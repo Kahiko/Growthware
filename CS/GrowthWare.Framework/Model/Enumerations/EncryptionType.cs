@@ -1,0 +1,24 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace GrowthWare.Framework.Model.Enumerations
+{
+    public enum EncryptionType
+    {
+        /// <summary>
+		/// Indicates Triple DES encryption
+		/// </summary>
+		TripleDes = 1,
+		/// <summary>
+		/// Indicates DES encryption
+		/// </summary>
+		Des = 2,
+		/// <summary>
+		/// Indicates no encryption
+		/// </summary>
+		None = 0
+    }
+}
