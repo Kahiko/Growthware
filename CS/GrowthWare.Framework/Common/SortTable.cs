@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using System.Globalization;
 
 namespace GrowthWare.Framework.Common
 {
@@ -8,9 +9,9 @@ namespace GrowthWare.Framework.Common
     /// </summary>
     public class SortTable
     {
-        private DateTime mStartTime = DateTime.Now;
+        private DateTime m_StartTime = DateTime.Now;
 
-        private DateTime mStopTime = DateTime.Now;
+        private DateTime m_StopTime = DateTime.Now;
 
         /// <summary>
         /// Gets the start time.
@@ -18,7 +19,7 @@ namespace GrowthWare.Framework.Common
         /// <value>The start time.</value>
         public DateTime StartTime
         {
-            get { return mStartTime; }
+            get { return m_StartTime; }
         }
 
         /// <summary>
@@ -27,7 +28,7 @@ namespace GrowthWare.Framework.Common
         /// <value>The stop time.</value>
         public DateTime StopTime
         {
-            get { return mStopTime; }
+            get { return m_StopTime; }
         }
 
         /// <summary>
@@ -40,73 +41,103 @@ namespace GrowthWare.Framework.Common
         /// <summary>
         /// Sorts the specified data table.
         /// </summary>
-        /// <param name="dt">The data table.</param>
-        /// <param name="col">The column.</param>
-        /// <param name="SortDirection">The sort direction.</param>
-        public void Sort(DataTable dt, DataColumn col, [System.Runtime.InteropServices.OptionalAttribute, System.Runtime.InteropServices.DefaultParameterValueAttribute("ASC")]  string SortDirection)
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="dataColumn">The column.</param>
+        /// <param name="sortDirection">The sort direction.</param>
+        public void Sort(DataTable dataTable, DataColumn dataColumn, string sortDirection)
         {
-            mStartTime = DateTime.Now;
-            int rowCount = dt.Rows.Count - 1;
+            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable can not be null");
+            if (dataColumn == null) throw new ArgumentNullException("dataColumn", "dataColumn can not be null");
+            m_StartTime = DateTime.Now;
+            int rowCount = dataTable.Rows.Count - 1;
             string[] sortValues = new string[rowCount + 1];
             string[] sortIndex = new string[rowCount + 1];
             for (int i = 0; i <= rowCount; i++)
             {
-                sortIndex[i] = i.ToString();
-                sortValues[i] = dt.Rows[i][col].ToString();
+                sortIndex[i] = i.ToString(CultureInfo.InvariantCulture);
+                sortValues[i] = dataTable.Rows[i][dataColumn].ToString();
             }
-            if (SortDirection == "ASC")
+            if (sortDirection == "ASC")
             {
-                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOptions.None));
+                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOption.None));
             }
             else
             {
-                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOptions.None, NaturalComparerDirection.Descending));
+                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOption.None, NaturalComparerDirections.Descending));
             }
             for (int i = 0; i <= sortIndex.GetUpperBound(0); i++)
             {
-                dt.ImportRow(dt.Rows[int.Parse(sortIndex[i].ToString())]);
+                dataTable.ImportRow(dataTable.Rows[int.Parse(sortIndex[i].ToString(), CultureInfo.InvariantCulture)]);
             }
             for (int i = 0; i <= sortIndex.GetUpperBound(0); i++)
             {
-                dt.Rows.RemoveAt(0);
+                dataTable.Rows.RemoveAt(0);
             }
-            mStopTime = DateTime.Now;
+            m_StopTime = DateTime.Now;
         }
 
         /// <summary>
         /// Sorts the specified data table.
         /// </summary>
-        /// <param name="dt">The data table.</param>
-        /// <param name="col">The column.</param>
-        /// <param name="SortDirection">The sort direction.</param>
-        public void Sort(DataTable dt, string col, [System.Runtime.InteropServices.OptionalAttribute, System.Runtime.InteropServices.DefaultParameterValueAttribute("ASC")]  string SortDirection)
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="dataColumn">The column.</param>
+        /// <remarks>Calls Sort passing "ASC" as sortDirection</remarks>
+        public void Sort(DataTable dataTable, DataColumn dataColumn)
         {
-            mStartTime = DateTime.Now;
-            int rowCount = dt.Rows.Count - 1;
+            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable can not be null");
+            if (dataColumn == null) throw new ArgumentNullException("dataColumn", "dataColumn can not be null");
+            Sort(dataTable,dataColumn,"ASC");
+        }
+
+        /// <summary>
+        /// Sorts the specified data table.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="columnName">The column.</param>
+        /// <param name="sortDirection">The sort direction.</param>
+        public void Sort(DataTable dataTable, string columnName, string sortDirection)
+        {
+            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable can not be null");
+            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("columnName", "columnName can not be null");
+            m_StartTime = DateTime.Now;
+            int rowCount = dataTable.Rows.Count - 1;
             string[] sortValues = new string[rowCount + 1];
             string[] sortIndex = new string[rowCount + 1];
             for (int i = 0; i <= rowCount; i++)
             {
-                sortIndex[i] = i.ToString();
-                sortValues[i] = dt.Rows[i][col].ToString();
+                sortIndex[i] = i.ToString(CultureInfo.InvariantCulture);
+                sortValues[i] = dataTable.Rows[i][columnName].ToString();
             }
-            if (SortDirection == "ASC")
+            if (sortDirection == "ASC")
             {
-                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOptions.None));
+                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOption.None));
             }
             else
             {
-                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOptions.None, NaturalComparerDirection.Descending));
+                Array.Sort(sortValues, sortIndex, new NaturalComparer(NaturalComparerOption.None, NaturalComparerDirections.Descending));
             }
             for (int i = 0; i <= sortIndex.GetUpperBound(0); i++)
             {
-                dt.ImportRow(dt.Rows[int.Parse(sortIndex[i].ToString())]);
+                dataTable.ImportRow(dataTable.Rows[int.Parse(sortIndex[i].ToString(), CultureInfo.InvariantCulture)]);
             }
             for (int i = 0; i <= sortIndex.GetUpperBound(0); i++)
             {
-                dt.Rows.RemoveAt(0);
+                dataTable.Rows.RemoveAt(0);
             }
-            mStopTime = DateTime.Now;
+            m_StopTime = DateTime.Now;
+        }
+
+        /// <summary>
+        /// Sorts the specified data table.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="columnName">The column.</param>
+        /// <remarks>Calls Sort passing sortDirection of "ASC"</remarks>
+        public void Sort(DataTable dataTable, string columnName) 
+        {
+            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable can not be null");
+            if (string.IsNullOrEmpty(columnName)) throw new ArgumentNullException("columnName", "columnName can not be null");
+            Sort(dataTable, columnName, "ASC");
         }
     }
 }

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Runtime.Serialization;
 
 namespace GrowthWare.Framework.Common
 {
@@ -11,10 +12,10 @@ namespace GrowthWare.Framework.Common
     public class NaturalComparer : IComparer<string>, IComparer
     {
 
-        private StringParser mParser1;
-        private StringParser mParser2;
-        private NaturalComparerOptions mNaturalComparerOptions;
-        private bool mSortAscending = true;
+        private StringParser m_Parser1;
+        private StringParser m_Parser2;
+        private NaturalComparerOption m_NaturalComparerOptions;
+        private bool m_SortAscending = true;
 
         private enum TokenType
         {
@@ -25,14 +26,14 @@ namespace GrowthWare.Framework.Common
 
         private class StringParser
         {
-            private TokenType mTokenType;
-            private string mStringValue;
-            private decimal mNumericalValue;
-            private int mIdx;
-            private string mSource;
-            private int mLen;
-            private char mCurChar;
-            private NaturalComparer mNaturalComparer;
+            private TokenType m_TokenType;
+            private string m_StringValue;
+            private decimal m_NumericalValue;
+            private int m_Idx;
+            private string m_Source;
+            private int m_Len;
+            private char m_CurChar;
+            private NaturalComparer m_NaturalComparer;
 
             /// <summary>
             /// Initializes a new instance of the <see cref="StringParser" /> class.
@@ -40,7 +41,7 @@ namespace GrowthWare.Framework.Common
             /// <param name="naturalComparer">The natural comparer.</param>
             public StringParser(NaturalComparer naturalComparer)
             {
-                mNaturalComparer = naturalComparer;
+                m_NaturalComparer = naturalComparer;
             }
 
             /// <summary>
@@ -50,10 +51,10 @@ namespace GrowthWare.Framework.Common
             public void Init(string source)
             {
                 if (source == null) source = string.Empty;
-                mSource = source;
-                mLen = source.Length;
-                mIdx = -1;
-                mNumericalValue = 0;
+                m_Source = source;
+                m_Len = source.Length;
+                m_Idx = -1;
+                m_NumericalValue = 0;
                 NextChar();
                 NextToken();
             }
@@ -64,7 +65,7 @@ namespace GrowthWare.Framework.Common
             /// <value>The type of the token.</value>
             public TokenType TokenType
             {
-                get { return mTokenType; }
+                get { return m_TokenType; }
             }
 
             /// <summary>
@@ -76,13 +77,13 @@ namespace GrowthWare.Framework.Common
             {
                 get
                 {
-                    if (mTokenType == NaturalComparer.TokenType.Numerical)
+                    if (m_TokenType == NaturalComparer.TokenType.Numerical)
                     {
-                        return mNumericalValue;
+                        return m_NumericalValue;
                     }
                     else
                     {
-                        throw new NaturalComparerException("Internal Error: NumericalValue called on a non numerical value.");
+                        throw new NaturalComparerException("Internal Error: Numeric value called on a non numerical value.");
                     }
                 }
             }
@@ -93,7 +94,7 @@ namespace GrowthWare.Framework.Common
             /// <value>The string value.</value>
             public string StringValue
             {
-                get { return mStringValue; }
+                get { return m_StringValue; }
             }
 
             /// <summary>
@@ -101,13 +102,13 @@ namespace GrowthWare.Framework.Common
             /// </summary>
             public void NextToken()
             {
-                if (mCurChar == 0)
+                if (m_CurChar == 0)
                 {
-                    mTokenType = NaturalComparer.TokenType.Nothing;
-                    mStringValue = null;
+                    m_TokenType = NaturalComparer.TokenType.Nothing;
+                    m_StringValue = null;
                     return;
                 }
-                else if (char.IsDigit(mCurChar))
+                else if (char.IsDigit(m_CurChar))
                 {
                     ParseNumericalValue();
                     return;
@@ -123,32 +124,32 @@ namespace GrowthWare.Framework.Common
 
             private void NextChar()
             {
-                mIdx += 1;
-                if (mIdx >= mLen)
+                m_Idx += 1;
+                if (m_Idx >= m_Len)
                 {
-                    mCurChar = '\0';
+                    m_CurChar = '\0';
                 }
                 else
                 {
-                    mCurChar = mSource[mIdx];
+                    m_CurChar = m_Source[m_Idx];
                 }
             }
 
             private void ParseNumericalValue()
             {
-                int start = mIdx;
+                int start = m_Idx;
                 char NumberDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator[0];
                 char NumberGroupSeparator = NumberFormatInfo.CurrentInfo.NumberGroupSeparator[0];
                 do
                 {
                     NextChar();
-                    if (mCurChar == NumberDecimalSeparator)
+                    if (m_CurChar == NumberDecimalSeparator)
                     {
                         // parse digits after the Decimal Separator
                         do
                         {
                             NextChar();
-                            if (!char.IsDigit(mCurChar) && mCurChar != NumberGroupSeparator) break; // TODO: might not be correct. Was : Exit Do
+                            if (!char.IsDigit(m_CurChar) && m_CurChar != NumberGroupSeparator) break; // TODO: might not be correct. Was : Exit Do
 
                         }
                         while (true);
@@ -156,27 +157,27 @@ namespace GrowthWare.Framework.Common
                     }
                     else
                     {
-                        if (!char.IsDigit(mCurChar) && mCurChar != NumberGroupSeparator) break; // TODO: might not be correct. Was : Exit Do
+                        if (!char.IsDigit(m_CurChar) && m_CurChar != NumberGroupSeparator) break; // TODO: might not be correct. Was : Exit Do
 
                     }
                 }
                 while (true);
-                mStringValue = mSource.Substring(start, mIdx - start);
-                if (decimal.TryParse(mStringValue, out mNumericalValue))
+                m_StringValue = m_Source.Substring(start, m_Idx - start);
+                if (decimal.TryParse(m_StringValue, out m_NumericalValue))
                 {
-                    mTokenType = NaturalComparer.TokenType.Numerical;
+                    m_TokenType = NaturalComparer.TokenType.Numerical;
                 }
                 else
                 {
                     // We probably have a too long value
-                    mTokenType = NaturalComparer.TokenType.String;
+                    m_TokenType = NaturalComparer.TokenType.String;
                 }
             }
 
             private void ParseString()
             {
-                int start = mIdx;
-                bool roman = (mNaturalComparer.mNaturalComparerOptions & NaturalComparerOptions.RomanNumbers) != 0;
+                int start = m_Idx;
+                bool roman = (m_NaturalComparer.m_NaturalComparerOptions & NaturalComparerOption.RomanNumber) != 0;
                 int romanValue = 0;
                 int lastRoman = int.MaxValue;
                 int cptLastRoman = 0;
@@ -184,7 +185,7 @@ namespace GrowthWare.Framework.Common
                 {
                     if (roman)
                     {
-                        int thisRomanValue = NaturalComparer.RomanLetterValue(mCurChar);
+                        int thisRomanValue = NaturalComparer.RomanLetterValue(m_CurChar);
                         if (thisRomanValue > 0)
                         {
                             bool handled = false;
@@ -192,7 +193,7 @@ namespace GrowthWare.Framework.Common
                             if ((thisRomanValue == 1 || thisRomanValue == 10 || thisRomanValue == 100))
                             {
                                 NextChar();
-                                int nextRomanValue = NaturalComparer.RomanLetterValue(mCurChar);
+                                int nextRomanValue = NaturalComparer.RomanLetterValue(m_CurChar);
                                 if (nextRomanValue == thisRomanValue * 10 | nextRomanValue == thisRomanValue * 5)
                                 {
                                     handled = true;
@@ -256,19 +257,19 @@ namespace GrowthWare.Framework.Common
                     {
                         NextChar();
                     }
-                    if (!char.IsLetter(mCurChar)) break; // TODO: might not be correct. Was : Exit Do
+                    if (!char.IsLetter(m_CurChar)) break; // TODO: might not be correct. Was : Exit Do
 
                 }
                 while (true);
-                mStringValue = mSource.Substring(start, mIdx - start);
+                m_StringValue = m_Source.Substring(start, m_Idx - start);
                 if (roman)
                 {
-                    mNumericalValue = romanValue;
-                    mTokenType = NaturalComparer.TokenType.Numerical;
+                    m_NumericalValue = romanValue;
+                    m_TokenType = NaturalComparer.TokenType.Numerical;
                 }
                 else
                 {
-                    mTokenType = NaturalComparer.TokenType.String;
+                    m_TokenType = NaturalComparer.TokenType.String;
                 }
             }
 
@@ -277,61 +278,61 @@ namespace GrowthWare.Framework.Common
         /// <summary>
         /// Initializes a new instance of the <see cref="NaturalComparer" /> class.
         /// </summary>
-        /// <param name="NaturalComparerOptions">The natural comparer options.</param>
-        public NaturalComparer(NaturalComparerOptions NaturalComparerOptions)
+        /// <param name="naturalComparerOptions">The natural comparer options.</param>
+        public NaturalComparer(NaturalComparerOption naturalComparerOptions)
         {
-            mNaturalComparerOptions = NaturalComparerOptions;
-            mParser1 = new StringParser(this);
-            mParser2 = new StringParser(this);
+            m_NaturalComparerOptions = naturalComparerOptions;
+            m_Parser1 = new StringParser(this);
+            m_Parser2 = new StringParser(this);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NaturalComparer" /> class.
         /// </summary>
-        /// <param name="NaturalComparerOptions">The natural comparer options.</param>
-        /// <param name="Direction">The direction.</param>
-        public NaturalComparer(NaturalComparerOptions NaturalComparerOptions, NaturalComparerDirection Direction)
+        /// <param name="naturalComparerOptions">The natural comparer options.</param>
+        /// <param name="direction">The direction.</param>
+        public NaturalComparer(NaturalComparerOption naturalComparerOptions, NaturalComparerDirections direction)
         {
-            if (Direction == NaturalComparerDirection.Descending) mSortAscending = false;
-            mNaturalComparerOptions = NaturalComparerOptions;
-            mParser1 = new StringParser(this);
-            mParser2 = new StringParser(this);
+            if (direction == NaturalComparerDirections.Descending) m_SortAscending = false;
+            m_NaturalComparerOptions = naturalComparerOptions;
+            m_Parser1 = new StringParser(this);
+            m_Parser2 = new StringParser(this);
         }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NaturalComparer" /> class.
         /// </summary>
         public NaturalComparer()
-            : this(NaturalComparerOptions.Default)
+            : this(NaturalComparerOption.Default)
         {
         }
 
         /// <summary>
-        /// Compares the specified string1.
+        /// Compares the specified x and y.
         /// </summary>
-        /// <param name="string1">The string1.</param>
-        /// <param name="string2">The string2.</param>
+        /// <param name="x">The string1.</param>
+        /// <param name="y">The string2.</param>
         /// <returns>System.Int32.</returns>
-        public int Compare(string string1, string string2)
+        public int Compare(string x, string y)
         {
-            mParser1.Init(string1);
-            mParser2.Init(string2);
+            m_Parser1.Init(x);
+            m_Parser2.Init(y);
             int result = 0;
             do
             {
-                if (mParser1.TokenType == TokenType.Numerical & mParser2.TokenType == TokenType.Numerical)
+                if (m_Parser1.TokenType == TokenType.Numerical & m_Parser2.TokenType == TokenType.Numerical)
                 {
                     // both string1 and string2 are numerical 
-                    result = decimal.Compare(mParser1.NumericalValue, mParser2.NumericalValue);
+                    result = decimal.Compare(m_Parser1.NumericalValue, m_Parser2.NumericalValue);
                 }
                 else
                 {
-                    result = string.Compare(mParser1.StringValue, mParser2.StringValue);
+                    result = string.Compare(m_Parser1.StringValue, m_Parser2.StringValue, StringComparison.OrdinalIgnoreCase);
                 }
                 if (result != 0)
                 {
                     // if the sort direction is decending the reverse the result
-                    if (!mSortAscending)
+                    if (!m_SortAscending)
                     {
                         if (result == -1) result = 1; else result = -1;
                     }
@@ -339,11 +340,11 @@ namespace GrowthWare.Framework.Common
                 }
                 else
                 {
-                    mParser1.NextToken();
-                    mParser2.NextToken();
+                    m_Parser1.NextToken();
+                    m_Parser2.NextToken();
                 }
             }
-            while (!(mParser1.TokenType == TokenType.Nothing & mParser2.TokenType == TokenType.Nothing));
+            while (!(m_Parser1.TokenType == TokenType.Nothing & m_Parser2.TokenType == TokenType.Nothing));
             return 0;
             //identical
         }
@@ -374,15 +375,15 @@ namespace GrowthWare.Framework.Common
         /// <summary>
         /// Romans the value.
         /// </summary>
-        /// <param name="string1">The string1.</param>
+        /// <param name="theValue">The string1.</param>
         /// <returns>System.Int32.</returns>
-        public int RomanValue(string string1)
+        public int RomanValue(string theValue)
         {
-            mParser1.Init(string1);
+            m_Parser1.Init(theValue);
 
-            if (mParser1.TokenType == TokenType.Numerical)
+            if (m_Parser1.TokenType == TokenType.Numerical)
             {
-                return (int)mParser1.NumericalValue;
+                return (int)m_Parser1.NumericalValue;
             }
             else
             {
@@ -393,24 +394,24 @@ namespace GrowthWare.Framework.Common
         /// <summary>
         /// Is the comparer_ compare.
         /// </summary>
-        /// <param name="x">The x.</param>
-        /// <param name="y">The y.</param>
+        /// <param name="theValue1">The x.</param>
+        /// <param name="theValue2">The y.</param>
         /// <returns>System.Int32.</returns>
-        public int IComparer_Compare(object x, object y)
+        public int IComparerCompare(object theValue1, object theValue2)
         {
-            return Compare((string)x, (string)x);
+            return Compare((string)theValue1, (string)theValue2);
         }
 
         int System.Collections.IComparer.Compare(object x, object y)
         {
-            return IComparer_Compare(x, y);
+            return IComparerCompare(x, y);
         }
     }
 
     /// <summary>
     /// Enum NaturalComparerOptions
     /// </summary>
-    public enum NaturalComparerOptions
+    public enum NaturalComparerOption
     {
         /// <summary>
         /// None
@@ -420,7 +421,7 @@ namespace GrowthWare.Framework.Common
         /// <summary>
         /// RomanNumbers
         /// </summary>
-        RomanNumbers,
+        RomanNumber,
 
         //DecimalValues <- we could put this as an option
         //IgnoreSpaces  <- we could put this as an option
@@ -436,7 +437,7 @@ namespace GrowthWare.Framework.Common
     /// Enum NaturalComparerDirection
     /// </summary>
     [System.Flags()]
-    public enum NaturalComparerDirection
+    public enum NaturalComparerDirections
     {
         /// <summary>
         /// None
@@ -460,13 +461,36 @@ namespace GrowthWare.Framework.Common
     public class NaturalComparerException : Exception
     {
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="NaturalComparerException" /> class.
-        /// </summary>
-        /// <param name="msg">The MSG.</param>
-        public NaturalComparerException(string msg)
-            : base(msg)
-        {
-        }
+        public NaturalComparerException() { }
+
+		/// <summary>
+		/// Calls base method
+		/// </summary>
+		/// <param name="message">string</param>
+		public NaturalComparerException(string message):base(message)
+		{
+			
+		}
+
+		/// <summary>
+		/// Calls base method
+		/// </summary>
+		/// <param name="message">string</param>
+		/// <param name="innerException">Exception</param>
+		public NaturalComparerException(string message, Exception innerException):base(message, innerException)
+		{
+		
+		}
+
+		/// <summary>
+		/// Calls base method
+		/// </summary>
+		/// <param name="info"></param>
+		/// <param name="context"></param>
+        protected NaturalComparerException(SerializationInfo info, StreamingContext context)
+            : base(info, context)
+		{
+			// Implement type-specific serialization constructor logic.
+		}
     }
 }

@@ -14,7 +14,6 @@ namespace GrowthWare.Framework.Common
     [Serializable()]
     public class CryptoUtilityException : Exception
     {
-        		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
 		public CryptoUtilityException(){}
 
 		/// <summary>

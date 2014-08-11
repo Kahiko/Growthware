@@ -20,10 +20,10 @@ namespace GrowthWare.WebSupport
         /// <summary>
         /// Returns the CacheDirectory path
         /// </summary>
-        public static string CacheDirectory = HttpContext.Current.Server.MapPath("~\\") + "CacheDependency\\";
+        private static string m_CacheDirectory = HttpContext.Current.Server.MapPath("~\\") + "CacheDependency\\";
 
         /// <summary>
-        ///		addToCacheDependency function Adds an object to the
+        ///	AddToCacheDependency function Adds an object to the
         /// cache as well as creates/re-writes the cacheDependency file
         /// based on the appropriate application variable
         /// For each cache dependency file a corresponding application variable
@@ -64,7 +64,7 @@ namespace GrowthWare.WebSupport
                 FileStream fileStream = null;
                 StreamWriter writer = null;
                 string fileName = null;
-                fileName = CacheDirectory + Key + ".txt";
+                fileName = m_CacheDirectory + Key + ".txt";
                 // ensure the file exists if not then create one
                 if (!File.Exists(fileName))
                 {
@@ -124,7 +124,7 @@ namespace GrowthWare.WebSupport
         public static void RemoveFromCache(string CacheName)
         {
             string fileName = null;
-            fileName = CacheDirectory + CacheName + ".txt";
+            fileName = m_CacheDirectory + CacheName + ".txt";
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
@@ -176,7 +176,7 @@ namespace GrowthWare.WebSupport
         public static void RemoveAllCache()
         {
             MDirectoryProfile directoryInfo = new MDirectoryProfile();
-            DirectoryInfo DirectoryFiles = new DirectoryInfo(CacheDirectory);
+            DirectoryInfo DirectoryFiles = new DirectoryInfo(m_CacheDirectory);
             foreach (FileInfo directoryFile in DirectoryFiles.GetFiles("*.*"))
             {
                 File.Delete(DirectoryFiles.FullName + directoryFile.Name);

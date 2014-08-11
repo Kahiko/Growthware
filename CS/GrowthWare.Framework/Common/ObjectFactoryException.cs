@@ -14,8 +14,7 @@ namespace GrowthWare.Framework.Common
     [Serializable()]
     public class ObjectFactoryException : Exception
     {
-        		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
-		private ObjectFactoryException(){}
+        public ObjectFactoryException() { }
 
 		/// <summary>
 		/// Calls base method
