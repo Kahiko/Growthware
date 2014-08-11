@@ -79,7 +79,7 @@ Namespace DataAccessLayer.SQLServer.V2008
              mPrimaryKey
              }
             MyBase.ExecuteNonQuery("ZGWSecurity.Set_Security_Entity", mParameters)
-            profile.Id = Integer.Parse(MyBase.GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture)
+            profile.Id = Integer.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture)
             Return profile.Id
         End Function
 

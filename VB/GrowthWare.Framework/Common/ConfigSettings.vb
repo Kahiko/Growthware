@@ -142,7 +142,7 @@ Namespace Common
         ''' <remarks>The CONFIG value can be encrypted or clear text</remarks>
         ReadOnly Property ConnectionString(ByVal dataAccessLayer As String) As String
             Get
-                Dim mRetVal As String = GetAppSettingValue("DAL_" & dataAccessLayer & "_Connectionstring", True), EncryptionType
+                Dim mRetVal As String = GetAppSettingValue("DAL_" & dataAccessLayer & "_Connectionstring", True)
                 Try
                     mRetVal = CryptoUtility.Decrypt(GetAppSettingValue("DAL_" & dataAccessLayer & "_Connectionstring", True), EncryptionType)
                 Catch ex As CryptoUtilityException

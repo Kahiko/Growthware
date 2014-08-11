@@ -1,14 +1,15 @@
 ﻿Imports System.Globalization
+Imports System.Runtime.Serialization
 
 Namespace Common
     Public Class NaturalComparer
         Implements IComparer(Of String)
         Implements IComparer
 
-        Private mParser1 As StringParser
-        Private mParser2 As StringParser
-        Private mNaturalComparerOptions As NaturalComparerOptions
-        Private mSortAscending As Boolean = True
+        Private m_Parser1 As StringParser
+        Private m_Parser2 As StringParser
+        Private m_NaturalComparerOptions As NaturalComparerOption
+        Private m_SortAscending As Boolean = True
 
         Private Enum TokenType
             [Nothing]
@@ -18,59 +19,59 @@ Namespace Common
 
 
         Private Class StringParser
-            Private mTokenType As TokenType
-            Private mStringValue As String
-            Private mNumericalValue As Decimal
-            Private mIdx As Integer
-            Private mSource As String
-            Private mLen As Integer
-            Private mCurChar As Char
-            Private mNaturalComparer As NaturalComparer
+            Private m_TokenType As TokenType
+            Private m_StringValue As String
+            Private m_NumericalValue As Decimal
+            Private m_Idx As Integer
+            Private m_Source As String
+            Private m_Len As Integer
+            Private m_CurChar As Char
+            Private m_NaturalComparer As NaturalComparer
 
             Sub New(ByVal naturalComparer As NaturalComparer)
-                mNaturalComparer = naturalComparer
+                m_NaturalComparer = naturalComparer
             End Sub
 
             Public Sub Init(ByVal source As String)
                 If source Is Nothing Then source = String.Empty
-                mSource = source
-                mLen = source.Length
-                mIdx = -1
-                mNumericalValue = 0
+                m_Source = source
+                m_Len = source.Length
+                m_Idx = -1
+                m_NumericalValue = 0
                 NextChar()
                 NextToken()
             End Sub
 
             Public ReadOnly Property TokenType() As TokenType
                 Get
-                    Return mTokenType
+                    Return m_TokenType
                 End Get
             End Property
 
             Public ReadOnly Property NumericalValue() As Decimal
                 Get
-                    If mTokenType = NaturalComparer.TokenType.Numerical Then
-                        Return mNumericalValue
+                    If m_TokenType = NaturalComparer.TokenType.Numerical Then
+                        Return m_NumericalValue
                     Else
-                        Throw New NaturalComparerException("Internal Error: NumericalValue called on a non numerical value.")
+                        Throw New NaturalComparerException("Internal Error: Numeric value called on a non numerical value.")
                     End If
                 End Get
             End Property
 
             Public ReadOnly Property StringValue() As String
                 Get
-                    Return mStringValue
+                    Return m_StringValue
                 End Get
             End Property
 
             Public Sub NextToken()
                 Do
                     'CharUnicodeInfo.GetUnicodeCategory 
-                    If mCurChar = Nothing Then
-                        mTokenType = NaturalComparer.TokenType.Nothing
-                        mStringValue = Nothing
+                    If m_CurChar = Nothing Then
+                        m_TokenType = NaturalComparer.TokenType.Nothing
+                        m_StringValue = Nothing
                         Exit Sub
-                    ElseIf Char.IsDigit(mCurChar) Then
+                    ElseIf Char.IsDigit(m_CurChar) Then
                         ParseNumericalValue()
                         Exit Sub
                         'ElseIf Char.IsLetter(mCurChar) Then
@@ -86,55 +87,55 @@ Namespace Common
             End Sub
 
             Private Sub NextChar()
-                mIdx += 1
-                If mIdx >= mLen Then
-                    mCurChar = Nothing
+                m_Idx += 1
+                If m_Idx >= m_Len Then
+                    m_CurChar = Nothing
                 Else
-                    mCurChar = mSource(mIdx)
+                    m_CurChar = m_Source(m_Idx)
                 End If
             End Sub
 
             Private Sub ParseNumericalValue()
-                Dim start As Integer = mIdx
+                Dim start As Integer = m_Idx
                 Dim NumberDecimalSeparator As Char = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator(0)
                 Dim NumberGroupSeparator As Char = NumberFormatInfo.CurrentInfo.NumberGroupSeparator(0)
                 Do
                     NextChar()
-                    If mCurChar = NumberDecimalSeparator Then
+                    If m_CurChar = NumberDecimalSeparator Then
                         ' parse digits after the Decimal Separator
                         Do
                             NextChar()
-                            If Not Char.IsDigit(mCurChar) AndAlso mCurChar <> NumberGroupSeparator Then Exit Do
+                            If Not Char.IsDigit(m_CurChar) AndAlso m_CurChar <> NumberGroupSeparator Then Exit Do
                         Loop
                         Exit Do
                     Else
-                        If Not Char.IsDigit(mCurChar) AndAlso mCurChar <> NumberGroupSeparator Then Exit Do
+                        If Not Char.IsDigit(m_CurChar) AndAlso m_CurChar <> NumberGroupSeparator Then Exit Do
                     End If
                 Loop
-                mStringValue = mSource.Substring(start, mIdx - start)
-                If Decimal.TryParse(mStringValue, mNumericalValue) Then
-                    mTokenType = NaturalComparer.TokenType.Numerical
+                m_StringValue = m_Source.Substring(start, m_Idx - start)
+                If Decimal.TryParse(m_StringValue, m_NumericalValue) Then
+                    m_TokenType = NaturalComparer.TokenType.Numerical
                 Else
                     ' We probably have a too long value
-                    mTokenType = NaturalComparer.TokenType.String
+                    m_TokenType = NaturalComparer.TokenType.String
                 End If
             End Sub
 
             Private Sub ParseString()
-                Dim start As Integer = mIdx
-                Dim roman As Boolean = (mNaturalComparer.mNaturalComparerOptions And NaturalComparerOptions.RomanNumbers) <> 0
+                Dim start As Integer = m_Idx
+                Dim roman As Boolean = (m_NaturalComparer.m_NaturalComparerOptions And NaturalComparerOption.RomanNumber) <> 0
                 Dim romanValue As Integer
                 Dim lastRoman As Integer = Integer.MaxValue
                 Dim cptLastRoman As Integer
                 Do
                     If roman Then
-                        Dim thisRomanValue As Integer = RomanLetterValue(mCurChar)
+                        Dim thisRomanValue As Integer = RomanLetterValue(m_CurChar)
                         If thisRomanValue > 0 Then
                             Dim handled As Boolean = False
 
                             If (thisRomanValue = 1 OrElse thisRomanValue = 10 OrElse thisRomanValue = 100) Then
                                 NextChar()
-                                Dim nextRomanValue As Integer = RomanLetterValue(mCurChar)
+                                Dim nextRomanValue As Integer = RomanLetterValue(m_CurChar)
                                 If nextRomanValue = thisRomanValue * 10 Or nextRomanValue = thisRomanValue * 5 Then
                                     handled = True
                                     If nextRomanValue <= lastRoman Then
@@ -174,58 +175,64 @@ Namespace Common
                     Else
                         NextChar()
                     End If
-                    If Not Char.IsLetter(mCurChar) Then Exit Do
+                    If Not Char.IsLetter(m_CurChar) Then Exit Do
                 Loop
-                mStringValue = mSource.Substring(start, mIdx - start)
+                m_StringValue = m_Source.Substring(start, m_Idx - start)
                 If roman Then
-                    mNumericalValue = romanValue
-                    mTokenType = NaturalComparer.TokenType.Numerical
+                    m_NumericalValue = romanValue
+                    m_TokenType = NaturalComparer.TokenType.Numerical
                 Else
-                    mTokenType = NaturalComparer.TokenType.String
+                    m_TokenType = NaturalComparer.TokenType.String
                 End If
             End Sub
 
         End Class
 
-        Sub New(ByVal NaturalComparerOptions As NaturalComparerOptions)
-            mNaturalComparerOptions = NaturalComparerOptions
-            mParser1 = New StringParser(Me)
-            mParser2 = New StringParser(Me)
+        Sub New(ByVal naturalComparerOptions As NaturalComparerOption)
+            m_NaturalComparerOptions = naturalComparerOptions
+            m_Parser1 = New StringParser(Me)
+            m_Parser2 = New StringParser(Me)
         End Sub
 
-        Sub New(ByVal NaturalComparerOptions As NaturalComparerOptions, ByVal Direction As NaturalComparerDirection)
-            If Direction = NaturalComparerDirection.Descending Then mSortAscending = False
-            mNaturalComparerOptions = NaturalComparerOptions
-            mParser1 = New StringParser(Me)
-            mParser2 = New StringParser(Me)
+        Sub New(ByVal naturalComparerOptions As NaturalComparerOption, ByVal direction As NaturalComparerDirections)
+            If direction = NaturalComparerDirections.Descending Then m_SortAscending = False
+            m_NaturalComparerOptions = naturalComparerOptions
+            m_Parser1 = New StringParser(Me)
+            m_Parser2 = New StringParser(Me)
         End Sub
 
         Sub New()
-            MyClass.New(NaturalComparerOptions.Default)
+            MyClass.New(NaturalComparerOption.Default)
         End Sub
 
-        Public Function Compare(ByVal string1 As String, ByVal string2 As String) As Integer Implements System.Collections.Generic.IComparer(Of String).Compare
-            mParser1.Init(string1)
-            mParser2.Init(string2)
+        ''' <summary>
+        ''' Compares the x y.
+        ''' </summary>
+        ''' <param name="x">The string1.</param>
+        ''' <param name="y">The string2.</param>
+        ''' <returns>System.Int32.</returns>
+        Public Function Compare(ByVal x As String, ByVal y As String) As Integer Implements System.Collections.Generic.IComparer(Of String).Compare
+            m_Parser1.Init(x)
+            m_Parser2.Init(y)
             Dim result As Integer
             Do
-                If mParser1.TokenType = TokenType.Numerical And mParser2.TokenType = TokenType.Numerical Then
+                If m_Parser1.TokenType = TokenType.Numerical And m_Parser2.TokenType = TokenType.Numerical Then
                     ' both string1 and string2 are numerical 
-                    result = Decimal.Compare(mParser1.NumericalValue, mParser2.NumericalValue)
+                    result = Decimal.Compare(m_Parser1.NumericalValue, m_Parser2.NumericalValue)
                 Else
-                    result = String.Compare(mParser1.StringValue, mParser2.StringValue)
+                    result = String.Compare(m_Parser1.StringValue, m_Parser2.StringValue, StringComparison.OrdinalIgnoreCase)
                 End If
                 If result <> 0 Then
                     ' if the sort direction is decending the reverse the result
-                    If Not mSortAscending Then
+                    If Not m_SortAscending Then
                         If result = -1 Then result = 1 Else result = -1
                     End If
                     Return result
                 Else
-                    mParser1.NextToken()
-                    mParser2.NextToken()
+                    m_Parser1.NextToken()
+                    m_Parser2.NextToken()
                 End If
-            Loop Until mParser1.TokenType = TokenType.Nothing And mParser2.TokenType = TokenType.Nothing
+            Loop Until m_Parser1.TokenType = TokenType.Nothing And m_Parser2.TokenType = TokenType.Nothing
             Return 0 'identical
         End Function
 
@@ -250,31 +257,42 @@ Namespace Common
             End Select
         End Function
 
-        Public Function RomanValue(ByVal string1 As String) As Integer
-            mParser1.Init(string1)
+        ''' <summary>
+        ''' Romans the value.
+        ''' </summary>
+        ''' <param name="theValue">The string1.</param>
+        ''' <returns>System.Int32.</returns>
+        Public Function RomanValue(ByVal theValue As String) As Integer
+            m_Parser1.Init(theValue)
 
-            If mParser1.TokenType = TokenType.Numerical Then
-                Return CInt(mParser1.NumericalValue)
+            If m_Parser1.TokenType = TokenType.Numerical Then
+                Return CInt(m_Parser1.NumericalValue)
             Else
                 Return 0
             End If
         End Function
 
-        Public Function IComparer_Compare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
-            Return Compare(DirectCast(x, String), DirectCast(x, String))
+        ''' <summary>
+        ''' Is the comparer_ compare.
+        ''' </summary>
+        ''' <param name="x">The x.</param>
+        ''' <param name="y">The y.</param>
+        ''' <returns>System.Int32.</returns>
+        Public Function IComparerCompare(ByVal x As Object, ByVal y As Object) As Integer Implements System.Collections.IComparer.Compare
+            Return Compare(DirectCast(x, String), DirectCast(y, String))
         End Function
     End Class
 
-    Public Enum NaturalComparerOptions
+    Public Enum NaturalComparerOption
         None
-        RomanNumbers
+        RomanNumber
         'DecimalValues <- we could put this as an option
         'IgnoreSpaces  <- we could put this as an option
         'IgnorePunctuation <- we could put this as an option
         [Default] = None
     End Enum
 
-    <System.Flags()> Public Enum NaturalComparerDirection
+    <System.Flags()> Public Enum NaturalComparerDirections
         None
         Ascending
         Descending
@@ -284,8 +302,40 @@ Namespace Common
     Public Class NaturalComparerException
         Inherits Exception
 
-        Sub New(ByVal msg As String)
-            MyBase.New(msg)
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="NaturalComparerException" /> class.
+        ''' </summary>
+        Public Sub New()
+
+        End Sub
+
+        ''' <summary>
+        ''' Calls base method
+        ''' </summary>
+        ''' <param name="message">String</param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal message As String)
+            MyBase.New(message)
+        End Sub
+
+        ''' <summary>
+        ''' Calls base method
+        ''' </summary>
+        ''' <param name="message">String</param>
+        ''' <param name="innerException">Exception</param>
+        ''' <remarks></remarks>
+        Public Sub New(ByVal message As String, ByVal innerException As Exception)
+            MyBase.New(message, innerException)
+        End Sub
+
+        ''' <summary>
+        ''' Calls base method
+        ''' </summary>
+        ''' <param name="info"></param>
+        ''' <param name="context"></param>
+        ''' <remarks></remarks>
+        Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+            MyBase.New(info, context)
         End Sub
     End Class
 End Namespace

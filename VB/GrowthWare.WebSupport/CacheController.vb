@@ -9,10 +9,10 @@ Imports GrowthWare.Framework.Common
 ''' Facade for System.Web.Caching
 ''' </summary>
 Public Class CacheController
-    Private Shared mCacheDirectory As String = HttpContext.Current.Server.MapPath("~\") & "CacheDependency\"
+    Private Shared m_CacheDirectory As String = HttpContext.Current.Server.MapPath("~\") & "CacheDependency\"
 
     ''' <summary>
-    '''		addToCacheDependency function Adds an object to the
+    '''	AddToCacheDependency function Adds an object to the
     ''' cache as well as creates/re-writes the cacheDependency file
     ''' based on the appropriate application variable
     ''' For each cache dependency file a corresponding application variable
@@ -51,7 +51,7 @@ Public Class CacheController
             Dim fileStream As FileStream
             Dim writer As StreamWriter
             Dim fileName As String
-            fileName = mCacheDirectory & Key & ".txt"
+            fileName = m_CacheDirectory & Key & ".txt"
             ' ensure the file exists if not then create one
             If Not File.Exists(fileName) Then
                 Try
@@ -101,7 +101,7 @@ Public Class CacheController
     ''' -----------------------------------------------------------------------------
     Public Shared Sub RemoveFromCache(ByVal CacheName As String)
         Dim fileName As String
-        fileName = mCacheDirectory & CacheName & ".txt"
+        fileName = m_CacheDirectory & CacheName & ".txt"
         If File.Exists(fileName) Then
             File.Delete(fileName)
         End If
@@ -145,7 +145,7 @@ Public Class CacheController
     ''' </summary>
     Public Shared Sub RemoveAllCache()
         Dim directoryInfo As New MDirectoryProfile
-        Dim DirectoryFiles As New DirectoryInfo(mCacheDirectory)
+        Dim DirectoryFiles As New DirectoryInfo(m_CacheDirectory)
         Dim directoryFile As FileInfo
         For Each directoryFile In DirectoryFiles.GetFiles("*.*")
             File.Delete(DirectoryFiles.FullName & directoryFile.Name)

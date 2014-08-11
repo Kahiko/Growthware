@@ -6,7 +6,7 @@ Namespace Common
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable()>
-    Public NotInheritable Class ObjectFactoryException
+    Public Class ObjectFactoryException
         Inherits Exception
 
         Public Sub New()
@@ -38,7 +38,7 @@ Namespace Common
         ''' <param name="info"></param>
         ''' <param name="context"></param>
         ''' <remarks></remarks>
-        Private Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
+        Protected Sub New(ByVal info As SerializationInfo, ByVal context As StreamingContext)
             MyBase.New(info, context)
         End Sub
     End Class
