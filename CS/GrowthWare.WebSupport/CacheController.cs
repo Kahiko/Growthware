@@ -20,7 +20,7 @@ namespace GrowthWare.WebSupport
         /// <summary>
         /// Returns the CacheDirectory path
         /// </summary>
-        private static string m_CacheDirectory = HttpContext.Current.Server.MapPath("~\\") + "CacheDependency\\";
+        private static string s_CacheDirectory = HttpContext.Current.Server.MapPath("~\\") + "CacheDependency\\";
 
         /// <summary>
         ///	AddToCacheDependency function Adds an object to the
@@ -64,7 +64,7 @@ namespace GrowthWare.WebSupport
                 FileStream fileStream = null;
                 StreamWriter writer = null;
                 string fileName = null;
-                fileName = m_CacheDirectory + Key + ".txt";
+                fileName = s_CacheDirectory + Key + ".txt";
                 // ensure the file exists if not then create one
                 if (!File.Exists(fileName))
                 {
@@ -124,7 +124,7 @@ namespace GrowthWare.WebSupport
         public static void RemoveFromCache(string CacheName)
         {
             string fileName = null;
-            fileName = m_CacheDirectory + CacheName + ".txt";
+            fileName = s_CacheDirectory + CacheName + ".txt";
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
@@ -176,7 +176,7 @@ namespace GrowthWare.WebSupport
         public static void RemoveAllCache()
         {
             MDirectoryProfile directoryInfo = new MDirectoryProfile();
-            DirectoryInfo DirectoryFiles = new DirectoryInfo(m_CacheDirectory);
+            DirectoryInfo DirectoryFiles = new DirectoryInfo(s_CacheDirectory);
             foreach (FileInfo directoryFile in DirectoryFiles.GetFiles("*.*"))
             {
                 File.Delete(DirectoryFiles.FullName + directoryFile.Name);
