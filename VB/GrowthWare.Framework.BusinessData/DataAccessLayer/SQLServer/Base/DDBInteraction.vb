@@ -219,6 +219,8 @@ Namespace DataAccessLayer.SQLServer.Base
                     mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure)
                 End If
                 If Not mReader Is Nothing Then
+                    mRetDataTable = New DataTable()
+                    mRetDataTable.Locale = CultureInfo.InvariantCulture
                     mRetDataTable.Load(mReader)
                 Else
                     Dim mMessage As String = vbCrLf & "Store procedure '" & storedProcedure & "' executed and no data was found." & vbCrLf
@@ -240,7 +242,7 @@ Namespace DataAccessLayer.SQLServer.Base
                     Throw New DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString), ex)
                 End If
             Catch ex As Exception
-                If mRetDataTable IsNot Nothing Then mRetDataTable.Dispose()
+                If Not mRetDataTable Is Nothing Then mRetDataTable.Dispose()
                 Throw New DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString), ex)
             Finally
                 If Not (mReader Is Nothing) Then

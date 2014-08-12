@@ -38,7 +38,7 @@ Public NotInheritable Class GWWebHelper
     Shared ReadOnly Property FrameworkVersion() As String
         Get
             Dim myVersion As String = String.Empty
-            Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWareFramework")
+            Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.Framework")
             If Not myAssembly Is Nothing Then
                 myVersion = myAssembly.GetName.Version.ToString
             End If

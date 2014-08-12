@@ -229,37 +229,9 @@ Namespace Common
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub log(ByVal message As Object, priority As LogPriority)
-            Dim framed As StackFrame = New StackFrame(2, True)
-
-
-            Dim frames As StackFrame() = m_StackTrace.GetFrames()
-            Dim executingAssembly As Assembly = Assembly.GetExecutingAssembly()
-            System.Diagnostics.Debug.Print("Starting loop")
-            For Each frame As StackFrame In frames
-                Dim assembly As Assembly = frame.GetMethod().DeclaringType.Assembly
-                If Not assembly = executingAssembly Then
-                    System.Diagnostics.Debug.Print(assembly.GetName.FullName + " :: " + frame.GetMethod().Name)
-                    'System.Diagnostics.Debug.Print(frame.GetMethod().Name)
-                End If
-            Next
-            System.Diagnostics.Debug.Print("Finished loop")
-
+            Dim mFramed As StackFrame = New StackFrame(2, True)
             Dim mException As Exception = Nothing
-            Dim mName As String = m_StackTrace.GetFrame(1).GetMethod().ReflectedType.Name
-            Dim mStackFrame As StackFrame = m_StackTrace.GetFrames()(1)
-            Dim mMethod = mStackFrame.GetMethod()
-            Dim mMethodName As String = mMethod.Name
-            If mMethodName = "onApplicationError" And m_StackTrace.GetFrames()(2) IsNot Nothing Then
-                mStackFrame = m_StackTrace.GetFrames()(2)
-                mName = mStackFrame.GetMethod().ReflectedType.Name
-                mMethod = mStackFrame.GetMethod()
-                mMethodName = mMethod.Name
-            End If
-
-
-            mName = framed.GetMethod.ReflectedType.Name + ":" + framed.GetMethod.Name
-
-
+            Dim mName As String = mFramed.GetMethod.ReflectedType.Name + ":" + mFramed.GetMethod.Name
             If message.GetType() IsNot GetType(String) Then
                 mException = New Exception("Calling: " + mName, message)
             End If
