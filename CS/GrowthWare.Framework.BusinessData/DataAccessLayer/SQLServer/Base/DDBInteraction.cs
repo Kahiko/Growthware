@@ -224,7 +224,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
             }
             finally
             {
-                dbCommand.Dispose();
+                if(dbCommand != null) dbCommand.Dispose();
             }
             return mRetDataSet;
         }
@@ -322,10 +322,12 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
                 if ((mReader != null))
                 {
                     mReader.Close();
+                    mReader = null;
                 }
                 if (mDataTable != null)
                 {
                     mDataTable.Dispose();
+                    mDataTable = null;
                 }
             }
         }
