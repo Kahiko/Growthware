@@ -20,7 +20,6 @@ Namespace Common
         Private m_LogFile As String = m_LogFilePath + m_LogFileName
         Private m_Appender As log4net.Appender.FileAppender = Nothing
         Private m_AppenderLastUsed As DateTime
-        Private m_StackTrace As New StackTrace()
         Private m_CurrentLogLevel As Integer
         Private Shared s_SCurrentLogLevel As String = String.Empty
 
