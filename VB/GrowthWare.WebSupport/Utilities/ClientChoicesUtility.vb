@@ -48,7 +48,7 @@ Namespace Utilities
             Dim myClientChoicesState As MClientChoicesState = CType(HttpContext.Current.Items(MClientChoices.SessionName), MClientChoicesState)
             Dim result As Integer
             If myClientChoicesState IsNot Nothing Then
-                result = Integer.Parse(myClientChoicesState(MClientChoices.SecurityEntityId))
+                result = Integer.Parse(myClientChoicesState(MClientChoices.SecurityEntityId), CultureInfo.InvariantCulture)
             Else
                 result = ConfigSettings.DefaultSecurityEntityId
             End If

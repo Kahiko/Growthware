@@ -24,7 +24,7 @@ Namespace Utilities
         Public Shared Function GetDefaultProfile() As MSecurityEntityProfile
             If m_DefaultProfile Is Nothing Then
                 Dim mDefaultProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
-                mDefaultProfile.Id = ConfigSettings.DefaultSecurityEntityId
+                mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture))
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer)
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer)
@@ -42,7 +42,7 @@ Namespace Utilities
         Public Shared Function GetCurrentProfile() As MSecurityEntityProfile
             Dim mAccount As String = AccountUtility.GetHttpContextUserName
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount)
-            Dim mCurrentSecurityEntityID As Integer = mClientChoicesState(MClientChoices.SecurityEntityId)
+            Dim mCurrentSecurityEntityID As Integer = Integer.Parse(mClientChoicesState(MClientChoices.SecurityEntityId).ToString(CultureInfo.InvariantCulture))
             Dim mProfiles As Collection(Of MSecurityEntityProfile)
             mProfiles = GetProfiles()
 
@@ -70,10 +70,10 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the profile.
         ''' </summary>
-        ''' <param name="securityEntityID">The security entity ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>MAccountProfile.</returns>
-        Public Shared Function GetProfile(ByVal securityEntityID As Integer) As MSecurityEntityProfile
-            Dim mResult = From mProfile In GetProfiles() Where mProfile.Id = securityEntityID Select mProfile
+        Public Shared Function GetProfile(ByVal securityEntityId As Integer) As MSecurityEntityProfile
+            Dim mResult = From mProfile In GetProfiles() Where mProfile.Id = securityEntityId Select mProfile
             Dim mRetVal As MSecurityEntityProfile = New MSecurityEntityProfile()
             Try
                 mRetVal = mResult.First
@@ -102,13 +102,13 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the valid security entities.
         ''' </summary>
-        ''' <param name="Account">The account.</param>
-        ''' <param name="SecurityEntityID">The security entity ID.</param>
+        ''' <param name="account">The account.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <param name="IsSecurityEntityAdministrator">if set to <c>true</c> [is security entity administrator].</param>
         ''' <returns>DataView.</returns>
-        Public Shared Function GetValidSecurityEntities(ByVal Account As String, ByVal SecurityEntityID As Integer, ByVal IsSecurityEntityAdministrator As Boolean) As DataView
+        Public Shared Function GetValidSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataView
             Dim mBSecurityEntity As BSecurityEntity = New BSecurityEntity(GetCurrentProfile(), ConfigSettings.CentralManagement)
-            Return mBSecurityEntity.GetValidSecurityEntities(Account, SecurityEntityID, IsSecurityEntityAdministrator).DefaultView()
+            Return mBSecurityEntity.GetValidSecurityEntities(account, securityEntityId, isSecurityEntityAdministrator).DefaultView()
         End Function
 
         ''' <summary>

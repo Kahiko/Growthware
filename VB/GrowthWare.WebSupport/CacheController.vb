@@ -4,6 +4,7 @@ Imports System.Web.Caching
 Imports System.Web
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
+Imports System.Globalization
 
 ''' <summary>
 ''' Facade for System.Web.Caching
@@ -29,11 +30,11 @@ Public Class CacheController
     ''' and the others servers will then update their in memory cache
     ''' objects the next time the cache objected is requested.
     ''' </summary>
-    ''' <param name="Key">
+    ''' <param name="key">
     '''		String representation of the cached object as
     ''' the corresponding cache file name "myKey.txt".
     ''' </param>
-    ''' <param name="Value">
+    ''' <param name="value">
     '''		Object being placed into cache.
     ''' </param>
     ''' <returns>
@@ -45,13 +46,13 @@ Public Class CacheController
     ''' 	[ReganM1]	12/15/2006	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function AddToCacheDependency(ByVal Key As String, ByVal Value As Object) As Boolean
+    Public Shared Function AddToCacheDependency(ByVal key As String, ByVal value As Object) As Boolean
         Dim retVal As Boolean = False
         If Not ConfigSettings.CentralManagement And ConfigSettings.EnableCache Then
             Dim fileStream As FileStream
             Dim writer As StreamWriter
             Dim fileName As String
-            fileName = s_CacheDirectory & Key & ".txt"
+            fileName = s_CacheDirectory & key & ".txt"
             ' ensure the file exists if not then create one
             If Not File.Exists(fileName) Then
                 Try
@@ -62,25 +63,25 @@ Public Class CacheController
                     File.Create(fileName).Close()
                 End Try
                 HttpContext.Current.Application.Lock()
-                HttpContext.Current.Application(Key & "WriteCache") = True
+                HttpContext.Current.Application(key & "WriteCache") = True
                 HttpContext.Current.Application.UnLock()
             End If
             ' re-write the dependancy file based on the application variable
             ' file replication will cause the other servers to remove their cache item
-            If HttpContext.Current.Application(Key & "WriteCache") Then
+            If Convert.ToBoolean(HttpContext.Current.Application(key & "WriteCache"), CultureInfo.InvariantCulture) Then
                 fileStream = New FileStream(fileName, FileMode.Truncate)
                 writer = New StreamWriter(fileStream)
                 writer.WriteLine(Now.TimeOfDay)
                 writer.Close()
                 fileStream.Close()
                 HttpContext.Current.Application.Lock()
-                HttpContext.Current.Application(Key & "WriteCache") = False
+                HttpContext.Current.Application(key & "WriteCache") = False
                 HttpContext.Current.Application.UnLock()
             End If
             ' cache it for future use
             Dim onCacheRemove As CacheItemRemovedCallback
             onCacheRemove = New CacheItemRemovedCallback(AddressOf CheckCallback)
-            If Not Value Is Nothing Then HttpContext.Current.Cache.Add(Key, Value, New CacheDependency(fileName), Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
+            If Not value Is Nothing Then HttpContext.Current.Cache.Add(key, value, New CacheDependency(fileName), Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
             If Err.Number = 0 Then retVal = True
         Else
             retVal = True
@@ -92,20 +93,20 @@ Public Class CacheController
     ''' <summary>
     ''' Remove a cache item from the servers memory.
     ''' </summary>
-    ''' <param name="CacheName"></param>
+    ''' <param name="cacheName"></param>
     ''' <remarks>
     ''' </remarks>
     ''' <history>
     ''' 	[ReganM1]	12/15/2006	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Sub RemoveFromCache(ByVal CacheName As String)
+    Public Shared Sub RemoveFromCache(ByVal cacheName As String)
         Dim fileName As String
-        fileName = s_CacheDirectory & CacheName & ".txt"
+        fileName = s_CacheDirectory & cacheName & ".txt"
         If File.Exists(fileName) Then
             File.Delete(fileName)
         End If
-        HttpContext.Current.Cache.Remove(CacheName)
+        HttpContext.Current.Cache.Remove(cacheName)
     End Sub
 
     ''' <summary>

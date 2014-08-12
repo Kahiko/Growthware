@@ -86,6 +86,7 @@ Namespace Context
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
+            mLog.Debug("onAcquireRequestState():: Done")
         End Sub
 
         ''' <summary>
@@ -115,15 +116,15 @@ Namespace Context
                         Dim mError As String = String.Empty
                         If m_Filter IsNot Nothing Then
                             mError = m_Filter.ReadStream()
-                            If mContext.Response.Headers("jsonerror").ToString().ToLower().Trim() = "true" Then
+                            If mContext.Response.Headers("jsonerror").ToString().ToLower(CultureInfo.InvariantCulture).Trim() = "true" Then
                                 mSendError = True
                                 formatError(mError)
-                                Throw (New Exception([String].Concat("An AJAX error has occured: ", System.Environment.NewLine, mError)))
+                                Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine, mError)))
                             End If
                         Else
                             If mContext.Response.Headers("jsonerror").ToString().ToLower().Trim() = "true" Then
                                 mSendError = True
-                                Throw (New Exception([String].Concat("An AJAX error has occured: ", System.Environment.NewLine)))
+                                Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine)))
                             End If
                         End If
                     End If
@@ -185,11 +186,13 @@ Namespace Context
         ''' <remarks>There's no need to process logic for the other file types or extension</remarks>
         Private Function processRequest() As Boolean
             Dim mRetval As Boolean = False
-            Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))
-            Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".") + 1)
-            Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
-            If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/") > -1 Then
-                mRetval = True
+            If Not HttpContext.Current Is Nothing Then
+                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))
+                Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".") + 1)
+                Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
+                If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/") > -1 Then
+                    mRetval = True
+                End If
             End If
             Return mRetval
         End Function

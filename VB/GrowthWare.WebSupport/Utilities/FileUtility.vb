@@ -106,11 +106,11 @@ Namespace Utilities
                         ' Populate the cell in the row
                         mRow("Size") = mStringBuilder.ToString
                         mStringBuilder = New StringBuilder       ' Clear the string builder
-                        mStringBuilder.Append(Directory.GetLastWriteTime(path & mDirectorySeparatorChar.ToString() & mDirName).ToString())
+                        mStringBuilder.Append(Directory.GetLastWriteTime(path & mDirectorySeparatorChar.ToString() & mDirName).ToString(CultureInfo.InvariantCulture))
                         ' Populate the cell in the row
                         mRow("Modified") = mStringBuilder.ToString
                         mStringBuilder = New StringBuilder
-                        mStringBuilder.Append(mDirectorySeparatorChar.ToString() & mDirName & "\")
+                        mStringBuilder.Append(mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) & mDirName & "\")
                         mRow("FullName") = mStringBuilder.ToString
                         mRetTable.Rows.Add(mRow)        ' Add the row to the table
                     Next
@@ -129,6 +129,7 @@ Namespace Utilities
                 Dim mFileInfo As FileInfo
                 If mRetTable Is Nothing Then
                     mRetTable = New DataTable("MyTable")
+                    mRetTable.Locale = CultureInfo.InvariantCulture
                     mRetTable.Columns.Add("Name", System.Type.GetType("System.String"))
                     mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"))
                     mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"))
@@ -165,12 +166,11 @@ Namespace Utilities
 
                     mRow("Size") = mStringBuilder.ToString
                     mStringBuilder = New StringBuilder
-                    mStringBuilder.Append(File.GetLastWriteTime(path & _
-                      mDirectorySeparatorChar.ToString() & mFileInfo.Name).ToString())
+                    mStringBuilder.Append(File.GetLastWriteTime(path + mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mFileInfo.Name).ToString(CultureInfo.InvariantCulture))
                     mRow("Modified") = mStringBuilder.ToString
                     mStringBuilder = New StringBuilder
                     mStringBuilder.Append(mFileInfo.FullName)
-                    mRow("FullName") = mStringBuilder.ToString
+                    mRow("FullName") = mStringBuilder.ToString()
 
                     mRetTable.Rows.Add(mRow)
                 Next
@@ -197,11 +197,11 @@ Namespace Utilities
         ''' Up loads file from an HtmlInputFile to the directory specified in the MDirectoryProfile object.
         ''' </summary>
         ''' <param name="uploadFile">HtmlInputFile</param>
-        ''' <param name="currentDir">string</param>
+        ''' <param name="currentDirectory">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
-        Public Function DoUpload(ByVal uploadFile As HttpPostedFile, ByVal currentDir As String, ByVal directoryProfile As MDirectoryProfile) As String
-            Return DoUpload(Nothing, uploadFile, currentDir, directoryProfile)
+        Public Function DoUpload(ByVal uploadFile As HttpPostedFile, ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
+            Return DoUpload(Nothing, uploadFile, currentDirectory, directoryProfile)
         End Function
 
         ''' <summary>
@@ -209,11 +209,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="fileName">Name of the file.</param>
         ''' <param name="uploadFile">The upload file.</param>
-        ''' <param name="currentDir">The current dir.</param>
+        ''' <param name="currentDirectory">The current dir.</param>
         ''' <param name="directoryProfile">The directory profile.</param>
         ''' <returns>System.String.</returns>
         ''' <exception cref="System.ArgumentNullException">directoryProfile;Can not be null reference (Nothing in Visual Basic)</exception>
-        Public Function DoUpload(fileName As String, uploadFile As HttpPostedFile, currentDir As String, directoryProfile As MDirectoryProfile) As String
+        Public Function DoUpload(fileName As String, uploadFile As HttpPostedFile, currentDirectory As String, directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)")
             End If
@@ -230,7 +230,7 @@ Namespace Utilities
                         mFilename = fileName
                     End If
                     System.IO.Path.GetFileName(uploadFile.FileName)
-                    uploadFile.SaveAs(currentDir & mDirectorySeparatorChar.ToString() & mFilename)
+                    uploadFile.SaveAs(currentDirectory & mDirectorySeparatorChar.ToString() & mFilename)
                 Catch ex As IOException
                     Dim mLog As Logger = Logger.Instance()
                     mLog.[Error](ex)
@@ -430,37 +430,37 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the line count.
         ''' </summary>
-        ''' <param name="theDir">The dir.</param>
-        ''' <param name="iLevel">The i level.</param>
+        ''' <param name="theDirectory">The dir.</param>
+        ''' <param name="level">An int representing the level.</param>
         ''' <param name="stringBuilder">The string builder.</param>
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
         ''' <param name="totalLinesOfCode">The total lines of code.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
-        Public Function GetLineCount(ByVal theDir As DirectoryInfo, ByVal iLevel As Integer, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
-                subDirectories = theDir.GetDirectories()
+                subDirectories = theDirectory.GetDirectories()
                 Dim x As Integer = 0
                 Dim numDirectories As Integer = subDirectories.Length - 1
                 If directoryLineCount > 0 Then
                     totalLinesOfCode += totalLinesOfCode
-                    stringBuilder.AppendLine("<br>Lines of code for " + theDir.Name + " " + directoryLineCount)
+                    stringBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount)
                     stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode)
                     directoryLineCount = 0
                 End If
                 For x = 0 To numDirectories
-                    If subDirectories(x).Name.Trim.ToUpper(New CultureInfo("en-US", False)) <> "BIN" AndAlso subDirectories(x).Name.Trim.ToUpper <> "DEBUG" AndAlso subDirectories(x).Name.Trim.ToUpper <> "RELEASE" Then
-                        countDirectory(subDirectories(x), stringBuilder, excludeList, fileArray, directoryLineCount)
+                    If subDirectories(x).Name.Trim.ToUpper((CultureInfo.InvariantCulture)) <> "BIN" AndAlso subDirectories(x).Name.Trim.ToUpper(CultureInfo.InvariantCulture) <> "DEBUG" AndAlso subDirectories(x).Name.Trim.ToUpper(CultureInfo.InvariantCulture) <> "RELEASE" Then
+                        CountDirectory(subDirectories(x), stringBuilder, excludeList, fileArray, directoryLineCount)
                         If (directoryLineCount > 0) Then
                             totalLinesOfCode += directoryLineCount
-                            stringBuilder.AppendLine("<br>Lines of code for " + subDirectories(x).Name.ToString() + " " + directoryLineCount.ToString())
-                            stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode.ToString())
+                            stringBuilder.AppendLine("<br>Lines of code for " + subDirectories(x).Name.ToString(CultureInfo.InvariantCulture) + " " + directoryLineCount.ToString(CultureInfo.InvariantCulture))
+                            stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode.ToString(CultureInfo.InvariantCulture))
                             directoryLineCount = 0
                         End If
                     End If
-                    GetLineCount(subDirectories(x), iLevel + 1, stringBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray)
+                    GetLineCount(subDirectories(x), level + 1, stringBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray)
                 Next
 
             Catch
@@ -472,12 +472,12 @@ Namespace Utilities
         ''' <summary>
         ''' Counts the directory.
         ''' </summary>
-        ''' <param name="theDir">The dir.</param>
+        ''' <param name="theDirectory">The directory.</param>
         ''' <param name="stringBuilder">The string builder.</param>
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
-        Public Sub countDirectory(ByVal theDir As DirectoryInfo, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
+        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True
             Dim FileLineCount As Integer = 0
@@ -485,10 +485,10 @@ Namespace Utilities
             For Each sFileType In fileArray
                 ' this loops files
                 Dim directoryFile As FileInfo
-                For Each directoryFile In theDir.GetFiles(sFileType.Trim)
+                For Each directoryFile In theDirectory.GetFiles(sFileType.Trim)
                     mCountFile = True
                     For Each item In excludeList
-                        If directoryFile.Name.ToUpper(New CultureInfo("en-US", False)).IndexOf(item.Trim().ToUpper()) <> -1 Then
+                        If directoryFile.Name.ToUpper(CultureInfo.InvariantCulture).IndexOf(item.Trim().ToUpper(CultureInfo.InvariantCulture), StringComparison.OrdinalIgnoreCase) <> -1 Then
                             mCountFile = False
                             Exit For
                         End If
@@ -499,7 +499,7 @@ Namespace Utilities
                         'loop until the end
                         While sr.Peek() > -1
                             Dim myString As String = sr.ReadLine
-                            If (Not myString.Trim.StartsWith("'") Or Not myString.Trim.StartsWith("//")) And Not myString.Trim.Length = 0 Then
+                            If (Not myString.Trim.StartsWith("'", StringComparison.OrdinalIgnoreCase) Or Not myString.Trim.StartsWith("//", StringComparison.OrdinalIgnoreCase)) And Not myString.Trim.Length = 0 Then
                                 FileLineCount += 1
                             End If
                         End While
@@ -507,10 +507,10 @@ Namespace Utilities
                         sr.Close()
                         If FileLineCount > 0 Then
                             If writeDirectory Then
-                                stringBuilder.AppendLine("<br>" + theDir.FullName)
+                                stringBuilder.AppendLine("<br>" + theDirectory.FullName)
                                 writeDirectory = False
                             End If
-                            stringBuilder.AppendLine("<br>" + m_Space + directoryFile.Name.ToString() + " " + FileLineCount.ToString())
+                            stringBuilder.AppendLine("<br>" + m_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
                         End If
                         If FileLineCount > 0 Then
                             directoryLineCount += FileLineCount
