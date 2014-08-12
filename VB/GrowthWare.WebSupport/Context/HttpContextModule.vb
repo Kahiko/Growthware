@@ -74,7 +74,9 @@ Namespace Context
         Private Sub onApplicationError(ByVal sender As Object, ByVal e As EventArgs)
             Dim mEx As Exception = HttpContext.Current.Server.GetLastError
             If mEx IsNot Nothing Then
-
+                Dim mLog As Logger = Logger.Instance()
+                GWWebHelper.ExceptionError = mEx
+                mLog.Error(mEx)
             End If
         End Sub
 
@@ -87,6 +89,9 @@ Namespace Context
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
             mLog.Debug("onAcquireRequestState():: Done")
+            Dim mEx As New Exception("This is a test for logging")
+            mLog.Debug(mEx)
+            Dim mAccountProfile As MAccountProfile = AccountUtility.GetCurrentProfile()
         End Sub
 
         ''' <summary>

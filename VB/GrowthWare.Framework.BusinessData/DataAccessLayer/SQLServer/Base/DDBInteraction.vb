@@ -233,14 +233,14 @@ Namespace DataAccessLayer.SQLServer.Base
                     Throw New DataAccessLayerException(mMessage)
                 End If
             Catch ex As SqlException
-                mRetDataTable.Dispose()
+                If mRetDataTable IsNot Nothing Then mRetDataTable.Dispose()
                 If ex.Message.ToUpper(CultureInfo.InvariantCulture).StartsWith("CANNOT OPEN DATABASE", StringComparison.OrdinalIgnoreCase) Then
                     Throw
                 Else
                     Throw New DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString), ex)
                 End If
             Catch ex As Exception
-                mRetDataTable.Dispose()
+                If mRetDataTable IsNot Nothing Then mRetDataTable.Dispose()
                 Throw New DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString), ex)
             Finally
                 If Not (mReader Is Nothing) Then

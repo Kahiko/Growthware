@@ -5,6 +5,7 @@ Imports System.Diagnostics
 Imports System.Globalization
 Imports System.Threading
 Imports System.IO
+Imports System.Reflection
 
 Namespace Common
     Public Class Logger
@@ -228,6 +229,21 @@ Namespace Common
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub log(ByVal message As Object, priority As LogPriority)
+            Dim framed As StackFrame = New StackFrame(2, True)
+
+
+            Dim frames As StackFrame() = m_StackTrace.GetFrames()
+            Dim executingAssembly As Assembly = Assembly.GetExecutingAssembly()
+            System.Diagnostics.Debug.Print("Starting loop")
+            For Each frame As StackFrame In frames
+                Dim assembly As Assembly = frame.GetMethod().DeclaringType.Assembly
+                If Not assembly = executingAssembly Then
+                    System.Diagnostics.Debug.Print(assembly.GetName.FullName + " :: " + frame.GetMethod().Name)
+                    'System.Diagnostics.Debug.Print(frame.GetMethod().Name)
+                End If
+            Next
+            System.Diagnostics.Debug.Print("Finished loop")
+
             Dim mException As Exception = Nothing
             Dim mName As String = m_StackTrace.GetFrame(1).GetMethod().ReflectedType.Name
             Dim mStackFrame As StackFrame = m_StackTrace.GetFrames()(1)
@@ -239,7 +255,12 @@ Namespace Common
                 mMethod = mStackFrame.GetMethod()
                 mMethodName = mMethod.Name
             End If
-            If Not message.GetType() Is GetType(String) Then
+
+
+            mName = framed.GetMethod.ReflectedType.Name + ":" + framed.GetMethod.Name
+
+
+            If message.GetType() IsNot GetType(String) Then
                 mException = New Exception("Calling: " + mName, message)
             End If
             Try
