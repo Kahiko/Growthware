@@ -281,6 +281,8 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
                 }
                 if ((mReader != null))
                 {
+                    mDataTable = new DataTable();
+                    mDataTable.Locale = CultureInfo.InvariantCulture;
                     mDataTable.Load(mReader);
                     return mDataTable;
                 }
