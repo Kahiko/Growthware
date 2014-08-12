@@ -57,6 +57,7 @@
     <Compile Include="Model\Enumerations\EncryptionType.cs" />
     <Compile Include="Model\Enumerations\LogPriority.cs" />
     <Compile Include="Model\Enumerations\MenuType.cs" />
+    <Compile Include="Model\Enumerations\SystemStatus.cs" />
     <Compile Include="Model\Profiles\Base\MDatabaseFunctions.cs" />
     <Compile Include="Model\Profiles\Base\MProfile.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMProfile.cs" />

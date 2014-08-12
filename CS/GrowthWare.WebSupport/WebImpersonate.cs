@@ -103,7 +103,7 @@ namespace GrowthWare.WebSupport
         /// <param name="dwLogonProvider">The logon type</param>
         /// <param name="phToken">A platform-specific that is used to represent a pointer to a handle</param>
         /// <returns></returns>
-        [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, ExactSpelling = true)]
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = true)]
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
         ///// <summary>

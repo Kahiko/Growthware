@@ -126,11 +126,11 @@ namespace GrowthWare.WebSupport.Utilities
                             mRow["Size"] = mStringBuilder.ToString();
                             mStringBuilder = new StringBuilder();
                             // Clear the string builder
-                            mStringBuilder.Append(Directory.GetLastWriteTime(path + mDirectorySeparatorChar.ToString() + mDirName).ToString());
+                            mStringBuilder.Append(Directory.GetLastWriteTime(path + mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName).ToString());
                             // Populate the cell in the row
                             mRow["Modified"] = mStringBuilder.ToString();
                             mStringBuilder = new StringBuilder();
-                            mStringBuilder.Append(mDirectorySeparatorChar.ToString() + mDirName + "\\");
+                            mStringBuilder.Append(mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName + "\\");
                             mRow["FullName"] = mStringBuilder.ToString();
                             mRetTable.Rows.Add(mRow);
                             // Add the row to the table
@@ -154,6 +154,7 @@ namespace GrowthWare.WebSupport.Utilities
                     if (mRetTable == null)
                     {
                         mRetTable = new DataTable("MyTable");
+                        mRetTable.Locale = CultureInfo.InvariantCulture;
                         mRetTable.Columns.Add("Name", System.Type.GetType("System.String"));
                         mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"));
                         mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"));
@@ -235,12 +236,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// Up loads file from an HtmlInputFile to the directory specified in the MDirectoryProfile object.
         /// </summary>
         /// <param name="uploadFile">HtmlInputFile</param>
-        /// <param name="currentDir">string</param>
+        /// <param name="currentDirectory">string</param>
         /// <param name="directoryProfile">MDirectoryProfile</param>
         /// <returns>string</returns>
-        public static string DoUpload(HttpPostedFile uploadFile, string currentDir, MDirectoryProfile directoryProfile)
+        public static string DoUpload(HttpPostedFile uploadFile, string currentDirectory, MDirectoryProfile directoryProfile)
         {
-            return DoUpload(null, uploadFile, currentDir, directoryProfile);
+            return DoUpload(null, uploadFile, currentDirectory, directoryProfile);
         }
 
         /// <summary>
@@ -248,10 +249,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="fileName">string</param>
         /// <param name="uploadFile">HtmlInputFile</param>
-        /// <param name="currentDir">string</param>
+        /// <param name="currentDirectory">string</param>
         /// <param name="directoryProfile">MDirectoryProfile</param>
         /// <returns>string</returns>
-        public static string DoUpload(string fileName, HttpPostedFile uploadFile, string currentDir, MDirectoryProfile directoryProfile)
+        public static string DoUpload(string fileName, HttpPostedFile uploadFile, string currentDirectory, MDirectoryProfile directoryProfile)
         {
             if (directoryProfile == null)
             {
@@ -274,7 +275,7 @@ namespace GrowthWare.WebSupport.Utilities
                         mFilename = fileName;
                     }
                     System.IO.Path.GetFileName(uploadFile.FileName);
-                    uploadFile.SaveAs(currentDir + mDirectorySeparatorChar.ToString() + mFilename);
+                    uploadFile.SaveAs(currentDirectory + mDirectorySeparatorChar.ToString() + mFilename);
                 }
                 catch (IOException ex)
                 {
@@ -525,32 +526,32 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Gets the line count.
         /// </summary>
-        /// <param name="theDir">The dir.</param>
-        /// <param name="iLevel">The i level.</param>
+        /// <param name="theDirectory">The dir.</param>
+        /// <param name="level">An int representing the level.</param>
         /// <param name="stringBuilder">The string builder.</param>
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
         /// <param name="totalLinesOfCode">The total lines of code.</param>
         /// <param name="fileArray">The file array.</param>
         /// <returns>System.String.</returns>
-        public static string GetLineCount(DirectoryInfo theDir, int iLevel, ref StringBuilder stringBuilder, List<String> excludeList, ref int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, ref StringBuilder stringBuilder, List<String> excludeList, ref int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
         {
             DirectoryInfo[] subDirectories = null;
             try
             {
-                subDirectories = theDir.GetDirectories();
+                subDirectories = theDirectory.GetDirectories();
                 int x = 0;
                 int numDirectories = subDirectories.Length - 1;
                 if (directoryLineCount > 0)
                 {
                     totalLinesOfCode += totalLinesOfCode;
-                    stringBuilder.AppendLine("<br>Lines of code for " + theDir.Name + " " + directoryLineCount);
+                    stringBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount);
                     stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
                     directoryLineCount = 0;
                 }
                 for (x = 0; x <= numDirectories; x++)
                 {
-                    if (subDirectories[x].Name.Trim().ToUpper() != "BIN" && subDirectories[x].Name.Trim().ToUpper() != "DEBUG" && subDirectories[x].Name.Trim().ToUpper() != "RELEASE")
+                    if (subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "BIN" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "DEBUG" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "RELEASE")
                     {
                         CountDirectory(subDirectories[x], ref stringBuilder, excludeList, fileArray, ref directoryLineCount);
                         if (directoryLineCount > 0)
@@ -561,7 +562,7 @@ namespace GrowthWare.WebSupport.Utilities
                             directoryLineCount = 0;
                         }
                     }
-                    GetLineCount(subDirectories[x], iLevel + 1, ref stringBuilder, excludeList, ref directoryLineCount, ref totalLinesOfCode, fileArray);
+                    GetLineCount(subDirectories[x], level + 1, ref stringBuilder, excludeList, ref directoryLineCount, ref totalLinesOfCode, fileArray);
                 }
             }
             catch (Exception)
@@ -575,12 +576,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Counts the directory.
         /// </summary>
-        /// <param name="theDir">The dir.</param>
+        /// <param name="theDirectory">The directory.</param>
         /// <param name="stringBuilder">The string builder.</param>
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="fileArray">The file array.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
-        public static void CountDirectory(DirectoryInfo theDir, ref StringBuilder stringBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
+        public static void CountDirectory(DirectoryInfo theDirectory, ref StringBuilder stringBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
         {
             Boolean writeDirectory = true;
             int FileLineCount = 0;
@@ -588,12 +589,12 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 // this loops files
                 Boolean countFile = true;
-                foreach (FileInfo directoryFile in theDir.GetFiles(sFileType.Trim()))
+                foreach (FileInfo directoryFile in theDirectory.GetFiles(sFileType.Trim()))
                 {
                     countFile = true;
                     foreach (var item in excludeList)
                     {
-                        if (directoryFile.Name.ToUpper().IndexOf(item) > -1)
+                        if (directoryFile.Name.ToUpper(CultureInfo.InvariantCulture).IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
                         {
                             countFile = false;
                             break;
@@ -606,7 +607,7 @@ namespace GrowthWare.WebSupport.Utilities
                         while (sr.Peek() > -1)
                         {
                             String myString = sr.ReadLine();
-                            if ((!myString.Trim().StartsWith("'") || !myString.Trim().StartsWith("//")) & myString.Trim().Length != 0)
+                            if ((!myString.Trim().StartsWith("'", StringComparison.OrdinalIgnoreCase) || !myString.Trim().StartsWith("//", StringComparison.OrdinalIgnoreCase)) & myString.Trim().Length != 0)
                             {
                                 FileLineCount += 1;
                             }
@@ -617,7 +618,7 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             if (writeDirectory)
                             {
-                                stringBuilder.AppendLine("<br>" + theDir.FullName);
+                                stringBuilder.AppendLine("<br>" + theDirectory.FullName);
                                 writeDirectory = false;
                             }
                             stringBuilder.AppendLine("<br>" + m_Space + directoryFile.Name + " " + FileLineCount);

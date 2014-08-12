@@ -471,6 +471,41 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
+        /// Sets the environment value.
+        /// </summary>
+        /// <param name="config">The config.</param>
+        /// <param name="isNew">if set to <c>true</c> [is new].</param>
+        /// <param name="ConfigName">Name of the config.</param>
+        /// <param name="ConfigValue">The config value.</param>
+        /// <param name="deleteEnvironment">if set to <c>true</c> [delete environment].</param>
+        public static void SetEnvironmentValue(Configuration config, bool isNew, string ConfigName, string ConfigValue, bool deleteEnvironment)
+        {
+            if (!deleteEnvironment)
+            {
+                if (!isNew)
+                {
+                    try
+                    {
+                        System.Configuration.KeyValueConfigurationElement configSetting = config.AppSettings.Settings[ConfigName];
+                        configSetting.Value = ConfigValue;
+                    }
+                    catch
+                    {
+                        config.AppSettings.Settings.Add(ConfigName, ConfigValue);
+                    }
+                }
+                else
+                {
+                    config.AppSettings.Settings.Add(ConfigName, ConfigValue);
+                }
+            }
+            else
+            {
+                config.AppSettings.Settings.Remove(ConfigName);
+            }
+        }
+
+        /// <summary>
         /// Returns decrypted SMTP_Account from the CONFIG file
         /// </summary>
         /// <value>String</value>

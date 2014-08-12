@@ -83,7 +83,7 @@ namespace GrowthWare.WebSupport.Utilities
             MClientChoicesState myClientChoicesState = (MClientChoicesState)HttpContext.Current.Items[MClientChoices.SessionName];
             if ((myClientChoicesState != null))
             {
-                return int.Parse(myClientChoicesState[MClientChoices.SecurityEntityId]);
+                return int.Parse(myClientChoicesState[MClientChoices.SecurityEntityId], CultureInfo.InvariantCulture);
             }
             else
             {

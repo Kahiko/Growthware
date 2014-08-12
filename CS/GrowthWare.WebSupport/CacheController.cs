@@ -3,6 +3,7 @@ using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -40,11 +41,11 @@ namespace GrowthWare.WebSupport
         /// and the others servers will then update their in memory cache
         /// objects the next time the cache objected is requested.
         /// </summary>
-        /// <param name="Key">
+        /// <param name="key">
         ///		String representation of the cached object as
         /// the corresponding cache file name "myKey.txt".
         /// </param>
-        /// <param name="Value">
+        /// <param name="value">
         ///		Object being placed into cache.
         /// </param>
         /// <returns>
@@ -56,7 +57,7 @@ namespace GrowthWare.WebSupport
         /// 	[ReganM1]	12/15/2006	Created
         /// </history>
         /// -----------------------------------------------------------------------------
-        public static bool AddToCacheDependency(string Key, object Value)
+        public static bool AddToCacheDependency(string key, object value)
         {
             bool retVal = false;
             if (!ConfigSettings.CentralManagement & ConfigSettings.EnableCache)
@@ -64,7 +65,7 @@ namespace GrowthWare.WebSupport
                 FileStream fileStream = null;
                 StreamWriter writer = null;
                 string fileName = null;
-                fileName = s_CacheDirectory + Key + ".txt";
+                fileName = s_CacheDirectory + key + ".txt";
                 // ensure the file exists if not then create one
                 if (!File.Exists(fileName))
                 {
@@ -79,13 +80,13 @@ namespace GrowthWare.WebSupport
                         File.Create(fileName).Close();
                     }
                     HttpContext.Current.Application.Lock();
-                    HttpContext.Current.Application[Key + "WriteCache"] = true;
+                    HttpContext.Current.Application[key + "WriteCache"] = true;
                     HttpContext.Current.Application.UnLock();
                 }
                 // re-write the dependancy file based on the application variable
                 // file replication will cause the other servers to remove their cache item
-                if (HttpContext.Current.Application[Key + "WriteCache"] == null) { HttpContext.Current.Application[Key + "WriteCache"] = "true"; }
-                if (Convert.ToBoolean(HttpContext.Current.Application[Key + "WriteCache"].ToString()))
+                if (HttpContext.Current.Application[key + "WriteCache"] == null) { HttpContext.Current.Application[key + "WriteCache"] = "true"; }
+                if (Convert.ToBoolean(HttpContext.Current.Application[key + "WriteCache"].ToString(), CultureInfo.InvariantCulture))
                 {
                     fileStream = new FileStream(fileName, FileMode.Truncate);
                     writer = new StreamWriter(fileStream);
@@ -93,13 +94,13 @@ namespace GrowthWare.WebSupport
                     writer.Close();
                     fileStream.Close();
                     HttpContext.Current.Application.Lock();
-                    HttpContext.Current.Application[Key + "WriteCache"] = false;
+                    HttpContext.Current.Application[key + "WriteCache"] = false;
                     HttpContext.Current.Application.UnLock();
                 }
                 // cache it for future use
                 CacheItemRemovedCallback onCacheRemove = null;
                 onCacheRemove = new CacheItemRemovedCallback(CheckCallback);
-                if ((Value != null)) HttpContext.Current.Cache.Add(Key, Value, new CacheDependency(fileName), System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove);
+                if ((value != null)) HttpContext.Current.Cache.Add(key, value, new CacheDependency(fileName), System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove);
                 // used in the orginal vb code and no eq. for the Err object exists in c#
                 // assume that if no exception has happened the set retVal=true
                 //if (Err().Number == 0) retVal = true;
@@ -115,21 +116,21 @@ namespace GrowthWare.WebSupport
         /// <summary>
         /// Remove a cache item from the servers memory.
         /// </summary>
-        /// <param name="CacheName"></param>
+        /// <param name="cacheName"></param>
         /// <remarks>
         /// </remarks>
         /// <history>
         /// 	[ReganM1]	12/15/2006	Created
         /// </history>
-        public static void RemoveFromCache(string CacheName)
+        public static void RemoveFromCache(string cacheName)
         {
             string fileName = null;
-            fileName = s_CacheDirectory + CacheName + ".txt";
+            fileName = s_CacheDirectory + cacheName + ".txt";
             if (File.Exists(fileName))
             {
                 File.Delete(fileName);
             }
-            HttpContext.Current.Cache.Remove(CacheName);
+            HttpContext.Current.Cache.Remove(cacheName);
         }
 
         /// <summary>

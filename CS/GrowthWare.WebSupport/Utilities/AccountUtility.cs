@@ -47,13 +47,13 @@ namespace GrowthWare.WebSupport.Utilities
             MAccountProfile mAccountProfile = GetProfile(account);
             if (mDomainPassed && mAccountProfile == null)
             {
-                int mDomainPos = account.IndexOf(@"\");
+                int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
                 account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
                 mAccountProfile = GetProfile(account);
             }
             if (mAccountProfile != null)
             {
-                if (ConfigSettings.AuthenticationType.ToUpper() == "INTERNAL")
+                if (ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
                 {
                     string profilePassword = string.Empty;
                     if ((mAccountProfile != null))
@@ -197,7 +197,7 @@ namespace GrowthWare.WebSupport.Utilities
                     }
                     else
                     {
-                        int mPos = HttpContext.Current.User.Identity.Name.IndexOf(@"\");
+                        int mPos = HttpContext.Current.User.Identity.Name.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
                         mRetVal = HttpContext.Current.User.Identity.Name.Substring(mPos, HttpContext.Current.User.Identity.Name.Length - mPos);
                     }
 
@@ -286,18 +286,18 @@ namespace GrowthWare.WebSupport.Utilities
         /// Performs all logoff function
         /// </summary>
         /// <remarks></remarks>
-        public static void Logoff()
+        public static void LogOff()
         {
             RemoveInMemoryInformation(true);
             FormsAuthentication.SignOut();
         }
 
         /// <summary>
-        /// Just a stub for now ... may not need it
+        /// Removes any session or cache information about the account
         /// </summary>
-        /// <param name="removeWorkFlow"></param>
+        /// <param name="removeWorkflow"></param>
         /// <remarks></remarks>
-        public static void RemoveInMemoryInformation(Boolean removeWorkFlow)
+        public static void RemoveInMemoryInformation(Boolean removeWorkflow)
         {
             String mAccountName = HttpContext.Current.User.Identity.Name;
             HttpContext.Current.Session.Remove(mAccountName + "_Session");

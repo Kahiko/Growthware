@@ -405,7 +405,7 @@ namespace GrowthWare.Framework.Common
         /// </summary>
         /// <param name="priority">The priority.</param>
         /// <returns>LogPriority.</returns>
-        public static LogPriority GetLogPriorityFromText(string priority)
+        public LogPriority GetLogPriorityFromText(string priority)
         {
             LogPriority mRetVal = LogPriority.Error;
             if (!String.IsNullOrEmpty(priority)) 

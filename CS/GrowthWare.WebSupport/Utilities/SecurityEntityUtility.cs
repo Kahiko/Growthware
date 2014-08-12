@@ -39,7 +39,7 @@ namespace GrowthWare.WebSupport.Utilities
             if (m_DefaultProfile == null)
             {
                 MSecurityEntityProfile mDefaultProfile = new MSecurityEntityProfile();
-                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString());
+                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture));
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer;
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer);
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer);
@@ -59,7 +59,7 @@ namespace GrowthWare.WebSupport.Utilities
             MSecurityEntityProfile mRetProfile = null;
             String mAccount = AccountUtility.GetHttpContextUserName();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
-            int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString());
+            int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(CultureInfo.InvariantCulture));
             mRetProfile = GetProfile(mSecurityEntity);
             return mRetProfile;
         }
@@ -107,13 +107,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Get a single function given it's id.
         /// </summary>
-        /// <param name="id">int or Integer</param>
+        /// <param name="accountSeqId">int or Integer</param>
         /// <returns>MSecurityEntityProfile</returns>
-        public static MSecurityEntityProfile GetProfile(int id)
+        public static MSecurityEntityProfile GetProfile(int accountSeqId)
         {
             MSecurityEntityProfile mRetVal = new MSecurityEntityProfile();
             var mResult = from mProfile in GetProfiles()
-                          where mProfile.Id == id
+                          where mProfile.Id == accountSeqId
                           select mProfile;
             try
             {
