@@ -405,6 +405,7 @@ namespace GrowthWare.Framework.Common
         /// </summary>
         /// <param name="priority">The priority.</param>
         /// <returns>LogPriority.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")]
         public LogPriority GetLogPriorityFromText(string priority)
         {
             LogPriority mRetVal = LogPriority.Error;
