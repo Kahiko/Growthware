@@ -87,10 +87,16 @@ namespace GrowthWare.WebSupport.Context
         private bool processRequest()
         {
             bool mRetVal = false;
-            string mPath = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture);
-            string mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1);
-            string[] mProcessingTypes = { "ASPX", "ASCX", "ASHX", "ASMX" };
-            if (mProcessingTypes.Contains(mFileExtension)) mRetVal = true;
+            if (HttpContext.Current != null) 
+            {
+                string mPath = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture);
+                string mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1);
+                string[] mProcessingTypes = { "ASPX", "ASCX", "ASHX", "ASMX" };
+                if (mProcessingTypes.Contains(mFileExtension) || mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1)
+                {
+                    mRetVal = true;
+                } 
+            }
             return mRetVal;
         }
     }

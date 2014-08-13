@@ -39,7 +39,7 @@ namespace GrowthWare.WebSupport.Utilities
             if (m_DefaultProfile == null)
             {
                 MSecurityEntityProfile mDefaultProfile = new MSecurityEntityProfile();
-                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture));
+                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(), CultureInfo.InvariantCulture);
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer;
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer);
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer);
@@ -59,7 +59,7 @@ namespace GrowthWare.WebSupport.Utilities
             MSecurityEntityProfile mRetProfile = null;
             String mAccount = AccountUtility.GetHttpContextUserName();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
-            int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(CultureInfo.InvariantCulture));
+            int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
             mRetProfile = GetProfile(mSecurityEntity);
             return mRetProfile;
         }

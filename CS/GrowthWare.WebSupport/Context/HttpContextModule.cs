@@ -127,7 +127,7 @@ namespace GrowthWare.WebSupport.Context
                 }
                 mLog.Error(mEx);
                 GWWebHelper.ExceptionError = mEx;
-                if (mEx.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+                if (mEx.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE", StringComparison.OrdinalIgnoreCase))
                 {
                     mLog.Error(mEx);
                     GWWebHelper.ExceptionError = mEx;
@@ -168,7 +168,7 @@ namespace GrowthWare.WebSupport.Context
                         if (m_Filter != null)
                         {
                             mError = m_Filter.ReadStream();
-                            if (mContext.Response.Headers["jsonerror"].ToString().ToLower().Trim() == "true")
+                            if (mContext.Response.Headers["jsonerror"].ToString().ToUpperInvariant().Trim() == "TRUE")
                             {
                                 mSendError = true;
                                 formatError(ref mError);
@@ -177,7 +177,7 @@ namespace GrowthWare.WebSupport.Context
                         }
                         else
                         {
-                            if (mContext.Response.Headers["jsonerror"].ToString().ToLower().Trim() == "true")
+                            if (mContext.Response.Headers["jsonerror"].ToString().ToUpperInvariant().Trim() == "TRUE")
                             {
                                 mSendError = true;
                                 throw (new Exception(String.Concat("An AJAX error has occurred: ", Environment.NewLine)));
@@ -242,9 +242,12 @@ namespace GrowthWare.WebSupport.Context
             if (HttpContext.Current != null) 
             {
                 string mPath = HttpContext.Current.Request.Path.ToUpper(new CultureInfo("en-US", false));
-                string mFileExtension = mPath.Substring(mPath.LastIndexOf(".") + 1);
+                string mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1);
                 string[] mProcessingTypes = { "ASPX", "ASHX", "ASMX" };
-                if (mProcessingTypes.Contains(mFileExtension)) mRetVal = true;
+                if (mProcessingTypes.Contains(mFileExtension) || mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1) 
+                {
+                    mRetVal = true;
+                } 
             }
             return mRetVal;
         }

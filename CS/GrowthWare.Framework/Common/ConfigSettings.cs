@@ -475,33 +475,38 @@ namespace GrowthWare.Framework.Common
         /// </summary>
         /// <param name="config">The config.</param>
         /// <param name="isNew">if set to <c>true</c> [is new].</param>
-        /// <param name="ConfigName">Name of the config.</param>
-        /// <param name="ConfigValue">The config value.</param>
+        /// <param name="configName">Name of the config.</param>
+        /// <param name="configValue">The config value.</param>
         /// <param name="deleteEnvironment">if set to <c>true</c> [delete environment].</param>
-        public static void SetEnvironmentValue(Configuration config, bool isNew, string ConfigName, string ConfigValue, bool deleteEnvironment)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
+        public static void SetEnvironmentValue(Configuration config, bool isNew, string configName, string configValue, bool deleteEnvironment)
         {
+            if (config == null) throw new ArgumentNullException("config", "config can not be null!");
+            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configName", "configName can not be null!");
+            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configValue", "configValue can not be null!");
+
             if (!deleteEnvironment)
             {
                 if (!isNew)
                 {
                     try
                     {
-                        System.Configuration.KeyValueConfigurationElement configSetting = config.AppSettings.Settings[ConfigName];
-                        configSetting.Value = ConfigValue;
+                        System.Configuration.KeyValueConfigurationElement configSetting = config.AppSettings.Settings[configName];
+                        configSetting.Value = configValue;
                     }
                     catch
                     {
-                        config.AppSettings.Settings.Add(ConfigName, ConfigValue);
+                        config.AppSettings.Settings.Add(configName, configValue);
                     }
                 }
                 else
                 {
-                    config.AppSettings.Settings.Add(ConfigName, ConfigValue);
+                    config.AppSettings.Settings.Add(configName, configValue);
                 }
             }
             else
             {
-                config.AppSettings.Settings.Remove(ConfigName);
+                config.AppSettings.Settings.Remove(configName);
             }
         }
 
