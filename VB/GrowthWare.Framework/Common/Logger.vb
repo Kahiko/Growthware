@@ -40,7 +40,6 @@ Namespace Common
         End Sub
 
         Private Sub init()
-            m_StackTrace = New StackTrace()
             m_LogFile = m_LogFilePath & m_LogFileName
             m_Layout.ConversionPattern = ConfigSettings.ConversionPattern
             s_SCurrentLogLevel = ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture)
@@ -326,6 +325,7 @@ Namespace Common
         ''' </summary>
         ''' <param name="priority">The priority.</param>
         ''' <returns>LogPriority.</returns>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1822:MarkMembersAsStatic")>
         Public Function GetLogPriorityFromText(ByVal priority As String) As LogPriority
             Dim mRetVal As LogPriority = Model.Enumerations.LogPriority.[Error]
             If Not String.IsNullOrEmpty(priority) Then

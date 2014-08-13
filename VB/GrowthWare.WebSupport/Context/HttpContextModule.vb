@@ -1,6 +1,7 @@
 ﻿Imports System.Web
 Imports System.Text.RegularExpressions
 Imports System.Globalization
+Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
@@ -100,6 +101,16 @@ Namespace Context
         ''' <param name="sender">The sender.</param>
         ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         Private Sub onBeginRequest(ByVal sender As Object, ByVal e As EventArgs)
+            Dim mStartLogInfo As Boolean = CBool(HttpContext.Current.Application("StartLogInfo"))
+            Dim mClearedCache As Boolean = CBool(HttpContext.Current.Application("ClearedCache"))
+            If Not mStartLogInfo Then
+                HttpContext.Current.Application("StartLogInfo") = "True"
+                Dim mLog As Logger = Logger.Instance
+                mLog.SetThreshold(LogPriority.Info)
+                mLog.Info("Starting Core Web Administration Version: " & GWWebHelper.CoreWebAdministrationVersion)
+                Dim mCurrentLevel As String = ConfigSettings.LogPriority.ToUpper(New CultureInfo("en-US", False))
+                mLog.SetThreshold(mLog.GetLogPriorityFromText(mCurrentLevel))
+            End If
             If processRequest() Then
                 m_Filter = New OutputFilterStream(HttpContext.Current.Response.Filter)
                 HttpContext.Current.Response.Filter = m_Filter
@@ -121,13 +132,13 @@ Namespace Context
                         Dim mError As String = String.Empty
                         If m_Filter IsNot Nothing Then
                             mError = m_Filter.ReadStream()
-                            If mContext.Response.Headers("jsonerror").ToString().ToLower(CultureInfo.InvariantCulture).Trim() = "true" Then
+                            If mContext.Response.Headers("jsonerror").ToString().ToUpperInvariant().Trim() = "TRUE" Then
                                 mSendError = True
                                 formatError(mError)
                                 Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine, mError)))
                             End If
                         Else
-                            If mContext.Response.Headers("jsonerror").ToString().ToLower().Trim() = "true" Then
+                            If mContext.Response.Headers("jsonerror").ToString().ToUpperInvariant().Trim() = "TRUE" Then
                                 mSendError = True
                                 Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine)))
                             End If
@@ -193,9 +204,9 @@ Namespace Context
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
                 Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))
-                Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".") + 1)
+                Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
-                If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/") > -1 Then
+                If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then
                     mRetval = True
                 End If
             End If

@@ -24,7 +24,7 @@ Namespace Utilities
         Public Shared Function GetDefaultProfile() As MSecurityEntityProfile
             If m_DefaultProfile Is Nothing Then
                 Dim mDefaultProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
-                mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture))
+                mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(), CultureInfo.InvariantCulture)
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer)
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer)
@@ -42,7 +42,7 @@ Namespace Utilities
         Public Shared Function GetCurrentProfile() As MSecurityEntityProfile
             Dim mAccount As String = AccountUtility.GetHttpContextUserName
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount)
-            Dim mCurrentSecurityEntityID As Integer = Integer.Parse(mClientChoicesState(MClientChoices.SecurityEntityId).ToString(CultureInfo.InvariantCulture))
+            Dim mCurrentSecurityEntityID As Integer = Integer.Parse(mClientChoicesState(MClientChoices.SecurityEntityId).ToString(), CultureInfo.InvariantCulture)
             Dim mProfiles As Collection(Of MSecurityEntityProfile)
             mProfiles = GetProfiles()
 

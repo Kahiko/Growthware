@@ -134,6 +134,35 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Sets the environment value.
+        ''' </summary>
+        ''' <param name="config">The config.</param>
+        ''' <param name="isNew">if set to <c>true</c> [is new].</param>
+        ''' <param name="configName">Name of the config.</param>
+        ''' <param name="configValue">The config value.</param>
+        ''' <param name="deleteEnvironment">if set to <c>true</c> [delete environment].</param>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
+        Sub SetEnvironmentValue(ByVal config As Configuration, ByVal isNew As Boolean, ByVal configName As String, ByVal configValue As String, ByVal deleteEnvironment As Boolean)
+            If config Is Nothing Then Throw New ArgumentNullException("config", "config can not be null!")
+            If String.IsNullOrEmpty(configName) Then Throw New ArgumentNullException("configName", "configName can not be null!")
+            If String.IsNullOrEmpty(configValue) Then Throw New ArgumentNullException("configValue", "configValue can not be null!")
+            If Not deleteEnvironment Then
+                If Not isNew Then
+                    Try
+                        Dim configSetting As System.Configuration.KeyValueConfigurationElement = config.AppSettings.Settings.Item(configName)
+                        configSetting.Value = configValue
+                    Catch ex As Exception
+                        config.AppSettings.Settings.Add(configName, configValue)
+                    End Try
+                Else
+                    config.AppSettings.Settings.Add(configName, configValue)
+                End If
+            Else
+                config.AppSettings.Settings.Remove(configName)
+            End If
+        End Sub
+
+        ''' <summary>
         ''' Returns the connection string as defined in the CONFIG file by environment/DAL
         ''' </summary>
         ''' <param name="dataAccessLayer">String</param>
