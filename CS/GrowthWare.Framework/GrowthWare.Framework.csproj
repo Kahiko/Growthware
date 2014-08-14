@@ -50,6 +50,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\BusinessLogicLayerException.cs" />
     <Compile Include="Common\ConfigSettings.cs" />
     <Compile Include="Common\CryptoUtility.cs" />
     <Compile Include="Common\CryptoUtilityException.cs" />

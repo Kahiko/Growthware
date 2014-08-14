@@ -4,6 +4,7 @@ using GrowthWare.Framework.Model.Profiles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -103,6 +104,19 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <remarks>None.</remarks>
         public MClientChoicesState GetClientChoicesState(string account)
         {
+            MClientChoicesState mRetVal = null;
+            try
+            {
+                if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
+                { 
+                    mRetVal = new MClientChoicesState(m_DClientChoices.GetChoices(account));
+                }
+            }
+            catch (Exception ex)
+            {
+                
+                throw new BusinessLogicLayerException("Could not retrieve the client choices state", ex);
+            }
             return new MClientChoicesState(m_DClientChoices.GetChoices(account));
         }
 

@@ -508,6 +508,7 @@ namespace GrowthWare.Framework.Common
             {
                 config.AppSettings.Settings.Remove(configName);
             }
+            config.Save();
         }
 
         /// <summary>

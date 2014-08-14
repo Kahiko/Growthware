@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -121,7 +122,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             m_DAccounts.Profile = new MAccountProfile();
             m_DAccounts.Profile.Id = accountId;
-            m_DAccounts.Delete();
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") m_DAccounts.Delete();
         }
 
         /// <summary>
@@ -146,12 +147,17 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </example>
         public MAccountProfile GetAccountProfile(string account)
         {
-            m_DAccounts.Profile = new MAccountProfile();
-            m_DAccounts.Profile.Account = account;
-            DataTable mAssignedRoles = m_DAccounts.Roles();
-            DataTable mAssignedGroups = m_DAccounts.Groups();
-            DataTable mRoles = m_DAccounts.Security();
-            return new MAccountProfile(m_DAccounts.GetAccount, mAssignedRoles, mAssignedGroups, mRoles);
+            MAccountProfile mRetVal = null;
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
+            {
+                m_DAccounts.Profile = new MAccountProfile();
+                m_DAccounts.Profile.Account = account;
+                DataTable mAssignedRoles = m_DAccounts.Roles();
+                DataTable mAssignedGroups = m_DAccounts.Groups();
+                DataTable mRoles = m_DAccounts.Security();
+                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mAssignedRoles, mAssignedGroups, mRoles);
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -166,10 +172,13 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             try
             {
                 m_DAccounts.Profile = profile;
-                mDataTable = m_DAccounts.GetAccounts;
-                foreach (DataRow item in mDataTable.Rows)
+                if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") mDataTable = m_DAccounts.GetAccounts;
+                if (mDataTable != null) 
                 {
-                    mRetList.Add(new MAccountProfile(item));
+                    foreach (DataRow item in mDataTable.Rows)
+                    {
+                        mRetList.Add(new MAccountProfile(item));
+                    }
                 }
                 return mRetList;
             }
@@ -195,7 +204,12 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <remarks></remarks>
         public DataTable GetMenu(String account, MenuType menuType)
         {
-            return m_DAccounts.GetMenu(account, menuType);
+            DataTable mRetVal = null;
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
+            {
+                mRetVal = m_DAccounts.GetMenu(account, menuType);
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -239,16 +253,19 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentException("profile can not be null");
             m_DAccounts.Profile = profile;
-            profile.Id = m_DAccounts.Save();
-            if (saveGroups)
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
             {
-                m_DAccounts.SaveGroups();
+                profile.Id = m_DAccounts.Save();
+                if (saveGroups)
+                {
+                    m_DAccounts.SaveGroups();
+                }
+                if (saveRoles)
+                {
+                    m_DAccounts.SaveRoles();
+                }
+                profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
             }
-            if (saveRoles)
-            {
-                m_DAccounts.SaveRoles();
-            }
-            profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
         }
 
         /// <summary>
@@ -258,7 +275,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns></returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            return m_DAccounts.Search(searchCriteria);
+            DataTable mRetVal = null;
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") m_DAccounts.Search(searchCriteria);
+            return mRetVal;
         }
 
     }

@@ -113,37 +113,13 @@ namespace GrowthWare.WebSupport.Context
             {
                 Logger mLog = Logger.Instance();
                 mLog.Error(mEx);
-                String mAction = "Unknown";
-                if (HttpContext.Current.Request.QueryString["Action"] != null)
+                if (mEx.GetType() == typeof(HttpException)) 
                 {
-                    mAction = HttpContext.Current.Request.QueryString["Action"];
-                }
-                switch (mEx.Message)
-                {
-                    case "Cannot redirect after HTTP headers have been sent":
-                        return;
-                    case "Session state has created a session id, but cannot save it because the response was already flushed by the application.":
-                        return;
-                }
-                mLog.Error(mEx);
-                GWWebHelper.ExceptionError = mEx;
-                if (mEx.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE", StringComparison.OrdinalIgnoreCase))
-                {
-                    mLog.Error(mEx);
-                    GWWebHelper.ExceptionError = mEx;
-                    HttpContext.Current.Server.ClearError();
                     Configuration config = WebConfigurationManager.OpenWebConfiguration("~");
-                    AppSettingsSection appSettingsSection = config.GetSection("appSettings") as AppSettingsSection;
                     ConfigSettings.SetEnvironmentValue(config, false, "DB_Status", "OffLine", false);
-                    HttpContext.Current.Response.Redirect("~/Public/Pages/UnderConstruction.aspx");
-                }
-                else
-                {
-                    HttpContext.Current.Server.ClearError();
-                    mLog.Error(mEx);
-                    HttpContext.Current.Response.Redirect("~/Functions/System/Errors/DisplayError.aspx?ReturnURL=" + mAction);
                 }
             }
+            HttpContext.Current.Server.ClearError()
         }
 
         private void onAcquireRequestState(Object sender, EventArgs e)

@@ -50,6 +50,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="directoryProfile">MDirectoryProfile</param>
         /// <param name="filesOnly">bool</param>
         /// <returns>DataTable</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")]
         public static DataTable GetDirectoryTableData(string path, MDirectoryProfile directoryProfile, bool filesOnly)
         {
             if (directoryProfile == null)

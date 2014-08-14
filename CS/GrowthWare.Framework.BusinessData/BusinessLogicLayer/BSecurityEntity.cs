@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces;
 using GrowthWare.Framework.Common;
+using System.Globalization;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
@@ -125,11 +126,14 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             DataTable mDataTable = null;
             try
             {
-                mDataTable = m_DSecurityEntity.GetSecurityEntities();
-                foreach (DataRow item in mDataTable.Rows)
+                if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
                 {
-                    MSecurityEntityProfile mProfile = new MSecurityEntityProfile(item);
-                    mRetVal.Add(mProfile);
+                    mDataTable = m_DSecurityEntity.GetSecurityEntities();
+                    foreach (DataRow item in mDataTable.Rows)
+                    {
+                        MSecurityEntityProfile mProfile = new MSecurityEntityProfile(item);
+                        mRetVal.Add(mProfile);
+                    }
                 }
             }
             catch (Exception)
@@ -155,7 +159,12 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
         {
-            return m_DSecurityEntity.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+            DataTable mRetVal = null;
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
+            { 
+                mRetVal = m_DSecurityEntity.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -165,7 +174,12 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            return m_DSecurityEntity.Search(searchCriteria);
+            DataTable mRetVal = null;
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
+            {
+                mRetVal = m_DSecurityEntity.Search(searchCriteria);
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -177,7 +191,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null");
             profile.Id = profile.Id;
-            m_DSecurityEntity.Save(profile);
+            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") m_DSecurityEntity.Save(profile);
             return profile.Id;
         }
     }
