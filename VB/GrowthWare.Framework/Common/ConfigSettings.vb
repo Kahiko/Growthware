@@ -160,6 +160,7 @@ Namespace Common
             Else
                 config.AppSettings.Settings.Remove(configName)
             End If
+            config.Save()
         End Sub
 
         ''' <summary>

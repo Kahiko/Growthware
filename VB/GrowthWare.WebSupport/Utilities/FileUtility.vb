@@ -41,6 +41,7 @@ Namespace Utilities
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <param name="filesOnly">bool</param>
         ''' <returns>DataTable</returns>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")>
         Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
             If directoryProfile Is Nothing Then
                 Throw New ArgumentException("directoryProfile", "Can not be null.")

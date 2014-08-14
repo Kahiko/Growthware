@@ -1,6 +1,7 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
+Imports System.Globalization
 
 Namespace BusinessLogicLayer
     ''' <summary>
@@ -87,7 +88,15 @@ Namespace BusinessLogicLayer
         ''' <returns>A populated MClientChoicesState</returns>
         ''' <remarks>None.</remarks>
         Public Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
-            Return New MClientChoicesState(m_DClientChoices.GetChoices(account))
+            Dim mRetVal As MClientChoicesState = Nothing
+            Try
+                If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                    mRetVal = New MClientChoicesState(m_DClientChoices.GetChoices(account))
+                End If
+            Catch ex As Exception
+                Throw New BusinessLogicLayerException("Could not retrieve the client choices state", ex)
+            End Try
+            Return mRetVal
         End Function
 
         ''' <summary>

@@ -2,6 +2,7 @@
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports System.Collections.ObjectModel
 Imports GrowthWare.Framework.Common
+Imports System.Globalization
 
 Namespace BusinessLogicLayer
     Public Class BAccounts
@@ -64,7 +65,7 @@ Namespace BusinessLogicLayer
 
         Public Sub Delete(ByVal accountId As Integer)
             m_DAccounts.Profile.Id = accountId
-            m_DAccounts.Delete()
+            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then m_DAccounts.Delete()
         End Sub
 
         ''' <summary>
@@ -88,9 +89,13 @@ Namespace BusinessLogicLayer
         ''' </code>
         ''' </example>
         Public Function GetProfile(ByVal account As String) As MAccountProfile
+            Dim mRetVal As MAccountProfile = Nothing
             m_DAccounts.Profile = New MAccountProfile()
             m_DAccounts.Profile.Account = account
-            Return New MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security())
+            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                mRetVal = New MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security())
+            End If
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -101,7 +106,11 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Public Function GetMenu(account, menuType) As DataTable
-            Return m_DAccounts.GetMenu(account, menuType)
+            Dim mRetVal As DataTable = Nothing
+            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                mRetVal = m_DAccounts.GetMenu(account, menuType)
+            End If
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -114,10 +123,14 @@ Namespace BusinessLogicLayer
             Dim mRetCollection As New Collection(Of MAccountProfile)
             Try
                 m_DAccounts.Profile = profile
-                mDataTable = m_DAccounts.GetAccounts()
-                For Each dataRow As DataRow In mDataTable.Rows
-                    mRetCollection.Add(New MAccountProfile(dataRow))
-                Next
+                If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                    mDataTable = m_DAccounts.GetAccounts()
+                End If
+                If mDataTable IsNot Nothing Then
+                    For Each dataRow As DataRow In mDataTable.Rows
+                        mRetCollection.Add(New MAccountProfile(dataRow))
+                    Next
+                End If
             Catch ex As Exception
                 Throw
             Finally
@@ -167,15 +180,17 @@ Namespace BusinessLogicLayer
         ''' </example>
         Public Sub Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
             If profile Is Nothing Then Throw New ArgumentException("profile can not be null")
-            m_DAccounts.Profile = profile
-            profile.Id = m_DAccounts.Save()
-            If saveGroups Then
-                m_DAccounts.SaveGroups()
+            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                m_DAccounts.Profile = profile
+                profile.Id = m_DAccounts.Save()
+                If saveGroups Then
+                    m_DAccounts.SaveGroups()
+                End If
+                If saveRoles Then
+                    m_DAccounts.SaveRoles()
+                End If
+                profile = New MAccountProfile(m_DAccounts.GetAccount(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security())
             End If
-            If saveRoles Then
-                m_DAccounts.SaveRoles()
-            End If
-            profile = New MAccountProfile(m_DAccounts.GetAccount(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security())
         End Sub
 
         ''' <summary>
@@ -185,7 +200,11 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            Return m_DAccounts.Search(searchCriteria)
+            Dim mRetVal As DataTable = Nothing
+            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                mRetVal = m_DAccounts.Search(searchCriteria)
+            End If
+            Return mRetVal
         End Function
     End Class
 End Namespace

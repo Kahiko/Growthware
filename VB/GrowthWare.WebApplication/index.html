@@ -2,7 +2,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <title>Product App</title>
-    <script src="Scripts/jquery-2.0.3.min.js" type="text/javascript" language="javascript"></script>
 </head>
 <body>
 
@@ -21,24 +20,24 @@
     <script type="text/javascript" language="javascript">
         var uri = 'api/products';
 
-        //$(document).ready(function () {
-        //    alert('hi');
-        //    // Send an AJAX request
-        //    $.getJSON(uri)
-        //        .done(function (data) {
-        //            // On success, 'data' contains a list of products.
-        //            $.each(data, function (key, item) {
-        //                // Add a list item for the product.
-        //                $('<li>', { text: formatItem(item) }).appendTo($('#products'));
-        //            });
-        //        })
-        //        .fail(function () {
-        //            console.log("error");
-        //        })
-        //        .always(function () {
-        //            console.log("complete");
-        //        });
-        //});
+        $(document).ready(function () {
+            alert('hi');
+            //// Send an AJAX request
+            //$.getJSON(uri)
+            //    .done(function (data) {
+            //        // On success, 'data' contains a list of products.
+            //        $.each(data, function (key, item) {
+            //            // Add a list item for the product.
+            //            $('<li>', { text: formatItem(item) }).appendTo($('#products'));
+            //        });
+            //    })
+            //    .fail(function () {
+            //        console.log("error");
+            //    })
+            //    .always(function () {
+            //        console.log("complete");
+            //    });
+        });
 
         function formatItem(item) {
             return item.Name + ': $' + item.Price;

@@ -111,6 +111,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Global.asax" />
+    <Content Include="index.aspx" />
     <Content Include="index.html" />
     <Content Include="index1.html" />
     <Content Include="Public\Skins\Default\Scripts\jquery-1.4.1.min.js" />
@@ -118,6 +119,13 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\GrowthWare\GW.Common.js" />
+    <Content Include="Scripts\GrowthWare\GW.FileManager.js" />
+    <Content Include="Scripts\GrowthWare\GW.Model.js" />
+    <Content Include="Scripts\GrowthWare\GW.NavigationController.js" />
+    <Content Include="Scripts\GrowthWare\GW.NavigationHandler.js" />
+    <Content Include="Scripts\GrowthWare\GW.Search.js" />
+    <Content Include="Scripts\GrowthWare\GW.Upload.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery-1.4.1.min.js" />
@@ -133,6 +141,13 @@
     <Compile Include="Controllers\ProductsController.vb" />
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.designer.vb">
+      <DependentUpon>index.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.vb">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Models\Product.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

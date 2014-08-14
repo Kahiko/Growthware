@@ -1,10 +1,12 @@
-﻿Imports System.Web
+﻿Imports System.Configuration
+Imports System.Web
 Imports System.Text.RegularExpressions
 Imports System.Globalization
 Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
+Imports System.Web.Configuration
 
 Namespace Context
     ''' <summary>
@@ -78,7 +80,13 @@ Namespace Context
                 Dim mLog As Logger = Logger.Instance()
                 GWWebHelper.ExceptionError = mEx
                 mLog.Error(mEx)
+                If (mEx.GetType Is GetType(BusinessLogicLayerException)) Then
+                    Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~")
+                    ConfigSettings.SetEnvironmentValue(config, False, "DB_Status", "OffLine", False)
+                End If
             End If
+            ' Next Line prevents the ASP.NET Error page from being shown.
+            HttpContext.Current.Server.ClearError()
         End Sub
 
         ''' <summary>

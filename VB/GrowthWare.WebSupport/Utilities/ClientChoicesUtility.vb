@@ -38,7 +38,7 @@ Namespace Utilities
                     mRetVal = mBClientChoices.GetClientChoicesState(account)
                 End If
             End If
-            If HttpContext.Current.Cache IsNot Nothing Then
+            If HttpContext.Current.Cache IsNot Nothing And mRetVal IsNot Nothing Then
                 HttpContext.Current.Cache(MClientChoices.SessionName) = mRetVal
             End If
             Return mRetVal

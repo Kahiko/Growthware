@@ -42,12 +42,15 @@ Namespace Utilities
         Public Shared Function GetCurrentProfile() As MSecurityEntityProfile
             Dim mAccount As String = AccountUtility.GetHttpContextUserName
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount)
-            Dim mCurrentSecurityEntityID As Integer = Integer.Parse(mClientChoicesState(MClientChoices.SecurityEntityId).ToString(), CultureInfo.InvariantCulture)
-            Dim mProfiles As Collection(Of MSecurityEntityProfile)
-            mProfiles = GetProfiles()
+            Dim mRetVal As MSecurityEntityProfile = Nothing
+            If mClientChoicesState IsNot Nothing Then
+                Dim mCurrentSecurityEntityID As Integer = Integer.Parse(mClientChoicesState(MClientChoices.SecurityEntityId).ToString(), CultureInfo.InvariantCulture)
+                Dim mProfiles As Collection(Of MSecurityEntityProfile)
+                mProfiles = GetProfiles()
 
-            Dim mResult = From mProfile In mProfiles Where mProfile.Id = mCurrentSecurityEntityID Select mProfile
-            Dim mRetVal As MSecurityEntityProfile = mResult.First
+                Dim mResult = From mProfile In mProfiles Where mProfile.Id = mCurrentSecurityEntityID Select mProfile
+                mRetVal = mResult.First
+            End If
             If mRetVal Is Nothing Then mRetVal = GetDefaultProfile()
             Return mRetVal
         End Function
