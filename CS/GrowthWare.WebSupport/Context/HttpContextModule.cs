@@ -119,7 +119,7 @@ namespace GrowthWare.WebSupport.Context
                     ConfigSettings.SetEnvironmentValue(config, false, "DB_Status", "OffLine", false);
                 }
             }
-            HttpContext.Current.Server.ClearError()
+            HttpContext.Current.Server.ClearError();
         }
 
         private void onAcquireRequestState(Object sender, EventArgs e)

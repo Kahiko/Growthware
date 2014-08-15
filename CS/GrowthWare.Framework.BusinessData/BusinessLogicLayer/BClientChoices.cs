@@ -117,7 +117,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
                 
                 throw new BusinessLogicLayerException("Could not retrieve the client choices state", ex);
             }
-            return new MClientChoicesState(m_DClientChoices.GetChoices(account));
+            return mRetVal;
         }
 
         /// <summary>
