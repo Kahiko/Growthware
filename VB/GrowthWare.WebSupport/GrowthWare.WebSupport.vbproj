@@ -92,6 +92,7 @@
     <Compile Include="Utilities\SecurityEntityUtility.vb" />
     <Compile Include="WebImpersonate.vb" />
     <Compile Include="WebImpersonateException.vb" />
+    <Compile Include="WebSupportException.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">

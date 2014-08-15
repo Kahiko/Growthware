@@ -1,7 +1,7 @@
 ﻿Imports System.Web
 
 Public NotInheritable Class GWWebHelper
-    Private Shared m_ExceptionError As Exception = Nothing
+    Private Shared s_ExceptionError As Exception = Nothing
 
     ''' <summary>
     ''' Gets the core web administration verison.
@@ -24,10 +24,10 @@ Public NotInheritable Class GWWebHelper
     ''' <value>The exception error.</value>
     Shared Property ExceptionError() As Exception
         Get
-            Return m_ExceptionError
+            Return s_ExceptionError
         End Get
         Set(ByVal Value As Exception)
-            m_ExceptionError = Value
+            s_ExceptionError = Value
         End Set
     End Property
 

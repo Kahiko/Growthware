@@ -43,7 +43,7 @@ Public NotInheritable Class WebImpersonate
         If Not returnValue Then
             Dim log As Logger = Logger.Instance
             Dim mExceptionMsg As String = "Could not impersonate user: " & userName & " for domain " & domainName
-            Dim mException As WebImpersonateException = New Exception(mExceptionMsg)
+            Dim mException As WebImpersonateException = New WebImpersonateException(mExceptionMsg)
             log.Fatal(mException)
             Throw mException
         End If
@@ -52,7 +52,7 @@ Public NotInheritable Class WebImpersonate
             NativeMethods.CloseHandle(tokenHandle)
             Dim mLog As Logger = Logger.Instance()
             Dim mExceptionMsg As String = "Exception thrown when trying to duplicate token." + System.Environment.NewLine + "Account: " + account + System.Environment.NewLine + "Domain: " + domainName
-            Dim mException As WebImpersonateException = New Exception(mExceptionMsg)
+            Dim mException As WebImpersonateException = New WebImpersonateException(mExceptionMsg)
             mLog.Error(mException)
             Throw mException
         End If
@@ -120,5 +120,5 @@ Friend Module NativeMethods
 
     Public Declare Auto Function DuplicateToken Lib "advapi32.dll" (ByVal existingTokenHandle As IntPtr, ByVal securityImpersonationLevel As Integer, ByRef duplicateTokenHandle As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
-    Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Long)
+    Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Integer)
 End Module

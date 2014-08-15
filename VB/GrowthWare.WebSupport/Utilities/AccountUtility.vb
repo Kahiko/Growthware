@@ -11,13 +11,13 @@ Imports System.DirectoryServices
 
 Namespace Utilities
     Public Class AccountUtility
-        Private Shared m_CachedAnonymousAccount As String = "AnonymousProfile"
-        Private Shared m_AnonymousAccount As String = "Anonymous"
+        Private Shared s_CachedAnonymousAccount As String = "AnonymousProfile"
+        Private Shared s_AnonymousAccount As String = "Anonymous"
 
         ''' <summary>
         ''' The name of the anonymous account profile
         ''' </summary>
-        Public Shared ReadOnly AnonymousAccountProfile As String = m_CachedAnonymousAccount
+        Public Shared ReadOnly AnonymousAccountProfile As String = s_CachedAnonymousAccount
 
         ''' <summary>
         ''' Constructor sets up the private fields
@@ -61,9 +61,8 @@ Namespace Utilities
                             retVal = True
                         End If
                     Else
-                        Dim myEx As New ApplicationException("Invalid account.")
                         Dim mLog As Logger = Logger.Instance
-                        mLog.Error(myEx)
+                        mLog.Error("Invalid account.")
                     End If
                 Else ' LDAP authentication
                     Dim domainAndUsername As String = ConfigSettings.LdapDomain + "\" + account
@@ -77,7 +76,10 @@ Namespace Utilities
                         obj = entry.NativeObject
                         retVal = True
                     Catch ex As Exception
-                        Throw New ApplicationException("Error Authenticating account through LDAP. " + ex.Message, ex)
+                        Dim mMessage As String = "Error Authenticating account " + domainAndUsername + " through LDAP."
+                        Dim mLogger As Logger = Logger.Instance()
+                        mLogger.Error(ex)
+                        Throw
                     Finally
                         If Not obj Is Nothing Then obj = Nothing
                         If Not entry Is Nothing Then entry.Dispose()
@@ -86,20 +88,6 @@ Namespace Utilities
             End If
             Return retVal
         End Function
-
-        ''' <summary>
-        ''' Automatics the create account.
-        ''' </summary>
-        ''' <param name="accountToCreate">The account automatic create.</param>
-        ''' <param name="clientChoicesAccount">The client choices account.</param>
-        ''' <param name="securityEntity">The security entity.</param>
-        Public Shared Sub AutoCreateAccount(ByVal accountToCreate As MAccountProfile, ByVal clientChoicesAccount As String, ByVal securityEntity As String)
-            Dim mTargetChoices As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountToCreate.Account, True)
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetProfile(securityEntity), ConfigSettings.CentralManagement)
-            mBAccount.Save(accountToCreate, True, True)
-            mTargetChoices.AccountName = accountToCreate.Account
-            ClientChoicesUtility.Save(mTargetChoices)
-        End Sub
 
         ''' <summary>
         ''' Deletes the specified account seq id.
@@ -137,13 +125,13 @@ Namespace Utilities
             mLog.Debug("AccountUtility::GetCurrentProfile() Started")
             Dim mRetProfile As MAccountProfile = Nothing
             Dim mAccountName As String = HttpContext.Current.User.Identity.Name
-            If mAccountName = String.Empty Then mAccountName = m_AnonymousAccount
-            If mAccountName.Trim() = m_AnonymousAccount Then
+            If mAccountName = String.Empty Then mAccountName = s_AnonymousAccount
+            If mAccountName.Trim() = s_AnonymousAccount Then
                 If Not HttpContext.Current.Cache Is Nothing Then
-                    mRetProfile = CType(HttpContext.Current.Cache(m_CachedAnonymousAccount), MAccountProfile)
+                    mRetProfile = CType(HttpContext.Current.Cache(s_CachedAnonymousAccount), MAccountProfile)
                     If mRetProfile Is Nothing Then
                         mRetProfile = GetProfile(mAccountName)
-                        CacheController.AddToCacheDependency(m_CachedAnonymousAccount, mRetProfile)
+                        CacheController.AddToCacheDependency(s_CachedAnonymousAccount, mRetProfile)
                     End If
                 Else
                     mLog.Debug("AccountUtility::GetCurrentProfile() No cache avalible")
@@ -218,9 +206,8 @@ Namespace Utilities
                 mRetVal = mBAccount.GetProfile(account)
             Catch ex As IndexOutOfRangeException
                 Dim mMSG As String = "Count not find account: " + account + " in the database"
-                Dim mEx As New ApplicationException(mMSG, ex)
                 Dim mLog As Logger = Logger.Instance
-                mLog.Error(mEx)
+                mLog.Error(mMSG)
             End Try
             Return mRetVal
         End Function
@@ -279,6 +266,9 @@ Namespace Utilities
             Dim mAccountName As String = HttpContext.Current.User.Identity.Name
             HttpContext.Current.Cache.Remove(mAccountName + "_Session")
             HttpContext.Current.Cache.Remove(MClientChoices.SessionName)
+            If removeWorkflow Then
+
+            End If
         End Sub
 
         ''' <summary>
@@ -315,7 +305,7 @@ Namespace Utilities
                 mCurrentConext.Response.Cookies.Add(authCookie)
                 mCurrentConext.User = New GenericPrincipal(mCurrentConext.User.Identity, accountProfile.DerivedRoles.ToArray)
             Else
-                Throw New ArgumentException("accountProfile", "accountProfile can not be null")
+                Throw New ArgumentNullException("accountProfile", "accountProfile can not be null")
             End If
         End Sub
 

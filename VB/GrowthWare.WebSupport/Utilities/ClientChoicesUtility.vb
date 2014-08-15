@@ -10,7 +10,7 @@ Namespace Utilities
     ''' with regards to ClientChoices.
     ''' </summary>
     Public Module ClientChoicesUtility
-        Private m_CachedAnonymousChoicesState As String = "AnonymousClientChoicesState"
+        Private s_CachedAnonymousChoicesState As String = "AnonymousClientChoicesState"
 
         Public Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
             Return GetClientChoicesState(account, False)
@@ -25,10 +25,10 @@ Namespace Utilities
             If fromDB Then Return mBClientChoices.GetClientChoicesState(account)
             If mRetVal Is Nothing Then
                 If account.Trim().ToLower(CultureInfo.CurrentCulture) = "anonymous" Then
-                    mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.m_CachedAnonymousChoicesState), MClientChoicesState)
+                    mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.s_CachedAnonymousChoicesState), MClientChoicesState)
                     If mRetVal Is Nothing Then
                         mRetVal = mBClientChoices.GetClientChoicesState(account)
-                        CacheController.AddToCacheDependency(ClientChoicesUtility.m_CachedAnonymousChoicesState, mRetVal)
+                        CacheController.AddToCacheDependency(ClientChoicesUtility.s_CachedAnonymousChoicesState, mRetVal)
                     End If
                 Else
                     mRetVal = mBClientChoices.GetClientChoicesState(account)

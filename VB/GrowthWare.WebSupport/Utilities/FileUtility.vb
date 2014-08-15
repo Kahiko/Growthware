@@ -10,7 +10,7 @@ Imports GrowthWare.Framework.Common
 
 Namespace Utilities
     Module FileUtility
-        Private m_Space As String = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+        Private s_Space As String = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 
         ''' <summary>
         ''' Retruns the parent full name.
@@ -44,7 +44,7 @@ Namespace Utilities
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")>
         Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
             If directoryProfile Is Nothing Then
-                Throw New ArgumentException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
             End If
             Dim mRetTable As DataTable = Nothing
             Dim mRow As DataRow = Nothing
@@ -259,7 +259,7 @@ Namespace Utilities
         ''' <returns>string</returns>
         Public Function CreateDirectory(ByVal currentDirectory As String, ByVal newDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
             End If
             Dim mRetVal As String
             mRetVal = "Successfully created the new directory!"
@@ -296,7 +296,7 @@ Namespace Utilities
         ''' <returns></returns>
         Public Function DeleteDirectory(ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
             End If
             Dim mRetVal As String
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
@@ -511,7 +511,7 @@ Namespace Utilities
                                 stringBuilder.AppendLine("<br>" + theDirectory.FullName)
                                 writeDirectory = False
                             End If
-                            stringBuilder.AppendLine("<br>" + m_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
+                            stringBuilder.AppendLine("<br>" + s_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
                         End If
                         If FileLineCount > 0 Then
                             directoryLineCount += FileLineCount

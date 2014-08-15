@@ -47,7 +47,6 @@ Namespace Context
         Public Sub Dispose() Implements IHttpModule.Dispose
             ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
             Dispose(True)
-            GC.SuppressFinalize(Me)
         End Sub
 
         ''' <summary>
@@ -98,7 +97,7 @@ Namespace Context
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
             mLog.Debug("onAcquireRequestState():: Done")
-            Dim mEx As New Exception("This is a test for logging")
+            Dim mEx As New WebSupportException("This is a test for logging")
             mLog.Debug(mEx)
             Dim mAccountProfile As MAccountProfile = AccountUtility.GetCurrentProfile()
         End Sub
@@ -143,12 +142,12 @@ Namespace Context
                             If mContext.Response.Headers("jsonerror").ToString().ToUpperInvariant().Trim() = "TRUE" Then
                                 mSendError = True
                                 formatError(mError)
-                                Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine, mError)))
+                                Throw (New WebSupportException([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine, mError)))
                             End If
                         Else
                             If mContext.Response.Headers("jsonerror").ToString().ToUpperInvariant().Trim() = "TRUE" Then
                                 mSendError = True
-                                Throw (New Exception([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine)))
+                                Throw (New WebSupportException([String].Concat("An AJAX error has occurred: ", System.Environment.NewLine)))
                             End If
                         End If
                     End If

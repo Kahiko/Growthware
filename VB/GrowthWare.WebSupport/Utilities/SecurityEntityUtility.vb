@@ -11,10 +11,10 @@ Namespace Utilities
     ''' Web needs such as caching are handeled here
     ''' </summary>
     Public Class SecurityEntityUtility
-        Private Shared m_ProfileContextName As String = "ContextSecurityEntityProfile"
-        Private Shared m_DefaultProfile As MSecurityEntityProfile = Nothing
+        Private Shared s_ProfileContextName As String = "ContextSecurityEntityProfile"
+        Private Shared s_DefaultProfile As MSecurityEntityProfile = Nothing
         'Private Shared m_BSecurityEntity As BSecurityEntity = Nothing
-        Private Shared m_CacheName As String = "SecurityEntityProfiles"
+        Private Shared s_CacheName As String = "SecurityEntityProfiles"
 
         ''' <summary>
         ''' Creates and returns MSecurityEntityProfile populated with information from the
@@ -22,16 +22,16 @@ Namespace Utilities
         ''' </summary>
         ''' <returns>MSecurityEntityProfile</returns>
         Public Shared Function GetDefaultProfile() As MSecurityEntityProfile
-            If m_DefaultProfile Is Nothing Then
+            If s_DefaultProfile Is Nothing Then
                 Dim mDefaultProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
                 mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(), CultureInfo.InvariantCulture)
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer)
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer)
                 mDefaultProfile.ConnectionString = ConfigSettings.ConnectionString(mDefaultProfile.DataAccessLayer)
-                m_DefaultProfile = mDefaultProfile
+                s_DefaultProfile = mDefaultProfile
             End If
-            Return m_DefaultProfile
+            Return s_DefaultProfile
         End Function
 
         ''' <summary>
@@ -61,11 +61,11 @@ Namespace Utilities
         ''' <returns>Collection{MSecurityEntityProfile}.</returns>
         Public Shared Function GetProfiles() As Collection(Of MSecurityEntityProfile)
             Dim mSecurityEntityCollection As Collection(Of MSecurityEntityProfile) = Nothing
-            mSecurityEntityCollection = CType(HttpContext.Current.Cache(m_CacheName), Collection(Of MSecurityEntityProfile))
+            mSecurityEntityCollection = CType(HttpContext.Current.Cache(s_CacheName), Collection(Of MSecurityEntityProfile))
             If mSecurityEntityCollection Is Nothing Then
                 Dim mBSecurityEntity As BSecurityEntity = New BSecurityEntity(GetDefaultProfile(), ConfigSettings.CentralManagement)
                 mSecurityEntityCollection = mBSecurityEntity.SecurityEntities()
-                CacheController.AddToCacheDependency(m_CacheName, mSecurityEntityCollection)
+                CacheController.AddToCacheDependency(s_CacheName, mSecurityEntityCollection)
             End If
             Return mSecurityEntityCollection
         End Function

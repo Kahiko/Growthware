@@ -73,7 +73,6 @@ Public Class CacheController
                 writer = New StreamWriter(fileStream)
                 writer.WriteLine(Now.TimeOfDay)
                 writer.Close()
-                fileStream.Close()
                 HttpContext.Current.Application.Lock()
                 HttpContext.Current.Application(key & "WriteCache") = False
                 HttpContext.Current.Application.UnLock()
@@ -135,7 +134,7 @@ Public Class CacheController
                     ' do nothing
                 Catch ex As Exception
                     log.Error("CheckCallback() :: Unexpected was encountered." + System.Environment.NewLine + ex.Message.ToString())
-                    Throw ex
+                    Throw
                 End Try
             End If
         End If
