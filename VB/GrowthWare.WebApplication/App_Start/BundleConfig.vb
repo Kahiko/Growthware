@@ -15,6 +15,11 @@ Public Module BundleConfig
         )
 
         bundles.Add(
+            New ScriptBundle("~/bundles/json").Include(
+            "~/Scripts/jSon2.js"
+            )
+        )
+        bundles.Add(
             New ScriptBundle("~/bundles/bootstrap").Include(
                 "~/Scripts/bootstrap.js",
                 "~/Scripts/respond.js"
