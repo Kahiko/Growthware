@@ -13,8 +13,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer
     [Serializable()]
     public class DataAccessLayerException : Exception
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1032:ImplementStandardExceptionConstructors")]
-        private DataAccessLayerException() { }
+        public DataAccessLayerException() { }
 
         /// <summary>
         /// Calls base method

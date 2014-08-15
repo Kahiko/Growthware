@@ -92,7 +92,6 @@ namespace GrowthWare.WebSupport
                     writer = new StreamWriter(fileStream);
                     writer.WriteLine(DateTime.Now.TimeOfDay);
                     writer.Close();
-                    fileStream.Close();
                     HttpContext.Current.Application.Lock();
                     HttpContext.Current.Application[key + "WriteCache"] = false;
                     HttpContext.Current.Application.UnLock();
@@ -165,7 +164,7 @@ namespace GrowthWare.WebSupport
                     catch (Exception ex)
                     {
                         log.Error("CheckCallback() :: Unexpected was encountered." + Environment.NewLine + ex.Message.ToString());
-                        throw ex;
+                        throw;
                     }
                 }
             }

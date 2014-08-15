@@ -148,7 +148,7 @@ namespace GrowthWare.WebSupport.Context
                             {
                                 mSendError = true;
                                 formatError(ref mError);
-                                throw (new Exception(String.Concat("An AJAX error has occurred: ", Environment.NewLine, mError)));
+                                throw (new WebSupportException(String.Concat("An AJAX error has occurred: ", Environment.NewLine, mError)));
                             }
                         }
                         else
@@ -156,7 +156,7 @@ namespace GrowthWare.WebSupport.Context
                             if (mContext.Response.Headers["jsonerror"].ToString().ToUpperInvariant().Trim() == "TRUE")
                             {
                                 mSendError = true;
-                                throw (new Exception(String.Concat("An AJAX error has occurred: ", Environment.NewLine)));
+                                throw (new WebSupportException(String.Concat("An AJAX error has occurred: ", Environment.NewLine)));
                             }
                         }
                     }

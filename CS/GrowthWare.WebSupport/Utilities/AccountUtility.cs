@@ -20,12 +20,12 @@ namespace GrowthWare.WebSupport.Utilities
     /// </summary>
     public static class AccountUtility
     {
-        private static String m_CachedAnonymousAccount = "AnonymousProfile";
-        private static String m_AnonymousAccount = "Anonymous";
+        private static String s_CachedAnonymousAccount = "AnonymousProfile";
+        private static String s_AnonymousAccount = "Anonymous";
         /// <summary>
         /// The anonymous account profile
         /// </summary>
-        public static String AnonymousAccountProfile = m_CachedAnonymousAccount;
+        public static readonly String AnonymousAccountProfile = s_CachedAnonymousAccount;
 
         /// <summary>
         /// Performs authentication give an account and password
@@ -86,12 +86,12 @@ namespace GrowthWare.WebSupport.Utilities
                         obj = entry.NativeObject;
                         retVal = true;
                     }
-                    catch (Exception ex)
+                    catch (Exception)
                     {
-                        Exception mEx = new Exception("Error Authenticating account through LDAP. ", ex);
+                        string mMessage = "Error Authenticating account " + domainAndUsername + " through LDAP.";
                         Logger mLog = Logger.Instance();
-                        mLog.Error(mEx);
-                        //throw new ApplicationException("Error Authenticating account through LDAP. " + ex.Message, ex);
+                        mLog.Error(mMessage);
+                        throw;
                     }
                     finally
                     {
@@ -143,16 +143,16 @@ namespace GrowthWare.WebSupport.Utilities
             mLog.Debug("AccountUtility::GetCurrentProfile() Started");
             MAccountProfile mRetProfile = null;
             String mAccountName = HttpContext.Current.User.Identity.Name;
-            if (mAccountName == String.Empty) mAccountName = m_AnonymousAccount;
-            if (mAccountName.Trim() == m_AnonymousAccount)
+            if (mAccountName == String.Empty) mAccountName = s_AnonymousAccount;
+            if (mAccountName.Trim() == s_AnonymousAccount)
             {
                 if (HttpContext.Current.Cache != null)
                 {
-                    mRetProfile = (MAccountProfile)(HttpContext.Current.Cache[m_CachedAnonymousAccount]);
+                    mRetProfile = (MAccountProfile)(HttpContext.Current.Cache[s_CachedAnonymousAccount]);
                     if (mRetProfile == null)
                     {
                         mRetProfile = GetProfile(mAccountName);
-                        CacheController.AddToCacheDependency(m_CachedAnonymousAccount, mRetProfile);
+                        CacheController.AddToCacheDependency(s_CachedAnonymousAccount, mRetProfile);
                     }
                 }
                 else
@@ -249,9 +249,8 @@ namespace GrowthWare.WebSupport.Utilities
             catch (IndexOutOfRangeException ex)
             {
                 String mMSG = "Count not find account: " + account + " in the database";
-                ApplicationException mEx = new ApplicationException(mMSG, ex);
                 Logger mLog = Logger.Instance();
-                mLog.Error(mEx);
+                mLog.Error(mMSG);
             }
             return mRetVal;
         }
@@ -303,6 +302,10 @@ namespace GrowthWare.WebSupport.Utilities
             HttpContext.Current.Session.Remove(mAccountName + "_Session");
             HttpContext.Current.Cache.Remove(mAccountName + "_Session");
             HttpContext.Current.Cache.Remove(MClientChoices.SessionName);
+            if (removeWorkflow) 
+            { 
+            
+            }
         }
 
         /// <summary>
@@ -321,6 +324,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void SetPrincipal(MAccountProfile accountProfile)
         {
+            if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile can not be null!");
             HttpContext mCurrentConext = HttpContext.Current;
             String mAccountRoles = accountProfile.AssignedRoles.ToString().Replace(",", ";");
             // generate authentication ticket
@@ -367,22 +371,6 @@ namespace GrowthWare.WebSupport.Utilities
                 RemoveInMemoryInformation(true);
             }
             return profile;
-        }
-
-        /// <summary>
-        /// Autocreates the account.
-        /// </summary>
-        /// <param name="accountToCreate">MAccountProfile representing the account to create.  All properties should be set prior to calling this method</param>
-        /// <param name="clientChoicesAccount">The client choices account.</param>
-        /// <param name="securityEntity">The security entity the account roles will be set in.</param>
-        public static void AutoCreateAccount(MAccountProfile accountToCreate, string clientChoicesAccount, string securityEntity)
-        {
-            MClientChoicesState mTargetChoices = ClientChoicesUtility.GetClientChoicesState(accountToCreate.Account, true);
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetProfile(securityEntity), ConfigSettings.CentralManagement);
-            mBAccount.Save(accountToCreate, true, true);
-            mTargetChoices.AccountName = accountToCreate.Account;
-            ClientChoicesUtility.Save(mTargetChoices);
-
         }
     }
 }

@@ -16,9 +16,9 @@ namespace GrowthWare.WebSupport.Utilities
     /// </summary>
     public static class SecurityEntityUtility
     {
-        private static String m_CacheName = "Cached_SecurityEntities";
+        private static String s_CacheName = "Cached_SecurityEntities";
 
-        private static MSecurityEntityProfile m_DefaultProfile = null;
+        private static MSecurityEntityProfile s_DefaultProfile = null;
 
         //private static BSecurityEntity m_BSecurityEntity = null;
 
@@ -36,17 +36,17 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MSecurityEntityProfile</returns>
         public static MSecurityEntityProfile GetDefaultProfile()
         {
-            if (m_DefaultProfile == null)
+            if (s_DefaultProfile == null)
             {
                 MSecurityEntityProfile mDefaultProfile = new MSecurityEntityProfile();
-                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(), CultureInfo.InvariantCulture);
+                mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer;
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer);
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer);
                 mDefaultProfile.ConnectionString = ConfigSettings.ConnectionString(mDefaultProfile.DataAccessLayer);
-                m_DefaultProfile = mDefaultProfile;
+                s_DefaultProfile = mDefaultProfile;
             }
-            return m_DefaultProfile;
+            return s_DefaultProfile;
         }
 
         /// <summary>
@@ -71,12 +71,12 @@ namespace GrowthWare.WebSupport.Utilities
         public static Collection<MSecurityEntityProfile> GetProfiles()
         {
             Collection<MSecurityEntityProfile> mRetVal = null;
-            mRetVal = (Collection<MSecurityEntityProfile>)(HttpContext.Current.Cache[m_CacheName]);
+            mRetVal = (Collection<MSecurityEntityProfile>)(HttpContext.Current.Cache[s_CacheName]);
             if (mRetVal == null)
             {
                 BSecurityEntity mBSecurityEntity = new BSecurityEntity(GetDefaultProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBSecurityEntity.SecurityEntities();
-                CacheController.AddToCacheDependency(m_CacheName, mRetVal);
+                CacheController.AddToCacheDependency(s_CacheName, mRetVal);
             }
             return mRetVal;
         }

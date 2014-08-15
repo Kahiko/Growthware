@@ -8,19 +8,19 @@ using System.Threading.Tasks;
 namespace GrowthWare.WebSupport
 {
     /// <summary>
-    /// Created to distinguish errors created in the WebImpersonate.
+    /// Created to distinguish errors created in the GrowthWare.WebSupport project.
     /// </summary>
     /// <remarks></remarks>
     [Serializable()]
-    public class WebImpersonateException : Exception
+    public class WebSupportException : Exception
     {
-		private WebImpersonateException(){}
+		public WebSupportException(){}
 
 		/// <summary>
 		/// Calls base method
 		/// </summary>
 		/// <param name="message">string</param>
-		public WebImpersonateException(string message):base(message)
+		public WebSupportException(string message):base(message)
 		{
 			
 		}
@@ -30,7 +30,7 @@ namespace GrowthWare.WebSupport
 		/// </summary>
 		/// <param name="message">string</param>
 		/// <param name="innerException">Exception</param>
-		public WebImpersonateException(string message, Exception innerException):base(message, innerException)
+		public WebSupportException(string message, Exception innerException):base(message, innerException)
 		{
 		
 		}
@@ -40,10 +40,11 @@ namespace GrowthWare.WebSupport
 		/// </summary>
 		/// <param name="info"></param>
 		/// <param name="context"></param>
-        protected WebImpersonateException(SerializationInfo info, StreamingContext context)
+        protected WebSupportException(SerializationInfo info, StreamingContext context)
             : base(info, context)
 		{
 			// Implement type-specific serialization constructor logic.
 		}
+
     }
 }

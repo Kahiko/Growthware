@@ -17,7 +17,7 @@ namespace GrowthWare.WebSupport.Utilities
     /// </summary>
     public static class FileUtility
     {
-        static String m_Space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+        static String s_Space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
         /// <summary>
         /// Retruns the parent full name.
@@ -563,7 +563,11 @@ namespace GrowthWare.WebSupport.Utilities
                             directoryLineCount = 0;
                         }
                     }
-                    GetLineCount(subDirectories[x], level + 1, ref stringBuilder, excludeList, ref directoryLineCount, ref totalLinesOfCode, fileArray);
+                    checked
+                    {
+                        level = level + 1;
+                    }
+                    GetLineCount(subDirectories[x], level, ref stringBuilder, excludeList, ref directoryLineCount, ref totalLinesOfCode, fileArray);
                 }
             }
             catch (Exception)
@@ -622,7 +626,7 @@ namespace GrowthWare.WebSupport.Utilities
                                 stringBuilder.AppendLine("<br>" + theDirectory.FullName);
                                 writeDirectory = false;
                             }
-                            stringBuilder.AppendLine("<br>" + m_Space + directoryFile.Name + " " + FileLineCount);
+                            stringBuilder.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
                         }
                         if (FileLineCount > 0)
                         {

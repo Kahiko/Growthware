@@ -14,7 +14,7 @@ namespace GrowthWare.WebSupport
     /// <remarks></remarks>
     static class GWWebHelper
     {
-        private static Exception m_ExceptionError = null;
+        private static Exception s_ExceptionError = null;
 
         /// <summary>
         /// Gets the core web administration verison.
@@ -40,8 +40,8 @@ namespace GrowthWare.WebSupport
         /// <value>The exception error.</value>
         public static Exception ExceptionError
         {
-            get { return m_ExceptionError; }
-            set { m_ExceptionError = value; }
+            get { return s_ExceptionError; }
+            set { s_ExceptionError = value; }
         }
 
         /// <summary>

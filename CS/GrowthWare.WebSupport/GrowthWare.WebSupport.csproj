@@ -60,6 +60,7 @@
     <Compile Include="Utilities\SecurityEntityUtility.cs" />
     <Compile Include="WebImpersonate.cs" />
     <Compile Include="WebImpersonateException.cs" />
+    <Compile Include="WebSupportException.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

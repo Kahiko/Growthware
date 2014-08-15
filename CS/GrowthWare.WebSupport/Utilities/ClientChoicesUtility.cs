@@ -13,7 +13,7 @@ namespace GrowthWare.WebSupport.Utilities
     /// </summary>
     public static class ClientChoicesUtility
     {
-        private static String m_CachedAnonymousChoicesState = "AnonymousClientChoicesState";
+        private static String s_CachedAnonymousChoicesState = "AnonymousClientChoicesState";
 
         /// <summary>
         /// Returns the client choices given the account
@@ -48,11 +48,11 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 if (account.Trim().ToLower(CultureInfo.CurrentCulture) == "anonymous")
                 {
-                    mRetVal = (MClientChoicesState)HttpContext.Current.Cache[m_CachedAnonymousChoicesState];
+                    mRetVal = (MClientChoicesState)HttpContext.Current.Cache[s_CachedAnonymousChoicesState];
                     if (mRetVal == null)
                     {
                         mRetVal = mBClientChoices.GetClientChoicesState(account);
-                        CacheController.AddToCacheDependency(m_CachedAnonymousChoicesState, mRetVal);
+                        CacheController.AddToCacheDependency(s_CachedAnonymousChoicesState, mRetVal);
                     }
                 }
                 else
