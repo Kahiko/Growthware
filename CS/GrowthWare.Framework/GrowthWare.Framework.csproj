@@ -62,10 +62,13 @@
     <Compile Include="Model\Enumerations\EncryptionType.cs" />
     <Compile Include="Model\Enumerations\LogPriority.cs" />
     <Compile Include="Model\Enumerations\MenuType.cs" />
+    <Compile Include="Model\Enumerations\RoleType.cs" />
     <Compile Include="Model\Enumerations\SystemStatus.cs" />
+    <Compile Include="Model\Profiles\Base\MBaseSecurity.cs" />
     <Compile Include="Model\Profiles\Base\MDatabaseFunctions.cs" />
     <Compile Include="Model\Profiles\Base\MProfile.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMProfile.cs" />
+    <Compile Include="Model\Profiles\Interfaces\IMSecurityInfo.cs" />
     <Compile Include="Model\Profiles\MAccountProfile.cs" />
     <Compile Include="Model\Profiles\MClientChoices.cs" />
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />

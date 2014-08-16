@@ -20,7 +20,7 @@ namespace GrowthWare.WebSupport.Context
     /// as well as adding the requested function and current security for the requested function.
     /// </summary>
     /// <remarks></remarks>
-    class HttpContextModule : IHttpModule, IRequiresSessionState
+    public class HttpContextModule : IHttpModule, IRequiresSessionState
     {
         private bool m_Disposing = false;
         private OutputFilterStream m_Filter;
@@ -96,11 +96,6 @@ namespace GrowthWare.WebSupport.Context
                 mLog.SetThreshold(LogPriority.Info);
                 mLog.Info("Starting Core Web Administration Version: " + GWWebHelper.CoreWebAdministrationVersion);
                 mLog.Info("Framework Version: " + GWWebHelper.FrameworkVersion);
-                // Pre-compile the site
-                System.Diagnostics.Process mProcess;
-                mLog.Debug("Starting pre-compile process");
-                mProcess = System.Diagnostics.Process.Start(System.Runtime.InteropServices.RuntimeEnvironment.GetRuntimeDirectory().ToString() + "aspnet_compiler.exe", "-p " + HttpContext.Current.Server.MapPath("~\\") + " -u");
-                mLog.Debug("Finished pre-compile process");
                 string mCurrentLevel = ConfigSettings.LogPriority.ToUpper(new CultureInfo("en-US", false));
                 mLog.SetThreshold(mLog.GetLogPriorityFromText(mCurrentLevel));
             }
@@ -212,7 +207,7 @@ namespace GrowthWare.WebSupport.Context
             message = Regex.Replace(message, @"\\u(?<code>\d{4})", charMatch);
         }
 
-        private bool processRequest()
+        private static bool processRequest()
         {
             bool mRetVal = false;
             if (HttpContext.Current != null) 

@@ -175,7 +175,6 @@ namespace GrowthWare.WebSupport
         /// </summary>
         public static void RemoveAllCache()
         {
-            MDirectoryProfile directoryInfo = new MDirectoryProfile();
             DirectoryInfo DirectoryFiles = new DirectoryInfo(s_CacheDirectory);
             foreach (FileInfo directoryFile in DirectoryFiles.GetFiles("*.*"))
             {

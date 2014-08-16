@@ -17,7 +17,6 @@ namespace GrowthWare.WebSupport.Context
     public class ClientChoicesHttpModule : IHttpModule, IRequiresSessionState
     {
 
-        private MSecurityEntityProfile m_SEProfile = SecurityEntityUtility.GetCurrentProfile();
         private bool m_Disposing = false;
 
         /// <summary>
@@ -38,7 +37,6 @@ namespace GrowthWare.WebSupport.Context
             if (!m_Disposing)
             {
                 m_Disposing = true;
-                m_SEProfile = null;
             }
         }
 
@@ -84,7 +82,7 @@ namespace GrowthWare.WebSupport.Context
         /// </summary>
         /// <returns>boolean</returns>
         /// <remarks>There's no need to process logic for the other file types or extension</remarks>
-        private bool processRequest()
+        private static bool processRequest()
         {
             bool mRetVal = false;
             if (HttpContext.Current != null) 

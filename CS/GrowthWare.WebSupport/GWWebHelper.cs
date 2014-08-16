@@ -38,6 +38,7 @@ namespace GrowthWare.WebSupport
         /// Gets or sets the exception error.
         /// </summary>
         /// <value>The exception error.</value>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static Exception ExceptionError
         {
             get { return s_ExceptionError; }
@@ -68,6 +69,7 @@ namespace GrowthWare.WebSupport
         /// <param name="request">The request.</param>
         /// <param name="queryString">The query string.</param>
         /// <returns>String.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static String GetQueryValue(HttpRequest request, String queryString)
         {
             String mRetVal = String.Empty;

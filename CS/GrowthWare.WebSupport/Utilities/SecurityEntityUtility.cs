@@ -25,11 +25,6 @@ namespace GrowthWare.WebSupport.Utilities
         private const string SESSION_PROFILE_NAME = "SessionSecurityEntityProfile";
 
         /// <summary>
-        /// The security entity cached collection
-        /// </summary>
-        static readonly string SecurityEntityCachedCollection = "SecurityEntityCollection";
-
-        /// <summary>
         /// Creates and returns MSecurityEntityProfile populated with information from the
         /// configuration file.
         /// </summary>

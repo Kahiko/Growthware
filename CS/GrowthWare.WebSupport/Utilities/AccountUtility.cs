@@ -86,12 +86,13 @@ namespace GrowthWare.WebSupport.Utilities
                         obj = entry.NativeObject;
                         retVal = true;
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         string mMessage = "Error Authenticating account " + domainAndUsername + " through LDAP.";
+                        WebSupportException mEx = new WebSupportException(mMessage,ex);
                         Logger mLog = Logger.Instance();
-                        mLog.Error(mMessage);
-                        throw;
+                        mLog.Error(mEx);
+                        throw mEx;
                     }
                     finally
                     {
@@ -143,7 +144,7 @@ namespace GrowthWare.WebSupport.Utilities
             mLog.Debug("AccountUtility::GetCurrentProfile() Started");
             MAccountProfile mRetProfile = null;
             String mAccountName = HttpContext.Current.User.Identity.Name;
-            if (mAccountName == String.Empty) mAccountName = s_AnonymousAccount;
+            if (string.IsNullOrEmpty(mAccountName)) mAccountName = s_AnonymousAccount;
             if (mAccountName.Trim() == s_AnonymousAccount)
             {
                 if (HttpContext.Current.Cache != null)
@@ -246,7 +247,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 mRetVal = mBAccount.GetAccountProfile(account);
             }
-            catch (IndexOutOfRangeException ex)
+            catch (IndexOutOfRangeException)
             {
                 String mMSG = "Count not find account: " + account + " in the database";
                 Logger mLog = Logger.Instance();
