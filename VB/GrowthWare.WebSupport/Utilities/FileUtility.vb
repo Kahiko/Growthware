@@ -48,9 +48,9 @@ Namespace Utilities
             End If
             Dim mRetTable As DataTable = Nothing
             Dim mRow As DataRow = Nothing
-            Dim mKiloBytes As Integer = 1024
-            Dim mMegaBytes As Integer = mKiloBytes * 1024
-            Dim mGigaBytes As Integer = mMegaBytes * 1024
+            'Dim mKiloBytes As Integer = 1024
+            'Dim mMegaBytes As Integer = mKiloBytes * 1024
+            'Dim mGigaBytes As Integer = mMegaBytes * 1024
             Dim mStringBuilder As New StringBuilder(4096)
             Dim mDirectorySeparatorChar As Char = DirectorySeparatorChar
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing

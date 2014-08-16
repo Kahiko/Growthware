@@ -79,8 +79,12 @@
     <Compile Include="Model\Enumerations\EncryptionType.vb" />
     <Compile Include="Model\Enumerations\LogPrioritiy.vb" />
     <Compile Include="Model\Enumerations\MenuType.vb" />
+    <Compile Include="Model\Enumerations\RoleType.vb" />
+    <Compile Include="Model\Profiles\Base\MBaseSecurity.vb" />
+    <Compile Include="Model\Profiles\Interfaces\IMSecurityInfo.vb" />
     <Compile Include="Model\Profiles\MClientChoices.vb" />
     <Compile Include="Model\Profiles\MClientChoicesState.vb" />
+    <Compile Include="Model\Profiles\MFunctionProfile.vb" />
     <Compile Include="Model\Profiles\MSearchCriteria.vb" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

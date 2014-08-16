@@ -11,7 +11,6 @@ Namespace Utilities
     ''' Web needs such as caching are handeled here
     ''' </summary>
     Public Class SecurityEntityUtility
-        Private Shared s_ProfileContextName As String = "ContextSecurityEntityProfile"
         Private Shared s_DefaultProfile As MSecurityEntityProfile = Nothing
         'Private Shared m_BSecurityEntity As BSecurityEntity = Nothing
         Private Shared s_CacheName As String = "SecurityEntityProfiles"

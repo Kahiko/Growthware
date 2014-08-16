@@ -14,7 +14,6 @@ Namespace Context
     Public Class ClientChoicesHttpModule
         Implements IHttpModule, IRequiresSessionState
 
-        Private m_SEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile()
         Private m_Disposing As Boolean = False
 
         ''' <summary>
@@ -32,7 +31,6 @@ Namespace Context
         Public Sub Dispose() Implements IHttpModule.Dispose
             If Not m_Disposing Then
                 m_Disposing = True
-                m_SEProfile = Nothing
             End If
         End Sub
 
@@ -78,7 +76,7 @@ Namespace Context
         ''' </summary>
         ''' <returns>boolean</returns>
         ''' <remarks>There's no need to process logic for the other file types or extension</remarks>
-        Private Function processRequest() As Boolean
+        Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
                 Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))

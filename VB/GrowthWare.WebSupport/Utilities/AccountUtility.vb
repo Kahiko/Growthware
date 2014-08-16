@@ -77,8 +77,9 @@ Namespace Utilities
                         retVal = True
                     Catch ex As Exception
                         Dim mMessage As String = "Error Authenticating account " + domainAndUsername + " through LDAP."
+                        Dim mEx As WebSupportException = New WebSupportException(mMessage, ex)
                         Dim mLogger As Logger = Logger.Instance()
-                        mLogger.Error(ex)
+                        mLogger.Error(mEx)
                         Throw
                     Finally
                         If Not obj Is Nothing Then obj = Nothing
@@ -125,7 +126,7 @@ Namespace Utilities
             mLog.Debug("AccountUtility::GetCurrentProfile() Started")
             Dim mRetProfile As MAccountProfile = Nothing
             Dim mAccountName As String = HttpContext.Current.User.Identity.Name
-            If mAccountName = String.Empty Then mAccountName = s_AnonymousAccount
+            If String.IsNullOrEmpty(mAccountName) Then mAccountName = s_AnonymousAccount
             If mAccountName.Trim() = s_AnonymousAccount Then
                 If Not HttpContext.Current.Cache Is Nothing Then
                     mRetProfile = CType(HttpContext.Current.Cache(s_CachedAnonymousAccount), MAccountProfile)

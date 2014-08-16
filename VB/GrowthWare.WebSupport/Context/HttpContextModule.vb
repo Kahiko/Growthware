@@ -99,7 +99,6 @@ Namespace Context
             mLog.Debug("onAcquireRequestState():: Done")
             Dim mEx As New WebSupportException("This is a test for logging")
             mLog.Debug(mEx)
-            Dim mAccountProfile As MAccountProfile = AccountUtility.GetCurrentProfile()
         End Sub
 
         ''' <summary>
@@ -117,6 +116,12 @@ Namespace Context
                 mLog.Info("Starting Core Web Administration Version: " & GWWebHelper.CoreWebAdministrationVersion)
                 Dim mCurrentLevel As String = ConfigSettings.LogPriority.ToUpper(New CultureInfo("en-US", False))
                 mLog.SetThreshold(mLog.GetLogPriorityFromText(mCurrentLevel))
+            End If
+            If ConfigSettings.CentralManagement Then
+                If Not mClearedCache Then
+                    CacheController.RemoveAllCache()
+                    HttpContext.Current.Application("ClearedCache") = "True"
+                End If
             End If
             If processRequest() Then
                 m_Filter = New OutputFilterStream(HttpContext.Current.Response.Filter)
@@ -207,7 +212,7 @@ Namespace Context
         ''' </summary>
         ''' <returns>boolean</returns>
         ''' <remarks>There's no need to process logic for the other file types or extension</remarks>
-        Private Function processRequest() As Boolean
+        Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
                 Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))

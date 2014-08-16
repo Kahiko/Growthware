@@ -144,10 +144,8 @@ Public Class CacheController
     ''' Removes all cache items from member by removing all files from the cache dependency directory.
     ''' </summary>
     Public Shared Sub RemoveAllCache()
-        Dim directoryInfo As New MDirectoryProfile
         Dim DirectoryFiles As New DirectoryInfo(s_CacheDirectory)
-        Dim directoryFile As FileInfo
-        For Each directoryFile In DirectoryFiles.GetFiles("*.*")
+        For Each directoryFile As FileInfo In DirectoryFiles.GetFiles("*.*")
             File.Delete(DirectoryFiles.FullName & directoryFile.Name)
         Next
     End Sub
