@@ -10,7 +10,7 @@ Public Module BundleConfig
 
         bundles.Add(
             New ScriptBundle("~/bundles/angular").Include(
-            "~/Scripts/angular.js"
+            "~/Scripts/angular-1.2.js"
             )
         )
 

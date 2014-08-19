@@ -136,7 +136,8 @@
     <Content Include="index1.html" />
     <Content Include="Public\Skins\Default\Scripts\jquery-1.4.1.min.js" />
     <Content Include="Public\Skins\Default\Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular-1.2.js" />
+    <Content Include="Scripts\angular-1.3.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
