@@ -1,5 +1,6 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles.Base
 Imports System.Collections.ObjectModel
+Imports GrowthWare.Framework.Model.Profiles.Interfaces
 
 Namespace Model.Profiles
     ''' <summary>
@@ -14,6 +15,7 @@ Namespace Model.Profiles
     <Serializable(), CLSCompliant(True)> _
     Public Class MAccountProfile
         Inherits MProfile
+        Implements IMRoleSecurity
 
 #Region "Constructors"
         ''' <summary>
@@ -60,7 +62,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Represents the roles that have been directly assigned to the account.
         ''' </summary>
-        Public ReadOnly Property AssignedRoles As Collection(Of String)
+        Public ReadOnly Property AssignedRoles As Collection(Of String) Implements IMRoleSecurity.AssignedRoles
             Get
                 Return m_AssignedRoles
             End Get
@@ -69,7 +71,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Represents the roles that have been assigned either directly or through assoication of a role to a group.
         ''' </summary>
-        Public ReadOnly Property DerivedRoles As Collection(Of String)
+        Public ReadOnly Property DerivedRoles As Collection(Of String) Implements IMRoleSecurity.DerivedRoles
             Get
                 Return m_DerivedRoles
             End Get
