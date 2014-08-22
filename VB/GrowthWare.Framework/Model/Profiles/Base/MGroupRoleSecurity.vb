@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.Model.Profiles.Interfaces
 Imports System.Collections.ObjectModel
 
 Namespace Model.Profiles.Base
-    Public MustInherit Class MGroupRole
+    Public MustInherit Class MGroupRoleSecurity
         Inherits MProfile
         Implements IMGroupRoleSecurity
 

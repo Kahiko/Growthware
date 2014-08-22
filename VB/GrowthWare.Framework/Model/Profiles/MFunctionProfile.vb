@@ -13,7 +13,7 @@ Namespace Model.Profiles
     ''' </remarks>
     <Serializable(), CLSCompliant(True)> _
     Public Class MFunctionProfile
-        Inherits MGroupRole
+        Inherits MGroupRoleSecurity
         Implements IMProfile
 
 #Region "Member Fields"
