@@ -15,7 +15,7 @@ Namespace Model.Profiles
     <Serializable(), CLSCompliant(True)> _
     Public Class MAccountProfile
         Inherits MProfile
-        Implements IMRoleSecurity
+        Implements IMGroupRoleSecurity
 
 #Region "Constructors"
         ''' <summary>
@@ -62,7 +62,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Represents the roles that have been directly assigned to the account.
         ''' </summary>
-        Public ReadOnly Property AssignedRoles As Collection(Of String) Implements IMRoleSecurity.AssignedRoles
+        Public ReadOnly Property AssignedRoles As Collection(Of String) Implements IMGroupRoleSecurity.AssignedRoles
             Get
                 Return m_AssignedRoles
             End Get
@@ -71,7 +71,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Represents the roles that have been assigned either directly or through assoication of a role to a group.
         ''' </summary>
-        Public ReadOnly Property DerivedRoles As Collection(Of String) Implements IMRoleSecurity.DerivedRoles
+        Public ReadOnly Property DerivedRoles As Collection(Of String) Implements IMGroupRoleSecurity.DerivedRoles
             Get
                 Return m_DerivedRoles
             End Get
@@ -80,7 +80,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Represents the groups that have been directly assigned to the account.
         ''' </summary>
-        Public ReadOnly Property Groups As Collection(Of String)
+        Public ReadOnly Property Groups As Collection(Of String) Implements IMGroupRoleSecurity.Groups
             Get
                 Return m_Groups
             End Get

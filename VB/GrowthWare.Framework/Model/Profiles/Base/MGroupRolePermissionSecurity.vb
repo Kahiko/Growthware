@@ -3,9 +3,9 @@ Imports GrowthWare.Framework.Model.Profiles.Interfaces
 Imports System.Collections.ObjectModel
 
 Namespace Model.Profiles.Base
-    Public MustInherit Class MGroupRoleSecurity
+    Public MustInherit Class MGroupRolePermissionSecurity
         Inherits MProfile
-        Implements IMGroupRoleSecurity
+        Implements IMGroupRolePermissionSecurity
 
         Private m_DerivedAddRoles As Collection(Of String) = New Collection(Of String)
         Private m_DerivedDeleteRoles As Collection(Of String) = New Collection(Of String)
@@ -57,7 +57,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return roles associated with the "Add" permission.
         ''' </summary>
-        Public ReadOnly Property AssignedAddRoles() As Collection(Of String) Implements IMGroupRoleSecurity.AssignedAddRoles
+        Public ReadOnly Property AssignedAddRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.AssignedAddRoles
             Get
                 Return m_AssignedAddRoles
             End Get
@@ -66,7 +66,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return roles associated with the "Add" permission.
         ''' </summary>
-        Public ReadOnly Property DerivedAddRoles() As Collection(Of String) Implements IMGroupRoleSecurity.DerivedAddRoles
+        Public ReadOnly Property DerivedAddRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.DerivedAddRoles
             Get
                 Return m_DerivedAddRoles
             End Get
@@ -75,7 +75,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return assigned roles associated with the "Delete" permission.
         ''' </summary>
-        Public ReadOnly Property AssignedDeleteRoles() As Collection(Of String) Implements IMGroupRoleSecurity.AssignedDeleteRoles
+        Public ReadOnly Property AssignedDeleteRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.AssignedDeleteRoles
             Get
                 Return m_AssignedDeleteRoles
             End Get
@@ -84,7 +84,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return roles associated with the "Delete" permission.
         ''' </summary>
-        Public ReadOnly Property DerivedDeleteRoles() As Collection(Of String) Implements IMGroupRoleSecurity.DerivedDeleteRoles
+        Public ReadOnly Property DerivedDeleteRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.DerivedDeleteRoles
             Get
                 Return m_DerivedDeleteRoles
             End Get
@@ -93,7 +93,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return assigned roles associated with the "Edit" permission.
         ''' </summary>
-        Public ReadOnly Property AssignedEditRoles() As Collection(Of String) Implements IMGroupRoleSecurity.AssignedEditRoles
+        Public ReadOnly Property AssignedEditRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.AssignedEditRoles
             Get
                 Return m_AssignedEditRoles
             End Get
@@ -102,7 +102,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return roles associated with the "Edit" permission.
         ''' </summary>
-        Public ReadOnly Property DerivedEditRoles() As Collection(Of String) Implements IMGroupRoleSecurity.DerivedEditRoles
+        Public ReadOnly Property DerivedEditRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.DerivedEditRoles
             Get
                 Return m_DerivedEditRoles
             End Get
@@ -111,7 +111,7 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return assigned roles associated with the "View" permission.
         ''' </summary>
-        Public ReadOnly Property AssignedViewRoles() As Collection(Of String) Implements IMGroupRoleSecurity.AssignedViewRoles
+        Public ReadOnly Property AssignedViewRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.AssignedViewRoles
             Get
                 Return m_AssignedViewRoles
             End Get
@@ -120,31 +120,31 @@ Namespace Model.Profiles.Base
         ''' <summary>
         ''' Return roles associated with the "View" permission.
         ''' </summary>
-        Public ReadOnly Property DerivedViewRoles() As Collection(Of String) Implements IMGroupRoleSecurity.DerivedViewRoles
+        Public ReadOnly Property DerivedViewRoles() As Collection(Of String) Implements IMGroupRolePermissionSecurity.DerivedViewRoles
             Get
                 Return m_DerivedViewRoles
             End Get
         End Property
 
-        Public ReadOnly Property AddGroups As Collection(Of String) Implements IMGroupRoleSecurity.AddGroups
+        Public ReadOnly Property AddGroups As Collection(Of String) Implements IMGroupRolePermissionSecurity.AddGroups
             Get
                 Return m_AddGroups
             End Get
         End Property
 
-        Public ReadOnly Property DeleteGroups As Collection(Of String) Implements IMGroupRoleSecurity.DeleteGroups
+        Public ReadOnly Property DeleteGroups As Collection(Of String) Implements IMGroupRolePermissionSecurity.DeleteGroups
             Get
                 Return m_DeleteGroups
             End Get
         End Property
 
-        Public ReadOnly Property EditGroups As Collection(Of String) Implements IMGroupRoleSecurity.EditGroups
+        Public ReadOnly Property EditGroups As Collection(Of String) Implements IMGroupRolePermissionSecurity.EditGroups
             Get
                 Return m_EditGroups
             End Get
         End Property
 
-        Public ReadOnly Property ViewGroups As Collection(Of String) Implements IMGroupRoleSecurity.ViewGroups
+        Public ReadOnly Property ViewGroups As Collection(Of String) Implements IMGroupRolePermissionSecurity.ViewGroups
             Get
                 Return m_ViewGroups
             End Get

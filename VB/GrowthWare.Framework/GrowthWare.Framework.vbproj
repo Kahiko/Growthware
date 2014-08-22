@@ -81,9 +81,9 @@
     <Compile Include="Model\Enumerations\MenuType.vb" />
     <Compile Include="Model\Enumerations\PermissionType.vb" />
     <Compile Include="Model\Enumerations\RoleType.vb" />
-    <Compile Include="Model\Profiles\Base\MGroupRoleSecurity.vb" />
+    <Compile Include="Model\Profiles\Base\MGroupRolePermissionSecurity.vb" />
+    <Compile Include="Model\Profiles\Interfaces\IMGroupRolePermissionSecurity.vb" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRoleSecurity.vb" />
-    <Compile Include="Model\Profiles\Interfaces\IMRoleSecurity.vb" />
     <Compile Include="Model\Profiles\MClientChoices.vb" />
     <Compile Include="Model\Profiles\MClientChoicesState.vb" />
     <Compile Include="Model\Profiles\MFunctionProfile.vb" />
