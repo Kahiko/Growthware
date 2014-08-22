@@ -13,29 +13,22 @@ namespace GrowthWare.WebSupport.Context
     /// </summary>
     /// <remarks></remarks>
     [Serializable(), CLSCompliant(true)]
-    public class MFunctionProfile : MGroupRoleSecurity, IMProfile
+    public class MFunctionProfile : MGroupRolePermissionSecurity, IMProfile
     {
-        private string m_Action = string.Empty;
-        private string m_Description = string.Empty;
-        private bool m_Enable_View_State = false;
-        private bool m_Enable_Notifications = false;
-        private bool m_Is_Nav = false;
-        private bool m_No_UI = false;
-        private string m_Function_Name = string.Empty;
-        private int m_Nav_Type_Seq_ID = 2;
-        private string m_Notes = string.Empty;
-        private int m_Function_Type_Seq_ID = -1;
-        private int m_ParentmFunction_Seq_ID = 1;
-        private string m_Source = string.Empty;
-        private string m_Transformations = string.Empty;
-        private bool m_Redirect_On_Timeout = true;
-        private string m_MetaKeyWords;
 
+        #region Member Objects
+        private int m_Nav_Type_Seq_ID = 2;
+        //private int m_ALLOW_HTML_INPUT = 1;
+        //private int m_ALLOW_COMMENT_HTML_INPUT = 1;
+        private int m_Function_Type_Seq_ID = 1;
+        private int m_ParentmFunction_Seq_ID = 1;
+        private int m_LinkBehavior = 1;
+        #endregion
+
+        #region Public Methods
         /// <summary>
         /// Will return a Function profile with the default vaules
         /// </summary>
-        /// <remarks></remarks>
-
         public MFunctionProfile()
         {
         }
@@ -43,125 +36,167 @@ namespace GrowthWare.WebSupport.Context
         /// <summary>
         /// Will return a fully populated Function profile.
         /// </summary>
-        /// <param name="drowProfile">A data row containing the Function information</param>
-        /// <param name="drowSecurity">A data row containing all of the roles</param>
+        /// <param name="profileDatarow">A data row containing the Function information</param>
+        /// <param name="derivedRoles">A data row containing all of the derived roles</param>
+        /// <param name="assignedRoles">A data row containing all of the assigned roles</param>
+        /// <param name="groups">A data row containing all of the assigned groups</param>
         /// <remarks></remarks>
-        public MFunctionProfile(DataRow drowProfile, DataRow[] drowSecurity)
+        public MFunctionProfile(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            Init(drowProfile, drowSecurity);
+            this.Initialize(profileDatarow, derivedRoles, assignedRoles, groups);
         }
 
-        private void Init(DataRow drowMain, DataRow[] drowSecurity)
+        #endregion
+
+        #region Private methods
+
+        /// <summary>
+        /// Initializes the specified profile with the given DataRow.
+        /// </summary>
+        /// <param name="profileDatarow">The profile DataRow.</param>
+        /// <param name="derivedRoles">The derived roles.</param>
+        /// <param name="assignedRoles">The assigned roles.</param>
+        /// <param name="groups">The groups.</param>
+        private new void Initialize(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            base.NameColumnName = "ACTION";
-            base.IdColumnName = "FUNCTION_SEQ_ID";
-            base.Init(drowMain, drowSecurity);
-            base.Id = base.GetInt(drowMain, "FUNCTION_SEQ_ID");
-            m_Function_Type_Seq_ID = base.GetInt(drowMain, "FUNCTION_TYPE_SEQ_ID");
-            m_Function_Name = base.GetString(drowMain, "NAME");
-            m_Description = base.GetString(drowMain, "DESCRIPTION");
-            m_Notes = base.GetString(drowMain, "NOTES");
-            m_Source = base.GetString(drowMain, "SOURCE");
-            m_Enable_View_State = base.GetBool(drowMain, "ENABLE_VIEW_STATE");
-            m_Enable_Notifications = base.GetBool(drowMain, "ENABLE_NOTIFICATIONS");
-            m_Redirect_On_Timeout = base.GetBool(drowMain, "REDIRECT_ON_TIMEOUT");
-            m_Is_Nav = base.GetBool(drowMain, "IS_NAV");
-            m_No_UI = base.GetBool(drowMain, "No_UI");
-            m_Nav_Type_Seq_ID = base.GetInt(drowMain, "NAVIGATION_NVP_SEQ_DET_ID");
-            m_ParentmFunction_Seq_ID = base.GetInt(drowMain, "PARENT_Function_Seq_ID");
-            m_Action = base.GetString(drowMain, "ACTION");
+            base.Id = base.GetInt(profileDatarow, "FUNCTION_SEQ_ID");
+            m_Function_Type_Seq_ID = base.GetInt(profileDatarow, "FUNCTION_TYPE_SEQ_ID");
+            Name = base.GetString(profileDatarow, "NAME");
+            Description = base.GetString(profileDatarow, "DESCRIPTION");
+            Notes = base.GetString(profileDatarow, "NOTES");
+            Source = base.GetString(profileDatarow, "SOURCE");
+            EnableViewState = base.GetBool(profileDatarow, "ENABLE_VIEW_STATE");
+            EnableNotifications = base.GetBool(profileDatarow, "ENABLE_NOTIFICATIONS");
+            RedirectOnTimeout = base.GetBool(profileDatarow, "REDIRECT_ON_TIMEOUT");
+            IsNav = base.GetBool(profileDatarow, "IS_NAV");
+            LinkBehavior = base.GetInt(profileDatarow, "Link_Behavior");
+            NoUI = base.GetBool(profileDatarow, "No_UI");
+            m_Nav_Type_Seq_ID = base.GetInt(profileDatarow, "NAVIGATION_NVP_SEQ_DET_ID");
+            m_ParentmFunction_Seq_ID = base.GetInt(profileDatarow, "PARENT_Function_Seq_ID");
+            Action = base.GetString(profileDatarow, "ACTION");
             // need to set the the base class name with the action.
             // the names can repeate but the action is unique and lower case.
-            base.Name = m_Action.ToString();
-            m_MetaKeyWords = base.GetString(drowMain, "META_KEY_WORDS");
+            base.Name = Action.ToString();
+            MetaKeyWords = base.GetString(profileDatarow, "META_KEY_WORDS");
+            base.Initialize(profileDatarow, derivedRoles, assignedRoles, groups);
         }
+        #endregion
 
-        public string Action
+        #region Public Properties
+        /// <summary>
+        /// Represents the Action to be take within the system.
+        /// </summary>
+        /// <remarks>This is a unique value</remarks>
+        public string Action { get; set; }
+
+        /// <summary>
+        /// Used as description of the profile
+        /// </summary>
+        /// <remarks>Designed to be used in any search options</remarks>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// Indicates to the system if the "page's" view state should be enabled.
+        /// </summary>
+        /// <remarks>Legacy usage</remarks>
+        public bool EnableViewState { get; set; }
+
+        /// <summary>
+        /// Intended to be used to send notifications when this profile is "used" by the client
+        /// </summary>
+        public bool EnableNotifications { get; set; }
+
+        /// <summary>
+        /// Use to determin if a function is a navigation function
+        /// </summary>
+        /// <remarks>
+        /// Should be replaced by LinkBehavior
+        /// </remarks>
+        public bool IsNav { get; set; }
+
+        /// <summary>
+        /// Represents the link behavior of a function.
+        /// </summary>
+        /// <returns>Integer</returns>
+        /// <remarks>
+        /// Data stored in ZGWSecurity.Functions and related to ZGWCoreWeb.Link_Behaviors
+        /// </remarks>
+        public int LinkBehavior
         {
-            get { return m_Action; }
-            set
-            {
-                m_Action = value.Trim();
-                base.Name = m_Action.ToString();
-            }
+            get { return m_LinkBehavior; }
+            set { m_LinkBehavior = value; }
         }
 
-        public string Description
-        {
-            get { return m_Description; }
-            set { m_Description = value.Trim(); }
-        }
-
-        public bool EnableViewState
-        {
-            get { return m_Enable_View_State; }
-            set { m_Enable_View_State = value; }
-        }
-
-        public bool EnableNotifications
-        {
-            get { return m_Enable_Notifications; }
-            set { m_Enable_Notifications = value; }
-        }
-
-        public bool IS_NAV
-        {
-            get { return m_Is_Nav; }
-            set { m_Is_Nav = value; }
-        }
-
-        public int Function_Type_Seq_ID
+        /// <summary>
+        /// Represents the type of function Module,Security, Menu Item etc
+        /// </summary>
+        /// <value>Integer/int</value>
+        /// <returns>Integer/int</returns>
+        /// <remarks>
+        /// Data stored in ZGWSecurity.Functions related to ZGWSecurity.Function_Types
+        /// </remarks>
+        public int FunctionTypeSeqID
         {
             get { return m_Function_Type_Seq_ID; }
             set { m_Function_Type_Seq_ID = value; }
         }
 
-        public string MetaKeyWords
-        {
-            get { return m_MetaKeyWords; }
-            set { m_MetaKeyWords = value.Trim(); }
-        }
+        /// <summary>
+        /// Gets or sets the meta key words.
+        /// </summary>
+        /// <value>The meta key words.</value>
+        public string MetaKeyWords { get; set; }
 
-        public new string Name
-        {
-            get { return m_Function_Name; }
-            set { m_Function_Name = value.Trim(); }
-        }
+        /// <summary>
+        /// String representation normaly unique
+        /// </summary>
+        /// <value>The name.</value>
+        public new string Name { get; set; }
 
-        public int NAV_TYPE_SEQ_ID
+        /// <summary>
+        /// Gets or sets the navigation type seq id.
+        /// </summary>
+        /// <value>The navigation type seq id.</value>
+        public int NavigationTypeSeqId
         {
             get { return m_Nav_Type_Seq_ID; }
             set { m_Nav_Type_Seq_ID = value; }
         }
 
-        public string Notes
-        {
-            get { return m_Notes; }
-            set { m_Notes = value.Trim(); }
-        }
+        /// <summary>
+        /// Gets or sets the notes.
+        /// </summary>
+        /// <value>The notes.</value>
+        public string Notes { get; set; }
 
-        public bool No_UI
-        {
-            get { return m_No_UI; }
-            set { m_No_UI = value; }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [no UI].
+        /// </summary>
+        /// <value><c>true</c> if [no UI]; otherwise, <c>false</c>.</value>
+        public bool NoUI { get; set; }
 
+        /// <summary>
+        /// Gets or sets the parent ID.
+        /// </summary>
+        /// <value>The parent ID.</value>
         public int ParentID
         {
             get { return m_ParentmFunction_Seq_ID; }
             set { m_ParentmFunction_Seq_ID = value; }
         }
 
-        public bool RedirectOnTimeout
-        {
-            get { return m_Redirect_On_Timeout; }
-            set { m_Redirect_On_Timeout = value; }
-        }
+        /// <summary>
+        /// Gets or sets a value indicating whether [redirect on timeout].
+        /// </summary>
+        /// <value><c>true</c> if [redirect on timeout]; otherwise, <c>false</c>.</value>
+        public bool RedirectOnTimeout { get; set; }
 
-        public string Source
-        {
-            get { return m_Source; }
-            set { m_Source = value.Trim(); }
-        }
+        /// <summary>
+        /// Gets or sets the source.
+        /// </summary>
+        /// <value>The source.</value>
+        public string Source { get; set; }
+
+        #endregion
     }
 }

@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.Model.Profiles.Base;
+using GrowthWare.Framework.Model.Profiles.Interfaces;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -11,7 +12,7 @@ namespace GrowthWare.Framework.Model.Profiles
     /// Properties for an account.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MAccountProfile : MProfile
+    public class MAccountProfile : MProfile, IMGroupRoleSecurity
     {
 
         #region "Member fields"

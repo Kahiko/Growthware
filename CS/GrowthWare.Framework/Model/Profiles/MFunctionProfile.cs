@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace GrowthWare.Framework.Model.Profiles
 {
@@ -13,14 +14,14 @@ namespace GrowthWare.Framework.Model.Profiles
     /// Class MFunctionProfile
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MFunctionProfile : MGroupRoleSecurity, IMProfile
+    public class MFunctionProfile : MGroupRolePermissionSecurity, IMProfile
     {
         #region Member Objects
-        private int m_Nav_Type_Seq_ID = 2;
+        private int m_NavigationTypeSeqId = 2;
         //private int m_ALLOW_HTML_INPUT = 1;
         //private int m_ALLOW_COMMENT_HTML_INPUT = 1;
-        private int m_Function_Type_Seq_ID = 1;
-        private int m_ParentmFunction_Seq_ID = 1;
+        private int m_FunctionTypeSeqId = 1;
+        private int m_ParentmFunctionSeqId = 1;
         private int m_LinkBehavior = 1;
         #endregion
 
@@ -52,32 +53,32 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <summary>
         /// Initializes the specified profile with the given DataRow.
         /// </summary>
-        /// <param name="profileDatarow">The profile DataRow.</param>
+        /// <param name="profileDataRow">The profile DataRow.</param>
         /// <param name="derivedRoles">The derived roles.</param>
         /// <param name="assignedRoles">The assigned roles.</param>
         /// <param name="groups">The groups.</param>
-        private new void Initialize(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
+        private new void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
             base.NameColumnName = "ACTION";
             base.IdColumnName = "FUNCTION_SEQ_ID";
-            m_Function_Type_Seq_ID = base.GetInt(profileDatarow, "FUNCTION_TYPE_SEQ_ID");
-            Name = base.GetString(profileDatarow, "NAME");
-            Description = base.GetString(profileDatarow, "DESCRIPTION");
-            Notes = base.GetString(profileDatarow, "NOTES");
-            Source = base.GetString(profileDatarow, "SOURCE");
-            EnableViewState = base.GetBool(profileDatarow, "ENABLE_VIEW_STATE");
-            EnableNotifications = base.GetBool(profileDatarow, "ENABLE_NOTIFICATIONS");
-            RedirectOnTimeout = base.GetBool(profileDatarow, "REDIRECT_ON_TIMEOUT");
-            IsNav = base.GetBool(profileDatarow, "IS_NAV");
-            LinkBehavior = base.GetInt(profileDatarow, "Link_Behavior");
-            NoUI = base.GetBool(profileDatarow, "No_UI");
-            m_Nav_Type_Seq_ID = base.GetInt(profileDatarow, "NAVIGATION_NVP_SEQ_DET_ID");
-            m_ParentmFunction_Seq_ID = base.GetInt(profileDatarow, "PARENT_Function_Seq_ID");
-            Action = base.GetString(profileDatarow, "ACTION");
+            m_FunctionTypeSeqId = base.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID");
+            Name = base.GetString(profileDataRow, "NAME");
+            Description = base.GetString(profileDataRow, "DESCRIPTION");
+            Notes = base.GetString(profileDataRow, "NOTES");
+            Source = base.GetString(profileDataRow, "SOURCE");
+            EnableViewState = base.GetBool(profileDataRow, "ENABLE_VIEW_STATE");
+            EnableNotifications = base.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS");
+            RedirectOnTimeout = base.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT");
+            IsNavigable = base.GetBool(profileDataRow, "IS_NAV");
+            LinkBehavior = base.GetInt(profileDataRow, "Link_Behavior");
+            NoUI = base.GetBool(profileDataRow, "No_UI");
+            m_NavigationTypeSeqId = base.GetInt(profileDataRow, "NAVIGATION_NVP_SEQ_DET_ID");
+            m_ParentmFunctionSeqId = base.GetInt(profileDataRow, "PARENT_Function_Seq_ID");
+            Action = base.GetString(profileDataRow, "ACTION");
             // need to set the the base class name with the action.
             // the names can repeate but the action is unique and lower case.
             base.Name = Action.ToString();
-            MetaKeyWords = base.GetString(profileDatarow, "META_KEY_WORDS");
+            MetaKeywords = base.GetString(profileDataRow, "META_KEY_WORDS");
         }
         #endregion
 
@@ -111,7 +112,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <remarks>
         /// Should be replaced by LinkBehavior
         /// </remarks>
-        public bool IsNav { get; set; }
+        public bool IsNavigable { get; set; }
 
         /// <summary>
         /// Represents the link behavior of a function.
@@ -134,17 +135,17 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <remarks>
         /// Data stored in ZGWSecurity.Functions related to ZGWSecurity.Function_Types
         /// </remarks>
-        public int FunctionTypeSeqID
+        public int FunctionTypeSeqId
         {
-            get { return m_Function_Type_Seq_ID; }
-            set { m_Function_Type_Seq_ID = value; }
+            get { return m_FunctionTypeSeqId; }
+            set { m_FunctionTypeSeqId = value; }
         }
 
         /// <summary>
         /// Gets or sets the meta key words.
         /// </summary>
         /// <value>The meta key words.</value>
-        public string MetaKeyWords { get; set; }
+        public string MetaKeywords { get; set; }
 
         /// <summary>
         /// String representation normaly unique
@@ -158,8 +159,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <value>The navigation type seq id.</value>
         public int NavigationTypeSeqId
         {
-            get { return m_Nav_Type_Seq_ID; }
-            set { m_Nav_Type_Seq_ID = value; }
+            get { return m_NavigationTypeSeqId; }
+            set { m_NavigationTypeSeqId = value; }
         }
 
         /// <summary>
@@ -178,10 +179,10 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Gets or sets the parent ID.
         /// </summary>
         /// <value>The parent ID.</value>
-        public int ParentID
+        public int ParentId
         {
-            get { return m_ParentmFunction_Seq_ID; }
-            set { m_ParentmFunction_Seq_ID = value; }
+            get { return m_ParentmFunctionSeqId; }
+            set { m_ParentmFunctionSeqId = value; }
         }
 
         /// <summary>
