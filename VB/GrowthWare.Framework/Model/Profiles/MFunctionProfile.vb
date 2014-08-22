@@ -17,11 +17,11 @@ Namespace Model.Profiles
         Implements IMProfile
 
 #Region "Member Fields"
-        Private m_NavTypeSeqId As Integer = 2
-        Private m_Function_Type_Seq_ID As Integer = 1
+        Private m_NavigationTypeSeqId As Integer = 2
+        Private m_FunctionTypeSeqId As Integer = 1
         'Private m_ALLOW_HTML_INPUT As Integer = 1
         'Private m_ALLOW_COMMENT_HTML_INPUT As Integer = 1
-        Private m_ParentmFunction_Seq_ID As Integer = 1
+        Private m_ParentmFunctionSeqId As Integer = 1
         Private m_LinkBehavior As Integer = 1
 #End Region
 
@@ -36,13 +36,13 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Will return a fully populated Function profile.
         ''' </summary>
-        ''' <param name="profileDatarow">A data row containing the Function information</param>
+        ''' <param name="profileDataRow">A data row containing the Function information</param>
         ''' <param name="derivedRoles">A data row containing all of the derived roles</param>
         ''' <param name="assignedRoles">A data row containing all of the assigned roles</param>
         ''' <param name="groups">A data row containing all of the assigned groups</param>
         ''' <remarks></remarks>
-        Public Sub New(ByVal profileDatarow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
-            Initialize(profileDatarow, derivedRoles, assignedRoles, groups)
+        Public Sub New(ByVal profileDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
+            Initialize(profileDataRow, derivedRoles, assignedRoles, groups)
         End Sub
 #End Region
 
@@ -55,28 +55,28 @@ Namespace Model.Profiles
         ''' <param name="assignedRoles">An array of datarows</param>
         ''' <param name="groups">An array of datarows</param>
         ''' <remarks></remarks>
-        Protected Overloads Sub Initialize(ByVal profileDatarow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
-            MyBase.Id = CInt(profileDatarow("FUNCTION_SEQ_ID"))
+        Protected Overloads Sub Initialize(ByVal profileDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
+            MyBase.Id = CInt(profileDataRow("FUNCTION_SEQ_ID"))
             MyBase.IdColumnName = "FUNCTION_SEQ_ID"
-            m_Function_Type_Seq_ID = Me.GetInt(profileDatarow, "FUNCTION_TYPE_SEQ_ID")
-            Name = Me.GetString(profileDatarow, "NAME")
-            Description = Me.GetString(profileDatarow, "DESCRIPTION")
-            Notes = Me.GetString(profileDatarow, "NOTES")
-            Source = Me.GetString(profileDatarow, "SOURCE")
-            EnableViewState = Me.GetBool(profileDatarow, "ENABLE_VIEW_STATE")
-            EnableNotifications = Me.GetBool(profileDatarow, "ENABLE_NOTIFICATIONS")
-            RedirectOnTimeout = Me.GetBool(profileDatarow, "REDIRECT_ON_TIMEOUT")
-            IsNav = Me.GetBool(profileDatarow, "IS_NAV")
-            LinkBehavior = Me.GetInt(profileDatarow, "LINK_BEHAVIOR")
-            NoUI = Me.GetBool(profileDatarow, "No_UI")
-            NavigationTypeSeqId = Me.GetInt(profileDatarow, "NAVIGATION_NVP_SEQ_DET_ID")
-            m_ParentmFunction_Seq_ID = Me.GetInt(profileDatarow, "PARENT_FUNCTION_SEQ_ID")
-            Action = Me.GetString(profileDatarow, "ACTION")
+            m_FunctionTypeSeqId = Me.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID")
+            Name = Me.GetString(profileDataRow, "NAME")
+            Description = Me.GetString(profileDataRow, "DESCRIPTION")
+            Notes = Me.GetString(profileDataRow, "NOTES")
+            Source = Me.GetString(profileDataRow, "SOURCE")
+            EnableViewState = Me.GetBool(profileDataRow, "ENABLE_VIEW_STATE")
+            EnableNotifications = Me.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS")
+            RedirectOnTimeout = Me.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT")
+            IsNavigable = Me.GetBool(profileDataRow, "IS_NAV")
+            LinkBehavior = Me.GetInt(profileDataRow, "LINK_BEHAVIOR")
+            NoUI = Me.GetBool(profileDataRow, "No_UI")
+            NavigationTypeSeqId = Me.GetInt(profileDataRow, "NAVIGATION_NVP_SEQ_DET_ID")
+            m_ParentmFunctionSeqId = Me.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
+            Action = Me.GetString(profileDataRow, "ACTION")
             ' need to set the the base class name with the action.
             ' the names can repeate but the action is unique and lower case.
             MyBase.Name = Action.ToLower
-            MetaKeyWords = Me.GetString(profileDatarow, "META_KEY_WORDS")
-            MyBase.Initialize(profileDatarow, derivedRoles, assignedRoles, groups)
+            MetaKeywords = Me.GetString(profileDataRow, "META_KEY_WORDS")
+            MyBase.Initialize(profileDataRow, derivedRoles, assignedRoles, groups)
         End Sub
 #End Region
 
@@ -110,7 +110,7 @@ Namespace Model.Profiles
         ''' <remarks>
         ''' Should be replaced by LinkBehavior
         ''' </remarks>
-        Public Property IsNav() As Boolean
+        Public Property IsNavigable() As Boolean
 
         ''' <summary>
         ''' Represents the link behavior of a function.
@@ -136,25 +136,25 @@ Namespace Model.Profiles
         ''' <remarks>
         ''' Data stored in ZGWSecurity.Functions related to ZGWSecurity.Function_Types
         ''' </remarks>
-        Public Property FunctionTypeSeqID() As Integer
+        Public Property FunctionTypeSeqId() As Integer
             Get
-                Return m_Function_Type_Seq_ID
+                Return m_FunctionTypeSeqId
             End Get
             Set(ByVal value As Integer)
-                m_Function_Type_Seq_ID = value
+                m_FunctionTypeSeqId = value
             End Set
         End Property
 
-        Public Property MetaKeyWords() As String
+        Public Property MetaKeywords() As String
 
         Public Shadows Property Name() As String
 
         Public Property NavigationTypeSeqId() As Integer
             Get
-                Return m_NavTypeSeqId
+                Return m_NavigationTypeSeqId
             End Get
             Set(ByVal Value As Integer)
-                m_NavTypeSeqId = Value
+                m_NavigationTypeSeqId = Value
             End Set
         End Property
 
@@ -162,12 +162,12 @@ Namespace Model.Profiles
 
         Public Property NoUI() As Boolean
 
-        Public Property ParentID() As Integer
+        Public Property ParentId() As Integer
             Get
-                Return m_ParentmFunction_Seq_ID
+                Return m_ParentmFunctionSeqId
             End Get
             Set(ByVal Value As Integer)
-                m_ParentmFunction_Seq_ID = Value
+                m_ParentmFunctionSeqId = Value
             End Set
         End Property
 
