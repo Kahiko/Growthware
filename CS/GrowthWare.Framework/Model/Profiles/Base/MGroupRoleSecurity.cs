@@ -23,7 +23,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
     /// roles from this class as well as the ones for yours.
     ///</remarks>
     [Serializable(), CLSCompliant(true)]
-    public abstract class MBaseSecurity : MProfile, IMSecurityInfo
+    public abstract class MGroupRoleSecurity : MProfile, IMSecurityInfo
     {
         private string[] m_AddRoles;
         private string[] m_DeleteRoles;

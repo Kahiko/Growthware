@@ -13,7 +13,7 @@ namespace GrowthWare.WebSupport.Context
     /// </summary>
     /// <remarks></remarks>
     [Serializable(), CLSCompliant(true)]
-    public class MFunctionProfile : MBaseSecurity, IMProfile
+    public class MFunctionProfile : MGroupRoleSecurity, IMProfile
     {
         private string m_Action = string.Empty;
         private string m_Description = string.Empty;

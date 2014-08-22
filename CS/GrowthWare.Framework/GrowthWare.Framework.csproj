@@ -64,7 +64,7 @@
     <Compile Include="Model\Enumerations\MenuType.cs" />
     <Compile Include="Model\Enumerations\RoleType.cs" />
     <Compile Include="Model\Enumerations\SystemStatus.cs" />
-    <Compile Include="Model\Profiles\Base\MBaseSecurity.cs" />
+    <Compile Include="Model\Profiles\Base\MGroupRoleSecurity.cs" />
     <Compile Include="Model\Profiles\Base\MDatabaseFunctions.cs" />
     <Compile Include="Model\Profiles\Base\MProfile.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMProfile.cs" />
@@ -73,6 +73,7 @@
     <Compile Include="Model\Profiles\MClientChoices.cs" />
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />
     <Compile Include="Model\Profiles\MDirectoryProfile.cs" />
+    <Compile Include="Model\Profiles\MFunctionProfile.cs" />
     <Compile Include="Model\Profiles\MSearchCriteria.cs" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
