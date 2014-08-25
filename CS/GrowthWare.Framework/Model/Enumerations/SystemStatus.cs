@@ -11,7 +11,6 @@ namespace GrowthWare.Framework.Model.Enumerations
     /// <remarks>
     /// Values match ZF_SYSTEM_STATUS in the database
     /// </remarks>
-    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1008:EnumsShouldHaveZeroValue")]
     public enum SystemStatus
     {
         /// <summary>
@@ -29,6 +28,10 @@ namespace GrowthWare.Framework.Model.Enumerations
         /// <summary>
         /// The inactive
         /// </summary>
-        Inactive = 2
+        Inactive = 2,
+        /// <summary>
+        /// Not used
+        /// </summary>
+        None = 0
     }
 }
