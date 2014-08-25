@@ -50,7 +50,6 @@
     <Compile Include="CacheController.cs" />
     <Compile Include="Context\ClientChoicesHttpModule.cs" />
     <Compile Include="Context\HttpContextModule.cs" />
-    <Compile Include="Context\MFunctionProfile.cs" />
     <Compile Include="Context\OutputFilterStream.cs" />
     <Compile Include="GWWebHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

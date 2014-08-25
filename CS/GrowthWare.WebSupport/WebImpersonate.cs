@@ -61,8 +61,19 @@ namespace GrowthWare.WebSupport
             // The token that is passed to the following constructor must 
             // be a primary token in order to use it for impersonation.
             WindowsIdentity newId = new WindowsIdentity(dupeTokenHandle);
-            WindowsImpersonationContext impersonatedUser = newId.Impersonate();
-            impersonatedUser = newId.Impersonate();
+            WindowsImpersonationContext impersonatedUser = null;
+            try
+            {
+                impersonatedUser = newId.Impersonate();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                newId.Dispose();
+            }
             return impersonatedUser;
         }
     }

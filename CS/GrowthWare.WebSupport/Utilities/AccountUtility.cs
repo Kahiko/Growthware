@@ -77,10 +77,11 @@ namespace GrowthWare.WebSupport.Utilities
                     string domainAndUsername = ConfigSettings.LdapDomain + "\\" + account;
                     if (mDomainPassed) domainAndUsername = account;
                     domainAndUsername = domainAndUsername.Trim();
-                    DirectoryEntry entry = new DirectoryEntry(ConfigSettings.LdapServer, domainAndUsername, password);
+                    DirectoryEntry entry = null;
                     object obj = new object();
                     try
                     {
+                        entry = new DirectoryEntry(ConfigSettings.LdapServer, domainAndUsername, password);
                         //Bind to the native AdsObject to force authentication
                         //if this does not work it will throw an exception.
                         obj = entry.NativeObject;

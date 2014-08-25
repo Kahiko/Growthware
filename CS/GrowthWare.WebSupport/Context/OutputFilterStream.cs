@@ -13,6 +13,8 @@ namespace GrowthWare.WebSupport.Context
     /// <remarks>found at http://stackoverflow.com/questions/1038466/logging-raw-http-request-response-in-asp-net-mvc-iis7</remarks>
     public class OutputFilterStream : Stream
     {
+        private object m_LockObj = new object();
+
         /// <summary>
         /// Provides access to the inner stream
         /// </summary>
@@ -39,7 +41,7 @@ namespace GrowthWare.WebSupport.Context
         /// <returns>System.String.</returns>
         public string ReadStream()
         {
-            lock (this.InnerStream)
+            lock (this.m_LockObj)
             {
                 if (this.CopyStream.Length <= 0L ||
                     !this.CopyStream.CanRead ||

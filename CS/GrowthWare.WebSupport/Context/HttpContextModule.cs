@@ -63,7 +63,7 @@ namespace GrowthWare.WebSupport.Context
             }
             else
             {
-                if (HttpContext.Current.Application["StartLogInfo"].ToString().ToLower(CultureInfo.InvariantCulture) == "false")
+                if (HttpContext.Current.Application["StartLogInfo"].ToString().ToUpperInvariant() == "FALSE")
                 {
                     mStartLogInfo = false;
                 }
@@ -80,7 +80,7 @@ namespace GrowthWare.WebSupport.Context
             }
             else
             {
-                if (HttpContext.Current.Application["ClearedCache"].ToString().ToLower(CultureInfo.InvariantCulture) == "false")
+                if (HttpContext.Current.Application["ClearedCache"].ToString().ToUpperInvariant() == "FALSE")
                 {
                     mClearedCache = false;
                 }
