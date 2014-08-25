@@ -1,5 +1,6 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles.Base
 Imports GrowthWare.Framework.Model.Profiles.Interfaces
+Imports System.Globalization
 
 Namespace Model.Profiles
     ''' <summary>
@@ -55,28 +56,24 @@ Namespace Model.Profiles
         ''' <param name="assignedRoles">An array of datarows</param>
         ''' <param name="groups">An array of datarows</param>
         ''' <remarks></remarks>
-        Protected Overloads Sub Initialize(ByVal profileDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
-            MyBase.Id = CInt(profileDataRow("FUNCTION_SEQ_ID"))
+        Friend Overloads Sub Initialize(ByVal profileDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
             MyBase.IdColumnName = "FUNCTION_SEQ_ID"
-            m_FunctionTypeSeqId = Me.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID")
-            Name = Me.GetString(profileDataRow, "NAME")
-            Description = Me.GetString(profileDataRow, "DESCRIPTION")
-            Notes = Me.GetString(profileDataRow, "NOTES")
-            Source = Me.GetString(profileDataRow, "SOURCE")
-            EnableViewState = Me.GetBool(profileDataRow, "ENABLE_VIEW_STATE")
-            EnableNotifications = Me.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS")
-            RedirectOnTimeout = Me.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT")
-            IsNavigable = Me.GetBool(profileDataRow, "IS_NAV")
-            LinkBehavior = Me.GetInt(profileDataRow, "LINK_BEHAVIOR")
-            NoUI = Me.GetBool(profileDataRow, "No_UI")
-            NavigationTypeSeqId = Me.GetInt(profileDataRow, "NAVIGATION_NVP_SEQ_DET_ID")
-            m_ParentmFunctionSeqId = Me.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
-            Action = Me.GetString(profileDataRow, "ACTION")
-            ' need to set the the base class name with the action.
-            ' the names can repeate but the action is unique and lower case.
-            MyBase.Name = Action.ToLower
-            MetaKeywords = Me.GetString(profileDataRow, "META_KEY_WORDS")
+            MyBase.NameColumnName = "NAME"
             MyBase.Initialize(profileDataRow, derivedRoles, assignedRoles, groups)
+            Action = MyBase.GetString(profileDataRow, "ACTION")
+            Description = MyBase.GetString(profileDataRow, "DESCRIPTION")
+            EnableNotifications = MyBase.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS")
+            EnableViewState = MyBase.GetBool(profileDataRow, "ENABLE_VIEW_STATE")
+            IsNavigable = MyBase.GetBool(profileDataRow, "IS_NAV")
+            LinkBehavior = MyBase.GetInt(profileDataRow, "LINK_BEHAVIOR")
+            MetaKeywords = MyBase.GetString(profileDataRow, "META_KEY_WORDS")
+            NavigationTypeSeqId = MyBase.GetInt(profileDataRow, "NAVIGATION_NVP_SEQ_DET_ID")
+            Notes = MyBase.GetString(profileDataRow, "NOTES")
+            NoUI = MyBase.GetBool(profileDataRow, "No_UI")
+            RedirectOnTimeout = MyBase.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT")
+            Source = MyBase.GetString(profileDataRow, "SOURCE")
+            m_ParentmFunctionSeqId = MyBase.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
+            m_FunctionTypeSeqId = MyBase.Id
         End Sub
 #End Region
 

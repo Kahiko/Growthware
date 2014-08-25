@@ -182,7 +182,7 @@ Namespace Utilities
         Public Shared Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             Dim mRetVal As DataTable = Nothing
-            If account.ToUpper(New CultureInfo("en-US", False)) = "ANONYMOUS" Then
+            If account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                 Dim mAnonMenu As String = menuType.ToString() + "Anonymous"
                 mRetVal = CType(HttpContext.Current.Cache(mAnonMenu), DataTable)
                 If mRetVal Is Nothing Then

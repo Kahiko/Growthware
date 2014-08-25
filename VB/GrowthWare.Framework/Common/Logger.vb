@@ -297,7 +297,7 @@ Namespace Common
         <CLSCompliant(False)> _
         Private Shared Function convertPriorityTextToPriority(ByVal priority As String) As log4net.Priority
             Dim retPriority As log4net.Priority = Nothing
-            Select Case priority.ToUpper(New CultureInfo("en-US", False))
+            Select Case priority.ToUpper(CultureInfo.InvariantCulture)
                 Case "DEBUG"
                     retPriority = log4net.Priority.DEBUG
                     Exit Select
@@ -329,7 +329,7 @@ Namespace Common
         Public Function GetLogPriorityFromText(ByVal priority As String) As LogPriority
             Dim mRetVal As LogPriority = Model.Enumerations.LogPriority.[Error]
             If Not String.IsNullOrEmpty(priority) Then
-                Select Case priority.ToUpper(New CultureInfo("en-US", False))
+                Select Case priority.ToUpper(CultureInfo.InvariantCulture)
                     Case "DEBUG"
                         mRetVal = Model.Enumerations.LogPriority.Debug
                         Exit Select

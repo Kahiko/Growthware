@@ -20,7 +20,7 @@ Namespace Model.Profiles.Base
         Protected Function GetBool(ByVal dataRow As DataRow, ByVal columnName As String) As Boolean
             Dim mRetVal As Boolean = False
             If Not dataRow Is Nothing AndAlso dataRow.Table.Columns.Contains(columnName) AndAlso Not Convert.IsDBNull(dataRow(columnName)) Then
-                If dataRow(columnName).ToString() = "1" Or dataRow(columnName).ToString().ToUpper(New CultureInfo("en-US", False)) = "TRUE" Then
+                If dataRow(columnName).ToString() = "1" Or dataRow(columnName).ToString().ToUpper(CultureInfo.InvariantCulture) = "TRUE" Then
                     mRetVal = True
                 End If
             End If

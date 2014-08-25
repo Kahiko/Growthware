@@ -114,7 +114,7 @@ Namespace Context
                 Dim mLog As Logger = Logger.Instance
                 mLog.SetThreshold(LogPriority.Info)
                 mLog.Info("Starting Core Web Administration Version: " & GWWebHelper.CoreWebAdministrationVersion)
-                Dim mCurrentLevel As String = ConfigSettings.LogPriority.ToUpper(New CultureInfo("en-US", False))
+                Dim mCurrentLevel As String = ConfigSettings.LogPriority.ToUpper(CultureInfo.InvariantCulture)
                 mLog.SetThreshold(mLog.GetLogPriorityFromText(mCurrentLevel))
             End If
             If ConfigSettings.CentralManagement Then
@@ -215,7 +215,7 @@ Namespace Context
         Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
-                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))
+                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
                 Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then

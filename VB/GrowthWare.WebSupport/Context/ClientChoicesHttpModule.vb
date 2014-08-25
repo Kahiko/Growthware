@@ -79,7 +79,7 @@ Namespace Context
         Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
-                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(New CultureInfo("en-US", False))
+                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
                 Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then

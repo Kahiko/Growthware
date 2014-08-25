@@ -1,6 +1,7 @@
 ﻿Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.Model.Profiles.Interfaces
 Imports System.Collections.ObjectModel
+Imports System.Globalization
 
 Namespace Model.Profiles.Base
     Public MustInherit Class MGroupRolePermissionSecurity
@@ -33,8 +34,8 @@ Namespace Model.Profiles.Base
         ''' <param name="assignedRoles">An array of data rows that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
         ''' <param name="groups">An array of data rows that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
         ''' <remarks></remarks>
-        Protected Overridable Overloads Sub Initialize(ByRef detailDatarow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
-            MyBase.Initialize(detailDatarow)
+        Friend Overloads Sub Initialize(ByRef detailDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
+            MyBase.Initialize(detailDataRow)
             setRoleOrGroup(m_DerivedAddRoles, derivedRoles, RoleType.AddRole, m_RoleColumn)
             setRoleOrGroup(m_DerivedDeleteRoles, derivedRoles, RoleType.DeleteRole, m_RoleColumn)
             setRoleOrGroup(m_DerivedEditRoles, derivedRoles, RoleType.EditRole, m_RoleColumn)
@@ -158,7 +159,8 @@ Namespace Model.Profiles.Base
                 Return m_PermissionColumn
             End Get
             Set(ByVal value As String)
-                m_PermissionColumn = value.Trim
+                m_PermissionColumn = value
+                If Not String.IsNullOrEmpty(m_PermissionColumn) Then m_PermissionColumn = m_PermissionColumn.Trim()
             End Set
         End Property
 
@@ -170,7 +172,8 @@ Namespace Model.Profiles.Base
                 Return m_RoleColumn
             End Get
             Set(ByVal value As String)
-                m_RoleColumn = value.Trim
+                m_RoleColumn = value
+                If Not String.IsNullOrEmpty(m_RoleColumn) Then m_RoleColumn = m_RoleColumn.Trim()
             End Set
         End Property
 
@@ -182,13 +185,13 @@ Namespace Model.Profiles.Base
         ''' <param name="permissionType">the type of role or group (View, Add, Edit, Delete)</param>
         ''' <param name="dataColumnName">Name of the column containg the data... will be different for roles and groups.</param>
         ''' <remarks></remarks>
-        Private Sub setRoleOrGroup(ByRef refCollection As Collection(Of String), ByVal roleOrGroups() As DataRow, ByVal permissionType As PermissionType, ByVal dataColumnName As String)
+        Private Sub setRoleOrGroup(ByVal refCollection As Collection(Of String), ByVal roleOrGroups() As DataRow, ByVal permissionType As PermissionType, ByVal dataColumnName As String)
             refCollection = New Collection(Of String)
             Dim row As DataRow
             For Each row In roleOrGroups
                 If Not IsDBNull(row(m_PermissionColumn)) Then
                     If (Not IsDBNull(row(dataColumnName))) Then
-                        If Integer.Parse(row(m_PermissionColumn).ToString()) = CType(permissionType, Integer) Then
+                        If Integer.Parse(row(m_PermissionColumn).ToString(), CultureInfo.InvariantCulture) = CType(permissionType, Integer) Then
                             refCollection.Add(row(dataColumnName).ToString())
                         End If
                     End If
@@ -197,85 +200,85 @@ Namespace Model.Profiles.Base
         End Sub
 
         ''' <summary>
-        ''' Will set the collection of roles given a comma seporated string of roles.
+        ''' Will set the collection of roles given a comma separated string of roles.
         ''' </summary>
-        ''' <param name="CommaSeporatedRoles">String of comma seporated roles</param>
-        Public Sub SetAssignedRoles(ByVal commaSeporatedRoles As String, ByVal permission As PermissionType)
+        ''' <param name="CommaSeparatedRoles">String of comma separated roles</param>
+        Public Sub SetAssignedRoles(ByVal commaSeparatedRoles As String, ByVal permission As PermissionType)
             Select Case permission
                 Case PermissionType.Add
-                    setRolesOrGroups(m_AssignedAddRoles, commaSeporatedRoles)
+                    setRolesOrGroups(m_AssignedAddRoles, commaSeparatedRoles)
                 Case PermissionType.Delete
-                    setRolesOrGroups(m_AssignedDeleteRoles, commaSeporatedRoles)
+                    setRolesOrGroups(m_AssignedDeleteRoles, commaSeparatedRoles)
                 Case PermissionType.Edit
-                    setRolesOrGroups(m_AssignedEditRoles, commaSeporatedRoles)
+                    setRolesOrGroups(m_AssignedEditRoles, commaSeparatedRoles)
                 Case PermissionType.View
-                    setRolesOrGroups(m_AssignedViewRoles, commaSeporatedRoles)
+                    setRolesOrGroups(m_AssignedViewRoles, commaSeparatedRoles)
                 Case Else
             End Select
         End Sub
 
         ''' <summary>
-        ''' Will set the collection of groups given a comma seporated string of groups.
+        ''' Will set the collection of groups given a comma separated string of groups.
         ''' </summary>
-        ''' <param name="CommaSeporatedGroups">String of comma seporated groups</param>
-        Public Sub SetGroups(ByVal commaSeporatedGroups As String, ByVal permission As PermissionType)
+        ''' <param name="CommaSeparatedGroups">String of comma separated groups</param>
+        Public Sub SetGroups(ByVal commaSeparatedGroups As String, ByVal permission As PermissionType)
             Select Case permission
                 Case PermissionType.Add
-                    setRolesOrGroups(m_AddGroups, commaSeporatedGroups)
+                    setRolesOrGroups(m_AddGroups, commaSeparatedGroups)
                 Case PermissionType.Delete
-                    setRolesOrGroups(m_DeleteGroups, commaSeporatedGroups)
+                    setRolesOrGroups(m_DeleteGroups, commaSeparatedGroups)
                 Case PermissionType.Edit
-                    setRolesOrGroups(m_EditGroups, commaSeporatedGroups)
+                    setRolesOrGroups(m_EditGroups, commaSeparatedGroups)
                 Case PermissionType.View
-                    setRolesOrGroups(m_ViewGroups, commaSeporatedGroups)
+                    setRolesOrGroups(m_ViewGroups, commaSeparatedGroups)
                 Case Else
                     'Do nothing
             End Select
         End Sub
 
         ''' <summary>
-        ''' Converts the collection of AssignedRoles to a comma seporated string.
+        ''' Converts the collection of AssignedRoles to a comma separated string.
         ''' </summary>
         ''' <returns>String</returns>
-        Public Function GetCommaSeporatedAssingedRoles(ByVal permission As PermissionType) As String
+        Public Function GetCommaSeparatedAssignedRoles(ByVal permission As PermissionType) As String
             Select Case permission
                 Case PermissionType.Add
-                    Return Me.getCommaSeportatedString(m_AssignedAddRoles)
+                    Return getCommaSeportatedString(m_AssignedAddRoles)
                 Case PermissionType.Delete
-                    Return Me.getCommaSeportatedString(m_AssignedDeleteRoles)
+                    Return getCommaSeportatedString(m_AssignedDeleteRoles)
                 Case PermissionType.Edit
-                    Return Me.getCommaSeportatedString(m_AssignedEditRoles)
+                    Return getCommaSeportatedString(m_AssignedEditRoles)
                 Case PermissionType.View
-                    Return Me.getCommaSeportatedString(m_AssignedViewRoles)
+                    Return getCommaSeportatedString(m_AssignedViewRoles)
                 Case Else
-                    Return Me.getCommaSeportatedString(m_AssignedViewRoles)
+                    Return getCommaSeportatedString(m_AssignedViewRoles)
             End Select
         End Function
 
         ''' <summary>
-        ''' Converts the collection of AssignedGroups to a comma seporated string.
+        ''' Converts the collection of AssignedGroups to a comma separated string.
         ''' </summary>
         ''' <returns>String</returns>
-        Public Function GetCommaSeporatedGroups(ByVal permission As PermissionType) As String
+        Public Function GetCommaSeparatedGroups(ByVal permission As PermissionType) As String
             Select Case permission
                 Case PermissionType.Add
-                    Return Me.getCommaSeportatedString(m_AddGroups)
+                    Return getCommaSeportatedString(m_AddGroups)
                 Case PermissionType.Delete
-                    Return Me.getCommaSeportatedString(m_DeleteGroups)
+                    Return getCommaSeportatedString(m_DeleteGroups)
                 Case PermissionType.Edit
-                    Return Me.getCommaSeportatedString(m_EditGroups)
+                    Return getCommaSeportatedString(m_EditGroups)
                 Case PermissionType.View
-                    Return Me.getCommaSeportatedString(m_ViewGroups)
+                    Return getCommaSeportatedString(m_ViewGroups)
                 Case Else
-                    Return Me.getCommaSeportatedString(m_ViewGroups)
+                    Return getCommaSeportatedString(m_ViewGroups)
             End Select
         End Function
 
         ' ''' <summary>
-        ' ''' Converts the collection of DerivedRoles to a comma seporated string.
+        ' ''' Converts the collection of DerivedRoles to a comma separated string.
         ' ''' </summary>
         ' ''' <returns>String</returns>
-        'Public Function GetCommaSeporatedDerivedRoles() As String
+        'Public Function GetCommaSeparatedDerivedRoles() As String
         '	Return Me.getCommaSeportatedString(m_DerivedRoles)
         'End Function
 
@@ -285,32 +288,16 @@ Namespace Model.Profiles.Base
         ''' Sets the assigned roles or groups.
         ''' </summary>
         ''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
-        ''' <param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
-        ''' <param name="ColumnName">The column name to retrieve the data from</param>
-        Private Sub setRolesOrGroups(ByRef stringCollectionObject As Collection(Of String), ByVal groupsOrRoles As DataRowCollection, ByVal columnName As String, ByVal permission As PermissionType)
-            For Each mRow In groupsOrRoles
-                If Not IsDBNull(mRow(columnName)) Then
-                    If Integer.Parse(mRow(m_PermissionColumn).ToString()) = permission Then
-                        stringCollectionObject.Add(mRow(columnName).ToString())
-                    End If
-                End If
-            Next
-        End Sub
-
-        ''' <summary>
-        ''' Sets the assigned roles or groups.
-        ''' </summary>
-        ''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
-        ''' <param name="CommaSeporatedString">A comma seporated list of roles or groups 'you, me' as an example</param>
-        Private Sub setRolesOrGroups(ByRef stringCollectionObject As Collection(Of String), ByRef commaSeporatedString As String)
-            Dim mRoles() As String = commaSeporatedString.Split(",")
+        ''' <param name="CommaSeparatedString">A comma separated list of roles or groups 'you, me' as an example</param>
+        Private Shared Sub setRolesOrGroups(ByRef stringCollectionObject As Collection(Of String), ByVal commaSeparatedString As String)
+            Dim mRoles() As String = commaSeparatedString.Split(",")
             stringCollectionObject = New Collection(Of String)
             For Each mRole In mRoles
                 stringCollectionObject.Add(mRole.ToString())
             Next
         End Sub
 
-        Private Function getCommaSeportatedString(ByVal collectionOfStrings As Collection(Of String)) As String
+        Private Shared Function getCommaSeportatedString(ByRef collectionOfStrings As Collection(Of String)) As String
             Dim mRetValue As String = String.Empty
             If Not collectionOfStrings Is Nothing Then
                 If collectionOfStrings.Count > 0 Then
