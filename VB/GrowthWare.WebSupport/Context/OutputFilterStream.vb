@@ -7,6 +7,8 @@ Namespace Context
     Public Class OutputFilterStream
         Inherits Stream
 
+
+        Private m_SyncLockObj = New Object
         ''' <summary>
         ''' The inner stream
         ''' </summary>
@@ -31,7 +33,7 @@ Namespace Context
         ''' </summary>
         ''' <returns>System.String.</returns>
         Public Function ReadStream() As String
-            SyncLock Me.InnerStream
+            SyncLock Me.m_SyncLockObj
                 If Me.CopyStream.Length <= 0L OrElse Not Me.CopyStream.CanRead OrElse Not Me.CopyStream.CanSeek Then
                     Return [String].Empty
                 End If

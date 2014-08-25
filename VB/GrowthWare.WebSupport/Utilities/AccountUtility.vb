@@ -68,9 +68,10 @@ Namespace Utilities
                     Dim domainAndUsername As String = ConfigSettings.LdapDomain + "\" + account
                     If mDomainPassed Then domainAndUsername = account
                     domainAndUsername = domainAndUsername.Trim
-                    Dim entry As DirectoryEntry = New DirectoryEntry(ConfigSettings.LdapServer, domainAndUsername, password)
+                    Dim entry As DirectoryEntry = Nothing
                     Dim obj As New Object
                     Try
+                        entry = New DirectoryEntry(ConfigSettings.LdapServer, domainAndUsername, password)
                         'Bind to the native AdsObject to force authentication
                         'if this does not work it will throw an exception.
                         obj = entry.NativeObject
