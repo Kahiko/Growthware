@@ -26,7 +26,7 @@ namespace GrowthWare.WebSupport.Context
         private OutputFilterStream m_Filter;
         public void Init(HttpApplication context)
         {
-            if (context != null && ConfigSettings.DBStatus.ToUpper(new CultureInfo("en-US", false)) != "INSTALL")
+            if (context != null && ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != "INSTALL")
             {
                 ClientChoicesHttpModule mInitClientChoices = new ClientChoicesHttpModule();
                 mInitClientChoices.Init(context);
@@ -63,7 +63,7 @@ namespace GrowthWare.WebSupport.Context
             }
             else
             {
-                if (HttpContext.Current.Application["StartLogInfo"].ToString().ToLower(new CultureInfo("en-US", false)) == "false")
+                if (HttpContext.Current.Application["StartLogInfo"].ToString().ToLower(CultureInfo.InvariantCulture) == "false")
                 {
                     mStartLogInfo = false;
                 }
@@ -80,7 +80,7 @@ namespace GrowthWare.WebSupport.Context
             }
             else
             {
-                if (HttpContext.Current.Application["ClearedCache"].ToString().ToLower(new CultureInfo("en-US", false)) == "false")
+                if (HttpContext.Current.Application["ClearedCache"].ToString().ToLower(CultureInfo.InvariantCulture) == "false")
                 {
                     mClearedCache = false;
                 }
@@ -96,7 +96,7 @@ namespace GrowthWare.WebSupport.Context
                 mLog.SetThreshold(LogPriority.Info);
                 mLog.Info("Starting Core Web Administration Version: " + GWWebHelper.CoreWebAdministrationVersion);
                 mLog.Info("Framework Version: " + GWWebHelper.FrameworkVersion);
-                string mCurrentLevel = ConfigSettings.LogPriority.ToUpper(new CultureInfo("en-US", false));
+                string mCurrentLevel = ConfigSettings.LogPriority.ToUpper(CultureInfo.InvariantCulture);
                 mLog.SetThreshold(mLog.GetLogPriorityFromText(mCurrentLevel));
             }
         }
@@ -212,7 +212,7 @@ namespace GrowthWare.WebSupport.Context
             bool mRetVal = false;
             if (HttpContext.Current != null) 
             {
-                string mPath = HttpContext.Current.Request.Path.ToUpper(new CultureInfo("en-US", false));
+                string mPath = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture);
                 string mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1);
                 string[] mProcessingTypes = { "ASPX", "ASHX", "ASMX" };
                 if (mProcessingTypes.Contains(mFileExtension) || mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1) 

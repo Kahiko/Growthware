@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Globalization;
 
 namespace GrowthWare.Framework.Model.Profiles.Base
 {
@@ -46,11 +47,11 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         private string m_GroupColumn = "Group";
 
         /// <summary>
-        /// Retruns a comma seporated string given a Collection strings
+        /// Retruns a comma separated string given a Collection strings
         /// </summary>
         /// <param name="collectionOfStrings">Collecion</param>
         /// <returns>comma seportated string.</returns>
-        private string getCommaSeportatedString(Collection<string> collectionOfStrings)
+        private static string getCommaSeportatedString(Collection<string> collectionOfStrings)
         {
             String mRetValue = String.Empty;
             if (collectionOfStrings != null)
@@ -77,26 +78,26 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <param name="derivedRoles">The derived roles.</param>
         /// <param name="assignedRoles">The assigned roles.</param>
         /// <param name="groups">The groups.</param>
-        virtual protected void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
+        internal virtual void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
             base.Initialize(profileDataRow);
-            this.setRolesOrGroups(m_DerivedAddRoles, derivedRoles, PermissionType.Add, m_RoleColumn);
-            this.setRolesOrGroups(m_DerivedDeleteRoles, derivedRoles, PermissionType.Delete, m_RoleColumn);
-            this.setRolesOrGroups(m_DerivedEditRoles, derivedRoles, PermissionType.Edit, m_RoleColumn);
-            this.setRolesOrGroups(m_DerivedViewRoles, derivedRoles, PermissionType.View, m_RoleColumn);
+            setRolesOrGroups(ref m_DerivedAddRoles, derivedRoles, PermissionType.Add, m_RoleColumn);
+            setRolesOrGroups(ref m_DerivedDeleteRoles, derivedRoles, PermissionType.Delete, m_RoleColumn);
+            setRolesOrGroups(ref m_DerivedEditRoles, derivedRoles, PermissionType.Edit, m_RoleColumn);
+            setRolesOrGroups(ref m_DerivedViewRoles, derivedRoles, PermissionType.View, m_RoleColumn);
             if (assignedRoles != null)
             {
-                this.setRolesOrGroups(m_AssignedAddRoles, assignedRoles, PermissionType.Add, m_RoleColumn);
-                this.setRolesOrGroups(m_AssignedDeleteRoles, assignedRoles, PermissionType.Delete, m_RoleColumn);
-                this.setRolesOrGroups(m_AssignedEditRoles, assignedRoles, PermissionType.Edit, m_RoleColumn);
-                this.setRolesOrGroups(m_AssignedViewRoles, assignedRoles, PermissionType.View, m_RoleColumn);
+                setRolesOrGroups(ref m_AssignedAddRoles, assignedRoles, PermissionType.Add, m_RoleColumn);
+                setRolesOrGroups(ref m_AssignedDeleteRoles, assignedRoles, PermissionType.Delete, m_RoleColumn);
+                setRolesOrGroups(ref m_AssignedEditRoles, assignedRoles, PermissionType.Edit, m_RoleColumn);
+                setRolesOrGroups(ref m_AssignedViewRoles, assignedRoles, PermissionType.View, m_RoleColumn);
             }
             if (groups != null)
             {
-                this.setRolesOrGroups(m_AddGroups, groups, PermissionType.Add, m_GroupColumn);
-                this.setRolesOrGroups(m_DeleteGroups, groups, PermissionType.Delete, m_GroupColumn);
-                this.setRolesOrGroups(m_EditGroups, groups, PermissionType.Edit, m_GroupColumn);
-                this.setRolesOrGroups(m_ViewGroups, groups, PermissionType.View, m_GroupColumn);
+                setRolesOrGroups(ref m_AddGroups, groups, PermissionType.Add, m_GroupColumn);
+                setRolesOrGroups(ref m_DeleteGroups, groups, PermissionType.Delete, m_GroupColumn);
+                setRolesOrGroups(ref m_EditGroups, groups, PermissionType.Edit, m_GroupColumn);
+                setRolesOrGroups(ref m_ViewGroups, groups, PermissionType.View, m_GroupColumn);
             }
 
         }
@@ -104,7 +105,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return assigned roles associated with the "Add" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.AssignedAddRoles
+        public Collection<string> AssignedAddRoles
         {
             get { return m_AssignedAddRoles; }
         }
@@ -112,7 +113,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return roles associated with the "Add" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.DerivedAddRoles
+        public Collection<string> DerivedAddRoles
         {
             get { return m_DerivedAddRoles; }
         }
@@ -120,7 +121,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return assigned roles associated with the "Delete" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.AssignedDeleteRoles
+        public Collection<string> AssignedDeleteRoles
         {
             get { return m_AssignedDeleteRoles; }
         }
@@ -128,7 +129,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return roles associated with the "Delete" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.DerivedDeleteRoles
+        public Collection<string> DerivedDeleteRoles
         {
             get { return m_DerivedDeleteRoles; }
         }
@@ -136,7 +137,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return roles associated with the "Edit" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.AssignedEditRoles
+        public Collection<string> AssignedEditRoles
         {
             get { return m_AssignedEditRoles; }
         }
@@ -144,7 +145,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return roles associated with the "Edit" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.DerivedEditRoles
+        public Collection<string> DerivedEditRoles
         {
             get { return m_DerivedEditRoles; }
         }
@@ -152,7 +153,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return assigned roles associated with the "View" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.AssignedViewRoles
+        public Collection<string> AssignedViewRoles
         {
             get { return m_AssignedViewRoles; }
         }
@@ -160,7 +161,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return roles associated with the "View" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.DerivedViewRoles
+        public Collection<string> DerivedViewRoles
         {
             get { return m_DerivedViewRoles; }
         }
@@ -168,7 +169,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return groups associated with the "Add" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.AddGroups
+        public Collection<string> AddGroups
         {
             get { return m_AddGroups; }
         }
@@ -176,7 +177,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return groups associated with the "Delete" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.DeleteGroups
+        public Collection<string> DeleteGroups
         {
             get { return m_DeleteGroups; }
         }
@@ -184,7 +185,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return groups associated with the "Edit" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.EditGroups
+        public Collection<string> EditGroups
         {
             get { return m_EditGroups; }
         }
@@ -192,48 +193,48 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Return groups associated with the "View" permission.
         /// </summary>
-        Collection<string> IMGroupRolePermissionSecurity.ViewGroups
+        public Collection<string> ViewGroups
         {
             get { return m_ViewGroups; }
         }
 
         /// <summary>
-        /// Converts the collection of AssignedGroups to a comma seporated string.
+        /// Converts the collection of AssignedGroups to a comma separated string.
         /// </summary>
         /// <returns>String</returns>
-        public string GetCommaSeporatedGroups(PermissionType permission)
+        public string GetCommaSeparatedGroups(PermissionType permission)
         {
             switch (permission)
             {
                 case PermissionType.Add:
-                    return this.getCommaSeportatedString(m_AddGroups);
+                    return getCommaSeportatedString(m_AddGroups);
                 case PermissionType.Delete:
-                    return this.getCommaSeportatedString(m_DeleteGroups);
+                    return getCommaSeportatedString(m_DeleteGroups);
                 case PermissionType.Edit:
-                    return this.getCommaSeportatedString(m_EditGroups);
+                    return getCommaSeportatedString(m_EditGroups);
                 case PermissionType.View:
-                    return this.getCommaSeportatedString(m_ViewGroups);
+                    return getCommaSeportatedString(m_ViewGroups);
                 default:
                     return null;
             }
         }
 
         /// <summary>
-        /// Converts the collection of AssignedGroups to a comma seporated string.
+        /// Converts the collection of AssignedGroups to a comma separated string.
         /// </summary>
         /// <returns>String</returns>
-        public string GetCommaSeporatedAssingedRoles(PermissionType permission)
+        public string GetCommaSeparatedAssignedRoles(PermissionType permission)
         {
             switch (permission)
             {
                 case PermissionType.Add:
-                    return this.getCommaSeportatedString(m_AssignedAddRoles);
+                    return getCommaSeportatedString(m_AssignedAddRoles);
                 case PermissionType.Delete:
-                    return this.getCommaSeportatedString(m_AssignedDeleteRoles);
+                    return getCommaSeportatedString(m_AssignedDeleteRoles);
                 case PermissionType.Edit:
-                    return this.getCommaSeportatedString(m_AssignedEditRoles);
+                    return getCommaSeportatedString(m_AssignedEditRoles);
                 case PermissionType.View:
-                    return this.getCommaSeportatedString(m_AssignedViewRoles);
+                    return getCommaSeportatedString(m_AssignedViewRoles);
                 default:
                     return null;
             }
@@ -245,7 +246,11 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         public string PermissionColumn
         {
             get { return m_PermissionColumn; }
-            set { m_PermissionColumn = value.Trim(); }
+            set 
+            { 
+                m_PermissionColumn = value;
+                if (!String.IsNullOrEmpty(m_PermissionColumn)) m_PermissionColumn = m_PermissionColumn.Trim();
+            }
         }
 
         /// <summary>
@@ -254,29 +259,33 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         public string RoleColumn
         {
             get { return m_RoleColumn; }
-            set { m_RoleColumn = value.Trim(); }
+            set 
+            { 
+                m_RoleColumn = value;
+                if (!String.IsNullOrEmpty(m_RoleColumn)) m_RoleColumn = m_RoleColumn.Trim();
+            }
         }
 
         /// <summary>
         /// Sets the groups.
         /// </summary>
-        /// <param name="commaSeporatedGroups">The comma seporated groups.</param>
+        /// <param name="commaSeparatedGroups">The comma separated groups.</param>
         /// <param name="permission">The permission.</param>
-        public void SetGroups(string commaSeporatedGroups, PermissionType permission)
+        public void SetGroups(string commaSeparatedGroups, PermissionType permission)
         {
             switch (permission)
             {
                 case PermissionType.Add:
-                    this.setRolesOrGroups(m_AddGroups, commaSeporatedGroups);
+                    setRolesOrGroups(ref m_AddGroups, commaSeparatedGroups);
                     break;
                 case PermissionType.Delete:
-                    this.setRolesOrGroups(m_DeleteGroups, commaSeporatedGroups);
+                    setRolesOrGroups(ref m_DeleteGroups, commaSeparatedGroups);
                     break;
                 case PermissionType.Edit:
-                    this.setRolesOrGroups(m_EditGroups, commaSeporatedGroups);
+                    setRolesOrGroups(ref m_EditGroups, commaSeparatedGroups);
                     break;
                 case PermissionType.View:
-                    this.setRolesOrGroups(m_ViewGroups, commaSeporatedGroups);
+                    setRolesOrGroups(ref m_ViewGroups, commaSeparatedGroups);
                     break;
                 default:
                     break;
@@ -286,23 +295,23 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <summary>
         /// Sets the assigned roles.
         /// </summary>
-        /// <param name="commaSeporatedRoles">The comma seporated roles.</param>
+        /// <param name="commaSeparatedRoles">The comma separated roles.</param>
         /// <param name="permission">The permission.</param>
-        public void SetAssignedRoles(string commaSeporatedRoles, PermissionType permission)
+        public void SetAssignedRoles(string commaSeparatedRoles, PermissionType permission)
         {
             switch (permission)
             {
                 case PermissionType.Add:
-                    this.setRolesOrGroups(m_AssignedAddRoles, commaSeporatedRoles);
+                    setRolesOrGroups(ref m_AssignedAddRoles, commaSeparatedRoles);
                     break;
                 case PermissionType.Delete:
-                    this.setRolesOrGroups(m_AssignedDeleteRoles, commaSeporatedRoles);
+                    setRolesOrGroups(ref m_AssignedDeleteRoles, commaSeparatedRoles);
                     break;
                 case PermissionType.Edit:
-                    this.setRolesOrGroups(m_AssignedEditRoles, commaSeporatedRoles);
+                    setRolesOrGroups(ref m_AssignedEditRoles, commaSeparatedRoles);
                     break;
                 case PermissionType.View:
-                    this.setRolesOrGroups(m_AssignedViewRoles, commaSeporatedRoles);
+                    setRolesOrGroups(ref m_AssignedViewRoles, commaSeparatedRoles);
                     break;
                 default:
                     break;
@@ -317,16 +326,16 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <param name="permissionType">the type of role or group (View, Add, Edit, Delete)</param>
         /// <param name="dataColumnName">Name of the column containg the data... will be different for roles and groups.</param>
         /// <remarks></remarks>
-        private void setRolesOrGroups(Collection<String> refCollection, DataRow[] roleOrGroups, PermissionType permissionType, String dataColumnName)
+        private void setRolesOrGroups(ref Collection<String> refCollection, DataRow[] roleOrGroups, PermissionType permissionType, String dataColumnName)
         {
             refCollection = new Collection<String>();
             foreach (DataRow row in roleOrGroups)
             {
-                if (!Convert.IsDBNull(row[m_PermissionColumn]))
+                if (!Convert.IsDBNull(row[this.m_PermissionColumn]))
                 {
                     if (!Convert.IsDBNull(row[dataColumnName]))
                     {
-                        if (int.Parse(row[m_PermissionColumn].ToString()) == (int)permissionType)
+                        if (int.Parse(row[m_PermissionColumn].ToString(), CultureInfo.InvariantCulture) == (int)permissionType)
                         {
                             refCollection.Add(row[dataColumnName].ToString());
                         }
@@ -339,25 +348,16 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// Sets the roles or groups.
         /// </summary>
         /// <param name="stringCollectionObject">The string collection object.</param>
-        /// <param name="commaSeporatedString">The comma seporated string.</param>
-        private void setRolesOrGroups(Collection<String> stringCollectionObject, string commaSeporatedString)
+        /// <param name="commaSeparatedString">The comma separated string.</param>
+        private static void setRolesOrGroups(ref Collection<String> stringCollectionObject, string commaSeparatedString)
         {
-            string[] mRoles = commaSeporatedString.Split(',');
+            string[] mRoles = commaSeparatedString.Split(',');
             stringCollectionObject = new Collection<string>();
             foreach (object mRole in mRoles)
             {
                 stringCollectionObject.Add(mRole.ToString());
             }
 
-        }
-
-        /// <summary>
-        /// Populates all permissions.
-        /// </summary>
-        /// <param name="SecurityRows">DataRowCollection containing all derived roles for all permissions</param>
-        protected void PopulatePermissions(DataRowCollection SecurityRows)
-        {
-            throw new NotImplementedException();
         }
     }
 }

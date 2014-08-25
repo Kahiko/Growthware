@@ -36,14 +36,14 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <summary>
         /// Will return a fully populated Function profile.
         /// </summary>
-        /// <param name="profileDatarow">A data row containing the Function information</param>
+        /// <param name="profileDataRow">A data row containing the Function information</param>
         /// <param name="derivedRoles">A data row containing all of the derived roles</param>
         /// <param name="assignedRoles">A data row containing all of the assigned roles</param>
         /// <param name="groups">A data row containing all of the assigned groups</param>
         /// <remarks></remarks>
-        public MFunctionProfile(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
+        public MFunctionProfile(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            this.Initialize(profileDatarow, derivedRoles, assignedRoles, groups);
+            this.Initialize(profileDataRow, derivedRoles, assignedRoles, groups);
         }
 
         #endregion
@@ -57,7 +57,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="derivedRoles">The derived roles.</param>
         /// <param name="assignedRoles">The assigned roles.</param>
         /// <param name="groups">The groups.</param>
-        private new void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
+        internal new void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
             base.NameColumnName = "ACTION";
             base.IdColumnName = "FUNCTION_SEQ_ID";
@@ -79,6 +79,7 @@ namespace GrowthWare.Framework.Model.Profiles
             // the names can repeate but the action is unique and lower case.
             base.Name = Action.ToString();
             MetaKeywords = base.GetString(profileDataRow, "META_KEY_WORDS");
+            base.Initialize(profileDataRow, derivedRoles, assignedRoles, groups);
         }
         #endregion
 

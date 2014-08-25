@@ -376,7 +376,7 @@ namespace GrowthWare.Framework.Common
         private static log4net.Priority convertPriorityTextToPriority(string priority)
         {
             log4net.Priority retPriority = null;
-            switch (priority.ToUpper(new CultureInfo("en-US", false)))
+            switch (priority.ToUpper(CultureInfo.InvariantCulture))
             {
                 case "DEBUG":
                     retPriority = log4net.Priority.DEBUG;
@@ -411,7 +411,7 @@ namespace GrowthWare.Framework.Common
             LogPriority mRetVal = LogPriority.Error;
             if (!String.IsNullOrEmpty(priority)) 
             {
-                switch (priority.ToUpper(new CultureInfo("en-US", false)))
+                switch (priority.ToUpper(CultureInfo.InvariantCulture))
                 {
                     case "DEBUG":
                         mRetVal = LogPriority.Debug;

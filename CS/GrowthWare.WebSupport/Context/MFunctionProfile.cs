@@ -57,28 +57,26 @@ namespace GrowthWare.WebSupport.Context
         /// <param name="derivedRoles">The derived roles.</param>
         /// <param name="assignedRoles">The assigned roles.</param>
         /// <param name="groups">The groups.</param>
-        private new void Initialize(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
+        internal new void Initialize(DataRow profileDatarow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            base.Id = base.GetInt(profileDatarow, "FUNCTION_SEQ_ID");
-            m_Function_Type_Seq_ID = base.GetInt(profileDatarow, "FUNCTION_TYPE_SEQ_ID");
-            Name = base.GetString(profileDatarow, "NAME");
+            base.IdColumnName = "FUNCTION_SEQ_ID";
+            base.NameColumnName = "NAME";
+            base.Initialize(profileDatarow, derivedRoles, assignedRoles, groups);
+            Action = base.GetString(profileDatarow, "ACTION");
             Description = base.GetString(profileDatarow, "DESCRIPTION");
-            Notes = base.GetString(profileDatarow, "NOTES");
-            Source = base.GetString(profileDatarow, "SOURCE");
-            EnableViewState = base.GetBool(profileDatarow, "ENABLE_VIEW_STATE");
             EnableNotifications = base.GetBool(profileDatarow, "ENABLE_NOTIFICATIONS");
-            RedirectOnTimeout = base.GetBool(profileDatarow, "REDIRECT_ON_TIMEOUT");
+            EnableViewState = base.GetBool(profileDatarow, "ENABLE_VIEW_STATE");
             IsNav = base.GetBool(profileDatarow, "IS_NAV");
             LinkBehavior = base.GetInt(profileDatarow, "Link_Behavior");
+            MetaKeyWords = base.GetString(profileDatarow, "META_KEY_WORDS");
+            Name = base.GetString(profileDatarow, "NAME");
+            Notes = base.GetString(profileDatarow, "NOTES");
             NoUI = base.GetBool(profileDatarow, "No_UI");
+            RedirectOnTimeout = base.GetBool(profileDatarow, "REDIRECT_ON_TIMEOUT");
+            Source = base.GetString(profileDatarow, "SOURCE");
+            m_Function_Type_Seq_ID = base.Id;
             m_Nav_Type_Seq_ID = base.GetInt(profileDatarow, "NAVIGATION_NVP_SEQ_DET_ID");
             m_ParentmFunction_Seq_ID = base.GetInt(profileDatarow, "PARENT_Function_Seq_ID");
-            Action = base.GetString(profileDatarow, "ACTION");
-            // need to set the the base class name with the action.
-            // the names can repeate but the action is unique and lower case.
-            base.Name = Action.ToString();
-            MetaKeyWords = base.GetString(profileDatarow, "META_KEY_WORDS");
-            base.Initialize(profileDatarow, derivedRoles, assignedRoles, groups);
         }
         #endregion
 

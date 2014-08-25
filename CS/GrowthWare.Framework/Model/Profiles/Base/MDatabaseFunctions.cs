@@ -24,7 +24,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
             bool mRetVal = false;
             if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
             {
-                if (dataRow[columnName].ToString() == "1" || dataRow[columnName].ToString().ToUpper(new CultureInfo("en-US", false)) == "TRUE")
+                if (dataRow[columnName].ToString() == "1" || dataRow[columnName].ToString().ToUpper(CultureInfo.InvariantCulture) == "TRUE")
                 {
                     mRetVal = true;
                 }
@@ -64,7 +64,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
             int mRetVal = -1;
             if (dataRow != null && dataRow.Table.Columns.Contains(columnName) && !(Convert.IsDBNull(dataRow[columnName])))
             {
-                mRetVal = int.Parse(dataRow[columnName].ToString(), new CultureInfo("en-US", false));
+                mRetVal = int.Parse(dataRow[columnName].ToString(), CultureInfo.InvariantCulture);
             }
             return mRetVal;
         }

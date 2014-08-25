@@ -217,7 +217,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
             DataTable mRetVal = null;
-            if (account.ToUpper(new CultureInfo("en-US", false)) == "ANONYMOUS")
+            if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
             {
                 String mAnonMenu = menuType.ToString() + "Anonymous";
                 mRetVal = (DataTable)HttpContext.Current.Cache[mAnonMenu];

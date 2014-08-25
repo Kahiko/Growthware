@@ -21,7 +21,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Initializes all of the properties given a data row.
         /// </summary>
         /// <param name="dataRow">DataRow</param>
-        protected override void Initialize(DataRow dataRow)
+        internal override void Initialize(DataRow dataRow)
         {
             base.Initialize(dataRow);
             base.Id = base.GetInt(dataRow, "SE_SEQ_ID");
