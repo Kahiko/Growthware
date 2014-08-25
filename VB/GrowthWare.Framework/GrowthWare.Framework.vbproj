@@ -81,6 +81,7 @@
     <Compile Include="Model\Enumerations\MenuType.vb" />
     <Compile Include="Model\Enumerations\PermissionType.vb" />
     <Compile Include="Model\Enumerations\RoleType.vb" />
+    <Compile Include="Model\Enumerations\SystemStatus.vb" />
     <Compile Include="Model\Profiles\Base\MGroupRolePermissionSecurity.vb" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRolePermissionSecurity.vb" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRoleSecurity.vb" />
