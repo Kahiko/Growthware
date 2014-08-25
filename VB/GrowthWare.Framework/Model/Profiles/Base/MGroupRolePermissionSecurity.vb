@@ -178,28 +178,6 @@ Namespace Model.Profiles.Base
         End Property
 
         ''' <summary>
-        ''' Populates the given permissions roles.
-        ''' </summary>
-        ''' <param name="refCollection">reference to the role or group colletion</param>
-        ''' <param name="roleOrGroups">An array of rows for the role or group</param>
-        ''' <param name="permissionType">the type of role or group (View, Add, Edit, Delete)</param>
-        ''' <param name="dataColumnName">Name of the column containg the data... will be different for roles and groups.</param>
-        ''' <remarks></remarks>
-        Private Sub setRoleOrGroup(ByVal refCollection As Collection(Of String), ByVal roleOrGroups() As DataRow, ByVal permissionType As PermissionType, ByVal dataColumnName As String)
-            refCollection = New Collection(Of String)
-            Dim row As DataRow
-            For Each row In roleOrGroups
-                If Not IsDBNull(row(m_PermissionColumn)) Then
-                    If (Not IsDBNull(row(dataColumnName))) Then
-                        If Integer.Parse(row(m_PermissionColumn).ToString(), CultureInfo.InvariantCulture) = CType(permissionType, Integer) Then
-                            refCollection.Add(row(dataColumnName).ToString())
-                        End If
-                    End If
-                End If
-            Next row
-        End Sub
-
-        ''' <summary>
         ''' Will set the collection of roles given a comma separated string of roles.
         ''' </summary>
         ''' <param name="CommaSeparatedRoles">String of comma separated roles</param>
@@ -284,6 +262,28 @@ Namespace Model.Profiles.Base
 
 
 #Region "Private Methods"
+        ''' <summary>
+        ''' Populates the given permissions roles.
+        ''' </summary>
+        ''' <param name="refCollection">reference to the role or group colletion</param>
+        ''' <param name="roleOrGroups">An array of rows for the role or group</param>
+        ''' <param name="permissionType">the type of role or group (View, Add, Edit, Delete)</param>
+        ''' <param name="dataColumnName">Name of the column containg the data... will be different for roles and groups.</param>
+        ''' <remarks></remarks>
+        Private Sub setRoleOrGroup(ByRef refCollection As Collection(Of String), ByVal roleOrGroups() As DataRow, ByVal permissionType As PermissionType, ByVal dataColumnName As String)
+            refCollection = New Collection(Of String)
+            Dim row As DataRow
+            For Each row In roleOrGroups
+                If Not IsDBNull(row(m_PermissionColumn)) Then
+                    If (Not IsDBNull(row(dataColumnName))) Then
+                        If Integer.Parse(row(m_PermissionColumn).ToString(), CultureInfo.InvariantCulture) = CType(permissionType, Integer) Then
+                            refCollection.Add(row(dataColumnName).ToString())
+                        End If
+                    End If
+                End If
+            Next row
+        End Sub
+
         ''' <summary>
         ''' Sets the assigned roles or groups.
         ''' </summary>
