@@ -13,7 +13,7 @@ Namespace Model.Profiles.Base
 
         Public Property AddedDate As Date Implements IMProfile.AddedDate
 
-        Public Property Id As Integer Implements IMProfile.Id
+        Public Property Id As Integer = -1 Implements IMProfile.Id
 
         Public Property IdColumnName As String Implements IMProfile.IdColumnName
 
@@ -39,7 +39,7 @@ Namespace Model.Profiles.Base
                 Me.Id = Me.GetInt(dataRow, Me.IdColumnName)
             End If
             If Not String.IsNullOrEmpty(Me.NameColumnName) Then
-                Me.Id = Me.GetString(dataRow, Me.NameColumnName)
+                Me.Name = Me.GetString(dataRow, Me.NameColumnName)
             End If
         End Sub
     End Class
