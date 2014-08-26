@@ -19,7 +19,7 @@ Namespace Model.Profiles
 
 #Region "Member Fields"
         Private m_NavigationTypeSeqId As Integer = 2
-        Private m_FunctionTypeSeqId As Integer = 1
+        Private m_FunctionTypeSeqId As Integer = -1
         'Private m_ALLOW_HTML_INPUT As Integer = 1
         'Private m_ALLOW_COMMENT_HTML_INPUT As Integer = 1
         Private m_ParentmFunctionSeqId As Integer = 1

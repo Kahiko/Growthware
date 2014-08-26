@@ -76,6 +76,7 @@
     <Compile Include="Common\ObjectFactory.vb" />
     <Compile Include="Common\ObjectFactoryException.vb" />
     <Compile Include="Common\SortTable.vb" />
+    <Compile Include="Model\Enumerations\DirectionType.vb" />
     <Compile Include="Model\Enumerations\EncryptionType.vb" />
     <Compile Include="Model\Enumerations\LogPrioritiy.vb" />
     <Compile Include="Model\Enumerations\MenuType.vb" />

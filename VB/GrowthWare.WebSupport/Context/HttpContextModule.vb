@@ -96,6 +96,8 @@ Namespace Context
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
+            Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Anonymous")
+            Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile("Generic_Home")
             mLog.Debug("onAcquireRequestState():: Done")
             Dim mEx As New WebSupportException("This is a test for logging")
             mLog.Debug(mEx)

@@ -89,6 +89,7 @@
     <Compile Include="Utilities\AccountUtility.vb" />
     <Compile Include="Utilities\ClientChoicesUtility.vb" />
     <Compile Include="Utilities\FileUtility.vb" />
+    <Compile Include="Utilities\FunctionUtility.vb" />
     <Compile Include="Utilities\SecurityEntityUtility.vb" />
     <Compile Include="WebImpersonate.vb" />
     <Compile Include="WebImpersonateException.vb" />
