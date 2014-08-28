@@ -52,15 +52,18 @@
   <ItemGroup>
     <Compile Include="BusinessLogicLayer\BAccounts.cs" />
     <Compile Include="BusinessLogicLayer\BClientChoices.cs" />
+    <Compile Include="BusinessLogicLayer\BFunctions.cs" />
     <Compile Include="BusinessLogicLayer\BSecurityEntity.cs" />
     <Compile Include="DataAccessLayer\DataAccessLayerException.cs" />
     <Compile Include="DataAccessLayer\Interfaces\Base\IDDBInteraction.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDAccount.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDClientChoices.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDFunctions.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDSecurityEntity.cs" />
     <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DAccounts.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DClientChoices.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DFunctions.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DSecurityEntity.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

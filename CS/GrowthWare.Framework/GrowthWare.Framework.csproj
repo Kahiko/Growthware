@@ -59,6 +59,7 @@
     <Compile Include="Common\ObjectFactory.cs" />
     <Compile Include="Common\ObjectFactoryException.cs" />
     <Compile Include="Common\SortTable.cs" />
+    <Compile Include="Model\Enumerations\DirectionType.cs" />
     <Compile Include="Model\Enumerations\EncryptionType.cs" />
     <Compile Include="Model\Enumerations\LogPriority.cs" />
     <Compile Include="Model\Enumerations\MenuType.cs" />

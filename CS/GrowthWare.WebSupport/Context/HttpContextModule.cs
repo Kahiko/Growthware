@@ -121,6 +121,8 @@ namespace GrowthWare.WebSupport.Context
         {
             if (HttpContext.Current.Session == null) return;
             Logger mLog = Logger.Instance();
+            MAccountProfile mAccountProfile = AccountUtility.GetProfile("Anonymous");
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("Generic_Home");
             mLog.Debug("onAcquireRequestState():: Started");
             mLog.Debug("onAcquireRequestState():: Done");
         }
