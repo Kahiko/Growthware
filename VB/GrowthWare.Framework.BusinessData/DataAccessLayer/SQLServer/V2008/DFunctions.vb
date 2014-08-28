@@ -1,8 +1,12 @@
-﻿Imports System.Data.SqlClient
-Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
+﻿Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
 Imports GrowthWare.Framework.Model.Enumerations
+Imports GrowthWare.Framework.Model.Profiles
+Imports System
+Imports System.Data
+Imports System.Data.SqlClient
+Imports System.Globalization
+
 
 Namespace DataAccessLayer.SQLServer.V2008
     Public Class DFunctions
@@ -11,6 +15,7 @@ Namespace DataAccessLayer.SQLServer.V2008
 
 #Region "Member Objects"
         Private m_Profile As MFunctionProfile = Nothing
+        Private m_SecurityEntitySeqId As Integer = -2
 #End Region
 
 #Region "Public Properties"
@@ -35,7 +40,7 @@ Namespace DataAccessLayer.SQLServer.V2008
                 }
                 Try
                     Dim mFunctions As DataTable = MyBase.GetDataTable("ZGWSecurity.Get_Function", mParameters)
-                    mDSFunctions = Me.GetSecurity()
+                    mDSFunctions = Me.getSecurity()
                     mDSFunctions.Tables(0).TableName = "DerivedRoles"
                     mDSFunctions.Tables(1).TableName = "AssignedRoles"
                     mDSFunctions.Tables(2).TableName = "Groups"
@@ -77,7 +82,14 @@ Namespace DataAccessLayer.SQLServer.V2008
             End Set
         End Property
 
-        Public Property SecurityEntitySeqID As Integer Implements IDFunction.SecurityEntitySeqID
+        Public Property SecurityEntitySeqId As Integer Implements IDFunction.SecurityEntitySeqId
+            Get
+                Return m_SecurityEntitySeqId
+            End Get
+            Set(value As Integer)
+                m_SecurityEntitySeqId = value
+            End Set
+        End Property
 #End Region
 
 #Region "Pulbic Methods"
@@ -93,13 +105,14 @@ Namespace DataAccessLayer.SQLServer.V2008
             MyBase.ExecuteNonQuery("ZGWSecurity.Delete_Function", myParameters)
         End Sub
 
-        Public Function GetFunctionTypes() As DataTable Implements IDFunction.GetFunctionTypes
+        Public Function FunctionTypes() As DataTable Implements IDFunction.FunctionTypes
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Function_Types"
             Dim mParameters() As SqlParameter = {New SqlParameter("@P_Function_Type_SeqID", -1)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetMenuOrder(ByRef profile As MFunctionProfile) As DataTable Implements IDFunction.GetMenuOrder
+        Public Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable Implements IDFunction.GetMenuOrder
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Function_Sort"
             Dim mParameters() As SqlParameter = {New SqlParameter("@P_Function_SeqID", profile.Id)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
@@ -132,7 +145,7 @@ Namespace DataAccessLayer.SQLServer.V2008
               New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
              }
             MyBase.ExecuteNonQuery("ZGWSecurity.Set_Function", mParameters)
-            mRetVal = Integer.Parse(GetParameterValue("@P_Function_SeqID", mParameters))
+            mRetVal = Integer.Parse(GetParameterValue("@P_Function_SeqID", mParameters), CultureInfo.InvariantCulture)
             Return mRetVal
         End Function
 
@@ -146,7 +159,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
              {
               New SqlParameter("@P_Function_SeqID", Profile.Id),
-              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+              New SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId),
               New SqlParameter("@P_Groups", mCommaSeporatedString),
               New SqlParameter("@P_Permissions_NVP_Detail_SeqID", permission),
               New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile))
@@ -164,7 +177,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
              {
               New SqlParameter("@P_Function_SeqID", Profile.Id),
-              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+              New SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId),
               New SqlParameter("@P_Roles", mCommaSeporatedString),
               New SqlParameter("@P_Permissions_NVP_Detail_SeqID", permission),
               New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile))
@@ -178,6 +191,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>DataTable</returns>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDFunction.Search
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null!")
             Dim mRetVal As DataTable
             Dim mParameters() As SqlParameter =
              {
@@ -192,24 +206,37 @@ Namespace DataAccessLayer.SQLServer.V2008
             mRetVal = MyBase.GetDataTable("ZGWSystem.Get_Paginated_Data", mParameters)
             Return mRetVal
         End Function
+
+        Public Sub UpdateMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType) Implements IDFunction.UpdateMenuOrder
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
+            Dim mStoreProcedure As String = "ZGWSecurity.Set_Function_Sort"
+            Dim mParameters() As SqlParameter =
+             {
+              New SqlParameter("@P_Function_SeqID", profile.Id),
+              New SqlParameter("@P_Direction", direction),
+              New SqlParameter("@P_Added_Updated_By", profile.UpdatedBy),
+              GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
+             }
+            MyBase.ExecuteNonQuery(mStoreProcedure, mParameters)
+        End Sub
 #End Region
 
 #Region "Private Methods"
-        Private Sub checkValid()
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA2204:Literals should be spelled correctly", MessageId:="SecurityEntitySeqId")> Private Sub checkValid()
             MyBase.IsValid()
             If Profile Is Nothing Then
-                Throw New ArgumentException("Profile property must be set before calling methods from this class")
+                Throw New InvalidOperationException("The Profile property must be set before calling methods from this class")
             End If
-            If SecurityEntitySeqID = 0 Then
-                Throw New ArgumentException("SE_SEQ_ID property must be set before calling methods from this class")
+            If m_SecurityEntitySeqId = 0 Then
+                Throw New InvalidOperationException("The SecurityEntitySeqId property must be set before calling methods from this class")
             End If
         End Sub
 
-        Private Function GetSecurity() As System.Data.DataSet
+        Private Function getSecurity() As System.Data.DataSet
             Dim myStoreProcedure As String = "ZGWSecurity.Get_Function_Security"
             Dim myParameters() As SqlParameter =
             {
-             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+             New SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId)
             }
             Return MyBase.GetDataSet(myStoreProcedure, myParameters)
         End Function

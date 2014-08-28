@@ -14,7 +14,7 @@ Namespace DataAccessLayer.Interfaces
         ''' <summary>
         ''' Used by all methds and must be set to send parameters to the datastore
         ''' </summary>
-        Property SecurityEntitySeqID() As Integer
+        Property SecurityEntitySeqId() As Integer
 
         ''' <summary>
         ''' Deletes an account
@@ -34,14 +34,14 @@ Namespace DataAccessLayer.Interfaces
         ''' <remarks>Does not caculate security for accounts.</remarks>
         ReadOnly Property GetFunctions() As DataSet
 
-        Function GetFunctionTypes() As DataTable
+        Function FunctionTypes() As DataTable
 
         ''' <summary>
         ''' Gets the menu order.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
-        Function GetMenuOrder(ByRef profile As MFunctionProfile) As DataTable
+        Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable
 
         ''' <summary>
         ''' Saves this instance.
@@ -66,5 +66,7 @@ Namespace DataAccessLayer.Interfaces
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+
+        Sub UpdateMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType)
     End Interface
 End Namespace

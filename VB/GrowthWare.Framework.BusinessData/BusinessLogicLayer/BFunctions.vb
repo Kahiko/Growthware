@@ -80,24 +80,24 @@ Namespace BusinessLogicLayer
                 m_DFunctions = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DFunctions")
             End If
             m_DFunctions.ConnectionString = securityEntityProfile.ConnectionString
-            m_DFunctions.SecurityEntitySeqID = securityEntityProfile.Id
+            m_DFunctions.SecurityEntitySeqId = securityEntityProfile.Id
         End Sub
 
         ''' <summary>
         ''' Returns a collection of MFunctionProfile objects for the given
         ''' security entity.
         ''' </summary>
-        ''' <param name="securityEntitySeqID">Integer</param>
+        ''' <param name="securityEntitySeqId">Integer</param>
         ''' <returns>Collection(of MFunctionProfile)</returns>
         ''' <remarks></remarks>
-        Public Function GetFunctions(ByVal securityEntitySeqID As Integer) As Collection(Of MFunctionProfile)
+        Public Function GetFunctions(ByVal securityEntitySeqId As Integer) As Collection(Of MFunctionProfile)
             'Dim mRetVal As MFunctionProfileCollection = New MFunctionProfileCollection()
             Dim mRetVal As Collection(Of MFunctionProfile) = New Collection(Of MFunctionProfile)
             Dim mDSFunctions As DataSet = Nothing
             Try
                 'mDSFunctions = New DataSet
                 m_DFunctions.Profile = New MFunctionProfile
-                m_DFunctions.SecurityEntitySeqID = securityEntitySeqID
+                m_DFunctions.SecurityEntitySeqId = securityEntitySeqId
                 mDSFunctions = m_DFunctions.GetFunctions()
                 Dim mHasAssingedRoles As Boolean = False
                 Dim mHasGroups As Boolean = False
@@ -130,8 +130,8 @@ Namespace BusinessLogicLayer
         ''' Gets the function types.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Public Function GetFunctionTypes() As DataTable
-            Return m_DFunctions.GetFunctionTypes()
+        Public Function FunctionTypes() As DataTable
+            Return m_DFunctions.FunctionTypes()
         End Function
 
         ''' <summary>
@@ -139,7 +139,7 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetMenuOrder(ByRef profile As MFunctionProfile) As DataTable
+        Public Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable
             Return m_DFunctions.GetMenuOrder(profile)
         End Function
 
@@ -149,7 +149,8 @@ Namespace BusinessLogicLayer
         ''' <param name="profile">MFunctionProfile</param>
         ''' <param name="saveGroups">Boolean</param>
         ''' <param name="saveRoles">Boolean</param>
-        Public Sub Save(ByRef profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
+        Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
             m_DFunctions.Profile = profile
             profile.Id = m_DFunctions.Save()
             m_DFunctions.Profile = profile
@@ -179,6 +180,10 @@ Namespace BusinessLogicLayer
 
         Public Sub Delete(ByVal functionSeqId As Integer)
             m_DFunctions.Delete(functionSeqId)
+        End Sub
+
+        Public Sub MoveMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType)
+            m_DFunctions.UpdateMenuOrder(profile, direction)
         End Sub
     End Class
 
