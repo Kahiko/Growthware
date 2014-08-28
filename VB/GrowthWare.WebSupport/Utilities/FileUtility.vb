@@ -43,14 +43,9 @@ Namespace Utilities
         ''' <returns>DataTable</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")>
         Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
-            If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
-            End If
+            If directoryProfile Is Nothing Then Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
             Dim mRetTable As DataTable = Nothing
             Dim mRow As DataRow = Nothing
-            'Dim mKiloBytes As Integer = 1024
-            'Dim mMegaBytes As Integer = mKiloBytes * 1024
-            'Dim mGigaBytes As Integer = mMegaBytes * 1024
             Dim mStringBuilder As New StringBuilder(4096)
             Dim mDirectorySeparatorChar As Char = DirectorySeparatorChar
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
@@ -116,7 +111,7 @@ Namespace Utilities
                         mRetTable.Rows.Add(mRow)        ' Add the row to the table
                     Next
                 Catch ex As IOException
-                    If Not mRetTable Is Nothing Then mRetTable.Dispose()
+                    If mRetTable IsNot Nothing Then mRetTable.Dispose()
                     Dim mLoger As Logger = Logger.Instance
                     mLoger.Error(ex)
                     Throw
@@ -496,16 +491,16 @@ Namespace Utilities
                     Next
                     If mCountFile Then
                         ' open files for streamreader
-                        Dim sr As StreamReader = File.OpenText(directoryFile.FullName)
+                        Dim mStreamReader As StreamReader = File.OpenText(directoryFile.FullName)
                         'loop until the end
-                        While sr.Peek() > -1
-                            Dim myString As String = sr.ReadLine
+                        While mStreamReader.Peek() > -1
+                            Dim myString As String = mStreamReader.ReadLine
                             If (Not myString.Trim.StartsWith("'", StringComparison.OrdinalIgnoreCase) Or Not myString.Trim.StartsWith("//", StringComparison.OrdinalIgnoreCase)) And Not myString.Trim.Length = 0 Then
                                 FileLineCount += 1
                             End If
                         End While
                         'close the streamreader
-                        sr.Close()
+                        mStreamReader.Close()
                         If FileLineCount > 0 Then
                             If writeDirectory Then
                                 stringBuilder.AppendLine("<br>" + theDirectory.FullName)

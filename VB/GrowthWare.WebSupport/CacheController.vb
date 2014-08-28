@@ -49,8 +49,7 @@ Public Class CacheController
     Public Shared Function AddToCacheDependency(ByVal key As String, ByVal value As Object) As Boolean
         Dim retVal As Boolean = False
         If Not ConfigSettings.CentralManagement And ConfigSettings.EnableCache Then
-            Dim fileStream As FileStream
-            Dim writer As StreamWriter
+            Dim fileStream As FileStream = Nothing
             Dim fileName As String
             fileName = s_CacheDirectory & key & ".txt"
             ' ensure the file exists if not then create one
@@ -69,18 +68,32 @@ Public Class CacheController
             ' re-write the dependancy file based on the application variable
             ' file replication will cause the other servers to remove their cache item
             If Convert.ToBoolean(HttpContext.Current.Application(key & "WriteCache"), CultureInfo.InvariantCulture) Then
-                fileStream = New FileStream(fileName, FileMode.Truncate)
-                writer = New StreamWriter(fileStream)
-                writer.WriteLine(Now.TimeOfDay)
-                writer.Close()
-                HttpContext.Current.Application.Lock()
-                HttpContext.Current.Application(key & "WriteCache") = False
-                HttpContext.Current.Application.UnLock()
+                Try
+                    fileStream = New FileStream(fileName, FileMode.Truncate)
+                    Using writer As New StreamWriter(fileStream)
+                        writer.WriteLine(Now.TimeOfDay)
+                    End Using
+                    HttpContext.Current.Application.Lock()
+                    HttpContext.Current.Application(key & "WriteCache") = False
+                    HttpContext.Current.Application.UnLock()
+                Catch ex As Exception
+                    Throw ex
+                Finally
+                    If Not fileStream Is Nothing Then fileStream.Dispose()
+                End Try
             End If
             ' cache it for future use
-            Dim onCacheRemove As CacheItemRemovedCallback
-            onCacheRemove = New CacheItemRemovedCallback(AddressOf CheckCallback)
-            If Not value Is Nothing Then HttpContext.Current.Cache.Add(key, value, New CacheDependency(fileName), Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
+            Dim onCacheRemove As CacheItemRemovedCallback = Nothing
+            Dim mCacheDependency As CacheDependency = Nothing
+            Try
+                onCacheRemove = New CacheItemRemovedCallback(AddressOf CheckCallback)
+                mCacheDependency = New CacheDependency(fileName)
+                If Not value Is Nothing Then HttpContext.Current.Cache.Add(key, value, mCacheDependency, Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
+            Catch ex As Exception
+                Throw ex
+            Finally
+                If Not mCacheDependency Is Nothing Then mCacheDependency.Dispose()
+            End Try
             If Err.Number = 0 Then retVal = True
         Else
             retVal = True

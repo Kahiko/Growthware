@@ -8,7 +8,7 @@ Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 
 Namespace Utilities
     Public Module FunctionUtility
-        Private m_FunctionProfileInfoName As String = "FunctionProfileInfo"
+        Private s_FunctionProfileInfoName As String = "FunctionProfileInfo"
 
         ''' <summary>
         ''' Retrieves all functions from the either the database or cache
@@ -17,7 +17,7 @@ Namespace Utilities
         Public Function GetFunctions() As Collection(Of MFunctionProfile)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile()
             Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
-            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString() + "_Functions"
+            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
             Dim mFunctionCollection As Collection(Of MFunctionProfile) = Nothing
             mFunctionCollection = CType(HttpContext.Current.Cache(mCacheName), Collection(Of MFunctionProfile))
             If mFunctionCollection Is Nothing Then
@@ -33,9 +33,14 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         ''' <param name="direction">The direction.</param>
         ''' <param name="updatedBy">The updated by.</param>
-        ''' <param name="upDatedDate">Up dated date.</param>
-        Public Sub Move(ByRef profile As MFunctionProfile, ByVal direction As DirectionType, ByVal updatedBy As Integer, ByVal upDatedDate As DateTime)
-
+        ''' <param name="updatedDate">Up dated date.</param>
+        Public Sub Move(ByVal profile As MFunctionProfile, ByVal direction As DirectionType, ByVal updatedBy As Integer, ByVal updatedDate As DateTime)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
+            profile.UpdatedBy = updatedBy
+            profile.UpdatedDate = updatedDate
+            Dim mBAppFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            mBAppFunctions.MoveMenuOrder(profile, direction)
+            RemoveCachedFunctions()
         End Sub
 
         ''' <summary>
@@ -64,7 +69,7 @@ Namespace Utilities
         ''' <returns>MFunctionProfile.</returns>
         Public Function GetCurrentProfile() As MFunctionProfile
             Dim mRetVal As MFunctionProfile
-            mRetVal = CType(HttpContext.Current.Items(m_FunctionProfileInfoName), MFunctionProfile)
+            mRetVal = CType(HttpContext.Current.Items(s_FunctionProfileInfoName), MFunctionProfile)
             Return mRetVal
         End Function
 
@@ -102,7 +107,7 @@ Namespace Utilities
             Dim mCacheName As String = String.Empty
             Dim mSecurityProfiles As Collection(Of MSecurityEntityProfile) = SecurityEntityUtility.GetProfiles()
             For Each mProfile In mSecurityProfiles
-                mCacheName = mProfile.Id.ToString() + "_Functions"
+                mCacheName = mProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
                 CacheController.RemoveFromCache(mCacheName)
             Next
 
@@ -163,7 +168,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub SetCurrentProfile(ByVal profile As MFunctionProfile)
-            HttpContext.Current.Items(m_FunctionProfileInfoName) = profile
+            HttpContext.Current.Items(s_FunctionProfileInfoName) = profile
         End Sub
     End Module
 End Namespace
