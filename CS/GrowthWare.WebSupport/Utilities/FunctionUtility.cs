@@ -23,7 +23,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// The function profile info name
         /// </summary>
-        public static readonly string m_FunctionProfileInfoName = "FunctionProfileInfo";
+        private static readonly string s_FunctionProfileInfoName = "FunctionProfileInfo";
 
         /// <summary>
         /// Retrieves all functions from the either the database or cache
@@ -33,7 +33,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-            String mCacheName = mSecurityEntityProfile.Id.ToString() + "_Functions";
+            String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
             Collection<MFunctionProfile> mRetVal = null;
             mRetVal = (Collection<MFunctionProfile>)(HttpContext.Current.Cache[mCacheName]);
             if (mRetVal == null)
@@ -50,7 +50,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MFunctionProfile.</returns>
         public static MFunctionProfile GetCurrentProfile()
         {
-            MFunctionProfile mRetVal = (MFunctionProfile)HttpContext.Current.Items[m_FunctionProfileInfoName];
+            MFunctionProfile mRetVal = (MFunctionProfile)HttpContext.Current.Items[s_FunctionProfileInfoName];
             return mRetVal;
         }
 
@@ -90,7 +90,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static DataTable GetFunctionMenuOrder(ref MFunctionProfile profile)
         {
             BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
-            return mBFunctions.GetMenuOrder(ref profile);
+            return mBFunctions.GetMenuOrder(profile);
         }
 
         /// <summary>
@@ -120,13 +120,16 @@ namespace GrowthWare.WebSupport.Utilities
         /// Moves the specified profiles menu order.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        /// <param name="Direction">The direction.</param>
+        /// <param name="direction">The direction.</param>
         /// <param name="updatedBy">The updated by.</param>
-        /// <param name="upDatedDate">Up dated date.</param>
-        public static void Move(ref MFunctionProfile profile, DirectionType Direction, int updatedBy, DateTime upDatedDate)
+        /// <param name="updatedDate">Up dated date.</param>
+        public static void Move(MFunctionProfile profile, DirectionType direction, int updatedBy, DateTime updatedDate)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null!");
+            profile.UpdatedBy = updatedBy;
+            profile.UpdatedDate = updatedDate;
             BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
-            mBAppFunctions.MoveMenuOrder(ref profile, Direction);
+            mBAppFunctions.MoveMenuOrder(profile, direction);
             RemoveCachedFunctions();
         }
 
@@ -139,7 +142,7 @@ namespace GrowthWare.WebSupport.Utilities
             Collection<MSecurityEntityProfile> mSecurityProfiles = SecurityEntityUtility.GetProfiles();
             foreach (MSecurityEntityProfile mProfile in mSecurityProfiles)
             {
-                mCacheName = mProfile.Id.ToString() + "_Functions";
+                mCacheName = mProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
                 CacheController.RemoveFromCache(mCacheName);
             }
         }
@@ -196,7 +199,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void SetCurrentFunction(MFunctionProfile profile)
         {
-            HttpContext.Current.Items[m_FunctionProfileInfoName] = profile;
+            HttpContext.Current.Items[s_FunctionProfileInfoName] = profile;
         }
 
         /// <summary>

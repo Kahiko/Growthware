@@ -63,7 +63,6 @@ namespace GrowthWare.WebSupport
             if (!ConfigSettings.CentralManagement & ConfigSettings.EnableCache)
             {
                 FileStream fileStream = null;
-                StreamWriter writer = null;
                 string fileName = null;
                 fileName = s_CacheDirectory + key + ".txt";
                 // ensure the file exists if not then create one
@@ -88,18 +87,43 @@ namespace GrowthWare.WebSupport
                 if (HttpContext.Current.Application[key + "WriteCache"] == null) { HttpContext.Current.Application[key + "WriteCache"] = "true"; }
                 if (Convert.ToBoolean(HttpContext.Current.Application[key + "WriteCache"].ToString(), CultureInfo.InvariantCulture))
                 {
-                    fileStream = new FileStream(fileName, FileMode.Truncate);
-                    writer = new StreamWriter(fileStream);
-                    writer.WriteLine(DateTime.Now.TimeOfDay);
-                    writer.Close();
-                    HttpContext.Current.Application.Lock();
-                    HttpContext.Current.Application[key + "WriteCache"] = false;
-                    HttpContext.Current.Application.UnLock();
+                    try
+                    {
+                        fileStream = new FileStream(fileName, FileMode.Truncate);
+                        using (StreamWriter writer = new StreamWriter(fileStream))
+                        {
+                            writer.WriteLine(DateTime.Now.TimeOfDay);
+                        }
+                        HttpContext.Current.Application.Lock();
+                        HttpContext.Current.Application[key + "WriteCache"] = false;
+                        HttpContext.Current.Application.UnLock();
+                    }
+                    catch (Exception)
+                    {
+                        throw;
+                    }
+                    finally 
+                    {
+                        if (fileStream != null) fileStream.Dispose();
+                    }
                 }
                 // cache it for future use
                 CacheItemRemovedCallback onCacheRemove = null;
-                onCacheRemove = new CacheItemRemovedCallback(CheckCallback);
-                if ((value != null)) HttpContext.Current.Cache.Add(key, value, new CacheDependency(fileName), System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove);
+                CacheDependency mCacheDependency = null;
+                try
+                {
+                    onCacheRemove = new CacheItemRemovedCallback(CheckCallback);
+                    mCacheDependency = new CacheDependency(fileName);
+                    if ((value != null)) HttpContext.Current.Cache.Add(key, value, mCacheDependency, System.Web.Caching.Cache.NoAbsoluteExpiration, System.Web.Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove);
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally 
+                {
+                    if (mCacheDependency != null) mCacheDependency.Dispose();
+                }
                 // used in the orginal vb code and no eq. for the Err object exists in c#
                 // assume that if no exception has happened the set retVal=true
                 //if (Err().Number == 0) retVal = true;
