@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Framework", "GrowthWare.Framework\GrowthWare.Framework.csproj", "{F12FECFD-D955-4F31-B7A6-E4EF8D88DE9D}"
 EndProject
@@ -10,9 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.csproj", "{0C246309-844C-4FF0-8083-884E2AABD537}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F452921-8AE4-48C0-8C68-A664605DDA56}"
-	ProjectSection(SolutionItems) = preProject
-		CustomDictionary.xml = CustomDictionary.xml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

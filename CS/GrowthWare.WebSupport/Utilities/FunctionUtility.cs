@@ -23,7 +23,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// The function profile info name
         /// </summary>
-        private static readonly string s_FunctionProfileInfoName = "FunctionProfileInfo";
+        private const string s_FunctionProfileInfoName = "FunctionProfileInfo";
 
         /// <summary>
         /// Retrieves all functions from the either the database or cache

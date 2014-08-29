@@ -25,6 +25,7 @@ namespace GrowthWare.WebSupport.Context
         /// <param name="context"></param>
         public void Init(HttpApplication context)
         {
+            if (context == null) throw new ArgumentNullException("context", "context can not be null (Nothing in VB)!");
             context.AcquireRequestState += this.AcquireRequestState;
             context.EndRequest += this.EndRequest;
         }
@@ -50,7 +51,7 @@ namespace GrowthWare.WebSupport.Context
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture)) return;
             if (!processRequest()) return;
             if (HttpContext.Current.Session == null) return;
-            String mAccountName = AccountUtility.GetHttpContextUserName();
+            String mAccountName = AccountUtility.HttpContextUserName();
             MClientChoicesState mClientChoicesState = null;
             mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
             // Add ClientChoicesState object to the context items for use

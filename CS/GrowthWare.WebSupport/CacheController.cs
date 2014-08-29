@@ -16,7 +16,7 @@ namespace GrowthWare.WebSupport
     /// <summary>
     /// Facade for System.Web.Caching
     /// </summary>
-    public class CacheController
+    public static class CacheController
     {
         /// <summary>
         /// Returns the CacheDirectory path
@@ -57,6 +57,7 @@ namespace GrowthWare.WebSupport
         /// 	[ReganM1]	12/15/2006	Created
         /// </history>
         /// -----------------------------------------------------------------------------
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")]
         public static bool AddToCacheDependency(string key, object value)
         {
             bool retVal = false;
@@ -72,7 +73,7 @@ namespace GrowthWare.WebSupport
                     {
                         File.Create(fileName).Close();
                     }
-                    catch
+                    catch (IOException)
                     {
                         MDirectoryProfile DirectoryProfile = new MDirectoryProfile();
                         FileUtility.CreateDirectory(HttpContext.Current.Server.MapPath("~\\"), "CacheDependency", DirectoryProfile);

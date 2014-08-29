@@ -33,6 +33,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MClientChoicesState.</returns>
         public static MClientChoicesState GetClientChoicesState(String account, bool fromDB)
         {
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!");
             MClientChoicesState mRetVal = null;
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetDefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
@@ -78,7 +79,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the selected security entity.
         /// </summary>
         /// <returns>System.Int32.</returns>
-        public static int GetSelectedSecurityEntity()
+        public static int SelectedSecurityEntity()
         {
             MClientChoicesState myClientChoicesState = (MClientChoicesState)HttpContext.Current.Items[MClientChoices.SessionName];
             if ((myClientChoicesState != null))
@@ -98,6 +99,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void Save(MClientChoicesState clientChoicesState)
         {
+            if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState can not be null (Nothing in VB)!");
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetDefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mBClientChoices.Save(clientChoicesState);

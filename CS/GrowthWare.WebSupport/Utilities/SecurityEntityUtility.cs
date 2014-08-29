@@ -52,7 +52,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static MSecurityEntityProfile GetCurrentProfile()
         {
             MSecurityEntityProfile mRetProfile = null;
-            String mAccount = AccountUtility.GetHttpContextUserName();
+            String mAccount = AccountUtility.HttpContextUserName();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
             int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
             mRetProfile = GetProfile(mSecurityEntity);

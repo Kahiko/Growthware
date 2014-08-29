@@ -38,6 +38,8 @@ namespace GrowthWare.WebSupport.Utilities
         /// </remarks>
         public static Boolean Authenticated(String account, String password)
         {
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!");
             bool retVal = false;
             bool mDomainPassed = false;
             if (account.Contains(@"\"))
@@ -62,7 +64,7 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             profilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.GetCurrentProfile().EncryptionType);
                         }
-                        catch (Exception)
+                        catch (CryptoUtilityException)
                         {
                             profilePassword = mAccountProfile.Password;
                         }
@@ -139,7 +141,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <returns>MAccountProfile</returns>
         /// <remarks>If context does not contain a referance to an account anonymous will be returned</remarks>
-        public static MAccountProfile GetCurrentProfile()
+        public static MAccountProfile CurrentProfile()
         {
             Logger mLog = Logger.Instance();
             mLog.Debug("AccountUtility::GetCurrentProfile() Started");
@@ -186,7 +188,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the name of the HTTP context user.
         /// </summary>
         /// <returns>String.</returns>
-        public static String GetHttpContextUserName()
+        public static String HttpContextUserName()
         {
             String mRetVal = "Anonymous";
             if (HttpContext.Current != null && HttpContext.Current.User != null && HttpContext.Current.User.Identity != null)
@@ -216,6 +218,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable GetMenu(String account, MenuType menuType)
         {
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!");
             BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
             DataTable mRetVal = null;
             if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
@@ -265,7 +268,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks>Returns null object if not found</remarks>
         public static MAccountProfile GetProfile(int id)
         {
-            var mResult = from mProfile in GetAccounts(GetCurrentProfile()) where mProfile.Id == id select mProfile;
+            var mResult = from mProfile in GetAccounts(CurrentProfile()) where mProfile.Id == id select mProfile;
             MAccountProfile mRetVal = null;
             try
             {
@@ -366,9 +369,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
         public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null (Nothing in VB) or empty!");
             BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
             mBAccount.Save(profile, saveRoles, saveGroups);
-            if (profile.Id == GetCurrentProfile().Id)
+            if (profile.Id == CurrentProfile().Id)
             {
                 RemoveInMemoryInformation(true);
             }

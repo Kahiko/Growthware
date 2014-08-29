@@ -49,187 +49,206 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="path">string</param>
         /// <param name="directoryProfile">MDirectoryProfile</param>
         /// <param name="filesOnly">bool</param>
+        /// <param name="columnName">name of the column to sort on</param>
+        /// <param name="sortOrder">the sort direction "ASC" or "DESC"</param>
         /// <returns>DataTable</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")]
-        public static DataTable GetDirectoryTableData(string path, MDirectoryProfile directoryProfile, bool filesOnly)
+        public static DataTable GetDirectoryTableData(string path, MDirectoryProfile directoryProfile, bool filesOnly, string columnName, string sortOrder)
         {
             if (directoryProfile == null)
             {
                 throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
             }
-            DataTable mRetTable = null;
-            if (directoryProfile != null)
+            DataTable mRetTable = getDataTable();
+
+            DataRow mRow = mRetTable.NewRow();
+            StringBuilder mStringBuilder = new StringBuilder(4096);
+            string[] mDirs = null;
+            char mDirectorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
+            WindowsImpersonationContext mImpersonatedUser = null;
+            if (directoryProfile.Impersonate)
             {
-                mRetTable = new DataTable("MyTable");
-                DataRow mRow = mRetTable.NewRow();
-                StringBuilder mStringBuilder = new StringBuilder(4096);
-                string[] mDirs = null;
-                char mDirectorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
-                WindowsImpersonationContext mImpersonatedUser = null;
-                if (directoryProfile.Impersonate)
-                {
-                    mImpersonatedUser = WebImpersonate.ImpersonateNow(directoryProfile.ImpersonateAccount, directoryProfile.ImpersonatePassword);
-                }
+                mImpersonatedUser = WebImpersonate.ImpersonateNow(directoryProfile.ImpersonateAccount, directoryProfile.ImpersonatePassword);
+            }
 
-                // Add the column header
 
-                mRetTable.Columns.Add("Name", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("Delete", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("Type", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("Size", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("Modified", System.Type.GetType("System.String"));
-                mRetTable.Columns.Add("FullName", System.Type.GetType("System.String"));
-                mRetTable.Columns["FullName"].ReadOnly = true;
-
-                mRow["Name"] = mStringBuilder.ToString();
-                mStringBuilder = new StringBuilder();
-                // Clear the string builder
-                if (!filesOnly)
-                {
-                    try
-                    {
-                        mDirs = Directory.GetDirectories(path);
-                        foreach (string mDirectory in mDirs)
-                        {
-                            string mDirName = System.IO.Path.GetFileName(mDirectory);
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mRow = mRetTable.NewRow();
-                            // Create a new row
-                            // Populate the string for the new row
-                            mStringBuilder.Append(mDirName);
-                            // Populate the cell in the row
-                            mRow["Name"] = mStringBuilder.ToString();
-
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mRow["ShortFileName"] = mStringBuilder.ToString();
-
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mRow["Extension"] = mStringBuilder.ToString();
-
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            // Populate the cell in the row
-                            mRow["Delete"] = mStringBuilder.ToString();
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mStringBuilder.Append("Folder");
-                            // Populate the cell in the row
-                            mRow["Type"] = mStringBuilder.ToString();
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mStringBuilder.Append("N/A");
-                            // Populate the cell in the row
-                            mRow["Size"] = mStringBuilder.ToString();
-                            mStringBuilder = new StringBuilder();
-                            // Clear the string builder
-                            mStringBuilder.Append(Directory.GetLastWriteTime(path + mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName).ToString());
-                            // Populate the cell in the row
-                            mRow["Modified"] = mStringBuilder.ToString();
-                            mStringBuilder = new StringBuilder();
-                            mStringBuilder.Append(mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName + "\\");
-                            mRow["FullName"] = mStringBuilder.ToString();
-                            mRetTable.Rows.Add(mRow);
-                            // Add the row to the table
-                        }
-                    }
-                    catch (IOException ex)
-                    {
-                        Logger mLog = Logger.Instance();
-                        mLog.Error(ex);
-                        throw;
-                    }
-
-                }
-                // Add all of the directories to the table
+            mRow["Name"] = mStringBuilder.ToString();
+            mStringBuilder = new StringBuilder();
+            // Clear the string builder
+            if (!filesOnly)
+            {
                 try
                 {
-                    DirectoryInfo dirInfo = new DirectoryInfo(path);
-                    FileInfo[] files = null;
-                    files = dirInfo.GetFiles();
-                    //FileInfo mFileInfo = null;
-                    if (mRetTable == null)
+                    mDirs = Directory.GetDirectories(path);
+                    foreach (string mDirectory in mDirs)
                     {
-                        mRetTable = new DataTable("MyTable");
-                        mRetTable.Locale = CultureInfo.InvariantCulture;
-                        mRetTable.Columns.Add("Name", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("Delete", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("Type", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("Size", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("Modified", System.Type.GetType("System.String"));
-                        mRetTable.Columns.Add("FullName", System.Type.GetType("System.String"));
-                        mRetTable.Columns["FullName"].ReadOnly = true;
-                    }
-                    foreach (FileInfo mFileInfo in files)
-                    {
+                        string mDirName = System.IO.Path.GetFileName(mDirectory);
+                        mStringBuilder = new StringBuilder();
+                        // Clear the string builder
                         mRow = mRetTable.NewRow();
-                        string mFilename = mFileInfo.Name;
-                        string mShortFileName = mFileInfo.Name;
-                        mShortFileName = mFilename.Remove(mFilename.Length - mFileInfo.Extension.Length, mFileInfo.Extension.Length);
+                        // Create a new row
+                        // Populate the string for the new row
+                        mStringBuilder.Append(mDirName);
+                        // Populate the cell in the row
+                        mRow["Name"] = mStringBuilder.ToString();
 
                         mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append(mFilename);
-                        mRow["Name"] = mFilename.ToString();
+                        // Clear the string builder
+                        mRow["ShortFileName"] = mStringBuilder.ToString();
 
                         mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append("File");
-                        mRow["Type"] = mStringBuilder.ToString();
-
-                        mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append(mShortFileName);
-                        mRow["shortFileName"] = mStringBuilder.ToString();
-
-                        mStringBuilder = new StringBuilder();
-                        string fileExtension = mFileInfo.Extension;
-                        mStringBuilder.Append(fileExtension);
+                        // Clear the string builder
                         mRow["Extension"] = mStringBuilder.ToString();
 
                         mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append(mFileInfo.Length.ToFileSize());
+                        // Clear the string builder
+                        // Populate the cell in the row
+                        mRow["Delete"] = mStringBuilder.ToString();
+                        mStringBuilder = new StringBuilder();
+                        // Clear the string builder
+                        mStringBuilder.Append("Folder");
+                        // Populate the cell in the row
+                        mRow["Type"] = mStringBuilder.ToString();
+                        mStringBuilder = new StringBuilder();
+                        // Clear the string builder
+                        mStringBuilder.Append("N/A");
+                        // Populate the cell in the row
                         mRow["Size"] = mStringBuilder.ToString();
                         mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append(File.GetLastWriteTime(path + mDirectorySeparatorChar.ToString() + mFileInfo.Name).ToString());
+                        // Clear the string builder
+                        mStringBuilder.Append(Directory.GetLastWriteTime(path + mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName).ToString());
+                        // Populate the cell in the row
                         mRow["Modified"] = mStringBuilder.ToString();
                         mStringBuilder = new StringBuilder();
-                        mStringBuilder.Append(mFileInfo.FullName);
+                        mStringBuilder.Append(mDirectorySeparatorChar.ToString(CultureInfo.InvariantCulture) + mDirName + "\\");
                         mRow["FullName"] = mStringBuilder.ToString();
-
                         mRetTable.Rows.Add(mRow);
+                        // Add the row to the table
                     }
                 }
                 catch (IOException ex)
                 {
+                    if (mRetTable != null) mRetTable.Dispose();
                     Logger mLog = Logger.Instance();
                     mLog.Error(ex);
                     throw;
                 }
-                finally
+
+            }
+            // Add all of the directories to the table
+            try
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(path);
+                FileInfo[] files = null;
+                files = dirInfo.GetFiles();
+                //FileInfo mFileInfo = null;
+                if (mRetTable == null)
                 {
-                    if (directoryProfile.Impersonate)
-                    {
-                        // Stop impersonating the user.
-                        if ((mImpersonatedUser != null))
-                        {
-                            mImpersonatedUser.Undo();
-                        }
-                    }
+
+                }
+                foreach (FileInfo mFileInfo in files)
+                {
+                    mRow = mRetTable.NewRow();
+                    string mFilename = mFileInfo.Name;
+                    string mShortFileName = mFileInfo.Name;
+                    mShortFileName = mFilename.Remove(mFilename.Length - mFileInfo.Extension.Length, mFileInfo.Extension.Length);
+
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append(mFilename);
+                    mRow["Name"] = mFilename.ToString();
+
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append("File");
+                    mRow["Type"] = mStringBuilder.ToString();
+
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append(mShortFileName);
+                    mRow["shortFileName"] = mStringBuilder.ToString();
+
+                    mStringBuilder = new StringBuilder();
+                    string fileExtension = mFileInfo.Extension;
+                    mStringBuilder.Append(fileExtension);
+                    mRow["Extension"] = mStringBuilder.ToString();
+
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append(mFileInfo.Length.ToFileSize());
+                    mRow["Size"] = mStringBuilder.ToString();
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append(File.GetLastWriteTime(path + mDirectorySeparatorChar.ToString() + mFileInfo.Name).ToString());
+                    mRow["Modified"] = mStringBuilder.ToString();
+                    mStringBuilder = new StringBuilder();
+                    mStringBuilder.Append(mFileInfo.FullName);
+                    mRow["FullName"] = mStringBuilder.ToString();
+
+                    mRetTable.Rows.Add(mRow);
                 }
             }
-            else
+            catch (IOException ex)
             {
-                mRetTable.Dispose();
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                if (mRetTable != null) mRetTable.Dispose();
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw;
             }
-            // Return the table object as the data source
+            finally
+            {
+                if (directoryProfile.Impersonate)
+                {
+                    // Stop impersonating the user.
+                    if ((mImpersonatedUser != null))
+                    {
+                        mImpersonatedUser.Undo();
+                    }
+                }
+            }            // Return the table object as the data source
             SortTable mSorter = new Framework.Common.SortTable();
-            String mColName = "Name";
-            mSorter.Sort(mRetTable, mColName, "ASC");
+            String mColName = columnName;
+            mSorter.Sort(mRetTable, mColName, sortOrder);
+            return mRetTable;
+        }
+
+        /// <summary>
+        /// Returns a table of files and/or directories.
+        /// </summary>
+        /// <param name="path">string</param>
+        /// <param name="directoryProfile">MDirectoryProfile</param>
+        /// <param name="filesOnly">bool</param>
+        /// <returns>DataTable sorted by the "Name" column ascending</returns>
+        public static DataTable GetDirectoryTableData(string path, MDirectoryProfile directoryProfile, bool filesOnly) 
+        { 
+            return GetDirectoryTableData(path, directoryProfile, filesOnly, "Name", "ASC");
+        }
+
+        private static DataTable getDataTable()
+        {
+            DataTable mTempRetTable = null;
+            DataTable mRetTable = null;
+            try
+            {
+                mTempRetTable = new DataTable("MyTable");
+                mTempRetTable.Locale = CultureInfo.InvariantCulture;
+                // Add the column header
+                mTempRetTable.Columns.Add("Name", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("Extension", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("Delete", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("Type", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("Size", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("Modified", System.Type.GetType("System.String"));
+                mTempRetTable.Columns.Add("FullName", System.Type.GetType("System.String"));
+                mTempRetTable.Columns["FullName"].ReadOnly = true;
+                mTempRetTable.Locale = CultureInfo.InvariantCulture;
+                mRetTable = mTempRetTable;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            finally 
+            {
+                if (mTempRetTable != null) mTempRetTable.Dispose();
+            }
+
             return mRetTable;
         }
 
@@ -535,7 +554,8 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="totalLinesOfCode">The total lines of code.</param>
         /// <param name="fileArray">The file array.</param>
         /// <returns>System.String.</returns>
-        public static string GetLineCount(DirectoryInfo theDirectory, int level, ref StringBuilder stringBuilder, List<String> excludeList, ref int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string")]
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder stringBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
         {
             DirectoryInfo[] subDirectories = null;
             try
@@ -567,7 +587,7 @@ namespace GrowthWare.WebSupport.Utilities
                     {
                         level = level + 1;
                     }
-                    GetLineCount(subDirectories[x], level, ref stringBuilder, excludeList, ref directoryLineCount, ref totalLinesOfCode, fileArray);
+                    GetLineCount(subDirectories[x], level, stringBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray);
                 }
             }
             catch (Exception)
@@ -586,7 +606,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="fileArray">The file array.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
-        public static void CountDirectory(DirectoryInfo theDirectory, ref StringBuilder stringBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
+        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder stringBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
         {
             Boolean writeDirectory = true;
             int FileLineCount = 0;
@@ -607,18 +627,18 @@ namespace GrowthWare.WebSupport.Utilities
                     }
                     if (countFile)
                     {
-                        StreamReader sr = File.OpenText(directoryFile.FullName);
-                        //loop until the end
-                        while (sr.Peek() > -1)
+                        using (StreamReader sr = File.OpenText(directoryFile.FullName))
                         {
-                            String myString = sr.ReadLine();
-                            if ((!myString.Trim().StartsWith("'", StringComparison.OrdinalIgnoreCase) || !myString.Trim().StartsWith("//", StringComparison.OrdinalIgnoreCase)) & myString.Trim().Length != 0)
+                            //loop until the end
+                            while (sr.Peek() > -1)
                             {
-                                FileLineCount += 1;
-                            }
+                                String myString = sr.ReadLine();
+                                if ((!myString.Trim().StartsWith("'", StringComparison.OrdinalIgnoreCase) || !myString.Trim().StartsWith("//", StringComparison.OrdinalIgnoreCase)) & myString.Trim().Length != 0)
+                                {
+                                    FileLineCount += 1;
+                                }
+                            }                            
                         }
-                        //close the streamreader
-                        sr.Close();
                         if (FileLineCount > 0)
                         {
                             if (writeDirectory)
