@@ -10,21 +10,14 @@ Imports GrowthWare.Framework.Model.Enumerations
 Imports System.DirectoryServices
 
 Namespace Utilities
-    Public Class AccountUtility
-        Private Shared s_CachedAnonymousAccount As String = "AnonymousProfile"
-        Private Shared s_AnonymousAccount As String = "Anonymous"
+    Public Module AccountUtility
+        Private s_CachedAnonymousAccount As String = "AnonymousProfile"
+        Private s_AnonymousAccount As String = "Anonymous"
 
         ''' <summary>
         ''' The name of the anonymous account profile
         ''' </summary>
-        Public Shared ReadOnly AnonymousAccountProfile As String = s_CachedAnonymousAccount
-
-        ''' <summary>
-        ''' Constructor sets up the private fields
-        ''' </summary>
-        Private Sub New()
-            ' do nothing do not want anyone to create an instance of the class
-        End Sub
+        Public ReadOnly AnonymousAccountProfile As String = s_CachedAnonymousAccount
 
         ''' <summary>
         ''' Performs authentication give an account and password
@@ -35,7 +28,9 @@ Namespace Utilities
         ''' <remarks>
         ''' Handles authentication methology
         ''' </remarks>
-        Public Shared Function Authenticated(ByVal account As String, ByVal password As String) As Boolean
+        Public Function Authenticated(ByVal account As String, ByVal password As String) As Boolean
+            If Not String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If Not String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!")
             Dim retVal As Boolean = False
             Dim mySEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile
             Dim mDomainPassed As Boolean = False
@@ -54,7 +49,7 @@ Namespace Utilities
                     If Not mAccountProfile Is Nothing Then
                         Try
                             profilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, mySEProfile.EncryptionType)
-                        Catch ex As Exception
+                        Catch ex As CryptoUtilityException
                             profilePassword = mAccountProfile.Password
                         End Try
                         If password = profilePassword Then
@@ -95,7 +90,7 @@ Namespace Utilities
         ''' Deletes the specified account seq id.
         ''' </summary>
         ''' <param name="accountSeqId">The account seq id.</param>
-        Public Shared Sub Delete(ByVal accountSeqId As Integer)
+        Public Sub Delete(ByVal accountSeqId As Integer)
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             mBAccount.Delete(accountSeqId)
         End Sub
@@ -105,7 +100,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">MAccountProfile</param>
         ''' <remarks>If the Profiles.IsSysAdmin is true then all accounts will be returned</remarks>
-        Public Shared Function GetAccounts(ByVal profile As MAccountProfile) As Collection(Of MAccountProfile)
+        Public Function GetAccounts(ByVal profile As MAccountProfile) As Collection(Of MAccountProfile)
             ' was thinking of adding cache here but
             ' when you think of it it's not needed
             ' account information needs to come from
@@ -122,7 +117,7 @@ Namespace Utilities
         ''' </summary>
         ''' <returns>MAccountProfile</returns>
         ''' <remarks>If context does not contain a referance to an account anonymous will be returned</remarks>
-        Public Shared Function GetCurrentProfile() As MAccountProfile
+        Public Function CurrentProfile() As MAccountProfile
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("AccountUtility::GetCurrentProfile() Started")
             Dim mRetProfile As MAccountProfile = Nothing
@@ -158,7 +153,7 @@ Namespace Utilities
         ''' Gets the name of the HTTP context user.
         ''' </summary>
         ''' <returns>System.String.</returns>
-        Public Shared Function GetHttpContextUserName() As String
+        Public Function HttpContextUserName() As String
             Dim mRetVal As String = "Anonymous"
             If Not HttpContext.Current Is Nothing AndAlso Not HttpContext.Current.User Is Nothing AndAlso Not HttpContext.Current.User.Identity Is Nothing Then
                 If HttpContext.Current.User.Identity.Name.Length > 0 Then
@@ -180,7 +175,8 @@ Namespace Utilities
         ''' <param name="menuType">MenuType</param>
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
-        Public Shared Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
+        Public Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
+            If Not String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             Dim mRetVal As DataTable = Nothing
             If account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
@@ -201,7 +197,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="account">String</param>
         ''' <returns>a populated MAccountProfile</returns>
-        Public Shared Function GetProfile(ByVal account As String) As MAccountProfile
+        Public Function GetProfile(ByVal account As String) As MAccountProfile
             Dim mRetVal As MAccountProfile = Nothing
             Try
                 Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
@@ -219,8 +215,8 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="accountSeqId">Integer</param>
         ''' <returns>a populated MAccountProfile</returns>
-        Public Shared Function GetProfile(ByVal accountSeqId As Integer) As MAccountProfile
-            Dim mResult = From mProfile In GetAccounts(GetCurrentProfile()) Where mProfile.Id = accountSeqId Select mProfile
+        Public Function GetProfile(ByVal accountSeqId As Integer) As MAccountProfile
+            Dim mResult = From mProfile In GetAccounts(CurrentProfile()) Where mProfile.Id = accountSeqId Select mProfile
             Dim mRetVal As MAccountProfile = New MAccountProfile()
             Try
                 mRetVal = mResult.First
@@ -238,7 +234,7 @@ Namespace Utilities
         ''' Performs all logoff function
         ''' </summary>
         ''' <remarks></remarks>
-        Public Shared Sub LogOff()
+        Public Sub LogOff()
             RemoveInMemoryInformation(True)
             FormsAuthentication.SignOut()
         End Sub
@@ -249,7 +245,7 @@ Namespace Utilities
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>NULL/Nothing if no records are returned.</returns>
         ''' <remarks></remarks>
-        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
                 Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
                 Return mBAccount.Search(searchCriteria)
@@ -264,7 +260,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="removeWorkflow"></param>
         ''' <remarks></remarks>
-        Public Shared Sub RemoveInMemoryInformation(ByVal removeWorkflow As Boolean)
+        Public Sub RemoveInMemoryInformation(ByVal removeWorkflow As Boolean)
             Dim mAccountName As String = HttpContext.Current.User.Identity.Name
             HttpContext.Current.Cache.Remove(mAccountName + "_Session")
             HttpContext.Current.Cache.Remove(MClientChoices.SessionName)
@@ -280,10 +276,11 @@ Namespace Utilities
         ''' <param name="saveRoles">Boolean</param>
         ''' <param name="saveGroups">Boolean</param>
         ''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-        Public Shared Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
+        Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in VB) or empty!")
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             mBAccount.Save(profile, saveRoles, saveGroups)
-            If profile.Id = GetCurrentProfile().Id Then
+            If profile.Id = CurrentProfile().Id Then
                 RemoveInMemoryInformation(True)
             End If
             Return profile
@@ -294,7 +291,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="accountProfile">MAccountProfile</param>
         ''' <remarks></remarks>
-        Public Shared Sub SetPrincipal(ByVal accountProfile As MAccountProfile)
+        Public Sub SetPrincipal(ByVal accountProfile As MAccountProfile)
             If Not accountProfile Is Nothing Then
                 Dim mCurrentConext As HttpContext = HttpContext.Current
                 Dim mAccountRoles As String = accountProfile.AssignedRoles.ToString().Replace(",", ";")
@@ -315,8 +312,8 @@ Namespace Utilities
         ''' Sets the current profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Shared Sub SetCurrentProfile(ByVal profile As MAccountProfile)
+        Public Sub SetCurrentProfile(ByVal profile As MAccountProfile)
             HttpContext.Current.Items.Add("CurrentAccount", profile)
         End Sub
-    End Class
+    End Module
 End Namespace

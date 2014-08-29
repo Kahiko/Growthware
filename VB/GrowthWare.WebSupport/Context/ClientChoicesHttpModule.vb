@@ -21,6 +21,7 @@ Namespace Context
         ''' </summary>
         ''' <param name="context"></param>
         Public Sub Init(ByVal context As HttpApplication) Implements IHttpModule.Init
+            If context Is Nothing Then Throw New ArgumentNullException("context", "context can not be null (Nothing in VB)!")
             AddHandler context.AcquireRequestState, AddressOf Me.AcquireRequestState
             AddHandler context.EndRequest, AddressOf Me.EndRequest
         End Sub
@@ -42,7 +43,7 @@ Namespace Context
         Public Sub AcquireRequestState(ByVal sender As Object, ByVal eventArgs As EventArgs)
             If Not (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) <> "OnLine".ToUpper(CultureInfo.InvariantCulture)) Then
                 If processRequest() Then
-                    Dim mAccountName As String = AccountUtility.GetHttpContextUserName()
+                    Dim mAccountName As String = AccountUtility.HttpContextUserName()
                     Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
                     HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
                     'If HttpContext.Current.Session IsNot Nothing Then

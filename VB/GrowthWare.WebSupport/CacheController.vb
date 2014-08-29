@@ -9,8 +9,8 @@ Imports System.Globalization
 ''' <summary>
 ''' Facade for System.Web.Caching
 ''' </summary>
-Public Class CacheController
-    Private Shared s_CacheDirectory As String = HttpContext.Current.Server.MapPath("~\") & "CacheDependency\"
+Public Module CacheController
+    Private s_CacheDirectory As String = HttpContext.Current.Server.MapPath("~\") & "CacheDependency\"
 
     ''' <summary>
     '''	AddToCacheDependency function Adds an object to the
@@ -46,58 +46,58 @@ Public Class CacheController
     ''' 	[ReganM1]	12/15/2006	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Function AddToCacheDependency(ByVal key As String, ByVal value As Object) As Boolean
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2202:Do not dispose objects multiple times")>
+    Public Function AddToCacheDependency(ByVal key As String, ByVal value As Object) As Boolean
         Dim retVal As Boolean = False
-        If Not ConfigSettings.CentralManagement And ConfigSettings.EnableCache Then
-            Dim fileStream As FileStream = Nothing
-            Dim fileName As String
-            fileName = s_CacheDirectory & key & ".txt"
-            ' ensure the file exists if not then create one
-            If Not File.Exists(fileName) Then
-                Try
-                    File.Create(fileName).Close()
-                Catch ex As Exception
-                    Dim DirectoryProfile As New MDirectoryProfile
-                    FileUtility.CreateDirectory(HttpContext.Current.Server.MapPath("~\"), "CacheDependency", DirectoryProfile)
-                    File.Create(fileName).Close()
-                End Try
-                HttpContext.Current.Application.Lock()
-                HttpContext.Current.Application(key & "WriteCache") = True
-                HttpContext.Current.Application.UnLock()
-            End If
-            ' re-write the dependancy file based on the application variable
-            ' file replication will cause the other servers to remove their cache item
-            If Convert.ToBoolean(HttpContext.Current.Application(key & "WriteCache"), CultureInfo.InvariantCulture) Then
-                Try
-                    fileStream = New FileStream(fileName, FileMode.Truncate)
-                    Using writer As New StreamWriter(fileStream)
-                        writer.WriteLine(Now.TimeOfDay)
-                    End Using
-                    HttpContext.Current.Application.Lock()
-                    HttpContext.Current.Application(key & "WriteCache") = False
-                    HttpContext.Current.Application.UnLock()
-                Catch ex As Exception
-                    Throw ex
-                Finally
-                    If Not fileStream Is Nothing Then fileStream.Dispose()
-                End Try
-            End If
-            ' cache it for future use
-            Dim onCacheRemove As CacheItemRemovedCallback = Nothing
-            Dim mCacheDependency As CacheDependency = Nothing
-            Try
-                onCacheRemove = New CacheItemRemovedCallback(AddressOf CheckCallback)
-                mCacheDependency = New CacheDependency(fileName)
-                If Not value Is Nothing Then HttpContext.Current.Cache.Add(key, value, mCacheDependency, Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
-            Catch ex As Exception
-                Throw ex
-            Finally
-                If Not mCacheDependency Is Nothing Then mCacheDependency.Dispose()
-            End Try
-            If Err.Number = 0 Then retVal = True
-        Else
-            retVal = True
+        If ConfigSettings.CentralManagement And Not ConfigSettings.EnableCache Then
+            Return True
         End If
+        Dim fileStream As FileStream = Nothing
+        Dim fileName As String
+        fileName = s_CacheDirectory & key & ".txt"
+        ' ensure the file exists if not then create one
+        If Not File.Exists(fileName) Then
+            Try
+                File.Create(fileName).Close()
+            Catch ex As IOException
+                Dim DirectoryProfile As New MDirectoryProfile
+                FileUtility.CreateDirectory(HttpContext.Current.Server.MapPath("~\"), "CacheDependency", DirectoryProfile)
+                File.Create(fileName).Close()
+            End Try
+            HttpContext.Current.Application.Lock()
+            HttpContext.Current.Application(key & "WriteCache") = True
+            HttpContext.Current.Application.UnLock()
+        End If
+        ' re-write the dependancy file based on the application variable
+        ' file replication will cause the other servers to remove their cache item
+        If Convert.ToBoolean(HttpContext.Current.Application(key & "WriteCache"), CultureInfo.InvariantCulture) Then
+            Try
+                fileStream = New FileStream(fileName, FileMode.Truncate)
+                Using writer As New StreamWriter(fileStream)
+                    writer.WriteLine(Now.TimeOfDay)
+                End Using
+                HttpContext.Current.Application.Lock()
+                HttpContext.Current.Application(key & "WriteCache") = False
+                HttpContext.Current.Application.UnLock()
+            Catch ex As Exception
+                Throw
+            Finally
+                If fileStream IsNot Nothing Then fileStream.Dispose()
+            End Try
+        End If
+        ' cache it for future use
+        Dim onCacheRemove As CacheItemRemovedCallback = Nothing
+        Dim mCacheDependency As CacheDependency = Nothing
+        Try
+            onCacheRemove = New CacheItemRemovedCallback(AddressOf CheckCallback)
+            mCacheDependency = New CacheDependency(fileName)
+            If Not value Is Nothing Then HttpContext.Current.Cache.Add(key, value, mCacheDependency, Caching.Cache.NoAbsoluteExpiration, Caching.Cache.NoSlidingExpiration, CacheItemPriority.Default, onCacheRemove)
+        Catch ex As Exception
+            Throw
+        Finally
+            If Not mCacheDependency Is Nothing Then mCacheDependency.Dispose()
+        End Try
+        If Err.Number = 0 Then retVal = True
         Return retVal
     End Function
 
@@ -112,7 +112,7 @@ Public Class CacheController
     ''' 	[ReganM1]	12/15/2006	Created
     ''' </history>
     ''' -----------------------------------------------------------------------------
-    Public Shared Sub RemoveFromCache(ByVal cacheName As String)
+    Public Sub RemoveFromCache(ByVal cacheName As String)
         Dim fileName As String
         fileName = s_CacheDirectory & cacheName & ".txt"
         If File.Exists(fileName) Then
@@ -131,7 +131,7 @@ Public Class CacheController
     ''' <param name="value">Generally a object being placed into cache.</param>
     ''' <param name="reason">The reason the item was removed from cache.</param>
     ''' <remarks></remarks>
-    Public Shared Sub CheckCallback(ByVal key As String, ByVal value As Object, ByVal reason As CacheItemRemovedReason)
+    Public Sub CheckCallback(ByVal key As String, ByVal value As Object, ByVal reason As CacheItemRemovedReason)
         'rebuild cache and file to sync cached objects if necessary
         If Not key Is Nothing Then
             If reason = CacheItemRemovedReason.Removed Then
@@ -142,7 +142,6 @@ Public Class CacheController
                     End If
                     log.Info("CheckCallback() :: " + key + " is no longer in cache")
                 Catch ex As NullReferenceException
-
                     log.Info("CheckCallback() :: NullReferenceException was encountered." + System.Environment.NewLine + ex.Message.ToString())
                     ' do nothing
                 Catch ex As Exception
@@ -156,11 +155,11 @@ Public Class CacheController
     ''' <summary>
     ''' Removes all cache items from member by removing all files from the cache dependency directory.
     ''' </summary>
-    Public Shared Sub RemoveAllCache()
+    Public Sub RemoveAllCache()
         Dim DirectoryFiles As New DirectoryInfo(s_CacheDirectory)
         For Each directoryFile As FileInfo In DirectoryFiles.GetFiles("*.*")
             File.Delete(DirectoryFiles.FullName & directoryFile.Name)
         Next
     End Sub
 
-End Class
+End Module

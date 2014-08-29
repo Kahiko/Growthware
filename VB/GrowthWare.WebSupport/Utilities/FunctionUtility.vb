@@ -8,8 +8,7 @@ Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 
 Namespace Utilities
     Public Module FunctionUtility
-        Private s_FunctionProfileInfoName As String = "FunctionProfileInfo"
-
+        Private Const s_FunctionProfileInfoName As String = "FunctionProfileInfo"
         ''' <summary>
         ''' Retrieves all functions from the either the database or cache
         ''' </summary>

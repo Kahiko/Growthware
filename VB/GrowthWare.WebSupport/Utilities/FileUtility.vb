@@ -40,36 +40,24 @@ Namespace Utilities
         ''' <param name="path">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <param name="filesOnly">bool</param>
+        ''' <param name="columnName">name of the column to sort on</param>
+        ''' <param name="sortOrder">the sort direction "ASC" or "DESC"</param>
         ''' <returns>DataTable</returns>
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1306:SetLocaleForDataTypes")>
-        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
+        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean, ByVal columnName As String, ByVal sortOrder As String) As DataTable
             If directoryProfile Is Nothing Then Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
-            Dim mRetTable As DataTable = Nothing
+            Dim mRetTable As DataTable = getDataTable()
             Dim mRow As DataRow = Nothing
             Dim mStringBuilder As New StringBuilder(4096)
             Dim mDirectorySeparatorChar As Char = DirectorySeparatorChar
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
             If Not filesOnly Then
                 Try
-                    mRetTable = New DataTable("MyTable")
+
                     mRow = mRetTable.NewRow()
                     Dim mDirs() As String
                     If directoryProfile.Impersonate Then
                         mImpersonatedUser = WebImpersonate.ImpersonateNow(directoryProfile.ImpersonateAccount, directoryProfile.ImpersonatePassword)
                     End If
-
-                    ' Add the column header
-
-                    mRetTable.Columns.Add("Name", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Delete", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Type", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Size", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Modified", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("FullName", System.Type.GetType("System.String"))
-                    mRetTable.Columns("FullName").ReadOnly = True
-
                     mRow("Name") = mStringBuilder.ToString
                     mStringBuilder = New StringBuilder    ' Clear the string builder
 
@@ -123,19 +111,6 @@ Namespace Utilities
                 Dim mFiles() As FileInfo
                 mFiles = mDirInfo.GetFiles()
                 Dim mFileInfo As FileInfo
-                If mRetTable Is Nothing Then
-                    mRetTable = New DataTable("MyTable")
-                    mRetTable.Locale = CultureInfo.InvariantCulture
-                    mRetTable.Columns.Add("Name", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Extension", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Delete", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Type", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Size", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("Modified", System.Type.GetType("System.String"))
-                    mRetTable.Columns.Add("FullName", System.Type.GetType("System.String"))
-                    mRetTable.Columns("FullName").ReadOnly = True
-                End If
                 For Each mFileInfo In mFiles
                     mRow = mRetTable.NewRow()
                     Dim mFilename As String = mFileInfo.Name
@@ -185,8 +160,20 @@ Namespace Utilities
             End Try
             ' Return the table object as the data source
             Dim mSorter As SortTable = New SortTable()
-            mSorter.Sort(mRetTable, "Name", "ASC")
+            mSorter.Sort(mRetTable, columnName, sortOrder)
             Return mRetTable
+
+        End Function
+
+        ''' <summary>
+        ''' Returns a table of files and/or directories.
+        ''' </summary>
+        ''' <param name="path">string</param>
+        ''' <param name="directoryProfile">MDirectoryProfile</param>
+        ''' <param name="filesOnly">bool</param>
+        ''' <returns>DataTable sorted by the "Name" column ascending</returns>
+        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
+            Return GetDirectoryTableData(path, directoryProfile, filesOnly, "Name", "ASC")
         End Function
 
         ''' <summary>
@@ -434,7 +421,8 @@ Namespace Utilities
         ''' <param name="totalLinesOfCode">The total lines of code.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
-        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId:="string")>
+        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
                 subDirectories = theDirectory.GetDirectories()
@@ -469,11 +457,11 @@ Namespace Utilities
         ''' Counts the directory.
         ''' </summary>
         ''' <param name="theDirectory">The directory.</param>
-        ''' <param name="stringBuilder">The string builder.</param>
+        ''' <param name="sb">The string builder.</param>
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
-        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByRef stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
+        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal sb As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True
             Dim FileLineCount As Integer = 0
@@ -491,22 +479,21 @@ Namespace Utilities
                     Next
                     If mCountFile Then
                         ' open files for streamreader
-                        Dim mStreamReader As StreamReader = File.OpenText(directoryFile.FullName)
-                        'loop until the end
-                        While mStreamReader.Peek() > -1
-                            Dim myString As String = mStreamReader.ReadLine
-                            If (Not myString.Trim.StartsWith("'", StringComparison.OrdinalIgnoreCase) Or Not myString.Trim.StartsWith("//", StringComparison.OrdinalIgnoreCase)) And Not myString.Trim.Length = 0 Then
-                                FileLineCount += 1
-                            End If
-                        End While
-                        'close the streamreader
-                        mStreamReader.Close()
+                        Using mStreamReader As StreamReader = File.OpenText(directoryFile.FullName)
+                            'loop until the end
+                            While mStreamReader.Peek() > -1
+                                Dim myString As String = mStreamReader.ReadLine
+                                If (Not myString.Trim.StartsWith("'", StringComparison.OrdinalIgnoreCase) Or Not myString.Trim.StartsWith("//", StringComparison.OrdinalIgnoreCase)) And Not myString.Trim.Length = 0 Then
+                                    FileLineCount += 1
+                                End If
+                            End While
+                        End Using
                         If FileLineCount > 0 Then
                             If writeDirectory Then
-                                stringBuilder.AppendLine("<br>" + theDirectory.FullName)
+                                sb.AppendLine("<br>" + theDirectory.FullName)
                                 writeDirectory = False
                             End If
-                            stringBuilder.AppendLine("<br>" + s_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
+                            sb.AppendLine("<br>" + s_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
                         End If
                         If FileLineCount > 0 Then
                             directoryLineCount += FileLineCount
@@ -535,6 +522,30 @@ Namespace Utilities
             Else 'Bytes
                 Return String.Concat(bytes, " Bytes")
             End If
+        End Function
+
+        Private Function getDataTable() As DataTable
+            Dim mRetTable As DataTable = Nothing
+            Dim mTempDataTable As DataTable = Nothing
+            Try
+                mTempDataTable = New DataTable("MyTable")
+                mTempDataTable.Locale = CultureInfo.InvariantCulture
+                mTempDataTable.Columns.Add("Name", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("Extension", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("Delete", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("Type", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("Size", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("Modified", System.Type.GetType("System.String"))
+                mTempDataTable.Columns.Add("FullName", System.Type.GetType("System.String"))
+                mTempDataTable.Columns("FullName").ReadOnly = True
+
+                mRetTable = mTempDataTable
+            Catch ex As Exception
+            Finally
+                If Not mTempDataTable Is Nothing Then mTempDataTable.Dispose()
+            End Try
+            Return mRetTable
         End Function
     End Module
 End Namespace

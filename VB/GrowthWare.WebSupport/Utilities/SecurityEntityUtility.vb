@@ -39,7 +39,7 @@ Namespace Utilities
         ''' </summary>
         ''' <returns>MSecurityEntityProfile</returns>
         Public Shared Function GetCurrentProfile() As MSecurityEntityProfile
-            Dim mAccount As String = AccountUtility.GetHttpContextUserName
+            Dim mAccount As String = AccountUtility.HttpContextUserName
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount)
             Dim mRetVal As MSecurityEntityProfile = Nothing
             If mClientChoicesState IsNot Nothing Then
