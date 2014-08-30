@@ -548,14 +548,14 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="theDirectory">The dir.</param>
         /// <param name="level">An int representing the level.</param>
-        /// <param name="stringBuilder">The string builder.</param>
+        /// <param name="outputBuilder">The string builder.</param>
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
         /// <param name="totalLinesOfCode">The total lines of code.</param>
         /// <param name="fileArray">The file array.</param>
         /// <returns>System.String.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId = "string")]
-        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder stringBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
         {
             DirectoryInfo[] subDirectories = null;
             try
@@ -566,20 +566,20 @@ namespace GrowthWare.WebSupport.Utilities
                 if (directoryLineCount > 0)
                 {
                     totalLinesOfCode += totalLinesOfCode;
-                    stringBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount);
-                    stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                    outputBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount);
+                    outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
                     directoryLineCount = 0;
                 }
                 for (x = 0; x <= numDirectories; x++)
                 {
                     if (subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "BIN" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "DEBUG" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "RELEASE")
                     {
-                        CountDirectory(subDirectories[x], ref stringBuilder, excludeList, fileArray, ref directoryLineCount);
+                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, ref directoryLineCount);
                         if (directoryLineCount > 0)
                         {
                             totalLinesOfCode += directoryLineCount;
-                            stringBuilder.AppendLine("<br>Lines of code for " + subDirectories[x].Name + " " + directoryLineCount);
-                            stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                            outputBuilder.AppendLine("<br>Lines of code for " + subDirectories[x].Name + " " + directoryLineCount);
+                            outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
                             directoryLineCount = 0;
                         }
                     }
@@ -587,14 +587,14 @@ namespace GrowthWare.WebSupport.Utilities
                     {
                         level = level + 1;
                     }
-                    GetLineCount(subDirectories[x], level, stringBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray);
+                    GetLineCount(subDirectories[x], level, outputBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray);
                 }
             }
             catch (Exception)
             {
-                stringBuilder.AppendLine("Directory not found");
+                outputBuilder.AppendLine("Directory not found");
             }
-            return stringBuilder.ToString();
+            return outputBuilder.ToString();
         }
 
 
@@ -602,11 +602,11 @@ namespace GrowthWare.WebSupport.Utilities
         /// Counts the directory.
         /// </summary>
         /// <param name="theDirectory">The directory.</param>
-        /// <param name="stringBuilder">The string builder.</param>
+        /// <param name="output">The string builder.</param>
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="fileArray">The file array.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
-        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder stringBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
+        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder output, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
         {
             Boolean writeDirectory = true;
             int FileLineCount = 0;
@@ -643,10 +643,10 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             if (writeDirectory)
                             {
-                                stringBuilder.AppendLine("<br>" + theDirectory.FullName);
+                                output.AppendLine("<br>" + theDirectory.FullName);
                                 writeDirectory = false;
                             }
-                            stringBuilder.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
+                            output.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
                         }
                         if (FileLineCount > 0)
                         {

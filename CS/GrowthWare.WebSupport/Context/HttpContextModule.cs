@@ -20,6 +20,7 @@ namespace GrowthWare.WebSupport.Context
     /// as well as adding the requested function and current security for the requested function.
     /// </summary>
     /// <remarks></remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")]
     public class HttpContextModule : IHttpModule, IRequiresSessionState
     {
         private bool m_Disposing = false;
@@ -34,17 +35,6 @@ namespace GrowthWare.WebSupport.Context
                 context.AcquireRequestState += this.onAcquireRequestState;
                 context.BeginRequest += this.onBeginRequest;
                 context.EndRequest += this.onEndRequest;
-            }
-        }
-
-        /// <summary>
-        /// Implemetation of dispose
-        /// </summary>
-        public void Dispose()
-        {
-            if (!m_Disposing)
-            {
-                m_Disposing = true;
             }
         }
 
@@ -121,8 +111,8 @@ namespace GrowthWare.WebSupport.Context
         {
             if (HttpContext.Current.Session == null) return;
             Logger mLog = Logger.Instance();
-            MAccountProfile mAccountProfile = AccountUtility.GetProfile("Anonymous");
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("Generic_Home");
+            //MAccountProfile mAccountProfile = AccountUtility.GetProfile("Anonymous");
+            //MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("Generic_Home");
             mLog.Debug("onAcquireRequestState():: Started");
             mLog.Debug("onAcquireRequestState():: Done");
         }
@@ -158,29 +148,31 @@ namespace GrowthWare.WebSupport.Context
                         }
                     }
                 }
-                catch (Exception ex)
+                catch (WebSupportException ex)
                 {
                     if (mSendError)
                     {
-                        try
+                        if (!ex.ToString().Contains("Invalid JSON primitive"))
                         {
-                            if (!ex.ToString().Contains("Invalid JSON primitive"))
-                            {
-                                Logger mLog = Logger.Instance();
-                                mLog.Error(ex);
-                            }
-                            HttpResponse mCurrentResponse = mContext.Response;
-                            mCurrentResponse.Clear();
-                            mCurrentResponse.Write("{\"Message\":\"We are very sorry but an error has occurred, please try your request again.\"}");
-                            mCurrentResponse.ContentType = "text/html";
-                            mCurrentResponse.StatusDescription = "500 Internal Error";
-                            mCurrentResponse.StatusCode = 500;
-                            mCurrentResponse.TrySkipIisCustomErrors = true;
-                            mCurrentResponse.Flush();
-                            HttpContext.Current.Server.ClearError();
-                            HttpContext.Current.ApplicationInstance.CompleteRequest();
+                            Logger mLog = Logger.Instance();
+                            mLog.Error(ex);
                         }
-                        catch { }
+                        if (mContext != null) 
+                        {
+                            HttpResponse mCurrentResponse = mContext.Response;
+                            if (mCurrentResponse != null)
+                            {
+                                mCurrentResponse.Clear();
+                                mCurrentResponse.Write("{\"Message\":\"We are very sorry but an error has occurred, please try your request again.\"}");
+                                mCurrentResponse.ContentType = "text/html";
+                                mCurrentResponse.StatusDescription = "500 Internal Error";
+                                mCurrentResponse.StatusCode = 500;
+                                mCurrentResponse.TrySkipIisCustomErrors = true;
+                                mCurrentResponse.Flush();
+                                HttpContext.Current.Server.ClearError();
+                                HttpContext.Current.ApplicationInstance.CompleteRequest();
+                            }
+                        }
                     }
                 }
                 finally
@@ -223,6 +215,32 @@ namespace GrowthWare.WebSupport.Context
                 } 
             }
             return mRetVal;
+        }
+
+        /// <summary>
+        /// Implements IDispose
+        /// </summary>
+        /// <param name="disposing">Boolean</param>
+        /// <remarks></remarks>
+        protected virtual void Dispose(bool disposing)
+        {
+            // Check to see if Dispose has already been called.
+            if (!m_Disposing)
+            {
+                if (disposing)
+                {
+                    m_Filter.Dispose();
+                }
+                // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+                // TODO: set large fields to null.
+
+            }
+            m_Disposing = true;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
         }
     }
 }

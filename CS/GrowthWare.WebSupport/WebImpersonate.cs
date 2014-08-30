@@ -11,6 +11,8 @@ namespace GrowthWare.WebSupport
     public sealed class WebImpersonate
     {
 
+        private WebImpersonate() { }
+
         /// <summary>
         /// Begins the impersonation process
         /// </summary>

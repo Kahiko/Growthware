@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrowthWare.Framework.Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -62,7 +63,11 @@ namespace GrowthWare.WebSupport.Context
                     {
                         this.CopyStream.Position = pos;
                     }
-                    catch { }
+                    catch (ArgumentOutOfRangeException ex) 
+                    {
+                        Logger mLogger = Logger.Instance();
+                        mLogger.Error(ex);
+                    }
                 }
             }
         }

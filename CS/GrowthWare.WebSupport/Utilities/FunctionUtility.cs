@@ -29,7 +29,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Retrieves all functions from the either the database or cache
         /// </summary>
         /// <returns>A Collection of MFunctinProfiles</returns>
-        public static Collection<MFunctionProfile> GetFunctions()
+        public static Collection<MFunctionProfile> Functions()
         {
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
@@ -48,7 +48,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the current profile.
         /// </summary>
         /// <returns>MFunctionProfile.</returns>
-        public static MFunctionProfile GetCurrentProfile()
+        public static MFunctionProfile CurrentProfile()
         {
             MFunctionProfile mRetVal = (MFunctionProfile)HttpContext.Current.Items[s_FunctionProfileInfoName];
             return mRetVal;
@@ -65,7 +65,7 @@ namespace GrowthWare.WebSupport.Utilities
             MFunctionProfile mRetVal = null;
             if (!string.IsNullOrEmpty(action))
             {
-                var mResult = from mProfile in GetFunctions()
+                var mResult = from mProfile in Functions()
                               where mProfile.Action.ToLower(CultureInfo.CurrentCulture) == action.ToLower(CultureInfo.CurrentCulture)
                               select mProfile;
                 mRetVal = new MFunctionProfile();
@@ -87,7 +87,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="profile"></param>
         /// <returns></returns>
-        public static DataTable GetFunctionMenuOrder(ref MFunctionProfile profile)
+        public static DataTable GetFunctionMenuOrder(MFunctionProfile profile)
         {
             BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
             return mBFunctions.GetMenuOrder(profile);
@@ -101,7 +101,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks>Returns null object if not found</remarks>
         public static MFunctionProfile GetProfile(int id)
         {
-            var mResult = from mProfile in GetFunctions()
+            var mResult = from mProfile in Functions()
                           where mProfile.Id == id
                           select mProfile;
             MFunctionProfile mRetVal = null;
