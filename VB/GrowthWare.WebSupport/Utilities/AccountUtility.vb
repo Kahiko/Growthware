@@ -29,8 +29,8 @@ Namespace Utilities
         ''' Handles authentication methology
         ''' </remarks>
         Public Function Authenticated(ByVal account As String, ByVal password As String) As Boolean
-            If Not String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
-            If Not String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!")
             Dim retVal As Boolean = False
             Dim mySEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile
             Dim mDomainPassed As Boolean = False
@@ -176,7 +176,7 @@ Namespace Utilities
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Public Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
-            If Not String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             Dim mRetVal As DataTable = Nothing
             If account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then

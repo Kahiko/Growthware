@@ -415,14 +415,14 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="theDirectory">The dir.</param>
         ''' <param name="level">An int representing the level.</param>
-        ''' <param name="stringBuilder">The string builder.</param>
+        ''' <param name="outputBuilder">The string builder.</param>
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
         ''' <param name="totalLinesOfCode">The total lines of code.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
-        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1720:IdentifiersShouldNotContainTypeNames", MessageId:="string")>
-        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal stringBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
+        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
                 subDirectories = theDirectory.GetDirectories()
@@ -430,38 +430,38 @@ Namespace Utilities
                 Dim numDirectories As Integer = subDirectories.Length - 1
                 If directoryLineCount > 0 Then
                     totalLinesOfCode += totalLinesOfCode
-                    stringBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount)
-                    stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode)
+                    outputBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount)
+                    outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode)
                     directoryLineCount = 0
                 End If
                 For x = 0 To numDirectories
                     If subDirectories(x).Name.Trim.ToUpper((CultureInfo.InvariantCulture)) <> "BIN" AndAlso subDirectories(x).Name.Trim.ToUpper(CultureInfo.InvariantCulture) <> "DEBUG" AndAlso subDirectories(x).Name.Trim.ToUpper(CultureInfo.InvariantCulture) <> "RELEASE" Then
-                        CountDirectory(subDirectories(x), stringBuilder, excludeList, fileArray, directoryLineCount)
+                        CountDirectory(subDirectories(x), outputBuilder, excludeList, fileArray, directoryLineCount)
                         If (directoryLineCount > 0) Then
                             totalLinesOfCode += directoryLineCount
-                            stringBuilder.AppendLine("<br>Lines of code for " + subDirectories(x).Name.ToString(CultureInfo.InvariantCulture) + " " + directoryLineCount.ToString(CultureInfo.InvariantCulture))
-                            stringBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode.ToString(CultureInfo.InvariantCulture))
+                            outputBuilder.AppendLine("<br>Lines of code for " + subDirectories(x).Name.ToString(CultureInfo.InvariantCulture) + " " + directoryLineCount.ToString(CultureInfo.InvariantCulture))
+                            outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode.ToString(CultureInfo.InvariantCulture))
                             directoryLineCount = 0
                         End If
                     End If
-                    GetLineCount(subDirectories(x), level + 1, stringBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray)
+                    GetLineCount(subDirectories(x), level + 1, outputBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray)
                 Next
 
             Catch
-                stringBuilder.AppendLine("Directory not found")
+                outputBuilder.AppendLine("Directory not found")
             End Try
-            Return stringBuilder.ToString()
+            Return outputBuilder.ToString()
         End Function
 
         ''' <summary>
         ''' Counts the directory.
         ''' </summary>
         ''' <param name="theDirectory">The directory.</param>
-        ''' <param name="sb">The string builder.</param>
+        ''' <param name="outputBuilder">The string builder.</param>
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
-        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal sb As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
+        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True
             Dim FileLineCount As Integer = 0
@@ -490,10 +490,10 @@ Namespace Utilities
                         End Using
                         If FileLineCount > 0 Then
                             If writeDirectory Then
-                                sb.AppendLine("<br>" + theDirectory.FullName)
+                                outputBuilder.AppendLine("<br>" + theDirectory.FullName)
                                 writeDirectory = False
                             End If
-                            sb.AppendLine("<br>" + s_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
+                            outputBuilder.AppendLine("<br>" + s_Space + directoryFile.Name.ToString(CultureInfo.InvariantCulture) + " " + FileLineCount.ToString(CultureInfo.InvariantCulture))
                         End If
                         If FileLineCount > 0 Then
                             directoryLineCount += FileLineCount

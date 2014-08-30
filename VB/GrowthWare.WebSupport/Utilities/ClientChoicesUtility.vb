@@ -17,7 +17,7 @@ Namespace Utilities
         End Function
 
         Public Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
-            If Not String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
             Dim mRetVal As MClientChoicesState = Nothing
             If HttpContext.Current.Cache IsNot Nothing Then
                 mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)

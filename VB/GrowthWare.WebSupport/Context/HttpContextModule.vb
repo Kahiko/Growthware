@@ -7,14 +7,16 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 Imports System.Web.Configuration
+Imports System.Web.SessionState
 
 Namespace Context
     ''' <summary>
     ''' HttpContext entry point
     ''' </summary>
     ''' <remarks>Will initiate the ClientChoicesHttpModule</remarks>
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1001:TypesThatOwnDisposableFieldsShouldBeDisposable")>
     Public Class HttpContextModule
-        Implements IHttpModule
+        Implements IHttpModule, IRequiresSessionState
 
         Private m_DisposedValue As Boolean ' To detect redundant calls
         Private m_Filter As OutputFilterStream
@@ -27,17 +29,10 @@ Namespace Context
         Protected Overridable Sub Dispose(ByVal disposing As Boolean)
             If Not Me.m_DisposedValue Then
                 If disposing Then
-                    ' TODO: dispose managed state (managed objects).
+                    m_Filter.Dispose()
                 End If
             End If
             Me.m_DisposedValue = True
-        End Sub
-
-        ' TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
-        Protected Overrides Sub Finalize()
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(False)
-            MyBase.Finalize()
         End Sub
 
         ''' <summary>
@@ -45,8 +40,7 @@ Namespace Context
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub Dispose() Implements IHttpModule.Dispose
-            ' Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
-            Dispose(True)
+            Me.Dispose(True)
         End Sub
 
         ''' <summary>
@@ -96,8 +90,8 @@ Namespace Context
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
-            Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Anonymous")
-            Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile("Generic_Home")
+            'Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Anonymous")
+            'Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile("Generic_Home")
             mLog.Debug("onAcquireRequestState():: Done")
             Dim mEx As New WebSupportException("This is a test for logging")
             mLog.Debug(mEx)
@@ -158,25 +152,26 @@ Namespace Context
                             End If
                         End If
                     End If
-                Catch ex As Exception
+                Catch ex As WebSupportException
                     If mSendError Then
-                        Try
-                            If Not ex.ToString().Contains("Invalid JSON primitive") Then
-                                Dim mLog As Logger = Logger.Instance()
-                                mLog.Error(ex)
-                            End If
+                        Dim mLog As Logger = Logger.Instance()
+                        If Not ex.ToString().Contains("Invalid JSON primitive") Then
+                            mLog.Error(ex)
+                        End If
+                        If Not mContext Is Nothing Then
                             Dim mCurrentResponse As HttpResponse = mContext.Response
-                            mCurrentResponse.Clear()
-                            mCurrentResponse.Write("{""Message"":""We are very sorry but an error has occurred, please try your request again.""}")
-                            mCurrentResponse.ContentType = "text/html"
-                            mCurrentResponse.StatusDescription = "500 Internal Error"
-                            mCurrentResponse.StatusCode = 500
-                            mCurrentResponse.TrySkipIisCustomErrors = True
-                            mCurrentResponse.Flush()
-                            HttpContext.Current.Server.ClearError()
-                            HttpContext.Current.ApplicationInstance.CompleteRequest()
-                        Catch
-                        End Try
+                            If Not mCurrentResponse Is Nothing Then
+                                mCurrentResponse.Clear()
+                                mCurrentResponse.Write("{""Message"":""We are very sorry but an error has occurred, please try your request again.""}")
+                                mCurrentResponse.ContentType = "text/html"
+                                mCurrentResponse.StatusDescription = "500 Internal Error"
+                                mCurrentResponse.StatusCode = 500
+                                mCurrentResponse.TrySkipIisCustomErrors = True
+                                mCurrentResponse.Flush()
+                                HttpContext.Current.Server.ClearError()
+                                HttpContext.Current.ApplicationInstance.CompleteRequest()
+                            End If
+                        End If
                     End If
                 Finally
                     If m_Filter IsNot Nothing Then
@@ -226,6 +221,7 @@ Namespace Context
             End If
             Return mRetval
         End Function
+
     End Class
 
 End Namespace

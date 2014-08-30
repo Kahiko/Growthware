@@ -1,4 +1,5 @@
 ﻿Imports System.IO
+Imports GrowthWare.Framework.Common
 
 Namespace Context
     ''' <summary>
@@ -45,7 +46,9 @@ Namespace Context
                 Finally
                     Try
                         Me.CopyStream.Position = pos
-                    Catch
+                    Catch ex As ArgumentOutOfRangeException
+                        Dim mLog As Logger = Logger.Instance()
+                        mLog.Error(ex)
                     End Try
                 End Try
             End SyncLock

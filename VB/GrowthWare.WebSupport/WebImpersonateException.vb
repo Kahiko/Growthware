@@ -8,7 +8,7 @@
 Public Class WebImpersonateException
     Inherits Exception
 
-    Private Sub New()
+    Public Sub New()
 
     End Sub
 

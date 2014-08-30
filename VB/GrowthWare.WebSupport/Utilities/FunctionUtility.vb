@@ -13,7 +13,7 @@ Namespace Utilities
         ''' Retrieves all functions from the either the database or cache
         ''' </summary>
         ''' <returns>A Collection of MFunctinProfiles</returns>
-        Public Function GetFunctions() As Collection(Of MFunctionProfile)
+        Public Function Functions() As Collection(Of MFunctionProfile)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile()
             Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
@@ -51,7 +51,7 @@ Namespace Utilities
         Public Function GetProfile(ByVal action As String) As MFunctionProfile
             Dim mRetVal As MFunctionProfile = Nothing
             If Not String.IsNullOrEmpty(action) Then
-                Dim mResult = From mProfile In GetFunctions() Where mProfile.Action.ToLower(CultureInfo.CurrentCulture) = action.ToLower(CultureInfo.CurrentCulture) Select mProfile
+                Dim mResult = From mProfile In Functions() Where mProfile.Action.ToLower(CultureInfo.CurrentCulture) = action.ToLower(CultureInfo.CurrentCulture) Select mProfile
                 mRetVal = New MFunctionProfile()
                 Try
                     mRetVal = mResult.First
@@ -66,7 +66,7 @@ Namespace Utilities
         ''' Gets the current profile.
         ''' </summary>
         ''' <returns>MFunctionProfile.</returns>
-        Public Function GetCurrentProfile() As MFunctionProfile
+        Public Function CurrentProfile() As MFunctionProfile
             Dim mRetVal As MFunctionProfile
             mRetVal = CType(HttpContext.Current.Items(s_FunctionProfileInfoName), MFunctionProfile)
             Return mRetVal
@@ -79,7 +79,7 @@ Namespace Utilities
         ''' <returns>MFunctionProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
         Public Function GetProfile(ByVal id As Integer) As MFunctionProfile
-            Dim mResult = From mProfile In GetFunctions() Where mProfile.Id = id Select mProfile
+            Dim mResult = From mProfile In Functions() Where mProfile.Id = id Select mProfile
             Dim mRetVal As MFunctionProfile = New MFunctionProfile()
             Try
                 mRetVal = mResult.First
@@ -94,7 +94,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetFunctionMenuOrder(ByRef profile As MFunctionProfile) As DataTable
+        Public Function GetFunctionMenuOrder(ByVal profile As MFunctionProfile) As DataTable
             Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
             Return mBFunctions.GetMenuOrder(profile)
         End Function

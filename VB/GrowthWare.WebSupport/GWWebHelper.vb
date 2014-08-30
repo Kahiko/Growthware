@@ -1,13 +1,14 @@
 ﻿Imports System.Web
 
-Public NotInheritable Class GWWebHelper
-    Private Shared s_ExceptionError As Exception = Nothing
+Public Module GWWebHelper
+    Private s_ExceptionError As Exception = Nothing
+
 
     ''' <summary>
     ''' Gets the core web administration verison.
     ''' </summary>
     ''' <value>The core web administration verison.</value>
-    Shared ReadOnly Property CoreWebAdministrationVersion() As String
+    ReadOnly Property CoreWebAdministrationVersion() As String
         Get
             Dim myVersion As String = String.Empty
             Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.WebApplication")
@@ -22,7 +23,7 @@ Public NotInheritable Class GWWebHelper
     ''' Gets or sets an exception.
     ''' </summary>
     ''' <value>The exception error.</value>
-    Shared Property ExceptionError() As Exception
+    Property ExceptionError() As Exception
         Get
             Return s_ExceptionError
         End Get
@@ -35,7 +36,7 @@ Public NotInheritable Class GWWebHelper
     ''' Gets the frame work verison.
     ''' </summary>
     ''' <value>The frame work verison.</value>
-    Shared ReadOnly Property FrameworkVersion() As String
+    ReadOnly Property FrameworkVersion() As String
         Get
             Dim myVersion As String = String.Empty
             Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.Framework")
@@ -52,11 +53,12 @@ Public NotInheritable Class GWWebHelper
     ''' <param name="request">The request.</param>
     ''' <param name="queryString">The query string.</param>
     ''' <returns>System.String.</returns>
-    Public Shared Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
+    Public Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
+        If request Is Nothing Then Throw New ArgumentNullException("request", "request can not be null (Nothing in VB)!")
         Dim mRetVal As String = String.Empty
         If Not request.QueryString(queryString) Is Nothing Then
             mRetVal = request.QueryString(queryString)
         End If
         Return mRetVal
     End Function
-End Class
+End Module
