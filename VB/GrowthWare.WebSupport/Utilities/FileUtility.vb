@@ -423,6 +423,8 @@ Namespace Utilities
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
                 subDirectories = theDirectory.GetDirectories()
@@ -447,7 +449,7 @@ Namespace Utilities
                     GetLineCount(subDirectories(x), level + 1, outputBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray)
                 Next
 
-            Catch
+            Catch ex As NullReferenceException
                 outputBuilder.AppendLine("Directory not found")
             End Try
             Return outputBuilder.ToString()
@@ -461,7 +463,12 @@ Namespace Utilities
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
-        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
+        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByVal directoryLineCount As Integer)
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net")
+            If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray can not be null or Nothing in VB.net")
+
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True
             Dim FileLineCount As Integer = 0
@@ -527,8 +534,8 @@ Namespace Utilities
         Private Function getDataTable() As DataTable
             Dim mRetTable As DataTable = Nothing
             Dim mTempDataTable As DataTable = Nothing
+            mTempDataTable = New DataTable("MyTable")
             Try
-                mTempDataTable = New DataTable("MyTable")
                 mTempDataTable.Locale = CultureInfo.InvariantCulture
                 mTempDataTable.Columns.Add("Name", System.Type.GetType("System.String"))
                 mTempDataTable.Columns.Add("ShortFileName", System.Type.GetType("System.String"))
@@ -539,12 +546,12 @@ Namespace Utilities
                 mTempDataTable.Columns.Add("Modified", System.Type.GetType("System.String"))
                 mTempDataTable.Columns.Add("FullName", System.Type.GetType("System.String"))
                 mTempDataTable.Columns("FullName").ReadOnly = True
-
-                mRetTable = mTempDataTable
-            Catch ex As Exception
+            Catch ex As NullReferenceException
+                Throw
             Finally
                 If Not mTempDataTable Is Nothing Then mTempDataTable.Dispose()
             End Try
+            mRetTable = mTempDataTable
             Return mRetTable
         End Function
     End Module

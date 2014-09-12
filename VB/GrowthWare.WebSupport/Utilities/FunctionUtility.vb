@@ -5,6 +5,7 @@ Imports System.Collections.ObjectModel
 Imports System.Globalization
 Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
     Public Module FunctionUtility
@@ -138,7 +139,7 @@ Namespace Utilities
             Try
                 Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Save(profile, saveGroups, saveRoles)
-            Catch ex As Exception
+            Catch ex As DataAccessLayerException
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
             Finally
@@ -154,7 +155,7 @@ Namespace Utilities
             Try
                 Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Delete(functionSeqId)
-            Catch ex As Exception
+            Catch ex As DataAccessLayerException
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
             Finally
