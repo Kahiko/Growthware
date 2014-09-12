@@ -15,7 +15,7 @@ Namespace Utilities
         ''' </summary>
         ''' <returns>A Collection of MFunctinProfiles</returns>
         Public Function Functions() As Collection(Of MFunctionProfile)
-            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile()
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
             Dim mFunctionCollection As Collection(Of MFunctionProfile) = Nothing
@@ -38,7 +38,7 @@ Namespace Utilities
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
             profile.UpdatedBy = updatedBy
             profile.UpdatedDate = updatedDate
-            Dim mBAppFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBAppFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBAppFunctions.MoveMenuOrder(profile, direction)
             RemoveCachedFunctions()
         End Sub
@@ -96,7 +96,7 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
         Public Function GetFunctionMenuOrder(ByVal profile As MFunctionProfile) As DataTable
-            Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBFunctions.GetMenuOrder(profile)
         End Function
 
@@ -105,7 +105,7 @@ Namespace Utilities
         ''' </summary>
         Public Sub RemoveCachedFunctions()
             Dim mCacheName As String = String.Empty
-            Dim mSecurityProfiles As Collection(Of MSecurityEntityProfile) = SecurityEntityUtility.GetProfiles()
+            Dim mSecurityProfiles As Collection(Of MSecurityEntityProfile) = SecurityEntityUtility.Profiles()
             For Each mProfile In mSecurityProfiles
                 mCacheName = mProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
                 CacheController.RemoveFromCache(mCacheName)
@@ -121,7 +121,7 @@ Namespace Utilities
         ''' <remarks></remarks>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
-                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 Return mBFunctions.Search(searchCriteria)
             Catch ex As IndexOutOfRangeException
                 'no data is not a problem
@@ -137,7 +137,7 @@ Namespace Utilities
         ''' <param name="saveRoles">if set to <c>true</c> [save roles].</param>
         Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
             Try
-                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Save(profile, saveGroups, saveRoles)
             Catch ex As DataAccessLayerException
                 Dim mLog As Logger = Logger.Instance()
@@ -153,7 +153,7 @@ Namespace Utilities
         ''' <param name="functionSeqId">The function seq id.</param>
         Public Sub Delete(ByVal functionSeqId As Integer)
             Try
-                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Delete(functionSeqId)
             Catch ex As DataAccessLayerException
                 Dim mLog As Logger = Logger.Instance()

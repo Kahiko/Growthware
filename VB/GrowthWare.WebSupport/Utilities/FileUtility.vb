@@ -9,7 +9,7 @@ Imports System.Web
 Imports GrowthWare.Framework.Common
 
 Namespace Utilities
-    Module FileUtility
+    Public Module FileUtility
         Private s_Space As String = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 
         ''' <summary>
@@ -344,11 +344,11 @@ Namespace Utilities
         ''' Renames a file from the "source" to the "destination"
         ''' </summary>
         ''' <param name="sourceFileName">string</param>
-        ''' <param name="destinationfileName">string</param>
+        ''' <param name="destinationFileName">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
         ''' <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
-        Public Function RenameFile(ByVal sourceFileName As String, ByVal destinationfileName As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Function RenameFile(ByVal sourceFileName As String, ByVal destinationFileName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "Can not be null.")
             End If
@@ -359,7 +359,7 @@ Namespace Utilities
                 If directoryProfile.Impersonate Then
                     mImpersonatedUser = WebImpersonate.ImpersonateNow(directoryProfile.ImpersonateAccount, directoryProfile.ImpersonatePassword)
                 End If
-                File.Move(sourceFileName, destinationfileName)
+                File.Move(sourceFileName, destinationFileName)
             Catch ex As IOException
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
@@ -422,7 +422,7 @@ Namespace Utilities
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
-        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByRef directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
             If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
             Dim subDirectories As DirectoryInfo() = Nothing
@@ -463,10 +463,11 @@ Namespace Utilities
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByVal directoryLineCount As Integer)
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
             If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
-            If outputBuilder Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net")
+            If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net")
             If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray can not be null or Nothing in VB.net")
 
             Dim sFileType As [String]

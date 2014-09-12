@@ -32,7 +32,7 @@ Namespace Utilities
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
             If String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!")
             Dim retVal As Boolean = False
-            Dim mySEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile
+            Dim mySEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
             Dim mDomainPassed As Boolean = False
             If account.Contains("\") Then
                 mDomainPassed = True
@@ -91,7 +91,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="accountSeqId">The account seq id.</param>
         Public Sub Delete(ByVal accountSeqId As Integer)
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBAccount.Delete(accountSeqId)
         End Sub
 
@@ -108,7 +108,7 @@ Namespace Utilities
             ' besides which a list of accounts is only necessary
             ' when editing an account and it that case
             ' what accounts that are returned are dependend on the requesting account.IsSysAdmin bit.
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBAccount.GetAccounts(profile)
         End Function
 
@@ -177,7 +177,7 @@ Namespace Utilities
         ''' <remarks></remarks>
         Public Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim mRetVal As DataTable = Nothing
             If account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                 Dim mAnonMenu As String = menuType.ToString() + "Anonymous"
@@ -200,7 +200,7 @@ Namespace Utilities
         Public Function GetProfile(ByVal account As String) As MAccountProfile
             Dim mRetVal As MAccountProfile = Nothing
             Try
-                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mRetVal = mBAccount.GetProfile(account)
             Catch ex As IndexOutOfRangeException
                 Dim mMSG As String = "Count not find account: " + account + " in the database"
@@ -224,7 +224,7 @@ Namespace Utilities
                 mRetVal = Nothing
             End Try
             If Not mRetVal Is Nothing Then
-                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mRetVal = mBAccount.GetProfile(mRetVal.Account)
             End If
             Return mRetVal
@@ -247,7 +247,7 @@ Namespace Utilities
         ''' <remarks></remarks>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
-                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+                Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 Return mBAccount.Search(searchCriteria)
             Catch ex As IndexOutOfRangeException
                 'no data is not a problem
@@ -278,7 +278,7 @@ Namespace Utilities
         ''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
         Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in VB) or empty!")
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBAccount.Save(profile, saveRoles, saveGroups)
             If profile.Id = CurrentProfile().Id Then
                 RemoveInMemoryInformation(True)

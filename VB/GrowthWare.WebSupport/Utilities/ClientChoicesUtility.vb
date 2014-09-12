@@ -22,7 +22,7 @@ Namespace Utilities
             If HttpContext.Current.Cache IsNot Nothing Then
                 mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
             End If
-            Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.GetDefaultProfile(), ConfigSettings.CentralManagement)
+            Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             If fromDB Then Return mBClientChoices.GetClientChoicesState(account)
             If mRetVal Is Nothing Then
                 If account.Trim().ToLower(CultureInfo.CurrentCulture) = "anonymous" Then
@@ -58,7 +58,7 @@ Namespace Utilities
 
         Public Sub Save(ByVal clientChoicesState As MClientChoicesState)
             If clientChoicesState Is Nothing Then Throw New ArgumentNullException("clientChoicesState", "clientChoicesState can not be null (Nothing in VB)!")
-            Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.GetDefaultProfile(), ConfigSettings.CentralManagement)
+            Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             mBClientChoices.Save(clientChoicesState)
             If HttpContext.Current.Cache IsNot Nothing Then
                 HttpContext.Current.Cache(MClientChoices.SessionName) = clientChoicesState
