@@ -62,7 +62,7 @@ namespace GrowthWare.WebSupport.Utilities
                     {
                         try
                         {
-                            profilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.GetCurrentProfile().EncryptionType);
+                            profilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.CurrentProfile().EncryptionType);
                         }
                         catch (CryptoUtilityException)
                         {
@@ -114,7 +114,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="accountSeqId">The account seq id.</param>
         public static void Delete(int accountSeqId)
         {
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBAccount.Delete(accountSeqId);
         }
 
@@ -132,7 +132,7 @@ namespace GrowthWare.WebSupport.Utilities
             // besides which a list of accounts is only necessary
             // when editing an account and it that case
             // what accounts that are returned are dependend on the requesting account.IsSysAdmin bit.
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBAccount.GetAccounts(profile);
         }
 
@@ -219,7 +219,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static DataTable GetMenu(String account, MenuType menuType)
         {
             if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!");
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             DataTable mRetVal = null;
             if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
             {
@@ -245,7 +245,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>a populated MAccountProfile</returns>
         public static MAccountProfile GetProfile(String account)
         {
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             MAccountProfile mRetVal = null;
             try
             {
@@ -280,7 +280,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             if (mRetVal != null)
             {
-                BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+                BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBAccount.GetAccountProfile(mRetVal.Account);
             }
             return mRetVal;
@@ -356,7 +356,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBAccount.Search(searchCriteria);
         }
 
@@ -370,7 +370,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null (Nothing in VB) or empty!");
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBAccount.Save(profile, saveRoles, saveGroups);
             if (profile.Id == CurrentProfile().Id)
             {

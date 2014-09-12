@@ -32,7 +32,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>A Collection of MFunctinProfiles</returns>
         public static Collection<MFunctionProfile> Functions()
         {
-            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetCurrentProfile();
+            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
             Collection<MFunctionProfile> mRetVal = null;
@@ -90,7 +90,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns></returns>
         public static DataTable GetFunctionMenuOrder(MFunctionProfile profile)
         {
-            BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBFunctions.GetMenuOrder(profile);
         }
 
@@ -129,7 +129,7 @@ namespace GrowthWare.WebSupport.Utilities
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null!");
             profile.UpdatedBy = updatedBy;
             profile.UpdatedDate = updatedDate;
-            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBAppFunctions.MoveMenuOrder(profile, direction);
             RemoveCachedFunctions();
         }
@@ -140,7 +140,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static void RemoveCachedFunctions()
         {
             String mCacheName = string.Empty;
-            Collection<MSecurityEntityProfile> mSecurityProfiles = SecurityEntityUtility.GetProfiles();
+            Collection<MSecurityEntityProfile> mSecurityProfiles = SecurityEntityUtility.Profiles();
             foreach (MSecurityEntityProfile mProfile in mSecurityProfiles)
             {
                 mCacheName = mProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
@@ -156,7 +156,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="saveRoles">if set to <c>true</c> [save roles].</param>
         public static void Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
         {
-            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             try
             {
                 mBAppFunctions.Save(profile, saveGroups, saveRoles);
@@ -178,7 +178,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="functionSeqId">The function seq id.</param>
         public static void Delete(int functionSeqId)
         {
-            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             try
             {
                 mBAppFunctions.Delete(functionSeqId);
@@ -210,7 +210,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
-            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBAppFunctions.Search(searchCriteria);
         }
     }

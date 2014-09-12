@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.BusinessData.BusinessLogicLayer;
+using GrowthWare.Framework.BusinessData.DataAccessLayer;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
 using System;
@@ -29,7 +30,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// configuration file.
         /// </summary>
         /// <returns>MSecurityEntityProfile</returns>
-        public static MSecurityEntityProfile GetDefaultProfile()
+        public static MSecurityEntityProfile DefaultProfile()
         {
             if (s_DefaultProfile == null)
             {
@@ -49,7 +50,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// the default values from the config file will be returned.
         /// </summary>
         /// <returns>MSecurityEntityProfile</returns>
-        public static MSecurityEntityProfile GetCurrentProfile()
+        public static MSecurityEntityProfile CurrentProfile()
         {
             MSecurityEntityProfile mRetProfile = null;
             String mAccount = AccountUtility.HttpContextUserName();
@@ -63,13 +64,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// Retrieves all security entities from the either the database or cache
         /// </summary>
         /// <returns>A Collection of MSecurityEntityProfile</returns>
-        public static Collection<MSecurityEntityProfile> GetProfiles()
+        public static Collection<MSecurityEntityProfile> Profiles()
         {
             Collection<MSecurityEntityProfile> mRetVal = null;
             mRetVal = (Collection<MSecurityEntityProfile>)(HttpContext.Current.Cache[s_CacheName]);
             if (mRetVal == null)
             {
-                BSecurityEntity mBSecurityEntity = new BSecurityEntity(GetDefaultProfile(), ConfigSettings.CentralManagement);
+                BSecurityEntity mBSecurityEntity = new BSecurityEntity(DefaultProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBSecurityEntity.SecurityEntities();
                 CacheController.AddToCacheDependency(s_CacheName, mRetVal);
             }
@@ -84,7 +85,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static MSecurityEntityProfile GetProfile(String name)
         {
             MSecurityEntityProfile mRetVal = new MSecurityEntityProfile();
-            var mResult = from mProfile in GetProfiles()
+            var mResult = from mProfile in Profiles()
                           where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             try
@@ -107,7 +108,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static MSecurityEntityProfile GetProfile(int accountSeqId)
         {
             MSecurityEntityProfile mRetVal = new MSecurityEntityProfile();
-            var mResult = from mProfile in GetProfiles()
+            var mResult = from mProfile in Profiles()
                           where mProfile.Id == accountSeqId
                           select mProfile;
             try
@@ -130,7 +131,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataView.</returns>
         public static DataView GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
         {
-            BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+            BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin).DefaultView;
         }
 
@@ -139,14 +140,14 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="searchCriteria">The search criteria.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable Search(ref MSearchCriteria searchCriteria)
+        public static DataTable Search(MSearchCriteria searchCriteria)
         {
             try
             {
-                BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+                BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 return mBSecurityEntities.Search(searchCriteria);
             }
-            catch (Exception)
+            catch (IndexOutOfRangeException)
             {
                 return null;
             }
@@ -160,11 +161,11 @@ namespace GrowthWare.WebSupport.Utilities
         {
             try
             {
-                BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.GetCurrentProfile(), ConfigSettings.CentralManagement);
+                BSecurityEntity mBSecurityEntities = new BSecurityEntity(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mBSecurityEntities.Save(profile);
                 CacheController.RemoveAllCache();
             }
-            catch (Exception ex)
+            catch (DataAccessLayerException ex)
             {
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
