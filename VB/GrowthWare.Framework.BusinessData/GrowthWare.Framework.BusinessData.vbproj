@@ -43,6 +43,12 @@
   <PropertyGroup>
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GrowthWare.Framework.BusinessData.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
@@ -97,6 +103,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="GrowthWare.Framework.BusinessData.pfx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>
