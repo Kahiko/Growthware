@@ -34,6 +34,12 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GrowthWare.WebSupport.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
@@ -62,7 +68,9 @@
     <Compile Include="WebImpersonateException.cs" />
     <Compile Include="WebSupportException.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="GrowthWare.WebSupport.pfx" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.csproj">
       <Project>{6fbbcb61-2d21-4d8e-958e-30683db4e833}</Project>
