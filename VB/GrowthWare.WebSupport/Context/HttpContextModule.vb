@@ -29,7 +29,7 @@ Namespace Context
         Protected Overridable Sub Dispose(ByVal disposing As Boolean)
             If Not Me.m_DisposedValue Then
                 If disposing Then
-                    m_Filter.Dispose()
+                    If Not m_Filter Is Nothing Then m_Filter.Dispose()
                 End If
             End If
             Me.m_DisposedValue = True
