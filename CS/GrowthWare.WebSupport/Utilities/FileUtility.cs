@@ -222,9 +222,9 @@ namespace GrowthWare.WebSupport.Utilities
         {
             DataTable mTempRetTable = null;
             DataTable mRetTable = null;
+            mTempRetTable = new DataTable("MyTable");
             try
             {
-                mTempRetTable = new DataTable("MyTable");
                 mTempRetTable.Locale = CultureInfo.InvariantCulture;
                 // Add the column header
                 mTempRetTable.Columns.Add("Name", System.Type.GetType("System.String"));
@@ -236,19 +236,16 @@ namespace GrowthWare.WebSupport.Utilities
                 mTempRetTable.Columns.Add("Modified", System.Type.GetType("System.String"));
                 mTempRetTable.Columns.Add("FullName", System.Type.GetType("System.String"));
                 mTempRetTable.Columns["FullName"].ReadOnly = true;
-                mTempRetTable.Locale = CultureInfo.InvariantCulture;
                 mRetTable = mTempRetTable;
             }
-            catch (Exception)
+            catch (NullReferenceException)
             {
-
                 throw;
             }
             finally 
             {
                 if (mTempRetTable != null) mTempRetTable.Dispose();
             }
-
             return mRetTable;
         }
 
@@ -557,6 +554,8 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
         {
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net");
             DirectoryInfo[] subDirectories = null;
             try
             {
@@ -574,7 +573,7 @@ namespace GrowthWare.WebSupport.Utilities
                 {
                     if (subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "BIN" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "DEBUG" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "RELEASE")
                     {
-                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, ref directoryLineCount);
+                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, directoryLineCount);
                         if (directoryLineCount > 0)
                         {
                             totalLinesOfCode += directoryLineCount;
@@ -590,7 +589,7 @@ namespace GrowthWare.WebSupport.Utilities
                     GetLineCount(subDirectories[x], level, outputBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray);
                 }
             }
-            catch (Exception)
+            catch (NullReferenceException)
             {
                 outputBuilder.AppendLine("Directory not found");
             }
@@ -602,12 +601,18 @@ namespace GrowthWare.WebSupport.Utilities
         /// Counts the directory.
         /// </summary>
         /// <param name="theDirectory">The directory.</param>
-        /// <param name="output">The string builder.</param>
+        /// <param name="outputBuilder">The string builder.</param>
         /// <param name="excludeList">The exclude list.</param>
         /// <param name="fileArray">The file array.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
-        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder output, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, int directoryLineCount)
         {
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net");
+            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net");
+            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray can not be null or Nothing in VB.net");
+
             Boolean writeDirectory = true;
             int FileLineCount = 0;
             foreach (String sFileType in fileArray)
@@ -643,10 +648,10 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             if (writeDirectory)
                             {
-                                output.AppendLine("<br>" + theDirectory.FullName);
+                                outputBuilder.AppendLine("<br>" + theDirectory.FullName);
                                 writeDirectory = false;
                             }
-                            output.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
+                            outputBuilder.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
                         }
                         if (FileLineCount > 0)
                         {

@@ -11,6 +11,7 @@ using System.Web;
 using System.Globalization;
 using System.Data;
 using GrowthWare.Framework.Model.Enumerations;
+using GrowthWare.Framework.BusinessData.DataAccessLayer;
 
 namespace GrowthWare.WebSupport.Utilities
 {
@@ -160,7 +161,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 mBAppFunctions.Save(profile, saveGroups, saveRoles);
             }
-            catch (Exception ex)
+            catch (DataAccessLayerException ex)
             {
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
@@ -182,7 +183,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 mBAppFunctions.Delete(functionSeqId);
             }
-            catch (Exception ex)
+            catch (DataAccessLayerException ex)
             {
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
