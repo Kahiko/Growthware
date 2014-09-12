@@ -229,7 +229,7 @@ namespace GrowthWare.WebSupport.Context
             {
                 if (disposing)
                 {
-                    m_Filter.Dispose();
+                    if (m_Filter != null) m_Filter.Dispose();
                 }
                 // TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
                 // TODO: set large fields to null.
