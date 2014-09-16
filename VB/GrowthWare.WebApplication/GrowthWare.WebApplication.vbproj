@@ -138,26 +138,56 @@
   <ItemGroup>
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
-    <Content Include="index.html" />
-    <Content Include="index1.html" />
-    <Content Include="Public\Skins\Default\Scripts\jquery-1.4.1.min.js" />
-    <Content Include="Public\Skins\Default\Scripts\jquery-2.0.3.min.js" />
-    <Content Include="Scripts\angular-1.2.js" />
-    <Content Include="Scripts\angular-1.3.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\GrowthWare\GW.Common.js" />
-    <Content Include="Scripts\GrowthWare\GW.FileManager.js" />
-    <Content Include="Scripts\GrowthWare\GW.Model.js" />
-    <Content Include="Scripts\GrowthWare\GW.NavigationController.js" />
-    <Content Include="Scripts\GrowthWare\GW.NavigationHandler.js" />
-    <Content Include="Scripts\GrowthWare\GW.Search.js" />
-    <Content Include="Scripts\GrowthWare\GW.Upload.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
-    <Content Include="Scripts\jSon2.js" />
+    <Content Include="Public\CSS\bootstrap-theme.css" />
+    <Content Include="Public\CSS\bootstrap-theme.min.css" />
+    <Content Include="Public\CSS\bootstrap.css" />
+    <Content Include="Public\CSS\bootstrap.min.css" />
+    <Content Include="Public\Images\GrowthWare\Add.png" />
+    <Content Include="Public\Images\GrowthWare\ajax-loader.gif" />
+    <Content Include="Public\Images\GrowthWare\ajax-loader_Green.gif" />
+    <Content Include="Public\Images\GrowthWare\delete_red.png" />
+    <Content Include="Public\Images\GrowthWare\Error.png" />
+    <Content Include="Public\Images\GrowthWare\File.gif" />
+    <Content Include="Public\Images\GrowthWare\Folder.gif" />
+    <Content Include="Public\Images\GrowthWare\help.gif" />
+    <Content Include="Public\Images\GrowthWare\help_and_support.png" />
+    <Content Include="Public\Images\GrowthWare\list-edit.png" />
+    <Content Include="Public\Images\GrowthWare\Misc\sidebar_blue.gif" />
+    <Content Include="Public\Images\GrowthWare\Misc\sidebar_green.gif" />
+    <Content Include="Public\Images\GrowthWare\Misc\sidebar_purple.gif" />
+    <Content Include="Public\Images\GrowthWare\Misc\sidebar_red.gif" />
+    <Content Include="Public\Images\GrowthWare\Misc\sidebar_yellow.gif" />
+    <Content Include="Public\Images\GrowthWare\new_folder.png" />
+    <Content Include="Public\Images\GrowthWare\Paging\first_blue.png" />
+    <Content Include="Public\Images\GrowthWare\Paging\last_blue.png" />
+    <Content Include="Public\Images\GrowthWare\Paging\next_blue.png" />
+    <Content Include="Public\Images\GrowthWare\Paging\previous_blue.png" />
+    <Content Include="Public\Images\GrowthWare\progress-bar.gif" />
+    <Content Include="Public\Images\GrowthWare\sort_asc.png" />
+    <Content Include="Public\Images\GrowthWare\sort_desc.png" />
+    <Content Include="Public\Skins\Default\CSS\Skin.css" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Public\Scripts\angular-1.2.js" />
+    <Content Include="Public\Scripts\angular-1.3.js" />
+    <Content Include="Public\Scripts\bootstrap.js" />
+    <Content Include="Public\Scripts\bootstrap.min.js" />
+    <Content Include="Public\CSS\bootstrap-theme.css.map" />
+    <Content Include="Public\CSS\bootstrap.css.map" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
+    <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.Common.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.FileManager.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.Model.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.NavigationController.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.NavigationHandler.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.Search.js" />
+    <Content Include="Public\Scripts\GrowthWare\GW.Upload.js" />
+    <Content Include="Public\Scripts\jquery-1.10.2.js" />
+    <Content Include="Public\Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Public\Scripts\jquery-1.4.1.min.js" />
+    <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -198,6 +228,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Public\Skins\Default\Default.Master.designer.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Public\Skins\Default\Default.Master.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -218,7 +255,8 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <Content Include="packages.config" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Public\Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Public\Skins\Default\Default.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -229,7 +267,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Public\Skins\Default\Images\" />
-    <Folder Include="Public\Skins\Default\Styles\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">

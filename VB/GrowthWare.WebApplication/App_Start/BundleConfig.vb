@@ -4,38 +4,44 @@ Public Module BundleConfig
     Public Sub RegisterBundles(bundles As BundleCollection)
         bundles.Add(
             New ScriptBundle("~/bundles/jquery").Include(
-            "~/Scripts/jquery-{version}.js"
+            "~/Public/Scripts/jquery-{version}.js"
             )
         )
 
         bundles.Add(
             New ScriptBundle("~/bundles/angular").Include(
-            "~/Scripts/angular-1.2.js"
+            "~/Public/Scripts/angular-{version}.js"
             )
         )
 
-        bundles.Add(
-            New ScriptBundle("~/bundles/json").Include(
-            "~/Scripts/jSon2.js"
-            )
-        )
+        'bundles.Add(
+        '    New ScriptBundle("~/bundles/json").Include(
+        '    "~/Public/Scripts/jSon2.js"
+        '    )
+        ')
+
         bundles.Add(
             New ScriptBundle("~/bundles/bootstrap").Include(
-                "~/Scripts/bootstrap.js",
-                "~/Scripts/respond.js"
+                "~/Public/Scripts/bootstrap.js",
+                "~/Public/Scripts/respond.js"
             )
         )
-
         bundles.Add(
             New ScriptBundle("~/bundles/GrowthWare").Include(
-            "~/Scripts/GrowthWare/GW.Common.js",
-            "~/Scripts/GrowthWare/GW.FileManager.js",
-            "~/Scripts/GrowthWare/GW.Model.js",
-            "~/Scripts/GrowthWare/GW.NavigationController.js",
-            "~/Scripts/GrowthWare/GW.NavigationHandler.js",
-            "~/Scripts/GrowthWare/GW.Search.js",
-            "~/Scripts/GrowthWare/GW.Upload.js"
+            "~/Public/Scripts/GrowthWare/GW.Common.js",
+            "~/Public/Scripts/GrowthWare/GW.FileManager.js",
+            "~/Public/Scripts/GrowthWare/GW.Model.js",
+            "~/Public/Scripts/GrowthWare/GW.NavigationController.js",
+            "~/Public/Scripts/GrowthWare/GW.NavigationHandler.js",
+            "~/Public/Scripts/GrowthWare/GW.Search.js",
+            "~/Public/Scripts/GrowthWare/GW.Upload.js"
+            )
         )
-)
+        bundles.Add(
+            New StyleBundle("~/Content/bootstrap").Include(
+                "~/Public/CSS/bootstrap.css",
+                "~/Public/CSS/bootstrap-theme.css"
+        )
+    )
     End Sub
 End Module

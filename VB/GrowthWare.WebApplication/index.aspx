@@ -1,16 +1,7 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="index.aspx.vb" Inherits="GrowthWare.WebApplication.index" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Public/Skins/Default/Default.Master" CodeBehind="index.aspx.vb" Inherits="GrowthWare.WebApplication.index" %>
 
-<%@ Import Namespace="System.Web.Optimization" %>
-
-<!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
-<head runat="server">
+<asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <title></title>
-    <%--<%: Scripts.Render("~/bundles/jquery") %>--%>
-    <%--<%: Scripts.Render("~/bundles/bootstrap")%>--%>
-    <%: Scripts.Render("~/bundles/angular")%>
-    <%--<%: Scripts.Render("~/bundles/GrowthWare")%>--%>
     <script type="text/javascript" language="javascript">
         // Declares the NG application.  Pass any external application within the bracketts
         var app = angular.module('main', []);
@@ -58,27 +49,27 @@
             };
         }]);
     </script>
-</head>
-<body>
+</asp:Content>
+<asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
+    <body ng-app="main">
+        <div ng-controller="pricingController">
+            <h2>All Products</h2>
+            <ul id="products">
+                <li ng-repeat="item in Products">{{item.Name}}</li>
+            </ul>
 
-    <div ng-controller="pricingController">
-        <h2>All Products</h2>
-        <ul id="products">
-            <li ng-repeat="item in Products">{{item.Name}}</li>
-        </ul>
-
-        <%--{{Products}}--%>
-    </div>
-    <div ng-controller="productController">
-        <h2>Search by ID</h2>
-        <input type="text" ng-model="productId" id="prodId" size="5" />
-        <input type="button" value="Search" ng-click="getProduct();" />
-        <div>{{Product.Name}}</div> 
-    </div>
+            <%--{{Products}}--%>
+        </div>
+        <div ng-controller="productController">
+            <h2>Search by ID</h2>
+            <input type="text" ng-model="productId" id="prodId" size="5" />
+            <input type="button" value="Search" ng-click="getProduct();" />
+            <div>{{Product.Name}}</div> 
+        </div>
 
 
-    <script type="text/javascript" language="javascript">
+        <script type="text/javascript" language="javascript">
 
-    </script>
-</body>
-</html>
+        </script>
+    </body>
+</asp:Content>
