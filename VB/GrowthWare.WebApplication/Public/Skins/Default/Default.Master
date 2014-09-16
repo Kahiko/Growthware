@@ -7,10 +7,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title></title>
-    <%--<%: Scripts.Render("~/bundles/jquery") %>--%>
-    <%--<%: Scripts.Render("~/bundles/bootstrap")%>--%>
+    <%: Styles.Render("~/Content/bootstrap")%>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/bootstrap")%>
     <%: Scripts.Render("~/bundles/angular")%>
-    <%--<%: Scripts.Render("~/bundles/GrowthWare")%>--%>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
