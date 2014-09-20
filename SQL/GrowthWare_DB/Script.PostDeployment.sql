@@ -156,7 +156,7 @@ SET @V_LinkBehaviorExternal = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Beha
 SET @V_LinkBehaviorNewPage = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'NewPage')
 
 Print 'Adding Security Entity'
-exec ZGWSecurity.Set_Security_Entity -1,	'System','The default Security Entity, needed by the system.','no url',1,'SQLServer','GrowthWareFramework','GrowthWare.Framework.DataAccessLayer.SQLServer.V2008','server=(local);Integrated Security=SSPI;database=GW2013Development;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50','Default','Default',@V_Encryption_Type,-1,@V_SystemID, @V_PRIMARY_KEY, @V_Debug
+exec ZGWSecurity.Set_Security_Entity -1,	'System','The default Security Entity, needed by the system.','no url',1,'SQLServer','GrowthWare.Framework.BusinessData','GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008','server=(local);Integrated Security=SSPI;database=GW2013Development;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50','Default','Default',@V_Encryption_Type,-1,@V_SystemID, @V_PRIMARY_KEY, @V_Debug
 SET @V_Security_Entity_SeqID = (SELECT Security_Entity_SeqID FROM ZGWSecurity.Security_Entities WHERE [Name]='System')
 Print 'Adding roles'
 -- Setup ZF_RLS
