@@ -29,7 +29,7 @@ AS
 	IF @P_Function_SeqID > 0
 		BEGIN
 			SELECT
-				ZGWSecurity.Roles.[NAME] AS Roles
+				ZGWSecurity.Roles.[Name] AS Roles
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK),
 				ZGWSecurity.Roles_Security_Entities_Functions WITH(NOLOCK),
@@ -50,7 +50,7 @@ AS
 			SELECT
 				ZGWSecurity.Functions.Function_SeqID AS 'Function_Seq_ID'
 				,ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_Detail_SeqID AS 'PERMISSIONS_SEQ_ID'
-				,ZGWSecurity.Roles.[NAME] AS Role
+				,ZGWSecurity.Roles.[Name] AS Role
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK),
 				ZGWSecurity.Roles_Security_Entities_Functions WITH(NOLOCK),

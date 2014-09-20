@@ -34,7 +34,7 @@ IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Role')
 BEGIN TRAN
 	DECLARE @V_Role_SeqID INT
 			,@V_Roles_Security_Entities_SeqID INT
-			,@V_GROUP_NAME VARCHAR(50)
+			,@V_Group_Name VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 			,@V_Now DATETIME = GETDATE()
@@ -51,13 +51,13 @@ BEGIN TRAN
 	IF REPLACE(@P_Role, ',', '') <> ''
 		WHILE @V_Pos > 0
 		BEGIN
-			SET @V_GROUP_NAME = LTRIM(RTRIM(LEFT(@P_Role, @V_Pos - 1)))
-			IF @V_GROUP_NAME <> ''
+			SET @V_Group_Name = LTRIM(RTRIM(LEFT(@P_Role, @V_Pos - 1)))
+			IF @V_Group_Name <> ''
 			BEGIN
 				IF @P_Debug = 1 PRINT 'select the Role_SeqID first'
 				SELECT @V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
 				FROM ZGWSecurity.Roles 
-				WHERE [NAME]=@V_GROUP_NAME
+				WHERE [Name]=@V_Group_Name
 
  				SELECT
 					@V_Roles_Security_Entities_SeqID=Roles_Security_Entities_SeqID

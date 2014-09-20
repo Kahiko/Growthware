@@ -25,7 +25,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Group_Roles'
 
 	SELECT 
-		[NAME] AS [Role] 
+		[Name] AS [Role] 
 	FROM 
 		ZGWSecurity.Roles WITH(NOLOCK) 
 	WHERE 

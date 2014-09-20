@@ -23,21 +23,21 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Selecting client choices for ' + CONVERT(VARCHAR(25),@P_Account)
 			SELECT
-				ACCOUNT AS ACCT
+				Account AS ACCT
 				, SE_SEQ_ID
 				, SE_NAME
-				, BACK_COLOR
-				, LEFT_COLOR
-				, HEAD_COLOR
+				, Back_Color
+				, Left_Color
+				, Head_Color
 				, Header_ForeColor
-				, SUB_HEAD_COLOR
+				, Sub_Head_Color
 				, Row_BackColor
 				, AlternatingRow_BackColor
-				, COLOR_SCHEME
+				, Color_Scheme
 				, Favorite_Action
-				, THIN_ACTIONS
-				, WIDE_ACTIONS
-				, RECORDS_PER_PAGE
+				, Thin_Actions
+				, Wide_Actions
+				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				Account = @P_Account
@@ -46,21 +46,21 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Selecting client choices for the Anonymous account'
 			SELECT
-				ACCOUNT AS ACCT
+				Account AS ACCT
 				, SE_SEQ_ID
 				, SE_NAME
-				, BACK_COLOR
-				, LEFT_COLOR
-				, HEAD_COLOR
+				, Back_Color
+				, Left_Color
+				, Head_Color
 				, Header_ForeColor
-				, SUB_HEAD_COLOR
+				, Sub_Head_Color
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME
 				, Favorite_Action
-				, THIN_ACTIONS
-				, WIDE_ACTIONS
-				, RECORDS_PER_PAGE
+				, Thin_Actions
+				, Wide_Actions
+				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				[Account] = 'Anonymous'

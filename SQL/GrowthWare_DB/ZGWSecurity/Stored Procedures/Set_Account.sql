@@ -150,12 +150,12 @@ AS
 				[Password],
 				FAILED_ATTEMPTS,
 				IS_SYSTEM_ADMIN,
-				ADDED_BY,
-				ADDED_DATE,
+				Added_By,
+				Added_Date,
 				LAST_LOGIN,
 				TIME_ZONE,
 				Location,
-				ENABLE_NOTIFICATIONS
+				Enable_Notifications
 			)
 			VALUES
 			(

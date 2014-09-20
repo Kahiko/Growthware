@@ -24,7 +24,7 @@ AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'
 	SELECT
-		ZGWSecurity.Roles.[NAME] AS ROLES
+		ZGWSecurity.Roles.[Name] AS ROLES
 	FROM
 		ZGWSecurity.Roles_Security_Entities_Permissions,
 		ZGWSecurity.Roles_Security_Entities,

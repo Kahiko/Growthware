@@ -60,8 +60,8 @@ AS
 				[Description] = @P_Description,
 				Template = @P_Template,
 				Is_Content = @P_Is_Content,
-				UPDATED_BY = @P_Added_Updated_BY,
-				UPDATED_DATE =@V_Now
+				Updated_By = @P_Added_Updated_BY,
+				Updated_Date =@V_Now
 			WHERE
 				Function_Type_SeqID = @P_Function_Type_SeqID
 
@@ -86,8 +86,8 @@ AS
 				[Description],
 				Template,
 				Is_Content,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES
 			(

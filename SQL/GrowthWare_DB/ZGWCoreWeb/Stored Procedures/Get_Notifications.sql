@@ -26,7 +26,7 @@ AS
 	SET @V_Enable_Notifications = 1 -- True
 
 	SELECT
-		EMAIL
+		Email
 	FROM
 		ZGWSecurity.Accounts Accounts WITH(NOLOCK)
 			INNER JOIN ZGWCoreWeb.Notifications Notifications WITH(NOLOCK)

@@ -9,13 +9,13 @@ Usage:
 		@P_DAL VARCHAR(50) = '',
 		@P_DAL_Name VARCHAR(50) = '',
 		@P_DAL_Name_SPACE VARCHAR(256) = '',
-		@P_DAL_STRING VARCHAR(512) = '',
+		@P_DAL_String VARCHAR(512) = '',
 		@P_Skin char(25) = '',
 		@P_Style VARCHAR(25) = '',
 		@P_Encryption_Type INT = 1,
 		@P_Parent_Security_Entity_SeqID int = 1,
 		@P_Added_Updated_By INT = 2,
-		@P_PRIMARY_KEY int,
+		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Security_Entity
@@ -27,13 +27,13 @@ Usage:
 		@P_DAL,
 		@P_DAL_Name,
 		@P_DAL_Name_SPACE,
-		@P_DAL_STRING,
+		@P_DAL_String,
 		@P_Skin,
 		@P_Style,
 		@P_Encryption_Type,
 		@P_Parent_Security_Entity_SeqID,
 		@P_Added_Updated_By,
-		@P_PRIMARY_KEY OUT,
+		@P_Primary_Key OUT,
 		@P_Debug
 
 	PRINT 'Primay key is: ' + CONVERT(VARCHAR(30),@P_Primary_Key)
@@ -52,13 +52,13 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Security_Entity]
 	@P_DAL VARCHAR(50),
 	@P_DAL_Name VARCHAR(50),
 	@P_DAL_Name_SPACE VARCHAR(256),
-	@P_DAL_STRING VARCHAR(512),
+	@P_DAL_String VARCHAR(512),
 	@P_Skin char(25),
 	@P_Style VARCHAR(25),
 	@P_Encryption_Type INT,
 	@P_Parent_Security_Entity_SeqID int,
 	@P_Added_Updated_By INT,
-	@P_PRIMARY_KEY int OUTPUT,
+	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
 AS
 	DECLARE @V_Now DATETIME = GETDATE()
@@ -76,18 +76,18 @@ AS
 				Status_SeqID = @P_Status_SeqID,
 				DAL = @P_DAL,
 				DAL_Name = @P_DAL_Name,
-				DAL_Name_SPACE = @P_DAL_Name_SPACE,
-				DAL_STRING = @P_DAL_STRING,
+				DAL_Name_Space = @P_DAL_Name_SPACE,
+				DAL_String = @P_DAL_String,
 				Skin = @P_Skin,
 				Style = @P_Style,
 				Encryption_Type = @P_Encryption_Type,
 				Parent_Security_Entity_SeqID = @P_Parent_Security_Entity_SeqID,
-				UPDATED_BY = @P_Added_Updated_By,
-				UPDATED_DATE = @V_Now
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Now
 			WHERE
 				Security_Entity_SeqID = @P_Security_Entity_SeqID
 
-			SELECT @P_PRIMARY_KEY = @P_Security_Entity_SeqID
+			SELECT @P_Primary_Key = @P_Security_Entity_SeqID
 		END
 	ELSE
 		BEGIN
@@ -107,8 +107,8 @@ AS
 				Style,
 				Encryption_Type,
 				Parent_Security_Entity_SeqID,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES
 			(
@@ -119,7 +119,7 @@ AS
 				@P_DAL,
 				@P_DAL_Name,
 				@P_DAL_Name_SPACE,
-				@P_DAL_STRING,
+				@P_DAL_String,
 				@P_Skin,
 				@P_Style,
 				@P_Encryption_Type,
@@ -128,7 +128,7 @@ AS
 				@V_Now
 			)	
 			-- Get the IDENTITY value for the row just inserted.
-			SELECT @P_PRIMARY_KEY=SCOPE_IDENTITY()
+			SELECT @P_Primary_Key=SCOPE_IDENTITY()
 		END
 -- End if
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Security_Entity'

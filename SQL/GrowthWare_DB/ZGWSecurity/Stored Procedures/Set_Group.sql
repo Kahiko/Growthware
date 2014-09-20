@@ -6,7 +6,7 @@ Usage:
 		@P_Description VARCHAR(512) = ' ',
 		@P_Security_Entity_SeqID INT = 1,
 		@P_Added_Updated_By INT = 2,
-		@P_PRIMARY_KEY int,
+		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group
@@ -15,7 +15,7 @@ Usage:
 		@P_Description,
 		@P_Security_Entity_SeqID,
 		@P_Added_Updated_By,
-		@P_PRIMARY_KEY,
+		@P_Primary_Key,
 		@P_Debug
 	PRINT 'Primary key is: ' + CONVERT(VARCHAR(30),@P_Primary_Key)
 */
@@ -30,7 +30,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Group]
 	@P_Description VARCHAR(512),
 	@P_Security_Entity_SeqID INT,
 	@P_Added_Updated_By INT,
-	@P_PRIMARY_KEY int OUTPUT,
+	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
 AS
 	DECLARE @RLS_SEQ_ID INT
@@ -42,12 +42,12 @@ AS
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
-				UPDATED_BY = @P_Added_Updated_By,
-				UPDATED_DATE = @V_Added_Updated_Date
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Added_Updated_Date
 			WHERE
 				Group_SeqID = @P_Group_SeqID
 
-			SELECT @P_PRIMARY_KEY = @P_Group_SeqID
+			SELECT @P_Primary_Key = @P_Group_SeqID
 		END
 	ELSE
 		BEGIN -- INSERT a new row in the table.
@@ -60,8 +60,8 @@ AS
 					(
 						[Name],
 						[Description],
-						ADDED_BY,
-						ADDED_DATE
+						Added_By,
+						Added_Date
 					)
 					VALUES
 					(
@@ -70,25 +70,25 @@ AS
 						@P_Added_Updated_By,
 						@V_Added_Updated_Date
 					)
-					SELECT @P_PRIMARY_KEY=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+					SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 				END
 			ELSE
 				--PRINT 'ENTERING SECURITY INFORMATION FOR THE GROUP'
-				SET @P_PRIMARY_KEY = (SELECT Group_SeqID FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
+				SET @P_Primary_Key = (SELECT Group_SeqID FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
 			-- END IF
 		END
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID AND Group_SeqID = @P_PRIMARY_KEY) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID AND Group_SeqID = @P_Primary_Key) = 0 
 	BEGIN  -- ADD GROUP REFERENCE TO SE_SECURITY
 			INSERT ZGWSecurity.Groups_Security_Entities (
 				Security_Entity_SeqID,
 				Group_SeqID,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES (
 				@P_Security_Entity_SeqID,
-				@P_PRIMARY_KEY,
+				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Added_Updated_Date
 			)

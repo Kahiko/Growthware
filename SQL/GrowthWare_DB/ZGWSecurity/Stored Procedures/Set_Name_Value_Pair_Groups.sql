@@ -59,7 +59,7 @@ BEGIN TRAN
 				IF @P_Debug = 1 PRINT 'select the GROUP seq id first'
 				SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
 				FROM ZGWSecurity.Groups 
-				WHERE [NAME]=@V_GROUP_NAME
+				WHERE [Name]=@V_GROUP_NAME
 
  				SELECT
 					@V_Groups_Security_Entities_SeqID=Groups_Security_Entities_SeqID

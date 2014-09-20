@@ -45,7 +45,7 @@ BEGIN TRAN
 		)
 	BEGIN TRY
 		INSERT INTO
-			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_Entities_SeqID,Account_SeqID,ADDED_BY)
+			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_Entities_SeqID,Account_SeqID,Added_By)
 		VALUES(
 			@V_Roles_Security_Entities_SeqID,
 			@V_Account_SeqID,

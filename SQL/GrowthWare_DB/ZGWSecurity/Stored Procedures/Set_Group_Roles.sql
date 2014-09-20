@@ -57,7 +57,7 @@ AS
 					FROM
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
-						ZGWSecurity.Roles_Security_Entities.Role_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[NAME] = @V_Role_Name)
+						ZGWSecurity.Roles_Security_Entities.Role_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
 						AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
 					IF @P_Debug = 1 PRINT @V_Roles_Security_Entities_SeqID
 
@@ -80,8 +80,8 @@ AS
 						INSERT ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities (
 							Groups_Security_Entities_SeqID,
 							Roles_Security_Entities_SeqID,
-							ADDED_BY,
-							ADDED_DATE
+							Added_By,
+							Added_Date
 						)VALUES(
 							@V_Groups_Security_Entities_SeqID,
 							@V_Roles_Security_Entities_SeqID,

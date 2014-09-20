@@ -15,7 +15,7 @@
     [Action]                            VARCHAR (256)        NOT NULL,
     [Parent_SeqID]                      INT                  NULL,
     [Notes]                             VARCHAR (512) SPARSE NULL,
-    [Sort_Order]                        INT                  CONSTRAINT [DF_ZGWSecurity_Functions_SORT_ORDER] DEFAULT ((0)) NOT NULL,
+    [Sort_Order]                        INT                  CONSTRAINT [DF_ZGWSecurity_Functions_Sort_Order] DEFAULT ((0)) NOT NULL,
     [Added_By]                          INT                  NOT NULL,
     [Added_Date]                        DATETIME             CONSTRAINT [DF_ZGWSecurity_Functions_ADDED_DATE] DEFAULT (getdate()) NOT NULL,
     [Updated_By]                        INT                  NULL,

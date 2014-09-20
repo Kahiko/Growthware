@@ -73,8 +73,8 @@ AS
 				Impersonate = @P_Impersonate,
 				Impersonating_Account = @P_Impersonating_Account,
 				Impersonating_Password = @P_Impersonating_Password,
-				UPDATED_BY = @P_Added_Updated_By,
-				UPDATED_DATE = @V_Now
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Now
 			WHERE
 				Function_SeqID = @P_Function_SeqID
 

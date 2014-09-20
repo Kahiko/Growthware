@@ -48,20 +48,20 @@ AS
 		--END IF
 		DECLARE @V_Role_SeqID AS 	INT
 		DECLARE @V_SE_RLS_SECURITY_ID AS 	INT
-		DECLARE @V_ROLE_NAME AS	VARCHAR(50)
+		DECLARE @V_Role_Name AS	VARCHAR(50)
 		DECLARE @V_Pos AS	INT
 		SET @P_Roles = LTRIM(RTRIM(@P_Roles))+ ','
 		SET @V_Pos = CHARINDEX(',', @P_Roles, 1)
 		IF REPLACE(@P_Roles, ',', '') <> ''
 			WHILE @V_Pos > 0
 			BEGIN
-				SET @V_ROLE_NAME = LTRIM(RTRIM(LEFT(@P_Roles, @V_Pos - 1)))
-				IF @V_ROLE_NAME <> ''
+				SET @V_Role_Name = LTRIM(RTRIM(LEFT(@P_Roles, @V_Pos - 1)))
+				IF @V_Role_Name <> ''
 				BEGIN
 					--select the role seq id first
 					SELECT @V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
 					FROM ZGWSecurity.Roles 
-					WHERE [NAME]=@V_ROLE_NAME
+					WHERE [Name]=@V_ROLE_NAME
 
  					SELECT
 						@V_SE_RLS_SECURITY_ID=Roles_Security_Entities_SeqID
@@ -85,7 +85,7 @@ AS
 						INSERT ZGWSecurity.Roles_Security_Entities_Accounts (
 							Account_SeqID,
 							Roles_Security_Entities_SeqID,
-							ADDED_BY
+							Added_By
 						)
 						VALUES (
 							@Account_SeqID,

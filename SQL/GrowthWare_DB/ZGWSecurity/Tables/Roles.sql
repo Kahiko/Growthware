@@ -4,7 +4,7 @@
     [Description]    VARCHAR (128) NOT NULL,
     [Is_System]      INT           NOT NULL,
     [Is_System_Only] INT           CONSTRAINT [DF_ZGWSecurity_Roles_IS_SYSTEM_ONLY] DEFAULT ((0)) NOT NULL,
-    [Added_By]       INT           CONSTRAINT [DF_ZGWSecurity_Roles_ADDED_BY] DEFAULT ((2)) NOT NULL,
+    [Added_By]       INT           CONSTRAINT [DF_ZGWSecurity_Roles_Added_By] DEFAULT ((2)) NOT NULL,
     [Added_Date]     DATETIME      CONSTRAINT [DF_ZGWSecurity_Roles_ADDED_DATE] DEFAULT (getdate()) NOT NULL,
     [Updated_By]     INT           NULL,
     [Updated_Date]   DATETIME      NULL,

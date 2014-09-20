@@ -6,7 +6,7 @@ Usage:
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
-		@P_BODY VARCHAR(MAX) = 'The body',
+		@P_Body VARCHAR(MAX) = 'The body',
 		@P_Format_As_HTML INT = 0,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key int,
@@ -18,7 +18,7 @@ Usage:
 		@P_Name,
 		@P_Title,
 		@P_Description,
-		@P_BODY,
+		@P_Body,
 		@P_Format_As_HTML,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
@@ -37,7 +37,7 @@ CREATE PROCEDURE [ZGWCoreWeb].[Set_Message]
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
 	@P_Description VARCHAR(512),
-	@P_BODY VARCHAR(MAX),
+	@P_Body VARCHAR(MAX),
 	@P_Format_As_HTML INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
@@ -62,7 +62,7 @@ AS
 						Title = @P_Title,
 						[Description] = @P_Description,
 						Format_As_HTML = @P_Format_As_HTML,
-						BODY = @P_BODY,
+						Body = @P_Body,
 						Updated_By = @P_Added_Updated_By,
 						Updated_Date = GETDATE()
 					WHERE
@@ -81,8 +81,8 @@ AS
 						[Description],
 						BODY,
 						Format_As_HTML,
-						ADDED_BY,
-						ADDED_DATE
+						Added_By,
+						Added_Date
 					)
 					VALUES
 					(
@@ -90,7 +90,7 @@ AS
 						@P_Name,
 						@P_Title,
 						@P_Description,
-						@P_BODY,
+						@P_Body,
 						@P_Format_As_HTML,
 						@P_Added_Updated_By,
 						@V_Now
@@ -118,10 +118,10 @@ AS
 				[Name],
 				Title,
 				[Description],
-				BODY,
+				Body,
 				Format_As_HTML,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES
 			(
@@ -129,7 +129,7 @@ AS
 				@P_Name,
 				@P_Title,
 				@P_Description,
-				@P_BODY,
+				@P_Body,
 				@P_Format_As_HTML,
 				@P_Added_Updated_By,
 				@V_Now

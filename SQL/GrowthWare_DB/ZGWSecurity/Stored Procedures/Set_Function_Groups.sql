@@ -90,7 +90,7 @@ BEGIN TRANSACTION
 								Function_SeqID,
 								Groups_Security_Entities_SeqID,
 								Permissions_NVP_Detail_SeqID,
-								ADDED_BY,
+								Added_By,
 								Added_Date
 							)
 							VALUES (

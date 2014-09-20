@@ -29,7 +29,7 @@ AS
 	*/
 	DECLARE @V_Roles_SeqID INT
 			
-	SET @V_Roles_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [NAME] = @P_Name)
+	SET @V_Roles_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 
 	BEGIN TRANSACTION
 		BEGIN -- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities

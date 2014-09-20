@@ -66,8 +66,8 @@ BEGIN TRAN
 				[Description] = @P_Description,
 				Is_System = @P_Is_System,
 				Is_System_Only = @P_Is_System_Only,
-				UPDATED_BY = @P_Added_Updated_By,
-				UPDATED_DATE = @V_Now
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Now
 			WHERE
 				Role_SeqID = @P_Role_SeqID
 
@@ -87,8 +87,8 @@ BEGIN TRAN
 						[Description],
 						Is_System,
 						Is_System_Only,
-						ADDED_BY,
-						ADDED_DATE
+						Added_By,
+						Added_Date
 					)
 					VALUES
 					(

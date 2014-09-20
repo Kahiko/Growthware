@@ -56,7 +56,7 @@ AS
 				NVP_Detail_Value = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Value) + ''',
 				Status_SeqID = ' + CONVERT(VARCHAR,@P_Status_SeqID) + ',
 				Sort_Order = ' + CONVERT(VARCHAR,@P_Sort_Order) + ',
-				UPDATED_BY = ' + CONVERT(VARCHAR,@P_Added_Updated_By) + ',
+				Updated_By = ' + CONVERT(VARCHAR,@P_Added_Updated_By) + ',
 				UPDATED_DATE = ''' + CONVERT(VARCHAR,@V_Now) + '''
 			WHERE
 				NVP_Detail_SeqID = ' + CONVERT(VARCHAR,@P_NVP_Detail_SeqID)

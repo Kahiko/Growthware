@@ -39,7 +39,7 @@ AS
 							@P_Security_Entity_SeqID
 							, Name
 							, Title
-							, [DESCRIPTION]
+							, [Description]
 							, Format_As_HTML
 							, Body
 							, Added_By
@@ -65,7 +65,7 @@ AS
 				, Security_Entity_SeqID as SE_SEQ_ID
 				, NAME
 				, TITLE
-				, [DESCRIPTION]
+				, [Description]
 				, Format_As_HTML
 				, BODY
 				, Added_By
@@ -85,7 +85,7 @@ AS
 				, Security_Entity_SeqID as SE_SEQ_ID
 				, NAME
 				, TITLE
-				, [DESCRIPTION]
+				, [Description]
 				, Format_As_HTML
 				, BODY
 				, Added_By

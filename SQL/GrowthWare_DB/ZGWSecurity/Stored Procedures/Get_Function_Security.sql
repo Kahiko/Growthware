@@ -28,7 +28,7 @@ AS
 		SELECT DISTINCT -- Directly assigned Roles
 			Functions.Function_SeqID,
 			[Permissions].NVP_Detail_SeqID,
-			Roles.[NAME] AS [ROLE]
+			Roles.[Name] AS [ROLE]
 		FROM
 			ZGWSecurity.Roles_Security_Entities Roles_Security_Entities WITH(NOLOCK),
 			ZGWSecurity.Roles Roles WITH(NOLOCK),
@@ -45,7 +45,7 @@ AS
 		SELECT DISTINCT -- Roles assigned via groups
 			Functions.Function_SeqID,
 			[Permissions].NVP_Detail_SeqID,
-			Roles.[NAME] AS [ROLE]
+			Roles.[Name] AS [ROLE]
 		FROM
 			ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
 			ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),

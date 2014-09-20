@@ -9,7 +9,7 @@ Usage:
 		@P_Enable_View_State int = 0,
 		@P_Enable_Notifications int = 0,
 		@P_Redirect_On_Timeout int = 0,
-		@P_IS_NAV int = 0,
+		@P_Is_Nav int = 0,
 		@P_Link_Behavior int 0,
 		@P_NO_UI int = 0,
 		@P_NAV_TYPE_ID int = 1,
@@ -29,7 +29,7 @@ Usage:
 		@P_Enable_View_State,
 		@P_Enable_Notifications,
 		@P_Redirect_On_Timeout,
-		@P_IS_NAV,
+		@P_Is_Nav,
 		@P_Link_Behavior,
 		@P_NO_UI,
 		@P_NAV_TYPE_ID,
@@ -56,7 +56,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Function]
 	@P_Enable_View_State int,
 	@P_Enable_Notifications int,
 	@P_Redirect_On_Timeout int,
-	@P_IS_NAV int,
+	@P_Is_Nav int,
 	@P_Link_Behavior int,
 	@P_NO_UI int,
 	@P_NAV_TYPE_ID int,
@@ -80,9 +80,9 @@ AS
 				Enable_View_State = @P_Enable_View_State,
 				Enable_Notifications = @P_Enable_Notifications,
 				Redirect_On_Timeout = @P_Redirect_On_Timeout,
-				IS_NAV = @P_IS_NAV,
+				Is_Nav = @P_Is_Nav,
 				Link_Behavior = @P_Link_Behavior,
-				NO_UI = @P_NO_UI,
+				No_UI = @P_NO_UI,
 				Navigation_Types_NVP_Detail_SeqID = @P_NAV_TYPE_ID,
 				Meta_Key_Words = @P_Meta_Key_Words,
 				Parent_SeqID = @P_Parent_SeqID,
@@ -112,7 +112,7 @@ AS
 				Enable_View_State,
 				Enable_Notifications,
 				Redirect_On_Timeout,
-				IS_NAV,
+				Is_Nav,
 				Link_Behavior,
 				NO_UI,
 				Navigation_Types_NVP_Detail_SeqID,
@@ -120,8 +120,8 @@ AS
 				[Action],
 				Parent_SeqID,
 				Notes,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES
 			(
@@ -132,7 +132,7 @@ AS
 				@P_Enable_View_State,
 				@P_Enable_Notifications,
 				@P_Redirect_On_Timeout,
-				@P_IS_NAV,
+				@P_Is_Nav,
 				@P_Link_Behavior,
 				@P_NO_UI,
 				@P_NAV_TYPE_ID,
@@ -144,9 +144,9 @@ AS
 				@V_Now
 			)
 			SELECT @P_Function_SeqID=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
-			DECLARE @V_SORT_ORDER INT
-			SET @V_SORT_ORDER = (SELECT MAX(SORT_ORDER) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
-			UPDATE ZGWSecurity.Functions SET SORT_ORDER = @V_SORT_ORDER WHERE Function_SeqID = @P_Function_SeqID
+			DECLARE @V_Sort_Order INT
+			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
+			UPDATE ZGWSecurity.Functions SET Sort_Order = @V_Sort_Order WHERE Function_SeqID = @P_Function_SeqID
 
 		END
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'

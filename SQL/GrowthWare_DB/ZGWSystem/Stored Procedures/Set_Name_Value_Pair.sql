@@ -7,7 +7,7 @@ Usage:
 		@P_Display VARCHAR(128) = 'TestingNVP',
 		@P_Description VARCHAR(256) = 'Just Testing the Name value Pair',
 		@P_Status_SeqID INT = 1,
-		@P_Added_Updated_BY INT = 1,
+		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key INT = null,
 		@P_ErrorCode int = null,
 		@P_Debug bit = 1
@@ -19,7 +19,7 @@ Usage:
 		@P_Display,
 		@P_Description,
 		@P_Status_SeqID,
-		@P_Added_Updated_BY,
+		@P_Added_Updated_By,
 		@P_Primary_Key,
 		@P_ErrorCode,
 		@P_Debug
@@ -36,13 +36,13 @@ CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair]
 	@P_Display VARCHAR(128),
 	@P_Description VARCHAR(256),
 	@P_Status_SeqID INT,
-	@P_Added_Updated_BY INT,
+	@P_Added_Updated_By INT,
 	@P_Primary_Key INT OUTPUT,
 	@P_ErrorCode int OUTPUT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSystem].[Set_Name_Value_Pair]'
-	DECLARE @V_NOW DATETIME = GETDATE()
+	DECLARE @V_Now DATETIME = GETDATE()
 	IF @P_NVP_SeqID > -1
 		BEGIN -- UPDATE PROFILE
 			UPDATE ZGWSystem.Name_Value_Pairs
@@ -50,8 +50,8 @@ AS
 				[Display] = @P_Display,
 				[Description] = @P_Description,
 				Status_SeqID = @P_Status_SeqID,
-				UPDATED_BY = @P_Added_Updated_BY,
-				UPDATED_DATE = @V_NOW
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Now
 			WHERE
 				NVP_SeqID = @P_NVP_SeqID
 
@@ -80,8 +80,8 @@ AS
 					[Sort_Order] [int] NOT NULL,
 					[Added_By] [int] NOT NULL,
 					[Added_DATE] [datetime] NOT NULL,
-					[UPDATED_BY] [int] NULL,
-					[UPDATED_DATE] [datetime] NULL,
+					[Updated_By] [int] NULL,
+					[Updated_Date] [datetime] NULL,
 					 CONSTRAINT [PK_' + CONVERT(VARCHAR,@P_Static_Name) + '] PRIMARY KEY CLUSTERED 
 					(
 						[NVP_Detail_SeqID] ASC
@@ -115,7 +115,7 @@ AS
 				[Description],
 				Status_SeqID,
 				Added_By,
-				Added_DATE
+				Added_Date
 			)
 			VALUES
 			(
@@ -124,8 +124,8 @@ AS
 				@P_Display,
 				@P_Description,
 				@P_Status_SeqID,
-				@P_Added_Updated_BY,
-				@V_NOW
+				@P_Added_Updated_By,
+				@V_Now
 			)
 			SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 		END

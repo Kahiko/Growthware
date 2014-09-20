@@ -61,7 +61,7 @@ AS
 					--select the role seq id first
 					SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
 					FROM ZGWSecurity.Groups 
-					WHERE [NAME]=@V_Group_Name
+					WHERE [Name]=@V_Group_Name
 
  					SELECT
 						@V_SecurityEntity_GroupSeqID=Groups_Security_Entities_SeqID
@@ -85,7 +85,7 @@ AS
 						INSERT ZGWSecurity.Groups_Security_Entities_Accounts (
 							Account_SeqID,
 							Groups_Security_Entities_SeqID,
-							ADDED_BY
+							Added_By
 						)
 						VALUES (
 							@Account_SeqID,

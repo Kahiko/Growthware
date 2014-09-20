@@ -39,8 +39,8 @@ BEGIN
 			(
 				Version,
 				Enable_Inheritance,
-				ADDED_BY,
-				ADDED_DATE
+				Added_By,
+				Added_Date
 			)
 			VALUES
 			(
@@ -57,8 +57,8 @@ BEGIN
 			SET 
 				[Version] = @P_Version,
 				Enable_Inheritance = @P_Enable_Inheritance,
-				UPDATED_BY = @P_Added_Updated_By,
-				UPDATED_DATE = @V_Now
+				Updated_By = @P_Added_Updated_By,
+				Updated_Date = @V_Now
 			WHERE
 				Database_Information_SeqID = @P_Database_Information_SeqID
 

@@ -22,7 +22,7 @@ CREATE PROCEDURE [ZGWSecurity].[Get_Account_Roles]
 AS
 	SET NOCOUNT ON
 	SELECT
-		ZGWSecurity.Roles.[NAME] AS Roles
+		ZGWSecurity.Roles.[Name] AS Roles
 	FROM
 		ZGWSecurity.Accounts WITH(NOLOCK),
 		ZGWSecurity.Roles_Security_Entities_Accounts WITH(NOLOCK),

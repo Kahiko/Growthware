@@ -24,7 +24,7 @@ AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Groups'
 	SELECT
-		ZGWSecurity.Groups.[NAME] AS GROUPS
+		ZGWSecurity.Groups.[Name] AS GROUPS
 	FROM
 		ZGWSecurity.Groups_Security_Entities_Permissions,
 		ZGWSecurity.Groups_Security_Entities,

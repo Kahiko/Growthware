@@ -49,8 +49,8 @@ AS
 			IF @P_Account_SeqID > -1
 				BEGIN -- get only valid NVP for the given account
 					IF @P_Debug = 1 PRINT 'get only valid NVP for the given account'
-					DECLARE @V_PERMISSION_ID INT
-					SET @V_PERMISSION_ID = ZGWSecurity.Get_View_Permission_SeqID()
+					DECLARE @V_Permission_Id INT
+					SET @V_Permission_Id = ZGWSecurity.Get_View_Permission_SeqID()
 					DECLARE @V_AvalibleItems TABLE ([NVP_SeqID] int,
 													[Schema_Name] varchar(30),
 													[Static_Name] varchar(30),
@@ -61,7 +61,7 @@ AS
 													[Added_Date] datetime,
 													[Updated_By] int,
 													[Updated_Date] datetime,
-													[ROLE] VARCHAR(50))
+													[Role] VARCHAR(50))
 					IF @P_Debug = 1 PRINT 'Geting items via roles'
 					INSERT INTO @V_AvalibleItems
 					SELECT -- Items via roles
@@ -75,7 +75,7 @@ AS
 						ZGWSystem.Name_Value_Pairs.Added_Date,
 						ZGWSystem.Name_Value_Pairs.Updated_By,
 						ZGWSystem.Name_Value_Pairs.Updated_Date,
-						ROLES.NAME AS [ROLE]
+						ROLES.Name AS [Role]
 					FROM
 						ZGWSecurity.Roles_Security_Entities SE_ROLES,
 						ZGWSecurity.Roles ROLES,
@@ -87,7 +87,7 @@ AS
 						AND SECURITY.Roles_Security_Entities_SeqID = SE_ROLES.Roles_Security_Entities_SeqID
 						AND SECURITY.NVP_SeqID = ZGWSystem.Name_Value_Pairs.NVP_SeqID
 						AND [Permissions].NVP_Detail_SeqID = SECURITY.Permissions_NVP_Detail_SeqID
-						AND [Permissions].NVP_Detail_SeqID = @V_PERMISSION_ID
+						AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
 						AND SE_ROLES.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
 					IF @P_Debug = 1 PRINT 'Getting items via groups'
 					INSERT INTO @V_AvalibleItems
@@ -102,7 +102,7 @@ AS
 						, ZGWSystem.Name_Value_Pairs.Added_Date
 						, ZGWSystem.Name_Value_Pairs.Updated_By
 						, ZGWSystem.Name_Value_Pairs.Updated_Date
-						, ROLES.NAME AS [ROLE]
+						, ROLES.[Name] AS [Role]
 					FROM
 						ZGWSecurity.Groups_Security_Entities_Permissions,
 						ZGWSecurity.Groups_Security_Entities,
@@ -118,14 +118,14 @@ AS
 						AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
 						AND ROLES.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
 						AND [Permissions].NVP_Detail_SeqID = ZGWSecurity.Groups_Security_Entities_Permissions.Permissions_NVP_Detail_SeqID
-						AND [Permissions].NVP_Detail_SeqID = @V_PERMISSION_ID
+						AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
 						AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
 
 					DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 					IF @P_Debug = 1 PRINT 'Getting roles for account and roles via groups'
 					INSERT INTO @V_AccountRoles
 					SELECT -- Roles via roles
-						ZGWSecurity.Roles.[NAME] AS Roles
+						ZGWSecurity.Roles.[Name] AS Roles
 					FROM
 						ZGWSecurity.Accounts,
 						ZGWSecurity.Roles_Security_Entities_Accounts,
@@ -138,7 +138,7 @@ AS
 						AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
 					UNION
 					SELECT -- Roles via groups
-						ZGWSecurity.Roles.[NAME] AS Roles
+						ZGWSecurity.Roles.[Name] AS Roles
 					FROM
 						ZGWSecurity.Accounts,
 						ZGWSecurity.Groups_Security_Entities_Accounts,
@@ -177,7 +177,7 @@ AS
 						FROM 
 							@V_AvalibleItems
 						WHERE
-							ROLE IN (SELECT DISTINCT * FROM @V_AccountRoles)
+							[Role] IN (SELECT DISTINCT * FROM @V_AccountRoles)
 
 					DECLARE @V_DistinctItems TABLE ([NVP_SeqID] int, 
 													[Schema_Name] varchar(30),
