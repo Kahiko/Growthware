@@ -144,8 +144,6 @@ Namespace Model.Profiles
 
         Public Property MetaKeywords() As String
 
-        Public Shadows Property Name() As String
-
         Public Property NavigationTypeSeqId() As Integer
             Get
                 Return m_NavigationTypeSeqId
