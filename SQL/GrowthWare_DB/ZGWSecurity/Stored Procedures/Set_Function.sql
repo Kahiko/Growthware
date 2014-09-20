@@ -120,6 +120,7 @@ AS
 				[Action],
 				Parent_SeqID,
 				Notes,
+				Sort_Order,
 				Added_By,
 				Added_Date
 			)
@@ -140,13 +141,14 @@ AS
 				@P_Action,
 				@P_Parent_SeqID,
 				@P_Notes,
+				0,
 				@P_Added_Updated_By,
 				@V_Now
 			)
 			SELECT @P_Function_SeqID=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 			DECLARE @V_Sort_Order INT
 			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
-			UPDATE ZGWSecurity.Functions SET Sort_Order = @V_Sort_Order WHERE Function_SeqID = @P_Function_SeqID
+			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE Function_SeqID = @P_Function_SeqID
 
 		END
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'

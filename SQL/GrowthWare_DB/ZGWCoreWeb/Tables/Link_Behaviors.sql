@@ -7,7 +7,7 @@
     [Sort_Order]       INT           NOT NULL,
     [Added_By]         INT           NOT NULL,
     [Added_DATE]       DATETIME      NOT NULL,
-    [UPDATED_BY]       INT           NULL,
+    [Updated_By]       INT           NULL,
     [UPDATED_DATE]     DATETIME      NULL,
     CONSTRAINT [PK_Link_Behaviors] PRIMARY KEY CLUSTERED ([NVP_Detail_SeqID] ASC),
     CONSTRAINT [FK_ZGWCoreWeb_Link_Behaviors_ZGWSystem_Name_Value_Pairs] FOREIGN KEY ([NVP_SeqID]) REFERENCES [ZGWSystem].[Name_Value_Pairs] ([NVP_SeqID]) ON DELETE CASCADE ON UPDATE CASCADE,
