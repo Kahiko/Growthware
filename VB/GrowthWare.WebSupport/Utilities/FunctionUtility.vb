@@ -56,7 +56,7 @@ Namespace Utilities
                 mRetVal = New MFunctionProfile()
                 Try
                     mRetVal = mResult.First
-                Catch ex As NullReferenceException
+                Catch ex As InvalidOperationException
                     mRetVal = Nothing
                 End Try
             End If
