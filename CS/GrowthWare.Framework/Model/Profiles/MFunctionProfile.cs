@@ -149,12 +149,6 @@ namespace GrowthWare.Framework.Model.Profiles
         public string MetaKeywords { get; set; }
 
         /// <summary>
-        /// String representation normaly unique
-        /// </summary>
-        /// <value>The name.</value>
-        public new string Name { get; set; }
-
-        /// <summary>
         /// Gets or sets the navigation type seq id.
         /// </summary>
         /// <value>The navigation type seq id.</value>
