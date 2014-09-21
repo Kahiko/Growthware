@@ -74,7 +74,7 @@ namespace GrowthWare.WebSupport.Utilities
                 {
                     mRetVal = mResult.First();
                 }
-                catch (NullReferenceException)
+                catch (InvalidOperationException)
                 {
                     mRetVal = null;
                 }
