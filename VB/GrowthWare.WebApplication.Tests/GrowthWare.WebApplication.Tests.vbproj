@@ -117,12 +117,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj">
-      <Project>{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}</Project>
-      <Name>GrowthWare.WebApplication</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

@@ -2,6 +2,7 @@
 Imports System.Collections.Generic
 Imports System.Linq
 Imports System.Web.Http
+Imports Newtonsoft.Json.Serialization
 Imports GrowthWare.Framework.Common
 
 Public Module WebApiConfig
