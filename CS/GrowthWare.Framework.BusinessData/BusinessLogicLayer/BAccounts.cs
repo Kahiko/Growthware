@@ -145,7 +145,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// ]]>
         /// </code>
         /// </example>
-        public MAccountProfile GetAccountProfile(string account)
+        public MAccountProfile GetProfile(string account)
         {
             MAccountProfile mRetVal = null;
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 

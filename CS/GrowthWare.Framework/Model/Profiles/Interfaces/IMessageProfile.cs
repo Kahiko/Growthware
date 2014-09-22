@@ -22,7 +22,7 @@ namespace GrowthWare.Framework.Model.Profiles.Interfaces
         /// Gets or sets a value indicating whether [format as HTML].
         /// </summary>
         /// <value><c>true</c> if [format as HTML]; otherwise, <c>false</c>.</value>
-        bool FormatAsHTML { get; set; }
+        bool FormatAsHtml { get; set; }
 
         /// <summary>
         /// Formats the body.
@@ -32,8 +32,8 @@ namespace GrowthWare.Framework.Model.Profiles.Interfaces
         /// <summary>
         /// Tagses the specified seporator.
         /// </summary>
-        /// <param name="seporator">The seporator.</param>
+        /// <param name="separator">The seporator.</param>
         /// <returns>System.String.</returns>
-        string GetTags(string seporator);
+        string GetTags(string separator);
     }
 }

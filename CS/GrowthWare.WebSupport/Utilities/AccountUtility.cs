@@ -249,7 +249,7 @@ namespace GrowthWare.WebSupport.Utilities
             MAccountProfile mRetVal = null;
             try
             {
-                mRetVal = mBAccount.GetAccountProfile(account);
+                mRetVal = mBAccount.GetProfile(account);
             }
             catch (IndexOutOfRangeException)
             {
@@ -283,7 +283,7 @@ namespace GrowthWare.WebSupport.Utilities
             if (mRetVal != null)
             {
                 BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                mRetVal = mBAccount.GetAccountProfile(mRetVal.Account);
+                mRetVal = mBAccount.GetProfile(mRetVal.Account);
             }
             return mRetVal;
         }

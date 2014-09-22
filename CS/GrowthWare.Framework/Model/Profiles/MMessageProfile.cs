@@ -16,35 +16,35 @@ namespace GrowthWare.Framework.Model.Profiles
     [Serializable(), CLSCompliant(true)]
     public class MMessageProfile : MProfile, IMessageProfile
     {
-        #region "Member Properties"
-        private int m_SE_SEQ_ID = 1;
+#region "Member Properties"
+        private int m_SecurityEntity_Seq_Id = 1;
         private string m_Description = string.Empty;
         private string m_Title = string.Empty;
         private bool m_FormatAsHTML = false;
         private string m_Body = string.Empty;
-        #endregion
+#endregion
 
-        #region "Private Methods"
+#region "Private Methods"
         /// <summary>
         /// Initializes values given a DataRow
         /// </summary>
-        /// <param name="datarow">datarow</param>
+        /// <param name="dataRow">DataRow</param>
         /// <remarks>Does not set ID or Name .. ColumnName should be unique to
         /// each inheriting class.</remarks>
-        protected new void Initialize(DataRow datarow)
+        protected new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "Name";
             base.IdColumnName = "Message_SeqID";
-            base.Initialize(datarow);
-            m_SE_SEQ_ID = base.GetInt(datarow, "SE_SEQ_ID");
-            m_Title = base.GetString( datarow, "TITLE");
-            m_Description = base.GetString(datarow, "DESCRIPTION");
-            m_FormatAsHTML = base.GetBool(datarow, "FORMAT_AS_HTML");
-            m_Body = base.GetString(datarow, "BODY");
+            base.Initialize(dataRow);
+            m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "SE_SEQ_ID");
+            m_Title = base.GetString(dataRow, "TITLE");
+            m_Description = base.GetString(dataRow, "DESCRIPTION");
+            m_FormatAsHTML = base.GetBool(dataRow, "FORMAT_AS_HTML");
+            m_Body = base.GetString(dataRow, "BODY");
         }
-        #endregion
+#endregion
 
-        #region "Public Methods"
+#region "Public Methods"
         /// <summary>
         /// Will return a message profile with the default values
         /// </summary>
@@ -55,39 +55,75 @@ namespace GrowthWare.Framework.Model.Profiles
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MMessageProfile" /> class.
-		/// </summary>
-		/// <param name="profile">MMessageProfile</param>
+        /// </summary>
+        /// <param name="profile">MMessageProfile</param>
         public MMessageProfile(MMessageProfile profile)
-		{
-			if (profile != null) 
-			{
-				this.AddedBy = profile.AddedBy;
-				this.AddedDate = profile.AddedDate;
-				this.Body = profile.Body;
-				this.Description = profile.Description;
-				this.FormatAsHTML = profile.FormatAsHTML;
-				this.Id = profile.Id;
-				this.Name = profile.Name;
-				this.SE_SEQ_ID = profile.SE_SEQ_ID;
-				this.Title = profile.Title;
-				this.UpdatedBy = profile.UpdatedBy;
-				this.UpdatedDate = profile.UpdatedDate;
-			}
-		}
+        {
+            if (profile != null)
+            {
+                this.AddedBy = profile.AddedBy;
+                this.AddedDate = profile.AddedDate;
+                this.Body = profile.Body;
+                this.Description = profile.Description;
+                this.FormatAsHtml = profile.FormatAsHtml;
+                this.Id = profile.Id;
+                this.Name = profile.Name;
+                this.SecurityEntitySeqId = profile.SecurityEntitySeqId;
+                this.Title = profile.Title;
+                this.UpdatedBy = profile.UpdatedBy;
+                this.UpdatedDate = profile.UpdatedDate;
+            }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="MMessageProfile" /> class.
         /// </summary>
-        /// <param name="dr">The dr.</param>
-        public MMessageProfile(DataRow dr)
+        /// <param name="dataRow">The DataRow.</param>
+        public MMessageProfile(DataRow dataRow)
         {
-            this.Initialize(dr);
+            this.Initialize(dataRow);
+        }
+        public string Body
+        {
+            get { return m_Body; }
+            set { if (value != null) m_Body = value.Trim(); }
         }
 
         /// <summary>
-        /// Formats the body.
+        /// Gets or sets the description.
         /// </summary>
-        void IMessageProfile.FormatBody()
+        /// <value>The description.</value>
+        public string Description
+        {
+            get { return m_Description; }
+            set 
+            {
+                if(value != null) m_Description = value.Trim(); 
+            }
+        }
+
+        public string Title
+        {
+            get { return m_Title; }
+            set { if(value != null) m_Title = value.Trim(); }
+        }
+        /// <summary>
+        /// Gets or sets the S e_ SE q_ ID.
+        /// </summary>
+        /// <value>The Security Entity ID.</value>
+        public int SecurityEntitySeqId
+        {
+            get { return m_SecurityEntity_Seq_Id; }
+            set { m_SecurityEntity_Seq_Id = value; }
+        }
+
+        public bool FormatAsHtml
+        {
+            get { return m_FormatAsHTML; }
+            set { m_FormatAsHTML = value; }
+        }
+
+        public void FormatBody()
         {
             PropertyInfo[] myPropertyInfo = this.GetType().GetProperties();
             PropertyInfo myPropertyItem = null;
@@ -102,73 +138,17 @@ namespace GrowthWare.Framework.Model.Profiles
             }
         }
 
-        /// <summary>
-        /// Returns all properties encapsulated by angle brackets seporated by the Seporator parameter
-        /// </summary>
-        /// <param name="seporator">string</param>
-        /// <returns>string</returns>
-        public string GetTags(string seporator)
+        public string GetTags(string separator)
         {
             string retVal = string.Empty;
             PropertyInfo[] mPropertyInfo = this.GetType().GetProperties();
             foreach (PropertyInfo mPropertyItem in mPropertyInfo)
             {
-                retVal = retVal + "<" + mPropertyItem.Name + ">" + seporator;
+                retVal = retVal + "<" + mPropertyItem.Name + ">" + separator;
             }
             return retVal;
         }
-        #endregion
-
-        #region "Public Properties"
-        /// <summary>
-        /// Gets or sets the S e_ SE q_ ID.
-        /// </summary>
-        /// <value>The Security Entity ID.</value>
-        public int SE_SEQ_ID
-        {
-            get { return m_SE_SEQ_ID; }
-            set { m_SE_SEQ_ID = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the title.
-        /// </summary>
-        /// <value>The title.</value>
-        public string Title
-        {
-            get { return m_Title; }
-            set { m_Title = value.Trim(); }
-        }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>The description.</value>
-        public string Description
-        {
-            get { return m_Description; }
-            set { m_Description = value.Trim(); }
-        }
-
-        /// <summary>
-        /// Gets or sets a value indicating whether [format as HTML].
-        /// </summary>
-        /// <value><c>true</c> if [format as HTML]; otherwise, <c>false</c>.</value>
-        public bool FormatAsHTML
-        {
-            get { return m_FormatAsHTML; }
-            set { m_FormatAsHTML = value; }
-        }
-
-        /// <summary>
-        /// Gets or sets the body.
-        /// </summary>
-        /// <value>The body.</value>
-        public string Body
-        {
-            get { return m_Body; }
-            set { m_Body = value.Trim(); }
-        }
-        #endregion
     }
+#endregion
+
 }
