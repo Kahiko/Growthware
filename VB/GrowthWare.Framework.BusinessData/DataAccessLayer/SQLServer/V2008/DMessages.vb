@@ -24,7 +24,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
              {
               New SqlParameter("@P_Message_SeqID", -1),
-              New SqlParameter("@P_Security_Entity_SeqID", Profile.SE_SEQ_ID)
+              New SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntitySeqId)
              }
             Return MyBase.GetDataTable("ZGWCoreWeb.Get_Messages", mParameters)
         End Function
@@ -34,7 +34,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
              {
               New SqlParameter("@P_Message_SeqID", Profile.Id),
-              New SqlParameter("@P_Security_Entity_SeqID", Profile.SE_SEQ_ID)
+              New SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntitySeqId)
              }
             Return MyBase.GetDataRow("ZGWCoreWeb.Get_Messages", mParameters)
         End Function
@@ -46,7 +46,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
              {
               New SqlParameter("@P_Message_SeqID", Profile.Id),
-              New SqlParameter("@P_Security_Entity_SeqID", Profile.SE_SEQ_ID),
+              New SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntitySeqId),
               New SqlParameter("@P_Name", Profile.Name),
               New SqlParameter("@P_Title", Profile.Title),
               New SqlParameter("@P_Description", Profile.Description),
@@ -82,7 +82,7 @@ Namespace DataAccessLayer.SQLServer.V2008
                 Throw New ArgumentException("Profile property must be set before calling methods from this class")
             End If
             If SecurityEntitySeqID = 0 Then
-                Throw New ArgumentException("SE_SEQ_ID property must be set before calling methods from this class")
+                Throw New ArgumentException("SecurityEntitySeqId property must be set before calling methods from this class")
             End If
         End Sub
     End Class
