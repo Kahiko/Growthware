@@ -9,9 +9,9 @@ Namespace Model.Profiles
         Implements IMessageProfile
 
 #Region "Member Properties"
-        Private m_SE_SEQ_ID As Integer = 1
+        Private m_SecurityEntity_Seq_Id As Integer = 1
         Private m_Description As String = String.Empty
-        Private m_ErrorCode As Integer = -1
+        'Private m_ErrorCode As Integer = -1
         Private m_Title As String = String.Empty
         Private m_FormatAsHTML As Boolean = False
         Private m_Body As String = String.Empty
@@ -26,7 +26,7 @@ Namespace Model.Profiles
             MyBase.IdColumnName = "MESSAGE_SEQ_ID"
             MyBase.NameColumnName = "Name"
             MyBase.Initialize(dataRow)
-            m_SE_SEQ_ID = MyBase.GetInt(dataRow, "SE_SEQ_ID")
+            m_SecurityEntity_Seq_Id = MyBase.GetInt(dataRow, "SE_SEQ_ID")
             m_Title = MyBase.GetString(dataRow, "TITLE")
             m_Description = MyBase.GetString(dataRow, "DESCRIPTION")
             m_FormatAsHTML = MyBase.GetBool(dataRow, "FORMAT_AS_HTML")
@@ -62,10 +62,10 @@ Namespace Model.Profiles
                     .AddedDate = profile.AddedDate
                     .Body = profile.Body
                     .Description = profile.Description
-                    .FormatAsHTML = profile.FormatAsHTML
+                    .FormatAsHtml = profile.FormatAsHtml
                     .Id = profile.Id
                     .Name = profile.Name
-                    .SE_SEQ_ID = profile.SE_SEQ_ID
+                    .SecurityEntitySeqId = profile.SecurityEntitySeqId
                     .Title = profile.Title
                     .UpdatedBy = profile.UpdatedBy
                     .UpdatedDate = profile.UpdatedDate
@@ -92,25 +92,25 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Returns all properties encapsulated by angle brackets seporated by the Seporator parameter
         ''' </summary>
-        ''' <param name="seporator">string</param>
+        ''' <param name="separator">string</param>
         ''' <returns>string</returns>
-        Public Function GetTags(ByVal seporator As String) As String Implements Interfaces.IMessageProfile.GetTags
+        Public Function GetTags(ByVal separator As String) As String Implements IMessageProfile.GetTags
             Dim mRetVal As String = String.Empty
             Dim mPropertyInfo As PropertyInfo() = Me.GetType.GetProperties()
             For Each mPropertyItem As PropertyInfo In mPropertyInfo
-                mRetVal = mRetVal & "<" & mPropertyItem.Name & ">" & seporator
+                mRetVal = mRetVal & "<" & mPropertyItem.Name & ">" & separator
             Next
             Return mRetVal
         End Function
 #End Region
 
 #Region "Public Properties"
-        Public Property SE_SEQ_ID() As Integer
+        Public Property SecurityEntitySeqId() As Integer
             Get
-                Return m_SE_SEQ_ID
+                Return m_SecurityEntity_Seq_Id
             End Get
             Set(ByVal value As Integer)
-                m_SE_SEQ_ID = value
+                m_SecurityEntity_Seq_Id = value
             End Set
         End Property
 
@@ -119,7 +119,7 @@ Namespace Model.Profiles
                 Return m_Title
             End Get
             Set(ByVal value As String)
-                m_Title = value.Trim
+                If Not value Is Nothing Then m_Title = value.Trim
             End Set
         End Property
 
@@ -128,11 +128,11 @@ Namespace Model.Profiles
                 Return m_Description
             End Get
             Set(ByVal value As String)
-                m_Description = value.Trim
+                If Not value Is Nothing Then m_Description = value.Trim()
             End Set
         End Property
 
-        Public Property FormatAsHTML() As Boolean Implements IMessageProfile.FormatAsHTML
+        Public Property FormatAsHtml() As Boolean Implements IMessageProfile.FormatAsHTML
             Get
                 Return m_FormatAsHTML
             End Get

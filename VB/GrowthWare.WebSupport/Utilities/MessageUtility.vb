@@ -3,6 +3,7 @@ Imports GrowthWare.Framework.Common
 Imports System.Web
 Imports System.Collections.ObjectModel
 Imports System.Globalization
+Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 
 Namespace Utilities
     Public Module MessageUtility
@@ -33,14 +34,14 @@ Namespace Utilities
         ''' <returns>Collection{MMessageProfile}.</returns>
         Public Function GetMessages() As Collection(Of MMessageProfile)
             Dim mMessageCollection As Collection(Of MMessageProfile) = Nothing
-            'Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
-            'Dim mBMessages As BMessages = New BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement)
-            'Dim mCacheName As String = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id)
-            'mMessageCollection = CType(HttpContext.Current.Cache(mCacheName), Collection(Of MMessageProfile))
-            'If mMessageCollection Is Nothing Then
-            '    mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id)
-            '    CacheController.AddToCacheDependency(mCacheName, mMessageCollection)
-            'End If
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
+            Dim mBMessages As BMessages = New BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+            Dim mCacheName As String = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id)
+            mMessageCollection = CType(HttpContext.Current.Cache(mCacheName), Collection(Of MMessageProfile))
+            If mMessageCollection Is Nothing Then
+                mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id)
+                CacheController.AddToCacheDependency(mCacheName, mMessageCollection)
+            End If
             Return mMessageCollection
         End Function
 
@@ -104,25 +105,25 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Save(ByVal profile As MMessageProfile)
-            'Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.GetCurrentProfile, WebConfigSettings.CentralManagement)
-            'mBMessages.Save(profile)
+            Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
+            mBMessages.Save(profile)
             RemoveCachedMessagesCollection()
         End Sub
 
-        ' ''' <summary>
-        ' ''' Returns a DataTable of the search data
-        ' ''' </summary>
-        ' ''' <param name="searchCriteria">MSearchCriteria</param>
-        ' ''' <returns>NULL/Nothing if no records are returned.</returns>
-        ' ''' <remarks></remarks>
-        'Public   Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-        '    Try
-        '        Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.GetCurrentProfile, WebConfigSettings.CentralManagement)
-        '        Return mBMessages.Search(searchCriteria)
-        '    Catch ex As IndexOutOfRangeException
-        '        'no data is not a problem
-        '        Return Nothing
-        '    End Try
-        'End Function
+        ''' <summary>
+        ''' Returns a DataTable of the search data
+        ''' </summary>
+        ''' <param name="searchCriteria">MSearchCriteria</param>
+        ''' <returns>NULL/Nothing if no records are returned.</returns>
+        ''' <remarks></remarks>
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            Try
+                Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
+                Return mBMessages.Search(searchCriteria)
+            Catch ex As IndexOutOfRangeException
+                'no data is not a problem
+                Return Nothing
+            End Try
+        End Function
     End Module
 End Namespace

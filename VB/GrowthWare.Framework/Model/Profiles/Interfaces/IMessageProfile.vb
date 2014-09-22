@@ -4,8 +4,8 @@
 
         Property Body() As String
         Property Title() As String
-        Property FormatAsHTML() As Boolean
+        Property FormatAsHtml() As Boolean
         Sub FormatBody()
-        Function GetTags(ByVal seporator As String) As String
+        Function GetTags(ByVal separator As String) As String
     End Interface
 End Namespace

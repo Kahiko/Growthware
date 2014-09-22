@@ -48,8 +48,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.dll</HintPath>
     </Reference>
-    <Reference Include="GrowthWare.WebSupport, Version=6.0.0.16499, Culture=neutral, PublicKeyToken=243bc12157814c51, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="GrowthWare.WebSupport">
       <HintPath>..\..\GrowthWareDLLs\GrowthWare.WebSupport.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">

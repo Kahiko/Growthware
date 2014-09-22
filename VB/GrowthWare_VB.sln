@@ -4,6 +4,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj", "{94D1A0B6-06A7-4AD3-9C47-A4E6374270B6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{055A674B-3AF2-450A-BE49-DAFF60828878} = {055A674B-3AF2-450A-BE49-DAFF60828878}
+		{147682F0-C578-4F06-9D87-5F5935086212} = {147682F0-C578-4F06-9D87-5F5935086212}
+	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.Framework", "GrowthWare.Framework\GrowthWare.Framework.vbproj", "{147682F0-C578-4F06-9D87-5F5935086212}"
 EndProject
