@@ -75,6 +75,7 @@
     <Compile Include="Model\Profiles\Base\MGroupRolePermissionSecurity.cs" />
     <Compile Include="Model\Profiles\Base\MDatabaseFunctions.cs" />
     <Compile Include="Model\Profiles\Base\MProfile.cs" />
+    <Compile Include="Model\Profiles\Interfaces\IMessageProfile.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRoleSecurity.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMProfile.cs" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRolePermissionSecurity.cs" />
@@ -83,6 +84,8 @@
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />
     <Compile Include="Model\Profiles\MDirectoryProfile.cs" />
     <Compile Include="Model\Profiles\MFunctionProfile.cs" />
+    <Compile Include="Model\Profiles\MMessageProfile.cs" />
+    <Compile Include="Model\Profiles\MRequestNewPassword.cs" />
     <Compile Include="Model\Profiles\MSearchCriteria.cs" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

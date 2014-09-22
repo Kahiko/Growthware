@@ -85,10 +85,10 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="dataRow">DataRow</param>
         protected new void Initialize(DataRow dataRow)
         {
+            base.NameColumnName = "ACCT";
+            base.IdColumnName = "ACCT_SEQ_ID";
             base.Initialize(dataRow);
-            base.Id = base.GetInt(dataRow, "ACCT_SEQ_ID");
-            Account = base.GetString(dataRow, "ACCT");
-            base.Name = Account;
+            Account = base.Name;
             this.Email = base.GetString(dataRow, "EMAIL");
             this.EnableNotifications = base.GetBool(dataRow, "ENABLE_NOTIFICATIONS");
             this.IsSystemAdmin = base.GetBool(dataRow, "IS_SYSTEM_ADMIN");

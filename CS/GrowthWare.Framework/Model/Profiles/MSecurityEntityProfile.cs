@@ -23,9 +23,9 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="dataRow">DataRow</param>
         internal override void Initialize(DataRow dataRow)
         {
+            base.NameColumnName = "Name";
+            base.IdColumnName = "SE_SEQ_ID";
             base.Initialize(dataRow);
-            base.Id = base.GetInt(dataRow, "SE_SEQ_ID");
-            base.Name = base.GetString(dataRow, "Name");
             this.Description = base.GetString(dataRow, "Description");
             this.Url = base.GetString(dataRow, "URL");
             this.Skin = base.GetString(dataRow, "Skin");
