@@ -16,7 +16,7 @@ Public Class ChallengeResult
     Public Property Request As HttpRequestMessage
 
     Public Function ExecuteAsync(cancellationToken As CancellationToken) As Task(Of HttpResponseMessage) Implements IHttpActionResult.ExecuteAsync
-        Request.GetOwinContext().Authentication.Challenge(LoginProvider)
+        'Request.GetOwinContext().Authentication.Challenge(LoginProvider)
 
         Dim response As New HttpResponseMessage(HttpStatusCode.Unauthorized)
         response.RequestMessage = Request

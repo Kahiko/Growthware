@@ -18,19 +18,20 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets or sets the security entity seq ID.
         ''' </summary>
         ''' <value>The security entity seq ID.</value>
-        Property SecurityEntitySeqID As Integer
+        Property SecurityEntitySeqId As Integer
 
         ''' <summary>
         ''' Gets the messages.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetMessages() As DataTable
+        Function Messages() As DataTable
 
         ''' <summary>
-        ''' Gets the message.
+        ''' Gets the messages.
         ''' </summary>
-        ''' <returns>DataRow.</returns>
-        Function GetMessage() As DataRow
+        ''' <returns>DataTable.</returns>
+
+        Function GetMessage(ByVal messageSeqId As Integer) As DataRow
 
         ''' <summary>
         ''' Saves this instance.

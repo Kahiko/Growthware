@@ -3,6 +3,7 @@ Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports System.Collections.ObjectModel
+Imports System.Globalization
 
 Namespace BusinessLogicLayer
     ''' <summary>
@@ -82,7 +83,7 @@ Namespace BusinessLogicLayer
             End If
             m_SecurityEntityProfile = securityEntityProfile
             m_DMessages.ConnectionString = securityEntityProfile.ConnectionString
-            m_DMessages.SecurityEntitySeqID = securityEntityProfile.Id
+            m_DMessages.SecurityEntitySeqId = securityEntityProfile.Id
         End Sub
 
         ''' <summary>
@@ -94,9 +95,8 @@ Namespace BusinessLogicLayer
             Dim mRetVal As Collection(Of MMessageProfile) = New Collection(Of MMessageProfile)
             Dim mDataTable As DataTable = Nothing
             Try
-                m_DMessages.Profile = New MMessageProfile
-                m_DMessages.SecurityEntitySeqID = securityEntitySeqId
-                mDataTable = m_DMessages.GetMessages()
+                m_DMessages.SecurityEntitySeqId = securityEntitySeqId
+                mDataTable = m_DMessages.Messages()
                 For Each item As DataRow In mDataTable.Rows
                     Dim mProfile As MMessageProfile = New MMessageProfile(item)
                     mRetVal.Add(mProfile)
@@ -112,10 +112,18 @@ Namespace BusinessLogicLayer
         End Function
 
         ''' <summary>
+        ''' Gets the messages.
+        ''' </summary>
+        ''' <param name="messageSeqId">The security entity seq ID.</param>
+        ''' <returns>Collection{MMessageProfile}.</returns>
+        Public Function GetMessage(ByVal messageSeqId As Integer) As MMessageProfile
+            Return New MMessageProfile(m_DMessages.GetMessage(messageSeqId))
+        End Function
+        ''' <summary>
         ''' Save Function information to the database
         ''' </summary>
         ''' <param name="profile">MMessageProfile</param>
-        Public Sub Save(ByRef profile As MMessageProfile)
+        Public Sub Save(ByVal profile As MMessageProfile)
             m_DMessages.Profile = profile
             m_DMessages.Save()
         End Sub
@@ -127,10 +135,11 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!")
             If String.IsNullOrEmpty(searchCriteria.WhereClause) Then
-                searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString()
+                searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
             Else
-                searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString()
+                searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
             End If
             Return m_DMessages.Search(searchCriteria)
         End Function
