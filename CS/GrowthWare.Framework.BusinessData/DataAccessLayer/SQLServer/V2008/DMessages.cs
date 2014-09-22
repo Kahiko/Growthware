@@ -2,71 +2,33 @@
 using GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base;
 using GrowthWare.Framework.Model.Profiles;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 {
+    /// <summary>
+    /// Class DMessages
+    /// </summary>
     public class DMessages : DDBInteraction, IDMessages
     {
-        private MMessageProfile mProfile = new MMessageProfile();
-
-        int IDMessages.SecurityEntitySeqId { get; set; }
-
-        MMessageProfile IDMessages.Profile
-        {
-            get { return mProfile; }
-            set { mProfile = value; }
-        }
-
-        DataTable IDMessages.GetAllMessages()
-        {
-            String storeProc = "ZGWCoreWeb.Get_Messages";
-            SqlParameter[] myParameters = GetSelectParameters();
-            return GetDataTable(storeProc, myParameters);
-        }
-
-        DataRow IDMessages.GetMessage()
-        {
-            String storeProc = "ZGWCoreWeb.Get_Messages";
-            SqlParameter[] myParameters = GetSelectParameters();
-            return GetDataRow(storeProc, myParameters);
-        }
-
-        void IDMessages.Save()
-        {
-            String storeProc = "ZGWCoreWeb.Set_Message";
-            SqlParameter[] mParameters = GetInsertUpdateParameters();
-            ExecuteNonQuery(storeProc, mParameters);
-        }
-
+        private MMessageProfile m_Profile = new MMessageProfile();
         private SqlParameter[] GetInsertUpdateParameters()
         {
             SqlParameter[] myParameters = { 
-				new SqlParameter("@P_Message_SeqID", mProfile.Id), new SqlParameter("@P_Security_Entity_SeqID", mProfile.SecurityEntitySeqId), 
-				new SqlParameter("@P_Name", mProfile.Name), new SqlParameter("@P_Title", mProfile.Title), 
-				new SqlParameter("@P_Description", mProfile.Description), new SqlParameter("@P_BODY", mProfile.Body), 
-				new SqlParameter("@P_Format_As_HTML", mProfile.FormatAsHtml), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(mProfile)), 
+				new SqlParameter("@P_Message_SeqID", m_Profile.Id), new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId), 
+				new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_Title", m_Profile.Title), 
+				new SqlParameter("@P_Description", m_Profile.Description), new SqlParameter("@P_BODY", m_Profile.Body), 
+				new SqlParameter("@P_Format_As_HTML", m_Profile.FormatAsHtml), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
 				GetSqlParameter("@P_PRIMARY_KEY", -1, ParameterDirection.Output) 
 			};
             return myParameters;
         }
 
-        private SqlParameter[] GetSelectParameters()
-        {
-            SqlParameter[] myParamaters = { 
-				new SqlParameter("@P_Message_SeqID", mProfile.Id), 
-				new SqlParameter("@P_Security_Entity_SeqID", mProfile.SecurityEntitySeqId)
-			};
-            return myParamaters;
-        }
 
         DataTable IDMessages.Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
             DataTable mRetVal;
             SqlParameter[] mParameters =
@@ -81,6 +43,47 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 			 };
             mRetVal = GetDataTable(mStoredProcedure, mParameters);
             return mRetVal;
+        }
+
+        MMessageProfile IDMessages.Profile
+        {
+            get
+            {
+                return m_Profile;
+            }
+            set
+            {
+                m_Profile = value;
+            }
+        }
+
+        int IDMessages.SecurityEntitySeqId { get; set; }
+
+        DataTable IDMessages.Messages()
+        {
+            String storeProc = "ZGWCoreWeb.Get_Messages";
+            SqlParameter[] mParamaters = { 
+				new SqlParameter("@P_Message_SeqID", -1), 
+				new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId)
+			};
+            return GetDataTable(storeProc, mParamaters);
+        }
+
+        DataRow IDMessages.Message(int messageSeqId)
+        {
+            String storeProc = "ZGWCoreWeb.Get_Messages";
+            SqlParameter[] mParamaters = { 
+				new SqlParameter("@P_Message_SeqID", messageSeqId), 
+				new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId)
+			};
+            return GetDataRow(storeProc, mParamaters);
+        }
+
+        void IDMessages.Save()
+        {
+            String storeProc = "ZGWCoreWeb.Set_Message";
+            SqlParameter[] mParameters = GetInsertUpdateParameters();
+            ExecuteNonQuery(storeProc, mParameters);
         }
     }
 }

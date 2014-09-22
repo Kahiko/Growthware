@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -109,10 +110,8 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             DataTable mDataTable = null;
             try
             {
-                m_DMessages.Profile = new MMessageProfile();
-                m_DMessages.Profile.Id = -1;
                 m_DMessages.Profile.SecurityEntitySeqId = securityEntitySeqId;
-                mDataTable = m_DMessages.GetAllMessages();
+                mDataTable = m_DMessages.Messages();
                 foreach (DataRow item in mDataTable.Rows)
                 {
                     mRetList.Add(new MMessageProfile(item));
@@ -136,13 +135,12 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <summary>
         /// Purpose is to return data for a specific message.
         /// </summary>
-        /// <param name="profile">The profile of the desired message.  SE_SEQ_ID and MESSAGE_SEQ_ID should be populated by calling code.</param>
+        /// <param name="messageSeqId">int of the desired message profile object</param>
         /// <returns>DataRow</returns>
         /// <remarks></remarks>
-        public DataRow GetMessage(ref MMessageProfile profile)
+        public DataRow GetMessage(int messageSeqId)
         {
-            m_DMessages.Profile = profile;
-            return m_DMessages.GetMessage();
+            return m_DMessages.Message(messageSeqId);
         }
 
         /// <summary>
@@ -150,7 +148,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </summary>
         /// <param name="profile">The message profile.</param>
         /// <returns>System.Int32.</returns>
-        public void Save(ref MMessageProfile profile)
+        public void Save(MMessageProfile profile)
         {
             m_DMessages.Profile = profile;
             m_DMessages.Save();
@@ -163,13 +161,14 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!");
             if (string.IsNullOrEmpty(searchCriteria.WhereClause))
             {
-                searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString();
+                searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
-                searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString();
+                searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             }
             return m_DMessages.Search(searchCriteria);
         }

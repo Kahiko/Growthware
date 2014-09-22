@@ -34,13 +34,13 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Gets all messages.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetAllMessages();
+        DataTable Messages();
 
         /// <summary>
         /// Gets the message.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow GetMessage();
+        DataRow Message(int messageSeqId);
 
         /// <summary>
         /// Saves this instance.
