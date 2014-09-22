@@ -13,26 +13,26 @@ Namespace Utilities
         ''' <summary>
         ''' Messages the name of the unit cached collection.
         ''' </summary>
-        ''' <param name="securityEntityID">The security entity ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function MessagesUnitCachedCollectionName(ByVal securityEntityID As Integer) As String
-            Return securityEntityID.ToString() + s_MessagesUnitCachedCollectionName + "_Messages"
+        Public Function MessagesUnitCachedCollectionName(ByVal securityEntityId As Integer) As String
+            Return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedCollectionName + "_Messages"
         End Function
 
         ''' <summary>
         ''' Messages the name of the unit cached DV.
         ''' </summary>
-        ''' <param name="securityEntityID">The security entity ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function MessagesUnitCachedDVName(ByVal securityEntityID As Integer) As String
-            Return securityEntityID.ToString() + s_MessagesUnitCachedDVName + "_Messages"
+        Public Function MessagesUnitCachedDVName(ByVal securityEntityId As Integer) As String
+            Return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedDVName + "_Messages"
         End Function
 
         ''' <summary>
         ''' Gets the messages.
         ''' </summary>
         ''' <returns>Collection{MMessageProfile}.</returns>
-        Public Function GetMessages() As Collection(Of MMessageProfile)
+        Public Function Messages() As Collection(Of MMessageProfile)
             Dim mMessageCollection As Collection(Of MMessageProfile) = Nothing
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
             Dim mBMessages As BMessages = New BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement)
@@ -52,7 +52,7 @@ Namespace Utilities
         ''' <returns>MMessageProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
         Public Function GetProfile(ByVal name As String) As MMessageProfile
-            Dim mResult = From mProfile In GetMessages() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
+            Dim mResult = From mProfile In Messages() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
             Dim mRetVal As MMessageProfile = New MMessageProfile()
             Try
                 mRetVal = mResult.First
@@ -71,7 +71,7 @@ Namespace Utilities
         ''' <returns>MMessageProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
         Public Function GetProfile(ByVal id As Integer) As MMessageProfile
-            Dim mResult = From mProfile In GetMessages() Where mProfile.Id = id Select mProfile
+            Dim mResult = From mProfile In Messages() Where mProfile.Id = id Select mProfile
             Dim mRetVal As MMessageProfile = New MMessageProfile()
             Try
                 mRetVal = mResult.First
@@ -122,6 +122,8 @@ Namespace Utilities
                 Return mBMessages.Search(searchCriteria)
             Catch ex As IndexOutOfRangeException
                 'no data is not a problem
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Debug(ex)
                 Return Nothing
             End Try
         End Function

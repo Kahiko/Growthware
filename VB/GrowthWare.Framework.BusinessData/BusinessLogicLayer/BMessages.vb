@@ -1,6 +1,7 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
+Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports System.Collections.ObjectModel
 
 Namespace BusinessLogicLayer
@@ -87,14 +88,14 @@ Namespace BusinessLogicLayer
         ''' <summary>
         ''' Gets the messages.
         ''' </summary>
-        ''' <param name="securityEntitySeqID">The security entity seq ID.</param>
+        ''' <param name="securityEntitySeqId">The security entity seq ID.</param>
         ''' <returns>Collection{MMessageProfile}.</returns>
-        Public Function GetMessages(ByVal securityEntitySeqID As Integer) As Collection(Of MMessageProfile)
+        Public Function GetMessages(ByVal securityEntitySeqId As Integer) As Collection(Of MMessageProfile)
             Dim mRetVal As Collection(Of MMessageProfile) = New Collection(Of MMessageProfile)
             Dim mDataTable As DataTable = Nothing
             Try
                 m_DMessages.Profile = New MMessageProfile
-                m_DMessages.SecurityEntitySeqID = securityEntitySeqID
+                m_DMessages.SecurityEntitySeqID = securityEntitySeqId
                 mDataTable = m_DMessages.GetMessages()
                 For Each item As DataRow In mDataTable.Rows
                     Dim mProfile As MMessageProfile = New MMessageProfile(item)
