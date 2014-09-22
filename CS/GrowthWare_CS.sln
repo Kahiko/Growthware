@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30723.0
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Framework", "GrowthWare.Framework\GrowthWare.Framework.csproj", "{F12FECFD-D955-4F31-B7A6-E4EF8D88DE9D}"
 EndProject
@@ -10,6 +10,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.csproj", "{0C246309-844C-4FF0-8083-884E2AABD537}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3F452921-8AE4-48C0-8C68-A664605DDA56}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebApplication", "GrowthWare.WebApplication\GrowthWare.WebApplication.csproj", "{F5CA7891-0046-4006-928E-3883F666A746}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebApplication.Tests", "GrowthWare.WebApplication.Tests\GrowthWare.WebApplication.Tests.csproj", "{248C35A2-C115-45EA-9BD7-1460DD0712DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebAngularJSApplication", "GrowthWare.WebAngularJSApplication\GrowthWare.WebAngularJSApplication.csproj", "{CBE4FF47-902C-4325-8071-AF963CE09447}"
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
@@ -33,6 +39,18 @@ Global
 		{0C246309-844C-4FF0-8083-884E2AABD537}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C246309-844C-4FF0-8083-884E2AABD537}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C246309-844C-4FF0-8083-884E2AABD537}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F5CA7891-0046-4006-928E-3883F666A746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F5CA7891-0046-4006-928E-3883F666A746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F5CA7891-0046-4006-928E-3883F666A746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F5CA7891-0046-4006-928E-3883F666A746}.Release|Any CPU.Build.0 = Release|Any CPU
+		{248C35A2-C115-45EA-9BD7-1460DD0712DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{248C35A2-C115-45EA-9BD7-1460DD0712DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{248C35A2-C115-45EA-9BD7-1460DD0712DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{248C35A2-C115-45EA-9BD7-1460DD0712DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBE4FF47-902C-4325-8071-AF963CE09447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBE4FF47-902C-4325-8071-AF963CE09447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBE4FF47-902C-4325-8071-AF963CE09447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBE4FF47-902C-4325-8071-AF963CE09447}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

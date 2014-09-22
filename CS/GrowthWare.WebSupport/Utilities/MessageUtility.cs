@@ -1,4 +1,5 @@
-﻿using GrowthWare.Framework.Common;
+﻿using GrowthWare.Framework.BusinessData.BusinessLogicLayer;
+using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
 using System;
 using System.Collections.Generic;
@@ -24,57 +25,57 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Messages the name of the unit cached collection.
         /// </summary>
-        /// <param name="securityEntityID">The security entity ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
         /// <returns>System.String.</returns>
-        public static string MessagesUnitCachedCollectionName(int securityEntityID)
+        public static string MessagesUnitCachedCollectionName(int securityEntityId)
         {
-            return securityEntityID.ToString() + s_MessagesUnitCachedCollectionName;
+            return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedCollectionName;
         }
 
         /// <summary>
         /// Messages the name of the unit cached DV.
         /// </summary>
-        /// <param name="securityEntityID">The security entity ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
         /// <returns>System.String.</returns>
-        public static string MessagesUnitCachedDVName(int securityEntityID)
+        public static string MessagesUnitCachedDVName(int securityEntityId)
         {
-            return securityEntityID.ToString() + s_MessagesUnitCachedDVName;
+            return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedDVName;
         }
 
-        private static Collection<MMessageProfile> GetAllMessages()
-        {
-            DataTable mDataTable = new DataTable();
-            Collection<MMessageProfile> mMessagesCollection = null;
-            //BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            //DataSet myDataSet = new DataSet();
-            //try
-            //{
-            //    int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
-            //    mMessagesCollection = mBMessages.GetMessages(mySecurityEntity);
-            //}
-            //catch (Exception ex)
-            //{
-            //    throw ex;
-            //}
-            //finally
-            //{
-            //    if ((myDataSet != null))
-            //    {
-            //        myDataSet.Dispose();
-            //        myDataSet = null;
-            //    }
-            //    if ((mDataTable != null))
-            //    {
-            //        mDataTable.Dispose();
-            //        mDataTable = null;
-            //    }
-            //    if ((mBMessages != null))
-            //    {
-            //        mBMessages = null;
-            //    }
-            //}
-            return mMessagesCollection;
-        }
+        //private static Collection<MMessageProfile> AllMessages()
+        //{
+        //    DataTable mDataTable = new DataTable();
+        //    Collection<MMessageProfile> mMessagesCollection = null;
+        //    BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        //    DataSet myDataSet = new DataSet();
+        //    try
+        //    {
+        //        int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
+        //        mMessagesCollection = mBMessages.GetMessages(mySecurityEntity);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        throw ex;
+        //    }
+        //    finally
+        //    {
+        //        if ((myDataSet != null))
+        //        {
+        //            myDataSet.Dispose();
+        //            myDataSet = null;
+        //        }
+        //        if ((mDataTable != null))
+        //        {
+        //            mDataTable.Dispose();
+        //            mDataTable = null;
+        //        }
+        //        if ((mBMessages != null))
+        //        {
+        //            mBMessages = null;
+        //        }
+        //    }
+        //    return mMessagesCollection;
+        //}
 
         /// <summary>
         /// Saves the specified profile.
@@ -82,8 +83,8 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void Save(MMessageProfile profile)
         {
-            //BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            //mBMessages.Save( profile);
+            BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mBMessages.Save(ref profile);
             RemoveCachedMessagesCollection();
         }
 
@@ -94,7 +95,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MMessageProfile.</returns>
         public static MMessageProfile GetProfile(string name)
         {
-            var mResult = from mProfile in GetMessages()
+            var mResult = from mProfile in Messages()
                           where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             MMessageProfile mRetVal = null;
@@ -118,7 +119,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MMessageProfile.</returns>
         public static MMessageProfile GetProfile(int messageSeqId)
         {
-            var mResult = from mProfile in GetMessages()
+            var mResult = from mProfile in Messages()
                           where mProfile.Id == messageSeqId
                           select mProfile;
             MMessageProfile mRetVal = null;
@@ -139,7 +140,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the messages.
         /// </summary>
         /// <returns>Collection{MMessageProfile}.</returns>
-        public static Collection<MMessageProfile> GetMessages()
+        public static Collection<MMessageProfile> Messages()
         {
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
@@ -147,9 +148,9 @@ namespace GrowthWare.WebSupport.Utilities
             mMessageCollection = (Collection<MMessageProfile>)HttpContext.Current.Cache[mCacheName];
             if (mMessageCollection == null)
             {
-                //BMessages mBMessages = new BMessages(mSecurityEntityProfile, onfigSettings.CentralManagement);
-                //mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
-                //CacheController.AddToCacheDependency(mCacheName, mMessageCollection);
+                BMessages mBMessages = new BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+                mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
+                CacheController.AddToCacheDependency(mCacheName, mMessageCollection);
             }
             return mMessageCollection;
         }
@@ -173,23 +174,24 @@ namespace GrowthWare.WebSupport.Utilities
             RemoveCachedMessagesDV();
         }
 
-        ///// <summary>
-        ///// Searches the specified search criteria.
-        ///// </summary>
-        ///// <param name="searchCriteria">The search criteria.</param>
-        ///// <returns>DataTable.</returns>
-        //public static DataTable Search(MSearchCriteria searchCriteria)
-        //{
-        //    try
-        //    {
-        //        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        //        return mBMessages.Search(searchCriteria);
-        //    }
-        //    catch (IndexOutOfRangeException ex)
-        //    {
-        //        //no data is not a problem
-        //        return null;
-        //    }
-        //}
+        /// <summary>
+        /// Searches the specified search criteria.
+        /// </summary>
+        /// <param name="searchCriteria">The search criteria.</param>
+        /// <returns>DataTable.</returns>
+        public static DataTable Search(MSearchCriteria searchCriteria)
+        {
+            try
+            {
+                BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+                return mBMessages.Search(searchCriteria);
+            }
+            catch (IndexOutOfRangeException ex)
+            {
+                Logger mLog = Logger.Instance();
+                mLog.Debug(ex);
+                return null;
+            }
+        }
     }
 }
