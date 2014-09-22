@@ -221,6 +221,8 @@ Namespace Utilities
             Try
                 mRetVal = mResult.First
             Catch ex As InvalidOperationException
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(ex)
                 mRetVal = Nothing
             End Try
             If Not mRetVal Is Nothing Then

@@ -44,6 +44,14 @@
     <Reference Include="Antlr3.Runtime">
       <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
     </Reference>
+    <Reference Include="GrowthWare.Framework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=aeb220d73d862efd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="GrowthWare.WebSupport, Version=6.0.0.16499, Culture=neutral, PublicKeyToken=243bc12157814c51, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GrowthWareDLLs\GrowthWare.WebSupport.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
@@ -262,16 +270,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Public\Skins\Default\Images\" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
-      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
-      <Name>GrowthWare.Framework</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj">
-      <Project>{94d1a0b6-06a7-4ad3-9c47-a4e6374270b6}</Project>
-      <Name>GrowthWare.WebSupport</Name>
-    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

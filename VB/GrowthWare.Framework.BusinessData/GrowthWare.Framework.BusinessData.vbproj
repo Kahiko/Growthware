@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <DefineDebug>true</DefineDebug>
     <DefineTrace>true</DefineTrace>
-    <OutputPath>..\GrowthWareDlls\</OutputPath>
+    <OutputPath>..\..\GrowthWareDlls\</OutputPath>
     <DocumentationFile>GrowthWare.Framework.BusinessData.xml</DocumentationFile>
     <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
@@ -50,6 +50,10 @@
     <AssemblyOriginatorKeyFile>GrowthWare.Framework.BusinessData.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="GrowthWare.Framework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=aeb220d73d862efd, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -113,12 +117,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
-      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
-      <Name>GrowthWare.Framework</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DataAccessLayer\MySQL\" />

@@ -33,9 +33,9 @@ Public Class MSecurityEntityProfile
         ''' </summary>
         ''' <param name="dataRow">DataRow</param>
         Protected Shadows Sub Initialize(ByVal dataRow As DataRow)
+            MyBase.IdColumnName = "SE_SEQ_ID"
+            MyBase.NameColumnName = "Name"
             MyBase.Initialize(dataRow)
-            MyBase.Id = MyBase.GetString(dataRow, "SE_SEQ_ID")
-            MyBase.Name = MyBase.GetString(dataRow, "Name")
             Description = MyBase.GetString(dataRow, "Description")
             Url = MyBase.GetString(dataRow, "URL")
             Skin = MyBase.GetString(dataRow, "Skin")

@@ -43,25 +43,6 @@ Namespace Utilities
             RemoveCachedFunctions()
         End Sub
 
-        ''' <summary>
-        ''' Get a single function given it's action.
-        ''' </summary>
-        ''' <param name="action">String</param>
-        ''' <returns>MFunctionProfile</returns>
-        ''' <remarks>Returns null object if not found</remarks>
-        Public Function GetProfile(ByVal action As String) As MFunctionProfile
-            Dim mRetVal As MFunctionProfile = Nothing
-            If Not String.IsNullOrEmpty(action) Then
-                Dim mResult = From mProfile In Functions() Where mProfile.Action.ToLower(CultureInfo.CurrentCulture) = action.ToLower(CultureInfo.CurrentCulture) Select mProfile
-                mRetVal = New MFunctionProfile()
-                Try
-                    mRetVal = mResult.First
-                Catch ex As InvalidOperationException
-                    mRetVal = Nothing
-                End Try
-            End If
-            Return mRetVal
-        End Function
 
         ''' <summary>
         ''' Gets the current profile.
@@ -84,9 +65,29 @@ Namespace Utilities
             Dim mRetVal As MFunctionProfile = New MFunctionProfile()
             Try
                 mRetVal = mResult.First
-            Catch ex As NullReferenceException
+            Catch ex As InvalidOperationException
                 mRetVal = Nothing
             End Try
+            Return mRetVal
+        End Function
+
+        ''' <summary>
+        ''' Get a single function given it's action.
+        ''' </summary>
+        ''' <param name="action">String</param>
+        ''' <returns>MFunctionProfile</returns>
+        ''' <remarks>Returns null object if not found</remarks>
+        Public Function GetProfile(ByVal action As String) As MFunctionProfile
+            Dim mRetVal As MFunctionProfile = Nothing
+            If Not String.IsNullOrEmpty(action) Then
+                Dim mResult = From mProfile In Functions() Where mProfile.Action.ToLower(CultureInfo.CurrentCulture) = action.ToLower(CultureInfo.CurrentCulture) Select mProfile
+                mRetVal = New MFunctionProfile()
+                Try
+                    mRetVal = mResult.First
+                Catch ex As IndexOutOfRangeException
+                    mRetVal = Nothing
+                End Try
+            End If
             Return mRetVal
         End Function
 
