@@ -192,7 +192,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 						options.url += "&Action=" + GW.Navigation.currentAction;
 					}
 				}
-				//GW.Common.debug(options.url);
+				GW.Common.debug(options.url);
 				var $webRequest = new $.ajax({
 					url: options.url,
 					type: options.type,

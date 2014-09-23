@@ -125,10 +125,11 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 GW.Navigation.createReloadUIEventHandler();
                 GW.Common.debug('Creating ~refreshUI');
                 var options = GW.Model.DefaultWebMethodOptions();
-                options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/SearchFunctions.aspx/GetFunctionData";
+                options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionData";
                 options.async = false;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
+                options.type = "GET"
                 GW.Common.JQueryHelper.callWeb(options, loadFunctionsSuccess, loadFunctionsError);
 
                 function loadFunctionsSuccess(xhr) {

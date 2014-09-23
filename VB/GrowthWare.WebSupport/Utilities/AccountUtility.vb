@@ -202,7 +202,7 @@ Namespace Utilities
             Try
                 Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mRetVal = mBAccount.GetProfile(account)
-            Catch ex As IndexOutOfRangeException
+            Catch ex As InvalidOperationException
                 Dim mMSG As String = "Count not find account: " + account + " in the database"
                 Dim mLog As Logger = Logger.Instance
                 mLog.Error(mMSG)

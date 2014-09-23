@@ -12,6 +12,37 @@
     <%: Scripts.Render("~/bundles/bootstrap")%>
     <%: Scripts.Render("~/bundles/angular")%>
     <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <script type="text/javascript" language="javascript">
+        function InitPageNavigation() {
+            GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
+        }
+
+        function afterLoadFunctions() {
+            alert('hi');
+        }
+
+        $(document).ready(function () {
+            var $loader = $('#loading'), timer = 0;
+            $loader.hide()
+			.ajaxStart(function () {
+			    timer && clearTimeout(timer);
+
+			    timer = setTimeout(function () {
+			        $loader.show();
+			    },
+				100);
+			})
+			.ajaxStop(function () {
+			    clearTimeout(timer);
+			    $loader.hide();
+
+			});
+
+            InitPageNavigation();
+        });
+
+
+    </script>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />

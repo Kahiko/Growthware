@@ -7,7 +7,7 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports System.Globalization
 
 Namespace Controllers
-    Public Class AccountsController
+    Public Class AccountController
         Inherits ApiController
 
         Public Function Logon(ByVal jsonData As LogonInfo) As IHttpActionResult

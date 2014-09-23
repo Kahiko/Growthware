@@ -84,7 +84,10 @@ Namespace Utilities
                 mRetVal = New MFunctionProfile()
                 Try
                     mRetVal = mResult.First
-                Catch ex As IndexOutOfRangeException
+                Catch ex As InvalidOperationException
+                    Dim mMSG As String = "Count not find action: " + action + " in the database"
+                    Dim mLog As Logger = Logger.Instance
+                    mLog.Error(mMSG)
                     mRetVal = Nothing
                 End Try
             End If

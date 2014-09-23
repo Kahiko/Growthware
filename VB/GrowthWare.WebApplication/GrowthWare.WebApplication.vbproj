@@ -227,8 +227,8 @@
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\Startup.vb" />
     <Compile Include="App_Start\WebApiConfig.vb" />
-    <Compile Include="Controllers\AccountsController.vb" />
-    <Compile Include="Controllers\LoginController.vb" />
+    <Compile Include="Controllers\AccountController.vb" />
+    <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\MenuController.vb" />
     <Compile Include="Controllers\ProductsController.vb" />
     <Compile Include="Functions\System\Menus\HHMenu.aspx.designer.vb">
