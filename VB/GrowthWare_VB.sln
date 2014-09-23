@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.30501.0
+VisualStudioVersion = 12.0.30723.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj", "{94D1A0B6-06A7-4AD3-9C47-A4E6374270B6}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -14,13 +14,6 @@ EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication.Tests", "GrowthWare.WebApplication.Tests\GrowthWare.WebApplication.Tests.vbproj", "{9A15043D-AED2-4E9E-BAC1-1D61A85C9A57}"
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.Framework.BusinessData", "GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.vbproj", "{055A674B-3AF2-450A-BE49-DAFF60828878}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebAngularJSApplication", "GrowthWare.WebAngularJSApplication\GrowthWare.WebAngularJSApplication.vbproj", "{C73800A9-9A89-4439-8D54-111F76548D98}"
-	ProjectSection(ProjectDependencies) = postProject
-		{055A674B-3AF2-450A-BE49-DAFF60828878} = {055A674B-3AF2-450A-BE49-DAFF60828878}
-		{94D1A0B6-06A7-4AD3-9C47-A4E6374270B6} = {94D1A0B6-06A7-4AD3-9C47-A4E6374270B6}
-		{147682F0-C578-4F06-9D87-5F5935086212} = {147682F0-C578-4F06-9D87-5F5935086212}
-	EndProjectSection
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication", "GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj", "{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}"
 EndProject
@@ -46,10 +39,6 @@ Global
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C73800A9-9A89-4439-8D54-111F76548D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C73800A9-9A89-4439-8D54-111F76548D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C73800A9-9A89-4439-8D54-111F76548D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C73800A9-9A89-4439-8D54-111F76548D98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
