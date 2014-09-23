@@ -13,6 +13,7 @@ Namespace My
         ''' <summary>
         ''' Returns information about the host computer.
         ''' </summary>
+        <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")> _
         Friend ReadOnly Property Computer() As Global.Microsoft.VisualBasic.Devices.ServerComputer
             Get
                 Return s_Computer.GetInstance()
@@ -21,6 +22,7 @@ Namespace My
         ''' <summary>
         ''' Returns information for the current Web user.
         ''' </summary>
+        <Global.System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")> _
         Friend ReadOnly Property User() As Global.Microsoft.VisualBasic.ApplicationServices.WebUser
             Get
                 Return s_User.GetInstance()
