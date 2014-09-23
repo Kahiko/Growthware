@@ -2,6 +2,5 @@
 
 <!-- http://cssmenumaker.com/ -->
 <div>
-	<div id='cssmenu' runat="server">
-	</div>
+	<div id='cssmenu' runat="server" />
 </div>
