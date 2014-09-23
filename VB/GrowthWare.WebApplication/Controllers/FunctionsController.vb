@@ -9,7 +9,7 @@ Namespace Controllers
     Public Class FunctionsController
         Inherits ApiController
 
-        <HttpGet, ActionName("GetFunctionData")>
+        <HttpGet>
         Public Function GetFunctionData() As Collection(Of FunctionInformation)
             Dim mFunctionInformation As FunctionInformation = Nothing
             Dim mRetVal As Collection(Of FunctionInformation) = New Collection(Of FunctionInformation)

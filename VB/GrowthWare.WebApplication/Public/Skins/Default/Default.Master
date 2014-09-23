@@ -13,12 +13,61 @@
     <%: Scripts.Render("~/bundles/angular")%>
     <%: Scripts.Render("~/bundles/GrowthWare")%>
     <script type="text/javascript" language="javascript">
-        function InitPageNavigation() {
-            GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
-        }
-
         function afterLoadFunctions() {
-            alert('hi');
+            // Create the refresh objects for all of the necessary UI elements
+            var mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalHierarchicalDiv';
+            mRefreshObject.Refresh = function refresh() {
+                GW.Navigation.NavigationController.LoadPage("HorizontalHierarchicalMenu", "HorizontalHierarchicalDiv");
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the vertical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the horizontal menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the GetPreferences into the refresh objects
+            //mRefreshObject = new GW.Navigation.RefreshObject();
+            //mRefreshObject.ContentAreaID = 'NotUsed';
+            //mRefreshObject.Refresh = function refreshFunction() {
+            //    var options = GW.Model.DefaultWebMethodOptions();
+            //    options.url = options.url = GW.Common.getBaseURL() + "/Functions/System/Accounts/SelectPreferences.aspx/GetPreferences";;
+            //    options.async = true;
+            //    options.contentType = 'application/json; charset=utf-8';
+            //    options.dataType = 'json';
+            //    GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+            //    function getGetPreferencesSuccess(xhr) {
+            //        var mClientChoices = GW.Model.ClientChoices();
+            //        var mClientChoices = $.extend({}, mClientChoices, xhr.d);
+            //        if (mClientChoices.Environment != 'Prod') {
+            //            $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+            //        } else {
+            //            $('#spEnvironment').css({ display: 'none' });
+            //        }
+            //        if (mClientChoices.AccountName != 'Anonymous') {
+            //            $('#spAccountName').html('Account: ' + mClientChoices.AccountName);
+            //        } else {
+            //            $('#spAccountName').css({ display: 'none' });
+            //        }
+            //        $('#spVersion').html('Version: ' + mClientChoices.Version);
+            //        $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+            //    }
+
+            //}
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
         }
 
         $(document).ready(function () {
@@ -38,7 +87,7 @@
 
 			});
 
-            InitPageNavigation();
+            GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
         });
 
 

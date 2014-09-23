@@ -133,7 +133,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 GW.Common.JQueryHelper.callWeb(options, loadFunctionsSuccess, loadFunctionsError);
 
                 function loadFunctionsSuccess(xhr) {
-                    var list = xhr.d;
+                    var list = xhr;
                     for (i = 0; i < list.length; i++) {
                         var mNavigationObject = new GW.Navigation.NavigationObject();
                         mNavigationObject.Action = list[i].Action;
