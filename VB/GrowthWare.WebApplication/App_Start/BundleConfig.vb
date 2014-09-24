@@ -38,9 +38,10 @@ Public Module BundleConfig
             )
         )
         bundles.Add(
-            New StyleBundle("~/Content/bootstrap").Include(
+            New StyleBundle("~/Content/SiteCSS").Include(
                 "~/Public/CSS/bootstrap.css",
-                "~/Public/CSS/bootstrap-theme.css"
+                "~/Public/CSS/bootstrap-theme.css",
+                "~/Public/CSS/SiteStyle.css"
         )
     )
     End Sub

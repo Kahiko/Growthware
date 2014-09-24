@@ -51,25 +51,5 @@
     </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
-    <body ng-app="main">
-        <div ng-controller="pricingController">
-            <h2>All Products</h2>
-            <ul id="products">
-                <li ng-repeat="item in Products">{{item.Name}}</li>
-            </ul>
-
-            <%--{{Products}}--%>
-        </div>
-        <div ng-controller="productController">
-            <h2>Search by ID</h2>
-            <input type="text" ng-model="productId" id="prodId" size="5" />
-            <input type="button" value="Search" ng-click="getProduct();" />
-            <div>{{Product.Name}}</div> 
-        </div>
-
-
-        <script type="text/javascript" language="javascript">
-
-        </script>
-    </body>
+    <div id="MainContentDiv" />
 </asp:Content>

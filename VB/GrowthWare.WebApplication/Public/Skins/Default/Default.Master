@@ -7,7 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title></title>
-    <%: Styles.Render("~/Content/bootstrap")%>
+    <%: Styles.Render("~/Content/SiteCSS")%>
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/bootstrap")%>
     <%: Scripts.Render("~/bundles/angular")%>
