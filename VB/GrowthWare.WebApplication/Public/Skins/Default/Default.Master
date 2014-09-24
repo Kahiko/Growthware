@@ -39,34 +39,34 @@
             GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 
             //Put the GetPreferences into the refresh objects
-            //mRefreshObject = new GW.Navigation.RefreshObject();
-            //mRefreshObject.ContentAreaID = 'NotUsed';
-            //mRefreshObject.Refresh = function refreshFunction() {
-            //    var options = GW.Model.DefaultWebMethodOptions();
-            //    options.url = options.url = GW.Common.getBaseURL() + "/Functions/System/Accounts/SelectPreferences.aspx/GetPreferences";;
-            //    options.async = true;
-            //    options.contentType = 'application/json; charset=utf-8';
-            //    options.dataType = 'json';
-            //    GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'NotUsed';
+            mRefreshObject.Refresh = function refreshFunction() {
+                var options = GW.Model.DefaultWebMethodOptions();
+                options.url = options.url = GW.Common.getBaseURL() + "/Functions/System/Accounts/SelectPreferences.aspx/GetPreferences";;
+                options.async = true;
+                options.contentType = 'application/json; charset=utf-8';
+                options.dataType = 'json';
+                //GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
 
-            //    function getGetPreferencesSuccess(xhr) {
-            //        var mClientChoices = GW.Model.ClientChoices();
-            //        var mClientChoices = $.extend({}, mClientChoices, xhr.d);
-            //        if (mClientChoices.Environment != 'Prod') {
-            //            $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
-            //        } else {
-            //            $('#spEnvironment').css({ display: 'none' });
-            //        }
-            //        if (mClientChoices.AccountName != 'Anonymous') {
-            //            $('#spAccountName').html('Account: ' + mClientChoices.AccountName);
-            //        } else {
-            //            $('#spAccountName').css({ display: 'none' });
-            //        }
-            //        $('#spVersion').html('Version: ' + mClientChoices.Version);
-            //        $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
-            //    }
+                function getGetPreferencesSuccess(xhr) {
+                    var mClientChoices = GW.Model.ClientChoices();
+                    var mClientChoices = $.extend({}, mClientChoices, xhr.d);
+                    if (mClientChoices.Environment != 'Prod') {
+                        $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                    } else {
+                        $('#spEnvironment').css({ display: 'none' });
+                    }
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#spAccountName').html('Account: ' + mClientChoices.AccountName);
+                    } else {
+                        $('#spAccountName').css({ display: 'none' });
+                    }
+                    $('#spVersion').html('Version: ' + mClientChoices.Version);
+                    $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                }
 
-            //}
+            }
             GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
         }
 
@@ -86,7 +86,9 @@
 			    $loader.hide();
 
 			});
-
+            $('[data-toggle=offcanvas]').click(function () {
+                $('.row-offcanvas').toggleClass('active');
+            });
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
         });
 
@@ -97,57 +99,57 @@
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<div class="page">
-		<div class="header">
-			<div style="width: 99%">
-				<div class="clear" style="position: relative; float: right;">
-					<span id="spSecurityEntity" style="color: White;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: White;"></span><br />
-					<span id="spEnvironment" style="color: White;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: White;"></span>
-				</div>
-				<div>
-					<h1 style="position: relative; float: left;">
-						VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span>
-					</h1>
-				</div>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span></a>
+            
+            <div id="loading" style=" height: 26px; float:left;">
+	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+            </div>
+			<div id="headerMenuDiv" style="float:left; background-color: white;">
+				<div id="HorizontalHierarchicalDiv">HorizontalHierarchicalDiv</div>
 			</div>
-			<div class="clear hideSkiplink" style="height: 50px;">
-				<div id="headerMenuDiv">
-					<div id="HorizontalHierarchicalDiv">
-					</div>
-				</div>
+        </div>
+        <div class="navbar-collapse collapse">
+            <div class="navbar-brand">
+                User Info
+	            <span id="spSecurityEntity" style="color: White;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: White;"></span><br />
+	            <span id="spEnvironment" style="color: White;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: White;"></span>
+            </div>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search..."/>
+            </form>
+			<div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;">
 			</div>
-			<div id="loading" style="height: 26px; float:left;">
-				&nbsp;<img style="vertical-align: middle;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
-			</div>
-			<div id="HorizontalDiv" style="height: 26px;">
-			</div>
-		</div>
-		<div class="colmask leftmenu">
-			<div class="colleft">
-				<div class="col1" style="overflow: auto">
-					<!-- Column 1 start -->
-					<p>
-						<asp:ContentPlaceHolder ID="MainContent" runat="server">
-						</asp:ContentPlaceHolder>
-					</p>
-					<!-- Column 1 end -->
-				</div>
-				<div class="col2">
-					<!-- Column 2 start -->
-					<div id="VMenuDiv" style="overflow: auto">
-					</div>
-					<!--						<div id="VHMenuDiv">
-								
-						</div> -->
-					<!-- Column 2 end -->
-				</div>
-			</div>
-		</div>
-		<div class="footer">
-			Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
-		</div>
-		<div class="clear">
-		</div>
+        </div>
+      </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row row-offcanvas row-offcanvas-left">
+        <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
+            <div id="VMenuDiv" style="overflow: auto">VMenuDiv</div>
+        </div><!--/span-->
+        <div class="col-sm-9 col-md-10 main">
+            <!--toggle sidebar button-->
+            <p class="visible-xs">
+            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
+            </p>
+            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+        </div><!--/row-->
 	</div>
+</div><!--/.container-->
+    <footer>
+        <div class="pull-right">
+	        Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
+        </div>
+    </footer>
 </body>
 </html>
