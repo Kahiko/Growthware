@@ -166,6 +166,7 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\Logon\Logon.aspx" />
@@ -173,12 +174,11 @@
     <Content Include="Functions\System\Menus\HMenu.aspx" />
     <Content Include="Functions\System\Menus\VHMenu.aspx" />
     <Content Include="Functions\System\Menus\VMenu.aspx" />
+    <Content Include="Functions\System\TestNaturalSort.aspx" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\bootstrap-theme.css" />
-    <Content Include="Public\CSS\bootstrap-theme.min.css" />
     <Content Include="Public\CSS\bootstrap.css" />
-    <Content Include="Public\CSS\bootstrap.min.css" />
     <Content Include="Public\CSS\SiteStyle.css" />
     <Content Include="Public\Images\GrowthWare\Add.png" />
     <Content Include="Public\Images\GrowthWare\ajax-loader.gif" />
@@ -214,6 +214,9 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\Scripts\GrowthWare\GW.Common.js" />
     <Content Include="Public\Scripts\GrowthWare\GW.FileManager.js" />
@@ -234,7 +237,7 @@
     <Compile Include="App_Start\BundleConfig.vb" />
     <Compile Include="App_Start\Startup.vb" />
     <Compile Include="App_Start\WebApiConfig.vb" />
-    <Compile Include="Controllers\AccountController.vb" />
+    <Compile Include="Controllers\AccountsController.vb" />
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\MenuController.vb" />
     <Compile Include="Controllers\ProductsController.vb" />
@@ -286,6 +289,13 @@
     <Compile Include="Functions\System\Menus\VMenu.aspx.vb">
       <DependentUpon>VMenu.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\TestNaturalSort.aspx.designer.vb">
+      <DependentUpon>TestNaturalSort.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\TestNaturalSort.aspx.vb">
+      <DependentUpon>TestNaturalSort.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Global.asax.vb">
       <DependentUpon>Global.asax</DependentUpon>

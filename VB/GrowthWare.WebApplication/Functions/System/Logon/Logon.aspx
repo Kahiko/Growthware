@@ -35,14 +35,6 @@
 		$mBtnRequestChange.css({ display: 'none' });
 		var mRetHTML = "";
 		var LogonInfo = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
-		// may need as an example when using some other than text boxes
-		//		var jsonData = new Object();
-		//		jsonData.Account = $("#account").val();
-		//		jsonData.Password = $("#pwd").val();
-
-		// A better way for the logon "form"
-		// Iterate over all the text fields in the area that holds the data and build an
-		//  object with their values as named properties.
 		$('#LogonData').children('input').each(function () {
 			if (this.type == 'text' || this.type == 'password') {
 				LogonInfo[this.id] = this.value;
@@ -52,10 +44,11 @@
 		try {
 			GW.Common.debug(LogonInfo);
 			var options = GW.Model.DefaultWebMethodOptions();
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Logon/Logon.aspx/InvokeLogon";
-			options.data = JSON.stringify({ jsonData: LogonInfo });
+			options.url = GW.Common.getBaseURL() + "/api/Accounts/Logon?Action=sdf";
+			options.data = JSON.stringify({ "jsonData": LogonInfo });
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
+			options.type = "GET";
 			GW.Common.JQueryHelper.callWeb(options, logonSuccess, logonError);
 		} catch (e) {
 			mRetHTML = 'Error attempting to call logon\n' + e.Message;
@@ -80,13 +73,13 @@
 		var $mIncorrectLogon = $("#<%=incorrectLogon.ClientID %>");
 		var $mBtnRequestChange = $('#btnRequestChange');
 		var $mLogonPage = $('#LogonPage');
-		if (xhr.d.toString() == "true") {
+		if (xhr.toString() == "true") {
 			jQuery.event.trigger('~reLoadUI');
 		} else {
-			if (xhr.d.toString() == "Request") {
+			if (xhr.toString() == "Request") {
 				$mBtnRequestChange.css({ display: 'inline' });
 			} else {
-				mRetHTML = xhr.d;
+				mRetHTML = xhr;
 				$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
 				$mIncorrectLogon.fadeIn(3000);
 			}

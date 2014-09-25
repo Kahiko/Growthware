@@ -1,0 +1,197 @@
+﻿Imports System.Net
+Imports System.Web.Http
+Imports GrowthWare.Framework.Common
+Imports GrowthWare.Framework.Model
+Imports GrowthWare.WebSupport.Utilities
+Imports GrowthWare.Framework.Model.Profiles
+Imports GrowthWare.Framework.Model.Profiles.Base
+Imports GrowthWare.WebSupport
+Imports System.Globalization
+
+Namespace Controllers
+    Public Class AccountsController
+        Inherits ApiController
+
+        <HttpGet>
+        Public Function GetPreferences() As MUIAccountChoices
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
+            Dim mRetVal As MUIAccountChoices = New MUIAccountChoices(mClientChoicesState)
+            mRetVal.Environment = GWWebHelper.DisplayEnvironment
+            mRetVal.Version = GWWebHelper.Version
+            Return mRetVal
+        End Function
+
+        <HttpGet>
+        Public Function Logon(ByVal jsonData As LogonInfo) As IHttpActionResult
+            If jsonData Is Nothing Then Throw New ArgumentNullException("logonInfo", "logonInfo can not be null or Nothing in VB.net")
+            If String.IsNullOrEmpty(jsonData.Account) Then Throw New NullReferenceException("jsonData.Account can not be null or Nothing in VB.net")
+            If String.IsNullOrEmpty(jsonData.Password) Then Throw New NullReferenceException("jsonData.Password can not be null or Nothing in VB.net")
+            Dim mRetVal As String = "false"
+            Dim mDomainPassed As Boolean = False
+            If jsonData.Account.Contains("\") Then
+                mDomainPassed = True
+            End If
+            If ConfigSettings.AuthenticationType.ToUpper() = "LDAP" And Not mDomainPassed Then
+                jsonData.Account = ConfigSettings.LdapDomain + "\" + jsonData.Account
+            End If
+            If AccountUtility.Authenticated(jsonData.Account, jsonData.Password) Then
+                Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(jsonData.Account)
+                AccountUtility.SetPrincipal(mAccountProfile)
+                mRetVal = "true"
+            Else
+                Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(jsonData.Account)
+                If mAccountProfile IsNot Nothing Then
+                    If mAccountProfile.Account.ToUpper(New CultureInfo("en-US", False)) = jsonData.Account.ToUpper(New CultureInfo("en-US", False)) Then
+                        If ConfigSettings.AuthenticationType.ToUpper() = "INTERNAL" Then
+                            mRetVal = "Request"
+                        Else
+                            Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("Logon Error")
+                            If mMessageProfile IsNot Nothing Then
+                                mRetVal = mMessageProfile.Body
+                            End If
+                        End If
+                    End If
+                Else
+                    Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("Logon Error")
+                    If mMessageProfile IsNot Nothing Then
+                        mRetVal = mMessageProfile.Body
+                    End If
+                End If
+            End If
+
+            Return Ok(mRetVal)
+        End Function
+    End Class
+
+    Public Class LogonInfo
+        Public Property Account() As String
+        Public Property Password() As String
+    End Class
+
+    ''' <summary>
+    ''' Class MUIAccountChoices
+    ''' </summary>
+    Public Class MUIAccountChoices
+        Inherits MProfile
+
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="MUIAccountChoices"/> class.
+        ''' </summary>
+        Public Sub New()
+
+        End Sub
+
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="MUIAccountChoices"/> class.
+        ''' </summary>
+        ''' <param name="clientChoicesState">State of the client choices.</param>
+        Public Sub New(ByVal clientChoicesState As MClientChoicesState)
+            If clientChoicesState(MClientChoices.AccountName) <> Nothing Then AccountName = clientChoicesState(MClientChoices.AccountName).ToString()
+            If clientChoicesState(MClientChoices.Action) <> Nothing Then Action = clientChoicesState(MClientChoices.Action).ToString()
+            If clientChoicesState(MClientChoices.BackColor) <> Nothing Then BackColor = clientChoicesState(MClientChoices.BackColor).ToString()
+            If clientChoicesState(MClientChoices.ColorScheme) <> Nothing Then ColorScheme = clientChoicesState(MClientChoices.ColorScheme).ToString()
+            If clientChoicesState(MClientChoices.HeadColor) <> Nothing Then HeadColor = clientChoicesState(MClientChoices.HeadColor).ToString()
+            If clientChoicesState(MClientChoices.LeftColor) <> Nothing Then LeftColor = clientChoicesState(MClientChoices.LeftColor).ToString()
+            If clientChoicesState(MClientChoices.RecordsPerPage) <> Nothing Then RecordsPerPage = Integer.Parse(clientChoicesState(MClientChoices.RecordsPerPage).ToString())
+            If clientChoicesState(MClientChoices.SecurityEntityID) <> Nothing Then SecurityEntityID = Integer.Parse(clientChoicesState(MClientChoices.SecurityEntityID).ToString())
+            If clientChoicesState(MClientChoices.SecurityEntityName) <> Nothing Then SecurityEntityName = clientChoicesState(MClientChoices.SecurityEntityName).ToString()
+            If clientChoicesState(MClientChoices.SubheadColor) <> Nothing Then SubheadColor = clientChoicesState(MClientChoices.SubheadColor).ToString()
+        End Sub
+
+        ''' <summary>
+        ''' Gets or sets the name of the account.
+        ''' </summary>
+        ''' <value>The name of the account.</value>
+        Public Property AccountName As String
+
+        ''' <summary>
+        ''' Gets or sets the action.
+        ''' </summary>
+        ''' <value>The action.</value>
+        Public Property Action As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the back.
+        ''' </summary>
+        ''' <value>The color of the back.</value>
+        Public Property BackColor As String
+
+        ''' <summary>
+        ''' Gets or sets the color scheme.
+        ''' </summary>
+        ''' <value>The color scheme.</value>
+        Public Property ColorScheme As String
+
+        ''' <summary>
+        ''' Gets or sets the environment.
+        ''' </summary>
+        ''' <value>The environment.</value>
+        Public Property Environment As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the head.
+        ''' </summary>
+        ''' <value>The color of the head.</value>
+        Public Property HeadColor As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the header foreground color.
+        ''' </summary>
+        ''' <value>The color of the header foreground color.</value>
+        Public Property HeaderForeColor As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the left.
+        ''' </summary>
+        ''' <value>The color of the left.</value>
+        Public Property LeftColor As String
+
+        ''' <summary>
+        ''' Gets or sets the records per page.
+        ''' </summary>
+        ''' <value>The records per page.</value>
+        Public Property RecordsPerPage As Integer
+
+        ''' <summary>
+        ''' Gets or sets the account.
+        ''' </summary>
+        ''' <value>The account.</value>
+        Public Property Account As String
+
+        ''' <summary>
+        ''' Gets or sets the security entity ID.
+        ''' </summary>
+        ''' <value>The security entity ID.</value>
+        Public Property SecurityEntityID As Integer
+
+        ''' <summary>
+        ''' Gets or sets the version.
+        ''' </summary>
+        ''' <value>The version.</value>
+        Public Property Version As String
+
+        ''' <summary>
+        ''' Gets or sets the name of the security entity.
+        ''' </summary>
+        ''' <value>The name of the security entity.</value>
+        Public Property SecurityEntityName As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the subhead.
+        ''' </summary>
+        ''' <value>The color of the subhead.</value>
+        Public Property SubheadColor As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the row background color.
+        ''' </summary>
+        ''' <value>The color of the row background color.</value>
+        Public Property RowBackColor As String
+
+        ''' <summary>
+        ''' Gets or sets the color of the alternating row background color.
+        ''' </summary>
+        ''' <value>The color of the alternating row background color.</value>
+        Public Property AlternatingRowBackColor As String
+    End Class
+End Namespace

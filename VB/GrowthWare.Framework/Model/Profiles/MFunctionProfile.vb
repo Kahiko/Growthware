@@ -73,7 +73,7 @@ Namespace Model.Profiles
             RedirectOnTimeout = MyBase.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT")
             Source = MyBase.GetString(profileDataRow, "SOURCE")
             m_ParentmFunctionSeqId = MyBase.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
-            m_FunctionTypeSeqId = MyBase.Id
+            m_FunctionTypeSeqId = MyBase.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID")
         End Sub
 #End Region
 

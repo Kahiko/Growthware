@@ -1,8 +1,9 @@
 ﻿Imports System.Web
+Imports GrowthWare.Framework.Common
 
 Public Module GWWebHelper
     Private s_ExceptionError As Exception = Nothing
-
+    Private s_Version As String = String.Empty
 
     ''' <summary>
     ''' Gets the core web administration verison.
@@ -61,4 +62,24 @@ Public Module GWWebHelper
         End If
         Return mRetVal
     End Function
-End Module
+
+    ''' <summary>
+    ''' Gets the display environment.
+    ''' </summary>
+    ''' <value>The display environment.</value>
+    ReadOnly Property DisplayEnvironment As String
+        Get
+            Return ConfigSettings.EnvironmentDisplayed
+        End Get
+    End Property
+
+    ReadOnly Property Version As String
+        Get
+            If s_Version = String.Empty Then
+                s_Version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString()
+            End If
+            Return s_Version
+        End Get
+    End Property
+
+    End Module

@@ -43,15 +43,16 @@
             mRefreshObject.ContentAreaID = 'NotUsed';
             mRefreshObject.Refresh = function refreshFunction() {
                 var options = GW.Model.DefaultWebMethodOptions();
-                options.url = options.url = GW.Common.getBaseURL() + "/Functions/System/Accounts/SelectPreferences.aspx/GetPreferences";;
+                options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences?Action=GetPreferences";
                 options.async = true;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
-                //GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+                options.type = "GET";
+                GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
 
                 function getGetPreferencesSuccess(xhr) {
                     var mClientChoices = GW.Model.ClientChoices();
-                    var mClientChoices = $.extend({}, mClientChoices, xhr.d);
+                    var mClientChoices = $.extend({}, mClientChoices, xhr);
                     if (mClientChoices.Environment != 'Prod') {
                         $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
                     } else {
@@ -90,6 +91,14 @@
                 $('.row-offcanvas').toggleClass('active');
             });
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
+            var currentHash = window.location.hash.substring(1);
+            currentHash = currentHash.replace("?Action=", "");
+            if (currentHash != '') {
+                GW.Navigation.NavigationController.LoadPage(currentHash, "MainContentDiv");
+
+            } else {
+                GW.Navigation.NavigationController.LoadPage("GenericHome", "MainContentDiv");
+            }
         });
 
 
@@ -99,53 +108,60 @@
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span></a>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="navbar-brand">
+                    VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span>
+                </div>
             
-            <div id="loading" style=" height: 26px; float:left;">
-	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+                <div id="loading" style=" height: 26px; float:left;">
+	                &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+                </div>
             </div>
-			<div id="headerMenuDiv" style="float:left; background-color: white;">
-				<div id="HorizontalHierarchicalDiv">HorizontalHierarchicalDiv</div>
-			</div>
-        </div>
-        <div class="navbar-collapse collapse">
-            <div class="navbar-brand">
-                User Info
-	            <span id="spSecurityEntity" style="color: White;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: White;"></span><br />
-	            <span id="spEnvironment" style="color: White;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: White;"></span>
+            <div class="navbar-collapse collapse">
+                <div class="navbar-brand">
+	                <span id="spSecurityEntity"></span>&nbsp;&nbsp;<span id="spVersion"></span>
+	                <span id="spEnvironment"></span>&nbsp;&nbsp;<span id="spAccountName"></span>
+                </div>
+    <%--            <form class="navbar-form navbar-right">
+                    <input type="text" class="form-control" placeholder="Search..."/>
+                </form>--%>
+			    <div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;">
+			    </div>
             </div>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search..."/>
-            </form>
-			<div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;">
-			</div>
-        </div>
-      </div>
-</nav>
-
-<div class="container-fluid">
-    <div class="row row-offcanvas row-offcanvas-left">
-        <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
-            <div id="VMenuDiv" style="overflow: auto">VMenuDiv</div>
-        </div><!--/span-->
-        <div class="col-sm-9 col-md-10 main">
-            <!--toggle sidebar button-->
-            <p class="visible-xs">
-            <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
-            </p>
-            <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
-        </div><!--/row-->
+          </div>
+    </nav>
+	<div id="headerMenuDiv">
+		<div id="HorizontalHierarchicalDiv">HorizontalHierarchicalDiv</div>
 	</div>
-</div><!--/.container-->
+
+    <div class="container-fluid">
+        <div class="row row-offcanvas row-offcanvas-left">
+            <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            <div id="VMenuDiv" style="overflow: auto">VMenuDiv</div>
+            </div><!--/span-->
+            <div class="col-sm-9 col-md-10 main" style="height: 30em;">
+                <!--toggle sidebar button-->
+                <p class="visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
+                </p>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server"></asp:ContentPlaceHolder>
+            </div><!--/row-->
+	    </div>
+    </div><!--/.container-->
     <footer>
         <div class="pull-right">
 	        Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!

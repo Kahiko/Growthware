@@ -75,3 +75,10 @@ footer {
 .main .page-header {
   margin-top: 0;
 }
+
+.HMenu a
+{
+    color: whitesmoke;
+    text-decoration: none;
+    font-size: 12px;
+}

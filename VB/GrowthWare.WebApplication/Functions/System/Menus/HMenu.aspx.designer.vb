@@ -20,5 +20,5 @@ Partial Public Class HMenu
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Navtrail As Global.GrowthWare.WebSupport.CustomWebControls.NAVTRAIL
+    Protected WithEvents Navtrail As Global.GrowthWare.WebSupport.CustomWebControls.NavTrail
 End Class

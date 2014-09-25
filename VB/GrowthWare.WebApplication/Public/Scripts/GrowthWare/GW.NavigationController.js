@@ -50,41 +50,45 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 GW.Navigation.currentAction = action;
                 var mRetHTML = "";
                 var mNavObject = new this.GetNavigationObject(action);
-                var mLocation = mNavObject.Location;
-                if (mLocation.substr(0, 1) != "/") mLocation = "/" + mLocation;
-                var mURL = GW.Common.getBaseURL() + mLocation + "?Action=" + action;
-                var $contentContainer = $('#' + containerID);
-                var $pageMessage = $('#pageMessage');
-                switch (mNavObject.LinkBehavior) {
-                    case 1: // internal
-                        var options = GW.Model.DefaultWebMethodOptions();
-                        options.url = mURL;
-                        options.async = true;
-                        options.abortable = true;
-                        GW.Common.JQueryHelper.callWeb(options, successLoadPage, errorLoadPage);
-                        break;
-                    case 2: // Popup
-                        var options = GW.Model.DefaultDialogOptions();
-                        options.async = false;
-                        options.resizable = true;
-                        options.url = mLocation;
-                        options.buttons = {
-                            'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
-                        };
-                        var dialogId = 'popupFromMenu';
-                        GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
-                        break;
-                    case 3: // External
-                        window.open(mNavObject.Location, mNavObject.Description);
-                        break;
-                    case 4: // NewPage
-                        window.open(mURL, mNavObject.Description);
-                        break;
-                    default: // same as internal
-                        var options = GW.Model.DefaultWebMethodOptions();
-                        options.url = mURL;
-                        options.async = true;
-                        GW.Common.JQueryHelper.callWeb(options, successLoadPage, errorLoadPage);
+                if (mNavObject.Location.length > 0) {
+                    var mLocation = mNavObject.Location;
+                    if (mLocation.substr(0, 1) != "/") mLocation = "/" + mLocation;
+                    var mURL = GW.Common.getBaseURL() + mLocation + "?Action=" + action;
+                    var $contentContainer = $('#' + containerID);
+                    var $pageMessage = $('#pageMessage');
+                    switch (mNavObject.LinkBehavior) {
+                        case 1: // internal
+                            var options = GW.Model.DefaultWebMethodOptions();
+                            options.url = mURL;
+                            options.async = true;
+                            options.abortable = true;
+                            GW.Common.JQueryHelper.callWeb(options, successLoadPage, errorLoadPage);
+                            break;
+                        case 2: // Popup
+                            var options = GW.Model.DefaultDialogOptions();
+                            options.async = false;
+                            options.resizable = true;
+                            options.url = mLocation;
+                            options.buttons = {
+                                'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+                            };
+                            var dialogId = 'popupFromMenu';
+                            GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
+                            break;
+                        case 3: // External
+                            window.open(mNavObject.Location, mNavObject.Description);
+                            break;
+                        case 4: // NewPage
+                            window.open(mURL, mNavObject.Description);
+                            break;
+                        default: // same as internal
+                            var options = GW.Model.DefaultWebMethodOptions();
+                            options.url = mURL;
+                            options.async = true;
+                            GW.Common.JQueryHelper.callWeb(options, successLoadPage, errorLoadPage);
+                    }
+                } else {
+                    GW.Common.debug("Could not find Action:" + action);
                 }
 
                 function successLoadPage(msg) {
@@ -129,7 +133,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 options.async = false;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
-                options.type = "GET"
+                options.type = "GET";
                 GW.Common.JQueryHelper.callWeb(options, loadFunctionsSuccess, loadFunctionsError);
 
                 function loadFunctionsSuccess(xhr) {
