@@ -10,7 +10,7 @@ Public Class HHMenu
         Dim mAccount As String = AccountUtility.HttpContextUserName()
         Dim mDataTable As DataTable = AccountUtility.GetMenu(mAccount, MenuType.Hierarchical)
         Dim mMenuString As String = String.Empty
-        If Not mDataTable Is Nothing And mDataTable.Rows.Count > 0 Then
+        If mDataTable IsNot Nothing And mDataTable.Rows.Count > 0 Then
             Dim mDataset As DataSet = New DataSet()
             mDataset.Tables.Add(mDataTable.Copy())
             Dim mMenu As String = String.Empty
@@ -20,7 +20,7 @@ Public Class HHMenu
             mDataset.Relations.Add(mRelation)
             mMenuString = MenuUtility.GenerateULLI(mDataTable, mStringBuiler)
         End If
-        'cssmenu.InnerHtml = mMenuString
+        cssmenu.InnerHtml = mMenuString
     End Sub
 
 End Class

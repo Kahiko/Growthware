@@ -21,7 +21,7 @@ Namespace Controllers
             Return mRetVal
         End Function
 
-        <HttpGet>
+        <HttpPost>
         Public Function Logon(ByVal jsonData As LogonInfo) As IHttpActionResult
             If jsonData Is Nothing Then Throw New ArgumentNullException("logonInfo", "logonInfo can not be null or Nothing in VB.net")
             If String.IsNullOrEmpty(jsonData.Account) Then Throw New NullReferenceException("jsonData.Account can not be null or Nothing in VB.net")

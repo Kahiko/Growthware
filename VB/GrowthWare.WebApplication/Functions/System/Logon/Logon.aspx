@@ -45,10 +45,9 @@
 			GW.Common.debug(LogonInfo);
 			var options = GW.Model.DefaultWebMethodOptions();
 			options.url = GW.Common.getBaseURL() + "/api/Accounts/Logon?Action=sdf";
-			options.data = JSON.stringify({ "jsonData": LogonInfo });
+			options.data = JSON.stringify(LogonInfo);
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
-			options.type = "GET";
 			GW.Common.JQueryHelper.callWeb(options, logonSuccess, logonError);
 		} catch (e) {
 			mRetHTML = 'Error attempting to call logon\n' + e.Message;
@@ -74,7 +73,8 @@
 		var $mBtnRequestChange = $('#btnRequestChange');
 		var $mLogonPage = $('#LogonPage');
 		if (xhr.toString() == "true") {
-			jQuery.event.trigger('~reLoadUI');
+		    //jQuery.event.trigger('~reLoadUI');
+		    GW.Navigation.NavigationController.Refresh();
 		} else {
 			if (xhr.toString() == "Request") {
 				$mBtnRequestChange.css({ display: 'inline' });

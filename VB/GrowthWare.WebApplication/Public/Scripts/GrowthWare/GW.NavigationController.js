@@ -186,7 +186,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
 
         createReloadUIEventHandler: function () {
             $(document).bind('~reLoadUI', function () {
-                location.reload(true);
+                //location.reload(true);
             });
         }
     }
