@@ -156,7 +156,7 @@ SET @V_LinkBehaviorExternal = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Beha
 SET @V_LinkBehaviorNewPage = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'NewPage')
 
 Print 'Adding Security Entity'
-exec ZGWSecurity.Set_Security_Entity -1,	'System','The default Security Entity, needed by the system.','no url',1,'SQLServer','GrowthWare.Framework.BusinessData','GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008','server=(local);Integrated Security=SSPI;database=GW2013Development;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50','Default','Default',@V_Encryption_Type,-1,@V_SystemID, @V_PRIMARY_KEY, @V_Debug
+exec ZGWSecurity.Set_Security_Entity -1,'System','The default Security Entity, needed by the system.','no url',1,'SQLServer','GrowthWare.Framework.BusinessData','GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008','server=(local);Integrated Security=SSPI;database=GW2013Development;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50','Default','Default',@V_Encryption_Type,-1,@V_SystemID, @V_PRIMARY_KEY, @V_Debug
 SET @V_Security_Entity_SeqID = (SELECT Security_Entity_SeqID FROM ZGWSecurity.Security_Entities WHERE [Name]='System')
 Print 'Adding roles'
 -- Setup ZF_RLS
@@ -205,14 +205,14 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 Print 'Adding GenericHome'
 set @V_MyAction = 'GenericHome'
-exec ZGWSecurity.Set_Function -1,'Home','Home',@V_Function_Type_SeqID,'Functions/System/Home/GenericHome.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,1,'Shown when not authenticated', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Home','Home',@V_Function_Type_SeqID,'Functions/System/Home/GenericHome.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,1,'Shown when not authenticated', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = @V_MyAction)
 
 Print 'Adding Home'
 set @V_MyAction = 'Home'
-exec ZGWSecurity.Set_Function -1,'Home','Home',@V_Function_Type_SeqID,'Functions/System/Home/Home.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Shown when authenticated', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Home','Home',@V_Function_Type_SeqID,'Functions/System/Home/Home.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Shown when authenticated', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Authenticated',@V_ViewPermission,@V_SystemID,@V_Debug
 
