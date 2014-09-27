@@ -1,8 +1,9 @@
 ﻿Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.Framework.Common
 Imports System.Collections.ObjectModel
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
+Imports System.Globalization
+Imports GrowthWare.Framework.Common
 
 Namespace BusinessLogicLayer
     ''' <summary>
@@ -26,6 +27,8 @@ Namespace BusinessLogicLayer
     ''' </code>
     ''' </example>
     Public Class BFunctions
+        Inherits BaseBusinessLogic
+
         Private m_DFunctions As IDFunction
 
         ''' <summary>
@@ -94,35 +97,37 @@ Namespace BusinessLogicLayer
             'Dim mRetVal As MFunctionProfileCollection = New MFunctionProfileCollection()
             Dim mRetVal As Collection(Of MFunctionProfile) = New Collection(Of MFunctionProfile)
             Dim mDSFunctions As DataSet = Nothing
-            Try
-                'mDSFunctions = New DataSet
-                m_DFunctions.Profile = New MFunctionProfile
-                m_DFunctions.SecurityEntitySeqId = securityEntitySeqId
-                mDSFunctions = m_DFunctions.GetFunctions()
-                Dim mHasAssingedRoles As Boolean = False
-                Dim mHasGroups As Boolean = False
-                If mDSFunctions.Tables(1).Rows.Count > 0 Then mHasAssingedRoles = True
-                If mDSFunctions.Tables(2).Rows.Count > 0 Then mHasGroups = True
-                Dim mGroups() As DataRow = Nothing
-                Dim mAssignedRoles() As DataRow = Nothing
-                Dim mDerivedRoles() As DataRow = Nothing
-                For Each item As DataRow In mDSFunctions.Tables("Functions").Rows
-                    mDerivedRoles = item.GetChildRows("DerivedRoles")
-                    mAssignedRoles = Nothing
-                    If mHasAssingedRoles Then mAssignedRoles = item.GetChildRows("AssignedRoles")
-                    mGroups = Nothing
-                    If mHasGroups Then mGroups = item.GetChildRows("Groups")
-                    Dim mProfile As New MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups)
-                    'mRetVal.Add(mProfile.Id, mProfile)
-                    mRetVal.Add(mProfile)
-                Next
-            Catch ex As Exception
-                Throw
-            Finally
-                If Not mDSFunctions Is Nothing Then
-                    mDSFunctions.Dispose()
-                End If
-            End Try
+            If IsDataBaseOnline() Then
+                Try
+                    'mDSFunctions = New DataSet
+                    m_DFunctions.Profile = New MFunctionProfile
+                    m_DFunctions.SecurityEntitySeqId = securityEntitySeqId
+                    mDSFunctions = m_DFunctions.GetFunctions()
+                    Dim mHasAssingedRoles As Boolean = False
+                    Dim mHasGroups As Boolean = False
+                    If mDSFunctions.Tables(1).Rows.Count > 0 Then mHasAssingedRoles = True
+                    If mDSFunctions.Tables(2).Rows.Count > 0 Then mHasGroups = True
+                    Dim mGroups() As DataRow = Nothing
+                    Dim mAssignedRoles() As DataRow = Nothing
+                    Dim mDerivedRoles() As DataRow = Nothing
+                    For Each item As DataRow In mDSFunctions.Tables("Functions").Rows
+                        mDerivedRoles = item.GetChildRows("DerivedRoles")
+                        mAssignedRoles = Nothing
+                        If mHasAssingedRoles Then mAssignedRoles = item.GetChildRows("AssignedRoles")
+                        mGroups = Nothing
+                        If mHasGroups Then mGroups = item.GetChildRows("Groups")
+                        Dim mProfile As New MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups)
+                        'mRetVal.Add(mProfile.Id, mProfile)
+                        mRetVal.Add(mProfile)
+                    Next
+                Catch ex As Exception
+                    Throw
+                Finally
+                    If Not mDSFunctions Is Nothing Then
+                        mDSFunctions.Dispose()
+                    End If
+                End Try
+            End If
             Return mRetVal
         End Function
 
@@ -131,7 +136,11 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <returns>DataTable.</returns>
         Public Function FunctionTypes() As DataTable
-            Return m_DFunctions.FunctionTypes()
+            Dim mRetVal As DataTable = Nothing
+            If IsDataBaseOnline() Then
+                mRetVal = m_DFunctions.FunctionTypes()
+            End If
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -140,7 +149,11 @@ Namespace BusinessLogicLayer
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
         Public Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable
-            Return m_DFunctions.GetMenuOrder(profile)
+            Dim mRetVal As DataTable = Nothing
+            If IsDataBaseOnline() Then
+                mRetVal = m_DFunctions.GetMenuOrder(profile)
+            End If
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -150,21 +163,23 @@ Namespace BusinessLogicLayer
         ''' <param name="saveGroups">Boolean</param>
         ''' <param name="saveRoles">Boolean</param>
         Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
-            m_DFunctions.Profile = profile
-            profile.Id = m_DFunctions.Save()
-            m_DFunctions.Profile = profile
-            If saveGroups Then
-                m_DFunctions.SaveGroups(PermissionType.Add)
-                m_DFunctions.SaveGroups(PermissionType.Delete)
-                m_DFunctions.SaveGroups(PermissionType.Edit)
-                m_DFunctions.SaveGroups(PermissionType.View)
-            End If
-            If saveRoles Then
-                m_DFunctions.SaveRoles(PermissionType.Add)
-                m_DFunctions.SaveRoles(PermissionType.Delete)
-                m_DFunctions.SaveRoles(PermissionType.Edit)
-                m_DFunctions.SaveRoles(PermissionType.View)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile  can not be null or Nothing in VB.net!")
+            If IsDataBaseOnline() Then
+                m_DFunctions.Profile = profile
+                profile.Id = m_DFunctions.Save()
+                m_DFunctions.Profile = profile
+                If saveGroups Then
+                    m_DFunctions.SaveGroups(PermissionType.Add)
+                    m_DFunctions.SaveGroups(PermissionType.Delete)
+                    m_DFunctions.SaveGroups(PermissionType.Edit)
+                    m_DFunctions.SaveGroups(PermissionType.View)
+                End If
+                If saveRoles Then
+                    m_DFunctions.SaveRoles(PermissionType.Add)
+                    m_DFunctions.SaveRoles(PermissionType.Delete)
+                    m_DFunctions.SaveRoles(PermissionType.Edit)
+                    m_DFunctions.SaveRoles(PermissionType.View)
+                End If
             End If
         End Sub
 
@@ -175,15 +190,24 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            Return m_DFunctions.Search(searchCriteria)
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null or Nothing in VB.net!")
+            Dim mRetVal As DataTable = Nothing
+            If IsDataBaseOnline() Then
+                mRetVal = m_DFunctions.Search(searchCriteria)
+            End If
+            Return mRetVal
         End Function
 
         Public Sub Delete(ByVal functionSeqId As Integer)
-            m_DFunctions.Delete(functionSeqId)
+            If IsDataBaseOnline() Then m_DFunctions.Delete(functionSeqId)
         End Sub
 
         Public Sub MoveMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType)
-            m_DFunctions.UpdateMenuOrder(profile, direction)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null or Nothing in VB.net!")
+            If profile Is Nothing Then Throw New ArgumentNullException("direction", "direction can not be null or Nothing in VB.net!")
+            If IsDataBaseOnline() Then
+                m_DFunctions.UpdateMenuOrder(profile, direction)
+            End If
         End Sub
     End Class
 

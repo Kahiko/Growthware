@@ -8,7 +8,7 @@
     </ProductVersion>
     <SchemaVersion>
     </SchemaVersion>
-    <ProjectGuid>{E2524E1C-A55A-48BB-9183-9CA281FAB8AD}</ProjectGuid>
+    <ProjectGuid>{F116AEEB-6628-46A2-BCCD-451F9317BEC8}</ProjectGuid>
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>GrowthWare.WebApplication</RootNamespace>
@@ -171,6 +171,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\Logon\Logon.aspx" />
@@ -245,6 +246,13 @@
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\MenuController.vb" />
     <Compile Include="Controllers\ProductsController.vb" />
+    <Compile Include="Functions\System\Accounts\Logoff.aspx.designer.vb">
+      <DependentUpon>Logoff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Logoff.aspx.vb">
+      <DependentUpon>Logoff.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.designer.vb">
       <DependentUpon>GenericHome.aspx</DependentUpon>
     </Compile>

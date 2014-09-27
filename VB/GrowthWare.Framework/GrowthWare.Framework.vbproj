@@ -73,7 +73,6 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Common\BusinessLogicLayerException.vb" />
     <Compile Include="Common\ConfigSettings.vb" />
     <Compile Include="Common\CryptoUtility.vb" />
     <Compile Include="Common\CryptoUtilityException.vb" />

@@ -73,8 +73,9 @@
 		var $mBtnRequestChange = $('#btnRequestChange');
 		var $mLogonPage = $('#LogonPage');
 		if (xhr.toString() == "true") {
-		    //jQuery.event.trigger('~reLoadUI');
-		    GW.Navigation.NavigationController.Refresh();
+		    jQuery.event.trigger('~reLoadUI');
+		    //GW.Navigation.NavigationController.Refresh();
+		    $('#MainContentDiv').html("You have successfully logged on").fadeIn(1000);
 		} else {
 			if (xhr.toString() == "Request") {
 				$mBtnRequestChange.css({ display: 'inline' });
@@ -113,7 +114,6 @@
 	}
 
 	function requestChangeError(xhr, status, error) {
-		alert('hi from logonError');
 		mRetHTML = 'Error logging on\n' + xhr.responseText;
 		$mClientMessage.css({ display: 'none' });
 		$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);

@@ -133,8 +133,7 @@
     <%--            <form class="navbar-form navbar-right">
                     <input type="text" class="form-control" placeholder="Search..."/>
                 </form>--%>
-			    <div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;">
-			    </div>
+			    <div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;"></div>
             </div>
           </div>
     </nav>

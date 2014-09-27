@@ -8,6 +8,7 @@ Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 Imports System.Web.Configuration
 Imports System.Web.SessionState
+Imports GrowthWare.Framework.BusinessData
 
 Namespace Context
     ''' <summary>
@@ -73,7 +74,7 @@ Namespace Context
                 Dim mLog As Logger = Logger.Instance()
                 GWWebHelper.ExceptionError = mEx
                 mLog.Error(mEx)
-                If (mEx.GetType Is GetType(BusinessLogicLayerException)) Then
+                If (mEx.GetType() Is GetType(BusinessLogicLayerException)) Then
                     Dim config As Configuration = WebConfigurationManager.OpenWebConfiguration("~")
                     ConfigSettings.SetEnvironmentValue(config, False, "DB_Status", "OffLine", False)
                 End If

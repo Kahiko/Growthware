@@ -1,8 +1,8 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.Framework.Common
 Imports System.Collections.ObjectModel
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports System.Globalization
+Imports GrowthWare.Framework.Common
 
 Namespace BusinessLogicLayer
     ''' <summary>
@@ -26,6 +26,8 @@ Namespace BusinessLogicLayer
     ''' </code>
     ''' </example>
     Public Class BSecurityEntity
+        Inherits BaseBusinessLogic
+
         Private m_DSecurityEntity As IDSecurityEntity
 
         ''' <summary>
@@ -91,7 +93,7 @@ Namespace BusinessLogicLayer
             Dim mRetVal As Collection(Of MSecurityEntityProfile) = New Collection(Of MSecurityEntityProfile)
             Dim mDataTable As DataTable = Nothing
             Try
-                If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+                If IsDataBaseOnline() Then
                     mDataTable = m_DSecurityEntity.GetSecurityEntities()
                     For Each item As DataRow In mDataTable.Rows
                         Dim mProfile As New MSecurityEntityProfile(item)
@@ -117,7 +119,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetValidSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+            If IsDataBaseOnline() Then
                 mRetVal = m_DSecurityEntity.GetValidSecurityEntities(account, securityEntityId, isSecurityEntityAdministrator)
             End If
             Return mRetVal
@@ -132,7 +134,7 @@ Namespace BusinessLogicLayer
         Public Function Save(ByVal profile As MSecurityEntityProfile) As Integer
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be Nothing")
             profile.Id = profile.Id
-            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then m_DSecurityEntity.Save(profile)
+            If IsDataBaseOnline() Then m_DSecurityEntity.Save(profile)
             Return profile.Id
         End Function
 
@@ -144,7 +146,7 @@ Namespace BusinessLogicLayer
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) = "ONLINE" Then
+            If IsDataBaseOnline() Then
                 mRetVal = m_DSecurityEntity.Search(searchCriteria)
             End If
             Return mRetVal

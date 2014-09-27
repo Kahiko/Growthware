@@ -1,9 +1,9 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports System.Collections.ObjectModel
 Imports System.Globalization
+Imports GrowthWare.Framework.Common
 
 Namespace BusinessLogicLayer
     ''' <summary>
@@ -27,6 +27,8 @@ Namespace BusinessLogicLayer
     ''' </code>
     ''' </example>
     Public Class BMessages
+        Inherits BaseBusinessLogic
+
         Private m_DMessages As IDMessages
         Private m_SecurityEntityProfile As MSecurityEntityProfile
 
@@ -94,20 +96,22 @@ Namespace BusinessLogicLayer
         Public Function GetMessages(ByVal securityEntitySeqId As Integer) As Collection(Of MMessageProfile)
             Dim mRetVal As Collection(Of MMessageProfile) = New Collection(Of MMessageProfile)
             Dim mDataTable As DataTable = Nothing
-            Try
-                m_DMessages.SecurityEntitySeqId = securityEntitySeqId
-                mDataTable = m_DMessages.Messages()
-                For Each item As DataRow In mDataTable.Rows
-                    Dim mProfile As MMessageProfile = New MMessageProfile(item)
-                    mRetVal.Add(mProfile)
-                Next
-            Catch ex As Exception
-                Throw
-            Finally
-                If Not mDataTable Is Nothing Then
-                    mDataTable.Dispose()
-                End If
-            End Try
+            If IsDataBaseOnline() Then
+                Try
+                    m_DMessages.SecurityEntitySeqId = securityEntitySeqId
+                    mDataTable = m_DMessages.Messages()
+                    For Each item As DataRow In mDataTable.Rows
+                        Dim mProfile As MMessageProfile = New MMessageProfile(item)
+                        mRetVal.Add(mProfile)
+                    Next
+                Catch ex As Exception
+                    Throw
+                Finally
+                    If Not mDataTable Is Nothing Then
+                        mDataTable.Dispose()
+                    End If
+                End Try
+            End If
             Return mRetVal
         End Function
 
@@ -117,13 +121,18 @@ Namespace BusinessLogicLayer
         ''' <param name="messageSeqId">The security entity seq ID.</param>
         ''' <returns>Collection{MMessageProfile}.</returns>
         Public Function GetMessage(ByVal messageSeqId As Integer) As MMessageProfile
-            Return New MMessageProfile(m_DMessages.GetMessage(messageSeqId))
+            Dim mRetVal As MMessageProfile = Nothing
+            If IsDataBaseOnline() Then
+                mRetVal = New MMessageProfile(m_DMessages.GetMessage(messageSeqId))
+            End If
+            Return mRetVal
         End Function
         ''' <summary>
         ''' Save Function information to the database
         ''' </summary>
         ''' <param name="profile">MMessageProfile</param>
         Public Sub Save(ByVal profile As MMessageProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null or Nothing ")
             m_DMessages.Profile = profile
             m_DMessages.Save()
         End Sub

@@ -79,7 +79,9 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogicLayerException.vb" />
     <Compile Include="BusinessLogicLayer\BAccounts.vb" />
+    <Compile Include="BusinessLogicLayer\BaseBusinessLogic.vb" />
     <Compile Include="BusinessLogicLayer\BClientChoices.vb" />
     <Compile Include="BusinessLogicLayer\BFunctions.vb" />
     <Compile Include="BusinessLogicLayer\BMessages.vb" />
