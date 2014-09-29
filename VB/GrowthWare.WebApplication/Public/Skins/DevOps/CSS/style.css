@@ -1,6 +1,6 @@
 body {
   color: #525252;
-  background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background: #6AA6D6;
 }
 .body-expanded, .modal-open {
   overflow-y:hidden;
@@ -16,9 +16,148 @@ body {
 h1, .h1, h2, .h2, h3, .h3 {
   margin:0;
 }
+/* Horizontal Hierarchical Menu ----------------------------------------------------------*/
+#cssmenu ul,
+#cssmenu li,
+#cssmenu span,
+#cssmenu a {
+	margin: 0;
+	padding: 0;
+	position: relative;
+}
+#cssmenu {
+	height: 49px;
+	background: #141414;
+	background: -moz-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #32323a), color-stop(100%, #141414));
+	background: -webkit-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -o-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -ms-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: linear-gradient(to bottom, #32323a 0%, #141414 100%);
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#32323a', EndColorStr='#141414', GradientType=0);
+	border-bottom: 2px solid #0fa1e0;
+}
+#cssmenu:after,
+#cssmenu ul:after {
+	content: '';
+	display: block;
+	clear: both;
+}
+#cssmenu a {
+	background: #141414;
+	background: -moz-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #32323a), color-stop(100%, #141414));
+	background: -webkit-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -o-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: -ms-linear-gradient(top, #32323a 0%, #141414 100%);
+	background: linear-gradient(to bottom, #32323a 0%, #141414 100%);
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#32323a', EndColorStr='#141414', GradientType=0);
+	color: #ffffff;
+	display: inline-block;
+	font-family: Helvetica, Arial, Verdana, sans-serif;
+	font-size: 12px;
+	line-height: 49px;
+	padding: 0 20px;
+	text-decoration: none;
+}
+#cssmenu ul {
+	list-style: none;
+}
+#cssmenu > ul {
+	float: left;
+}
+#cssmenu > ul > li {
+	float: left;
+}
+#cssmenu > ul > li:hover:after {
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	position: absolute;
+	left: 50%;
+	bottom: 0;
+	border-left: 10px solid transparent;
+	border-right: 10px solid transparent;
+	border-bottom: 10px solid #0fa1e0;
+	margin-left: -10px;
+}
+#cssmenu > ul > li.active a {
+	-moz-box-shadow: inset 0 0 3px #000000;
+	-webkit-box-shadow: inset 0 0 3px #000000;
+	background: #070707;
+	background: -moz-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #26262c), color-stop(100%, #070707));
+	background: -webkit-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -o-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -ms-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: linear-gradient(to bottom, #26262c 0%, #070707 100%);
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#26262c', EndColorStr='#070707', GradientType=0);
+}
+#cssmenu > ul > li:hover > a {
+	background: #070707;
+	background: -moz-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #26262c), color-stop(100%, #070707));
+	background: -webkit-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -o-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: -ms-linear-gradient(top, #26262c 0%, #070707 100%);
+	background: linear-gradient(to bottom, #26262c 0%, #070707 100%);
+	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#26262c', EndColorStr='#070707', GradientType=0);
+	-moz-box-shadow: 0 0 10px #3399FF;
+	-webkit-box-shadow: 0 0 10px #3399FF;
+	box-shadow: 0 0 10px #3399FF;
+	margin-right: 10px;
+	border-radius: 15px 15px 0 0;
+	-moz-border-radius: 15px 15px 0 0;
+	-webkit-border-radius: 15px 15px 0 0;
+}
+#cssmenu .has-sub {
+	z-index: 1;
+}
+#cssmenu .has-sub:hover > ul {
+	display: block;
+}
+#cssmenu .has-sub ul {
+	display: none;
+	position: absolute;
+	width: 200px;
+	top: 100%;
+	left: 0;
+}
+#cssmenu .has-sub ul li {
+	*margin-bottom: -1px;
+}
+#cssmenu .has-sub ul li a {
+	background: #0fa1e0;
+	border-bottom: 1px dotted #6fc7ec;
+	filter: none;
+	font-size: 11px;
+	display: block;
+	line-height: 120%;
+	padding: 10px;
+}
+#cssmenu .has-sub ul li:hover a {
+	background: #0c7fb0;
+}
+#cssmenu .has-sub .has-sub:hover > ul {
+	display: block;
+}
+#cssmenu .has-sub .has-sub ul {
+	display: none;
+	position: absolute;
+	left: 100%;
+	top: 0;
+}
+#cssmenu .has-sub .has-sub ul li a {
+	background: #0c7fb0;
+	border-bottom: 1px dotted #6db2d0;
+}
+#cssmenu .has-sub .has-sub ul li a:hover {
+	background: #095c80;
+}
 #logo {
   position:relative;
-  background: #525252 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background: #525252;
 }
 #logo a {
   color: #fff;
@@ -26,7 +165,7 @@ h1, .h1, h2, .h2, h3, .h3 {
   display: block;
   font-size: 20px;
   line-height: 50px;
-  background: url(../img/logo.png) right 42px no-repeat;
+  background: url(../Images/logo.png) right 42px no-repeat;
   -webkit-transition: 0.5s;
   -moz-transition: 0.5s;
   -o-transition: 0.5s;
@@ -69,7 +208,7 @@ a.show-sidebar:hover {
   z-index: inherit;
   padding-bottom: 3000px !important;
   margin-bottom: -3000px !important;
-  background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background: #6AA6D6;
   -webkit-transition: 0.2s;
   -moz-transition: 0.2s;
   -o-transition: 0.2s;
@@ -144,7 +283,7 @@ a.show-sidebar:hover {
   -moz-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;
   padding: 0;
-  background: #6AA6D6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background: #6AA6D6;
   box-shadow: none;
   visibility:hidden;
 }
@@ -602,7 +741,7 @@ ul.DTTT_dropdown.dropdown-menu > li:hover > a {
   padding: 0;
   line-height: 40px;
   background: #525252;
-  background: #5a8db6 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background: #5a8db6;
   margin-bottom: 20px;
 }
 .breadcrumb {
@@ -1680,7 +1819,7 @@ td.beauty-hover {
   padding: 0;
 }
 #dashboard_links .nav {
-  background:#3575A0 url(../img/devoops_pattern_b10.png) 0 0 repeat;
+  background:#3575A0;
   -webkit-border-radius: 0 4px 4px 0;
   -moz-border-radius: 0 4px 4px 0;
   border-radius: 0 4px 4px 0;

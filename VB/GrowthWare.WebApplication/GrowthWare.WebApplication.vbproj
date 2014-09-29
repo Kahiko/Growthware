@@ -235,6 +235,7 @@
     <Content Include="Public\Scripts\jquery-1.4.1.min.js" />
     <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Public\Skins\DevOps\CSS\style.css" />
+    <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
