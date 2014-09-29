@@ -2499,3 +2499,7 @@ td.beauty-hover {
     display: none;
   }
 }
+#VMenu a {
+color: white;
+text-decoration: none;
+} 
