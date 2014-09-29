@@ -50,7 +50,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// BSecurityEntity mBSecurityEntity = New BSecurityEntity(mSecurityEntityProfile, ConfigSettings.CentralManagement);
     /// ]]>
     /// </code>	/// </example>
-    public class BSecurityEntity
+    public class BSecurityEntity : BaseBusinessLogic
     {
         private IDSecurityEntity m_DSecurityEntity;
 

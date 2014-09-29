@@ -57,7 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BusinessLogicLayerException.cs" />
     <Compile Include="BusinessLogicLayer\BAccounts.cs" />
+    <Compile Include="BusinessLogicLayer\BaseBusinessLogic.cs" />
     <Compile Include="BusinessLogicLayer\BClientChoices.cs" />
     <Compile Include="BusinessLogicLayer\BFunctions.cs" />
     <Compile Include="BusinessLogicLayer\BMessages.cs" />

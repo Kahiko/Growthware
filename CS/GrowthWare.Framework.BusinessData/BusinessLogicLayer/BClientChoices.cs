@@ -31,7 +31,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// ]]>
     /// </code>
     /// </example>
-    public class BClientChoices
+    public class BClientChoices : BaseBusinessLogic
     {
         private IDClientChoices m_DClientChoices;
 
@@ -107,7 +107,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             MClientChoicesState mRetVal = null;
             try
             {
-                if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
+                if (isDataBaseOnline()) 
                 { 
                     mRetVal = new MClientChoicesState(m_DClientChoices.GetChoices(account));
                 }

@@ -5,6 +5,7 @@ using GrowthWare.Framework.Model.Profiles;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
@@ -28,7 +29,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// ]]>
     /// </code>
     /// </example>
-    public class BFunctions
+    public class BFunctions : BaseBusinessLogic
     {
         private IDFunction m_DFunctions;
 
@@ -114,33 +115,37 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             Collection<MFunctionProfile> mRetVal = new Collection<MFunctionProfile>();
             DataSet mDSFunctions = null;
-            try
+            if (isDataBaseOnline()) 
             {
-                m_DFunctions.Profile = new MFunctionProfile();
-                m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
-                mDSFunctions = m_DFunctions.GetFunctions;
-                bool mHasAssingedRoles = false;
-                bool mHasGroups = false;
-                if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssingedRoles = true;
-                if (mDSFunctions.Tables[2].Rows.Count > 0) mHasGroups = true;
-                DataRow[] mGroups = null;
-                DataRow[] mAssignedRoles = null;
-                DataRow[] mDerivedRoles = null;
-
-                foreach (DataRow item in mDSFunctions.Tables["Functions"].Rows)
+                try
                 {
-                    mDerivedRoles = item.GetChildRows("DerivedRoles");
-                    mAssignedRoles = null;
-                    if (mHasAssingedRoles) mAssignedRoles = item.GetChildRows("AssignedRoles");
-                    mGroups = null;
-                    if (mHasGroups) mGroups = item.GetChildRows("Groups");
-                    MFunctionProfile mProfile = new MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups);
-                    mRetVal.Add(mProfile);
+                    m_DFunctions.Profile = new MFunctionProfile();
+                    m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
+                    mDSFunctions = m_DFunctions.GetFunctions;
+                    bool mHasAssingedRoles = false;
+                    bool mHasGroups = false;
+                    if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssingedRoles = true;
+                    if (mDSFunctions.Tables[2].Rows.Count > 0) mHasGroups = true;
+                    DataRow[] mGroups = null;
+                    DataRow[] mAssignedRoles = null;
+                    DataRow[] mDerivedRoles = null;
+
+                    foreach (DataRow item in mDSFunctions.Tables["Functions"].Rows)
+                    {
+                        mDerivedRoles = item.GetChildRows("DerivedRoles");
+                        mAssignedRoles = null;
+                        if (mHasAssingedRoles) mAssignedRoles = item.GetChildRows("AssignedRoles");
+                        mGroups = null;
+                        if (mHasGroups) mGroups = item.GetChildRows("Groups");
+                        MFunctionProfile mProfile = new MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups);
+                        mRetVal.Add(mProfile);
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                throw;
+                catch (Exception)
+                {
+                    throw;
+                }
+
             }
             return mRetVal;
         }
@@ -152,7 +157,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable GetMenuOrder(MFunctionProfile profile)
         {
-            return m_DFunctions.GetMenuOrder(profile);
+            DataTable mRetVal = null;
+            if (isDataBaseOnline()) mRetVal = m_DFunctions.GetMenuOrder(profile);
+            return mRetVal;
         }
 
         /// <summary>
@@ -165,22 +172,25 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null!");
-            m_DFunctions.Profile = profile;
-            profile.Id = m_DFunctions.Save();
-            m_DFunctions.Profile = profile;
-            if (saveGroups)
+            if (isDataBaseOnline()) 
             {
-                m_DFunctions.SaveGroups(PermissionType.Add);
-                m_DFunctions.SaveGroups(PermissionType.Delete);
-                m_DFunctions.SaveGroups(PermissionType.Edit);
-                m_DFunctions.SaveGroups(PermissionType.View);
-            }
-            if (saveRoles)
-            {
-                m_DFunctions.SaveRoles(PermissionType.Add);
-                m_DFunctions.SaveRoles(PermissionType.Delete);
-                m_DFunctions.SaveRoles(PermissionType.Edit);
-                m_DFunctions.SaveRoles(PermissionType.View);
+                m_DFunctions.Profile = profile;
+                profile.Id = m_DFunctions.Save();
+                m_DFunctions.Profile = profile;
+                if (saveGroups)
+                {
+                    m_DFunctions.SaveGroups(PermissionType.Add);
+                    m_DFunctions.SaveGroups(PermissionType.Delete);
+                    m_DFunctions.SaveGroups(PermissionType.Edit);
+                    m_DFunctions.SaveGroups(PermissionType.View);
+                }
+                if (saveRoles)
+                {
+                    m_DFunctions.SaveRoles(PermissionType.Add);
+                    m_DFunctions.SaveRoles(PermissionType.Delete);
+                    m_DFunctions.SaveRoles(PermissionType.Edit);
+                    m_DFunctions.SaveRoles(PermissionType.View);
+                }            
             }
             return profile.Id;
 
@@ -192,7 +202,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="functionSeqId">The function seq id.</param>
         public void Delete(int functionSeqId)
         {
-            m_DFunctions.Delete(functionSeqId);
+            if (isDataBaseOnline()) m_DFunctions.Delete(functionSeqId);
         }
 
         /// <summary>
@@ -202,7 +212,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns></returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            return m_DFunctions.Search(searchCriteria);
+            DataTable mRetVal = null;
+            if (isDataBaseOnline()) mRetVal = m_DFunctions.Search(searchCriteria);
+            return mRetVal;
         }
 
         /// <summary>
@@ -212,7 +224,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="direction">The direction.</param>
         public void MoveMenuOrder(MFunctionProfile profile, DirectionType direction)
         {
-            m_DFunctions.UpdateMenuOrder(profile, direction);
+            if (isDataBaseOnline()) m_DFunctions.UpdateMenuOrder(profile, direction);
         }
     }
 }

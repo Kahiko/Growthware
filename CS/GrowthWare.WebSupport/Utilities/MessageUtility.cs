@@ -84,7 +84,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static void Save(MMessageProfile profile)
         {
             BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            mBMessages.Save(ref profile);
+            mBMessages.Save(profile);
             RemoveCachedMessagesCollection();
         }
 
