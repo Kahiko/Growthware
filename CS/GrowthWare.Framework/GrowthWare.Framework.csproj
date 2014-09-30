@@ -88,6 +88,7 @@
     <Compile Include="Model\Profiles\MRequestNewPassword.cs" />
     <Compile Include="Model\Profiles\MSearchCriteria.cs" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.cs" />
+    <Compile Include="Model\Profiles\MSecurityInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -108,7 +108,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             Collection<MMessageProfile> mRetList = new Collection<MMessageProfile>();
             DataTable mDataTable = null;
-            if (isDataBaseOnline()) 
+            if (IsDatabaseOnline()) 
             {
                 try
                 {
@@ -143,7 +143,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataRow GetMessage(int messageSeqId)
         {
             DataRow mRetVal = null;
-            if (isDataBaseOnline()) mRetVal = m_DMessages.Message(messageSeqId);
+            if (IsDatabaseOnline()) mRetVal = m_DMessages.Message(messageSeqId);
             return mRetVal;
         }
 
@@ -155,7 +155,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public void Save(MMessageProfile profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null or Nothing in VB.Net!");
-            if (isDataBaseOnline()) 
+            if (IsDatabaseOnline()) 
             {
                 m_DMessages.Profile = profile;
                 m_DMessages.Save();
@@ -179,7 +179,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             {
                 searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             }
-            if (isDataBaseOnline()) mRetVal = m_DMessages.Search(searchCriteria);
+            if (IsDatabaseOnline()) mRetVal = m_DMessages.Search(searchCriteria);
             return mRetVal;
         }
     }

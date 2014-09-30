@@ -8,9 +8,16 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
+    /// <summary>
+    /// Abstract (must inherit) class to add common code
+    /// </summary>
     public abstract class BaseBusinessLogic
     {
-        protected virtual bool isDataBaseOnline()
+        /// <summary>
+        /// IsDatabaseOnline return bool based on ConfigSettings.DBStatus
+        /// </summary>
+        /// <returns>bool</returns>
+        protected virtual bool IsDatabaseOnline()
         {
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
             {

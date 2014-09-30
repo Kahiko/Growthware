@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
     <Reference Include="System.DirectoryServices" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
@@ -58,12 +59,20 @@
     <Compile Include="Context\ClientChoicesHttpModule.cs" />
     <Compile Include="Context\HttpContextModule.cs" />
     <Compile Include="Context\OutputFilterStream.cs" />
+    <Compile Include="CustomWebControls\Designers\CustomDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomWebControls\ListPicker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomWebControls\NavTrail.cs" />
     <Compile Include="GWWebHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AccountUtility.cs" />
     <Compile Include="Utilities\ClientChoicesUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\FunctionUtility.cs" />
+    <Compile Include="Utilities\MenuUtility.cs" />
     <Compile Include="Utilities\MessageUtility.cs" />
     <Compile Include="Utilities\SecurityEntityUtility.cs" />
     <Compile Include="WebImpersonate.cs" />
@@ -82,6 +91,9 @@
       <Project>{f12fecfd-d955-4f31-b7a6-e4ef8d88de9d}</Project>
       <Name>GrowthWare.Framework</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomWebControls\JS\ListPicker.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

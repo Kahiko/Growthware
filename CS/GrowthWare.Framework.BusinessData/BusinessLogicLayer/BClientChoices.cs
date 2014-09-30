@@ -107,7 +107,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             MClientChoicesState mRetVal = null;
             try
             {
-                if (isDataBaseOnline()) 
+                if (IsDatabaseOnline()) 
                 { 
                     mRetVal = new MClientChoicesState(m_DClientChoices.GetChoices(account));
                 }

@@ -115,7 +115,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             Collection<MFunctionProfile> mRetVal = new Collection<MFunctionProfile>();
             DataSet mDSFunctions = null;
-            if (isDataBaseOnline()) 
+            if (IsDatabaseOnline()) 
             {
                 try
                 {
@@ -158,7 +158,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetMenuOrder(MFunctionProfile profile)
         {
             DataTable mRetVal = null;
-            if (isDataBaseOnline()) mRetVal = m_DFunctions.GetMenuOrder(profile);
+            if (IsDatabaseOnline()) mRetVal = m_DFunctions.GetMenuOrder(profile);
             return mRetVal;
         }
 
@@ -172,7 +172,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null!");
-            if (isDataBaseOnline()) 
+            if (IsDatabaseOnline()) 
             {
                 m_DFunctions.Profile = profile;
                 profile.Id = m_DFunctions.Save();
@@ -202,7 +202,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="functionSeqId">The function seq id.</param>
         public void Delete(int functionSeqId)
         {
-            if (isDataBaseOnline()) m_DFunctions.Delete(functionSeqId);
+            if (IsDatabaseOnline()) m_DFunctions.Delete(functionSeqId);
         }
 
         /// <summary>
@@ -213,7 +213,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable Search(MSearchCriteria searchCriteria)
         {
             DataTable mRetVal = null;
-            if (isDataBaseOnline()) mRetVal = m_DFunctions.Search(searchCriteria);
+            if (IsDatabaseOnline()) mRetVal = m_DFunctions.Search(searchCriteria);
             return mRetVal;
         }
 
@@ -224,7 +224,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="direction">The direction.</param>
         public void MoveMenuOrder(MFunctionProfile profile, DirectionType direction)
         {
-            if (isDataBaseOnline()) m_DFunctions.UpdateMenuOrder(profile, direction);
+            if (IsDatabaseOnline()) m_DFunctions.UpdateMenuOrder(profile, direction);
         }
     }
 }

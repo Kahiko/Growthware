@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 namespace GrowthWare.Framework.BusinessData
 {
     /// <summary>
-    /// Created to distinguish errors created in the GrowthWare.WebSupport project.
+    /// Created to distinguish errors created in the Business LogicLayer Exceptions.
     /// </summary>
     /// <remarks></remarks>
     [Serializable()]
     public class BusinessLogicLayerException : Exception
     {
+        /// <summary>
+        /// Calls base method
+        /// </summary>
         public BusinessLogicLayerException() { }
 
         /// <summary>

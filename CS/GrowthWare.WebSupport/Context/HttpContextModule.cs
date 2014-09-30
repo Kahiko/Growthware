@@ -25,6 +25,11 @@ namespace GrowthWare.WebSupport.Context
     {
         private bool m_Disposing = false;
         private OutputFilterStream m_Filter;
+
+        /// <summary>
+        /// Initializes the class
+        /// </summary>
+        /// <param name="context"></param>
         public void Init(HttpApplication context)
         {
             if (context != null && ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != "INSTALL")
