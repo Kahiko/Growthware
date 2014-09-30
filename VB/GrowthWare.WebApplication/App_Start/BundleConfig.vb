@@ -4,10 +4,14 @@ Public Module BundleConfig
     Public Sub RegisterBundles(bundles As BundleCollection)
         bundles.Add(
             New ScriptBundle("~/bundles/jquery").Include(
-            "~/Public/Scripts/jquery-{version}.js"
+            "~/Public/Scripts/jquery.js"
             )
         )
-
+        bundles.Add(
+            New ScriptBundle("~/bundles/jqueryUI").Include(
+            "~/Public/Scripts/jquery-ui.js"
+            )
+        )
         bundles.Add(
             New ScriptBundle("~/bundles/angular").Include(
             "~/Public/Scripts/angular-{version}.js"
@@ -42,7 +46,14 @@ Public Module BundleConfig
                 "~/Public/CSS/bootstrap.css",
                 "~/Public/CSS/bootstrap-theme.css",
                 "~/Public/CSS/SiteStyle.css"
+            )
         )
-    )
+        bundles.Add(
+            New StyleBundle("~/Content/jQueryUIRedmond").Include(
+                "~/Public/jQueryUIThemes/Redmond/jquery-ui.css",
+                "~/Public/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                "~/Public/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+            )
+        )
     End Sub
 End Module

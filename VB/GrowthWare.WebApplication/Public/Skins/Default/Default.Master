@@ -8,6 +8,7 @@
 <head runat="server">
     <title></title>
     <%: Styles.Render("~/Content/SiteCSS")%>
+    <%: Styles.Render("~/Content/jQueryUIRedmond")%>
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/bootstrap")%>
     <%: Scripts.Render("~/bundles/angular")%>

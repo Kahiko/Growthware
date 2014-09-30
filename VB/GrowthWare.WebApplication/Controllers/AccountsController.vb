@@ -194,4 +194,27 @@ Namespace Controllers
         ''' <value>The color of the alternating row background color.</value>
         Public Property AlternatingRowBackColor As String
     End Class
+
+    Public Class UIAccountProfile
+        Public Account As String
+        Public Id As Integer
+        Public EnableNotifications As Boolean
+        Public EMail As String
+        Public Status As Integer
+        Public FirstName As String
+        Public MiddleName As String
+        Public LastName As String
+        Public PreferredName As String
+        Public IsSystemAdmin As Boolean
+        Public TimeZone As Integer
+        Public Location As String
+    End Class
+
+    Public Class UIAccountRoles
+        Public Roles() As String
+    End Class
+
+    Public Class UIAccountGroups
+        Public Groups() As String
+    End Class
 End Namespace

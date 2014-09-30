@@ -67,7 +67,7 @@ Namespace BusinessLogicLayer
 
         Public Sub Delete(ByVal accountId As Integer)
             m_DAccounts.Profile.Id = accountId
-            If IsDataBaseOnline() Then m_DAccounts.Delete()
+            If IsDatabaseOnline() Then m_DAccounts.Delete()
         End Sub
 
         ''' <summary>
@@ -94,7 +94,7 @@ Namespace BusinessLogicLayer
             Dim mRetVal As MAccountProfile = Nothing
             m_DAccounts.Profile = New MAccountProfile()
             m_DAccounts.Profile.Account = account
-            If IsDataBaseOnline() Then
+            If IsDatabaseOnline() Then
                 mRetVal = New MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security())
             End If
             Return mRetVal
@@ -109,7 +109,7 @@ Namespace BusinessLogicLayer
         ''' <remarks></remarks>
         Public Function GetMenu(account, menuType) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDataBaseOnline() Then
+            If IsDatabaseOnline() Then
                 mRetVal = m_DAccounts.GetMenu(account, menuType)
             End If
             Return mRetVal
@@ -125,7 +125,7 @@ Namespace BusinessLogicLayer
             Dim mRetCollection As New Collection(Of MAccountProfile)
             Try
                 m_DAccounts.Profile = profile
-                If IsDataBaseOnline() Then
+                If IsDatabaseOnline() Then
                     mDataTable = m_DAccounts.GetAccounts()
                 End If
                 If mDataTable IsNot Nothing Then
@@ -182,7 +182,7 @@ Namespace BusinessLogicLayer
         ''' </example>
         Public Sub Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
             If profile Is Nothing Then Throw New ArgumentException("profile can not be null")
-            If IsDataBaseOnline() Then
+            If IsDatabaseOnline() Then
                 m_DAccounts.Profile = profile
                 profile.Id = m_DAccounts.Save()
                 If saveGroups Then
@@ -203,7 +203,7 @@ Namespace BusinessLogicLayer
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDataBaseOnline() Then
+            If IsDatabaseOnline() Then
                 mRetVal = m_DAccounts.Search(searchCriteria)
             End If
             Return mRetVal

@@ -92,6 +92,7 @@
     <Compile Include="Model\Profiles\Interfaces\IMessageProfile.vb" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRolePermissionSecurity.vb" />
     <Compile Include="Model\Profiles\Interfaces\IMGroupRoleSecurity.vb" />
+    <Compile Include="Model\Profiles\Interfaces\IMSecurityInfo.vb" />
     <Compile Include="Model\Profiles\MClientChoices.vb" />
     <Compile Include="Model\Profiles\MClientChoicesState.vb" />
     <Compile Include="Model\Profiles\MFunctionProfile.vb" />
@@ -99,6 +100,7 @@
     <Compile Include="Model\Profiles\MRequestNewPassword.vb" />
     <Compile Include="Model\Profiles\MSearchCriteria.vb" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.vb" />
+    <Compile Include="Model\Profiles\MSecurityInfo.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

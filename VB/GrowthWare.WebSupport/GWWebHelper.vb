@@ -5,6 +5,33 @@ Public Module GWWebHelper
     Private s_ExceptionError As Exception = Nothing
     Private s_Version As String = String.Empty
 
+#Region "General Actions"
+    Public Const ActionNotAvailable As String = "Not_Avalible"
+    Public Const ActionUnderMaintenance As String = "Under_Maintance"
+    Public Const ActionLogOff As String = "Logoff"
+    Public Const ActionAlwaysLogOn As String = "AlwaysLogon"
+    Public Const ActionAccessDenied As String = "AccessDenied"
+    Public Const ActionChangePassword As String = "ChangePassword"
+    Public Const ActionLogOn As String = "Logon"
+#End Region
+
+#Region "Name Value Pair"
+    Public Const NVP_NAVIGATION_TYPES_ID As Integer = 1
+    Public Const NVP_LINK_BEHAVIOR_ID As Integer = 3
+    Public Const NVP_EDIT_ACTION As String = "EditNameValuePairs"
+    Public Const NVP_DATA_KEY_FIELD As String = "NVP_SEQ_ID"
+    Public Const NVP_DETAIL_DATA_KEY_FIELD As String = "NVP_SEQ_DET_ID"
+#End Region
+
+#Region "Functions"
+    Public Const FUNCTION_DATA_KEY_FIELD As String = "FUNCTION_SEQ_ID"
+#End Region
+
+#Region "Accounts"
+    Public Const ACCOUNT_VIEW_ROLE_TAB_ACTION As String = "ViewAccountRoleTab"
+    Public Const ACCOUNT_VIEW_GROUP_TAB_ACTION As String = "ViewAccountGroupTab"
+#End Region
+
     ''' <summary>
     ''' Gets the core web administration verison.
     ''' </summary>
@@ -17,6 +44,30 @@ Public Module GWWebHelper
                 myVersion = myAssembly.GetName.Version.ToString
             End If
             Return myVersion
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Returns http(s)://FQDN(/AppName)
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>String</returns>
+    ''' <remarks></remarks>
+    ReadOnly Property RootSite() As String
+        Get
+            Dim myRoot_Site As String = String.Empty
+            Dim myHTTP_Schema As String = String.Empty
+            If ConfigSettings.ForceHttps Then
+                myHTTP_Schema = "HTTPS"
+            Else
+                myHTTP_Schema = HttpContext.Current.Request.Url.Scheme
+            End If
+            If HttpContext.Current.Request.ApplicationPath = "/" Then
+                myRoot_Site = myHTTP_Schema & "://" & HttpContext.Current.Request.ServerVariables("HTTP_HOST") & "/"
+            Else
+                myRoot_Site = myHTTP_Schema & "://" & HttpContext.Current.Request.ServerVariables("HTTP_HOST") & "/" & ConfigSettings.AppName & "/"
+            End If
+            Return myRoot_Site
         End Get
     End Property
 

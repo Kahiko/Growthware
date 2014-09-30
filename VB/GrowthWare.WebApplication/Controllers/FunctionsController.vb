@@ -31,6 +31,40 @@ Namespace Controllers
 
             Return mRetVal
         End Function
+
+        <HttpPost>
+        Function SetSelectedSecurityEntity(ByVal selectedSecurityEntityId As Integer) As String
+            Dim targetSEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId)
+            Dim currentSEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+            Dim mClientChoicesState As MClientChoicesState = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
+            Dim mMessageProfile As MMessageProfile = Nothing
+            Try
+                If Not ConfigSettings.CentralManagement Then
+                    'SecurityEntityUtility.SetSessionSecurityEntity(targetSEProfile)
+                    mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
+                    mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
+                Else
+                    If currentSEProfile.ConnectionString = targetSEProfile.ConnectionString Then
+                        mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
+                        mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
+                    Else
+                        mClientChoicesState(MClientChoices.SecurityEntityId) = ConfigSettings.DefaultSecurityEntityId
+                        mClientChoicesState(MClientChoices.SecurityEntityName) = "System"
+                    End If
+                End If
+                ClientChoicesUtility.Save(mClientChoicesState)
+                AccountUtility.RemoveInMemoryInformation(True)
+                mMessageProfile = MessageUtility.GetProfile("ChangedSelectedSecurityEntity")
+            Catch ex As Exception
+                Dim myMessageProfile As New MMessageProfile
+                Dim mLog As Logger = Logger.Instance()
+                mMessageProfile = MessageUtility.GetProfile("NoDataFound")
+                Dim myEx As New Exception("SelectSecurityEntity:: reported an error.", ex)
+                mLog.Error(myEx)
+            End Try
+            ' update all of your in memory information
+            Return mMessageProfile.Body
+        End Function
     End Class
 
     Public Class FunctionInformation

@@ -170,8 +170,45 @@
     <Import Include="System.Web.UI.HtmlControls" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\themes\base\accordion.css" />
+    <Content Include="Content\themes\base\all.css" />
+    <Content Include="Content\themes\base\autocomplete.css" />
+    <Content Include="Content\themes\base\base.css" />
+    <Content Include="Content\themes\base\button.css" />
+    <Content Include="Content\themes\base\core.css" />
+    <Content Include="Content\themes\base\datepicker.css" />
+    <Content Include="Content\themes\base\dialog.css" />
+    <Content Include="Content\themes\base\draggable.css" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_dadada_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_75_e6e6e6_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\themes\base\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
+    <Content Include="Content\themes\base\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_454545_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_888888_256x240.png" />
+    <Content Include="Content\themes\base\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\themes\base\menu.css" />
+    <Content Include="Content\themes\base\progressbar.css" />
+    <Content Include="Content\themes\base\resizable.css" />
+    <Content Include="Content\themes\base\selectable.css" />
+    <Content Include="Content\themes\base\selectmenu.css" />
+    <Content Include="Content\themes\base\slider.css" />
+    <Content Include="Content\themes\base\sortable.css" />
+    <Content Include="Content\themes\base\spinner.css" />
+    <Content Include="Content\themes\base\tabs.css" />
+    <Content Include="Content\themes\base\theme.css" />
+    <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Default.aspx" />
     <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\Logon\Logon.aspx" />
@@ -179,6 +216,7 @@
     <Content Include="Functions\System\Menus\HMenu.aspx" />
     <Content Include="Functions\System\Menus\VHMenu.aspx" />
     <Content Include="Functions\System\Menus\VMenu.aspx" />
+    <Content Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx" />
     <Content Include="Functions\System\TestNaturalSort.aspx" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
@@ -208,12 +246,31 @@
     <Content Include="Public\Images\GrowthWare\progress-bar.gif" />
     <Content Include="Public\Images\GrowthWare\sort_asc.png" />
     <Content Include="Public\Images\GrowthWare\sort_desc.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Public\jQueryUIThemes\Redmond\jquery-ui.css" />
+    <Content Include="Public\jQueryUIThemes\Redmond\jquery-ui.structure.css" />
+    <Content Include="Public\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
+    <Content Include="Public\Scripts\jquery-ui.js" />
+    <Content Include="Public\Scripts\jquery.js" />
     <Content Include="Public\Skins\Default\CSS\Skin.css" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Public\Scripts\angular-1.2.js" />
     <Content Include="Public\Scripts\angular-1.3.js" />
     <Content Include="Public\Scripts\bootstrap.js" />
-    <Content Include="Public\Scripts\bootstrap.min.js" />
     <Content Include="Public\CSS\bootstrap-theme.css.map" />
     <Content Include="Public\CSS\bootstrap.css.map" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
@@ -231,12 +288,11 @@
     <Content Include="Public\Scripts\GrowthWare\GW.Search.js" />
     <Content Include="Public\Scripts\GrowthWare\GW.Upload.js" />
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
-    <Content Include="Public\Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Public\Scripts\jquery-1.4.1.min.js" />
     <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Public\Skins\DevOps\CSS\style.css" />
     <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
+    <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -249,11 +305,39 @@
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\MenuController.vb" />
     <Compile Include="Controllers\ProductsController.vb" />
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
     <Compile Include="Functions\System\Accounts\Logoff.aspx.designer.vb">
       <DependentUpon>Logoff.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Accounts\Logoff.aspx.vb">
       <DependentUpon>Logoff.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.designer.vb">
+      <DependentUpon>AddEditAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.vb">
+      <DependentUpon>AddEditAccount.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.designer.vb">
+      <DependentUpon>SearchAccountResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.vb">
+      <DependentUpon>SearchAccountResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.designer.vb">
+      <DependentUpon>SearchAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.vb">
+      <DependentUpon>SearchAccounts.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.designer.vb">
@@ -303,6 +387,13 @@
     </Compile>
     <Compile Include="Functions\System\Menus\VMenu.aspx.vb">
       <DependentUpon>VMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.designer.vb">
+      <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.vb">
+      <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\TestNaturalSort.aspx.designer.vb">
@@ -356,6 +447,13 @@
       <DependentUpon>Default.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="UserControls\Search.ascx.designer.vb">
+      <DependentUpon>Search.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\Search.ascx.vb">
+      <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="My Project\Resources.resx">
@@ -376,7 +474,6 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <Content Include="packages.config" />
-    <Content Include="Public\Scripts\jquery-1.10.2.min.map" />
     <Content Include="Public\Skins\Default\Default.Master" />
     <Content Include="Public\Skins\DevOps\Default.Master" />
     <None Include="Web.Debug.config">
