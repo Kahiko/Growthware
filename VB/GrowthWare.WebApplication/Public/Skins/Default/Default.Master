@@ -7,12 +7,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title></title>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryUI") %>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
     <%: Styles.Render("~/Content/SiteCSS")%>
     <%: Styles.Render("~/Content/jQueryUIRedmond")%>
-    <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/bootstrap")%>
-    <%: Scripts.Render("~/bundles/angular")%>
-    <%: Scripts.Render("~/bundles/GrowthWare")%>
+
     <script type="text/javascript" language="javascript">
         function afterLoadFunctions() {
             // Create the refresh objects for all of the necessary UI elements
@@ -88,9 +88,6 @@
 			    $loader.hide();
 
 			});
-            $('[data-toggle=offcanvas]').click(function () {
-                $('.row-offcanvas').toggleClass('active');
-            });
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
             var currentHash = window.location.hash.substring(1);
             currentHash = currentHash.replace("?Action=", "");
@@ -109,62 +106,60 @@
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <div class="navbar-brand">
-                    VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span>
-                </div>
-            
-                <div id="loading" style=" height: 26px; float:left;">
-	                &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
-                </div>
-            </div>
-            <div class="navbar-collapse collapse">
-                <div class="navbar-brand">
-	                <span id="spSecurityEntity"></span>&nbsp;&nbsp;<span id="spVersion"></span>
-	                <span id="spEnvironment"></span>&nbsp;&nbsp;<span id="spAccountName"></span>
-                </div>
-    <%--            <form class="navbar-form navbar-right">
-                    <input type="text" class="form-control" placeholder="Search..."/>
-                </form>--%>
-			    <div class="nav navbar-nav navbar-right" id="HorizontalDiv" style="height: 26px;"></div>
-            </div>
-          </div>
-    </nav>
-    <div class="container-fluid">
-        <div class="row row-offcanvas row-offcanvas-left">
-            <div class="col-sm-3 col-md-2 sidebar-offcanvas" id="sidebar" role="navigation">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            <div id="VMenuDiv" style="overflow: auto">VMenuDiv</div>
-            </div><!--/span-->
-            <div class="col-sm-9 col-md-10 main" style="height: 30em;">
-                <!--toggle sidebar button-->
-                <p class="visible-xs">
-                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas"><i class="glyphicon glyphicon-chevron-left"></i></button>
-                </p>
-	            <div id="headerMenuDiv">
-		            <div id="HorizontalHierarchicalDiv">HorizontalHierarchicalDiv</div>
-	            </div>
-                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
-            </div><!--/row-->
-	    </div>
-    </div><!--/.container-->
-    <footer>
-        <div class="pull-right">
-	        Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
-        </div>
-    </footer>
+	<div class="page">
+		<div class="header">
+			<div style="width: 99%">
+				<div class="clear" style="position: relative; float: right;">
+					<span id="spSecurityEntity" style="color: White;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: White;"></span><br />
+					<span id="spEnvironment" style="color: White;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: White;"></span>
+				</div>
+				<div>
+					<h1 style="position: relative; float: left;">
+						VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span>
+					</h1>
+				</div>
+			</div>
+			<div class="clear hideSkiplink" style="height: 50px">
+				<div id="headerMenuDiv">
+					<div id="HorizontalHierarchicalDiv">
+					</div>
+				</div>
+			</div>
+			<div id="loading" style="height: 26px; float:left;">
+				&nbsp;<img style="vertical-align: middle;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+			</div>
+			<div id="HorizontalDiv" style="height: 26px;">
+			</div>
+		</div>
+		<div class="colmask leftmenu">
+			<div class="colleft">
+				<div class="col1" style="overflow: auto">
+					<!-- Column 1 start -->
+					<p>
+						<asp:ContentPlaceHolder ID="MainContent" runat="server">
+						</asp:ContentPlaceHolder>
+					</p>
+					<!-- Column 1 end -->
+				</div>
+				<div class="col2">
+					<!-- Column 2 start -->
+					<div id="VMenuDiv" style="overflow: auto">
+					</div>
+
+					<!--
+					div id="VHMenuDiv">
+								
+					</div> 
+					-->
+					<!-- Column 2 end -->
+				</div>
+			</div>
+		</div>
+		<div class="footer">
+			Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
+		</div>
+		<div class="clear">
+		</div>
+	</div>
 </body>
 </html>

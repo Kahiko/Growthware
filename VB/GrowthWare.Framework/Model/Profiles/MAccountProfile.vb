@@ -202,7 +202,7 @@ Namespace Model.Profiles
         ''' </summary>
         ''' <param name="DetailRow">DataRow</param>
         Protected Shadows Sub Initialize(ByVal detailRow As DataRow)
-            MyBase.IdColumnName = "Account_SeqID"
+            MyBase.IdColumnName = "ACCT_SEQ_ID"
             MyBase.NameColumnName = "ACCT"
             MyBase.Initialize(detailRow)
             Account = MyBase.GetString(detailRow, "ACCT")

@@ -1,87 +1,146 @@
-﻿/*
- * Style tweaks
- * --------------------------------------------------
- */
-body {
-  padding-top: 50px;
-  background-color: #f5f5f5;
+﻿/******** Page Layout ************/
+/* column container From http://matthewjamestaylor.com/blog/perfect-2-column-left-menu.htm*/
+.colmask {
+	position:relative;	/* This fixes the IE7 overflow hidden bug */
+	clear:both;
+	float:left;
+	width:100%;			/* width of whole page */
+	overflow:hidden;		/* This chops off any overhanging divs */
 }
-footer {
-  padding-left: 15px;
-  padding-right: 15px;
-  background-color: #fff;
-}
-
-/*
- * Off Canvas
- * --------------------------------------------------
- */
-@media screen and (max-width: 768px) {
-  .row-offcanvas {
-    position: relative;
-    -webkit-transition: all 0.25s ease-out;
-    -moz-transition: all 0.25s ease-out;
-    transition: all 0.25s ease-out;
-  }
-
-  .row-offcanvas-left
-  .sidebar-offcanvas {
-    left: -33%;
-  }
-
-  .row-offcanvas-left.active {
-    left: 33%;
-  }
-
-  .sidebar-offcanvas {
-    position: absolute;
-    top: 0;
-    width: 33%;
-    margin-left: 10px;
-  }
-}
-
-
-/* Sidebar navigation */
-.nav-sidebar {
-  background-color: #f5f5f5;
-  margin-right: -15px;
-  margin-bottom: 20px;
-  margin-left: -15px;
-}
-.nav-sidebar > li > a {
-  padding-right: 20px;
-  padding-left: 20px;
-}
-.nav-sidebar > .active > a {
-  color: #fff;
-  background-color: #428bca;
-}
-
-/*
- * Main content
- */
-
-.main {
-  padding: 20px;
-  background-color: #fff;
-}
-@media (min-width: 768px) {
-  .main {
-    padding-right: 40px;
-    padding-left: 40px;
-  }
-}
-.main .page-header {
-  margin-top: 0;
-}
-
-.HMenu a
+.page
 {
-    color: whitesmoke;
-    text-decoration: none;
-    font-size: 12px;
+	border-radius: 15px 15px 15px 15px;
+	-moz-border-radius: 15px 15px 15px 15px;
+	-webkit-border-radius: 15px 15px 15px 15px;	
 }
+.header
+{
+	border-radius: 15px 15px 0px 0px;
+	-moz-border-radius: 15px 15px 0px 0px;
+	-webkit-border-radius: 15px 15px 0px 0px;	
+}
+.footer
+{
+	border-radius: 0px 0px 15px 15px;
+	-moz-border-radius: 0px 0px 15px 15px;
+	-webkit-border-radius: 0px 0px 15px 15px;	
+}
+/* common column settings */
+.colright,
+.colmid,
+.colleft {
+	float:left;
+	width:100%;
+	position:relative;
+}
+.col1,
+.col2 
+{
+	height:550px;
+	float:left;
+	position:relative;
+	padding:0 0 1em 0;	
+}
+.col3 {
+	float:left;
+	position:relative;
+	padding:0 0 1em 0;
+	overflow:hidden;
+}
+/* 2 Column (left menu) settings */
+.leftmenu {
+	background:#fff;		/* right column background colour */
+}
+.leftmenu .colleft {
+	right:85%;			/* right column width */
+	background:#f4f4f4;	/* left column background colour */
+}
+.leftmenu .col1 {
+	width:81%;			/* right column content width */
+	left:101%;			/* 100% plus left column left padding */
+}
+.leftmenu .col2 {
+	width:11%;			/* left column content width (column width minus left and right padding) */
+	left:5%;			/* (right column left and right padding) plus (left column left padding) */
+}
+/******** Page Layout ************/
+
+/* DEFAULTS
+----------------------------------------------------------*/
+
+body   
+{
+	background: #b6b7bc;
+	font-size: 14px;
+	font-family: "Helvetica Neue", "Lucida Grande", "Segoe UI", Arial, Helvetica, Verdana, sans-serif;
+	margin: 0px;
+	padding: 0px;
+	color: #696969;
+}
+
+/* this rule styles <h1> and <h2> tags that are the 
+first child of the left and right table columns */
+
+
+/* PRIMARY LAYOUT ELEMENTS   
+----------------------------------------------------------*/
+
+.page
+{
+	width: 98%;
+	min-height:550px;
+	background-color: #fff;
+	margin: 5px auto 0px auto;
+	
+}
+
+.header
+{
+	position: relative;
+	margin: 0px;
+	padding: 0px;
+	background: #4b6c9e;
+	width: 100%;
+}
+
+.header h1
+{
+	font-weight: 700;
+	margin: 0px;
+	padding: 0px 0px 0px 20px;
+	color: #f9f9f9;
+	border: none;
+	line-height: 2em;
+	font-size: 2em;
+}
+
+.footer
+{
+	color: #4e5766;
+	padding: 8px 0px 0px 0px;
+	margin: 0px auto;
+	text-align: center;
+	line-height: normal;
+}
+
+.pageDescription { font-family: Arial; font-size: 12px; color: #666666;} 
+
+/* MISC  
+----------------------------------------------------------*/
+.clear
+{
+	clear: both;
+}
+/* Horizontal Menu ----------------------------------------------------------*/
+
+#HMenu {
+	text-align: right;
+	}
+
+#HMenu a {
+	color: white;
+	text-decoration: none;
+	}
 /* Horizontal Hierarchical Menu ----------------------------------------------------------*/
 #cssmenu ul,
 #cssmenu li,
@@ -359,3 +418,12 @@ footer {
 	top: 0px;
 	opacity: 1;
 }
+/******** Vertical Menu ************/
+#VMenu {
+	text-align: left;
+	}
+
+#VMenu a {
+	color: black;
+	text-decoration: none;
+	}

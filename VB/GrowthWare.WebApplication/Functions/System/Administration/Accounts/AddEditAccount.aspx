@@ -3,26 +3,26 @@
 
 <!DOCTYPE html>
 <html>
-    <body class="clear">
-        <div id="helpPopup" style="display: none;"></div>
-        <form id="frmAddEditAccount" runat="server">
-	        <input type="hidden" id="hdnCanSaveRoles" runat="server" />
-	        <input type="hidden" id="hdnCanSaveGroups" runat="server" />
-	        <input type="hidden" id="hdnCanSaveStatus" runat="server" />
-            <div>
-				<ul class="nav nav-tabs" role="tablist">
-					<li class="active"><a href="#tabsGeneral" role="tab" data-toggle="tab">General</a></li>
-					<li id="rolesTab" runat="server"><a href="#tabsRoles" role="tab" data-toggle="tab">Roles</a></li>
-					<li id="groupsTab" runat="server"><a href="#tabsGroups" role="tab" data-toggle="tab">Groups</a></li>
-					<li id="derivedTab"><a href="#tabsDerivedRoles" role="tab" data-toggle="tab">Derived Roles</a></li>
-				</ul>
-                <div class="tab-content">
-				    <div class="tab-pane active" id="tabsGeneral">
+    <body>
+	    <div id="helpPopup" style="display: none;"></div>
+	    <form id="form1" runat="server">
+		    <input type="hidden" id="hdnCanSaveRoles" runat="server" />
+		    <input type="hidden" id="hdnCanSaveGroups" runat="server" />
+		    <input type="hidden" id="hdnCanSaveStatus" runat="server" />
+		    <div>
+			    <div id="tabs">
+				    <ul>
+					    <li><a href="#tabsGeneral">General</a></li>
+					    <li id="rolesTab" runat="server"><a href="#tabsRoles">Roles</a></li>
+					    <li id="groupsTab" runat="server"><a href="#tabsGroups">Groups</a></li>
+					    <li><a href="#tabsDerivedRoles">Derived Roles</a></li>
+				    </ul>
+				    <div id="tabsGeneral">
 					    <p>
 						    <table border="0" cellpadding="3" cellspacing="0" style="width: 700px">
 							    <tr>
 								    <td>
-									    <input id="txtAccount_seq_id" style="display: none" runat="server" />
+									    <input id="txtAccount_seq_id" style="display: ''" runat="server" />
 									    <table border="0" cellpadding="2" width="100%">
 										    <tr>
 											    <td align="center" colspan="2">
@@ -178,8 +178,8 @@
 						    </table>
 					    </p>
 				    </div>
-				    <div class="tab-pane" id="tabsRoles" runat="server">
-                        <table class="pickListTable" style="margin-top: .5em; margin-left: .5em;">
+				    <div id="tabsRoles" runat="server">
+                        <table class="pickListTable">
                             <tr class="pickListTableHeader">
                                 <td>
                                     Roles
@@ -197,8 +197,8 @@
                             </tr>
                         </table>
 				    </div>
-				    <div class="tab-pane" id="tabsGroups" runat="server">
-                        <table class="pickListTable" style="margin-top: .5em; margin-left: .5em;">
+				    <div id="tabsGroups" runat="server">
+                        <table class="pickListTable">
                             <tr class="pickListTableHeader">
                                 <td>
                                     Groups
@@ -216,8 +216,8 @@
                             </tr>
                         </table>
 				    </div>
-				    <div class="tab-pane" id="tabsDerivedRoles">
-					    <table border="0" style="margin-top: .5em; margin-left: .5em;">
+				    <div id="tabsDerivedRoles">
+					    <table cellspacing="0" cellpadding="3" border="0">
 						    <tr>
 							    <td align="left" style="width: 480px">
 								    <table class="pickListTable">
@@ -246,18 +246,81 @@
 						    </tr>
 					    </table>				
 				    </div>
-
-                </div>
-                <br />
-			    <input type="button" id="btnSave" value="Save" onclick="javascript: saveAddEditAccount();" runat="server" class="btn btn-primary" style="display: '';" />
-
-            </div>
-        </form>
+			    </div>
+			    <input type="button" id="btnSave" value="Save" onclick="javascript: saveAddEditAccount();" runat="server" style="display: '';" />
+		    </div>
+	    </form>
     </body>
 </html>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
+        $(document).ready(function () {
+            $("#btnSave").button();
+            $("#tabs").tabs();
+            $("#tabs").tabs("option", "selected", 0);
+        });
 
+        function updateData() {
+            var profile = {};
+            var roles = '';
+            var groups = '';
+            var canSaveRoles = false;
+            var canSaveGroups = false;
+            roles = $.map($('#ctlRoles_DstList option'), function (e) { return $(e).val(); });
+            groups = $.map($('#ctlGroups_DstList option'), function (e) { return $(e).val(); });
+
+            accountRoles = {};
+            accountRoles.Roles = roles;
+
+            accountGroups = {};
+            accountGroups.Groups = groups;
+            canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
+            canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
+            profile = {};
+            profile.IsSystemAdmin = false;
+            if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
+                profile.IsSystemAdmin = true;
+            }
+            profile.Id = parseInt($("#<%=txtAccount_seq_id.ClientID %>").val());
+            profile.Account = $("#<%=txtAccount.ClientID %>").val();
+            profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
+            profile.EMail = $("#<%=txtEmail.ClientID %>").val();
+            profile.Status = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
+            profile.FirstName = $("#<%=txtFirstName.ClientID %>").val();
+            profile.LastName = $("#<%=txtLastName.ClientID %>").val();
+            profile.MiddleName = $("#<%=txtMiddleName.ClientID %>").val();
+            profile.PreferredName = $("#<%=txtPreferredName.ClientID %>").val();
+            profile.TimeZone = parseInt($("#<%=dropTimezone.ClientID %> option:selected").val());
+            profile.Location = $("#<%=txtLocation.ClientID %>").val();
+            var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, accountRoles: accountRoles, accountGroups: accountGroups };
+            return theData;
+        }
+
+        function saveAddEditAccount($dialogWindow) {
+            var theData = updateData();
+            // profile is defined in AddEditAccounts.aspx
+            GW.Common.debug(theData);
+            var options = GW.Model.DefaultWebMethodOptions();
+            options.async = false;
+            options.data = theData;
+            options.contentType = 'application/json; charset=utf-8';
+            options.dataType = 'json';
+            options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx/InvokeSave"
+            GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
+            if (!($dialogWindow === undefined)) {
+                $dialogWindow.dialog("destroy")
+                $dialogWindow.remove();
+            }
+        }
+
+        function saveAddEditAccountSucess(xhr) {
+            GW.Navigation.NavigationController.Refresh();
+            GW.Search.GetSearchResults();
+        }
+
+        function saveAddEditAccountError(xhr, status, error) {
+
+        }
     });
 </script>
 

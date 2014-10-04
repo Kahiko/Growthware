@@ -11,8 +11,9 @@
         <%: Scripts.Render("~/bundles/bootstrap")%>
         <%: Scripts.Render("~/bundles/angular")%>
         <%: Scripts.Render("~/bundles/GrowthWare")%>
-        <%: Styles.Render("~/Content/SiteCSS")%>
+        <%: Styles.Render("~/Content/BootstrapCSS")%>
         <%: Styles.Render("~/Content/jQueryUIRedmond")%>
+        <%: Styles.Render("~/Content/SiteCSS")%>
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<link href="css/style.css" rel="stylesheet">

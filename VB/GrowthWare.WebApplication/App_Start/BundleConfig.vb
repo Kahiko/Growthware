@@ -4,25 +4,21 @@ Public Module BundleConfig
     Public Sub RegisterBundles(bundles As BundleCollection)
         bundles.Add(
             New ScriptBundle("~/bundles/jquery").Include(
-            "~/Public/Scripts/jquery.js"
+            "~/Public/Scripts/jquery-{version}.js"
             )
         )
+
         bundles.Add(
             New ScriptBundle("~/bundles/jqueryUI").Include(
             "~/Public/Scripts/jquery-ui.js"
             )
         )
+
         bundles.Add(
             New ScriptBundle("~/bundles/angular").Include(
             "~/Public/Scripts/angular-{version}.js"
             )
         )
-
-        'bundles.Add(
-        '    New ScriptBundle("~/bundles/json").Include(
-        '    "~/Public/Scripts/jSon2.js"
-        '    )
-        ')
 
         bundles.Add(
             New ScriptBundle("~/bundles/bootstrap").Include(
@@ -30,6 +26,7 @@ Public Module BundleConfig
                 "~/Public/Scripts/respond.js"
             )
         )
+
         bundles.Add(
             New ScriptBundle("~/bundles/GrowthWare").Include(
             "~/Public/Scripts/GrowthWare/GW.Common.js",
@@ -41,13 +38,22 @@ Public Module BundleConfig
             "~/Public/Scripts/GrowthWare/GW.Upload.js"
             )
         )
+
         bundles.Add(
             New StyleBundle("~/Content/SiteCSS").Include(
-                "~/Public/CSS/bootstrap.css",
-                "~/Public/CSS/bootstrap-theme.css",
                 "~/Public/CSS/SiteStyle.css"
             )
         )
+
+        bundles.Add(
+            New StyleBundle("~/Content/BootstrapCSS").Include(
+                "~/Public/CSS/bootstrap-theme.css",
+                "~/Public/CSS/bootstrap-theme.css.map",
+                "~/Public/CSS/bootstrap.css",
+                "~/Public/CSS/bootstrap.css.map"
+            )
+        )
+
         bundles.Add(
             New StyleBundle("~/Content/jQueryUIRedmond").Include(
                 "~/Public/jQueryUIThemes/Redmond/jquery-ui.css",

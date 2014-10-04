@@ -28,7 +28,7 @@
 	    mAccountSeqID = accountSeqID;
 	    var options = GW.Model.DefaultDialogOptions();
 	    options.title = 'Edit Account';
-	    options.height = 700;
+	    options.height = 500;
 	    options.width = 1000;
 	    options.async = false;
 	    options.resizable = true;
