@@ -9,11 +9,11 @@
         <%: Scripts.Render("~/bundles/jquery") %>
         <%: Scripts.Render("~/bundles/jqueryUI") %>
         <%: Scripts.Render("~/bundles/bootstrap")%>
-        <%: Scripts.Render("~/bundles/angular")%>
+        <%--<%: Scripts.Render("~/bundles/angular")%>--%>
         <%: Scripts.Render("~/bundles/GrowthWare")%>
-        <%: Styles.Render("~/Content/GrowthWare")%>
         <%: Styles.Render("~/Content/BootstrapCSS")%>
         <%: Styles.Render("~/Content/jQueryUIRedmond")%>
+        <%: Styles.Render("~/Content/GrowthWare")%>
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
