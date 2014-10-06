@@ -171,7 +171,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
-    <Content Include="Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
@@ -187,9 +186,9 @@
     <Content Include="Functions\System\TestNaturalSort.aspx" />
     <Content Include="Global.asax" />
     <Content Include="index.aspx" />
-    <Content Include="Public\CSS\bootstrap-theme.css" />
-    <Content Include="Public\CSS\bootstrap.css" />
-    <Content Include="Public\CSS\SiteStyle.css" />
+    <Content Include="Public\BootStrap\bootstrap-theme.css" />
+    <Content Include="Public\BootStrap\bootstrap.css" />
+    <Content Include="Public\CSS\GrowthWare.css" />
     <Content Include="Public\Images\GrowthWare\Add.png" />
     <Content Include="Public\Images\GrowthWare\ajax-loader.gif" />
     <Content Include="Public\Images\GrowthWare\ajax-loader_Green.gif" />
@@ -238,14 +237,11 @@
     <Content Include="Public\Scripts\angular-1.2.js" />
     <Content Include="Public\Scripts\angular-1.3.js" />
     <Content Include="Public\Scripts\bootstrap.js" />
-    <Content Include="Public\CSS\bootstrap-theme.css.map" />
-    <Content Include="Public\CSS\bootstrap.css.map" />
+    <Content Include="Public\BootStrap\bootstrap-theme.css.map" />
+    <Content Include="Public\BootStrap\bootstrap.css.map" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="Fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="Fonts\glyphicons-halflings-regular.woff" />
     <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\Scripts\GrowthWare\GW.Common.js" />
     <Content Include="Public\Scripts\GrowthWare\GW.FileManager.js" />
@@ -256,7 +252,7 @@
     <Content Include="Public\Scripts\GrowthWare\GW.Upload.js" />
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
     <Content Include="Public\Scripts\jSon2.js" />
-    <Content Include="Public\Skins\DevOps\CSS\style.css" />
+    <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
     <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
     <Content Include="UserControls\Search.ascx" />

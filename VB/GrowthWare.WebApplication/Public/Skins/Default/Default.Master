@@ -10,7 +10,7 @@
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/jqueryUI") %>
     <%: Scripts.Render("~/bundles/GrowthWare")%>
-    <%: Styles.Render("~/Content/SiteCSS")%>
+    <%: Styles.Render("~/Content/GrowthWare")%>
     <%: Styles.Render("~/Content/jQueryUIRedmond")%>
 
     <script type="text/javascript" language="javascript">

@@ -594,7 +594,6 @@ function TinyMCEStart(elem, mode){
 	tinymce.init({selector: elem,
 		theme: "modern",
 		plugins: plugins,
-		//content_css: "css/style.css",
 		toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | print preview media fullpage | forecolor backcolor emoticons",
 		style_formats: [
 			{title: 'Header 2', block: 'h2', classes: 'page-header'},

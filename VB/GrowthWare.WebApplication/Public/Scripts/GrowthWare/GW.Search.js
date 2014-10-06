@@ -120,14 +120,14 @@ GW.Search = {
     },
 
     BuildDropSelectPage: function (numToBuild) {
-        //var dropSelectPageLength = this.$DropSelectPage.find('option').length;
-        //if (dropSelectPageLength == 0 || dropSelectPageLength != numToBuild) {
-        //    this.$DropSelectPage.empty();
-        //    for (var i = 1; i < (numToBuild + 1); i++) {
-        //        this.$DropSelectPage.append($("<option />").val(i).text(i));
-        //    }
-        //    this.$DropSelectPage.bind('click', GW.Search.onDropSelectPageChanged);
-        //}
+        var dropSelectPageLength = this.$DropSelectPage.find('option').length;
+        if (dropSelectPageLength == 0 || dropSelectPageLength != numToBuild) {
+            this.$DropSelectPage.empty();
+            for (var i = 1; i < (numToBuild + 1) ; i++) {
+                this.$DropSelectPage.append($("<option />").val(i).text(i));
+            }
+            this.$DropSelectPage.bind('click', GW.Search.onDropSelectPageChanged);
+        }
     },
 
     onRecordsChanged: function ($txtBox) {

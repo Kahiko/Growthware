@@ -1,132 +1,131 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Search.ascx.vb" Inherits="GrowthWare.WebApplication.Search" %>
 <script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+        $("#<%= addNew.ClientID %>").button();
+        $("#<%= btnRefesh.ClientID %>").button();
+        $("#<%= cmdSelect.ClientID %>").button();
+        GW.Search.Criteria.PageSize = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value
+        $("input").bind("keydown", function (event) {
+            // track enter key
+            var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
+            if (keycode == 13) { // keycode for enter key
+                if (this.id == "<%= txtRecordsPerPage.ClientID %>") {
+                    mRecordsPerPage = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value;
+                    if (isNaN(mRecordsPerPage)) {
+                        alert('Records per page must be a number.');
+                        event.preventDefault();
+                        return false;
+                    } else {
+                        GW.Search.Criteria.PageSize = mRecordsPerPage;
+                        GW.Search.Criteria.SelectedPage = 1;
+                        GW.Search.GetSearchResults();
+                    }
+                }
+                if (this.id == 'txtSearch') {
+                    GW.Search.Criteria.SelectedPage = 1;
+                    GW.Search.Criteria.WhereClause = '"' + GW.Search.SearchColumn + ' like \'%' + document.getElementById('txtSearch').value + '%\'"';
+                    GW.Search.Criteria.WhereClause = escape(GW.Search.Criteria.WhereClause);
+                    GW.Search.GetSearchResults();
+                }
+                return false;
+            } else {
+                return true;
+            }
+        }); // end of function
+    });
 
-	$(document).ready(function () {
-	    $("#<%= addNew.ClientID %>").button();
-	    $("#<%= btnRefesh.ClientID %>").button();
-		$("#<%= cmdSelect.ClientID %>").button();
-		GW.Search.Criteria.PageSize = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value;
-		$("input").bind("keydown", function (event) {
-			// track enter key
-			var keycode = (event.keyCode ? event.keyCode : (event.which ? event.which : event.charCode));
-			if (keycode == 13) { // keycode for enter key
-				if (this.id == "<%= txtRecordsPerPage.ClientID %>") {
-					mRecordsPerPage = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value;
-					if (isNaN(mRecordsPerPage)) {
-						alert('Records per page must be a number.');
-						event.preventDefault();
-						return false;
-					} else {
-						GW.Search.Criteria.PageSize = mRecordsPerPage;
-						GW.Search.Criteria.SelectedPage = 1;
-						GW.Search.GetSearchResults();
-					}
-				}
-				if (this.id == 'txtSearch') {
-					GW.Search.Criteria.SelectedPage = 1;
-					GW.Search.Criteria.WhereClause = '"' + GW.Search.SearchColumn + ' like \'%' + document.getElementById('txtSearch').value + '%\'"';
-					GW.Search.Criteria.WhereClause = escape(GW.Search.Criteria.WhereClause);
-					GW.Search.GetSearchResults();
-				}
-				return false;
-			} else {
-				return true;
-			}
-		}); // end of function
-	});
+    function selectAll() {
+        var btn = document.getElementById('<%=cmdSelect.ClientID %>');
+        var checked = false;
+        if (btn.value == "Select All") {
+            btn.value = "De-Select All";
+            checked = true;
+        } else {
+            btn.value = "Select All";
+            checked = false;
+        }
+        try {
+            var checkBoxes = document.getElementsByTagName('input');
+            for (var i = 0; i < checkBoxes.length; i++) {
+                var checkBox = checkBoxes[i];
+                if (checkBox.type == 'checkbox') {
+                    var id = checkBox.id
+                    if (id.indexOf('DeleteCheckBox') > 0) {
+                        checkBox.checked = checked;
+                    }
+                }
+            }
+        } catch (e) {
+            //alert(e.message);
+        }
+    }
 
-	function selectAll() {
-		var btn = document.getElementById('<%=cmdSelect.ClientID %>');
-		var checked = false;
-		if (btn.value == "Select All") {
-			btn.value = "De-Select All";
-			checked = true;
-		} else {
-			btn.value = "Select All";
-			checked = false;
-		}
-		try {
-			var checkBoxes = document.getElementsByTagName('input');
-			for (var i = 0; i < checkBoxes.length; i++) {
-				var checkBox = checkBoxes[i];
-				if (checkBox.type == 'checkbox') {
-					var id = checkBox.id
-					if (id.indexOf('DeleteCheckBox') > 0) {
-						checkBox.checked = checked;
-					}
-				}
-			}
-		} catch (e) {
-			//alert(e.message);
-		}
-	}
+    function btnDelete_Click() {
+        var inputBoxes = document.getElementsByTagName('input');
+        var checkBoxes = new Array;
+        var answer = false;
+        for (var i = 0; i < inputBoxes.length; i++) {
+            var checkBox = inputBoxes[i];
+            if (checkBox.type == 'checkbox') {
+                var id = checkBox.id
+                if (id.indexOf('DeleteCheckBox') > 0 && checkBox.checked == true) {
+                    checkBoxes.push(checkBox);
+                }
+            }
+        }
+        if (checkBoxes.length > 0) {
+            answer = window.confirm("Are you sure want to delete this?");
+        }
 
-	function btnDelete_Click() {
-		var inputBoxes = document.getElementsByTagName('input');
-		var checkBoxes = new Array;
-		var answer = false;
-		for (var i = 0; i < inputBoxes.length; i++) {
-			var checkBox = inputBoxes[i];
-			if (checkBox.type == 'checkbox') {
-				var id = checkBox.id
-				if (id.indexOf('DeleteCheckBox') > 0 && checkBox.checked == true) {
-					checkBoxes.push(checkBox);
-				}
-			}
-		}
-		if (checkBoxes.length > 0) {
-			answer = window.confirm("Are you sure want to delete this?");
-		}
+        if (answer) {
+            var filesToDelete = new Array;
+            for (var i = 0; i < checkBoxes.length; i++) {
+                var checkBox = checkBoxes[i];
+                if (checkBox.type == 'checkbox') {
+                    var id = checkBox.id
+                    var $checkBox = $('#' + id);
+                    var theData = $.parseJSON($checkBox.attr('data'));
+                    filesToDelete.push(theData);
+                }
+            }
+            //GW.Common.debug(filesToDelete);
+            try {
+                var options = GW.Model.DefaultWebMethodOptions();
+                var theData = { filesToDelete: filesToDelete };
+                GW.Common.debug(theData);
+                options.url = GW.Common.getBaseURL() + "/Functions/System/FileManagement/FileManager.aspx/DeleteFiles";
+                options.data = theData;
+                options.contentType = 'application/json; charset=utf-8';
+                options.dataType = 'json';
+                GW.Common.JQueryHelper.callWeb(options, deletFilesSuccess, deleteFilesError);
+            } catch (e) {
+                mRetHTML = 'Error attempting to call DeleteFiles\n' + e.message;
+                alert(mRetHTML);
+                //				$mClientMessage.css({ display: 'none' });
+                //				$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
+            }
+            return true;
+        }
+        else {
+            //alert('doing nothing');
+            return false;
+        }
+    }
 
-		if (answer) {
-			var filesToDelete = new Array;
-			for (var i = 0; i < checkBoxes.length; i++) {
-				var checkBox = checkBoxes[i];
-				if (checkBox.type == 'checkbox') {
-					var id = checkBox.id
-					var $checkBox = $('#' + id);
-					var theData = $.parseJSON($checkBox.attr('data'));
-					filesToDelete.push(theData);
-				}
-			}
-			//GW.Common.debug(filesToDelete);
-			try {
-				var options = GW.Model.DefaultWebMethodOptions();
-				var theData = { filesToDelete: filesToDelete };
-				GW.Common.debug(theData);
-				options.url = GW.Common.getBaseURL() + "/Functions/System/FileManagement/FileManager.aspx/DeleteFiles";
-				options.data = theData;
-				options.contentType = 'application/json; charset=utf-8';
-				options.dataType = 'json';
-				GW.Common.JQueryHelper.callWeb(options, deletFilesSuccess, deleteFilesError);
-			} catch (e) {
-				mRetHTML = 'Error attempting to call DeleteFiles\n' + e.message;
-				alert(mRetHTML);
-				//				$mClientMessage.css({ display: 'none' });
-				//				$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
-			}
-			return true;
-		}
-		else {
-			//alert('doing nothing');
-			return false;
-		}
-	}
+    function deletFilesSuccess(xhr) {
+        GW.Common.debug(xhr.d);
+        if (xhr.d.indexOf("Successfully") == -1) {
+            alert(xhr.d);
+        }
+        var btn = document.getElementById('<%=cmdSelect.ClientID %>');
+        btn.value = "Select All";
+        jQuery.event.trigger('~refreshDirectory', '');
+    }
 
-	function deletFilesSuccess(xhr) {
-		GW.Common.debug(xhr.d);
-		if (xhr.d.indexOf("Successfully") == -1) {
-			alert(xhr.d);
-		}
-		var btn = document.getElementById('<%=cmdSelect.ClientID %>');
-		btn.value = "Select All";
-		jQuery.event.trigger('~refreshDirectory', '');
-	}
-
-	function deleteFilesError(xhr, status, error) {
-		mRetHTML = 'Error deleting files\n' + xhr.responseText;
-		alert(mRetHTML);
-	}
+    function deleteFilesError(xhr, status, error) {
+        mRetHTML = 'Error deleting files\n' + xhr.responseText;
+        alert(mRetHTML);
+    }
 </script>
 <div class="searchResultsContainer Container">
 	<div class="searchResultsHeader">

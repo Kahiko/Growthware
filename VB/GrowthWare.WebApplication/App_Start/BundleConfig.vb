@@ -40,17 +40,17 @@ Public Module BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Content/SiteCSS").Include(
-                "~/Public/CSS/SiteStyle.css"
+            New StyleBundle("~/Content/BootstrapCSS").Include(
+                "~/Public/BootStrap/bootstrap-theme.css",
+                "~/Public/BootStrap/bootstrap-theme.css.map",
+                "~/Public/BootStrap/bootstrap.css",
+                "~/Public/BootStrap/bootstrap.css.map"
             )
         )
 
         bundles.Add(
-            New StyleBundle("~/Content/BootstrapCSS").Include(
-                "~/Public/CSS/bootstrap-theme.css",
-                "~/Public/CSS/bootstrap-theme.css.map",
-                "~/Public/CSS/bootstrap.css",
-                "~/Public/CSS/bootstrap.css.map"
+            New StyleBundle("~/Content/GrowthWare").Include(
+                "~/Public/CSS/GrowthWare.css"
             )
         )
 

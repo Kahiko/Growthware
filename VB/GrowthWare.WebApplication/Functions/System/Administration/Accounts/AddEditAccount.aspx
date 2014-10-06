@@ -19,13 +19,13 @@
 				    </ul>
 				    <div id="tabsGeneral">
 					    <p>
-						    <table border="0" cellpadding="3" cellspacing="0" style="width: 700px">
+						    <table border="0" cellpadding="3" cellspacing="0">
 							    <tr>
 								    <td>
 									    <input id="txtAccount_seq_id" style="display: ''" runat="server" />
-									    <table border="0" cellpadding="2" width="100%">
+									    <table border="1" cellpadding="2" width="100%">
 										    <tr>
-											    <td align="center" colspan="2">
+											    <td align="center" colspan="4">
 												    <asp:Label ID="Label1" runat="server" ForeColor="Red"></asp:Label>
 											    </td>
 										    </tr>
@@ -162,7 +162,7 @@
 											    <td valign="top">
 												    <span class="formLabelText">Email Notifications: </span>
 											    </td>
-											    <td colspan="2" valign="top">
+											    <td colspan="3" valign="top">
 												    <asp:CheckBox ID="chkEnableNotifications" CssClass="rounded" Checked="true" runat="Server" Text="Receive Email Notifications" />
 												    <br />
 												    <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>

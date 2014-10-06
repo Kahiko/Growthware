@@ -59,7 +59,11 @@ Public Class Search
         If Not m_ShowSelect Then cmdSelect.Style.Add("display", "none")
         addNew.Visible = m_ShowAddLink
         btnRefesh.Visible = m_ShowRefresh
-        txtRecordsPerPage.Value = ClientChoicesState(MClientChoices.RecordsPerPage)
+        If ClientChoicesState(MClientChoices.RecordsPerPage) <> Nothing Then
+            txtRecordsPerPage.Value = ClientChoicesState(MClientChoices.RecordsPerPage)
+        Else
+            txtRecordsPerPage.Value = "10"
+        End If
         imgDeleteAll.Src = GWWebHelper.RootSite + "Public/Images/GrowthWare/delete_red.png"
     End Sub
 

@@ -24,7 +24,7 @@
 		<div>
 			<asp:GridView ID="searchResults" Width="100%"
 				AutoGenerateColumns="False" runat="server" CellPadding="4" ForeColor="#333333" 
-				GridLines="none">
+				GridLines="Both">
 				<AlternatingRowStyle BackColor="#6699cc" />
 				<Columns>
 					<asp:TemplateField>
