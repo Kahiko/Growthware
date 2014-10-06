@@ -1,5 +1,38 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="TestNaturalSort.aspx.vb" Inherits="GrowthWare.WebApplication.TestNaturalSort" %>
+<script type="text/javascript" language="javascript">
+    var sortDirection = $('#dropSortDirection').val();
+    var $mSortContent = $('#SortContent');
+    var mRetHTML = "";
 
+    function changeSort() {
+        if (sortDirection == "ASC") {
+            sortDirection = "DESC";
+        } else {
+            sortDirection = "ASC";
+        }
+        try {
+            var options = GW.Model.DefaultWebMethodOptions();
+            options.url = GW.Common.getBaseURL() + "/Functions/System/TestNaturalSort.aspx?SortDirection=" + sortDirection;
+            options.dataType = 'html';
+            GW.Common.JQueryHelper.callWeb(options, onSuccess, onError);
+        } catch (e) {
+           	mRetHTML = 'Error attempting to call logon\n' + e.message;
+            $mSortContent.css({ display: 'none' });
+            $mSortContent.html(mRetHTML.toString()).fadeIn(3000);
+        }
+        return true;
+    }
+
+    function onSuccess(htmlResponse) {
+        $mSortContent.html(htmlResponse.toString());
+    }
+
+    function onError(xhr, status, error) {
+        mRetHTML = 'Error getting content\n' + xhr.responseText;
+        $mSortContent.css({ display: 'none' });
+        $mSortContent.html(mRetHTML.toString()).fadeIn(3000);
+    }        
+</script>
 <form id="TestNaturalSort" runat="server">
 	<div id="SortContent" runat="server">
 		Direction: 
