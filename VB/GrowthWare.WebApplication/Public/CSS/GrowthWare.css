@@ -243,4 +243,18 @@ div.rounded
 		background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
 		background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
 	}
+    .searchResultsContainer a
+    {
+        color: blue;
+        text-decoration: none;
+    }
+    .searchResultsContainer a:active
+    {
+        text-decoration: underline;
+    }
+    .searchResultsContainer a:hover
+    {
+        color: #FF9900;
+        text-decoration: underline;
+    }
 /* Search Results ----------------------------------------------------------*/
