@@ -232,6 +232,7 @@
     <Content Include="Public\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
+    <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\Skins\Default\CSS\Skin.css" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Public\Scripts\angular-1.2.js" />
