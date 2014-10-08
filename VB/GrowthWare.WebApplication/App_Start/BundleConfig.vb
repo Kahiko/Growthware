@@ -41,10 +41,10 @@ Public Module BundleConfig
 
         bundles.Add(
             New StyleBundle("~/Content/BootstrapCSS").Include(
-                "~/Public/BootStrap/bootstrap-theme.css",
-                "~/Public/BootStrap/bootstrap-theme.css.map",
-                "~/Public/BootStrap/bootstrap.css",
-                "~/Public/BootStrap/bootstrap.css.map"
+                "~/Public/CSS/BootStrap/bootstrap-theme.css",
+                "~/Public/CSS/BootStrap/bootstrap-theme.css.map",
+                "~/Public/CSS/BootStrap/bootstrap.css",
+                "~/Public/CSS/BootStrap/bootstrap.css.map"
             )
         )
 

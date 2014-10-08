@@ -23,6 +23,15 @@ Partial Public Class _Default
     Protected WithEvents HeadContent As Global.System.Web.UI.WebControls.ContentPlaceHolder
 
     '''<summary>
+    '''formStyles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents formStyles As Global.System.Web.UI.HtmlControls.HtmlLink
+
+    '''<summary>
     '''MainContent control.
     '''</summary>
     '''<remarks>

@@ -123,9 +123,9 @@
 </script>
 <div id="LogonPage">
 	<div id="LogonData">
-		<div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="rounded" id="Account" />
+		<div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="Form_Field rounded" id="Account" />
 		<br /><br />
-		<div style="text-align: right; width: 80px; float: left;">Password:&nbsp;&nbsp;</div><input type="password" class="rounded" id="Password" />
+		<div style="text-align: right; width: 80px; float: left;">Password:&nbsp;&nbsp;</div><input type="password" class="Form_Field rounded" id="Password" />
 	</div>
 	<br />
 	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" id="btnLogon" onclick="javascript:logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="javascript:requestChange();" value="Change Password" />
