@@ -256,8 +256,8 @@
     <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
     <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
-    <Content Include="Public\SyteStyles\Blue Arrow.css" />
-    <Content Include="Public\SyteStyles\Default.css" />
+    <Content Include="Public\SiteStyles\Blue Arrow.css" />
+    <Content Include="Public\SiteStyles\Default.css" />
     <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
