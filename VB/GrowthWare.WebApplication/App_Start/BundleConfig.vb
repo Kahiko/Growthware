@@ -56,9 +56,9 @@ Public Module BundleConfig
 
         bundles.Add(
             New StyleBundle("~/Content/jQueryUIRedmond").Include(
-                "~/Public/jQueryUIThemes/Redmond/jquery-ui.css",
-                "~/Public/jQueryUIThemes/Redmond/jquery-ui.structure.css",
-                "~/Public/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
             )
         )
     End Sub
