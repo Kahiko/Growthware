@@ -52,23 +52,22 @@
     <Reference Include="GrowthWare.WebSupport">
       <HintPath>..\..\GrowthWareDLLs\GrowthWare.WebSupport.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=2.0.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.2.0.2\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Owin.Security, Version=2.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Microsoft.Owin.Security.2.1.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.Cookies">
-      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.2.0.2\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Owin.Security.OAuth">
-      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.2.0.2\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
@@ -189,29 +188,29 @@
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css" />
     <Content Include="Public\CSS\BootStrap\bootstrap.css" />
     <Content Include="Public\CSS\GrowthWare.css" />
-    <Content Include="Public\Images\GrowthWare\Add.png" />
-    <Content Include="Public\Images\GrowthWare\ajax-loader.gif" />
-    <Content Include="Public\Images\GrowthWare\ajax-loader_Green.gif" />
-    <Content Include="Public\Images\GrowthWare\delete_red.png" />
-    <Content Include="Public\Images\GrowthWare\Error.png" />
-    <Content Include="Public\Images\GrowthWare\File.gif" />
-    <Content Include="Public\Images\GrowthWare\Folder.gif" />
-    <Content Include="Public\Images\GrowthWare\help.gif" />
-    <Content Include="Public\Images\GrowthWare\help_and_support.png" />
-    <Content Include="Public\Images\GrowthWare\list-edit.png" />
-    <Content Include="Public\Images\GrowthWare\Misc\sidebar_blue.gif" />
-    <Content Include="Public\Images\GrowthWare\Misc\sidebar_green.gif" />
-    <Content Include="Public\Images\GrowthWare\Misc\sidebar_purple.gif" />
-    <Content Include="Public\Images\GrowthWare\Misc\sidebar_red.gif" />
-    <Content Include="Public\Images\GrowthWare\Misc\sidebar_yellow.gif" />
-    <Content Include="Public\Images\GrowthWare\new_folder.png" />
-    <Content Include="Public\Images\GrowthWare\Paging\first_blue.png" />
-    <Content Include="Public\Images\GrowthWare\Paging\last_blue.png" />
-    <Content Include="Public\Images\GrowthWare\Paging\next_blue.png" />
-    <Content Include="Public\Images\GrowthWare\Paging\previous_blue.png" />
-    <Content Include="Public\Images\GrowthWare\progress-bar.gif" />
-    <Content Include="Public\Images\GrowthWare\sort_asc.png" />
-    <Content Include="Public\Images\GrowthWare\sort_desc.png" />
+    <Content Include="Public\Growthware\Images\Add.png" />
+    <Content Include="Public\Growthware\Images\ajax-loader.gif" />
+    <Content Include="Public\Growthware\Images\ajax-loader_Green.gif" />
+    <Content Include="Public\Growthware\Images\delete_red.png" />
+    <Content Include="Public\Growthware\Images\Error.png" />
+    <Content Include="Public\Growthware\Images\File.gif" />
+    <Content Include="Public\Growthware\Images\Folder.gif" />
+    <Content Include="Public\Growthware\Images\help.gif" />
+    <Content Include="Public\Growthware\Images\help_and_support.png" />
+    <Content Include="Public\Growthware\Images\list-edit.png" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_blue.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_green.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_purple.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_red.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_yellow.gif" />
+    <Content Include="Public\Growthware\Images\new_folder.png" />
+    <Content Include="Public\Growthware\Images\Paging\first_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\last_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\next_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\previous_blue.png" />
+    <Content Include="Public\Growthware\Images\progress-bar.gif" />
+    <Content Include="Public\Growthware\Images\sort_asc.png" />
+    <Content Include="Public\Growthware\Images\sort_desc.png" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
@@ -452,6 +451,9 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
+    <Folder Include="Public\Growthware\Scripts\" />
+    <Folder Include="Public\Growthware\Styles\" />
+    <Folder Include="Public\Images\" />
     <Folder Include="Public\Skins\Default\Images\" />
   </ItemGroup>
   <PropertyGroup>

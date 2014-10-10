@@ -250,7 +250,7 @@
 		<!--Start Content-->
 		<div id="content" class="col-xs-12 col-sm-10">
             <div id="loading" style=" height: 26px; float:left;">
-	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
             </div>
 			<div id="ajax-content" class="clear" style="margin-top: 0.5em; margin-left: 0.5em;">
                 <div id="HorizontalDiv"></div>

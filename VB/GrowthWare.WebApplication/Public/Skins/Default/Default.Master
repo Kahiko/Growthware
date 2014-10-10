@@ -127,7 +127,7 @@
 				</div>
 			</div>
 			<div id="loading" style="height: 26px; float:left;">
-				&nbsp;<img style="vertical-align: middle;" alt="Loading, please wait.." src="Public/Images/GrowthWare/ajax-loader_Green.gif" />
+				&nbsp;<img style="vertical-align: middle;" alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
 			</div>
 			<div id="HorizontalDiv" style="height: 26px;">
 			</div>

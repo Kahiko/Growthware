@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Public/Skins/DevOps/Default.Master" CodeBehind="index.aspx.vb" Inherits="GrowthWare.WebApplication.index" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Public/Skins/Default/Default.Master" CodeBehind="index.aspx.vb" Inherits="GrowthWare.WebApplication.index" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
 	<script type="text/javascript" language="javascript">
 

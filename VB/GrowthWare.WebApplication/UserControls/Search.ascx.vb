@@ -64,7 +64,7 @@ Public Class Search
         Else
             txtRecordsPerPage.Value = "10"
         End If
-        imgDeleteAll.Src = GWWebHelper.RootSite + "Public/Images/GrowthWare/delete_red.png"
+        imgDeleteAll.Src = GWWebHelper.RootSite + "Public/GrowthWare/Images/delete_red.png"
     End Sub
 
 End Class
