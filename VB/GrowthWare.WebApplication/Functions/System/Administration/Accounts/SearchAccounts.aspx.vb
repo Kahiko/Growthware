@@ -9,7 +9,7 @@ Public Class SearchAccounts
         Dim mAction As String = GWWebHelper.GetQueryValue(Request, "action")
         If Not String.IsNullOrEmpty(mAction) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile().DerivedRoles)
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
             SearchControl.ShowAddLink = mSecurityInfo.MayAdd
         End If
     End Sub

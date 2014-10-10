@@ -10,7 +10,7 @@ Public Class SearchAccountResults
         Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
         If (Not String.IsNullOrEmpty(mAction)) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile().DerivedRoles)
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
             If Not mSecurityInfo.MayDelete Then
                 searchResults.Columns.RemoveAt(1)
             End If

@@ -35,8 +35,8 @@ Public Class AddEditAccount
         If String.IsNullOrEmpty(hdnCanSaveStatus.Value.ToString()) Then
             hdnCanSaveStatus.Value = True
         End If
-        Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(GWWebHelper.ACCOUNT_VIEW_ROLE_TAB_ACTION), AccountUtility.CurrentProfile.DerivedRoles)
-        Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(GWWebHelper.ACCOUNT_VIEW_GROUP_TAB_ACTION), AccountUtility.CurrentProfile.DerivedRoles)
+        Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(GWWebHelper.ACCOUNT_VIEW_ROLE_TAB_ACTION), AccountUtility.CurrentProfile)
+        Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(GWWebHelper.ACCOUNT_VIEW_GROUP_TAB_ACTION), AccountUtility.CurrentProfile)
         If String.IsNullOrEmpty(hdnCanSaveRoles.Value.ToString()) Then
             hdnCanSaveRoles.Value = mRoleTabSecurity.MayView
             tabsRoles.Visible = mRoleTabSecurity.MayView
