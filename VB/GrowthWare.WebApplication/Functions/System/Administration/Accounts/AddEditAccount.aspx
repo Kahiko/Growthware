@@ -23,7 +23,7 @@
 							    <tr>
 								    <td>
 									    <input id="txtAccount_seq_id" style="display: ''" runat="server" />
-									    <table border="1" cellpadding="2" width="100%">
+									    <table border="0" cellpadding="2" width="100%">
 										    <tr>
 											    <td align="center" colspan="4">
 												    <asp:Label ID="Label1" runat="server" ForeColor="Red"></asp:Label>
@@ -31,13 +31,13 @@
 										    </tr>
 										    <tr id="trAccount" runat="server">
 											    <td valign="top">
-												    <span class="formLabelText">Account: </span>
+												    <span class="Form_LabelText">Account: </span>
 											    </td>
 											    <td valign="top">
 												    <table border="0" cellpadding="0" cellspacing="0">
 													    <tr>
 														    <td>
-															    <asp:TextBox ID="txtAccount" CssClass="rounded" MaxLength="128" runat="server" />
+															    <asp:TextBox ID="txtAccount" CssClass="Form_Field rounded" MaxLength="128" runat="server" />
 															    <asp:Image ID="imgWarningAccount" ImageUrl="~/Public/Images/GrowthWare/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
 															    <asp:Literal Visible="False" ID="litAccountWarning" runat="server"></asp:Literal>
 														    </td>
@@ -48,10 +48,10 @@
 												    </table>
 											    </td>
 											    <td id="tdStatus" valign="top" runat="server">
-												    <span class="formLabelText">Status: </span>
+												    <span class="Form_LabelText">Status: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:DropDownList ID="dropStatus" CssClass="rounded" runat="server">
+												    <asp:DropDownList ID="dropStatus" CssClass="Form_Field rounded" runat="server">
 													    <asp:ListItem Value="1">Active</asp:ListItem>
 													    <asp:ListItem Value="4">Change Password</asp:ListItem>
 													    <asp:ListItem Value="3">Disabled</asp:ListItem>
@@ -60,61 +60,61 @@
 										    </tr>
 										    <tr id="trSysAdmin" visible="false" runat="server">
 											    <td valign="top">
-												    <span class="formLabelText">System Administrator: </span>
+												    <span class="Form_LabelText">System Administrator: </span>
 											    </td>
 											    <td valign="top">
 												    <asp:CheckBox ID="chkSysAdmin" runat="server" />
 											    </td>
 											    <td valign="top">
-												    <span class="formLabelText">Failed Logon Attempts: </span>
+												    <span class="Form_LabelText">Failed Logon Attempts: </span>
 											    </td>
 											    <td valign="top">
 												    <asp:Literal ID="litFailedAttempts" runat="server" />
-												    <asp:TextBox ID="txtFailedAttempts" CssClass="rounded" Visible="False" runat="server" />
+												    <asp:TextBox ID="txtFailedAttempts" CssClass="Form_Field rounded" Visible="False" runat="server" />
 											    </td>
 										    </tr>
 										    <tr>
 											    <td valign="top">
-												    <span class="formLabelText">First Name: </span>
+												    <span class="Form_LabelText">First Name: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtFirstName" MaxLength="15" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtFirstName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
 												    <asp:RequiredFieldValidator ControlToValidate="txtFirstName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter your first name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator5"/>
 											    </td>
 											    <td valign="top">
-												    <span class="formLabelText">Last Name: </span>
+												    <span class="Form_LabelText">Last Name: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtLastName" MaxLength="15" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtLastName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
 												    <asp:RequiredFieldValidator ControlToValidate="txtLastName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter a last name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator6"/>
 											    </td>
 										    </tr>
 										    <tr>
 											    <td valign="top">
-												    <span class="formLabelText">Middle Name: </span>
+												    <span class="Form_LabelText">Middle Name: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtMiddleName" MaxLength="15" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtMiddleName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
 											    </td>
 											    <td valign="top">
-												    <span class="formLabelText">Preferred Name: </span>
+												    <span class="Form_LabelText">Preferred Name: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtPreferredName" MaxLength="50" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtPreferredName" MaxLength="50" CssClass="Form_Field rounded" runat="Server" />
 												    <asp:RequiredFieldValidator ControlToValidate="txtPreferredName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter a prefered name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator4" />
 											    </td>
 										    </tr>
 										    <tr>
 											    <td valign="top">
-												    <span class="formLabelText">Email: </span>
+												    <span class="Form_LabelText">Email: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtEmail" MaxLength="128" Columns="25" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtEmail" MaxLength="128" Columns="25" CssClass="Form_Field rounded" runat="Server" />
 												    <asp:RequiredFieldValidator ControlToValidate="txtEmail" Display="Dynamic" Text="(required)" ErrorMessage="You must enter an email address" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator2" />
 												    <asp:RegularExpressionValidator ControlToValidate="txtEmail" Text="(invalid email)" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" runat="Server" ID="Regularexpressionvalidator1" />
 											    </td>
 											    <td valign="top">
-												    <span class="formLabelText">Timezone: </span>
+												    <span class="Form_LabelText">Timezone: </span>
 											    </td>
 											    <td valign="top">
 												    <asp:DropDownList ID="dropTimezone" CssClass="rounded" runat="server">
@@ -142,35 +142,31 @@
 										    </tr>
 										    <tr>
 											    <td colspan="4">
-												    <span class="Form_SubTitle"><b>Optional Information </b></span>
+												    <span class="Form_SubSectionText"><b>Optional Information </b></span>
 											    </td>
 										    </tr>
 										    <tr>
 											    <td valign="top">
-												    <span class="formLabelText">Location: </span>
+												    <span class="Form_LabelText">Location: </span>
 											    </td>
 											    <td valign="top">
-												    <asp:TextBox ID="txtLocation" MaxLength="128" CssClass="rounded" runat="Server" />
+												    <asp:TextBox ID="txtLocation" MaxLength="128" CssClass="Form_Field rounded" runat="Server" />
 											    </td>
 										    </tr>
 										    <tr>
 											    <td colspan="4">
-												    <span class="Form_SubTitle"><b>Email Options </b></span>
+												    <span class="Form_SubSectionText"><b>Email Options </b></span>
 											    </td>
 										    </tr>
 										    <tr>
 											    <td valign="top">
-												    <span class="formLabelText">Email Notifications: </span>
+												    <span class="Form_LabelText">Email Notifications: </span>
 											    </td>
 											    <td colspan="3" valign="top">
-												    <asp:CheckBox ID="chkEnableNotifications" CssClass="rounded" Checked="true" runat="Server" Text="Receive Email Notifications" />
+												    <asp:CheckBox ID="chkEnableNotifications" CssClass="Form_Field rounded" Checked="true" runat="Server" Text="Receive Email Notifications" />
 												    <br />
 												    <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
 											    </td>
-										    </tr>
-										    <tr>
-											    <td colspan="4" align="center">
-												    &nbsp;</td>
 										    </tr>
 									    </table>
 								    </td>

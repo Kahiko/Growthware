@@ -104,7 +104,7 @@
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
-    <link href="../../Styles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
 </head>
 <body>
 	<div class="page">
@@ -116,7 +116,7 @@
 				</div>
 				<div>
 					<h1 style="position: relative; float: left;">
-						VB ASP.NET Application&nbsp;-&nbsp;<span id="pageMessage"></span>
+						VB ASP.NET Application
 					</h1>
 				</div>
 			</div>
@@ -137,6 +137,7 @@
 				<div class="col1" style="overflow: auto">
 					<!-- Column 1 start -->
 					<p>
+                        <span id="pageMessage" class="Form_Title"></span>
 						<asp:ContentPlaceHolder ID="MainContent" runat="server">
 						</asp:ContentPlaceHolder>
 					</p>

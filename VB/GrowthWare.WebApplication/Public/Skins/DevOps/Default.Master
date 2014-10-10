@@ -139,7 +139,7 @@
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
         <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
-        <link href="../../Styles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+        <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
 	</head>
 <body>
 <!--Start Header-->
