@@ -290,7 +290,7 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.vb">
       <DependentUpon>AddEditAccount.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.designer.vb">
       <DependentUpon>SearchAccountResults.aspx</DependentUpon>

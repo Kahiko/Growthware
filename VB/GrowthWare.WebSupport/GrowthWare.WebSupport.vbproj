@@ -103,7 +103,7 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePages\BaseWebPage.vb">
+    <Compile Include="BasePages\BaseWebpage.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="BasePages\ClientChoicesPage.vb">
@@ -113,6 +113,7 @@
     <Compile Include="Context\ClientChoicesHttpModule.vb" />
     <Compile Include="Context\HttpContextModule.vb" />
     <Compile Include="Context\OutputFilterStream.vb" />
+    <Compile Include="CustomWebControlException.vb" />
     <Compile Include="CustomWebControls\Designers\CustomDesigner.vb" />
     <Compile Include="CustomWebControls\ListPicker.vb" />
     <Compile Include="CustomWebControls\NavTrail.vb" />
@@ -149,7 +150,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomWebControls\JS\ListPicker.js" />

@@ -35,7 +35,7 @@ Namespace CustomWebControls
                 If TypeOf value Is IEnumerable OrElse value Is Nothing Then
                     mDataSource = value
                 Else
-                    Throw New ArgumentException
+                    Throw New ArgumentNullException("value", "value can not be null (Nothing in VB)!")
                 End If
             End Set
         End Property
@@ -110,7 +110,7 @@ Namespace CustomWebControls
                 If Not (ViewState("RowCount") Is Nothing) Then
                     resolvedDataSource = New Object(Fix(ViewState("RowCount"))) {}
                 Else
-                    Throw New Exception("Unable to retrieve expected data from ViewState")
+                    Throw New CustomWebControlException("Unable to retrieve expected data from ViewState")
                 End If
             Else
                 resolvedDataSource = GetDataSource()

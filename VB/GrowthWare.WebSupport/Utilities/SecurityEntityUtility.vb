@@ -24,7 +24,7 @@ Namespace Utilities
         Public Function DefaultProfile() As MSecurityEntityProfile
             If s_DefaultProfile Is Nothing Then
                 Dim mDefaultProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
-                mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(), CultureInfo.InvariantCulture)
+                mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture)
                 mDefaultProfile.DataAccessLayer = ConfigSettings.DataAccessLayer
                 mDefaultProfile.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace(mDefaultProfile.DataAccessLayer)
                 mDefaultProfile.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName(mDefaultProfile.DataAccessLayer)

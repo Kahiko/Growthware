@@ -1,7 +1,7 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 
 Public Class ClientChoicesPage
-    Inherits BaseWebPage
+    Inherits BaseWebpage
 
     ''' <summary>
     ''' Gets the state of the client choices.
