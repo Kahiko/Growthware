@@ -103,7 +103,12 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePages\ClientChoicesPage.vb" />
+    <Compile Include="BasePages\BaseWebpage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BasePages\ClientChoicesPage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="CacheController.vb" />
     <Compile Include="Context\ClientChoicesHttpModule.vb" />
     <Compile Include="Context\HttpContextModule.vb" />

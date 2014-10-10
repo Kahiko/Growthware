@@ -6,7 +6,7 @@ Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model
 Imports GrowthWare.Framework.Common
 
-Public Class BaseWebPage
+Public Class BaseWebpage
     Inherits System.Web.UI.Page
 
     Private Const VIEW_STATE_FIELD_NAME As String = "__vi"
@@ -86,13 +86,21 @@ Public Class BaseWebPage
     ''' <returns>Byte array</returns>
     ''' <remarks></remarks>
     Private Function Serialize(ByVal obj As Object) As Byte()
-        Dim ms As New MemoryStream
-        Dim formater As New LosFormatter
-        formater.Serialize(ms, obj)
-        Serialize = ms.ToArray()
-        ms.Close()
-        ms.Dispose()
-        formater = Nothing
+        Dim functionReturnValue As Byte() = Nothing
+        Dim ms As MemoryStream = Nothing
+        Dim formater As LosFormatter = Nothing
+        Try
+            ms = New MemoryStream()
+            formater = New LosFormatter()
+            formater.Serialize(ms, obj)
+            functionReturnValue = ms.ToArray()
+        Catch
+            Throw New WebSupportException("Could not Serialize the object")
+        Finally
+            If Not ms Is Nothing Then ms.Close()
+            If Not formater Is Nothing Then formater = Nothing
+        End Try
+        Return functionReturnValue
     End Function
 
     ''' <summary>
