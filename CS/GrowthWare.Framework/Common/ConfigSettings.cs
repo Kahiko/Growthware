@@ -481,9 +481,9 @@ namespace GrowthWare.Framework.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         public static void SetEnvironmentValue(Configuration config, bool isNew, string configName, string configValue, bool deleteEnvironment)
         {
-            if (config == null) throw new ArgumentNullException("config", "config can not be null!");
-            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configName", "configName can not be null!");
-            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configValue", "configValue can not be null!");
+            if (config == null) throw new ArgumentNullException("config", "config cannot be a null reference (Nothing in Visual Basic)");
+            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configName", "configName cannot be a null reference (Nothing in Visual Basic)");
+            if (string.IsNullOrEmpty(configName)) throw new ArgumentNullException("configValue", "configValue cannot be a null reference (Nothing in Visual Basic)");
 
             if (!deleteEnvironment)
             {

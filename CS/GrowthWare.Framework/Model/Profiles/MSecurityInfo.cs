@@ -90,33 +90,37 @@ namespace GrowthWare.Framework.Model.Profiles
         ///  All client permissions are calculated relative to the object and the client roles.
         /// </summary>
         /// <param name="groupRolePermissionSecurity">The security info object.</param>
-        /// <param name="accountDerivedRoles">The account derived roles.</param>
-        public MSecurityInfo(IMGroupRolePermissionSecurity groupRolePermissionSecurity, Collection<String> accountDerivedRoles)
+        /// <param name="profileWithDerivedRoles">A profile that implements IMGroupRoleSecurity.</param>
+        public MSecurityInfo(IMGroupRolePermissionSecurity groupRolePermissionSecurity, IMGroupRoleSecurity profileWithDerivedRoles)
         {
+            if (groupRolePermissionSecurity == null) throw new ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)");
+            if (profileWithDerivedRoles == null) throw new ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)");
             // Check View Permissions
-            m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, accountDerivedRoles);
+            m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
             // Check Add Permissions
-            m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, accountDerivedRoles);
+            m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
             // Check Edit Permissions
-            m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, accountDerivedRoles);
+            m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
             // Check Delete Permissions
-            m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, accountDerivedRoles);
+            m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
         }
 
         /// <summary>
         /// Checks whether an account is in the necessary role for the 4 permissions given an objects roles
         /// </summary>
         /// <param name="objRoles">The obj roles.</param>
-        /// <param name="accountRoles">The account roles.</param>
+        /// <param name="profileDerivedRoles">The derived roles.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        protected bool CheckAuthenticatedPermission(Collection<String> objRoles, Collection<String> accountRoles)
+        protected static bool CheckAuthenticatedPermission(Collection<String> objRoles, Collection<String> profileDerivedRoles)
         {
+            if (objRoles == null) throw new ArgumentNullException("objRoles", "objRoles cannot be a null reference (Nothing in Visual Basic)");
+            if (profileDerivedRoles == null) throw new ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)");
             // If page/module contains the role "Anonymous" the don't bother running the rest of code just return true
             if (objRoles.Contains("Anonymous")) return true;
-            if (accountRoles.Contains("SysAdmin")) return true;
+            if (profileDerivedRoles.Contains("SysAdmin")) return true;
             foreach (string role in objRoles)
             {
-                if (accountRoles.Contains(role))
+                if (profileDerivedRoles.Contains(role))
                 {
                     return true;
                 }

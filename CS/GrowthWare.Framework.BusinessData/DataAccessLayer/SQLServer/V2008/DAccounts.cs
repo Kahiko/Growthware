@@ -3,13 +3,9 @@ using GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base;
 using GrowthWare.Framework.Model.Enumerations;
 using GrowthWare.Framework.Model.Profiles;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 {

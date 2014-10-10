@@ -55,10 +55,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BasePages\BaseWebpage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="BasePages\ClientChoicesPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="CacheController.cs" />
     <Compile Include="Context\ClientChoicesHttpModule.cs" />
     <Compile Include="Context\HttpContextModule.cs" />
     <Compile Include="Context\OutputFilterStream.cs" />
+    <Compile Include="CustomWebControlException.cs" />
     <Compile Include="CustomWebControls\Designers\CustomDesigner.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -37,7 +37,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 					mDataSource = value;
 				}
 				else {
-					throw new ArgumentException();
+                    throw new ArgumentNullException("value", "value can not be null (Nothing in VB)!");
 				}
 			}
 		}
@@ -111,7 +111,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 					resolvedDataSource = new object[int.Parse(this.ViewState["RowCount"].ToString()) + 1];
 				}
 				else {
-					throw new Exception("Unable to retrieve expected data from ViewState");
+                    throw new CustomWebControlException("Unable to retrieve expected data from ViewState");
 				}
 			}
 			else {

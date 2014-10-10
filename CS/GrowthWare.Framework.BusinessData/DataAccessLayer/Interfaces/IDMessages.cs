@@ -9,7 +9,11 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 {
-    public interface IDMessages : IDDBInteraction
+    /// <summary>
+    /// IDMessages defines the contract for any
+    /// class implementing the interface.
+    /// </summary>
+    interface IDMessages : IDDBInteraction
     {
         /// <summary>
         /// Gets a subset of information from the database 
