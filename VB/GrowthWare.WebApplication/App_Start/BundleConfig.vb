@@ -29,13 +29,13 @@ Public Module BundleConfig
 
         bundles.Add(
             New ScriptBundle("~/bundles/GrowthWare").Include(
-            "~/Public/Scripts/GrowthWare/GW.Common.js",
-            "~/Public/Scripts/GrowthWare/GW.FileManager.js",
-            "~/Public/Scripts/GrowthWare/GW.Model.js",
-            "~/Public/Scripts/GrowthWare/GW.NavigationController.js",
-            "~/Public/Scripts/GrowthWare/GW.NavigationHandler.js",
-            "~/Public/Scripts/GrowthWare/GW.Search.js",
-            "~/Public/Scripts/GrowthWare/GW.Upload.js"
+            "~/Public/GrowthWare/Scripts/GW.Common.js",
+            "~/Public/GrowthWare/Scripts/GW.FileManager.js",
+            "~/Public/GrowthWare/Scripts/GW.Model.js",
+            "~/Public/GrowthWare/Scripts/GW.NavigationController.js",
+            "~/Public/GrowthWare/Scripts/GW.NavigationHandler.js",
+            "~/Public/GrowthWare/Scripts/GW.Search.js",
+            "~/Public/GrowthWare/Scripts/GW.Upload.js"
             )
         )
 
@@ -50,7 +50,7 @@ Public Module BundleConfig
 
         bundles.Add(
             New StyleBundle("~/Content/GrowthWare").Include(
-                "~/Public/CSS/GrowthWare.css"
+                "~/Public/Growthware/Styles/GrowthWare.css"
             )
         )
 

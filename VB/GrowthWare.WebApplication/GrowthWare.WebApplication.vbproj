@@ -187,7 +187,7 @@
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css" />
     <Content Include="Public\CSS\BootStrap\bootstrap.css" />
-    <Content Include="Public\CSS\GrowthWare.css" />
+    <Content Include="Public\Growthware\Styles\GrowthWare.css" />
     <Content Include="Public\Growthware\Images\Add.png" />
     <Content Include="Public\Growthware\Images\ajax-loader.gif" />
     <Content Include="Public\Growthware\Images\ajax-loader_Green.gif" />
@@ -243,13 +243,13 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
     <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.Common.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.FileManager.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.Model.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.NavigationController.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.NavigationHandler.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.Search.js" />
-    <Content Include="Public\Scripts\GrowthWare\GW.Upload.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Common.js" />
+    <Content Include="Public\Growthware\Scripts\GW.FileManager.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Model.js" />
+    <Content Include="Public\Growthware\Scripts\GW.NavigationController.js" />
+    <Content Include="Public\Growthware\Scripts\GW.NavigationHandler.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Search.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Upload.js" />
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
     <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
@@ -451,9 +451,8 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
-    <Folder Include="Public\Growthware\Scripts\" />
-    <Folder Include="Public\Growthware\Styles\" />
     <Folder Include="Public\Images\" />
+    <Folder Include="Public\Scripts\GrowthWare\" />
     <Folder Include="Public\Skins\Default\Images\" />
   </ItemGroup>
   <PropertyGroup>
