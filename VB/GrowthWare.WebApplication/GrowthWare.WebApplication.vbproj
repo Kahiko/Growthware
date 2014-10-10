@@ -290,14 +290,12 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.vb">
       <DependentUpon>AddEditAccount.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.designer.vb">
       <DependentUpon>SearchAccountResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.vb">
       <DependentUpon>SearchAccountResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.designer.vb">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
@@ -360,7 +358,6 @@
     </Compile>
     <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.vb">
       <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\TestNaturalSort.aspx.designer.vb">
       <DependentUpon>TestNaturalSort.aspx</DependentUpon>
