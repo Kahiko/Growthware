@@ -117,7 +117,7 @@ Namespace CustomWebControls
             End If
 
             If Not (resolvedDataSource Is Nothing) Then
-                Dim dataItem As Object
+                Dim dataItem As DataRowView
                 For Each dataItem In resolvedDataSource
                     Dim myNavTrailTab As New NavTrailTab
                     myNavTrailTab.Action = dataItem(3)

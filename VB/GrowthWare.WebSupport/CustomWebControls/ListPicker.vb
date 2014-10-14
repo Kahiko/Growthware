@@ -14,6 +14,10 @@ Namespace CustomWebControls
         Inherits WebControl
         Implements IPostBackDataHandler, INamingContainer
 
+        ''' <summary>
+        ''' Gets or sets the text.
+        ''' </summary>
+        ''' <value>The text.</value>
         <Bindable(True), Category("Appearance"), DefaultValue(""), Localizable(True)> _
         Property Text() As String
             Get
@@ -45,21 +49,13 @@ Namespace CustomWebControls
         ' The following controls are used by downlevel browsers
         Private lstAllItems As ListBox
         Private lstSelectedItems As ListBox
-        Private btnAddItem As Button
-        Private btnAddAllItem As Button
-        Private btnRemoveItem As Button
-        Private btnRemoveAllItem As Button
 
-
-
-        '*********************************************************************
-        '
-        ' Changed Property
-        '
-        ' True when new item picked. 
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets or sets a value indicating whether this <see cref="ListPicker" /> is changed.
+        ''' </summary>
+        ''' <value><c>true</c> if changed; otherwise, <c>false</c>.</value>
+        ''' <returns>Boolean</returns>
+        ''' <remarks>True when new item picked. </remarks>
         Public Property Changed() As Boolean
             Get
                 If ViewState("Changed") Is Nothing Then
@@ -73,6 +69,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the selected items text.
+        ''' </summary>
+        ''' <value>The selected items text.</value>
         Public Property SelectedItemsText() As String
             Get
                 If ViewState("SelectedItemsText") Is Nothing Then
@@ -86,6 +86,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets all items text.
+        ''' </summary>
+        ''' <value>All items text.</value>
         Public Property AllItemsText() As String
             Get
                 If ViewState("AllItemsText") Is Nothing Then
@@ -133,6 +137,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the select button text.
+        ''' </summary>
+        ''' <value>The select button text.</value>
         Property SelectButtonText() As String
             Get
                 Return m_SelectButtonText
@@ -143,6 +151,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the select all button text.
+        ''' </summary>
+        ''' <value>The select all button text.</value>
         Property SelectAllButtonText() As String
             Get
                 Return m_SelectAllButtonText
@@ -153,6 +165,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the de select button text.
+        ''' </summary>
+        ''' <value>The de select button text.</value>
         Property DeselectButtonText() As String
             Get
                 Return m_DeselectButtonText
@@ -163,6 +179,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the de select all button text.
+        ''' </summary>
+        ''' <value>The de select all button text.</value>
         Property DeselectAllButtonText() As String
             Get
                 Return m_DeselectAllButtonText
@@ -173,26 +193,27 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the width of the button.
+        ''' </summary>
+        ''' <value>The width of the button.</value>
         Property ButtonWidth() As String
             Get
                 Return m_ButtonWidth
             End Get
             Set(ByVal value As String)
-                If value.Trim.EndsWith("px") Then
+                If value.Trim.EndsWith("px", StringComparison.OrdinalIgnoreCase) Then
                     m_ButtonWidth = value.Trim
                 Else
                     m_ButtonWidth = value.Trim & "px"
                 End If
             End Set
         End Property
-        '*********************************************************************
-        '
-        ' Size Property
-        '
-        ' Determines the number of items displayed by the picker.
-        '
-        '*********************************************************************
 
+        ''' <summary>
+        ''' Gets or sets the size.
+        ''' </summary>
+        ''' <value>The size.</value>
         Public Property Size() As Integer
             Get
                 If ViewState("Size") Is Nothing Then
@@ -206,6 +227,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the rows.
+        ''' </summary>
+        ''' <value>The rows.</value>
         Public Property Rows() As Integer
             Get
                 If ViewState("Rows") Is Nothing Then
@@ -219,15 +244,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
-        '*********************************************************************
-        '
-        ' SelectedState Property
-        '
-        ' Preserves state between postbacks so change notification can be raised
-        ' only when state changes. 
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets or sets the state of the selected.
+        ''' </summary>
+        ''' <value>The state of the selected.</value>
         Public Property SelectedState() As String
             Get
                 If ViewState("selectedState") Is Nothing Then
@@ -241,15 +261,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
-
-        '*********************************************************************
-        '
-        ' DataSource Property
-        '
-        ' The Data Source for the All Items listbox
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets or sets the data source.
+        ''' </summary>
+        ''' <value>The data source.</value>
         Public Property DataSource() As IEnumerable
             Get
                 Return m_DataSource
@@ -259,14 +274,10 @@ Namespace CustomWebControls
             End Set
         End Property
 
-        '*********************************************************************
-        '
-        ' DataField Property
-        '
-        ' The Data Field for the All Items Data Source
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets or sets the data field.
+        ''' </summary>
+        ''' <value>The data field.</value>
         Public Property DataField() As String
             Get
                 Return m_DataField
@@ -276,42 +287,30 @@ Namespace CustomWebControls
             End Set
         End Property
 
-        '*********************************************************************
-        '
-        ' SelectedHelperId Property
-        '
-        ' The ID of the hidden form field for the selected list box
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets the selected helper ID.
+        ''' </summary>
+        ''' <value>The selected helper ID.</value>
         Protected ReadOnly Property SelectedHelperId() As String
             Get
                 Return ClientId + "_SelectedState"
             End Get
         End Property
 
-        '*********************************************************************
-        '
-        ' AllHelperId Property
-        '
-        ' The ID of the hidden form field for the all list box
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets all helper ID.
+        ''' </summary>
+        ''' <value>All helper ID.</value>
         Protected ReadOnly Property AllHelperId() As String
             Get
                 Return ClientId + "_AllState"
             End Get
         End Property
 
-        '*********************************************************************
-        '
-        ' OnInit Method
-        '
-        ' Notifies framework that this control wants to be notified of data
-        ' changes on postback.
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Web.UI.Control.Init" /> event.
+        ''' </summary>
+        ''' <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         Protected Overrides Sub OnInit(ByVal e As EventArgs)
             If Not (Page Is Nothing) Then
                 MyBase.OnInit(e)
@@ -321,13 +320,13 @@ Namespace CustomWebControls
             End If
         End Sub       'OnInit
 
-        '*********************************************************************
-        '
-        ' LoadPostData Method
-        '
-        ' This method retrieves the posted data and update the control properties
-        '
-        '*********************************************************************
+
+        ''' <summary>
+        ''' Loads the post data.
+        ''' </summary>
+        ''' <param name="postDataKey">The post data key.</param>
+        ''' <param name="values">The values.</param>
+        ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         Public Function LoadPostData(ByVal postDataKey As String, ByVal values As System.Collections.Specialized.NameValueCollection) As Boolean Implements IPostBackDataHandler.LoadPostData
             Dim _allState As String
             Dim _selectedState As String
@@ -338,12 +337,12 @@ Namespace CustomWebControls
             End If
             _allState = values(AllHelperId).Trim()
             _selectedState = values(SelectedHelperId).Trim()
-            If _allState = String.Empty Then
+            If String.IsNullOrEmpty(_allState) Then
                 m_AllItems.Clear()
             Else
                 m_AllItems = New ArrayList(_allState.Split(","c))
             End If
-            If _selectedState = String.Empty Then
+            If String.IsNullOrEmpty(_selectedState) Then
                 m_SelectedItems.Clear()
             Else
                 m_SelectedItems = New ArrayList(_selectedState.Split(","c))
@@ -358,13 +357,10 @@ Namespace CustomWebControls
             Return True
         End Function          'LoadPostData
 
-        '*********************************************************************
-        '
-        ' RaisePostDataChangedEvent Method
-        '
-        ' This method raises the OnListChanged event if posted data changed
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' When implemented by a class, signals the server control to notify the ASP.NET application that the state of the control has changed.
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub RaisePostDataChangedEvent() Implements IPostBackDataHandler.RaisePostDataChangedEvent
             OnListChanged(EventArgs.Empty)
         End Sub       'RaisePostDataChangedEvent

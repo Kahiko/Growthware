@@ -5,6 +5,7 @@ Imports System.Web
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model
 Imports GrowthWare.Framework.Common
+Imports System.Globalization
 
 Public Class BaseWebpage
     Inherits System.Web.UI.Page
@@ -32,14 +33,14 @@ Public Class BaseWebpage
     ''' <summary>
     ''' Overrides SavePageStateToPersistenceMedium if needed
     ''' </summary>
-    ''' <param name="viewState"></param>
+    ''' <param name="state"></param>
     ''' <remarks></remarks>
-    Protected Overrides Sub SavePageStateToPersistenceMedium(ByVal viewState As Object)
+    Protected Overrides Sub SavePageStateToPersistenceMedium(ByVal state As Object)
         If Convert.ToBoolean(ConfigSettings.ServerSideViewState) Then
-            Me.SaveViewState(viewState)
+            Me.SaveViewState(state)
             MyBase.SavePageStateToPersistenceMedium("")
         Else
-            MyBase.SavePageStateToPersistenceMedium(viewState)
+            MyBase.SavePageStateToPersistenceMedium(state)
         End If
     End Sub
 
@@ -50,15 +51,17 @@ Public Class BaseWebpage
     ''' <remarks></remarks>
     Protected Overloads Function LoadViewState() As Object
         Dim text1 As String = ""
-        LoadViewState = Nothing
+        Dim mViewState As Object = Nothing
         Try
             text1 = MyBase.Request.Form.Item(VIEW_STATE_FIELD_NAME)
-            HttpContext.Current.Session.Item(REQUEST_NUMBER) = Integer.Parse(text1)
+            HttpContext.Current.Session.Item(REQUEST_NUMBER) = Integer.Parse(text1, CultureInfo.InvariantCulture)
             If (Not HttpContext.Current.Session.Item((VIEW_STATE_FIELD_NAME & text1)) Is Nothing) Then
-                LoadViewState = Deserialize(CType(Me.Session.Item((VIEW_STATE_FIELD_NAME & text1)), Byte()))
+                mViewState = Deserialize(CType(Me.Session.Item((VIEW_STATE_FIELD_NAME & text1)), Byte()))
             End If
         Catch obj3 As Exception
+            Throw
         End Try
+        Return mViewState
     End Function
 
     ''' <summary>
@@ -75,8 +78,8 @@ Public Class BaseWebpage
             End If
         End If
         HttpContext.Current.Session.Item(REQUEST_NUMBER) = num1
-        Me.Session.Item(("__vi" & num1.ToString)) = Serialize(viewState)
-        Me.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString)
+        Me.Session.Item(("__vi" & num1.ToString(CultureInfo.InvariantCulture))) = Serialize(viewState)
+        Me.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString(CultureInfo.InvariantCulture))
     End Sub
 
     ''' <summary>
@@ -85,7 +88,7 @@ Public Class BaseWebpage
     ''' <param name="obj">Object</param>
     ''' <returns>Byte array</returns>
     ''' <remarks></remarks>
-    Private Function Serialize(ByVal obj As Object) As Byte()
+    Private Shared Function Serialize(ByVal obj As Object) As Byte()
         Dim functionReturnValue As Byte() = Nothing
         Dim ms As MemoryStream = Nothing
         Dim formater As LosFormatter = Nothing
@@ -109,13 +112,22 @@ Public Class BaseWebpage
     ''' <param name="bytes">Byte</param>
     ''' <returns>Object</returns>
     ''' <remarks></remarks>
-    Private Function Deserialize(ByVal bytes() As Byte) As Object
-        Dim ms As New MemoryStream(bytes)
-        Dim formater As New LosFormatter
-        Deserialize = formater.Deserialize(ms)
-        ms.Close()
-        ms.Dispose()
-        formater = Nothing
+    Private Shared Function Deserialize(ByVal bytes() As Byte) As Object
+        If bytes Is Nothing Then Throw New ArgumentNullException("bytes", "bytes can not be null (Nothing in VB) or empty!")
+        Dim functionReturnValue As Object = Nothing
+        Dim ms As MemoryStream = Nothing
+        Dim formater As LosFormatter = Nothing
+        Try
+            ms = New MemoryStream(bytes)
+            formater = New LosFormatter
+            functionReturnValue = formater.Deserialize(ms)
+        Catch ex As Exception
+            Throw
+        Finally
+            If Not ms Is Nothing Then ms.Close()
+            If Not formater Is Nothing Then formater = Nothing
+        End Try
+        Return functionReturnValue
     End Function
 
     ''' <summary>

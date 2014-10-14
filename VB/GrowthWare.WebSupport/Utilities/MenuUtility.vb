@@ -5,8 +5,8 @@ Namespace Utilities
     ''' Utiltiy class to aid in a web application
     ''' </summary>
     ''' <remarks>Could be considered Specific to Growthware</remarks>
-    Public Class MenuUtility
-        Private Shared m_MenuRelationName As String = "MenuRelation"
+    Public Module MenuUtility
+        Private m_MenuRelationName As String = "MenuRelation"
 
         ''' <summary>
         ''' Generates and order list form hierarchical data.
@@ -15,7 +15,7 @@ Namespace Utilities
         ''' <param name="stringBuiler">StringBuiler used to build the ul/li string data</param>
         ''' <returns>String</returns>
         ''' <remarks>Frist Layer of items should have a ParentID of 1</remarks>
-        Public Shared Function GenerateULLI(ByVal menuData As DataTable, ByRef stringBuiler As StringBuilder) As String
+        Public Function GenerateULLI(ByVal menuData As DataTable, ByRef stringBuiler As StringBuilder) As String
             stringBuiler.AppendLine("<ul>")
             Dim datView As DataView = New DataView(menuData)
             datView.RowFilter = "ParentID = 1"
@@ -42,7 +42,7 @@ Namespace Utilities
         ''' <param name="parentID">Integer</param>
         ''' <param name="stringBuilder">StringBuiler</param>
         ''' <remarks></remarks>
-        Private Shared Sub addChildItems(ByVal menuData As DataTable, ByVal parentID As Integer, ByRef stringBuilder As StringBuilder)
+        Private Sub addChildItems(ByVal menuData As DataTable, ByVal parentID As Integer, ByRef stringBuilder As StringBuilder)
             '//Populate DataView
             Dim datView As DataView = New DataView(menuData)
             '//Filter child menu items
@@ -74,14 +74,14 @@ Namespace Utilities
         ''' <param name="hasChildren">Determines the class='has-sub' for the li tag</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Shared Function createLIItem(ByVal hrefText As String, ByVal action As String, ByVal hrefToolTip As String, ByVal hasChildren As Boolean) As String
+        Private Function createLIItem(ByVal hrefText As String, ByVal action As String, ByVal hrefToolTip As String, ByVal hasChildren As Boolean) As String
             Dim retVal As String = String.Empty
             If Not hasChildren Then
-                retVal = "<li><a href=""" + action + """><span>" + hrefText + "</span></a>"
+                retVal = "<li><a href=""" + action + """ title=""" + hrefToolTip + """><span>" + hrefText + "</span></a>"
             Else
-                retVal = "<li class='has-sub'><a href='#'><span>" + hrefText + "</span></a>"
+                retVal = "<li class='has-sub'><a href='#' title=""" + hrefToolTip + """><span>" + hrefText + "</span></a>"
             End If
             Return retVal
         End Function
-    End Class
+    End Module
 End Namespace
