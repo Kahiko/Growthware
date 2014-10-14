@@ -3,6 +3,7 @@ using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -56,15 +57,15 @@ namespace GrowthWare.WebSupport.BasePages
 		/// <summary>
 		/// Saves the page state to persistence medium.
 		/// </summary>
-		/// <param name="viewState">State of the view.</param>
-		protected override void SavePageStateToPersistenceMedium(object viewState)
+		/// <param name="state">State of the view.</param>
+		protected override void SavePageStateToPersistenceMedium(object state)
 		{
 			if (Convert.ToBoolean(ConfigSettings.ServerSideViewState)) {
-				this.SaveViewState(viewState);
+				this.SaveViewState(state);
 				base.SavePageStateToPersistenceMedium("");
 			}
 			else {
-				base.SavePageStateToPersistenceMedium(viewState);
+				base.SavePageStateToPersistenceMedium(state);
 			}
 		}
 
@@ -76,15 +77,15 @@ namespace GrowthWare.WebSupport.BasePages
 		{
 			object functionReturnValue = null;
 			string text1 = "";
-			functionReturnValue = null;
 			try {
 				text1 = base.Request.Form[VIEW_STATE_FIELD_NAME];
-				HttpContext.Current.Session[REQUEST_NUMBER] = int.Parse(text1);
+                HttpContext.Current.Session[REQUEST_NUMBER] = int.Parse(text1, CultureInfo.InvariantCulture);
 				if (((HttpContext.Current.Session[(VIEW_STATE_FIELD_NAME + text1)] != null))) {
 					functionReturnValue = Deserialize((byte[])this.Session[(VIEW_STATE_FIELD_NAME + text1)]);
 				}
 			}
 			catch {
+                throw;
 			}
 			return functionReturnValue;
 		}
@@ -92,8 +93,8 @@ namespace GrowthWare.WebSupport.BasePages
 		/// <summary>
 		/// Saves the state of the view.
 		/// </summary>
-		/// <param name="viewState">State of the view.</param>
-		protected void SaveViewState(object viewState)
+        /// <param name="state">State of the view.</param>
+        protected void SaveViewState(object state)
 		{
 			int num1 = 0;
 			if (((HttpContext.Current.Session[REQUEST_NUMBER] != null))) {
@@ -103,8 +104,8 @@ namespace GrowthWare.WebSupport.BasePages
 				}
 			}
 			HttpContext.Current.Session[REQUEST_NUMBER] = num1;
-			this.Session[("__vi" + num1.ToString())] = Serialize(viewState);
-			this.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString());
+            this.Session[("__vi" + num1.ToString(CultureInfo.InvariantCulture))] = Serialize(state);
+			this.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString(CultureInfo.InvariantCulture));
 		}
 
 		/// <summary>
@@ -121,7 +122,7 @@ namespace GrowthWare.WebSupport.BasePages
 			}
 		}
 
-		private byte[] Serialize(object obj)
+		private static byte[] Serialize(object obj)
 		{
 			byte[] functionReturnValue = null;
 			MemoryStream ms = null;
@@ -135,7 +136,6 @@ namespace GrowthWare.WebSupport.BasePages
             }
             catch (Exception)
             {
-
                 throw new WebSupportException("Could not Serialize the object");
             }
             finally 
@@ -146,15 +146,27 @@ namespace GrowthWare.WebSupport.BasePages
 			return functionReturnValue;
 		}
 
-		private object Deserialize(byte[] bytes)
+        private static object Deserialize(byte[] bytes)
 		{
+            if (bytes == null) throw new ArgumentNullException("bytes", "bytes can not be null (Nothing in VB) or empty!");
 			object functionReturnValue = null;
-			MemoryStream ms = new MemoryStream(bytes);
-			LosFormatter formater = new LosFormatter();
-			functionReturnValue = formater.Deserialize(ms);
-			ms.Close();
-			ms.Dispose();
-			formater = null;
+			MemoryStream ms = null;
+			LosFormatter formater = null;
+            try
+            {
+                ms = new MemoryStream(bytes);
+                formater = new LosFormatter();
+                functionReturnValue = formater.Deserialize(ms);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                ms.Close();
+                formater = null;
+            }
 			return functionReturnValue;
 		}
     }

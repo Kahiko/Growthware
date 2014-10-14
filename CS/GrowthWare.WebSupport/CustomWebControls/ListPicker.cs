@@ -92,33 +92,6 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// </summary>
         private ListBox lstSelectedItems = new ListBox();
         /// <summary>
-        /// 
-        /// </summary>
-        private Button btnAddItem = new Button();
-        /// <summary>
-        /// 
-        /// </summary>
-        private Button btnAddAllItem = new Button();
-        /// <summary>
-        /// 
-        /// </summary>
-        private Button btnRemoveItem = new Button();
-        /// <summary>
-        /// 
-        /// </summary>
-        private Button btnRemoveAllItem = new Button();
-
-
-
-        //********************************************************************* 
-        // 
-        // Changed Property 
-        // 
-        // True when new item picked. 
-        // 
-        //********************************************************************* 
-
-        /// <summary>
         /// Gets or sets a value indicating whether this <see cref="ListPicker" /> is changed.
         /// </summary>
         /// <value><c>true</c> if changed; otherwise, <c>false</c>.</value>
@@ -271,7 +244,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
             get { return m_ButtonWidth; }
             set
             {
-                if (value.Trim().EndsWith("px"))
+                if (value.Trim().EndsWith("px", StringComparison.OrdinalIgnoreCase))
                 {
                     m_ButtonWidth = value.Trim();
                 }
@@ -413,7 +386,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
             }
             _allState = values[AllHelperId].Trim();
             _selectedState = values[SelectedHelperId].Trim();
-            if (_allState == string.Empty)
+            if (string.IsNullOrEmpty(_allState))
             {
                 m_AllItems.Clear();
             }
@@ -421,7 +394,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
             {
                 m_AllItems = new ArrayList(_allState.Split(','));
             }
-            if (_selectedState == string.Empty)
+            if (string.IsNullOrEmpty(_selectedState))
             {
                 m_SelectedItems.Clear();
             }

@@ -89,11 +89,11 @@ namespace GrowthWare.WebSupport.Utilities
             String retVal = String.Empty;
             if (!hasChildren)
             {
-                retVal = "<li><a href=\"" + action + "\"><span>" + hrefText + "</span></a>";
+                retVal = "<li><a href=\"" + action + "\" title=\"" + hrefToolTip + "\"><span>" + hrefText + "</span></a>";
             }
             else
             {
-                retVal = "<li class='has-sub'><a href='#'><span>" + hrefText + "</span></a>";
+                retVal = "<li class='has-sub'><a href='#' title=\"" + hrefToolTip + "\"><span>" + hrefText + "</span></a>";
             }
             return retVal;
         }

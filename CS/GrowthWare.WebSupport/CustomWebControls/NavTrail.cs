@@ -119,10 +119,8 @@ namespace GrowthWare.WebSupport.CustomWebControls
 			}
 
 			if ((resolvedDataSource != null)) {
-				DataRowView dataItem = null;
-				TableRow row = new TableRow();
-				foreach (object dataItem_loopVariable in resolvedDataSource) {
-					dataItem = (DataRowView)dataItem_loopVariable;
+                foreach (DataRowView dataItem in resolvedDataSource)
+                {
 					NavTrailTab myNavTrailTab = new NavTrailTab();
 					myNavTrailTab.Text = dataItem[1].ToString();
 					myNavTrailTab.Action = dataItem[3].ToString();
