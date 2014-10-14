@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrowthWare.Framework.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -79,6 +80,38 @@ namespace GrowthWare.WebSupport
                 mRetVal = request.QueryString[queryString].ToString();
             }
             return mRetVal;
+        }
+
+        /// <summary>
+        /// Returns http(s)://FQDN(/AppName)
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
+        public static string RootSite
+        {
+            get
+            {
+                string myRoot_Site = string.Empty;
+                string myHTTP_Schema = string.Empty;
+                if (ConfigSettings.ForceHttps)
+                {
+                    myHTTP_Schema = "HTTPS";
+                }
+                else
+                {
+                    myHTTP_Schema = HttpContext.Current.Request.Url.Scheme;
+                }
+                if (HttpContext.Current.Request.ApplicationPath == "/")
+                {
+                    myRoot_Site = myHTTP_Schema + "://" + HttpContext.Current.Request.ServerVariables["HTTP_HOST"] + "/";
+                }
+                else
+                {
+                    myRoot_Site = myHTTP_Schema + "://" + HttpContext.Current.Request.ServerVariables["HTTP_HOST"] + "/" + ConfigSettings.AppName + "/";
+                }
+                return myRoot_Site;
+            }
         }
     }
 }

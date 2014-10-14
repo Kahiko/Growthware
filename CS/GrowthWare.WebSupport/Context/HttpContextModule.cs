@@ -119,6 +119,52 @@ namespace GrowthWare.WebSupport.Context
             //MAccountProfile mAccountProfile = AccountUtility.GetProfile("Anonymous");
             //MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("Generic_Home");
             mLog.Debug("onAcquireRequestState():: Started");
+
+            if (HttpContext.Current.Session != null)
+            {
+                if (processRequest())
+                {
+                    if (HttpContext.Current.Request.QueryString["Action"] != null)
+                    {
+                        String mAction = HttpContext.Current.Request.QueryString["Action"].ToString();
+                        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
+
+                        string mHashCode = string.Empty;
+                        string mWindowUrl = HttpContext.Current.Request.Url.ToString();
+                        string[] urlParts = mWindowUrl.Split('?');
+
+                        if (urlParts.Length > 1) mHashCode = urlParts[1];
+                        mLog.Debug("hashCode: " + mHashCode);
+                        mLog.Debug("Processing action: " + mAction);
+                        if(!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" || mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
+                        {
+                            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+                            mLog.Debug("Processing for account " + mAccountProfile.Account);
+                            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                            if(!mSecurityInfo.MayView)
+                            {
+                                mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                                HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
+                            }
+                        }else
+                        {
+                            mLog.Debug("Menu data or Logoff/Logon requested");
+                        }
+                    }
+                    else 
+                    { 
+                        mLog.Debug("QueryString[\"Action\"] is null");
+                    }
+                }
+                else 
+                {
+                    mLog.Debug("Request is not for a processing event.");
+                }
+            }
+            else 
+            {
+                mLog.Debug("No session exiting");
+            }
             mLog.Debug("onAcquireRequestState():: Done");
         }
 
