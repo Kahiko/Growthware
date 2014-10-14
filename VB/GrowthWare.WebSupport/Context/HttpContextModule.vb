@@ -91,17 +91,54 @@ Namespace Context
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
-            Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Anonymous")
-            If Not mAccountProfile Is Nothing Then
-                mLog.Debug("Processing for account " + mAccountProfile.Account)
+
+            If Not HttpContext.Current.Session Is Nothing Then
+                If processRequest() Then
+                    If Not HttpContext.Current.Request.QueryString("Action") Is Nothing Then
+                        Dim mAction As String = HttpContext.Current.Request.QueryString("Action").ToString(CultureInfo.InvariantCulture)
+                        Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
+
+                        Dim mHashCode As String = String.Empty
+                        Dim mWindowUrl As String = HttpContext.Current.Request.Url.ToString()
+                        Dim mUrlParts As String() = mWindowUrl.Split("?")
+
+                        If mUrlParts.Length > 1 Then mHashCode = mUrlParts(1)
+                        mLog.Debug("hashCode: " + mHashCode)
+                        mLog.Debug("Processing action: " + mAction)
+
+                        If Not mFunctionProfile.Source().ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") And Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON") Then
+                            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+                            If Not mAccountProfile.Status = DirectCast(SystemStatus.ChangePassword, Integer) Then
+                                mLog.Debug("Processing for account " + mAccountProfile.Account)
+                                Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
+                                If Not mSecurityInfo.MayView Then
+                                    If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
+                                        Dim mException As Exception = New Exception("Your session has timed out.<br/>Please sign in.")
+                                        GWWebHelper.ExceptionError = mException
+                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx")
+                                    End If
+                                    mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
+                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx")
+                                End If
+                            Else
+                                Dim mException As Exception = New Exception("Your pass word needs to be changed before any other action can be performed.")
+                                GWWebHelper.ExceptionError = mException
+                                HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword")
+                            End If
+                        Else
+                            mLog.Debug("Menu data or Logoff/Logon requested")
+                        End If
+                    Else
+                        mLog.Debug("QueryString(Action) is nothing")
+                    End If
+                Else
+                    mLog.Debug("Request is not for a processing event.")
+                End If
+            Else
+                mLog.Debug("No session exiting")
             End If
-            Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile("GenericHome")
-            If Not mFunctionProfile Is Nothing Then
-                mLog.Debug("Processing for function " + mFunctionProfile.Name)
-            End If
+
             mLog.Debug("onAcquireRequestState():: Done")
-            Dim mEx As New WebSupportException("This is a test for logging")
-            mLog.Debug(mEx)
         End Sub
 
         ''' <summary>

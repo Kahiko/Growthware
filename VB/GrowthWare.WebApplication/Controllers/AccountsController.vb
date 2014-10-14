@@ -7,6 +7,7 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.Framework.Model.Profiles.Base
 Imports GrowthWare.WebSupport
 Imports System.Globalization
+Imports GrowthWare.Framework.Model.Enumerations
 
 Namespace Controllers
     Public Class AccountsController
@@ -61,6 +62,22 @@ Namespace Controllers
 
             Return Ok(mRetVal)
         End Function
+
+        <HttpPost>
+        Public Function ChangePassword(ByVal oldPassword As String, ByVal newPassword As String) As IHttpActionResult
+            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+            Dim mRetVal As String = "false"
+            Dim mOldPassword As String = CryptoUtility.Decrypt(oldPassword, EncryptionType.TripleDes)
+            If String.IsNullOrEmpty(mOldPassword) Then mOldPassword = oldPassword
+            If mOldPassword = oldPassword Then
+                mAccountProfile.Status = DirectCast(SystemStatus.Active, Integer)
+                mAccountProfile.Password = CryptoUtility.Encrypt(newPassword, EncryptionType.TripleDes)
+                AccountUtility.Save(mAccountProfile, False, False)
+                mRetVal = "true"
+            End If
+            Return Ok(mRetVal)
+        End Function
+
     End Class
 
     Public Class LogonInfo
@@ -93,7 +110,7 @@ Namespace Controllers
             If clientChoicesState(MClientChoices.HeadColor) <> Nothing Then HeadColor = clientChoicesState(MClientChoices.HeadColor).ToString()
             If clientChoicesState(MClientChoices.LeftColor) <> Nothing Then LeftColor = clientChoicesState(MClientChoices.LeftColor).ToString()
             If clientChoicesState(MClientChoices.RecordsPerPage) <> Nothing Then RecordsPerPage = Integer.Parse(clientChoicesState(MClientChoices.RecordsPerPage).ToString())
-            If clientChoicesState(MClientChoices.SecurityEntityID) <> Nothing Then SecurityEntityID = Integer.Parse(clientChoicesState(MClientChoices.SecurityEntityID).ToString())
+            If clientChoicesState(MClientChoices.SecurityEntityId) <> Nothing Then SecurityEntityID = Integer.Parse(clientChoicesState(MClientChoices.SecurityEntityId).ToString())
             If clientChoicesState(MClientChoices.SecurityEntityName) <> Nothing Then SecurityEntityName = clientChoicesState(MClientChoices.SecurityEntityName).ToString()
             If clientChoicesState(MClientChoices.SubheadColor) <> Nothing Then SubheadColor = clientChoicesState(MClientChoices.SubheadColor).ToString()
         End Sub
