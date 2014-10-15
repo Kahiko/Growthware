@@ -65,17 +65,48 @@ Namespace Controllers
 
         <HttpPost>
         Public Function ChangePassword(ByVal oldPassword As String, ByVal newPassword As String) As IHttpActionResult
+            If String.IsNullOrEmpty(newPassword) Then Throw New ArgumentNullException("newPassword", "newPassword cannot be NULL or Nothing in VB.net!")
+            Dim mMessageProfile As New MMessageProfile
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
-            Dim mRetVal As String = "false"
-            Dim mOldPassword As String = CryptoUtility.Decrypt(oldPassword, EncryptionType.TripleDes)
-            If String.IsNullOrEmpty(mOldPassword) Then mOldPassword = oldPassword
-            If mOldPassword = oldPassword Then
-                mAccountProfile.Status = DirectCast(SystemStatus.Active, Integer)
-                mAccountProfile.Password = CryptoUtility.Encrypt(newPassword, EncryptionType.TripleDes)
-                AccountUtility.Save(mAccountProfile, False, False)
-                mRetVal = "true"
+            Dim mCurrentPassword = ""
+            mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword")
+            Try
+                mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType)
+            Catch ex As Exception
+                mCurrentPassword = mAccountProfile.Password
+            End Try
+            If mAccountProfile.Status <> SystemStatus.ChangePassword Then
+                If oldPassword <> mCurrentPassword Then
+                    mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
+                Else
+                    With mAccountProfile
+                        .PasswordLastSet = Date.Now
+                        .Status = SystemStatus.Active
+                        .FailedAttempts = 0
+                        .Password = CryptoUtility.Encrypt(newPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    End With
+                    Try
+                        AccountUtility.Save(mAccountProfile, False, False)
+                    Catch ex As Exception
+                        mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                    End Try
+                End If
+            Else
+                Try
+                    With mAccountProfile
+                        .PasswordLastSet = Date.Now
+                        .Status = SystemStatus.Active
+                        .FailedAttempts = 0
+                        .Password = CryptoUtility.Encrypt(newPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    End With
+                    AccountUtility.Save(mAccountProfile, False, False)
+                Catch ex As Exception
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                End Try
             End If
-            Return Ok(mRetVal)
+            AccountUtility.RemoveInMemoryInformation(True)
+            Return Ok(mMessageProfile.Body)
         End Function
 
     End Class
