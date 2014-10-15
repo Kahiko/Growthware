@@ -1,6 +1,7 @@
 ﻿Imports System
 Imports System.Reflection
 Imports System.Runtime.InteropServices
+Imports System.Web.UI
 
 ' General Information about an assembly is controlled through the following 
 ' set of attributes. Change these attribute values to modify the information
@@ -34,3 +35,4 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyVersion("6.0.0.*")> 
 <Assembly: AssemblyFileVersion("6.0.0.0")> 
+<Assembly: WebResource("GrowthWare.WebSupport.CustomWebControls.JS.ListPicker.js", "application/x-javascript")> 
