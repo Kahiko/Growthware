@@ -139,7 +139,6 @@ first child of the left and right table columns */
 
 #HMenu a {
 	color: white;
-	text-decoration: none;
 	}
 /* Horizontal Hierarchical Menu ----------------------------------------------------------*/
 #cssmenu ul,
@@ -425,7 +424,6 @@ first child of the left and right table columns */
 
 #VMenu a {
 	color: black;
-	text-decoration: none;
 	}
 
 .Row
