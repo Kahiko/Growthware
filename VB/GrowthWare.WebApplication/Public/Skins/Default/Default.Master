@@ -78,14 +78,15 @@
             .ajaxStart(function () {
 			    timer && clearTimeout(timer);
 			    timer = setTimeout(function () {
-			        $loader.show();
+			        //$loader.show();
+			        $loader.css('visibility', 'visible');
 			    },
 				100);
 			})
 			.ajaxStop(function () {
 			    clearTimeout(timer);
-			    $loader.hide();
-
+			    //$loader.hide();
+			    $loader.css('visibility', 'hidden');
 			});
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
             var currentHash = window.location.hash.substring(1);
