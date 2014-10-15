@@ -30,28 +30,34 @@
 		var $mIncorrectLogon = $("<%=incorrectLogon.ClientID %>");
 		var $mBtnRequestChange = $('#btnRequestChange');
 		var $mLogonPage = $('#LogonPage');
-		$mIncorrectLogon.css({ display: 'none' });
-		$mClientMessage.css({ display: 'none' });
-		$mBtnRequestChange.css({ display: 'none' });
+		//$mIncorrectLogon.css({ display: 'none' });
+		//$mClientMessage.css({ display: 'none' });
+		//$mBtnRequestChange.css({ display: 'none' });
+
+		$mIncorrectLogon.css('visibility', 'hidden');
+		$mClientMessage.css('visibility', 'hidden');
+		$mBtnRequestChange.css('visibility', 'hidden');
+
 		var mRetHTML = "";
-		var LogonInfo = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
+		var mLogonInfo = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
 		$('#LogonData').children('input').each(function () {
 			if (this.type == 'text' || this.type == 'password') {
-				LogonInfo[this.id] = this.value;
+			    mLogonInfo[this.id] = this.value;
 			}
 		});
 
 		try {
-			GW.Common.debug(LogonInfo);
+		    GW.Common.debug(mLogonInfo);
 			var options = GW.Model.DefaultWebMethodOptions();
-			options.url = GW.Common.getBaseURL() + "/api/Accounts/Logon?Action=sdf";
-			options.data = JSON.stringify(LogonInfo);
+			options.url = GW.Common.getBaseURL() + "/api/Accounts/Logon?Action=Logon";
+			options.data = mLogonInfo;
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
 			GW.Common.JQueryHelper.callWeb(options, logonSuccess, logonError);
 		} catch (e) {
 			mRetHTML = 'Error attempting to call logon\n' + e.Message;
-			$mClientMessage.css({ display: 'none' });
+			//$mClientMessage.css({ display: 'none' });
+			$mClientMessage.css('visibility', 'hidden');
 			$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
 		}
 		return true;
@@ -78,7 +84,8 @@
 		    $('#MainContentDiv').html("You have successfully logged on").fadeIn(1000);
 		} else {
 			if (xhr.toString() == "Request") {
-				$mBtnRequestChange.css({ display: 'inline' });
+			    //$mBtnRequestChange.css({ display: 'inline' });
+			    $mBtnRequestChange.css('visibility', 'visible');
 			} else {
 				mRetHTML = xhr;
 				$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
@@ -90,7 +97,8 @@
 	function logonError(xhr, status, error) {
 		var $mClientMessage = $("<%=clientMessage.ClientID %>");
 		var mRetHTML = 'Error logging on\n' + xhr.responseText;
-		$mClientMessage.css({ display: 'none' });
+		//$mClientMessage.css({ display: 'none' });
+		$mClientMessage.css('visibility', 'hidden');
 		$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
 	}
 
@@ -104,10 +112,12 @@
 			jQuery.event.trigger('~reLoadUI');
 		} else {
 			if (xhr.d.toString() == "Request") {
-				$mBtnRequestChange.css({ display: 'inline' });
+			    //$mBtnRequestChange.css({ display: 'inline' });
+			    $mBtnRequestChange.css('visibility', 'visible');
 			} else {
 				mRetHTML = xhr.d;
 				$mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
+				$mClientMessage.css('visibility', 'visible');
 				//$mIncorrectLogon.fadeIn(3000);
 			}
 		}

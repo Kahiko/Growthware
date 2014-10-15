@@ -121,7 +121,7 @@ Namespace Context
                                     HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx")
                                 End If
                             Else
-                                Dim mException As Exception = New Exception("Your pass word needs to be changed before any other action can be performed.")
+                                Dim mException As Exception = New Exception("Your password needs to be changed before any other action can be performed.")
                                 GWWebHelper.ExceptionError = mException
                                 HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword")
                             End If

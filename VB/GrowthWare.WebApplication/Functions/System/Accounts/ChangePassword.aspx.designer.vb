@@ -32,15 +32,6 @@ Partial Public Class ChangePassword
     Protected WithEvents frmChangePassword As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
-    '''ClientMSG control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents ClientMSG As Global.System.Web.UI.HtmlControls.HtmlGenericControl
-
-    '''<summary>
     '''trOldPassword control.
     '''</summary>
     '''<remarks>

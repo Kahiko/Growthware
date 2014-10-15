@@ -128,6 +128,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SimplePostVariableParameterBinding.vb" />
     <Compile Include="Utilities\AccountUtility.vb" />
     <Compile Include="Utilities\ClientChoicesUtility.vb" />
     <Compile Include="Utilities\FileUtility.vb" />

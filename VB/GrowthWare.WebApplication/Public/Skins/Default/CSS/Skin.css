@@ -427,3 +427,14 @@ first child of the left and right table columns */
 	color: black;
 	text-decoration: none;
 	}
+
+.Row
+{
+    display: table;
+    width: 100%; /*Optional*/
+    table-layout: fixed; /*Optional*/
+}
+.Column
+{
+    display: table-cell;
+}

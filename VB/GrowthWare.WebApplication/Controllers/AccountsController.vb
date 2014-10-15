@@ -63,9 +63,11 @@ Namespace Controllers
             Return Ok(mRetVal)
         End Function
 
+        'Public Function ChangePassword(<FromBody()> ByVal oldPassword As String, <FromBody()> ByVal newPassword As String) As IHttpActionResult
+
         <HttpPost>
-        Public Function ChangePassword(ByVal oldPassword As String, ByVal newPassword As String) As IHttpActionResult
-            If String.IsNullOrEmpty(newPassword) Then Throw New ArgumentNullException("newPassword", "newPassword cannot be NULL or Nothing in VB.net!")
+        Public Function ChangePassword(ByVal mChangePassword As MChangePassword) As IHttpActionResult
+            If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be NULL or Nothing in VB.net!")
             Dim mMessageProfile As New MMessageProfile
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
@@ -77,14 +79,14 @@ Namespace Controllers
                 mCurrentPassword = mAccountProfile.Password
             End Try
             If mAccountProfile.Status <> SystemStatus.ChangePassword Then
-                If oldPassword <> mCurrentPassword Then
+                If mChangePassword.OldPassword <> mCurrentPassword Then
                     mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
                 Else
                     With mAccountProfile
                         .PasswordLastSet = Date.Now
                         .Status = SystemStatus.Active
                         .FailedAttempts = 0
-                        .Password = CryptoUtility.Encrypt(newPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
                     End With
                     Try
                         AccountUtility.Save(mAccountProfile, False, False)
@@ -98,7 +100,7 @@ Namespace Controllers
                         .PasswordLastSet = Date.Now
                         .Status = SystemStatus.Active
                         .FailedAttempts = 0
-                        .Password = CryptoUtility.Encrypt(newPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
                     End With
                     AccountUtility.Save(mAccountProfile, False, False)
                 Catch ex As Exception
@@ -109,6 +111,11 @@ Namespace Controllers
             Return Ok(mMessageProfile.Body)
         End Function
 
+    End Class
+
+    Public Class MChangePassword
+        Public Property OldPassword() As String
+        Public Property NewPassword() As String
     End Class
 
     Public Class LogonInfo

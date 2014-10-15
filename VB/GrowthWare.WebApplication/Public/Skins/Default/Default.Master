@@ -74,10 +74,9 @@
 
         $(document).ready(function () {
             var $loader = $('#loading'), timer = 0;
-            $loader.hide()
-			.ajaxStart(function () {
+            $(document)
+            .ajaxStart(function () {
 			    timer && clearTimeout(timer);
-
 			    timer = setTimeout(function () {
 			        $loader.show();
 			    },
@@ -126,18 +125,22 @@
 					</div>
 				</div>
 			</div>
-			<div id="loading" style="height: 26px; float:left;">
-				&nbsp;<img style="vertical-align: middle;" alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
-			</div>
-			<div id="HorizontalDiv" style="height: 26px;">
-			</div>
+            <div class="Row" style="height: 26px;">
+                <div class="Column" style="color:white;">
+                    <span id="pageMessage" class="Form_Title"></span>
+                </div>
+			    <div class="Column" id="loading">
+				    &nbsp;<img alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
+			    </div>
+			    <div class="Column" id="HorizontalDiv">
+			    </div>
+            </div>
 		</div>
 		<div class="colmask leftmenu">
 			<div class="colleft">
 				<div class="col1" style="overflow: auto">
 					<!-- Column 1 start -->
 					<p>
-                        <span id="pageMessage" class="Form_Title"></span>
 						<asp:ContentPlaceHolder ID="MainContent" runat="server">
 						</asp:ContentPlaceHolder>
 					</p>

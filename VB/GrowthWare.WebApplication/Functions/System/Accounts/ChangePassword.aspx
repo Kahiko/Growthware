@@ -6,11 +6,6 @@
     <form id="frmChangePassword" runat="server">
 	    <div>
 		    <table border="0" cellpadding="3" cellspacing="3" style="font: 8pt verdana, arial;">
-			    <tr>
-				    <td colspan="2">
-					    &nbsp;<label id="ClientMSG" runat="server" style="font-weight: bold; color: red"></label>
-				    </td>
-			    </tr>
 			    <tr id="trOldPassword" runat="server">
 				    <td align="right" valign="top">
 					    <span class="Form_LabelText">Old Password&nbsp;:</span>
@@ -93,16 +88,24 @@
         }
 	});
     function changePassword() {
-        //$mIncorrectLogon.css({ display: 'none' });
-        var $mClientMessage = $('#ClientMSG');
+        var $mClientMessage = $('#clientMessage');
+        $mClientMessage.html('');
         $mClientMessage.css({ display: 'none' });
+        var mChangePassword = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
         var mRetHTML = "";
+        var mOldPassword = $('#<%=OldPassword.ClientID %>').val();
+        if (typeof mOldPassword === 'undefined') {
+            mChangePassword.OldPassword = 'forced change';
+        } else
+        {
+            mChangePassword.OldPassword = mOldPassword;
+        }
+        mChangePassword.NewPassword = $('#<%=NewPassword.ClientID %>').val();
+        GW.Common.debug(JSON.stringify(mChangePassword));
         try {
-            //var data = '{ "oldPassword" : "' + $('#<%=OldPassword.ClientID %>').val() + '", "newPassword" : "' + $('#<%=NewPassword.ClientID %>').val() + '" }'
-            var data = '{ "oldPassword" : "' + $('#<%=OldPassword.ClientID %>').val() + '", "newPassword" : "' + $('#<%=NewPassword.ClientID %>').val() + '" }'
             var options = GW.Model.DefaultWebMethodOptions();
             options.url = GW.Common.getBaseURL() + "/api/Accounts/ChangePassword?Action=ChangePassword";
-            options.data = JSON.stringify(data);
+            options.data = mChangePassword;
             options.contentType = 'application/json; charset=utf-8';
             options.dataType = 'json';
             GW.Common.JQueryHelper.callWeb(options, changePasswordSuccess, changePasswordError);
@@ -116,13 +119,13 @@
 
     function changePasswordSuccess(xhr) {
         GW.Common.debug(xhr);
-        var $mClientMessage = $('#ClientMSG');
-        var mRetHTML = xhr.d;
+        var $mClientMessage = $('#clientMessage');
+        var mRetHTML = xhr;
         $mClientMessage.html(mRetHTML.toString()).fadeIn(800);
     }
 
     function changePasswordError(xhr, status, error) {
-        var $mClientMessage = $('#ClientMSG');
+        var $mClientMessage = $('#clientMessage');
         var mRetHTML = 'Error changePasswordError on\n' + error;
         $mClientMessage.css({ display: 'none' });
         $mClientMessage.html(mRetHTML.toString());
