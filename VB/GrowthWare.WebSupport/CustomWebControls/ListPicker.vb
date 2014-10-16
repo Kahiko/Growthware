@@ -602,7 +602,7 @@ Namespace CustomWebControls
             ' Add Button
             Dim myButton As New HtmlControls.HtmlInputButton
             myButton.Value = m_SelectButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientId, SortOnChange))
+            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
             myButton.Attributes.Add("class", "listPickerArrow")
             myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
             myButton.RenderControl(writer)
@@ -610,7 +610,7 @@ Namespace CustomWebControls
 
             myButton = New HtmlControls.HtmlInputButton
             myButton.Value = m_SelectAllButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientId, SortOnChange))
+            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
             myButton.Attributes.Add("class", "listPickerArrow")
             myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
             myButton.RenderControl(writer)
@@ -618,7 +618,7 @@ Namespace CustomWebControls
 
             myButton = New HtmlControls.HtmlInputButton
             myButton.Value = m_DeselectButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientId))
+            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
             myButton.Attributes.Add("class", "listPickerArrow")
             myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
             myButton.RenderControl(writer)
@@ -626,7 +626,7 @@ Namespace CustomWebControls
 
             myButton = New HtmlControls.HtmlInputButton
             myButton.Value = m_DeselectAllButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientId))
+            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
             myButton.Attributes.Add("class", "listPickerArrow")
             myButton.Attributes.Add("style", "width: " & ButtonWidth)
             myButton.RenderControl(writer)
@@ -655,7 +655,7 @@ Namespace CustomWebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Td)
                 myButton = New HtmlControls.HtmlInputButton
                 myButton.Value = "▲"
-                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "moveUp(this.form.{0}_DstList)", ClientId))
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID))
                 myButton.Attributes.Add("class", "listPickerArrow")
                 myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
                 myButton.RenderControl(writer)
@@ -663,7 +663,7 @@ Namespace CustomWebControls
 
                 myButton = New HtmlControls.HtmlInputButton
                 myButton.Value = "▼"
-                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "moveDown(this.form.{0}_DstList)", ClientId))
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID))
                 myButton.Attributes.Add("class", "listPickerArrow")
                 myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
                 myButton.RenderControl(writer)
