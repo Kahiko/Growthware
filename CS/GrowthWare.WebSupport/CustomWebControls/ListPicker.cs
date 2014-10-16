@@ -6,7 +6,8 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
-using GrowthWare.WebSupport.CustomWebControls.Designers;
+using GrowthWare.WebSupport.CustomWebContswitchList
+rols.Designers;
 
 namespace GrowthWare.WebSupport.CustomWebControls
 {
@@ -658,7 +659,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
             // Add Button 
             HtmlInputButton myButton = new HtmlInputButton();
             myButton.Value = m_SelectButtonText;
-            myButton.Attributes.Add("onclick", string.Format("switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
+            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
             myButton.Attributes.Add("class", "listPickerArrow");
             myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
             myButton.RenderControl(writer);
@@ -666,7 +667,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 
             myButton = new HtmlInputButton();
             myButton.Value = m_SelectAllButtonText;
-            myButton.Attributes.Add("onclick", string.Format("switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
+            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
             myButton.Attributes.Add("class", "listPickerArrow");
             myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
             myButton.RenderControl(writer);
@@ -674,7 +675,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 
             myButton = new HtmlInputButton();
             myButton.Value = m_DeSelectButtonText;
-            myButton.Attributes.Add("onclick", string.Format("switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
+            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
             myButton.Attributes.Add("class", "listPickerArrow");
             myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
             myButton.RenderControl(writer);
@@ -682,7 +683,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 
             myButton = new HtmlInputButton();
             myButton.Value = m_DeSelectAllButtonText;
-            myButton.Attributes.Add("onclick", string.Format("switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
+            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
             myButton.Attributes.Add("class", "listPickerArrow");
             myButton.Attributes.Add("style", "width: " + ButtonWidth);
             myButton.RenderControl(writer);
@@ -714,7 +715,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 
                 myButton = new HtmlInputButton();
                 myButton.Value = "▲";
-                myButton.Attributes.Add("onclick", string.Format("moveUp(this.form.{0}_DstList)", ClientID));
+                myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID));
                 myButton.Attributes.Add("class", "listPickerArrow");
                 myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
                 myButton.RenderControl(writer);
@@ -722,7 +723,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 
                 myButton = new HtmlInputButton();
                 myButton.Value = "▼";
-                myButton.Attributes.Add("onclick", string.Format("moveDown(this.form.{0}_DstList)", ClientID));
+                myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID));
                 myButton.Attributes.Add("class", "listPickerArrow");
                 myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
                 myButton.RenderControl(writer);
