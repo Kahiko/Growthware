@@ -158,68 +158,90 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="About.aspx" />
-    <Content Include="Account\Confirm.aspx" />
-    <Content Include="Account\Forgot.aspx" />
-    <Content Include="Account\Login.aspx" />
-    <Content Include="Account\Manage.aspx" />
-    <Content Include="Account\OpenAuthProviders.ascx" />
-    <Content Include="Account\Register.aspx" />
-    <Content Include="Account\RegisterExternalLogin.aspx" />
-    <Content Include="Account\ResetPassword.aspx" />
-    <Content Include="Account\ResetPasswordConfirmation.aspx" />
-    <Content Include="Contact.aspx" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
-    <Content Include="Content\Site.css" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Account\Web.config" />
-    <None Include="Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.10.2.js" />
-    <Content Include="Scripts\jquery-1.10.2.min.js" />
-    <Content Include="Scripts\modernizr-2.6.2.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\WebForms\DetailsView.js" />
-    <Content Include="Scripts\WebForms\Focus.js" />
-    <Content Include="Scripts\WebForms\GridView.js" />
-    <Content Include="Scripts\WebForms\Menu.js" />
-    <Content Include="Scripts\WebForms\MenuStandards.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjax.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxApplicationServices.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxComponentModel.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxCore.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxGlobalization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxHistory.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxNetwork.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxSerialization.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxTimer.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebForms.js" />
-    <Content Include="Scripts\WebForms\MSAjax\MicrosoftAjaxWebServices.js" />
-    <Content Include="Scripts\WebForms\SmartNav.js" />
-    <Content Include="Scripts\WebForms\TreeView.js" />
-    <Content Include="Scripts\WebForms\WebForms.js" />
-    <Content Include="Scripts\WebForms\WebParts.js" />
-    <Content Include="Scripts\WebForms\WebUIValidation.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Site.Master" />
-    <Content Include="ViewSwitcher.ascx" />
+    <Content Include="Public\CSS\bootstrap-theme.min.css" />
+    <Content Include="Public\CSS\bootstrap.min.css" />
+    <Content Include="Public\CSS\BootStrap\bootstrap-theme.css" />
+    <Content Include="Public\CSS\BootStrap\bootstrap.css" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.css" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.structure.css" />
+    <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Public\Growthware\Images\Add.png" />
+    <Content Include="Public\Growthware\Images\ajax-loader.gif" />
+    <Content Include="Public\Growthware\Images\ajax-loader_Green.gif" />
+    <Content Include="Public\Growthware\Images\delete_red.png" />
+    <Content Include="Public\Growthware\Images\Error.png" />
+    <Content Include="Public\Growthware\Images\File.gif" />
+    <Content Include="Public\Growthware\Images\Folder.gif" />
+    <Content Include="Public\Growthware\Images\help.gif" />
+    <Content Include="Public\Growthware\Images\help_and_support.png" />
+    <Content Include="Public\Growthware\Images\list-edit.png" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_blue.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_green.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_purple.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_red.gif" />
+    <Content Include="Public\Growthware\Images\Misc\sidebar_yellow.gif" />
+    <Content Include="Public\Growthware\Images\new_folder.png" />
+    <Content Include="Public\Growthware\Images\Paging\first_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\last_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\next_blue.png" />
+    <Content Include="Public\Growthware\Images\Paging\previous_blue.png" />
+    <Content Include="Public\Growthware\Images\progress-bar.gif" />
+    <Content Include="Public\Growthware\Images\sort_asc.png" />
+    <Content Include="Public\Growthware\Images\sort_desc.png" />
+    <Content Include="Public\Growthware\Scripts\GW.Common.js" />
+    <Content Include="Public\Growthware\Scripts\GW.FileManager.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Model.js" />
+    <Content Include="Public\Growthware\Scripts\GW.NavigationController.js" />
+    <Content Include="Public\Growthware\Scripts\GW.NavigationHandler.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Search.js" />
+    <Content Include="Public\Growthware\Scripts\GW.Upload.js" />
+    <Content Include="Public\Growthware\Styles\GrowthWare.css" />
+    <Content Include="Public\Scripts\angular-1.2.js" />
+    <Content Include="Public\Scripts\angular-1.3.js" />
+    <Content Include="Public\Scripts\bootstrap.js" />
+    <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Public\Scripts\jquery-1.10.2.js" />
+    <Content Include="Public\Scripts\jquery-ui.js" />
+    <Content Include="Public\Scripts\jquery.js" />
+    <Content Include="Public\Scripts\jSon2.js" />
+    <Content Include="Public\Scripts\respond.js" />
+    <Content Include="Public\SiteStyles\Blue Arrow.css" />
+    <Content Include="Public\SiteStyles\Default.css" />
+    <Content Include="Public\Skins\Default\CSS\Skin.css" />
+    <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
+    <Content Include="Public\Skins\DevOps\Images\logo.png" />
+    <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
-    <None Include="Project_Readme.html" />
-    <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Site.Mobile.Master" />
+    <Content Include="Public\CSS\BootStrap\bootstrap-theme.css.map" />
+    <Content Include="Public\CSS\BootStrap\bootstrap.css.map" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Public\Skins\Default\Default.Master" />
+    <Content Include="Public\Skins\DevOps\Default.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -228,88 +250,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Account\Confirm.aspx.cs">
-      <DependentUpon>Confirm.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Confirm.aspx.designer.cs">
-      <DependentUpon>Confirm.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Forgot.aspx.cs">
-      <DependentUpon>Forgot.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Forgot.aspx.designer.cs">
-      <DependentUpon>Forgot.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Login.aspx.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Login.aspx.designer.cs">
-      <DependentUpon>Login.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Manage.aspx.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Manage.aspx.designer.cs">
-      <DependentUpon>Manage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\OpenAuthProviders.ascx.cs">
-      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\OpenAuthProviders.ascx.designer.cs">
-      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\Register.aspx.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\Register.aspx.designer.cs">
-      <DependentUpon>Register.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\RegisterExternalLogin.aspx.cs">
-      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\RegisterExternalLogin.aspx.designer.cs">
-      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\ResetPassword.aspx.cs">
-      <DependentUpon>ResetPassword.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\ResetPassword.aspx.designer.cs">
-      <DependentUpon>ResetPassword.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\ResetPasswordConfirmation.aspx.cs">
-      <DependentUpon>ResetPasswordConfirmation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\ResetPasswordConfirmation.aspx.designer.cs">
-      <DependentUpon>ResetPasswordConfirmation.aspx</DependentUpon>
-    </Compile>
     <Compile Include="App_Start\BundleConfig.cs" />
-    <Compile Include="About.aspx.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="About.aspx.designer.cs">
-      <DependentUpon>About.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="App_Start\IdentityConfig.cs" />
-    <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Contact.aspx.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Contact.aspx.designer.cs">
-      <DependentUpon>Contact.aspx</DependentUpon>
-    </Compile>
+    <Compile Include="Controllers\AccountsController.cs" />
+    <Compile Include="Controllers\FunctionsController.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -320,34 +264,27 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Site.Master.cs">
-      <DependentUpon>Site.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Public\Skins\Default\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
     </Compile>
-    <Compile Include="Site.Master.designer.cs">
-      <DependentUpon>Site.Master</DependentUpon>
+    <Compile Include="Public\Skins\Default\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
     </Compile>
-    <Compile Include="Site.Mobile.Master.cs">
-      <DependentUpon>Site.Mobile.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
+    <Compile Include="Public\Skins\DevOps\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
     </Compile>
-    <Compile Include="Site.Mobile.Master.designer.cs">
-      <DependentUpon>Site.Mobile.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Startup.cs" />
-    <Compile Include="ViewSwitcher.ascx.cs">
-      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="ViewSwitcher.ascx.designer.cs">
-      <DependentUpon>ViewSwitcher.ascx</DependentUpon>
+    <Compile Include="Public\Skins\DevOps\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
+    <Folder Include="Functions\" />
+    <Folder Include="Public\Images\" />
+    <Folder Include="Public\Scripts\GrowthWare\" />
+    <Folder Include="UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj">

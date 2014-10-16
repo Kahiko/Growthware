@@ -39,7 +39,8 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>GrowthWare.WebSupport.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -85,9 +86,6 @@
     <Compile Include="WebImpersonate.cs" />
     <Compile Include="WebImpersonateException.cs" />
     <Compile Include="WebSupportException.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="GrowthWare.WebSupport.pfx" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.csproj">

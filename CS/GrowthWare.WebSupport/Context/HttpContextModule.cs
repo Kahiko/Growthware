@@ -43,6 +43,11 @@ namespace GrowthWare.WebSupport.Context
             }
         }
 
+        /// <summary>
+        /// Ons the begin request.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void onBeginRequest(object sender, EventArgs e)
         {
             if (processRequest())
@@ -96,6 +101,11 @@ namespace GrowthWare.WebSupport.Context
             }
         }
 
+        /// <summary>
+        /// Ons the application error.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         private void onApplicationError(Object sender, EventArgs e)
         {
             Exception mEx = HttpContext.Current.Server.GetLastError();
@@ -112,62 +122,89 @@ namespace GrowthWare.WebSupport.Context
             HttpContext.Current.Server.ClearError();
         }
 
-        private void onAcquireRequestState(Object sender, EventArgs e)
+        /// <summary>
+        /// Ons the state of the acquire request.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        private void onAcquireRequestState(object sender, EventArgs e)
         {
-            if (HttpContext.Current.Session == null) return;
             Logger mLog = Logger.Instance();
-            //MAccountProfile mAccountProfile = AccountUtility.GetProfile("Anonymous");
-            //MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("Generic_Home");
             mLog.Debug("onAcquireRequestState():: Started");
 
-            if (HttpContext.Current.Session != null)
+            if ((HttpContext.Current.Session != null))
             {
                 if (processRequest())
                 {
-                    if (HttpContext.Current.Request.QueryString["Action"] != null)
+                    if ((HttpContext.Current.Request.QueryString["Action"] != null))
                     {
-                        String mAction = HttpContext.Current.Request.QueryString["Action"].ToString();
+                        string mAction = HttpContext.Current.Request.QueryString["Action"].ToString(CultureInfo.InvariantCulture);
                         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
 
                         string mHashCode = string.Empty;
                         string mWindowUrl = HttpContext.Current.Request.Url.ToString();
-                        string[] urlParts = mWindowUrl.Split('?');
+                        string[] mUrlParts = mWindowUrl.Split('?');
 
-                        if (urlParts.Length > 1) mHashCode = urlParts[1];
+                        if (mUrlParts.Length > 1)
+                            mHashCode = mUrlParts[1];
                         mLog.Debug("hashCode: " + mHashCode);
                         mLog.Debug("Processing action: " + mAction);
-                        if(!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" || mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
+
+                        if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
                         {
                             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-                            mLog.Debug("Processing for account " + mAccountProfile.Account);
-                            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-                            if(!mSecurityInfo.MayView)
+                            if (!(mAccountProfile.Status == (int)SystemStatus.ChangePassword))
                             {
-                                mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
+                                mLog.Debug("Processing for account " + mAccountProfile.Account);
+                                dynamic mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                                if (!mSecurityInfo.MayView)
+                                {
+                                    if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+                                    {
+                                        Exception mException = new Exception("Your session has timed out.<br/>Please sign in.");
+                                        GWWebHelper.ExceptionError = mException;
+                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx");
+                                    }
+                                    mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
+                                }
                             }
-                        }else
+                            else
+                            {
+                                Exception mException = new Exception("Your password needs to be changed before any other action can be performed.");
+                                GWWebHelper.ExceptionError = mException;
+                                HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
+                            }
+                        }
+                        else
                         {
                             mLog.Debug("Menu data or Logoff/Logon requested");
                         }
                     }
-                    else 
-                    { 
-                        mLog.Debug("QueryString[\"Action\"] is null");
+                    else
+                    {
+                        mLog.Debug("QueryString(Action) is nothing");
                     }
                 }
-                else 
+                else
                 {
                     mLog.Debug("Request is not for a processing event.");
                 }
             }
-            else 
+            else
             {
                 mLog.Debug("No session exiting");
             }
+
             mLog.Debug("onAcquireRequestState():: Done");
         }
 
+        /// <summary>
+        /// Ons the end request.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        /// <exception cref="System.Exception"></exception>
         private void onEndRequest(Object sender, EventArgs e)
         {
             if (processRequest())
@@ -289,6 +326,10 @@ namespace GrowthWare.WebSupport.Context
             m_Disposing = true;
         }
 
+        /// <summary>
+        /// Implements Dispose
+        /// </summary>
+        /// <remarks></remarks>
         public void Dispose()
         {
             Dispose(true);
