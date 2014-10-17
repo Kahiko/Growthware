@@ -13,7 +13,7 @@ namespace GrowthWare.WebSupport
     /// GWWebHelper Contains non volital data needed throughout the system.
     /// </summary>
     /// <remarks></remarks>
-    static class GWWebHelper
+    public static class GWWebHelper
     {
         private static Exception s_ExceptionError = null;
 
@@ -32,6 +32,20 @@ namespace GrowthWare.WebSupport
                     myVersion = myAssembly.GetName().Version.ToString();
                 }
                 return myVersion;
+            }
+        }
+
+        private static string s_Version = string.Empty;
+
+        /// <summary>
+        /// Gets the environment.
+        /// </summary>
+        /// <value>The environment.</value>
+        public static String DisplayEnvironment
+        {
+            get
+            {
+                return ConfigSettings.EnvironmentDisplayed;
             }
         }
 
@@ -111,6 +125,22 @@ namespace GrowthWare.WebSupport
                     myRoot_Site = myHTTP_Schema + "://" + HttpContext.Current.Request.ServerVariables["HTTP_HOST"] + "/" + ConfigSettings.AppName + "/";
                 }
                 return myRoot_Site;
+            }
+        }
+
+        /// <summary>
+        /// Gets the verison.
+        /// </summary>
+        /// <value>The verison.</value>
+        public static string Version
+        {
+            get
+            {
+                if (s_Version == string.Empty)
+                {
+                    s_Version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
+                }
+                return s_Version;
             }
         }
     }

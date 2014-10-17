@@ -12,39 +12,66 @@ namespace GrowthWare.WebApplication
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkID=303951
         public static void RegisterBundles(BundleCollection bundles)
         {
-            bundles.Add(new ScriptBundle("~/bundles/WebFormsJs").Include(
-                            "~/Scripts/WebForms/WebForms.js",
-                            "~/Scripts/WebForms/WebUIValidation.js",
-                            "~/Scripts/WebForms/MenuStandards.js",
-                            "~/Scripts/WebForms/Focus.js",
-                            "~/Scripts/WebForms/GridView.js",
-                            "~/Scripts/WebForms/DetailsView.js",
-                            "~/Scripts/WebForms/TreeView.js",
-                            "~/Scripts/WebForms/WebParts.js"));
+        bundles.Add(
+            new ScriptBundle("~/bundles/jquery").Include(
+            "~/Public/Scripts/jquery-{version}.js"
+            )
+        );
 
-            // Order is very important for these files to work, they have explicit dependencies
-            bundles.Add(new ScriptBundle("~/bundles/MsAjaxJs").Include(
-                    "~/Scripts/WebForms/MsAjax/MicrosoftAjax.js",
-                    "~/Scripts/WebForms/MsAjax/MicrosoftAjaxApplicationServices.js",
-                    "~/Scripts/WebForms/MsAjax/MicrosoftAjaxTimer.js",
-                    "~/Scripts/WebForms/MsAjax/MicrosoftAjaxWebForms.js"));
+        bundles.Add(
+            new ScriptBundle("~/bundles/jqueryUI").Include(
+            "~/Public/Scripts/jquery-ui.js"
+            )
+        );
 
-            // Use the Development version of Modernizr to develop with and learn from. Then, when you’re
-            // ready for production, use the build tool at http://modernizr.com to pick only the tests you need
-            bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
-                            "~/Scripts/modernizr-*"));
+        bundles.Add(
+            new ScriptBundle("~/bundles/angular").Include(
+            "~/Public/Scripts/angular-{version}.js"
+            )
+        );
 
-            // Set EnableOptimizations to false for debugging. For more information,
-            // visit http://go.microsoft.com/fwlink/?LinkId=301862
-            BundleTable.EnableOptimizations = true;
+        bundles.Add(
+            new ScriptBundle("~/bundles/bootstrap").Include(
+                "~/Public/Scripts/bootstrap.js",
+                "~/Public/Scripts/respond.js"
+            )
+        );
 
-            ScriptManager.ScriptResourceMapping.AddDefinition(
-                "respond",
-                new ScriptResourceDefinition
-                {
-                    Path = "~/Scripts/respond.min.js",
-                    DebugPath = "~/Scripts/respond.js",
-                });
+        bundles.Add(
+            new ScriptBundle("~/bundles/GrowthWare").Include(
+            "~/Public/GrowthWare/Scripts/GW.Common.js",
+            "~/Public/GrowthWare/Scripts/GW.FileManager.js",
+            "~/Public/GrowthWare/Scripts/GW.Model.js",
+            "~/Public/GrowthWare/Scripts/GW.NavigationController.js",
+            "~/Public/GrowthWare/Scripts/GW.NavigationHandler.js",
+            "~/Public/GrowthWare/Scripts/GW.Search.js",
+            "~/Public/GrowthWare/Scripts/GW.Upload.js",
+            "~/Public/Scripts/jSon2.js"
+            )
+        );
+
+        bundles.Add(
+            new StyleBundle("~/Content/BootstrapCSS").Include(
+                "~/Public/CSS/BootStrap/bootstrap-theme.css",
+                "~/Public/CSS/BootStrap/bootstrap-theme.css.map",
+                "~/Public/CSS/BootStrap/bootstrap.css",
+                "~/Public/CSS/BootStrap/bootstrap.css.map"
+            )
+        );
+
+        bundles.Add(
+            new StyleBundle("~/Content/GrowthWare").Include(
+                "~/Public/Growthware/Styles/GrowthWare.css"
+            )
+        );
+
+        bundles.Add(
+            new StyleBundle("~/Content/jQueryUIRedmond").Include(
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+            )
+        );
         }
     }
 }

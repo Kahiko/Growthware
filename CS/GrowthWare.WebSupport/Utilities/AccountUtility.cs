@@ -137,6 +137,32 @@ namespace GrowthWare.WebSupport.Utilities
         }
 
         /// <summary>
+        /// Gets the name of the HTTP context user.
+        /// </summary>
+        /// <returns>String.</returns>
+        public static String GetHttpContextUserName()
+        {
+            String mRetVal = "Anonymous";
+            if (HttpContext.Current != null && HttpContext.Current.User != null && HttpContext.Current.User.Identity != null)
+            {
+                if (HttpContext.Current.User.Identity.Name.Length > 0)
+                {
+                    if (!ConfigSettings.StripDomainFromHttpContextUserName())
+                    {
+                        mRetVal = HttpContext.Current.User.Identity.Name;
+                    }
+                    else
+                    {
+                        int mPos = HttpContext.Current.User.Identity.Name.IndexOf(@"\");
+                        mRetVal = HttpContext.Current.User.Identity.Name.Substring(mPos, HttpContext.Current.User.Identity.Name.Length - mPos);
+                    }
+
+                }
+            }
+            return mRetVal;
+        }
+
+        /// <summary>
         /// Retrieves the current profile.
         /// </summary>
         /// <returns>MAccountProfile</returns>

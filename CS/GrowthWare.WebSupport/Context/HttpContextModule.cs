@@ -12,6 +12,7 @@ using GrowthWare.WebSupport.Utilities;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Enumerations;
 using GrowthWare.Framework.Model.Profiles;
+using GrowthWare.Framework.BusinessData;
 
 namespace GrowthWare.WebSupport.Context
 {
@@ -113,7 +114,7 @@ namespace GrowthWare.WebSupport.Context
             {
                 Logger mLog = Logger.Instance();
                 mLog.Error(mEx);
-                if (mEx.GetType() == typeof(HttpException)) 
+                if (mEx.GetType() == typeof(BusinessLogicLayerException)) 
                 {
                     Configuration config = WebConfigurationManager.OpenWebConfiguration("~");
                     ConfigSettings.SetEnvironmentValue(config, false, "DB_Status", "OffLine", false);

@@ -158,10 +158,24 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
+    <Content Include="Functions\System\Accounts\Logoff.aspx" />
+    <Content Include="Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
+    <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Errors\AccessDenied.aspx" />
+    <Content Include="Functions\System\Home\GenericHome.aspx" />
+    <Content Include="Functions\System\Home\Home.aspx" />
+    <Content Include="Functions\System\Menus\HHMenu.aspx" />
+    <Content Include="Functions\System\Menus\HMenu.aspx" />
+    <Content Include="Functions\System\Menus\VHMenu.aspx" />
+    <Content Include="Functions\System\Menus\VMenu.aspx" />
+    <Content Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx" />
+    <Content Include="index.aspx" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Public\CSS\bootstrap-theme.min.css" />
@@ -254,26 +268,126 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\FunctionsController.cs" />
-    <Compile Include="Default.aspx.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Functions\System\Accounts\ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
+    <Compile Include="Functions\System\Accounts\ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Logoff.aspx.cs">
+      <DependentUpon>Logoff.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Logoff.aspx.designer.cs">
+      <DependentUpon>Logoff.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Logon.aspx.cs">
+      <DependentUpon>Logon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Logon.aspx.designer.cs">
+      <DependentUpon>Logon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.cs">
+      <DependentUpon>AddEditAccount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.designer.cs">
+      <DependentUpon>AddEditAccount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.cs">
+      <DependentUpon>SearchAccountResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.designer.cs">
+      <DependentUpon>SearchAccountResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.cs">
+      <DependentUpon>SearchAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.designer.cs">
+      <DependentUpon>SearchAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Errors\AccessDenied.aspx.cs">
+      <DependentUpon>AccessDenied.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Errors\AccessDenied.aspx.designer.cs">
+      <DependentUpon>AccessDenied.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Home\GenericHome.aspx.cs">
+      <DependentUpon>GenericHome.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Home\GenericHome.aspx.designer.cs">
+      <DependentUpon>GenericHome.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Home\Home.aspx.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Home\Home.aspx.designer.cs">
+      <DependentUpon>Home.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Menus\HHMenu.aspx.cs">
+      <DependentUpon>HHMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Menus\HHMenu.aspx.designer.cs">
+      <DependentUpon>HHMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Menus\HMenu.aspx.cs">
+      <DependentUpon>HMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Menus\HMenu.aspx.designer.cs">
+      <DependentUpon>HMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Menus\VHMenu.aspx.cs">
+      <DependentUpon>VHMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Menus\VHMenu.aspx.designer.cs">
+      <DependentUpon>VHMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Menus\VMenu.aspx.cs">
+      <DependentUpon>VMenu.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Menus\VMenu.aspx.designer.cs">
+      <DependentUpon>VMenu.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.cs">
+      <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.designer.cs">
+      <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="index.aspx.cs">
+      <DependentUpon>index.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="index.aspx.designer.cs">
+      <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
     <Compile Include="Public\Skins\Default\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Public\Skins\Default\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
     <Compile Include="Public\Skins\DevOps\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Public\Skins\DevOps\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
@@ -281,7 +395,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Functions\" />
+    <Folder Include="Functions\Overrides\" />
     <Folder Include="Public\Images\" />
     <Folder Include="Public\Scripts\GrowthWare\" />
     <Folder Include="UserControls\" />
