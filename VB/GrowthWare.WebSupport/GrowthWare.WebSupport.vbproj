@@ -51,14 +51,6 @@
     </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GrowthWare.Framework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=aeb220d73d862efd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.dll</HintPath>
-    </Reference>
-    <Reference Include="GrowthWare.Framework.BusinessData, Version=1.0.0.0, Culture=neutral, PublicKeyToken=117e92af438f025d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.BusinessData.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Owin">
       <HintPath>..\packages\Microsoft.Owin.2.1.0\lib\net45\Microsoft.Owin.dll</HintPath>
     </Reference>
@@ -154,6 +146,16 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="CustomWebControls\JS\ListPicker.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.vbproj">
+      <Project>{055a674b-3af2-450a-be49-daff60828878}</Project>
+      <Name>GrowthWare.Framework.BusinessData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
+      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -50,10 +50,6 @@
     <AssemblyOriginatorKeyFile>GrowthWare.Framework.BusinessData.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GrowthWare.Framework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=aeb220d73d862efd, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\GrowthWareDLLs\GrowthWare.Framework.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
       <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
     </Reference>
@@ -128,6 +124,12 @@
     <Folder Include="DataAccessLayer\Oracle\11g\" />
     <Folder Include="DataAccessLayer\Oracle\Base\" />
     <Folder Include="DataAccessLayer\Postgres\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
+      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

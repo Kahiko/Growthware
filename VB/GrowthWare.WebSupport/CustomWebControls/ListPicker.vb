@@ -315,7 +315,7 @@ Namespace CustomWebControls
             If Not (Page Is Nothing) Then
                 MyBase.OnInit(e)
                 Page.RegisterRequiresPostBack(Me)
-                Dim scriptUrl As String = Page.ClientScript.GetWebResourceUrl(Me.GetType(), "GrowthWare.CustomWebControls.ListPicker.js")
+                Dim scriptUrl As String = Page.ClientScript.GetWebResourceUrl(Me.GetType(), "GrowthWare.WebSupport.ListPicker.js")
                 Page.ClientScript.RegisterClientScriptInclude(Me.GetType(), "GrowthWareListPicker", scriptUrl)
             End If
         End Sub       'OnInit

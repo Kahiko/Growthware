@@ -35,7 +35,8 @@ Public Module BundleConfig
             "~/Public/GrowthWare/Scripts/GW.NavigationController.js",
             "~/Public/GrowthWare/Scripts/GW.NavigationHandler.js",
             "~/Public/GrowthWare/Scripts/GW.Search.js",
-            "~/Public/GrowthWare/Scripts/GW.Upload.js"
+            "~/Public/GrowthWare/Scripts/GW.Upload.js",
+            "~/Public/Scripts/jSon2.js"
             )
         )
 
