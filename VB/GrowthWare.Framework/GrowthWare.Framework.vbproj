@@ -47,8 +47,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>
-    </AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>GrowthWare.Framework.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="log4net">
@@ -120,6 +119,7 @@
     <Compile Include="Model\Profiles\MRoutes.vb" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="GrowthWare.Framework.pfx" />
     <None Include="My Project\Application.myapp">
       <Generator>MyApplicationCodeGenerator</Generator>
       <LastGenOutput>Application.Designer.vb</LastGenOutput>

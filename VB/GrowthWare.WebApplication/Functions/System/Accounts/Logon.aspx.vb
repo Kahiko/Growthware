@@ -12,7 +12,7 @@ Public Class Logon
             clientMessage.InnerHtml = mException.Message.ToString()
             GWWebHelper.ExceptionError = Nothing
         Else
-            If AccountUtility.CurrentProfile().Account.ToString().ToUpper(New CultureInfo("en-US", False)) <> "ANONYMOUS" Then
+            If AccountUtility.CurrentProfile().Account.ToString().ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" Then
                 clientMessage.Style.Add("display", "")
                 clientMessage.InnerHtml = "You are currently logged on as " + AccountUtility.CurrentProfile().Account.ToString()
             End If
