@@ -364,7 +364,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
             {
                 base.OnInit(e);
                 Page.RegisterRequiresPostBack(this);
-                string scriptUrl = Page.ClientScript.GetWebResourceUrl(this.GetType(), "GrowthWare.CustomWebControls.JS.ListPicker.js");
+                string scriptUrl = Page.ClientScript.GetWebResourceUrl(this.GetType(), "GrowthWare.WebSupport.CustomWebControls.JS.ListPicker.js");
                 Page.ClientScript.RegisterClientScriptInclude(this.GetType(), "GrowthWareListPicker", scriptUrl);
             }
         }
