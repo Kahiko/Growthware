@@ -171,7 +171,7 @@
     <Content Include="Functions\System\Errors\AccessDenied.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
-    <Content Include="Functions\System\Logon\Logon.aspx" />
+    <Content Include="Functions\System\Accounts\Logon.aspx" />
     <Content Include="Functions\System\Menus\HHMenu.aspx" />
     <Content Include="Functions\System\Menus\HMenu.aspx" />
     <Content Include="Functions\System\Menus\VHMenu.aspx" />
@@ -326,10 +326,10 @@
       <DependentUpon>Home.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="Functions\System\Logon\Logon.aspx.designer.vb">
+    <Compile Include="Functions\System\Accounts\Logon.aspx.designer.vb">
       <DependentUpon>Logon.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Functions\System\Logon\Logon.aspx.vb">
+    <Compile Include="Functions\System\Accounts\Logon.aspx.vb">
       <DependentUpon>Logon.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
