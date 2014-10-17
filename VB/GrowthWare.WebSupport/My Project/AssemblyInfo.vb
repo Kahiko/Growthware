@@ -35,4 +35,4 @@ Imports System.Web.UI
 
 <Assembly: AssemblyVersion("6.0.0.*")> 
 <Assembly: AssemblyFileVersion("6.0.0.0")> 
-<Assembly: System.Web.UI.WebResource("GrowthWare.WebSupport.ListPicker.js", "application/x-javascript", PerformSubstitution:=True)> 
+<Assembly: System.Web.UI.WebResource("GrowthWare.WebSupport.ListPicker.js", "application/x-javascript", PerformSubstitution:=False)> 
