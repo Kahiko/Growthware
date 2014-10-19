@@ -163,7 +163,7 @@ Namespace BusinessLogicLayer
         ''' <param name="saveGroups">Boolean</param>
         ''' <param name="saveRoles">Boolean</param>
         Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile  can not be null or Nothing in VB.net!")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             If IsDatabaseOnline() Then
                 m_DFunctions.Profile = profile
                 profile.Id = m_DFunctions.Save()
@@ -190,7 +190,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null or Nothing in VB.net!")
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable = Nothing
             If IsDatabaseOnline() Then
                 mRetVal = m_DFunctions.Search(searchCriteria)
@@ -203,8 +203,8 @@ Namespace BusinessLogicLayer
         End Sub
 
         Public Sub MoveMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType)
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null or Nothing in VB.net!")
-            If profile Is Nothing Then Throw New ArgumentNullException("direction", "direction can not be null or Nothing in VB.net!")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
+            If profile Is Nothing Then Throw New ArgumentNullException("direction", "direction cannot be a null reference (Nothing in Visual Basic)!")
             If IsDatabaseOnline() Then
                 m_DFunctions.UpdateMenuOrder(profile, direction)
             End If

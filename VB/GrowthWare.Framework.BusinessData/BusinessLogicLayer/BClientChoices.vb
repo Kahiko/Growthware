@@ -112,7 +112,7 @@ Namespace BusinessLogicLayer
                     m_DClientChoices.Save(clientChoicesState.ChoicesHashtable)
                 End If
             Else
-                Throw New ArgumentNullException("clientChoicesState", "clientChoicesState can not be null")
+                Throw New ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!")
             End If
         End Sub
     End Class

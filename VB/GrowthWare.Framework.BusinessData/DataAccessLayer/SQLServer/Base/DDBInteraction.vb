@@ -306,7 +306,7 @@ Namespace DataAccessLayer.SQLServer.Base
                     End If
                 Next
             Else
-                Throw New ArgumentNullException("parameters", "parameters can not be nothing")
+                Throw New ArgumentNullException("parameters", "parameters cannot be a null reference (Nothing in Visual Basic)!")
             End If
             Return mRetVal
         End Function
@@ -349,7 +349,7 @@ Namespace DataAccessLayer.SQLServer.Base
                     mAdded_Updated_By = profile.UpdatedBy
                 End If
             Else
-                Throw New ArgumentNullException("profile", "profile can not be null!")
+                Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             End If
             Return mAdded_Updated_By
         End Function

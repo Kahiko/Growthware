@@ -112,7 +112,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Public Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable Implements IDFunction.GetMenuOrder
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Function_Sort"
             Dim mParameters() As SqlParameter = {New SqlParameter("@P_Function_SeqID", profile.Id)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
@@ -191,7 +191,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>DataTable</returns>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDFunction.Search
-            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null!")
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable
             Dim mParameters() As SqlParameter =
              {
@@ -208,7 +208,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Public Sub UpdateMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType) Implements IDFunction.UpdateMenuOrder
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSecurity.Set_Function_Sort"
             Dim mParameters() As SqlParameter =
              {

@@ -89,8 +89,8 @@ Namespace Model.Profiles
         ''' <param name="profileWithDerivedRoles">A profile that implements IMGroupRoleSecurity.</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal groupRolePermissionSecurity As IMGroupRolePermissionSecurity, ByVal profileWithDerivedRoles As IMGroupRoleSecurity)
-            If groupRolePermissionSecurity Is Nothing Then Throw New ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)")
-            If profileWithDerivedRoles Is Nothing Then Throw New ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)")
+            If groupRolePermissionSecurity Is Nothing Then Throw New ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!")
+            If profileWithDerivedRoles Is Nothing Then Throw New ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)!")
             ' Check View Permissions
             m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles)
             ' Check Add Permissions
@@ -109,8 +109,8 @@ Namespace Model.Profiles
         ''' <returns>True/False</returns>
         ''' <remarks></remarks>
         Protected Shared Function CheckAuthenticatedPermission(ByVal objRoles As Collection(Of String), ByVal profileDerivedRoles As Collection(Of String)) As Boolean
-            If objRoles Is Nothing Then Throw New ArgumentNullException("objRoles", "objRoles cannot be a null reference (Nothing in Visual Basic)")
-            If profileDerivedRoles Is Nothing Then Throw New ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)")
+            If objRoles Is Nothing Then Throw New ArgumentNullException("objRoles", "objRoles cannot be a null reference (Nothing in Visual Basic)!")
+            If profileDerivedRoles Is Nothing Then Throw New ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)!")
             Dim role As String
             'If objRoles contains the role "Anonymous" the don't bother running the rest of code just return true
             If objRoles.Contains("Anonymous") Then Return True

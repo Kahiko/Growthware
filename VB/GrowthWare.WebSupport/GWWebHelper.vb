@@ -79,7 +79,7 @@ Public Module GWWebHelper
     ''' <param name="queryString">The query string.</param>
     ''' <returns>System.String.</returns>
     Public Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
-        If request Is Nothing Then Throw New ArgumentNullException("request", "request can not be null (Nothing in VB)!")
+        If request Is Nothing Then Throw New ArgumentNullException("request", "request can not be null (Nothing in VB)")
         Dim mRetVal As String = String.Empty
         If Not request.QueryString(queryString) Is Nothing Then
             mRetVal = request.QueryString(queryString)

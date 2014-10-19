@@ -331,7 +331,7 @@ Namespace CustomWebControls
         ''' <param name="postCollection">The values.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         Public Function LoadPostData(ByVal postDataKey As String, ByVal postCollection As NameValueCollection) As Boolean Implements IPostBackDataHandler.LoadPostData
-            If postCollection Is Nothing Then Throw New ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)")
+            If postCollection Is Nothing Then Throw New ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)!")
             Dim _allState As String
             Dim _selectedState As String
 
@@ -531,7 +531,7 @@ Namespace CustomWebControls
         ''' </summary>
         ''' <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter" /> that represents the output stream to render HTML content on the client.</param>
         Protected Overrides Sub RenderContents(ByVal writer As HtmlTextWriter)
-            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)")
+            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)!")
             Dim item As String
             writer.RenderBeginTag(HtmlTextWriterTag.Tr) ' start the row
             ' Add Labels

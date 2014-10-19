@@ -198,7 +198,7 @@ Namespace Utilities
         ''' <exception cref="System.ArgumentNullException">directoryProfile;Can not be null reference (Nothing in Visual Basic)</exception>
         Public Function DoUpload(fileName As String, uploadFile As HttpPostedFile, currentDirectory As String, directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
             Dim mRetVal As String = "Upload successfull"
             Dim mDirectorySeparatorChar As Char = System.IO.Path.DirectorySeparatorChar
@@ -241,7 +241,7 @@ Namespace Utilities
         ''' <returns>string</returns>
         Public Function CreateDirectory(ByVal currentDirectory As String, ByVal newDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
             Dim mRetVal As String
             mRetVal = "Successfully created the new directory!"
@@ -278,7 +278,7 @@ Namespace Utilities
         ''' <returns></returns>
         Public Function DeleteDirectory(ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
             Dim mRetVal As String
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
@@ -315,7 +315,7 @@ Namespace Utilities
         ''' <returns>string</returns>
         Public Function DeleteFile(ByVal fileName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile cannot be a null reference (Nothing in Visual Basic)!")
             End If
             Dim mRetVal As String
             mRetVal = "Successfully deleted the file(s)"
@@ -350,7 +350,7 @@ Namespace Utilities
         ''' <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
         Public Function RenameFile(ByVal sourceFileName As String, ByVal destinationFileName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
             Dim mRetVal As String
             mRetVal = "Successfully renamed the file!"
@@ -385,7 +385,7 @@ Namespace Utilities
         ''' <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
         Public Function RenameDirectory(ByVal sourceDirectoryName As String, ByVal destinationDirectoryName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
-                Throw New ArgumentNullException("directoryProfile", "Can not be null.")
+                Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
             Dim mRetVal As String
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
@@ -423,8 +423,8 @@ Namespace Utilities
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
-            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)")
-            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)")
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!")
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
                 subDirectories = theDirectory.GetDirectories()
@@ -465,10 +465,10 @@ Namespace Utilities
         ''' <param name="directoryLineCount">The directory line count.</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByVal directoryLineCount As Integer)
-            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)")
-            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)")
-            If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)")
-            If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)")
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!")
+            If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)!")
+            If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)!")
 
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True

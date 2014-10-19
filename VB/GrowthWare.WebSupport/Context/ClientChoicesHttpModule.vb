@@ -21,7 +21,7 @@ Namespace Context
         ''' </summary>
         ''' <param name="context"></param>
         Public Sub Init(ByVal context As HttpApplication) Implements IHttpModule.Init
-            If context Is Nothing Then Throw New ArgumentNullException("context", "context can not be null (Nothing in VB)!")
+            If context Is Nothing Then Throw New ArgumentNullException("context", "context cannot be a null reference (Nothing in Visual Basic)!")
             AddHandler context.AcquireRequestState, AddressOf Me.AcquireRequestState
             AddHandler context.EndRequest, AddressOf Me.EndRequest
         End Sub

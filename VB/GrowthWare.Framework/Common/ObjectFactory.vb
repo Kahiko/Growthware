@@ -30,13 +30,13 @@ Namespace Common
         ''' <remarks></remarks>
         Shared Function Create(ByVal assemblyName As String, ByVal theNamespace As String, ByVal className As String) As Object
             If (assemblyName Is Nothing) Then
-                Throw New ArgumentNullException("assemblyName", "theAssemblyName cannot be a null reference (Nothing in Visual Basic)")
+                Throw New ArgumentNullException("assemblyName", "theAssemblyName cannot be a null reference (Nothing in Visual Basic)!")
             End If
             If theNamespace Is Nothing Then
-                Throw New ArgumentNullException("theNamespace", "theNamespace cannot be a null reference (Nothing in Visual Basic)")
+                Throw New ArgumentNullException("theNamespace", "theNamespace cannot be a null reference (Nothing in Visual Basic)!")
             End If
             If className Is Nothing Then
-                Throw New ArgumentNullException("className", "theClassName cannot be a null reference (Nothing in Visual Basic)")
+                Throw New ArgumentNullException("className", "theClassName cannot be a null reference (Nothing in Visual Basic)!")
             End If
             Dim mReturnObject As Object = Nothing
             Try

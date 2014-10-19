@@ -17,7 +17,7 @@ Namespace Utilities
         ''' <remarks>Frist Layer of items should have a ParentID of 1</remarks>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="ULLI")>
         Public Function GenerateULLI(ByVal menuData As DataTable, ByVal value As StringBuilder) As String
-            If value Is Nothing Then Throw New ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)")
+            If value Is Nothing Then Throw New ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)!")
             value.AppendLine("<ul>")
             Dim datView As DataView = Nothing
             Try

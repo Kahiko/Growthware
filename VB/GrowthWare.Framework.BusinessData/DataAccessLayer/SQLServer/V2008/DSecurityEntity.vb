@@ -21,8 +21,8 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Function GetSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataTable Implements IDSecurityEntity.GetSecurityEntities
-            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account not given")
-            If securityEntityId = -1 Then Throw New ArgumentNullException("securityEntityId", "securityEntityId not given")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentException("account", "account not given")
+            If securityEntityId = -1 Then Throw New ArgumentException("securityEntityId", "securityEntityId not given")
 
             Dim myStoreProcedure As String = "ZGWSecurity.Get_Valid_Security_Entity"
             Dim myParameters() As SqlParameter =
@@ -43,8 +43,8 @@ Namespace DataAccessLayer.SQLServer.V2008
         ''' <param name="isSecurityEntityAdministrator">if set to <c>true</c> [is security entity administrator].</param>
         ''' <returns>DataTable.</returns>
         Function GetValidSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataTable Implements IDSecurityEntity.GetValidSecurityEntities
-            If account = String.Empty Then Throw New ArgumentNullException("account", "account can not be blank")
-            If securityEntityId = -1 Then Throw New ArgumentNullException("securityEntityId", "securityEntityId must be greater than -1")
+            If account = String.Empty Then Throw New ArgumentException("account", "account can not be blank")
+            If securityEntityId = -1 Then Throw New ArgumentException("securityEntityId", "securityEntityId must be greater than -1")
 
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Valid_Security_Entity"
             Dim mParameters() As SqlParameter =
@@ -57,7 +57,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Function Save(ByVal profile As MSecurityEntityProfile) As Integer Implements IDSecurityEntity.Save
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be nothing")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mPrimaryKey As SqlParameter = GetSqlParameter("@P_PRIMARY_KEY", Nothing, ParameterDirection.Output)
             mPrimaryKey.Size = 10
             Dim mParameters() As SqlParameter =
@@ -84,7 +84,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Public Function Search(searchCriteria As Model.Profiles.MSearchCriteria) As System.Data.DataTable Implements Interfaces.IDSecurityEntity.Search
-            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be nothing.")
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!.")
             Dim mRetVal As DataTable
             Dim mParameters() As SqlParameter =
              {

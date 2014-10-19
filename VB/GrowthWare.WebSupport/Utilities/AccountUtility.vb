@@ -29,8 +29,8 @@ Namespace Utilities
         ''' Handles authentication methology
         ''' </remarks>
         Public Function Authenticated(ByVal account As String, ByVal password As String) As Boolean
-            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
-            If String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in Visual Basic) or empty!")
+            If String.IsNullOrEmpty(password) Then Throw New ArgumentNullException("password", "password can not be null (Nothing in Visual Basic) or empty!")
             Dim retVal As Boolean = False
             Dim mySEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
             Dim mDomainPassed As Boolean = False
@@ -176,7 +176,7 @@ Namespace Utilities
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Public Function GetMenu(ByVal account As String, ByVal menuType As MenuType) As DataTable
-            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim mRetVal As DataTable = Nothing
             If account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
@@ -279,7 +279,7 @@ Namespace Utilities
         ''' <param name="saveGroups">Boolean</param>
         ''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
         Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in VB) or empty!")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBAccount.Save(profile, saveRoles, saveGroups)
             If profile.Id = CurrentProfile().Id Then
@@ -306,7 +306,7 @@ Namespace Utilities
                 mCurrentConext.Response.Cookies.Add(authCookie)
                 mCurrentConext.User = New GenericPrincipal(mCurrentConext.User.Identity, accountProfile.DerivedRoles.ToArray)
             Else
-                Throw New ArgumentNullException("accountProfile", "accountProfile can not be null")
+                Throw New ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in Visual Basic)!")
             End If
         End Sub
 

@@ -143,9 +143,9 @@ Namespace Common
         ''' <param name="deleteEnvironment">if set to <c>true</c> [delete environment].</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Sub SetEnvironmentValue(ByVal config As Configuration, ByVal isNew As Boolean, ByVal configName As String, ByVal configValue As String, ByVal deleteEnvironment As Boolean)
-            If config Is Nothing Then Throw New ArgumentNullException("config", "config cannot be a null reference (Nothing in Visual Basic)")
-            If String.IsNullOrEmpty(configName) Then Throw New ArgumentNullException("configName", "configName cannot be a null reference (Nothing in Visual Basic)")
-            If String.IsNullOrEmpty(configValue) Then Throw New ArgumentNullException("configValue", "configValue cannot be a null reference (Nothing in Visual Basic)")
+            If config Is Nothing Then Throw New ArgumentNullException("config", "config cannot be a null reference (Nothing in Visual Basic)!")
+            If String.IsNullOrEmpty(configName) Then Throw New ArgumentNullException("configName", "configName cannot be a null reference (Nothing in Visual Basic)!")
+            If String.IsNullOrEmpty(configValue) Then Throw New ArgumentNullException("configValue", "configValue cannot be a null reference (Nothing in Visual Basic)!")
             If Not deleteEnvironment Then
                 If Not isNew Then
                     Try

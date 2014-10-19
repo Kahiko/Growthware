@@ -68,7 +68,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         Public Property SecurityEntitySeqId As Integer Implements IDMessages.SecurityEntitySeqId
 
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDMessages.Search
-            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!")
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable
             Dim mParameters() As SqlParameter =
              {

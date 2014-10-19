@@ -132,7 +132,7 @@ Namespace BusinessLogicLayer
         ''' <returns>Integer</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1011:ConsiderPassingBaseTypesAsParameters")>
         Public Function Save(ByVal profile As MSecurityEntityProfile) As Integer
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be Nothing")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             profile.Id = profile.Id
             If IsDatabaseOnline() Then m_DSecurityEntity.Save(profile)
             Return profile.Id

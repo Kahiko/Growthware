@@ -132,7 +132,7 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">MMessageProfile</param>
         Public Sub Save(ByVal profile As MMessageProfile)
-            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null or Nothing ")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             m_DMessages.Profile = profile
             m_DMessages.Save()
         End Sub
@@ -144,7 +144,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!")
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(searchCriteria.WhereClause) Then
                 searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
             Else

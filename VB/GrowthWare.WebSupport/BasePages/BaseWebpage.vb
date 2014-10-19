@@ -113,7 +113,7 @@ Public Class BaseWebpage
     ''' <returns>Object</returns>
     ''' <remarks></remarks>
     Private Shared Function Deserialize(ByVal bytes() As Byte) As Object
-        If bytes Is Nothing Then Throw New ArgumentNullException("bytes", "bytes can not be null (Nothing in VB) or empty!")
+        If bytes Is Nothing Then Throw New ArgumentNullException("bytes", "bytes cannot be a null reference (Nothing in Visual Basic)!")
         Dim functionReturnValue As Object = Nothing
         Dim ms As MemoryStream = Nothing
         Dim formater As LosFormatter = Nothing

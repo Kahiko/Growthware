@@ -35,7 +35,7 @@ Namespace CustomWebControls
                 If TypeOf value Is IEnumerable OrElse value Is Nothing Then
                     mDataSource = value
                 Else
-                    Throw New ArgumentNullException("value", "value can not be null (Nothing in VB)!")
+                    Throw New ArgumentNullException("value", "value can not be null (Nothing in VB)")
                 End If
             End Set
         End Property
@@ -153,7 +153,7 @@ Namespace CustomWebControls
         ''' <param name="writer"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub RenderContents(ByVal writer As HtmlTextWriter)
-            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)")
+            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)!")
             ' Display the tabs
             Dim i As Integer
             For i = 0 To mNavigationTrailTab.Count - 1
@@ -195,7 +195,7 @@ Namespace CustomWebControls
         ''' <param name="attribs">The attributes.</param>
         ''' <returns>Type.</returns>
         Public Overrides Function GetChildControlType(ByVal tagName As String, ByVal attribs As IDictionary) As Type
-            If attribs Is Nothing Then Throw New ArgumentNullException("attribs", "attribs cannot be a null reference (Nothing in Visual Basic)")
+            If attribs Is Nothing Then Throw New ArgumentNullException("attribs", "attribs cannot be a null reference (Nothing in Visual Basic)!")
             If String.Compare(tagName, "NavigationTrailTab", StringComparison.OrdinalIgnoreCase) = 0 Then
                 Return GetType(NavigationTrailTab)
             End If

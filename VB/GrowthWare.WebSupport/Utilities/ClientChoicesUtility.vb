@@ -17,7 +17,7 @@ Namespace Utilities
         End Function
 
         Public Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
-            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!")
+            If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As MClientChoicesState = Nothing
             If HttpContext.Current.Cache IsNot Nothing Then
                 mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
@@ -57,7 +57,7 @@ Namespace Utilities
         End Function
 
         Public Sub Save(ByVal clientChoicesState As MClientChoicesState)
-            If clientChoicesState Is Nothing Then Throw New ArgumentNullException("clientChoicesState", "clientChoicesState can not be null (Nothing in VB)!")
+            If clientChoicesState Is Nothing Then Throw New ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             mBClientChoices.Save(clientChoicesState)
             If HttpContext.Current.Cache IsNot Nothing Then

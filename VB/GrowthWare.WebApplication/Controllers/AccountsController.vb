@@ -24,9 +24,9 @@ Namespace Controllers
 
         <HttpPost>
         Public Function Logon(ByVal jsonData As LogonInfo) As IHttpActionResult
-            If jsonData Is Nothing Then Throw New ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)")
-            If String.IsNullOrEmpty(jsonData.Account) Then Throw New NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)")
-            If String.IsNullOrEmpty(jsonData.Password) Then Throw New NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)")
+            If jsonData Is Nothing Then Throw New ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)!")
+            If String.IsNullOrEmpty(jsonData.Account) Then Throw New NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)!")
+            If String.IsNullOrEmpty(jsonData.Password) Then Throw New NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As String = "false"
             Dim mDomainPassed As Boolean = False
             If jsonData.Account.Contains("\") Then
@@ -67,7 +67,7 @@ Namespace Controllers
 
         <HttpPost>
         Public Function ChangePassword(ByVal mChangePassword As MChangePassword) As IHttpActionResult
-            If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be NULL or Nothing in VB.net!")
+            If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
             Dim mMessageProfile As New MMessageProfile
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
