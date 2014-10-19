@@ -7,6 +7,8 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.HtmlControls;
 using GrowthWare.WebSupport.CustomWebControls.Designers;
+using System.Globalization;
+using System.Collections.Specialized;
 
 namespace GrowthWare.WebSupport.CustomWebControls
 {
@@ -148,7 +150,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
                     return (string)ViewState["AllItemsText"];
                 }
             }
-            set { ViewState["AllItemsText"] = value.Trim(); }
+            set { if(!string.IsNullOrEmpty(value)) ViewState["AllItemsText"] = value.Trim(); }
         }
 
         /// <summary>
@@ -199,7 +201,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         {
             get { return m_SelectButtonText; }
 
-            set { m_SelectButtonText = value.Trim(); }
+            set { if (!string.IsNullOrEmpty(value)) m_SelectButtonText = value.Trim(); }
         }
 
         /// <summary>
@@ -210,14 +212,14 @@ namespace GrowthWare.WebSupport.CustomWebControls
         {
             get { return m_SelectAllButtonText; }
 
-            set { m_SelectAllButtonText = value.Trim(); }
+            set { if (!string.IsNullOrEmpty(value)) m_SelectAllButtonText = value.Trim(); }
         }
 
         /// <summary>
         /// Gets or sets the de select button text.
         /// </summary>
         /// <value>The de select button text.</value>
-        public string DeSelectButtonText
+        public string DeselectButtonText
         {
             get { return m_DeSelectButtonText; }
 
@@ -228,7 +230,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// Gets or sets the de select all button text.
         /// </summary>
         /// <value>The de select all button text.</value>
-        public string DeSelectAllButtonText
+        public string DeselectAllButtonText
         {
             get { return m_DeSelectAllButtonText; }
 
@@ -244,13 +246,16 @@ namespace GrowthWare.WebSupport.CustomWebControls
             get { return m_ButtonWidth; }
             set
             {
-                if (value.Trim().EndsWith("px", StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrEmpty(value))
                 {
-                    m_ButtonWidth = value.Trim();
-                }
-                else
-                {
-                    m_ButtonWidth = value.Trim() + "px";
+                    if (value.Trim().EndsWith("px", StringComparison.OrdinalIgnoreCase))
+                    {
+                        m_ButtonWidth = value.Trim();
+                    }
+                    else
+                    {
+                        m_ButtonWidth = value.Trim() + "px";
+                    }
                 }
             }
         }
@@ -269,7 +274,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
                 }
                 else
                 {
-                    return int.Parse(ViewState["Size"].ToString());
+                    return int.Parse(ViewState["Size"].ToString(), CultureInfo.InvariantCulture);
                 }
             }
             set { ViewState["Size"] = value; }
@@ -289,7 +294,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
                 }
                 else
                 {
-                    return int.Parse(ViewState["Rows"].ToString());
+                    return int.Parse(ViewState["Rows"].ToString(), CultureInfo.InvariantCulture);
                 }
             }
             set { ViewState["Rows"] = value; }
@@ -372,20 +377,21 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// Loads the post data.
         /// </summary>
         /// <param name="postDataKey">The post data key.</param>
-        /// <param name="values">The values.</param>
+        /// <param name="postCollection">The values.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        public bool LoadPostData(string postDataKey, System.Collections.Specialized.NameValueCollection values)
+        public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
+            if (postCollection == null) throw new ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)");
             string _allState = null;
             string _selectedState = null;
 
             // return if null 
-            if (values[AllHelperId] == null)
+            if (postCollection[AllHelperId] == null)
             {
                 return false;
             }
-            _allState = values[AllHelperId].Trim();
-            _selectedState = values[SelectedHelperId].Trim();
+            _allState = postCollection[AllHelperId].Trim();
+            _selectedState = postCollection[SelectedHelperId].Trim();
             if (string.IsNullOrEmpty(_allState))
             {
                 m_AllItems.Clear();
@@ -449,7 +455,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
                 objDataEnum = m_DataSource.GetEnumerator();
                 while (objDataEnum.MoveNext())
                 {
-                    if (m_DataField == string.Empty)
+                    if (string.IsNullOrEmpty(m_DataField))
                     {
                         m_AllItems.Add((string)objDataEnum.Current.ToString());
                     }
@@ -471,6 +477,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// Gets or sets the selected items.
         /// </summary>
         /// <value>The selected items.</value>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public string[] SelectedItems
         {
             get { return (string[])m_SelectedItems.ToArray(typeof(string)); }
@@ -485,6 +492,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// Gets all items.
         /// </summary>
         /// <value>All items.</value>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")]
         public string[] AllItems
         {
             get { return (string[])m_AllItems.ToArray(typeof(string)); }
@@ -499,11 +507,11 @@ namespace GrowthWare.WebSupport.CustomWebControls
         }
 
         /// <summary>
-        /// BTNs the add click.
+        /// Add button click event.
         /// </summary>
-        /// <param name="s">The s.</param>
+        /// <param name="addButton">The s.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void btnAddClick(Object s, EventArgs e)
+        public void AddButtonClick(Object addButton, EventArgs e)
         {
             if (lstAllItems.SelectedIndex != -1)
             {
@@ -525,11 +533,11 @@ namespace GrowthWare.WebSupport.CustomWebControls
         }
 
         /// <summary>
-        /// BTNs the add all click.
+        /// Add all button click event
         /// </summary>
-        /// <param name="s">The s.</param>
+        /// <param name="addAllButton">The s.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void btnAddAllClick(Object s, EventArgs e)
+        public void AddAllButtonClick(Object addAllButton, EventArgs e)
         {
             // Move the item 
             int x = 0;
@@ -545,11 +553,11 @@ namespace GrowthWare.WebSupport.CustomWebControls
         }
 
         /// <summary>
-        /// BTNs the remove click.
+        /// Remove button cClick event.
         /// </summary>
-        /// <param name="s">The s.</param>
+        /// <param name="removeButton">The s.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void btnRemoveClick(Object s, EventArgs e)
+        public void RemoveButtonClick(Object removeButton, EventArgs e)
         {
             if (lstSelectedItems.SelectedIndex != -1)
             {
@@ -569,11 +577,11 @@ namespace GrowthWare.WebSupport.CustomWebControls
         }
 
         /// <summary>
-        /// BTNs the remove all click.
+        /// Remove all button click event.
         /// </summary>
-        /// <param name="s">The s.</param>
+        /// <param name="removeAllButton">The s.</param>
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
-        public void btnRemoveAllClick(Object s, EventArgs e)
+        public void RemoveAllButtonClick(Object removeAllButton, EventArgs e)
         {
             int x = 0;
             for (x = lstSelectedItems.Items.Count - 1; x >= 0; x += -1)
@@ -603,6 +611,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter" /> that represents the output stream to render HTML content on the client.</param>
         protected override void RenderContents(HtmlTextWriter writer)
         {
+            if (writer == null) throw new ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)");
             // start the row 
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
             // Add Labels 
@@ -636,19 +645,21 @@ namespace GrowthWare.WebSupport.CustomWebControls
             // set the alignment to top 
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             // All list box 
-            HtmlSelect mySelect = new HtmlSelect();
-            mySelect.Multiple = true;
-            mySelect.Attributes.Add("Style", "width: " + Size + "px");
-            mySelect.Size = int.Parse(Rows.ToString());
-            mySelect.ID = ClientID + "_SrcList";
-            foreach (var _item in m_AllItems)
+            using (HtmlSelect mySelect = new HtmlSelect()) 
             {
-                ListItem myItem = new ListItem(_item.ToString(), _item.ToString());
-                myItem.Attributes.Add("title", _item.ToString());
-                mySelect.Items.Add(myItem);
+                mySelect.Multiple = true;
+                mySelect.Attributes.Add("Style", "width: " + Size + "px");
+                mySelect.Size = int.Parse(Rows.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                mySelect.ID = ClientID + "_SrcList";
+                foreach (var _item in m_AllItems)
+                {
+                    ListItem myItem = new ListItem(_item.ToString(), _item.ToString());
+                    myItem.Attributes.Add("title", _item.ToString());
+                    mySelect.Items.Add(myItem);
+                }
+                //writer.Write(String.Format("<option value=""{0}"">{0}</option>", item)) 
+                mySelect.RenderControl(writer);
             }
-            //writer.Write(String.Format("<option value=""{0}"">{0}</option>", item)) 
-            mySelect.RenderControl(writer);
             // end the first cell 
             writer.RenderEndTag();
             // begin the second cell 
@@ -656,54 +667,65 @@ namespace GrowthWare.WebSupport.CustomWebControls
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             // begin the second cell 
             // Add Button 
-            HtmlInputButton myButton = new HtmlInputButton();
-            myButton.Value = m_SelectButtonText;
-            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
-            myButton.Attributes.Add("class", "listPickerArrow");
-            myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
-            myButton.RenderControl(writer);
+            using (HtmlInputButton myButton = new HtmlInputButton())
+            {
+                myButton.Value = m_SelectButtonText;
+                myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
+                myButton.Attributes.Add("class", "listPickerArrow");
+                myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
+                myButton.RenderControl(writer);
+            }
             writer.WriteBreak();
 
-            myButton = new HtmlInputButton();
-            myButton.Value = m_SelectAllButtonText;
-            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
-            myButton.Attributes.Add("class", "listPickerArrow");
-            myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
-            myButton.RenderControl(writer);
+            using (HtmlInputButton myButton = new HtmlInputButton())
+            {
+                myButton.Value = m_SelectAllButtonText;
+                myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange));
+                myButton.Attributes.Add("class", "listPickerArrow");
+                myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
+                myButton.RenderControl(writer);
+            }
             writer.WriteBreak();
 
-            myButton = new HtmlInputButton();
-            myButton.Value = m_DeSelectButtonText;
-            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
-            myButton.Attributes.Add("class", "listPickerArrow");
-            myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
-            myButton.RenderControl(writer);
+            using (HtmlInputButton myButton = new HtmlInputButton())
+            {
+                myButton.Value = m_DeSelectButtonText;
+                myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
+                myButton.Attributes.Add("class", "listPickerArrow");
+                myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
+                myButton.RenderControl(writer);
+            }
             writer.WriteBreak();
 
-            myButton = new HtmlInputButton();
-            myButton.Value = m_DeSelectAllButtonText;
-            myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
-            myButton.Attributes.Add("class", "listPickerArrow");
-            myButton.Attributes.Add("style", "width: " + ButtonWidth);
-            myButton.RenderControl(writer);
+            using (HtmlInputButton myButton = new HtmlInputButton())
+            {
+                myButton.Value = m_DeSelectAllButtonText;
+                myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID));
+                myButton.Attributes.Add("class", "listPickerArrow");
+                myButton.Attributes.Add("style", "width: " + ButtonWidth);
+                myButton.RenderControl(writer);
+            }
 
             writer.RenderEndTag();
             // end the second cell 
             writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top");
             writer.RenderBeginTag(HtmlTextWriterTag.Td);
             //begin third cell 
-            mySelect = new HtmlSelect();
-            mySelect.Multiple = true;
-            mySelect.Attributes.Add("Style", "width: " + Size + "px");
-            mySelect.Size = int.Parse(Rows.ToString());
-            mySelect.ID = ClientID + "_DstList";
-            foreach (var _item in m_SelectedItems)
+            using (HtmlSelect mySelect = new HtmlSelect())
             {
-                ListItem myItem = new ListItem(_item.ToString(), _item.ToString());
-                mySelect.Items.Add(myItem);
+                mySelect.Multiple = true;
+                mySelect.Attributes.Add("Style", "width: " + Size + "px");
+                mySelect.Size = int.Parse(Rows.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture);
+                mySelect.ID = ClientID + "_DstList";
+                foreach (var _item in m_SelectedItems)
+                {
+                    ListItem myItem = new ListItem(_item.ToString(), _item.ToString());
+                    mySelect.Items.Add(myItem);
+                }
+                //writer.Write(String.Format("<option value=""{0}"">{0}</option>", item)) 
+                mySelect.RenderControl(writer);                
             }
-            //writer.Write(String.Format("<option value=""{0}"">{0}</option>", item)) 
-            mySelect.RenderControl(writer);
+
             writer.RenderEndTag();// end third cell 
 
             if (DestinationSortable && !SortOnChange)
@@ -712,26 +734,28 @@ namespace GrowthWare.WebSupport.CustomWebControls
                 writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top");
                 writer.RenderBeginTag(HtmlTextWriterTag.Td);// add the 4th td
 
-                myButton = new HtmlInputButton();
-                myButton.Value = "▲";
-                myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID));
-                myButton.Attributes.Add("class", "listPickerArrow");
-                myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
-                myButton.RenderControl(writer);
+                using (HtmlInputButton myButton = new HtmlInputButton())
+                {
+
+                    myButton.Value = "▲";
+                    myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID));
+                    myButton.Attributes.Add("class", "listPickerArrow");
+                    myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
+                    myButton.RenderControl(writer);
+                }
                 writer.WriteBreak();
 
-                myButton = new HtmlInputButton();
-                myButton.Value = "▼";
-                myButton.Attributes.Add("onclick", string.Format("GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID));
-                myButton.Attributes.Add("class", "listPickerArrow");
-                myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
-                myButton.RenderControl(writer);
+                using (HtmlInputButton myButton = new HtmlInputButton())
+                {
+                    myButton.Value = "▼";
+                    myButton.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID));
+                    myButton.Attributes.Add("class", "listPickerArrow");
+                    myButton.Attributes.Add("style", "width: " + m_ButtonWidth);
+                    myButton.RenderControl(writer);
+                }
                 writer.WriteBreak();
                 writer.RenderEndTag();
             }
-
-
-
             writer.RenderEndTag();// end the tr 
         }
     }

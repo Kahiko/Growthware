@@ -14,10 +14,10 @@ namespace GrowthWare.WebApplication.Functions.System.Menus
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            String mAccount = AccountUtility.GetHttpContextUserName();
+            String mAccount = AccountUtility.HttpContextUserName();
             DataTable myDataTable = AccountUtility.GetMenu(mAccount, MenuType.Horizontal);
-            Navtrail.DataSource = myDataTable.DefaultView;
-            Navtrail.DataBind();
+            NavigationTrail.DataSource = myDataTable.DefaultView;
+            NavigationTrail.DataBind();
         }
     }
 }

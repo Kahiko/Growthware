@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,30 +17,46 @@ namespace GrowthWare.WebSupport.Utilities
         /// Generates and order list form hierarchical data.
         /// </summary>
         /// <param name="menuData">The menu data.</param>
-        /// <param name="stringBuilder">The string builder.</param>
+        /// <param name="value">The string builder.</param>
         /// <returns>String.</returns>
-        public static String GenerateULLI(DataTable menuData, StringBuilder stringBuilder)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ULLI")]
+        public static String GenerateULLI(DataTable menuData, StringBuilder value)
         {
-            stringBuilder.AppendLine("<ul>");
-            DataView datView = new DataView(menuData);
-            datView.RowFilter = "ParentID = 1";
-            //Populate menu with top menu items;
-            foreach (DataRowView rowVeiw in datView)
+            if (value == null) throw new ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)");
+            if (menuData == null) throw new ArgumentNullException("menuData", "menuData cannot be a null reference (Nothing in Visual Basic)");
+            value.AppendLine("<ul>");
+            DataView datView = null;
+            try
             {
-                //Define new menu item
-                if (int.Parse(rowVeiw["FUNCTION_TYPE_SEQ_ID"].ToString()) == 3)
+                datView = new DataView(menuData);
+                datView.RowFilter = "ParentID = 1";
+                //Populate menu with top menu items;
+                foreach (DataRowView rowVeiw in datView)
                 {
-                    stringBuilder.AppendLine(createLIItem(rowVeiw["Title"].ToString(), rowVeiw["URL"].ToString(), rowVeiw["Description"].ToString(), true));
+                    //Define new menu item
+                    if (int.Parse(rowVeiw["FUNCTION_TYPE_SEQ_ID"].ToString(), CultureInfo.InvariantCulture) == 3)
+                    {
+                        value.AppendLine(createLIItem(rowVeiw["Title"].ToString(), rowVeiw["URL"].ToString(), rowVeiw["Description"].ToString(), true));
+                    }
+                    else
+                    {
+                        value.AppendLine(createLIItem(rowVeiw["Title"].ToString(), rowVeiw["URL"].ToString(), rowVeiw["Description"].ToString(), false));
+                    }
+                    //Populate child items of this parent
+                    addChildItems(menuData, int.Parse(rowVeiw["MenuID"].ToString(), CultureInfo.InvariantCulture), ref value);
                 }
-                else
-                {
-                    stringBuilder.AppendLine(createLIItem(rowVeiw["Title"].ToString(), rowVeiw["URL"].ToString(), rowVeiw["Description"].ToString(), false));
-                }
-                //Populate child items of this parent
-                addChildItems(menuData, int.Parse(rowVeiw["MenuID"].ToString()), ref stringBuilder);
             }
-            stringBuilder.AppendLine("<ul>");
-            return stringBuilder.ToString();
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (datView != null) datView.Dispose();
+            }
+
+            value.AppendLine("<ul>");
+            return value.ToString();
         }
 
         /// <summary>
@@ -52,25 +69,37 @@ namespace GrowthWare.WebSupport.Utilities
         private static void addChildItems(DataTable menuData, int parentID, ref StringBuilder stringBuilder)
         {
             //Populate DataView
-            DataView datView = new DataView(menuData);
-            //Filter child menu items
-            datView.RowFilter = "parentid = " + parentID;
-            //Populate parent menu item with child menu items
-            stringBuilder.AppendLine("<ul>");
-            foreach (DataRowView datRow in datView)
+            DataView datView = null;
+            try
             {
-                //Define new menu item
-                if (int.Parse(datRow["FUNCTION_TYPE_SEQ_ID"].ToString()) == 3)
+                datView = new DataView(menuData);
+                //Filter child menu items
+                datView.RowFilter = "parentid = " + parentID;
+                //Populate parent menu item with child menu items
+                stringBuilder.AppendLine("<ul>");
+                foreach (DataRowView datRow in datView)
                 {
-                    stringBuilder.AppendLine(createLIItem(datRow["Title"].ToString(), datRow["URL"].ToString(), datRow["Description"].ToString(), true));
+                    //Define new menu item
+                    if (int.Parse(datRow["FUNCTION_TYPE_SEQ_ID"].ToString(), CultureInfo.InvariantCulture) == 3)
+                    {
+                        stringBuilder.AppendLine(createLIItem(datRow["Title"].ToString(), datRow["URL"].ToString(), datRow["Description"].ToString(), true));
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(createLIItem(datRow["Title"].ToString(), datRow["URL"].ToString(), datRow["Description"].ToString(), false));
+                    }
+                    //stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), mHasChildren))
+                    //Populate child items of this parent
+                    addChildItems(menuData, int.Parse(datRow["MenuID"].ToString(), CultureInfo.InvariantCulture), ref stringBuilder);
                 }
-                else
-                {
-                    stringBuilder.AppendLine(createLIItem(datRow["Title"].ToString(), datRow["URL"].ToString(), datRow["Description"].ToString(), false));
-                }
-                //stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), mHasChildren))
-                //Populate child items of this parent
-                addChildItems(menuData, int.Parse(datRow["MenuID"].ToString()), ref stringBuilder);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (datView != null) datView.Dispose();
             }
             stringBuilder.AppendLine("</ul>");
         }

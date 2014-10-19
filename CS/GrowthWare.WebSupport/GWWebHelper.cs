@@ -136,7 +136,7 @@ namespace GrowthWare.WebSupport
         {
             get
             {
-                if (s_Version == string.Empty)
+                if (String.IsNullOrEmpty(s_Version))
                 {
                     s_Version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString();
                 }

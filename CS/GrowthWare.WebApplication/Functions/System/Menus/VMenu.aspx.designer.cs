@@ -13,12 +13,12 @@ namespace GrowthWare.WebApplication.Functions.System.Menus {
     public partial class VMenu {
         
         /// <summary>
-        /// Navtrail control.
+        /// NavigationTrail control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::GrowthWare.WebSupport.CustomWebControls.NavTrail Navtrail;
+        protected global::GrowthWare.WebSupport.CustomWebControls.NavigationTrail NavigationTrail;
     }
 }

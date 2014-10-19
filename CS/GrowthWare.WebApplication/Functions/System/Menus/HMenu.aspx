@@ -4,6 +4,6 @@
 <!DOCTYPE html>
 
 <div id="HMenu" class="HMenu">
-    <CustomWebControls:NAVTRAIL id="Navtrail" runat="server"/>
+    <CustomWebControls:NavigationTrail id="NavigationTrail" runat="server"/>
     &nbsp;&nbsp;
 </div>

@@ -31,11 +31,11 @@ public class AccountsController : ApiController
 	public IHttpActionResult Logon(LogonInfo jsonData)
 	{
 		if (jsonData == null)
-			throw new ArgumentNullException("logonInfo", "logonInfo can not be null or Nothing in VB.net");
+			throw new ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)");
 		if (string.IsNullOrEmpty(jsonData.Account))
-			throw new NullReferenceException("jsonData.Account can not be null or Nothing in VB.net");
+			throw new NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)");
 		if (string.IsNullOrEmpty(jsonData.Password))
-			throw new NullReferenceException("jsonData.Password can not be null or Nothing in VB.net");
+			throw new NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)");
 		string mRetVal = "false";
 		bool mDomainPassed = false;
 		if (jsonData.Account.Contains("\\")) {

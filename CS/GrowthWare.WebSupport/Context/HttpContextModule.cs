@@ -162,7 +162,7 @@ namespace GrowthWare.WebSupport.Context
                                 {
                                     if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
                                     {
-                                        Exception mException = new Exception("Your session has timed out.<br/>Please sign in.");
+                                        WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
                                         GWWebHelper.ExceptionError = mException;
                                         HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx");
                                     }
@@ -172,7 +172,7 @@ namespace GrowthWare.WebSupport.Context
                             }
                             else
                             {
-                                Exception mException = new Exception("Your password needs to be changed before any other action can be performed.");
+                                WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
                                 GWWebHelper.ExceptionError = mException;
                                 HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
                             }

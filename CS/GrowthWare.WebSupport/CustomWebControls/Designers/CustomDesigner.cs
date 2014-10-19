@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -34,22 +35,25 @@ namespace GrowthWare.WebSupport.CustomWebControls.Designers
         {
             WebControl mControl = (WebControl)Component;
 
-            StringWriter mStringWriter = new StringWriter();
-            HtmlTextWriter mHtmlWriter = new HtmlTextWriter(mStringWriter);
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderStyle, "solid");
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderColor, "black");
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderWidth, "1px");
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "GainsBoro");
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.Width, mControl.Width.ToString());
-            mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.Height, mControl.Height.ToString());
-            mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Table);
-            mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Tr);
-            mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Td);
-            mHtmlWriter.Write(mControl.GetType().Name);
-            mHtmlWriter.RenderEndTag();
-            mHtmlWriter.RenderEndTag();
-            mHtmlWriter.RenderEndTag();
-
+            StringWriter mStringWriter = null;
+            using (mStringWriter = new StringWriter(CultureInfo.InvariantCulture))
+            {
+                HtmlTextWriter mHtmlWriter = new HtmlTextWriter(mStringWriter);
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderStyle, "solid");
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderColor, "black");
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BorderWidth, "1px");
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.BackgroundColor, "GainsBoro");
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.Width, mControl.Width.ToString());
+                mHtmlWriter.AddStyleAttribute(HtmlTextWriterStyle.Height, mControl.Height.ToString());
+                mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Table);
+                mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Tr);
+                mHtmlWriter.RenderBeginTag(HtmlTextWriterTag.Td);
+                mHtmlWriter.Write(mControl.GetType().Name);
+                mHtmlWriter.RenderEndTag();
+                mHtmlWriter.RenderEndTag();
+                mHtmlWriter.RenderEndTag();
+            }
+            if (mControl != null) mControl.Dispose();
             return mStringWriter.ToString();
         }
 
@@ -60,7 +64,14 @@ namespace GrowthWare.WebSupport.CustomWebControls.Designers
         /// <returns>The design-time HTML markup for the specified exception.</returns>
         protected override string GetErrorDesignTimeHtml(Exception e)
         {
-            return CreatePlaceHolderDesignTimeHtml(("error:" + e.Message + e.StackTrace));
+            if (e != null) 
+            {
+                return CreatePlaceHolderDesignTimeHtml("error:" + e.Message + e.StackTrace);
+            }
+            else 
+            {
+                return CreatePlaceHolderDesignTimeHtml("Error getting the design time HTML.");
+            }
         }
     }
 }

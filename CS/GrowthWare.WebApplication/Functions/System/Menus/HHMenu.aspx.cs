@@ -13,7 +13,7 @@ namespace GrowthWare.WebApplication.Functions.System.Menus
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            String mAccount = AccountUtility.GetHttpContextUserName();
+            String mAccount = AccountUtility.HttpContextUserName();
             DataTable mDataTable = AccountUtility.GetMenu(mAccount, MenuType.Hierarchical);
             String mMenuString = String.Empty;
             if (mDataTable != null && mDataTable.Rows.Count > 0)

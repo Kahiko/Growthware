@@ -154,7 +154,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>System.Int32.</returns>
         public void Save(MMessageProfile profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null or Nothing in VB.Net!");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             if (IsDatabaseOnline()) 
             {
                 m_DMessages.Profile = profile;

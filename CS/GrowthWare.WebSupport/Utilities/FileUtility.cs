@@ -554,8 +554,8 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net");
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)");
             DirectoryInfo[] subDirectories = null;
             try
             {
@@ -608,10 +608,10 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, int directoryLineCount)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net");
-            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net");
-            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray can not be null or Nothing in VB.net");
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)");
+            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)");
+            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)");
 
             Boolean writeDirectory = true;
             int FileLineCount = 0;
