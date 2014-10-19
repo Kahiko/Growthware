@@ -24,7 +24,7 @@ Namespace Controllers
 
         <HttpPost>
         Public Function Logon(ByVal jsonData As LogonInfo) As IHttpActionResult
-            If jsonData Is Nothing Then Throw New ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)!")
+            If jsonData Is Nothing Then Throw New ArgumentNullException("jsonData", "jsonData cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(jsonData.Account) Then Throw New NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(jsonData.Password) Then Throw New NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As String = "false"

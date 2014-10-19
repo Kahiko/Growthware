@@ -2,6 +2,7 @@
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.WebSupport
+Imports GrowthWare.WebSupport.BasePages
 
 Public Class SelectSecurityEntity
     Inherits ClientChoicesPage

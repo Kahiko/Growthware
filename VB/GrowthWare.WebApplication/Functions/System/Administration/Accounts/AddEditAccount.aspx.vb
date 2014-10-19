@@ -1,6 +1,7 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.WebSupport
+Imports GrowthWare.WebSupport.BasePages
 
 Public Class AddEditAccount
     Inherits ClientChoicesPage
@@ -69,7 +70,7 @@ Public Class AddEditAccount
         txtLastName.Text = m_Profile.LastName
         txtMiddleName.Text = m_Profile.MiddleName
         txtPreferredName.Text = m_Profile.PreferredName
-        txtEmail.Text = m_Profile.EMail
+        txtEmail.Text = m_Profile.Email
         txtLocation.Text = m_Profile.Location
         chkEnableNotifications.Checked = m_Profile.EnableNotifications
         'NameValuePairUtility.SetDropSelection(dropStatus, m_Profile.Status.ToString())

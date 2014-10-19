@@ -79,9 +79,8 @@
 		var $mBtnRequestChange = $('#btnRequestChange');
 		var $mLogonPage = $('#LogonPage');
 		if (xhr.toString() == "true") {
+		    window.location.hash = "?Action=Favorite";
 		    jQuery.event.trigger('~reLoadUI');
-		    //GW.Navigation.NavigationController.Refresh();
-		    $('#MainContentDiv').html("You have successfully logged on").fadeIn(1000);
 		} else {
 			if (xhr.toString() == "Request") {
 			    //$mBtnRequestChange.css({ display: 'inline' });

@@ -164,6 +164,7 @@
   <ItemGroup>
     <Content Include="Default.aspx" />
     <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
+    <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
@@ -277,6 +278,13 @@
       <DependentUpon>ChangePassword.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Functions\System\Accounts\Favorite.aspx.designer.vb">
+      <DependentUpon>Favorite.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Favorite.aspx.vb">
+      <DependentUpon>Favorite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Functions\System\Accounts\Logoff.aspx.designer.vb">
       <DependentUpon>Logoff.aspx</DependentUpon>
     </Compile>
@@ -383,7 +391,7 @@
     </Compile>
     <Compile Include="index.aspx.vb">
       <DependentUpon>index.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
@@ -458,7 +466,8 @@
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
     <Folder Include="Public\Images\" />
-    <Folder Include="Public\Scripts\GrowthWare\" />
+    <Folder Include="Public\Skins\Blue Arrow\" />
+    <Folder Include="Public\Skins\Default Black\" />
     <Folder Include="Public\Skins\Default\Images\" />
   </ItemGroup>
   <ItemGroup>

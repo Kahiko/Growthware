@@ -19,7 +19,7 @@ Public Class VHMenu
             Try
                 mDataset.EnforceConstraints = False
                 mDataset.Relations.Add(mRelation)
-                mMenuString = MenuUtility.GenerateULLI(mDataTable, mStringBuiler)
+                mMenuString = MenuUtility.GenerateUnorderedList(mDataTable, mStringBuiler)
             Catch ex As Exception
             End Try
 

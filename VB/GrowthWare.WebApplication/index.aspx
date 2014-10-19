@@ -8,124 +8,19 @@
 
     <%: Styles.Render("~/Content/GrowthWare")%>
     <%: Styles.Render("~/Content/jQueryUIRedmond")%>
+    <script type="text/javascript" language="javascript">
+        $(document).ready(function () {
+            GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
+            var currentHash = window.location.hash.substring(1);
+            currentHash = currentHash.replace("?Action=", "");
+            if (currentHash != '') {
+                GW.Navigation.NavigationController.LoadPage(currentHash, "MainContentDiv");
 
-
-
-        <script type="text/javascript" language="javascript">
-            function afterLoadFunctions() {
-                // Create the refresh objects for all of the necessary UI elements
-                var mRefreshObject = new GW.Navigation.RefreshObject();
-                mRefreshObject.ContentAreaID = 'HorizontalHierarchicalDiv';
-                mRefreshObject.Refresh = function refresh() {
-                    GW.Navigation.NavigationController.LoadPage("HorizontalHierarchicalMenu", "HorizontalHierarchicalDiv");
-                }
-                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
-
-                //Put the vertical menu into the refresh objects
-                mRefreshObject = new GW.Navigation.RefreshObject();
-                mRefreshObject.ContentAreaID = 'VMenuDiv';
-                mRefreshObject.Refresh = function refreshFunction() {
-                    GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
-                }
-                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
-
-                //Put the horizontal menu into the refresh objects
-                mRefreshObject = new GW.Navigation.RefreshObject();
-                mRefreshObject.ContentAreaID = 'HorizontalDiv';
-                mRefreshObject.Refresh = function refreshFunction() {
-                    GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
-                }
-                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
-
-                //Put the GetPreferences into the refresh objects
-                mRefreshObject = new GW.Navigation.RefreshObject();
-                mRefreshObject.ContentAreaID = 'NotUsed';
-                mRefreshObject.Refresh = function refreshFunction() {
-                    var options = GW.Model.DefaultWebMethodOptions();
-                    options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences?Action=GetPreferences";
-                    options.async = true;
-                    options.contentType = 'application/json; charset=utf-8';
-                    options.dataType = 'json';
-                    options.type = "GET";
-                    GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
-
-                    function getGetPreferencesSuccess(xhr) {
-                        var mClientChoices = GW.Model.ClientChoices();
-                        var mClientChoices = $.extend({}, mClientChoices, xhr);
-                        if (mClientChoices.AccountName != 'Anonymous') {
-                            $('#smallMenu').hide();
-                            $('#smallMenuAuthenticated').show();
-                        } else {
-                            $('#smallMenuAuthenticated').hide();
-                            $('#smallMenu').show();
-                        }
-
-                        if (mClientChoices.Environment != 'Prod') {
-                            $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
-                        } else {
-                            $('#spEnvironment').css({ display: 'none' });
-                        }
-                        if (mClientChoices.AccountName != 'Anonymous') {
-                            $('#spAccountName').html(mClientChoices.AccountName);
-                        } else {
-                            $('#spAccountName').css({ display: 'none' });
-                        }
-                        $('#spVersion').html('Version: ' + mClientChoices.Version);
-                        $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
-                    }
-
-                }
-                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+            } else {
+                GW.Navigation.NavigationController.LoadPage("GenericHome", "MainContentDiv");
             }
-
-            $(document).ready(function () {
-                var $loader = $('#loading'), timer = 0;
-                $loader.hide()
-			    .ajaxStart(function () {
-			        timer && clearTimeout(timer);
-
-			        timer = setTimeout(function () {
-			            $loader.show();
-			        },
-				    100);
-			    })
-			    .ajaxStop(function () {
-			        clearTimeout(timer);
-			        $loader.hide();
-
-			    });
-                $('[data-toggle=offcanvas]').click(function () {
-                    $('.row-offcanvas').toggleClass('active');
-                });
-                GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
-                var currentHash = window.location.hash.substring(1);
-                currentHash = currentHash.replace("?Action=", "");
-                if (currentHash != '') {
-                    GW.Navigation.NavigationController.LoadPage(currentHash, "MainContentDiv");
-
-                } else {
-                    GW.Navigation.NavigationController.LoadPage("GenericHome", "MainContentDiv");
-                }
-
-                $('.show-sidebar').on('click', function (e) {
-                    e.preventDefault();
-                    $('div#main').toggleClass('sidebar-show');
-                    setTimeout(MessagesMenuWidth, 250);
-                });
-
-                $('#content').addClass('full-content');
-            });
-
-            //
-            //  Helper for correct size of Messages page
-            //
-            function MessagesMenuWidth() {
-                var W = window.innerWidth;
-                var W_menu = $('#sidebar-left').outerWidth();
-                var w_messages = (W - W_menu) * 16.666666666666664 / 100;
-                $('#messages-menu').width(w_messages);
-            }
-        </script>
+        });
+    </script>
 </asp:Content>
 <asp:Content ID="Content2" ContentPlaceHolderID="MainContent" runat="server">
 	<div id="MainContentDiv">

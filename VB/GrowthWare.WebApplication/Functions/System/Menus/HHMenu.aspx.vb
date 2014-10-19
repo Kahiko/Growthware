@@ -18,7 +18,7 @@ Public Class HHMenu
             Dim mStringBuiler As StringBuilder = New StringBuilder()
             mDataset.EnforceConstraints = False
             mDataset.Relations.Add(mRelation)
-            mMenuString = MenuUtility.GenerateULLI(mDataTable, mStringBuiler)
+            mMenuString = MenuUtility.GenerateUnorderedList(mDataTable, mStringBuiler)
         End If
         cssmenu.InnerHtml = mMenuString
     End Sub

@@ -5,10 +5,7 @@
 <html lang="en">
 	<head runat="server">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>GrowhtWare DevOops VB</title>
-        <%: Scripts.Render("~/bundles/bootstrap")%>
-        <%--<%: Scripts.Render("~/bundles/angular")%>--%>
-        <%: Styles.Render("~/Content/BootstrapCSS")%>
+		<title>Growhtware DevOops VB</title>
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -18,8 +15,113 @@
 		<![endif]-->
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
-        <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
+        <%: Scripts.Render("~/bundles/bootstrap")%>
+        <%: Styles.Render("~/Content/BootstrapCSS")%>
+        <script type="text/javascript" language="javascript">
+            function afterLoadFunctions() {
+                // Create the refresh objects for all of the necessary UI elements
+                var mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'HorizontalHierarchicalDiv';
+                mRefreshObject.Refresh = function refresh() {
+                    GW.Navigation.NavigationController.LoadPage("HorizontalHierarchicalMenu", "HorizontalHierarchicalDiv");
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the vertical menu into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'VMenuDiv';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the horizontal menu into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'HorizontalDiv';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the GetPreferences into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'NotUsed';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    var options = GW.Model.DefaultWebMethodOptions();
+                    options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences?Action=GetPreferences";
+                    options.async = true;
+                    options.contentType = 'application/json; charset=utf-8';
+                    options.dataType = 'json';
+                    options.type = "GET";
+                    GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+                    function getGetPreferencesSuccess(xhr) {
+                        var mClientChoices = GW.Model.ClientChoices();
+                        var mClientChoices = $.extend({}, mClientChoices, xhr);
+                        if (mClientChoices.AccountName != 'Anonymous') {
+                            $('#smallMenu').hide();
+                            $('#smallMenuAuthenticated').show();
+                        } else {
+                            $('#smallMenuAuthenticated').hide();
+                            $('#smallMenu').show();
+                        }
+
+                        if (mClientChoices.Environment != 'Prod') {
+                            $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                        } else {
+                            $('#spEnvironment').css({ display: 'none' });
+                        }
+                        if (mClientChoices.AccountName != 'Anonymous') {
+                            $('#spAccountName').html(mClientChoices.AccountName);
+                        } else {
+                            $('#spAccountName').css({ display: 'none' });
+                        }
+                        $('#spVersion').html('Version: ' + mClientChoices.Version);
+                        $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                    }
+
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+            }
+
+            //
+            //  Helper for correct size of Messages page
+            //
+            function MessagesMenuWidth() {
+                var W = window.innerWidth;
+                var W_menu = $('#sidebar-left').outerWidth();
+                var w_messages = (W - W_menu) * 16.666666666666664 / 100;
+                $('#messages-menu').width(w_messages);
+            }
+
+            $(document).ready(function () {
+                $('[data-toggle=offcanvas]').click(function () {
+                    $('.row-offcanvas').toggleClass('active');
+                });
+                $('.show-sidebar').on('click', function (e) {
+                    e.preventDefault();
+                    $('div#main').toggleClass('sidebar-show');
+                    setTimeout(MessagesMenuWidth, 250);
+                });
+                var $loader = $('#loading'), timer = 0;
+                $loader.hide()
+			    .ajaxStart(function () {
+			        timer && clearTimeout(timer);
+
+			        timer = setTimeout(function () {
+			            $loader.show();
+			        },
+				    100);
+			    })
+			    .ajaxStop(function () {
+			        clearTimeout(timer);
+			        $loader.hide();
+
+			    });
+            });
+        </script>
         <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+        <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 	</head>
 <body>
 <!--Start Header-->
@@ -143,4 +245,3 @@
 <!--End Container-->
 </body>
 </html>
-
