@@ -38,7 +38,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 					mDataSource = value;
 				}
 				else {
-                    throw new ArgumentNullException("value", "value can not be null (Nothing in VB)!");
+                    throw new ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
 				}
 			}
 		}
@@ -165,7 +165,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 		/// <remarks></remarks>
 		protected override void RenderContents(HtmlTextWriter writer)
 		{
-            if (writer == null) throw new ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)");
+            if (writer == null) throw new ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)!");
 			// Display the tabs
 			int i = 0;
 			for (i = 0; i <= mNavigationTrailTab.Count - 1; i++) {
@@ -217,7 +217,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
 		/// <returns>Type.</returns>
         public override Type GetChildControlType(string tagName, IDictionary attribs)
 		{
-            if (attribs == null) throw new ArgumentNullException("attribs", "attribs cannot be a null reference (Nothing in Visual Basic)");
+            if (attribs == null) throw new ArgumentNullException("attribs", "attribs cannot be a null reference (Nothing in Visual Basic)!");
             if (string.Compare(tagName, "NavigationTrailTab", StringComparison.OrdinalIgnoreCase) == 0)
             {
 				return typeof(NavigationTrailTab);

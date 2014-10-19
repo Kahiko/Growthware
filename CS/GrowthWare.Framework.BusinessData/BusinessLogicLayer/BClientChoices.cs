@@ -134,7 +134,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             }
             else 
             {
-                throw new ArgumentNullException("clientChoicesState", "clientChoicesState can not be null");
+                throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!");
             }
         }
     }

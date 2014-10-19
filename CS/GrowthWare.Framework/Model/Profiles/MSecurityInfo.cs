@@ -93,8 +93,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="profileWithDerivedRoles">A profile that implements IMGroupRoleSecurity.</param>
         public MSecurityInfo(IMGroupRolePermissionSecurity groupRolePermissionSecurity, IMGroupRoleSecurity profileWithDerivedRoles)
         {
-            if (groupRolePermissionSecurity == null) throw new ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)");
-            if (profileWithDerivedRoles == null) throw new ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)");
+            if (groupRolePermissionSecurity == null) throw new ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!");
+            if (profileWithDerivedRoles == null) throw new ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
             // Check View Permissions
             m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
             // Check Add Permissions
@@ -113,8 +113,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         protected static bool CheckAuthenticatedPermission(Collection<String> objRoles, Collection<String> profileDerivedRoles)
         {
-            if (objRoles == null) throw new ArgumentNullException("objRoles", "objRoles cannot be a null reference (Nothing in Visual Basic)");
-            if (profileDerivedRoles == null) throw new ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)");
+            if (objRoles == null) throw new ArgumentNullException("objRoles", "objRoles cannot be a null reference (Nothing in Visual Basic)!");
+            if (profileDerivedRoles == null) throw new ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
             // If page/module contains the role "Anonymous" the don't bother running the rest of code just return true
             if (objRoles.Contains("Anonymous")) return true;
             if (profileDerivedRoles.Contains("SysAdmin")) return true;

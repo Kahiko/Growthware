@@ -22,8 +22,8 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ULLI")]
         public static String GenerateULLI(DataTable menuData, StringBuilder value)
         {
-            if (value == null) throw new ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)");
-            if (menuData == null) throw new ArgumentNullException("menuData", "menuData cannot be a null reference (Nothing in Visual Basic)");
+            if (value == null) throw new ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)!");
+            if (menuData == null) throw new ArgumentNullException("menuData", "menuData cannot be a null reference (Nothing in Visual Basic)!");
             value.AppendLine("<ul>");
             DataView datView = null;
             try

@@ -118,7 +118,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 
         DataTable IDAccount.Search(MSearchCriteria searchCriteria)
         {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria can not be null");
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
             DataTable mRetVal;
             SqlParameter[] mParameters =

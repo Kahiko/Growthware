@@ -22,7 +22,7 @@ namespace GrowthWare.WebSupport
         /// <remarks></remarks>
         public static WindowsImpersonationContext ImpersonateNow(string account, string password)
         {
-            if (account == null || password == null) throw new ArgumentNullException("account", "Account or password can not be null reference (Nothing in Visual Basic)");
+            if (account == null || password == null) throw new ArgumentException("account", "account cannot be blank or a null reference (Nothing in Visual Basic)");
             IntPtr tokenHandle = new IntPtr(0);
             IntPtr dupeTokenHandle = new IntPtr(0);
             //WebImpersonate myImpersonate = new WebImpersonate();

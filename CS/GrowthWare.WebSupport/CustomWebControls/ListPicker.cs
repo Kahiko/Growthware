@@ -381,7 +381,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public bool LoadPostData(string postDataKey, NameValueCollection postCollection)
         {
-            if (postCollection == null) throw new ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)");
+            if (postCollection == null) throw new ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)!");
             string _allState = null;
             string _selectedState = null;
 
@@ -611,7 +611,7 @@ namespace GrowthWare.WebSupport.CustomWebControls
         /// <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter" /> that represents the output stream to render HTML content on the client.</param>
         protected override void RenderContents(HtmlTextWriter writer)
         {
-            if (writer == null) throw new ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)");
+            if (writer == null) throw new ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)!");
             // start the row 
             writer.RenderBeginTag(HtmlTextWriterTag.Tr);
             // Add Labels 

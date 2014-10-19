@@ -251,7 +251,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </example>
         public void Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
         {
-            if (profile == null) throw new ArgumentException("profile can not be null");
+            if (profile == null) throw new ArgumentException("profile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts.Profile = profile;
             if (IsDatabaseOnline()) 
             {

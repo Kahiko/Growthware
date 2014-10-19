@@ -56,7 +56,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             DataTable mRetTable = getDataTable();
 
@@ -273,7 +273,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = "Upload successfull";
             char mDirectorySeparatorChar = System.IO.Path.DirectorySeparatorChar;
@@ -314,7 +314,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             else
             {
-                mRetVal = "fileToUpload can not be null or Nothing.";
+                mRetVal = "fileToUpload cannot be a null reference (Nothing in Visual Basic)! or Nothing.";
             }
             return mRetVal;
         }
@@ -330,7 +330,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = null;
             mRetVal = "Successfully created the new directory!";
@@ -373,7 +373,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = null;
             WindowsImpersonationContext mImpersonatedUser = null;
@@ -414,7 +414,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = null;
             mRetVal = "Successfully deleted the file(s)";
@@ -459,7 +459,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (directoryProfile == null)
             {
-                throw new ArgumentNullException("directoryProfile", "Can not be null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             string mRetVal = null;
             mRetVal = "Successfully renamed the file!";
@@ -535,7 +535,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             else
             {
-                throw new ArgumentNullException("directoryProfile");
+                throw new ArgumentNullException("directoryProfile","directoryProfile can not be null reference (Nothing in Visual Basic)");
             }
             return mRetVal;
         }
@@ -554,8 +554,8 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)");
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
             DirectoryInfo[] subDirectories = null;
             try
             {
@@ -608,10 +608,10 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, int directoryLineCount)
         {
-            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)");
-            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)");
-            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)");
-            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)");
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
+            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)!");
+            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)!");
 
             Boolean writeDirectory = true;
             int FileLineCount = 0;

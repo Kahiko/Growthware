@@ -33,15 +33,15 @@ namespace GrowthWare.Framework.Common
 		{
 			if ((assemblyName == null))
 			{
-                throw new ArgumentNullException("assemblyName", "assemblyName cannot be a null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("assemblyName", "assemblyName cannot be a null reference (Nothing in Visual Basic)!");
 			}
 			if (theNamespace == null)
 			{
-				throw new ArgumentNullException("theNamespace", "theNamespace cannot be a null reference (Nothing in Visual Basic)");
+				throw new ArgumentNullException("theNamespace", "theNamespace cannot be a null reference (Nothing in Visual Basic)!");
 			}
 			if (className == null)
 			{
-                throw new ArgumentNullException("className", "className cannot be a null reference (Nothing in Visual Basic)");
+                throw new ArgumentNullException("className", "className cannot be a null reference (Nothing in Visual Basic)!");
 			}
 			object mReturnObject = null;
 			try

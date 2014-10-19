@@ -189,7 +189,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>Integer</returns>
         public int Save(MSecurityEntityProfile profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             profile.Id = profile.Id;
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") m_DSecurityEntity.Save(profile);
             return profile.Id;

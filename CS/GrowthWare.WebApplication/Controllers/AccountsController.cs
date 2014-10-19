@@ -31,11 +31,11 @@ public class AccountsController : ApiController
 	public IHttpActionResult Logon(LogonInfo jsonData)
 	{
 		if (jsonData == null)
-			throw new ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)");
+			throw new ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)!");
 		if (string.IsNullOrEmpty(jsonData.Account))
-			throw new NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)");
+			throw new NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)!");
 		if (string.IsNullOrEmpty(jsonData.Password))
-			throw new NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)");
+			throw new NullReferenceException("jsonData.Password cannot be a null reference (Nothing in Visual Basic)!");
 		string mRetVal = "false";
 		bool mDomainPassed = false;
 		if (jsonData.Account.Contains("\\")) {
@@ -78,7 +78,7 @@ public class AccountsController : ApiController
 	public IHttpActionResult ChangePassword(MChangePassword mChangePassword)
 	{
 		if (mChangePassword == null)
-			throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be NULL or Nothing in VB.net!");
+			throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!");
 		MMessageProfile mMessageProfile = new MMessageProfile();
 		MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
 		MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();

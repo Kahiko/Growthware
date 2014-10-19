@@ -396,7 +396,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
             } 
             else 
             {
-                throw new ArgumentNullException("parameters", "parameters can not be null");
+                throw new ArgumentNullException("parameters", "parameters cannot be a null reference (Nothing in Visual Basic)!");
             }
             return mRetVal;
         }
@@ -453,7 +453,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.Base
             }
             else 
             {
-                throw new ArgumentNullException("profile", "profile can not be null!");
+                throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             }
             return mAdded_Updated_By;
         }

@@ -87,7 +87,7 @@ namespace GrowthWare.WebSupport
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static String GetQueryValue(HttpRequest request, String queryString)
         {
-            if (request == null) throw new ArgumentNullException("request", "request can not be null (Nothing in VB)!");
+            if (request == null) throw new ArgumentNullException("request", "request cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
             String mRetVal = String.Empty;
             if (request.QueryString[queryString] != null)
             {

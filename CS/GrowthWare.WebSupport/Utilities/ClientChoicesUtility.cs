@@ -33,7 +33,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MClientChoicesState.</returns>
         public static MClientChoicesState GetClientChoicesState(String account, bool fromDB)
         {
-            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account can not be null (Nothing in VB) or empty!");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
             MClientChoicesState mRetVal = null;
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
@@ -99,7 +99,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void Save(MClientChoicesState clientChoicesState)
         {
-            if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState can not be null (Nothing in VB)!");
+            if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mBClientChoices.Save(clientChoicesState);

@@ -154,7 +154,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>System.Int32.</returns>
         public void Save(MMessageProfile profile)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             if (IsDatabaseOnline()) 
             {
                 m_DMessages.Profile = profile;
@@ -169,7 +169,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in VB) or empty!");
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
             DataTable mRetVal = null;
             if (string.IsNullOrEmpty(searchCriteria.WhereClause))
             {

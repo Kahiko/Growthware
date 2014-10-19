@@ -25,7 +25,7 @@ namespace GrowthWare.WebSupport.Context
         /// <param name="context"></param>
         public void Init(HttpApplication context)
         {
-            if (context == null) throw new ArgumentNullException("context", "context can not be null (Nothing in VB)!");
+            if (context == null) throw new ArgumentNullException("context", "context cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
             context.AcquireRequestState += this.AcquireRequestState;
             context.EndRequest += this.EndRequest;
         }

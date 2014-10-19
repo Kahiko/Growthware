@@ -126,7 +126,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="updatedDate">Up dated date.</param>
         public static void Move(MFunctionProfile profile, DirectionType direction, int updatedBy, DateTime updatedDate)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile can not be null!");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             profile.UpdatedBy = updatedBy;
             profile.UpdatedDate = updatedDate;
             BFunctions mBAppFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
