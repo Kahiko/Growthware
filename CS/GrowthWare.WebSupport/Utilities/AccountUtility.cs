@@ -292,7 +292,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Performs all logoff function
         /// </summary>
         /// <remarks></remarks>
-        public static void LogOff()
+        public static void Logoff()
         {
             RemoveInMemoryInformation(true);
             FormsAuthentication.SignOut();

@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
+    <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
@@ -172,14 +173,13 @@
     <Content Include="Functions\System\Menus\VHMenu.aspx" />
     <Content Include="Functions\System\Menus\VMenu.aspx" />
     <Content Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx" />
+    <Content Include="Functions\System\TestNaturalSort.aspx" />
     <Content Include="index.aspx" />
     <Content Include="packages.config">
       <SubType>Designer</SubType>
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Public\CSS\bootstrap-theme.min.css" />
-    <Content Include="Public\CSS\bootstrap.min.css" />
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css" />
     <Content Include="Public\CSS\BootStrap\bootstrap.css" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -275,6 +275,13 @@
     <Compile Include="Functions\System\Accounts\ChangePassword.aspx.designer.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Functions\System\Accounts\Favorite.aspx.cs">
+      <DependentUpon>Favorite.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\Favorite.aspx.designer.cs">
+      <DependentUpon>Favorite.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Functions\System\Accounts\Logoff.aspx.cs">
       <DependentUpon>Logoff.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -366,6 +373,13 @@
     <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.designer.cs">
       <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Functions\System\TestNaturalSort.aspx.cs">
+      <DependentUpon>TestNaturalSort.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\TestNaturalSort.aspx.designer.cs">
+      <DependentUpon>TestNaturalSort.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -397,7 +411,6 @@
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
     <Folder Include="Public\Images\" />
-    <Folder Include="Public\Scripts\GrowthWare\" />
     <Folder Include="UserControls\" />
   </ItemGroup>
   <ItemGroup>

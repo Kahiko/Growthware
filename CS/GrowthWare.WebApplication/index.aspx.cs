@@ -1,17 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using GrowthWare.Framework.Model.Profiles;
+using GrowthWare.WebSupport.BasePages;
+using GrowthWare.WebSupport.Utilities;
+using System;
+using System.IO;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace GrowthWare.WebApplication
 {
-    public partial class index : Page
+    public partial class index : BaseWebpage
     {
-        protected void Page_Load(object sender, EventArgs e)
+        protected new void Page_PreInit(object sender, EventArgs e)
         {
-
+            base.Page_PreInit(sender, e);
+            MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
+            String mMasterPage = "Public/Skins/" + mSecProfile.Skin + "/Default.master";
+            string fileName = null;
+            fileName = HttpContext.Current.Server.MapPath("~\\") + mMasterPage;
+            if (!File.Exists(fileName))
+            {
+                mMasterPage = "Public/Skins/Default/Default.Master";
+            }
+            this.MasterPageFile = mMasterPage;
         }
     }
 }

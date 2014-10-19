@@ -19,8 +19,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="menuData">The menu data.</param>
         /// <param name="value">The string builder.</param>
         /// <returns>String.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "ULLI")]
-        public static String GenerateULLI(DataTable menuData, StringBuilder value)
+        public static String GenerateUnorderedList(DataTable menuData, StringBuilder value)
         {
             if (value == null) throw new ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)!");
             if (menuData == null) throw new ArgumentNullException("menuData", "menuData cannot be a null reference (Nothing in Visual Basic)!");

@@ -31,7 +31,7 @@ public class AccountsController : ApiController
 	public IHttpActionResult Logon(LogonInfo jsonData)
 	{
 		if (jsonData == null)
-			throw new ArgumentNullException("logonInfo", "logonInfo cannot be a null reference (Nothing in Visual Basic)!");
+            throw new ArgumentNullException("jsonData", "jsonData cannot be a null reference (Nothing in Visual Basic)!");
 		if (string.IsNullOrEmpty(jsonData.Account))
 			throw new NullReferenceException("jsonData.Account cannot be a null reference (Nothing in Visual Basic)!");
 		if (string.IsNullOrEmpty(jsonData.Password))

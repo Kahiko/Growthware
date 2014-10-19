@@ -25,7 +25,7 @@ namespace GrowthWare.WebApplication.Functions.System.Menus
                 StringBuilder mStringBuiler = new StringBuilder();
                 mDataset.EnforceConstraints = false;
                 mDataset.Relations.Add(mRelation);
-                mMenuString = MenuUtility.GenerateULLI(mDataTable, mStringBuiler);
+                mMenuString = MenuUtility.GenerateUnorderedList(mDataTable, mStringBuiler);
             }
             cssmenuVHMenu.InnerHtml = mMenuString;
         }
