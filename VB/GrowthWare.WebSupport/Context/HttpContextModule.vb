@@ -113,7 +113,7 @@ Namespace Context
                                 Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
                                 If Not mSecurityInfo.MayView Then
                                     If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
-                                        Dim mException As Exception = New Exception("Your session has timed out.<br/>Please sign in.")
+                                        Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
                                         GWWebHelper.ExceptionError = mException
                                         HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx")
                                     End If
@@ -121,7 +121,7 @@ Namespace Context
                                     HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx")
                                 End If
                             Else
-                                Dim mException As Exception = New Exception("Your password needs to be changed before any other action can be performed.")
+                                Dim mException As WebSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
                                 GWWebHelper.ExceptionError = mException
                                 HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword")
                             End If

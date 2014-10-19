@@ -1,4 +1,5 @@
 ﻿Imports System.Text
+Imports System.Globalization
 
 Namespace Utilities
     ''' <summary>
@@ -6,33 +7,41 @@ Namespace Utilities
     ''' </summary>
     ''' <remarks>Could be considered Specific to Growthware</remarks>
     Public Module MenuUtility
-        Private m_MenuRelationName As String = "MenuRelation"
 
         ''' <summary>
         ''' Generates and order list form hierarchical data.
         ''' </summary>
         ''' <param name="menuData">Hierarchical datatable</param>
-        ''' <param name="stringBuiler">StringBuiler used to build the ul/li string data</param>
+        ''' <param name="value">StringBuiler used to build the ul/li string data</param>
         ''' <returns>String</returns>
         ''' <remarks>Frist Layer of items should have a ParentID of 1</remarks>
-        Public Function GenerateULLI(ByVal menuData As DataTable, ByRef stringBuiler As StringBuilder) As String
-            stringBuiler.AppendLine("<ul>")
-            Dim datView As DataView = New DataView(menuData)
-            datView.RowFilter = "ParentID = 1"
-            '//Populate menu with top menu items
-            Dim datRow As DataRowView
-            For Each datRow In datView
-                '//Define new menu item
-                If Integer.Parse(datRow("FUNCTION_TYPE_SEQ_ID").ToString()) = 3 Then
-                    stringBuiler.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), True))
-                Else
-                    stringBuiler.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), False))
-                End If
-                '//Populate child items of this parent
-                addChildItems(menuData, datRow("MenuID"), stringBuiler)
-            Next
-            stringBuiler.AppendLine("<ul>")
-            Return stringBuiler.ToString()
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="ULLI")>
+        Public Function GenerateULLI(ByVal menuData As DataTable, ByVal value As StringBuilder) As String
+            If value Is Nothing Then Throw New ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)")
+            value.AppendLine("<ul>")
+            Dim datView As DataView = Nothing
+            Try
+                datView = New DataView(menuData)
+                datView.RowFilter = "ParentID = 1"
+                '//Populate menu with top menu items
+                Dim datRow As DataRowView
+                For Each datRow In datView
+                    '//Define new menu item
+                    If Integer.Parse(datRow("FUNCTION_TYPE_SEQ_ID").ToString(), CultureInfo.InvariantCulture) = 3 Then
+                        value.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), True))
+                    Else
+                        value.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), False))
+                    End If
+                    '//Populate child items of this parent
+                    addChildItems(menuData, datRow("MenuID"), value)
+                Next
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not datView Is Nothing Then datView.Dispose()
+            End Try
+            value.AppendLine("<ul>")
+            Return value.ToString()
         End Function
 
         ''' <summary>
@@ -44,24 +53,31 @@ Namespace Utilities
         ''' <remarks></remarks>
         Private Sub addChildItems(ByVal menuData As DataTable, ByVal parentID As Integer, ByRef stringBuilder As StringBuilder)
             '//Populate DataView
-            Dim datView As DataView = New DataView(menuData)
-            '//Filter child menu items
-            datView.RowFilter = "parentid = " & parentID
-            '//Populate parent menu item with child menu items
-            Dim datRow As DataRowView
-            stringBuilder.AppendLine("<ul>")
-            For Each datRow In datView
-                '//Define new menu item
-                If Integer.Parse(datRow("FUNCTION_TYPE_SEQ_ID").ToString()) = 3 Then
-                    stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), True))
-                Else
-                    stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), False))
-                End If
+            Dim datView As DataView = Nothing
+            Try
+                datView = New DataView(menuData)
+                '//Filter child menu items
+                datView.RowFilter = "parentid = " & parentID
+                '//Populate parent menu item with child menu items
+                Dim datRow As DataRowView
+                stringBuilder.AppendLine("<ul>")
+                For Each datRow In datView
+                    '//Define new menu item
+                    If Integer.Parse(datRow("FUNCTION_TYPE_SEQ_ID").ToString(), CultureInfo.InvariantCulture) = 3 Then
+                        stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), True))
+                    Else
+                        stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), False))
+                    End If
 
-                'stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), mHasChildren))
-                '//Populate child items of this parent
-                addChildItems(menuData, datRow("MenuID"), stringBuilder)
-            Next
+                    'stringBuilder.AppendLine(createLIItem(datRow("Title"), datRow("URL"), datRow("Description"), mHasChildren))
+                    '//Populate child items of this parent
+                    addChildItems(menuData, datRow("MenuID"), stringBuilder)
+                Next
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not datView Is Nothing Then datView.Dispose()
+            End Try
             stringBuilder.AppendLine("</ul>")
         End Sub
 

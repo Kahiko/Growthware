@@ -7,8 +7,8 @@ Public Class HMenu
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim mAccount As String = AccountUtility.HttpContextUserName()
         Dim myDataTable As DataTable = AccountUtility.GetMenu(mAccount, MenuType.Horizontal)
-        Navtrail.DataSource = myDataTable.DefaultView
-        Navtrail.DataBind()
+        NavigationTrail.DataSource = myDataTable.DefaultView
+        NavigationTrail.DataBind()
     End Sub
 
 End Class

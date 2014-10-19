@@ -30,6 +30,7 @@ Public Class SimplePostVariableParameterBinding
     ''' <param name="cancellationToken"></param>
     ''' <returns></returns>
     Public Overrides Function ExecuteBindingAsync(metadataProvider As ModelMetadataProvider, actionContext As HttpActionContext, cancellationToken As CancellationToken) As Task
+        If actionContext Is Nothing Then Throw New ArgumentNullException("actionContext", "actionContext cannot be a null reference (Nothing in Visual Basic)")
         Dim stringValue As String = Nothing
 
         Dim col As NameValueCollection = TryReadBody(actionContext.Request)
@@ -75,6 +76,7 @@ Public Class SimplePostVariableParameterBinding
     ''' <param name="descriptor"></param>
     ''' <returns></returns>
     Public Shared Function HookupParameterBinding(descriptor As HttpParameterDescriptor) As HttpParameterBinding
+        If descriptor Is Nothing Then Throw New ArgumentNullException("descriptor", "descriptor cannot be a null reference (Nothing in Visual Basic)")
         Dim supportedMethods = descriptor.ActionDescriptor.SupportedHttpMethods
 
         ' Only apply this binder on POST and PUT operations

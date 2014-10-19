@@ -423,8 +423,8 @@ Namespace Utilities
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
-            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
-            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)")
             Dim subDirectories As DirectoryInfo() = Nothing
             Try
                 subDirectories = theDirectory.GetDirectories()
@@ -465,10 +465,10 @@ Namespace Utilities
         ''' <param name="directoryLineCount">The directory line count.</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByVal directoryLineCount As Integer)
-            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory can not be null or Nothing in VB.net")
-            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder can not be null or Nothing in VB.net")
-            If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList can not be null or Nothing in VB.net")
-            If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray can not be null or Nothing in VB.net")
+            If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)")
+            If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)")
+            If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)")
+            If fileArray Is Nothing Then Throw New ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)")
 
             Dim sFileType As [String]
             Dim writeDirectory As Boolean = True

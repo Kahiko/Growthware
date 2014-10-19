@@ -5,7 +5,7 @@ Imports System.Web.UI.WebControls
 Imports GrowthWare.WebSupport.CustomWebControls.Designers
 
 Namespace CustomWebControls
-    <ControlBuilderAttribute(GetType(NavTrailControlBuilder)), _
+    <ControlBuilderAttribute(GetType(NavigationTrailControlBuilder)), _
     ParseChildrenAttribute(False), _
     Designer(GetType(CustomDesigner)), _
     Bindable(True), _
@@ -13,13 +13,13 @@ Namespace CustomWebControls
     Category("Data"), _
     DefaultValue(""), _
     Description("Used to display a line type menu or a trail for navigation.")> _
-    Public Class NavTrail
+    Public Class NavigationTrail
         Inherits WebControl
         Implements INamingContainer
 
         Private mDataSource As IEnumerable
-        Private mNavTrailTab As New ArrayList
-        Private m_Orentation As Orentation = Orentation.Horizontal
+        Private mNavigationTrailTab As New ArrayList
+        Private m_Orientation As Orientation = Orientation.Horizontal
 
         ''' <summary>
         ''' DataSource is the source of data used with the bind
@@ -45,12 +45,12 @@ Namespace CustomWebControls
         ''' </summary>
         ''' <value>Horzontal or Vertical</value>
         ''' <returns>String</returns>
-        Public Overridable Property Orentation As Orentation
+        Public Overridable Property Orientation As Orientation
             Get
-                Return m_Orentation
+                Return m_Orientation
             End Get
-            Set(value As Orentation)
-                m_Orentation = value
+            Set(value As Orientation)
+                m_Orientation = value
             End Set
         End Property
 
@@ -83,47 +83,34 @@ Namespace CustomWebControls
         End Sub
 
         ''' <summary>
-        ''' Gets the data source
-        ''' </summary>
-        ''' <returns>IEnumerable</returns>
-        ''' <remarks></remarks>
-        Protected Overridable Function GetDataSource() As IEnumerable
-            If mDataSource Is Nothing Then
-                Return Nothing
-            End If
-            Dim resolvedDataSource As IEnumerable
-            resolvedDataSource = mDataSource
-            Return resolvedDataSource
-        End Function
-
-        ''' <summary>
-        ''' Creates a navtrailtab for each item in a dataview
+        ''' Creates a NavigationTrailtab for each item in a dataview
         ''' </summary>
         ''' <param name="useViewState"></param>
         ''' <remarks>
         ''' Please note that there must at least 4 data items and 
         ''' data item 1 and 3 are used for text and URL respectively
         ''' </remarks>
-        Protected Overridable Sub CreateMyControlHeirarchy(ByVal useViewState As Boolean)
+        Protected Overridable Sub CreateMyControlHierarchy(ByVal useViewState As Boolean)
             Dim resolvedDataSource As IEnumerable = Nothing
             If useViewState Then
                 If Not (ViewState("RowCount") Is Nothing) Then
                     resolvedDataSource = New Object(Fix(ViewState("RowCount"))) {}
                 Else
-                    Throw New CustomWebControlException("Unable to retrieve expected data from ViewState")
+                    Throw New CustomWebControlException("Unable to retrieve expected data from View State")
                 End If
             Else
-                resolvedDataSource = GetDataSource()
+                resolvedDataSource = DataSource()
             End If
 
             If Not (resolvedDataSource Is Nothing) Then
                 Dim dataItem As DataRowView
                 For Each dataItem In resolvedDataSource
-                    Dim myNavTrailTab As New NavTrailTab
-                    myNavTrailTab.Action = dataItem(3)
-                    myNavTrailTab.Text = dataItem(1)
-                    myNavTrailTab.ToolTip = dataItem(2)
-                    mNavTrailTab.Add(myNavTrailTab)
+                    Using myNavigationTrailTab As New NavigationTrailTab
+                        myNavigationTrailTab.Action = dataItem(3)
+                        myNavigationTrailTab.Text = dataItem(1)
+                        myNavigationTrailTab.ToolTip = dataItem(2)
+                        mNavigationTrailTab.Add(myNavigationTrailTab)
+                    End Using
                 Next dataItem
             End If
         End Sub
@@ -133,7 +120,7 @@ Namespace CustomWebControls
 
             If Not (ViewState("RowCount") Is Nothing) Then
                 Dim useViewState As Boolean = True
-                CreateMyControlHeirarchy(useViewState)
+                CreateMyControlHierarchy(useViewState)
             End If
 
         End Sub
@@ -144,19 +131,19 @@ Namespace CustomWebControls
             ClearChildViewState()
             TrackViewState()
             Dim useViewState As Boolean = False
-            CreateMyControlHeirarchy(useViewState)
+            CreateMyControlHierarchy(useViewState)
             ChildControlsCreated = True
         End Sub 'DataBind
 
         ''' <summary>
-        ''' Only add NavTrailTab to the mNavTrailTab collection.
+        ''' Only add NavigationTrailTab to the mNavigationTrailTab collection.
         ''' </summary>
         ''' <param name="obj"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub AddParsedSubObject(ByVal obj As [Object])
 
-            If TypeOf obj Is NavTrailTab Then
-                mNavTrailTab.Add(obj)
+            If TypeOf obj Is NavigationTrailTab Then
+                mNavigationTrailTab.Add(obj)
             End If
         End Sub
 
@@ -166,23 +153,25 @@ Namespace CustomWebControls
         ''' <param name="writer"></param>
         ''' <remarks></remarks>
         Protected Overrides Sub RenderContents(ByVal writer As HtmlTextWriter)
+            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)")
             ' Display the tabs
             Dim i As Integer
-            For i = 0 To mNavTrailTab.Count - 1
-                Dim objTab As NavTrailTab = CType(mNavTrailTab(i), NavTrailTab)
-                Dim hyperLink As New HyperLink
-                hyperLink.RenderBeginTag(writer)
-                hyperLink.Text = objTab.Text
-                hyperLink.NavigateUrl = objTab.Action
-                hyperLink.ToolTip = objTab.ToolTip
-                hyperLink.RenderEndTag(writer)
-                hyperLink.RenderControl(writer)
-                If m_Orentation = Orentation.Horizontal Then
-                    If i < mNavTrailTab.Count - 1 Then
+            For i = 0 To mNavigationTrailTab.Count - 1
+                Dim objTab As NavigationTrailTab = CType(mNavigationTrailTab(i), NavigationTrailTab)
+                Using hyperLink As New HyperLink
+                    hyperLink.RenderBeginTag(writer)
+                    hyperLink.Text = objTab.Text
+                    hyperLink.NavigateUrl = objTab.Action
+                    hyperLink.ToolTip = objTab.ToolTip
+                    hyperLink.RenderEndTag(writer)
+                    hyperLink.RenderControl(writer)
+                End Using
+                If m_Orientation = Orientation.Horizontal Then
+                    If i < mNavigationTrailTab.Count - 1 Then
                         writer.Write("&nbsp;|&nbsp;")
                     End If
                 Else
-                    If i < mNavTrailTab.Count - 1 Then
+                    If i < mNavigationTrailTab.Count - 1 Then
                         writer.Write("<br/>")
                     End If
                 End If
@@ -192,29 +181,35 @@ Namespace CustomWebControls
 
     '*********************************************************************
     ' Navigation Trail Control Builder Class
-    ' Only parse NavTrailTab in the NavTrail.
+    ' Only parse NavigationTrailTab in the NavigationTrail.
     '*********************************************************************
 
     <Designer(GetType(CustomDesigner))> _
-    Public Class NavTrailControlBuilder
+    Public Class NavigationTrailControlBuilder
         Inherits ControlBuilder
 
-        Public Overrides Function GetChildControlType(ByVal tagName As String, ByVal attributes As IDictionary) As Type
-
-            If String.Compare(tagName, "NavTrailTab", True) = 0 Then
-                Return GetType(NavTrailTab)
+        ''' <summary>
+        ''' Gets the type of the child control.
+        ''' </summary>
+        ''' <param name="tagName">Name of the tag.</param>
+        ''' <param name="attribs">The attributes.</param>
+        ''' <returns>Type.</returns>
+        Public Overrides Function GetChildControlType(ByVal tagName As String, ByVal attribs As IDictionary) As Type
+            If attribs Is Nothing Then Throw New ArgumentNullException("attribs", "attribs cannot be a null reference (Nothing in Visual Basic)")
+            If String.Compare(tagName, "NavigationTrailTab", StringComparison.OrdinalIgnoreCase) = 0 Then
+                Return GetType(NavigationTrailTab)
             End If
 
             Return Nothing
         End Function    'GetChildControlType
-    End Class ' NavTrailControlBuilder
+    End Class
 
     ''' <summary>
-    ''' Represents individual links in the NavTrail.
+    ''' Represents individual links in the NavigationTrail.
     ''' </summary>
     ''' <remarks></remarks>
     <Designer(GetType(CustomDesigner))> _
-    Public Class NavTrailTab
+    Public Class NavigationTrailTab
         Inherits Control
 
         Public Property Action As String
@@ -225,7 +220,7 @@ Namespace CustomWebControls
 
     End Class
 
-    Public Enum Orentation
+    Public Enum Orientation
         Horizontal = 0
         Vertical = 1
     End Enum

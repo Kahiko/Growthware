@@ -14,11 +14,11 @@ Option Explicit On
 Partial Public Class HMenu
 
     '''<summary>
-    '''Navtrail control.
+    '''NavigationTrail control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents Navtrail As Global.GrowthWare.WebSupport.CustomWebControls.NavTrail
+    Protected WithEvents NavigationTrail As Global.GrowthWare.WebSupport.CustomWebControls.NavigationTrail
 End Class

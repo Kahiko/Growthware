@@ -7,6 +7,7 @@ Imports System.Web.UI
 Imports System.Web.UI.WebControls
 Imports GrowthWare.WebSupport.CustomWebControls.Designers
 Imports System.Globalization
+Imports System.Collections.Specialized
 
 Namespace CustomWebControls
     <DefaultProperty("Text"), Designer(GetType(CustomDesigner)), ToolboxData("<{0}:ListPicker runat=server></{0}:ListPicker>")> _
@@ -82,7 +83,7 @@ Namespace CustomWebControls
                 End If
             End Get
             Set(ByVal Value As String)
-                ViewState("SelectedItemsText") = Value
+                If Not String.IsNullOrEmpty(Value) Then ViewState("SelectedItemsText") = Value
             End Set
         End Property
 
@@ -99,7 +100,7 @@ Namespace CustomWebControls
                 End If
             End Get
             Set(ByVal Value As String)
-                ViewState("AllItemsText") = Value.Trim
+                If Not String.IsNullOrEmpty(Value) Then ViewState("AllItemsText") = Value.Trim
             End Set
         End Property
 
@@ -147,7 +148,7 @@ Namespace CustomWebControls
             End Get
 
             Set(ByVal Value As String)
-                m_SelectButtonText = Value.Trim
+                If Not String.IsNullOrEmpty(Value) Then m_SelectButtonText = Value.Trim
             End Set
         End Property
 
@@ -161,7 +162,7 @@ Namespace CustomWebControls
             End Get
 
             Set(ByVal Value As String)
-                m_SelectAllButtonText = Value.Trim
+                If Not String.IsNullOrEmpty(Value) Then m_SelectAllButtonText = Value.Trim
             End Set
         End Property
 
@@ -175,7 +176,7 @@ Namespace CustomWebControls
             End Get
 
             Set(ByVal Value As String)
-                m_DeselectButtonText = Value
+                If Not String.IsNullOrEmpty(Value) Then m_DeselectButtonText = Value
             End Set
         End Property
 
@@ -189,7 +190,7 @@ Namespace CustomWebControls
             End Get
 
             Set(ByVal Value As String)
-                m_DeselectAllButtonText = Value
+                If Not String.IsNullOrEmpty(Value) Then m_DeselectAllButtonText = Value
             End Set
         End Property
 
@@ -202,10 +203,12 @@ Namespace CustomWebControls
                 Return m_ButtonWidth
             End Get
             Set(ByVal value As String)
-                If value.Trim.EndsWith("px", StringComparison.OrdinalIgnoreCase) Then
-                    m_ButtonWidth = value.Trim
-                Else
-                    m_ButtonWidth = value.Trim & "px"
+                If Not String.IsNullOrEmpty(value) Then
+                    If value.Trim.EndsWith("px", StringComparison.OrdinalIgnoreCase) Then
+                        m_ButtonWidth = value.Trim
+                    Else
+                        m_ButtonWidth = value.Trim & "px"
+                    End If
                 End If
             End Set
         End Property
@@ -257,7 +260,7 @@ Namespace CustomWebControls
                 End If
             End Get
             Set(ByVal Value As String)
-                ViewState("selectedState") = Value
+                If Not String.IsNullOrEmpty(Value) Then ViewState("selectedState") = Value
             End Set
         End Property
 
@@ -283,7 +286,7 @@ Namespace CustomWebControls
                 Return m_DataField
             End Get
             Set(ByVal Value As String)
-                m_DataField = Value
+                If Not String.IsNullOrEmpty(Value) Then m_DataField = Value
             End Set
         End Property
 
@@ -293,7 +296,7 @@ Namespace CustomWebControls
         ''' <value>The selected helper ID.</value>
         Protected ReadOnly Property SelectedHelperId() As String
             Get
-                Return ClientId + "_SelectedState"
+                Return ClientID + "_SelectedState"
             End Get
         End Property
 
@@ -303,7 +306,7 @@ Namespace CustomWebControls
         ''' <value>All helper ID.</value>
         Protected ReadOnly Property AllHelperId() As String
             Get
-                Return ClientId + "_AllState"
+                Return ClientID + "_AllState"
             End Get
         End Property
 
@@ -325,18 +328,19 @@ Namespace CustomWebControls
         ''' Loads the post data.
         ''' </summary>
         ''' <param name="postDataKey">The post data key.</param>
-        ''' <param name="values">The values.</param>
+        ''' <param name="postCollection">The values.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        Public Function LoadPostData(ByVal postDataKey As String, ByVal values As System.Collections.Specialized.NameValueCollection) As Boolean Implements IPostBackDataHandler.LoadPostData
+        Public Function LoadPostData(ByVal postDataKey As String, ByVal postCollection As NameValueCollection) As Boolean Implements IPostBackDataHandler.LoadPostData
+            If postCollection Is Nothing Then Throw New ArgumentNullException("postCollection", "postCollection cannot be a null reference (Nothing in Visual Basic)")
             Dim _allState As String
             Dim _selectedState As String
 
             ' return if null
-            If values(AllHelperId) Is Nothing Then
+            If postCollection(AllHelperId) Is Nothing Then
                 Return False
             End If
-            _allState = values(AllHelperId).Trim()
-            _selectedState = values(SelectedHelperId).Trim()
+            _allState = postCollection(AllHelperId).Trim()
+            _selectedState = postCollection(SelectedHelperId).Trim()
             If String.IsNullOrEmpty(_allState) Then
                 m_AllItems.Clear()
             Else
@@ -363,27 +367,20 @@ Namespace CustomWebControls
         ''' <remarks></remarks>
         Public Sub RaisePostDataChangedEvent() Implements IPostBackDataHandler.RaisePostDataChangedEvent
             OnListChanged(EventArgs.Empty)
-        End Sub       'RaisePostDataChangedEvent
+        End Sub
 
-        '*********************************************************************
-        '
-        ' OnListChanged Method
-        '
-        ' Method for handling list control post data changes
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' Raises the <see cref="E:ListChanged" /> event.
+        ''' </summary>
+        ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         Protected Overridable Sub OnListChanged(ByVal e As EventArgs)
             RaiseEvent ListChanged(Me, e)
         End Sub       'OnListChanged
 
-
-        '*********************************************************************
-        '
-        ' OnDataBinding Method
-        '
-        ' This method is called when the DataBind method is called
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Web.UI.Control.DataBinding" /> event.
+        ''' </summary>
+        ''' <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         Protected Overrides Sub OnDataBinding(ByVal e As EventArgs)
             Dim objDataEnum As IEnumerator
 
@@ -406,16 +403,13 @@ Namespace CustomWebControls
             For Each item In m_SelectedItems
                 m_AllItems.Remove(item)
             Next item
-        End Sub       'OnDataBinding
+        End Sub
 
-        '*********************************************************************
-        '
-        ' SelectedItems Property
-        '
-        ' Returns an array of selected items
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets or sets the selected items.
+        ''' </summary>
+        ''' <value>The selected items.</value>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")>
         Public Property SelectedItems() As String()
             Get
                 Return CType(m_SelectedItems.ToArray(GetType(String)), String())
@@ -426,37 +420,30 @@ Namespace CustomWebControls
             End Set
         End Property
 
-        '*********************************************************************
-        '
-        ' AllItems Property
-        '
-        ' Returns an array of all items.
-        '
-        '*********************************************************************
-
+        ''' <summary>
+        ''' Gets all items.
+        ''' </summary>
+        ''' <value>All items.</value>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1819:PropertiesShouldNotReturnArrays")>
         Public ReadOnly Property AllItems() As String()
             Get
                 Return CType(m_AllItems.ToArray(GetType(String)), String())
             End Get
         End Property
 
-        '*********************************************************************
-        '
-        ' List Picker Constructor
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' Initializes a new instance of the <see cref="ListPicker" /> class.
+        ''' </summary>
         Public Sub New()
             MyBase.New(HtmlTextWriterTag.Table)
-        End Sub       'New
+        End Sub
 
-        '*********************************************************************
-        '
-        ' BtnAddClick Method
-        '
-        ' Raised by clicking add button on downlevel browser.
-        '
-        '*********************************************************************
-        Sub BtnAddClick(ByVal s As [Object], ByVal e As EventArgs)
+        ''' <summary>
+        ''' Add button click event.
+        ''' </summary>
+        ''' <param name="addButton">The addButton.</param>
+        ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        Sub AddButtonClick(ByVal addButton As [Object], ByVal e As EventArgs)
             If lstAllItems.SelectedIndex <> -1 Then
                 ' Move the item
                 Dim x As Integer = 0
@@ -471,16 +458,14 @@ Namespace CustomWebControls
                 ' update changed status items
                 Changed = True
             End If
-        End Sub       'btnAddClick
+        End Sub
 
-        '*********************************************************************
-        '
-        ' BtnAddAllClick Method
-        '
-        ' Raised by clicking add button on downlevel browser.
-        '
-        '*********************************************************************
-        Sub BtnAddAllClick(ByVal s As [Object], ByVal e As EventArgs)
+        ''' <summary>
+        ''' Add all button click event
+        ''' </summary>
+        ''' <param name="addAllButton">The addAllButton.</param>
+        ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        Sub AddAllButtonClick(ByVal addAllButton As [Object], ByVal e As EventArgs)
             ' Move the item
             Dim x As Integer = 0
             For x = lstAllItems.Items.Count - 1 To 0 Step -1
@@ -491,17 +476,15 @@ Namespace CustomWebControls
 
             ' update changed status items
             Changed = True
-        End Sub       'btnAddAllClick
+        End Sub
 
 
-        '*********************************************************************
-        '
-        ' BtnRemoveClick Method
-        '
-        ' Raised by clicking remove button on downlevel browser.
-        '
-        '*********************************************************************
-        Sub BtnRemoveClick(ByVal s As [Object], ByVal e As EventArgs)
+        ''' <summary>
+        ''' Remove button cClick event.
+        ''' </summary>
+        ''' <param name="removeButton">The removeButton.</param>
+        ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        Sub RemoveButtonClick(ByVal removeButton As [Object], ByVal e As EventArgs)
             If lstSelectedItems.SelectedIndex <> -1 Then
                 Dim x As Integer = 0
                 For x = lstSelectedItems.Items.Count - 1 To 0 Step -1
@@ -514,16 +497,14 @@ Namespace CustomWebControls
                 ' update changed status items
                 Changed = True
             End If
-        End Sub       'btnRemoveClick
+        End Sub
 
-        '*********************************************************************
-        '
-        ' BtnRemoveAllClick Method
-        '
-        ' Raised by clicking remove button on downlevel browser.
-        '
-        '*********************************************************************
-        Sub BtnRemoveAllClick(ByVal s As [Object], ByVal e As EventArgs)
+        ''' <summary>
+        ''' Remove all button click event.
+        ''' </summary>
+        ''' <param name="removeAllButton">The removeAllButton.</param>
+        ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
+        Sub RemoveAllButtonClick(ByVal removeAllButton As [Object], ByVal e As EventArgs)
             Dim x As Integer = 0
             For x = lstSelectedItems.Items.Count - 1 To 0 Step -1
                 lstAllItems.Items.Add(lstSelectedItems.Items(x))
@@ -532,29 +513,25 @@ Namespace CustomWebControls
 
             ' update changed status items
             Changed = True
-        End Sub       'btnRemoveAllClick
+        End Sub
 
 
-        '*********************************************************************
-        '
-        ' OnPreRender Method
-        '
-        ' Add reference to client-side script.
-        '
-        '*********************************************************************
+        ''' <summary>
+        ''' Raises the <see cref="E:System.Web.UI.Control.PreRender" /> event.
+        ''' </summary>
+        ''' <param name="e">An <see cref="T:System.EventArgs" /> object that contains the event data.</param>
         Protected Overrides Sub OnPreRender(ByVal e As EventArgs)
             ' next two lines for conversion to framework 2.0
             Page.ClientScript.RegisterHiddenField(SelectedHelperId, String.Join(",", SelectedItems))
             Page.ClientScript.RegisterHiddenField(AllHelperId, String.Join(",", AllItems))
-        End Sub       'OnPreRender
-        '*********************************************************************
-        '
-        ' RenderContents Method
-        '
-        ' Displays downlevel content.
-        '
-        '*********************************************************************
+        End Sub
+
+        ''' <summary>
+        ''' Renders the contents of the control to the specified writer. This method is used primarily by control developers.
+        ''' </summary>
+        ''' <param name="writer">A <see cref="T:System.Web.UI.HtmlTextWriter" /> that represents the output stream to render HTML content on the client.</param>
         Protected Overrides Sub RenderContents(ByVal writer As HtmlTextWriter)
+            If writer Is Nothing Then Throw New ArgumentNullException("writer", "writer cannot be a null reference (Nothing in Visual Basic)")
             Dim item As String
             writer.RenderBeginTag(HtmlTextWriterTag.Tr) ' start the row
             ' Add Labels
@@ -583,69 +560,75 @@ Namespace CustomWebControls
             writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top") ' set the alignment to top
             writer.RenderBeginTag(HtmlTextWriterTag.Td) ' begin the first cell
 
-            Dim mySelect As New HtmlControls.HtmlSelect ' All list box
-            mySelect.Multiple = True
-            mySelect.Attributes.Add("Style", "width: " & Size & "px")
-            mySelect.Size = Rows.ToString
-            mySelect.ID = ClientId + "_SrcList"
-            For Each item In m_AllItems
-                Dim myItem As New WebControls.ListItem(item.ToString, item.ToString)
-                myItem.Attributes.Add("title", item.ToString())
-                mySelect.Items.Add(myItem)
-            Next item
-            mySelect.RenderControl(writer)
+            Using mySelect As New HtmlControls.HtmlSelect ' All list box
+                mySelect.Multiple = True
+                mySelect.Attributes.Add("Style", "width: " & Size & "px")
+                mySelect.Size = Rows.ToString(CultureInfo.InvariantCulture)
+                mySelect.ID = ClientID + "_SrcList"
+                For Each item In m_AllItems
+                    Dim myItem As New WebControls.ListItem(item.ToString(CultureInfo.InvariantCulture), item.ToString(CultureInfo.InvariantCulture))
+                    myItem.Attributes.Add("title", item.ToString(CultureInfo.InvariantCulture))
+                    mySelect.Items.Add(myItem)
+                Next item
+                mySelect.RenderControl(writer)
+            End Using
             writer.RenderEndTag() ' end the first cell
 
 
             writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top") ' begin the second cell
             writer.RenderBeginTag(HtmlTextWriterTag.Td) ' begin the second cell
             ' Add Button
-            Dim myButton As New HtmlControls.HtmlInputButton
-            myButton.Value = m_SelectButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
-            myButton.Attributes.Add("class", "listPickerArrow")
-            myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
-            myButton.RenderControl(writer)
+            Using myButton As New HtmlControls.HtmlInputButton
+                myButton.Value = m_SelectButtonText
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
+                myButton.Attributes.Add("class", "listPickerArrow")
+                myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
+                myButton.RenderControl(writer)
+            End Using
             writer.WriteBreak()
 
-            myButton = New HtmlControls.HtmlInputButton
-            myButton.Value = m_SelectAllButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
-            myButton.Attributes.Add("class", "listPickerArrow")
-            myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
-            myButton.RenderControl(writer)
+            Using myButton As New HtmlControls.HtmlInputButton
+                myButton.Value = m_SelectAllButtonText
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_SrcList, this.form.{0}_DstList,'{1}')", ClientID, SortOnChange))
+                myButton.Attributes.Add("class", "listPickerArrow")
+                myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
+                myButton.RenderControl(writer)
+            End Using
             writer.WriteBreak()
 
-            myButton = New HtmlControls.HtmlInputButton
-            myButton.Value = m_DeselectButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
-            myButton.Attributes.Add("class", "listPickerArrow")
-            myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
-            myButton.RenderControl(writer)
+            Using myButton As New HtmlControls.HtmlInputButton
+                myButton.Value = m_DeselectButtonText
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchList(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
+                myButton.Attributes.Add("class", "listPickerArrow")
+                myButton.Attributes.Add("style", "width: " & m_ButtonWidth)
+                myButton.RenderControl(writer)
+            End Using
             writer.WriteBreak()
 
-            myButton = New HtmlControls.HtmlInputButton
-            myButton.Value = m_DeselectAllButtonText
-            myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
-            myButton.Attributes.Add("class", "listPickerArrow")
-            myButton.Attributes.Add("style", "width: " & ButtonWidth)
-            myButton.RenderControl(writer)
+            Using myButton As New HtmlControls.HtmlInputButton
+                myButton.Value = m_DeselectAllButtonText
+                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.switchAll(this.form.{0}_DstList, this.form.{0}_SrcList,'true')", ClientID))
+                myButton.Attributes.Add("class", "listPickerArrow")
+                myButton.Attributes.Add("style", "width: " & ButtonWidth)
+                myButton.RenderControl(writer)
+            End Using
 
             writer.RenderEndTag() ' end the second cell
 
             writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
             writer.RenderBeginTag(HtmlTextWriterTag.Td) 'begin third cell
-            mySelect = New HtmlControls.HtmlSelect
-            mySelect.Multiple = True
-            mySelect.Attributes.Add("Style", "width: " & Size & "px")
-            mySelect.Size = Rows.ToString
-            mySelect.ID = ClientId + "_DstList"
-            For Each item In m_SelectedItems
-                Dim myItem As New WebControls.ListItem(item.ToString, item.ToString)
-                mySelect.Items.Add(myItem)
-                'writer.Write(String.Format(CultureInfo.InvariantCulture, "<option value=""{0}"">{0}</option>", item))
-            Next item
-            mySelect.RenderControl(writer)
+            Using mySelect As New HtmlControls.HtmlSelect
+                mySelect.Multiple = True
+                mySelect.Attributes.Add("Style", "width: " & Size & "px")
+                mySelect.Size = Rows.ToString(CultureInfo.InvariantCulture)
+                mySelect.ID = ClientID + "_DstList"
+                For Each item In m_SelectedItems
+                    Dim myItem As New WebControls.ListItem(item.ToString(CultureInfo.InvariantCulture), item.ToString(CultureInfo.InvariantCulture))
+                    mySelect.Items.Add(myItem)
+                    'writer.Write(String.Format(CultureInfo.InvariantCulture, "<option value=""{0}"">{0}</option>", item))
+                Next item
+                mySelect.RenderControl(writer)
+            End Using
 
             writer.RenderEndTag() ' end third cell
 
@@ -653,25 +636,24 @@ Namespace CustomWebControls
                 writer.RenderBeginTag(HtmlTextWriterTag.Td)
                 writer.AddAttribute(HtmlTextWriterAttribute.Valign, "top")
                 writer.RenderBeginTag(HtmlTextWriterTag.Td)
-                myButton = New HtmlControls.HtmlInputButton
-                myButton.Value = "▲"
-                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID))
-                myButton.Attributes.Add("class", "listPickerArrow")
-                myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
-                myButton.RenderControl(writer)
+                Using myButton As New HtmlControls.HtmlInputButton
+                    myButton.Value = "▲"
+                    myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveUp(this.form.{0}_DstList)", ClientID))
+                    myButton.Attributes.Add("class", "listPickerArrow")
+                    myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
+                    myButton.RenderControl(writer)
+                End Using
                 writer.WriteBreak()
 
-                myButton = New HtmlControls.HtmlInputButton
-                myButton.Value = "▼"
-                myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID))
-                myButton.Attributes.Add("class", "listPickerArrow")
-                myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
-                myButton.RenderControl(writer)
+                Using myButton As New HtmlControls.HtmlInputButton
+                    myButton.Value = "▼"
+                    myButton.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "GW.ListPicker.moveDown(this.form.{0}_DstList)", ClientID))
+                    myButton.Attributes.Add("class", "listPickerArrow")
+                    myButton.Attributes.Add("style", "width: " + m_ButtonWidth)
+                    myButton.RenderControl(writer)
+                End Using
                 writer.WriteBreak()
                 writer.RenderEndTag()
-
-
-
                 writer.RenderEndTag()
             End If
 
