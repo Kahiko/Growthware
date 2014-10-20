@@ -125,8 +125,11 @@
     <Compile Include="Utilities\ClientChoicesUtility.vb" />
     <Compile Include="Utilities\FileUtility.vb" />
     <Compile Include="Utilities\FunctionUtility.vb" />
+    <Compile Include="Utilities\GroupUtility.vb" />
     <Compile Include="Utilities\MenuUtility.vb" />
     <Compile Include="Utilities\MessageUtility.vb" />
+    <Compile Include="Utilities\NameValuePairUtility.vb" />
+    <Compile Include="Utilities\RoleUtility.vb" />
     <Compile Include="Utilities\SecurityEntityUtility.vb" />
     <Compile Include="WebImpersonate.vb" />
     <Compile Include="WebImpersonateException.vb" />

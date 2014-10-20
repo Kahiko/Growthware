@@ -96,8 +96,13 @@
     <Compile Include="Model\Profiles\MClientChoices.vb" />
     <Compile Include="Model\Profiles\MClientChoicesState.vb" />
     <Compile Include="Model\Profiles\MFunctionProfile.vb" />
+    <Compile Include="Model\Profiles\MGroupProfile.vb" />
+    <Compile Include="Model\Profiles\MGroupRoles.vb" />
     <Compile Include="Model\Profiles\MMessageProfile.vb" />
+    <Compile Include="Model\Profiles\MNameValuePair.vb" />
+    <Compile Include="Model\Profiles\MNameValuePairDetail.vb" />
     <Compile Include="Model\Profiles\MRequestNewPassword.vb" />
+    <Compile Include="Model\Profiles\MRoleProfile.vb" />
     <Compile Include="Model\Profiles\MSearchCriteria.vb" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.vb" />
     <Compile Include="Model\Profiles\MSecurityInfo.vb" />

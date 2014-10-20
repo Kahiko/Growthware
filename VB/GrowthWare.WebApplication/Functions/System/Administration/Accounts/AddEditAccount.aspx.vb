@@ -73,23 +73,23 @@ Public Class AddEditAccount
         txtEmail.Text = m_Profile.Email
         txtLocation.Text = m_Profile.Location
         chkEnableNotifications.Checked = m_Profile.EnableNotifications
-        'NameValuePairUtility.SetDropSelection(dropStatus, m_Profile.Status.ToString())
-        'NameValuePairUtility.SetDropSelection(dropTimezone, m_Profile.TimeZone.ToString())
+        NameValuePairUtility.SetDropSelection(dropStatus, m_Profile.Status.ToString())
+        NameValuePairUtility.SetDropSelection(dropTimezone, m_Profile.TimeZone.ToString())
     End Sub
 
     Private Sub populateRoles()
-        'ctlRoles.DataSource = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.GetCurrentProfile().Id)
-        'ctlRoles.SelectedItems = m_Profile.AssignedRoles.ToArray()
-        'ctlRoles.DataBind()
-        'For Each role As String In m_Profile.DerivedRoles
-        '    lstBoxRoles.Items.Add(role)
-        'Next
+        ctlRoles.DataSource = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id)
+        ctlRoles.SelectedItems = m_Profile.AssignedRoles.ToArray()
+        ctlRoles.DataBind()
+        For Each role As String In m_Profile.DerivedRoles
+            lstBoxRoles.Items.Add(role)
+        Next
     End Sub
 
     Private Sub populateGroups()
-        'ctlGroups.DataSource = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.GetCurrentProfile().Id)
-        'ctlGroups.SelectedItems = m_Profile.Groups.ToArray()
-        'ctlGroups.DataBind()
+        ctlGroups.DataSource = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id)
+        ctlGroups.SelectedItems = m_Profile.Groups.ToArray()
+        ctlGroups.DataBind()
     End Sub
 
 End Class

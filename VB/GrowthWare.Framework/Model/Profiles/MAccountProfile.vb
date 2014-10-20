@@ -34,8 +34,6 @@ Namespace Model.Profiles
         ''' Class should be inherited to extend to your project specific properties
         ''' </remarks>
         Public Sub New(ByVal detailRow As DataRow)
-            Me.IdColumnName = "ACCT_SEQ_ID"
-            Me.NameColumnName = "ACCT"
             Me.Initialize(detailRow)
         End Sub
 
