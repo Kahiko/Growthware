@@ -16,7 +16,7 @@
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
         <%: Scripts.Render("~/bundles/bootstrap")%>
-        <%: Styles.Render("~/Content/BootstrapCSS")%>
+        <%: Styles.Render("~/Public/CSS/BootstrapCSS")%>
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {
                 // Create the refresh objects for all of the necessary UI elements

@@ -41,7 +41,7 @@ Public Module BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Content/BootstrapCSS").Include(
+            New StyleBundle("~/Public/CSS/BootstrapCSS").Include(
                 "~/Public/CSS/BootStrap/bootstrap-theme.css",
                 "~/Public/CSS/BootStrap/bootstrap.css"
             )
@@ -54,7 +54,7 @@ Public Module BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Content/jQueryUIRedmond").Include(
+            New StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond").Include(
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"

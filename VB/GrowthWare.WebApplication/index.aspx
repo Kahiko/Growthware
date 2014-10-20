@@ -7,7 +7,7 @@
     <%: Scripts.Render("~/bundles/GrowthWare")%>
 
     <%: Styles.Render("~/Content/GrowthWare")%>
-    <%: Styles.Render("~/Content/jQueryUIRedmond")%>
+    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond")%>
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
