@@ -1,7 +1,9 @@
-﻿Namespace Model.Profiles
+﻿Imports System.Collections
+
+Namespace Model.Profiles
     <Serializable(), CLSCompliant(True)> _
     Public Class MClientChoicesState
-        Dim mClientChoices As System.Collections.Hashtable = New System.Collections.Hashtable
+        Dim mClientChoices As Hashtable = New Hashtable(StringComparer.InvariantCultureIgnoreCase)
         Dim mAccountName As String
         Dim mIsDirty As Boolean = False
 
