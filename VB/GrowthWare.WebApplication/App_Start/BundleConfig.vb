@@ -41,7 +41,7 @@ Public Module BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Public/CSS/BootstrapCSS").Include(
+            New StyleBundle("~/Public/CSS/Bootstrap").Include(
                 "~/Public/CSS/BootStrap/bootstrap-theme.css",
                 "~/Public/CSS/BootStrap/bootstrap.css"
             )
