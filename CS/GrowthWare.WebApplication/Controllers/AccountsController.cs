@@ -86,7 +86,7 @@ public class AccountsController : ApiController
 		mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
 		try {
 			mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType);
-		} catch (Exception ex) {
+		} catch (Exception) {
 			mCurrentPassword = mAccountProfile.Password;
 		}
 		if (mAccountProfile.Status != (int)SystemStatus.ChangePassword) {
@@ -100,7 +100,7 @@ public class AccountsController : ApiController
 				_with1.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
 				try {
 					AccountUtility.Save(mAccountProfile, false, false);
-				} catch (Exception ex) {
+				} catch (Exception) {
 					mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
 				}
 			}
@@ -112,7 +112,7 @@ public class AccountsController : ApiController
 				_with2.FailedAttempts = 0;
 				_with2.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
 				AccountUtility.Save(mAccountProfile, false, false);
-			} catch (Exception ex) {
+			} catch (Exception) {
 				mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
 			}
 		}

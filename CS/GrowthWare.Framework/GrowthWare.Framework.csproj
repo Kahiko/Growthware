@@ -84,8 +84,13 @@
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />
     <Compile Include="Model\Profiles\MDirectoryProfile.cs" />
     <Compile Include="Model\Profiles\MFunctionProfile.cs" />
+    <Compile Include="Model\Profiles\MGroupProfile.cs" />
+    <Compile Include="Model\Profiles\MGroupRoles.cs" />
     <Compile Include="Model\Profiles\MMessageProfile.cs" />
+    <Compile Include="Model\Profiles\MNameValuePair.cs" />
+    <Compile Include="Model\Profiles\MNameValuePairDetail.cs" />
     <Compile Include="Model\Profiles\MRequestNewPassword.cs" />
+    <Compile Include="Model\Profiles\MRoleProfile.cs" />
     <Compile Include="Model\Profiles\MSearchCriteria.cs" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.cs" />
     <Compile Include="Model\Profiles\MSecurityInfo.cs" />

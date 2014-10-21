@@ -7,9 +7,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
@@ -276,7 +273,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable Search(MSearchCriteria searchCriteria)
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) m_DAccounts.Search(searchCriteria);
+            if (IsDatabaseOnline()) mRetVal = m_DAccounts.Search(searchCriteria);
             return mRetVal;
         }
 

@@ -1,8 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="GrowthWare.WebApplication.Public.Skins.DevOps.Default" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 <!DOCTYPE html>
-
-
 <html lang="en">
 	<head runat="server">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,7 +16,7 @@
         </asp:ContentPlaceHolder>
         <%: Scripts.Render("~/bundles/bootstrap")%>
         <%--<%: Scripts.Render("~/bundles/angular")%>--%>
-        <%: Styles.Render("~/Content/BootstrapCSS")%>
+        <%: Styles.Render("~/Public/CSS/Bootstrap")%>
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {
                 // Create the refresh objects for all of the necessary UI elements
@@ -153,7 +151,7 @@
 	<div class="container-fluid expanded-panel">
 		<div class="row">
 			<div id="logo" class="col-xs-12 col-sm-2">
-				<a href="#">GrowthWare VB</a>
+				<a href="#">GrowthWare CS</a>
 			</div>
 			<div id="top-panel" class="col-xs-12 col-sm-10">
 				<div class="row">

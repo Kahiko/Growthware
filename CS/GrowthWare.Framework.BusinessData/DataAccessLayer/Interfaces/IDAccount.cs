@@ -4,9 +4,7 @@ using GrowthWare.Framework.Model.Profiles;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 {

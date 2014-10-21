@@ -79,8 +79,10 @@
     <Compile Include="Utilities\ClientChoicesUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Utilities\FunctionUtility.cs" />
+    <Compile Include="Utilities\GroupUtility.cs" />
     <Compile Include="Utilities\MenuUtility.cs" />
     <Compile Include="Utilities\MessageUtility.cs" />
+    <Compile Include="Utilities\NameValuePairUtility.cs" />
     <Compile Include="Utilities\SecurityEntityUtility.cs" />
     <Compile Include="WebImpersonate.cs" />
     <Compile Include="WebImpersonateException.cs" />

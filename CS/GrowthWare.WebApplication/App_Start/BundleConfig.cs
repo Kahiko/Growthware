@@ -51,7 +51,7 @@ namespace GrowthWare.WebApplication
         );
 
         bundles.Add(
-            new StyleBundle("~/Content/BootstrapCSS").Include(
+            new StyleBundle("~/Public/CSS/Bootstrap").Include(
                 "~/Public/CSS/BootStrap/bootstrap-theme.css",
                 "~/Public/CSS/BootStrap/bootstrap.css"
             )
@@ -64,7 +64,7 @@ namespace GrowthWare.WebApplication
         );
 
         bundles.Add(
-            new StyleBundle("~/Content/jQueryUIRedmond").Include(
+            new StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond").Include(
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
                 "~/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"

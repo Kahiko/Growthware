@@ -14,7 +14,7 @@
     <RootNamespace>GrowthWare.WebApplication</RootNamespace>
     <AssemblyName>GrowthWare.WebApplication</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -247,6 +247,7 @@
     <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
     <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
+    <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css.map" />
@@ -406,12 +407,18 @@
     <Compile Include="Public\Skins\DevOps\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\Search.ascx.cs">
+      <DependentUpon>Search.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\Search.ascx.designer.cs">
+      <DependentUpon>Search.ascx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
     <Folder Include="Public\Images\" />
-    <Folder Include="UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj">
@@ -438,7 +445,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2539</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2539/</IISUrl>
+          <IISUrl>http://gw2013cs.internal.com</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

@@ -1,7 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="GrowthWare.WebApplication.Public.Skins.Default.Default" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title>Growhtware Default CS</title>
@@ -105,7 +104,7 @@
 				</div>
 				<div>
 					<h1 style="position: relative; float: left;">
-						VB ASP.NET Application
+						CS ASP.NET Application
 					</h1>
 				</div>
 			</div>

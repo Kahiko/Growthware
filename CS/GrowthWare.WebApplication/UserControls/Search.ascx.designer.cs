@@ -7,54 +7,63 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts {
+namespace GrowthWare.WebApplication.UserControls {
     
     
-    public partial class SearchAccountResults {
+    public partial class Search {
         
         /// <summary>
-        /// Head1 control.
+        /// txtRecordsPerPage control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlHead Head1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputText txtRecordsPerPage;
         
         /// <summary>
-        /// form1 control.
+        /// cmdSelect control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlInputButton cmdSelect;
         
         /// <summary>
-        /// recordsReturned control.
+        /// imgDeleteAll control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputHidden recordsReturned;
+        protected global::System.Web.UI.HtmlControls.HtmlImage imgDeleteAll;
         
         /// <summary>
-        /// searchResults control.
+        /// btnRefesh control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView searchResults;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor btnRefesh;
         
         /// <summary>
-        /// noResults control.
+        /// addNew control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl noResults;
+        protected global::System.Web.UI.HtmlControls.HtmlAnchor addNew;
+        
+        /// <summary>
+        /// currentPage control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl currentPage;
     }
 }

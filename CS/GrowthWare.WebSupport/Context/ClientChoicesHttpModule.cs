@@ -50,7 +50,7 @@ namespace GrowthWare.WebSupport.Context
         {
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture)) return;
             if (!processRequest()) return;
-            if (HttpContext.Current.Session == null) return;
+            //if (HttpContext.Current.Session == null) return;
             String mAccountName = AccountUtility.HttpContextUserName();
             MClientChoicesState mClientChoicesState = null;
             mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);

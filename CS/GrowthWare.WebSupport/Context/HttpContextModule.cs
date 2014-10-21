@@ -141,6 +141,7 @@ namespace GrowthWare.WebSupport.Context
                     {
                         string mAction = HttpContext.Current.Request.QueryString["Action"].ToString(CultureInfo.InvariantCulture);
                         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
+                        if (mFunctionProfile != null) FunctionUtility.SetCurrentFunction(mFunctionProfile);
 
                         string mHashCode = string.Empty;
                         string mWindowUrl = HttpContext.Current.Request.Url.ToString();
@@ -154,27 +155,30 @@ namespace GrowthWare.WebSupport.Context
                         if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
                         {
                             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-                            if (!(mAccountProfile.Status == (int)SystemStatus.ChangePassword))
+                            if (mAccountProfile != null) 
                             {
-                                mLog.Debug("Processing for account " + mAccountProfile.Account);
-                                dynamic mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-                                if (!mSecurityInfo.MayView)
+                                if (!(mAccountProfile.Status == (int)SystemStatus.ChangePassword))
                                 {
-                                    if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+                                    mLog.Debug("Processing for account " + mAccountProfile.Account);
+                                    MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                                    if (!mSecurityInfo.MayView)
                                     {
-                                        WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
-                                        GWWebHelper.ExceptionError = mException;
-                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx");
+                                        if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+                                        {
+                                            WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
+                                            GWWebHelper.ExceptionError = mException;
+                                            HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx");
+                                        }
+                                        mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
                                     }
-                                    mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
                                 }
-                            }
-                            else
-                            {
-                                WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
-                                GWWebHelper.ExceptionError = mException;
-                                HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
+                                else
+                                {
+                                    WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
+                                    GWWebHelper.ExceptionError = mException;
+                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
+                                }                            
                             }
                         }
                         else
