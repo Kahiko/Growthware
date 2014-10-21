@@ -92,28 +92,28 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                //String mEditOnClick = "javascript:" + string.Format("editAccount('{0}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString());
-                //String mDeleteOnClick = "javascript:" + string.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Account").ToString()).ToString();
-                //HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
-                //e.Row.Attributes.Add("ondblclick", mEditOnClick);
-                //btnDetails.Attributes.Add("onclick", mEditOnClick);
-                //HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                ////' Add confirmation to delete button
-                //if (btnDelete != null)
-                //{
-                //    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                //}
-                ////' add the hover behavior
-                //if (e.Row.RowState == DataControlRowState.Normal)
-                //{
-                //    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'");
-                //    e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='" + ClientChoicesState[MClientChoices.RowBackColor] + "'");
-                //}
-                //else // the alternate row.
-                //{
-                //    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'");
-                //    e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='" + ClientChoicesState[MClientChoices.AlternatingRowBackColor] + "'");
-                //}
+                String mEditOnClick = "javascript:" + string.Format("editAccount('{0}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString());
+                String mDeleteOnClick = "javascript:" + string.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Account").ToString()).ToString();
+                HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
+                e.Row.Attributes.Add("ondblclick", mEditOnClick);
+                btnDetails.Attributes.Add("onclick", mEditOnClick);
+                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
+                //' Add confirmation to delete button
+                if (btnDelete != null)
+                {
+                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
+                }
+                //' add the hover behavior
+                if (e.Row.RowState == DataControlRowState.Normal)
+                {
+                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'");
+                    e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='" + ClientChoicesState[MClientChoices.RowBackColor] + "'");
+                }
+                else // the alternate row.
+                {
+                    e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'");
+                    e.Row.Attributes.Add("onmouseout", "this.style.backgroundColor='" + ClientChoicesState[MClientChoices.AlternatingRowBackColor] + "'");
+                }
             }
         }
 
