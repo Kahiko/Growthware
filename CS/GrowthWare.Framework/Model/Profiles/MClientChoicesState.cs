@@ -10,7 +10,7 @@ namespace GrowthWare.Framework.Model.Profiles
     [Serializable(), CLSCompliant(true)]
     public class MClientChoicesState
     {
-        Hashtable m_ClientChoices = new Hashtable();
+        Hashtable m_ClientChoices = new Hashtable(StringComparer.InvariantCultureIgnoreCase);
 
         string m_AccountName;
 

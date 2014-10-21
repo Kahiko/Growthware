@@ -57,9 +57,7 @@ namespace GrowthWare.WebApplication.UserControls
             if (!m_ShowSelect) cmdSelect.Style.Add("display", "none");
             addNew.Visible = m_ShowAddLink;
             btnRefesh.Visible = m_ShowRefresh;
-            //txtRecordsPerPage.Value = ClientChoicesState[MClientChoices.RecordsPerPage];
-            string mRecordsPerPage = ClientChoicesState[MClientChoices.RecordsPerPage];
-            if (String.IsNullOrEmpty(mRecordsPerPage)) mRecordsPerPage = "10";
+            txtRecordsPerPage.Value = ClientChoicesState[MClientChoices.RecordsPerPage];
             imgDeleteAll.Src = GWWebHelper.RootSite + ConfigSettings.AppName + "Public/GrowthWare/Images/delete_red.png";
         }
     }
