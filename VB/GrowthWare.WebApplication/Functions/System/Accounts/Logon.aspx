@@ -3,6 +3,7 @@
     $(document).ready(function () {
         GW.Navigation.currentAction = 'Logon';
         $("#btnLogon").button();
+        $("#btnRequestChange").button();
         if ($('input:text')) {
             $('#Account').focus();
             $('input').bind("keydown", function (e) {

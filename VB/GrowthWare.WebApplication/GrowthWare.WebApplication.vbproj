@@ -518,6 +518,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
+    <Folder Include="Functions\System\Administration\SecurityEntities\" />
     <Folder Include="Public\Images\" />
   </ItemGroup>
   <ItemGroup>
