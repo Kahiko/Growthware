@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using GrowthWare.Framework.Common;
 
 namespace GrowthWare.WebApplication.Functions.System
 {
@@ -34,6 +35,8 @@ namespace GrowthWare.WebApplication.Functions.System
 
         private void BindData(String sortDirection) 
         {
+            Logger mLog = Logger.Instance();
+
             DataTable oTable = new DataTable("MyTable");
             oTable.Columns.Add("COL1", Type.GetType("System.String"));
             oTable.Columns.Add("COL2", Type.GetType("System.String"));
@@ -97,7 +100,7 @@ namespace GrowthWare.WebApplication.Functions.System
             StartTime.Text = mySorter.StartTime.ToString();
             StopTime.Text = mySorter.StopTime.ToString();
             TimeSpan ts = mySorter.StopTime.Subtract(mySorter.StartTime);
-
+            mLog.Debug(ts.TotalMilliseconds.ToString());
             lblTotalTime.Text = ts.TotalMilliseconds.ToString();
             GridView2.DataSource = oTable;
             GridView2.DataBind();

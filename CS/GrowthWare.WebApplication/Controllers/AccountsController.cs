@@ -78,8 +78,7 @@ public class AccountsController : ApiController
 	[HttpPost()]
 	public IHttpActionResult ChangePassword(MChangePassword mChangePassword)
 	{
-		if (mChangePassword == null)
-			throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!");
+		if (mChangePassword == null) throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!");
 		MMessageProfile mMessageProfile = new MMessageProfile();
 		MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
 		MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();

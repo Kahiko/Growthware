@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="ChangePassword.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.ChangePassword" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="ChangePassword.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.ChangePassword" %>
 <!DOCTYPE html>
 
 <div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
@@ -65,17 +65,17 @@
 </body>
 
 <script type="text/javascript" language="javascript">
-	$(document).ready(function () {
-	    $("#btnChangePassword").button();
-	    if ($('input:password')) {
-	        //$('#OldPassword').focus();
-	        $('input:password').bind("keydown", function (e) {
-	            if (e.which == 13) {   //Enter key
-	                e.preventDefault(); //to skip default behaviour of enter key
-	                var nextIndex = $('input:password').index(this) + 1;
-	                if (typeof this.id != undefined) {
-	                    var $element = $('#' + this.id);
-	                    if (this.id === "<%=ConfirmPassword.ClientID %>" && $element.val().length > 0 && $('#<%=NewPassword.ClientID %>').val().length > 0 && $('#<%=ConfirmPassword.ClientID %>').val().length > 0) {
+    $(document).ready(function () {
+        $("#btnChangePassword").button();
+        if ($('input:password')) {
+            //$('#OldPassword').focus();
+            $('input:password').bind("keydown", function (e) {
+                if (e.which == 13) {   //Enter key
+                    e.preventDefault(); //to skip default behaviour of enter key
+                    var nextIndex = $('input:password').index(this) + 1;
+                    if (typeof this.id != undefined) {
+                        var $element = $('#' + this.id);
+                        if (this.id === "<%=ConfirmPassword.ClientID %>" && $element.val().length > 0 && $('#<%=NewPassword.ClientID %>').val().length > 0 && $('#<%=ConfirmPassword.ClientID %>').val().length > 0) {
 	                        changePassword();
 	                    }
                     }
@@ -96,8 +96,7 @@
         var mOldPassword = $('#<%=OldPassword.ClientID %>').val();
         if (typeof mOldPassword === 'undefined') {
             mChangePassword.OldPassword = 'forced change';
-        } else
-        {
+        } else {
             mChangePassword.OldPassword = mOldPassword;
         }
         mChangePassword.NewPassword = $('#<%=NewPassword.ClientID %>').val();

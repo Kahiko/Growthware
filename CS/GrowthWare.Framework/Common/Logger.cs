@@ -46,7 +46,6 @@ namespace GrowthWare.Framework.Common
         private void init()
         {
             m_LogFile = m_LogFilePath + m_LogFileName;
-            m_StackTrace = new StackTrace();
             m_Layout.ConversionPattern = ConfigSettings.ConversionPattern;
             s_SCurrentLogLevel = ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture);
             switch (ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture))
@@ -87,7 +86,7 @@ namespace GrowthWare.Framework.Common
                         m_Appender.Close();
                         m_Appender = null;
                     }
-                    //break; // TODO: might not be correct. Was : Exit Do
+                    //break;
                 }
                 Thread.Sleep(3000);
             } while (true);
@@ -274,19 +273,26 @@ namespace GrowthWare.Framework.Common
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void log(object message, LogPriority priority)
         {
+            StackTrace mStackTrace = new StackTrace();
             Exception mException = null;
-            string mName = m_StackTrace.GetFrame(1).GetMethod().ReflectedType.Name;
-            StackFrame mStackFrame = m_StackTrace.GetFrames()[1];
-            var mMethod = mStackFrame.GetMethod();
-            string mMethodName = mMethod.Name;
-            if (mMethodName == "onApplicationError" && m_StackTrace.GetFrames()[2] != null)
+            string mName = string.Empty;
+            string mMethodName = string.Empty;
+
+            StackFrame[] mStackFrames = mStackTrace.GetFrames();  // get method calls (frames)
+
+            int mCurrentStackFrameNumber = 0;
+            foreach (StackFrame stackFrame in mStackFrames)
             {
-                mStackFrame = m_StackTrace.GetFrames()[2];
-                mName = mStackFrame.GetMethod().ReflectedType.Name;
-                mMethod = mStackFrame.GetMethod();
-                mMethodName = mMethod.Name;
+                mCurrentStackFrameNumber += 1;
+                //Console.WriteLine(stackFrame.GetMethod().Name);   // write method name
+                if (stackFrame.GetMethod().Name == "log")
+                {
+                    mName = mStackTrace.GetFrame(mCurrentStackFrameNumber + 1).GetMethod().ReflectedType.Name;
+                    mMethodName = mStackTrace.GetFrame(mCurrentStackFrameNumber + 1).GetMethod().Name;
+                    break;
+                }
             }
-            mName += ":" + mMethodName + "()";
+            mName += "::" + mMethodName + "()";
             if (!object.ReferenceEquals(message.GetType(), typeof(string)))
             {
                 mException = new Exception("Calling: " + mName, mException);
