@@ -227,9 +227,22 @@ Namespace Common
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
         Private Sub log(ByVal message As Object, priority As LogPriority)
-            Dim mFramed As StackFrame = New StackFrame(2, True)
+            Dim mStackTrace As StackTrace = New StackTrace()
             Dim mException As Exception = Nothing
-            Dim mName As String = mFramed.GetMethod.ReflectedType.Name + ":" + mFramed.GetMethod.Name
+            Dim mName As String = String.Empty
+            Dim mMethodName As String = String.Empty
+            Dim mCurrentStackFrameNumber As Integer = 0
+            Dim mStackFrames As StackFrame() = mStackTrace.GetFrames()
+            For Each mStackFrame As StackFrame In mStackFrames
+                mCurrentStackFrameNumber += 1
+                If mStackFrame.GetMethod().Name = "log" Then
+                    mName = mStackTrace.GetFrame(mCurrentStackFrameNumber + 1).GetMethod().ReflectedType.Name
+                    mMethodName = mStackTrace.GetFrame(mCurrentStackFrameNumber + 1).GetMethod().Name
+                    Exit For
+                End If
+            Next
+            mName += "::" + mMethodName + "()"
+
             If message.GetType() IsNot GetType(String) Then
                 mException = New Exception("Calling: " + mName, message)
             End If
