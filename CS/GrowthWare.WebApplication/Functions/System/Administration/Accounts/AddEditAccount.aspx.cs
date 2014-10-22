@@ -110,13 +110,13 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
 
         private void populateRoles()
         {
-            //ctlRoles.DataSource = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
-            //ctlRoles.SelectedItems = m_Profile.AssignedRoles.ToArray();
-            //ctlRoles.DataBind();
-            //foreach (String role in m_Profile.DerivedRoles)
-            //{
-            //    lstBoxRoles.Items.Add(role);
-            //}
+            ctlRoles.DataSource = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+            ctlRoles.SelectedItems = m_Profile.AssignedRoles.ToArray();
+            ctlRoles.DataBind();
+            foreach (String role in m_Profile.DerivedRoles)
+            {
+                lstBoxRoles.Items.Add(role);
+            }
         }
 
         private void populateGroups()

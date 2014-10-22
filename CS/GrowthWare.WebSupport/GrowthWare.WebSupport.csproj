@@ -83,6 +83,7 @@
     <Compile Include="Utilities\MenuUtility.cs" />
     <Compile Include="Utilities\MessageUtility.cs" />
     <Compile Include="Utilities\NameValuePairUtility.cs" />
+    <Compile Include="Utilities\RoleUtility.cs" />
     <Compile Include="Utilities\SecurityEntityUtility.cs" />
     <Compile Include="WebImpersonate.cs" />
     <Compile Include="WebImpersonateException.cs" />

@@ -65,6 +65,7 @@
     <Compile Include="BusinessLogicLayer\BGroups.cs" />
     <Compile Include="BusinessLogicLayer\BMessages.cs" />
     <Compile Include="BusinessLogicLayer\BNameValuePairs.cs" />
+    <Compile Include="BusinessLogicLayer\BRoles.cs" />
     <Compile Include="BusinessLogicLayer\BSecurityEntity.cs" />
     <Compile Include="DataAccessLayer\DataAccessLayerException.cs" />
     <Compile Include="DataAccessLayer\Interfaces\Base\IDDBInteraction.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="DataAccessLayer\SQLServer\V2008\DGroups.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DMessages.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DNameValuePair.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DRoles.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DSecurityEntity.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

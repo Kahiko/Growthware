@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Web.Http;
 using GrowthWare.Framework.Model.Enumerations;
 using GrowthWare.Framework.Model.Profiles.Base;
+using System.Web;
 
 namespace GrowthWare.WebApplication.Controllers
 {
@@ -82,7 +83,7 @@ public class AccountsController : ApiController
 		MMessageProfile mMessageProfile = new MMessageProfile();
 		MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
 		MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-		dynamic mCurrentPassword = "";
+		string mCurrentPassword = "";
 		mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
 		try {
 			mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType);
@@ -119,6 +120,38 @@ public class AccountsController : ApiController
 		AccountUtility.RemoveInMemoryInformation(true);
 		return Ok(mMessageProfile.Body);
 	}
+
+    [HttpPost()]
+    public IHttpActionResult SelectSecurityEntity([FromUri] int selectedSecurityEntityId) 
+    {
+        MSecurityEntityProfile targetSEProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId);
+        MSecurityEntityProfile currentSEProfile = SecurityEntityUtility.CurrentProfile();
+        MClientChoicesState mClientChoicesState = (MClientChoicesState)HttpContext.Current.Cache[MClientChoices.SessionName];
+        if (!ConfigSettings.CentralManagement)
+        {
+            mClientChoicesState[MClientChoices.SecurityEntityId] = targetSEProfile.Id.ToString();
+            mClientChoicesState[MClientChoices.SecurityEntityName] = targetSEProfile.Name;
+        }
+        else
+        {
+            if (currentSEProfile.ConnectionString == targetSEProfile.ConnectionString)
+            {
+                mClientChoicesState[MClientChoices.SecurityEntityId] = targetSEProfile.Id.ToString();
+                mClientChoicesState[MClientChoices.SecurityEntityName] = targetSEProfile.Name;
+            }
+            else
+            {
+                mClientChoicesState[MClientChoices.SecurityEntityId] = ConfigSettings.DefaultSecurityEntityId.ToString();
+                mClientChoicesState[MClientChoices.SecurityEntityName] = "System";
+            }
+        }
+        MMessageProfile myMessageProfile = new MMessageProfile();
+        // update all of your in memory information
+        AccountUtility.RemoveInMemoryInformation(true);
+        ClientChoicesUtility.Save(mClientChoicesState);
+        // refresh the view
+        return Ok(MessageUtility.GetProfile("ChangedSelectedSecurityEntity").Body);    
+    }
 
 }
 
