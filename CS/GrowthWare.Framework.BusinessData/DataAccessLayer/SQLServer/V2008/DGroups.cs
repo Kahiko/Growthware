@@ -10,7 +10,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
     /// <summary>
     /// Class DGroups
     /// </summary>
-    public class DGroupss : DDBInteraction, IDGroups
+    public class DGroups : DDBInteraction, IDGroups
     {
         /// <summary>
         /// GroupProfile

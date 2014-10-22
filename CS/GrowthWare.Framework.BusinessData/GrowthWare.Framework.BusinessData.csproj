@@ -74,6 +74,7 @@
     <Compile Include="DataAccessLayer\Interfaces\IDGroups.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDMessages.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDNameValuePair.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDRoles.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDSecurityEntity.cs" />
     <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DAccounts.cs" />
