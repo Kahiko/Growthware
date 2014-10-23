@@ -14,7 +14,7 @@ Public Class SelectSecurityEntity
             dropSecurityEntities.DataValueField = "SE_SEQ_ID"
             dropSecurityEntities.DataTextField = "NAME"
             dropSecurityEntities.DataBind()
-            'NameValuePairUtility.SetDropSelection(dropSecurityEntities, ClientChoicesState(MClientChoices.SecurityEntityId))
+            NameValuePairUtility.SetDropSelection(dropSecurityEntities, ClientChoicesState(MClientChoices.SecurityEntityId))
         Catch ex As Exception
             Dim mMessageProfile As MMessageProfile = Nothing
             Dim mLog As Logger = Logger.Instance()

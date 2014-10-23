@@ -3,6 +3,7 @@
 	    var $mClientMessage = $('#clientMessage');
 
 	    $(document).ready(function () {
+	        $('#btnGo').button();
 	    });
 
 	    function InvokeSelectSecurityEntity() {
@@ -13,7 +14,7 @@
 	        var theData = '{ selectedSecurityEntityId: ' + selectedSecurityEntity + ' }';
 	        try {
 	            var options = GW.Model.DefaultWebMethodOptions();
-	            options.url = GW.Common.getBaseURL() + "/api/Functions/SetSelectedSecurityEntity/?Action=SelectASecurityEntity";
+	            options.url = GW.Common.getBaseURL() + "/api/Accounts/SelectSecurityEntity/?Action=SelectASecurityEntity&selectedSecurityEntityId=" + selectedSecurityEntity;
 	            options.data = theData;
 	            //options.data = selectedSEId;
 	            options.contentType = 'application/json; charset=utf-8';
