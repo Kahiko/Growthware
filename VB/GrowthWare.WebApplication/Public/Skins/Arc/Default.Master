@@ -1,0 +1,175 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Default.master.vb" Inherits="GrowthWare.WebApplication._Default6" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Growth Ware Blue Arrow VB</title>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <script type="text/javascript" language="javascript">
+        function afterLoadFunctions() {
+            // Create the refresh objects for all of the necessary UI elements
+            var mRefreshObject = new GW.Navigation.RefreshObject();
+
+            //Put the vertical Hierarchical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VHMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('VerticalHierarchicalMenu', 'VHMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the vertical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the horizontal menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the GetPreferences into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'NotUsed';
+            mRefreshObject.Refresh = function refreshFunction() {
+                var options = GW.Model.DefaultWebMethodOptions();
+                options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences?Action=GetPreferences";
+                options.async = true;
+                options.contentType = 'application/json; charset=utf-8';
+                options.dataType = 'json';
+                options.type = "GET";
+                GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+                function getGetPreferencesSuccess(xhr) {
+                    var mClientChoices = GW.Model.ClientChoices();
+                    var mClientChoices = $.extend({}, mClientChoices, xhr);
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#smallMenu').hide();
+                        $('#smallMenuAuthenticated').show();
+                    } else {
+                        $('#smallMenuAuthenticated').hide();
+                        $('#smallMenu').show();
+                    }
+
+                    if (mClientChoices.Environment != 'Prod') {
+                        $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                    } else {
+                        $('#spEnvironment').css({ display: 'none' });
+                    }
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#spAccountName').html(mClientChoices.AccountName);
+                    } else {
+                        $('#spAccountName').css({ display: 'none' });
+                    }
+                    $('#spVersion').html('Version: ' + mClientChoices.Version);
+                    $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                }
+
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+        }
+
+        $(document).ready(function () {
+            var $loader = $('#loading'), timer = 0;
+            $loader.hide()
+			.ajaxStart(function () {
+			    timer && clearTimeout(timer);
+
+			    timer = setTimeout(function () {
+			        $loader.show();
+			    },
+				100);
+			})
+			.ajaxStop(function () {
+			    clearTimeout(timer);
+			    $loader.hide();
+
+			});
+        });
+    </script>
+    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />    
+</head>
+<body>
+	<div>
+        <form id="form1" runat="server">
+			<table border="0" cellpadding="0" cellspacing="0" width="100%">
+				<tr bgcolor="#dadfcb">
+					<td align="center" width="1px">
+						&nbsp;&nbsp;&nbsp;<img src='<%=ResolveUrl("Images/logo.png")%>' />
+					</td>
+					<td colspan="2" width="100%">
+						<table width="100%">
+							<tr>
+								<td align="center">
+                                    <span id="spEnvironment" style="color: Black;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: Black;"></span>
+								</td>
+							</tr>
+							<tr>
+								<td height="25" align="center">
+                                    <span id="spSecurityEntity" style="color: Black;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: Black;"></span>
+								</td>
+							</tr>
+							<tr>
+								<td height="25" align="right">
+                                    <div id="HorizontalDiv"></div>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td colspan="3" style="BORDER-TOP:#000000 1px solid" bgcolor='#ffffff'>
+						<img src='<%=ResolveUrl("Images/black_lines_top.gif")%>' width="192" height="17" alt="">
+					</td>
+				</tr>
+				<tr valign="top">
+					<td colspan="3" width="100%">
+						<table border="0" cellpadding="0" cellspacing="0" width="100%"align="left" valign="top" rowspan="2">
+							<tr>
+								<td bgcolor="#cfd0c2"><img src='<%=ResolveUrl("Images/small_gray_line.gif")%>' width="50" height="16" alt=""></td>
+								<td bgcolor="#cfd0c2"><img src='<%=ResolveUrl("Images/thick_gray_line.gif")%>' width="85" height="16" alt=""></td>
+								<td valign="top" bgcolor='#C7C7C7'><img src='<%=ResolveUrl("Images/top_curveT.gif")%>' width="55" height="16" alt=""></td>
+								<td width="100%" bgcolor='#C7C7C7'>&nbsp;</td>
+							</tr>
+							<tr height="600px">
+								<td colspan="2" bgcolor="#cfd0c2" height="16" valign="top">
+                                    <div id="VHMenuDiv" class="clear" style="margin: auto; z-index: 1000;"></div>
+								</td>
+								<td background='<%=ResolveUrl("Images/menubg.gif")%>' valign="top">
+									<img src='<%=ResolveUrl("Images/right_curve.gif")%>' width="55" height="129" alt="">
+								</td>
+								<td width="100%" valign="top">
+									<table border="0" cellpadding="0" cellspacing="0" width="100%">
+										<tr>
+											<td>&nbsp;</td>
+										</tr>
+										<tr>
+											<td>
+                                                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+											</td>
+										</tr>
+										<tr>
+											<td align="center">
+                                                Linemenu1
+                                            </td>
+										</tr>
+									</table>
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+        </form>
+	</div>
+</body>
+</html>

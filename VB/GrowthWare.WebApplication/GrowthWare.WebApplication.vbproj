@@ -207,6 +207,18 @@
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
     <Content Include="Public\Scripts\respond.js" />
+    <Content Include="Public\SiteStyles\Arc.css" />
+    <Content Include="Public\Skins\Arc\CSS\Skin.css" />
+    <Content Include="Public\Skins\Arc\Images\black_lines_top.gif" />
+    <Content Include="Public\Skins\Arc\Images\bullet.gif" />
+    <Content Include="Public\Skins\Arc\Images\logo.png" />
+    <Content Include="Public\Skins\Arc\Images\menubg.gif" />
+    <Content Include="Public\Skins\Arc\Images\right_curve.gif" />
+    <Content Include="Public\Skins\Arc\Images\small_gray_line.gif" />
+    <Content Include="Public\Skins\Arc\Images\space.gif" />
+    <Content Include="Public\Skins\Arc\Images\thick_gray_line.gif" />
+    <Content Include="Public\Skins\Arc\Images\top_curve.gif" />
+    <Content Include="Public\Skins\Arc\Images\top_curveT.gif" />
     <Content Include="Public\Skins\Blue Arrow\CSS\Skin.css" />
     <Content Include="Public\Skins\Blue Arrow\Images\arrow.gif" />
     <Content Include="Public\Skins\Blue Arrow\Images\ArrowRow_Big.gif" />
@@ -420,6 +432,13 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="Public\Skins\Arc\Default.Master.designer.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Public\Skins\Arc\Default.Master.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Public\Skins\Blue Arrow\Default.Master.designer.vb">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
@@ -487,6 +506,7 @@
     <Content Include="Public\Skins\Blue Arrow\Default.Master" />
     <Content Include="Public\Skins\Default Black\Default.Master" />
     <Content Include="Public\Skins\Professional\Default.Master" />
+    <Content Include="Public\Skins\Arc\Default.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
