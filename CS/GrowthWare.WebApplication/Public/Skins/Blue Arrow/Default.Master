@@ -1,0 +1,245 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="GrowthWare.WebApplication.Public.Skins.Blue_Arrow.Default" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Growth Ware Blue Arrow VB</title>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <script type="text/javascript" language="javascript">
+        function afterLoadFunctions() {
+            // Create the refresh objects for all of the necessary UI elements
+            var mRefreshObject = new GW.Navigation.RefreshObject();
+
+            //Put the vertical Hierarchical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VHMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('VerticalHierarchicalMenu', 'VHMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the vertical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the horizontal menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the GetPreferences into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'NotUsed';
+            mRefreshObject.Refresh = function refreshFunction() {
+                var options = GW.Model.DefaultWebMethodOptions();
+                options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences?Action=GetPreferences";
+                options.async = true;
+                options.contentType = 'application/json; charset=utf-8';
+                options.dataType = 'json';
+                options.type = "GET";
+                GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+                function getGetPreferencesSuccess(xhr) {
+                    var mClientChoices = GW.Model.ClientChoices();
+                    var mClientChoices = $.extend({}, mClientChoices, xhr);
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#smallMenu').hide();
+                        $('#smallMenuAuthenticated').show();
+                    } else {
+                        $('#smallMenuAuthenticated').hide();
+                        $('#smallMenu').show();
+                    }
+
+                    if (mClientChoices.Environment != 'Prod') {
+                        $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                    } else {
+                        $('#spEnvironment').css({ display: 'none' });
+                    }
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#spAccountName').html(mClientChoices.AccountName);
+                    } else {
+                        $('#spAccountName').css({ display: 'none' });
+                    }
+                    $('#spVersion').html('Version: ' + mClientChoices.Version);
+                    $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                }
+
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+        }
+
+        $(document).ready(function () {
+            var $loader = $('#loading'), timer = 0;
+            $loader.hide()
+			.ajaxStart(function () {
+			    timer && clearTimeout(timer);
+
+			    timer = setTimeout(function () {
+			        $loader.show();
+			    },
+				100);
+			})
+			.ajaxStop(function () {
+			    clearTimeout(timer);
+			    $loader.hide();
+
+			});
+        });
+    </script>
+    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />    
+</head>
+<body>
+	<div>
+		<table width="100%" cellpadding="0" cellspacing="0" border="0">
+			<tr>
+				<!-- Outer Left Line -->
+				<td style="background-color: #DCDDDE; width: 2px;">
+					<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" style="border: 0px;" width="2" height="1" alt="Spacer image" />
+				</td>
+				<!-- Inner Table -->
+				<td valign="top">
+					<table width="100%" cellpadding="0" cellspacing="0" border="0" style="height: 70px;">
+						<!-- Logo Row -->
+						<tr>
+							<td style="background-color: #2f7eb0; width: 150px; height: 70px;" align="center" valign="middle" class="LogoCell">
+								<table style="height: 70px;" width="150">
+									<tr>
+										<td align="center" valign="middle" class="LogoCell">
+											<asp:Image ImageUrl='/Public/Skins/Blue Arrow/Images/CompanyLogo.gif' ID="AppImage" runat="server" AlternateText="Logo Image"></asp:Image>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td style="width: 3px; background-color: #ffffff;">
+								<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" style="border: 0px" width="3" height="1" alt="Spacer image" />
+							</td>
+							<td style="background-color: #DCDDDE; width: 100%" class="BannerCell" valign="top">
+								<!-- Banner/BigImage -->
+								<table width="100%" cellspacing="0" border="0">
+									<tr>
+										<td align="center" valign="top">
+											<span id="spSecurityEntity" style="color: Black;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: Black;"></span>
+											<br />
+											<span id="spEnvironment" style="color: Black;"></span>&nbsp;&nbsp;<span id="spAccountName" style="color: Black;"></span>
+										</td>
+										<td align="center" valign="middle" style="width: 200px;" class="BigImage">
+											&nbsp;
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<!-- Spacer Row -->
+						<tr>
+							<td style="width: 150px; height: 4px;">
+							</td>
+							<td style="width: 3px;">
+								<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="3" height="1" style="border: 0px;" alt="Spacer image" />
+							</td>
+							<td style="height: 4px;">
+							</td>
+						</tr>
+						<!-- Topic Row -->
+						<tr>
+							<td style="background-color: #DCDDDE; width: 150px; height: 22px;" align="center" class="SmallImage">
+								&nbsp;
+							</td>
+							<td style="height: 3px;">
+								<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="3" height="1" style="border: 0px;" alt="Spacer image" />
+							</td>
+							<td style="background-color: #2f7eb0;" class="TopicCell">
+								&nbsp;&nbsp;&nbsp;
+							</td>
+						</tr>
+						<!-- Content Row -->
+						<tr>
+							<td valign="top" style="width: 150px;">
+								<br />
+								<table cellpadding="3" cellspacing="0" border="0">
+									<!-- Middle-Right: Search-->
+									<tr>
+										<td style="width: 100%; background-color: #DCDDDE; white-space: nowrap;" class="Search">
+											Search:
+											<input type="text" ID="txtSearch" style="height:15; font-size: 7; width:110" runat="Server" />
+											<a href="#" id="lnkServer"> Go </a>
+										</td>
+									</tr>
+									<tr>
+										<td>
+											<div id="VMenuDiv" style="overflow: auto;"></div>
+											<br />
+											<div id="VHMenuDiv" style="z-index: 1000;"></div>
+										</td>
+									</tr>
+								</table>
+							</td>
+							<td style="width: 3px;">
+								<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="3" height="1" alt="Spacer image" />
+							</td>
+							<!-- Inner Content Table -->
+							<td>
+								<table cellpadding="0" cellspacing="0" border="0" width="100%" style="height: 520px;">
+									<tr>
+										<td valign="top" style="width: 100%;">
+											<table cellspacing="0" cellpadding="1" border="0" width="100%">
+												<tr>
+													<td valign="top">
+														<div id="HorizontalDiv"></div>
+													</td>
+												</tr>
+												<tr>
+													<td valign="top">
+						                                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+						                                </asp:ContentPlaceHolder>
+													</td>
+												</tr>
+											</table>
+										</td>
+										<!-- Blue line -->
+										<td style="background-color: #2f7eb0; width: 1;">
+											<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="1" height="1" alt="Spacer" />
+										</td>
+										<!-- Web Boxes -->
+										<td valign="top">
+											&nbsp;
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+						<!-- Footer Row -->
+						<tr>
+							<td style="height: 23px; background-color: #2f7eb0;" class="FooterLeftCell">
+								&nbsp;
+							</td>
+							<td style="width: 3px;">
+								<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="3" height="1" alt="Spacer image" />
+							</td>
+							<td style="background-color: #DCDDDE;" class="FooterRightCell">
+								<div class="FooterText" style="text-align: center;">
+									Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
+								</div>
+							</td>
+						</tr>
+					</table>
+				</td>
+				<!-- End Inner Table -->
+				<!-- Right Outer Line -->
+				<td style="background-color: #DCDDDE; width: 2px;">
+					<img src="Public/Skins/Blue Arrow/Images/Spacer.gif" width="2" height="1" alt="Spacer image" />
+				</td>
+			</tr>
+		</table>
+	</div>
+</body>
+</html>

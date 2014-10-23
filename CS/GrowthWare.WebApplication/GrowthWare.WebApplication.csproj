@@ -203,10 +203,39 @@
     <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\SiteStyles\Blue Arrow.css" />
     <Content Include="Public\SiteStyles\Default.css" />
+    <Content Include="Public\Skins\Blue Arrow\CSS\Skin.css" />
+    <Content Include="Public\Skins\Blue Arrow\Images\arrow.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\ArrowRow_Big.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\ArrowRow_Small.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\bigmoon.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\CircleRow_Big.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\CircleRow_Small.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\CompanyLogo.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\curve.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\DiscussHeader.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\NavIcon.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\Spacer.gif" />
+    <Content Include="Public\Skins\Blue Arrow\Images\tinymoon.gif" />
+    <Content Include="Public\Skins\Default Black\CSS\Skin.css" />
     <Content Include="Public\Skins\Default\CSS\Skin.css" />
     <Content Include="Public\Skins\DevOps\CSS\Skin.css" />
     <Content Include="Public\Skins\DevOps\Images\logo.png" />
     <Content Include="Public\Skins\DevOps\Scripts\devoops.js" />
+    <Content Include="Public\Skins\Professional\CSS\Skin.css" />
+    <Content Include="Public\Skins\Professional\Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Public\Skins\Professional\Images\black_line_left.gif" />
+    <Content Include="Public\Skins\Professional\Images\black_line_right.gif" />
+    <Content Include="Public\Skins\Professional\Images\blue_background_right.gif" />
+    <Content Include="Public\Skins\Professional\Images\blue_section_bottom.gif" />
+    <Content Include="Public\Skins\Professional\Images\blue_section_divider.gif" />
+    <Content Include="Public\Skins\Professional\Images\blue_section_top.gif" />
+    <Content Include="Public\Skins\Professional\Images\blue_topic_background.gif" />
+    <Content Include="Public\Skins\Professional\Images\CompanyLogo.gif" />
+    <Content Include="Public\Skins\Professional\Images\NavIcon.gif" />
+    <Content Include="Public\Skins\Professional\Images\top_black_stripe.gif" />
+    <Content Include="Public\Skins\Professional\Images\top_black_stripes.gif" />
+    <Content Include="Public\Skins\Professional\Images\top_blue_curve.gif" />
+    <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
     <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config" />
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css.map" />
@@ -216,6 +245,9 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Public\Skins\Default\Default.Master" />
     <Content Include="Public\Skins\DevOps\Default.Master" />
+    <Content Include="Public\Skins\Blue Arrow\Default.Master" />
+    <Content Include="Public\Skins\Default Black\Default.Master" />
+    <Content Include="Public\Skins\Professional\Default.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -352,6 +384,20 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Public\Skins\Blue Arrow\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\Skins\Blue Arrow\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Public\Skins\Default Black\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\Skins\Default Black\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
     <Compile Include="Public\Skins\Default\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -364,6 +410,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Public\Skins\DevOps\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Public\Skins\Professional\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\Skins\Professional\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Search.ascx.cs">

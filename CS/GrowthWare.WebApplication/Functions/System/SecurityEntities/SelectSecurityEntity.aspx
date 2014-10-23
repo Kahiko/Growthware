@@ -2,8 +2,8 @@
 <script type="text/javascript" language="javascript">
 	var $mClientMessage = $('#clientMessage');
 
-	$(document).ready(function ()
-	{
+	$(document).ready(function () {
+	    $('#btnGo').button();
 	});
 
 	function InvokeSelectSecurityEntity()
