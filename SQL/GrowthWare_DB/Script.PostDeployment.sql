@@ -771,20 +771,6 @@ exec ZGWSecurity.Set_Function -1,'Search Security Entitys','Search Security Enti
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 
--- Add a Name Value Pair
-SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'AddNameValuePairs'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Manage_Name_Value_Pairs')
-exec ZGWSecurity.Set_Function -1,'Add Name Value Pairs','Add Name Value Pairs',@V_Function_Type_SeqID,'Functions/System/Administration/NVP/AddEditNVP.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add a name/value pair.', @V_SystemID, @V_Debug
-set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
--- Edit a Name Value Pair
-SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'Edit_Name_Value_Pairs'
---SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageSecurityEntites')
-exec ZGWSecurity.Set_Function -1,'Edit a Name Value Pair','Edit a Name Value Pair',@V_Function_Type_SeqID,'Functions/System/Administration/NVP/AddEditNVP.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit a name/value pair.', @V_SystemID, @V_Debug
-set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Search Name Value Pairs
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'SearchNameValuePairs'
@@ -793,6 +779,21 @@ exec ZGWSecurity.Set_Function -1,'Manage Name/Value Pairs','Search Name Value Pa
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 UPDATE ZGWSecurity.Functions SET Sort_Order = 5 WHERE Function_SeqID = @V_FunctionID
+-- Add a Name Value Pair
+SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
+set @V_MyAction = 'AddNameValuePairs'
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SearchNameValuePairs')
+exec ZGWSecurity.Set_Function -1,'Add Name Value Pairs','Add Name Value Pairs',@V_Function_Type_SeqID,'Functions/System/Administration/NVP/AddEditNVP.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add a name/value pair.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
+-- Edit a Name Value Pair
+SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
+set @V_MyAction = 'EditNameValuePairs'
+--SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageSecurityEntites')
+exec ZGWSecurity.Set_Function -1,'Edit a Name Value Pair','Edit a Name Value Pair',@V_Function_Type_SeqID,'Functions/System/Administration/NVP/AddEditNVP.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit a name/value pair.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
+
 -- Add a Message
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'AddMessage'
@@ -826,15 +827,14 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 -- Search State
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'SearchStates'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageSecurityEntites')
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageStates')
 exec ZGWSecurity.Set_Function -1,'Search States','Search States',@V_Function_Type_SeqID,'Functions/System/Administration/States/SearchStates.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to search a State.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Add Edit Workflows
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'AddEditWorkflow'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Work_Flows')
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageSecurityEntites')
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'WorkFlows')
 exec ZGWSecurity.Set_Function -1,'Add/Edit Workflows','Add/Edit Workflows',@V_Function_Type_SeqID,'Functions/System/Administration/WorkFlow/AddEditWorkFlow.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or edit a Workflow.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
@@ -900,7 +900,7 @@ print 'Adding MS NewPage'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'MSNewPage'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'TestLinkBehavior')
-exec ZGWSecurity.Set_Function -1,'MS NewPage','MS NewPage',@V_Function_Type_SeqID,'Functions/System/TestNaturalSort.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorNewPage,@V_NO_UIFalse,@V_NAV_TYPE_Vertical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit a State.', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'MS NewPage','MS NewPage',@V_Function_Type_SeqID,'Functions/System/TestNaturalSort.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorNewPage,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit a State.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 
