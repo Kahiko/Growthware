@@ -201,6 +201,7 @@
     <Content Include="Public\Scripts\jquery.js" />
     <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Public\Scripts\respond.js" />
+    <Content Include="Public\SiteStyles\Arc.css" />
     <Content Include="Public\SiteStyles\Blue Arrow.css" />
     <Content Include="Public\SiteStyles\Default.css" />
     <Content Include="Public\Skins\Arc\CSS\Skin.css" />
