@@ -1,4 +1,12 @@
-﻿#cssmenuVHMenu > ul {
+﻿body { margin-top: 0px; margin-right: 0px; margin-bottom: 0px; margin-left: 0px; background-color:#FFFFFF;font-size:12px;}
+
+
+a { color: #993300; text-decoration: none; font: 12px verdana;}
+a:hover {text-decoration: underline;}
+
+.Footer {font-family: verdana, arial, helvetica, sans-serif; font-size: 11px;}
+
+#cssmenuVHMenu > ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
@@ -10,7 +18,7 @@
 #cssmenuVHMenu > ul {
 	display: block;
 	position: relative;
-	width: 150px;
+	width: 100px;
 }
 
 /* The list elements which contain the links */
@@ -19,7 +27,6 @@
 	position: relative;
 	margin: 0;
 	padding: 0;
-	width: 150px;	
 }
 
 /* General link styling */
@@ -31,7 +38,7 @@
 	border-top: 1px dotted #3a3a3a;
 	border-bottom: 1px dotted #1b1b1b;
 	padding: 11px 20px;
-	width: 110px;
+	width: 90px;
 
 	/* Typography */
 	font-family: Helvetica, Arial, sans-serif;
@@ -39,7 +46,7 @@
 	text-decoration: none;
 	text-transform: uppercase;
 	text-shadow: 0 1px 1px #000;
-	font-size: 13px;
+	font-size: 10px;
 	font-weight: 300;			
 
 	/* Background & effects */
@@ -118,7 +125,7 @@
 /* THE SUBMENUS */
 #cssmenuVHMenu > ul ul {
 	position: absolute;
-	left: 150px;
+	left: 125px;
 	top: -9999px;
 	padding-left: 5px;
 	opacity: 0;
