@@ -203,6 +203,17 @@
     <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\SiteStyles\Blue Arrow.css" />
     <Content Include="Public\SiteStyles\Default.css" />
+    <Content Include="Public\Skins\Arc\CSS\Skin.css" />
+    <Content Include="Public\Skins\Arc\Images\black_lines_top.gif" />
+    <Content Include="Public\Skins\Arc\Images\bullet.gif" />
+    <Content Include="Public\Skins\Arc\Images\logo.png" />
+    <Content Include="Public\Skins\Arc\Images\menubg.gif" />
+    <Content Include="Public\Skins\Arc\Images\right_curve.gif" />
+    <Content Include="Public\Skins\Arc\Images\small_gray_line.gif" />
+    <Content Include="Public\Skins\Arc\Images\space.gif" />
+    <Content Include="Public\Skins\Arc\Images\thick_gray_line.gif" />
+    <Content Include="Public\Skins\Arc\Images\top_curve.gif" />
+    <Content Include="Public\Skins\Arc\Images\top_curveT.gif" />
     <Content Include="Public\Skins\Blue Arrow\CSS\Skin.css" />
     <Content Include="Public\Skins\Blue Arrow\Images\arrow.gif" />
     <Content Include="Public\Skins\Blue Arrow\Images\ArrowRow_Big.gif" />
@@ -237,7 +248,9 @@
     <Content Include="Public\Skins\Professional\Images\top_blue_curve.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
     <Content Include="UserControls\Search.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css.map" />
     <Content Include="Public\CSS\BootStrap\bootstrap.css.map" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
@@ -248,6 +261,8 @@
     <Content Include="Public\Skins\Blue Arrow\Default.Master" />
     <Content Include="Public\Skins\Default Black\Default.Master" />
     <Content Include="Public\Skins\Professional\Default.Master" />
+    <Content Include="Public\Web.config" />
+    <Content Include="Public\Skins\Arc\Default.Master" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -384,6 +399,13 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="Public\Skins\Arc\Default.Master.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Public\Skins\Arc\Default.Master.designer.cs">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
     <Compile Include="Public\Skins\Blue Arrow\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

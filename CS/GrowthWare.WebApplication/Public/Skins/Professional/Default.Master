@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head runat="server">
-        <title>Growthware Professional VB</title>
+        <title>Growthware Professional CS</title>
         <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {

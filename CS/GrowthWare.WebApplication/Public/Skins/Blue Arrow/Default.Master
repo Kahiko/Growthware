@@ -4,7 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
-    <title>Growth Ware Blue Arrow VB</title>
+    <title>Growthware Blue Arrow CS</title>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">
