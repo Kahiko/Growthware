@@ -148,6 +148,9 @@
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx" />
+    <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx" />
+    <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx" />
     <Content Include="Functions\System\Errors\AccessDenied.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
@@ -331,6 +334,27 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.vb">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.designer.vb">
+      <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.vb">
+      <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx.designer.vb">
+      <DependentUpon>SearchSecurityEntities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx.vb">
+      <DependentUpon>SearchSecurityEntities.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.designer.vb">
+      <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.vb">
+      <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Errors\AccessDenied.aspx.designer.vb">
@@ -517,7 +541,6 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Functions\Overrides\" />
-    <Folder Include="Functions\System\Administration\SecurityEntities\" />
     <Folder Include="Public\Images\" />
   </ItemGroup>
   <ItemGroup>
