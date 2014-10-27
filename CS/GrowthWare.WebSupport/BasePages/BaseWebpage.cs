@@ -114,8 +114,9 @@ namespace GrowthWare.WebSupport.BasePages
 		/// <param name="sender">The source of the event.</param>
 		/// <param name="e">The <see cref="EventArgs"/> instance containing the event data.</param>
 		protected void Page_PreInit(object sender, EventArgs e)
-		{
-			MFunctionProfile mFunction = FunctionUtility.CurrentProfile();
+        {
+            base.OnInit(e);
+            MFunctionProfile mFunction = FunctionUtility.CurrentProfile();
 			if (mFunction != null)
 			{
 				this.EnableViewState = mFunction.EnableViewState;

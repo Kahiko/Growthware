@@ -129,6 +129,17 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
+        /// Returns MapPath("~\Public\Skins\")
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
+        public static string SkinPath
+        {
+            get { return HttpContext.Current.Server.MapPath(@"~\Public\Skins\"); }
+        }
+
+        /// <summary>
         /// Gets the verison.
         /// </summary>
         /// <value>The verison.</value>

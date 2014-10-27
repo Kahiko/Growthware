@@ -330,18 +330,21 @@
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.cs">
       <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.designer.cs">
       <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx.cs">
       <DependentUpon>SearchSecurityEntities.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx.designer.cs">
       <DependentUpon>SearchSecurityEntities.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.cs">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.designer.cs">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
