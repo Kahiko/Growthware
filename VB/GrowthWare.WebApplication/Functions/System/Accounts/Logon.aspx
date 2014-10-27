@@ -81,7 +81,8 @@
 	    var $mLogonPage = $('#LogonPage');
 	    if (xhr.toString() == "true") {
 	        window.location.hash = "?Action=Favorite";
-	        jQuery.event.trigger('~reLoadUI');
+	        //jQuery.event.trigger('~reLoadUI');
+	        location.reload();
 	    } else {
 	        if (xhr.toString() == "Request") {
 	            $mBtnRequestChange.css({ display: 'inline' });

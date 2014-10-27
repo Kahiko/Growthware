@@ -3,6 +3,82 @@
 
 <!DOCTYPE html>
 <html>
+    <head>
+        <title>Add or Edit Account</title>
+        <script type="text/javascript" language="javascript">
+            $(document).ready(function () {
+                $(document).ready(function () {
+                    $("#btnSave").button();
+                    $("#tabs").tabs();
+                    $("#tabs").tabs("option", "selected", 0);
+                });
+            });
+
+            function updateData() {
+                var profile = {};
+                var roles = '';
+                var groups = '';
+                var canSaveRoles = false;
+                var canSaveGroups = false;
+                roles = $.map($('#ctlRoles_DstList option'), function (e) { return $(e).val(); });
+                groups = $.map($('#ctlGroups_DstList option'), function (e) { return $(e).val(); });
+
+                accountRoles = {};
+                accountRoles.Roles = roles;
+
+                accountGroups = {};
+                accountGroups.Groups = groups;
+                canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
+                canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
+                profile = {};
+                profile.IsSystemAdmin = false;
+                if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
+                    profile.IsSystemAdmin = true;
+                }
+                profile.Id = parseInt($("#<%=txtAccount_seq_id.ClientID %>").val());
+                profile.Account = $("#<%=txtAccount.ClientID %>").val();
+                profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
+                profile.EMail = $("#<%=txtEmail.ClientID %>").val();
+                profile.Status = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
+                profile.FirstName = $("#<%=txtFirstName.ClientID %>").val();
+                profile.LastName = $("#<%=txtLastName.ClientID %>").val();
+                profile.MiddleName = $("#<%=txtMiddleName.ClientID %>").val();
+                profile.PreferredName = $("#<%=txtPreferredName.ClientID %>").val();
+                profile.TimeZone = parseInt($("#<%=dropTimezone.ClientID %> option:selected").val());
+                profile.Location = $("#<%=txtLocation.ClientID %>").val();
+                var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, accountRoles: accountRoles, accountGroups: accountGroups };
+                return theData;
+            }
+
+            function saveAddEditAccount($dialogWindow) {
+                if (Page_ClientValidate()) {
+                    var theData = updateData();
+                    // profile is defined in AddEditAccounts.aspx
+                    GW.Common.debug(theData);
+                    var options = GW.Model.DefaultWebMethodOptions();
+                    options.async = false;
+                    options.data = theData;
+                    options.contentType = 'application/json; charset=utf-8';
+                    options.dataType = 'json';
+                    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx/InvokeSave"
+                    GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
+                    if (!($dialogWindow === undefined)) {
+                        $dialogWindow.dialog("destroy")
+                        $dialogWindow.remove();
+                    }
+                }
+            }
+
+            function saveAddEditAccountSucess(xhr) {
+                GW.Navigation.NavigationController.Refresh();
+                GW.Search.GetSearchResults();
+            }
+
+            function saveAddEditAccountError(xhr, status, error) {
+
+            }
+        </script>
+    </head>
     <body>
 	    <div id="helpPopup" style="display: none;"></div>
 	    <form id="form1" runat="server">
@@ -248,75 +324,3 @@
 	    </form>
     </body>
 </html>
-<script type="text/javascript" language="javascript">
-    $(document).ready(function () {
-        $(document).ready(function () {
-            $("#btnSave").button();
-            $("#tabs").tabs();
-            $("#tabs").tabs("option", "selected", 0);
-        });
-
-        function updateData() {
-            var profile = {};
-            var roles = '';
-            var groups = '';
-            var canSaveRoles = false;
-            var canSaveGroups = false;
-            roles = $.map($('#ctlRoles_DstList option'), function (e) { return $(e).val(); });
-            groups = $.map($('#ctlGroups_DstList option'), function (e) { return $(e).val(); });
-
-            accountRoles = {};
-            accountRoles.Roles = roles;
-
-            accountGroups = {};
-            accountGroups.Groups = groups;
-            canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
-            canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
-            profile = {};
-            profile.IsSystemAdmin = false;
-            if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
-                profile.IsSystemAdmin = true;
-            }
-            profile.Id = parseInt($("#<%=txtAccount_seq_id.ClientID %>").val());
-            profile.Account = $("#<%=txtAccount.ClientID %>").val();
-            profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
-            profile.EMail = $("#<%=txtEmail.ClientID %>").val();
-            profile.Status = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
-            profile.FirstName = $("#<%=txtFirstName.ClientID %>").val();
-            profile.LastName = $("#<%=txtLastName.ClientID %>").val();
-            profile.MiddleName = $("#<%=txtMiddleName.ClientID %>").val();
-            profile.PreferredName = $("#<%=txtPreferredName.ClientID %>").val();
-            profile.TimeZone = parseInt($("#<%=dropTimezone.ClientID %> option:selected").val());
-            profile.Location = $("#<%=txtLocation.ClientID %>").val();
-            var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, accountRoles: accountRoles, accountGroups: accountGroups };
-            return theData;
-        }
-
-        function saveAddEditAccount($dialogWindow) {
-            var theData = updateData();
-            // profile is defined in AddEditAccounts.aspx
-            GW.Common.debug(theData);
-            var options = GW.Model.DefaultWebMethodOptions();
-            options.async = false;
-            options.data = theData;
-            options.contentType = 'application/json; charset=utf-8';
-            options.dataType = 'json';
-            options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx/InvokeSave"
-            GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
-            if (!($dialogWindow === undefined)) {
-                $dialogWindow.dialog("destroy")
-                $dialogWindow.remove();
-            }
-        }
-
-        function saveAddEditAccountSucess(xhr) {
-            GW.Navigation.NavigationController.Refresh();
-            GW.Search.GetSearchResults();
-        }
-
-        function saveAddEditAccountError(xhr, status, error) {
-
-        }
-    });
-</script>
-

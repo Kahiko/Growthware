@@ -19,6 +19,17 @@ Public Module GWWebHelper
             Return myVersion
         End Get
     End Property
+    ''' <summary>
+    ''' Returns MapPath("~\Public\Skins\")
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>String</returns>
+    ''' <remarks></remarks>
+    ReadOnly Property SkinPath() As String
+        Get
+            Return HttpContext.Current.Server.MapPath("~\Public\Skins\")
+        End Get
+    End Property
 
     ''' <summary>
     ''' Returns http(s)://FQDN(/AppName)
