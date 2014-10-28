@@ -180,7 +180,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </summary>
         /// <param name="searchCriteria">The search criteria.</param>
         /// <returns>DataTable.</returns>
-        public DataTable Search(ref MSearchCriteria searchCriteria)
+        public DataTable Search( MSearchCriteria searchCriteria)
         {
             return m_DGroups.Search(searchCriteria);
         }

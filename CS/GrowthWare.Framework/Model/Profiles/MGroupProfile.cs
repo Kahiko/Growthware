@@ -5,15 +5,18 @@ using System.Data;
 
 namespace GrowthWare.Framework.Model.Profiles
 {
+    /// <summary>
+    /// Model object representing the GroupProfile
+    /// </summary>
     [Serializable(), CLSCompliant(true)]
     public class MGroupProfile : MProfile
     {
-        #region "Member Properties"
-        private string mDescription = string.Empty;
-        #endregion
-        private int mSecurityEntityId = 1;
+    #region "Member Properties"
+        private string m_Description = string.Empty;
+        private int m_SecurityEntityId = 1;
+    #endregion
 
-        #region "Protected Methods"
+    #region "Protected Methods"
         /// <summary>
         /// Initializes the specified DataRow.
         /// </summary>
@@ -23,7 +26,7 @@ namespace GrowthWare.Framework.Model.Profiles
             base.NameColumnName = "NAME";
             base.IdColumnName = "GROUP_SEQ_ID";
             base.Initialize(dataRow);
-            mDescription = base.GetString(dataRow, "DESCRIPTION");
+            m_Description = base.GetString(dataRow, "DESCRIPTION");
         }
         #endregion
 
@@ -53,8 +56,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <value>The security entity ID.</value>
         public int SecurityEntityId
         {
-            get { return mSecurityEntityId; }
-            set { mSecurityEntityId = value; }
+            get { return m_SecurityEntityId; }
+            set { m_SecurityEntityId = value; }
         }
 
         /// <summary>
@@ -63,8 +66,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <value>The description.</value>
         public string Description
         {
-            get { return mDescription; }
-            set { if(value != null) mDescription = value.Trim(); }
+            get { return m_Description; }
+            set { if(value != null) m_Description = value.Trim(); }
         }
         #endregion
     }

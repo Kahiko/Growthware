@@ -22,7 +22,6 @@ namespace GrowthWare.Framework.Common
         private string m_LogFile = string.Empty;
         private log4net.Appender.FileAppender m_Appender = null;
         private DateTime m_AppenderLastUsed;
-        private StackTrace m_StackTrace = new StackTrace();
         private int m_CurrentLogLevel;
 
         private static string s_SCurrentLogLevel = string.Empty;

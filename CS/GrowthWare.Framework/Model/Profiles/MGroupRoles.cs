@@ -6,7 +6,7 @@ using System.Data;
 namespace GrowthWare.Framework.Model.Profiles
 {
     /// <summary>
-	/// Class MGroupRoles
+    /// Model object representing GroupRoles
 	/// </summary>
 	[Serializable(), CLSCompliant(true)]
     public class MGroupRoles : MProfile
@@ -15,7 +15,7 @@ namespace GrowthWare.Framework.Model.Profiles
         private int m_SecurityEntityId = -1;
         private int m_GroupSeqId = -1;
 
-        private string mRoles;
+        private string m_Roles;
 
         /// <summary>
         /// Gets or Added Updated By id.
@@ -53,8 +53,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <value>The roles.</value>
         public string Roles
         {
-            get { return mRoles; }
-            set { if (!String.IsNullOrEmpty(value)) mRoles = value.Trim(); }
+            get { return m_Roles; }
+            set { if (!String.IsNullOrEmpty(value)) m_Roles = value.Trim(); }
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Data;
 namespace GrowthWare.Framework.Model.Profiles
 {
     /// <summary>
-    /// Properties for an account.
+    /// Model object representing a Role.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
     public class MRoleProfile : MProfile
@@ -21,7 +21,7 @@ namespace GrowthWare.Framework.Model.Profiles
 
         #region "Protected Methods"
         /// <summary>
-        /// Initializes the specified DataRow.
+        /// Initializes with the specified DataRow.
         /// </summary>
         /// <param name="dataRow">The DataRow.</param>
         protected new void Initialize(DataRow dataRow)

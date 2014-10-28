@@ -111,7 +111,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         {
             if (GroupRolesProfile.GroupSeqId == -1)
             {
-                throw new ApplicationException("The GroupRoles Profile must be set.");
+                throw new ArgumentException("The GroupRoles Profile must be set.");
             }
             string mymStoreProcedure = "ZGWSecurity.Get_Group_Roles";
             SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityId), new SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId) };
@@ -127,7 +127,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         {
             if (GroupRolesProfile.GroupSeqId == -1)
             {
-                throw new ApplicationException("The GroupRoles Profile must be set.");
+                throw new ArgumentException("The GroupRoles Profile must be set.");
             }
             string mymStoreProcedure = "ZGWSecurity.Set_Group_Roles";
             SqlParameter[] mParameters = { new SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId), new SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityId), new SqlParameter("@P_Roles", GroupRolesProfile.Roles), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile)) };

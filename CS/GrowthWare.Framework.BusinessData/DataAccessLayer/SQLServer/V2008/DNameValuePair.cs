@@ -4,6 +4,7 @@ using GrowthWare.Framework.Model.Profiles;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 {
@@ -65,7 +66,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             SqlParameter[] mParameters = GetInsertUpdateParameters();
             int mRetVal = -1;
             base.ExecuteNonQuery(storeProc, mParameters);
-            mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters));
+            mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
             return mRetVal;
         }
 
