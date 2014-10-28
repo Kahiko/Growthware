@@ -279,6 +279,9 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\FunctionsController.cs" />
+    <Compile Include="Controllers\SecurityEntitiesController.cs" />
+    <Compile Include="Controllers\SessionableControllerHandler.cs" />
+    <Compile Include="Controllers\SessionStateRouteHandler.cs" />
     <Compile Include="Functions\System\Accounts\ChangePassword.aspx.cs">
       <DependentUpon>ChangePassword.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

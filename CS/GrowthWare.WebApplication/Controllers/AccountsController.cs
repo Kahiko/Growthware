@@ -1,17 +1,13 @@
 ﻿using GrowthWare.Framework.Common;
-using GrowthWare.Framework.Model.Profiles;
-using GrowthWare.WebSupport.Utilities;
-using GrowthWare.WebSupport;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 using GrowthWare.Framework.Model.Enumerations;
+using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.Framework.Model.Profiles.Base;
+using GrowthWare.WebSupport;
+using GrowthWare.WebSupport.Utilities;
+using System;
+using System.Globalization;
 using System.Web;
+using System.Web.Http;
 
 namespace GrowthWare.WebApplication.Controllers
 {

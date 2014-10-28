@@ -34,10 +34,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="searchCriteria">The search criteria.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable Search(ref MSearchCriteria searchCriteria)
+        public static DataTable Search(MSearchCriteria searchCriteria)
         {
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            return mBGroups.Search(ref searchCriteria);
+            return mBGroups.Search(searchCriteria);
         }
 
         /// <summary>
