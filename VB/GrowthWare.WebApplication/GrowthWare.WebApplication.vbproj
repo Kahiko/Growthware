@@ -287,6 +287,8 @@
     <Compile Include="App_Start\WebApiConfig.vb" />
     <Compile Include="Controllers\AccountsController.vb" />
     <Compile Include="Controllers\FunctionsController.vb" />
+    <Compile Include="Controllers\SessionStateRouteHandler .vb" />
+    <Compile Include="Controllers\SessionableControllerHandler .vb" />
     <Compile Include="Controllers\SecurityEntitiesController.vb" />
     <Compile Include="Default.aspx.designer.vb">
       <DependentUpon>Default.aspx</DependentUpon>

@@ -4,7 +4,7 @@
 	$(document).ready(function () {
 	    GW.Search.init();
 		GW.Search.SearchColumn = '[Name]';
-		GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/SecurityEntities/SearchSecurityEntitiesResults.aspx?";
+		GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/SecurityEntities/SearchSecurityEntitiesResults.aspx?Action=SearchSecurityEntities";
 		GW.Search.Criteria.SelectedPage = 1;
 		//GW.Search.Criteria.Columns = 'SE_SEQ_ID, Name, Description, Skin';
 		GW.Search.Criteria.Columns = 'Security_Entity_SeqID, Name, Description, Skin';

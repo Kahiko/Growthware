@@ -38,7 +38,7 @@
 	                    options.data = theData;
 	                    options.contentType = 'application/json; charset=utf-8';
 	                    options.dataType = 'json';
-	                    options.url = GW.Common.getBaseURL() + "/api/SecurityEntities/Save?Action=SelectASecurityEntity"
+	                    options.url = GW.Common.getBaseURL() + "/api/SecurityEntities/Save?Action=SearchSecurityEntities"
 	                    GW.Common.JQueryHelper.callWeb(options, saveAddEditSucess, saveAddEditError);
 	                    if (!($dialogWindow === undefined)) {
 	                        $dialogWindow.dialog("destroy")
