@@ -3,7 +3,7 @@
 Namespace Model.Profiles
     <Serializable(), CLSCompliant(True)> _
     Public Class MClientChoicesState
-        Dim mClientChoices As Hashtable = New Hashtable(StringComparer.InvariantCultureIgnoreCase)
+        Dim mClientChoices As Hashtable = New Hashtable(StringComparer.OrdinalIgnoreCase)
         Dim mAccountName As String
         Dim mIsDirty As Boolean = False
 

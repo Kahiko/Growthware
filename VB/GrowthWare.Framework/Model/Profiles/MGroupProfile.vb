@@ -2,25 +2,29 @@
 Imports GrowthWare.Framework.Model.Profiles.Interfaces
 
 Namespace Model.Profiles
+    ''' <summary>
+    ''' Model object representing the GroupProfile
+    ''' </summary>
+    ''' <remarks></remarks>
     <Serializable(), CLSCompliant(True)>
     Public Class MGroupProfile
         Inherits MProfile
 
 #Region "Member Properties"
-        Private mDESCRIPTION As String = String.Empty
-        Private mSE_SEQ_ID As Integer = 1
+        Private m_Description As String = String.Empty
+        Private m_SecurityEntityId As Integer = 1
 #End Region
 
 #Region "Protected Methods"
         ''' <summary>
         ''' Initializes the properties using the specified DataRow.
         ''' </summary>
-        ''' <param name="dr">The dr.</param>
-        Protected Overloads Sub Initialize(ByVal dr As DataRow)
+        ''' <param name="dataRow">The dr.</param>
+        Protected Overloads Sub Initialize(ByVal dataRow As DataRow)
             Me.IdColumnName = "GROUP_SEQ_ID"
             Me.NameColumnName = "NAME"
-            MyBase.Initialize(dr)
-            mDESCRIPTION = CStr(dr("DESCRIPTION")).Trim
+            MyBase.Initialize(dataRow)
+            m_Description = MyBase.GetString(dataRow, "DESCRIPTION")
         End Sub
 #End Region
 
@@ -36,9 +40,9 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Initializes a new instance of the <see cref="MGroupProfile" /> class.
         ''' </summary>
-        ''' <param name="dr">The DataRow</param>
-        Public Sub New(ByVal dr As DataRow)
-            Me.Initialize(dr)
+        ''' <param name="dataRow">The DataRow</param>
+        Public Sub New(ByVal dataRow As DataRow)
+            Me.Initialize(dataRow)
         End Sub
 #End Region
 
@@ -49,10 +53,10 @@ Namespace Model.Profiles
         ''' <value>The security entity ID.</value>
         Public Property SecurityEntityId() As Integer
             Get
-                Return mSE_SEQ_ID
+                Return m_SecurityEntityId
             End Get
             Set(ByVal value As Integer)
-                mSE_SEQ_ID = value
+                m_SecurityEntityId = value
             End Set
         End Property
 
@@ -62,10 +66,10 @@ Namespace Model.Profiles
         ''' <value>The description.</value>
         Public Property Description() As String
             Get
-                Return mDESCRIPTION
+                Return m_Description
             End Get
             Set(ByVal value As String)
-                mDESCRIPTION = value.Trim
+                If Not String.IsNullOrEmpty(value) Then m_Description = value.Trim
             End Set
         End Property
 #End Region

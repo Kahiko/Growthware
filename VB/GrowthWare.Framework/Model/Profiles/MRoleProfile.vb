@@ -2,27 +2,35 @@
 Imports GrowthWare.Framework.Model.Profiles.Interfaces
 
 Namespace Model.Profiles
+    ''' <summary>
+    ''' Model object representing a Role.
+    ''' </summary>
+    ''' <remarks></remarks>
     <Serializable(), CLSCompliant(True)> _
     Public Class MRoleProfile
         Inherits MProfile
 
 #Region "Member Properties"
-        Private m_DESCRIPTION As String = String.Empty
+        Private m_Description As String = String.Empty
         Private m_IsSystem As Boolean = False
         Private m_IsSystemOnly As Boolean = False
-        Private m_ErrorCode As Integer = -1
         Private m_SecurityEntitySeqId As Integer = 1
 #End Region
 
 #Region "Protected Methods"
-        Protected Overloads Sub Initialize(ByVal detailRow As DataRow)
+        ''' <summary>
+        ''' Initializes with the specified DataRow.
+        ''' </summary>
+        ''' <param name="dataRow"></param>
+        ''' <remarks></remarks>
+        Protected Overloads Sub Initialize(ByVal dataRow As DataRow)
             Me.IdColumnName = "ROLE_SEQ_ID"
             Me.NameColumnName = "NAME"
-            Me.Initialize(detailRow)
-            MyBase.Initialize(detailRow)
-            m_DESCRIPTION = CStr(detailRow("DESCRIPTION")).Trim
-            m_IsSystem = CInt(detailRow("IS_SYSTEM"))
-            m_IsSystemOnly = CInt(detailRow("IS_SYSTEM_ONLY"))
+            Me.Initialize(dataRow)
+            MyBase.Initialize(dataRow)
+            m_Description = MyBase.GetString(dataRow, "DESCRIPTION")
+            m_IsSystem = MyBase.GetBool(dataRow, "IS_SYSTEM")
+            m_IsSystemOnly = MyBase.GetBool(dataRow, "IS_SYSTEM_ONLY")
         End Sub
 #End Region
 
@@ -38,9 +46,9 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Initializes a new instance of the <see cref="MRoleProfile" /> class.
         ''' </summary>
-        ''' <param name="dr">The datarow</param>
-        Public Sub New(ByVal dr As DataRow)
-            Initialize(dr)
+        ''' <param name="dataRow">The DataRow</param>
+        Public Sub New(ByVal dataRow As DataRow)
+            Initialize(dataRow)
         End Sub
 #End Region
 
@@ -63,10 +71,10 @@ Namespace Model.Profiles
         ''' <value>The description.</value>
         Public Property Description() As String
             Get
-                Return m_DESCRIPTION
+                Return m_Description
             End Get
             Set(ByVal value As String)
-                If Not value Is Nothing Then m_DESCRIPTION = value.Trim
+                If Not value Is Nothing Then m_Description = value.Trim
             End Set
         End Property
 

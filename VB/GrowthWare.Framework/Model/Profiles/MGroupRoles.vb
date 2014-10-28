@@ -1,22 +1,26 @@
 ﻿Namespace Model.Profiles
+    ''' <summary>
+    ''' Model object representing GroupRoles
+    ''' </summary>
+    ''' <remarks></remarks>
     <Serializable(), CLSCompliant(True)>
     Public Class MGroupRoles
 
-        Private mADD_UP_BY As Integer
-        Private mSE_SEQ_ID As Integer = -1
-        Private mGROUP_SEQ_ID As Integer = -1
-        Private mRoles As String
+        Private m_AddedUpdatedBy As Integer
+        Private m_SecurityEntityId As Integer = -1
+        Private m_GroupSeqId As Integer = -1
+        Private m_Roles As String
 
         ''' <summary>
         ''' Gets or sets the ADD_UP_BY.
         ''' </summary>
         ''' <value>Account added or updated by.</value>
-        Public Property ADD_UP_BY() As Integer
+        Public Property AddedUpdatedBy() As Integer
             Get
-                Return mADD_UP_BY
+                Return m_AddedUpdatedBy
             End Get
             Set(ByVal value As Integer)
-                mADD_UP_BY = value
+                m_AddedUpdatedBy = value
             End Set
         End Property
 
@@ -24,12 +28,12 @@
         ''' Gets or sets the SE_SEQ_ID.
         ''' </summary>
         ''' <value>The Security Entity ID.</value>
-        Public Property SE_SEQ_ID() As Integer
+        Public Property SecurityEntityId() As Integer
             Get
-                Return mSE_SEQ_ID
+                Return m_SecurityEntityId
             End Get
             Set(ByVal value As Integer)
-                mSE_SEQ_ID = value
+                m_SecurityEntityId = value
             End Set
         End Property
 
@@ -37,12 +41,12 @@
         ''' Gets or sets the GROUP_SEQ_ID.
         ''' </summary>
         ''' <value>The Group Sequence ID.</value>
-        Public Property GROUP_SEQ_ID() As Integer
+        Public Property GroupSeqId() As Integer
             Get
-                Return mGROUP_SEQ_ID
+                Return m_GroupSeqId
             End Get
             Set(ByVal value As Integer)
-                mGROUP_SEQ_ID = value
+                m_GroupSeqId = value
             End Set
         End Property
 
@@ -52,10 +56,10 @@
         ''' <value>The roles.</value>
         Public Property Roles() As String
             Get
-                Return mRoles
+                Return m_Roles
             End Get
             Set(ByVal value As String)
-                mRoles = value.Trim
+                If Not String.IsNullOrEmpty(value) Then m_Roles = value.Trim
             End Set
         End Property
     End Class

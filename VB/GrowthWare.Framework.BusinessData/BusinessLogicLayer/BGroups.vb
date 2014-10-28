@@ -51,8 +51,9 @@ Namespace BusinessLogicLayer
         ''' ]]>
         ''' </code>
         ''' </example>
-        Public Sub New(ByRef securityEntityProfile As MSecurityEntityProfile, ByVal centralManagement As Boolean)
-            If Not ConfigSettings.CentralManagement Then
+        Public Sub New(ByVal securityEntityProfile As MSecurityEntityProfile, ByVal centralManagement As Boolean)
+            If securityEntityProfile Is Nothing Then Throw New ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!")
+            If Not centralManagement Then
                 If m_DGroups Is Nothing Then
                     m_DGroups = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups")
                 End If
@@ -60,12 +61,12 @@ Namespace BusinessLogicLayer
                 m_DGroups = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DGroups")
             End If
             m_DGroups.ConnectionString = securityEntityProfile.ConnectionString
-            m_DGroups.SecurityEntitySeqID = securityEntityProfile.Id
+            m_DGroups.SecurityEntitySeqId = securityEntityProfile.Id
         End Sub
 
-        Public Function GetGroupsBySecurityEntity(ByVal securityEntityID As Integer) As DataTable
+        Public Function GetGroupsBySecurityEntity(ByVal securityEntityId As Integer) As DataTable
             Dim myProfile As New MGroupProfile
-            myProfile.SecurityEntityID = securityEntityID
+            myProfile.SecurityEntityID = securityEntityId
             m_DGroups.Profile = myProfile
             Return m_DGroups.GetGroupsBySecurityEntity
         End Function
@@ -96,10 +97,10 @@ Namespace BusinessLogicLayer
         ''' <summary>
         ''' Searches the specified search critera.
         ''' </summary>
-        ''' <param name="searchCritera">The search critera.</param>
+        ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>DataTable.</returns>
-        Public Function Search(ByRef searchCritera As MSearchCriteria) As DataTable
-            Return m_DGroups.Search(searchCritera)
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            Return m_DGroups.Search(searchCriteria)
         End Function
 
         ''' <summary>

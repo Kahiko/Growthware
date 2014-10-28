@@ -2,6 +2,7 @@
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports System.Data.SqlClient
 Imports GrowthWare.Framework.Model.Profiles
+Imports System.Globalization
 
 Namespace DataAccessLayer.SQLServer.V2008
     ''' <summary>
@@ -90,7 +91,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter = GetInsertUpdateParameters()
             Dim mRetVal As Integer = -1
             MyBase.ExecuteNonQuery(mStoreProcedure, mParameters)
-            mRetVal = Integer.Parse(GetParameterValue("@P_Primary_Key", mParameters))
+            mRetVal = Integer.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture)
             Return mRetVal
         End Function
 

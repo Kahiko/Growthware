@@ -22,14 +22,14 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Sub
 
         Public Function GetGroupRoles() As DataTable Implements IDGroups.GetGroupRoles
-            If GroupRolesProfile.GROUP_SEQ_ID = -1 Then
-                Throw New ApplicationException("The GroupRoles Profile must be set.")
+            If GroupRolesProfile.GroupSeqId = -1 Then
+                Throw New ArgumentException("The GroupRoles Profile must be set.")
             End If
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Group_Roles"
             Dim mParameters() As SqlParameter =
               {
-             New SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SE_SEQ_ID),
-             New SqlParameter("@P_Group_SeqID", GroupRolesProfile.GROUP_SEQ_ID)
+             New SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityId),
+             New SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId)
               }
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
@@ -65,16 +65,16 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Sub
 
         Public Sub UpdateGroupRoles() Implements IDGroups.UpdateGroupRoles
-            If GroupRolesProfile.GROUP_SEQ_ID = -1 Then
-                Throw New ApplicationException("The GroupRoles Profile must be set.")
+            If GroupRolesProfile.GroupSeqId = -1 Then
+                Throw New ArgumentException("The GroupRoles Profile must be set.")
             End If
             Dim mStoredProcedure As String = "ZGWSecurity.Set_Group_Roles"
             Dim mParameters() As SqlParameter =
             {
-             New SqlParameter("@P_Group_SeqID", GroupRolesProfile.GROUP_SEQ_ID),
-             New SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SE_SEQ_ID),
+             New SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId),
+             New SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityId),
              New SqlParameter("@P_Roles", GroupRolesProfile.Roles),
-             New SqlParameter("@P_Added_Updated_By", GroupRolesProfile.ADD_UP_BY)
+             New SqlParameter("@P_Added_Updated_By", GroupRolesProfile.AddedUpdatedBy)
             }
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
