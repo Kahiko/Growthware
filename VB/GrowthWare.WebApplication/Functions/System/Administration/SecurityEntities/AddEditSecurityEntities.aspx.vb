@@ -23,6 +23,7 @@ Public Class AddEditSecurityEntities
         Else
             m_Profile = SecurityEntityUtility.CurrentProfile()
         End If
+        HttpContext.Current.Session.Item("EditId") = m_Profile.Id
         populatePage()
     End Sub
 
