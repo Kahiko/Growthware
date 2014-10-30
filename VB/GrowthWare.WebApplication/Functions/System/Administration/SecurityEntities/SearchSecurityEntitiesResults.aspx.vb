@@ -7,7 +7,10 @@ Imports GrowthWare.WebSupport.BasePages
 Public Class SearchSecurityEntitiesResults
 	Inherits ClientChoicesPage
 
+    Protected m_SecurityInfo As MSecurityInfo = Nothing
+
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        m_SecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
         noResults.Visible = False
         searchResults.HeaderStyle.ForeColor = ColorTranslator.FromHtml(ClientChoicesState(MClientChoices.HeaderForeColor))
         searchResults.HeaderStyle.BackColor = ColorTranslator.FromHtml(ClientChoicesState(MClientChoices.HeadColor))
@@ -51,7 +54,7 @@ Public Class SearchSecurityEntitiesResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString())
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), m_SecurityInfo)
             'Dim mDeleteOnClick As String = "javascript:" + String.Format("delete('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Name")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)

@@ -25,6 +25,7 @@
 	}
 
 	function editAccount(accountSeqID, viewOnly) {
+	    if (typeof viewOnly == undefined) viewOnly = false;
 	    mAccountSeqID = accountSeqID;
 	    var options = GW.Model.DefaultDialogOptions();
 	    options.title = 'Edit Account';
