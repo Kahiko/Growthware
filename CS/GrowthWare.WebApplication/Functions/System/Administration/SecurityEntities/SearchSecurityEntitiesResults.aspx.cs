@@ -13,8 +13,11 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.SecurityEnti
 {
     public partial class SearchSecurityEntitiesResults : ClientChoicesPage
     {
+        MSecurityInfo m_SecurityInfo = null;
+
         protected void Page_Load(object sender, EventArgs e)
         {
+            m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
             noResults.Visible = false;
             searchResults.HeaderStyle.ForeColor = ColorTranslator.FromHtml(ClientChoicesState[MClientChoices.HeaderForeColor]);
             searchResults.HeaderStyle.BackColor = ColorTranslator.FromHtml(ClientChoicesState[MClientChoices.HeadColor]);
@@ -66,7 +69,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.SecurityEnti
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString());
+                String mEditOnClick = "javascript:" + string.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), m_SecurityInfo.MayEdit);
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);

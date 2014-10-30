@@ -15,6 +15,8 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
     {
         private bool m_ShowDeleteLink = false;
 
+        MSecurityInfo m_SecurityInfo = null;
+
         public bool ShowDeleteLink
         {
             get { return m_ShowDeleteLink; }
@@ -31,8 +33,8 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
             string mAction = GWWebHelper.GetQueryValue(Request, "action");
             if (!String.IsNullOrEmpty(mAction))
             {
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                m_ShowDeleteLink = mSecurityInfo.MayDelete;
+                m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
+                m_ShowDeleteLink = m_SecurityInfo.MayDelete;
             }
             if (!m_ShowDeleteLink)
             {
@@ -92,7 +94,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("editAccount('{0}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString());
+                String mEditOnClick = "javascript:" + string.Format("editAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit);
                 String mDeleteOnClick = "javascript:" + string.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Account").ToString()).ToString();
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
