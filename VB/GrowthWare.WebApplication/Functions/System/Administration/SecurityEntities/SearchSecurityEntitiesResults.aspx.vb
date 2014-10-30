@@ -54,7 +54,7 @@ Public Class SearchSecurityEntitiesResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), m_SecurityInfo)
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), m_SecurityInfo.MayEdit)
             'Dim mDeleteOnClick As String = "javascript:" + String.Format("delete('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Security_Entity_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Name")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
