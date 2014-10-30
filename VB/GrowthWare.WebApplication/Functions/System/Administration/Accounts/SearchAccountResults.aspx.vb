@@ -7,14 +7,15 @@ Imports GrowthWare.WebSupport.BasePages
 Public Class SearchAccountResults
     Inherits ClientChoicesPage
 
+
+    Protected m_SecurityInfo As MSecurityInfo = Nothing
+
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
         If (Not String.IsNullOrEmpty(mAction)) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
-            If Not mSecurityInfo.MayDelete Then
-                searchResults.Columns.RemoveAt(1)
-            End If
+            m_SecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
+            If Not m_SecurityInfo.MayDelete Then searchResults.Columns.RemoveAt(1)
         End If
     End Sub
 
@@ -62,7 +63,7 @@ Public Class SearchAccountResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("editAccount('{0}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString())
+            Dim mEditOnClick As String = "javascript:" + String.Format("editAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit)
             Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Account")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
