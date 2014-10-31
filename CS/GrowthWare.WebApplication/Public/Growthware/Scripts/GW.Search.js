@@ -83,7 +83,9 @@ GW.Search = {
     GetSearchResults: function () {
         var defaultOptions = GW.Model.DefaultWebMethodOptions();
         var mOptions = $.extend({}, defaultOptions, this.CallWebOptions);
-        mOptions.url = this.URL + this.GetQueryOptions() + this.URLParameters
+        var mUrl = this.URL;
+        if (this.URL.indexOf("Action=") > -1) mUrl += "&";
+        mOptions.url = mUrl + this.GetQueryOptions() + this.URLParameters
         GW.Common.JQueryHelper.callWeb(mOptions, this.GetResultsSuccess, this.GetResultsError);
     },
 
