@@ -107,7 +107,7 @@ Namespace Context
                         mLog.Debug("hashCode: " + mHashCode)
                         mLog.Debug("Processing action: " + mAction)
 
-                        If Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") And Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON") Then
+                        If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON") Then
                             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                             If Not mAccountProfile Is Nothing Then
                                 If Not mAccountProfile.Status = DirectCast(SystemStatus.ChangePassword, Integer) Then
