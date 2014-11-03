@@ -7,17 +7,19 @@ using System.Web;
 using System.Web.Http;
 using System.Net.Http.Formatting;
 using GrowthWare.WebSupport.Utilities;
+using System.Web.SessionState;
 
 namespace GrowthWare.WebApplication.Controllers
 {
     public class SecurityEntitiesController : ApiController
     {
-        [HttpGet()]
+        [HttpPost()]
         public IHttpActionResult Save(MUISecurityEntityProfile uiProfile) 
         { 
             if(uiProfile == null) new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
             bool mRetVal = false;
-            if (HttpContext.Current.Items["EditId"] != null) 
+            var session = SessionStateUtility.GetHttpSessionStateFromContext(HttpContext.Current);
+            if (HttpContext.Current.Session["EditId"] != null) 
             {
                 if (!string.IsNullOrEmpty(uiProfile.Name))
                 {

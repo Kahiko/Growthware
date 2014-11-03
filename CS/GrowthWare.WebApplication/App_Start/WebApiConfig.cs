@@ -16,22 +16,17 @@ namespace GrowthWare.WebApplication
             // Web API routes
             config.MapHttpAttributeRoutes();
 
-            config.Routes.MapHttpRoute(
+            //config.Routes.MapHttpRoute(
+            //    name: "DefaultApi",
+            //    routeTemplate: "api/{controller}/{action}/{id}",
+            //    defaults: new { id = RouteParameter.Optional }
+            //);
+
+            RouteTable.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
-            );
-        }
-
-        public static void RegisterRoutes(RouteCollection routes) 
-        {
-            Route sessionRoute = null;
-            string sessionUrlPattern = string.Empty;
-
-            sessionUrlPattern = "api/{controller}/{action}/{id}";
-            sessionRoute = new Route(sessionUrlPattern, new SessionStateRouteHandler());
-            sessionRoute.Defaults = new RouteValueDictionary(new { id = RouteParameter.Optional });
-            routes.Add("DefaultApi", sessionRoute);
+            ).RouteHandler = new SessionStateRouteHandler();
         }
     }
 }

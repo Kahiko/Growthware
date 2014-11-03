@@ -47,6 +47,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
                 tdStatus.Style.Add("display", "none");
                 dropStatus.Style.Add("display", "none");
             }
+            HttpContext.Current.Session.Add("EditId", m_Profile.Id);
             populatePage();
         }
 

@@ -135,6 +135,7 @@ namespace GrowthWare.WebSupport.Context
 
             if ((HttpContext.Current.Session != null))
             {
+                if (HttpContext.Current.Session["EditId"] != null) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
                 if (processRequest())
                 {
                     if ((HttpContext.Current.Request.QueryString["Action"] != null))
@@ -152,7 +153,7 @@ namespace GrowthWare.WebSupport.Context
                         mLog.Debug("hashCode: " + mHashCode);
                         mLog.Debug("Processing action: " + mAction);
 
-                        if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
+                        if (mFunctionProfile != null && !mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
                         {
                             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
                             if (mAccountProfile != null) 

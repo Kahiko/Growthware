@@ -19,9 +19,9 @@
 		return true;
 	}
 
-	function edit(securityEntitySeqId, viewOnly) {
-	    if (typeof viewOnly == undefined) viewOnly = false;
-		mSecurityEntitySeqId = securityEntitySeqId;
+	function edit(securityEntitySeqId, mayEdit) {
+	    if (typeof mayEdit == undefined) mayEdit = false;
+	    mSecurityEntitySeqId = securityEntitySeqId;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Security Entity';
 		options.height = 650;
@@ -29,7 +29,7 @@
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/SecurityEntities/AddEditSecurityEntities.aspx?SecurityEntitySeqId=" + securityEntitySeqId;
-		if (!viewOnly) {
+		if (mayEdit) {
 		    options.buttons = {
 		        'Save': function () { saveAddEdit($(this)); },
 		        'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }

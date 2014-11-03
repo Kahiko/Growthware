@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GrowthWare.WebApplication.Controllers;
+using System;
 using System.Web;
 using System.Web.Http;
 using System.Web.Optimization;
@@ -13,8 +14,6 @@ namespace GrowthWare.WebApplication
         {
             // Code that runs on application startup
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            //RouteConfig.RegisterRoutes(RouteTable.Routes);
-            //WebApiConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
 

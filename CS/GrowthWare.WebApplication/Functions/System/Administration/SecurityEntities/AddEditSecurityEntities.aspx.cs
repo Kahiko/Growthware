@@ -6,6 +6,7 @@ using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Web;
 using System.Web.UI.WebControls;
 
 namespace GrowthWare.WebApplication.Functions.System.Administration.SecurityEntities
@@ -30,6 +31,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.SecurityEnti
                     m_Profile.DataAccessLayerNamespace = "GrowthWare.Framework.DataAccessLayer.SQLServer.V2008";
                 }
             }
+            HttpContext.Current.Session.Add("EditId", m_Profile.Id);
             populatePage();
         }
 

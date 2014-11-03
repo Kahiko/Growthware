@@ -24,8 +24,8 @@
         return true;
     }
 
-    function editAccount(accountSeqID, viewOnly) {
-        if (typeof viewOnly == undefined) viewOnly = false;
+    function editAccount(accountSeqID, mayEdit) {
+        if (typeof mayEdit == undefined) mayEdit = false;
         mAccountSeqID = accountSeqID;
         var options = GW.Model.DefaultDialogOptions();
         options.title = 'Edit Account';
@@ -35,7 +35,7 @@
         options.resizable = true;
         options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx?AccountSeqID=" + mAccountSeqID;
         GW.Common.debug(options.url);
-        if (!viewOnly) {
+        if (mayEdit) {
             options.buttons = {
                 'Save': function () { saveAddEditAccount($(this)); },
                 'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
