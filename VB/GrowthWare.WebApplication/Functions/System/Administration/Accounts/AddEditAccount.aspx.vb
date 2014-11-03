@@ -26,6 +26,7 @@ Public Class AddEditAccount
             tdStatus.Style.Add("display", "none")
             dropStatus.Style.Add("display", "none")
         End If
+        HttpContext.Current.Session.Add("EditId", m_Profile.Id);
         populatePage()
     End Sub
 
