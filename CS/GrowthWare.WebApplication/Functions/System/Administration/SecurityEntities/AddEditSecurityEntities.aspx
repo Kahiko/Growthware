@@ -5,28 +5,27 @@
             <script type="text/javascript" language="javascript">
                 $(document).ready(function () {
                     $("#<%=dropDAL.ClientID %>").change(function (e) {
-	                    drapDALChange($(this).val())
-	                });
-	            });
+                        drapDALChange($(this).val())
+                    });
+                });
 
-	            function updateData() {
-	                var profile = {};
-	                profile.Id = parseInt($("#<%=txtSeqID.ClientID %>").val());
-		            profile.Name = $("#<%=txtSecurityEntity.ClientID %>").val();
-	                profile.Description = $("#<%=txtDescription.ClientID %>").val();
-	                profile.Url = $("#<%=txtURL.ClientID %>").val();
-	                profile.DAL = $("#<%=dropDAL.ClientID %> option:selected").val();
-	                profile.DALAssemblyName = $("#<%=txtAssembly_Name.ClientID %>").val();
-	                profile.DALNamespace = $("#<%=txtName_Space.ClientID %>").val();
-	                profile.ConnectionString = $("#<%=txtConnectionstring.ClientID %>").val();
-	                profile.ParentSeqId = parseInt($("#<%=dropParent.ClientID %> option:selected").val());
-	                profile.Skin = $("#<%=dropSkin.ClientID %> option:selected").val();
-	                profile.Style = $("#<%=dropStyles.ClientID %> option:selected").val();
-	                profile.EncryptionType = parseInt($("#<%=dropEncryptionType.ClientID %> option:selected").val());
-	                profile.StatusSeqId = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
-	                var theData = { uiProfile: profile };
-	                return theData;
-	            }
+                function updateData() {
+                    var profile = {};
+                    profile.Id = parseInt($("#<%=txtSeqID.ClientID %>").val());
+                    profile.Name = $("#<%=txtSecurityEntity.ClientID %>").val();
+                    profile.Description = $("#<%=txtDescription.ClientID %>").val();
+                    profile.Url = $("#<%=txtURL.ClientID %>").val();
+                    profile.DAL = $("#<%=dropDAL.ClientID %> option:selected").val();
+                    profile.DALAssemblyName = $("#<%=txtAssembly_Name.ClientID %>").val();
+                    profile.DALNamespace = $("#<%=txtName_Space.ClientID %>").val();
+                    profile.ConnectionString = $("#<%=txtConnectionstring.ClientID %>").val();
+                    profile.ParentSeqId = parseInt($("#<%=dropParent.ClientID %> option:selected").val());
+                    profile.Skin = $("#<%=dropSkin.ClientID %> option:selected").val();
+                    profile.Style = $("#<%=dropStyles.ClientID %> option:selected").val();
+                    profile.EncryptionType = parseInt($("#<%=dropEncryptionType.ClientID %> option:selected").val());
+                    profile.StatusSeqId = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
+                    return profile;
+                }
 
                 function saveAddEdit($dialogWindow) {
                     if (Page_ClientValidate()) {
@@ -44,31 +43,31 @@
                             $dialogWindow.remove();
                         }
                     }
-	            }
+                }
 
-	            function saveAddEditSucess(xhr) {
-	                GW.Search.GetSearchResults();
-	                location.reload(true);
-	            }
+                function saveAddEditSucess(xhr) {
+                    GW.Search.GetSearchResults();
+                    location.reload(true);
+                }
 
-	            function saveAddEditError(xhr, status, error) {
+                function saveAddEditError(xhr, status, error) {
 
-	            }
+                }
 
-	            function drapDALChange(selectedDAL) {
-	                $("#<%=txtConnectionstring.ClientID %>").val("");
+                function drapDALChange(selectedDAL) {
+                    $("#<%=txtConnectionstring.ClientID %>").val("");
 	                switch (selectedDAL) {
 	                    case "SQLServer":
 	                        $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
-			                $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
-			                break;
+	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
+	                        break;
                         case "Oracle":
                             $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
-			                $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.Oracle.11g");
-			                break;
+                            $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.Oracle.11g");
+                            break;
                         default:
                             $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
-			                $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
+                            $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
                     }
                 }
             </script>
