@@ -24,8 +24,6 @@
 	                profile.Style = $("#<%=dropStyles.ClientID %> option:selected").val();
 	                profile.EncryptionType = parseInt($("#<%=dropEncryptionType.ClientID %> option:selected").val());
 	                profile.StatusSeqId = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
-	                //var theData = { uiProfile: profile };
-                    //return theData;
                     return profile;
 	            }
 
