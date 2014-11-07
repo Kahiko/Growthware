@@ -153,7 +153,7 @@ namespace GrowthWare.WebSupport.Context
                         mLog.Debug("hashCode: " + mHashCode);
                         mLog.Debug("Processing action: " + mAction);
 
-                        if (mFunctionProfile != null && !mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON"))
+                        if (mFunctionProfile != null && !mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
                         {
                             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
                             if (mAccountProfile != null) 
@@ -162,6 +162,7 @@ namespace GrowthWare.WebSupport.Context
                                 {
                                     mLog.Debug("Processing for account " + mAccountProfile.Account);
                                     MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                                    if(mSecurityInfo != null) HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
                                     if (!mSecurityInfo.MayView)
                                     {
                                         if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")

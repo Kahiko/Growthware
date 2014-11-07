@@ -161,7 +161,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords), 
 				new SqlParameter("@P_Parent_SeqID", m_Profile.ParentId), 
 				new SqlParameter("@P_Notes", m_Profile.Notes), 
-				new SqlParameter("@P_Added_Updated_By", m_Profile.UpdatedBy)
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			};
             String mStoreProc = "ZGWSecurity.Set_Function";
             base.ExecuteNonQuery(mStoreProc, mParameters);
@@ -222,7 +222,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Function_SeqID", profile.Id), 
 				new SqlParameter("@P_Direction", direction), 
-				new SqlParameter("@P_Added_Updated_By", profile.UpdatedBy),
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
 				GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
 			};
             base.ExecuteNonQuery(mStoreProcedure, mParameters);

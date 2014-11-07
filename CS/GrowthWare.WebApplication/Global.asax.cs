@@ -27,7 +27,7 @@ namespace GrowthWare.WebApplication
 
         private static Boolean IsWebApiRequest() 
         {
-            return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("api");
+            return HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.Contains("/api/");
         }
     }
 }

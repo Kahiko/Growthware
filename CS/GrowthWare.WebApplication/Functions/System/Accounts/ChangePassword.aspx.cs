@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.Model.Profiles;
+using GrowthWare.WebSupport;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,13 @@ namespace GrowthWare.WebApplication.Functions.System.Accounts
                 this.trNormalChange.Visible = true;
                 this.trOldPassword.Visible = true;
                 this.OldPassword.Focus();
+            }
+            Exception mException = GWWebHelper.ExceptionError;
+            if (mException != null) 
+            {
+                clientMessage.Style.Add("display", "");
+                clientMessage.InnerHtml = mException.Message.ToString();
+                GWWebHelper.ExceptionError = null;
             }
         }
     }

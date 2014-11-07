@@ -97,7 +97,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
                 new SqlParameter("@P_STYLE", profile.Style),
                 new SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
                 new SqlParameter("@P_Parent_Security_Entity_SeqID", profile.ParentSeqId),
-                new SqlParameter("@P_Added_Updated_By", profile.AddedBy),
+                new SqlParameter("@P_Added_Updated_By",  GetAddedUpdatedBy(profile)),
                 mPrimaryKey
 			 };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
