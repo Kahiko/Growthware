@@ -25,6 +25,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Accounts_In_Group'
 	SELECT
 		Accounts.Account AS ACCT
+		, Accounts.Email AS Email
 	FROM
 		ZGWSecurity.Accounts Accounts WITH(NOLOCK),
 		ZGWSecurity.Groups_Security_Entities_Accounts AcctSecurity WITH(NOLOCK),

@@ -23,7 +23,8 @@ CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_In_Role]
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Accounts_In_Role'
 	SELECT
-		Accounts.Account AS ACCT 
+		Accounts.Account AS ACCT
+		, Accounts.Email AS Email
 	FROM
 		ZGWSecurity.Accounts Accounts WITH(NOLOCK),
 		ZGWSecurity.Roles_Security_Entities_Accounts AcctSecurity WITH(NOLOCK),
