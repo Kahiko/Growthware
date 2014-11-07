@@ -46,8 +46,9 @@
                 profile.PreferredName = $("#<%=txtPreferredName.ClientID %>").val();
                 profile.TimeZone = parseInt($("#<%=dropTimezone.ClientID %> option:selected").val());
                 profile.Location = $("#<%=txtLocation.ClientID %>").val();
-                var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, accountRoles: accountRoles, accountGroups: accountGroups };
-                return theData;
+                //var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, accountRoles: accountRoles, accountGroups: accountGroups };
+                //return theData;
+                return profile;
             }
 
             function saveAddEditAccount($dialogWindow) {
@@ -60,7 +61,7 @@
                     options.data = theData;
                     options.contentType = 'application/json; charset=utf-8';
                     options.dataType = 'json';
-                    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx/InvokeSave"
+                    options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts"
                     GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                     if (!($dialogWindow === undefined)) {
                         $dialogWindow.dialog("destroy")

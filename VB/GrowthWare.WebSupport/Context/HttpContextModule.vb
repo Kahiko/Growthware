@@ -107,12 +107,13 @@ Namespace Context
                         mLog.Debug("hashCode: " + mHashCode)
                         mLog.Debug("Processing action: " + mAction)
 
-                        If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON") Then
+                        If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                             If Not mAccountProfile Is Nothing Then
                                 If Not mAccountProfile.Status = DirectCast(SystemStatus.ChangePassword, Integer) Then
                                     mLog.Debug("Processing for account " + mAccountProfile.Account)
                                     Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
+                                    If Not mSecurityInfo Is Nothing Then HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
                                     If Not mSecurityInfo.MayView Then
                                         If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                                             Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")

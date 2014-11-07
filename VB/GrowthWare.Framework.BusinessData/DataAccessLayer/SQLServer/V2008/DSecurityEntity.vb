@@ -75,7 +75,7 @@ Namespace DataAccessLayer.SQLServer.V2008
              New SqlParameter("@P_STYLE", profile.Style),
              New SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
              New SqlParameter("@P_Parent_Security_Entity_SeqID", profile.ParentSeqId),
-             New SqlParameter("@P_Added_Updated_By", profile.AddedBy),
+             New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
              mPrimaryKey
              }
             MyBase.ExecuteNonQuery("ZGWSecurity.Set_Security_Entity", mParameters)

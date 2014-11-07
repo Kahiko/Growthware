@@ -23,6 +23,19 @@
                 }
             });
         }
+
+        $("#chkShowPassword").bind("click", function () {
+            var txtPassword = $("#Password");
+            if ($(this).is(":checked")) {
+                txtPassword.after('<input onchange = "PasswordChanged(this);" id = "txt_' + txtPassword.attr("id") + '" type = "text" value = "' + txtPassword.val() + '" />');
+                txtPassword.hide();
+            } else {
+                txtPassword.val(txtPassword.next().val());
+                txtPassword.next().remove();
+                txtPassword.show();
+            }
+        });
+
         GW.Common.debug('finished with document.ready');
     });
 
@@ -129,15 +142,24 @@
 	    $mClientMessage.css({ display: 'none' });
 	    $mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
 	}
+
+
+	function PasswordChanged(txt) {
+	    $(txt).prev().val($(txt).val());
+	}
 </script>
 <div id="LogonPage">
 	<div id="LogonData">
 		<div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="Form_Field rounded" id="Account" />
 		<br /><br />
 		<div style="text-align: right; width: 80px; float: left;">Password:&nbsp;&nbsp;</div><input type="password" class="Form_Field rounded" id="Password" />
+        <label for="chkShowPassword">
+                <input type="checkbox" id="chkShowPassword" />
+                Show password
+        </label>
 	</div>
 	<br />
-	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" id="btnLogon" onclick="javascript:logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="javascript:requestChange();" value="Change Password" />
+	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
 </div>
 <div style="height: 26px;">
 	<div id="clientMessage" style="display: none" runat="server"></div>

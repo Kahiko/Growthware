@@ -46,8 +46,12 @@
 	            }
 
 	            function saveAddEditSucess(xhr) {
-	                GW.Search.GetSearchResults();
-	                location.reload(true);
+	                if (xhr == true) {
+	                    GW.Search.GetSearchResults();
+	                    location.reload(true);
+	                } else {
+	                    alert('Error saving!!!');
+	                }
 	            }
 
 	            function saveAddEditError(xhr, status, error) {

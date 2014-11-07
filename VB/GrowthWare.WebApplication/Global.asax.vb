@@ -6,8 +6,7 @@ Public Class WebApiApplication
     Inherits System.Web.HttpApplication
 
     Protected Sub Application_Start()
-        'GlobalConfiguration.Configure(AddressOf WebApiConfig.Register)
-        WebApiConfig.RegisterRoutes(RouteTable.Routes)
+        GlobalConfiguration.Configure(AddressOf WebApiConfig.Register)
         BundleConfig.RegisterBundles(BundleTable.Bundles)
     End Sub
 

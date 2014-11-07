@@ -74,7 +74,7 @@ Namespace DataAccessLayer.SQLServer.V2008
              New SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId),
              New SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityId),
              New SqlParameter("@P_Roles", GroupRolesProfile.Roles),
-             New SqlParameter("@P_Added_Updated_By", GroupRolesProfile.AddedUpdatedBy)
+             New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile))
             }
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub

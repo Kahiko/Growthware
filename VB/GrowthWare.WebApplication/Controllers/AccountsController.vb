@@ -145,6 +145,108 @@ Namespace Controllers
             Return Ok(mMessageProfile.Body)
         End Function
 
+        <HttpPost>
+        Public Function Save(ByVal uiProfile As UIAccountProfile, ByVal canSaveRoles As Boolean, ByVal canSaveGroups As Boolean, ByVal accountRoles As UIAccountRoles, ByVal accountGroups As UIAccountGroups) As IHttpActionResult
+            If uiProfile Is Nothing Then Throw New ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mRetVal As Boolean = False
+            Dim mSaveGroups As Boolean = False
+            Dim mSaveRoles As Boolean = False
+            Dim mLog As Logger = Logger.Instance()
+            If Not HttpContext.Current.Items("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If mEditId = uiProfile.Id Then
+                    Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
+                    If Not mSecurityInfo Is Nothing Then
+                        If mEditId <> -1 Then
+                            If mSecurityInfo.MayEdit Then
+                                Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(mEditId)
+                                mAccountProfile = populateAccountProfile(uiProfile, mAccountProfile)
+                                mAccountProfile.Id = uiProfile.Id
+                                Dim mGroups = String.Join(",", accountGroups.Groups)
+                                Dim mRoles = String.Join(",", accountRoles.Roles)
+                                If canSaveGroups Then
+                                    If mAccountProfile.GetCommaSeparatedAssignedGroups <> mGroups Then
+                                        mSaveGroups = True
+                                        mAccountProfile.SetGroups(mGroups)
+                                    End If
+                                End If
+                                If canSaveRoles Then
+                                    If mAccountProfile.GetCommaSeparatedAssignedRoles <> mRoles Then
+                                        mSaveRoles = True
+                                        mAccountProfile.SetRoles(mRoles)
+                                    End If
+                                End If
+
+                                AccountUtility.Save(mAccountProfile, mSaveRoles, mSaveGroups)
+                                mRetVal = True
+                            Else
+                                Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                                mLog.Error(mError)
+                                Return Me.InternalServerError(mError)
+                            End If
+                        Else
+                            If mSecurityInfo.MayAdd Then
+                                Dim mAccountProfile As MAccountProfile = New MAccountProfile()
+                                mAccountProfile = populateAccountProfile(uiProfile, mAccountProfile)
+                                mAccountProfile.Id = -1
+                                mAccountProfile.AddedBy = AccountUtility.CurrentProfile().Id
+                                mAccountProfile.AddedDate = Now
+                                mAccountProfile.UpdatedBy = mAccountProfile.AddedBy
+                                mAccountProfile.UpdatedDate = mAccountProfile.AddedDate
+                                Dim mGroups = String.Join(",", accountGroups.Groups)
+                                Dim mRoles = String.Join(",", accountRoles.Roles)
+                                If canSaveGroups Then
+                                    If mAccountProfile.GetCommaSeparatedAssignedGroups <> mGroups Then
+                                        mSaveGroups = True
+                                        mAccountProfile.SetGroups(mGroups)
+                                    End If
+                                End If
+                                If canSaveRoles Then
+                                    If mAccountProfile.GetCommaSeparatedAssignedRoles <> mRoles Then
+                                        mSaveRoles = True
+                                        mAccountProfile.SetRoles(mRoles)
+                                    End If
+                                End If
+                                AccountUtility.Save(mAccountProfile, mSaveRoles, mSaveGroups)
+                                mRetVal = True
+                            Else
+                                Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                                mLog.Error(mError)
+                                Return Me.InternalServerError(mError)
+                            End If
+                        End If
+                    Else
+                        Dim mError As Exception = New Exception("Security Info is not in context nothing has been saved!!!!")
+                        mLog.Error(mError)
+                        Return Me.InternalServerError(mError)
+                    End If
+                Else
+                    Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                    mLog.Error(mError)
+                    Return Me.InternalServerError(mError)
+                End If
+            End If
+            Return Me.Ok(mRetVal)
+        End Function
+
+        Private Function populateAccountProfile(ByVal uiProfile As UIAccountProfile, ByVal accountProfile As MAccountProfile) As MAccountProfile
+            If accountProfile Is Nothing Then accountProfile = New MAccountProfile()
+            accountProfile.Account = uiProfile.Account
+            accountProfile.Email = uiProfile.EMail
+            accountProfile.EnableNotifications = uiProfile.EnableNotifications
+            accountProfile.FirstName = uiProfile.FirstName
+            If AccountUtility.CurrentProfile().IsSystemAdmin Then
+                accountProfile.IsSystemAdmin = uiProfile.IsSystemAdmin
+            End If
+            accountProfile.LastName = uiProfile.LastName
+            accountProfile.Location = uiProfile.Location
+            accountProfile.MiddleName = uiProfile.MiddleName
+            accountProfile.Name = uiProfile.Account
+            accountProfile.PreferredName = uiProfile.PreferredName
+            accountProfile.Status = uiProfile.Status
+            accountProfile.TimeZone = uiProfile.TimeZone
+            Return accountProfile
+        End Function
     End Class
 
     Public Class MChangePassword
