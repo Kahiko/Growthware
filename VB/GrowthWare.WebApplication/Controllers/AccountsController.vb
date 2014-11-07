@@ -145,8 +145,9 @@ Namespace Controllers
             Return Ok(mMessageProfile.Body)
         End Function
 
+
         <HttpPost>
-        Public Function Save(ByVal uiProfile As UIAccountProfile, ByVal canSaveRoles As Boolean, ByVal canSaveGroups As Boolean, ByVal accountRoles As UIAccountRoles, ByVal accountGroups As UIAccountGroups) As IHttpActionResult
+        Public Function Save(ByVal uiProfile As UIAccountProfile) As IHttpActionResult
             If uiProfile Is Nothing Then Throw New ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As Boolean = False
             Dim mSaveGroups As Boolean = False
@@ -162,15 +163,15 @@ Namespace Controllers
                                 Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(mEditId)
                                 mAccountProfile = populateAccountProfile(uiProfile, mAccountProfile)
                                 mAccountProfile.Id = uiProfile.Id
-                                Dim mGroups = String.Join(",", accountGroups.Groups)
-                                Dim mRoles = String.Join(",", accountRoles.Roles)
-                                If canSaveGroups Then
+                                Dim mGroups = String.Join(",", uiProfile.AccountGroups.Groups)
+                                Dim mRoles = String.Join(",", uiProfile.AccountRoles.Roles)
+                                If uiProfile.CanSaveGroups Then
                                     If mAccountProfile.GetCommaSeparatedAssignedGroups <> mGroups Then
                                         mSaveGroups = True
                                         mAccountProfile.SetGroups(mGroups)
                                     End If
                                 End If
-                                If canSaveRoles Then
+                                If uiProfile.CanSaveRoles Then
                                     If mAccountProfile.GetCommaSeparatedAssignedRoles <> mRoles Then
                                         mSaveRoles = True
                                         mAccountProfile.SetRoles(mRoles)
@@ -193,15 +194,15 @@ Namespace Controllers
                                 mAccountProfile.AddedDate = Now
                                 mAccountProfile.UpdatedBy = mAccountProfile.AddedBy
                                 mAccountProfile.UpdatedDate = mAccountProfile.AddedDate
-                                Dim mGroups = String.Join(",", accountGroups.Groups)
-                                Dim mRoles = String.Join(",", accountRoles.Roles)
-                                If canSaveGroups Then
+                                Dim mGroups = String.Join(",", uiProfile.AccountGroups.Groups)
+                                Dim mRoles = String.Join(",", uiProfile.AccountRoles.Roles)
+                                If uiProfile.CanSaveGroups Then
                                     If mAccountProfile.GetCommaSeparatedAssignedGroups <> mGroups Then
                                         mSaveGroups = True
                                         mAccountProfile.SetGroups(mGroups)
                                     End If
                                 End If
-                                If canSaveRoles Then
+                                If uiProfile.CanSaveRoles Then
                                     If mAccountProfile.GetCommaSeparatedAssignedRoles <> mRoles Then
                                         mSaveRoles = True
                                         mAccountProfile.SetRoles(mRoles)
@@ -388,17 +389,21 @@ Namespace Controllers
 
     Public Class UIAccountProfile
         Public Account As String
-        Public Id As Integer
-        Public EnableNotifications As Boolean
+        Public AccountGroups As UIAccountGroups
+        Public AccountRoles As UIAccountRoles
+        Public CanSaveRoles As Boolean
+        Public CanSaveGroups As Boolean
         Public EMail As String
-        Public Status As Integer
+        Public EnableNotifications As Boolean
         Public FirstName As String
-        Public MiddleName As String
-        Public LastName As String
-        Public PreferredName As String
+        Public Id As Integer
         Public IsSystemAdmin As Boolean
-        Public TimeZone As Integer
+        Public LastName As String
         Public Location As String
+        Public MiddleName As String
+        Public PreferredName As String
+        Public Status As Integer
+        Public TimeZone As Integer
     End Class
 
     Public Class UIAccountRoles
