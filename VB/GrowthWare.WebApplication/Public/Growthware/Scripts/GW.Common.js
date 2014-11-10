@@ -380,10 +380,6 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 					draggable: options.draggable,
 					height: options.height,
 					hide: options.hide,
-					//maxHeight: options.maxHeight,
-					//maxWidth: options.maxWidth,
-					//minHeight: options.minHeight,
-					//minWidth: options.minWidth,
 					modal: options.modal,
 					position: options.position,
 					resizable: options.resizable,
@@ -474,48 +470,63 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 			@author Michael Regan
 			*/
 			openDialogWithWebContent: function (dialogOptions, dialogId) {
-				if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
-				var defaultOptions = GW.Model.DefaultDialogOptions();
-				var options = $.extend({}, defaultOptions, dialogOptions);
-				var newElementID = dialogId.substring(1, dialogId.length) + 'DialogWindow';
-				var $popupBodyDialogWindow = {};
-				if ($('#' + newElementID).length > 0) {
-					$popupBodyDialogWindow = $('#' + newElementID);
-				} else {
-					$popupBodyDialogWindow = $('<div id="' + newElementID + '"></div>');
-					$popupBodyDialogWindow.appendTo('body');
+			    var defaultOptions = GW.Model.DefaultDialogOptions();
+			    var options = $.extend({}, defaultOptions, dialogOptions);
+			    if (typeof jQuery.ui != 'undefined') {
+				    if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
+				    var newElementID = dialogId.substring(1, dialogId.length) + 'DialogWindow';
+				    var $popupBodyDialogWindow = {};
+				    if ($('#' + newElementID).length > 0) {
+				        $popupBodyDialogWindow = $('#' + newElementID);
+				    } else {
+				        $popupBodyDialogWindow = $('<div id="' + newElementID + '"></div>');
+				        $popupBodyDialogWindow.appendTo('body');
+				    }
+				    $popupBodyDialogWindow.load(options.url, function (response, status, xhr) {
+				        if (status != "error") {
+				            $(this).dialog({
+				                autoOpen: true,
+				                buttons: options.buttons,
+				                closeOnEscape: options.closeOnEscape,
+				                closeText: options.closeText,
+				                dialogClass: options.dialogClass,
+				                disabled: options.disabled,
+				                draggable: options.draggable,
+				                height: options.height,
+				                hide: options.hide,
+				                cache: options.cache,
+				                modal: options.modal,
+				                position: options.position,
+				                resizable: options.resizable,
+				                show: options.show,
+				                stack: options.stack,
+				                title: options.title,
+				                width: options.width,
+				                zindex: options.zindex,
+				                beforeClose: function (event, ui) {
+				                    $(this).remove();
+				                    return false;
+				                }
+				            });
+				        } else {
+				            var msg = "Sorry but there was an error: ";
+				            $container.html(msg + xhr.status + " " + xhr.statusText);
+				        }
+				    });
+			    } else {
+			        $('#myModal').on('show', function () {
+			            $('.modal-body', this).css({ width: options.width, height: options.height, 'max-height': '100%', 'max-width': '100%' });
+			        });
+				    var mOptions = GW.Model.DefaultDialogOptions();
+				    mOptions.url = options.url;
+				    mOptions.dataType = 'html';
+				    mOptions.contentType = 'application/html; charset=utf-8';
+				    mOptions.async = false;
+				    $('#MainContentDiv').load(options.url);
+				    //$('.modal-body').load(options.url);
+				    //$('#myModal').modal('show');
+
 				}
-				$popupBodyDialogWindow.load(options.url, function (response, status, xhr) {
-					if (status != "error") {
-						$(this).dialog({
-							autoOpen: true,
-							buttons: options.buttons,
-							closeOnEscape: options.closeOnEscape,
-							closeText: options.closeText,
-							dialogClass: options.dialogClass,
-							disabled: options.disabled,
-							draggable: options.draggable,
-							height: options.height,
-							hide: options.hide,
-							cache: options.cache,
-							modal: options.modal,
-							position: options.position,
-							resizable: options.resizable,
-							show: options.show,
-							stack: options.stack,
-							title: options.title,
-							width: options.width,
-							zindex: options.zindex,
-							beforeClose: function (event, ui) {
-								$(this).remove();
-								return false;
-							}
-						});
-					} else {
-						var msg = "Sorry but there was an error: ";
-						$container.html(msg + xhr.status + " " + xhr.statusText);
-					}
-				});
 			}
 
 		} // End GW.Common.JQueryHelper namespace
