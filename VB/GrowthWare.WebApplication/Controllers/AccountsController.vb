@@ -177,7 +177,8 @@ Namespace Controllers
                                         mAccountProfile.SetRoles(mRoles)
                                     End If
                                 End If
-
+                                mAccountProfile.AddedBy = AccountUtility.CurrentProfile().Id
+                                mAccountProfile.AddedDate = Now
                                 AccountUtility.Save(mAccountProfile, mSaveRoles, mSaveGroups)
                                 mRetVal = True
                             Else
