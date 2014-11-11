@@ -65,7 +65,7 @@
                     options.dataType = 'json';
                     options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts";
                     GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
-                    if (!($dialogWindow === undefined)) {
+                    if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
                         $dialogWindow.dialog("destroy")
                         $dialogWindow.remove();
                     }
@@ -255,72 +255,78 @@
 					        </p>
 				        </div>
 				        <div class="tab-pane fade" id="tabsRoles" runat="server">
-                            <table class="pickListTable">
-                                <tr class="pickListTableHeader">
-                                    <td>
-                                        Roles
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pickListTableHelp">
-                                        Assign roles
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pickListTableContents">
-                                        <CustomWebControls:ListPicker CssClass="listPicker" Size="200" Rows="6" ID="ctlRoles" AllItemsText="All Roles" SelectedItemsText="Selected Roles" runat="Server" />
-                                    </td>
-                                </tr>
-                            </table>
+                            <p>
+                                <table class="pickListTable">
+                                    <tr class="pickListTableHeader">
+                                        <td>
+                                            Roles
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pickListTableHelp">
+                                            Assign roles
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pickListTableContents">
+                                            <CustomWebControls:ListPicker CssClass="listPicker" Size="200" Rows="6" ID="ctlRoles" AllItemsText="All Roles" SelectedItemsText="Selected Roles" runat="Server" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p>
 				        </div>
 				        <div class="tab-pane fade" id="tabsGroups" runat="server">
-                            <table class="pickListTable">
-                                <tr class="pickListTableHeader">
-                                    <td>
-                                        Groups
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pickListTableHelp">
-                                        Assign groups
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="pickListTableContents">
-                                        <CustomWebControls:ListPicker CssClass="listPicker" Size="200" Rows="6" ID="ctlGroups" AllItemsText="All Groups" SelectedItemsText="Selected Groups" runat="Server" />
-                                    </td>
-                                </tr>
-                            </table>
+                            <p>
+                                <table class="pickListTable">
+                                    <tr class="pickListTableHeader">
+                                        <td>
+                                            Groups
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pickListTableHelp">
+                                            Assign groups
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="pickListTableContents">
+                                            <CustomWebControls:ListPicker CssClass="listPicker" Size="200" Rows="6" ID="ctlGroups" AllItemsText="All Groups" SelectedItemsText="Selected Groups" runat="Server" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </p>
 				        </div>
 				        <div class="tab-pane fade" id="tabsDerivedRoles">
-					        <table cellspacing="0" cellpadding="3" border="0">
-						        <tr>
-							        <td align="left" style="width: 480px">
-								        <table class="pickListTable">
-									        <!-- Roles -->
-									        <tr class="pickListTableHeader">
-										        <td>
-											        Derived Roles
-										        </td>
-									        </tr>
-									        <tr>
-										        <td class="pickListTableHelp">
-											        &nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpRoles').innerHTML,'Help Derived Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
-										        </td>
-									        </tr>
-									        <tr>
-										        <td class="pickListTableContents">
-											        <asp:ListBox ID="lstBoxRoles" style="width: 462px;" rows="5" runat="server"></asp:ListBox>
-										        </td>
-									        </tr>
-								        </table>
-								        <!-- View Roles -->
-								        <div id="derivedHelpRoles" style="display: none">
-									        Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups.<br />
-								        </div>
-							        </td>
-						        </tr>
-					        </table>				
+                            <p>
+					            <table cellspacing="0" cellpadding="3" border="0">
+						            <tr>
+							            <td align="left" style="width: 480px">
+								            <table class="pickListTable">
+									            <!-- Roles -->
+									            <tr class="pickListTableHeader">
+										            <td>
+											            Derived Roles
+										            </td>
+									            </tr>
+									            <tr>
+										            <td class="pickListTableHelp">
+											            &nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpRoles').innerHTML,'Help Derived Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
+										            </td>
+									            </tr>
+									            <tr>
+										            <td class="pickListTableContents">
+											            <asp:ListBox ID="lstBoxRoles" style="width: 462px;" rows="5" runat="server"></asp:ListBox>
+										            </td>
+									            </tr>
+								            </table>
+								            <!-- View Roles -->
+								            <div id="derivedHelpRoles" style="display: none">
+									            Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups.<br />
+								            </div>
+							            </td>
+						            </tr>
+					            </table>
+                            </p>				
 				        </div>
 			        <input type="button" id="btnSave" value="Save" onclick="javascript: saveAddEditAccount();" runat="server" style="display: inline-block;" />
                     </div>

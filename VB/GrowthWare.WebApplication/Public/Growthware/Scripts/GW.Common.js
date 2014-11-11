@@ -514,17 +514,40 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 				        }
 				    });
 			    } else {
-			        $('#myModal').on('show', function () {
+			        if (!$('#myModal').length) {
+			            $('body').append(GW.Model.BoostrapModal);
+			        }
+			        var $mModal = $('#myModal');
+			        $mModal.on("show.bs.modal", function () {
+			            var height = $(window).height() - 200;
+			            $(this).find(".modal-body").css("max-height", height);
+			        });
+
+			        $mModal.modal({
+			            backdrop: false,
+			            show: false,
+			            keyboard: true
+			        });
+			        $mModal.on('show', function () {
 			            $('.modal-body', this).css({ width: options.width, height: options.height, 'max-height': '100%', 'max-width': '100%' });
 			        });
-				    var mOptions = GW.Model.DefaultDialogOptions();
-				    mOptions.url = options.url;
-				    mOptions.dataType = 'html';
-				    mOptions.contentType = 'application/html; charset=utf-8';
-				    mOptions.async = false;
-				    $('#MainContentDiv').load(options.url);
-				    //$('.modal-body').load(options.url);
-				    //$('#myModal').modal('show');
+			        var mModalTitle = $('#myModalTitle');
+                    var saveBtnFunction
+			        mModalTitle.html(options.title);
+			        $.each(options.buttons, function (key, value) {
+			            if (key == 'Save') {
+			                saveBtnFunction = value;
+			            }
+			        });
+			        //$('#MainContentDiv').load(options.url);
+			        $('.modal-body').load(options.url);
+			        //$mModal.find('.callback-btn').off('click.callback').on('click.callback', function () {saveBtnFunction;$mModal.modal('hide');}).end();
+			        $('#mModalBtnSave').click(function () {
+			            eval("var fn = " + saveBtnFunction);
+			            fn();
+			            $('#myModal').modal('hide');
+			        });
+				    $mModal.modal('show');
 
 				}
 			}
