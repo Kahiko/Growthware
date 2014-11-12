@@ -1,10 +1,15 @@
 ﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Default.master.vb" Inherits="GrowthWare.WebApplication._Default4" %>
+<%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Growhtware Default Black VB</title>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryUI") %>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">

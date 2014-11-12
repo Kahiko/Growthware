@@ -2,8 +2,10 @@
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
         GW.Navigation.currentAction = 'Logon';
-        $("#btnLogon").button();
-        $("#btnRequestChange").button();
+        if (typeof jQuery.ui != 'undefined') {
+            $("#btnLogon").button();
+            $("#btnRequestChange").button();
+        }
         if ($('input:text')) {
             $('#Account').focus();
             $('input').bind("keydown", function (e) {
@@ -159,7 +161,7 @@
         </label>
 	</div>
 	<br />
-	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
+	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" class="btn btn-primary" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
 </div>
 <div style="height: 26px;">
 	<div id="clientMessage" style="display: none" runat="server"></div>

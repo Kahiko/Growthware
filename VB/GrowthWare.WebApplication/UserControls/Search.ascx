@@ -1,9 +1,11 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="Search.ascx.vb" Inherits="GrowthWare.WebApplication.Search" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
-        $("#<%= addNew.ClientID %>").button();
-        $("#<%= btnRefesh.ClientID %>").button();
-        $("#<%= cmdSelect.ClientID %>").button();
+        if (typeof jQuery.ui != 'undefined') {
+            $("#<%= addNew.ClientID %>").button();
+            $("#<%= btnRefesh.ClientID %>").button();
+            $("#<%= cmdSelect.ClientID %>").button();
+        }
         GW.Search.Criteria.PageSize = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value
         $("input").bind("keydown", function (event) {
             // track enter key
@@ -137,8 +139,8 @@
 			<img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="../Public/GrowthWare/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" runat="server" />
 		</div>
 		<div style="float: right; position: relative;">
-            <a id="btnRefesh" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a> 
-			<a id="addNew" runat="server" onclick="javascript:addNew();">Add New</a>
+            <a id="btnRefesh" class="btn btn-primary" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a> 
+			<a id="addNew" class="btn" runat="server" onclick="javascript:addNew();">Add New</a>
 			<input id="txtSearch" placeholder="Search in selected column." class="rounded10" />
 		</div>
 	</div>

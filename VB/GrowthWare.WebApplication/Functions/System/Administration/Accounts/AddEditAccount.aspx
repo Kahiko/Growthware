@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <%--<title>Add or Edit Account</title>--%>
+        <title>Add or Edit Account</title>
         <script type="text/javascript" language="javascript">
             $(document).ready(function () {
                 if (typeof jQuery.ui != 'undefined') {

@@ -37,7 +37,7 @@
 			    </tr>
 			    <tr>
 				    <td colspan="2" align="left">
-					    <input type="button" id="btnChangePassword" value="Change Password" onclick="javascript: changePassword();" />
+					    <input type="button" id="btnChangePassword" class="btn btn-primary" value="Change Password" onclick="javascript: changePassword();" />
 				    </td>
 			    </tr>
 			    <tr id="trNormalChange" runat="server">
@@ -65,8 +65,10 @@
 </body>
 
 <script type="text/javascript" language="javascript">
-	$(document).ready(function () {
-	    $("#btnChangePassword").button();
+    $(document).ready(function () {
+        if (typeof jQuery.ui != 'undefined') {
+            $("#btnChangePassword").button();
+        }
 	    if ($('input:password')) {
 	        //$('#OldPassword').focus();
 	        $('input:password').bind("keydown", function (e) {

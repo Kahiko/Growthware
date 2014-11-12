@@ -3,7 +3,9 @@
 	    var $mClientMessage = $('#clientMessage');
 
 	    $(document).ready(function () {
-	        $('#btnGo').button();
+	        if (typeof jQuery.ui != 'undefined') {
+	            $('#btnGo').button();
+	        }
 	    });
 
 	    function InvokeSelectSecurityEntity() {
@@ -41,7 +43,7 @@
 	</script>
 <form id="SelectSecurityEntity" runat="server">
 <div>
-	<table cellspacing="2" cellpadding="2" width="100%" border="0">
+	<table cellspacing="5" cellpadding="2" width="100%" border="0">
 		<tr align="left">
 			<td align="left">
 				<asp:DropDownList ID="dropSecurityEntities" CssClass="rounded" runat="server" />
@@ -49,7 +51,7 @@
 		</tr>
 		<tr>
 			<td align="left">
-				<input type="button" id="btnGo" onclick="javascript:InvokeSelectSecurityEntity();" value="Go" runat="server" />
+				<input type="button" id="btnGo" class="btn btn-primary" onclick="javascript:InvokeSelectSecurityEntity();" value="Go" runat="server" />
 			</td>
 		</tr>
 	</table>    

@@ -20,22 +20,6 @@
         </asp:ContentPlaceHolder>
         <%: Scripts.Render("~/bundles/bootstrap")%>
         <%: Styles.Render("~/Public/CSS/Bootstrap")%>
-        <style type="text/css">
-.modal.modal-wide .modal-dialog {
-  width: 90%;
-}
-.modal-wide .modal-body {
-  overflow-y: auto;
-}
-
-/* irrelevant styling */
-body { text-align: center; }
-body p { 
-  max-width: 400px; 
-  margin: 20px auto; 
-}
-#tallModal .modal-body p { margin-bottom: 900px }
-        </style>
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {
                 // Create the refresh objects for all of the necessary UI elements
