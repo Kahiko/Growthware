@@ -1,9 +1,15 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="false" CodeBehind="Default.master.cs" Inherits="GrowthWare.WebApplication.Public.Skins.Default_Black.Default" %>
+<%@ Import Namespace="System.Web.Optimization" %>
+
 <!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Growhtware Default Black CS</title>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryUI") %>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">

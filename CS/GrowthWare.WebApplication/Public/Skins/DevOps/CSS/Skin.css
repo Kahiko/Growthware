@@ -2545,3 +2545,12 @@ td.beauty-hover {
 color: white;
 text-decoration: none;
 } 
+
+.modal.modal-wide .modal-dialog {
+  width: 90%;
+}
+.modal-wide .modal-body {
+  overflow-y: auto;
+}
+
+#tallModal .modal-body p { margin-bottom: 900px }

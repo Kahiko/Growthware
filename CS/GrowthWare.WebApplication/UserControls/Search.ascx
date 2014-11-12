@@ -1,9 +1,11 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="Search.ascx.cs" Inherits="GrowthWare.WebApplication.UserControls.Search" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
-        $("#<%= addNew.ClientID %>").button();
-        $("#<%= btnRefesh.ClientID %>").button();
-        $("#<%= cmdSelect.ClientID %>").button();
+        if (typeof jQuery.ui != 'undefined') {
+            $("#<%= addNew.ClientID %>").button();
+            $("#<%= btnRefesh.ClientID %>").button();
+            $("#<%= cmdSelect.ClientID %>").button();
+        }
         GW.Search.Criteria.PageSize = document.getElementById("<%= txtRecordsPerPage.ClientID %>").value
         $("input").bind("keydown", function (event) {
             // track enter key

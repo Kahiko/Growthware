@@ -4,6 +4,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title>Growhtware Default CS</title>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryUI") %>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">

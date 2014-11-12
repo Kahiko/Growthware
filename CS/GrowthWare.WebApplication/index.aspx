@@ -2,12 +2,7 @@
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryUI") %>
-    <%: Scripts.Render("~/bundles/GrowthWare")%>
-
     <%: Styles.Render("~/Content/GrowthWare")%>
-    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond")%>
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
