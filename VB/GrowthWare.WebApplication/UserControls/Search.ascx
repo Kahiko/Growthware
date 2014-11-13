@@ -131,18 +131,18 @@
 </script>
 <div class="searchResultsContainer Container">
 	<div class="searchResultsHeader">
-		<div style="float: left; position: relative;">
-			Show
-			<input id="txtRecordsPerPage" class="rounded10" style="width: 30px;" onblur="javascript:GW.Search.onRecordsChanged(this);" runat="server" value="10" />
-			&nbsp;records per page&nbsp;&nbsp;
-			<input id="cmdSelect" type="button" value="Select All" onclick="selectAll();" name="cmdSelect" runat="server" />&nbsp;
-			<img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="../Public/GrowthWare/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" runat="server" />
-		</div>
-		<div style="float: right; position: relative;">
-            <a id="btnRefesh" class="btn btn-primary" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a> 
-			<a id="addNew" class="btn" runat="server" onclick="javascript:addNew();">Add New</a>
-			<input id="txtSearch" placeholder="Search in selected column." class="rounded10" />
-		</div>
+        <span style="display: inline-block; width: 33%; text-align: left;">
+            Show <input id="txtRecordsPerPage" class="rounded10" style="width: 30px;" onblur="javascript:GW.Search.onRecordsChanged(this);" runat="server" value="10" />&nbsp;records per page&nbsp;&nbsp;
+        </span>
+        <span style="display: inline-block; width: 33%;">
+            <input id="cmdSelect" class="btn btn-primary" type="button" value="Select All" onclick="selectAll();" name="cmdSelect" runat="server" />&nbsp;
+            <img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="Public/GrowthWare/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" runat="server" />
+        </span>
+        <span style="display: inline-block; width: 33%; text-align: right;">
+            <a id="btnRefesh" class="btn btn-primary" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a>
+            <a id="addNew" class="btn btn-primary" runat="server" onclick="javascript:addNew();">Add New</a>
+            <input id="txtSearch" placeholder="Search in selected column." class="rounded10" />
+        </span>
 	</div>
 	<div id="searchResults" class="searchResultsMainbody">
 	</div>
