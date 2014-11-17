@@ -25,6 +25,8 @@ GW.Search = {
 
     $TotalPages: {},
 
+    $TotalRecords: {},
+
     $DropSelectPage: {},
 
     $CurrentPage: {},
@@ -119,6 +121,7 @@ GW.Search = {
         this.$CurrentPage.html(this.Criteria.SelectedPage);
         this.$TotalPages.html(mTotalPages);
         this.$DropSelectPage.val(this.Criteria.SelectedPage);
+        this.$TotalRecords.html('(' + this.RecordsReturned + ') total items');
     },
 
     BuildDropSelectPage: function (numToBuild) {
@@ -187,6 +190,7 @@ GW.Search = {
         this.$DropSelectPage = $('#ddSelectPage')
         this.$TotalPages = $('#totalPages');
         this.$CurrentPage = $('#SearchControl_currentPage');
+        this.$TotalRecords = $('#totalRecords');
         GW.Search.Criteria.PageSize = $('#SearchControl_txtRecordsPerPage').val();
     }
 }
