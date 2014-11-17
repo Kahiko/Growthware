@@ -171,9 +171,10 @@ GW.Search = {
     },
 
     setSortImage: function () {
-    	$("[name~='headerSort']").each(function () {
-    		$(this).attr("src", "Public/Skins/Blue Arrow/Images/Spacer.gif");
-    	});
+        $("img[name^='headerSort']").each(function () {
+            $(this).attr("src", GW.Common.getBaseURL() + "/Public/Growthware/Images/Spacer.gif");
+        });
+
     	this.SortImage = document.getElementById('imgSort' + this.SearchColumn);
     	if (!this.SortImage) {
     		return;

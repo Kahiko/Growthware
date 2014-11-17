@@ -165,6 +165,7 @@
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\BootStrap\bootstrap-theme.css" />
     <Content Include="Public\CSS\BootStrap\bootstrap.css" />
+    <Content Include="Public\Growthware\Images\Spacer.gif" />
     <Content Include="Public\Growthware\Styles\GrowthWare.css" />
     <Content Include="Public\Growthware\Images\Add.png" />
     <Content Include="Public\Growthware\Images\ajax-loader.gif" />
