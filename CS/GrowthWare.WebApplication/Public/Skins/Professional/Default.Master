@@ -223,7 +223,7 @@
 								</td>
 								<td align="left" valign="top" background='<%=ResolveUrl( "Images/black_line_left.gif" )%>' width="6">
 								</td>
-								<td colspan="3" width="600" align="left" valign="top" class="body">
+								<td colspan="3" width="98%" align="left" valign="top" class="body">
                                     <asp:ContentPlaceHolder ID="MainContent" runat="server" />
 								</td>
 							</tr>
