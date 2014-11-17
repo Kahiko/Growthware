@@ -148,7 +148,7 @@
 	</div>
 	<div class="searchResultsFooter">
 		<div style="float: left">
-			Page <span id="currentPage" runat="server">1</span> of <span id="totalPages">1</span>
+			Page <span id="currentPage" runat="server">1</span> of <span id="totalPages">1</span> <span id="totalRecords">(82 total items)</span>
 		</div>
 		<div style="float: right;">
 			<table>

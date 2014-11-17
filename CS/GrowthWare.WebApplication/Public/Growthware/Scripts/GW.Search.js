@@ -11,7 +11,8 @@ GW.Search = {
         return "Public/GrowthWare/Images/sort_asc.png";
     },
 
-    Criteria: { SelectedPage: 1,
+    Criteria: {
+        SelectedPage: 1,
         PageSize: 10,
         Columns: '',
         OrderByColumn: '',
@@ -24,6 +25,8 @@ GW.Search = {
     RecordsReturned: {},
 
     $TotalPages: {},
+
+    $TotalRecords: {},
 
     $DropSelectPage: {},
 
@@ -119,6 +122,7 @@ GW.Search = {
         this.$CurrentPage.html(this.Criteria.SelectedPage);
         this.$TotalPages.html(mTotalPages);
         this.$DropSelectPage.val(this.Criteria.SelectedPage);
+        this.$TotalRecords.html('(' + this.RecordsReturned + ') total items');
     },
 
     BuildDropSelectPage: function (numToBuild) {
@@ -168,18 +172,18 @@ GW.Search = {
     },
 
     setSortImage: function () {
-    	$("[name~='headerSort']").each(function () {
-    		$(this).attr("src", "Public/Skins/Blue Arrow/Images/Spacer.gif");
-    	});
-    	this.SortImage = document.getElementById('imgSort' + this.SearchColumn);
-    	if (!this.SortImage) {
-    		return;
-    	}
-    	var src = GW.Search.DefaultImageSrc();
-    	if (GW.Search.Criteria.OrderByDirection.toLowerCase() != "asc") {
-    		src = src.replace("asc", "desc");
-    	}
-    	this.SortImage.src = src;
+        $("[name~='headerSort']").each(function () {
+            $(this).attr("src", "Public/Skins/Blue Arrow/Images/Spacer.gif");
+        });
+        this.SortImage = document.getElementById('imgSort' + this.SearchColumn);
+        if (!this.SortImage) {
+            return;
+        }
+        var src = GW.Search.DefaultImageSrc();
+        if (GW.Search.Criteria.OrderByDirection.toLowerCase() != "asc") {
+            src = src.replace("asc", "desc");
+        }
+        this.SortImage.src = src;
     },
 
     init: function () {
@@ -187,6 +191,7 @@ GW.Search = {
         this.$DropSelectPage = $('#ddSelectPage')
         this.$TotalPages = $('#totalPages');
         this.$CurrentPage = $('#SearchControl_currentPage');
+        this.$TotalRecords = $('#totalRecords');
         GW.Search.Criteria.PageSize = $('#SearchControl_txtRecordsPerPage').val();
     }
 }
