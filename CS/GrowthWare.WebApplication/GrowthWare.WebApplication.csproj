@@ -187,6 +187,7 @@
     <Content Include="Public\Growthware\Images\progress-bar.gif" />
     <Content Include="Public\Growthware\Images\sort_asc.png" />
     <Content Include="Public\Growthware\Images\sort_desc.png" />
+    <Content Include="Public\Growthware\Images\Spacer.gif" />
     <Content Include="Public\Growthware\Scripts\GW.Common.js" />
     <Content Include="Public\Growthware\Scripts\GW.FileManager.js" />
     <Content Include="Public\Growthware\Scripts\GW.Model.js" />
