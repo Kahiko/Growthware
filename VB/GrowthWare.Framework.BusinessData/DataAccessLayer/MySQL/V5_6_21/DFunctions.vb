@@ -1,4 +1,4 @@
-﻿Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySQL.Base
+﻿Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.Base
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.Model.Enumerations
 Imports GrowthWare.Framework.Model.Profiles
@@ -8,7 +8,7 @@ Imports MySql.Data.MySqlClient
 Imports System.Globalization
 
 
-Namespace DataAccessLayer.MySQL.V5_6_21
+Namespace DataAccessLayer.MySql.V5_6_21
     Public Class DFunctions
         Inherits DDBInteraction
         Implements IDFunction

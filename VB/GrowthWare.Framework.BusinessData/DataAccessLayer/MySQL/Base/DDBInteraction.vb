@@ -4,7 +4,7 @@ Imports System.Globalization
 Imports GrowthWare.Framework.Model.Profiles.Interfaces
 
 
-Namespace DataAccessLayer.MySQL.Base
+Namespace DataAccessLayer.MySql.Base
     Public MustInherit Class DDBInteraction
         Implements IDDBInteraction, IDisposable
 

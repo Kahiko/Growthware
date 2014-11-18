@@ -1,9 +1,9 @@
 ﻿Imports MySql.Data.MySqlClient
-Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySQL.Base
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.Base
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.Model.Profiles
 
-Namespace DataAccessLayer.MySQL.V5_6_21
+Namespace DataAccessLayer.MySql.V5_6_21
     Public Class DGroups
         Inherits DDBInteraction
         Implements IDGroups
