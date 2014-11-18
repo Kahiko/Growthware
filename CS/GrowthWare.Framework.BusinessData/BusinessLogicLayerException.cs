@@ -15,7 +15,7 @@ namespace GrowthWare.Framework.BusinessData
     public class BusinessLogicLayerException : Exception
     {
         /// <summary>
-        /// Calls base method
+        /// Creates a new instance of the BusinessLogicLayerException class
         /// </summary>
         public BusinessLogicLayerException() { }
 

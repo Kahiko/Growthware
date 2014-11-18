@@ -98,16 +98,17 @@ namespace GrowthWare.WebSupport.Utilities
             var mResult = from mProfile in Messages()
                           where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
-            MMessageProfile mRetVal = null;
+            MMessageProfile mRetVal = new MMessageProfile();
             try
             {
                 mRetVal = mResult.First();
             }
-            catch (IndexOutOfRangeException)
+            catch (InvalidOperationException)
             {
                 String mMSG = "Count not find function: " + name + " in the database";
                 Logger mLog = Logger.Instance();
                 mLog.Error(mMSG);
+                mRetVal = null;
             }
             return mRetVal;
         }

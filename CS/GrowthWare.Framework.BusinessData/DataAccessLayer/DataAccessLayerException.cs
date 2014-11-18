@@ -13,6 +13,9 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer
     [Serializable()]
     public class DataAccessLayerException : Exception
     {
+        /// <summary>
+        /// Creates a new instance of the DataAccessLayerException class
+        /// </summary>
         public DataAccessLayerException() { }
 
         /// <summary>
