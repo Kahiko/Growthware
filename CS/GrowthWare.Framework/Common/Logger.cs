@@ -294,6 +294,7 @@ namespace GrowthWare.Framework.Common
             mName += "::" + mMethodName + "()";
             if (!object.ReferenceEquals(message.GetType(), typeof(string)))
             {
+                mException = (Exception)message;
                 mException = new Exception("Calling: " + mName, mException);
             }
             try
