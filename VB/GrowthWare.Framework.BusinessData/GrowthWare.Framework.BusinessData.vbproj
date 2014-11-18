@@ -56,6 +56,10 @@
     <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
       <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
     </Reference>
+    <Reference Include="MySql.Data, Version=6.9.4.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ExternalDLLs\MySQL_Connector.NET 6.9\v4.5\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -95,6 +99,7 @@
     <Compile Include="DataAccessLayer\Interfaces\IDNameValuePair.vb" />
     <Compile Include="DataAccessLayer\Interfaces\IDRoles.vb" />
     <Compile Include="DataAccessLayer\Interfaces\IDSecurityEntity.vb" />
+    <Compile Include="DataAccessLayer\MySQL\Base\DDBInteraction.vb" />
     <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.vb" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DFunctions.vb" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DGroups.vb" />
@@ -129,7 +134,8 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccessLayer\MySQL\" />
+    <Folder Include="DataAccessLayer\MySQL\V5_6_21_32\" />
+    <Folder Include="DataAccessLayer\MySQL\V5_6_21_64\" />
     <Folder Include="DataAccessLayer\Oracle\11g\" />
     <Folder Include="DataAccessLayer\Oracle\Base\" />
     <Folder Include="DataAccessLayer\Postgres\" />
