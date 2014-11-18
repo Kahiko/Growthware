@@ -114,6 +114,15 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
                 {
                     m_DMessages.Profile.SecurityEntitySeqId = securityEntitySeqId;
                     mDataTable = m_DMessages.Messages();
+                    // the DB code is set to create entries for
+                    // the given security entity however the insert into the table
+                    // may not have commited before this code has finished executing
+                    // so an extra check is made here to ensure that
+                    // messages have been retruned... this is not necessary in the VB
+                    // code.
+                    // Basic assumption ... that has to be at least one message
+                    // because at DB design time messages were created!!!
+                    if (mDataTable == null || mDataTable.Rows.Count == 0) mDataTable = m_DMessages.Messages();
                     foreach (DataRow item in mDataTable.Rows)
                     {
                         mRetList.Add(new MMessageProfile(item));
