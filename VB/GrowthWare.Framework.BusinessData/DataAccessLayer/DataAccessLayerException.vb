@@ -9,6 +9,10 @@ Namespace DataAccessLayer
     Public NotInheritable Class DataAccessLayerException
         Inherits Exception
 
+        ''' <summary>
+        ''' Creates a new instance of the DataAccessLayerException class
+        ''' </summary>
+        ''' <remarks></remarks>
         Public Sub New()
 
         End Sub

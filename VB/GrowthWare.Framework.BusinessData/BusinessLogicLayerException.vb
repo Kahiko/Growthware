@@ -9,8 +9,9 @@ Public Class BusinessLogicLayerException
     Inherits Exception
 
     ''' <summary>
-    ''' Calls base method
+    ''' Creates a new instance of the BusinessLogicLayerException
     ''' </summary>
+    ''' <remarks></remarks>
     Public Sub New()
 
     End Sub

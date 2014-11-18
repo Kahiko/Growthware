@@ -135,7 +135,6 @@ Namespace Controllers
                 AccountUtility.RemoveInMemoryInformation(True)
                 mMessageProfile = MessageUtility.GetProfile("ChangedSelectedSecurityEntity")
             Catch ex As Exception
-                Dim myMessageProfile As New MMessageProfile
                 Dim mLog As Logger = Logger.Instance()
                 mMessageProfile = MessageUtility.GetProfile("NoDataFound")
                 Dim myEx As New Exception("SelectSecurityEntity:: reported an error.", ex)
@@ -144,7 +143,6 @@ Namespace Controllers
             ' update all of your in memory information
             Return Ok(mMessageProfile.Body)
         End Function
-
 
         <HttpPost>
         Public Function Save(ByVal uiProfile As UIAccountProfile) As IHttpActionResult
