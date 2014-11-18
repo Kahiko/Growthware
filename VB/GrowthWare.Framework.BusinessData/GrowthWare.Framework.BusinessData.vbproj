@@ -100,6 +100,14 @@
     <Compile Include="DataAccessLayer\Interfaces\IDRoles.vb" />
     <Compile Include="DataAccessLayer\Interfaces\IDSecurityEntity.vb" />
     <Compile Include="DataAccessLayer\MySQL\Base\DDBInteraction.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DAccounts.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DClientChoices.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DFunctions.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DGroups.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DMessages.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DNameValuePair.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DRoles.vb" />
+    <Compile Include="DataAccessLayer\MySQL\V5_6_21\DSecurityEntity.vb" />
     <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.vb" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DFunctions.vb" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DGroups.vb" />
@@ -134,7 +142,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataAccessLayer\MySQL\V5_6_21\" />
     <Folder Include="DataAccessLayer\Oracle\11g\" />
     <Folder Include="DataAccessLayer\Oracle\Base\" />
     <Folder Include="DataAccessLayer\Postgres\" />
