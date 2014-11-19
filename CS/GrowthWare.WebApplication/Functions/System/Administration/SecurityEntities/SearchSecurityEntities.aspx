@@ -25,7 +25,7 @@
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Security Entity';
 		options.height = 650;
-		options.width = 800;
+		options.width = 900;
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/SecurityEntities/AddEditSecurityEntities.aspx?SecurityEntitySeqId=" + securityEntitySeqId;

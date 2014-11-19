@@ -14,6 +14,9 @@ namespace GrowthWare.WebSupport
     [Serializable()]
     public class WebSupportException : Exception
     {
+        /// <summary>
+        /// Helps seporate any errors that occure within Web Support 
+        /// </summary>
 		public WebSupportException(){}
 
 		/// <summary>

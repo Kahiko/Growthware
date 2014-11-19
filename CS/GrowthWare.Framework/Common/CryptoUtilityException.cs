@@ -14,6 +14,9 @@ namespace GrowthWare.Framework.Common
     [Serializable()]
     public class CryptoUtilityException : Exception
     {
+        /// <summary>
+        /// Helps separate any errors that occure within Crypto Utility
+        /// </summary>
 		public CryptoUtilityException(){}
 
 		/// <summary>

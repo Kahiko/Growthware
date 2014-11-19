@@ -14,6 +14,9 @@ namespace GrowthWare.WebSupport
     [Serializable()]
     public class CustomWebControlException : Exception
     {
+        /// <summary>
+        /// Helps separate any errors that occure within Custom Web Control
+        /// </summary>
         public CustomWebControlException() { }
 
         /// <summary>

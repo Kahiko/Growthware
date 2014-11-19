@@ -14,6 +14,9 @@ namespace GrowthWare.WebSupport
     [Serializable()]
     public class WebImpersonateException : Exception
     {
+        /// <summary>
+        /// Helps separate any errors that occure within web impersonation
+        /// </summary>
 		public WebImpersonateException(){}
 
 		/// <summary>

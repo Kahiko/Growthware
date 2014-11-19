@@ -295,6 +295,11 @@ namespace GrowthWare.WebSupport.Utilities
             mBNameValuePairs.SaveNVPDetail(Profile);
         }
 
+        /// <summary>
+        /// Searches the specified search criteria.
+        /// </summary>
+        /// <param name="searchCriteria"></param>
+        /// <returns></returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
