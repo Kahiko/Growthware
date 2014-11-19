@@ -132,7 +132,7 @@
 <div class="searchResultsContainer Container">
 	<div class="searchResultsHeader">
         <span style="display: inline-block; width: 33%; text-align: left;">
-            Show <input id="txtRecordsPerPage" class="rounded10" style="width: 30px;" onblur="javascript:GW.Search.onRecordsChanged(this);" runat="server" value="10" />&nbsp;records per page&nbsp;&nbsp;
+            Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px;" onblur="javascript:GW.Search.onRecordsChanged(this);" runat="server" value="10" />&nbsp;records per page&nbsp;&nbsp;
         </span>
         <span style="display: inline-block; width: 33%;">
             <input id="cmdSelect" class="btn btn-primary" type="button" value="Select All" onclick="selectAll();" name="cmdSelect" runat="server" />&nbsp;
