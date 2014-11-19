@@ -62,15 +62,19 @@
 	                $("#<%=txtConnectionstring.ClientID %>").val("");
 	                switch (selectedDAL) {
 	                    case "SQLServer":
-	                        $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
-	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
+	                        $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");
+	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008");
 	                        break;
-                        case "Oracle":
-                            $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
-                            $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.Oracle.11g");
-                            break;
+	                    case "Oracle":
+	                        $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");
+	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.BusinessData.DataAccessLayer.Oracle.11g");
+	                        break;
+	                    case "MySql":
+	                        $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");
+	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.V5_6_21");
+	                        break;
                         default:
-                            $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWareFramework");
+                            $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");
                             $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.DataAccessLayer.SQLServer.V2008");
                     }
                 }
@@ -113,30 +117,31 @@
 			        :&nbsp;
 		        </label>
 			    <asp:literal id="litSecurityEntity" runat="server"></asp:literal>
-			    <asp:TextBox ID="txtSecurityEntity" CssClass="rounded" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" Style="display: none;" runat="server" TextMode="MultiLine" Width="400px"></asp:TextBox>
+			    <asp:TextBox ID="txtSecurityEntity" CssClass="rounded" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" Style="display: none;" runat="server" TextMode="MultiLine" Width="500px"></asp:TextBox>
 			    <asp:requiredfieldvalidator controltovalidate="txtSecurityEntity" display="Dynamic" text="(required)" errormessage="Required" CssClass="failureNotification" runat="Server" id="Requiredfieldvalidator2">(required)</asp:requiredfieldvalidator>
                 <br />
                 <label for="txtDescription" class="formLabelText">Description: </label>
-				<asp:TextBox ID="txtDescription" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512,event)" CssClass="rounded" runat="Server" TextMode="MultiLine" Width="400px" />
+				<asp:TextBox ID="txtDescription" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512,event)" CssClass="rounded" runat="Server" TextMode="MultiLine" Width="500px" />
 				<asp:requiredfieldvalidator controltovalidate="txtDescription" display="Dynamic" text="(required)" errormessage="Required" CssClass="failureNotification" runat="Server" id="Requiredfieldvalidator1">(required)</asp:requiredfieldvalidator>
                 <br />
 				<label for="txtURL" class="formLabelText">URL: </label>
-				<asp:textbox id="txtURL" maxlength="128" CssClass="rounded" runat="Server" width="400px" />
+				<asp:textbox id="txtURL" maxlength="128" CssClass="rounded" runat="Server" width="500px" />
                 <br />
 				<label for="dropDAL" class="formLabelText">Data Access Layer :</label>
 				<asp:dropdownlist id="dropDAL" CssClass="rounded" runat="server">
 					<asp:ListItem Value="SQLServer" Text="SQL Server" />
+                    <asp:ListItem Value="MySql" Text="MySql" />
 					<asp:ListItem Value="Oracle" Text="Oracle" />
 				</asp:dropdownlist>
                 <br />
 				<label for="txtAssembly_Name" class="formLabelText">Data access layer DLL Name :</label>
-				<asp:textbox id="txtAssembly_Name" width="400px" runat="server" maxlength="50" />
+				<asp:textbox id="txtAssembly_Name" width="500px" runat="server" maxlength="50" />
                 <br />
                 <label for="txtName_Space" class="formLabelText">Data access layer Namespace :</label>
-			    <asp:textbox id="txtName_Space" width="400px" runat="server" maxlength="256" />
+			    <asp:textbox id="txtName_Space" width="500px" runat="server" maxlength="256" />
                 <br />
 				<label for="txtConnectionstring" class="formLabelText">Connection String :</label>
-				<asp:TextBox ID="txtConnectionstring" TextMode="multiLine" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" runat="server" Rows="3" Wrap="true" Width="400px" />
+				<asp:TextBox ID="txtConnectionstring" TextMode="multiLine" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" runat="server" Rows="3" Wrap="true" Width="500px" />
 				&nbsp;
 				<asp:hyperlink id="hyperConnectionString" NavigateUrl="http://www.connectionstrings.com/" Target="_blank" runat="server">Build</asp:hyperlink>
                 <br />
