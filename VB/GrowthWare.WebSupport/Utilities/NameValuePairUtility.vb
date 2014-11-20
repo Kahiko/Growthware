@@ -191,7 +191,7 @@ Namespace Utilities
         ''' <returns>System.String[][].</returns>
         Public Function GetSelectedRoles(ByVal nameValuePairSeqId As Integer) As String()
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            Dim mDataTable As DataTable = mNameValuePair.GetNVPRoles(nameValuePairSeqId)
+            Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairRoles(nameValuePairSeqId)
             Return GetStringArrayList(mDataTable, "Roles")
         End Function
 
@@ -202,7 +202,7 @@ Namespace Utilities
         ''' <returns>System.String[][].</returns>
         Public Function GetSelectedGroups(ByVal nameValuePairSeqID As Integer) As String()
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            Dim mDataTable As DataTable = mNameValuePair.GetNVPGroups(nameValuePairSeqID)
+            Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairGroups(nameValuePairSeqID)
             Return GetStringArrayList(mDataTable, "Groups")
         End Function
 
@@ -240,7 +240,7 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         Public Sub SaveDetail(ByRef profile As MNameValuePairDetail)
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            mBNameValuePairs.SaveNVPDetail(profile)
+            mBNameValuePairs.SaveNameValuePairDetail(profile)
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME)
         End Sub
 

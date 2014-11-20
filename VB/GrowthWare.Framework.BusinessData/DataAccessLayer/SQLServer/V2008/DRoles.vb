@@ -14,7 +14,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
             {
              New SqlParameter("@P_Name", Profile.Name),
-             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
@@ -24,7 +24,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
             {
               New SqlParameter("@P_Role_SeqID", Profile.Id),
-              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
@@ -33,7 +33,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Accounts_Not_In_Role"
             Dim mParameters() As SqlParameter =
             {
-             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId),
              New SqlParameter("@P_Role_SeqID", Profile.Id)
             }
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
@@ -54,7 +54,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Dim mParameters() As SqlParameter =
             {
               New SqlParameter("@P_Role_SeqID", -1),
-              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+              New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             Return MyBase.GetDataTable(mStoredProcedure, mParameters)
         End Function
@@ -84,9 +84,9 @@ Namespace DataAccessLayer.SQLServer.V2008
             Return mRetVal
         End Function
 
-        Public Property SecurityEntitySeqID As Integer Implements IDRoles.SecurityEntitySeqId
+        Public Property SecurityEntitySeqId As Integer Implements IDRoles.SecurityEntitySeqId
 
-        Public Function UpdateAllAccountsForRole(roleSeqID As Integer, securityEntityID As Integer, accounts() As String, accountSeqID As Integer) As Boolean Implements IDRoles.UpdateAllAccountsForRole
+        Public Function UpdateAllAccountsForRole(roleSeqId As Integer, securityEntityId As Integer, accounts() As String, accountSeqId As Integer) As Boolean Implements IDRoles.UpdateAllAccountsForRole
             Dim success As Boolean = False
             Dim dbConn As SqlConnection = Nothing
             Dim trans As SqlTransaction = Nothing
@@ -98,22 +98,22 @@ Namespace DataAccessLayer.SQLServer.V2008
                 Dim db As SqlDatabase = New SqlDatabase(MyBase.ConnectionString)
                 ' delete all the accounts for this role/SecurityEntity
                 Dim dbCommand As System.Data.Common.DbCommand = db.GetStoredProcCommand("ZGWSecurity.Delete_Roles_Accounts")
-                Dim myParameter As SqlParameter = New SqlParameter("@P_ROLE_SEQ_ID", roleSeqID)
+                Dim myParameter As SqlParameter = New SqlParameter("@P_ROLE_SEQ_ID", roleSeqId)
                 dbCommand.Parameters.Add(myParameter)
-                myParameter = New SqlParameter("@P_Security_Entity_SeqID", securityEntityID)
+                myParameter = New SqlParameter("@P_Security_Entity_SeqID", securityEntityId)
                 dbCommand.Parameters.Add(myParameter)
                 db.ExecuteNonQuery(dbCommand, trans)
 
                 For Each account In accounts
                     dbCommand.Parameters.Clear()
                     dbCommand = db.GetStoredProcCommand("ZGWSecurity.Set_Role_Accounts")
-                    myParameter = New SqlParameter("@P_Role_SeqID", roleSeqID)
+                    myParameter = New SqlParameter("@P_Role_SeqID", roleSeqId)
                     dbCommand.Parameters.Add(myParameter)
-                    myParameter = New SqlParameter("@P_Security_Entity_SeqID", securityEntityID)
+                    myParameter = New SqlParameter("@P_Security_Entity_SeqID", securityEntityId)
                     dbCommand.Parameters.Add(myParameter)
                     myParameter = New SqlParameter("@P_Account", account)
                     dbCommand.Parameters.Add(myParameter)
-                    myParameter = New SqlParameter("@P_Added_Updated_By", accountSeqID)
+                    myParameter = New SqlParameter("@P_Added_Updated_By", accountSeqId)
                     dbCommand.Parameters.Add(myParameter)
                     db.ExecuteNonQuery(dbCommand, trans)
                 Next
@@ -144,7 +144,7 @@ Namespace DataAccessLayer.SQLServer.V2008
              New SqlParameter("@P_Description", Profile.Description),
              New SqlParameter("@P_Is_System", Profile.IsSystem),
              New SqlParameter("@P_Is_System_Only", Profile.IsSystemOnly),
-             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+             New SqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId),
              New SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)),
              GetSqlParameter("@P_Primary_Key", Profile.Id, ParameterDirection.Output)
              }

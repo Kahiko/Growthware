@@ -74,7 +74,7 @@ Namespace BusinessLogicLayer
         ''' </example>
         Public Sub New(ByVal securityEntityProfile As MSecurityEntityProfile, ByVal centralManagement As Boolean)
             If (securityEntityProfile Is Nothing) Then
-                Throw New ArgumentException("securityEntityProfile can not be null or empty!")
+                Throw New ArgumentException("securityEntityProfile can not be null (Nothing in Visual Basic)")
             End If
             If Not centralManagement Then
                 If m_DMessages Is Nothing Then

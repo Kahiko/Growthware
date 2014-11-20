@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports MySql.Data.MySqlClient
 Imports GrowthWare.Framework.Model.Profiles
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     Public Class DRoles
         Inherits DDBInteraction
         Implements IDRoles
@@ -13,7 +13,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Dim mParameters() As MySqlParameter =
             {
              New MySqlParameter("@P_Name", Profile.Name),
-             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
@@ -23,7 +23,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Dim mParameters() As MySqlParameter =
             {
               New MySqlParameter("@P_Role_SeqID", Profile.Id),
-              New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+              New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
@@ -32,7 +32,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Accounts_Not_In_Role"
             Dim mParameters() As MySqlParameter =
             {
-             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId),
              New MySqlParameter("@P_Role_SeqID", Profile.Id)
             }
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
@@ -53,7 +53,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Dim mParameters() As MySqlParameter =
             {
               New MySqlParameter("@P_Role_SeqID", -1),
-              New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID)
+              New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId)
             }
             Return MyBase.GetDataTable(mStoredProcedure, mParameters)
         End Function
@@ -83,9 +83,9 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return mRetVal
         End Function
 
-        Public Property SecurityEntitySeqID As Integer Implements IDRoles.SecurityEntitySeqId
+        Public Property SecurityEntitySeqId As Integer Implements IDRoles.SecurityEntitySeqId
 
-        Public Function UpdateAllAccountsForRole(roleSeqID As Integer, securityEntityID As Integer, accounts() As String, accountSeqID As Integer) As Boolean Implements IDRoles.UpdateAllAccountsForRole
+        Public Function UpdateAllAccountsForRole(roleSeqId As Integer, securityEntityId As Integer, accounts() As String, accountSeqId As Integer) As Boolean Implements IDRoles.UpdateAllAccountsForRole
             Dim success As Boolean = False
             Dim db As MySqlConnection = Nothing
             Dim dbConn As MySqlCommand = Nothing
@@ -96,22 +96,22 @@ Namespace DataAccessLayer.MySql.V5_6_21
                 trans = db.BeginTransaction(IsolationLevel.Serializable)
                 ' delete all the accounts for this role/SecurityEntity
                 dbConn = New MySqlCommand("ZGWSecurity.Delete_Roles_Accounts", db)
-                Dim myParameter As MySqlParameter = New MySqlParameter("@P_ROLE_SEQ_ID", roleSeqID)
+                Dim myParameter As MySqlParameter = New MySqlParameter("@P_ROLE_SEQ_ID", roleSeqId)
                 dbConn.Parameters.Add(myParameter)
-                myParameter = New MySqlParameter("@P_Security_Entity_SeqID", securityEntityID)
+                myParameter = New MySqlParameter("@P_Security_Entity_SeqID", securityEntityId)
                 dbConn.Parameters.Add(myParameter)
                 dbConn.ExecuteNonQuery()
 
                 For Each account In accounts
                     dbConn.Parameters.Clear()
                     dbConn.CommandText = "ZGWSecurity.Set_Role_Accounts"
-                    myParameter = New MySqlParameter("@P_Role_SeqID", roleSeqID)
+                    myParameter = New MySqlParameter("@P_Role_SeqID", roleSeqId)
                     dbConn.Parameters.Add(myParameter)
-                    myParameter = New MySqlParameter("@P_Security_Entity_SeqID", securityEntityID)
+                    myParameter = New MySqlParameter("@P_Security_Entity_SeqID", securityEntityId)
                     dbConn.Parameters.Add(myParameter)
                     myParameter = New MySqlParameter("@P_Account", account)
                     dbConn.Parameters.Add(myParameter)
-                    myParameter = New MySqlParameter("@P_Added_Updated_By", accountSeqID)
+                    myParameter = New MySqlParameter("@P_Added_Updated_By", accountSeqId)
                     dbConn.Parameters.Add(myParameter)
                     dbConn.ExecuteNonQuery()
                 Next
@@ -145,7 +145,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
              New MySqlParameter("@P_Description", Profile.Description),
              New MySqlParameter("@P_Is_System", Profile.IsSystem),
              New MySqlParameter("@P_Is_System_Only", Profile.IsSystemOnly),
-             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqID),
+             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntitySeqId),
              New MySqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)),
              GetSqlParameter("@P_Primary_Key", Profile.Id, ParameterDirection.Output)
              }

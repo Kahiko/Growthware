@@ -4,7 +4,7 @@ Imports MySql.Data.MySqlClient
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Globalization
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     ''' <summary>
     ''' DAccounts provides all database interaction to SQL Server 2008
     ''' </summary>
@@ -20,14 +20,19 @@ Namespace DataAccessLayer.MySql.V5_6_21
 
         Private m_PermissionSeqId As Integer = 1
 
-        Public Property AccountID As Integer Implements IDNameValuePair.AccountId
+        Public Property AccountId As Integer Implements IDNameValuePair.AccountId
 
-        Public Sub DeleteNVPDetail(ByVal Profile As MNameValuePairDetail) Implements IDNameValuePair.DeleteNameValuePairDetail
+        ''' <summary>
+        ''' 
+        ''' </summary>
+        ''' <param name="profile"></param>
+        ''' <remarks></remarks>
+        Public Sub DeleteNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.DeleteNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Del_Name_Value_Pair_Detail"
             Dim myParameters() As MySqlParameter =
              {
-              New MySqlParameter("@P_NVP_Detail_SeqID", Profile.Id),
-              New MySqlParameter("@P_NVP_SeqID", Profile.NameValuePairSeqId)
+              New MySqlParameter("@P_NVP_Detail_SeqID", profile.Id),
+              New MySqlParameter("@P_NVP_SeqID", profile.NameValuePairSeqId)
              }
             MyBase.ExecuteNonQuery(mStoreProcedure, myParameters)
         End Sub
@@ -38,31 +43,31 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return MyBase.GetDataTable("ZGWSystem.Get_Name_Value_Pair", GetSelectParameters)
         End Function
 
-        Public Function GetAllNVPDetail() As DataTable Implements IDNameValuePair.GetAllNameValuePairDetail
+        Public Function GetAllNameValuePairDetail() As DataTable Implements IDNameValuePair.GetAllNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Details"
             Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", -1)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetAllNVPDetail(ByVal NVPSeqID As Integer) As DataTable Implements IDNameValuePair.GetAllNameValuePairDetail
+        Public Function GetAllNameValuePairDetail(ByVal nameValuePairSeqId As Integer) As DataTable Implements IDNameValuePair.GetAllNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Details"
-            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", -1)}
+            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetGroups(ByVal nameValuePairSeqID As Integer) As DataTable Implements IDNameValuePair.GetGroups
-            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqID), New MySqlParameter("@P_Security_Entity_SeqID", SE_SEQ_ID)}
+        Public Function GetGroups(ByVal nameValuePairSeqId As Integer) As DataTable Implements IDNameValuePair.GetGroups
+            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId), New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntityId)}
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Name_Value_Pair_Groups"
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetNVP() As DataRow Implements IDNameValuePair.GetNameValuePair
+        Public Function GetNameValuePair() As DataRow Implements IDNameValuePair.GetNameValuePair
             Dim storeProc As String = "ZGWSystem.Get_Name_Value_Pair"
             Dim mParameters() As MySqlParameter = GetSelectParameters()
             Return MyBase.GetDataRow(storeProc, mParameters)
         End Function
 
-        Public Function GetNVPDetail() As DataRow Implements IDNameValuePair.GetNameValuePairDetail
+        Public Function GetNameValuePairDetail() As DataRow Implements IDNameValuePair.GetNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Detail"
             Dim mParameters() As MySqlParameter =
              {
@@ -72,14 +77,14 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return MyBase.GetDataRow(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetNVPDetails(ByVal nameValuePairSeqDetID As Integer, ByVal nameValuePairSeqId As Integer) As DataRow Implements IDNameValuePair.GetNameValuePairDetails
+        Public Function GetNameValuePairDetails(ByVal nameValuePairSeqDetailId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow Implements IDNameValuePair.GetNameValuePairDetails
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Details"
             Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId)}
             Return MyBase.GetDataRow(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetRoles(ByVal nameValuePairSeqID As Integer) As DataTable Implements IDNameValuePair.GetRoles
-            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqID), New MySqlParameter("@P_Security_Entity_SeqID", SE_SEQ_ID)}
+        Public Function GetRoles(ByVal nameValuePairSeqId As Integer) As DataTable Implements IDNameValuePair.GetRoles
+            Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId), New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntityId)}
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Name_Value_Pair_Roles"
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
@@ -95,7 +100,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return mRetVal
         End Function
 
-        Public Sub SaveNVPDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.SaveNameValuePairDetail
+        Public Sub SaveNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.SaveNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Set_Name_Value_Pair_Detail"
             Dim mParameters() As MySqlParameter =
              {
@@ -129,28 +134,28 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return mRetVal
         End Function
 
-        Public Property SE_SEQ_ID As Integer Implements IDNameValuePair.SecurityEntityId
+        Public Property SecurityEntityId As Integer Implements IDNameValuePair.SecurityEntityId
 
-        Public Sub UpdateGroups(ByVal NVP_ID As Integer, ByVal securityEntityID As Integer, ByVal commaSeperatedGroups As String, ByVal profile As MNameValuePair) Implements IDNameValuePair.UpdateGroups
+        Public Sub UpdateGroups(ByVal nameValuePairSeqId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal profile As MNameValuePair) Implements IDNameValuePair.UpdateGroups
             Dim myStoreProcedure As String = "ZGWSecurity.Set_Name_Value_Pair_Groups"
             Dim mParameters() As MySqlParameter =
              {
-              New MySqlParameter("@P_NVP_SeqID", NVP_ID),
-              New MySqlParameter("@P_Security_Entity_SeqID", securityEntityID),
-              New MySqlParameter("@P_Groups", commaSeperatedGroups),
+              New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId),
+              New MySqlParameter("@P_Security_Entity_SeqID", securityEntityId),
+              New MySqlParameter("@P_Groups", commaSeparatedGroups),
               New MySqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId),
               New MySqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile))
              }
             MyBase.ExecuteNonQuery(myStoreProcedure, mParameters)
         End Sub
 
-        Public Sub UpdateRoles(ByVal NVP_ID As Integer, ByVal securityEntityID As Integer, ByVal commaSeperatedRoles As String, ByVal profile As MNameValuePair) Implements IDNameValuePair.UpdateRoles
+        Public Sub UpdateRoles(ByVal nameValuePairSeqId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedRoles As String, ByVal profile As MNameValuePair) Implements IDNameValuePair.UpdateRoles
             Dim myStoreProcedure As String = "ZGWSecurity.Set_Name_Value_Pair_Roles"
             Dim mParameters() As MySqlParameter =
              {
-              New MySqlParameter("@P_NVP_SeqID", NVP_ID),
-              New MySqlParameter("@P_Security_Entity_SeqID", securityEntityID),
-              New MySqlParameter("@P_Role", commaSeperatedRoles),
+              New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId),
+              New MySqlParameter("@P_Security_Entity_SeqID", securityEntityId),
+              New MySqlParameter("@P_Role", commaSeparatedRoles),
               New MySqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId),
               New MySqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile))
              }
@@ -178,8 +183,8 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Dim mParameters() As MySqlParameter =
             {
              New MySqlParameter("@P_NVP_SeqID", NameValuePairProfile.Id),
-             New MySqlParameter("@P_Account_SeqID", AccountID),
-             New MySqlParameter("@P_Security_Entity_SeqID", SE_SEQ_ID)
+             New MySqlParameter("@P_Account_SeqID", AccountId),
+             New MySqlParameter("@P_Security_Entity_SeqID", SecurityEntityId)
             }
             Return mParameters
         End Function

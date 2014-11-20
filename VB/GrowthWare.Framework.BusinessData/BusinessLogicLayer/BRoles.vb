@@ -39,10 +39,10 @@ Namespace BusinessLogicLayer
         ''' <summary>
         ''' Searches the specified search critera.
         ''' </summary>
-        ''' <param name="searchCritera">The search critera.</param>
+        ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function Search(ByRef searchCritera As MSearchCriteria) As System.Data.DataTable
-            Return m_BRoles.Search(searchCritera)
+        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable
+            Return m_BRoles.Search(searchCriteria)
         End Function
 
         ''' <summary>
@@ -66,43 +66,43 @@ Namespace BusinessLogicLayer
         ''' <summary>
         ''' Gets the roles by security entity.
         ''' </summary>
-        ''' <param name="SecurityEntityID">The security entity ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function GetRolesBySecurityEntity(SecurityEntityID As Integer) As System.Data.DataTable
-            m_BRoles.SecurityEntitySeqID = SecurityEntityID
+        Public Function GetRolesBySecurityEntity(securityEntityId As Integer) As DataTable
+            m_BRoles.SecurityEntitySeqId = securityEntityId
             Return m_BRoles.GetRolesBySecurityEntity()
         End Function
 
         ''' <summary>
         ''' Gets the accounts in role.
         ''' </summary>
-        ''' <param name="Profile">The profile.</param>
+        ''' <param name="profile">The profile.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function GetAccountsInRole(Profile As MRoleProfile) As System.Data.DataTable
-            m_BRoles.Profile = Profile
+        Public Function GetAccountsInRole(profile As MRoleProfile) As DataTable
+            m_BRoles.Profile = profile
             Return m_BRoles.GetAccountsInRole()
         End Function
 
         ''' <summary>
         ''' Gets the accounts not in role.
         ''' </summary>
-        ''' <param name="Profile">The profile.</param>
+        ''' <param name="profile">The profile.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function GetAccountsNotInRole(Profile As MRoleProfile) As System.Data.DataTable
-            m_BRoles.Profile = Profile
+        Public Function GetAccountsNotInRole(profile As MRoleProfile) As System.Data.DataTable
+            m_BRoles.Profile = profile
             Return m_BRoles.GetAccountsNotInRole()
         End Function
 
         ''' <summary>
         ''' Updates all accounts for role.
         ''' </summary>
-        ''' <param name="RoleSeqID">The role seq ID.</param>
-        ''' <param name="SecurityEntityID">The security entity ID.</param>
-        ''' <param name="Accounts">The accounts.</param>
-        ''' <param name="AccountSeqID">The account seq ID.</param>
+        ''' <param name="roleSeqId">The role seq ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
+        ''' <param name="accounts">The accounts.</param>
+        ''' <param name="accountSeqId">The account seq ID.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        Public Function UpdateAllAccountsForRole(RoleSeqID As Integer, SecurityEntityID As Integer, Accounts As String(), AccountSeqID As Integer) As Boolean
-            Return m_BRoles.UpdateAllAccountsForRole(RoleSeqID, SecurityEntityID, Accounts, AccountSeqID)
+        Public Function UpdateAllAccountsForRole(roleSeqId As Integer, securityEntityId As Integer, accounts As String(), accountSeqId As Integer) As Boolean
+            Return m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, AccountSeqID)
         End Function
 
     End Class

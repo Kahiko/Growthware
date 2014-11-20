@@ -5,7 +5,7 @@ Imports GrowthWare.Framework.Model.Enumerations
 Imports MySql.Data.MySqlClient
 Imports System.Globalization
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     ''' <summary>
     ''' DAccounts provides all database interaction to SQL Server 2008
     ''' </summary>

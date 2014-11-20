@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.Base
 Imports GrowthWare.Framework.Model.Profiles
 Imports MySql.Data.MySqlClient
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     ''' <summary>
     ''' DFunctions provides all database interaction to SQL Server 2008
     ''' </summary>

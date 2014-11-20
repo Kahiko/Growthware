@@ -5,6 +5,7 @@ Imports GrowthWare.Framework.Model.Profiles.Interfaces
 
 
 Namespace DataAccessLayer.MySql.Base
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="DDB")>
     Public MustInherit Class DDBInteraction
         Implements IDDBInteraction, IDisposable
 

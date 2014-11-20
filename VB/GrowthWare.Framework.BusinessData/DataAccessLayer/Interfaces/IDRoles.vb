@@ -29,7 +29,7 @@ Namespace DataAccessLayer.Interfaces
         ''' <param name="accounts">The accounts.</param>
         ''' <param name="accountSeqID">The account seq ID.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        Function UpdateAllAccountsForRole(ByVal roleSeqID As Integer, ByVal securityEntityID As Integer, ByVal accounts() As String, ByVal accountSeqID As Integer) As Boolean
+        Function UpdateAllAccountsForRole(ByVal roleSeqId As Integer, ByVal securityEntityId As Integer, ByVal accounts() As String, ByVal accountSeqId As Integer) As Boolean
 
         ''' <summary>
         ''' Saves this instance.

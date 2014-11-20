@@ -92,7 +92,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             Return mParameters
         End Function
 
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable Implements IDGroups.Search
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDGroups.Search
             Dim mStoredProcedure As String = "ZGWSystem.Get_Paginated_Data"
             Dim mRetVal As DataTable = Nothing
             Dim mParameters() As SqlParameter =

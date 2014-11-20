@@ -8,9 +8,9 @@ Namespace DataAccessLayer.Interfaces
         ''' <summary>
         ''' Searches the specified search critera.
         ''' </summary>
-        ''' <param name="searchCritera">The search critera.</param>
+        ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>DataTable.</returns>
-        Function Search(ByRef searchCritera As MSearchCriteria) As DataTable
+        Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
 
         ''' <summary>
         ''' Gets or sets the security entity seq ID.
