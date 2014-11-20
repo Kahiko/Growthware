@@ -109,11 +109,11 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <summary>
         /// Searches the specified search critera.
         /// </summary>
-        /// <param name="searchCritera">The search critera.</param>
+        /// <param name="searchCriteria">The search critera.</param>
         /// <returns>DataTable.</returns>
-        public DataTable Search(MSearchCriteria searchCritera)
+        public DataTable Search(MSearchCriteria searchCriteria)
         {
-            return m_BRoles.Search(searchCritera);
+            return m_BRoles.Search(searchCriteria);
         }
 
         /// <summary>
@@ -140,47 +140,47 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <summary>
         /// Gets the roles by BU.
         /// </summary>
-        /// <param name="SecurityEntityID">The security entity ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetRolesBySecurityEntity(int SecurityEntityID)
+        public DataTable GetRolesBySecurityEntity(int securityEntityId)
         {
-            m_BRoles.SecurityEntitySeqID = SecurityEntityID;
+            m_BRoles.SecurityEntitySeqID = securityEntityId;
             return m_BRoles.GetRolesBySecurityEntity();
         }
 
         /// <summary>
         /// Gets the accounts in role.
         /// </summary>
-        /// <param name="Profile">The profile.</param>
+        /// <param name="profile">The profile.</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetAccountsInRole(MRoleProfile Profile)
+        public DataTable GetAccountsInRole(MRoleProfile profile)
         {
-            m_BRoles.Profile = Profile;
+            m_BRoles.Profile = profile;
             return m_BRoles.GetAccountsInRole();
         }
 
         /// <summary>
         /// Gets the accounts not in role.
         /// </summary>
-        /// <param name="Profile">The profile.</param>
+        /// <param name="profile">The profile.</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetAccountsNotInRole(MRoleProfile Profile)
+        public DataTable GetAccountsNotInRole(MRoleProfile profile)
         {
-            m_BRoles.Profile = Profile;
+            m_BRoles.Profile = profile;
             return m_BRoles.GetAccountsNotInRole();
         }
 
         /// <summary>
         /// Updates all accounts for role.
         /// </summary>
-        /// <param name="RoleSeqID">The role seq ID.</param>
-        /// <param name="SecurityEntityID">The security entity ID.</param>
-        /// <param name="Accounts">The accounts.</param>
-        /// <param name="AccountSeqID">The account seq ID.</param>
+        /// <param name="roleSeqId">The role seq ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="accounts">The accounts.</param>
+        /// <param name="accountSeqId">The account seq ID.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        public bool UpdateAllAccountsForRole(int RoleSeqID, int SecurityEntityID, string[] Accounts, int AccountSeqID)
+        public bool UpdateAllAccountsForRole(int roleSeqId, int securityEntityId, string[] accounts, int accountSeqId)
         {
-            return m_BRoles.UpdateAllAccountsForRole(RoleSeqID, SecurityEntityID, Accounts, AccountSeqID);
+            return m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
         }
     }
 }

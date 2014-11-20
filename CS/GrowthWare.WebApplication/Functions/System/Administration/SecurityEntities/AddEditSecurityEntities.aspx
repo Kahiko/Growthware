@@ -70,7 +70,7 @@
 	                        break;
                         case "MySql":
                             $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");
-	                        $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.V5_6_21");
+                            $("#<%=txtName_Space.ClientID %>").val("GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.V5621");
 	                        break;
                         default:
                             $("#<%=txtAssembly_Name.ClientID %>").val("GrowthWare.Framework.BusinessData");

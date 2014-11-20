@@ -35,7 +35,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
-            mBNameValuePairs.DeleteNVPDetail(Profile);
+            mBNameValuePairs.DeleteNameValuePairDetail(Profile);
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
         }
 
@@ -49,7 +49,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            return myNameValuePair.GetAllNVP(AccountID);
+            return myNameValuePair.GetAllNameValuePair(AccountID);
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
                 BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-                YourDataTable = myNameValuePair.GetAllNVP();
+                YourDataTable = myNameValuePair.GetAllNameValuePair();
                 CacheController.AddToCacheDependency(CACHED_NVP_TABLE_NAME, YourDataTable);
             }
         }
@@ -116,7 +116,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            return new MNameValuePair(myNameValuePair.GetNVP(NVPSeqID));
+            return new MNameValuePair(myNameValuePair.GetNameValuePair(NVPSeqID));
         }
 
         /// <summary>
@@ -152,7 +152,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
                 BNameValuePairs myNameValuePairDetails = new BNameValuePairs(mSecurityProfile);
-                YourDataTable = myNameValuePairDetails.GetAllNVPDetail();
+                YourDataTable = myNameValuePairDetails.GetAllNameValuePairDetail();
                 CacheController.AddToCacheDependency(CACHED_NVP_DETAILS_TABLE_NAME, YourDataTable);
             }
         }
@@ -228,7 +228,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            DataTable myDataTable = myNameValuePair.GetNVPRoles(nameValuePairSeqID);
+            DataTable myDataTable = myNameValuePair.GetNameValuePairRoles(nameValuePairSeqID);
             return GetStringArrayList(myDataTable, "Roles");
         }
 
@@ -242,7 +242,7 @@ namespace GrowthWare.WebSupport.Utilities
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            DataTable myDataTable = myNameValuePair.GetNVPGroups(nameValuePairSeqID);
+            DataTable myDataTable = myNameValuePair.GetNameValuePairGroups(nameValuePairSeqID);
             return GetStringArrayList(myDataTable, "Groups");
         }
 
@@ -292,7 +292,7 @@ namespace GrowthWare.WebSupport.Utilities
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
-            mBNameValuePairs.SaveNVPDetail(Profile);
+            mBNameValuePairs.SaveNameValuePairDetail(Profile);
         }
 
         /// <summary>
