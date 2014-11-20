@@ -70,7 +70,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                             options.resizable = true;
                             options.url = mLocation;
                             options.buttons = {
-                                'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+                                'Cancel': function () { $(this).dialog("close"); }
                             };
                             var dialogId = 'popupFromMenu';
                             GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
