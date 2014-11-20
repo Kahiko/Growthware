@@ -66,8 +66,7 @@
                     options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts";
                     GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                     if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
-                        $dialogWindow.dialog("destroy")
-                        $dialogWindow.remove();
+                        $dialogWindow.dialog("close");
                     }
                 }
             }

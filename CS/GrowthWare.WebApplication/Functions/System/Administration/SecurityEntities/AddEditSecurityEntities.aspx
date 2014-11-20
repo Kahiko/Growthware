@@ -39,8 +39,7 @@
                         options.url = GW.Common.getBaseURL() + "/api/SecurityEntities/Save?Action=SearchSecurityEntities"
                         GW.Common.JQueryHelper.callWeb(options, saveAddEditSucess, saveAddEditError);
                         if (!($dialogWindow === undefined)) {
-                            $dialogWindow.dialog("destroy")
-                            $dialogWindow.remove();
+                            $dialogWindow.dialog("close");
                         }
                     }
                 }

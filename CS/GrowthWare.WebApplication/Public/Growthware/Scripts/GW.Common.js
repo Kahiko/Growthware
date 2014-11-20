@@ -327,7 +327,6 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                 if ($(dialogId).length > 0) {
                     var $dialogElement = $(dialogId);
                     $dialogElement.html('');
-                    //$dialogElement.dialog("destroy");
                     $dialogElement.dialog({
                         draggable: false,
                         modal: true,
@@ -346,14 +345,17 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                                         okFunc();
                                     }
                                 }
-                                $(this).dialog("destroy");
+                                $(this).dialog("close");
                             },
                             Cancel: function () {
                                 if (typeof (cancelFunc) == 'function') {
                                     setTimeout(cancelFunc, 50);
                                 }
-                                $(this).dialog("destroy");
+                                $(this).dialog("close");
                             }
+                        },
+                        close: function (event, ui) {
+                            $(this).dialog('destroy').remove();
                         }
                     });
 
@@ -457,7 +459,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 			options.resizable = true;
 			options.buttons = {
 			'Save': function () { saveAddEditAccount($(this)); },
-			'Cancel': function () { $(this).dialog("destroy"); }
+			'Cancel': function () { $(this).dialog("close"); }
 			};
 
 			@param dialogOptions from GW.Model.DefaultDialogOptions
@@ -503,9 +505,8 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                                 title: options.title,
                                 width: options.width,
                                 zindex: options.zindex,
-                                beforeClose: function (event, ui) {
-                                    $(this).remove();
-                                    return false;
+                                close: function (event, ui) {
+                                    $(this).dialog('destroy').remove();
                                 }
                             });
                         } else {

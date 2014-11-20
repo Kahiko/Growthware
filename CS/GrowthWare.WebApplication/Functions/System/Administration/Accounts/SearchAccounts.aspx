@@ -38,12 +38,12 @@
         if (mayEdit) {
             options.buttons = {
                 'Save': function () { saveAddEditAccount($(this)); },
-                'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+                'Cancel': function () { $(this).dialog('close'); }
             };
 
         } else {
             options.buttons = {
-                'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+                'Cancel': function () { $(this).dialog('close'); }
             };
         }
         var dialogId = 'popupAddEditAccount';
