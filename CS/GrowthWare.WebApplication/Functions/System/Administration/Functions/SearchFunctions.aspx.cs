@@ -4,9 +4,9 @@ using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Web.UI;
 
-namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
+namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 {
-    public partial class SearchAccounts : Page
+    public partial class SearchFunctions : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -15,8 +15,8 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
             {
                 MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
                 MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
-                //MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-                //SearchControl.ShowAddLink = mSecurityInfo.MayAdd;
+                MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                SearchControl.ShowAddLink = mSecurityInfo.MayAdd;
             }
         }
     }
