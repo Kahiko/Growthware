@@ -8,7 +8,7 @@ Imports MySql.Data.MySqlClient
 Imports System.Globalization
 
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     Public Class DFunctions
         Inherits DDBInteraction
         Implements IDFunction

@@ -4,7 +4,7 @@ Imports MySql.Data.MySqlClient
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Globalization
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     ''' <summary>
     ''' Provides data access to SQL Server 2008
     ''' </summary>

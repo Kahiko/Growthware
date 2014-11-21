@@ -148,6 +148,9 @@
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
+    <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
+    <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx" />
@@ -338,6 +341,27 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.vb">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.designer.vb">
+      <DependentUpon>AddEditFunction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.vb">
+      <DependentUpon>AddEditFunction.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx.designer.vb">
+      <DependentUpon>SearchFunctionResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx.vb">
+      <DependentUpon>SearchFunctionResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.designer.vb">
+      <DependentUpon>SearchFunctions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.vb">
+      <DependentUpon>SearchFunctions.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.designer.vb">

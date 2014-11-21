@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.BusinessData.DataAccessLayer.MySql.Base
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.Model.Profiles
 
-Namespace DataAccessLayer.MySql.V5_6_21
+Namespace DataAccessLayer.MySql.V5621
     Public Class DGroups
         Inherits DDBInteraction
         Implements IDGroups
@@ -92,7 +92,7 @@ Namespace DataAccessLayer.MySql.V5_6_21
             Return mParameters
         End Function
 
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable Implements IDGroups.Search
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDGroups.Search
             Dim mStoredProcedure As String = "ZGWSystem.Get_Paginated_Data"
             Dim mRetVal As DataTable = Nothing
             Dim mParameters() As MySqlParameter =
