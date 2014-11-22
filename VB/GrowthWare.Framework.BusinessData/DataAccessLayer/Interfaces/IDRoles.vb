@@ -41,7 +41,7 @@ Namespace DataAccessLayer.Interfaces
         ''' </summary>
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
-        Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable
+        Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
 
         ''' <summary>
         ''' Deletes the role.

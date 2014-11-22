@@ -93,6 +93,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDGroups.Search
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoredProcedure As String = "ZGWSystem.Get_Paginated_Data"
             Dim mRetVal As DataTable = Nothing
             Dim mParameters() As SqlParameter =

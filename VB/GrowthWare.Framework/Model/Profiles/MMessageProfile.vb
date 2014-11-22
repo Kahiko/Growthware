@@ -74,7 +74,7 @@ Namespace Model.Profiles
         End Sub
 
         ''' <summary>
-        ''' Formats the body.
+        ''' Formats the body and replaces < and > with the appropriate property value.
         ''' </summary>
         Public Overridable Sub FormatBody() Implements IMessageProfile.FormatBody
             Dim myPropertyInfo As PropertyInfo() = Me.GetType.GetProperties()
@@ -105,6 +105,12 @@ Namespace Model.Profiles
 #End Region
 
 #Region "Public Properties"
+        ''' <summary>
+        ''' Sets or gets the SecurityEntitySeqId property
+        ''' </summary>
+        ''' <value>Sets the value</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
         Public Property SecurityEntitySeqId() As Integer
             Get
                 Return m_SecurityEntity_Seq_Id
@@ -114,6 +120,12 @@ Namespace Model.Profiles
             End Set
         End Property
 
+        ''' <summary>
+        ''' Sets or gets the Title property
+        ''' </summary>
+        ''' <value>Sets the value</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
         Public Property Title() As String Implements IMessageProfile.Title
             Get
                 Return m_Title
@@ -123,6 +135,12 @@ Namespace Model.Profiles
             End Set
         End Property
 
+        ''' <summary>
+        ''' Sets or gets the Description property
+        ''' </summary>
+        ''' <value>Sets the value</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
         Public Property Description() As String
             Get
                 Return m_Description
@@ -132,7 +150,13 @@ Namespace Model.Profiles
             End Set
         End Property
 
-        Public Property FormatAsHtml() As Boolean Implements IMessageProfile.FormatAsHTML
+        ''' <summary>
+        ''' Sets or gets the FormatAsHtml property
+        ''' </summary>
+        ''' <value>Sets the value</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
+        Public Property FormatAsHtml() As Boolean Implements IMessageProfile.FormatAsHtml
             Get
                 Return m_FormatAsHTML
             End Get
@@ -141,6 +165,12 @@ Namespace Model.Profiles
             End Set
         End Property
 
+        ''' <summary>
+        ''' Sets or gets the body property
+        ''' </summary>
+        ''' <value>Sets the value</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
         Public Property Body() As String Implements IMessageProfile.Body
             Get
                 Return m_Body

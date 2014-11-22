@@ -23,6 +23,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         Public Property AccountId As Integer Implements IDNameValuePair.AccountId
 
         Public Sub DeleteNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.DeleteNameValuePairDetail
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSystem.Del_Name_Value_Pair_Detail"
             Dim myParameters() As SqlParameter =
              {
@@ -96,6 +97,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Function
 
         Public Sub SaveNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.SaveNameValuePairDetail
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSystem.Set_Name_Value_Pair_Detail"
             Dim mParameters() As SqlParameter =
              {
@@ -114,6 +116,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         End Sub
 
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDNameValuePair.Search
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable
             Dim mParameters() As SqlParameter =
              {

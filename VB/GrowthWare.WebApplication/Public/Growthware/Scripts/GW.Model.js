@@ -45,7 +45,7 @@ GW.Model = {
 			minHeight: 150,
 			minWidth: 150,
 			modal: false,
-			position: { my: "center", at: "center", of: window },
+			position: { my: "top", at: "center top", of: window },
 			resizable: true,
 			show: 'fade',
 			stack: true,

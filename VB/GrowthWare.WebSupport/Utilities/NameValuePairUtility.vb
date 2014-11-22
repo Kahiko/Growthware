@@ -3,6 +3,7 @@ Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Web
 Imports System.Web.UI
+Imports System.Globalization
 
 Namespace Utilities
     ''' <summary>
@@ -12,21 +13,21 @@ Namespace Utilities
         ''' <summary>
         ''' Cached Name Value Pair Details Table Name
         ''' </summary>
-        Public Const CACHED_NVP_DETAILS_TABLE_NAME As String = "CachedNVPDetailsTable"
+        Public Const CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME As String = "CachedNVPDetailsTable"
 
         ''' <summary>
         ''' Cached Name Value Pair Table Name
         ''' </summary>
-        Public Const CACHED_NVP_TABLE_NAME As String = "CachedNVPTable"
+        Public Const CACHED_NAME_VALUE_PAIR_TABLE_NAME As String = "CachedNVPTable"
 
         ''' <summary>
         ''' Deletes the detail.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub DeleteDetail(ByRef profile As MNameValuePairDetail)
+        Public Sub DeleteDetail(ByVal profile As MNameValuePairDetail)
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.DeleteNameValuePairDetail(profile)
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
         End Sub
 
         ''' <summary>
@@ -34,7 +35,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="accountId">The account ID.</param>
         ''' <returns>Returns a data table of name value pairs for a given account</returns>
-        Public Function AllNameValuePairs(ByRef accountId As Integer) As DataTable
+        Public Function AllNameValuePairs(ByVal accountId As Integer) As DataTable
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Return mNameValuePair.AllNameValuePairs(accountId)
         End Function
@@ -44,9 +45,10 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>System.Int32.</returns>
-        Public Function GetNVPID(ByRef staticName As String) As Integer
+        Public Function GetNameValuePairId(ByVal staticName As String) As Integer
             Dim mDV As New DataView
             Dim mDT As New DataTable
+            mDT.Locale = CultureInfo.InvariantCulture
             Dim mRetValue As Integer = 0
             mDT = AllNameValuePairs(-1)
             mDV = mDT.DefaultView
@@ -59,15 +61,15 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the name of the NVP.
         ''' </summary>
-        ''' <param name="NVPSeqID">The NVP seq ID.</param>
+        ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function GetNVPName(ByRef NVPSeqID As Integer) As String
+        Public Function GetNameValuePairName(ByVal nameValuePairSeqId As Integer) As String
             Dim mDV As New DataView
             Dim mDT As New DataTable
             Dim mRetValue As String = String.Empty
             mDT = AllNameValuePairs(-1)
             mDV = mDT.DefaultView
-            mDV.RowFilter = "NVP_SEQ_ID = " & NVPSeqID
+            mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
             Dim mDataViewRow As DataRowView = mDV.Item(0)
             mRetValue = mDataViewRow.Item("NVP_SEQ_ID").ToString()
             Return mRetValue
@@ -77,12 +79,12 @@ Namespace Utilities
         ''' GetNVPs will return all Name Value Pairs reguardless of security
         ''' </summary>
         ''' <param name="yourDataTable">An instance of a data table you would like populated</param>
-        Public Sub GetNVPs(ByRef yourDataTable As DataTable)
-            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NVP_TABLE_NAME), DataTable)
+        Public Sub GetNameValuePairs(ByVal yourDataTable As DataTable)
+            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NAME_VALUE_PAIR_TABLE_NAME), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 yourDataTable = mNameValuePair.AllNameValuePairs()
-                CacheController.AddToCacheDependency(CACHED_NVP_TABLE_NAME, yourDataTable)
+                CacheController.AddToCacheDependency(CACHED_NAME_VALUE_PAIR_TABLE_NAME, yourDataTable)
             End If
         End Sub
 
@@ -91,7 +93,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>MNameValuePair.</returns>
-        Public Function GetNameValuePair(ByRef nameValuePairSeqId As Integer) As MNameValuePair
+        Public Function GetNameValuePair(ByVal nameValuePairSeqId As Integer) As MNameValuePair
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Return New MNameValuePair(mNameValuePair.GetNameValuePair(nameValuePairSeqId))
         End Function
@@ -99,17 +101,17 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the NVP detail.
         ''' </summary>
-        ''' <param name="nameValuePairDetaukSeqId">The NVP seq det ID.</param>
+        ''' <param name="nameValuePairDetailSeqId">The NVP seq det ID.</param>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>MNameValuePairDetail.</returns>
-        Public Function GetNVPDetail(ByRef nameValuePairDetaukSeqId As Integer, ByRef nameValuePairSeqId As Integer) As MNameValuePairDetail
+        Public Function GetNameValuePairDetail(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As MNameValuePairDetail
             Dim mDV As New DataView
             Dim mDT As New DataTable
             Dim mImportTable As New DataTable
-            GetNVPDetails(mDT, nameValuePairSeqId)
+            GetNameValuePairDetails(mDT, nameValuePairSeqId)
             mDV = mDT.DefaultView
             mImportTable = mDT.Clone
-            mDV.RowFilter = "NVP_SEQ_DET_ID = " & nameValuePairDetaukSeqId
+            mDV.RowFilter = "NVP_SEQ_DET_ID = " & nameValuePairDetailSeqId
             For Each drv As DataRowView In mDV
                 mImportTable.ImportRow(drv.Row)
             Next
@@ -120,12 +122,12 @@ Namespace Utilities
         ''' Gets the NVP details.
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
-        Public Sub GetNVPDetails(ByRef yourDataTable As DataTable)
-            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NVP_DETAILS_TABLE_NAME), DataTable)
+        Public Sub GetNameValuePairDetails(ByVal yourDataTable As DataTable)
+            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePairDetails As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 yourDataTable = mNameValuePairDetails.GetAllNameValuePairDetail()
-                CacheController.AddToCacheDependency(CACHED_NVP_DETAILS_TABLE_NAME, yourDataTable)
+                CacheController.AddToCacheDependency(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME, yourDataTable)
             End If
         End Sub
 
@@ -134,10 +136,10 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
         ''' <param name="NVPSeqID">The NVP seq ID.</param>
-        Public Sub GetNVPDetails(ByRef yourDataTable As DataTable, ByRef NVPSeqID As Integer)
+        Public Sub GetNameValuePairDetails(ByVal yourDataTable As DataTable, ByVal NVPSeqID As Integer)
             Dim mDV As New DataView
             Dim mDT As New DataTable
-            GetNVPDetails(mDT)
+            GetNameValuePairDetails(mDT)
             mDV = mDT.DefaultView
             yourDataTable = mDV.Table.Clone()
             mDV.RowFilter = "NVP_SEQ_ID = " & NVPSeqID
@@ -151,11 +153,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetNVPDetails(ByRef staticName As String) As DataTable
+        Public Function GetNameValuePairDetails(ByVal staticName As String) As DataTable
             Dim mDV As New DataView
             Dim mDT As New DataTable
             Dim mReturnTable As DataTable
-            GetNVPDetails(mDT)
+            GetNameValuePairDetails(mDT)
             mDV = mDT.DefaultView
             mReturnTable = mDV.Table.Clone()
             mDV.RowFilter = "TABLE_NAME = '" & staticName & "'"
@@ -170,11 +172,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetNVPDetails(ByRef nameValuePairSeqId As Integer) As DataTable
+        Public Function GetNameValuePairDetails(ByVal nameValuePairSeqId As Integer) As DataTable
             Dim mDV As New DataView
             Dim mDT As New DataTable
             Dim mReturnTable As DataTable
-            GetNVPDetails(mDT)
+            GetNameValuePairDetails(mDT)
             mDV = mDT.DefaultView
             mReturnTable = mDV.Table.Clone()
             mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
@@ -212,7 +214,7 @@ Namespace Utilities
         ''' <param name="yourDT">Your DT.</param>
         ''' <param name="rowName">Name of the row.</param>
         ''' <returns>System.String[][].</returns>
-        Private Function GetStringArrayList(ByRef yourDT As DataTable, ByVal rowName As String) As String()
+        Private Function GetStringArrayList(ByVal yourDT As DataTable, ByVal rowName As String) As String()
             Dim mRetrunArrayList As New ArrayList
             Dim mDR As DataRow
             For Each mDR In yourDT.Rows
@@ -225,12 +227,12 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Function Save(ByRef profile As MNameValuePair) As Integer
+        Public Function Save(ByVal profile As MNameValuePair) As Integer
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Dim mRetVal As Integer = -1
             mRetVal = mNameValuePair.Save(profile)
-            CacheController.RemoveFromCache(CACHED_NVP_TABLE_NAME)
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_TABLE_NAME)
+            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
             Return mRetVal
         End Function
 
@@ -238,10 +240,10 @@ Namespace Utilities
         ''' Saves the detail.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub SaveDetail(ByRef profile As MNameValuePairDetail)
+        Public Sub SaveDetail(ByVal profile As MNameValuePairDetail)
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.SaveNameValuePairDetail(profile)
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
         End Sub
 
         ''' <summary>
@@ -264,7 +266,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="theDropDown">The drop down.</param>
         ''' <param name="selectedVale">The selected vale.</param>
-        Public Sub SetDropSelection(ByRef theDropDown As WebControls.DropDownList, ByVal selectedVale As String)
+        Public Sub SetDropSelection(ByVal theDropDown As WebControls.DropDownList, ByVal selectedVale As String)
             Try
                 Dim X As Integer
                 For X = 0 To theDropDown.Items.Count - 1

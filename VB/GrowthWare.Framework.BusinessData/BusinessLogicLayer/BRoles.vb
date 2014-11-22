@@ -41,7 +41,7 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Return m_BRoles.Search(searchCriteria)
         End Function
 
@@ -58,7 +58,7 @@ Namespace BusinessLogicLayer
         ''' Gets the profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub GetProfile(ByRef profile As MRoleProfile)
+        Public Sub GetProfile(ByVal profile As MRoleProfile)
             m_BRoles.Profile = profile
             profile = New MRoleProfile(m_BRoles.GetProfileData())
         End Sub

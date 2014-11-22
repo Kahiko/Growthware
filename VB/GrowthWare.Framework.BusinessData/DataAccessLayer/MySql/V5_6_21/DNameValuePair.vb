@@ -28,6 +28,7 @@ Namespace DataAccessLayer.MySql.V5621
         ''' <param name="profile"></param>
         ''' <remarks></remarks>
         Public Sub DeleteNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.DeleteNameValuePairDetail
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSystem.Del_Name_Value_Pair_Detail"
             Dim myParameters() As MySqlParameter =
              {
@@ -101,6 +102,7 @@ Namespace DataAccessLayer.MySql.V5621
         End Function
 
         Public Sub SaveNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.SaveNameValuePairDetail
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoreProcedure As String = "ZGWSystem.Set_Name_Value_Pair_Detail"
             Dim mParameters() As MySqlParameter =
              {
@@ -119,6 +121,7 @@ Namespace DataAccessLayer.MySql.V5621
         End Sub
 
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDNameValuePair.Search
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable
             Dim mParameters() As MySqlParameter =
              {
