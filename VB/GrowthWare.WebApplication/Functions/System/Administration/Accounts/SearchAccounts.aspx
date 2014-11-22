@@ -29,6 +29,7 @@
 	    mAccountSeqID = accountSeqID;
 	    var options = GW.Model.DefaultDialogOptions();
 	    options.title = 'Edit Account';
+	    if (accountSeqID == -1) options.title = 'Add Account';
 	    options.height = 600;
 	    options.width = 1000;
 	    options.async = false;

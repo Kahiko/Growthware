@@ -63,7 +63,7 @@ Public Class SearchFunctionResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("editFunction('{0}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString())
+            Dim mEditOnClick As String = "javascript:" + String.Format("editFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), m_SecurityInfo.MayEdit)
             Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "NAME")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)

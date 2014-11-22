@@ -66,7 +66,8 @@ Namespace DataAccessLayer.MySql.V5621
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
 
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable Implements IDRoles.Search
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDRoles.Search
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoredProcedure As String = "ZGWSystem.Get_Paginated_Data"
             Dim mRetVal As DataTable = Nothing
             Dim mParameters() As MySqlParameter =
@@ -86,6 +87,7 @@ Namespace DataAccessLayer.MySql.V5621
         Public Property SecurityEntitySeqId As Integer Implements IDRoles.SecurityEntitySeqId
 
         Public Function UpdateAllAccountsForRole(roleSeqId As Integer, securityEntityId As Integer, accounts() As String, accountSeqId As Integer) As Boolean Implements IDRoles.UpdateAllAccountsForRole
+            If accounts Is Nothing Then Throw New ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!")
             Dim success As Boolean = False
             Dim db As MySqlConnection = Nothing
             Dim dbConn As MySqlCommand = Nothing

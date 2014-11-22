@@ -141,14 +141,14 @@
         <span style="display: inline-block; width: 33%; text-align: right;">
             <a id="btnRefesh" class="btn btn-primary" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a>
             <a id="addNew" class="btn btn-primary" runat="server" onclick="javascript:addNew();">Add New</a>
-            <input id="txtSearch" placeholder="Search in selected column." class="rounded10" />
+            <input id="txtSearch" style="width: 164px;" placeholder="Search in selected column." class="rounded10" />
         </span>
 	</div>
 	<div id="searchResults" class="searchResultsMainbody">
 	</div>
 	<div class="searchResultsFooter">
 		<div style="float: left">
-			Page <span id="currentPage" runat="server">1</span> of <span id="totalPages">1</span> <span id="totalRecords">(82 total items)</span>
+			Page <span id="currentPage" runat="server">1</span> of <span id="totalPages">1</span> <span id="totalRecords">(0 total items)</span>
 		</div>
 		<div style="float: right;">
 			<table>
