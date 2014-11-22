@@ -65,7 +65,7 @@ namespace GrowthWare.WebSupport.Utilities
 
             int mRetValue = 0;
             int mDefault = -1;
-            mDT = GetNVPs(mDefault);
+            mDT = GetNameValuePairs(mDefault);
             mDV = mDT.DefaultView;
             mDV.RowFilter = "TABLE_NAME = '" + staticName + "'";
             DataRowView mDataViewRow = mDV[0];
@@ -85,7 +85,7 @@ namespace GrowthWare.WebSupport.Utilities
             mDT.Locale = CultureInfo.InvariantCulture;
             string mRetValue = string.Empty;
             int mDefault = -1;
-            mDT = GetNVPs(mDefault);
+            mDT = GetNameValuePairs(mDefault);
             mDV = mDT.DefaultView;
             mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
             DataRowView mDataViewRow = mDV[0];

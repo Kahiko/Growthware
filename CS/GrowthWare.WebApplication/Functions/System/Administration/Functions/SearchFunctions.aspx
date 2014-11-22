@@ -15,23 +15,32 @@
 	});
 
 	function addNew(e) {
-		editFunction(-1);
+	    editFunction(-1, true);
 		return true;
 	}
 
-	function editFunction(functionSeqID) {
+	function editFunction(functionSeqID, mayEdit) {
+	    if (typeof mayEdit == undefined) mayEdit = false;
 		mFunctionSeqID = functionSeqID;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Function';
+		if (functionSeqID == -1) options.title = 'Add Function';
 		options.height = 595;
 		options.width = 1050;
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx?FunctionSeqID=" + mFunctionSeqID;
-		options.buttons = {
-			'Save': function () { saveAddEditFunciton($(this)); },
-			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
-		};
+		if (mayEdit) {
+		    options.buttons = {
+		        'Save': function () { saveAddEditFunciton($(this)); },
+		        'Cancel': function () { $(this).dialog('close'); }
+		    };
+
+		} else {
+		    options.buttons = {
+		        'Cancel': function () { $(this).dialog('close'); }
+		    };
+		}
 		var dialogId = 'addEditFunction';
 		GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}

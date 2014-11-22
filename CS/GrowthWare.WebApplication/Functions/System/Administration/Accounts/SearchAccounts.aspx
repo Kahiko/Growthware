@@ -73,5 +73,4 @@
         GW.Search.GetSearchResults();
     }
 </script>
-<div id="popupDeleteEditAccount" />
 <ucSearch:Search ID="SearchControl" runat="server" />
