@@ -83,6 +83,13 @@ namespace GrowthWare.Framework.Model.Profiles
         {
             this.Initialize(dataRow);
         }
+
+        /// <summary>
+        /// Sets or gets the body property
+        /// </summary>
+        /// <value>Sets the value</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
         public string Body
         {
             get { return m_Body; }
@@ -102,6 +109,12 @@ namespace GrowthWare.Framework.Model.Profiles
             }
         }
 
+        /// <summary>
+        /// Sets or gets the Title property
+        /// </summary>
+        /// <value>Sets the value</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
         public string Title
         {
             get { return m_Title; }
@@ -117,12 +130,21 @@ namespace GrowthWare.Framework.Model.Profiles
             set { m_SecurityEntity_Seq_Id = value; }
         }
 
+        /// <summary>
+        /// Sets or gets the FormatAsHtml property
+        /// </summary>
+        /// <value>Sets the value</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
         public bool FormatAsHtml
         {
             get { return m_FormatAsHTML; }
             set { m_FormatAsHTML = value; }
         }
 
+        /// <summary>
+        /// Formats the body and replaces < and > with the appropriate property value.
+        /// </summary>
         public void FormatBody()
         {
             PropertyInfo[] myPropertyInfo = this.GetType().GetProperties();
@@ -138,6 +160,11 @@ namespace GrowthWare.Framework.Model.Profiles
             }
         }
 
+        /// <summary>
+        /// Returns all properties encapsulated by angle brackets seporated by the Seporator parameter
+        /// </summary>
+        /// <param name="separator">string</param>
+        /// <returns>string</returns>
         public string GetTags(string separator)
         {
             string retVal = string.Empty;

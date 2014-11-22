@@ -6,6 +6,7 @@ using System;
 using System.Collections;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Globalization;
 using System.Web;
 using System.Web.UI.WebControls;
 
@@ -42,30 +43,31 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// GetNVPs will return all Name Value Pairs avalible for a given account
         /// </summary>
-        /// <param name="AccountID">The account the list of NVPs are for</param>
+        /// <param name="accountId">The account the list of NVPs are for</param>
         /// <returns>Returns a data table of name value pairs for a given account</returns>
         /// <remarks></remarks>
-        public static DataTable GetNVPs(int AccountID)
+        public static DataTable GetNameValuePairs(int accountId)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            return myNameValuePair.GetAllNameValuePair(AccountID);
+            return myNameValuePair.GetAllNameValuePair(accountId);
         }
 
         /// <summary>
         /// Gets the NVPID.
         /// </summary>
-        /// <param name="StaticName">Name of the static.</param>
+        /// <param name="staticName">Name of the static.</param>
         /// <returns>System.Int32.</returns>
-        public static int GetNVPID(string StaticName)
+        public static int GetNameValuePairId(string staticName)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
+
             int mRetValue = 0;
             int mDefault = -1;
             mDT = GetNVPs(mDefault);
             mDV = mDT.DefaultView;
-            mDV.RowFilter = "TABLE_NAME = '" + StaticName + "'";
+            mDV.RowFilter = "TABLE_NAME = '" + staticName + "'";
             DataRowView mDataViewRow = mDV[0];
             mRetValue = int.Parse(mDataViewRow["NVP_SEQ_ID"].ToString());
             return mRetValue;
@@ -74,17 +76,18 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Gets the name of the NVP.
         /// </summary>
-        /// <param name="NVPSeqID">The NVP seq ID.</param>
+        /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>System.String.</returns>
-        public static string GetNVPName(int NVPSeqID)
+        public static string GetNameValuePairName(int nameValuePairSeqId)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
+            mDT.Locale = CultureInfo.InvariantCulture;
             string mRetValue = string.Empty;
             int mDefault = -1;
             mDT = GetNVPs(mDefault);
             mDV = mDT.DefaultView;
-            mDV.RowFilter = "NVP_SEQ_ID = " + NVPSeqID;
+            mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
             DataRowView mDataViewRow = mDV[0];
             mRetValue = mDataViewRow["NVP_SEQ_ID"].ToString();
             return mRetValue;
@@ -93,47 +96,48 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// GetNVPs will return all Name Value Pairs reguardless of security
         /// </summary>
-        /// <param name="YourDataTable">An instance of a data table you would like populated</param>
+        /// <param name="yourDataTable">An instance of a data table you would like populated</param>
         /// <remarks></remarks>
-        public static void GetNVPs(DataTable YourDataTable)
+        public static void GetNameValuePairs(DataTable yourDataTable)
         {
-            YourDataTable = (DataTable)HttpContext.Current.Cache[CACHED_NVP_TABLE_NAME];
-            if (YourDataTable == null)
+            yourDataTable = (DataTable)HttpContext.Current.Cache[CACHED_NVP_TABLE_NAME];
+            if (yourDataTable == null)
             {
                 MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
                 BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-                YourDataTable = myNameValuePair.GetAllNameValuePair();
-                CacheController.AddToCacheDependency(CACHED_NVP_TABLE_NAME, YourDataTable);
+                yourDataTable = myNameValuePair.GetAllNameValuePair();
+                CacheController.AddToCacheDependency(CACHED_NVP_TABLE_NAME, yourDataTable);
             }
         }
 
         /// <summary>
         /// Gets the NVP.
         /// </summary>
-        /// <param name="NVPSeqID">The NVP seq ID.</param>
+        /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>MNameValuePair.</returns>
-        public static MNameValuePair GetNVP(int NVPSeqID)
+        public static MNameValuePair GetNameValuePair(int nameValuePairSeqId)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            return new MNameValuePair(myNameValuePair.GetNameValuePair(NVPSeqID));
+            return new MNameValuePair(myNameValuePair.GetNameValuePair(nameValuePairSeqId));
         }
 
         /// <summary>
         /// Gets the NVP detail.
         /// </summary>
-        /// <param name="NVPSeqDetID">The NVP seq det ID.</param>
-        /// <param name="NVPSeqID">The NVP seq ID.</param>
+        /// <param name="nameValuePairSeqDetId">The NVP seq det ID.</param>
+        /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>MNameValuePairDetail.</returns>
-        public static MNameValuePairDetail GetNVPDetail(int NVPSeqDetID, int NVPSeqID)
+        public static MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetId, int nameValuePairSeqId)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
+            mDT.Locale = CultureInfo.InvariantCulture;
             DataTable mImportTable = new DataTable();
-            GetNVPDetails(mDT, NVPSeqID);
+            GetNameValuePairDetails(mDT, nameValuePairSeqId);
             mDV = mDT.DefaultView;
             mImportTable = mDT.Clone();
-            mDV.RowFilter = "NVP_SEQ_DET_ID = " + NVPSeqDetID;
+            mDV.RowFilter = "NVP_SEQ_DET_ID = " + nameValuePairSeqDetId;
             foreach (DataRowView drv in mDV)
             {
                 mImportTable.ImportRow(drv.Row);
@@ -145,7 +149,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the NVP details.
         /// </summary>
         /// <param name="YourDataTable">Your data table.</param>
-        public static void GetNVPDetails(DataTable YourDataTable)
+        public static void GetNameValuePairDetails(DataTable YourDataTable)
         {
             YourDataTable = (DataTable)HttpContext.Current.Cache[CACHED_NVP_DETAILS_TABLE_NAME];
             if (YourDataTable == null)
@@ -162,11 +166,11 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="yourDataTable">Your data table.</param>
         /// <param name="NVPSeqID">The NVP seq ID.</param>
-        public static void GetNVPDetails(DataTable yourDataTable, int NVPSeqID)
+        public static void GetNameValuePairDetails(DataTable yourDataTable, int NVPSeqID)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
-            GetNVPDetails(mDT);
+            GetNameValuePairDetails(mDT);
             mDV = mDT.DefaultView;
             yourDataTable = mDV.Table.Clone();
             mDV.RowFilter = "NVP_SEQ_ID = " + NVPSeqID;
@@ -181,12 +185,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="staticName">Name of the static.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable GetNVPDetails(string staticName)
+        public static DataTable GetNameValuePairDetails(string staticName)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
             DataTable mReturnTable = null;
-            GetNVPDetails(mDT);
+            GetNameValuePairDetails(mDT);
             mDV = mDT.DefaultView;
             mReturnTable = mDV.Table.Clone();
             mDV.RowFilter = "TABLE_NAME = '" + staticName + "'";
@@ -202,12 +206,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="NVPSeqID">The NVP seq ID.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable GetNVPDetails(int NVPSeqID)
+        public static DataTable GetNameValuePairDetails(int NVPSeqID)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
             DataTable mReturnTable = null;
-            GetNVPDetails(mDT);
+            GetNameValuePairDetails(mDT);
             mDV = mDT.DefaultView;
             mReturnTable = mDV.Table.Clone();
             mDV.RowFilter = "NVP_SEQ_ID = " + NVPSeqID;

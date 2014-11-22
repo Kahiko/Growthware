@@ -29,8 +29,8 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 
         DataTable IDSecurityEntity.GetSecurityEntities(String account, int securityEntityId, bool isSecurityEntityAdministrator)
         {
-            if (String.IsNullOrEmpty(account)) { throw new ArgumentException("account", "account not given"); };
-            if (securityEntityId == -1) { throw new ArgumentException("securityEntityId", "securityEntityId not given"); };
+            if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!"); };
+            if (securityEntityId == -1) { throw new ArgumentNullException("securityEntityId", "securityEntityId cannot be a null reference (Nothing in Visual Basic)!"); };
             string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] mParameters =
 			{
@@ -44,8 +44,8 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 
         DataTable IDSecurityEntity.GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
         {
-            if (string.IsNullOrEmpty(account)) throw new ArgumentException("account", "account can not be blank");
-            if (securityEntityId == -1) throw new ArgumentException("securityEntityId", "securityEntityId must be greater than -1");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!");
+            if (securityEntityId == -1) throw new ArgumentNullException("securityEntityId", "securityEntityId must be greater than -1");
 
             string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] myParameters = 
