@@ -5,6 +5,8 @@ Public Module GWWebHelper
     Private s_ExceptionError As Exception = Nothing
     Private s_Version As String = String.Empty
 
+    Public Const LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID As Integer = 3
+
     ''' <summary>
     ''' Gets the core web administration verison.
     ''' </summary>
