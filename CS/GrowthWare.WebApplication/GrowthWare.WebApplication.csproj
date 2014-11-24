@@ -255,6 +255,8 @@
     <Content Include="Public\Skins\Professional\Images\top_black_stripes.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_curve.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
+    <Content Include="UserControls\GroupControl.ascx" />
+    <Content Include="UserControls\RolesControl.ascx" />
     <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
@@ -493,6 +495,20 @@
     </Compile>
     <Compile Include="Public\Skins\Professional\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GroupControl.ascx.cs">
+      <DependentUpon>GroupControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\GroupControl.ascx.designer.cs">
+      <DependentUpon>GroupControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\RolesControl.ascx.cs">
+      <DependentUpon>RolesControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\RolesControl.ascx.designer.cs">
+      <DependentUpon>RolesControl.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\Search.ascx.cs">
       <DependentUpon>Search.ascx</DependentUpon>
