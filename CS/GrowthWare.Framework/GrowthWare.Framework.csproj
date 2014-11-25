@@ -84,6 +84,7 @@
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />
     <Compile Include="Model\Profiles\MDirectoryProfile.cs" />
     <Compile Include="Model\Profiles\MFunctionProfile.cs" />
+    <Compile Include="Model\Profiles\MFunctionTypeProfile.cs" />
     <Compile Include="Model\Profiles\MGroupProfile.cs" />
     <Compile Include="Model\Profiles\MGroupRoles.cs" />
     <Compile Include="Model\Profiles\MMessageProfile.cs" />

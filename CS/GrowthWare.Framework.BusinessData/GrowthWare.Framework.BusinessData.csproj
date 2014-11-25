@@ -71,6 +71,7 @@
     <Compile Include="DataAccessLayer\Interfaces\Base\IDDBInteraction.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDAccount.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDClientChoices.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDDirectories.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDFunctions.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDGroups.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDMessages.cs" />

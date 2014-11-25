@@ -62,7 +62,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
             txtName.Value = m_Profile.Name;
             txtDescription.Value = m_Profile.Description;
             txtNotes.Text = m_Profile.Notes;
-            txtKeyWords.Text = m_Profile.MetaKeyWords;
+            txtKeyWords.Text = m_Profile.MetaKeywords;
 
             divAction.InnerHtml = m_Profile.Action;
             divAction.Visible = true;
@@ -75,15 +75,15 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
             chkEnableNotifications.Checked = m_Profile.EnableNotifications;
             chkRedirectOnTimeout.Checked = m_Profile.RedirectOnTimeout;
             chkNoUI.Checked = m_Profile.NoUI;
-            chkIsNav.Checked = m_Profile.IsNav;
+            chkIsNav.Checked = m_Profile.IsNavigable;
 
-            RolesControl.AllRoles = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.GetCurrentProfile().Id);
+            RolesControl.AllRoles = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
             RolesControl.SelectedAddRoles = m_Profile.AssignedAddRoles.ToArray();
             RolesControl.SelectedDeleteRoles = m_Profile.AssignedDeleteRoles.ToArray();
             RolesControl.SelectedEditRoles = m_Profile.AssignedEditRoles.ToArray();
             RolesControl.SelectedViewRoles = m_Profile.AssignedViewRoles.ToArray();
 
-            GroupsControl.AllGroups = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.GetCurrentProfile().Id);
+            GroupsControl.AllGroups = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
             GroupsControl.SelectedAddGroups = m_Profile.AddGroups.ToArray();
             GroupsControl.SelectedDeleteGroups = m_Profile.DeleteGroups.ToArray();
             GroupsControl.SelectedEditGroups = m_Profile.EditGroups.ToArray();
@@ -92,7 +92,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 
         private void populateFucntionDrop()
         {
-            DataView mDataView = FunctionUtility.GetFunctionMenuOrder(ref m_Profile).DefaultView;
+            DataView mDataView = FunctionUtility.GetFunctionMenuOrder(m_Profile).DefaultView;
             if (mDataView.Count > 0)
             {
                 mDataView.Sort = "[Name] ASC";
@@ -102,7 +102,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
                 dropFunctions.DataBind();
                 if (m_Profile.Id != -1)
                 {
-                    NameValuePairUtility.SetDropSelection(ref dropFunctions, m_Profile.Id.ToString());
+                    NameValuePairUtility.SetDropSelection(dropFunctions, m_Profile.Id.ToString());
                 }
             }
         }
@@ -115,7 +115,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
             dropFunctionType.DataBind();
             if (m_Profile.Id != -1)
             {
-                NameValuePairUtility.SetDropSelection(ref dropFunctionType, m_Profile.FunctionTypeSeqID.ToString());
+                NameValuePairUtility.SetDropSelection(dropFunctionType, m_Profile.FunctionTypeSeqId.ToString());
             }
         }
 
@@ -130,15 +130,15 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
         private void populateNavigationTypes()
         {
             DataTable mDataTable = new DataTable();
-            int mNavType = GWWebHelper.NVP_NAVIGATION_TYPES_ID;
-            NameValuePairUtility.GetNVPDetails(ref mDataTable, ref mNavType);
+            int mNavType = GWWebHelper.LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID;
+            NameValuePairUtility.GetNameValuePairDetails(mDataTable, mNavType);
             dropNavType.DataSource = mDataTable;
             dropNavType.DataTextField = "NVP_DET_TEXT";
             dropNavType.DataValueField = "NVP_SEQ_DET_ID";
             dropNavType.DataBind();
             if (m_Profile.Id != -1)
             {
-                NameValuePairUtility.SetDropSelection(ref dropNavType, m_Profile.NavigationTypeSeqId.ToString());
+                NameValuePairUtility.SetDropSelection(dropNavType, m_Profile.NavigationTypeSeqId.ToString());
             }
         }
 
