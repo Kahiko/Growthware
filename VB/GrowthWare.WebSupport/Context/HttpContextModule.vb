@@ -276,6 +276,7 @@ Namespace Context
         Private Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
             ' do not process API calls
             If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
+                Dim mLog As Logger = Logger.Instance()
                 Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
                 Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
                 Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
@@ -283,8 +284,10 @@ Namespace Context
                 Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
                 Dim mSkinOverrdiePage As String = mPage.Replace("\System\", mSkinLocation)
                 If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
+                    mLog.Debug("Transfering to override page: " + mSystemOverridePage)
                     HttpContext.Current.Server.Transfer(mSystemOverridePage, False)
                 ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverrdiePage)) Then
+                    mLog.Debug("Transfering to override page: " + mSkinOverrdiePage)
                     HttpContext.Current.Server.Transfer(mSkinOverrdiePage, False)
                 End If
             End If
