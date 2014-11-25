@@ -23,13 +23,13 @@ Partial Public Class AddEditFunction
     Protected WithEvents Head1 As Global.System.Web.UI.HtmlControls.HtmlHead
 
     '''<summary>
-    '''AddEditFunction control.
+    '''frmAddEditFunction control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AddEditFunction As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents frmAddEditFunction As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
     '''trID control.

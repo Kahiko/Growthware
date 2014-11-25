@@ -142,6 +142,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Default.aspx" />
+    <Content Include="Functions\Overrides\Accounts\ChangePassword.aspx" />
+    <Content Include="Functions\Overrides\Accounts\Logon.aspx" />
     <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
@@ -584,7 +586,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Functions\Overrides\" />
     <Folder Include="Public\Images\" />
   </ItemGroup>
   <ItemGroup>

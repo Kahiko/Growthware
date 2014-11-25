@@ -21,15 +21,14 @@
 
 	function editFunction(functionSeqID, mayEdit) {
 	    if (typeof mayEdit == undefined) mayEdit = false;
-		mFunctionSeqID = functionSeqID;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Function';
 		if (functionSeqID == -1) options.title = 'Add Function';
-		options.height = 595;
+		options.height = 695;
 		options.width = 1050;
 		options.async = false;
 		options.resizable = true;
-		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx?FunctionSeqID=" + mFunctionSeqID;
+		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx?FunctionSeqID=" + functionSeqID;
 		if (mayEdit) {
 		    options.buttons = {
 		        'Save': function () { saveAddEditFunciton($(this)); },

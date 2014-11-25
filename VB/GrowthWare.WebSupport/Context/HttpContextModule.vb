@@ -9,6 +9,7 @@ Imports GrowthWare.Framework.Common
 Imports System.Web.Configuration
 Imports System.Web.SessionState
 Imports GrowthWare.Framework.BusinessData
+Imports System.IO
 
 Namespace Context
     ''' <summary>
@@ -128,9 +129,11 @@ Namespace Context
                                     GWWebHelper.ExceptionError = mException
                                     HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword")
                                 End If
+                                processOverridePage(mFunctionProfile)
                             End If
                         Else
                             mLog.Debug("Menu data or Logoff/Logon requested")
+                            processOverridePage(mFunctionProfile)
                         End If
                     Else
                         mLog.Debug("QueryString(Action) is nothing")
@@ -269,6 +272,23 @@ Namespace Context
             End If
             Return mRetval
         End Function
+
+        Private Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
+            ' do not process API calls
+            If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
+                Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
+                Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+                Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
+                mPage = mPage.Replace("/", "\")
+                Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
+                Dim mSkinOverrdiePage As String = mPage.Replace("\System\", mSkinLocation)
+                If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
+                    HttpContext.Current.Server.Transfer(mSystemOverridePage, False)
+                ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverrdiePage)) Then
+                    HttpContext.Current.Server.Transfer(mSkinOverrdiePage, False)
+                End If
+            End If
+        End Sub
 
     End Class
 

@@ -14,13 +14,13 @@ Option Explicit On
 Partial Public Class AddEditAccount
 
     '''<summary>
-    '''form1 control.
+    '''frmAddEditAccount control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents frmAddEditAccount As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
     '''hdnCanSaveRoles control.

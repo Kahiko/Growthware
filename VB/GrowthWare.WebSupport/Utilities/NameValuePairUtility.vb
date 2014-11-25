@@ -122,7 +122,7 @@ Namespace Utilities
         ''' Gets the NVP details.
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
-        Public Sub GetNameValuePairDetails(ByVal yourDataTable As DataTable)
+        Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable)
             yourDataTable = CType(HttpContext.Current.Cache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePairDetails As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
@@ -135,14 +135,14 @@ Namespace Utilities
         ''' Gets the NVP details.
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
-        ''' <param name="NVPSeqID">The NVP seq ID.</param>
-        Public Sub GetNameValuePairDetails(ByVal yourDataTable As DataTable, ByVal NVPSeqID As Integer)
+        ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
+        Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable, ByVal nameValuePairSeqId As Integer)
             Dim mDV As New DataView
             Dim mDT As New DataTable
             GetNameValuePairDetails(mDT)
             mDV = mDT.DefaultView
             yourDataTable = mDV.Table.Clone()
-            mDV.RowFilter = "NVP_SEQ_ID = " & NVPSeqID
+            mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
             For Each drv As DataRowView In mDV
                 yourDataTable.ImportRow(drv.Row)
             Next

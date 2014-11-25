@@ -83,7 +83,7 @@
     </head>
     <body>
 	    <div id="helpPopup" style="display: none;"></div>
-	    <form id="form1" runat="server">
+	    <form id="frmAddEditAccount" runat="server">
 		    <input type="hidden" id="hdnCanSaveRoles" runat="server" />
 		    <input type="hidden" id="hdnCanSaveGroups" runat="server" />
 		    <input type="hidden" id="hdnCanSaveStatus" runat="server" />

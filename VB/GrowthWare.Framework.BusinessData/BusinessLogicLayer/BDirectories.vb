@@ -66,18 +66,20 @@ Namespace BusinessLogicLayer
 
         Public Function Directories() As Collection(Of MDirectoryProfile)
             Dim mRetVal As Collection(Of MDirectoryProfile) = New Collection(Of MDirectoryProfile)
-            Dim mDataTable As DataTable = m_DDirectories.Directories()
-            If Not mDataTable Is Nothing Then
-                For Each mDataRow In mDataTable.Rows
-                    Dim mProfile As MDirectoryProfile = New MDirectoryProfile(mDataRow)
-                    mRetVal.Add(mProfile)
-                Next
+            If IsDatabaseOnline() Then
+                Dim mDataTable As DataTable = m_DDirectories.Directories()
+                If Not mDataTable Is Nothing Then
+                    For Each mDataRow In mDataTable.Rows
+                        Dim mProfile As MDirectoryProfile = New MDirectoryProfile(mDataRow)
+                        mRetVal.Add(mProfile)
+                    Next
+                End If
             End If
             Return mRetVal
         End Function
 
         Public Sub Save(ByRef profile As MDirectoryProfile)
-            m_DDirectories.Save(profile)
+            If IsDatabaseOnline() Then m_DDirectories.Save(profile)
         End Sub
     End Class
 End Namespace
