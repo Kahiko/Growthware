@@ -94,7 +94,7 @@ Public Class AddEditFunction
 
     Private Sub populateNavigationTypes()
         Dim mDataTable As DataTable = Nothing
-        Dim mNavType As Integer = GWWebHelper.NVP_NAVIGATION_TYPES_ID
+        Dim mNavType As Integer = GWWebHelper.LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID
         NameValuePairUtility.GetNameValuePairDetails(mDataTable, mNavType)
         dropNavType.DataSource = mDataTable
         dropNavType.DataTextField = "NVP_DET_TEXT"
@@ -137,7 +137,7 @@ Public Class AddEditFunction
     End Sub
 
     Private Sub populateParent()
-        Dim mResult = From mProfile In FunctionUtility.GetFunctions() Where mProfile.ParentID <> m_Profile.Id Select mProfile
+        Dim mResult = From mProfile In FunctionUtility.Functions() Where mProfile.ParentId <> m_Profile.Id Select mProfile
         dropNavParent.DataValueField = "Id"
         dropNavParent.DataTextField = "Name"
         dropNavParent.DataSource = mResult
@@ -152,9 +152,9 @@ Public Class AddEditFunction
         If Not mProfile Is Nothing Then
             txtDirectory.Text = mProfile.Directory
             chkImpersonation.Checked = mProfile.Impersonate
-            txtAccount.Text = mProfile.Impersonate_Account
-            txtPassword.Text = mProfile.Impersonate_PWD
-            txtHidPwd.Text = mProfile.Impersonate_PWD
+            txtAccount.Text = mProfile.ImpersonateAccount
+            txtPassword.Text = mProfile.ImpersonatePassword
+            txtHidPwd.Text = mProfile.ImpersonatePassword
         End If
     End Sub
 

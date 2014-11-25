@@ -6,6 +6,7 @@ Public Module GWWebHelper
     Private s_Version As String = String.Empty
 
     Public Const LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID As Integer = 3
+    Public Const LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID As Integer = 1
 
     ''' <summary>
     ''' Gets the core web administration verison.
