@@ -13,6 +13,7 @@ using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Enumerations;
 using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.Framework.BusinessData;
+using System.IO;
 
 namespace GrowthWare.WebSupport.Context
 {
@@ -180,12 +181,14 @@ namespace GrowthWare.WebSupport.Context
                                     WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
                                     GWWebHelper.ExceptionError = mException;
                                     HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
-                                }                            
+                                }
+                                processOverridePage(mFunctionProfile);
                             }
                         }
                         else
                         {
                             mLog.Debug("Menu data or Logoff/Logon requested");
+                            processOverridePage(mFunctionProfile);
                         }
                     }
                     else
@@ -310,6 +313,29 @@ namespace GrowthWare.WebSupport.Context
                 } 
             }
             return mRetVal;
+        }
+
+        private void processOverridePage(MFunctionProfile functionProfile) 
+        {
+            if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1) 
+            {
+                Logger mLog = Logger.Instance();
+                String mPage = @"/" + ConfigSettings.AppName + functionProfile.Source;
+                MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
+                String mSkinLocation = "/Public/Skins/" + mSecProfile.Skin + "/";
+                mPage = mPage.Replace("/", @"\");
+                String mSystemOverridePage = mPage.Replace(@"\System\", @"\Overrides\");
+                String mSkinOverrdiePage = mPage.Replace(@"\System\", mSkinLocation);
+                if (File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage))) 
+                {
+                    mLog.Debug("Transfering to override page: " + mSystemOverridePage);
+                    HttpContext.Current.Server.Transfer(mSystemOverridePage, false);
+                }else if(File.Exists(HttpContext.Current.Server.MapPath(mSkinOverrdiePage)))
+                {
+                    mLog.Debug("Transfering to override page: " + mSkinOverrdiePage);
+                    HttpContext.Current.Server.Transfer(mSkinOverrdiePage, false);
+                }
+            }
         }
 
         /// <summary>

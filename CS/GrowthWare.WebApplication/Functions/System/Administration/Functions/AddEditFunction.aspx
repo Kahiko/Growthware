@@ -1,20 +1,11 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddEditFunction.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Functions.AddEditFunction" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="AddEditFunction.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Functions.AddEditFunction" %>
 <%@ Register Src="~/UserControls/RolesControl.ascx" TagName="RolesControl" TagPrefix="ucRoles" %>
 <%@ Register Src="~/UserControls/GroupControl.ascx" TagName="GroupControl" TagPrefix="ucGroups" %>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head id="Head1" runat="server">
-	<title></title>
-	<style type="text/css">
-		.formSection {background-color:#DCDDDE; width:500; border-collapse:collapse;}
-		.formSectionHeader {background-color:#B2B2B2; padding:5px; font-family:verdana, arial; font-weight: bold; font-size: 12px; color: #FFFFFF;}
-		.formSectionHelp {padding:2px;font-family:verdana, arial; font-size: 10px;}
-		.formSectionContents {padding:2px;font: 14px Verdana;}
-		.formSectionContents td {font: 12px Verdana;}
-		.listPicker {width:200px;font-family:verdana, arial; font-size: 10px;}
-	</style>
-
+    <title></title>
 	<script type="text/x-jquery-tmpl" id="functionOrderTemplate">
 			<tr><td>${Name}</td><td>${Action}</td></tr>
 	</script>
@@ -22,18 +13,20 @@
 	    // DOM level accessable variables ...
 	    $(document).ready(function () {
 	        getFunctionMenuOrder();
-	        $("#tabs").tabs();
-	        $("#tabs").tabs("option", "selected", 0);
+	        if (typeof jQuery.ui != 'undefined') {
+	            $("#tabs").tabs();
+	            $("#tabs").tabs("option", "selected", 0);
 
-	        $('#tabs')
-				.tabs()
-				.find('.ui-tabs-nav')
-					.css('white-space', 'nowrap')
-					.css('overflow', 'hidden')
-				.find('li')
-					.css('display', 'inline-block')
-					.css('float', 'none')
-					.css('vertical-align', 'bottom');
+	            $('#tabs')
+                    .tabs()
+                    .find('.ui-tabs-nav')
+                        .css('white-space', 'nowrap')
+                        .css('overflow', 'hidden')
+                    .find('li')
+                        .css('display', 'inline-block')
+                        .css('float', 'none')
+                        .css('vertical-align', 'bottom');
+	        }
 	    });
 
 	    function move(direction) {
@@ -123,7 +116,7 @@
 		    directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
 		    //directoryInfo.DirectoryID = $("#<%=txtDirectoryID.ClientID %>").val();
 		    //directoryInfo.HidPwd = $("#<%=txtHidPwd.ClientID %>").val();
-		    directoryInfo.Impersonate_PWD = $("#<%=txtPassword.ClientID %>").val();
+		    directoryInfo.Impersonate_PWD = $("[id$=ctlAddRoles]").val();
 		    var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
 		    return theData;
 		}
@@ -152,355 +145,351 @@
 	</script>
 </head>
 <body>
-	<div id="helpPopup" style="display: none;" />
-	<form id="form1" runat="server">
-	<div>
-		<div id="tabs">
-			<ul>
-				<li><a href="#tabs-General">General</a></li>
-				<li><a href="#tabs-MenuOrder">Menu Order</a></li>
-				<li><a href="#tabs-Roles">Roles</a></li>
-				<li><a href="#tabs-Groups">Groups</a></li>
-				<li><a href="#tabs-DirectoryInformation">Directory Information</a></li>
-				<li><a href="#tabs-DerivedRoles">Derived Roles</a></li>
-			</ul>
-			<div id="tabs-General">
-				<p>
-					<table border="0" style="width: 100%;" cellpadding="2">
-						<tr id="trID" runat="server">
-							<td align="right">
-								<span class="Form_LabelText">ID:</span>
-							</td>
-							<td style="width: 0px;">
-								&nbsp;
-							</td>
-							<td align="left">
-								<div id="divFunctionSeqId" runat="server">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Name:</span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								&nbsp;
-							</td>
-							<td align="left">
-								<input type="text" id="txtName" class="rounded" style="width: 322px;" runat="server" />
-								<asp:RequiredFieldValidator ID="Requiredfieldvalidator5" runat="Server" CssClass="Form_Message" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtName">(required)</asp:RequiredFieldValidator>
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Description: </span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								&nbsp;
-							</td>
-							<td align="left">
-								<!-- todo add max length -->
-								<input type="text" id="txtDescription" class="rounded" runat="server" />
-								<asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="Form_Message" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtDescription">(required)</asp:RequiredFieldValidator>
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Notes: </span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								&nbsp;
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtNotes" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,255)" runat="Server" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Key Words: </span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								&nbsp;
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtKeyWords" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" runat="Server" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Action:</span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								<img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
-							</td>
-							<td align="left">
-								<div id="divAction" runat="server">
-								</div>
-								<asp:TextBox ID="txtAction" MaxLength="255" runat="server" CssClass="rounded" Height="20px" Width="500px" Columns="100" />
-							</td>
-						</tr>
-						<tr>
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Type: </span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								&nbsp;
-							</td>
-							<td align="left">
-								<asp:DropDownList ID="dropFunctionType" runat="server" CssClass="rounded">
-								</asp:DropDownList>
-							</td>
-						</tr>
-						<tr id="trSource" runat="server">
-							<td align="right" valign="top">
-								<span class="Form_LabelText">Source: </span>
-							</td>
-							<td style="width: 0px;" valign="top">
-								<img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Source Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtSource" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
-								<asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" CssClass="Form_Message" ErrorMessage="Required (Relitive location of the module)" Text="(required)" Display="Dynamic" ControlToValidate="txtSource">(required)</asp:RequiredFieldValidator>
-							</td>
-						</tr>
-						<tr>
-							<td colspan="3">
-								<table style="width: 100%">
-									<asp:CheckBox ID="chkEnableViewState" Text="Enable ViewState" runat="server" />
-									<asp:CheckBox ID="chkEnableNotifications" Text="Enable Notifications" runat="server" />
-									<asp:CheckBox ID="chkRedirectOnTimeout" Text="Redirect on Session Timeout" runat="server" />
-									<asp:CheckBox ID="chkNoUI" runat="server" Text="No UI" />
-									<asp:CheckBox ID="chkIsNav" Text="Is Nav" runat="server" />
-								</table>
-							</td>
-						</tr>
-						<tr id="trParent" runat="server">
-							<td colspan="3">
-								<table border="0" style="width: 100%;">
-									<span class="Form_LabelText">Nav type: </span>
-									<asp:DropDownList ID="dropNavType" runat="server" CssClass="rounded">
-									</asp:DropDownList>
-									&nbsp; <span class="Form_LabelText">Parent: </span>
-									<asp:DropDownList ID="dropNavParent" runat="server" CssClass="rounded">
-										<asp:ListItem Text="None" Value="0" />
-									</asp:DropDownList>
-									&nbsp; <span class="Form_LabelText">Link Behavior: </span>
-									<asp:DropDownList ID="dropLinkBehavior" runat="server" CssClass="rounded">
-										<asp:ListItem Text="None" Value="0" />
-									</asp:DropDownList>
-								</table>
-							</td>
-						</tr>
-					</table>
-					<div id="helpActions" style="display: none">
-						Note: Action should not have any special charactors.<br />
-						Once an action has been entered it can not be changed other than by direct access to the data store.<br />
-					</div>
-					<div id="helpSource" style="display: none">
-						Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
-					</div>
-				</p>
-			</div>
-			<div id="tabs-MenuOrder">
-
-				<table border="0" cellpadding="3" cellspacing="0">
-					<tr>
-						<td>
-							<table border="0" style="display: none;" cellspacing="2" cellpadding="2" id="functionOrderTable">
-								<thead>
-									<tr>
-										<th>
-											Name
-										</th>
-										<th>
-											Action
-										</th>
-									</tr>
-								</thead>
-								<tbody>
-								
-								</tbody>
-							</table>
-						</td>
-						<td valign="top">
-							<asp:DropDownList ID="dropFunctions" CssClass="rounded" runat="server" />
-							&nbsp;
-							<input type="button" id="btnMoveUp" value="Up" onclick="javascript: move('up');" />
-							<input type="button" id="btnMoveDown" value="Down" onclick="javascript: move('down');" />
-						</td>
-					</tr>
-				</table>
-			</div>
-			<div id="tabs-Roles">
-				<p>
-					<ucRoles:RolesControl ID="RolesControl" runat="server" />
-				</p>
-			</div>
-			<div id="tabs-Groups">
-				<p>
-					<ucGroups:GroupControl ID="GroupsControl" runat="server" />
-				</p>
-			</div>
-			<div id="tabs-DirectoryInformation">
-				<p>
-					<table>
-						<tr>
-							<td align="right">
-								<label>
-									Directory:&nbsp;</label>
-								<asp:TextBox ID="txtDirectoryID" CssClass="rounded" Visible="false" runat="server"></asp:TextBox>
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtDirectory" MaxLength="255" CssClass="rounded" runat="server" Width="563px"></asp:TextBox>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">
-								<label>
-									Requries Impersonation:&nbsp;</label>
-							</td>
-							<td align="left">
-								<asp:CheckBox ID="chkImpersonation" runat="server"></asp:CheckBox>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">
-								<label>
-									Account:&nbsp;</label>
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtAccount" CssClass="rounded" MaxLength="50" runat="server"></asp:TextBox>
-							</td>
-						</tr>
-						<tr>
-							<td align="right">
-								<label>
-									Password:&nbsp;</label>
-							</td>
-							<td align="left">
-								<asp:TextBox ID="txtPassword" MaxLength="50" CssClass="rounded" TextMode="Password" runat="server"></asp:TextBox>&nbsp;!Leave blank to keep the same password!
-								<asp:TextBox ID="txtHidPwd" Visible="False" runat="server"></asp:TextBox>
-							</td>
-						</tr>
-					</table>
-				</p>
-			</div>
-			<div id="tabs-DerivedRoles">
-				<p>
-                    <table cellspacing="0" cellpadding="3" border="0">
-                        <tr>
-                            <td align="left" style="width: 480px">
-                                <table class="pickListTable">
+    <div id="helpPopup" style="display: none;" />
+    <form id="frmAddEditFunction" runat="server">
+    <div>
+        <div class="container" id="tabs">
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-General">General</a></li>
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-MenuOrder">Menu Order</a></li>
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-Roles">Roles</a></li>
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-Groups">Groups</a></li>
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-DirectoryInformation">Directory Information</a></li>
+                <li role="presentation"><a data-toggle="tab"  href="#tabs-DerivedRoles">Derived Roles</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="tabs-General">
+                    <p>
+                        <table border="0" style="width: 100%;" cellpadding="2">
+                            <tr id="trID" runat="server">
+                                <td align="right">
+                                    <span class="formLabelText">ID:</span>
+                                </td>
+                                <td style="width: 0px;">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <div id="divFunctionSeqId" runat="server">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Name:</span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <input type="text" id="txtName" class="rounded" style="width: 322px;" runat="server" />
+                                    <asp:RequiredFieldValidator ID="Requiredfieldvalidator5" runat="Server" CssClass="failureNotification" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtName">(required)</asp:RequiredFieldValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Description: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <!-- todo add max length -->
+                                    <input type="text" class="rounded" id="txtDescription" runat="server" />
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" CssClass="failureNotification" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtDescription">(required)</asp:RequiredFieldValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Notes: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtNotes" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,255)" runat="Server" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Key Words: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtKeyWords" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" runat="Server" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Action:</span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
+                                </td>
+                                <td align="left">
+                                    <div id="divAction" runat="server">
+                                    </div>
+                                    <asp:TextBox ID="txtAction" MaxLength="255" runat="server" CssClass="rounded" Height="20px" Width="500px" Columns="100" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Type: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    &nbsp;
+                                </td>
+                                <td align="left">
+                                    <asp:DropDownList ID="dropFunctionType" runat="server" CssClass="rounded">
+                                    </asp:DropDownList>
+                                </td>
+                            </tr>
+                            <tr id="trSource" runat="server">
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Source: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Action Source')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtSource" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
+                                    <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" CssClass="failureNotification" ErrorMessage="Required (Relitive location of the module)" Text="(required)" Display="Dynamic" ControlToValidate="txtSource">(required)</asp:RequiredFieldValidator>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3">
+                                    <table style="width: 100%">
+                                        <asp:CheckBox ID="chkEnableViewState" Text="Enable ViewState" runat="server" />
+                                        <asp:CheckBox ID="chkEnableNotifications" Text="Enable Notifications" runat="server" />
+                                        <asp:CheckBox ID="chkRedirectOnTimeout" Text="Redirect on Session Timeout" runat="server" />
+                                        <asp:CheckBox ID="chkNoUI" runat="server" Text="No UI" />
+                                        <asp:CheckBox ID="chkIsNav" Text="Is Nav" runat="server" />
+                                    </table>
+                                </td>
+                            </tr>
+                            <tr id="trParent" runat="server">
+                                <td colspan="3">
+                                    <table border="0" style="width: 100%;">
+                                        <span class="formLabelText">Nav type: </span>
+                                        <asp:DropDownList ID="dropNavType" runat="server" CssClass="rounded">
+                                        </asp:DropDownList>
+                                        &nbsp; <span class="formLabelText">Parent: </span>
+                                        <asp:DropDownList ID="dropNavParent" runat="server" CssClass="rounded">
+                                            <asp:ListItem Text="None" Value="0" />
+                                        </asp:DropDownList>
+                                        &nbsp; <span class="formLabelText">Link Behavior: </span>
+                                        <asp:DropDownList ID="dropLinkBehavior" runat="server" CssClass="rounded">
+                                            <asp:ListItem Text="None" Value="0" />
+                                        </asp:DropDownList>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
+                        <div id="helpActions" style="display: none">
+                            Note: Action should not have any special charactors.<br />
+                            Once an action has been entered it can not be changed other than by direct access to the data store.<br />
+                        </div>
+                        <div id="helpSource" style="display: none">
+                            Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+                        </div>
+                    </p>
+                </div>
+                <div class="tab-pane fade in active" id="tabs-MenuOrder">
+				    <table border="0" cellpadding="3" cellspacing="0">
+					    <tr>
+						    <td>
+							    <table border="0" style="display: none;" cellspacing="2" cellpadding="2" id="functionOrderTable">
+								    <tr>
+									    <th>
+										    Name
+									    </th>
+									    <th>
+										    Action
+									    </th>
+								    </tr>
+							    </table>
+						    </td>
+						    <td valign="top">
+							    <asp:DropDownList ID="dropFunctions" CssClass="rounded" runat="server" />
+							    &nbsp;
+							    <input type="button" id="btnMoveUp" value="Up" onclick="javascript: move('up');" />
+							    <input type="button" id="btnMoveDown" value="Down" onclick="javascript: move('down');" />
+						    </td>
+					    </tr>
+				    </table>
+                </div>
+                <div class="tab-pane fade in active" id="tabs-Roles">
+                    <p>
+                        <ucRoles:RolesControl ID="RolesControl" runat="server" />
+                    </p>
+                </div>
+                <div class="tab-pane fade in active" id="tabs-Groups">
+                    <p>
+                        <ucGroups:GroupControl ID="GroupsControl" runat="server" />
+                    </p>
+                </div>
+                <div class="tab-pane fade in active" id="tabs-DirectoryInformation">
+                    <p>
+                        <table>
+                            <tr>
+                                <td align="right">
+                                    <label>
+                                        Directory:&nbsp;</label>
+                                    <asp:TextBox ID="txtDirectoryID" CssClass="rounded" Visible="false" runat="server"></asp:TextBox>
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtDirectory" MaxLength="255" CssClass="rounded" runat="server" Width="563px"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <label>
+                                        Requries Impersonation:&nbsp;</label>
+                                </td>
+                                <td align="left">
+                                    <asp:CheckBox ID="chkImpersonation" runat="server"></asp:CheckBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <label>
+                                        Account:&nbsp;</label>
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtAccount" MaxLength="50" CssClass="rounded" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="right">
+                                    <label>
+                                        Password:&nbsp;</label>
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtPassword" MaxLength="50" TextMode="Password" CssClass="rounded" runat="server"></asp:TextBox>&nbsp;!Leave blank to keep the same password!
+                                    <asp:TextBox ID="txtHidPwd" Visible="False" CssClass="rounded" runat="server"></asp:TextBox>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
+                <div class="tab-pane fade in active" id="tabs-DerivedRoles">
+                    <p>
+                        <table cellspacing="0" cellpadding="3" border="0">
+                            <tr>
+                                <td align="left" style="width: 480px">
+                                    <table class="pickListTable">
+                                        <!-- View Roles -->
+                                        <tr class="pickListTableHeader">
+                                            <td>
+                                                View Roles
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableHelp">
+                                                Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpViewRoles').innerHTML,'Help Derived View Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableContents">
+                                                <asp:ListBox ID="lstBoxViewRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <!-- View Roles -->
-                                    <tr class="pickListTableHeader">
-                                        <td>
-                                            View Roles
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableHelp">
-                                            Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpViewRoles').innerHTML,'Help Derived View Roles')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableContents">
-                                            <asp:ListBox ID="lstBoxViewRoles" CssClass="listPicker" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- View Roles -->
-                                <div id="derivedHelpViewRoles" style="display: none">
-                                    Derived roles are calculated by combining roles that are directly assigned through<br />
-                                    Roles tab or indirectly assigned throught the Groups tab.<br />
-                                    View roles are used to determine who can view a function.
-                                </div>
-                            </td>
-                            <td align="left" style="width: 480px">
-                                <table class="pickListTable">
+                                    <div id="derivedHelpViewRoles" style="display: none">
+                                        Derived roles are calculated by combining roles that are directly assigned through<br />
+                                        Roles tab or indirectly assigned throught the Groups tab.<br />
+                                        View roles are used to determine who can view a function.
+                                    </div>
+                                </td>
+                                <td align="left" style="width: 480px">
+                                    <table class="pickListTable">
+                                        <!-- Add Roles -->
+                                        <tr class="pickListTableHeader">
+                                            <td>
+                                                Add Roles
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableHelp">
+                                                Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpAddRoles').innerHTML,'Help Derived Add Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Add&nbsp;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableContents">
+                                                <asp:ListBox ID="lstBoxAddRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <!-- Add Roles -->
-                                    <tr class="pickListTableHeader">
-                                        <td>
-                                            Add Roles
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableHelp">
-                                            Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpAddRoles').innerHTML,'Help Derived Add Roles')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="&nbsp;Roles that may Add&nbsp;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableContents">
-                                            <asp:ListBox ID="lstBoxAddRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- Add Roles -->
-                                <div id="derivedHelpAddRoles" style="display: none">
-                                    Derived roles are calculated by combining roles that are directly assigned through<br />
-                                    Roles tab or indirectly assigned throught the Groups tab.<br />
-                                    Add roles are used to determine who can Add.
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td align="left" style="width: 480px">
-                                <table class="pickListTable">
+                                    <div id="derivedHelpAddRoles" style="display: none">
+                                        Derived roles are calculated by combining roles that are directly assigned through<br />
+                                        Roles tab or indirectly assigned throught the Groups tab.<br />
+                                        Add roles are used to determine who can Add.
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td align="left" style="width: 480px">
+                                    <table class="pickListTable">
+                                        <!-- Edit Roles -->
+                                        <tr class="pickListTableHeader">
+                                            <td>
+                                                Edit Roles
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="formSectionHelp">
+                                                Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpEditRoles').innerHTML,'Help Derived Edit Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Edit&nbsp;" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableContents">
+                                                <asp:ListBox ID="lstBoxEditRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <!-- Edit Roles -->
-                                    <tr class="pickListTableHeader">
-                                        <td>
-                                            Edit Roles
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="formSectionHelp">
-                                            Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpEditRoles').innerHTML,'Help Derived Edit Roles')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="&nbsp;Roles that may Edit&nbsp;" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableContents">
-                                            <asp:ListBox ID="lstBoxEditRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- Edit Roles -->
-                                <div id="derivedHelpEditRoles" style="display: none">
-                                    Derived roles are calculated by combining roles that are directly assigned through<br />
-                                    Roles tab or indirectly assigned throught the Groups tab.<br />
-                                    Edit roles are used to determine who can Edit.
-                                </div>
-                            </td>
-                            <td align="left" style="width: 480px">
-                                <table class="pickListTable">
+                                    <div id="derivedHelpEditRoles" style="display: none">
+                                        Derived roles are calculated by combining roles that are directly assigned through<br />
+                                        Roles tab or indirectly assigned throught the Groups tab.<br />
+                                        Edit roles are used to determine who can Edit.
+                                    </div>
+                                </td>
+                                <td align="left" style="width: 480px">
+                                    <table class="pickListTable">
+                                        <!-- Delete Roles -->
+                                        <tr class="pickListTableHeader">
+                                            <td>
+                                                Delete Roles
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableHelp">
+                                                Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpDeleteRoles').innerHTML,'Help Derived Delete Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="Roles that may Delete" />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="pickListTableContents">
+                                                <asp:ListBox ID="lstBoxDeleteRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
+                                            </td>
+                                        </tr>
+                                    </table>
                                     <!-- Delete Roles -->
-                                    <tr class="pickListTableHeader">
-                                        <td>
-                                            Delete Roles
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableHelp">
-                                            Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpDeleteRoles').innerHTML,'Help Derived Delete Roles')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="Roles that may Delete" />
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="pickListTableContents">
-                                            <asp:ListBox ID="lstBoxDeleteRoles" Style="width: 462px;" Rows="5" runat="server"></asp:ListBox>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <!-- Delete Roles -->
-                                <div id="derivedHelpDeleteRoles" style="display: none">
-                                    Derived roles are calculated by combining roles that are directly assigned through<br />
-                                    Roles tab or indirectly assigned throught the Groups tab.<br />
-                                    Delete roles are used to determine who can Delete.
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-				</p>
-			</div>
-		</div>
-	</div>
-	</form>
+                                    <div id="derivedHelpDeleteRoles" style="display: none">
+                                        Derived roles are calculated by combining roles that are directly assigned through<br />
+                                        Roles tab or indirectly assigned throught the Groups tab.<br />
+                                        Delete roles are used to determine who can Delete.
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
 </body>
 </html>

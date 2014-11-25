@@ -78,7 +78,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Gets or sets the TEMPLATE.
         /// </summary>
         /// <value>The TEMPLATE.</value>
-        public string TEMPLATE
+        public string Template
         {
             get { return m_Template; }
             set { if(!string.IsNullOrEmpty(value)) m_Template = value.Trim(); }

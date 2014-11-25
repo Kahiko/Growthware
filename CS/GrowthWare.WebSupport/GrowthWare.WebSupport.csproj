@@ -77,7 +77,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\AccountUtility.cs" />
     <Compile Include="Utilities\ClientChoicesUtility.cs" />
+    <Compile Include="Utilities\DirectoryUtility.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\FunctionTypeUtility.cs" />
     <Compile Include="Utilities\FunctionUtility.cs" />
     <Compile Include="Utilities\GroupUtility.cs" />
     <Compile Include="Utilities\MenuUtility.cs" />
