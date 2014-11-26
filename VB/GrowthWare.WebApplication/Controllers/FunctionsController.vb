@@ -32,6 +32,21 @@ Namespace Controllers
             Return mRetVal
         End Function
 
+        <HttpGet>
+        Public Function GetFunctionOrder(<FromUri()> ByVal functionSeqId As Integer) As List(Of UIFuncitonMenuOrder)
+            Dim mRetVal As List(Of UIFuncitonMenuOrder) = New List(Of UIFuncitonMenuOrder)
+            Dim mProfile As MFunctionProfile = FunctionUtility.GetProfile(functionSeqId)
+            Dim mDataView As DataView = FunctionUtility.GetFunctionMenuOrder(mProfile).DefaultView
+            For Each mRow As DataRowView In mDataView
+                Dim mItem As UIFuncitonMenuOrder = New UIFuncitonMenuOrder()
+                mItem.Function_Seq_Id = mRow("Function_Seq_Id").ToString()
+                mItem.Name = mRow("Name").ToString()
+                mItem.Action = mRow("Action").ToString()
+                mRetVal.Add(mItem)
+            Next
+            Return mRetVal
+        End Function
+
     End Class
 
     Public Class FunctionInformation
@@ -39,5 +54,11 @@ Namespace Controllers
         Public Property Location() As String
         Public Property Description() As String
         Public Property LinkBehavior As Integer
+    End Class
+
+    Public Class UIFuncitonMenuOrder
+        Public Function_Seq_Id As String
+        Public Action As String
+        Public Name As String
     End Class
 End Namespace

@@ -215,6 +215,7 @@
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
+    <Content Include="Public\Scripts\jquery.tmpl.js" />
     <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\SiteStyles\Arc.css" />
     <Content Include="Public\Skins\Arc\CSS\Skin.css" />

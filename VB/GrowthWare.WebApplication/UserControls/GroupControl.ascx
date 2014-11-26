@@ -12,7 +12,7 @@
 				</tr>
 				<tr>
 					<td class="pickListTableHelp">
-						Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpViewGroups').innerHTML,'Help View Groups')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title=" &nbsp;Groups that may View&nbsp;" />
+						Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpViewGroups').innerHTML,'Help View Groups')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Groups that may View&nbsp;" />
 					</td>
 				</tr>
 				<tr>
@@ -36,7 +36,7 @@
 				</tr>
 				<tr>
 					<td class="pickListTableHelp">
-						Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpAddGroups').innerHTML,'Help Add Groups')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
+						Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpAddGroups').innerHTML,'Help Add Groups')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
 					</td>
 				</tr>
 				<tr>
@@ -62,7 +62,7 @@
 				</tr>
 				<tr>
 					<td class="pickListTableHelp">
-						Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpEditGroups').innerHTML,'Help Edit Groups')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="&nbsp;Groups that may Edit&nbsp;" />
+						Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpEditGroups').innerHTML,'Help Edit Groups')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Groups that may Edit&nbsp;" />
 					</td>
 				</tr>
 				<tr>
@@ -86,7 +86,7 @@
 				</tr>
 				<tr>
 					<td class="pickListTableHelp">
-						Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpDeleteGroups').innerHTML,'Help Delete Groups')" src='<%=ResolveUrl("~/Public/Images/GrowthWare/help.gif")%>' title="Groups that may Delete" />
+						Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpDeleteGroups').innerHTML,'Help Delete Groups')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="Groups that may Delete" />
 					</td>
 				</tr>
 				<tr>

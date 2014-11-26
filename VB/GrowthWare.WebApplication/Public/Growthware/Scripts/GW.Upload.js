@@ -43,7 +43,7 @@ if (typeof GW.Upload == "undefined" || !GW.Upload) {
 			retVal = retVal + "	</td>";
 			retVal = retVal + "	<td>";
 			retVal = retVal + "	<div id='divUpload' style='padding-top: 4px'>";
-			retVal = retVal + "		<img alt='Upload File' onclick='javascript:alert(" + "\"" + "hi" + "\"" + ");' id='btnUpload' src='" + GW.Common.getBaseURL() + "/Public/Images/GrowthWare/Add.png' height='16px' width='16px' />";
+			retVal = retVal + "		<img alt='Upload File' onclick='javascript:alert(" + "\"" + "hi" + "\"" + ");' id='btnUpload' src='" + GW.Common.getBaseURL() + "/Public/GrowthWare/Images/Add.png' height='16px' width='16px' />";
 			retVal = retVal + "	</div>"
 			retVal = retVal + "	<div>";
 			retVal = retVal + "	</td>";

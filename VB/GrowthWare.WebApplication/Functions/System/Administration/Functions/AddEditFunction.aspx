@@ -42,18 +42,21 @@
 
 		function getFunctionMenuOrder() {
 			var functionSeqID = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
-			var options = GW.Model.DefaultWebMethodOptions();
-			options.async = true;
-			options.data = JSON.stringify({ functionSeqId: functionSeqID });
+		    var options = GW.Model.DefaultWebMethodOptions();
+		    var profile = {};
+		    profile.functionSeqId = functionSeqID;
+		    options.async = true;
+		    options.type = 'GET';
+			//options.data = profile;
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/GetFunctionOrder"
+			options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
 			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
 		}
 
 		function getFunctionMenuOrderSucess(xhr) {
 			$("#functionOrderTable > tbody").empty()
-			$("#functionOrderTemplate").tmpl(xhr.d).appendTo("#functionOrderTable > tbody");
+			$("#functionOrderTemplate").tmpl(xhr).appendTo("#functionOrderTable > tbody");
 			$("#functionOrderTable").css('display', '');
 		}
 

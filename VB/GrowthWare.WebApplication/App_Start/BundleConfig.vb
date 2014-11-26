@@ -6,7 +6,8 @@ Public Module BundleConfig
     Public Sub RegisterBundles(bundles As BundleCollection)
         bundles.Add(
             New ScriptBundle("~/bundles/jquery").Include(
-            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery-{version}.js"
+            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery-{version}.js",
+            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery.tmpl.js"
             )
         )
 
