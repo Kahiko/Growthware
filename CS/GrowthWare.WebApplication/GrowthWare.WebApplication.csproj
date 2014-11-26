@@ -207,6 +207,7 @@
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
+    <Content Include="Public\Scripts\jquery.tmpl.js" />
     <Content Include="Public\Scripts\jSon2.js" />
     <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\SiteStyles\Arc.css" />

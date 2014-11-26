@@ -15,7 +15,8 @@ namespace GrowthWare.WebApplication
         {
         bundles.Add(
             new ScriptBundle("~/bundles/jquery").Include(
-            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery-{version}.js"
+            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery-{version}.js",
+            "~/" + ConfigSettings.AppName + "Public/Scripts/jquery.tmpl.js"
             )
         );
 
