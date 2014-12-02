@@ -170,17 +170,19 @@ namespace GrowthWare.WebSupport.Context
                                         {
                                             WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
                                             GWWebHelper.ExceptionError = mException;
-                                            HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx");
+                                            processOverridePage(FunctionUtility.GetProfile("Logon"));
                                         }
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx");
+                                        processOverridePage(FunctionUtility.GetProfile("AccessDenied"));
                                     }
                                 }
                                 else
                                 {
                                     WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
                                     GWWebHelper.ExceptionError = mException;
-                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword");
+                                    MFunctionProfile mChangePasswordProfile = FunctionUtility.GetProfile("ChangePassword");
+                                    string mChangePasswordPage = GWWebHelper.RootSite + ConfigSettings.AppName + mChangePasswordProfile.Source;
+                                    HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword");
                                 }
                                 processOverridePage(mFunctionProfile);
                             }
@@ -306,7 +308,7 @@ namespace GrowthWare.WebSupport.Context
             {
                 string mPath = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture);
                 string mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1);
-                string[] mProcessingTypes = { "ASPX", "ASHX", "ASMX" };
+                string[] mProcessingTypes = { "ASPX", "ASHX", "ASMX", "HTM", "HTML" };
                 if (mProcessingTypes.Contains(mFileExtension) || mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1) 
                 {
                     mRetVal = true;
