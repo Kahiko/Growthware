@@ -119,15 +119,18 @@ Namespace Context
                                         If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                                             Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
                                             GWWebHelper.ExceptionError = mException
-                                            HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Logon/Logon.aspx")
+                                            processOverridePage(FunctionUtility.GetProfile("Logon"))
                                         End If
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
-                                        HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Errors/AccessDenied.aspx")
+                                        Dim mAccessDeniedProfile As MFunctionProfile = FunctionUtility.GetProfile("AccessDenied")
+                                        processOverridePage(mAccessDeniedProfile)
                                     End If
                                 Else
                                     Dim mException As WebSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
                                     GWWebHelper.ExceptionError = mException
-                                    HttpContext.Current.Response.Redirect(GWWebHelper.RootSite + ConfigSettings.AppName + "/Functions/System/Accounts/ChangePassword.aspx#?Action=ChangePassword")
+                                    Dim mChangePasswordProfile As MFunctionProfile = FunctionUtility.GetProfile("ChangePassword")
+                                    Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mChangePasswordProfile.Source
+                                    HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword")
                                 End If
                                 processOverridePage(mFunctionProfile)
                             End If
@@ -265,7 +268,7 @@ Namespace Context
             If Not HttpContext.Current Is Nothing Then
                 Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
                 Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
-                Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
+                Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX", "HTM", "HTML"}
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then
                     mRetval = True
                 End If
