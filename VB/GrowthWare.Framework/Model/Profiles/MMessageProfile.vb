@@ -74,7 +74,7 @@ Namespace Model.Profiles
         End Sub
 
         ''' <summary>
-        ''' Formats the body and replaces < and > with the appropriate property value.
+        ''' Formats the body and replaces property names within angle brackes with the appropriate property value.
         ''' </summary>
         Public Overridable Sub FormatBody() Implements IMessageProfile.FormatBody
             Dim myPropertyInfo As PropertyInfo() = Me.GetType.GetProperties()

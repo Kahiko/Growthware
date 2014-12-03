@@ -200,24 +200,24 @@ Namespace Utilities
         ''' <summary>
         ''' Gets the selected groups.
         ''' </summary>
-        ''' <param name="nameValuePairSeqID">The name value pair seq ID.</param>
+        ''' <param name="nameValuePairSeqId">The name value pair seq ID.</param>
         ''' <returns>System.String[][].</returns>
-        Public Function GetSelectedGroups(ByVal nameValuePairSeqID As Integer) As String()
+        Public Function GetSelectedGroups(ByVal nameValuePairSeqId As Integer) As String()
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairGroups(nameValuePairSeqID)
+            Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairGroups(nameValuePairSeqId)
             Return GetStringArrayList(mDataTable, "Groups")
         End Function
 
         ''' <summary>
         ''' Gets the string array list.
         ''' </summary>
-        ''' <param name="yourDT">Your DT.</param>
+        ''' <param name="yourDataTable">Your DT.</param>
         ''' <param name="rowName">Name of the row.</param>
         ''' <returns>System.String[][].</returns>
-        Private Function GetStringArrayList(ByVal yourDT As DataTable, ByVal rowName As String) As String()
+        Private Function GetStringArrayList(ByVal yourDataTable As DataTable, ByVal rowName As String) As String()
             Dim mRetrunArrayList As New ArrayList
             Dim mDR As DataRow
-            For Each mDR In yourDT.Rows
+            For Each mDR In yourDataTable.Rows
                 mRetrunArrayList.Add(mDR(rowName).ToString)
             Next
             Return CType(mRetrunArrayList.ToArray(GetType(String)), String())
@@ -284,24 +284,24 @@ Namespace Utilities
         ''' Updates the groups.
         ''' </summary>
         ''' <param name="nameValuePairId">The name value pair Id.</param>
-        ''' <param name="securityEntityID">The security entity Id.</param>
+        ''' <param name="securityEntityId">The security entity Id.</param>
         ''' <param name="commaSeparatedGroups">The comma Separated groups.</param>
-        ''' <param name="profile">MNameValuePair</param>
-        Public Sub UpdateGroups(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal profile As MNameValuePair)
+        ''' <param name="nameValuePairProfile">MNameValuePair</param>
+        Public Sub UpdateGroups(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal nameValuePairProfile As MNameValuePair)
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            mNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, profile)
+            mNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile)
         End Sub
 
         ''' <summary>
         ''' Updates the roles.
         ''' </summary>
         ''' <param name="nameValuePairId">The NV p_ ID.</param>
-        ''' <param name="securityEntityID">The security entity ID.</param>
+        ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <param name="commaSeparatedRoles">The comma Separated roles.</param>
-        ''' <param name="profile">MNameValuePair</param>
-        Public Sub UpdateRoles(ByVal nameValuePairId As Integer, ByVal securityEntityID As Integer, ByVal commaSeparatedRoles As String, ByVal nvpProfile As MNameValuePair)
+        ''' <param name="nameValuePairProfile">nameValuePairProfile</param>
+        Public Sub UpdateRoles(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedRoles As String, ByVal nameValuePairProfile As MNameValuePair)
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
-            mNameValuePair.UpdateRoles(nameValuePairId, securityEntityID, commaSeparatedRoles, nvpProfile)
+            mNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile)
         End Sub
     End Module
 End Namespace

@@ -35,10 +35,13 @@ Namespace Model.Profiles
         Protected Shadows Sub Initialize(ByVal detailRow As DataRow)
             MyBase.IdColumnName = "Function_Type_Seq_ID"
             MyBase.NameColumnName = "NAME"
-            m_FunctionTypeSeqId = Id
-            m_Description = CStr(detailRow("DESCRIPTION"))
-            m_Template = CStr(detailRow("TEMPLATE"))
-            m_IsContent = CStr(detailRow("IS_CONTENT"))
+            If Not detailRow Is Nothing Then
+                MyBase.Initialize(detailRow)
+                m_FunctionTypeSeqId = Id
+                m_Description = CStr(detailRow("DESCRIPTION"))
+                m_Template = CStr(detailRow("TEMPLATE"))
+                m_IsContent = CStr(detailRow("IS_CONTENT"))
+            End If
         End Sub
 
         Public Property FunctionTypeSeqId() As Integer
