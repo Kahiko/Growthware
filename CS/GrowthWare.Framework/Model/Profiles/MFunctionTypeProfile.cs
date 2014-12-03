@@ -43,15 +43,18 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Initializes the specified datarow.
         /// </summary>
         /// <param name="Datarow">The datarow.</param>
-        protected new void Initialize(DataRow dataRow)
+        protected new void Initialize(DataRow detailRow)
         {
             base.NameColumnName = "NAME";
             base.IdColumnName = "Function_Type_Seq_ID";
-            base.Initialize(dataRow);
-            m_FunctionTypeSeqId = Id;
-            m_Description = base.GetString(dataRow, "DESCRIPTION");
-            m_Template = base.GetString(dataRow, "TEMPLATE");
-            m_IsContent = base.GetBool(dataRow, "IS_CONTENT");
+            if (detailRow != null) 
+            {
+                base.Initialize(detailRow);
+                m_FunctionTypeSeqId = Id;
+                m_Description = base.GetString(detailRow, "DESCRIPTION");
+                m_Template = base.GetString(detailRow, "TEMPLATE");
+                m_IsContent = base.GetBool(detailRow, "IS_CONTENT");
+            }
         }
 
         /// <summary>

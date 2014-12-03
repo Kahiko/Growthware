@@ -30,13 +30,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Deletes the detail.
         /// </summary>
-        /// <param name="Profile">The profile.</param>
+        /// <param name="profile">The profile.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        public static void DeleteDetail(MNameValuePairDetail Profile)
+        public static void DeleteDetail(MNameValuePairDetail profile)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
-            mBNameValuePairs.DeleteNameValuePairDetail(Profile);
+            mBNameValuePairs.DeleteNameValuePairDetail(profile);
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
         }
 
@@ -204,9 +204,9 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Gets the NVP details.
         /// </summary>
-        /// <param name="NVPSeqID">The NVP seq ID.</param>
+        /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable GetNameValuePairDetails(int NVPSeqID)
+        public static DataTable GetNameValuePairDetails(int nameValuePairSeqId)
         {
             DataView mDV = new DataView();
             DataTable mDT = new DataTable();
@@ -214,7 +214,7 @@ namespace GrowthWare.WebSupport.Utilities
             GetNameValuePairDetails(ref mDT);
             mDV = mDT.DefaultView;
             mReturnTable = mDV.Table.Clone();
-            mDV.RowFilter = "NVP_SEQ_ID = " + NVPSeqID;
+            mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
             foreach (DataRowView drv in mDV)
             {
                 mReturnTable.ImportRow(drv.Row);
@@ -225,43 +225,43 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Retrieves the selected roles for the name value pair
         /// </summary>
-        /// <param name="nameValuePairSeqID">The primary key of the name value pair</param>
+        /// <param name="nameValuePairSeqId">The primary key of the name value pair</param>
         /// <returns>String array list of roles</returns>
         /// <remarks></remarks>
-        public static string[] GetSelectedRoles(int nameValuePairSeqID)
+        public static string[] GetSelectedRoles(int nameValuePairSeqId)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            DataTable myDataTable = myNameValuePair.GetNameValuePairRoles(nameValuePairSeqID);
+            DataTable myDataTable = myNameValuePair.GetNameValuePairRoles(nameValuePairSeqId);
             return GetStringArrayList(myDataTable, "Roles");
         }
 
         /// <summary>
         /// Retrieves the selected groups for the name value pair
         /// </summary>
-        /// <param name="nameValuePairSeqID">The primary key of the name value pair</param>
+        /// <param name="nameValuePairSeqId">The primary key of the name value pair</param>
         /// <returns>String array list of groups</returns>
         /// <remarks></remarks>
-        public static string[] GetSelectedGroups(int nameValuePairSeqID)
+        public static string[] GetSelectedGroups(int nameValuePairSeqId)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            DataTable myDataTable = myNameValuePair.GetNameValuePairGroups(nameValuePairSeqID);
+            DataTable myDataTable = myNameValuePair.GetNameValuePairGroups(nameValuePairSeqId);
             return GetStringArrayList(myDataTable, "Groups");
         }
 
         /// <summary>
         /// Add all the roles or groups to a string array list to bind to the List picker control.
         /// </summary>
-        /// <param name="yourDT">The DataTable containing the data to bind</param>
+        /// <param name="yourDataTable">The DataTable containing the data to bind</param>
         /// <param name="rowName">The name of the row to add to the array list</param>
         /// <returns>String array list</returns>
         /// <remarks>See the GrowthWare.CustomWebControls.ListPicker object</remarks>
-        private static string[] GetStringArrayList(DataTable yourDT, string rowName)
+        private static string[] GetStringArrayList(DataTable yourDataTable, string rowName)
         {
             ArrayList mRetrunArrayList = new ArrayList();
             DataRow myDR = null;
-            foreach (DataRow myDR_loopVariable in yourDT.Rows)
+            foreach (DataRow myDR_loopVariable in yourDataTable.Rows)
             {
                 myDR = myDR_loopVariable;
                 mRetrunArrayList.Add(myDR[rowName].ToString());
@@ -272,31 +272,31 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Inserts or updates a name value pair given a NameValuePair profile
         /// </summary>
-        /// <param name="Profile">Details of the profile to added or updated</param>
+        /// <param name="profile">Details of the profile to added or updated</param>
         /// <returns>The Primary sequence ID</returns>
         /// <remarks></remarks>
-        public static int Save(MNameValuePair Profile)
+        public static int Save(MNameValuePair profile)
         {
             int mRetVal = -1;
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
             CacheController.RemoveFromCache(CACHED_NVP_TABLE_NAME);
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
-            mRetVal = myNameValuePair.Save(Profile);
+            mRetVal = myNameValuePair.Save(profile);
             return mRetVal;
         }
 
         /// <summary>
         /// Saves the detail.
         /// </summary>
-        /// <param name="Profile">The profile.</param>
+        /// <param name="profile">The profile.</param>
         /// <returns>System.Int32.</returns>
-        public static void SaveDetail(MNameValuePairDetail Profile)
+        public static void SaveDetail(MNameValuePairDetail profile)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
             CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
-            mBNameValuePairs.SaveNameValuePairDetail(Profile);
+            mBNameValuePairs.SaveNameValuePairDetail(profile);
         }
 
         /// <summary>
@@ -340,29 +340,29 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Updates the groups.
         /// </summary>
-        /// <param name="NVP_ID">The NV p_ ID.</param>
-        /// <param name="SecurityEntityID">The security entity ID.</param>
-        /// <param name="CommaSeparatedGroups">The comma separated groups.</param>
-        /// <param name="nvpProfile">MNameValuePair.</param>
-        public static void UpdateGroups(int NVP_ID, int SecurityEntityID, string CommaSeparatedGroups, MNameValuePair nvpProfile)
+        /// <param name="nameValuePairId">The NV p_ ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="commaSeparatedGroups">The comma separated groups.</param>
+        /// <param name="nameValuePairProfile">MNameValuePair.</param>
+        public static void UpdateGroups(int nameValuePairId, int securityEntityId, string commaSeparatedGroups, MNameValuePair nameValuePairProfile)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            myNameValuePair.UpdateGroups(NVP_ID, SecurityEntityID, CommaSeparatedGroups, nvpProfile);
+            myNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
         }
 
         /// <summary>
         /// Updates the roles.
         /// </summary>
-        /// <param name="NVP_ID">The NV p_ ID.</param>
-        /// <param name="SecurityEntityID">The security entity ID.</param>
-        /// <param name="CommaSeparatedRoles">The comma separated roles.</param>
-        /// <param name="nvpProfile">MNameValuePair.</param>
-        public static void UpdateRoles(int NVP_ID, int SecurityEntityID, string CommaSeparatedRoles, MNameValuePair nvpProfile)
+        /// <param name="nameValuePairId">The NV p_ ID.</param>
+        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="commaSeparatedRoles">The comma separated roles.</param>
+        /// <param name="nameValuePairProfile">MNameValuePair.</param>
+        public static void UpdateRoles(int nameValuePairId, int securityEntityId, string commaSeparatedRoles, MNameValuePair nameValuePairProfile)
         {
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            myNameValuePair.UpdateRoles(NVP_ID, SecurityEntityID, CommaSeparatedRoles, nvpProfile);
+            myNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile);
         }
 
     }

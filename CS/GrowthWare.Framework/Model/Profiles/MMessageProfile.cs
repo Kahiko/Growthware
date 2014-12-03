@@ -143,7 +143,7 @@ namespace GrowthWare.Framework.Model.Profiles
         }
 
         /// <summary>
-        /// Formats the body and replaces < and > with the appropriate property value.
+        /// Formats the body and replaces property names within angle brackes with the appropriate property value.
         /// </summary>
         public void FormatBody()
         {
