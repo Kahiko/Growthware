@@ -39,7 +39,7 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the NVP detail.
         ''' </summary>
         ''' <returns>DataRow.</returns>
-        Function GetNameValuePairDetail() As DataRow
+        Function NameValuePairDetail() As DataRow
 
         ''' <summary>
         ''' Gets the NVP details.
@@ -47,13 +47,13 @@ Namespace DataAccessLayer.Interfaces
         ''' <param name="nameValuePairSeqDetailId">The NVP seq det ID.</param>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>DataRow.</returns>
-        Function GetNameValuePairDetails(ByVal nameValuePairSeqDetailId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow
+        Function NameValuePairDetails(ByVal nameValuePairSeqDetailId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow
 
         ''' <summary>
         ''' Gets all NVP detail.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetAllNameValuePairDetail() As DataTable
+        Function AllNameValuePairDetail() As DataTable
 
         ''' <summary>
         ''' Gets all NVP detail.
@@ -119,7 +119,7 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the NVP.
         ''' </summary>
         ''' <returns>DataRow.</returns>
-        Function GetNameValuePair() As DataRow
+        Function NameValuePair() As DataRow
 
         ''' <summary>
         ''' Saves this instance.

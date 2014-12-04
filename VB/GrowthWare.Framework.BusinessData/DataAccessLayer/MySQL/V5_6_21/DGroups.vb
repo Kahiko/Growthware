@@ -21,7 +21,7 @@ Namespace DataAccessLayer.MySql.V5621
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
 
-        Public Function GetGroupRoles() As DataTable Implements IDGroups.GetGroupRoles
+        Public Function GetGroupRoles() As DataTable Implements IDGroups.GroupRoles
             If GroupRolesProfile.GroupSeqId = -1 Then
                 Throw New ArgumentException("The GroupRoles Profile must be set.")
             End If
@@ -34,7 +34,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetGroupsBySecurityEntity() As DataTable Implements IDGroups.GetGroupsBySecurityEntity
+        Public Function GetGroupsBySecurityEntity() As DataTable Implements IDGroups.GroupsBySecurityEntity
             Dim mStoredProcedure As String = "ZGWSecurity.Get_Group"
             Dim mParameters() As MySqlParameter =
             {
@@ -44,7 +44,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable(mStoredProcedure, mParameters)
         End Function
 
-        Public Function GetProfileData() As System.Data.DataRow Implements IDGroups.GetProfileData
+        Public Function GetProfileData() As System.Data.DataRow Implements IDGroups.ProfileData
             Dim mStoredProcedure As String = "ZGWSecurity.Get_Group"
             Dim myParameters() As MySqlParameter =
             {

@@ -401,45 +401,62 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 			},
 
 			getDialog: function (dialogOptions, dialogId, dialogMessageTemplate) {
-				if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
-				var defaultOptions = GW.Model.DefaultDialogOptions();
-				var options = $.extend({}, defaultOptions, dialogOptions);
-				if ($(dialogId).length > 0) {
-					var $dialogId = $(dialogId);
-					$dialogId.html('');
-					$dialogId.dialog({
-						autoOpen: false,
-						buttons: options.buttons,
-						closeOnEscape: options.closeOnEscape,
-						closeText: options.closeText,
-						dialogClass: options.dialogClass,
-						disabled: options.disabled,
-						draggable: options.draggable,
-						height: options.height,
-						hide: options.hide,
-						cache: options.cache,
-						//maxHeight: options.maxHeight,
-						//maxWidth: options.maxWidth,
-						//minHeight: options.minHeight,
-						//minWidth: options.minWidth,
-						modal: options.modal,
-						position: options.position,
-						resizable: options.resizable,
-						show: options.show,
-						stack: options.stack,
-						title: options.title,
-						width: options.width,
-						zindex: options.zindex
-					});
-					// added to fix the title not taking when sending it
-					// using the above method
-					//$(dialogId).dialog('option', 'title', options.title);
-					// Set the HTML
-					$dialogId.html(dialogMessageTemplate);
-					return $(dialogId);
-				} else {
-					alert('The dialogId "' + dialogId + '" does not exist!');
-				}
+			    if (typeof jQuery.ui != 'undefined') {
+			        if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
+			        var defaultOptions = GW.Model.DefaultDialogOptions();
+			        var options = $.extend({}, defaultOptions, dialogOptions);
+			        if ($(dialogId).length > 0) {
+			            var $dialogId = $(dialogId);
+			            $dialogId.html('');
+			            $dialogId.dialog({
+			                autoOpen: false,
+			                buttons: options.buttons,
+			                closeOnEscape: options.closeOnEscape,
+			                closeText: options.closeText,
+			                dialogClass: options.dialogClass,
+			                disabled: options.disabled,
+			                draggable: options.draggable,
+			                height: options.height,
+			                hide: options.hide,
+			                cache: options.cache,
+			                modal: options.modal,
+			                position: options.position,
+			                resizable: options.resizable,
+			                show: options.show,
+			                stack: options.stack,
+			                title: options.title,
+			                width: options.width,
+			                zindex: options.zindex
+			            });
+			            // Set the HTML
+			            $dialogId.html(dialogMessageTemplate);
+			            return $(dialogId);
+			        } else {
+			            alert('The dialogId "' + dialogId + '" does not exist!');
+			        }
+			    } else {
+			        if (!$('#myModal').length) {
+			            $('body').append(GW.Model.BoostrapModal);
+			        }
+			        var $mModal = $('#myModal');
+			        $mModal.on("show.bs.modal", function () {
+			            var height = $(window).height() - 200;
+			            $(this).find(".modal-body").css("max-height", height);
+			        });
+
+			        $mModal.modal({
+			            backdrop: false,
+			            show: false,
+			            keyboard: true
+			        });
+			        $mModal.on('show', function () {
+			            $('.modal-body', this).css({ width: dialogOptions.width, height: dialogOptions.height, 'max-height': '100%', 'max-width': '100%' });
+			        });
+			        $('#myModalTitle').html(dialogOptions.title);
+			        $('#mModalBtnSave').remove();
+			        $('.modal-body').html(dialogMessageTemplate);
+			        $mModal.modal('show');
+			    }
 			},
 
 			/*

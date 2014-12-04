@@ -22,7 +22,7 @@ Public NotInheritable Class WebImpersonate
     ''' <remarks></remarks>
     Public Shared Function ImpersonateNow(ByVal account As String, ByVal password As String) As WindowsImpersonationContext
         If account Is Nothing Or password Is Nothing Then
-            Throw New ArgumentException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
+            Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
         End If
         Dim tokenHandle As New IntPtr(0)
         Dim dupeTokenHandle As New IntPtr(0)

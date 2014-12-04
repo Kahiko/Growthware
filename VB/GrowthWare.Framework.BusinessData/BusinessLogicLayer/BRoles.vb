@@ -60,7 +60,7 @@ Namespace BusinessLogicLayer
         ''' <param name="profile">The profile.</param>
         Public Sub GetProfile(ByVal profile As MRoleProfile)
             m_BRoles.Profile = profile
-            profile = New MRoleProfile(m_BRoles.GetProfileData())
+            profile = New MRoleProfile(m_BRoles.ProfileData())
         End Sub
 
         ''' <summary>
@@ -70,7 +70,7 @@ Namespace BusinessLogicLayer
         ''' <returns>System.Data.DataTable.</returns>
         Public Function GetRolesBySecurityEntity(securityEntityId As Integer) As DataTable
             m_BRoles.SecurityEntitySeqId = securityEntityId
-            Return m_BRoles.GetRolesBySecurityEntity()
+            Return m_BRoles.RolesBySecurityEntity()
         End Function
 
         ''' <summary>
@@ -80,7 +80,7 @@ Namespace BusinessLogicLayer
         ''' <returns>System.Data.DataTable.</returns>
         Public Function GetAccountsInRole(profile As MRoleProfile) As DataTable
             m_BRoles.Profile = profile
-            Return m_BRoles.GetAccountsInRole()
+            Return m_BRoles.AccountsInRole()
         End Function
 
         ''' <summary>
@@ -90,7 +90,7 @@ Namespace BusinessLogicLayer
         ''' <returns>System.Data.DataTable.</returns>
         Public Function GetAccountsNotInRole(profile As MRoleProfile) As System.Data.DataTable
             m_BRoles.Profile = profile
-            Return m_BRoles.GetAccountsNotInRole()
+            Return m_BRoles.AccountsNotInRole()
         End Function
 
         ''' <summary>

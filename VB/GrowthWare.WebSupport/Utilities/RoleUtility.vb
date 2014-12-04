@@ -3,6 +3,7 @@ Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.Model.Enumerations
 Imports System.Web
+Imports System.Globalization
 
 Namespace Utilities
     Public Module RoleUtility
@@ -12,18 +13,18 @@ Namespace Utilities
         ''' <param name="securityEntitySeqId">The security entity seq id.</param>
         ''' <returns>System.String.</returns>
         Public Function SecurityEntitiesRolesCacheName(securityEntitySeqId As Integer) As String
-            Return "SecurityEntityRoles" + securityEntitySeqId.ToString()
+            Return "SecurityEntityRoles" + securityEntitySeqId.ToString(CultureInfo.InvariantCulture)
         End Function
 
         ''' <summary>
         ''' Gets the profile.
         ''' </summary>
-        ''' <param name="roleID">The role ID.</param>
+        ''' <param name="roleId">The role ID.</param>
         ''' <returns>MRoleProfile.</returns>
-        Public Function GetProfile(roleID As Integer) As MRoleProfile
+        Public Function GetProfile(roleId As Integer) As MRoleProfile
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim mProfile As MRoleProfile = New MRoleProfile()
-            mProfile.Id = roleID
+            mProfile.Id = roleId
             mBRoles.GetProfile(mProfile)
             Return mProfile
         End Function
@@ -33,6 +34,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub DeleteRole(profile As MRoleProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim mSecurityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBRoles As BRoles = New BRoles(mSecurityProfile, ConfigSettings.CentralManagement)
             profile.SecurityEntityId = mSecurityProfile.Id
@@ -47,6 +49,7 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         ''' <returns>ArrayList.</returns>
         Public Function GetAccountsInRole(profile As MRoleProfile) As ArrayList
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim colAccounts As ArrayList = New ArrayList()
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim myDataTable As DataTable = mBRoles.GetAccountsInRole(profile)
@@ -62,6 +65,7 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         ''' <returns>ArrayList.</returns>
         Public Function GetAccountsNotInRole(profile As MRoleProfile) As ArrayList
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim colAccounts As ArrayList = New ArrayList()
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim myDataTable As DataTable = mBRoles.GetAccountsNotInRole(profile)
@@ -113,6 +117,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Save(profile As MRoleProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             profile.SecurityEntityId = SecurityEntityUtility.CurrentProfile.Id
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBRoles.Save(profile)
@@ -125,7 +130,8 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBRoles.Search(searchCriteria)
         End Function
@@ -133,14 +139,15 @@ Namespace Utilities
         ''' <summary>
         ''' Updates all accounts for role.
         ''' </summary>
-        ''' <param name="roleID">The role ID.</param>
+        ''' <param name="roleId">The role ID.</param>
         ''' <param name="securityEntitySeqId">The security entity seq id.</param>
         ''' <param name="accounts">The accounts.</param>
-        ''' <param name="accountID">The account ID.</param>
+        ''' <param name="accountId">The account ID.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        Public Function UpdateAllAccountsForRole(roleID As Integer, securityEntitySeqId As Integer, accounts As String(), accountID As Integer) As Boolean
+        Public Function UpdateAllAccountsForRole(roleId As Integer, securityEntitySeqId As Integer, accounts As String(), accountId As Integer) As Boolean
+            If accounts Is Nothing Then Throw New ArgumentNullException("accounts", "accounts cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
-            Return mBRoles.UpdateAllAccountsForRole(roleID, securityEntitySeqId, accounts, accountID)
+            Return mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId)
         End Function
 
     End Module

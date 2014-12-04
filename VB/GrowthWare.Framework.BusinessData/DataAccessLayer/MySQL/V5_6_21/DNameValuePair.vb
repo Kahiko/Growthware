@@ -44,7 +44,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable("ZGWSystem.Get_Name_Value_Pair", GetSelectParameters)
         End Function
 
-        Public Function GetAllNameValuePairDetail() As DataTable Implements IDNameValuePair.GetAllNameValuePairDetail
+        Public Function GetAllNameValuePairDetail() As DataTable Implements IDNameValuePair.AllNameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Details"
             Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", -1)}
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
@@ -62,13 +62,13 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetNameValuePair() As DataRow Implements IDNameValuePair.GetNameValuePair
+        Public Function GetNameValuePair() As DataRow Implements IDNameValuePair.NameValuePair
             Dim storeProc As String = "ZGWSystem.Get_Name_Value_Pair"
             Dim mParameters() As MySqlParameter = GetSelectParameters()
             Return MyBase.GetDataRow(storeProc, mParameters)
         End Function
 
-        Public Function GetNameValuePairDetail() As DataRow Implements IDNameValuePair.GetNameValuePairDetail
+        Public Function GetNameValuePairDetail() As DataRow Implements IDNameValuePair.NameValuePairDetail
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Detail"
             Dim mParameters() As MySqlParameter =
              {
@@ -78,7 +78,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataRow(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetNameValuePairDetails(ByVal nameValuePairSeqDetailId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow Implements IDNameValuePair.GetNameValuePairDetails
+        Public Function GetNameValuePairDetails(ByVal nameValuePairSeqDetailId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow Implements IDNameValuePair.NameValuePairDetails
             Dim mStoreProcedure As String = "ZGWSystem.Get_Name_Value_Pair_Details"
             Dim mParameters() As MySqlParameter = {New MySqlParameter("@P_NVP_SeqID", nameValuePairSeqId)}
             Return MyBase.GetDataRow(mStoreProcedure, mParameters)

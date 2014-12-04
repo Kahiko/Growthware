@@ -20,6 +20,7 @@ Namespace DataAccessLayer.SQLServer.V2008
         'Public Property Profile As MDirectoryProfile Implements IDDirectories.Profile
 
         Public Sub Save(ByVal profile As MDirectoryProfile) Implements IDDirectories.Save
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mStoredProcedure As String = "ZGWOptional.Set_Directory"
             Dim mParameters As SqlParameter() =
             {
@@ -34,6 +35,6 @@ Namespace DataAccessLayer.SQLServer.V2008
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
 
-        Public Property SecurityEntitySeqID As Integer Implements IDDirectories.SecurityEntitySeqID
+        Public Property SecurityEntitySeqId As Integer Implements IDDirectories.SecurityEntitySeqId
     End Class
 End Namespace

@@ -18,7 +18,7 @@ Namespace DataAccessLayer.MySql.V5621
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
         End Sub
 
-        Public Function GetAccountsInRole() As DataTable Implements IDRoles.GetAccountsInRole
+        Public Function GetAccountsInRole() As DataTable Implements IDRoles.AccountsInRole
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Accounts_In_Role"
             Dim mParameters() As MySqlParameter =
             {
@@ -28,7 +28,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetAccountsNotInRole() As DataTable Implements IDRoles.GetAccountsNotInRole
+        Public Function GetAccountsNotInRole() As DataTable Implements IDRoles.AccountsNotInRole
             Dim mStoreProcedure As String = "ZGWSecurity.Get_Accounts_Not_In_Role"
             Dim mParameters() As MySqlParameter =
             {
@@ -38,7 +38,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataTable(mStoreProcedure, mParameters)
         End Function
 
-        Public Function GetProfileData() As DataRow Implements IDRoles.GetProfileData
+        Public Function GetProfileData() As DataRow Implements IDRoles.ProfileData
             Dim mStoredProcedure As String = "ZGWSecurity.Get_Role"
             Dim mParameters() As MySqlParameter =
             {
@@ -48,7 +48,7 @@ Namespace DataAccessLayer.MySql.V5621
             Return MyBase.GetDataRow(mStoredProcedure, mParameters)
         End Function
 
-        Public Function GetRolesBySecurityEntity() As DataTable Implements IDRoles.GetRolesBySecurityEntity
+        Public Function GetRolesBySecurityEntity() As DataTable Implements IDRoles.RolesBySecurityEntity
             Dim mStoredProcedure As String = "ZGWSecurity.Get_Role"
             Dim mParameters() As MySqlParameter =
             {

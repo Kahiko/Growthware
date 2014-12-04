@@ -68,7 +68,7 @@ Namespace BusinessLogicLayer
             Dim myProfile As New MGroupProfile
             myProfile.SecurityEntityID = securityEntityId
             m_DGroups.Profile = myProfile
-            Return m_DGroups.GetGroupsBySecurityEntity
+            Return m_DGroups.GroupsBySecurityEntity
         End Function
 
         Public Sub AddGroup(ByVal profile As MGroupProfile)
@@ -80,7 +80,7 @@ Namespace BusinessLogicLayer
             Dim retProfile As New MGroupProfile
             retProfile.ID = groupId
             m_DGroups.Profile = retProfile
-            retProfile = New MGroupProfile(m_DGroups.GetProfileData)
+            retProfile = New MGroupProfile(m_DGroups.ProfileData)
             Return retProfile
         End Function
 
@@ -111,7 +111,7 @@ Namespace BusinessLogicLayer
         Public Function GetSelectedRoles(ByVal profile As MGroupRoles) As String()
             Dim ClientRoles As New ArrayList
             m_DGroups.GroupRolesProfile = profile
-            Dim myDataTable As DataTable = m_DGroups.GetGroupRoles
+            Dim myDataTable As DataTable = m_DGroups.GroupRoles
             Dim myDR As DataRow
             For Each myDR In myDataTable.Rows
                 ClientRoles.Add(myDR("Role").ToString)

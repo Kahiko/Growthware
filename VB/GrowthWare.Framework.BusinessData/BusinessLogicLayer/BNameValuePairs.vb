@@ -106,7 +106,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataRow.</returns>
         Public Function GetNameValuePairDetails(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow
             Dim mRetVal As DataRow = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetNameValuePairDetails(nameValuePairDetailSeqId, nameValuePairSeqId)
+            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairDetailSeqId, nameValuePairSeqId)
             Return mRetVal
         End Function
 
@@ -116,7 +116,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetAllNameValuePairDetail() As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetAllNameValuePairDetail
+            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairDetail
             Return mRetVal
         End Function
 
@@ -140,7 +140,7 @@ Namespace BusinessLogicLayer
             Dim mRetVal As DataRow = Nothing
             m_DNameValuePair.NameValuePairProfile = New MNameValuePair()
             m_DNameValuePair.NameValuePairProfile.Id = nameValuePairSeqId
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetNameValuePair
+            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.NameValuePair
             Return mRetVal
         End Function
 

@@ -27,13 +27,13 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the group roles.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetGroupRoles() As DataTable
+        Function GroupRoles() As DataTable
 
         ''' <summary>
         ''' Gets the groups by security entity.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetGroupsBySecurityEntity() As DataTable
+        Function GroupsBySecurityEntity() As DataTable
 
         ''' <summary>
         ''' Gets or sets the group roles profile.
@@ -45,7 +45,7 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the profile data.
         ''' </summary>
         ''' <returns>DataRow.</returns>
-        Function GetProfileData() As DataRow
+        Function ProfileData() As DataRow
 
         ''' <summary>
         ''' Gets or sets the profile.

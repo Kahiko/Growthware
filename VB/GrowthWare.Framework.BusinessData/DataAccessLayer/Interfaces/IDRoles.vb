@@ -13,13 +13,13 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the accounts in role.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetAccountsInRole() As DataTable
+        Function AccountsInRole() As DataTable
 
         ''' <summary>
         ''' Gets the accounts not in role.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetAccountsNotInRole() As DataTable
+        Function AccountsNotInRole() As DataTable
 
         ''' <summary>
         ''' Updates all accounts for role.
@@ -52,12 +52,12 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the profile data.
         ''' </summary>
         ''' <returns>DataRow.</returns>
-        Function GetProfileData() As DataRow
+        Function ProfileData() As DataRow
 
         ''' <summary>
         ''' Gets the roles by security entity.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Function GetRolesBySecurityEntity() As DataTable
+        Function RolesBySecurityEntity() As DataTable
     End Interface
 End Namespace
