@@ -53,7 +53,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             return base.GetDataTable(storeProc, mParameters);
         }
 
-        DataRow IDNameValuePair.GetNVP()
+        DataRow IDNameValuePair.NameValuePair()
         {
             String storeProc = "ZGWSystem.Get_Name_Value_Pair";
             SqlParameter[] mParameters = GetSelectParameters();
@@ -98,7 +98,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             base.ExecuteNonQuery(myStoreProcdure, mParameters);
         }
 
-        DataRow IDNameValuePair.GetNVPDetail()
+        DataRow IDNameValuePair.NameValuePairDetail()
         {
             string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Detail";
             SqlParameter[] mParameters = { 
@@ -108,7 +108,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             return base.GetDataRow(myStoreProcedure, mParameters);
         }
 
-        DataRow IDNameValuePair.GetNVPDetails(int NVPSeqDetID, int NVPSeqID)
+        DataRow IDNameValuePair.NameValuePairDetails(int NVPSeqDetID, int NVPSeqID)
         {
             string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Details";
             SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NVPSeqID) };
@@ -132,7 +132,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             return mRetVal;
         }
 
-        DataTable IDNameValuePair.GetAllNVPDetail()
+        DataTable IDNameValuePair.AllNameValuePairDetail()
         {
             string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Details";
             SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", -1) };

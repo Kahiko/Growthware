@@ -34,7 +34,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Returns a DataTable of Group roles
         /// </summary>
         /// <returns>DataTable</returns>
-        DataTable GetGroupRoles();
+        DataTable GroupRoles();
 
         /// <summary>
         /// Updates the Groups roles
@@ -46,7 +46,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Get's all of the groups for a given Security Entity
         /// </summary>
         /// <returns>DataTable</returns>
-        DataTable GetGroupsBySecurityEntity();
+        DataTable GroupsBySecurityEntity();
 
         /// <summary>
         /// Adds a group to a Security Entity
@@ -58,7 +58,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Returns a data row necessary to populate MGroupProfile
         /// </summary>
         /// <returns>DataRow</returns>
-        DataRow GetProfileData();
+        DataRow ProfileData();
 
         /// <summary>
         /// Deletes a group in a given Security Entity

@@ -58,28 +58,28 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             return mRetVal;
         }
 
-        DataTable IDRoles.GetRolesBySecurityEntity()
+        DataTable IDRoles.RolesBySecurityEntity()
         {
             SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", -1), new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID) };
             String myStoreProc = "ZGWSecurity.Get_Role";
             return base.GetDataTable( myStoreProc,  myParameters);
         }
 
-        DataRow IDRoles.GetProfileData()
+        DataRow IDRoles.ProfileData()
         {
             SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", m_Profile.Id), new SqlParameter("@P_Security_Entity_SeqID", -1) };
             String myStoreProc = "ZGWSecurity.Get_Role";
             return base.GetDataRow( myStoreProc,  myParameters);
         }
 
-        DataTable IDRoles.GetAccountsInRole()
+        DataTable IDRoles.AccountsInRole()
         {
             SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
             string myStoreProcedure = "ZGWSecurity.Get_Accounts_In_Role";
             return base.GetDataTable( myStoreProcedure,  myParameters);
         }
 
-        DataTable IDRoles.GetAccountsNotInRole()
+        DataTable IDRoles.AccountsNotInRole()
         {
             SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
             string myStoreProcedure = "ZGWSecurity.Get_Accounts_Not_In_Role";

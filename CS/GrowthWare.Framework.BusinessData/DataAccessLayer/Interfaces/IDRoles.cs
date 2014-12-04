@@ -27,13 +27,13 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Gets the accounts in role.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetAccountsInRole();
+        DataTable AccountsInRole();
 
         /// <summary>
         /// Gets the accounts not in role.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetAccountsNotInRole();
+        DataTable AccountsNotInRole();
 
         /// <summary>
         /// Updates all accounts for role.
@@ -66,12 +66,12 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Gets the profile data.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow GetProfileData();
+        DataRow ProfileData();
 
         /// <summary>
         /// Gets the roles by BU.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetRolesBySecurityEntity();
+        DataTable RolesBySecurityEntity();
     }
 }

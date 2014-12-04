@@ -104,7 +104,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             MGroupProfile myProfile = new MGroupProfile();
             myProfile.SecurityEntityId = securityEntityId;
             m_DGroups.Profile = myProfile;
-            return m_DGroups.GetGroupsBySecurityEntity();
+            return m_DGroups.GroupsBySecurityEntity();
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             MGroupProfile retProfile = new MGroupProfile();
             retProfile.Id = groupId;
             m_DGroups.Profile = retProfile;
-            retProfile = new MGroupProfile(m_DGroups.GetProfileData());
+            retProfile = new MGroupProfile(m_DGroups.ProfileData());
             return retProfile;
         }
 
@@ -165,7 +165,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             ArrayList ClientRoles = new ArrayList();
             m_DGroups.GroupRolesProfile = profile;
-            DataTable myDataTable = m_DGroups.GetGroupRoles();
+            DataTable myDataTable = m_DGroups.GroupRoles();
             DataRow myDR = null;
             foreach (DataRow myDR_loopVariable in myDataTable.Rows)
             {

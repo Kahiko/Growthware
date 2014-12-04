@@ -134,7 +134,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public void GetProfile(MRoleProfile profile)
         {
             m_BRoles.Profile = profile;
-            profile = new MRoleProfile(m_BRoles.GetProfileData());
+            profile = new MRoleProfile(m_BRoles.ProfileData());
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetRolesBySecurityEntity(int securityEntityId)
         {
             m_BRoles.SecurityEntitySeqID = securityEntityId;
-            return m_BRoles.GetRolesBySecurityEntity();
+            return m_BRoles.RolesBySecurityEntity();
         }
 
         /// <summary>
@@ -156,7 +156,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetAccountsInRole(MRoleProfile profile)
         {
             m_BRoles.Profile = profile;
-            return m_BRoles.GetAccountsInRole();
+            return m_BRoles.AccountsInRole();
         }
 
         /// <summary>
@@ -167,7 +167,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetAccountsNotInRole(MRoleProfile profile)
         {
             m_BRoles.Profile = profile;
-            return m_BRoles.GetAccountsNotInRole();
+            return m_BRoles.AccountsNotInRole();
         }
 
         /// <summary>

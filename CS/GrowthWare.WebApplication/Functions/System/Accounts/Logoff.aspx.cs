@@ -12,7 +12,7 @@ namespace GrowthWare.WebApplication.Functions.System.Accounts
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            AccountUtility.Logoff();
+            AccountUtility.LogOff();
         }
     }
 }

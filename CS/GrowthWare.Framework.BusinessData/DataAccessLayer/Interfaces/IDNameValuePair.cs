@@ -49,7 +49,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Gets the NVP detail.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow GetNVPDetail();
+        DataRow NameValuePairDetail();
 
         /// <summary>
         /// Gets the NVP details.
@@ -57,13 +57,13 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// <param name="nameValuePairSeqDetailId">The NVP seq det ID.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataRow.</returns>
-        DataRow GetNVPDetails(int nameValuePairSeqDetailId, int nameValuePairSeqId);
+        DataRow NameValuePairDetails(int nameValuePairSeqDetailId, int nameValuePairSeqId);
 
         /// <summary>
         /// Gets all NVP detail.
         /// </summary>
         /// <returns>DataTable.</returns>
-        DataTable GetAllNVPDetail();
+        DataTable AllNameValuePairDetail();
 
         /// <summary>
         /// Gets all NVP detail.
@@ -120,7 +120,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
         /// Gets the NVP.
         /// </summary>
         /// <returns>DataRow.</returns>
-        DataRow GetNVP();
+        DataRow NameValuePair();
 
         /// <summary>
         /// Saves this instance.

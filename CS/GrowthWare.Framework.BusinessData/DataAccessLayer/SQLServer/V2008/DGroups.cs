@@ -73,7 +73,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         /// Get's all of the groups for a given Security Entity
         /// </summary>
         /// <returns>DataTable</returns>
-        public DataTable GetGroupsBySecurityEntity()
+        public DataTable GroupsBySecurityEntity()
         {
             SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityId), new SqlParameter("@P_Group_SeqID", -1) };
             String mStoreProc = "ZGWSecurity.Get_Group";
@@ -84,7 +84,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         /// Returns a data row necessary to populate MGroupProfile
         /// </summary>
         /// <returns>DataRow</returns>
-        public DataRow GetProfileData()
+        public DataRow ProfileData()
         {
             SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityId), new SqlParameter("@P_Group_SeqID", Profile.Id) };
             String mStoreProc = "ZGWSecurity.Get_Group";
@@ -107,7 +107,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         /// </summary>
         /// <returns>DataTable</returns>
         /// <exception cref="System.ApplicationException"></exception>
-        public DataTable GetGroupRoles()
+        public DataTable GroupRoles()
         {
             if (GroupRolesProfile.GroupSeqId == -1)
             {

@@ -1,8 +1,10 @@
 ﻿using GrowthWare.Framework.BusinessData.BusinessLogicLayer;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
+using System;
 using System.Collections;
 using System.Data;
+using System.Globalization;
 using System.Web;
 
 namespace GrowthWare.WebSupport.Utilities
@@ -20,19 +22,19 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>System.String.</returns>
         public static string SecurityEntitiesRolesCacheName(int securityEntitySeqId)
         {
-            string retVal = "SecurityEntityRoles" + securityEntitySeqId;
+            string retVal = "SecurityEntityRoles" + securityEntitySeqId.ToString(CultureInfo.InvariantCulture);
             return retVal;
         }
 
         /// <summary>
         /// Gets the profile.
         /// </summary>
-        /// <param name="roleID">The role ID.</param>
+        /// <param name="roleId">The role ID.</param>
         /// <returns>MRoleProfile.</returns>
-        public static MRoleProfile GetProfile(int roleID)
+        public static MRoleProfile GetProfile(int roleId)
         {
             MRoleProfile myProfile = new MRoleProfile();
-            myProfile.Id = roleID;
+            myProfile.Id = roleId;
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             myBRoles.GetProfile(myProfile);
             return myProfile;
@@ -45,6 +47,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public static void DeleteRole(MRoleProfile profile)
         {
+            if(profile == null)  throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             myBRoles.DeleteRole(profile);
             RemoveRoleCache(profile.SecurityEntityId);
@@ -58,6 +61,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>ArrayList.</returns>
         public static ArrayList GetAccountsInRole(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             ArrayList colAccounts = new ArrayList();
             DataRow accountsRow = null;
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
@@ -77,6 +81,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>ArrayList.</returns>
         public static ArrayList GetAccountsNotInRole(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             ArrayList colAccounts = new ArrayList();
             DataRow accountsRow = null;
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
@@ -143,6 +148,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void Save(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             myBRoles.Save(profile);
             RemoveRoleCache(profile.SecurityEntityId);
@@ -156,6 +162,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be blank or a null reference (Nothing in Visual Basic)");
             BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBRoles.Search(searchCriteria);
         }
@@ -163,16 +170,17 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Updates all accounts for role.
         /// </summary>
-        /// <param name="roleID">The role ID.</param>
+        /// <param name="roleId">The role ID.</param>
         /// <param name="securityEntitySeqId">The security entity Seq ID.</param>
         /// <param name="accounts">The accounts.</param>
-        /// <param name="accountID">The account ID.</param>
+        /// <param name="accountId">The account ID.</param>
         /// <returns><c>true</c> if no errors, <c>true</c> otherwise false</returns>
-        public static bool UpdateAllAccountsForRole(int roleID, int securityEntitySeqId, string[] accounts, int accountID)
+        public static bool UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
         {
+            if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be blank or a null reference (Nothing in Visual Basic)");
             bool success = false;
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            success = myBRoles.UpdateAllAccountsForRole(roleID, securityEntitySeqId, accounts, accountID);
+            success = myBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
             return success;
         }
 

@@ -98,7 +98,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataRow GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
          {
             DataRow mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetNVPDetails(nameValuePairSeqDetailId, nameValuePairSeqId);
+            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairSeqDetailId, nameValuePairSeqId);
             return mRetVal;
         }
 
@@ -109,7 +109,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetAllNameValuePairDetail()
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetAllNVPDetail();
+            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.AllNameValuePairDetail();
             return mRetVal;
         }
 
@@ -134,7 +134,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             DataRow mRetVal = null;
             m_DNameValuePair.NameValuePairProfile.Id = nameValuePairSeqId;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetNVP();
+            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.NameValuePair();
             return mRetVal;
         }
 
