@@ -213,6 +213,7 @@
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.css" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.structure.css" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
+    <Content Include="Public\Scripts\bootstrap-dialog.js" />
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
     <Content Include="Public\Scripts\jquery.tmpl.js" />
