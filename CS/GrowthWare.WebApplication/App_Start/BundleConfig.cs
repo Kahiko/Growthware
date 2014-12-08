@@ -35,6 +35,7 @@ namespace GrowthWare.WebApplication
         bundles.Add(
             new ScriptBundle("~/bundles/bootstrap").Include(
                 "~/" + ConfigSettings.AppName + "Public/Scripts/bootstrap.js",
+                "~/" + ConfigSettings.AppName + "Public/Scripts/bootstrap-dialog.js",
                 "~/" + ConfigSettings.AppName + "Public/Scripts/respond.js"
             )
         );

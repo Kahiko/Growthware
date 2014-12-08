@@ -202,6 +202,7 @@
     <Content Include="Public\Growthware\Styles\GrowthWare.css" />
     <Content Include="Public\Scripts\angular-1.2.js" />
     <Content Include="Public\Scripts\angular-1.3.js" />
+    <Content Include="Public\Scripts\bootstrap-dialog.js" />
     <Content Include="Public\Scripts\bootstrap.js" />
     <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
