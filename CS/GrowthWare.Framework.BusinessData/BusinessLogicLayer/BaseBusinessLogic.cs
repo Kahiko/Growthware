@@ -17,7 +17,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// IsDatabaseOnline return bool based on ConfigSettings.DBStatus
         /// </summary>
         /// <returns>bool</returns>
-        protected virtual bool IsDatabaseOnline()
+        protected virtual bool DatabaseIsOnline()
         {
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
             {

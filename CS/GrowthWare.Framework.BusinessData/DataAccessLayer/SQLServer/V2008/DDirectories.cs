@@ -19,7 +19,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
-        void IDDirectories.Save(ref MDirectoryProfile profile)
+        void IDDirectories.Save(MDirectoryProfile profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             String mStoredProcedure = "ZGWOptional.Set_Directory";

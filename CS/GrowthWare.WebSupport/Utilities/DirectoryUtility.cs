@@ -154,7 +154,7 @@ namespace GrowthWare.WebSupport.Utilities
                 profile.ImpersonateAccount = CryptoUtility.Encrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType);
             }
             BDirectories myBLL = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-            myBLL.Save(ref profile);
+            myBLL.Save(profile);
             String mCacheName = mSecurityEntityProfile.Id.ToString() + "_" + m_DirectoryInfoCachedName;
             CacheController.RemoveFromCache(mCacheName);
         }

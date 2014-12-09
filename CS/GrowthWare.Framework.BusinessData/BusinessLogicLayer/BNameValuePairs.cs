@@ -52,7 +52,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public bool DeleteNameValuePairDetail(MNameValuePairDetail detailProfile)
         {
             bool mRetVal = false;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.DeleteNVPDetail(detailProfile);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.DeleteNVPDetail(detailProfile);
             return mRetVal;
         }
 
@@ -68,7 +68,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             // for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePair.AccountId = -1;
             m_DNameValuePair.NameValuePairProfile.Id = -1;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetAllNVP();
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.GetAllNVP();
             return mRetVal;
         }
 
@@ -85,7 +85,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             // for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePair.AccountId = accountId;
             m_DNameValuePair.NameValuePairProfile.Id = -1;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetAllNVP();
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.GetAllNVP();
             return mRetVal;
         }
 
@@ -98,7 +98,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataRow GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
          {
             DataRow mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairSeqDetailId, nameValuePairSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairSeqDetailId, nameValuePairSeqId);
             return mRetVal;
         }
 
@@ -109,7 +109,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetAllNameValuePairDetail()
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.AllNameValuePairDetail();
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.AllNameValuePairDetail();
             return mRetVal;
         }
 
@@ -121,7 +121,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetAllNameValuePairDetail(int nameValuePairSeqId)
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetAllNVPDetail(nameValuePairSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.GetAllNVPDetail(nameValuePairSeqId);
             return mRetVal;
         }
 
@@ -134,7 +134,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             DataRow mRetVal = null;
             m_DNameValuePair.NameValuePairProfile.Id = nameValuePairSeqId;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.NameValuePair();
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.NameValuePair();
             return mRetVal;
         }
 
@@ -147,7 +147,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             DataTable mRetVal = null;
             m_DNameValuePair.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetRoles(nameValuePairSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.GetRoles(nameValuePairSeqId);
             return mRetVal;
         }
 
@@ -160,7 +160,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             DataTable mRetVal = null;
             m_DNameValuePair.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.GetGroups(nameValuePairSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.GetGroups(nameValuePairSeqId);
             return mRetVal;
         }
 
@@ -173,7 +173,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             int mRetVal = -1;
             m_DNameValuePair.NameValuePairProfile = nameValuePairProfile;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.Save();
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.Save();
             return mRetVal;
         }
 
@@ -185,7 +185,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public void SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetailProfile)
         {
             m_DNameValuePair.DetailProfile = nameValuePairDetailProfile;
-            if (IsDatabaseOnline()) m_DNameValuePair.SaveNVPDetail(nameValuePairDetailProfile);
+            if (DatabaseIsOnline()) m_DNameValuePair.SaveNVPDetail(nameValuePairDetailProfile);
         }
 
         /// <summary>
@@ -196,7 +196,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable Search(MSearchCriteria searchCriteria)
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DNameValuePair.Search(searchCriteria);
+            if (DatabaseIsOnline()) mRetVal = m_DNameValuePair.Search(searchCriteria);
             return mRetVal;
         }
 
@@ -209,7 +209,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
         public void UpdateGroups(int nameValuePairId, int securityEntityId, string commaSeparatedGroups, MNameValuePair nameValuePairProfile)
         {
-            if (IsDatabaseOnline()) m_DNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
+            if (DatabaseIsOnline()) m_DNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
         }
 
         /// <summary>
@@ -221,7 +221,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
         public void UpdateRoles(int nameValuePairId, int securityEntityId, string commaSeparatedRoles, MNameValuePair nameValuePairProfile)
         {
-            if (IsDatabaseOnline()) m_DNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile);
+            if (DatabaseIsOnline()) m_DNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile);
         }
     }
 }

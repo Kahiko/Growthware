@@ -80,7 +80,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public Collection<MDirectoryProfile> Directories()
         {
             Collection<MDirectoryProfile> mRetVal = new Collection<MDirectoryProfile>();
-            if (IsDatabaseOnline()) 
+            if (DatabaseIsOnline()) 
             {
                 DataTable mDataTable = m_DDirectories.Directories();
                 foreach (DataRow mDataRow in mDataTable.Rows)
@@ -96,9 +96,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// Saves the specified profile.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        public void Save(ref MDirectoryProfile profile)
+        public void Save(MDirectoryProfile profile)
         {
-            if(IsDatabaseOnline()) m_DDirectories.Save(ref profile);
+            if(DatabaseIsOnline()) m_DDirectories.Save(profile);
         }
     }
 }

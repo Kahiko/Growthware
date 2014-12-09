@@ -96,7 +96,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (securityEntityProfile == null)
             {
-                throw new ArgumentException("The securityEntityProfile and not be null!");
+                throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
             }
             if (centralManagement)
             {

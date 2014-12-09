@@ -19,7 +19,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 		/// Saves the specified profile.
 		/// </summary>
 		/// <param name="profile">The profile.</param>
-		void Save(ref MDirectoryProfile profile);
+		void Save(MDirectoryProfile profile);
 
 		/// <summary>
 		/// Gets or sets the security entity seq ID.

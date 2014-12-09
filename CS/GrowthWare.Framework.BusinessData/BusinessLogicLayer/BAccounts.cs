@@ -119,7 +119,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             m_DAccounts.Profile = new MAccountProfile();
             m_DAccounts.Profile.Id = accountId;
-            if (IsDatabaseOnline()) m_DAccounts.Delete();
+            if (DatabaseIsOnline()) m_DAccounts.Delete();
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public MAccountProfile GetProfile(string account)
         {
             MAccountProfile mRetVal = null;
-            if (IsDatabaseOnline()) 
+            if (DatabaseIsOnline()) 
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
@@ -169,7 +169,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             try
             {
                 m_DAccounts.Profile = profile;
-                if (IsDatabaseOnline()) mDataTable = m_DAccounts.GetAccounts;
+                if (DatabaseIsOnline()) mDataTable = m_DAccounts.GetAccounts;
                 if (mDataTable != null) 
                 {
                     foreach (DataRow item in mDataTable.Rows)
@@ -202,7 +202,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable GetMenu(String account, MenuType menuType)
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) 
+            if (DatabaseIsOnline()) 
             {
                 mRetVal = m_DAccounts.GetMenu(account, menuType);
             }
@@ -250,7 +250,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentException("profile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts.Profile = profile;
-            if (IsDatabaseOnline()) 
+            if (DatabaseIsOnline()) 
             {
                 profile.Id = m_DAccounts.Save();
                 if (saveGroups)
@@ -273,7 +273,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public DataTable Search(MSearchCriteria searchCriteria)
         {
             DataTable mRetVal = null;
-            if (IsDatabaseOnline()) mRetVal = m_DAccounts.Search(searchCriteria);
+            if (DatabaseIsOnline()) mRetVal = m_DAccounts.Search(searchCriteria);
             return mRetVal;
         }
 

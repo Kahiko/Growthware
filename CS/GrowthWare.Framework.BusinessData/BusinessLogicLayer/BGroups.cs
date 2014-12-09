@@ -1,4 +1,5 @@
-﻿using GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces;
+﻿using GrowthWare.Framework.BusinessData.DataAccessLayer;
+using GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
 using System;
@@ -76,7 +77,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (securityEntityProfile == null)
             {
-                throw new ArgumentException("The securityEntityProfile and not be null!");
+                throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
             }
             if (centralManagement)
             {
@@ -114,8 +115,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>System.Int32.</returns>
         public void AddGroup(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_DGroups.Profile = profile;
-            m_DGroups.AddGroup();
+            if(DatabaseIsOnline()) m_DGroups.AddGroup();
         }
 
         /// <summary>
@@ -139,9 +141,10 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public bool DeleteGroup(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             bool retVal = false;
             m_DGroups.Profile = profile;
-            retVal = m_DGroups.DeleteGroup();
+            if (DatabaseIsOnline()) retVal = m_DGroups.DeleteGroup();
             return retVal;
         }
 
@@ -152,8 +155,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public void Save(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_DGroups.Profile = profile;
-            m_DGroups.Save();
+            if (DatabaseIsOnline()) m_DGroups.Save();
         }
 
         /// <summary>
@@ -163,14 +167,26 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>System.String[][].</returns>
         public string[] GetSelectedRoles(MGroupRoles profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             ArrayList ClientRoles = new ArrayList();
             m_DGroups.GroupRolesProfile = profile;
-            DataTable myDataTable = m_DGroups.GroupRoles();
-            DataRow myDR = null;
-            foreach (DataRow myDR_loopVariable in myDataTable.Rows)
+            DataTable myDataTable = null;
+            if (DatabaseIsOnline()) 
             {
-                myDR = myDR_loopVariable;
-                ClientRoles.Add(myDR["Role"].ToString());
+                try
+                {
+                    myDataTable = m_DGroups.GroupRoles();
+                    DataRow myDR = null;
+                    foreach (DataRow myDR_loopVariable in myDataTable.Rows)
+                    {
+                        myDR = myDR_loopVariable;
+                        ClientRoles.Add(myDR["Role"].ToString());
+                    }
+                }
+                catch (DataAccessLayerException)
+                {
+                    throw;
+                }
             }
             return (string[])ClientRoles.ToArray(typeof(string));
         }
@@ -182,7 +198,10 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search( MSearchCriteria searchCriteria)
         {
-            return m_DGroups.Search(searchCriteria);
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!");
+            DataTable mRetVal = null;
+            if (DatabaseIsOnline()) mRetVal = m_DGroups.Search(searchCriteria);
+            return mRetVal;
         }
 
         /// <summary>
@@ -192,8 +211,11 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public bool UpdateGroupRoles(MGroupRoles profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+            bool mRetVal = false;
             m_DGroups.GroupRolesProfile = profile;
-            return m_DGroups.UpdateGroupRoles();
+            if (DatabaseIsOnline()) mRetVal = m_DGroups.UpdateGroupRoles();
+            return mRetVal;
         }
     }
 }

@@ -30,7 +30,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// ]]>
     /// </code>
     /// </example>
-    public class BRoles
+    public class BRoles : BaseBusinessLogic
     {
         private IDRoles m_BRoles;
 
@@ -78,7 +78,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (securityEntityProfile == null)
             {
-                throw new ArgumentException("The securityEntityProfile and not be null!");
+                throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
             }
             if (centralManagement)
             {
@@ -102,8 +102,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="profile">The profile.</param>
         public void Save(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_BRoles.Profile = profile;
-            m_BRoles.Save();
+            if (DatabaseIsOnline()) m_BRoles.Save();
         }
 
         /// <summary>
@@ -113,7 +114,10 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            return m_BRoles.Search(searchCriteria);
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!");
+            DataTable mRetVal = null;
+            if (DatabaseIsOnline()) mRetVal = m_BRoles.Search(searchCriteria);
+            return mRetVal;
         }
 
         /// <summary>
@@ -123,8 +127,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public void DeleteRole(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_BRoles.Profile = profile;
-            m_BRoles.DeleteRole();
+            if (DatabaseIsOnline()) m_BRoles.DeleteRole();
         }
 
         /// <summary>
@@ -133,8 +138,9 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="profile">The profile.</param>
         public void GetProfile(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_BRoles.Profile = profile;
-            profile = new MRoleProfile(m_BRoles.ProfileData());
+            if (DatabaseIsOnline()) m_BRoles.ProfileData();
         }
 
         /// <summary>
@@ -155,8 +161,11 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable GetAccountsInRole(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+            DataTable mRetVal = null;
             m_BRoles.Profile = profile;
-            return m_BRoles.AccountsInRole();
+            if (DatabaseIsOnline()) mRetVal = m_BRoles.AccountsInRole();
+            return mRetVal;
         }
 
         /// <summary>
@@ -166,8 +175,11 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable GetAccountsNotInRole(MRoleProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+            DataTable mRetVal = null;
             m_BRoles.Profile = profile;
-            return m_BRoles.AccountsNotInRole();
+            if (DatabaseIsOnline()) mRetVal = m_BRoles.AccountsNotInRole();
+            return mRetVal;
         }
 
         /// <summary>
@@ -180,7 +192,10 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public bool UpdateAllAccountsForRole(int roleSeqId, int securityEntityId, string[] accounts, int accountSeqId)
         {
-            return m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
+            if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!!");
+            bool mRetVal = false;
+            if (DatabaseIsOnline()) mRetVal = m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
+            return mRetVal;
         }
     }
 }
