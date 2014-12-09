@@ -8,7 +8,7 @@
         <script type="text/javascript" language="javascript">
             $(document).ready(function () {
                 if (typeof jQuery.ui != 'undefined') {
-                    $("#btnSave").css("display", "none");
+                    //$("#btnSave").css("display", "none");
                     $("#btnSave").button();
                     $("#tabs").tabs();
                     $("#tabs").tabs("option", "selected", 0);
@@ -31,7 +31,11 @@
                 canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
                 canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
                 profile = {};
-                profile.Account = $("#<%=txtAccount.ClientID %>").val();
+                if (document.getElementById("<%=txtAccount.ClientID%>") != null) {
+                    profile.Account = $("#<%=txtAccount.ClientID %>").val();
+                } else {
+                    profile.Account = $("#<%=txtEmail.ClientID %>").val();
+                }
                 profile.AccountGroups = accountGroups;
                 profile.AccountRoles = accountRoles;
                 profile.CanSaveGroups = canSaveGroups;
@@ -42,8 +46,11 @@
                 profile.FirstName = $("#<%=txtFirstName.ClientID %>").val();
                 profile.Id = parseInt($("#<%=txtAccount_seq_id.ClientID %>").val());
                 profile.IsSystemAdmin = false;
-                if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
-                    profile.IsSystemAdmin = true;
+                if (document.getElementById("<%=chkSysAdmin.ClientID %>") != null)
+                {
+                    if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
+                        profile.IsSystemAdmin = true;
+                    }
                 }
                 profile.LastName = $("#<%=txtLastName.ClientID %>").val();
                 profile.Location = $("#<%=txtLocation.ClientID %>").val();
@@ -63,7 +70,12 @@
                     options.data = JSON.stringify(theData);
                     options.contentType = 'application/json; charset=utf-8';
                     options.dataType = 'json';
-                    options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts";
+                    var mAction = GW.Common.getParameterByName('Action');
+                    if (mAction != 'Register') {
+                        options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts";
+                    } else {
+                        options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=Register";
+                    }
                     GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                     if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
                         $dialogWindow.dialog("close");
@@ -72,8 +84,11 @@
             }
 
             function saveAddEditAccountSucess(xhr) {
-                GW.Navigation.NavigationController.Refresh();
-                GW.Search.GetSearchResults();
+                alert(xhr);
+                if (xhr==true) {
+                    GW.Navigation.NavigationController.Refresh();
+                    GW.Search.GetSearchResults();
+                }
             }
 
             function saveAddEditAccountError(xhr, status, error) {
@@ -93,7 +108,7 @@
 					    <li role="presentation"><a data-toggle="tab" href="#tabsGeneral">General</a></li>
 					    <li role="presentation" id="rolesTab" runat="server"><a data-toggle="tab" href="#tabsRoles">Roles</a></li>
 					    <li role="presentation" id="groupsTab" runat="server"><a data-toggle="tab" href="#tabsGroups">Groups</a></li>
-					    <li role="presentation"><a data-toggle="tab" href="#tabsDerivedRoles">Derived Roles</a></li>
+					    <li role="presentation" id="derivedRolesTab" runat="server"><a data-toggle="tab" href="#tabsDerivedRoles">Derived Roles</a></li>
 				    </ul>
                     <div class="tab-content">
 				        <div class="tab-pane fade in active" id="tabsGeneral">
@@ -295,7 +310,7 @@
                                 </table>
                             </p>
 				        </div>
-				        <div class="tab-pane fade" id="tabsDerivedRoles">
+				        <div class="tab-pane fade" id="tabsDerivedRoles" runat="server">
                             <p>
 					            <table cellspacing="0" cellpadding="3" border="0">
 						            <tr>

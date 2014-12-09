@@ -68,6 +68,15 @@ Partial Public Class AddEditAccount
     Protected WithEvents groupsTab As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
+    '''derivedRolesTab control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents derivedRolesTab As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+
+    '''<summary>
     '''txtAccount_seq_id control.
     '''</summary>
     '''<remarks>
@@ -336,6 +345,15 @@ Partial Public Class AddEditAccount
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents ctlGroups As Global.GrowthWare.WebSupport.CustomWebControls.ListPicker
+
+    '''<summary>
+    '''tabsDerivedRoles control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents tabsDerivedRoles As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''lstBoxRoles control.

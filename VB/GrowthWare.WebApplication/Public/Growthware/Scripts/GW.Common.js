@@ -48,10 +48,13 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 		},
 
 		getParameterByName: function (name) {
+		    var windowLocation = window.location.search;
+		    if (windowLocation.length == 0) windowLocation = document.location.hash;
+		    windowLocation = windowLocation.replace('#', '');
 			name = name.replace(/[\[]/, "\\\[").replace(/[\]]/, "\\\]");
 			var regexS = "[\\?&]" + name + "=([^&#]*)";
 			var regex = new RegExp(regexS);
-			var results = regex.exec(window.location.search);
+			var results = regex.exec(windowLocation);
 			if (results == null)
 				return "";
 			else

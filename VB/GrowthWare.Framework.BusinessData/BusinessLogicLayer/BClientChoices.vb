@@ -92,7 +92,7 @@ Namespace BusinessLogicLayer
         Public Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
             Dim mRetVal As MClientChoicesState = Nothing
             Try
-                If IsDatabaseOnline() Then
+                If DatabaseIsOnline() Then
                     mRetVal = New MClientChoicesState(m_DClientChoices.GetChoices(account))
                 End If
             Catch ex As Exception
@@ -108,7 +108,7 @@ Namespace BusinessLogicLayer
         ''' <remarks>MClientChoicesState can be found in the GrowthWare.Framework.ModelObjects namespace.</remarks>
         Public Sub Save(ByVal clientChoicesState As MClientChoicesState)
             If Not clientChoicesState Is Nothing Then
-                If IsDatabaseOnline() Then
+                If DatabaseIsOnline() Then
                     m_DClientChoices.Save(clientChoicesState.ChoicesHashtable)
                 End If
             Else

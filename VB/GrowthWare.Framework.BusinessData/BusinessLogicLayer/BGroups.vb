@@ -1,9 +1,11 @@
 ﻿Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.Model.Profiles
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace BusinessLogicLayer
     Public Class BGroups
+        Inherits BaseBusinessLogic
         Private m_DGroups As IDGroups
 
         ''' <summary>
@@ -66,32 +68,35 @@ Namespace BusinessLogicLayer
 
         Public Function GetGroupsBySecurityEntity(ByVal securityEntityId As Integer) As DataTable
             Dim myProfile As New MGroupProfile
-            myProfile.SecurityEntityID = securityEntityId
+            myProfile.SecurityEntityId = securityEntityId
             m_DGroups.Profile = myProfile
             Return m_DGroups.GroupsBySecurityEntity
         End Function
 
         Public Sub AddGroup(ByVal profile As MGroupProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_DGroups.Profile = profile
-            m_DGroups.Save()
+            If DatabaseIsOnline() Then m_DGroups.Save()
         End Sub
 
         Public Function GetProfile(ByVal groupId As Integer) As MGroupProfile
             Dim retProfile As New MGroupProfile
-            retProfile.ID = groupId
+            retProfile.Id = groupId
             m_DGroups.Profile = retProfile
-            retProfile = New MGroupProfile(m_DGroups.ProfileData)
+            If DatabaseIsOnline() Then retProfile = New MGroupProfile(m_DGroups.ProfileData)
             Return retProfile
         End Function
 
         Public Sub DeleteGroup(ByVal profile As MGroupProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_DGroups.Profile = profile
-            m_DGroups.DeleteGroup()
+            If DatabaseIsOnline() Then m_DGroups.DeleteGroup()
         End Sub
 
         Public Sub UpdateGroup(ByVal profile As MGroupProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_DGroups.Profile = profile
-            m_DGroups.Save()
+            If DatabaseIsOnline() Then m_DGroups.Save()
         End Sub
 
         ''' <summary>
@@ -100,7 +105,10 @@ Namespace BusinessLogicLayer
         ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>DataTable.</returns>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            Return m_DGroups.Search(searchCriteria)
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As DataTable = Nothing
+            If DatabaseIsOnline() Then mRetVal = m_DGroups.Search(searchCriteria)
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -109,13 +117,23 @@ Namespace BusinessLogicLayer
         ''' <param name="profile">The profile.</param>
         ''' <returns>System.String[][].</returns>
         Public Function GetSelectedRoles(ByVal profile As MGroupRoles) As String()
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             Dim ClientRoles As New ArrayList
             m_DGroups.GroupRolesProfile = profile
-            Dim myDataTable As DataTable = m_DGroups.GroupRoles
-            Dim myDR As DataRow
-            For Each myDR In myDataTable.Rows
-                ClientRoles.Add(myDR("Role").ToString)
-            Next
+            Dim myDataTable As DataTable = Nothing
+            If DatabaseIsOnline() Then
+                Try
+                    myDataTable = m_DGroups.GroupRoles
+                    Dim myDR As DataRow
+                    For Each myDR In myDataTable.Rows
+                        ClientRoles.Add(myDR("Role").ToString)
+                    Next
+                Catch ex As DataAccessLayerException
+                    Throw
+                Finally
+                    If Not myDataTable Is Nothing Then myDataTable.Dispose()
+                End Try
+            End If
             Return CType(ClientRoles.ToArray(GetType(String)), String())
         End Function
 
@@ -124,8 +142,9 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub UpdateGroupRoles(ByVal profile As MGroupRoles)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_DGroups.GroupRolesProfile = profile
-            m_DGroups.UpdateGroupRoles()
+            If DatabaseIsOnline() Then m_DGroups.UpdateGroupRoles()
         End Sub
     End Class
 End Namespace

@@ -97,7 +97,7 @@ Namespace BusinessLogicLayer
             'Dim mRetVal As MFunctionProfileCollection = New MFunctionProfileCollection()
             Dim mRetVal As Collection(Of MFunctionProfile) = New Collection(Of MFunctionProfile)
             Dim mDSFunctions As DataSet = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 Try
                     'mDSFunctions = New DataSet
                     m_DFunctions.Profile = New MFunctionProfile
@@ -137,7 +137,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function FunctionTypes() As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 mRetVal = m_DFunctions.FunctionTypes()
             End If
             Return mRetVal
@@ -150,7 +150,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetMenuOrder(ByVal profile As MFunctionProfile) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 mRetVal = m_DFunctions.GetMenuOrder(profile)
             End If
             Return mRetVal
@@ -164,7 +164,7 @@ Namespace BusinessLogicLayer
         ''' <param name="saveRoles">Boolean</param>
         Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 m_DFunctions.Profile = profile
                 profile.Id = m_DFunctions.Save()
                 m_DFunctions.Profile = profile
@@ -192,20 +192,20 @@ Namespace BusinessLogicLayer
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 mRetVal = m_DFunctions.Search(searchCriteria)
             End If
             Return mRetVal
         End Function
 
         Public Sub Delete(ByVal functionSeqId As Integer)
-            If IsDatabaseOnline() Then m_DFunctions.Delete(functionSeqId)
+            If DatabaseIsOnline() Then m_DFunctions.Delete(functionSeqId)
         End Sub
 
         Public Sub MoveMenuOrder(ByVal profile As MFunctionProfile, ByVal direction As DirectionType)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             If profile Is Nothing Then Throw New ArgumentNullException("direction", "direction cannot be a null reference (Nothing in Visual Basic)!")
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 m_DFunctions.UpdateMenuOrder(profile, direction)
             End If
         End Sub

@@ -96,7 +96,7 @@ Namespace BusinessLogicLayer
         Public Function GetMessages(ByVal securityEntitySeqId As Integer) As Collection(Of MMessageProfile)
             Dim mRetVal As Collection(Of MMessageProfile) = New Collection(Of MMessageProfile)
             Dim mDataTable As DataTable = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 Try
                     m_DMessages.SecurityEntitySeqId = securityEntitySeqId
                     mDataTable = m_DMessages.Messages()
@@ -122,7 +122,7 @@ Namespace BusinessLogicLayer
         ''' <returns>Collection{MMessageProfile}.</returns>
         Public Function GetMessage(ByVal messageSeqId As Integer) As MMessageProfile
             Dim mRetVal As MMessageProfile = Nothing
-            If IsDatabaseOnline() Then
+            If DatabaseIsOnline() Then
                 mRetVal = New MMessageProfile(m_DMessages.GetMessage(messageSeqId))
             End If
             Return mRetVal

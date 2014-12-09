@@ -68,7 +68,7 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="detailProfile">The detail profile.</param>
         Public Sub DeleteNameValuePairDetail(ByVal detailProfile As MNameValuePairDetail)
-            If IsDatabaseOnline() Then m_DNameValuePair.DeleteNameValuePairDetail(detailProfile)
+            If DatabaseIsOnline() Then m_DNameValuePair.DeleteNameValuePairDetail(detailProfile)
         End Sub
 
         ''' <summary>
@@ -80,7 +80,7 @@ Namespace BusinessLogicLayer
             m_DNameValuePair.SecurityEntityId = ConfigSettings.DefaultSecurityEntityId ' for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePair.AccountId = -1
             m_DNameValuePair.NameValuePairProfile.Id = -1
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairs
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairs
             Return mRetVal
         End Function
 
@@ -94,7 +94,7 @@ Namespace BusinessLogicLayer
             m_DNameValuePair.SecurityEntityId = ConfigSettings.DefaultSecurityEntityId ' for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePair.AccountId = accountId
             m_DNameValuePair.NameValuePairProfile.Id = -1
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairs
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairs
             Return mRetVal
         End Function
 
@@ -106,7 +106,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataRow.</returns>
         Public Function GetNameValuePairDetails(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As DataRow
             Dim mRetVal As DataRow = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairDetailSeqId, nameValuePairSeqId)
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.NameValuePairDetails(nameValuePairDetailSeqId, nameValuePairSeqId)
             Return mRetVal
         End Function
 
@@ -116,7 +116,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetAllNameValuePairDetail() As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairDetail
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.AllNameValuePairDetail
             Return mRetVal
         End Function
 
@@ -127,7 +127,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetAllNameValuePairDetail(ByVal nameValuePairSeqId As Integer) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetAllNameValuePairDetail(nameValuePairSeqId)
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.GetAllNameValuePairDetail(nameValuePairSeqId)
             Return mRetVal
         End Function
 
@@ -140,7 +140,7 @@ Namespace BusinessLogicLayer
             Dim mRetVal As DataRow = Nothing
             m_DNameValuePair.NameValuePairProfile = New MNameValuePair()
             m_DNameValuePair.NameValuePairProfile.Id = nameValuePairSeqId
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.NameValuePair
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.NameValuePair
             Return mRetVal
         End Function
 
@@ -151,7 +151,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetNameValuePairRoles(ByVal nameValuePairSeqId As Integer) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetRoles(nameValuePairSeqId)
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.GetRoles(nameValuePairSeqId)
             Return mRetVal
         End Function
 
@@ -162,7 +162,7 @@ Namespace BusinessLogicLayer
         ''' <returns>DataTable.</returns>
         Public Function GetNameValuePairGroups(ByVal nameValuePairSeqId As Integer) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.GetGroups(nameValuePairSeqId)
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.GetGroups(nameValuePairSeqId)
             Return mRetVal
         End Function
 
@@ -173,7 +173,7 @@ Namespace BusinessLogicLayer
         Public Function Save(ByVal profile As MNameValuePair) As Integer
             Dim mRetVal As Integer = -1
             m_DNameValuePair.NameValuePairProfile = profile
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.Save()
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.Save()
             Return mRetVal
         End Function
 
@@ -185,7 +185,7 @@ Namespace BusinessLogicLayer
         ''' <remarks></remarks>
         Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Dim mRetVal As DataTable = Nothing
-            If IsDatabaseOnline() Then mRetVal = m_DNameValuePair.Search(searchCriteria)
+            If DatabaseIsOnline() Then mRetVal = m_DNameValuePair.Search(searchCriteria)
             Return mRetVal
         End Function
 
@@ -194,7 +194,7 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="detailProfile">The detail profile.</param>
         Public Sub SaveNameValuePairDetail(ByVal detailProfile As MNameValuePairDetail)
-            If IsDatabaseOnline() Then m_DNameValuePair.SaveNameValuePairDetail(detailProfile)
+            If DatabaseIsOnline() Then m_DNameValuePair.SaveNameValuePairDetail(detailProfile)
         End Sub
 
         ''' <summary>
@@ -205,7 +205,7 @@ Namespace BusinessLogicLayer
         ''' <param name="commaSeparatedGroups">The comma Separated groups.</param>
         ''' <param name="nameValuePairProfile">MNameValuePair</param>
         Public Sub UpdateGroups(ByVal nameValuePairSeqId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal nameValuePairProfile As MNameValuePair)
-            If IsDatabaseOnline() Then m_DNameValuePair.UpdateGroups(nameValuePairSeqId, securityEntityId, commaSeparatedGroups, nameValuePairProfile)
+            If DatabaseIsOnline() Then m_DNameValuePair.UpdateGroups(nameValuePairSeqId, securityEntityId, commaSeparatedGroups, nameValuePairProfile)
         End Sub
 
         ''' <summary>
@@ -216,7 +216,7 @@ Namespace BusinessLogicLayer
         ''' <param name="commaSeparatedRoles">The comma Separated roles.</param>
         ''' <param name="nameValuePairProfile">MNameValuePair</param>
         Public Sub UpdateRoles(ByVal nameValuePairSeqId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedRoles As String, ByVal nameValuePairProfile As MNameValuePair)
-            If IsDatabaseOnline() Then m_DNameValuePair.UpdateRoles(nameValuePairSeqId, securityEntityId, commaSeparatedRoles, nameValuePairProfile)
+            If DatabaseIsOnline() Then m_DNameValuePair.UpdateRoles(nameValuePairSeqId, securityEntityId, commaSeparatedRoles, nameValuePairProfile)
         End Sub
     End Class
 End Namespace

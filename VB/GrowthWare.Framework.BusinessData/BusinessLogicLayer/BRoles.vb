@@ -14,7 +14,7 @@ Namespace BusinessLogicLayer
 
         Public Sub New(securityEntityProfile As MSecurityEntityProfile, centralManagement As Boolean)
             If securityEntityProfile Is Nothing Then
-                Throw New ArgumentException("The securityEntityProfile and not be null!")
+                Throw New ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!")
             End If
             If centralManagement Then
                 If m_BRoles Is Nothing Then
@@ -32,8 +32,9 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Save(profile As MRoleProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_BRoles.Profile = profile
-            m_BRoles.Save()
+            If DatabaseIsOnline() Then m_BRoles.Save()
         End Sub
 
         ''' <summary>
@@ -42,7 +43,10 @@ Namespace BusinessLogicLayer
         ''' <param name="searchCriteria">The search critera.</param>
         ''' <returns>System.Data.DataTable.</returns>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
-            Return m_BRoles.Search(searchCriteria)
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As DataTable = Nothing
+            If DatabaseIsOnline() Then m_BRoles.Search(searchCriteria)
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -50,8 +54,9 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Delete(profile As MRoleProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_BRoles.Profile = profile
-            m_BRoles.DeleteRole()
+            If DatabaseIsOnline() Then m_BRoles.DeleteRole()
         End Sub
 
         ''' <summary>
@@ -59,8 +64,9 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub GetProfile(ByVal profile As MRoleProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_BRoles.Profile = profile
-            profile = New MRoleProfile(m_BRoles.ProfileData())
+            If DatabaseIsOnline() Then profile = New MRoleProfile(m_BRoles.ProfileData())
         End Sub
 
         ''' <summary>
@@ -69,8 +75,10 @@ Namespace BusinessLogicLayer
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.Data.DataTable.</returns>
         Public Function GetRolesBySecurityEntity(securityEntityId As Integer) As DataTable
+            Dim mRetVal As DataTable = Nothing
             m_BRoles.SecurityEntitySeqId = securityEntityId
-            Return m_BRoles.RolesBySecurityEntity()
+            If DatabaseIsOnline() Then mRetVal = m_BRoles.RolesBySecurityEntity()
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -79,8 +87,11 @@ Namespace BusinessLogicLayer
         ''' <param name="profile">The profile.</param>
         ''' <returns>System.Data.DataTable.</returns>
         Public Function GetAccountsInRole(profile As MRoleProfile) As DataTable
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As DataTable = Nothing
             m_BRoles.Profile = profile
-            Return m_BRoles.AccountsInRole()
+            If DatabaseIsOnline() Then mRetVal = m_BRoles.AccountsInRole()
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -88,9 +99,12 @@ Namespace BusinessLogicLayer
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         ''' <returns>System.Data.DataTable.</returns>
-        Public Function GetAccountsNotInRole(profile As MRoleProfile) As System.Data.DataTable
+        Public Function GetAccountsNotInRole(profile As MRoleProfile) As DataTable
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As DataTable = Nothing
             m_BRoles.Profile = profile
-            Return m_BRoles.AccountsNotInRole()
+            If DatabaseIsOnline() Then mRetVal = m_BRoles.AccountsNotInRole()
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -102,7 +116,10 @@ Namespace BusinessLogicLayer
         ''' <param name="accountSeqId">The account seq ID.</param>
         ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         Public Function UpdateAllAccountsForRole(roleSeqId As Integer, securityEntityId As Integer, accounts As String(), accountSeqId As Integer) As Boolean
-            Return m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, AccountSeqID)
+            If accounts Is Nothing Then Throw New ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As Boolean = False
+            If DatabaseIsOnline() Then mRetVal = m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId)
+            Return mRetVal
         End Function
 
     End Class

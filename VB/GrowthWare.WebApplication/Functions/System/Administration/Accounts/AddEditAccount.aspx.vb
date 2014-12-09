@@ -2,14 +2,17 @@
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.WebSupport
 Imports GrowthWare.WebSupport.BasePages
+Imports System.Globalization
 
 Public Class AddEditAccount
     Inherits ClientChoicesPage
 
     Private m_Profile As MAccountProfile = Nothing
+    Private m_Action As String = Nothing
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         btnSave.Visible = False
+        m_Action = GWWebHelper.GetQueryValue(Request, "Action")
         If Not String.IsNullOrEmpty(Request.QueryString("AccountSeqID")) Then
             Dim mAccountSeqID As Integer = Integer.Parse(Request.QueryString("AccountSeqID").ToString())
             If Not mAccountSeqID = -1 Then
@@ -25,6 +28,12 @@ Public Class AddEditAccount
             hdnCanSaveStatus.Value = False
             tdStatus.Style.Add("display", "none")
             dropStatus.Style.Add("display", "none")
+            If m_Action.ToUpper(CultureInfo.InvariantCulture) = "REGISTER" Then
+                m_Profile = New MAccountProfile()
+                trAccount.Visible = False
+                tabsDerivedRoles.Visible = False
+                derivedRolesTab.Visible = False
+            End If
         End If
         HttpContext.Current.Session.Add("EditId", m_Profile.Id)
         populatePage()

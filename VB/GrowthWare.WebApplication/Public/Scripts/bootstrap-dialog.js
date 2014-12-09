@@ -33,134 +33,6 @@
 
     "use strict";
 
-    /* ================================================
-     * Definition of BootstrapDialogModal.
-     * Extend Bootstrap Modal and override some functions.
-     * BootstrapDialogModal === Modified Modal.
-     * ================================================ */
-    var Modal = $.fn.modal.Constructor;
-    var BootstrapDialogModal = function(element, options) {
-        Modal.call(this, element, options);
-    };
-    BootstrapDialogModal.getModalVersion = function() {
-        var version = null;
-        if (typeof $.fn.modal.Constructor.VERSION === 'undefined') {
-            version = 'v3.1';
-        } else if (/3\.2\.\d+/.test($.fn.modal.Constructor.VERSION)) {
-            version = 'v3.2';
-        } else {
-            version = 'v3.3';  // v3.3+
-        }
-
-        return version;
-    };
-    BootstrapDialogModal.ORIGINAL_BODY_PADDING = $('body').css('padding-right') || 0;
-    BootstrapDialogModal.METHODS_TO_OVERRIDE = {};
-    BootstrapDialogModal.METHODS_TO_OVERRIDE['v3.1'] = {};
-    BootstrapDialogModal.METHODS_TO_OVERRIDE['v3.2'] = {
-        hide: function(e) {
-            if (e) {
-                e.preventDefault();
-            }
-            e = $.Event('hide.bs.modal');
-
-            this.$element.trigger(e);
-
-            if (!this.isShown || e.isDefaultPrevented()) {
-                return;
-            }
-
-            this.isShown = false;
-
-            // Remove css class 'modal-open' when the last opened dialog is closing.
-            var openedDialogs = this.getGlobalOpenedDialogs();
-            if (openedDialogs.length === 0) {
-                this.$body.removeClass('modal-open');
-            }
-
-            this.resetScrollbar();
-            this.escape();
-
-            $(document).off('focusin.bs.modal');
-
-            this.$element
-            .removeClass('in')
-            .attr('aria-hidden', true)
-            .off('click.dismiss.bs.modal');
-
-            $.support.transition && this.$element.hasClass('fade') ?
-            this.$element
-            .one('bsTransitionEnd', $.proxy(this.hideModal, this))
-            .emulateTransitionEnd(300) :
-            this.hideModal();
-        }
-    };
-    BootstrapDialogModal.METHODS_TO_OVERRIDE['v3.3'] = {
-        /**
-         * Overrided.
-         * 
-         * @returns {undefined}
-         */
-        setScrollbar: function() {
-            var bodyPad = BootstrapDialogModal.ORIGINAL_BODY_PADDING;
-            if (this.bodyIsOverflowing) {
-                this.$body.css('padding-right', bodyPad + this.scrollbarWidth);
-            }
-        },
-        /**
-         * Overrided.
-         * 
-         * @returns {undefined}
-         */
-        resetScrollbar: function() {
-            var openedDialogs = this.getGlobalOpenedDialogs();
-            if (openedDialogs.length === 0) {
-                this.$body.css('padding-right', BootstrapDialogModal.ORIGINAL_BODY_PADDING);
-            }
-        },
-        /**
-         * Overrided.
-         * 
-         * @returns {undefined}
-         */
-        hideModal: function() {
-            this.$element.hide();
-            this.backdrop($.proxy(function() {
-                var openedDialogs = this.getGlobalOpenedDialogs();
-                if (openedDialogs.length === 0) {
-                    this.$body.removeClass('modal-open');
-                }
-                this.resetAdjustments();
-                this.resetScrollbar();
-                this.$element.trigger('hidden.bs.modal');
-            }, this));
-        }
-    };
-    BootstrapDialogModal.prototype = {
-        constructor: BootstrapDialogModal,
-        /**
-         * New function, to get the dialogs that opened by BootstrapDialog.
-         * 
-         * @returns {undefined}
-         */
-        getGlobalOpenedDialogs: function() {
-            var openedDialogs = [];
-            $.each(BootstrapDialog.dialogs, function(id, dialogInstance) {
-                if (dialogInstance.isRealized() && dialogInstance.isOpened()) {
-                    openedDialogs.push(dialogInstance);
-                }
-            });
-
-            return openedDialogs;
-        }
-    };
-
-    // Add compatible methods.
-    BootstrapDialogModal.prototype = $.extend(BootstrapDialogModal.prototype, Modal.prototype, BootstrapDialogModal.METHODS_TO_OVERRIDE[BootstrapDialogModal.getModalVersion()]);
-
-    /* ================================================
-     * Definition of BootstrapDialog.
-     * ================================================ */
     var BootstrapDialog = function(options) {
         this.defaultOptions = $.extend(true, {
             id: BootstrapDialog.newGuid(),
@@ -215,6 +87,9 @@
     BootstrapDialog.BUTTON_SIZES[BootstrapDialog.SIZE_LARGE] = 'btn-lg';
 
     BootstrapDialog.ICON_SPINNER = 'glyphicon glyphicon-asterisk';
+
+    BootstrapDialog.ZINDEX_BACKDROP = 1040;
+    BootstrapDialog.ZINDEX_MODAL = 1050;
 
     /**
      * Default options.
@@ -271,49 +146,22 @@
         }
     };
 
-    BootstrapDialog.METHODS_TO_OVERRIDE = {};
-    BootstrapDialog.METHODS_TO_OVERRIDE['v3.1'] = {
-        handleModalBackdropEvent: function() {
-            this.getModal().on('click', {dialog: this}, function(event) {
-                event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
-            });
-
-            return this;
-        },
-        /**
-         * To make multiple opened dialogs look better.
-         * 
-         * Will be removed in later version, after Bootstrap Modal >= 3.3.0, updating z-index is unnecessary.
-         */
-        updateZIndex: function() {
-            var zIndexBackdrop = 1040;
-            var zIndexModal = 1050;
-            var dialogCount = 0;
-            $.each(BootstrapDialog.dialogs, function(dialogId, dialogInstance) {
-                dialogCount++;
-            });
-            var $modal = this.getModal();
-            var $backdrop = $modal.data('bs.modal').$backdrop;
-            $modal.css('z-index', zIndexModal + (dialogCount - 1) * 20);
-            $backdrop.css('z-index', zIndexBackdrop + (dialogCount - 1) * 20);
-
-            return this;
-        },
-        open: function() {
-            !this.isRealized() && this.realize();
-            this.getModal().modal('show');
-            this.updateZIndex();
-            this.setOpened(true);
-
-            return this;
+    /**
+     * Show scrollbar if the last visible dialog needs one.
+     */
+    BootstrapDialog.showScrollbar = function() {
+        var lastDialogInstance = null;
+        $.each(BootstrapDialog.dialogs, function(id, dialogInstance) {
+            lastDialogInstance = dialogInstance;
+        });
+        if (lastDialogInstance !== null && lastDialogInstance.isRealized() && lastDialogInstance.isOpened()) {
+            var bsModal = lastDialogInstance.getModal().data('bs.modal');
+            bsModal.checkScrollbar();
+            $('body').addClass('modal-open');
+            bsModal.setScrollbar();
         }
     };
-    BootstrapDialog.METHODS_TO_OVERRIDE['v3.2'] = {
-        handleModalBackdropEvent: BootstrapDialog.METHODS_TO_OVERRIDE['v3.1']['handleModalBackdropEvent'],
-        updateZIndex: BootstrapDialog.METHODS_TO_OVERRIDE['v3.1']['updateZIndex'],
-        open: BootstrapDialog.METHODS_TO_OVERRIDE['v3.1']['open']
-    };
-    BootstrapDialog.METHODS_TO_OVERRIDE['v3.3'] = {};
+
     BootstrapDialog.prototype = {
         constructor: BootstrapDialog,
         initOptions: function(options) {
@@ -971,7 +819,9 @@
             });
 
             // Backdrop, I did't find a way to change bs3 backdrop option after the dialog is popped up, so here's a new wheel.
-            this.handleModalBackdropEvent();
+            this.getModal().on('click', {dialog: this}, function(event) {
+                event.target === this && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
+            });
 
             // ESC key support
             this.getModal().on('keyup', {dialog: this}, function(event) {
@@ -985,13 +835,6 @@
                     var $button = $(dialog.registeredButtonHotkeys[event.which]);
                     !$button.prop('disabled') && $button.focus().trigger('click');
                 }
-            });
-
-            return this;
-        },
-        handleModalBackdropEvent: function() {
-            this.getModal().on('click', {dialog: this}, function(event) {
-                $(event.target).hasClass('modal-backdrop') && event.data.dialog.isClosable() && event.data.dialog.canCloseByBackdrop() && event.data.dialog.close();
             });
 
             return this;
@@ -1027,6 +870,21 @@
 
             return this;
         },
+        /**
+         * To make multiple opened dialogs look better.
+         */
+        updateZIndex: function() {
+            var dialogCount = 0;
+            $.each(BootstrapDialog.dialogs, function(dialogId, dialogInstance) {
+                dialogCount++;
+            });
+            var $modal = this.getModal();
+            var $backdrop = $modal.data('bs.modal').$backdrop;
+            $modal.css('z-index', BootstrapDialog.ZINDEX_MODAL + (dialogCount - 1) * 20);
+            $backdrop.css('z-index', BootstrapDialog.ZINDEX_BACKDROP + (dialogCount - 1) * 20);
+
+            return this;
+        },
         realize: function() {
             this.initModalStuff();
             this.getModal().addClass(BootstrapDialog.NAMESPACE)
@@ -1038,11 +896,11 @@
             this.getModalFooter().append(this.createFooterContent());
             this.getModalHeader().append(this.createHeaderContent());
             this.getModalBody().append(this.createBodyContent());
-            this.getModal().data('bs.modal', new BootstrapDialogModal(this.getModal(), {
+            this.getModal().modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: false
-            }));
+            });
             this.makeModalDraggable();
             this.handleModalEvents();
             this.setRealized(true);
@@ -1059,6 +917,7 @@
         open: function() {
             !this.isRealized() && this.realize();
             this.getModal().modal('show');
+            this.updateZIndex();
             this.setOpened(true);
 
             return this;
@@ -1070,12 +929,12 @@
             }
             this.setOpened(false);
 
+            // Show scrollbar if the last visible dialog needs one.
+            BootstrapDialog.showScrollbar();
+
             return this;
         }
     };
-
-    // Add compatible methods.
-    BootstrapDialog.prototype = $.extend(BootstrapDialog.prototype, BootstrapDialog.METHODS_TO_OVERRIDE[BootstrapDialogModal.getModalVersion()]);
 
     /**
      * RFC4122 version 4 compliant unique id creator.
