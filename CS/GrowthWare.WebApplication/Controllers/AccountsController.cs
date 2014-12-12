@@ -114,7 +114,78 @@ public class AccountsController : ApiController
 		}
 		AccountUtility.RemoveInMemoryInformation(true);
 		return Ok(mMessageProfile.Body);
-	} 
+	}
+
+    [HttpPost()]
+    public IHttpActionResult Save(UIAccountProfile uiProfile) 
+    {
+        if (uiProfile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
+        string mRetVal = "False";
+        bool mSaveGroups = false;
+        bool mSaveRoles = false;
+        Logger mLog = Logger.Instance();
+        if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
+        {
+            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+            mAccountProfile = populateAccountProfile(uiProfile, mAccountProfile);
+            mAccountProfile.Id = uiProfile.Id;
+            String mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
+            String mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
+        }
+        else 
+        {
+            if (HttpContext.Current.Items["EditId"] != null)
+            {
+                int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                if (mEditId == uiProfile.Id)
+                {
+                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    if (mSecurityInfo != null)
+                    {
+                        if (mEditId != 1)
+                        {
+                            if (mSecurityInfo.MayEdit) 
+                            {
+
+                            }
+                            else
+                            {
+                                Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to edit");
+                                mLog.Error(mError);
+                                return this.InternalServerError(mError);
+                            }
+                        }
+                        else 
+                        {
+                            if (mSecurityInfo.MayAdd)
+                            {
+
+                            }
+                            else 
+                            {
+                                Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to add");
+                                mLog.Error(mError);
+                                return this.InternalServerError(mError);
+                            }
+                        }
+                    }
+                    else 
+                    {
+                        Exception mError = new Exception("Security Info is not in context nothing has been saved!!!!");
+                        mLog.Error(mError);
+                        return this.InternalServerError(mError);            
+                    }
+                }
+                else 
+                {
+                    Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);            
+                }
+            }
+        }
+        return Ok(mRetVal);
+    }
 
     [HttpPost()]
     public IHttpActionResult SelectSecurityEntity([FromUri] int selectedSecurityEntityId) 
@@ -160,6 +231,26 @@ public class AccountsController : ApiController
         return Ok(mMessageProfile.Body);    
     }
 
+    private MAccountProfile populateAccountProfile(UIAccountProfile uiProfile, MAccountProfile accountProfile) 
+    {
+        if (accountProfile == null) accountProfile = new MAccountProfile();
+        accountProfile.Account = uiProfile.Account;
+        accountProfile.Email = uiProfile.EMail;
+        accountProfile.EnableNotifications = uiProfile.EnableNotifications;
+        accountProfile.FirstName = uiProfile.FirstName;
+        if (AccountUtility.CurrentProfile().IsSystemAdmin) 
+        {
+            accountProfile.IsSystemAdmin = uiProfile.IsSystemAdmin;
+        }
+        accountProfile.LastName = uiProfile.LastName;
+        accountProfile.Location = uiProfile.Location;
+        accountProfile.MiddleName = uiProfile.MiddleName;
+        accountProfile.Name = uiProfile.Account;
+        accountProfile.PreferredName = uiProfile.PreferredName;
+        accountProfile.Status = uiProfile.Status;
+        accountProfile.TimeZone = uiProfile.TimeZone;
+        return accountProfile;
+    }
 }
 
 public class MChangePassword
@@ -316,6 +407,10 @@ public class MUIAccountChoices : MProfile
     public class UIAccountProfile
     {
 	    public string Account;
+        public UIAccountGroups AccountGroups;
+        public UIAccountRoles AccountRoles;
+        public bool CanSaveRoles;
+        public bool CanSaveGroups;
 	    public int Id;
 	    public bool EnableNotifications;
 	    public string EMail;

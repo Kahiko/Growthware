@@ -573,7 +573,7 @@ namespace GrowthWare.WebSupport.Utilities
                 {
                     if (subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "BIN" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "DEBUG" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "RELEASE")
                     {
-                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, directoryLineCount);
+                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, ref directoryLineCount);
                         if (directoryLineCount > 0)
                         {
                             totalLinesOfCode += directoryLineCount;
@@ -606,7 +606,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="fileArray">The file array.</param>
         /// <param name="directoryLineCount">The directory line count.</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, int directoryLineCount)
+        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
         {
             if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
             if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");

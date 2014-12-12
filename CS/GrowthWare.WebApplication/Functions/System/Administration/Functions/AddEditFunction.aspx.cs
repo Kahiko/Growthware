@@ -197,14 +197,15 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
         private void populateDirectoryInformation()
         {
             MDirectoryProfile mProfile = DirectoryUtility.GetProfile(m_Profile.Id);
-            if (mProfile != null)
+            if (mProfile == null)
             {
-                txtDirectory.Text = mProfile.Directory;
-                chkImpersonation.Checked = mProfile.Impersonate;
-                txtAccount.Text = mProfile.ImpersonateAccount;
-                txtPassword.Text = mProfile.ImpersonatePassword;
-                txtHidPwd.Text = mProfile.ImpersonatePassword;
+                mProfile = new MDirectoryProfile();
             }
+            txtDirectory.Text = mProfile.Directory;
+            chkImpersonation.Checked = mProfile.Impersonate;
+            txtAccount.Text = mProfile.ImpersonateAccount;
+            txtPassword.Text = mProfile.ImpersonatePassword;
+            txtHidPwd.Text = mProfile.ImpersonatePassword;
         }
     }
 }
