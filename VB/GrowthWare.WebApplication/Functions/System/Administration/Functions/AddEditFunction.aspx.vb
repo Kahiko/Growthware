@@ -149,13 +149,14 @@ Public Class AddEditFunction
 
     Private Sub populateDirectoryInformation()
         Dim mProfile As MDirectoryProfile = DirectoryUtility.GetProfile(m_Profile.Id)
-        If Not mProfile Is Nothing Then
-            txtDirectory.Text = mProfile.Directory
-            chkImpersonation.Checked = mProfile.Impersonate
-            txtAccount.Text = mProfile.ImpersonateAccount
-            txtPassword.Text = mProfile.ImpersonatePassword
-            txtHidPwd.Text = mProfile.ImpersonatePassword
+        If mProfile Is Nothing Then
+            mProfile = New MDirectoryProfile()
         End If
+        txtDirectory.Text = mProfile.Directory
+        chkImpersonation.Checked = mProfile.Impersonate
+        txtAccount.Text = mProfile.ImpersonateAccount
+        txtPassword.Text = mProfile.ImpersonatePassword
+        txtHidPwd.Text = mProfile.ImpersonatePassword
     End Sub
 
 End Class

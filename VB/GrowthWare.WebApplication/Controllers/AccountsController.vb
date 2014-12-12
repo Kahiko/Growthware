@@ -207,7 +207,7 @@ Namespace Controllers
                                     AccountUtility.Save(mAccountProfile, mSaveRoles, mSaveGroups)
                                     mRetVal = True
                                 Else
-                                    Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                                    Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to edit")
                                     mLog.Error(mError)
                                     Return Me.InternalServerError(mError)
                                 End If

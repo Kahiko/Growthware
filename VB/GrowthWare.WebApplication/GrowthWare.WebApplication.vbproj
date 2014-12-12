@@ -160,6 +160,7 @@
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Functions\System\LineCount.aspx" />
     <Content Include="Functions\System\Menus\HHMenu.aspx" />
     <Content Include="Functions\System\Menus\HMenu.aspx" />
     <Content Include="Functions\System\Menus\VHMenu.aspx" />
@@ -418,6 +419,13 @@
     <Compile Include="Functions\System\Accounts\Logon.aspx.vb">
       <DependentUpon>Logon.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\LineCount.aspx.designer.vb">
+      <DependentUpon>LineCount.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\LineCount.aspx.vb">
+      <DependentUpon>LineCount.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Menus\HHMenu.aspx.designer.vb">
       <DependentUpon>HHMenu.aspx</DependentUpon>

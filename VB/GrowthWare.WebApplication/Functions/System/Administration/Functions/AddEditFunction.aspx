@@ -113,13 +113,13 @@
 			profile.RedirectOnTimeout = $("#<%=chkRedirectOnTimeout.ClientID %>").is(':checked');
 			profile.Source = $("#<%=txtSource.ClientID %>").val();
 
-			directoryInfo = {};
-			directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
-			directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
-			directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
-			//directoryInfo.DirectoryID = $("#<%=txtDirectoryID.ClientID %>").val();
-			//directoryInfo.HidPwd = $("#<%=txtHidPwd.ClientID %>").val();
-			directoryInfo.Impersonate_PWD = $("[id$=ctlAddRoles]").val();
+		    directoryInfo = {};
+		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
+		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
+		    directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
+		    var iPassword = $("#<%=txtPassword.ClientID %>").val();
+		    if (iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
+		    directoryInfo.Impersonate_PWD = iPassword;
 			var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
 			return theData;
 		}
