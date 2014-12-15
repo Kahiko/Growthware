@@ -123,12 +123,13 @@ public class AccountsController : ApiController
         string mRetVal = "False";
         bool mSaveGroups = false;
         bool mSaveRoles = false;
+        MAccountProfile mCurrentAccountProfile = AccountUtility.CurrentProfile();
+        MAccountProfile mAccountProfileToSave = new MAccountProfile();
         Logger mLog = Logger.Instance();
         if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
         {
-            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-            mAccountProfile = populateAccountProfile(uiProfile, mAccountProfile);
-            mAccountProfile.Id = uiProfile.Id;
+            mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
+            mAccountProfileToSave.Id = uiProfile.Id;
             String mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
             String mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
         }
@@ -146,7 +147,32 @@ public class AccountsController : ApiController
                         {
                             if (mSecurityInfo.MayEdit) 
                             {
-
+                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountGroupTab"), mCurrentAccountProfile);
+                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountRoleTab"), mCurrentAccountProfile);
+                                mAccountProfileToSave = AccountUtility.GetProfile(mEditId);
+                                mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
+                                string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
+                                string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
+                                if (mGroupTabSecurity.MayView) 
+                                {
+                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedGroups != mGroups) 
+                                    {
+                                        mSaveGroups = true;
+                                        mAccountProfileToSave.SetGroups(mGroups);
+                                    }
+                                }
+                                if (mRoleTabSecurity.MayView) 
+                                {
+                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedRoles != mRoles) 
+                                    {
+                                        mSaveRoles = true;
+                                        mAccountProfileToSave.SetRoles(mRoles);
+                                    }
+                                }
+                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+                                mAccountProfileToSave.AddedDate = DateTime.Now;
+                                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                mRetVal = "true";
                             }
                             else
                             {
@@ -159,7 +185,18 @@ public class AccountsController : ApiController
                         {
                             if (mSecurityInfo.MayAdd)
                             {
-
+                                mSaveRoles = true;
+                                mSaveGroups = true;
+                                mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
+                                mAccountProfileToSave.Id = -1;
+                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+                                mAccountProfileToSave.AddedDate = DateTime.Now;
+                                mAccountProfileToSave.UpdatedBy = mAccountProfileToSave.AddedBy;
+                                mAccountProfileToSave.UpdatedDate = mAccountProfileToSave.AddedDate;
+                                string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
+                                string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
+                                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                mRetVal = "true";
                             }
                             else 
                             {
