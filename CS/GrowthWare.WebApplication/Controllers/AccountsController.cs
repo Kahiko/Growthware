@@ -152,7 +152,7 @@ public class AccountsController : ApiController
             ClientChoicesUtility.Save(mCurrentClientChoiceState);
             try
             {
-                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
                 ClientChoicesUtility.Save(mClientChoiceState);
                 mCurrentClientChoiceState[MClientChoices.SecurityEntityId] = mCurrentSecurityEntityId;
                 ClientChoicesUtility.Save(mCurrentClientChoiceState);

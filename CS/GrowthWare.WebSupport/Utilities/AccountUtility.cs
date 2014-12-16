@@ -368,17 +368,32 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">MAccountProfile</param>
         /// <param name="saveRoles">Boolean</param>
         /// <param name="saveGroups">Boolean</param>
+        /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
         /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-        public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
+        public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups, MSecurityEntityProfile securityEntityProfile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
+            BAccounts mBAccount = new BAccounts(securityEntityProfile, ConfigSettings.CentralManagement);
             mBAccount.Save(profile, saveRoles, saveGroups);
             if (profile.Id == CurrentProfile().Id)
             {
                 RemoveInMemoryInformation(true);
             }
             return profile;
+        }
+
+        /// <summary>
+        /// Inserts or updates account information
+        /// </summary>
+        /// <param name="profile">MAccountProfile</param>
+        /// <param name="saveRoles">Boolean</param>
+        /// <param name="saveGroups">Boolean</param>
+        /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+        public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
+        {
+            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+            return Save(profile, saveRoles, saveGroups, mSecurityEntityProfile);
         }
     }
 }
