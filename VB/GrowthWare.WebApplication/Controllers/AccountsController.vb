@@ -176,7 +176,7 @@ Namespace Controllers
                 mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
                 ClientChoicesUtility.Save(mCurrentClientChoiceState)
                 Try
-                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
                     ClientChoicesUtility.Save(mClientChoiceState)
                     mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mCurrentSecurityEntityId
                     ClientChoicesUtility.Save(mCurrentClientChoiceState)

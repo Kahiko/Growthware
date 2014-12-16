@@ -277,15 +277,30 @@ Namespace Utilities
         ''' <param name="profile">MAccountProfile</param>
         ''' <param name="saveRoles">Boolean</param>
         ''' <param name="saveGroups">Boolean</param>
+        ''' <param name="securityEntityProfile">MSecurityEntityProfile</param>
         ''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-        Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
+        Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean, ByVal securityEntityProfile As MSecurityEntityProfile)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
-            Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
+            If securityEntityProfile Is Nothing Then Throw New ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mBAccount As BAccounts = New BAccounts(securityEntityProfile, ConfigSettings.CentralManagement)
             mBAccount.Save(profile, saveRoles, saveGroups)
             If profile.Id = CurrentProfile().Id Then
                 RemoveInMemoryInformation(True)
             End If
             Return profile
+        End Function
+
+        ''' <summary>
+        ''' Inserts or updates account information
+        ''' </summary>
+        ''' <param name="profile">MAccountProfile</param>
+        ''' <param name="saveRoles">Boolean</param>
+        ''' <param name="saveGroups">Boolean</param>
+        ''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+        Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+            Return Save(profile, saveRoles, saveGroups, mSecurityEntityProfile)
         End Function
 
         ''' <summary>
