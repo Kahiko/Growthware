@@ -83,7 +83,7 @@ Public Class AddEditFunction
     End Sub
 
     Private Sub populateFunctionTypes()
-        dropFunctionType.DataSource = FunctionTypeUtility.GetFunctionTypes()
+        dropFunctionType.DataSource = FunctionTypeUtility.FunctionTypes()
         dropFunctionType.DataTextField = "NAME"
         dropFunctionType.DataValueField = "FUNCTION_TYPE_SEQ_ID"
         dropFunctionType.DataBind()
@@ -94,7 +94,7 @@ Public Class AddEditFunction
 
     Private Sub populateNavigationTypes()
         Dim mDataTable As DataTable = Nothing
-        Dim mNavType As Integer = GWWebHelper.LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID
+        Dim mNavType As Integer = GWWebHelper.LinkBehaviorNavigationTypesSequenceId
         NameValuePairUtility.GetNameValuePairDetails(mDataTable, mNavType)
         dropNavType.DataSource = mDataTable
         dropNavType.DataTextField = "NVP_DET_TEXT"
@@ -108,7 +108,7 @@ Public Class AddEditFunction
 
     Private Sub populateLinkBehaviors()
         Dim mDataTable As DataTable = Nothing
-        Dim mNavType As Integer = GWWebHelper.LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID
+        Dim mNavType As Integer = GWWebHelper.LinkBehaviorNameValuePairSequenceId
         NameValuePairUtility.GetNameValuePairDetails(mDataTable, mNavType)
         dropLinkBehavior.DataSource = mDataTable
         dropLinkBehavior.DataTextField = "NVP_DET_TEXT"

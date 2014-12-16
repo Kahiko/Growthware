@@ -463,6 +463,7 @@ Namespace Utilities
         ''' <param name="excludeList">The exclude list.</param>
         ''' <param name="fileArray">The file array.</param>
         ''' <param name="directoryLineCount">The directory line count.</param>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="4#")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
         Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")

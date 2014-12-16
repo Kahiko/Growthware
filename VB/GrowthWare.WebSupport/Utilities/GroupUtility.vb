@@ -10,7 +10,8 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
-        Public Function Search(ByRef searchCriteria As MSearchCriteria) As DataTable
+        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in Visual Basic) or empty!")
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBGroups.Search(searchCriteria)
         End Function
@@ -77,6 +78,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Save(ByVal profile As MGroupProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBGroups As BGroups = New BGroups(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             profile.SecurityEntityId = mSecurityEntityProfile.Id
@@ -90,6 +92,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub Delete(ByVal profile As MGroupProfile)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBGroups As BGroups = New BGroups(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             profile.SecurityEntityId = mSecurityEntityProfile.Id
@@ -103,6 +106,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub UpdateGroupRoles(ByVal profile As MGroupRoles)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBGroups.UpdateGroupRoles(profile)
             CacheController.RemoveAllCache()

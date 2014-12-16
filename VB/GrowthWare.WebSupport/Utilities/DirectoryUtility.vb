@@ -7,7 +7,7 @@ Imports System.Globalization
 
 Namespace Utilities
     Public Module DirectoryUtility
-        Private ReadOnly m_DirectoryInfoCachedName = "DirectoryInfoCollection"
+        Private s_DirectoryInfoCachedName As String = "DirectoryInfoCollection"
 
         ''' <summary>
         ''' DirectoryInfo Cached Collection Name
@@ -18,10 +18,10 @@ Namespace Utilities
         ''' Gets the directory collection.
         ''' </summary>
         ''' <returns>Collection{MDirectoryProfile}.</returns>
-        Public Function GetDirectoryCollection() As Collection(Of MDirectoryProfile)
+        Public Function Directories() As Collection(Of MDirectoryProfile)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBDirectories As BDirectories = New BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement)
-            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString() + "_" + m_DirectoryInfoCachedName
+            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName
             Dim mRetVal As Collection(Of MDirectoryProfile) = Nothing
             mRetVal = CType(HttpContext.Current.Cache(mCacheName), Collection(Of MDirectoryProfile))
             If mRetVal Is Nothing Then
@@ -37,7 +37,7 @@ Namespace Utilities
         ''' <param name="id">The Function Profile id.</param>
         ''' <returns>MDirectoryProfile.</returns>
         Public Function GetProfile(ByVal id As Integer) As MDirectoryProfile
-            Dim mResult = From mProfile In GetDirectoryCollection() Where mProfile.FunctionSeqId = id Select mProfile
+            Dim mResult = From mProfile In Directories() Where mProfile.FunctionSeqId = id Select mProfile
             Dim mRetVal As MDirectoryProfile = New MDirectoryProfile()
             Try
                 mRetVal = mResult.First
@@ -55,7 +55,7 @@ Namespace Utilities
         ''' <param name="name">The name.</param>
         ''' <returns>MDirectoryProfile.</returns>
         Public Function GetProfile(ByVal name As String) As MDirectoryProfile
-            Dim mResult = From mProfile In GetDirectoryCollection() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
+            Dim mResult = From mProfile In Directories() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
             Dim mRetVal As MDirectoryProfile = New MDirectoryProfile()
             Try
                 mRetVal = mResult.First
@@ -68,26 +68,27 @@ Namespace Utilities
         End Function
 
         Public Sub Save(ByVal profile As MDirectoryProfile)
-            CacheController.RemoveFromCache(m_DirectoryInfoCachedName)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
+            CacheController.RemoveFromCache(s_DirectoryInfoCachedName)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Try
                 profile.ImpersonatePassword = CryptoUtility.Decrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType)
-            Catch ex As Exception
+            Catch ex As CryptoUtilityException
                 profile.ImpersonatePassword = CryptoUtility.Encrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType)
             End Try
             Try
                 profile.Directory = CryptoUtility.Decrypt(profile.Directory, mSecurityEntityProfile.EncryptionType)
-            Catch ex As Exception
+            Catch ex As CryptoUtilityException
                 profile.Directory = CryptoUtility.Encrypt(profile.Directory, mSecurityEntityProfile.EncryptionType)
             End Try
             Try
                 profile.ImpersonateAccount = CryptoUtility.Decrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType)
-            Catch ex As Exception
+            Catch ex As CryptoUtilityException
                 profile.ImpersonateAccount = CryptoUtility.Encrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType)
             End Try
             Dim mBLL As BDirectories = New BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             mBLL.Save(profile)
-            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString() + "_" + m_DirectoryInfoCachedName
+            Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName
             CacheController.RemoveFromCache(mCacheName)
         End Sub
     End Module

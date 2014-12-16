@@ -13,21 +13,22 @@ Namespace Utilities
         ''' <summary>
         ''' Cached Name Value Pair Details Table Name
         ''' </summary>
-        Public Const CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME As String = "CachedNVPDetailsTable"
+        Public Const CachedNameValuePairDetailsTableName As String = "CachedNVPDetailsTable"
 
         ''' <summary>
         ''' Cached Name Value Pair Table Name
         ''' </summary>
-        Public Const CACHED_NAME_VALUE_PAIR_TABLE_NAME As String = "CachedNVPTable"
+        Public Const CachedNameValuePairTableName As String = "CachedNVPTable"
 
         ''' <summary>
         ''' Deletes the detail.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub DeleteDetail(ByVal profile As MNameValuePairDetail)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.DeleteNameValuePairDetail(profile)
-            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName)
         End Sub
 
         ''' <summary>
@@ -46,15 +47,28 @@ Namespace Utilities
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>System.Int32.</returns>
         Public Function GetNameValuePairId(ByVal staticName As String) As Integer
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
-            mDT.Locale = CultureInfo.InvariantCulture
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
             Dim mRetValue As Integer = 0
-            mDT = AllNameValuePairs(-1)
-            mDV = mDT.DefaultView
-            mDV.RowFilter = "TABLE_NAME = '" & staticName & "'"
-            Dim mDataViewRow As DataRowView = mDV.Item(0)
-            mRetValue = Integer.Parse(mDataViewRow.Item("NVP_SEQ_ID").ToString())
+            Try
+                mDataTable = AllNameValuePairs(-1)
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataView = mDataTable.DefaultView
+                mDataView.RowFilter = "TABLE_NAME = '" & staticName & "'"
+                Dim mDataViewRow As DataRowView = mDataView.Item(0)
+                mRetValue = Integer.Parse(mDataViewRow.Item("NVP_SEQ_ID").ToString())
+            Catch ex As Exception
+                Throw ex
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
+                End If
+            End Try
             Return mRetValue
         End Function
 
@@ -80,11 +94,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="yourDataTable">An instance of a data table you would like populated</param>
         Public Sub GetNameValuePairs(ByVal yourDataTable As DataTable)
-            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NAME_VALUE_PAIR_TABLE_NAME), DataTable)
+            yourDataTable = CType(HttpContext.Current.Cache(CachedNameValuePairTableName), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 yourDataTable = mNameValuePair.AllNameValuePairs()
-                CacheController.AddToCacheDependency(CACHED_NAME_VALUE_PAIR_TABLE_NAME, yourDataTable)
+                CacheController.AddToCacheDependency(CachedNameValuePairTableName, yourDataTable)
             End If
         End Sub
 
@@ -123,11 +137,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
         Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable)
-            yourDataTable = CType(HttpContext.Current.Cache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME), DataTable)
+            yourDataTable = CType(HttpContext.Current.Cache(CachedNameValuePairDetailsTableName), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePairDetails As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 yourDataTable = mNameValuePairDetails.GetAllNameValuePairDetail()
-                CacheController.AddToCacheDependency(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME, yourDataTable)
+                CacheController.AddToCacheDependency(CachedNameValuePairDetailsTableName, yourDataTable)
             End If
         End Sub
 
@@ -137,15 +151,26 @@ Namespace Utilities
         ''' <param name="yourDataTable">Your data table.</param>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable, ByVal nameValuePairSeqId As Integer)
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
-            GetNameValuePairDetails(mDT)
-            mDV = mDT.DefaultView
-            yourDataTable = mDV.Table.Clone()
-            mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
-            For Each drv As DataRowView In mDV
-                yourDataTable.ImportRow(drv.Row)
-            Next
+            Dim mDataView As DataView
+            Dim mDataTable As DataTable
+            Try
+                mDataTable = New DataTable
+                GetNameValuePairDetails(mDataTable)
+                mDataView = mDataTable.DefaultView
+                yourDataTable = mDataView.Table.Clone()
+                mDataView.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
+                For Each drv As DataRowView In mDataView
+                    yourDataTable.ImportRow(drv.Row)
+                Next
+            Catch ex As Exception
+                ' do nothing
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+            End Try
+
         End Sub
 
         ''' <summary>
@@ -228,11 +253,12 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Function Save(ByVal profile As MNameValuePair) As Integer
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Dim mRetVal As Integer = -1
             mRetVal = mNameValuePair.Save(profile)
-            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_TABLE_NAME)
-            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CachedNameValuePairTableName)
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName)
             Return mRetVal
         End Function
 
@@ -241,9 +267,10 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         Public Sub SaveDetail(ByVal profile As MNameValuePairDetail)
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.SaveNameValuePairDetail(profile)
-            CacheController.RemoveFromCache(CACHED_NAME_VALUE_PAIR_DETAILS_TABLE_NAME)
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName)
         End Sub
 
         ''' <summary>
@@ -252,6 +279,7 @@ Namespace Utilities
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+            If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Try
                 Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 Return mBNameValuePairs.Search(searchCriteria)
@@ -267,6 +295,8 @@ Namespace Utilities
         ''' <param name="theDropDown">The drop down.</param>
         ''' <param name="selectedVale">The selected vale.</param>
         Public Sub SetDropSelection(ByVal theDropDown As WebControls.DropDownList, ByVal selectedVale As String)
+            If theDropDown Is Nothing Then Throw New ArgumentNullException("theDropDown", "theDropDown cannot be a null reference (Nothing in Visual Basic)!")
+            If String.IsNullOrEmpty(selectedVale) Then Throw New ArgumentNullException("selectedVale", "selectedVale cannot be a null reference (Nothing in Visual Basic)!")
             Try
                 Dim X As Integer
                 For X = 0 To theDropDown.Items.Count - 1

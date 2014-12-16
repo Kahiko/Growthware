@@ -1,12 +1,23 @@
 ﻿Imports System.Web
 Imports GrowthWare.Framework.Common
 
+''' <summary>
+''' GWWebHelper Contains non volital data needed throughout the system.
+''' </summary>
+''' <remarks></remarks>
 Public Module GWWebHelper
     Private s_ExceptionError As Exception = Nothing
     Private s_Version As String = String.Empty
 
-    Public Const LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID As Integer = 3
-    Public Const LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID As Integer = 1
+    ''' <summary>
+    ''' Constant value of 3 representing the Link Behavior for the name
+    ''' </summary>
+    Public Const LinkBehaviorNameValuePairSequenceId As Integer = 3
+
+    ''' <summary>
+    ''' Constant value of 1 representing the Link Behavior for navigation
+    ''' </summary>
+    Public Const LinkBehaviorNavigationTypesSequenceId As Integer = 1
 
     ''' <summary>
     ''' Gets the core web administration verison.

@@ -276,7 +276,7 @@ Namespace Context
             Return mRetval
         End Function
 
-        Private Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
+        Private Shared Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
             ' do not process API calls
             If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
                 Dim mLog As Logger = Logger.Instance()

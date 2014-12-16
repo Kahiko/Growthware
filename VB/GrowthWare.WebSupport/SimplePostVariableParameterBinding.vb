@@ -42,7 +42,7 @@ Public Class SimplePostVariableParameterBinding
         If stringValue Is Nothing Then
             Dim query = actionContext.Request.GetQueryNameValuePairs()
             If query IsNot Nothing Then
-                Dim matches = query.Where(Function(kv) kv.Key.ToLower() = Descriptor.ParameterName.ToLower())
+                Dim matches = query.Where(Function(kv) kv.Key.ToUpper(CultureInfo.InvariantCulture) = Descriptor.ParameterName.ToUpper(CultureInfo.InvariantCulture))
                 If matches.Count() > 0 Then
                     stringValue = matches.First().Value
                 End If
@@ -129,7 +129,7 @@ Public Class SimplePostVariableParameterBinding
     ''' </summary>
     ''' <param name="request"></param>
     ''' <returns></returns>
-    Private Function TryReadBody(request As HttpRequestMessage) As NameValueCollection
+    Private Shared Function TryReadBody(request As HttpRequestMessage) As NameValueCollection
         Dim result As Object = Nothing
 
         ' try to read out of cache first
