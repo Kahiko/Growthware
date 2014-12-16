@@ -142,14 +142,19 @@ public class AccountsController : ApiController
             MClientChoicesState mCurrentClientChoiceState = ClientChoicesUtility.GetClientChoicesState(mCurrentAccountProfile.Account);
             MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+            string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
+
             mClientChoiceState.IsDirty = false;
             mClientChoiceState.AccountName = mAccountProfileToSave.Account;
             mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+            mCurrentClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+            ClientChoicesUtility.Save(mCurrentClientChoiceState);
             try
             {
                 AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
                 ClientChoicesUtility.Save(mClientChoiceState);
+                mCurrentClientChoiceState[MClientChoices.SecurityEntityId] = mCurrentSecurityEntityId;
                 ClientChoicesUtility.Save(mCurrentClientChoiceState);
                 mRetVal = "Your account has been created";
             }
