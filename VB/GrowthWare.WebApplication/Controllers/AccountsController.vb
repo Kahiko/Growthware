@@ -167,13 +167,18 @@ Namespace Controllers
                 Dim mCurrentClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mCurrentAccountProfile.Account)
                 Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
                 Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
+                Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
+
                 mClientChoiceState.IsDirty = False
-                mClientChoiceState.AccountName = mAccountProfileToSave.Account
+                mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
                 mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
                 mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
+                mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+                ClientChoicesUtility.Save(mCurrentClientChoiceState)
                 Try
                     AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
                     ClientChoicesUtility.Save(mClientChoiceState)
+                    mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mCurrentSecurityEntityId
                     ClientChoicesUtility.Save(mCurrentClientChoiceState)
                     mRetVal = "Your account has been created"
                 Catch ex As Exception
