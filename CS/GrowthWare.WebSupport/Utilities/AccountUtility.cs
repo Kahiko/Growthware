@@ -38,8 +38,8 @@ namespace GrowthWare.WebSupport.Utilities
         /// </remarks>
         public static Boolean Authenticated(String account, String password)
         {
-            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
-            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
             bool retVal = false;
             bool mDomainPassed = false;
             if (account.Contains(@"\"))
@@ -218,7 +218,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable GetMenu(String account, MenuType menuType)
         {
-            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
             BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             DataTable mRetVal = null;
             if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
@@ -371,7 +371,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
         public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
         {
-            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBAccount.Save(profile, saveRoles, saveGroups);
             if (profile.Id == CurrentProfile().Id)

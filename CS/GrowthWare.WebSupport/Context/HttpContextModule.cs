@@ -317,7 +317,7 @@ namespace GrowthWare.WebSupport.Context
             return mRetVal;
         }
 
-        private void processOverridePage(MFunctionProfile functionProfile) 
+        private static void processOverridePage(MFunctionProfile functionProfile) 
         {
             if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1) 
             {

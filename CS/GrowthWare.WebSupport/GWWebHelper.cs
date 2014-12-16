@@ -15,8 +15,14 @@ namespace GrowthWare.WebSupport
     /// <remarks></remarks>
     public static class GWWebHelper
     {
-        public const int LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID = 3;
-        public const int LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID = 1;
+        /// <summary>
+        /// Constant value of 3 representing the Link Behavior for the name
+        /// </summary>
+        public const int LinkBehaviorNameValuePairSequenceId = 3;
+        /// <summary>
+        /// Constant value of 1 representing the Link Behavior for navigation
+        /// </summary>
+        public const int LinkBehaviorNavigationTypesSequenceId = 1;
 
         private static Exception s_ExceptionError = null;
 

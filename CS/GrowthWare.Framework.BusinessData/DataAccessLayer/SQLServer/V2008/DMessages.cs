@@ -28,7 +28,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 
         DataTable IDMessages.Search(MSearchCriteria searchCriteria)
         {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
             DataTable mRetVal;
             SqlParameter[] mParameters =

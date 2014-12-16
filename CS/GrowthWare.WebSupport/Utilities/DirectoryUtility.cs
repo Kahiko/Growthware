@@ -19,17 +19,17 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// The m_ directory info cached name
         /// </summary>
-        public static readonly string m_DirectoryInfoCachedName = "DirectoryInfoCollection";
+        private static string s_DirectoryInfoCachedName = "DirectoryInfoCollection";
 
         /// <summary>
         /// Gets the directories.
         /// </summary>
         /// <returns>Collection{MDirectoryProfile}.</returns>
-        public static Collection<MDirectoryProfile> GetDirectories()
+        public static Collection<MDirectoryProfile> Directories()
         {
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             BDirectories mBDirectories = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-            String mCacheName = mSecurityEntityProfile.Id.ToString() + "_" + m_DirectoryInfoCachedName;
+            String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
             Collection<MDirectoryProfile> mRetVal = null;
             mRetVal = (Collection<MDirectoryProfile>)(HttpContext.Current.Cache[mCacheName]);
             if (mRetVal == null)
@@ -47,7 +47,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MDirectoryProfile.</returns>
         public static MDirectoryProfile GetProfile(String name)
         {
-            var mResult = from mProfile in GetDirectories()
+            var mResult = from mProfile in Directories()
                           where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             MDirectoryProfile mRetVal = null;
@@ -74,7 +74,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MDirectoryProfile.</returns>
         public static MDirectoryProfile GetProfile(int id)
         {
-            var mResult = from mProfile in GetDirectories()
+            var mResult = from mProfile in Directories()
                           where mProfile.Id == id
                           select mProfile;
             MDirectoryProfile mRetVal = null;
@@ -101,7 +101,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MDirectoryProfile.</returns>
         public static MDirectoryProfile GetProfileByFunction(int id)
         {
-            var mResult = from mProfile in GetDirectories()
+            var mResult = from mProfile in Directories()
                           where mProfile.FunctionSeqId == id
                           select mProfile;
             MDirectoryProfile mRetVal = null;
@@ -127,13 +127,14 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void Save(MDirectoryProfile profile)
         {
-            CacheController.RemoveFromCache(m_DirectoryInfoCachedName);
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            CacheController.RemoveFromCache(s_DirectoryInfoCachedName);
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             try
             {
                 profile.ImpersonatePassword = CryptoUtility.Decrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType);
             }
-            catch
+            catch (CryptoUtilityException)
             {
                 profile.ImpersonatePassword = CryptoUtility.Encrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType);
             }
@@ -141,7 +142,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 profile.Directory = CryptoUtility.Decrypt(profile.Directory, mSecurityEntityProfile.EncryptionType);
             }
-            catch
+            catch (CryptoUtilityException)
             {
                 profile.Directory = CryptoUtility.Encrypt(profile.Directory, mSecurityEntityProfile.EncryptionType);
             }
@@ -149,13 +150,13 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 profile.ImpersonateAccount = CryptoUtility.Decrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType);
             }
-            catch
+            catch (CryptoUtilityException)
             {
                 profile.ImpersonateAccount = CryptoUtility.Encrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType);
             }
             BDirectories myBLL = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             myBLL.Save(profile);
-            String mCacheName = mSecurityEntityProfile.Id.ToString() + "_" + m_DirectoryInfoCachedName;
+            String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName;
             CacheController.RemoveFromCache(mCacheName);
         }
     }

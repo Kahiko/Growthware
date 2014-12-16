@@ -76,10 +76,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </example>
         public BAccounts(MSecurityEntityProfile securityEntityProfile, bool centralManagement)
         {
-            if (securityEntityProfile == null)
-            {
-                throw new ArgumentException("The securityEntityProfile and not be null!");
-            }
+            if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
             if (centralManagement)
             {
                 if (m_DAccounts == null)
@@ -248,7 +245,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </example>
         public void Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
         {
-            if (profile == null) throw new ArgumentException("profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts.Profile = profile;
             if (DatabaseIsOnline()) 
             {
@@ -272,6 +269,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns></returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             DataTable mRetVal = null;
             if (DatabaseIsOnline()) mRetVal = m_DAccounts.Search(searchCriteria);
             return mRetVal;

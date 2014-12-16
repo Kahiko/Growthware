@@ -10,28 +10,31 @@ using System.Web;
 
 namespace GrowthWare.WebSupport.Utilities
 {
+    /// <summary>
+    /// FunctionTypeUtility serves as the focal point for any web application needing to utilize the GrowthWare framework.
+    /// Web needs such as caching are handled here.
+    /// </summary>
     public static class FunctionTypeUtility
     {
-        private static Logger m_LogUtility = Logger.Instance();
         /// <summary>
         /// Read only property for cache ame for the collection
         /// </summary>
-        public static readonly string FunctionTypeCachedCollectionName = "FunctionTypeCollection";
+        private static string s_FunctionTypeCachedCollectionName = "FunctionTypeCollection";
 
-        /// <summary>
-        /// Read only property for cache name for the DataView
-        /// </summary>
-        public static readonly string FunctionTypeCachedDVFunctions = "dvTypeFunctions";
+        ///// <summary>
+        ///// Read only property for cache name for the DataView
+        ///// </summary>
+        //private static string s_FunctionTypeCachedDVFunctions = "dvTypeFunctions";
 
         /// <summary>
         /// Gets the name of the function type by.
         /// </summary>
-        /// <param name="Name">The name.</param>
+        /// <param name="name">The name.</param>
         /// <returns>MFunctionTypeProfile.</returns>
-        public static MFunctionTypeProfile GetProfile(string Name)
+        public static MFunctionTypeProfile GetProfile(string name)
         {
-            var mResult = from mProfile in GetFunctionTypeCollection()
-                          where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == Name.ToLower(CultureInfo.CurrentCulture)
+            var mResult = from mProfile in FunctionTypeCollection()
+                          where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             MFunctionTypeProfile mRetVal = null;
             try
@@ -52,7 +55,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MFunctionTypeProfile.</returns>
         public static MFunctionTypeProfile GetProfile(int id)
         {
-            var mResult = from mProfile in GetFunctionTypeCollection()
+            var mResult = from mProfile in FunctionTypeCollection()
                           where mProfile.Id == id
                           select mProfile;
             MFunctionTypeProfile mRetVal = null;
@@ -71,13 +74,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the function type collection.
         /// </summary>
         /// <returns>Collection{MFunctionTypeProfile}.</returns>
-        public static Collection<MFunctionTypeProfile> GetFunctionTypeCollection()
+        public static Collection<MFunctionTypeProfile> FunctionTypeCollection()
         {
-            Collection<MFunctionTypeProfile> mFunctionTypeCollection = (Collection<MFunctionTypeProfile>)HttpContext.Current.Cache[FunctionTypeCachedCollectionName];
+            Collection<MFunctionTypeProfile> mFunctionTypeCollection = (Collection<MFunctionTypeProfile>)HttpContext.Current.Cache[s_FunctionTypeCachedCollectionName];
             if (mFunctionTypeCollection == null)
             {
                 mFunctionTypeCollection = new Collection<MFunctionTypeProfile>();
-                foreach (DataRow mDataRow in GetFunctionTypes().Rows)
+                foreach (DataRow mDataRow in FunctionTypes().Rows)
                 {
                     if ((mDataRow["Function_Type_Seq_ID"] != null))
                     {
@@ -86,44 +89,35 @@ namespace GrowthWare.WebSupport.Utilities
                         mFunctionTypeCollection.Add(mProfile);
                     }
                 }
-
-                try
-                {
-                    CacheController.AddToCacheDependency(FunctionTypeCachedCollectionName, mFunctionTypeCollection);
-                }
-                catch
-                {
-                    ApplicationException myAppEx = new ApplicationException("Could not add to cache for Function Type '");
-                    throw myAppEx;
-                }
+                CacheController.AddToCacheDependency(s_FunctionTypeCachedCollectionName, mFunctionTypeCollection);
             }
             return mFunctionTypeCollection;
         }
 
-        /// <summary>
-        /// Removes the cached function types.
-        /// </summary>
-        public static void RemoveCachedFunctionTypes()
-        {
-            CacheController.RemoveFromCache(FunctionTypeCachedCollectionName);
-            CacheController.RemoveFromCache(FunctionTypeCachedDVFunctions);
-        }
+        ///// <summary>
+        ///// Removes the cached function types.
+        ///// </summary>
+        //public static void RemoveCachedFunctionTypes()
+        //{
+        //    CacheController.RemoveFromCache(s_FunctionTypeCachedCollectionName);
+        //    CacheController.RemoveFromCache(s_FunctionTypeCachedDVFunctions);
+        //}
 
-        /// <summary>
-        /// Res the build function collection.
-        /// </summary>
-        public static void ReBuildFunctionCollection()
-        {
-            RemoveCachedFunctionTypes();
-            MFunctionTypeProfile myFunctionProfileInfo = new MFunctionTypeProfile();
-            myFunctionProfileInfo = GetProfile(1);
-        }
+        ///// <summary>
+        ///// Res the build function collection.
+        ///// </summary>
+        //public static void RebuildFunctionCollection()
+        //{
+        //    RemoveCachedFunctionTypes();
+        //    MFunctionTypeProfile mFunctionProfileInfo = new MFunctionTypeProfile();
+        //    mFunctionProfileInfo = GetProfile(1);
+        //}
 
         /// <summary>
         /// Gets the function types.
         /// </summary>
         /// <returns>DataTable.</returns>
-        public static DataTable GetFunctionTypes()
+        public static DataTable FunctionTypes()
         {
             BFunctions functionTypes = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return functionTypes.FunctionTypes();

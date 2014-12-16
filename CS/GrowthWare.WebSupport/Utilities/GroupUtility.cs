@@ -21,6 +21,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void Save(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BGroups mBGroups = new BGroups(mSecurityProfile, ConfigSettings.CentralManagement);
             profile.SecurityEntityId = mSecurityProfile.Id;
@@ -36,6 +37,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             return mBGroups.Search(searchCriteria);
         }
@@ -43,32 +45,32 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Securities the name of the entities groups cache.
         /// </summary>
-        /// <param name="SecurityEntityId">The Security Entity Id.</param>
+        /// <param name="securityEntityId">The Security Entity Id.</param>
         /// <returns>System.String.</returns>
-        public static string SecurityEntitiesGroupsCacheName(int SecurityEntityId)
+        public static string SecurityEntitiesGroupsCacheName(int securityEntityId)
         {
-            string retVal = SecurityEntityId + "SecurityEntityGroups";
+            string retVal = securityEntityId + "_SecurityEntityGroups";
             return retVal;
         }
 
         /// <summary>
         /// Gets all groups by BU.
         /// </summary>
-        /// <param name="SecurityEntityId">The SECURIT y_ ENTIT y_ SE q_ ID.</param>
+        /// <param name="securityEntityId">The SECURIT y_ ENTIT y_ SE q_ ID.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable GetAllGroupsBySecurityEntity(int SecurityEntityId)
+        public static DataTable GetAllGroupsBySecurityEntity(int securityEntityId)
         {
             DataTable mySecurityEntityGroups = null;
             // attempt to retrieve the information from cache
-            mySecurityEntityGroups = (DataTable)HttpContext.Current.Cache[SecurityEntitiesGroupsCacheName(SecurityEntityId)];
+            mySecurityEntityGroups = (DataTable)HttpContext.Current.Cache[SecurityEntitiesGroupsCacheName(securityEntityId)];
             // if the information was not avalible in cache
             // then retieve the information from the DB and put it into
             // cache for subsequent use.
             if (mySecurityEntityGroups == null)
             {
                 BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                mySecurityEntityGroups = mBGroups.GetGroupsBySecurityEntity(SecurityEntityId);
-                CacheController.AddToCacheDependency(SecurityEntitiesGroupsCacheName(SecurityEntityId), mySecurityEntityGroups);
+                mySecurityEntityGroups = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
+                CacheController.AddToCacheDependency(SecurityEntitiesGroupsCacheName(securityEntityId), mySecurityEntityGroups);
             }
             return mySecurityEntityGroups;
         }
@@ -76,14 +78,14 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Gets the groups array list by BU.
         /// </summary>
-        /// <param name="SecurityEntityId">The SECURIT y_ ENTIT y_ SE q_ ID.</param>
+        /// <param name="securityEntityId">The SECURIT y_ ENTIT y_ SE q_ ID.</param>
         /// <returns>ArrayList.</returns>
-        public static ArrayList GetGroupsArrayListBySecurityEntity(int SecurityEntityId)
+        public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)
         {
             DataTable mySecurityEntityGroups = null;
             ArrayList colGroups = new ArrayList();
             DataRow groupRow = null;
-            mySecurityEntityGroups = GetAllGroupsBySecurityEntity(SecurityEntityId);
+            mySecurityEntityGroups = GetAllGroupsBySecurityEntity(securityEntityId);
             foreach (DataRow groupRow_loopVariable in mySecurityEntityGroups.Rows)
             {
                 groupRow = groupRow_loopVariable;
@@ -109,6 +111,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void AddGroup(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBGroups.AddGroup(profile);
             CacheController.RemoveFromCache(SecurityEntitiesGroupsCacheName(profile.SecurityEntityId));
@@ -122,6 +125,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns><c>true</c> if no errors, <c>true</c> otherwise false</returns>
         public static void Delete(MGroupProfile profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             bool success = false;
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             success = mBGroups.DeleteGroup(profile);
@@ -138,6 +142,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="profile">The profile.</param>
         public static void UpdateGroupRoles(MGroupRoles profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             mBGroups.UpdateGroupRoles(profile);
             CacheController.RemoveAllCache();

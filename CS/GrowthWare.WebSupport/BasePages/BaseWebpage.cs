@@ -149,7 +149,7 @@ namespace GrowthWare.WebSupport.BasePages
 
         private static object Deserialize(byte[] bytes)
 		{
-            if (bytes == null) throw new ArgumentNullException("bytes", "bytes cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (bytes == null) throw new ArgumentNullException("bytes", "bytes cannot be a null reference (Nothing in VB) or empty!");
 			object functionReturnValue = null;
 			MemoryStream ms = null;
 			LosFormatter formater = null;

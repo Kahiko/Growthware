@@ -178,7 +178,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB) or empty!");
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
             DataTable mRetVal = null;
             if (string.IsNullOrEmpty(searchCriteria.WhereClause))
             {

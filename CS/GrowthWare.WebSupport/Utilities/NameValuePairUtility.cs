@@ -20,12 +20,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Constant for the NVP Cached table
         /// </summary>
-        public const string CACHED_NVP_DETAILS_TABLE_NAME = "CachedNVPDetailsTable";
+        public const string CachedNameValuePairDetailsTableName = "CachedNVPDetailsTable";
 
         /// <summary>
         /// Name for the cache table
         /// </summary>
-        public const string CACHED_NVP_TABLE_NAME = "CachedNVPTable";
+        public const string CachedNameValuePairTableName = "CachedNVPTable";
 
         /// <summary>
         /// Deletes the detail.
@@ -34,10 +34,11 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
         public static void DeleteDetail(MNameValuePairDetail profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
             mBNameValuePairs.DeleteNameValuePairDetail(profile);
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName);
         }
 
         /// <summary>
@@ -60,16 +61,36 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>System.Int32.</returns>
         public static int GetNameValuePairId(string staticName)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
-
+            DataView mDataView = null;
+            DataTable mDataTable = null;
             int mRetValue = 0;
-            int mDefault = -1;
-            mDT = GetNameValuePairs(mDefault);
-            mDV = mDT.DefaultView;
-            mDV.RowFilter = "TABLE_NAME = '" + staticName + "'";
-            DataRowView mDataViewRow = mDV[0];
-            mRetValue = int.Parse(mDataViewRow["NVP_SEQ_ID"].ToString());
+            try
+            {
+                int mDefault = -1;
+                mDataTable = GetNameValuePairs(mDefault);
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataView = mDataTable.DefaultView;
+                mDataView.RowFilter = "TABLE_NAME = '" + staticName + "'";
+                DataRowView mDataViewRow = mDataView[0];
+                mRetValue = int.Parse(mDataViewRow["NVP_SEQ_ID"].ToString());
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null) 
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
+                if (mDataView != null) 
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
+                }
+            }
             return mRetValue;
         }
 
@@ -80,16 +101,37 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>System.String.</returns>
         public static string GetNameValuePairName(int nameValuePairSeqId)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
-            mDT.Locale = CultureInfo.InvariantCulture;
+            DataView mDataView = null;
+            DataTable mDataTable = null;
             string mRetValue = string.Empty;
-            int mDefault = -1;
-            mDT = GetNameValuePairs(mDefault);
-            mDV = mDT.DefaultView;
-            mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
-            DataRowView mDataViewRow = mDV[0];
-            mRetValue = mDataViewRow["NVP_SEQ_ID"].ToString();
+            try
+            {
+                int mDefault = -1;
+                mDataTable = GetNameValuePairs(mDefault);
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataView = mDataTable.DefaultView;
+                mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
+                DataRowView mDataViewRow = mDataView[0];
+                mRetValue = mDataViewRow["NVP_SEQ_ID"].ToString();
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null) 
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
+                if (mDataView != null)
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
+                }
+            }
             return mRetValue;
         }
 
@@ -100,13 +142,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void GetNameValuePairs(DataTable yourDataTable)
         {
-            yourDataTable = (DataTable)HttpContext.Current.Cache[CACHED_NVP_TABLE_NAME];
+            yourDataTable = (DataTable)HttpContext.Current.Cache[CachedNameValuePairTableName];
             if (yourDataTable == null)
             {
                 MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
                 BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
                 yourDataTable = myNameValuePair.GetAllNameValuePair();
-                CacheController.AddToCacheDependency(CACHED_NVP_TABLE_NAME, yourDataTable);
+                CacheController.AddToCacheDependency(CachedNameValuePairTableName, yourDataTable);
             }
         }
 
@@ -130,19 +172,47 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MNameValuePairDetail.</returns>
         public static MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetId, int nameValuePairSeqId)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
-            mDT.Locale = CultureInfo.InvariantCulture;
-            DataTable mImportTable = new DataTable();
-            GetNameValuePairDetails(ref mDT, nameValuePairSeqId);
-            mDV = mDT.DefaultView;
-            mImportTable = mDT.Clone();
-            mDV.RowFilter = "NVP_SEQ_DET_ID = " + nameValuePairSeqDetId;
-            foreach (DataRowView drv in mDV)
+            DataView mDataView = null;
+            DataTable mDataTable = null;
+            DataTable mImportTable = null;
+            MNameValuePairDetail mRetVal = null;
+            try
             {
-                mImportTable.ImportRow(drv.Row);
+                mDataTable = new DataTable();
+                GetNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataView = mDataTable.DefaultView;
+                mImportTable = mDataTable.Clone();
+                mDataView.RowFilter = "NVP_SEQ_DET_ID = " + nameValuePairSeqDetId;
+                foreach (DataRowView drv in mDataView)
+                {
+                    mImportTable.ImportRow(drv.Row);
+                }
+                mRetVal = new MNameValuePairDetail(mImportTable.Rows[0]);
             }
-            return new MNameValuePairDetail(mImportTable.Rows[0]);
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null) 
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
+                if (mDataView != null)
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
+                }
+                if (mImportTable != null)
+                {
+                    mImportTable.Dispose();
+                    mImportTable = null;
+                }
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -151,13 +221,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="yourDataTable">Your data table.</param>
         public static void GetNameValuePairDetails(ref DataTable yourDataTable)
         {
-            yourDataTable = (DataTable)HttpContext.Current.Cache[CACHED_NVP_DETAILS_TABLE_NAME];
+            yourDataTable = (DataTable)HttpContext.Current.Cache[CachedNameValuePairDetailsTableName];
             if (yourDataTable == null)
             {
                 MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
                 BNameValuePairs myNameValuePairDetails = new BNameValuePairs(mSecurityProfile);
                 yourDataTable = myNameValuePairDetails.GetAllNameValuePairDetail();
-                CacheController.AddToCacheDependency(CACHED_NVP_DETAILS_TABLE_NAME, yourDataTable);
+                CacheController.AddToCacheDependency(CachedNameValuePairDetailsTableName, yourDataTable);
             }
         }
 
@@ -168,15 +238,32 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         public static void GetNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
-            GetNameValuePairDetails(ref mDT);
-            mDV = mDT.DefaultView;
-            yourDataTable = mDV.Table.Clone();
-            mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
-            foreach (DataRowView drv in mDV)
+            DataView mDataView;
+            DataTable mDataTable = new DataTable();
+            try
             {
-                yourDataTable.ImportRow(drv.Row);
+                mDataTable = new DataTable();
+                mDataView = new DataView();
+                GetNameValuePairDetails(ref mDataTable);
+                mDataView = mDataTable.DefaultView;
+                yourDataTable = mDataView.Table.Clone();
+                mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
+                foreach (DataRowView drv in mDataView)
+                {
+                    yourDataTable.ImportRow(drv.Row);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null) 
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
             }
         }
 
@@ -277,11 +364,12 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static int Save(MNameValuePair profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             int mRetVal = -1;
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            CacheController.RemoveFromCache(CACHED_NVP_TABLE_NAME);
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
+            CacheController.RemoveFromCache(CachedNameValuePairTableName);
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName);
             mRetVal = myNameValuePair.Save(profile);
             return mRetVal;
         }
@@ -293,9 +381,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>System.Int32.</returns>
         public static void SaveDetail(MNameValuePairDetail profile)
         {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
-            CacheController.RemoveFromCache(CACHED_NVP_DETAILS_TABLE_NAME);
+            CacheController.RemoveFromCache(CachedNameValuePairDetailsTableName);
             mBNameValuePairs.SaveNameValuePairDetail(profile);
         }
 
@@ -306,6 +395,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns></returns>
         public static DataTable Search(MSearchCriteria searchCriteria)
         {
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs mBNameValuePairs = new BNameValuePairs(mSecurityProfile);
             return mBNameValuePairs.Search(searchCriteria);
@@ -315,16 +405,18 @@ namespace GrowthWare.WebSupport.Utilities
         /// SetDropSelection will set the selected index given the drop down list and the desired value
         /// </summary>
         /// <param name="theDropDown">The drop down list to set</param>
-        /// <param name="SelectedValue">The value to set the drop box to</param>
+        /// <param name="selectedValue">The value to set the drop box to</param>
         /// <remarks></remarks>
-        public static void SetDropSelection(DropDownList theDropDown, string SelectedValue)
+        public static void SetDropSelection(DropDownList theDropDown, string selectedValue)
         {
+            if (theDropDown == null) throw new ArgumentNullException("theDropDown", "theDropDown cannot be a null reference (Nothing in Visual Basic)!");
+            if (string.IsNullOrEmpty(selectedValue)) throw new ArgumentNullException("selectedValue", "selectedValue cannot be a null reference (Nothing in Visual Basic)!");
             try
             {
                 int X = 0;
                 for (X = 0; X <= theDropDown.Items.Count - 1; X++)
                 {
-                    if (theDropDown.Items[X].Value == SelectedValue)
+                    if (theDropDown.Items[X].Value == selectedValue)
                     {
                         theDropDown.SelectedIndex = X;
                         break; // TODO: might not be correct. Was : Exit For
@@ -346,9 +438,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
         public static void UpdateGroups(int nameValuePairId, int securityEntityId, string commaSeparatedGroups, MNameValuePair nameValuePairProfile)
         {
+            if (nameValuePairProfile == null) throw new ArgumentNullException("nameValuePairProfile", "nameValuePairProfile cannot be a null reference (Nothing in Visual Basic)!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
-            BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
-            myNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
+            BNameValuePairs mNameValuePair = new BNameValuePairs(mSecurityProfile);
+            mNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
         }
 
         /// <summary>
@@ -360,6 +453,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
         public static void UpdateRoles(int nameValuePairId, int securityEntityId, string commaSeparatedRoles, MNameValuePair nameValuePairProfile)
         {
+            if (nameValuePairProfile == null) throw new ArgumentNullException("nameValuePairProfile", "nameValuePairProfile cannot be a null reference (Nothing in Visual Basic)!");
             MSecurityEntityProfile mSecurityProfile = SecurityEntityUtility.CurrentProfile();
             BNameValuePairs myNameValuePair = new BNameValuePairs(mSecurityProfile);
             myNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile);

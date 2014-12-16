@@ -109,7 +109,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 
         private void populateFunctionTypes()
         {
-            dropFunctionType.DataSource = FunctionTypeUtility.GetFunctionTypes();
+            dropFunctionType.DataSource = FunctionTypeUtility.FunctionTypes();
             dropFunctionType.DataTextField = "NAME";
             dropFunctionType.DataValueField = "FUNCTION_TYPE_SEQ_ID";
             dropFunctionType.DataBind();
@@ -130,7 +130,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
         private void populateNavigationTypes()
         {
             DataTable mDataTable = new DataTable();
-            int mNavType = GWWebHelper.LINK_BEHAVIOR_NAVIGATION_TYPES_SEQUENCE_ID;
+            int mNavType = GWWebHelper.LinkBehaviorNavigationTypesSequenceId;
             NameValuePairUtility.GetNameValuePairDetails(ref mDataTable, mNavType);
             dropNavType.DataSource = mDataTable;
             dropNavType.DataTextField = "NVP_DET_TEXT";
@@ -145,7 +145,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
         private void populateLinkBehaviors()
         {
             DataTable mDataTable = new DataTable();
-            int mNavType = GWWebHelper.LINK_BEHAVIOR_NAME_VALUE_PAIR_SEQUENCE_ID;
+            int mNavType = GWWebHelper.LinkBehaviorNameValuePairSequenceId;
             NameValuePairUtility.GetNameValuePairDetails(ref mDataTable, mNavType);
             dropLinkBehavior.DataSource = mDataTable;
             dropLinkBehavior.DataTextField = "NVP_DET_TEXT";
