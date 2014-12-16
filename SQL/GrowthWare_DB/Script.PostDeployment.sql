@@ -235,6 +235,7 @@ set @V_MyAction = 'Register'
 exec ZGWSecurity.Set_Function -1,'Register','Register accounts for the system',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Registers an account.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
 
 Print 'Adding Favorite'
 set @V_MyAction = 'Favorite'
