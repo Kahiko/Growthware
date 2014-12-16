@@ -8,7 +8,6 @@
         <script type="text/javascript" language="javascript">
             $(document).ready(function () {
                 if (typeof jQuery.ui != 'undefined') {
-                    //$("#btnSave").css("display", "none");
                     $("#btnSave").button();
                     $("#tabs").tabs();
                     $("#tabs").tabs("option", "selected", 0);

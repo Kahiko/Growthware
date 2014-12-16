@@ -10,46 +10,6 @@ Namespace Common
     Public Module ConfigSettings
 
         ''' <summary>
-        ''' Gets or sets a value indicating whether [auto create account].
-        ''' </summary>
-        ''' <value><c>true</c> if [auto create account]; otherwise, <c>false</c>.</value>
-        ReadOnly Property AutoCreate() As Boolean
-            Get
-                Return Boolean.Parse(GetAppSettingValue("Auto_Create", True))
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets or sets a value indicating whether [auto create account].
-        ''' </summary>
-        ''' <value><c>true</c> if [auto create account]; otherwise, <c>false</c>.</value>
-        ReadOnly Property AutoCreateClientChoicesAccount() As String
-            Get
-                Return GetAppSettingValue("Auto_Create_ClientChoicesAccount", True)
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the auto create security entity.
-        ''' </summary>
-        ''' <value>The auto create security entity.</value>
-        ReadOnly Property AutoCreateSecurityEntity As String
-            Get
-                Return GetAppSettingValue("Auto_Create_SecurityEntity", True)
-            End Get
-        End Property
-
-        ''' <summary>
-        ''' Gets the auto create roles.
-        ''' </summary>
-        ''' <value>The auto create roles.</value>
-        ReadOnly Property AutoCreateRoles As String
-            Get
-                Return GetAppSettingValue("Auto_Create_Roles", True)
-            End Get
-        End Property
-
-        ''' <summary>
         ''' Returns App_Displayed_Name from the CONFIG file
         ''' </summary>
         ''' <value></value>
@@ -429,26 +389,79 @@ Namespace Common
         End Property
 
         ''' <summary>
-        ''' Returns Registering_Roles from the CONFIG file
+        ''' Gets or sets a value indicating the account to use for the client choices.
         ''' </summary>
-        ''' <value>String</value>
-        ''' <returns>String</returns>
-        ''' <remarks></remarks>
-        ReadOnly Property RegisteringRoles() As String
+        ''' <value>string value from config file</value>
+        ''' <returns>string</returns>
+        ReadOnly Property RegistrationAccountChoicesAccount() As String
             Get
-                Return GetAppSettingValue("Registering_Roles", True)
+                Return GetAppSettingValue("RegistrationAccountChoicesAccount", True)
             End Get
         End Property
 
         ''' <summary>
-        ''' Return Registration_Post_Action from the COFNIG file
+        ''' Returns RegistrationGroups from the CONFIG file
+        ''' </summary>
+        ''' <value>String</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
+        ReadOnly Property RegistrationGroups As String
+            Get
+                Return GetAppSettingValue("RegistrationGroups", True)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return RegistrationPassword from the COFNIG file
         ''' </summary>
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks>String</remarks>
-        ReadOnly Property RegistrationPostAction()
+        ReadOnly Property RegistrationPassword As String
             Get
-                Return GetAppSettingValue("Registration_Post_Action", True)
+                Return GetAppSettingValue("RegistrationPassword", True)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Return RegistrationPostAction from the COFNIG file
+        ''' </summary>
+        ''' <value>String</value>
+        ''' <returns>String</returns>
+        ''' <remarks>String</remarks>
+        ReadOnly Property RegistrationPostAction() As String
+            Get
+                Return GetAppSettingValue("RegistrationPostAction", True)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Gets the registration create roles.
+        ''' </summary>
+        ''' <value>The registration roles.</value>
+        ReadOnly Property RegistrationRoles As String
+            Get
+                Return GetAppSettingValue("RegistrationRoles", True)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Gets the RegistrationStatusIds account.
+        ''' </summary>
+        ''' <value>The RegistrationStatusIds.</value>
+        ReadOnly Property RegistrationStatusId As String
+            Get
+                Return GetAppSettingValue("RegistrationStatusId", True)
+            End Get
+        End Property
+
+        ''' <summary>
+        ''' Gets the RegistrationSecurityEntityId.
+        ''' </summary>
+        ''' <value>The RegistrationSecurityEntityId.</value>
+        ReadOnly Property RegistrationSecurityEntityId As String
+            Get
+                Return GetAppSettingValue("RegistrationSecurityEntityId", True)
             End Get
         End Property
 

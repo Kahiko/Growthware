@@ -63,8 +63,6 @@ Namespace Controllers
             Return Ok(mRetVal)
         End Function
 
-        'Public Function ChangePassword(<FromBody()> ByVal oldPassword As String, <FromBody()> ByVal newPassword As String) As IHttpActionResult
-
         <HttpPost>
         Public Function ChangePassword(ByVal mChangePassword As MChangePassword) As IHttpActionResult
             If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
@@ -156,15 +154,30 @@ Namespace Controllers
             If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture) = "REGISTER" Then
                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                 mAccountProfileToSave.Id = uiProfile.Id
-                Dim mGroups = String.Join(",", uiProfile.AccountGroups.Groups)
-                Dim mRoles = String.Join(",", uiProfile.AccountRoles.Roles)
+                Dim mGroups = ConfigSettings.RegistrationGroups
+                Dim mRoles = ConfigSettings.RegistrationRoles
                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
                 mAccountProfileToSave.AddedDate = Now
+                mAccountProfileToSave.SetGroups(mGroups)
+                mAccountProfileToSave.SetRoles(mRoles)
+                mAccountProfileToSave.PasswordLastSet = DateTime.Now
+                mAccountProfileToSave.LastLogOn = DateTime.Now
+                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+                mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
+                Dim mCurrentClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mCurrentAccountProfile.Account)
+                Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
+                Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
+                mClientChoiceState.IsDirty = False
+                mClientChoiceState.AccountName = mAccountProfileToSave.Account
+                mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+                mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
                 Try
-                    'AccountUtility.Save(mAccountProfile, mSaveRoles, mSaveGroups)
+                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                    ClientChoicesUtility.Save(mClientChoiceState)
+                    ClientChoicesUtility.Save(mCurrentClientChoiceState)
                     mRetVal = "Your account has been created"
                 Catch ex As Exception
-
+                    mLog.Error(ex)
                 End Try
             Else
                 If Not HttpContext.Current.Items("EditId") Is Nothing Then
@@ -196,6 +209,7 @@ Namespace Controllers
                                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
                                     mAccountProfileToSave.AddedDate = Now
                                     AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                                    mLog.Debug("Saved account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account)
                                     mRetVal = True
                                 Else
                                     Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to edit")
@@ -217,6 +231,7 @@ Namespace Controllers
                                     mAccountProfileToSave.SetGroups(mGroups)
                                     mAccountProfileToSave.SetRoles(mRoles)
                                     AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                                    mLog.Debug("Added account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account)
                                     mRetVal = "true"
                                 Else
                                     Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
