@@ -72,7 +72,7 @@ namespace GrowthWare.WebSupport.Utilities
                 mDataView = mDataTable.DefaultView;
                 mDataView.RowFilter = "TABLE_NAME = '" + staticName + "'";
                 DataRowView mDataViewRow = mDataView[0];
-                mRetValue = int.Parse(mDataViewRow["NVP_SEQ_ID"].ToString());
+                mRetValue = int.Parse(mDataViewRow["NVP_SEQ_ID"].ToString(), CultureInfo.InvariantCulture);
             }
             catch (Exception)
             {
@@ -167,10 +167,10 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Gets the NVP detail.
         /// </summary>
-        /// <param name="nameValuePairSeqDetId">The NVP seq det ID.</param>
+        /// <param name="nameValuePairSeqDetailId">The NVP seq det ID.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>MNameValuePairDetail.</returns>
-        public static MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetId, int nameValuePairSeqId)
+        public static MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
         {
             DataView mDataView = null;
             DataTable mDataTable = null;
@@ -178,12 +178,11 @@ namespace GrowthWare.WebSupport.Utilities
             MNameValuePairDetail mRetVal = null;
             try
             {
-                mDataTable = new DataTable();
                 GetNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
                 mDataTable.Locale = CultureInfo.InvariantCulture;
                 mDataView = mDataTable.DefaultView;
                 mImportTable = mDataTable.Clone();
-                mDataView.RowFilter = "NVP_SEQ_DET_ID = " + nameValuePairSeqDetId;
+                mDataView.RowFilter = "NVP_SEQ_DET_ID = " + nameValuePairSeqDetailId;
                 foreach (DataRowView drv in mDataView)
                 {
                     mImportTable.ImportRow(drv.Row);
@@ -219,6 +218,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Gets the NVP details.
         /// </summary>
         /// <param name="yourDataTable">Your data table.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
         public static void GetNameValuePairDetails(ref DataTable yourDataTable)
         {
             yourDataTable = (DataTable)HttpContext.Current.Cache[CachedNameValuePairDetailsTableName];
@@ -236,16 +236,18 @@ namespace GrowthWare.WebSupport.Utilities
         /// </summary>
         /// <param name="yourDataTable">Your data table.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#"), 
+        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId = "0")]
         public static void GetNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)
         {
-            DataView mDataView;
-            DataTable mDataTable = new DataTable();
+            DataView mDataView = null;
+            DataTable mDataTable = null;
             try
             {
-                mDataTable = new DataTable();
-                mDataView = new DataView();
                 GetNameValuePairDetails(ref mDataTable);
-                mDataView = mDataTable.DefaultView;
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataTable.DefaultView.RowFilter = String.Empty;
+                mDataView = new DataView(mDataTable);
                 yourDataTable = mDataView.Table.Clone();
                 mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
                 foreach (DataRowView drv in mDataView)
@@ -253,8 +255,10 @@ namespace GrowthWare.WebSupport.Utilities
                     yourDataTable.ImportRow(drv.Row);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
                 throw;
             }
             finally 
@@ -263,6 +267,11 @@ namespace GrowthWare.WebSupport.Utilities
                 {
                     mDataTable.Dispose();
                     mDataTable = null;
+                }
+                if (mDataView != null)
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
                 }
             }
         }
@@ -274,16 +283,37 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable GetNameValuePairDetails(string staticName)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
+            DataView mDataView = null;
+            DataTable mDataTable = null;
             DataTable mReturnTable = null;
-            GetNameValuePairDetails(ref mDT);
-            mDV = mDT.DefaultView;
-            mReturnTable = mDV.Table.Clone();
-            mDV.RowFilter = "TABLE_NAME = '" + staticName + "'";
-            foreach (DataRowView drv in mDV)
+            try
             {
-                mReturnTable.ImportRow(drv.Row);
+                GetNameValuePairDetails(ref mDataTable);
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataView = mDataTable.DefaultView;
+                mReturnTable = mDataView.Table.Clone();
+                mDataView.RowFilter = "TABLE_NAME = '" + staticName + "'";
+                foreach (DataRowView drv in mDataView)
+                {
+                    mReturnTable.ImportRow(drv.Row);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null)
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
+                if (mDataView != null)
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
+                }            
             }
             return mReturnTable;
         }
@@ -295,16 +325,37 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>DataTable.</returns>
         public static DataTable GetNameValuePairDetails(int nameValuePairSeqId)
         {
-            DataView mDV = new DataView();
-            DataTable mDT = new DataTable();
+            DataView mDataView = null;
+            DataTable mDataTable = null;
             DataTable mReturnTable = null;
-            GetNameValuePairDetails(ref mDT);
-            mDV = mDT.DefaultView;
-            mReturnTable = mDV.Table.Clone();
-            mDV.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
-            foreach (DataRowView drv in mDV)
+            try
             {
-                mReturnTable.ImportRow(drv.Row);
+                GetNameValuePairDetails(ref mDataTable);
+                mDataTable.Locale = CultureInfo.InvariantCulture;
+                mDataView = mDataTable.DefaultView;
+                mReturnTable = mDataView.Table.Clone();
+                mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
+                foreach (DataRowView drv in mDataView)
+                {
+                    mReturnTable.ImportRow(drv.Row);
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+            finally 
+            {
+                if (mDataTable != null)
+                {
+                    mDataTable.Dispose();
+                    mDataTable = null;
+                }
+                if (mDataView != null)
+                {
+                    mDataView.Dispose();
+                    mDataView = null;
+                }                 
             }
             return mReturnTable;
         }
@@ -407,7 +458,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="theDropDown">The drop down list to set</param>
         /// <param name="selectedValue">The value to set the drop box to</param>
         /// <remarks></remarks>
-        public static void SetDropSelection(DropDownList theDropDown, string selectedValue)
+        public static void SetDropSelection(ListControl theDropDown, string selectedValue)
         {
             if (theDropDown == null) throw new ArgumentNullException("theDropDown", "theDropDown cannot be a null reference (Nothing in Visual Basic)!");
             if (string.IsNullOrEmpty(selectedValue)) throw new ArgumentNullException("selectedValue", "selectedValue cannot be a null reference (Nothing in Visual Basic)!");
@@ -423,9 +474,9 @@ namespace GrowthWare.WebSupport.Utilities
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                throw;
             }
         }
 
