@@ -69,8 +69,6 @@ public class AccountsController : ApiController
 		return Ok(mRetVal);
 	}
 
-	//Public Function ChangePassword(<FromBody()> ByVal oldPassword As String, <FromBody()> ByVal newPassword As String) As IHttpActionResult
-
 	[HttpPost()]
 	public IHttpActionResult ChangePassword(MChangePassword mChangePassword)
 	{
@@ -128,10 +126,37 @@ public class AccountsController : ApiController
         Logger mLog = Logger.Instance();
         if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
         {
+            // need code to check for account before continuing
+            String mGroups = ConfigSettings.RegistrationGroups;
+            String mRoles = ConfigSettings.RegistrationRoles;
             mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
             mAccountProfileToSave.Id = uiProfile.Id;
-            String mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
-            String mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
+            mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+            mAccountProfileToSave.AddedDate = DateTime.Now;
+            mAccountProfileToSave.SetGroups(mGroups);
+            mAccountProfileToSave.SetRoles(mRoles);
+            mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+            mAccountProfileToSave.LastLogOn = DateTime.Now;
+            mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+            mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
+            MClientChoicesState mCurrentClientChoiceState = ClientChoicesUtility.GetClientChoicesState(mCurrentAccountProfile.Account);
+            MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
+            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+            mClientChoiceState.IsDirty = false;
+            mClientChoiceState.AccountName = mAccountProfileToSave.Account;
+            mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+            mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+            try
+            {
+                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                ClientChoicesUtility.Save(mClientChoiceState);
+                ClientChoicesUtility.Save(mCurrentClientChoiceState);
+                mRetVal = "Your account has been created";
+            }
+            catch (Exception ex)
+            {
+                mLog.Error(ex);
+            }
         }
         else 
         {
@@ -172,6 +197,7 @@ public class AccountsController : ApiController
                                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                                 mAccountProfileToSave.AddedDate = DateTime.Now;
                                 AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                mLog.Debug("Saved account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account);
                                 mRetVal = "true";
                             }
                             else
@@ -196,6 +222,7 @@ public class AccountsController : ApiController
                                 string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
                                 string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
                                 AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                mLog.Debug("Added account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account);
                                 mRetVal = "true";
                             }
                             else 

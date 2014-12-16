@@ -13,13 +13,13 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts {
     public partial class AddEditAccount {
         
         /// <summary>
-        /// form1 control.
+        /// frmAddEditAccount control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlForm form1;
+        protected global::System.Web.UI.HtmlControls.HtmlForm frmAddEditAccount;
         
         /// <summary>
         /// hdnCanSaveRoles control.
@@ -65,6 +65,15 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlGenericControl groupsTab;
+        
+        /// <summary>
+        /// derivedRolesTab control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl derivedRolesTab;
         
         /// <summary>
         /// txtAccount_seq_id control.
@@ -335,6 +344,15 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::GrowthWare.WebSupport.CustomWebControls.ListPicker ctlGroups;
+        
+        /// <summary>
+        /// tabsDerivedRoles control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl tabsDerivedRoles;
         
         /// <summary>
         /// lstBoxRoles control.

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Services;
@@ -22,9 +23,12 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
     {
         MAccountProfile m_Profile = null;
 
+        string m_Action = string.Empty;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             btnSave.Visible = false;
+            m_Action = GWWebHelper.GetQueryValue(Request, "Action");
             if (!String.IsNullOrEmpty(Request.QueryString["AccountSeqID"]))
             {
                 int mAccountSeqID = int.Parse(Request.QueryString["AccountSeqID"].ToString());
@@ -46,6 +50,13 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
                 hdnCanSaveStatus.Value = false.ToString();
                 tdStatus.Style.Add("display", "none");
                 dropStatus.Style.Add("display", "none");
+                if (m_Action.ToUpper(CultureInfo.InvariantCulture) == "REGISTER") 
+                { 
+                    m_Profile = new MAccountProfile();
+                    trAccount.Visible = false;
+                    tabsDerivedRoles.Visible = false;
+                    derivedRolesTab.Visible = false;
+                }
             }
             HttpContext.Current.Session.Add("EditId", m_Profile.Id);
             populatePage();

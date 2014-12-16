@@ -11,23 +11,6 @@ namespace GrowthWare.Framework.Common
     static public class ConfigSettings
     {
 
-        /// <summary>
-        /// Gets a value indicating whether [auto create account].
-        /// </summary>
-        /// <value><c>true</c> if [auto create account]; otherwise, <c>false</c>.</value>
-        public static bool AutoCreate
-        {
-            get { return bool.Parse(GetAppSettingValue("Auto_Create", true)); }
-        }
-
-        /// <summary>
-        /// Gets the auto create client choices account.
-        /// </summary>
-        /// <value>The auto create client choices account.</value>
-        public static string AutoCreateClientChoicesAccount
-        {
-            get { return GetAppSettingValue("Auto_Create_ClientChoicesAccount", true); }
-        }
 
         /// <summary>
         /// Gets the automatic create security entity.
@@ -36,15 +19,6 @@ namespace GrowthWare.Framework.Common
         public static string AutoCreateSecurityEntity
         {
             get { return GetAppSettingValue("Auto_Create_SecurityEntity", true); }
-        }
-
-        /// <summary>
-        /// Gets the auto create roles.
-        /// </summary>
-        /// <value>The auto create roles.</value>
-        public static string AutoCreateRoles
-        {
-            get { return GetAppSettingValue("Auto_Create_Roles", true); }
         }
 
         /// <summary>
@@ -361,27 +335,74 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
-        /// Returns Registering_Roles from the CONFIG file
+        /// Gets or sets a value indicating the account to use for the client choices.
+        /// </summary>
+        /// <value>string value from config file</value>
+        /// <returns>string</returns>
+        public static string RegistrationAccountChoicesAccount
+        {
+            get { return GetAppSettingValue("RegistrationAccountChoicesAccount", true); }
+        }
+
+        /// <summary>
+        /// Returns RegistrationGroups from the CONFIG file
         /// </summary>
         /// <value>String</value>
         /// <returns>String</returns>
         /// <remarks></remarks>
-        public static string RegisteringRoles
+        public static string RegistrationGroups
         {
-            get { return GetAppSettingValue("Registering_Roles", true); }
+            get { return GetAppSettingValue("RegistrationGroups", true); }
         }
 
         /// <summary>
-        /// Return Registration_Post_Action from the COFNIG file
+        /// Return RegistrationPassword from the COFNIG file
         /// </summary>
         /// <value>String</value>
         /// <returns>String</returns>
         /// <remarks>String</remarks>
-        public static object RegistrationPostAction
+        public static string RegistrationPassword 
         {
-            get { return GetAppSettingValue("Registration_Post_Action", true); }
+            get { return GetAppSettingValue("RegistrationPassword", true); }
         }
 
+        /// <summary>
+        /// Return RegistrationPostAction from the COFNIG file
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks>String</remarks>
+        public static string RegistrationPostAction
+        {
+            get { return GetAppSettingValue("RegistrationPostAction", true); }
+        }
+
+        /// <summary>
+        /// Gets the registration create roles.
+        /// </summary>
+        /// <value>The registration roles.</value>
+        public static string RegistrationRoles
+        {
+            get { return GetAppSettingValue("RegistrationRoles", true); }
+        }
+
+        /// <summary>
+        /// Gets the RegistrationStatusIds account.
+        /// </summary>
+        /// <value>The RegistrationStatusIds.</value>
+        public static string RegistrationStatusId 
+        {
+            get { return GetAppSettingValue("RegistrationStatusId", true); }
+        }
+
+        /// <summary>
+        /// Gets the RegistrationSecurityEntityId.
+        /// </summary>
+        /// <value>The RegistrationSecurityEntityId.</value>
+        public static string RegistrationSecurityEntityId
+        {
+            get { return GetAppSettingValue("RegistrationSecurityEntityId", true); }
+        }
         /// <summary>
         /// Retrun AppDisplayedName and Remember_Me from the CONFIG file
         /// </summary>
