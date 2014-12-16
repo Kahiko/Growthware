@@ -4,6 +4,7 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports System.Web
 Imports System.Web.UI
 Imports System.Globalization
+Imports System.Web.UI.WebControls
 
 Namespace Utilities
     ''' <summary>
@@ -56,9 +57,9 @@ Namespace Utilities
                 mDataView = mDataTable.DefaultView
                 mDataView.RowFilter = "TABLE_NAME = '" & staticName & "'"
                 Dim mDataViewRow As DataRowView = mDataView.Item(0)
-                mRetValue = Integer.Parse(mDataViewRow.Item("NVP_SEQ_ID").ToString())
+                mRetValue = Integer.Parse(mDataViewRow.Item("NVP_SEQ_ID").ToString(), CultureInfo.InvariantCulture)
             Catch ex As Exception
-                Throw ex
+                Throw
             Finally
                 If Not mDataTable Is Nothing Then
                     mDataTable.Dispose()
@@ -78,14 +79,28 @@ Namespace Utilities
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>System.String.</returns>
         Public Function GetNameValuePairName(ByVal nameValuePairSeqId As Integer) As String
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
             Dim mRetValue As String = String.Empty
-            mDT = AllNameValuePairs(-1)
-            mDV = mDT.DefaultView
-            mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
-            Dim mDataViewRow As DataRowView = mDV.Item(0)
-            mRetValue = mDataViewRow.Item("NVP_SEQ_ID").ToString()
+            Try
+                mDataTable = AllNameValuePairs(-1)
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataView = mDataTable.DefaultView
+                mDataView.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
+                Dim mDataViewRow As DataRowView = mDataView.Item(0)
+                mRetValue = mDataViewRow.Item("NVP_SEQ_ID").ToString()
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
+                End If
+            End Try
             Return mRetValue
         End Function
 
@@ -119,16 +134,30 @@ Namespace Utilities
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>MNameValuePairDetail.</returns>
         Public Function GetNameValuePairDetail(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As MNameValuePairDetail
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
-            Dim mImportTable As New DataTable
-            GetNameValuePairDetails(mDT, nameValuePairSeqId)
-            mDV = mDT.DefaultView
-            mImportTable = mDT.Clone
-            mDV.RowFilter = "NVP_SEQ_DET_ID = " & nameValuePairDetailSeqId
-            For Each drv As DataRowView In mDV
-                mImportTable.ImportRow(drv.Row)
-            Next
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
+            Dim mImportTable As DataTable = Nothing
+            Try
+                GetNameValuePairDetails(mDataTable, nameValuePairSeqId)
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataView = mDataTable.DefaultView
+                mImportTable = mDataTable.Clone
+                mDataView.RowFilter = "NVP_SEQ_DET_ID = " & nameValuePairDetailSeqId
+                For Each drv As DataRowView In mDataView
+                    mImportTable.ImportRow(drv.Row)
+                Next
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
+                End If
+            End Try
             Return New MNameValuePairDetail(mImportTable.Rows(0))
         End Function
 
@@ -136,6 +165,7 @@ Namespace Utilities
         ''' Gets the NVP details.
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="0#")>
         Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable)
             yourDataTable = CType(HttpContext.Current.Cache(CachedNameValuePairDetailsTableName), DataTable)
             If yourDataTable Is Nothing Then
@@ -150,24 +180,33 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="0#")>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId:="0")>
         Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable, ByVal nameValuePairSeqId As Integer)
-            Dim mDataView As DataView
-            Dim mDataTable As DataTable
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
             Try
-                mDataTable = New DataTable
                 GetNameValuePairDetails(mDataTable)
-                mDataView = mDataTable.DefaultView
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataTable.DefaultView.RowFilter = String.Empty
+                mDataView = New DataView(mDataTable)
                 yourDataTable = mDataView.Table.Clone()
                 mDataView.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
                 For Each drv As DataRowView In mDataView
                     yourDataTable.ImportRow(drv.Row)
                 Next
             Catch ex As Exception
-                ' do nothing
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(ex)
+                Throw
             Finally
                 If Not mDataTable Is Nothing Then
                     mDataTable.Dispose()
                     mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
                 End If
             End Try
 
@@ -179,16 +218,30 @@ Namespace Utilities
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>DataTable.</returns>
         Public Function GetNameValuePairDetails(ByVal staticName As String) As DataTable
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
-            Dim mReturnTable As DataTable
-            GetNameValuePairDetails(mDT)
-            mDV = mDT.DefaultView
-            mReturnTable = mDV.Table.Clone()
-            mDV.RowFilter = "TABLE_NAME = '" & staticName & "'"
-            For Each drv As DataRowView In mDV
-                mReturnTable.ImportRow(drv.Row)
-            Next
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
+            Dim mReturnTable As DataTable = Nothing
+            Try
+                GetNameValuePairDetails(mDataTable)
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataView = mDataTable.DefaultView
+                mReturnTable = mDataView.Table.Clone()
+                mDataView.RowFilter = "TABLE_NAME = '" & staticName & "'"
+                For Each drv As DataRowView In mDataView
+                    mReturnTable.ImportRow(drv.Row)
+                Next
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
+                End If
+            End Try
             Return mReturnTable
         End Function
 
@@ -198,16 +251,31 @@ Namespace Utilities
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>DataTable.</returns>
         Public Function GetNameValuePairDetails(ByVal nameValuePairSeqId As Integer) As DataTable
-            Dim mDV As New DataView
-            Dim mDT As New DataTable
-            Dim mReturnTable As DataTable
-            GetNameValuePairDetails(mDT)
-            mDV = mDT.DefaultView
-            mReturnTable = mDV.Table.Clone()
-            mDV.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
-            For Each drv As DataRowView In mDV
-                mReturnTable.ImportRow(drv.Row)
-            Next
+            Dim mDataView As DataView = Nothing
+            Dim mDataTable As DataTable = Nothing
+            Dim mReturnTable As DataTable = Nothing
+            Try
+                GetNameValuePairDetails(mDataTable)
+                mDataTable.Locale = CultureInfo.InvariantCulture
+                mDataView = mDataTable.DefaultView
+                mReturnTable = mDataView.Table.Clone()
+                mDataView.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
+                For Each drv As DataRowView In mDataView
+                    mReturnTable.ImportRow(drv.Row)
+                Next
+
+            Catch ex As Exception
+                Throw
+            Finally
+                If Not mDataTable Is Nothing Then
+                    mDataTable.Dispose()
+                    mDataTable = Nothing
+                End If
+                If Not mDataView Is Nothing Then
+                    mDataView.Dispose()
+                    mDataView = Nothing
+                End If
+            End Try
             Return mReturnTable
         End Function
 
@@ -294,7 +362,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="theDropDown">The drop down.</param>
         ''' <param name="selectedVale">The selected vale.</param>
-        Public Sub SetDropSelection(ByVal theDropDown As WebControls.DropDownList, ByVal selectedVale As String)
+        Public Sub SetDropSelection(ByVal theDropDown As ListControl, ByVal selectedVale As String)
             If theDropDown Is Nothing Then Throw New ArgumentNullException("theDropDown", "theDropDown cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(selectedVale) Then Throw New ArgumentNullException("selectedVale", "selectedVale cannot be a null reference (Nothing in Visual Basic)!")
             Try
@@ -306,7 +374,7 @@ Namespace Utilities
                     End If
                 Next
             Catch ex As Exception
-                Throw ex
+                Throw
             End Try
         End Sub
 
