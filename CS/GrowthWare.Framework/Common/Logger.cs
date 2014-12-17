@@ -101,25 +101,26 @@ namespace GrowthWare.Framework.Common
             }
             if (m_Appender == null)
             {
-                try
+                if (!Directory.Exists(m_LogFilePath)) 
                 {
-                    m_Appender = new log4net.Appender.FileAppender(m_Layout, m_LogFile, true);
-                }
-                catch (DirectoryNotFoundException)
-                {
-                    m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "\\Logs\\";
-                    m_LogFile = m_LogFilePath + m_LogFileName;
                     try
                     {
                         Directory.CreateDirectory(m_LogFilePath);
+                    }
+                    catch (DirectoryNotFoundException)
+                    {
+                        m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + @"\Logs\";
+                        Directory.CreateDirectory(m_LogFilePath);
                         m_LogFile = m_LogFilePath + m_LogFileName;
                     }
-                    catch
+                    catch (IOException) 
                     {
-                        throw;
+                        m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + @"\Logs\";
+                        Directory.CreateDirectory(m_LogFilePath);
+                        m_LogFile = m_LogFilePath + m_LogFileName;                    
                     }
-                    m_Appender = new log4net.Appender.FileAppender(m_Layout, m_LogFile, true);
                 }
+                m_Appender = new log4net.Appender.FileAppender(m_Layout, m_LogFile, true);
             }
             m_Appender.Name = "Logger";
             m_Appender.Threshold = convertPriorityTextToPriority(s_SCurrentLogLevel);
