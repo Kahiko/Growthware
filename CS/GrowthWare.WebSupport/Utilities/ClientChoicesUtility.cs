@@ -99,13 +99,28 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void Save(MClientChoicesState clientChoicesState)
         {
+            Save(clientChoicesState, true);
+        }
+
+
+        /// <summary>
+        /// Save the client choices to the database.
+        /// </summary>
+        /// <param name="clientChoicesState">MClientChoicesState</param>
+        /// <param name="updateContext">bool</param>
+        /// <remarks></remarks>
+        public static void Save(MClientChoicesState clientChoicesState, bool updateContext)
+        {
             if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mBClientChoices.Save(clientChoicesState);
-            if (HttpContext.Current.Cache != null)
+            if (updateContext) 
             {
-                HttpContext.Current.Cache[MClientChoices.SessionName] = clientChoicesState;
+                if (HttpContext.Current.Cache != null)
+                {
+                    HttpContext.Current.Cache[MClientChoices.SessionName] = clientChoicesState;
+                }
             }
         }
     }
