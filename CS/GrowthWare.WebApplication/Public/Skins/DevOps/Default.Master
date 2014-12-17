@@ -106,20 +106,19 @@
                     setTimeout(MessagesMenuWidth, 250);
                 });
                 var $loader = $('#loading'), timer = 0;
-                $loader.hide()
-			    .ajaxStart(function () {
-			        timer && clearTimeout(timer);
+                $loader.hide();
+                $(document).ajaxStart(function () {
+                    timer && clearTimeout(timer);
 
-			        timer = setTimeout(function () {
-			            $loader.show();
-			        },
-				    100);
-			    })
-			    .ajaxStop(function () {
-			        clearTimeout(timer);
-			        $loader.hide();
-
-			    });
+                    timer = setTimeout(function () {
+                        $loader.show();
+                    },
+                    100);
+                })
+                $(document).ajaxStop(function () {
+                    clearTimeout(timer);
+                    $loader.hide();
+                });
             });
         </script>
         <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
@@ -234,7 +233,7 @@
 		<!--Start Content-->
 		<div id="content" class="col-xs-12 col-sm-10">
             <div id="loading" style=" height: 26px; float:left;">
-	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
+	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src='<%=ResolveUrl("~/Public/GrowthWare/Images/ajax-loader_Green.gif")%>' />
             </div>
 			<div id="ajax-content" class="clear" style="margin-top: 0.5em; margin-left: 0.5em;">
                 <div id="HorizontalDiv"></div>
