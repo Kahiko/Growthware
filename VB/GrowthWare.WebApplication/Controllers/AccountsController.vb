@@ -164,7 +164,6 @@ Namespace Controllers
                 mAccountProfileToSave.LastLogOn = DateTime.Now
                 mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
                 mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
-                Dim mCurrentClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mCurrentAccountProfile.Account)
                 Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
                 Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
                 Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
@@ -173,13 +172,9 @@ Namespace Controllers
                 mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
                 mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
                 mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
-                mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
-                ClientChoicesUtility.Save(mCurrentClientChoiceState)
                 Try
                     AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
-                    ClientChoicesUtility.Save(mClientChoiceState)
-                    mCurrentClientChoiceState(MClientChoices.SecurityEntityId) = mCurrentSecurityEntityId
-                    ClientChoicesUtility.Save(mCurrentClientChoiceState)
+                    ClientChoicesUtility.Save(mClientChoiceState, False)
                     mRetVal = "Your account has been created"
                 Catch ex As Exception
                     mLog.Error(ex)
