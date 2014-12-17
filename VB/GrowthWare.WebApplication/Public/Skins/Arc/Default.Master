@@ -98,22 +98,6 @@
                 window.location.hash = "?Action=" + mHREF;
                 return false;
             });
-
-            var $loader = $('#loading'), timer = 0;
-            $loader.hide()
-			.ajaxStart(function () {
-			    timer && clearTimeout(timer);
-
-			    timer = setTimeout(function () {
-			        $loader.show();
-			    },
-				100);
-			})
-			.ajaxStop(function () {
-			    clearTimeout(timer);
-			    $loader.hide();
-
-			});
         });
     </script>
     <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>

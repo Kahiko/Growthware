@@ -81,20 +81,20 @@
 
         $(document).ready(function () {
             var $loader = $('#loading'), timer = 0;
-            $loader.hide()
-			.ajaxStart(function () {
-			    timer && clearTimeout(timer);
+            $loader.hide();
+            $(document).ajaxStart(function () {
+                timer && clearTimeout(timer);
 
-			    timer = setTimeout(function () {
-			        $loader.show();
-			    },
+                timer = setTimeout(function () {
+                    $loader.show();
+                },
 				100);
-			})
-			.ajaxStop(function () {
-			    clearTimeout(timer);
-			    $loader.hide();
+            })
+            $(document).ajaxStop(function () {
+                clearTimeout(timer);
+                $loader.hide();
 
-			});
+            });
         });
     </script>
     <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
@@ -125,7 +125,7 @@
                     <span id="pageMessage" class="Form_Title"></span>
                 </div>
 			    <div class="Column" id="loading">
-				    &nbsp;<img alt="Loading, please wait.." src="Public/GrowthWare/Images/ajax-loader_Green.gif" />
+				    &nbsp;<img alt="Loading, please wait.." src='<%=ResolveUrl("~/Public/GrowthWare/Images/ajax-loader_Green.gif")%>' />
 			    </div>
 			    <div class="Column" id="HorizontalDiv">
 			    </div>
