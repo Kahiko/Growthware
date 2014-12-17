@@ -89,19 +89,20 @@ Namespace Common
             End If
             m_AppenderLastUsed = DateTime.Now()
             If m_Appender Is Nothing Then
-                Try
-                    m_Appender = New log4net.Appender.FileAppender(m_Layout, m_LogFile, True)
-                Catch ex As DirectoryNotFoundException
-                    m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "\Logs\"
-                    m_LogFile = m_LogFilePath & m_LogFileName
+                If Not Directory.Exists(m_LogFilePath) Then
                     Try
                         Directory.CreateDirectory(m_LogFilePath)
-                        m_LogFile = m_LogFilePath & m_LogFileName
-                    Catch generatedExceptionName As Exception
-                        Throw
+                    Catch ex As DirectoryNotFoundException
+                        m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "\Logs\"
+                        Directory.CreateDirectory(m_LogFilePath)
+                        m_LogFile = m_LogFilePath + m_LogFileName
+                    Catch ex As IOException
+                        m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "\Logs\"
+                        Directory.CreateDirectory(m_LogFilePath)
+                        m_LogFile = m_LogFilePath + m_LogFileName
                     End Try
-                    m_Appender = New log4net.Appender.FileAppender(m_Layout, m_LogFile, True)
-                End Try
+                End If
+                m_Appender = New log4net.Appender.FileAppender(m_Layout, m_LogFile, True)
             End If
             m_Appender.Name = "LogUtility"
             m_Appender.Threshold = convertPriorityTextToPriority(s_SCurrentLogLevel)
