@@ -70,6 +70,8 @@ namespace GrowthWare.WebSupport.Utilities
                         }
                         if (password == profilePassword)
                         {
+                            mAccountProfile.LastLogOn = DateTime.Now;
+                            AccountUtility.Save(mAccountProfile, false, false);
                             retVal = true;
                         }
                     }
@@ -87,6 +89,8 @@ namespace GrowthWare.WebSupport.Utilities
                         //Bind to the native AdsObject to force authentication
                         //if this does not work it will throw an exception.
                         obj = entry.NativeObject;
+                        mAccountProfile.LastLogOn = DateTime.Now;
+                        AccountUtility.Save(mAccountProfile, false, false);
                         retVal = true;
                     }
                     catch (Exception ex)
