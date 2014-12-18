@@ -251,7 +251,13 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 mRetVal = mBAccount.GetProfile(account);
             }
-            catch (IndexOutOfRangeException)
+            catch (InvalidOperationException)
+            {
+                String mMSG = "Count not find account: " + account + " in the database";
+                Logger mLog = Logger.Instance();
+                mLog.Error(mMSG);
+            }
+            catch (IndexOutOfRangeException) 
             {
                 String mMSG = "Count not find account: " + account + " in the database";
                 Logger mLog = Logger.Instance();
@@ -274,11 +280,17 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 mRetVal = mResult.First();
             }
-            catch (InvalidOperationException ex)
+            catch (InvalidOperationException)
             {
+                String mMSG = "Count not find account: " + id + " in the database";
                 Logger mLog = Logger.Instance();
-                mLog.Error(ex);
-                mRetVal = null;
+                mLog.Error(mMSG);
+            }
+            catch (IndexOutOfRangeException)
+            {
+                String mMSG = "Count not find account: " + id + " in the database";
+                Logger mLog = Logger.Instance();
+                mLog.Error(mMSG);
             }
             if (mRetVal != null)
             {

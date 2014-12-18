@@ -126,35 +126,43 @@ public class AccountsController : ApiController
         Logger mLog = Logger.Instance();
         if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
         {
-            // need code to check for account before continuing
-            String mGroups = ConfigSettings.RegistrationGroups;
-            String mRoles = ConfigSettings.RegistrationRoles;
-            mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
-            mAccountProfileToSave.Id = uiProfile.Id;
-            mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
-            mAccountProfileToSave.AddedDate = DateTime.Now;
-            mAccountProfileToSave.SetGroups(mGroups);
-            mAccountProfileToSave.SetRoles(mRoles);
-            mAccountProfileToSave.PasswordLastSet = DateTime.Now;
-            mAccountProfileToSave.LastLogOn = DateTime.Now;
-            mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
-            mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
-            MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
-            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+            MAccountProfile mExistingAccount = AccountUtility.GetProfile(uiProfile.Account);
+            if (mExistingAccount == null)
+            {
+                String mGroups = ConfigSettings.RegistrationGroups;
+                String mRoles = ConfigSettings.RegistrationRoles;
+                mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
+                mAccountProfileToSave.Id = uiProfile.Id;
+                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+                mAccountProfileToSave.AddedDate = DateTime.Now;
+                mAccountProfileToSave.SetGroups(mGroups);
+                mAccountProfileToSave.SetRoles(mRoles);
+                mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+                mAccountProfileToSave.LastLogOn = DateTime.Now;
+                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+                mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
+                MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
+                MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
 
-            mClientChoiceState.IsDirty = false;
-            mClientChoiceState.AccountName = mAccountProfileToSave.Account;
-            mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
-            mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
-            try
-            {
-                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
-                ClientChoicesUtility.Save(mClientChoiceState, false);
-                mRetVal = "Your account has been created";
+                mClientChoiceState.IsDirty = false;
+                mClientChoiceState.AccountName = mAccountProfileToSave.Account;
+                mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+                mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+                try
+                {
+                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
+                    ClientChoicesUtility.Save(mClientChoiceState, false);
+                    AccountUtility.SetPrincipal(mAccountProfileToSave);
+                    mRetVal = "Your account has been created";
+                }
+                catch (Exception ex)
+                {
+                    mLog.Error(ex);
+                }
             }
-            catch (Exception ex)
+            else 
             {
-                mLog.Error(ex);
+                mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email";
             }
         }
         else 
