@@ -152,33 +152,39 @@ Namespace Controllers
             Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
             Dim mLog As Logger = Logger.Instance()
             If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture) = "REGISTER" Then
-                mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
-                mAccountProfileToSave.Id = uiProfile.Id
-                Dim mGroups = ConfigSettings.RegistrationGroups
-                Dim mRoles = ConfigSettings.RegistrationRoles
-                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
-                mAccountProfileToSave.AddedDate = Now
-                mAccountProfileToSave.SetGroups(mGroups)
-                mAccountProfileToSave.SetRoles(mRoles)
-                mAccountProfileToSave.PasswordLastSet = DateTime.Now
-                mAccountProfileToSave.LastLogOn = DateTime.Now
-                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
-                mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
-                Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
-                Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
-                Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
+                Dim mExistingAccount As MAccountProfile = AccountUtility.GetProfile(uiProfile.Account)
+                If mExistingAccount Is Nothing Then
+                    mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
+                    mAccountProfileToSave.Id = uiProfile.Id
+                    Dim mGroups = ConfigSettings.RegistrationGroups
+                    Dim mRoles = ConfigSettings.RegistrationRoles
+                    mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
+                    mAccountProfileToSave.AddedDate = Now
+                    mAccountProfileToSave.SetGroups(mGroups)
+                    mAccountProfileToSave.SetRoles(mRoles)
+                    mAccountProfileToSave.PasswordLastSet = DateTime.Now
+                    mAccountProfileToSave.LastLogOn = DateTime.Now
+                    mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+                    mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
+                    Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
+                    Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
+                    Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
 
-                mClientChoiceState.IsDirty = False
-                mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
-                mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
-                mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
-                Try
-                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
-                    ClientChoicesUtility.Save(mClientChoiceState, False)
-                    mRetVal = "Your account has been created"
-                Catch ex As Exception
-                    mLog.Error(ex)
-                End Try
+                    mClientChoiceState.IsDirty = False
+                    mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
+                    mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+                    mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
+                    Try
+                        AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
+                        ClientChoicesUtility.Save(mClientChoiceState, False)
+                        AccountUtility.SetPrincipal(mAccountProfileToSave)
+                        mRetVal = "Your account has been created"
+                    Catch ex As Exception
+                        mLog.Error(ex)
+                    End Try
+                Else
+                    mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email"
+                End If
             Else
                 If Not HttpContext.Current.Items("EditId") Is Nothing Then
                     Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())

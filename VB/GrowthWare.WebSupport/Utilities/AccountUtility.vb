@@ -206,6 +206,10 @@ Namespace Utilities
                 Dim mMSG As String = "Count not find account: " + account + " in the database"
                 Dim mLog As Logger = Logger.Instance
                 mLog.Error(mMSG)
+            Catch ex As IndexOutOfRangeException
+                Dim mMSG As String = "Count not find account: " + account + " in the database"
+                Dim mLog As Logger = Logger.Instance
+                mLog.Error(mMSG)
             End Try
             Return mRetVal
         End Function

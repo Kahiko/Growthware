@@ -83,10 +83,17 @@
             }
 
             function saveAddEditAccountSucess(xhr) {
-                alert(xhr);
-                if (xhr==true) {
-                    GW.Navigation.NavigationController.Refresh();
-                    GW.Search.GetSearchResults();
+                switch (xhr) {
+                    case "true":
+                        GW.Navigation.NavigationController.Refresh();
+                        GW.Search.GetSearchResults();
+                        break;
+                    case "Your account has been created":
+                        location.reload();
+                        break;
+                    default:
+                        alert(xhr);
+                        break;
                 }
             }
 
