@@ -31,29 +31,37 @@
 
 	    function move(direction) {
 	        var functionSeqId = parseInt($("#<%=dropFunctions.ClientID %> option:selected").val());
-		    var options = GW.Model.DefaultWebMethodOptions();
-		    options.async = true;
-		    options.data = { "functionSeqId": functionSeqId, "direction": direction };
-		    options.contentType = 'application/json; charset=utf-8';
-		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/MoveMenu"
-		    GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder);
-		}
+	        var options = GW.Model.DefaultWebMethodOptions();
+	        options.async = true;
+	        options.url = GW.Common.getBaseURL() + "/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
+	        GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
+	    }
+
+	    function moveError(xhr, status, error) {
+	        var mErrorMessage = 'Error getting content';
+	        mErrorMessage += '\nStatus: ' + status;
+	        mErrorMessage += '\nError: ' + error;
+	        mErrorMessage += '\nMessage: ' + xhr;
+	        alert(mErrorMessage);
+	    }
 
 		function getFunctionMenuOrder() {
 		    var functionSeqID = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
 		    var options = GW.Model.DefaultWebMethodOptions();
+		    var profile = {};
+		    profile.functionSeqId = functionSeqID;
 		    options.async = true;
-		    options.data = JSON.stringify({ functionSeqId: functionSeqID });
+		    options.type = 'GET';
+		    //options.data = profile;
 		    options.contentType = 'application/json; charset=utf-8';
 		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/GetFunctionOrder"
+		    options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
 		    GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
 		}
 
 		function getFunctionMenuOrderSucess(xhr) {
 		    $("#functionOrderTable > tbody").empty()
-		    $("#functionOrderTemplate").tmpl(xhr.d).appendTo("#functionOrderTable > tbody");
+		    $("#functionOrderTemplate").tmpl(xhr).appendTo("#functionOrderTable > tbody");
 		    $("#functionOrderTable").css('display', '');
 		}
 
@@ -112,7 +120,7 @@
 
 		    directoryInfo = {};
 		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
-			directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
+		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
 		    directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
 		    var iPassword = $("#<%=txtPassword.ClientID %>").val();
 		    if (iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
@@ -300,14 +308,17 @@
 					    <tr>
 						    <td>
 							    <table border="0" style="display: none;" cellspacing="2" cellpadding="2" id="functionOrderTable">
-								    <tr>
-									    <th>
-										    Name
-									    </th>
-									    <th>
-										    Action
-									    </th>
-								    </tr>
+                                    <thead>
+								        <tr>
+									        <th>
+										        Name
+									        </th>
+									        <th>
+										        Action
+									        </th>
+								        </tr>
+                                    </thead>
+                                    <tbody></tbody>
 							    </table>
 						    </td>
 						    <td valign="top">

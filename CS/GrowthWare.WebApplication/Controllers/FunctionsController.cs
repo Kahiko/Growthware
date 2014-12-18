@@ -1,9 +1,11 @@
 ﻿using GrowthWare.Framework.Common;
+using GrowthWare.Framework.Model.Enumerations;
 using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data;
 using System.Globalization;
 using System.Linq;
 using System.Net;
@@ -39,6 +41,42 @@ namespace GrowthWare.WebApplication.Controllers
                 }
             }
 
+            return mRetVal;
+        }
+
+        [HttpGet()]
+        public List<UIFuncitonMenuOrder> GetFunctionOrder([FromUri()] int functionSeqId) 
+        {
+            List<UIFuncitonMenuOrder> mRetVal = new List<UIFuncitonMenuOrder>();
+            MFunctionProfile profile = FunctionUtility.GetProfile(functionSeqId);
+            DataView myDataView = FunctionUtility.GetFunctionMenuOrder(profile).DefaultView;
+            foreach (DataRowView mRow in myDataView)
+            {
+                UIFuncitonMenuOrder mItem = new UIFuncitonMenuOrder();
+                mItem.Function_Seq_Id = mRow["Function_Seq_Id"].ToString();
+                mItem.Name = mRow["Name"].ToString();
+                mItem.Action = mRow["Action"].ToString();
+                mRetVal.Add(mItem);
+            }
+            return mRetVal;
+        }
+
+        [HttpPost()]
+        public bool MoveMenu(int functionSeqId, string direction) 
+        {
+            bool mRetVal = false;
+            MFunctionProfile mProfile = FunctionUtility.GetProfile(functionSeqId);
+            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+            DirectionType mDirection;
+            Enum.TryParse(direction, out mDirection);
+            if (direction == "up")
+            {
+                FunctionUtility.Move(mProfile, DirectionType.Up, mAccountProfile.Id, DateTime.Now);
+            }
+            else
+            {
+                FunctionUtility.Move(mProfile, DirectionType.Down, mAccountProfile.Id, DateTime.Now);
+            }
             return mRetVal;
         }
 
@@ -94,5 +132,12 @@ namespace GrowthWare.WebApplication.Controllers
         public string Location { get; set; }
         public string Description { get; set; }
         public int LinkBehavior { get; set; }
+    }
+
+    public class UIFuncitonMenuOrder
+    {
+        public string Function_Seq_Id;
+        public String Name;
+        public String Action;
     }
 }
