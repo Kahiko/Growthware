@@ -37,6 +37,8 @@ Namespace Controllers
             End If
             If AccountUtility.Authenticated(jsonData.Account, jsonData.Password) Then
                 Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(jsonData.Account)
+                mAccountProfile.LastLogOn = DateTime.Now()
+                AccountUtility.Save(mAccountProfile, False, False)
                 AccountUtility.SetPrincipal(mAccountProfile)
                 mRetVal = "true"
             Else
