@@ -4,6 +4,7 @@ Imports System.Web.Http
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.WebSupport.Utilities
+Imports GrowthWare.Framework.Model.Enumerations
 
 Namespace Controllers
     Public Class FunctionsController
@@ -46,6 +47,26 @@ Namespace Controllers
             Next
             Return mRetVal
         End Function
+
+        <HttpPost>
+        Public Function MoveMenu(<FromUri()> ByVal functionSeqId As Integer, <FromUri()> ByVal direction As String) As Boolean
+            Dim mRetVal As Boolean = False
+            Dim mProfile As MFunctionProfile = FunctionUtility.GetProfile(functionSeqId)
+            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+            Try
+                If direction = "up" Then
+                    FunctionUtility.Move(mProfile, DirectionType.Up, mAccountProfile.Id, DateTime.Now)
+                Else
+                    FunctionUtility.Move(mProfile, DirectionType.Down, mAccountProfile.Id, DateTime.Now)
+                End If
+                mRetVal = True
+            Catch ex As Exception
+                Dim mLogger As Logger = Logger.Instance()
+                mLogger.Error(ex)
+            End Try
+            Return mRetVal
+        End Function
+
 
     End Class
 

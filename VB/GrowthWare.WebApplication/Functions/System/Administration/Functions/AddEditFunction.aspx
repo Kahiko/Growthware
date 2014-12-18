@@ -31,14 +31,19 @@
 
 		function move(direction) {
 			var functionSeqId = parseInt($("#<%=dropFunctions.ClientID %> option:selected").val());
-			var options = GW.Model.DefaultWebMethodOptions();
+		    var options = GW.Model.DefaultWebMethodOptions();
 			options.async = true;
-			options.data = { "functionSeqId": functionSeqId, "direction": direction };
-			options.contentType = 'application/json; charset=utf-8';
-			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/MoveMenu"
-			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder);
+			options.url = GW.Common.getBaseURL() + "/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
+			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
 		}
+
+	    function moveError(xhr, status, error) {
+	        var mErrorMessage = 'Error getting content';
+	        mErrorMessage += '\nStatus: ' + status;
+	        mErrorMessage += '\nError: ' + error;
+	        mErrorMessage += '\nMessage: ' + xhr;
+	        alert(mErrorMessage);
+	    }
 
 		function getFunctionMenuOrder() {
 			var functionSeqID = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
@@ -47,7 +52,6 @@
 		    profile.functionSeqId = functionSeqID;
 		    options.async = true;
 		    options.type = 'GET';
-			//options.data = profile;
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
 			options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
@@ -303,14 +307,17 @@
 					    <tr>
 						    <td>
 							    <table border="0" style="display: none;" cellspacing="2" cellpadding="2" id="functionOrderTable">
-								    <tr>
-									    <th>
-										    Name
-									    </th>
-									    <th>
-										    Action
-									    </th>
-								    </tr>
+                                    <thead>
+								        <tr>
+									        <th>
+										        Name
+									        </th>
+									        <th>
+										        Action
+									        </th>
+								        </tr>
+                                    </thead>
+                                    <tbody></tbody>
 							    </table>
 						    </td>
 						    <td valign="top">

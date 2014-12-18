@@ -147,6 +147,7 @@
     <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
+    <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
@@ -327,6 +328,13 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\Logoff.aspx.vb">
       <DependentUpon>Logoff.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\UpdateSession.aspx.designer.vb">
+      <DependentUpon>UpdateSession.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\UpdateSession.aspx.vb">
+      <DependentUpon>UpdateSession.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.designer.vb">
