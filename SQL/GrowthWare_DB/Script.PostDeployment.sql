@@ -846,7 +846,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'Update'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
-exec ZGWSecurity.Set_Function -1,'Update','Update',@V_Function_Type_SeqID,'Functions/System/Accounts/UpdateSession.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to update the session menus and roles.', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Update','Update',@V_Function_Type_SeqID,'Functions/System/Accounts/UpdateSession.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to update the session menus and roles.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Authenticated',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Under Maintance
