@@ -28,6 +28,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
                 {
                     m_Profile = new MFunctionProfile();
                 }
+                HttpContext.Current.Session.Add("EditId", m_Profile.Id);
                 populatePage();
             }
         }

@@ -130,7 +130,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
             while (i < clen) {
                 var j = i + alen;
                 if (document.cookie.substring(i, j) == arg)
-                    return getCookieVal(j);
+                    return this.getCookieVal(j);
                 i = document.cookie.indexOf(" ", i) + 1;
                 if (i == 0) break;
             }
@@ -150,7 +150,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
         deleteCookie: function (name) {
             exp = new Date();
             exp.setTime(exp.getTime() - 1);
-            var cval = getCookie("name");
+            var cval = this.getCookie("name");
             document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
             return;
         },
@@ -317,7 +317,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 
             },
 
-            customConfirm: function (dialogId, height, width, okFunc, cancelFunc, dialogTitle, dialogMessageTemplate, okCallBackData) {
+            customConfirm: function (dialogId, height, width, okFunc, cancelFunc, dialogTitle, dialogMessageTemplate, okCallBackData, buttons) {
                 if (dialogId.substring(0, 1) == "#") dialogId = dialogId.substring(1, dialogId.length - 1);
                 var $popupBodyDialogWindow = {};
                 if ($(dialogId).length > 0) {
@@ -331,6 +331,8 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                     var $dialogElement = $(dialogId);
                     $dialogElement.html('');
                     $dialogElement.dialog({
+                        closeOnEscape: false,
+                        open: function (event, ui) { $(this).parent().children().children('.ui-dialog-titlebar-close').hide(); },
                         draggable: false,
                         modal: true,
                         autoOpen: false,
@@ -339,7 +341,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                         height: height,
                         width: width,
                         title: dialogTitle || 'Confirm',
-                        buttons: {
+                        buttons: buttons || {
                             OK: function () {
                                 if (typeof (okFunc) == 'function') {
                                     if (okCallBackData != null) {
@@ -364,8 +366,10 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 
                     // Set the HTML
                     $dialogElement.html(dialogMessageTemplate);
+
                     // open the dialog box.
                     $dialogElement.dialog("open");
+
                 } else {
                     alert('The dialogId "' + dialogId + '" does not exist!');
                 }
@@ -404,8 +408,8 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
             },
 
             getDialog: function (dialogOptions, dialogId, dialogMessageTemplate) {
+                if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
                 if (typeof jQuery.ui != 'undefined') {
-                    if (dialogId.substring(0, 1) != "#") dialogId = "#" + dialogId;
                     var defaultOptions = GW.Model.DefaultDialogOptions();
                     var options = $.extend({}, defaultOptions, dialogOptions);
                     if ($(dialogId).length > 0) {
@@ -438,27 +442,12 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                         alert('The dialogId "' + dialogId + '" does not exist!');
                     }
                 } else {
-                    if (!$('#myModal').length) {
-                        $('body').append(GW.Model.BoostrapModal);
-                    }
-                    var $mModal = $('#myModal');
-                    $mModal.on("show.bs.modal", function () {
-                        var height = $(window).height() - 200;
-                        $(this).find(".modal-body").css("max-height", height);
+                    var options = $.extend({}, defaultOptions, dialogOptions);
+                    var dialog = new BootstrapDialog({
+                        title: options.title,
+                        message: dialogMessageTemplate
                     });
-
-                    $mModal.modal({
-                        backdrop: false,
-                        show: false,
-                        keyboard: true
-                    });
-                    $mModal.on('show', function () {
-                        $('.modal-body', this).css({ width: dialogOptions.width, height: dialogOptions.height, 'max-height': '100%', 'max-width': '100%' });
-                    });
-                    $('#myModalTitle').html(dialogOptions.title);
-                    $('#mModalBtnSave').remove();
-                    $('.modal-body').html(dialogMessageTemplate);
-                    $mModal.modal('show');
+                    dialog.open();
                 }
             },
 
@@ -535,6 +524,12 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                         }
                     });
                 } else {
+                    //BootstrapDialog.show({
+                    //    title: options.title,
+                    //    message: $('<div></div>').load(options.url)
+                    //});
+
+
                     if (!$('#myModal').length) {
                         $('body').append(GW.Model.BoostrapModal);
                     }
@@ -596,7 +591,7 @@ if (typeof GW.Common.Validation == "undefined" || !GW.Common.Validation) {
                             if (msg !== undefined) {
                                 alert(msg);
                             } else {
-                                alert('Text is too nong');
+                                alert('Text is too long');
                             }
                         } catch (err) {
                             // do nothing

@@ -98,12 +98,12 @@
 		    profile = {};
 		    profile.Id = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
 		    // action is not being picked up ...
-			if (profile.Id == -1) {
-			    profile.Action = $("#<%=txtAction.ClientID %>").val();
-			} else {
-			    profile.Action = $("#<%=divAction.ClientID %>").html();
-			}
-            profile.Description = $("#<%=txtDescription.ClientID %>").val();
+		    if (profile.Id == -1) {
+		        profile.Action = $("#<%=txtAction.ClientID %>").val();
+		    } else {
+		        profile.Action = $("#<%=divAction.ClientID %>").html();
+		    }
+		    profile.Description = $("#<%=txtDescription.ClientID %>").val();
 		    profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
 		    profile.EnableViewState = $("#<%=chkEnableViewState.ClientID %>").is(':checked');
 		    profile.FunctionTypeSeqID = parseInt($("#<%=dropFunctionType.ClientID %> option:selected").val());
@@ -121,12 +121,15 @@
 		    directoryInfo = {};
 		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
 		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
-		    directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
+		    directoryInfo.ImpersonateAccount = $("#<%=txtAccount.ClientID %>").val();
 		    var iPassword = $("#<%=txtPassword.ClientID %>").val();
-		    if (iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
-		    directoryInfo.Impersonate_PWD = iPassword;
-		    var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
-		    return theData;
+		    if (iPassword === undefined || iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
+		    if (iPassword === undefined) iPassword = '';
+		    directoryInfo.ImpersonatePassword = iPassword;
+		    profile.DirectoryData = directoryInfo;
+		    profile.RolesAndGroups = functionRolesGroups;
+		    //var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
+		    return profile;
 		}
 
 		function saveAddEditFunciton($dialogWindow) {
@@ -139,7 +142,7 @@
 		    options.data = theData;
 		    options.contentType = 'application/json; charset=utf-8';
 		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/InvokeSave"
+		    options.url = GW.Common.getBaseURL() + "/api/Functions/Save?Action=SearchAccounts";
 		    GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
 		    profile = {};
 		    $dialogWindow.dialog("destroy");

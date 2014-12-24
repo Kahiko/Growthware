@@ -164,16 +164,21 @@ namespace GrowthWare.WebSupport.Context
                                     mLog.Debug("Processing for account " + mAccountProfile.Account);
                                     MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
                                     if(mSecurityInfo != null) HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
+                                    string mPage = string.Empty;
                                     if (!mSecurityInfo.MayView)
                                     {
                                         if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
                                         {
                                             WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
                                             GWWebHelper.ExceptionError = mException;
-                                            processOverridePage(FunctionUtility.GetProfile("Logon"));
+                                            //processOverridePage(FunctionUtility.GetProfile("Logon"));
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("Logon").Source;
+                                            HttpContext.Current.Response.Redirect(mPage + "?Action=Logon");
                                         }
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                        processOverridePage(FunctionUtility.GetProfile("AccessDenied"));
+                                        //processOverridePage(FunctionUtility.GetProfile("AccessDenied"));
+                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("AccessDenied").Source;
+                                        HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied");
                                     }
                                 }
                                 else
@@ -327,15 +332,18 @@ namespace GrowthWare.WebSupport.Context
                 String mSkinLocation = "/Public/Skins/" + mSecProfile.Skin + "/";
                 mPage = mPage.Replace("/", @"\");
                 String mSystemOverridePage = mPage.Replace(@"\System\", @"\Overrides\");
-                String mSkinOverrdiePage = mPage.Replace(@"\System\", mSkinLocation);
+                String mSkinOverridePage = mPage.Replace(@"\System\", mSkinLocation);
                 if (File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage))) 
                 {
-                    mLog.Debug("Transfering to override page: " + mSystemOverridePage);
-                    HttpContext.Current.Server.Transfer(mSystemOverridePage, false);
-                }else if(File.Exists(HttpContext.Current.Server.MapPath(mSkinOverrdiePage)))
+                    mLog.Debug("Transferring to system override page: " + mSystemOverridePage);
+                    HttpContext.Current.Server.Execute(mSystemOverridePage, false);
+                    HttpContext.Current.ApplicationInstance.CompleteRequest();
+                }
+                else if (File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)))
                 {
-                    mLog.Debug("Transfering to override page: " + mSkinOverrdiePage);
-                    HttpContext.Current.Server.Transfer(mSkinOverrdiePage, false);
+                    mLog.Debug("Transferring to skin override override page: " + mSkinOverridePage);
+                    HttpContext.Current.Server.Execute(mSkinOverridePage, false);
+                    HttpContext.Current.ApplicationInstance.CompleteRequest();
                 }
             }
         }

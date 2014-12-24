@@ -45,14 +45,14 @@ namespace GrowthWare.WebApplication.Controllers
         }
 
         [HttpGet()]
-        public List<UIFuncitonMenuOrder> GetFunctionOrder([FromUri()] int functionSeqId) 
+        public List<UIFunctionMenuOrder> GetFunctionOrder([FromUri()] int functionSeqId) 
         {
-            List<UIFuncitonMenuOrder> mRetVal = new List<UIFuncitonMenuOrder>();
+            List<UIFunctionMenuOrder> mRetVal = new List<UIFunctionMenuOrder>();
             MFunctionProfile profile = FunctionUtility.GetProfile(functionSeqId);
             DataView myDataView = FunctionUtility.GetFunctionMenuOrder(profile).DefaultView;
             foreach (DataRowView mRow in myDataView)
             {
-                UIFuncitonMenuOrder mItem = new UIFuncitonMenuOrder();
+                UIFunctionMenuOrder mItem = new UIFunctionMenuOrder();
                 mItem.Function_Seq_Id = mRow["Function_Seq_Id"].ToString();
                 mItem.Name = mRow["Name"].ToString();
                 mItem.Action = mRow["Action"].ToString();
@@ -124,6 +124,188 @@ namespace GrowthWare.WebApplication.Controllers
             return mMessageProfile.Body;
         }
 
+        [HttpPost()]
+        public IHttpActionResult Save(UIFunctionProfile uiProfile) 
+        {
+            if (uiProfile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
+            string mRetVal = "false";
+            Logger mLog = Logger.Instance();
+            if (HttpContext.Current.Items["EditId"] != null)
+            {
+                int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                if (mEditId == uiProfile.Id) 
+                {
+                    MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+                    MFunctionProfile profile = new MFunctionProfile();
+                    MDirectoryProfile directoryProfile = new MDirectoryProfile();
+                    if (uiProfile.Id != -1)
+                    {
+                        profile = FunctionUtility.GetProfile(uiProfile.Id);
+                        profile.UpdatedBy = mAccountProfile.Id;
+                        profile.UpdatedDate = DateTime.Now;
+                    }
+                    else 
+                    {
+                        profile.AddedBy = mAccountProfile.Id;
+                        profile.AddedDate = DateTime.Now;                    
+                    }
+                    string viewCommaRoles = String.Join(",", uiProfile.RolesAndGroups.ViewRoles);
+                    string addCommaRoles = String.Join(",", uiProfile.RolesAndGroups.AddRoles);
+                    string editCommaRoles = String.Join(",", uiProfile.RolesAndGroups.EditRoles);
+                    string deleteCommaRoles = String.Join(",", uiProfile.RolesAndGroups.DeleteRoles);
+
+                    string viewCommaGroups = String.Join(",", uiProfile.RolesAndGroups.ViewGroups);
+                    string addCommaGroups = String.Join(",", uiProfile.RolesAndGroups.AddGroups);
+                    string editCommaGroups = String.Join(",", uiProfile.RolesAndGroups.EditGroups);
+                    string deleteCommaGroups = String.Join(",", uiProfile.RolesAndGroups.DeleteGroups);
+
+                    bool saveGroups = false;
+                    bool saveRoles = false;
+
+                    if (profile.GetCommaSeparatedAssignedRoles(PermissionType.View) != viewCommaRoles)
+                    {
+                        profile.SetAssignedRoles(viewCommaRoles, PermissionType.View);
+                        saveRoles = true;
+                    }
+
+                    if (profile.GetCommaSeparatedAssignedRoles(PermissionType.Add) != addCommaRoles)
+                    {
+                        profile.SetAssignedRoles(addCommaRoles, PermissionType.Add);
+                        saveRoles = true;
+                    }
+
+                    if (profile.GetCommaSeparatedAssignedRoles(PermissionType.Edit) != editCommaRoles)
+                    {
+                        profile.SetAssignedRoles(editCommaRoles, PermissionType.Edit);
+                        saveRoles = true;
+                    }
+
+                    if (profile.GetCommaSeparatedAssignedRoles(PermissionType.Delete) != deleteCommaRoles)
+                    {
+                        profile.SetAssignedRoles(deleteCommaRoles, PermissionType.Delete);
+                        saveRoles = true;
+                    }
+
+                    if (profile.GetCommaSeparatedGroups(PermissionType.View) != viewCommaGroups)
+                    {
+                        profile.SetGroups(viewCommaGroups, PermissionType.View);
+                        saveGroups = true;
+                    }
+                    if (profile.GetCommaSeparatedGroups(PermissionType.Add) != addCommaGroups)
+                    {
+                        profile.SetGroups(addCommaGroups, PermissionType.Add);
+                        saveGroups = true;
+                    }
+                    if (profile.GetCommaSeparatedGroups(PermissionType.Edit) != editCommaGroups)
+                    {
+                        profile.SetGroups(editCommaGroups, PermissionType.Edit);
+                        saveGroups = true;
+                    }
+                    if (profile.GetCommaSeparatedGroups(PermissionType.Delete) != deleteCommaGroups)
+                    {
+                        profile.SetGroups(deleteCommaGroups, PermissionType.Delete);
+                        saveGroups = true;
+                    }
+                    profile.Action = uiProfile.Action;
+                    profile.EnableNotifications = uiProfile.EnableNotifications;
+                    profile.EnableViewState = uiProfile.EnableViewState;
+                    profile.FunctionTypeSeqId = uiProfile.FunctionTypeSeqID;
+                    profile.Id = uiProfile.Id;
+                    profile.IsNavigable = uiProfile.IsNav;
+                    profile.LinkBehavior = uiProfile.LinkBehavior;
+                    profile.MetaKeywords = uiProfile.MetaKeyWords;
+                    profile.Name = uiProfile.Name;
+                    profile.NavigationTypeSeqId = uiProfile.NavigationTypeSeqId;
+                    profile.Notes = uiProfile.Notes;
+                    profile.NoUI = uiProfile.NoUI;
+                    profile.ParentId = uiProfile.ParentID;
+                    profile.Source = uiProfile.Source;
+                    profile.Description = uiProfile.Description;
+                    profile.RedirectOnTimeout = uiProfile.RedirectOnTimeout;
+                    FunctionUtility.Save(profile, saveGroups, saveRoles);
+                    profile = FunctionUtility.GetProfile(uiProfile.Action);
+                    if (!String.IsNullOrEmpty(uiProfile.DirectoryData.Directory))
+                    {
+                        if(directoryProfile == null) directoryProfile = new MDirectoryProfile();
+                        directoryProfile.FunctionSeqId = profile.Id;
+                        directoryProfile.Directory = uiProfile.DirectoryData.Directory;
+                        directoryProfile.Impersonate = uiProfile.DirectoryData.Impersonate;
+                        directoryProfile.ImpersonateAccount = uiProfile.DirectoryData.ImpersonateAccount;
+                        directoryProfile.ImpersonatePassword = uiProfile.DirectoryData.ImpersonatePassword;
+                        directoryProfile.Name = uiProfile.DirectoryData.Directory;
+                        directoryProfile.UpdatedBy = mAccountProfile.Id;
+                        DirectoryUtility.Save(directoryProfile);
+                    }
+                    else 
+                    {
+                        if (directoryProfile != null) 
+                        { 
+                            directoryProfile.Directory = "";
+                            directoryProfile.Name = "";
+                            DirectoryUtility.Save(directoryProfile);              
+                        }
+                    }
+                } else 
+                {
+                    Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);                   
+                }
+            }
+            else 
+            { 
+                Exception mError = new Exception("Identifier could not be determined, nothing has been saved!!!!");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            return Ok(mRetVal);
+        }
+
+    }
+
+
+    public class UIFunctionProfile
+    {
+        public string Action;
+        public string Description;
+        public UIDirectoryProfile DirectoryData;
+        public bool EnableNotifications;
+        public bool EnableViewState;
+        public int FunctionTypeSeqID;
+        public int Id;
+        public bool IsNav;
+        public int LinkBehavior;
+        public string MetaKeyWords;
+        public string Name;
+        public int NavigationTypeSeqId;
+        public bool NoUI;
+        public string Notes;
+        public int ParentID;
+        public bool RedirectOnTimeout;
+        public string Source;
+        public UIFunctionRolesGroups RolesAndGroups;
+
+    }
+
+
+    public class UIDirectoryProfile 
+    {
+        public string Directory;
+        public bool Impersonate;
+        public string ImpersonateAccount;
+        public string ImpersonatePassword;
+    }
+
+    public class UIFunctionRolesGroups
+    {
+        public string[] ViewRoles;
+        public string[] AddRoles;
+        public string[] EditRoles;
+        public string[] DeleteRoles;
+        public string[] ViewGroups;
+        public string[] AddGroups;
+        public string[] EditGroups;
+        public string[] DeleteGroups;
     }
 
     public class FunctionInformation
@@ -134,7 +316,7 @@ namespace GrowthWare.WebApplication.Controllers
         public int LinkBehavior { get; set; }
     }
 
-    public class UIFuncitonMenuOrder
+    public class UIFunctionMenuOrder
     {
         public string Function_Seq_Id;
         public String Name;
