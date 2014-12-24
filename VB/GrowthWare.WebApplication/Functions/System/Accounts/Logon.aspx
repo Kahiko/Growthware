@@ -164,6 +164,6 @@
 	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" class="btn btn-primary" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
 </div>
 <div style="height: 26px;">
-	<div id="clientMessage" style="display: none" runat="server"></div>
+	<div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
 	<div id="incorrectLogon" style="display: none;" runat="server"></div>
 </div>

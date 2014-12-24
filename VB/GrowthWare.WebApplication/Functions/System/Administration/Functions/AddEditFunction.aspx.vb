@@ -15,6 +15,7 @@ Public Class AddEditFunction
             Else
                 m_Profile = New MFunctionProfile()
             End If
+            HttpContext.Current.Session.Add("EditId", m_Profile.Id)
             populatePage()
         End If
     End Sub

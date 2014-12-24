@@ -120,33 +120,38 @@
 		    directoryInfo = {};
 		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
 		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
-		    directoryInfo.Impersonate_Account = $("#<%=txtAccount.ClientID %>").val();
+		    directoryInfo.ImpersonateAccount = $("#<%=txtAccount.ClientID %>").val();
 		    var iPassword = $("#<%=txtPassword.ClientID %>").val();
-		    if (iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
-		    directoryInfo.Impersonate_PWD = iPassword;
-			var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
-			return theData;
+		    if (iPassword === undefined || iPassword.length == 0) iPassword = $("#<%=txtHidPwd.ClientID %>").val();
+		    if (iPassword === undefined) iPassword = '';
+		    directoryInfo.ImpersonatePassword = iPassword;
+		    profile.DirectoryData = directoryInfo;
+		    profile.RolesAndGroups = functionRolesGroups;
+			//var theData = { uiProfile: profile, functionRolesGroups: functionRolesGroups, directoryData: directoryInfo };
+		    return profile;
 		}
 
-		function saveAddEditFunciton($dialogWindow) {
-			var theData = updateData();
-			GW.Common.debug(theData);
-			var options = GW.Model.DefaultWebMethodOptions();
-			options.height = 585;
-			options.width = 1050;
-			options.async = false;
-			options.data = theData;
-			options.contentType = 'application/json; charset=utf-8';
-			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx/InvokeSave"
-			GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
-			profile = {};
-			$dialogWindow.dialog("destroy");
-			$dialogWindow.remove();
+	    function saveAddEditFunciton($dialogWindow) {
+	        if (Page_ClientValidate()) {
+	            var theData = updateData();
+	            GW.Common.debug(theData);
+	            var options = GW.Model.DefaultWebMethodOptions();
+	            options.height = 585;
+	            options.width = 1050;
+	            options.async = false;
+	            options.data = theData;
+	            options.contentType = 'application/json; charset=utf-8';
+	            options.dataType = 'json';
+	            options.url = GW.Common.getBaseURL() + "/api/Functions/Save?Action=SearchFunctions";
+	            GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
+	            profile = {};
+	            $dialogWindow.dialog("destroy");
+	            $dialogWindow.remove();
+	        }
 		}
 
 		function saveAddEditFuncitonSucess(xhr) {
-			GW.Navigation.NavigationController.Refresh();
+		    GW.Navigation.NavigationController.Refresh();
 			GW.Search.GetSearchResults();
 		}
 	</script>

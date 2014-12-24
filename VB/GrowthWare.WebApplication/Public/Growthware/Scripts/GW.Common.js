@@ -130,7 +130,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 			while (i < clen) {
 				var j = i + alen;
 				if (document.cookie.substring(i, j) == arg)
-					return getCookieVal(j);
+					return this.getCookieVal(j);
 				i = document.cookie.indexOf(" ", i) + 1;
 				if (i == 0) break;
 			}
@@ -150,7 +150,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 		deleteCookie: function (name) {
 			exp = new Date();
 			exp.setTime(exp.getTime() - 1);
-			var cval = getCookie("name");
+			var cval = this.getCookie("name");
 			document.cookie = name + "=" + cval + "; expires=" + exp.toGMTString();
 			return;
 		},
@@ -317,58 +317,62 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 
 			},
 
-			customConfirm: function (dialogId, height, width, okFunc, cancelFunc, dialogTitle, dialogMessageTemplate, okCallBackData) {
-				if (dialogId.substring(0, 1) == "#") dialogId = dialogId.substring(1, dialogId.length - 1);
-				var $popupBodyDialogWindow = {};
-				if ($(dialogId).length > 0) {
-					$popupBodyDialogWindow = $(dialogId);
-				} else {
-					$popupBodyDialogWindow = $('<div id="' + dialogId + '"></div>');
-					$popupBodyDialogWindow.appendTo('body');
-				}
-				dialogId = '#' + dialogId;
-				if ($(dialogId).length > 0) {
-					var $dialogElement = $(dialogId);
-					$dialogElement.html('');
-					$dialogElement.dialog({
-						draggable: false,
-						modal: true,
-						autoOpen: false,
-						resizable: false,
-						autoOpen: false,
-						height: height,
-						width: width,
-						title: dialogTitle || 'Confirm',
-						buttons: {
-							OK: function () {
-								if (typeof (okFunc) == 'function') {
-									if (okCallBackData != null) {
-										okFunc(okCallBackData);
-									} else {
-										okFunc();
-									}
-								}
-								$(this).dialog("close");
-							},
-							Cancel: function () {
-								if (typeof (cancelFunc) == 'function') {
-									setTimeout(cancelFunc, 50);
-								}
-								$(this).dialog("close");
-							}
-						},
-						close: function (event, ui) {
-						    $(this).dialog('destroy').remove();
-						}
-					});
+			customConfirm: function (dialogId, height, width, okFunc, cancelFunc, dialogTitle, dialogMessageTemplate, okCallBackData, buttons) {
+			    if (dialogId.substring(0, 1) == "#") dialogId = dialogId.substring(1, dialogId.length - 1);
+			    var $popupBodyDialogWindow = {};
+			    if ($(dialogId).length > 0) {
+			        $popupBodyDialogWindow = $(dialogId);
+			    } else {
+			        $popupBodyDialogWindow = $('<div id="' + dialogId + '"></div>');
+			        $popupBodyDialogWindow.appendTo('body');
+			    }
+			    dialogId = '#' + dialogId;
+			    if ($(dialogId).length > 0) {
+			        var $dialogElement = $(dialogId);
+			        $dialogElement.html('');
+			        $dialogElement.dialog({
+			            closeOnEscape: false,
+			            open: function (event, ui) { $(this).parent().children().children('.ui-dialog-titlebar-close').hide(); },
+			            draggable: false,
+			            modal: true,
+			            autoOpen: false,
+			            resizable: false,
+			            autoOpen: false,
+			            height: height,
+			            width: width,
+			            title: dialogTitle || 'Confirm',
+			            buttons: buttons || {
+			                OK: function () {
+			                    if (typeof (okFunc) == 'function') {
+			                        if (okCallBackData != null) {
+			                            okFunc(okCallBackData);
+			                        } else {
+			                            okFunc();
+			                        }
+			                    }
+			                    $(this).dialog("close");
+			                },
+			                Cancel: function () {
+			                    if (typeof (cancelFunc) == 'function') {
+			                        setTimeout(cancelFunc, 50);
+			                    }
+			                    $(this).dialog("close");
+			                }
+			            },
+			            close: function (event, ui) {
+			                $(this).dialog('destroy').remove();
+			            }
+			        });
 
-					// Set the HTML
-					$dialogElement.html(dialogMessageTemplate);
-					// open the dialog box.
-					$dialogElement.dialog("open");
-				} else {
-					alert('The dialogId "' + dialogId + '" does not exist!');
-				}
+			        // Set the HTML
+			        $dialogElement.html(dialogMessageTemplate);
+
+			        // open the dialog box.
+			        $dialogElement.dialog("open");
+
+			    } else {
+			        alert('The dialogId "' + dialogId + '" does not exist!');
+			    }
 			},
 
 			openDialog: function (dialogOptions, dialogId, dialogMessageTemplate) {
@@ -587,7 +591,7 @@ if (typeof GW.Common.Validation == "undefined" || !GW.Common.Validation) {
 							if (msg !== undefined) {
 								alert(msg);
 							} else {
-								alert('Text is too nong');
+								alert('Text is too long');
 							}
 						} catch (err) {
 							// do nothing

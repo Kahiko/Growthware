@@ -14,7 +14,7 @@ Namespace Model.Profiles
 
 #Region "Constructors"
         ''' <summary>
-        ''' Will return a directory profile with the default vaules
+        ''' Will return a directory profile with the default values
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
@@ -24,7 +24,7 @@ Namespace Model.Profiles
         ''' <summary>
         ''' Will return a directory profile with the values from the data row
         ''' </summary>
-        ''' <param name="Datarow">DataRow</param>
+        ''' <param name="dataRow">DataRow</param>
         Public Sub New(ByVal dataRow As DataRow)
             MyBase.Initialize(dataRow)
             mFunction_Seq_ID = MyBase.GetInt(dataRow, "FUNCTION_SEQ_ID")
@@ -37,7 +37,7 @@ Namespace Model.Profiles
         End Sub
 #End Region
 
-#Region "Field Objecgts"
+#Region "Field Objects"
         Private mFunction_Seq_ID As Integer
         Private mDirectory As String = String.Empty
         Private mImpersonate As Boolean = False

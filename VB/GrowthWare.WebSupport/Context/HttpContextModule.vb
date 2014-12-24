@@ -114,16 +114,21 @@ Namespace Context
                                 If Not mAccountProfile.Status = DirectCast(SystemStatus.ChangePassword, Integer) Then
                                     mLog.Debug("Processing for account " + mAccountProfile.Account)
                                     Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
+                                    Dim mPage As String = String.Empty
                                     If Not mSecurityInfo Is Nothing Then HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
                                     If Not mSecurityInfo.MayView Then
                                         If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                                             Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
                                             GWWebHelper.ExceptionError = mException
-                                            processOverridePage(FunctionUtility.GetProfile("Logon"))
+                                            'processOverridePage(FunctionUtility.GetProfile("Logon"))
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("Logon").Source
+                                            HttpContext.Current.Response.Redirect(mPage + "?Action=Logon")
                                         End If
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
-                                        Dim mAccessDeniedProfile As MFunctionProfile = FunctionUtility.GetProfile("AccessDenied")
-                                        processOverridePage(mAccessDeniedProfile)
+                                        'Dim mAccessDeniedProfile As MFunctionProfile = FunctionUtility.GetProfile("AccessDenied")
+                                        'processOverridePage(mAccessDeniedProfile)
+                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("AccessDenied").Source
+                                        HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied")
                                     End If
                                 Else
                                     Dim mException As WebSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
@@ -285,13 +290,15 @@ Namespace Context
                 Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
                 mPage = mPage.Replace("/", "\")
                 Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
-                Dim mSkinOverrdiePage As String = mPage.Replace("\System\", mSkinLocation)
+                Dim mSkinOverridePage As String = mPage.Replace("\System\", mSkinLocation)
                 If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
-                    mLog.Debug("Transfering to override page: " + mSystemOverridePage)
-                    HttpContext.Current.Server.Transfer(mSystemOverridePage, False)
-                ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverrdiePage)) Then
-                    mLog.Debug("Transfering to override page: " + mSkinOverrdiePage)
-                    HttpContext.Current.Server.Transfer(mSkinOverrdiePage, False)
+                    mLog.Debug("Transfering to system override page: " + mSystemOverridePage)
+                    HttpContext.Current.Server.Execute(mSystemOverridePage, False)
+                    HttpContext.Current.ApplicationInstance.CompleteRequest()
+                ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)) Then
+                    mLog.Debug("Transfering to skin override page: " + mSkinOverridePage)
+                    HttpContext.Current.Server.Execute(mSkinOverridePage, False)
+                    HttpContext.Current.ApplicationInstance.CompleteRequest()
                 End If
             End If
         End Sub

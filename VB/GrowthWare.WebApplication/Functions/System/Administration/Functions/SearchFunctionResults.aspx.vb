@@ -10,7 +10,8 @@ Public Class SearchFunctionResults
     Protected m_SecurityInfo As MSecurityInfo = Nothing
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
-        Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
+        'Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
+        Dim mAction = "SearchFunctions"
         If (Not String.IsNullOrEmpty(mAction)) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
             m_SecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
@@ -67,10 +68,10 @@ Public Class SearchFunctionResults
             Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "NAME")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
-            btnDetails.Attributes.Add("onclick", mEditOnClick)
+            If Not btnDetails Is Nothing Then btnDetails.Attributes.Add("onclick", mEditOnClick)
             Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
             ' Add confirmation to delete button
-            btnDelete.Attributes.Add("onclick", mDeleteOnClick)
+            If Not btnDelete Is Nothing Then btnDelete.Attributes.Add("onclick", mDeleteOnClick)
             ' add the hover behavior
             If e.Row.RowState = DataControlRowState.Normal Then
                 e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'")
