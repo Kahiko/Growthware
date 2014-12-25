@@ -129,7 +129,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 GW.Navigation.createReloadUIEventHandler();
                 GW.Common.debug('Creating ~refreshUI');
                 var options = GW.Model.DefaultWebMethodOptions();
-                options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionData";
+                options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionData";
                 options.async = false;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';

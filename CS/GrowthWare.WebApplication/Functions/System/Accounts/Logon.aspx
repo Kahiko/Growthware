@@ -64,7 +64,7 @@
 	    try {
 	        GW.Common.debug(mLogonInfo);
 	        var options = GW.Model.DefaultWebMethodOptions();
-	        options.url = GW.Common.getBaseURL() + "/api/Accounts/Logon?Action=Logon";
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Logon?Action=Logon";
 	        options.data = mLogonInfo;
 	        options.contentType = 'application/json; charset=utf-8';
 	        options.dataType = 'json';

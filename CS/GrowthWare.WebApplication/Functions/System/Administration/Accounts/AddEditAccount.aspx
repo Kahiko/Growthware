@@ -70,9 +70,9 @@
                     options.dataType = 'json';
                     var mAction = GW.Common.getParameterByName('Action');
                     if (mAction != 'Register') {
-                        options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=SearchAccounts";
+                        options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=SearchAccounts";
                     } else {
-                        options.url = GW.Common.getBaseURL() + "/api/Accounts/Save?Action=Register";
+                        options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=Register";
                     }
                     GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                     if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {

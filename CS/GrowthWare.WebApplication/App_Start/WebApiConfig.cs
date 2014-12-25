@@ -17,8 +17,8 @@ namespace GrowthWare.WebApplication
             config.MapHttpAttributeRoutes();
 
             RouteTable.Routes.MapHttpRoute(
-                name: "DefaultApi",
-                routeTemplate: "api/{controller}/{action}/{id}",
+                name: "GrowthwareApi",
+                routeTemplate: "gw/api/{controller}/{action}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             ).RouteHandler = new SessionStateRouteHandler();
         }
