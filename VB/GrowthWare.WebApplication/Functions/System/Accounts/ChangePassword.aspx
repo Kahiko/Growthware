@@ -106,7 +106,7 @@
         GW.Common.debug(JSON.stringify(mChangePassword));
         try {
             var options = GW.Model.DefaultWebMethodOptions();
-            options.url = GW.Common.getBaseURL() + "/api/Accounts/ChangePassword?Action=ChangePassword";
+            options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/ChangePassword?Action=ChangePassword";
             options.data = mChangePassword;
             options.contentType = 'application/json; charset=utf-8';
             options.dataType = 'json';
