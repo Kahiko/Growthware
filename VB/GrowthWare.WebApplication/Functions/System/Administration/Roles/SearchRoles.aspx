@@ -23,6 +23,7 @@
 		mFunctionSeqID = roleSeqId;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Role';
+		if (roleSeqId == -1) options.title = 'Add Role';
 		options.height = 350;
 		options.width = 500;
 		options.async = false;
@@ -44,7 +45,7 @@
 		options.width = 500;
 		options.async = false;
 		options.resizable = true;
-		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/EditRoleMembers.aspx?Action=Edit_Role_Members&ROLE_SEQ_ID=" + roleSeqId;
+		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/EditRoleMembers.aspx?Action=EditRoleMembers&ROLE_SEQ_ID=" + roleSeqId;
 		options.buttons = {
 			'Save': function () { saveMembers($(this)); },
 			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }

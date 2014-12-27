@@ -25,7 +25,7 @@ Namespace Utilities
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Dim mProfile As MRoleProfile = New MRoleProfile()
             mProfile.Id = roleId
-            mBRoles.GetProfile(mProfile)
+            mProfile = mBRoles.GetProfile(mProfile)
             Return mProfile
         End Function
 

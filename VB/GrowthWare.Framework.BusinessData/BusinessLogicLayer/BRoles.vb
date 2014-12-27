@@ -63,11 +63,12 @@ Namespace BusinessLogicLayer
         ''' Gets the profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub GetProfile(ByVal profile As MRoleProfile)
+        Public Function GetProfile(ByVal profile As MRoleProfile) As MRoleProfile
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
             m_BRoles.Profile = profile
             If DatabaseIsOnline() Then profile = New MRoleProfile(m_BRoles.ProfileData())
-        End Sub
+            Return profile
+        End Function
 
         ''' <summary>
         ''' Gets the roles by security entity.

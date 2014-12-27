@@ -14,13 +14,13 @@ Option Explicit On
 Partial Public Class AddEditRole
 
     '''<summary>
-    '''form1 control.
+    '''frmAddEditRole control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+    Protected WithEvents frmAddEditRole As Global.System.Web.UI.HtmlControls.HtmlForm
 
     '''<summary>
     '''litClientMsg control.
@@ -39,15 +39,6 @@ Partial Public Class AddEditRole
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents txtRoleSeqId As Global.System.Web.UI.HtmlControls.HtmlInputText
-
-    '''<summary>
-    '''spnRoleName control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents spnRoleName As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 
     '''<summary>
     '''txtRole control.

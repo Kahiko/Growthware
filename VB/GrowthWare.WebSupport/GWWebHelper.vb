@@ -2,7 +2,7 @@
 Imports GrowthWare.Framework.Common
 
 ''' <summary>
-''' GWWebHelper Contains non volital data needed throughout the system.
+''' GWWebHelper Contains non volatile data needed throughout the system.
 ''' </summary>
 ''' <remarks></remarks>
 Public Module GWWebHelper
@@ -20,9 +20,14 @@ Public Module GWWebHelper
     Public Const LinkBehaviorNavigationTypesSequenceId As Integer = 1
 
     ''' <summary>
-    ''' Gets the core web administration verison.
+    ''' Constant value of 1 representing the DataKeyField for Roles
     ''' </summary>
-    ''' <value>The core web administration verison.</value>
+    Public Const RoleDataKeyField As String = "ROLE_SEQ_ID"
+
+    ''' <summary>
+    ''' Gets the core web administration version.
+    ''' </summary>
+    ''' <value>The core web administration version.</value>
     ReadOnly Property CoreWebAdministrationVersion() As String
         Get
             Dim myVersion As String = String.Empty
