@@ -45,7 +45,7 @@ Namespace BusinessLogicLayer
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!")
             Dim mRetVal As DataTable = Nothing
-            If DatabaseIsOnline() Then m_BRoles.Search(searchCriteria)
+            If DatabaseIsOnline() Then mRetVal = m_BRoles.Search(searchCriteria)
             Return mRetVal
         End Function
 

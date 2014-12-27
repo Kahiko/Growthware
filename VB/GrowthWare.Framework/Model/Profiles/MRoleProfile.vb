@@ -24,9 +24,8 @@ Namespace Model.Profiles
         ''' <param name="dataRow"></param>
         ''' <remarks></remarks>
         Protected Overloads Sub Initialize(ByVal dataRow As DataRow)
-            Me.IdColumnName = "ROLE_SEQ_ID"
-            Me.NameColumnName = "NAME"
-            Me.Initialize(dataRow)
+            MyBase.IdColumnName = "ROLE_SEQ_ID"
+            MyBase.NameColumnName = "NAME"
             MyBase.Initialize(dataRow)
             m_Description = MyBase.GetString(dataRow, "DESCRIPTION")
             m_IsSystem = MyBase.GetBool(dataRow, "IS_SYSTEM")

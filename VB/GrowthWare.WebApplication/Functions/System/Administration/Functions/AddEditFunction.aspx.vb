@@ -1,9 +1,10 @@
 ﻿Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport
+Imports GrowthWare.WebSupport.BasePages
 
 Public Class AddEditFunction
-    Inherits Page
+    Inherits BaseWebpage
 
     Private m_Profile As MFunctionProfile = Nothing
 

@@ -1,9 +1,10 @@
 ﻿Imports GrowthWare.WebSupport
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
+Imports GrowthWare.WebSupport.BasePages
 
 Public Class SearchSecurityEntities
-    Inherits System.Web.UI.Page
+    Inherits BaseWebpage
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim mAction As String = GWWebHelper.GetQueryValue(Request, "action")

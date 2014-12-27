@@ -154,10 +154,15 @@
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
+    <Content Include="Functions\System\Administration\Roles\AddEditRole.aspx" />
+    <Content Include="Functions\System\Administration\Roles\EditRoleMembers.aspx" />
+    <Content Include="Functions\System\Administration\Roles\SearchRoleResults.aspx" />
+    <Content Include="Functions\System\Administration\Roles\SearchRoles.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx" />
     <Content Include="Functions\System\Errors\AccessDenied.aspx" />
+    <Content Include="Functions\System\Errors\UnknownAction.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
@@ -356,14 +361,14 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.vb">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.designer.vb">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.vb">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx.designer.vb">
       <DependentUpon>SearchFunctionResults.aspx</DependentUpon>
@@ -377,7 +382,35 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.vb">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.designer.vb">
+      <DependentUpon>AddEditRole.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.vb">
+      <DependentUpon>AddEditRole.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\EditRoleMembers.aspx.designer.vb">
+      <DependentUpon>EditRoleMembers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\EditRoleMembers.aspx.vb">
+      <DependentUpon>EditRoleMembers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\SearchRoleResults.aspx.designer.vb">
+      <DependentUpon>SearchRoleResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\SearchRoleResults.aspx.vb">
+      <DependentUpon>SearchRoleResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\SearchRoles.aspx.designer.vb">
+      <DependentUpon>SearchRoles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Roles\SearchRoles.aspx.vb">
+      <DependentUpon>SearchRoles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.designer.vb">
       <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
@@ -391,7 +424,7 @@
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx.vb">
       <DependentUpon>SearchSecurityEntities.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.designer.vb">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
@@ -406,6 +439,13 @@
     <Compile Include="Functions\System\Errors\AccessDenied.aspx.vb">
       <DependentUpon>AccessDenied.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Errors\UnknownAction.aspx.designer.vb">
+      <DependentUpon>UnknownAction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Errors\UnknownAction.aspx.vb">
+      <DependentUpon>UnknownAction.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.designer.vb">
       <DependentUpon>GenericHome.aspx</DependentUpon>

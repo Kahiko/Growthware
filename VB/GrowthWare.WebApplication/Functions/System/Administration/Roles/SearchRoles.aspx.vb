@@ -3,7 +3,7 @@ Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.BasePages
 
-Public Class SearchFunctions
+Public Class SearchRoles
     Inherits BaseWebpage
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

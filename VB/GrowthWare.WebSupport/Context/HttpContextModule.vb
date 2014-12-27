@@ -141,6 +141,9 @@ Namespace Context
                             End If
                         Else
                             mLog.Debug("Menu data or Logoff/Logon requested")
+                            If Not String.IsNullOrEmpty(mAction) And mFunctionProfile Is Nothing Then
+                                mLog.Error("Could not find Action """ + mAction + """")
+                            End If
                             processOverridePage(mFunctionProfile)
                         End If
                     Else
@@ -282,24 +285,27 @@ Namespace Context
         End Function
 
         Private Shared Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
-            ' do not process API calls
-            If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
-                Dim mLog As Logger = Logger.Instance()
-                Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
-                Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-                Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
-                mPage = mPage.Replace("/", "\")
-                Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
-                Dim mSkinOverridePage As String = mPage.Replace("\System\", mSkinLocation)
-                If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
-                    mLog.Debug("Transfering to system override page: " + mSystemOverridePage)
-                    HttpContext.Current.Server.Execute(mSystemOverridePage, False)
-                    HttpContext.Current.ApplicationInstance.CompleteRequest()
-                ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)) Then
-                    mLog.Debug("Transfering to skin override page: " + mSkinOverridePage)
-                    HttpContext.Current.Server.Execute(mSkinOverridePage, False)
-                    HttpContext.Current.ApplicationInstance.CompleteRequest()
+            If Not functionProfile Is Nothing Then
+                ' do not process API calls
+                If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
+                    Dim mLog As Logger = Logger.Instance()
+                    Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
+                    Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+                    Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
+                    mPage = mPage.Replace("/", "\")
+                    Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
+                    Dim mSkinOverridePage As String = mPage.Replace("\System\", mSkinLocation)
+                    If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
+                        mLog.Debug("Transferring to system override page: " + mSystemOverridePage)
+                        HttpContext.Current.Server.Execute(mSystemOverridePage, False)
+                        HttpContext.Current.ApplicationInstance.CompleteRequest()
+                    ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)) Then
+                        mLog.Debug("Transferring to skin override page: " + mSkinOverridePage)
+                        HttpContext.Current.Server.Execute(mSkinOverridePage, False)
+                        HttpContext.Current.ApplicationInstance.CompleteRequest()
+                    End If
                 End If
+
             End If
         End Sub
 

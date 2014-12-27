@@ -33,7 +33,7 @@
 			var functionSeqId = parseInt($("#<%=dropFunctions.ClientID %> option:selected").val());
 		    var options = GW.Model.DefaultWebMethodOptions();
 			options.async = true;
-			options.url = GW.Common.getBaseURL() + "/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
+			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
 			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
 		}
 
@@ -54,7 +54,7 @@
 		    options.type = 'GET';
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
+			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
 			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
 		}
 
@@ -142,7 +142,7 @@
 	            options.data = theData;
 	            options.contentType = 'application/json; charset=utf-8';
 	            options.dataType = 'json';
-	            options.url = GW.Common.getBaseURL() + "/api/Functions/Save?Action=SearchFunctions";
+	            options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save?Action=SearchFunctions";
 	            GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
 	            profile = {};
 	            $dialogWindow.dialog("destroy");
