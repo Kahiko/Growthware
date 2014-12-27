@@ -703,6 +703,14 @@ exec ZGWSecurity.Set_Function -1,'Display Error','Display Error',@V_Function_Typ
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V_ViewPermission,@V_SystemID, @V_Debug
 
+--Adding Error
+print 'Adding Unknown Action Error'
+SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
+set @V_MyAction = 'UnknownAction'
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
+exec ZGWSecurity.Set_Function -1,'Unknown Action','Unknown Action',@V_Function_Type_SeqID,'Functions/System/Errors/UnknownAction.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsTrue,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Error page when unknown action is attempted occurs.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V_ViewPermission,@V_SystemID, @V_Debug
 
 print 'Adding Horizontal Hierarchical menu'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
