@@ -10,7 +10,7 @@ using System.Web;
 namespace GrowthWare.WebSupport
 {
     /// <summary>
-    /// GWWebHelper Contains non volital data needed throughout the system.
+    /// GWWebHelper Contains non volatile data needed throughout the system.
     /// </summary>
     /// <remarks></remarks>
     public static class GWWebHelper
@@ -24,12 +24,17 @@ namespace GrowthWare.WebSupport
         /// </summary>
         public const int LinkBehaviorNavigationTypesSequenceId = 1;
 
+        /// <summary>
+        /// Constant value of 1 representing the DataKeyField for Roles
+        /// </summary>
+        public const string RoleDataKeyField = "ROLE_SEQ_ID";
+
         private static Exception s_ExceptionError = null;
 
         /// <summary>
-        /// Gets the core web administration verison.
+        /// Gets the core web administration version.
         /// </summary>
-        /// <value>The core web administration verison.</value>
+        /// <value>The core web administration version.</value>
         public static string CoreWebAdministrationVersion
         {
             get

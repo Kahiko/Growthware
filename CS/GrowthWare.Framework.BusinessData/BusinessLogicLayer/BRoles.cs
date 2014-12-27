@@ -32,7 +32,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// </example>
     public class BRoles : BaseBusinessLogic
     {
-        private IDRoles m_BRoles;
+        private IDRoles m_DRoles;
 
         /// <summary>
         /// Private BRoles() to ensure only new instances with passed parameters is used.
@@ -58,7 +58,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
         /// mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
         /// 
-        /// BRoless mBRoles = BRoless = New BRoless(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        /// BRoles mBRoles = BRoles = New BRoles(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         /// ]]>
         /// </code>
         /// <code language="C#">
@@ -70,7 +70,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
         /// mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
         /// 
-        /// Dim mBRoles As BRoless = New BRoless(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+        /// Dim mBRoles As BRoles = New BRoles(mSecurityEntityProfile, ConfigSettings.CentralManagement)
         /// ]]>
         /// </code>
         /// </example>
@@ -82,18 +82,18 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
             }
             if (centralManagement)
             {
-                if (m_BRoles == null)
+                if (m_DRoles == null)
                 {
-                    m_BRoles = (IDRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
+                    m_DRoles = (IDRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
                 }
             }
             else
             {
-                m_BRoles = (IDRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
+                m_DRoles = (IDRoles)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DRoles");
             }
 
-            m_BRoles.ConnectionString = securityEntityProfile.ConnectionString;
-            m_BRoles.SecurityEntitySeqID = securityEntityProfile.Id;
+            m_DRoles.ConnectionString = securityEntityProfile.ConnectionString;
+            m_DRoles.SecurityEntitySeqID = securityEntityProfile.Id;
         }
 
         /// <summary>
@@ -103,20 +103,20 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public void Save(MRoleProfile profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-            m_BRoles.Profile = profile;
-            if (DatabaseIsOnline()) m_BRoles.Save();
+            m_DRoles.Profile = profile;
+            if (DatabaseIsOnline()) m_DRoles.Save();
         }
 
         /// <summary>
-        /// Searches the specified search critera.
+        /// Searches the specified search criteria.
         /// </summary>
-        /// <param name="searchCriteria">The search critera.</param>
+        /// <param name="searchCriteria">The search criteria.</param>
         /// <returns>DataTable.</returns>
         public DataTable Search(MSearchCriteria searchCriteria)
         {
             if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!");
             DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_BRoles.Search(searchCriteria);
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.Search(searchCriteria);
             return mRetVal;
         }
 
@@ -128,19 +128,21 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         public void DeleteRole(MRoleProfile profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-            m_BRoles.Profile = profile;
-            if (DatabaseIsOnline()) m_BRoles.DeleteRole();
+            m_DRoles.Profile = profile;
+            if (DatabaseIsOnline()) m_DRoles.DeleteRole();
         }
 
         /// <summary>
         /// Gets the profile.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        public void GetProfile(MRoleProfile profile)
+        public MRoleProfile GetProfile(MRoleProfile profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-            m_BRoles.Profile = profile;
-            if (DatabaseIsOnline()) m_BRoles.ProfileData();
+            MRoleProfile mRetVal = null;
+            m_DRoles.Profile = profile;
+            if (DatabaseIsOnline()) mRetVal = new MRoleProfile(m_DRoles.ProfileData());
+            return mRetVal;
         }
 
         /// <summary>
@@ -150,8 +152,8 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <returns>DataTable.</returns>
         public DataTable GetRolesBySecurityEntity(int securityEntityId)
         {
-            m_BRoles.SecurityEntitySeqID = securityEntityId;
-            return m_BRoles.RolesBySecurityEntity();
+            m_DRoles.SecurityEntitySeqID = securityEntityId;
+            return m_DRoles.RolesBySecurityEntity();
         }
 
         /// <summary>
@@ -163,8 +165,8 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             DataTable mRetVal = null;
-            m_BRoles.Profile = profile;
-            if (DatabaseIsOnline()) mRetVal = m_BRoles.AccountsInRole();
+            m_DRoles.Profile = profile;
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsInRole();
             return mRetVal;
         }
 
@@ -177,8 +179,8 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             DataTable mRetVal = null;
-            m_BRoles.Profile = profile;
-            if (DatabaseIsOnline()) mRetVal = m_BRoles.AccountsNotInRole();
+            m_DRoles.Profile = profile;
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.AccountsNotInRole();
             return mRetVal;
         }
 
@@ -194,7 +196,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!!");
             bool mRetVal = false;
-            if (DatabaseIsOnline()) mRetVal = m_BRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
             return mRetVal;
         }
     }

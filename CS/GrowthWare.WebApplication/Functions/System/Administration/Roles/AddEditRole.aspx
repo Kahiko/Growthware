@@ -1,54 +1,48 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddEditRole.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Roles.AddEditRole" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="AddEditRole.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Roles.AddEditRole" %>
+<script type="text/javascript" language="javascript">
+	$(document).ready(function () {
+	});
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head runat="server">
-	<title></title>
-	<script type="text/javascript" language="javascript">
-		$(document).ready(function () {
-		});
-
-		function updateData() {
-			var profile = {};
-			profile = {};
-			profile.IsSystem = false;
-			profile.IsSystemOnly = false;
-			if ($("#<%=chkIsSystem.ClientID %>").is(':checked')) {
-				profile.IsSystem = true;
-			}
-			if ($("#<%=chkIsSystemOnly.ClientID %>").is(':checked')) {
-				profile.IsSystemOnly = true;
-			}
-			profile.Id = parseInt($("#<%=txtRoleSeqId.ClientID %>").val());
-			profile.Name = $("#<%=txtRole.ClientID %>").val();
-			profile.Description = $("#<%=txtDescription.ClientID %>").val();
-			var theData = { profile: profile };
-			return theData;
+	function updateData() {
+		var profile = {};
+		profile = {};
+		profile.IsSystem = false;
+		profile.IsSystemOnly = false;
+		if ($("#<%=chkIsSystem.ClientID %>").is(':checked')) {
+			profile.IsSystem = true;
 		}
-
-		function saveAddEdit($dialogWindow) {
-			var theData = updateData();
-			// profile is defined in AddEditAccounts.aspx
-			GW.Common.debug(theData);
-			var options = GW.Model.DefaultWebMethodOptions();
-			options.async = false;
-			options.data = theData;
-			options.contentType = 'application/json; charset=utf-8';
-			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx/InvokeSave"
-			GW.Common.JQueryHelper.callWeb(options);
-			if (!($dialogWindow === undefined)) {
-				$dialogWindow.dialog("destroy")
-				$dialogWindow.remove();
-			}
-			GW.Search.GetSearchResults();
+		if ($("#<%=chkIsSystemOnly.ClientID %>").is(':checked')) {
+			profile.IsSystemOnly = true;
 		}
-	</script>
-</head>
-<body>
-	<div id="helpPopup" style="display: none;">
-	</div>
-	<form id="form1" runat="server">
+		profile.Id = parseInt($("#<%=txtRoleSeqId.ClientID %>").val());
+		profile.Name = $("#<%=txtRole.ClientID %>").val();
+		profile.Description = $("#<%=txtDescription.ClientID %>").val();
+		var theData = { profile: profile };
+		return theData;
+	}
+
+	function saveAddEdit($dialogWindow) {
+	    if (Page_ClientValidate()) {
+	        var theData = updateData();
+	        GW.Common.debug(theData);
+	        var options = GW.Model.DefaultWebMethodOptions();
+	        options.async = false;
+	        options.data = theData;
+	        options.contentType = 'application/json; charset=utf-8';
+	        options.dataType = 'json';
+	        options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx/InvokeSave"
+	        GW.Common.JQueryHelper.callWeb(options);
+	        if (!($dialogWindow === undefined)) {
+	            $dialogWindow.dialog("destroy")
+	            $dialogWindow.remove();
+	        }
+	        GW.Search.GetSearchResults();
+	    }
+	}
+</script>
+<div id="helpPopup" style="display: none;">
+</div>
+<form id="frmAddEditRole" runat="server">
 	<table cellpadding="0" width="100%">
 		<tr>
 			<td>
@@ -97,7 +91,4 @@
 			</td>
 		</tr>
 	</table>
-	</form>
-</body>
-</html>
-
+</form>

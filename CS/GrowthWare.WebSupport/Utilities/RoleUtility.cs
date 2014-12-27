@@ -33,11 +33,11 @@ namespace GrowthWare.WebSupport.Utilities
         /// <returns>MRoleProfile.</returns>
         public static MRoleProfile GetProfile(int roleId)
         {
-            MRoleProfile myProfile = new MRoleProfile();
-            myProfile.Id = roleId;
-            BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            myBRoles.GetProfile(myProfile);
-            return myProfile;
+            MRoleProfile mProfile = new MRoleProfile();
+            mProfile.Id = roleId;
+            BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mProfile = mBRoles.GetProfile(mProfile);
+            return mProfile;
         }
 
         /// <summary>
