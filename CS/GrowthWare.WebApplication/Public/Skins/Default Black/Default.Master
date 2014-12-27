@@ -43,7 +43,7 @@
             mRefreshObject.ContentAreaID = 'NotUsed';
             mRefreshObject.Refresh = function refreshFunction() {
                 var options = GW.Model.DefaultWebMethodOptions();
-                options.url = options.url = GW.Common.getBaseURL() + "/api/Accounts/GetPreferences";
+                options.url = options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/GetPreferences";
                 options.async = true;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';

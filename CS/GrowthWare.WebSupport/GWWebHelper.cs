@@ -70,9 +70,9 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
-        /// Gets the frame work verison.
+        /// Gets the frame work version.
         /// </summary>
-        /// <value>The frame work verison.</value>
+        /// <value>The frame work version.</value>
         public static string FrameworkVersion
         {
             get

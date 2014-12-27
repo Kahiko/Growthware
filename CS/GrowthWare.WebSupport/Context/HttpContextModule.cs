@@ -139,7 +139,7 @@ namespace GrowthWare.WebSupport.Context
                 if (HttpContext.Current.Session["EditId"] != null) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
                 if (processRequest())
                 {
-                    if ((HttpContext.Current.Request.QueryString["Action"] != null))
+                    if ((!String.IsNullOrEmpty(HttpContext.Current.Request.QueryString["Action"])))
                     {
                         string mAction = HttpContext.Current.Request.QueryString["Action"].ToString(CultureInfo.InvariantCulture);
                         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
@@ -195,6 +195,10 @@ namespace GrowthWare.WebSupport.Context
                         else
                         {
                             mLog.Debug("Menu data or Logoff/Logon requested");
+                            if (!string.IsNullOrEmpty(mAction) && mFunctionProfile == null)
+                            {
+                                mLog.Error("Could not find Action \"" + mAction + "\"");
+                            }
                             processOverridePage(mFunctionProfile);
                         }
                     }
@@ -324,7 +328,7 @@ namespace GrowthWare.WebSupport.Context
 
         private static void processOverridePage(MFunctionProfile functionProfile) 
         {
-            if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1) 
+            if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1 && functionProfile != null) 
             {
                 Logger mLog = Logger.Instance();
                 String mPage = @"/" + ConfigSettings.AppName + functionProfile.Source;

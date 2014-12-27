@@ -16,7 +16,7 @@
 		try
 		{
 			var options = GW.Model.DefaultWebMethodOptions();
-			options.url = GW.Common.getBaseURL() + "/api/Accounts/SelectSecurityEntity/?Action=SelectASecurityEntity&selectedSecurityEntityId=" + selectedSecurityEntity;
+			options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/SelectSecurityEntity/?Action=SelectASecurityEntity&selectedSecurityEntityId=" + selectedSecurityEntity;
 			//options.data = theData;
 			options.contentType = 'application/json; charset=utf-8';
 			//options.dataType = 'json';

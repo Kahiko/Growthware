@@ -4,9 +4,9 @@ using GrowthWare.WebSupport.BasePages;
 using GrowthWare.WebSupport.Utilities;
 using System;
 
-namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
+namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
 {
-    public partial class SearchFunctions : BaseWebpage
+    public partial class SearchRoles : BaseWebpage
     {
         protected void Page_Load(object sender, EventArgs e)
         {

@@ -1,17 +1,15 @@
 ﻿using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport;
+using GrowthWare.WebSupport.BasePages;
 using GrowthWare.WebSupport.Utilities;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 
 namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 {
-    public partial class AddEditFunction : Page
+    public partial class AddEditFunction : BaseWebpage
     {
         protected MFunctionProfile m_Profile = null;
 
