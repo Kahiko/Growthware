@@ -34,7 +34,7 @@ function LoadCalendarScript(callback){
 //
 function LoadOpenLayersScript(callback){
 	if (!$.fn.OpenLayers){
-		$.getScript('http://www.openlayers.org/api/OpenLayers.js', callback);
+		$.getScript('http://www.openlayers.org/gw/api/OpenLayers.js', callback);
 	}
 	else {
 		if (callback && typeof(callback) === "function") {
