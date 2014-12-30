@@ -17,9 +17,9 @@
     <MyType>Custom</MyType>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
-    <IISExpressAnonymousAuthentication />
-    <IISExpressWindowsAuthentication />
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -224,6 +224,7 @@
     <Content Include="Public\Scripts\jquery-ui.js" />
     <Content Include="Public\Scripts\jquery.js" />
     <Content Include="Public\Scripts\jquery.tmpl.js" />
+    <Content Include="Public\Scripts\modernizr-2.6.2.js" />
     <Content Include="Public\Scripts\respond.js" />
     <Content Include="Public\SiteStyles\Arc.css" />
     <Content Include="Public\Skins\Arc\CSS\Skin.css" />
