@@ -237,6 +237,14 @@ set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where acti
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
 
+Print 'Adding Register External Login'
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
+set @V_MyAction = 'RegisterExternalLogin'
+exec ZGWSecurity.Set_Function -1,'Register External Login','Register External Login accounts for the system',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/RegisterExternalLogin.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Registers an account.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
+
 Print 'Adding Favorite'
 set @V_MyAction = 'Favorite'
 exec ZGWSecurity.Set_Function -1,'Favorite','Favorite',@V_Function_Type_SeqID,'Functions/System/Accounts/Favorite.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Allows client to set a Favorite action.', @V_SystemID, @V_Debug
