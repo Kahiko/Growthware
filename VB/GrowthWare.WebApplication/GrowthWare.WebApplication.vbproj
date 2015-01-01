@@ -487,6 +487,11 @@
       <DependentUpon>Contact.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
+    <Compile Include="Controllers\AccountsController.vb" />
+    <Compile Include="Controllers\FunctionsController.vb" />
+    <Compile Include="Controllers\SecurityEntitiesController.vb" />
+    <Compile Include="Controllers\SessionableControllerHandler .vb" />
+    <Compile Include="Controllers\SessionStateRouteHandler .vb" />
     <Compile Include="Default.aspx.vb">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -788,7 +793,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Controllers\" />
     <Folder Include="Public\Images\" />
   </ItemGroup>
   <ItemGroup>

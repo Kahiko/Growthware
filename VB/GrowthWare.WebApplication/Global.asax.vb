@@ -10,4 +10,16 @@ Public Class Global_asax
         RouteConfig.RegisterRoutes(RouteTable.Routes)
         BundleConfig.RegisterBundles(BundleTable.Bundles)
     End Sub
+
+    Protected Sub Application_PostAuthorizeRequest()
+        If IsWebApiRequest() Then HttpContext.Current.SetSessionStateBehavior(SessionStateBehavior.Required)
+    End Sub
+
+    Private Shared Function IsWebApiRequest() As Boolean
+        Dim mRetVal As Boolean = False
+        If HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("gw") Or HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("api") Then
+            mRetVal = True
+        End If
+        Return mRetVal
+    End Function
 End Class
