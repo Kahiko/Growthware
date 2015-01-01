@@ -4,13 +4,13 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports System.Web
 
 Namespace Utilities
-    Public Module GroupUtility
+    Public Class GroupUtility
         ''' <summary>
         ''' Searches the specified search criteria.
         ''' </summary>
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
-        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria can not be null (Nothing in Visual Basic) or empty!")
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBGroups.Search(searchCriteria)
@@ -21,7 +21,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="securityEntityId">The security entity id.</param>
         ''' <returns>System.String.</returns>
-        Public Function SecurityEntitiesGroupsCacheName(ByVal securityEntityId As Integer) As String
+        Public Shared Function SecurityEntitiesGroupsCacheName(ByVal securityEntityId As Integer) As String
             Dim retVal As String = securityEntityId & "SecurityEntityGroups"
             Return retVal
         End Function
@@ -31,13 +31,13 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="securityEntityId">The security entity id.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetAllGroupsBySecurityEntity(ByVal securityEntityId As Integer) As DataTable
+        Public Shared Function GetAllGroupsBySecurityEntity(ByVal securityEntityId As Integer) As DataTable
             Dim mySecurityEntityGroups As DataTable
 
             ' attempt to retrieve the information from cache
             mySecurityEntityGroups = HttpContext.Current.Cache.Item(SecurityEntitiesGroupsCacheName(securityEntityId))
-            ' if the information was not avalible in cache
-            ' then retieve the information from the DB and put it into
+            ' if the information was not available in cache
+            ' then retrieve the information from the DB and put it into
             ' cache for subsequent use.
             If mySecurityEntityGroups Is Nothing Then
                 Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
@@ -52,7 +52,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="securityEntityId">The security entity id.</param>
         ''' <returns>ArrayList.</returns>
-        Public Function GetGroupsArrayListBySecurityEntity(ByVal securityEntityId As Integer) As ArrayList
+        Public Shared Function GetGroupsArrayListBySecurityEntity(ByVal securityEntityId As Integer) As ArrayList
             Dim mySecurityEntityGroups As DataTable
             Dim colGroups As New ArrayList
             Dim groupRow As DataRow
@@ -68,7 +68,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="groupId">The group ID.</param>
         ''' <returns>MGroupProfile.</returns>
-        Public Function GetProfile(ByVal groupId As Integer) As MGroupProfile
+        Public Shared Function GetProfile(ByVal groupId As Integer) As MGroupProfile
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBGroups.GetProfile(groupId)
         End Function
@@ -77,7 +77,7 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub Save(ByVal profile As MGroupProfile)
+        Public Shared Sub Save(ByVal profile As MGroupProfile)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBGroups As BGroups = New BGroups(mSecurityEntityProfile, ConfigSettings.CentralManagement)
@@ -91,7 +91,7 @@ Namespace Utilities
         ''' Deletes the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub Delete(ByVal profile As MGroupProfile)
+        Public Shared Sub Delete(ByVal profile As MGroupProfile)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBGroups As BGroups = New BGroups(mSecurityEntityProfile, ConfigSettings.CentralManagement)
@@ -105,13 +105,13 @@ Namespace Utilities
         ''' Updates the group roles.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub UpdateGroupRoles(ByVal profile As MGroupRoles)
+        Public Shared Sub UpdateGroupRoles(ByVal profile As MGroupRoles)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             mBGroups.UpdateGroupRoles(profile)
             CacheController.RemoveAllCache()
         End Sub
 
-    End Module
+    End Class
 End Namespace
 

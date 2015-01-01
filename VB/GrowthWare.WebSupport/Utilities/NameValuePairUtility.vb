@@ -10,7 +10,7 @@ Namespace Utilities
     ''' <summary>
     ''' Class NameValuePairUtility
     ''' </summary>
-    Public Module NameValuePairUtility
+    Public Class NameValuePairUtility
         ''' <summary>
         ''' Cached Name Value Pair Details Table Name
         ''' </summary>
@@ -25,7 +25,7 @@ Namespace Utilities
         ''' Deletes the detail.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub DeleteDetail(ByVal profile As MNameValuePairDetail)
+        Public Shared Sub DeleteDetail(ByVal profile As MNameValuePairDetail)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.DeleteNameValuePairDetail(profile)
@@ -33,11 +33,11 @@ Namespace Utilities
         End Sub
 
         ''' <summary>
-        ''' GetNVPs will return all Name Value Pairs avalible for a given account
+        ''' GetNVPs will return all Name Value Pairs available for a given account
         ''' </summary>
         ''' <param name="accountId">The account ID.</param>
         ''' <returns>Returns a data table of name value pairs for a given account</returns>
-        Public Function AllNameValuePairs(ByVal accountId As Integer) As DataTable
+        Public Shared Function AllNameValuePairs(ByVal accountId As Integer) As DataTable
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Return mNameValuePair.AllNameValuePairs(accountId)
         End Function
@@ -47,7 +47,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>System.Int32.</returns>
-        Public Function GetNameValuePairId(ByVal staticName As String) As Integer
+        Public Shared Function GetNameValuePairId(ByVal staticName As String) As Integer
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Dim mRetValue As Integer = 0
@@ -78,7 +78,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function GetNameValuePairName(ByVal nameValuePairSeqId As Integer) As String
+        Public Shared Function GetNameValuePairName(ByVal nameValuePairSeqId As Integer) As String
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Dim mRetValue As String = String.Empty
@@ -105,10 +105,10 @@ Namespace Utilities
         End Function
 
         ''' <summary>
-        ''' GetNVPs will return all Name Value Pairs reguardless of security
+        ''' GetNVPs will return all Name Value Pairs regardless of security
         ''' </summary>
         ''' <param name="yourDataTable">An instance of a data table you would like populated</param>
-        Public Sub GetNameValuePairs(ByVal yourDataTable As DataTable)
+        Public Shared Sub GetNameValuePairs(ByVal yourDataTable As DataTable)
             yourDataTable = CType(HttpContext.Current.Cache(CachedNameValuePairTableName), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
@@ -122,7 +122,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>MNameValuePair.</returns>
-        Public Function GetNameValuePair(ByVal nameValuePairSeqId As Integer) As MNameValuePair
+        Public Shared Function GetNameValuePair(ByVal nameValuePairSeqId As Integer) As MNameValuePair
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Return New MNameValuePair(mNameValuePair.GetNameValuePair(nameValuePairSeqId))
         End Function
@@ -133,7 +133,7 @@ Namespace Utilities
         ''' <param name="nameValuePairDetailSeqId">The NVP seq det ID.</param>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>MNameValuePairDetail.</returns>
-        Public Function GetNameValuePairDetail(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As MNameValuePairDetail
+        Public Shared Function GetNameValuePairDetail(ByVal nameValuePairDetailSeqId As Integer, ByVal nameValuePairSeqId As Integer) As MNameValuePairDetail
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Dim mImportTable As DataTable = Nothing
@@ -166,7 +166,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="yourDataTable">Your data table.</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="0#")>
-        Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable)
+        Public Shared Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable)
             yourDataTable = CType(HttpContext.Current.Cache(CachedNameValuePairDetailsTableName), DataTable)
             If yourDataTable Is Nothing Then
                 Dim mNameValuePairDetails As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
@@ -182,7 +182,7 @@ Namespace Utilities
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="0#")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1062:Validate arguments of public methods", MessageId:="0")>
-        Public Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable, ByVal nameValuePairSeqId As Integer)
+        Public Shared Sub GetNameValuePairDetails(ByRef yourDataTable As DataTable, ByVal nameValuePairSeqId As Integer)
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Try
@@ -217,7 +217,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="staticName">Name of the static.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetNameValuePairDetails(ByVal staticName As String) As DataTable
+        Public Shared Function GetNameValuePairDetails(ByVal staticName As String) As DataTable
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Dim mReturnTable As DataTable = Nothing
@@ -250,7 +250,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The NVP seq ID.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetNameValuePairDetails(ByVal nameValuePairSeqId As Integer) As DataTable
+        Public Shared Function GetNameValuePairDetails(ByVal nameValuePairSeqId As Integer) As DataTable
             Dim mDataView As DataView = Nothing
             Dim mDataTable As DataTable = Nothing
             Dim mReturnTable As DataTable = Nothing
@@ -284,7 +284,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The name value pair seq ID.</param>
         ''' <returns>System.String[][].</returns>
-        Public Function GetSelectedRoles(ByVal nameValuePairSeqId As Integer) As String()
+        Public Shared Function GetSelectedRoles(ByVal nameValuePairSeqId As Integer) As String()
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairRoles(nameValuePairSeqId)
             Return GetStringArrayList(mDataTable, "Roles")
@@ -295,7 +295,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="nameValuePairSeqId">The name value pair seq ID.</param>
         ''' <returns>System.String[][].</returns>
-        Public Function GetSelectedGroups(ByVal nameValuePairSeqId As Integer) As String()
+        Public Shared Function GetSelectedGroups(ByVal nameValuePairSeqId As Integer) As String()
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Dim mDataTable As DataTable = mNameValuePair.GetNameValuePairGroups(nameValuePairSeqId)
             Return GetStringArrayList(mDataTable, "Groups")
@@ -307,20 +307,20 @@ Namespace Utilities
         ''' <param name="yourDataTable">Your DT.</param>
         ''' <param name="rowName">Name of the row.</param>
         ''' <returns>System.String[][].</returns>
-        Private Function GetStringArrayList(ByVal yourDataTable As DataTable, ByVal rowName As String) As String()
-            Dim mRetrunArrayList As New ArrayList
+        Private Shared Function GetStringArrayList(ByVal yourDataTable As DataTable, ByVal rowName As String) As String()
+            Dim mReturnArrayList As New ArrayList
             Dim mDR As DataRow
             For Each mDR In yourDataTable.Rows
-                mRetrunArrayList.Add(mDR(rowName).ToString)
+                mReturnArrayList.Add(mDR(rowName).ToString)
             Next
-            Return CType(mRetrunArrayList.ToArray(GetType(String)), String())
+            Return CType(mReturnArrayList.ToArray(GetType(String)), String())
         End Function
 
         ''' <summary>
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Function Save(ByVal profile As MNameValuePair) As Integer
+        Public Shared Function Save(ByVal profile As MNameValuePair) As Integer
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             Dim mRetVal As Integer = -1
@@ -334,7 +334,7 @@ Namespace Utilities
         ''' Saves the detail.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub SaveDetail(ByVal profile As MNameValuePairDetail)
+        Public Shared Sub SaveDetail(ByVal profile As MNameValuePairDetail)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBNameValuePairs.SaveNameValuePairDetail(profile)
@@ -346,7 +346,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="searchCriteria">The search criteria.</param>
         ''' <returns>DataTable.</returns>
-        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")
             Try
                 Dim mBNameValuePairs As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
@@ -362,7 +362,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="theDropDown">The drop down.</param>
         ''' <param name="selectedVale">The selected vale.</param>
-        Public Sub SetDropSelection(ByVal theDropDown As ListControl, ByVal selectedVale As String)
+        Public Shared Sub SetDropSelection(ByVal theDropDown As ListControl, ByVal selectedVale As String)
             If theDropDown Is Nothing Then Throw New ArgumentNullException("theDropDown", "theDropDown cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(selectedVale) Then Throw New ArgumentNullException("selectedVale", "selectedVale cannot be a null reference (Nothing in Visual Basic)!")
             Try
@@ -385,7 +385,7 @@ Namespace Utilities
         ''' <param name="securityEntityId">The security entity Id.</param>
         ''' <param name="commaSeparatedGroups">The comma Separated groups.</param>
         ''' <param name="nameValuePairProfile">MNameValuePair</param>
-        Public Sub UpdateGroups(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal nameValuePairProfile As MNameValuePair)
+        Public Shared Sub UpdateGroups(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedGroups As String, ByVal nameValuePairProfile As MNameValuePair)
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mNameValuePair.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile)
         End Sub
@@ -397,9 +397,9 @@ Namespace Utilities
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <param name="commaSeparatedRoles">The comma Separated roles.</param>
         ''' <param name="nameValuePairProfile">nameValuePairProfile</param>
-        Public Sub UpdateRoles(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedRoles As String, ByVal nameValuePairProfile As MNameValuePair)
+        Public Shared Sub UpdateRoles(ByVal nameValuePairId As Integer, ByVal securityEntityId As Integer, ByVal commaSeparatedRoles As String, ByVal nameValuePairProfile As MNameValuePair)
             Dim mNameValuePair As New BNameValuePairs(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mNameValuePair.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile)
         End Sub
-    End Module
+    End Class
 End Namespace

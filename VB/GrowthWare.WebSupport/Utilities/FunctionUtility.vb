@@ -8,13 +8,13 @@ Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
-    Public Module FunctionUtility
+    Public Class FunctionUtility
         Private Const s_FunctionProfileInfoName As String = "FunctionProfileInfo"
         ''' <summary>
         ''' Retrieves all functions from the either the database or cache
         ''' </summary>
-        ''' <returns>A Collection of MFunctinProfiles</returns>
-        Public Function Functions() As Collection(Of MFunctionProfile)
+        ''' <returns>A Collection of MFunctionProfiles</returns>
+        Public Shared Function Functions() As Collection(Of MFunctionProfile)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions"
@@ -34,7 +34,7 @@ Namespace Utilities
         ''' <param name="direction">The direction.</param>
         ''' <param name="updatedBy">The updated by.</param>
         ''' <param name="updatedDate">Up dated date.</param>
-        Public Sub Move(ByVal profile As MFunctionProfile, ByVal direction As DirectionType, ByVal updatedBy As Integer, ByVal updatedDate As DateTime)
+        Public Shared Sub Move(ByVal profile As MFunctionProfile, ByVal direction As DirectionType, ByVal updatedBy As Integer, ByVal updatedDate As DateTime)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null!")
             profile.UpdatedBy = updatedBy
             profile.UpdatedDate = updatedDate
@@ -48,7 +48,7 @@ Namespace Utilities
         ''' Gets the current profile.
         ''' </summary>
         ''' <returns>MFunctionProfile.</returns>
-        Public Function CurrentProfile() As MFunctionProfile
+        Public Shared Function CurrentProfile() As MFunctionProfile
             Dim mRetVal As MFunctionProfile
             mRetVal = CType(HttpContext.Current.Items(s_FunctionProfileInfoName), MFunctionProfile)
             Return mRetVal
@@ -60,7 +60,7 @@ Namespace Utilities
         ''' <param name="id">int or Integer</param>
         ''' <returns>MFunctionProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
-        Public Function GetProfile(ByVal id As Integer) As MFunctionProfile
+        Public Shared Function GetProfile(ByVal id As Integer) As MFunctionProfile
             Dim mResult = From mProfile In Functions() Where mProfile.Id = id Select mProfile
             Dim mRetVal As MFunctionProfile = New MFunctionProfile()
             Try
@@ -77,7 +77,7 @@ Namespace Utilities
         ''' <param name="action">String</param>
         ''' <returns>MFunctionProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
-        Public Function GetProfile(ByVal action As String) As MFunctionProfile
+        Public Shared Function GetProfile(ByVal action As String) As MFunctionProfile
             Dim mRetVal As MFunctionProfile = Nothing
             If Not String.IsNullOrEmpty(action) Then
                 Dim mResult = From mProfile In Functions() Where mProfile.Action.ToLower(CultureInfo.CurrentCulture) = action.ToLower(CultureInfo.CurrentCulture) Select mProfile
@@ -99,7 +99,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="profile">The profile.</param>
         ''' <returns>DataTable.</returns>
-        Public Function GetFunctionMenuOrder(ByVal profile As MFunctionProfile) As DataTable
+        Public Shared Function GetFunctionMenuOrder(ByVal profile As MFunctionProfile) As DataTable
             Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBFunctions.GetMenuOrder(profile)
         End Function
@@ -107,7 +107,7 @@ Namespace Utilities
         ''' <summary>
         ''' Removes the cached functions.
         ''' </summary>
-        Public Sub RemoveCachedFunctions()
+        Public Shared Sub RemoveCachedFunctions()
             Dim mCacheName As String = String.Empty
             Dim mSecurityProfiles As Collection(Of MSecurityEntityProfile) = SecurityEntityUtility.Profiles()
             For Each mProfile In mSecurityProfiles
@@ -118,12 +118,12 @@ Namespace Utilities
         End Sub
 
         ''' <summary>
-        ''' Returns a datatable of the search data
+        ''' Returns a data table of the search data
         ''' </summary>
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>NULL/Nothing if no records are returned.</returns>
         ''' <remarks></remarks>
-        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
                 Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 Return mBFunctions.Search(searchCriteria)
@@ -139,7 +139,7 @@ Namespace Utilities
         ''' <param name="profile">The profile.</param>
         ''' <param name="saveGroups">if set to <c>true</c> [save groups].</param>
         ''' <param name="saveRoles">if set to <c>true</c> [save roles].</param>
-        Public Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
+        Public Shared Sub Save(ByVal profile As MFunctionProfile, ByVal saveGroups As Boolean, ByVal saveRoles As Boolean)
             Try
                 Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Save(profile, saveGroups, saveRoles)
@@ -155,7 +155,7 @@ Namespace Utilities
         ''' Deletes the specified function seq id.
         ''' </summary>
         ''' <param name="functionSeqId">The function seq id.</param>
-        Public Sub Delete(ByVal functionSeqId As Integer)
+        Public Shared Sub Delete(ByVal functionSeqId As Integer)
             Try
                 Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
                 mBFunctions.Delete(functionSeqId)
@@ -171,8 +171,8 @@ Namespace Utilities
         ''' Sets the current profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub SetCurrentProfile(ByVal profile As MFunctionProfile)
+        Public Shared Sub SetCurrentProfile(ByVal profile As MFunctionProfile)
             HttpContext.Current.Items(s_FunctionProfileInfoName) = profile
         End Sub
-    End Module
+    End Class
 End Namespace

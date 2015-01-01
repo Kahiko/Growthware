@@ -6,19 +6,19 @@ Imports System.Collections.ObjectModel
 Imports System.Globalization
 
 Namespace Utilities
-    Public Module DirectoryUtility
-        Private s_DirectoryInfoCachedName As String = "DirectoryInfoCollection"
+    Public Class DirectoryUtility
+        Private Shared s_DirectoryInfoCachedName As String = "DirectoryInfoCollection"
 
         ''' <summary>
         ''' DirectoryInfo Cached Collection Name
         ''' </summary>
-        Public ReadOnly DirectoryInfoCachedCollection As String = "DirectoryInfoCollection"
+        Public Shared ReadOnly DirectoryInfoCachedCollection As String = "DirectoryInfoCollection"
 
         ''' <summary>
         ''' Gets the directory collection.
         ''' </summary>
         ''' <returns>Collection{MDirectoryProfile}.</returns>
-        Public Function Directories() As Collection(Of MDirectoryProfile)
+        Public Shared Function Directories() As Collection(Of MDirectoryProfile)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBDirectories As BDirectories = New BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement)
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName
@@ -36,7 +36,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="id">The Function Profile id.</param>
         ''' <returns>MDirectoryProfile.</returns>
-        Public Function GetProfile(ByVal id As Integer) As MDirectoryProfile
+        Public Shared Function GetProfile(ByVal id As Integer) As MDirectoryProfile
             Dim mResult = From mProfile In Directories() Where mProfile.FunctionSeqId = id Select mProfile
             Dim mRetVal As MDirectoryProfile = New MDirectoryProfile()
             Try
@@ -54,7 +54,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="name">The name.</param>
         ''' <returns>MDirectoryProfile.</returns>
-        Public Function GetProfile(ByVal name As String) As MDirectoryProfile
+        Public Shared Function GetProfile(ByVal name As String) As MDirectoryProfile
             Dim mResult = From mProfile In Directories() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
             Dim mRetVal As MDirectoryProfile = New MDirectoryProfile()
             Try
@@ -67,7 +67,7 @@ Namespace Utilities
             Return mRetVal
         End Function
 
-        Public Sub Save(ByVal profile As MDirectoryProfile)
+        Public Shared Sub Save(ByVal profile As MDirectoryProfile)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             CacheController.RemoveFromCache(s_DirectoryInfoCachedName)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
@@ -91,5 +91,5 @@ Namespace Utilities
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName
             CacheController.RemoveFromCache(mCacheName)
         End Sub
-    End Module
+    End Class
 End Namespace

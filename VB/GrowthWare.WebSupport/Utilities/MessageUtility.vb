@@ -6,16 +6,16 @@ Imports System.Globalization
 Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 
 Namespace Utilities
-    Public Module MessageUtility
-        Private s_MessagesUnitCachedDVName As String = "dvMessages"
-        Private s_MessagesUnitCachedCollectionName As String = "MessagesCollection"
+    Public Class MessageUtility
+        Private Shared s_MessagesUnitCachedDVName As String = "dvMessages"
+        Private Shared s_MessagesUnitCachedCollectionName As String = "MessagesCollection"
 
         ''' <summary>
         ''' Messages the name of the unit cached collection.
         ''' </summary>
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function MessagesUnitCachedCollectionName(ByVal securityEntityId As Integer) As String
+        Public Shared Function MessagesUnitCachedCollectionName(ByVal securityEntityId As Integer) As String
             Return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedCollectionName + "_Messages"
         End Function
 
@@ -24,7 +24,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>System.String.</returns>
-        Public Function MessagesUnitCachedDVName(ByVal securityEntityId As Integer) As String
+        Public Shared Function MessagesUnitCachedDVName(ByVal securityEntityId As Integer) As String
             Return securityEntityId.ToString(CultureInfo.InvariantCulture) + s_MessagesUnitCachedDVName + "_Messages"
         End Function
 
@@ -32,7 +32,7 @@ Namespace Utilities
         ''' Gets the messages.
         ''' </summary>
         ''' <returns>Collection{MMessageProfile}.</returns>
-        Public Function Messages() As Collection(Of MMessageProfile)
+        Public Shared Function Messages() As Collection(Of MMessageProfile)
             Dim mMessageCollection As Collection(Of MMessageProfile) = Nothing
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile
             Dim mBMessages As BMessages = New BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement)
@@ -51,7 +51,7 @@ Namespace Utilities
         ''' <param name="name">String</param>
         ''' <returns>MMessageProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
-        Public Function GetProfile(ByVal name As String) As MMessageProfile
+        Public Shared Function GetProfile(ByVal name As String) As MMessageProfile
             Dim mResult = From mProfile In Messages() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
             Dim mRetVal As MMessageProfile = New MMessageProfile()
             Try
@@ -70,7 +70,7 @@ Namespace Utilities
         ''' <param name="id">int or Integer</param>
         ''' <returns>MMessageProfile</returns>
         ''' <remarks>Returns null object if not found</remarks>
-        Public Function GetProfile(ByVal id As Integer) As MMessageProfile
+        Public Shared Function GetProfile(ByVal id As Integer) As MMessageProfile
             Dim mResult = From mProfile In Messages() Where mProfile.Id = id Select mProfile
             Dim mRetVal As MMessageProfile = New MMessageProfile()
             Try
@@ -86,7 +86,7 @@ Namespace Utilities
         ''' <summary>
         ''' Removes the cached messages DV.
         ''' </summary>
-        Private Sub RemoveCachedMessagesDV()
+        Private Shared Sub RemoveCachedMessagesDV()
             Dim mySecurityEntity As Integer = ClientChoicesUtility.SelectedSecurityEntity()
             CacheController.RemoveFromCache(MessagesUnitCachedDVName(mySecurityEntity))
         End Sub
@@ -94,7 +94,7 @@ Namespace Utilities
         ''' <summary>
         ''' Removes the cached messages collection.
         ''' </summary>
-        Private Sub RemoveCachedMessagesCollection()
+        Private Shared Sub RemoveCachedMessagesCollection()
             Dim mySecurityEntity As Integer = ClientChoicesUtility.SelectedSecurityEntity
             CacheController.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity))
             RemoveCachedMessagesDV()
@@ -104,7 +104,7 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub Save(ByVal profile As MMessageProfile)
+        Public Shared Sub Save(ByVal profile As MMessageProfile)
             Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
             mBMessages.Save(profile)
             RemoveCachedMessagesCollection()
@@ -116,7 +116,7 @@ Namespace Utilities
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>NULL/Nothing if no records are returned.</returns>
         ''' <remarks></remarks>
-        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
                 Dim mBMessages As BMessages = New BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement)
                 Return mBMessages.Search(searchCriteria)
@@ -127,5 +127,5 @@ Namespace Utilities
                 Return Nothing
             End Try
         End Function
-    End Module
+    End Class
 End Namespace

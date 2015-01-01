@@ -10,9 +10,9 @@ Namespace Utilities
     ''' FunctionTypeUtility serves as the focal point for any web application needing to utilize the GrowthWare framework.
     ''' Web needs such as caching are handled here.
     ''' </summary>
-    Public Module FunctionTypeUtility
+    Public Class FunctionTypeUtility
 
-        Private s_FunctionTypeCachedCollectionName As String = "FunctionTypeCollection"
+        Private Shared s_FunctionTypeCachedCollectionName As String = "FunctionTypeCollection"
 
         'Private s_FunctionTypeCachedDVFunctions As String = "dvTypeFunctions"
 
@@ -20,7 +20,7 @@ Namespace Utilities
         ''' Gets the function types.
         ''' </summary>
         ''' <returns>DataTable.</returns>
-        Public Function FunctionTypes() As DataTable
+        Public Shared Function FunctionTypes() As DataTable
             Dim mBFunctions As BFunctions = New BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBFunctions.FunctionTypes()
         End Function
@@ -30,7 +30,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="id">The ID.</param>
         ''' <returns>MFunctionTypeProfile.</returns>
-        Public Function GetProfile(ByVal id As Integer) As MFunctionTypeProfile
+        Public Shared Function GetProfile(ByVal id As Integer) As MFunctionTypeProfile
             Dim mResult = From mProfile In FunctionTypeCollection() Where mProfile.Id = id Select mProfile
             Dim mRetVal As MFunctionTypeProfile = New MFunctionTypeProfile()
             Try
@@ -45,7 +45,7 @@ Namespace Utilities
         ''' Gets the function type collection.
         ''' </summary>
         ''' <returns>Collection{MFunctionTypeProfile}.</returns>
-        Public Function GetProfile(ByVal name As String) As MFunctionTypeProfile
+        Public Shared Function GetProfile(ByVal name As String) As MFunctionTypeProfile
             Dim mRetVal As MFunctionTypeProfile = Nothing
             If Not String.IsNullOrEmpty(Action) Then
                 Dim mResult = From mProfile In FunctionTypeCollection() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = Action.ToLower(CultureInfo.CurrentCulture) Select mProfile
@@ -83,7 +83,7 @@ Namespace Utilities
         ''' Gets the function type collection.
         ''' </summary>
         ''' <returns>Collection{MFunctionTypeProfile}.</returns>
-        Public Function FunctionTypeCollection() As Collection(Of MFunctionTypeProfile)
+        Public Shared Function FunctionTypeCollection() As Collection(Of MFunctionTypeProfile)
             Dim mRetVal As Collection(Of MFunctionTypeProfile) = CType(HttpContext.Current.Cache(s_FunctionTypeCachedCollectionName), Collection(Of MFunctionTypeProfile))
             If mRetVal Is Nothing Then
                 mRetVal = New Collection(Of MFunctionTypeProfile)
@@ -97,5 +97,5 @@ Namespace Utilities
             End If
             Return mRetVal
         End Function
-    End Module
+    End Class
 End Namespace

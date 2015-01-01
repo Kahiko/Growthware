@@ -8,20 +8,20 @@ Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
     ''' <summary>
-    ''' SecurityEntityUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
-    ''' Web needs such as caching are handeled here
+    ''' SecurityEntityUtility serves as the focal point for any web application needing to utilize the GrowthWare framework.
+    ''' Web needs such as caching are handled here
     ''' </summary>
-    Public Module SecurityEntityUtility
-        Private s_DefaultProfile As MSecurityEntityProfile = Nothing
+    Public Class SecurityEntityUtility
+        Private Shared s_DefaultProfile As MSecurityEntityProfile = Nothing
         'Private Shared m_BSecurityEntity As BSecurityEntity = Nothing
-        Private s_CacheName As String = "SecurityEntityProfiles"
+        Private Shared s_CacheName As String = "SecurityEntityProfiles"
 
         ''' <summary>
         ''' Creates and returns MSecurityEntityProfile populated with information from the
         ''' configuration file.
         ''' </summary>
         ''' <returns>MSecurityEntityProfile</returns>
-        Public Function DefaultProfile() As MSecurityEntityProfile
+        Public Shared Function DefaultProfile() As MSecurityEntityProfile
             If s_DefaultProfile Is Nothing Then
                 Dim mDefaultProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
                 mDefaultProfile.Id = Integer.Parse(ConfigSettings.DefaultSecurityEntityId.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture)
@@ -39,7 +39,7 @@ Namespace Utilities
         ''' the default values from the config file will be returned.
         ''' </summary>
         ''' <returns>MSecurityEntityProfile</returns>
-        Public Function CurrentProfile() As MSecurityEntityProfile
+        Public Shared Function CurrentProfile() As MSecurityEntityProfile
             Dim mAccount As String = AccountUtility.HttpContextUserName
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount)
             Dim mRetVal As MSecurityEntityProfile = Nothing
@@ -59,7 +59,7 @@ Namespace Utilities
         ''' Gets the profiles.
         ''' </summary>
         ''' <returns>Collection{MSecurityEntityProfile}.</returns>
-        Public Function Profiles() As Collection(Of MSecurityEntityProfile)
+        Public Shared Function Profiles() As Collection(Of MSecurityEntityProfile)
             Dim mSecurityEntityCollection As Collection(Of MSecurityEntityProfile) = Nothing
             mSecurityEntityCollection = CType(HttpContext.Current.Cache(s_CacheName), Collection(Of MSecurityEntityProfile))
             If mSecurityEntityCollection Is Nothing Then
@@ -75,7 +75,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <returns>MAccountProfile.</returns>
-        Public Function GetProfile(ByVal securityEntityId As Integer) As MSecurityEntityProfile
+        Public Shared Function GetProfile(ByVal securityEntityId As Integer) As MSecurityEntityProfile
             Dim mResult = From mProfile In Profiles() Where mProfile.Id = securityEntityId Select mProfile
             Dim mRetVal As MSecurityEntityProfile = New MSecurityEntityProfile()
             Try
@@ -91,7 +91,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="name">The name.</param>
         ''' <returns>MSecurityEntityProfile.</returns>
-        Public Function GetProfile(ByVal name As String) As MSecurityEntityProfile
+        Public Shared Function GetProfile(ByVal name As String) As MSecurityEntityProfile
             Dim mResult = From mProfile In Profiles() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = name.ToLower(CultureInfo.CurrentCulture) Select mProfile
             Dim mRetVal As MSecurityEntityProfile = New MSecurityEntityProfile()
             Try
@@ -109,7 +109,7 @@ Namespace Utilities
         ''' <param name="securityEntityId">The security entity ID.</param>
         ''' <param name="IsSecurityEntityAdministrator">if set to <c>true</c> [is security entity administrator].</param>
         ''' <returns>DataView.</returns>
-        Public Function GetValidSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataView
+        Public Shared Function GetValidSecurityEntities(ByVal account As String, ByVal securityEntityId As Integer, ByVal isSecurityEntityAdministrator As Boolean) As DataView
             Dim mBSecurityEntity As BSecurityEntity = New BSecurityEntity(CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBSecurityEntity.GetValidSecurityEntities(account, securityEntityId, isSecurityEntityAdministrator).DefaultView()
         End Function
@@ -118,7 +118,7 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub Save(ByVal profile As MSecurityEntityProfile)
+        Public Shared Sub Save(ByVal profile As MSecurityEntityProfile)
             Try
                 Dim mBSecurityEntity As BSecurityEntity = New BSecurityEntity(CurrentProfile(), ConfigSettings.CentralManagement)
                 mBSecurityEntity.Save(profile)
@@ -130,12 +130,12 @@ Namespace Utilities
         End Sub
 
         ''' <summary>
-        ''' Returns a datatable of the search data
+        ''' Returns a data table of the search data
         ''' </summary>
         ''' <param name="searchCriteria">MSearchCriteria</param>
         ''' <returns>NULL/Nothing if no records are returned.</returns>
         ''' <remarks></remarks>
-        Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
+        Public Shared Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable
             Try
                 Dim mBSecurityEntity As BSecurityEntity = New BSecurityEntity(CurrentProfile(), ConfigSettings.CentralManagement)
                 Return mBSecurityEntity.Search(searchCriteria)
@@ -145,5 +145,5 @@ Namespace Utilities
             End Try
         End Function
 
-    End Module
+    End Class
 End Namespace

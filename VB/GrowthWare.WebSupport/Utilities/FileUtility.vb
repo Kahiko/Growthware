@@ -9,15 +9,15 @@ Imports System.Web
 Imports GrowthWare.Framework.Common
 
 Namespace Utilities
-    Public Module FileUtility
-        Private s_Space As String = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+    Public Class FileUtility
+        Private Shared s_Space As String = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
 
         ''' <summary>
-        ''' Retruns the parent full name.
+        ''' Reruns the parent full name.
         ''' </summary>
         ''' <param name="path">string</param>
         ''' <returns>string</returns>
-        Public Function GetParent(ByVal path As String) As String
+        Public Shared Function GetParent(ByVal path As String) As String
             Dim mRetVal As String
             Dim mDirInfo As New DirectoryInfo(path)
             mRetVal = mDirInfo.Parent.FullName.ToString
@@ -30,7 +30,7 @@ Namespace Utilities
         ''' <param name="path">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>DataTable</returns>
-        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile) As DataTable
+        Public Shared Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile) As DataTable
             Return GetDirectoryTableData(path, directoryProfile, False)
         End Function
 
@@ -43,7 +43,7 @@ Namespace Utilities
         ''' <param name="columnName">name of the column to sort on</param>
         ''' <param name="sortOrder">the sort direction "ASC" or "DESC"</param>
         ''' <returns>DataTable</returns>
-        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean, ByVal columnName As String, ByVal sortOrder As String) As DataTable
+        Public Shared Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean, ByVal columnName As String, ByVal sortOrder As String) As DataTable
             If directoryProfile Is Nothing Then Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null.")
             Dim mRetTable As DataTable = getDataTable()
             Dim mRow As DataRow = Nothing
@@ -172,7 +172,7 @@ Namespace Utilities
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <param name="filesOnly">bool</param>
         ''' <returns>DataTable sorted by the "Name" column ascending</returns>
-        Public Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
+        Public Shared Function GetDirectoryTableData(ByVal path As String, ByVal directoryProfile As MDirectoryProfile, ByVal filesOnly As Boolean) As DataTable
             Return GetDirectoryTableData(path, directoryProfile, filesOnly, "Name", "ASC")
         End Function
 
@@ -183,7 +183,7 @@ Namespace Utilities
         ''' <param name="currentDirectory">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
-        Public Function DoUpload(ByVal uploadFile As HttpPostedFile, ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function DoUpload(ByVal uploadFile As HttpPostedFile, ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             Return DoUpload(Nothing, uploadFile, currentDirectory, directoryProfile)
         End Function
 
@@ -196,11 +196,11 @@ Namespace Utilities
         ''' <param name="directoryProfile">The directory profile.</param>
         ''' <returns>System.String.</returns>
         ''' <exception cref="System.ArgumentNullException">directoryProfile;Can not be null reference (Nothing in Visual Basic)</exception>
-        Public Function DoUpload(fileName As String, uploadFile As HttpPostedFile, currentDirectory As String, directoryProfile As MDirectoryProfile) As String
+        Public Shared Function DoUpload(fileName As String, uploadFile As HttpPostedFile, currentDirectory As String, directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
-            Dim mRetVal As String = "Upload successfull"
+            Dim mRetVal As String = "Upload successful"
             Dim mDirectorySeparatorChar As Char = System.IO.Path.DirectorySeparatorChar
             Dim mImpersonatedUser As WindowsImpersonationContext = Nothing
             If (uploadFile IsNot Nothing) Then
@@ -239,7 +239,7 @@ Namespace Utilities
         ''' <param name="newDirectory">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
-        Public Function CreateDirectory(ByVal currentDirectory As String, ByVal newDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function CreateDirectory(ByVal currentDirectory As String, ByVal newDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
@@ -254,8 +254,8 @@ Namespace Utilities
                     Directory.CreateDirectory(currentDirectory & "\" & newDirectory)
                 End If
             Catch ex As IOException
-                Dim mLoger As Logger = Logger.Instance
-                mLoger.Error(ex)
+                Dim mLogger As Logger = Logger.Instance
+                mLogger.Error(ex)
                 Throw
             Finally
                 If Not directoryProfile Is Nothing Then
@@ -276,7 +276,7 @@ Namespace Utilities
         ''' <param name="currentDirectory">string</param>
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns></returns>
-        Public Function DeleteDirectory(ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function DeleteDirectory(ByVal currentDirectory As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
@@ -313,7 +313,7 @@ Namespace Utilities
         ''' <param name="fileName"></param>
         ''' <param name="directoryProfile"></param>
         ''' <returns>string</returns>
-        Public Function DeleteFile(ByVal fileName As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function DeleteFile(ByVal fileName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile cannot be a null reference (Nothing in Visual Basic)!")
             End If
@@ -348,7 +348,7 @@ Namespace Utilities
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
         ''' <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
-        Public Function RenameFile(ByVal sourceFileName As String, ByVal destinationFileName As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function RenameFile(ByVal sourceFileName As String, ByVal destinationFileName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
@@ -383,7 +383,7 @@ Namespace Utilities
         ''' <param name="directoryProfile">MDirectoryProfile</param>
         ''' <returns>string</returns>
         ''' <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
-        Public Function RenameDirectory(ByVal sourceDirectoryName As String, ByVal destinationDirectoryName As String, ByVal directoryProfile As MDirectoryProfile) As String
+        Public Shared Function RenameDirectory(ByVal sourceDirectoryName As String, ByVal destinationDirectoryName As String, ByVal directoryProfile As MDirectoryProfile) As String
             If directoryProfile Is Nothing Then
                 Throw New ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)")
             End If
@@ -422,7 +422,7 @@ Namespace Utilities
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
-        Public Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        Public Shared Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")
             If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!")
             Dim subDirectories As DirectoryInfo() = Nothing
@@ -465,7 +465,7 @@ Namespace Utilities
         ''' <param name="directoryLineCount">The directory line count.</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId:="4#")>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
-        Public Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
+        Public Shared Sub CountDirectory(ByVal theDirectory As DirectoryInfo, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal fileArray As String(), ByRef directoryLineCount As Integer)
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")
             If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!")
             If excludeList Is Nothing Then Throw New ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)!")
@@ -513,27 +513,7 @@ Namespace Utilities
             Next sFileType
         End Sub
 
-        <Extension()>
-        Public Function ToFileSize(ByVal source As Integer) As String
-            Return ToFileSize(Convert.ToInt64(source))
-        End Function
-
-        <Extension()>
-        Public Function ToFileSize(ByVal source As Long) As String
-            Const byteConversion As Integer = 1024
-            Dim bytes As Double = Convert.ToDouble(source)
-            If bytes >= Math.Pow(byteConversion, 3) Then 'GB Range
-                Return String.Concat(Math.Round(bytes / Math.Pow(byteConversion, 3), 2), " GB")
-            ElseIf bytes >= Math.Pow(byteConversion, 2) Then 'MB Range
-                Return String.Concat(Math.Round(bytes / Math.Pow(byteConversion, 2), 2), " MB")
-            ElseIf bytes >= byteConversion Then 'KB Range
-                Return String.Concat(Math.Round(bytes / byteConversion, 2), " KB")
-            Else 'Bytes
-                Return String.Concat(bytes, " Bytes")
-            End If
-        End Function
-
-        Private Function getDataTable() As DataTable
+        Private Shared Function getDataTable() As DataTable
             Dim mRetTable As DataTable = Nothing
             Dim mTempDataTable As DataTable = Nothing
             mTempDataTable = New DataTable("MyTable")
@@ -556,5 +536,5 @@ Namespace Utilities
             mRetTable = mTempDataTable
             Return mRetTable
         End Function
-    End Module
+    End Class
 End Namespace

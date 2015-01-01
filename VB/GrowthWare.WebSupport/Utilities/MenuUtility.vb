@@ -3,19 +3,19 @@ Imports System.Globalization
 
 Namespace Utilities
     ''' <summary>
-    ''' Utiltiy class to aid in a web application
+    ''' Utility class to aid in a web application
     ''' </summary>
     ''' <remarks>Could be considered Specific to Growthware</remarks>
-    Public Module MenuUtility
+    Public Class MenuUtility
 
         ''' <summary>
         ''' Generates and order list form hierarchical data.
         ''' </summary>
-        ''' <param name="menuData">Hierarchical datatable</param>
-        ''' <param name="value">StringBuiler used to build the ul/li string data</param>
+        ''' <param name="menuData">Hierarchical data table</param>
+        ''' <param name="value">StringBuilder used to build the ul/li string data</param>
         ''' <returns>String</returns>
-        ''' <remarks>Frist Layer of items should have a ParentID of 1</remarks>
-        Public Function GenerateUnorderedList(ByVal menuData As DataTable, ByVal value As StringBuilder) As String
+        ''' <remarks>First Layer of items should have a ParentID of 1</remarks>
+        Public Shared Function GenerateUnorderedList(ByVal menuData As DataTable, ByVal value As StringBuilder) As String
             If value Is Nothing Then Throw New ArgumentNullException("value", "value cannot be a null reference (Nothing in Visual Basic)!")
             value.AppendLine("<ul>")
             Dim datView As DataView = Nothing
@@ -44,13 +44,13 @@ Namespace Utilities
         End Function
 
         ''' <summary>
-        ''' Add the child itmes to the StringBuiler
+        ''' Add the child items to the StringBuilder
         ''' </summary>
         ''' <param name="menuData">DataTable</param>
         ''' <param name="parentID">Integer</param>
-        ''' <param name="stringBuilder">StringBuiler</param>
+        ''' <param name="stringBuilder">StringBuilder</param>
         ''' <remarks></remarks>
-        Private Sub addChildItems(ByVal menuData As DataTable, ByVal parentID As Integer, ByRef stringBuilder As StringBuilder)
+        Private Shared Sub addChildItems(ByVal menuData As DataTable, ByVal parentID As Integer, ByRef stringBuilder As StringBuilder)
             '//Populate DataView
             Dim datView As DataView = Nothing
             Try
@@ -85,11 +85,11 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="hrefText">Link Text</param>
         ''' <param name="action">Used to build the javascript</param>
-        ''' <param name="hrefToolTip">Used for the tooltip property</param>
+        ''' <param name="hrefToolTip">Used for the tool tip property</param>
         ''' <param name="hasChildren">Determines the class='has-sub' for the li tag</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        Private Function createLIItem(ByVal hrefText As String, ByVal action As String, ByVal hrefToolTip As String, ByVal hasChildren As Boolean) As String
+        Private Shared Function createLIItem(ByVal hrefText As String, ByVal action As String, ByVal hrefToolTip As String, ByVal hasChildren As Boolean) As String
             Dim retVal As String = String.Empty
             If Not hasChildren Then
                 retVal = "<li><a href=""" + action + """ title=""" + hrefToolTip + """><span>" + hrefText + "</span></a>"
@@ -98,5 +98,5 @@ Namespace Utilities
             End If
             Return retVal
         End Function
-    End Module
+    End Class
 End Namespace

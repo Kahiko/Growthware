@@ -9,15 +9,15 @@ Namespace Utilities
     ''' ClientChoicesUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework
     ''' with regards to ClientChoices.
     ''' </summary>
-    Public Module ClientChoicesUtility
-        Private s_CachedAnonymousChoicesState As String = "AnonymousClientChoicesState"
+    Public Class ClientChoicesUtility
+        Private Shared s_CachedAnonymousChoicesState As String = "AnonymousClientChoicesState"
 
         ''' <summary>
         ''' Returns the client choices given the account
         ''' </summary>
         ''' <param name="account">String</param>
         ''' <returns>MClientChoicesState</returns>
-        Public Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
+        Public Shared Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
             Return GetClientChoicesState(account, False)
         End Function
 
@@ -27,7 +27,7 @@ Namespace Utilities
         ''' <param name="account">The account.</param>
         ''' <param name="fromDB">if set to <c>true</c> [from database].</param>
         ''' <returns>MClientChoicesState.</returns>
-        Public Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
+        Public Shared Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As MClientChoicesState = Nothing
             If HttpContext.Current.Cache IsNot Nothing Then
@@ -60,7 +60,7 @@ Namespace Utilities
         ''' Gets the selected security entity.
         ''' </summary>
         ''' <returns>System.Int32.</returns>
-        Public Function SelectedSecurityEntity() As Integer
+        Public Shared Function SelectedSecurityEntity() As Integer
             Dim myClientChoicesState As MClientChoicesState = CType(HttpContext.Current.Items(MClientChoices.SessionName), MClientChoicesState)
             Dim result As Integer
             If myClientChoicesState IsNot Nothing Then
@@ -76,7 +76,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="clientChoicesState">MClientChoicesState</param>
         ''' <remarks></remarks>
-        Public Sub Save(ByVal clientChoicesState As MClientChoicesState)
+        Public Shared Sub Save(ByVal clientChoicesState As MClientChoicesState)
             Save(clientChoicesState, True)
         End Sub
 
@@ -85,7 +85,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="clientChoicesState">MClientChoicesState</param>
         ''' <remarks></remarks>
-        Public Sub Save(ByVal clientChoicesState As MClientChoicesState, ByVal updateContext As Boolean)
+        Public Shared Sub Save(ByVal clientChoicesState As MClientChoicesState, ByVal updateContext As Boolean)
             If clientChoicesState Is Nothing Then Throw New ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)!")
             Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             mBClientChoices.Save(clientChoicesState)
@@ -96,6 +96,6 @@ Namespace Utilities
             End If
         End Sub
 
-    End Module
+    End Class
 End Namespace
 
