@@ -457,6 +457,16 @@
     <Folder Include="App_Data\" />
     <Folder Include="Controllers\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
+      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj">
+      <Project>{ce3e125d-0a3e-4f4d-b246-7a7931744a58}</Project>
+      <Name>GrowthWare.WebSupport</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
