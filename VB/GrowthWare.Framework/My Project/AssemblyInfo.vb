@@ -10,7 +10,7 @@ Imports System.Runtime.InteropServices
 
 <Assembly: AssemblyTitle("GrowthWare.Framework")> 
 <Assembly: AssemblyDescription("Framework for supporting GrowthWare products for data access")> 
-<Assembly: AssemblyCompany("")> 
+<Assembly: AssemblyCompany("GrowthWare")> 
 <Assembly: AssemblyProduct("GrowthWare.Framework")> 
 <Assembly: AssemblyCopyright("Copyright ©  2014")> 
 <Assembly: AssemblyTrademark("")> 

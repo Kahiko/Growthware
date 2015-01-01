@@ -9,8 +9,8 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 
 <Assembly: AssemblyTitle("GrowthWare.WebSupport")> 
-<Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
+<Assembly: AssemblyDescription("Framework for supporting GrowthWare products for web applications")> 
+<Assembly: AssemblyCompany("Growthware")> 
 <Assembly: AssemblyProduct("GrowthWare.WebSupport")> 
 <Assembly: AssemblyCopyright("Copyright © Microsoft 2015")> 
 <Assembly: AssemblyTrademark("")> 
