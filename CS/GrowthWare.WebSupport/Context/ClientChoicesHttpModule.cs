@@ -49,7 +49,6 @@ namespace GrowthWare.WebSupport.Context
         public void AcquireRequestState(object sender, EventArgs eventArgs)
         {
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture)) return;
-            if (!processRequest()) return;
             //if (HttpContext.Current.Session == null) return;
             String mAccountName = AccountUtility.HttpContextUserName();
             MClientChoicesState mClientChoicesState = null;

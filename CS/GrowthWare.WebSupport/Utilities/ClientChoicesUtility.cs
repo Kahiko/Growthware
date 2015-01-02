@@ -37,40 +37,24 @@ namespace GrowthWare.WebSupport.Utilities
             MClientChoicesState mRetVal = null;
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
             BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-            if (fromDB)
+            if (fromDB) return mBClientChoices.GetClientChoicesState(account);
+            if (account.Trim().ToLower(CultureInfo.CurrentCulture) != "anonymous")
             {
-                return mBClientChoices.GetClientChoicesState(account);
-            }
-            if (HttpContext.Current.Cache != null)
-            {
-                mRetVal = (MClientChoicesState)(HttpContext.Current.Cache[MClientChoices.SessionName]);
-            }
-            if (mRetVal == null)
-            {
-                if (account.Trim().ToLower(CultureInfo.CurrentCulture) == "anonymous")
-                {
-                    mRetVal = (MClientChoicesState)HttpContext.Current.Cache[s_CachedAnonymousChoicesState];
-                    if (mRetVal == null)
-                    {
-                        mRetVal = mBClientChoices.GetClientChoicesState(account);
-                        CacheController.AddToCacheDependency(s_CachedAnonymousChoicesState, mRetVal);
-                    }
-                }
-                else
+                mRetVal = (MClientChoicesState)HttpContext.Current.Cache[MClientChoices.SessionName];
+                if (mRetVal == null) 
                 {
                     mRetVal = mBClientChoices.GetClientChoicesState(account);
+                    HttpContext.Current.Cache[MClientChoices.SessionName] = mRetVal;
                 }
             }
-            else
+            else 
             {
-                if (mRetVal.AccountName != account)
+                mRetVal = (MClientChoicesState)HttpContext.Current.Cache[s_CachedAnonymousChoicesState];
+                if (mRetVal == null)
                 {
                     mRetVal = mBClientChoices.GetClientChoicesState(account);
+                    CacheController.AddToCacheDependency(ClientChoicesUtility.s_CachedAnonymousChoicesState, mRetVal);
                 }
-            }
-            if (HttpContext.Current.Cache != null)
-            {
-                HttpContext.Current.Cache[MClientChoices.SessionName] = mRetVal;
             }
             return mRetVal;
         }
