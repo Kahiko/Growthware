@@ -41,18 +41,14 @@ Namespace Context
         ''' <param name="sender">object</param>
         ''' <param name="eventArgs">EventArgs</param>
         Public Sub AcquireRequestState(ByVal sender As Object, ByVal eventArgs As EventArgs)
-            If Not (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) <> "OnLine".ToUpper(CultureInfo.InvariantCulture)) Then
-                If processRequest() Then
-                    Dim mAccountName As String = AccountUtility.HttpContextUserName()
-                    Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
-                    HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
-                    'If HttpContext.Current.Session IsNot Nothing Then
-                    '	Dim mAccountName As String = AccountUtility.GetHttpContextUserName()
-                    '	Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
-                    '	HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
-                    'End If
-                End If
-            End If
+            Dim mAccountName As String = AccountUtility.HttpContextUserName()
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
+            HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
+            'If HttpContext.Current.Session IsNot Nothing Then
+            '	Dim mAccountName As String = AccountUtility.GetHttpContextUserName()
+            '	Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
+            '	HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
+            'End If
         End Sub
 
         ''' <summary>
@@ -79,13 +75,18 @@ Namespace Context
         ''' <remarks>There's no need to process logic for the other file types or extension</remarks>
         Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
+            Dim mLogger As Logger = Logger.Instance()
             If Not HttpContext.Current Is Nothing Then
                 Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
                 Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
+                mLogger.Debug("mPath: " + mPath.ToString())
+                mLogger.Debug("Processing types: " + mProcessingTypes.ToString() + System.Environment.NewLine + " mFileExtension: " + mFileExtension.ToString() + " mPath.IndexOf(/API/, StringComparison.OrdinalIgnoreCase): " + mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase).ToString())
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then
                     mRetval = True
                 End If
+            Else
+                mLogger.Info("HttpContext.Current is null can not process")
             End If
             Return mRetval
         End Function

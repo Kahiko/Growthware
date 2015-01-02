@@ -30,28 +30,20 @@ Namespace Utilities
         Public Shared Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As MClientChoicesState = Nothing
-            If HttpContext.Current.Cache IsNot Nothing Then
-                mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
-            End If
             Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             If fromDB Then Return mBClientChoices.GetClientChoicesState(account)
-            If mRetVal Is Nothing Then
-                If account.Trim().ToLower(CultureInfo.CurrentCulture) = "anonymous" Then
-                    mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.s_CachedAnonymousChoicesState), MClientChoicesState)
-                    If mRetVal Is Nothing Then
-                        mRetVal = mBClientChoices.GetClientChoicesState(account)
-                        CacheController.AddToCacheDependency(ClientChoicesUtility.s_CachedAnonymousChoicesState, mRetVal)
-                    End If
-                Else
+            If account.Trim().ToLower(CultureInfo.CurrentCulture) <> "anonymous" Then
+                mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
+                If mRetVal Is Nothing Then
                     mRetVal = mBClientChoices.GetClientChoicesState(account)
+                    HttpContext.Current.Cache(MClientChoices.SessionName) = mRetVal
                 End If
             Else
-                If mRetVal.AccountName <> account Then
+                mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.s_CachedAnonymousChoicesState), MClientChoicesState)
+                If mRetVal Is Nothing Then
                     mRetVal = mBClientChoices.GetClientChoicesState(account)
+                    CacheController.AddToCacheDependency(ClientChoicesUtility.s_CachedAnonymousChoicesState, mRetVal)
                 End If
-            End If
-            If HttpContext.Current.Cache IsNot Nothing And mRetVal IsNot Nothing Then
-                HttpContext.Current.Cache(MClientChoices.SessionName) = mRetVal
             End If
             Return mRetVal
         End Function
