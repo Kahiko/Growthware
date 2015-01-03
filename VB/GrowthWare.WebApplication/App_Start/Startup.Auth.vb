@@ -7,6 +7,7 @@ Imports Microsoft.Owin.Security.Cookies
 Imports Microsoft.Owin.Security.DataProtection
 Imports Microsoft.Owin.Security.Google
 Imports Owin
+Imports GrowthWare.Framework.Common
 
 Partial Public Class Startup
 
@@ -36,21 +37,29 @@ Partial Public Class Startup
         ' This is similar to the RememberMe option when you log in.
         app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie)
 
-        ' Uncomment the following lines to enable logging in with third party login providers
-        'app.UseMicrosoftAccountAuthentication(
-        '    clientId:= "",
-        '    clientSecret:= "")
+        ' Make the appropriate changes to the web.config file.
+        If ConfigSettings.GetAppSettingValue("EnableMicrosoftAccountAuthentication", True).ToUpperInvariant() = "TRUE" Then
+            app.UseMicrosoftAccountAuthentication(
+                clientId:=ConfigSettings.GetAppSettingValue("MicrosoftAccountClientId", True),
+                clientSecret:=ConfigSettings.GetAppSettingValue("MicrosoftAccountClientSecret", True))
+        End If
 
-        'app.UseTwitterAuthentication(
-        '   consumerKey:= "",
-        '   consumerSecret:= "")
+        If ConfigSettings.GetAppSettingValue("EnableTwitterAuthentication", True).ToUpperInvariant() = "TRUE" Then
+            app.UseTwitterAuthentication(
+               consumerKey:=ConfigSettings.GetAppSettingValue("TwitterConsumerKey", True),
+               consumerSecret:=ConfigSettings.GetAppSettingValue("TwitterConsumerSecret", True))
+        End If
 
-        'app.UseFacebookAuthentication(
-        '   appId:= "",
-        '   appSecret:= "")
+        If ConfigSettings.GetAppSettingValue("EnableFacebookAuthentication", True).ToUpperInvariant() = "TRUE" Then
+            app.UseFacebookAuthentication(
+               appId:=ConfigSettings.GetAppSettingValue("FacebookAppId", True),
+               appSecret:=ConfigSettings.GetAppSettingValue("FacebookAppSecret", True))
+        End If
 
-        'app.UseGoogleAuthentication(New GoogleOAuth2AuthenticationOptions() With {
-        '   .ClientId = "",
-        '   .ClientSecret = ""})
+        If ConfigSettings.GetAppSettingValue("EnableGoogleAuthentication", True).ToUpperInvariant() = "TRUE" Then
+            app.UseGoogleAuthentication(New GoogleOAuth2AuthenticationOptions() With {
+               .ClientId = ConfigSettings.GetAppSettingValue("GoogleClientId", True),
+               .ClientSecret = ConfigSettings.GetAppSettingValue("GoogleClientSecret", True)})
+        End If
     End Sub
 End Class

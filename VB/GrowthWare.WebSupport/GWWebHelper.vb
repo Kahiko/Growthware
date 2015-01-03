@@ -5,9 +5,9 @@ Imports GrowthWare.Framework.Common
 ''' GWWebHelper Contains non volatile data needed throughout the system.
 ''' </summary>
 ''' <remarks></remarks>
-Public Module GWWebHelper
-    Private s_ExceptionError As Exception = Nothing
-    Private s_Version As String = String.Empty
+Public Class GWWebHelper
+    Private Shared s_ExceptionError As Exception = Nothing
+    Private Shared s_Version As String = String.Empty
 
     ''' <summary>
     ''' Constant value of 3 representing the Link Behavior for the name
@@ -28,7 +28,7 @@ Public Module GWWebHelper
     ''' Gets the core web administration version.
     ''' </summary>
     ''' <value>The core web administration version.</value>
-    ReadOnly Property CoreWebAdministrationVersion() As String
+    Public Shared ReadOnly Property CoreWebAdministrationVersion() As String
         Get
             Dim myVersion As String = String.Empty
             Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.WebApplication")
@@ -44,7 +44,7 @@ Public Module GWWebHelper
     ''' <value>String</value>
     ''' <returns>String</returns>
     ''' <remarks></remarks>
-    ReadOnly Property SkinPath() As String
+    Public Shared ReadOnly Property SkinPath() As String
         Get
             Return HttpContext.Current.Server.MapPath("~\Public\Skins\")
         End Get
@@ -56,7 +56,7 @@ Public Module GWWebHelper
     ''' <value>String</value>
     ''' <returns>String</returns>
     ''' <remarks></remarks>
-    ReadOnly Property RootSite() As String
+    Public Shared ReadOnly Property RootSite() As String
         Get
             Dim myRoot_Site As String = String.Empty
             Dim myHTTP_Schema As String = String.Empty
@@ -78,7 +78,7 @@ Public Module GWWebHelper
     ''' Gets or sets an exception.
     ''' </summary>
     ''' <value>The exception error.</value>
-    Property ExceptionError() As Exception
+    Public Shared Property ExceptionError() As Exception
         Get
             Return s_ExceptionError
         End Get
@@ -88,10 +88,10 @@ Public Module GWWebHelper
     End Property
 
     ''' <summary>
-    ''' Gets the frame work verison.
+    ''' Gets the frame work version.
     ''' </summary>
-    ''' <value>The frame work verison.</value>
-    ReadOnly Property FrameworkVersion() As String
+    ''' <value>The frame work version.</value>
+    Public Shared ReadOnly Property FrameworkVersion() As String
         Get
             Dim myVersion As String = String.Empty
             Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.Framework")
@@ -108,7 +108,7 @@ Public Module GWWebHelper
     ''' <param name="request">The request.</param>
     ''' <param name="queryString">The query string.</param>
     ''' <returns>System.String.</returns>
-    Public Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
+    Public Shared Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
         If request Is Nothing Then Throw New ArgumentNullException("request", "request can not be null (Nothing in VB)")
         Dim mRetVal As String = String.Empty
         If Not request.QueryString(queryString) Is Nothing Then
@@ -121,13 +121,13 @@ Public Module GWWebHelper
     ''' Gets the display environment.
     ''' </summary>
     ''' <value>The display environment.</value>
-    ReadOnly Property DisplayEnvironment As String
+    Shared ReadOnly Property DisplayEnvironment As String
         Get
             Return ConfigSettings.EnvironmentDisplayed
         End Get
     End Property
 
-    ReadOnly Property Version As String
+    Shared ReadOnly Property Version As String
         Get
             If String.IsNullOrEmpty(s_Version) Then
                 s_Version = System.Reflection.Assembly.GetCallingAssembly().GetName().Version.ToString()
@@ -136,4 +136,4 @@ Public Module GWWebHelper
         End Get
     End Property
 
-    End Module
+End Class

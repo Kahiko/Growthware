@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Logon.aspx.vb" Inherits="GrowthWare.WebApplication.Logon" %>
+<%@ Register src="../../../UserControls/OpenAuthProviders.ascx" tagname="OpenAuthProviders" tagprefix="uc" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
         GW.Navigation.currentAction = 'Logon';
@@ -150,6 +151,7 @@
 	    $(txt).prev().val($(txt).val());
 	}
 </script>
+<form id="form1" runat="server">
 <div id="LogonPage">
 	<div id="LogonData">
 		<div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="Form_Field rounded" id="Account" />
@@ -162,8 +164,13 @@
 	</div>
 	<br />
 	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" class="btn btn-primary" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
+    <br />
+	<uc:OpenAuthProviders runat="server" ID="OpenAuthLogin" />
+
 </div>
 <div style="height: 26px;">
 	<div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
 	<div id="incorrectLogon" style="display: none;" runat="server"></div>
 </div>
+</form>
+
