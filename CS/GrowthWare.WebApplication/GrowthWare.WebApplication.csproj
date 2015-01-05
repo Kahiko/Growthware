@@ -686,7 +686,7 @@
     <Compile Include="Public\Skins\Professional\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
-    <Compile Include="Startup.cs" />
+    <Compile Include="App_Start\Startup.cs" />
     <Compile Include="UserControls\GroupControl.ascx.cs">
       <DependentUpon>GroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
