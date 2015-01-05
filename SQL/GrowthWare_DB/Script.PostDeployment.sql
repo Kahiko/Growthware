@@ -229,22 +229,6 @@ exec ZGWSecurity.Set_Function -1,'Logon','Logon',@V_Function_Type_SeqID,'Functio
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Developer',@V_ViewPermission,@V_SystemID,@V_Debug
 
-Print 'Adding Register'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
-set @V_MyAction = 'Register'
-exec ZGWSecurity.Set_Function -1,'Register','Register accounts for the system',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Registers an account.', @V_SystemID, @V_Debug
-set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
-
-Print 'Adding Register External Login'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
-set @V_MyAction = 'RegisterExternalLogin'
-exec ZGWSecurity.Set_Function -1,'Register External Login','Register External Login accounts for the system',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/RegisterExternalLogin.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Registers an account.', @V_SystemID, @V_Debug
-set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
-exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
-
 Print 'Adding Favorite'
 set @V_MyAction = 'Favorite'
 exec ZGWSecurity.Set_Function -1,'Favorite','Favorite',@V_Function_Type_SeqID,'Functions/System/Accounts/Favorite.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Allows client to set a Favorite action.', @V_SystemID, @V_Debug
@@ -559,18 +543,32 @@ print 'Adding Add Account'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'AddAccount'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
-exec ZGWSecurity.Set_Function -1,'Add Account','Add Account',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add an accounts password.', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Add Account','Add Account',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add an accounts password.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 
-Print 'Adding Register Account'
-set @V_MyAction = 'RegisterAccount'
-SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
+Print 'Adding Register'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
-exec ZGWSecurity.Set_Function -1,'Register Account','Register Account',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Vertical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add an accounts password.', @V_SystemID, @V_Debug
+set @V_MyAction = 'Register'
+exec ZGWSecurity.Set_Function -1,'Register','Register accounts for the system',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Registers an account.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
---exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
-exec ZGWSecurity.Set_Function_Groups @V_FunctionID,1,'Everyone',@V_ViewPermission,@V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
+
+Print 'Adding Open Auth Provider Logon'
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
+set @V_MyAction = 'OpenAuthProviderLogon'
+exec ZGWSecurity.Set_Function -1,'Open Auth Provider Logon','Open Auth Provider Logon bounce page to redirect to the appropriate provider.',@V_Function_Type_SeqID,'Functions/System/Accounts/OpenAuthProviderLogon.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Open Auth Provider Logon.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
+
+Print 'Adding Register External Login'
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
+set @V_MyAction = 'RegisterExternalLogin'
+exec ZGWSecurity.Set_Function -1,'Register External Login','Register External Login accounts for the system',@V_Function_Type_SeqID,'Functions/System/Accounts/RegisterExternalLogin.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Register External Login.', @V_SystemID, @V_Debug
+set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission,@V_SystemID,@V_Debug
 
 print 'Adding Add Edit Roles'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
