@@ -18,6 +18,7 @@ Public Class OpenAuthProviderLogon
     Private m_ReturnUrl As String
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Try
+            HttpContext.Current.Response.SuppressFormsAuthenticationRedirect = True
             'Dim provider = Request.Form("provider")
             Dim provider As String = GWWebHelper.GetQueryValue(Request, "provider")
             If String.IsNullOrEmpty(provider) Then

@@ -3,6 +3,8 @@ Imports Microsoft.AspNet.Identity.EntityFramework
 Imports Microsoft.AspNet.Identity.Owin
 Imports Microsoft.Owin.Security
 Imports Owin
+Imports GrowthWare.Framework.Model.Profiles
+Imports GrowthWare.WebSupport.Utilities
 
 Public Class RegisterExternalLogin1
     Inherits System.Web.UI.Page
@@ -47,7 +49,7 @@ Public Class RegisterExternalLogin1
             End If
             Dim appuser = manager.Find(loginInfo.Login)
             If appuser IsNot Nothing Then
-                'signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
+                signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
                 'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
             ElseIf User.Identity.IsAuthenticated Then
                 Dim verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId())
@@ -64,6 +66,9 @@ Public Class RegisterExternalLogin1
                 '    Return
                 'End If
             Else
+                Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Developer")
+                AccountUtility.SetPrincipal(mAccountProfile)
+                Response.Redirect("~/")
                 email.Text = loginInfo.Email
             End If
         End If
