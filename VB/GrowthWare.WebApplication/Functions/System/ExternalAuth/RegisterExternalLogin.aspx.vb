@@ -47,22 +47,22 @@ Public Class RegisterExternalLogin1
             End If
             Dim appuser = manager.Find(loginInfo.Login)
             If appuser IsNot Nothing Then
-                signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
-                IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
+                'signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
+                'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
             ElseIf User.Identity.IsAuthenticated Then
                 Dim verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId())
                 If verifiedloginInfo Is Nothing Then
-                    RedirectOnFail()
+                    'RedirectOnFail()
                     Return
                 End If
 
-                Dim result = manager.AddLogin(User.Identity.GetUserId(), verifiedloginInfo.Login)
-                If result.Succeeded Then
-                    IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
-                Else
-                    AddErrors(result)
-                    Return
-                End If
+                'Dim result = manager.AddLogin(User.Identity.GetUserId(), verifiedloginInfo.Login)
+                'If result.Succeeded Then
+                '    IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
+                'Else
+                '    AddErrors(result)
+                '    Return
+                'End If
             Else
                 email.Text = loginInfo.Email
             End If
