@@ -7,36 +7,27 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrowthWare.WebApplication.Functions.System.Accounts {
+namespace GrowthWare.WebApplication.UserControls {
     
     
-    public partial class Logon {
+    public partial class OpenAuthProviders {
         
         /// <summary>
-        /// OpenAuthLogin control.
+        /// thirdPartyAuthentication control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::GrowthWare.WebApplication.UserControls.OpenAuthProviders OpenAuthLogin;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl thirdPartyAuthentication;
         
         /// <summary>
-        /// clientMessage control.
+        /// providerDetails control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl clientMessage;
-        
-        /// <summary>
-        /// incorrectLogon control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl incorrectLogon;
+        protected global::System.Web.UI.WebControls.ListView providerDetails;
     }
 }

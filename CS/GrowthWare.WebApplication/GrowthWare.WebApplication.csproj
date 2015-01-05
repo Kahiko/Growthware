@@ -155,7 +155,6 @@
     <Content Include="Account\Forgot.aspx" />
     <Content Include="Account\Login.aspx" />
     <Content Include="Account\Manage.aspx" />
-    <Content Include="Account\OpenAuthProviders.ascx" />
     <Content Include="Account\Register.aspx" />
     <Content Include="Account\RegisterExternalLogin.aspx" />
     <Content Include="Account\ResetPassword.aspx" />
@@ -169,6 +168,7 @@
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx" />
     <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
@@ -332,6 +332,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="UserControls\GroupControl.ascx" />
+    <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
     <Content Include="UserControls\Search.ascx" />
     <Content Include="Web.config">
@@ -385,13 +386,6 @@
     </Compile>
     <Compile Include="Account\Manage.aspx.designer.cs">
       <DependentUpon>Manage.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Account\OpenAuthProviders.ascx.cs">
-      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Account\OpenAuthProviders.ascx.designer.cs">
-      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
     </Compile>
     <Compile Include="Account\Register.aspx.cs">
       <DependentUpon>Register.aspx</DependentUpon>
@@ -456,6 +450,13 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\Logon.aspx.designer.cs">
       <DependentUpon>Logon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.cs">
+      <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.designer.cs">
+      <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Accounts\UpdateSession.aspx.cs">
       <DependentUpon>UpdateSession.aspx</DependentUpon>
@@ -693,6 +694,13 @@
     </Compile>
     <Compile Include="UserControls\GroupControl.ascx.designer.cs">
       <DependentUpon>GroupControl.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\OpenAuthProviders.ascx.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\OpenAuthProviders.ascx.designer.cs">
+      <DependentUpon>OpenAuthProviders.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\RolesControl.ascx.cs">
       <DependentUpon>RolesControl.ascx</DependentUpon>

@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.Logon" %>
+<%@ Register src="../../../UserControls/OpenAuthProviders.ascx" tagname="OpenAuthProviders" tagprefix="uc" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
         GW.Navigation.currentAction = 'Logon';
@@ -159,6 +160,8 @@
 	</div>
 	<br />
 	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" id="btnLogon" onclick="javascript:logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="javascript:requestChange();" value="Change Password" />
+    <br />
+	<uc:OpenAuthProviders runat="server" ID="OpenAuthLogin" />
 </div>
 <div style="height: 26px;">
 	<div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
