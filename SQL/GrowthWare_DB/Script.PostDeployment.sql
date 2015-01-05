@@ -558,7 +558,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_AddPermission
 Print 'Adding Open Auth Provider Logon'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'RootMenu')
 set @V_MyAction = 'OpenAuthProviderLogon'
-exec ZGWSecurity.Set_Function -1,'Open Auth Provider Logon','Open Auth Provider Logon bounce page to redirect to the appropriate provider.',@V_Function_Type_SeqID,'Functions/System/ExternalAuth/OpenAuthProviderLogon.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Open Auth Provider Logon.', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Open Auth Provider Logon','Open Auth Provider Logon bounce page to redirect to the appropriate provider.',@V_Function_Type_SeqID,'Functions/System/ExternalAuth/OpenAuthProviderLogon.aspx',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Open Auth Provider Logon.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
 
