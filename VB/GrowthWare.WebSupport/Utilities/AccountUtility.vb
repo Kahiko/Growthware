@@ -8,6 +8,7 @@ Imports System.Web.Security
 Imports System.Globalization
 Imports GrowthWare.Framework.Model.Enumerations
 Imports System.DirectoryServices
+Imports System.Security.Claims
 
 Namespace Utilities
     Public Class AccountUtility
@@ -318,12 +319,18 @@ Namespace Utilities
                 Dim mAccountRoles As String = accountProfile.AssignedRoles.ToString().Replace(",", ";")
                 ' generate authentication ticket
                 Dim authTicket As FormsAuthenticationTicket = New FormsAuthenticationTicket(1, accountProfile.Account, DateTime.Now, DateTime.Now.AddHours(1), False, mAccountRoles)
+                Dim mFormsIdentity As FormsIdentity = New FormsIdentity(authTicket)
                 ' Encrypt the ticket.
                 Dim encryptedTicket As String = FormsAuthentication.Encrypt(authTicket)
                 ' Create a cookie and add the encrypted ticket to the cookie
                 Dim authCookie As HttpCookie = New HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket)
                 mCurrentContext.Response.Cookies.Add(authCookie)
-                mCurrentContext.User = New GenericPrincipal(mCurrentContext.User.Identity, accountProfile.DerivedRoles.ToArray)
+                Dim mGenericPrincipal As GenericPrincipal = New GenericPrincipal(mCurrentContext.User.Identity, accountProfile.DerivedRoles.ToArray)
+                Dim mClaimsIdentity = New ClaimsIdentity(mFormsIdentity)
+                Dim mClaimsPrincipal As ClaimsPrincipal = New ClaimsPrincipal(mClaimsIdentity)
+                'mCurrentContext.User = New GenericPrincipal(mCurrentContext.User.Identity, accountProfile.DerivedRoles.ToArray)
+                mCurrentContext.User = mGenericPrincipal
+                'mCurrentContext.User = mClaimsPrincipal
             Else
                 Throw New ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in Visual Basic)!")
             End If
@@ -338,3 +345,4 @@ Namespace Utilities
         End Sub
     End Class
 End Namespace
+

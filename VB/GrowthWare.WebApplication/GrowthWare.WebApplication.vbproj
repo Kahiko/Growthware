@@ -18,8 +18,8 @@
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44300</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
-    <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
-    <IISExpressUseClassicPipelineMode />
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode>false</IISExpressUseClassicPipelineMode>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -210,8 +210,8 @@
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
-    <Content Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx" />
-    <Content Include="Functions\System\Accounts\RegisterExternalLogin.aspx" />
+    <Content Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx" />
+    <Content Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx" />
     <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
@@ -248,6 +248,7 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Functions\System\ExternalAuth\Web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\CSS\bootstrap-theme.min.css" />
     <Content Include="Public\CSS\bootstrap.min.css" />
@@ -405,7 +406,9 @@
     <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
     <Content Include="UserControls\Search.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Bundle.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
@@ -574,17 +577,17 @@
       <DependentUpon>Logon.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.designer.vb">
+    <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.designer.vb">
       <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.vb">
+    <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.vb">
       <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
-    <Compile Include="Functions\System\Accounts\RegisterExternalLogin.aspx.designer.vb">
+    <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.designer.vb">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Functions\System\Accounts\RegisterExternalLogin.aspx.vb">
+    <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.vb">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>

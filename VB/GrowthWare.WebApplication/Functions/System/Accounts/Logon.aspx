@@ -151,26 +151,25 @@
 	    $(txt).prev().val($(txt).val());
 	}
 </script>
-<form id="form1" runat="server">
-<div id="LogonPage">
-	<div id="LogonData">
-		<div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="Form_Field rounded" id="Account" />
-		<br /><br />
-		<div style="text-align: right; width: 80px; float: left;">Password:&nbsp;&nbsp;</div><input type="password" class="Form_Field rounded" id="Password" />
-        <label for="chkShowPassword">
-                <input type="checkbox" id="chkShowPassword" />
-                Show password
-        </label>
-	</div>
-	<br />
-	<div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" class="btn btn-primary" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
-    <br />
-	<uc:OpenAuthProviders runat="server" ID="OpenAuthLogin" />
+<form id="frmLogon" runat="server">
+    <div id="LogonPage">
+	    <div id="LogonData">
+		    <div style="text-align: right; width: 80px; float: left;">Account:&nbsp;&nbsp;</div><input type="text" class="Form_Field rounded" id="Account" />
+		    <br /><br />
+		    <div style="text-align: right; width: 80px; float: left;">Password:&nbsp;&nbsp;</div><input type="password" class="Form_Field rounded" id="Password" />
+            <label for="chkShowPassword">
+                    <input type="checkbox" id="chkShowPassword" />
+                    Show password
+            </label>
+	    </div>
+	    <br />
+	    <div style="text-align: right; width: 80px; float: left;">&nbsp;</div><input type="button" class="btn btn-primary" id="btnLogon" onclick="javascript: logon();" value="Logon" />&nbsp;<input type="button" id="btnRequestChange" style="display: none" onclick="    javascript: requestChange();" value="Change Password" />
+        <br />
+	    <uc:OpenAuthProviders runat="server" ID="OpenAuthLogin" />
 
-</div>
-<div style="height: 26px;">
-	<div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
-	<div id="incorrectLogon" style="display: none;" runat="server"></div>
-</div>
+    </div>
+    <div style="height: 26px;">
+	    <div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>
+	    <div id="incorrectLogon" style="display: none;" runat="server"></div>
+    </div>
 </form>
-
