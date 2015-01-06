@@ -5,9 +5,10 @@ Imports Microsoft.Owin.Security
 Imports Owin
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
+Imports GrowthWare.WebSupport.Base
 
 Public Class RegisterExternalLogin1
-    Inherits System.Web.UI.Page
+    Inherits ClientChoicesPage
 
     Protected Property ProviderName() As String
         Get
@@ -32,6 +33,10 @@ Public Class RegisterExternalLogin1
     End Sub
 
     Protected Sub Page_Load() Handles Me.Load
+
+    End Sub
+
+    Protected Sub Pre_Render(sender As Object, e As EventArgs) Handles Me.PreRender
         ' Process the result from an auth provider in the request
         ProviderName = IdentityHelper.GetProviderNameFromRequest(Request)
         If [String].IsNullOrEmpty(ProviderName) Then
@@ -53,7 +58,10 @@ Public Class RegisterExternalLogin1
                 'signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
                 'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
                 AccountUtility.SetPrincipal(mAccountProfile)
-                Response.Redirect("~/")
+                Dim mAction As String = ClientChoicesState(MClientChoices.Action)
+                Dim mScript As String = "<script type='text/javascript' language='javascript'>window.location.hash = '?Action=" + mAction + "'; location.reload();</script>"
+                Page.ClientScript.RegisterStartupScript(Me.GetType(), "", mScript)
+                'Response.Redirect("~/")
             ElseIf User.Identity.IsAuthenticated Then
                 Dim verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId())
                 If verifiedloginInfo Is Nothing Then
