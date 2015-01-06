@@ -16,7 +16,42 @@
             var groups = '';
             var canSaveRoles = false;
             var canSaveGroups = false;
- 
+            roles = $.map($('#AddEditAccount_ctlRoles_DstList option'), function (e) { return $(e).val(); });
+            groups = $.map($('#AddEditAccount_ctlGroups_DstList option'), function (e) { return $(e).val(); });
+
+            accountRoles = {};
+            accountRoles.Roles = roles;
+
+            accountGroups = {};
+            accountGroups.Groups = groups;
+            canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
+            canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
+            profile = {};
+            if (document.getElementById("<%=txtAccount.ClientID%>") != null) {
+                profile.Account = $("#<%=txtAccount.ClientID %>").val();
+            } else {
+                profile.Account = $("#<%=txtEmail.ClientID %>").val();
+            }
+            profile.AccountGroups = accountGroups;
+            profile.AccountRoles = accountRoles;
+            profile.CanSaveGroups = canSaveGroups;
+            profile.CanSaveRoles = canSaveRoles;
+            profile.EMail = $("#<%=txtEmail.ClientID %>").val();
+            profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
+            profile.Status = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
+            profile.FirstName = $("#<%=txtFirstName.ClientID %>").val();
+            profile.Id = parseInt($("#<%=txtAccount_seq_id.ClientID %>").val());
+            profile.IsSystemAdmin = false;
+            if (document.getElementById("<%=chkSysAdmin.ClientID %>") != null) {
+                if (document.getElementById("<%=chkSysAdmin.ClientID %>").checked) {
+                    profile.IsSystemAdmin = true;
+                }
+            }
+            profile.LastName = $("#<%=txtLastName.ClientID %>").val();
+            profile.Location = $("#<%=txtLocation.ClientID %>").val();
+            profile.MiddleName = $("#<%=txtMiddleName.ClientID %>").val();
+            profile.PreferredName = $("#<%=txtPreferredName.ClientID %>").val();
+            profile.TimeZone = parseInt($("#<%=dropTimezone.ClientID %> option:selected").val());
             return profile;
         }
 
