@@ -168,7 +168,7 @@
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
-    <Content Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx" />
+    <Content Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx" />
     <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
@@ -185,6 +185,7 @@
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx" />
     <Content Include="Functions\System\Errors\AccessDenied.aspx" />
     <Content Include="Functions\System\Errors\UnknownAction.aspx" />
+    <Content Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx" />
     <Content Include="Functions\System\Home\GenericHome.aspx" />
     <Content Include="Functions\System\Home\Home.aspx" />
     <Content Include="Functions\System\LineCount.aspx" />
@@ -265,6 +266,7 @@
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="Content\bootstrap.css.map" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Content Include="Functions\System\ExternalAuth\Web.config" />
     <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\Scripts\jquery-1.10.2.js" />
     <Content Include="Public\Scripts\jquery-ui.js" />
@@ -451,11 +453,11 @@
     <Compile Include="Functions\System\Accounts\Logon.aspx.designer.cs">
       <DependentUpon>Logon.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.cs">
+    <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.cs">
       <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Functions\System\Accounts\OpenAuthProviderLogon.aspx.designer.cs">
+    <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.designer.cs">
       <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Accounts\UpdateSession.aspx.cs">
@@ -569,6 +571,13 @@
     </Compile>
     <Compile Include="Functions\System\Errors\UnknownAction.aspx.designer.cs">
       <DependentUpon>UnknownAction.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.cs">
+      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.designer.cs">
+      <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.cs">
       <DependentUpon>GenericHome.aspx</DependentUpon>

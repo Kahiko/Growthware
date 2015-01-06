@@ -54,6 +54,19 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                     var mLocation = mNavObject.Location;
                     if (mLocation.substr(0, 1) != "/") mLocation = "/" + mLocation;
                     var mURL = GW.Common.getBaseURL() + mLocation + "?Action=" + action;
+                    var vars = [], hash;
+                    var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+                    for (var i = 0; i < hashes.length; i++) {
+                        hash = hashes[i].split('=');
+                        vars[hash[0]] = hash[1];
+                    }
+                    for (var i in vars) {
+                        if (i != "Action") {
+                            mURL += "&" + i + "=" + vars[i];
+                        }
+                        //alert(i + " == " + vars[i]);
+                    }
+                    //alert(mURL)
                     var $contentContainer = $('#' + containerID);
                     var $pageMessage = $('#pageMessage');
                     switch (mNavObject.LinkBehavior) {
