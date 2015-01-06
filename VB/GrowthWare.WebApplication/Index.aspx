@@ -1,15 +1,14 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Index.aspx.vb" Inherits="GrowthWare.WebApplication.Index" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Public/Skins/Default/Default.Master" CodeBehind="Index.aspx.vb" Inherits="GrowthWare.WebApplication.Index" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
-            var currentHash = window.location.hash.substring(1);
-            currentHash = currentHash.replace("?Action=", "");
-            if (currentHash != '') {
-                GW.Navigation.NavigationController.LoadPage(currentHash, "MainContentDiv");
+            var currentAction = GW.Common.getParameterByName("Action")
+            if (currentAction != '') {
+                GW.Navigation.NavigationController.LoadPage(currentAction, "MainContentDiv");
 
             } else {
-                GW.Navigation.NavigationController.LoadPage("GenericHome", "MainContentDiv");
+                GW.Navigation.NavigationController.LoadPage("Generic_Home", "MainContentDiv");
             }
         });
     </script>

@@ -402,6 +402,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon1.ico" />
     <Content Include="Global.asax" />
+    <Content Include="UserControls\AddEditAccount.ascx" />
     <Content Include="UserControls\GroupControl.ascx" />
     <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
@@ -589,7 +590,7 @@
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.vb">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Accounts\UpdateSession.aspx.designer.vb">
       <DependentUpon>UpdateSession.aspx</DependentUpon>
@@ -846,6 +847,13 @@
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Startup.vb" />
+    <Compile Include="UserControls\AddEditAccount.ascx.designer.vb">
+      <DependentUpon>AddEditAccount.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\AddEditAccount.ascx.vb">
+      <DependentUpon>AddEditAccount.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="UserControls\GroupControl.ascx.designer.vb">
       <DependentUpon>GroupControl.ascx</DependentUpon>
     </Compile>

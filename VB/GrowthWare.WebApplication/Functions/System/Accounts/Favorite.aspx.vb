@@ -1,5 +1,5 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.WebSupport.BasePages
+Imports GrowthWare.WebSupport.Base
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 

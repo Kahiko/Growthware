@@ -1,4 +1,4 @@
-﻿Imports GrowthWare.WebSupport.BasePages
+﻿Imports GrowthWare.WebSupport.Base
 Imports GrowthWare.WebSupport.Utilities
 
 Public Class UpdateSession

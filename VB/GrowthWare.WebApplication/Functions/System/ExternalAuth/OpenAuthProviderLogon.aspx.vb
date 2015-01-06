@@ -25,7 +25,8 @@ Public Class OpenAuthProviderLogon
                 Return
             End If
             ' Request a redirect to the external login provider
-            Dim redirectUrl As String = ResolveUrl([String].Format(CultureInfo.InvariantCulture, "~//Functions/System/ExternalAuth/RegisterExternalLogin?{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl))
+            'Dim redirectUrl As String = ResolveUrl([String].Format(CultureInfo.InvariantCulture, "~/Functions/System/ExternalAuth/RegisterExternalLogin?{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl))
+            Dim redirectUrl As String = ResolveUrl([String].Format(CultureInfo.InvariantCulture, "~/#?Action=RegisterExternalLogin&{0}={1}&returnUrl={2}", IdentityHelper.ProviderNameKey, provider, ReturnUrl))
             Dim properties As AuthenticationProperties = New AuthenticationProperties() With {.RedirectUri = redirectUrl}
             'Add xsrf verification when linking accounts
             If (Context.User.Identity.IsAuthenticated) Then

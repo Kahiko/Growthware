@@ -1,7 +1,7 @@
 ﻿Imports GrowthWare.WebSupport
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.WebSupport.BasePages
+Imports GrowthWare.WebSupport.Base
 
 Public Class SearchSecurityEntities
     Inherits BaseWebpage

@@ -1,6 +1,6 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 
-Namespace BasePages
+Namespace Base
     Public Class ClientChoicesPage
         Inherits BaseWebpage
 

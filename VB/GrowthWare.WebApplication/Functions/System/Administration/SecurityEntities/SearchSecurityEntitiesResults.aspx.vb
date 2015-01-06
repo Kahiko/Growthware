@@ -2,7 +2,7 @@
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Drawing
-Imports GrowthWare.WebSupport.BasePages
+Imports GrowthWare.WebSupport.Base
 
 Public Class SearchSecurityEntitiesResults
 	Inherits ClientChoicesPage

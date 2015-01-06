@@ -1,5 +1,5 @@
 ﻿Imports GrowthWare.WebSupport
-Imports GrowthWare.WebSupport.BasePages
+Imports GrowthWare.WebSupport.Base
 
 Public Class UnknownAction
     Inherits BaseWebpage

@@ -48,9 +48,12 @@ Public Class RegisterExternalLogin1
                 Return
             End If
             Dim appuser = manager.Find(loginInfo.Login)
-            If appuser IsNot Nothing Then
-                signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
+            Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(loginInfo.Email)
+            If mAccountProfile IsNot Nothing Then
+                'signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
                 'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
+                AccountUtility.SetPrincipal(mAccountProfile)
+                Response.Redirect("~/")
             ElseIf User.Identity.IsAuthenticated Then
                 Dim verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId())
                 If verifiedloginInfo Is Nothing Then
@@ -66,10 +69,11 @@ Public Class RegisterExternalLogin1
                 '    Return
                 'End If
             Else
-                Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile("Developer")
-                AccountUtility.SetPrincipal(mAccountProfile)
-                Response.Redirect("~/")
-                email.Text = loginInfo.Email
+                Dim mEmail As TextBox = AddEditAccount.FindControl("txtEmail")
+                If mEmail IsNot Nothing Then
+                    mEmail.Text = loginInfo.Email
+                End If
+                'email.Text = loginInfo.Email
             End If
         End If
     End Sub
@@ -79,35 +83,35 @@ Public Class RegisterExternalLogin1
     End Sub
 
     Private Sub CreateAndLoginUser()
-        If Not IsValid Then
-            Return
-        End If
-        Dim manager = Context.GetOwinContext().GetUserManager(Of ApplicationUserManager)()
-        Dim signInManager = Context.GetOwinContext().Get(Of ApplicationSignInManager)()
-        Dim user = New ApplicationUser() With {.UserName = email.Text, .Email = email.Text}
-        Dim result = manager.Create(user)
-        If Not result.Succeeded Then
-            AddErrors(result)
-            Return
-        End If
-        Dim loginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo()
-        If loginInfo Is Nothing Then
-            RedirectOnFail()
-            Return
-        End If
-        result = manager.AddLogin(user.Id, loginInfo.Login)
-        If Not result.Succeeded Then
-            AddErrors(result)
-            Return
-        End If
-        signInManager.SignIn(user, isPersistent:=False, rememberBrowser:=False)
+        'If Not IsValid Then
+        '    Return
+        'End If
+        'Dim manager = Context.GetOwinContext().GetUserManager(Of ApplicationUserManager)()
+        'Dim signInManager = Context.GetOwinContext().Get(Of ApplicationSignInManager)()
+        'Dim user = New ApplicationUser() With {.UserName = email.Text, .Email = email.Text}
+        'Dim result = manager.Create(user)
+        'If Not result.Succeeded Then
+        '    AddErrors(result)
+        '    Return
+        'End If
+        'Dim loginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo()
+        'If loginInfo Is Nothing Then
+        '    RedirectOnFail()
+        '    Return
+        'End If
+        'result = manager.AddLogin(user.Id, loginInfo.Login)
+        'If Not result.Succeeded Then
+        '    AddErrors(result)
+        '    Return
+        'End If
+        'signInManager.SignIn(user, isPersistent:=False, rememberBrowser:=False)
 
-        ' For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
-        ' Dim code = manager.GenerateEmailConfirmationToken(user.Id)
-        ' Send this link via email: IdentityHelper.GetUserConfirmationRedirectUrl(code, user.Id)
+        '' For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
+        '' Dim code = manager.GenerateEmailConfirmationToken(user.Id)
+        '' Send this link via email: IdentityHelper.GetUserConfirmationRedirectUrl(code, user.Id)
 
-        IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
-        Return
+        'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
+        'Return
     End Sub
 
     Private Sub AddErrors(result As IdentityResult)

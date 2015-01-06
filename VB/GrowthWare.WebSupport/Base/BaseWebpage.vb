@@ -7,7 +7,7 @@ Imports GrowthWare.Framework.Model
 Imports GrowthWare.Framework.Common
 Imports System.Globalization
 
-Namespace BasePages
+Namespace Base
     Public Class BaseWebpage
         Inherits System.Web.UI.Page
 

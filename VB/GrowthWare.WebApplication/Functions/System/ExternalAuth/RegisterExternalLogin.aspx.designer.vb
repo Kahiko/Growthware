@@ -14,20 +14,11 @@ Option Explicit On
 Partial Public Class RegisterExternalLogin1
 
     '''<summary>
-    '''frmRegisterExternalLogin control.
+    '''AddEditAccount control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents frmRegisterExternalLogin As Global.System.Web.UI.HtmlControls.HtmlForm
-
-    '''<summary>
-    '''email control.
-    '''</summary>
-    '''<remarks>
-    '''Auto-generated field.
-    '''To modify move field declaration from designer file to code-behind file.
-    '''</remarks>
-    Protected WithEvents email As Global.System.Web.UI.WebControls.TextBox
+    Protected WithEvents AddEditAccount As Global.GrowthWare.WebApplication.AddEditAccount1
 End Class

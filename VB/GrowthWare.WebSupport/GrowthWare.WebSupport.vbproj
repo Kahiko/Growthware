@@ -73,10 +73,16 @@
     <Import Include="System.Threading.Tasks" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePages\BaseWebpage.vb">
+    <Compile Include="Base\BaseUserControl.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BasePages\ClientChoicesPage.vb">
+    <Compile Include="Base\BaseWebpage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesPage.vb">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesUserControl.vb">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CacheController.vb" />
