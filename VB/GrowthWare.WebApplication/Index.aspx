@@ -1,5 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" MasterPageFile="~/Public/Skins/Default/Default.Master" CodeBehind="Index.aspx.vb" Inherits="GrowthWare.WebApplication.Index" %>
+<%@ Import Namespace="System.Web.Optimization" %>
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
+    <%: Styles.Render("~/Content/GrowthWare")%>
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
