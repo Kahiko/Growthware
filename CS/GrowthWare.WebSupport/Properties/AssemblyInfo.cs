@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("6.0.0.*")]
 [assembly: AssemblyFileVersion("6.0.0.0")]
-[assembly: System.Web.UI.WebResource("GrowthWare.CustomWebControls.JS.ListPicker.js", "application/x-javascript", PerformSubstitution = true)]
+[assembly: System.Web.UI.WebResource("GrowthWare.WebSupport.CustomWebControls.JS.ListPicker.js", "application/x-javascript", PerformSubstitution = true)]
 
