@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 
 namespace GrowthWare.WebApplication.Functions.System.ExternalAuth
 {
-    public partial class RegisterExternalLogin : System.Web.UI.Page
+    public partial class RegisterExternalLogin : Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {
