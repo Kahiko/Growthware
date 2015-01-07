@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpenAuthProviderLogon.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.OpenAuthProviderLogon" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="OpenAuthProviderLogon.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.OpenAuthProviderLogon" %>
 
 <!DOCTYPE html>
 

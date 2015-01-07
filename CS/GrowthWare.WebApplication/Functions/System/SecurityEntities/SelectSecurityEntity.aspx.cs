@@ -1,5 +1,5 @@
 ﻿using GrowthWare.Framework.Model.Profiles;
-using GrowthWare.WebSupport.BasePages;
+using GrowthWare.WebSupport.Base;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;

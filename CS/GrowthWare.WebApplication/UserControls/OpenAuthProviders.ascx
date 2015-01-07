@@ -1,9 +1,7 @@
 ﻿<%@ Control Language="C#" AutoEventWireup="true" CodeBehind="OpenAuthProviders.ascx.cs" Inherits="GrowthWare.WebApplication.UserControls.OpenAuthProviders" %>
 <script type="text/javascript">
     function useProvider(provider) {
-        //window.location.hash = "?Action=GenericHome";
-        //window.location.hash = "?Action=OpenAuthProviderLogon&provider=" + provider;
-        window.location = "https://localhost:44300/Functions/System/Accounts/OpenAuthProviderLogon?provider=" + provider;
+        window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
     }
 
 </script>

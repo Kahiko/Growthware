@@ -1,4 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="RegisterExternalLogin.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.RegisterExternalLogin" %>
+<%@ Register Src="~/UserControls/AddEditAccount.ascx" TagPrefix="uc" TagName="AddEditAccount" %>
 
 <!DOCTYPE html>
 
@@ -7,10 +8,8 @@
     <title></title>
 </head>
 <body>
-    <form id="form1" runat="server">
-    <div>
-    
-    </div>
+    <form id="frmRegisterExternalLogin" runat="server">
+        <uc:AddEditAccount runat="server" id="AddEditAccount" />
     </form>
 </body>
 </html>

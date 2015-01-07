@@ -55,10 +55,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BasePages\BaseWebpage.cs">
+    <Compile Include="Base\BaseUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="BasePages\ClientChoicesPage.cs">
+    <Compile Include="Base\BaseWebpage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="CacheController.cs" />

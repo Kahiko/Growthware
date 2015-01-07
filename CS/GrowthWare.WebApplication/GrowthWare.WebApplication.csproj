@@ -163,6 +163,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="favicon1.ico" />
     <Content Include="Functions\Overrides\Accounts\ChangePassword.aspx" />
     <Content Include="Functions\System\Accounts\ChangePassword.aspx" />
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
@@ -333,6 +334,7 @@
     <Content Include="Scripts\respond.matchmedia.addListener.js" />
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="UserControls\AddEditAccount.ascx" />
     <Content Include="UserControls\GroupControl.ascx" />
     <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
@@ -697,6 +699,13 @@
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
     <Compile Include="App_Start\Startup.cs" />
+    <Compile Include="UserControls\AddEditAccount.ascx.cs">
+      <DependentUpon>AddEditAccount.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\AddEditAccount.ascx.designer.cs">
+      <DependentUpon>AddEditAccount.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GroupControl.ascx.cs">
       <DependentUpon>GroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

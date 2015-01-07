@@ -19,7 +19,7 @@ GW.Model = {
             type: 'POST',
             async: true,
             cache: false,
-            timeout: 8000,
+            timeout: 16000,
             url: '',
             data: {},
             dataType: 'html',

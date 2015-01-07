@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UpdateSession.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.UpdateSession" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="UpdateSession.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.UpdateSession" %>
 <script type="text/javascript" language="javascript">
 	$(document).ready(function () {
 	    GW.Navigation.NavigationController.Refresh();

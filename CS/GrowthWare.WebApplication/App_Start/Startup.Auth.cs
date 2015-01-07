@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.DataProtection;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using GrowthWare.WebApplication.Models;
+using GrowthWare.Framework.Common;
 
 namespace GrowthWare.WebApplication.App_Start
 {
@@ -38,24 +39,33 @@ namespace GrowthWare.WebApplication.App_Start
             // Use a cookie to temporarily store information about a user logging in with a third party login provider
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-            //app.UseFacebookAuthentication(
-            //   appId: "",
-            //   appSecret: "");
-
-            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            // Add settings based on the web.config file.
+            if (ConfigSettings.GetAppSettingValue("EnableMicrosoftAccountAuthentication", true).ToUpperInvariant() == "TRUE") 
+            { 
+                app.UseMicrosoftAccountAuthentication(
+                    clientId: ConfigSettings.GetAppSettingValue("MicrosoftAccountClientId", true),
+                    clientSecret: ConfigSettings.GetAppSettingValue("MicrosoftAccountClientSecret", true));            
+            }
+            if (ConfigSettings.GetAppSettingValue("EnableTwitterAuthentication", true).ToUpperInvariant() == "TRUE") 
             {
-                ClientId = "431225382205-njgg4rn4c47hoqvs763fedq17j5eecp4.apps.googleusercontent.com",
-                ClientSecret = "9o9xqz_cY3exC1jt0RF5ZJVv"
-            });
+                app.UseTwitterAuthentication(
+                   consumerKey: ConfigSettings.GetAppSettingValue("TwitterConsumerKey", true),
+                   consumerSecret: ConfigSettings.GetAppSettingValue("TwitterConsumerSecret", true));
+            }
+            if (ConfigSettings.GetAppSettingValue("EnableFacebookAuthentication", true).ToUpperInvariant() == "TRUE")
+            {
+                app.UseFacebookAuthentication(
+                   appId: ConfigSettings.GetAppSettingValue("FacebookAppId", true),
+                   appSecret: ConfigSettings.GetAppSettingValue("FacebookAppSecret", true));
+            }
+            if (ConfigSettings.GetAppSettingValue("EnableGoogleAuthentication", true).ToUpperInvariant() == "TRUE")
+            {
+                app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+                {
+                    ClientId = ConfigSettings.GetAppSettingValue("GoogleClientId", true),
+                    ClientSecret = ConfigSettings.GetAppSettingValue("GoogleClientSecret", true)
+                });
+            }
         }
     }
 }

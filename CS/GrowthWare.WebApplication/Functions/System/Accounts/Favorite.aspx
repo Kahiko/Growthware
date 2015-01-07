@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Favorite.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.Favorite" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Favorite.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.Favorite" %>
 
 <!DOCTYPE html>
 

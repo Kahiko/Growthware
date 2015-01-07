@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logoff.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.Logoff" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logoff.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.Logoff" %>
 <script type="text/javascript" language="javascript">
 	$(document).ready(function () {
 		window.location.hash = '';

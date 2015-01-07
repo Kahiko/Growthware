@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrowthWare.WebApplication.Functions.System.Accounts {
+namespace GrowthWare.WebApplication.Functions.System.ExternalAuth {
     
     
     public partial class UpdateSession {

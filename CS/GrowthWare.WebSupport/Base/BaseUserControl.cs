@@ -11,12 +11,9 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.UI;
 
-namespace GrowthWare.WebSupport.BasePages
+namespace GrowthWare.WebSupport.Base
 {
-    /// <summary>
-    /// Class Page
-    /// </summary>
-    public class BaseWebpage : System.Web.UI.Page
+    public class BaseUserControl : UserControl
     {
 		/// <summary>
 		/// Setup the name of the hidden field on the client for storing the view state key, 
@@ -36,38 +33,38 @@ namespace GrowthWare.WebSupport.BasePages
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Page" /> class.
 		/// </summary>
-        public BaseWebpage()
+        public BaseUserControl()
 		{
 			
 		}
 
-		/// <summary>
-		/// Overrides System.Web.UI.PageLoadPageStateFromPersistenceMedium
-		/// </summary>
-		/// <returns></returns>
-		/// <remarks></remarks>
-		protected override object LoadPageStateFromPersistenceMedium()
-		{
-			if (Convert.ToBoolean(ConfigSettings.ServerSideViewState)) {
-				return this.LoadViewState();
-			}
-			return base.LoadPageStateFromPersistenceMedium();
-		}
+        ///// <summary>
+        ///// Overrides System.Web.UI.PageLoadPageStateFromPersistenceMedium
+        ///// </summary>
+        ///// <returns></returns>
+        ///// <remarks></remarks>
+        //protected override object LoadPageStateFromPersistenceMedium()
+        //{
+        //    if (Convert.ToBoolean(ConfigSettings.ServerSideViewState)) {
+        //        return this.LoadViewState();
+        //    }
+        //    return base.LoadPageStateFromPersistenceMedium();
+        //}
 
-		/// <summary>
-		/// Saves the page state to persistence medium.
-		/// </summary>
-		/// <param name="state">State of the view.</param>
-		protected override void SavePageStateToPersistenceMedium(object state)
-		{
-			if (Convert.ToBoolean(ConfigSettings.ServerSideViewState)) {
-				this.SaveViewState(state);
-				base.SavePageStateToPersistenceMedium("");
-			}
-			else {
-				base.SavePageStateToPersistenceMedium(state);
-			}
-		}
+        ///// <summary>
+        ///// Saves the page state to persistence medium.
+        ///// </summary>
+        ///// <param name="state">State of the view.</param>
+        //protected override void SavePageStateToPersistenceMedium(object state)
+        //{
+        //    if (Convert.ToBoolean(ConfigSettings.ServerSideViewState)) {
+        //        this.SaveViewState(state);
+        //        base.SavePageStateToPersistenceMedium("");
+        //    }
+        //    else {
+        //        base.SavePageStateToPersistenceMedium(state);
+        //    }
+        //}
 
 		/// <summary>
 		/// Loads the state of the view.
@@ -105,7 +102,7 @@ namespace GrowthWare.WebSupport.BasePages
 			}
 			HttpContext.Current.Session[REQUEST_NUMBER] = num1;
             this.Session[("__vi" + num1.ToString(CultureInfo.InvariantCulture))] = Serialize(state);
-			this.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString(CultureInfo.InvariantCulture));
+			//this.ClientScript.RegisterHiddenField(VIEW_STATE_FIELD_NAME, num1.ToString(CultureInfo.InvariantCulture));
 		}
 
 		/// <summary>

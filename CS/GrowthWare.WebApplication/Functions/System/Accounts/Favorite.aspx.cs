@@ -1,6 +1,6 @@
 ﻿using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
-using GrowthWare.WebSupport.BasePages;
+using GrowthWare.WebSupport.Base;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace GrowthWare.WebApplication.Functions.System.Accounts
+namespace GrowthWare.WebApplication.Functions.System.ExternalAuth
 {
     public partial class Favorite : ClientChoicesPage
     {

@@ -1,7 +1,7 @@
 ﻿using GrowthWare.Framework.Model.Profiles;
 using System;
 
-namespace GrowthWare.WebSupport.BasePages
+namespace GrowthWare.WebSupport.Base
 {
     /// <summary>
     /// used by pages needed access to ClientChoicesState.

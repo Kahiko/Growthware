@@ -1,5 +1,5 @@
 ﻿using GrowthWare.WebSupport;
-using GrowthWare.WebSupport.BasePages;
+using GrowthWare.WebSupport.Base;
 using System;
 
 namespace GrowthWare.WebApplication.Functions.System.Errors
