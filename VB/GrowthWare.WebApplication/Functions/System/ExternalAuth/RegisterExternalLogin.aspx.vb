@@ -52,16 +52,12 @@ Public Class RegisterExternalLogin1
                 RedirectOnFail()
                 Return
             End If
-            Dim appuser = manager.Find(loginInfo.Login)
             Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(loginInfo.Email)
             If mAccountProfile IsNot Nothing Then
-                'signInManager.SignIn(appuser, isPersistent:=False, rememberBrowser:=False)
-                'IdentityHelper.RedirectToReturnUrl(Request.QueryString("ReturnUrl"), Response)
                 AccountUtility.SetPrincipal(mAccountProfile)
                 Dim mAction As String = ClientChoicesState(MClientChoices.Action)
                 Dim mScript As String = "<script type='text/javascript' language='javascript'>window.location.hash = '?Action=" + mAction + "'; location.reload();</script>"
                 Page.ClientScript.RegisterStartupScript(Me.GetType(), "", mScript)
-                'Response.Redirect("~/")
             ElseIf User.Identity.IsAuthenticated Then
                 Dim verifiedloginInfo = Context.GetOwinContext().Authentication.GetExternalLoginInfo(IdentityHelper.XsrfKey, User.Identity.GetUserId())
                 If verifiedloginInfo Is Nothing Then
@@ -81,7 +77,6 @@ Public Class RegisterExternalLogin1
                 If mEmail IsNot Nothing Then
                     mEmail.Text = loginInfo.Email
                 End If
-                'email.Text = loginInfo.Email
             End If
         End If
     End Sub
