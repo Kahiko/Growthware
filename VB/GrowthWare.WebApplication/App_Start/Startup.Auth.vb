@@ -37,7 +37,7 @@ Partial Public Class Startup
         ' This is similar to the RememberMe option when you log in.
         app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie)
 
-        ' Make the appropriate changes to the web.config file.
+        ' Add settings based on the web.config file.
         If ConfigSettings.GetAppSettingValue("EnableMicrosoftAccountAuthentication", True).ToUpperInvariant() = "TRUE" Then
             app.UseMicrosoftAccountAuthentication(
                 clientId:=ConfigSettings.GetAppSettingValue("MicrosoftAccountClientId", True),

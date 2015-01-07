@@ -10,10 +10,16 @@ Public Module WebApiConfig
         ' Web API routes
         config.MapHttpAttributeRoutes()
 
-        config.Routes.MapHttpRoute(
+        'config.Routes.MapHttpRoute(
+        '    name:="GrowthwareApi",
+        '    routeTemplate:="gw/api/{controller}/{action}/{id}",
+        '    defaults:=New With {.id = RouteParameter.Optional}
+        ')
+
+        RouteTable.Routes.MapHttpRoute(
             name:="GrowthwareApi",
             routeTemplate:="gw/api/{controller}/{action}/{id}",
             defaults:=New With {.id = RouteParameter.Optional}
-        )
+        ).RouteHandler = New SessionStateRouteHandler()
     End Sub
 End Module

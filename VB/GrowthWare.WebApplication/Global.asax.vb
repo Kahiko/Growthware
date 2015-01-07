@@ -17,7 +17,7 @@ Public Class Global_asax
 
     Private Shared Function IsWebApiRequest() As Boolean
         Dim mRetVal As Boolean = False
-        If HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("gw") Or HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.StartsWith("api") Then
+        If HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.Contains("/gw/") Or HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.Contains("/api/") Then
             mRetVal = True
         End If
         Return mRetVal

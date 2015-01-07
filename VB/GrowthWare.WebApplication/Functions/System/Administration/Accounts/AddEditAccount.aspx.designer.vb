@@ -14,11 +14,20 @@ Option Explicit On
 Partial Public Class AddEditAccount
 
     '''<summary>
-    '''AddEditAccount control.
+    '''frmAddEditAccount control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents AddEditAccount As Global.GrowthWare.WebApplication.AddEditAccount1
+    Protected WithEvents frmAddEditAccount As Global.System.Web.UI.HtmlControls.HtmlForm
+
+    '''<summary>
+    '''AddEditAccountUserControl control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents AddEditAccountUserControl As Global.GrowthWare.WebApplication.AddEditAccount1
 End Class

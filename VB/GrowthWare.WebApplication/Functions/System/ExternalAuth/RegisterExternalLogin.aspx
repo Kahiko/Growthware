@@ -2,12 +2,13 @@
 <%@ Register Src="~/UserControls/AddEditAccount.ascx" TagPrefix="uc" TagName="AddEditAccount" %>
 <!DOCTYPE html>
 <html>
-
     <body>
-        <h3>Register with your <%: ProviderName %> account</h3>
+        <form id="frmRegisterExternalLogin" runat="server">
+            <h3>Register with your <%: ProviderName %> account</h3>
 
-        <asp:PlaceHolder runat="server">
-            <uc:AddEditAccount runat="server" id="AddEditAccount" />
-        </asp:PlaceHolder>
+            <asp:PlaceHolder runat="server">
+                <uc:AddEditAccount runat="server" id="AddEditAccount" />
+            </asp:PlaceHolder>
+        </form>
     </body>
 </html>
