@@ -7,8 +7,6 @@
 
     </head>
     <body>
-	    <form id="frmAddEditAccount" runat="server">
-            <uc:AddEditAccount runat="server" id="AddEditAccount" />
-	    </form>
+        <uc:AddEditAccount runat="server" id="AddEditAccount" />
     </body>
 </html>

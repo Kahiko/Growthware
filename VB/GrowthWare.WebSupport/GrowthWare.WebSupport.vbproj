@@ -147,7 +147,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="CustomWebControls\JS\ListPicker.js" />
+    <EmbeddedResource Include="CustomWebControls\JS\ListPicker.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.vbproj">
