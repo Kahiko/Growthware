@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrowthWare.WebApplication.Functions.System.ExternalAuth {
+namespace GrowthWare.WebApplication.Functions.System.Accounts {
     
     
     public partial class ChangePassword {

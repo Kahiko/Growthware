@@ -2,7 +2,7 @@
 using GrowthWare.WebSupport.Utilities;
 using System;
 
-namespace GrowthWare.WebApplication.Functions.System.ExternalAuth
+namespace GrowthWare.WebApplication.Functions.System.Accounts
 {
     public partial class UpdateSession : BaseWebpage
     {

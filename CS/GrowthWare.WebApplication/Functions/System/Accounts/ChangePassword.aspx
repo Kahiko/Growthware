@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="ChangePassword.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.ChangePassword" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="ChangePassword.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.ChangePassword" %>
 <!DOCTYPE html>
 
 <div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>

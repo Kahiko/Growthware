@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.ExternalAuth.Logon" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="Logon.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Accounts.Logon" %>
 <%@ Register src="../../../UserControls/OpenAuthProviders.ascx" tagname="OpenAuthProviders" tagprefix="uc" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
