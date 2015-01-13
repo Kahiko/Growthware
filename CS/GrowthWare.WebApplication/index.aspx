@@ -11,7 +11,7 @@
                 GW.Navigation.NavigationController.LoadPage(currentAction, "MainContentDiv");
 
             } else {
-                GW.Navigation.NavigationController.LoadPage("Generic_Home", "MainContentDiv");
+                GW.Navigation.NavigationController.LoadPage("GenericHome", "MainContentDiv");
             }
         });
     </script>
