@@ -282,7 +282,7 @@ Namespace Controllers
                                 mLog.Error(ex)
                             End Try
                         Else
-                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to delete")
                             mLog.Error(mError)
                             Return Me.InternalServerError(mError)
                         End If

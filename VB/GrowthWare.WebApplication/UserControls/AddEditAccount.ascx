@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             if (typeof jQuery.ui != 'undefined') {
-                $("#AddEditAccount_btnSave").button();
+                $("#AddEditAccountUserControl_btnSave").button();
                 $("#tabs").tabs();
                 $("#tabs").tabs("option", "selected", 0);
             }
@@ -16,8 +16,8 @@
             var groups = '';
             var canSaveRoles = false;
             var canSaveGroups = false;
-            roles = $.map($('#AddEditAccount_ctlRoles_DstList option'), function (e) { return $(e).val(); });
-            groups = $.map($('#AddEditAccount_ctlGroups_DstList option'), function (e) { return $(e).val(); });
+            roles = $.map($('#AddEditAccountUserControl_ctlRoles_DstList option'), function (e) { return $(e).val(); });
+            groups = $.map($('#AddEditAccountUserControl_ctlGroups_DstList option'), function (e) { return $(e).val(); });
 
             accountRoles = {};
             accountRoles.Roles = roles;
@@ -105,9 +105,9 @@
 		<div class="container" id="tabs">
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation"><a data-toggle="tab" href="#tabsGeneral">General</a></li>
-				<li role="presentation" id="rolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccount_tabsRoles">Roles</a></li>
-				<li role="presentation" id="groupsTab" runat="server"><a data-toggle="tab" href="#AddEditAccount_tabsGroups">Groups</a></li>
-				<li role="presentation" id="derivedRolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccount_tabsDerivedRoles">Derived Roles</a></li>
+				<li role="presentation" id="rolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsRoles">Roles</a></li>
+				<li role="presentation" id="groupsTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsGroups">Groups</a></li>
+				<li role="presentation" id="derivedRolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsDerivedRoles">Derived Roles</a></li>
 			</ul>
             <div class="tab-content">
 				<div class="tab-pane fade in active" id="tabsGeneral">
