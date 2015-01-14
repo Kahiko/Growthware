@@ -1,4 +1,10 @@
 ﻿Namespace Model.Enumerations
+    ''' <summary>
+    ''' Enumeration of system status
+    ''' </summary>
+    ''' <remarks>
+    ''' Values match ZGWSystem.Statuses in the database
+    ''' </remarks>
     Public Enum SystemStatus
         ''' <summary>
         ''' The active
