@@ -43,7 +43,7 @@ namespace GrowthWare.WebApplication.UserControls
                 hdnCanSaveStatus.Value = false.ToString();
                 tdStatus.Style.Add("display", "none");
                 dropStatus.Style.Add("display", "none");
-                if (m_Action.ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
+                if (m_Action.ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1)
                 {
                     m_Profile = new MAccountProfile();
                     trAccount.Visible = false;

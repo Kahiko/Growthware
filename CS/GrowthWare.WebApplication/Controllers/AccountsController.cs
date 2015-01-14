@@ -124,7 +124,7 @@ public class AccountsController : ApiController
         MAccountProfile mCurrentAccountProfile = AccountUtility.CurrentProfile();
         MAccountProfile mAccountProfileToSave = new MAccountProfile();
         Logger mLog = Logger.Instance();
-        if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture) == "REGISTER")
+        if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1)
         {
             MAccountProfile mExistingAccount = AccountUtility.GetProfile(uiProfile.Account);
             if (mExistingAccount == null)
@@ -141,6 +141,7 @@ public class AccountsController : ApiController
                 mAccountProfileToSave.LastLogOn = DateTime.Now;
                 mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
                 mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
+                if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTEREXTERNALLOGIN") > -1) mAccountProfileToSave.Status = (int)SystemStatus.Active;
                 MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
                 MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
 

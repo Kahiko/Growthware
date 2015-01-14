@@ -30,7 +30,7 @@ namespace GrowthWare.WebApplication.Functions.System.ExternalAuth
             Response.Redirect((User.Identity.IsAuthenticated) ? "~/Account/Manage" : "~/Account/Login");
         }
 
-        protected void Page_Load()
+        protected void Page_PreRender(object sender, EventArgs e)
         {
             // Process the result from an auth provider in the request
             ProviderName = IdentityHelper.GetProviderNameFromRequest(Request);

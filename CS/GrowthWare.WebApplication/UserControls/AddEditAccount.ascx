@@ -5,7 +5,7 @@
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             if (typeof jQuery.ui != 'undefined') {
-                $("#btnSave").button();
+                $("#<%=btnSave.ClientID %>").button();
                 $("#tabs").tabs();
                 $("#tabs").tabs("option", "selected", 0);
             }
@@ -16,8 +16,8 @@
             var groups = '';
             var canSaveRoles = false;
             var canSaveGroups = false;
-            roles = $.map($('#ctlRoles_DstList option'), function (e) { return $(e).val(); });
-            groups = $.map($('#ctlGroups_DstList option'), function (e) { return $(e).val(); });
+            roles = $.map($('#AddEditAccountUserControl_ctlRoles_DstList option'), function (e) { return $(e).val(); });
+            groups = $.map($('#AddEditAccountUserControl_ctlGroups_DstList option'), function (e) { return $(e).val(); });
 
             accountRoles = {};
             accountRoles.Roles = roles;
@@ -66,11 +66,12 @@
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
                 var mAction = GW.Common.getParameterByName('Action');
-                if (mAction != 'Register') {
-                    options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=SearchAccounts";
-                } else {
-                    options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=Register";
-                }
+                options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=" + mAction;
+                //if (mAction == 'SearchAccounts') {
+                //    options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=SearchAccounts";
+                //} else {
+                //    options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=Register";
+                //}
                 GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                 if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
                     $dialogWindow.dialog("close");
@@ -105,9 +106,9 @@
 		<div class="container" id="tabs">
 			<ul class="nav nav-tabs" role="tablist">
 				<li role="presentation"><a data-toggle="tab" href="#tabsGeneral">General</a></li>
-				<li role="presentation" id="rolesTab" runat="server"><a data-toggle="tab" href="#tabsRoles">Roles</a></li>
-				<li role="presentation" id="groupsTab" runat="server"><a data-toggle="tab" href="#tabsGroups">Groups</a></li>
-				<li role="presentation" id="derivedRolesTab" runat="server"><a data-toggle="tab" href="#tabsDerivedRoles">Derived Roles</a></li>
+				<li role="presentation" id="rolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsRoles">Roles</a></li>
+				<li role="presentation" id="groupsTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsGroups">Groups</a></li>
+				<li role="presentation" id="derivedRolesTab" runat="server"><a data-toggle="tab" href="#AddEditAccountUserControl_tabsDerivedRoles">Derived Roles</a></li>
 			</ul>
             <div class="tab-content">
 				<div class="tab-pane fade in active" id="tabsGeneral">
