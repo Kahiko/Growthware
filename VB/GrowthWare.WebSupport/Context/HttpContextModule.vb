@@ -274,19 +274,19 @@ Namespace Context
         Private Shared Function processRequest() As Boolean
             Dim mRetval As Boolean = False
             If Not HttpContext.Current Is Nothing Then
-                'Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
-                Dim mPath As String = HttpContext.Current.Request.AppRelativeCurrentExecutionFilePath.ToUpper(CultureInfo.InvariantCulture)
-                Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
+                Dim mAction = HttpContext.Current.Request.QueryString("Action")
+                Dim mPath As String = HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture)
                 ' this was added because for some reason the httpmodule is fireing twice
                 ' the first time does begin and end but no AcquireRequestState
                 ' the second time fires the begin, end, and AcquireRequestState but drops the file extention
                 ' this does not happen in c#
-                Dim mAction = HttpContext.Current.Request.QueryString("Action")
-                If Not String.IsNullOrEmpty(mAction) Then
+                If Not String.IsNullOrEmpty(mAction) And mPath.IndexOf(".") = -1 Then
                     Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
-                    mFileExtension = mFunctionProfile.Source.Substring(mFunctionProfile.Source.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
-                    mFileExtension = mFileExtension.ToUpper(CultureInfo.InvariantCulture)
+                    If Not mFunctionProfile Is Nothing Then
+                        mPath = mFunctionProfile.Source.ToUpperInvariant()
+                    End If
                 End If
+                Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX", "HTM", "HTML"}
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then
                     mRetval = True
