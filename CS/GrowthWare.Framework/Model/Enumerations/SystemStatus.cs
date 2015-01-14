@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.Model.Enumerations
 {
+    /// <summary>
     /// Enumeration of system status
     /// </summary>
     /// <remarks>
-    /// Values match ZF_SYSTEM_STATUS in the database
+    /// Values match ZGWSystem.Statuses in the database
     /// </remarks>
     public enum SystemStatus
     {
