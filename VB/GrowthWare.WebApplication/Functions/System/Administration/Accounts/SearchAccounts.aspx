@@ -24,8 +24,9 @@
 	    return true;
 	}
 
-	function editAccount(accountSeqID, mayEdit) {
+	function editAccount(accountSeqID, mayEdit, mayDelete) {
 	    if (typeof mayEdit == undefined) mayEdit = false;
+	    if (typeof mayDelete == undefined) mayDelete = false;
 	    mAccountSeqID = accountSeqID;
 	    var options = GW.Model.DefaultDialogOptions();
 	    options.title = 'Edit Account';
@@ -36,42 +37,37 @@
 	    options.resizable = true;
 	    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx?AccountSeqID=" + mAccountSeqID;
 	    GW.Common.debug(options.url);
-	    if (mayEdit) {
-	        options.buttons = {
-	            'Save': function () { saveAddEditAccount($(this)); },
-	            'Cancel': function () { $(this).dialog('close'); }
-	        };
+	    var myButtons = {};
+	    if (mayDelete) {
+	        myButtons["Delete"] = function () {
+	            var options = GW.Model.DefaultWebMethodOptions();
+	            options.async = false;
+	            options.contentType = 'application/json; charset=utf-8';
+	            options.dataType = 'json';
+	            options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Delete?accountSeqId=" + mAccountSeqID;
+	            GW.Common.JQueryHelper.callWeb(options);
+	            $(this).dialog("close");
+	            GW.Search.GetSearchResults();
+	        }
+	    };
 
-	    } else {
-	        options.buttons = {
-	            'Cancel': function () { $(this).dialog('close'); }
-	        };
+	    if (mayEdit) {
+	        myButtons["Save"] = function () {
+	            saveAddEditAccount($(this));
+	        }
 	    }
+
+	    myButtons["Cancel"] = function () {
+	        $(this).dialog("close");
+	    }
+
+	    options.buttons = myButtons;
 	    var dialogId = 'popupAddEditAccount';
 	    GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}
 
 	function getAddEditError() {
 	    alert('sorry');
-	}
-
-	function deleteAccount(accountSeqID, name) {
-	    var callBackData = { accountSeqId: accountSeqID };
-	    var dialogId = '#popupDeleteEditAccount';
-	    var dialogTitle = 'Are you Sure';
-	    var dialogMessageTemplate = 'You would like to delete Account \n"' + name + '"';
-	    GW.Common.JQueryHelper.customConfirm(dialogId, 300, 300, okDeleteFunc, null, dialogTitle, dialogMessageTemplate, callBackData);
-	}
-
-	function okDeleteFunc(jsonObj) {
-	    var options = GW.Model.DefaultWebMethodOptions();
-	    options.async = true;
-	    options.data = jsonObj;
-	    options.contentType = 'application/json; charset=utf-8';
-	    options.dataType = 'json';
-	    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx/InvokeDelete"
-	    GW.Common.JQueryHelper.callWeb(options);
-	    GW.Search.GetSearchResults();
 	}
 </script>
 <ucSearch:Search ID="SearchControl" runat="server" />

@@ -1,5 +1,5 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="Logon.aspx.vb" Inherits="GrowthWare.WebApplication.Logon" %>
-<%@ Register src="../../../UserControls/OpenAuthProviders.ascx" tagname="OpenAuthProviders" tagprefix="uc" %>
+<%@ Register src="~/UserControls/OpenAuthProviders.ascx" tagname="OpenAuthProviders" tagprefix="uc" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
         GW.Navigation.currentAction = 'Logon';

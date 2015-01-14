@@ -153,7 +153,7 @@ Namespace Controllers
             Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
             Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
             Dim mLog As Logger = Logger.Instance()
-            If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture) = "REGISTER" Then
+            If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1 Then
                 Dim mExistingAccount As MAccountProfile = AccountUtility.GetProfile(uiProfile.Account)
                 If mExistingAccount Is Nothing Then
                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
@@ -168,6 +168,7 @@ Namespace Controllers
                     mAccountProfileToSave.LastLogOn = DateTime.Now
                     mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
                     mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
+                    If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTEREXTERNALLOGIN") > -1 Then mAccountProfileToSave.Status = SystemStatus.Active
                     Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
                     Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
                     Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
@@ -259,6 +260,46 @@ Namespace Controllers
                     End If
                 End If
 
+            End If
+            Return Me.Ok(mRetVal)
+        End Function
+
+        <HttpPost>
+        Public Function Delete(<FromUri()> ByVal accountSeqId As Integer) As IHttpActionResult
+            If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
+            Dim mRetVal As String = False
+            Dim mLog As Logger = Logger.Instance()
+            If Not HttpContext.Current.Items("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If mEditId = accountSeqId Then
+                    Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
+                    If Not mSecurityInfo Is Nothing Then
+                        If mSecurityInfo.MayDelete Then
+                            Try
+                                AccountUtility.Delete(accountSeqId)
+                                mRetVal = True
+                            Catch ex As Exception
+                                mLog.Error(ex)
+                            End Try
+                        Else
+                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                            mLog.Error(mError)
+                            Return Me.InternalServerError(mError)
+                        End If
+                    Else
+                        Dim mError As Exception = New Exception("Security Info is not in context nothing has been saved!!!!")
+                        mLog.Error(mError)
+                        Return Me.InternalServerError(mError)
+                    End If
+                Else
+                    Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                    mLog.Error(mError)
+                    Return Me.InternalServerError(mError)
+                End If
+            Else
+                Dim mError As Exception = New Exception("Can not verify the identifier you are trying to work with!")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
             End If
             Return Me.Ok(mRetVal)
         End Function

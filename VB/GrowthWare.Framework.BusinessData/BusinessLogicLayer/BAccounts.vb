@@ -66,6 +66,7 @@ Namespace BusinessLogicLayer
         End Sub
 
         Public Sub Delete(ByVal accountId As Integer)
+            m_DAccounts.Profile = New MAccountProfile()
             m_DAccounts.Profile.Id = accountId
             If DatabaseIsOnline() Then m_DAccounts.Delete()
         End Sub

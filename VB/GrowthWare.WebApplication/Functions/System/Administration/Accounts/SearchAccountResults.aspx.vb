@@ -15,7 +15,6 @@ Public Class SearchAccountResults
         If (Not String.IsNullOrEmpty(mAction)) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
             m_SecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
-            If Not m_SecurityInfo.MayDelete Then searchResults.Columns.RemoveAt(1)
             If Not m_SecurityInfo.MayEdit Then searchResults.Columns.RemoveAt(0)
         End If
     End Sub
@@ -64,17 +63,11 @@ Public Class SearchAccountResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("editAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit)
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Account")))
+            Dim mEditOnClick As String = "javascript:" + String.Format("editAccount('{0}','{1}','{2}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit, m_SecurityInfo.MayDelete)
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             If Not btnDetails Is Nothing Then
                 e.Row.Attributes.Add("ondblclick", mEditOnClick)
                 btnDetails.Attributes.Add("onclick", mEditOnClick)
-            End If
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
             End If
             ' add the hover behavior
             If e.Row.RowState = DataControlRowState.Normal Then
