@@ -36,9 +36,9 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
                 m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
                 m_ShowDeleteLink = m_SecurityInfo.MayDelete;
             }
-            if (!m_ShowDeleteLink)
+            if (!m_SecurityInfo.MayView)
             {
-                this.searchResults.Columns.RemoveAt(1);
+                this.searchResults.Columns.RemoveAt(0);
             }
         }
 
@@ -94,17 +94,10 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("editAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit);
-                String mDeleteOnClick = "javascript:" + string.Format("deleteAccount('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Account").ToString()).ToString();
+                String mEditOnClick = "javascript:" + string.Format("editAccount('{0}','{1}','{2}')", DataBinder.Eval(e.Row.DataItem, "Account_SeqID").ToString(), m_SecurityInfo.MayEdit, m_SecurityInfo.MayDelete);
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                //' Add confirmation to delete button
-                if (btnDelete != null)
-                {
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                }
                 //' add the hover behavior
                 if (e.Row.RowState == DataControlRowState.Normal)
                 {
