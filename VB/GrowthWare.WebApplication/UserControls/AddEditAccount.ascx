@@ -81,7 +81,7 @@
 
         function saveAddEditAccountSucess(xhr) {
             switch (xhr) {
-                case "true":
+                case "True":
                     GW.Navigation.NavigationController.Refresh();
                     GW.Search.GetSearchResults();
                     break;
