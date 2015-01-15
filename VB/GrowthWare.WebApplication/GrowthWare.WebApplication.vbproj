@@ -250,6 +250,7 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Functions\System\ExternalAuth\Web.config" />
+    <Content Include="Public\Web.config" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Public\CSS\bootstrap-theme.min.css" />
     <Content Include="Public\CSS\bootstrap.min.css" />
