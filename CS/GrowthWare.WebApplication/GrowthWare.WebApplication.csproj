@@ -169,6 +169,7 @@
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Functions\System\Accounts\SelectPreferences.aspx" />
     <Content Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx" />
     <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
@@ -454,6 +455,13 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\Logon.aspx.designer.cs">
       <DependentUpon>Logon.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.cs">
+      <DependentUpon>SelectPreferences.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.designer.cs">
+      <DependentUpon>SelectPreferences.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.cs">
       <DependentUpon>OpenAuthProviderLogon.aspx</DependentUpon>

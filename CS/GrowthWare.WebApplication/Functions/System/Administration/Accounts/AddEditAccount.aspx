@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="AddEditAccount.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Accounts.AddEditAccount" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddEditAccount.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Accounts.AddEditAccount" %>
 <%@ Register Src="~/UserControls/AddEditAccount.ascx" TagPrefix="uc" TagName="AddEditAccount" %>
 
 <!DOCTYPE html>

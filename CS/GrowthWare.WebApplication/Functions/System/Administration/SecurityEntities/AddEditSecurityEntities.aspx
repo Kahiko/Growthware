@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="AddEditSecurityEntities.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.SecurityEntities.AddEditSecurityEntities" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AddEditSecurityEntities.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.SecurityEntities.AddEditSecurityEntities" %>
 <html>
     <head>
         <title>Add or Edit Security Entities</title>

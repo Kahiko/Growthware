@@ -1,4 +1,4 @@
-﻿<%@ Page Language="C#" AutoEventWireup="true" UnobtrusiveValidationMode="None" CodeBehind="EditRoleMembers.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Roles.EditRoleMembers" %>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="EditRoleMembers.aspx.cs" Inherits="GrowthWare.WebApplication.Functions.System.Administration.Roles.EditRoleMembers" %>
 <%@ Register Assembly="GrowthWare.WebSupport" Namespace="GrowthWare.WebSupport.CustomWebControls" TagPrefix="CustomWebControls" %>
 
 <script type="text/javascript" language="javascript">
