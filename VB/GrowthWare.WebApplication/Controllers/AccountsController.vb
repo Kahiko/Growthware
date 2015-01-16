@@ -265,6 +265,26 @@ Namespace Controllers
         End Function
 
         <HttpPost>
+        Public Function SaveClientChoices(ByVal choices As MUIAccountChoices) As IHttpActionResult
+            If choices Is Nothing Then Throw New ArgumentNullException("choices", "choices cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mRetVal As String = False
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
+            mClientChoicesState(MClientChoices.Action) = choices.Action
+            mClientChoicesState(MClientChoices.BackColor) = choices.BackColor
+            mClientChoicesState(MClientChoices.ColorScheme) = choices.ColorScheme
+            mClientChoicesState(MClientChoices.HeadColor) = choices.HeadColor
+            mClientChoicesState(MClientChoices.HeaderForeColor) = choices.HeaderForeColor
+            mClientChoicesState(MClientChoices.RowBackColor) = choices.RowBackColor
+            mClientChoicesState(MClientChoices.AlternatingRowBackColor) = choices.AlternatingRowBackColor
+            mClientChoicesState(MClientChoices.LeftColor) = choices.LeftColor
+            mClientChoicesState(MClientChoices.RecordsPerPage) = choices.RecordsPerPage.ToString()
+            mClientChoicesState(MClientChoices.SubheadColor) = choices.SubheadColor
+            ClientChoicesUtility.Save(mClientChoicesState)
+            AccountUtility.RemoveInMemoryInformation(True)
+            Return Me.Ok(mRetVal)
+        End Function
+
+        <HttpPost>
         Public Function Delete(<FromUri()> ByVal accountSeqId As Integer) As IHttpActionResult
             If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
             Dim mRetVal As String = False
@@ -487,4 +507,6 @@ Namespace Controllers
     Public Class UIAccountGroups
         Public Groups() As String
     End Class
+
+
 End Namespace

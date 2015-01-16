@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" UnobtrusiveValidationMode="None" CodeBehind="ChangePassword.aspx.vb" Inherits="GrowthWare.WebApplication.ChangePassword" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="ChangePassword.aspx.vb" Inherits="GrowthWare.WebApplication.ChangePassword" %>
 <!DOCTYPE html>
 Override !!!!
 <div id="clientMessage" class="Form_Message" style="display: none" runat="server"></div>

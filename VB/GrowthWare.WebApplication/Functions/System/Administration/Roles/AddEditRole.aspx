@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" UnobtrusiveValidationMode="None" CodeBehind="AddEditRole.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditRole" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditRole.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditRole" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
     });

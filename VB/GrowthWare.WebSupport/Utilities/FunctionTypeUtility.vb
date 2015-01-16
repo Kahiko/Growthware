@@ -45,7 +45,7 @@ Namespace Utilities
         ''' Gets the function type collection.
         ''' </summary>
         ''' <returns>Collection{MFunctionTypeProfile}.</returns>
-        Public Shared Function GetProfile(ByVal name As String) As MFunctionTypeProfile
+        Public Shared Function GetProfile(ByVal Action As String) As MFunctionTypeProfile
             Dim mRetVal As MFunctionTypeProfile = Nothing
             If Not String.IsNullOrEmpty(Action) Then
                 Dim mResult = From mProfile In FunctionTypeCollection() Where mProfile.Name.ToLower(CultureInfo.CurrentCulture) = Action.ToLower(CultureInfo.CurrentCulture) Select mProfile
@@ -53,7 +53,7 @@ Namespace Utilities
                 Try
                     mRetVal = mResult.First
                 Catch ex As InvalidOperationException
-                    Dim mMSG As String = "Count not find name: " + name + " in the database"
+                    Dim mMSG As String = "Count not find Action: " + Action + " in the database"
                     Dim mLog As Logger = Logger.Instance
                     mLog.Error(mMSG)
                     mRetVal = Nothing

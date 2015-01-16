@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" UnobtrusiveValidationMode="None" CodeBehind="AddEditSecurityEntities.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditSecurityEntities" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditSecurityEntities.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditSecurityEntities" %>
 <html>
     <head>
         <title>Add or Edit Security Entities</title>

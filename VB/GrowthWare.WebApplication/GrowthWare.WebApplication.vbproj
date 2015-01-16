@@ -211,6 +211,7 @@
     <Content Include="Functions\System\Accounts\Favorite.aspx" />
     <Content Include="Functions\System\Accounts\Logoff.aspx" />
     <Content Include="Functions\System\Accounts\Logon.aspx" />
+    <Content Include="Functions\System\Accounts\SelectPreferences.aspx" />
     <Content Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx" />
     <Content Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx" />
     <Content Include="Functions\System\Accounts\UpdateSession.aspx" />
@@ -578,6 +579,13 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\Logon.aspx.vb">
       <DependentUpon>Logon.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.designer.vb">
+      <DependentUpon>SelectPreferences.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.vb">
+      <DependentUpon>SelectPreferences.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx.designer.vb">

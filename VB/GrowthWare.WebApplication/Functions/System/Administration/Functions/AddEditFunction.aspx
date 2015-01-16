@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditFunction.aspx.vb" UnobtrusiveValidationMode="None" Inherits="GrowthWare.WebApplication.AddEditFunction" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditFunction.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditFunction" %>
 <%@ Register Src="~/UserControls/RolesControl.ascx" TagName="RolesControl" TagPrefix="ucRoles" %>
 <%@ Register Src="~/UserControls/GroupControl.ascx" TagName="GroupControl" TagPrefix="ucGroups" %>
 

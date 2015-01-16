@@ -38,6 +38,12 @@
 	    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/AddEditAccount.aspx?AccountSeqID=" + mAccountSeqID;
 	    GW.Common.debug(options.url);
 	    var myButtons = {};
+	    if (mayEdit) {
+	        myButtons["Save"] = function () {
+	            saveAddEditAccount($(this));
+	        }
+	    }
+
 	    if (mayDelete) {
 	        myButtons["Delete"] = function () {
 	            var options = GW.Model.DefaultWebMethodOptions();
@@ -50,12 +56,6 @@
 	            GW.Search.GetSearchResults();
 	        }
 	    };
-
-	    if (mayEdit) {
-	        myButtons["Save"] = function () {
-	            saveAddEditAccount($(this));
-	        }
-	    }
 
 	    myButtons["Cancel"] = function () {
 	        $(this).dialog("close");

@@ -1,4 +1,4 @@
-﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditAccount.aspx.vb" UnobtrusiveValidationMode="None" Inherits="GrowthWare.WebApplication.AddEditAccount" %>
+﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditAccount.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditAccount" %>
 <%@ Register Src="~/UserControls/AddEditAccount.ascx" TagPrefix="uc" TagName="AddEditAccount" %>
 <!DOCTYPE html>
 <html>
