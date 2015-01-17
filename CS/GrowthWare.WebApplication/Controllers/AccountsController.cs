@@ -260,6 +260,27 @@ public class AccountsController : ApiController
     }
 
     [HttpPost()]
+    public IHttpActionResult SaveClientChoices(MUIAccountChoices choices) 
+    {
+        if (choices == null) throw new ArgumentNullException("choices", "choices cannot be a null reference (Nothing in Visual Basic)!");
+        string mRetVal = "false";
+        MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account);
+        mClientChoicesState[MClientChoices.Action] = choices.Action;
+        mClientChoicesState[MClientChoices.BackColor] = choices.BackColor;
+        mClientChoicesState[MClientChoices.ColorScheme] = choices.ColorScheme;
+        mClientChoicesState[MClientChoices.HeadColor] = choices.HeadColor;
+        mClientChoicesState[MClientChoices.HeaderForeColor] = choices.HeaderForeColor;
+        mClientChoicesState[MClientChoices.RowBackColor] = choices.RowBackColor;
+        mClientChoicesState[MClientChoices.AlternatingRowBackColor] = choices.AlternatingRowBackColor;
+        mClientChoicesState[MClientChoices.LeftColor] = choices.LeftColor;
+        mClientChoicesState[MClientChoices.RecordsPerPage] = choices.RecordsPerPage.ToString();
+        mClientChoicesState[MClientChoices.SubheadColor] = choices.SubheadColor;
+        ClientChoicesUtility.Save(mClientChoicesState);
+        AccountUtility.RemoveInMemoryInformation(true);
+        return Ok(mRetVal);
+    }
+
+    [HttpPost()]
     public IHttpActionResult Delete([FromUri] int accountSeqId) 
     {
         if (accountSeqId <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");

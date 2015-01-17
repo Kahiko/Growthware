@@ -22,14 +22,13 @@
 		mClientChoices.RecordsPerPage = parseInt($("#<%=txtPreferedRecordsPerPage.ClientID %>").val());
 		mClientChoices.Action = $("#<%=dropFavorite.ClientID %> option:selected").val();
 		mClientChoices.SecurityEntityID = 0;
-		var theData = { choices: mClientChoices };
-		GW.Common.debug(theData);
+		GW.Common.debug(mClientChoices);
 		var options = GW.Model.DefaultWebMethodOptions();
 		options.async = false;
-		options.data = theData;
+		options.data = mClientChoices;
 		options.contentType = 'application/json; charset=utf-8';
 		options.dataType = 'json';
-		options.url = GW.Common.getBaseURL() + "/Functions/System/Accounts/SelectPreferences.aspx/InvokeSave?Action=Select_Preferences"
+		options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/SaveClientChoices";
 		GW.Common.JQueryHelper.callWeb(options, saveSucess, saveError);
 	}
 
