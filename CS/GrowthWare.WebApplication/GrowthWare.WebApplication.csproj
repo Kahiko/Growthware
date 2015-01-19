@@ -324,6 +324,11 @@
     <Content Include="Public\Skins\Professional\Images\top_black_stripes.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_curve.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
+    <Content Include="Public\Skins\Arc\Arc.Master" />
+    <Content Include="Public\Skins\Blue Arrow\Blue Arrow.Master" />
+    <Content Include="Public\Skins\Default Black\Default Black.Master" />
+    <Content Include="Public\Skins\DevOps\DevOps.Master" />
+    <Content Include="Public\Skins\Professional\Professional.Master" />
     <None Include="Scripts\jquery-2.1.3.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -349,12 +354,7 @@
     <Content Include="Public\Fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="Public\Fonts\glyphicons-halflings-regular.woff" />
     <Content Include="Public\Skins\Default\Default.Master" />
-    <Content Include="Public\Skins\DevOps\Default.Master" />
-    <Content Include="Public\Skins\Blue Arrow\Default.Master" />
-    <Content Include="Public\Skins\Default Black\Default.Master" />
-    <Content Include="Public\Skins\Professional\Default.Master" />
     <Content Include="Public\Web.config" />
-    <Content Include="Public\Skins\Arc\Default.Master" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -664,46 +664,11 @@
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Public\Skins\Arc\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Public\Skins\Arc\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Public\Skins\Blue Arrow\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Public\Skins\Blue Arrow\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Public\Skins\Default Black\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Public\Skins\Default Black\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
     <Compile Include="Public\Skins\Default\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Public\Skins\Default\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Public\Skins\DevOps\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Public\Skins\DevOps\Default.Master.designer.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-    </Compile>
-    <Compile Include="Public\Skins\Professional\Default.Master.cs">
-      <DependentUpon>Default.Master</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Public\Skins\Professional\Default.Master.designer.cs">
       <DependentUpon>Default.Master</DependentUpon>
     </Compile>
     <Compile Include="App_Start\Startup.cs" />

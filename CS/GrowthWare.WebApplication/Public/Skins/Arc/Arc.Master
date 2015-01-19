@@ -1,4 +1,4 @@
-﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Default.master.cs" Inherits="GrowthWare.WebApplication.Public.Skins.Arc.Default" %>
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="GrowthWare.WebApplication.Public.Skins.Default.Default" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>

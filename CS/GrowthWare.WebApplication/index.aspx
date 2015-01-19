@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Public/Skins/DevOps/Default.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="GrowthWare.WebApplication.index" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Public/Skins/Default/Default.Master" AutoEventWireup="true" CodeBehind="index.aspx.cs" Inherits="GrowthWare.WebApplication.index" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">

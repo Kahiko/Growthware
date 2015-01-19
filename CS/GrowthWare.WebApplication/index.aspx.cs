@@ -13,7 +13,7 @@ namespace GrowthWare.WebApplication
         {
             base.Page_PreInit(sender, e);
             MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
-            String mMasterPage = "Public/Skins/" + mSecProfile.Skin + "/Default.master";
+            String mMasterPage = "Public/Skins/" + mSecProfile.Skin + "/" + mSecProfile.Skin + ".master";
             string fileName = null;
             fileName = HttpContext.Current.Server.MapPath("~\\") + mMasterPage;
             if (!File.Exists(fileName))
