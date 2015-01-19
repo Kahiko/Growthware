@@ -74,7 +74,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                         case 1: // internal
                             var options = GW.Model.DefaultWebMethodOptions();
                             // The next line is for VB site ONLY
-                            mURL = mURL.replace('.aspx', '');
+                            //mURL = mURL.replace('.aspx', '');
                             options.url = mURL;
                             options.async = true;
                             options.abortable = true;
