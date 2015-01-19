@@ -8,7 +8,7 @@ Public Class Index
 
     Protected Shadows Sub Page_PreInit(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreInit
         Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-        Dim mMasterPage As String = "Public/Skins/" + mSecProfile.Skin + "/Default.master"
+        Dim mMasterPage As String = "Public/Skins/" + mSecProfile.Skin + "/" + mSecProfile.Skin + ".master"
         Dim fileName As String = String.Empty
         fileName = HttpContext.Current.Server.MapPath("~\") + mMasterPage
         If Not File.Exists(fileName) Then

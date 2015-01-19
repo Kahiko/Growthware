@@ -1,4 +1,4 @@
-﻿Public Class _Default1
+﻿Public Class Professional
     Inherits System.Web.UI.MasterPage
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load

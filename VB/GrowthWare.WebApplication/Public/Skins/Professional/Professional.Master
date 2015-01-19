@@ -1,4 +1,4 @@
-﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Default.master.vb" Inherits="GrowthWare.WebApplication._Default5" %>
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Professional.master.vb" Inherits="GrowthWare.WebApplication._Default2" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>

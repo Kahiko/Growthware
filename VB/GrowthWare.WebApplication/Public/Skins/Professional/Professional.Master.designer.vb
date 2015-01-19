@@ -11,7 +11,7 @@ Option Strict On
 Option Explicit On
 
 
-Partial Public Class _Default6
+Partial Public Class _Default2
 
     '''<summary>
     '''HeadContent control.
@@ -39,6 +39,15 @@ Partial Public Class _Default6
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents form1 As Global.System.Web.UI.HtmlControls.HtmlForm
+
+    '''<summary>
+    '''AppImage control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents AppImage As Global.System.Web.UI.WebControls.Image
 
     '''<summary>
     '''txtSearch control.
