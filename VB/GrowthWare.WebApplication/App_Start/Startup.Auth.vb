@@ -16,16 +16,7 @@ Partial Public Class Startup
         'Configure the db context, user manager and signin manager to use a single instance per request
         app.CreatePerOwinContext(AddressOf ApplicationDbContext.Create)
         app.CreatePerOwinContext(Of ApplicationUserManager)(AddressOf ApplicationUserManager.Create)
-        app.CreatePerOwinContext(Of ApplicationSignInManager)(AddressOf ApplicationSignInManager.Create)
 
-        ' Enable the application to use a cookie to store information for the signed in user
-        app.UseCookieAuthentication(New CookieAuthenticationOptions() With {
-            .AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
-            .Provider = New CookieAuthenticationProvider() With {
-                .OnValidateIdentity = SecurityStampValidator.OnValidateIdentity(Of ApplicationUserManager, ApplicationUser)(
-                    validateInterval:=TimeSpan.FromMinutes(30),
-                    regenerateIdentity:=Function(manager, user) user.GenerateUserIdentityAsync(manager))},
-            .LoginPath = New PathString("/Account/Login")})
         ' Use a cookie to temporarily store information about a user logging in with a third party login provider
         app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie)
 
