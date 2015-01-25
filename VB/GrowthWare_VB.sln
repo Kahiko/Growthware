@@ -11,6 +11,8 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebSupport", "Gr
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication.Tests", "GrowthWare.WebApplication.Tests\GrowthWare.WebApplication.Tests.vbproj", "{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication", "GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj", "{E9106579-77EB-4539-AF50-CAD33D6881A0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
