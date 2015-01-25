@@ -9,8 +9,6 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.Framework.Busine
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj", "{CE3E125D-0A3E-4F4D-B246-7A7931744A58}"
 EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication", "GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj", "{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}"
-EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication.Tests", "GrowthWare.WebApplication.Tests\GrowthWare.WebApplication.Tests.vbproj", "{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
