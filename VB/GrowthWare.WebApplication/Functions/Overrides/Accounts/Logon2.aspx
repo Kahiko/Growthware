@@ -6,6 +6,8 @@
         if (typeof jQuery.ui != 'undefined') {
             $("#btnLogon").button();
             $("#btnRequestChange").button();
+            var arrProviderButtons = document.getElementsByName("provider");
+            $(arrProviderButtons).button();
         }
         if ($('input:text')) {
             $('#Account').focus();

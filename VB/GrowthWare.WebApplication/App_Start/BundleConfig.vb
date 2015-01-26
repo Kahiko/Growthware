@@ -31,7 +31,7 @@ Public Class BundleConfig
 
         bundles.Add(
             New ScriptBundle("~/bundles/jqueryUI").Include(
-            "~/" + ConfigSettings.AppName + "/Scripts/jquery-ui.js"
+            "~/" + ConfigSettings.AppName + "/Scripts/jquery-ui-{version}.js"
             )
         )
 
@@ -44,7 +44,7 @@ Public Class BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond").Include(
+            New StyleBundle("~/bundles/Content/jQueryUIRedmond").Include(
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
@@ -52,7 +52,7 @@ Public Class BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Public/CSS/Bootstrap").Include(
+            New StyleBundle("~/Content/Bootstrap").Include(
                 "~/" + ConfigSettings.AppName + "/Content/bootstrap-theme.css",
                 "~/" + ConfigSettings.AppName + "/Content/bootstrap.css"
             )
