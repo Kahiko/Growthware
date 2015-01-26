@@ -121,7 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj">
-      <Project>{CD8E53D2-B177-494B-AE08-1CEEF98E43D7}</Project>
+      <Project>{e9106579-77eb-4539-af50-cad33d6881a0}</Project>
       <Name>GrowthWare.WebApplication</Name>
     </ProjectReference>
   </ItemGroup>
