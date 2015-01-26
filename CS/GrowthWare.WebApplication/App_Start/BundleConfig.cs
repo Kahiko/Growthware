@@ -29,7 +29,7 @@ namespace GrowthWare.WebApplication
 
         bundles.Add(
             new ScriptBundle("~/bundles/jqueryUI").Include(
-            "~/" + ConfigSettings.AppName + "/Scripts/jquery-ui.js"
+            "~/" + ConfigSettings.AppName + "/Scripts/jquery-ui-{version}.js"
             )
         );
 
@@ -55,23 +55,23 @@ namespace GrowthWare.WebApplication
         );
 
         bundles.Add(
-            new StyleBundle("~/Public/CSS/Bootstrap").Include(
+            new StyleBundle("~/bundles/Content/Bootstrap").Include(
                 "~/" + ConfigSettings.AppName + "/Content/BootStrap/bootstrap-theme.css",
                 "~/" + ConfigSettings.AppName + "/Content/BootStrap/bootstrap.css"
             )
         );
 
         bundles.Add(
-            new StyleBundle("~/Content/GrowthWare").Include(
+            new StyleBundle("~/bundles/Content/GrowthWare").Include(
                 "~/" + ConfigSettings.AppName + "/Public/Growthware/Styles/GrowthWare.css"
             )
         );
 
         bundles.Add(
-            new StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/jQueryUIRedmond").Include(
-                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.css",
-                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.structure.css",
-                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+            new StyleBundle("~/bundles/Content/jQueryUIRedmond").Include(
+                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
+                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
             )
         );
         }
