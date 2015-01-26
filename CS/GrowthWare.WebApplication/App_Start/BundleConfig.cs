@@ -56,8 +56,8 @@ namespace GrowthWare.WebApplication
 
         bundles.Add(
             new StyleBundle("~/bundles/Content/Bootstrap").Include(
-                "~/" + ConfigSettings.AppName + "/Content/BootStrap/bootstrap-theme.css",
-                "~/" + ConfigSettings.AppName + "/Content/BootStrap/bootstrap.css"
+                "~/" + ConfigSettings.AppName + "/Content/bootstrap-theme.css",
+                "~/" + ConfigSettings.AppName + "/Content/bootstrap.css"
             )
         );
 
