@@ -147,6 +147,7 @@
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
@@ -437,6 +438,12 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.designer.cs">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.cs">
+      <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.designer.cs">
+      <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.cs">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
