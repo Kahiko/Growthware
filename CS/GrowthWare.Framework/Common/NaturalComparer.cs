@@ -460,7 +460,9 @@ namespace GrowthWare.Framework.Common
     [Serializable]
     public class NaturalComparerException : Exception
     {
-
+        /// <summary>
+        /// Created to distinguish errors created in the NaturalComparer class.
+        /// </summary>
         public NaturalComparerException() { }
 
 		/// <summary>

@@ -681,6 +681,12 @@ namespace GrowthWare.Framework.Common
             return text;
         }
 
+        /// <summary>
+        /// Return a value from the configuration file appsettings section
+        /// </summary>
+        /// <param name="settingName"></param>
+        /// <param name="fromEnvironment"></param>
+        /// <returns>String</returns>
         public static string GetAppSettingValue(string settingName, Boolean fromEnvironment) 
         {
             if (fromEnvironment) 
@@ -693,6 +699,12 @@ namespace GrowthWare.Framework.Common
             }
         }
 
+        /// <summary>
+        /// Return a value from the configuration file appsettings section
+        /// </summary>
+        /// <param name="settingName"></param>
+        /// <returns>String</returns>
+        /// <remarks>Overloaded method calls GetAppSettingValue(string settingName, Boolean fromEnvironment) passing false for fromEnvironment</remarks>
         public static string GetAppSettingValue(string settingName)
         {
             return GetAppSettingValue(settingName, false);

@@ -14,6 +14,9 @@ namespace GrowthWare.Framework.Common
     [Serializable()]
     public class ObjectFactoryException : Exception
     {
+        /// <summary>
+        /// Creates a new instance of the ObjectFactoryException class
+        /// </summary>
         public ObjectFactoryException() { }
 
 		/// <summary>
