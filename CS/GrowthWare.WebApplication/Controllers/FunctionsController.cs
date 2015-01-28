@@ -17,6 +17,58 @@ namespace GrowthWare.WebApplication.Controllers
 {
     public class FunctionsController : ApiController
     {
+
+        [HttpPost()]
+        public IHttpActionResult Delete([FromUri] int functionSeqID)
+        {
+            if (functionSeqID <= 0) throw new ArgumentNullException("functionSeqID", " must be a positive number!");
+            string mRetVal = "False";
+            Logger mLog = Logger.Instance();
+            if (HttpContext.Current.Items["EditId"] != null)
+            {
+                int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                if (mEditId == functionSeqID)
+                {
+                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    if (mSecurityInfo != null)
+                    {
+                        if (mSecurityInfo.MayDelete)
+                        {
+                            try
+                            {
+                                FunctionUtility.Delete(functionSeqID);
+                                mRetVal = "True";
+                            }
+                            catch (Exception ex)
+                            {
+                                mLog.Error(ex);
+                                throw;
+                            }
+                        }
+                        else
+                        {
+                            Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
+                            mLog.Error(mError);
+                            return this.InternalServerError(mError);
+                        }
+                    }
+                    else
+                    {
+                        Exception mError = new Exception("Security Info is not in context nothing has been saved!!!!");
+                        mLog.Error(mError);
+                        return this.InternalServerError(mError);
+                    }
+                }
+                else
+                {
+                    Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);
+                }
+            }
+            return Ok(mRetVal);
+        }
+
         [HttpGet()]
         public Collection<FunctionInformation> GetFunctionData()
         {

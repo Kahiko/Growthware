@@ -31,10 +31,6 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
                 m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
                 m_ShowDeleteLink = m_SecurityInfo.MayDelete;
             }
-            if (!m_ShowDeleteLink)
-            {
-                this.searchResults.Columns.RemoveAt(1);
-            }
         }
 
         /// <summary>
@@ -97,7 +93,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("editFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), m_SecurityInfo.MayEdit);
+                String mEditOnClick = "javascript:" + string.Format("editFunction('{0}','{1}','{2}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), m_SecurityInfo.MayEdit, m_SecurityInfo.MayDelete);
                 String mDeleteOnClick = "javascript:" + string.Format("deleteFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString()).ToString();
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);

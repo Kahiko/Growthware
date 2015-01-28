@@ -19,8 +19,9 @@
 		return true;
 	}
 
-	function editFunction(functionSeqID, mayEdit) {
+	function editFunction(functionSeqID, mayEdit, mayDelete) {
 	    if (typeof mayEdit == undefined) mayEdit = false;
+	    if (typeof mayDelete == undefined) mayDelete = false;
 		mFunctionSeqID = functionSeqID;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Function';
@@ -30,17 +31,30 @@
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Functions/AddEditFunction.aspx?FunctionSeqID=" + mFunctionSeqID;
+		var myButtons = {};
 		if (mayEdit) {
-		    options.buttons = {
-		        'Save': function () { saveAddEditFunciton($(this)); },
-		        'Cancel': function () { $(this).dialog('close'); }
-		    };
-
-		} else {
-		    options.buttons = {
-		        'Cancel': function () { $(this).dialog('close'); }
-		    };
+		    myButtons["Save"] = function () {
+		        saveAddEditFunciton($(this));
+		    }
 		}
+
+		if (mayDelete) {
+		    myButtons["Delete"] = function () {
+		        var options = GW.Model.DefaultWebMethodOptions();
+		        options.async = true;
+		        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Delete?functionSeqID=" + functionSeqID;
+		        options.contentType = 'application/json; charset=utf-8';
+		        options.dataType = 'json';
+		        GW.Common.JQueryHelper.callWeb(options);
+		        $(this).dialog("close");
+		        GW.Search.GetSearchResults();
+		    }
+		};
+		myButtons["Cancel"] = function () {
+		    $(this).dialog("close");
+		}
+		options.buttons = myButtons;
+
 		var dialogId = 'addEditFunction';
 		GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}
