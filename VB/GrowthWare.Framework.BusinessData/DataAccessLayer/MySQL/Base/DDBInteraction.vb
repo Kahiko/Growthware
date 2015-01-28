@@ -82,6 +82,8 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="storedProcedure">String</param>
         ''' <param name="parameters">SqlParmeter</param>
         ''' <remarks></remarks>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")>
+        <CLSCompliant(False)>
         Protected Overridable Sub ExecuteNonQuery(ByVal storedProcedure As String, ByVal parameters() As MySqlParameter)
             Me.IsValid()
             Dim myParameter As MySqlParameter = Nothing
@@ -136,6 +138,8 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="parameters">SqlParmeter</param>
         ''' <returns>DataSet</returns>
         ''' <remarks></remarks>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")>
+        <CLSCompliant(False)>
         Protected Overridable Function GetDataSet(ByVal storedProcedure As String, ByVal parameters() As MySqlParameter) As DataSet
             Me.IsValid()
             Dim mRetDataSet As DataSet = Nothing
@@ -210,6 +214,8 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="parameters">MySqlParameter</param>
         ''' <returns>DataTable</returns>
         ''' <remarks></remarks>
+        <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Security", "CA2100:Review SQL queries for security vulnerabilities")>
+        <CLSCompliant(False)>
         Protected Overridable Function GetDataTable(ByVal storedProcedure As String, ByVal parameters() As MySqlParameter) As DataTable
             Me.IsValid()
             Dim mRetDataTable As DataTable = Nothing
@@ -293,6 +299,7 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="parameters">MySqlParameter</param>
         ''' <returns>DataRow</returns>
         ''' <remarks></remarks>
+        <CLSCompliant(False)>
         Protected Overridable Function GetDataRow(ByVal storedProcedure As String, ByVal parameters() As MySqlParameter) As DataRow
             Me.IsValid()
             Return Me.GetDataTable(storedProcedure, parameters).Rows(0)
@@ -316,6 +323,7 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="parameters">MySqlParameter</param>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <CLSCompliant(False)>
         Protected Shared Function GetParameterValue(ByVal parameterName As String, ByVal parameters() As MySqlParameter) As String
             Dim mRetVal As String = String.Empty
             If Not parameters Is Nothing Then
@@ -340,6 +348,7 @@ Namespace DataAccessLayer.MySql.Base
         ''' <param name="parameterValue">Object</param>
         ''' <param name="direction">ParameterDirection</param>
         ''' <returns>MySqlParameter</returns>
+        <CLSCompliant(False)>
         Protected Shared Function GetSqlParameter(ByVal parameterName As String, ByVal parameterValue As Object, ByVal direction As ParameterDirection) As MySqlParameter
             Dim mRetVal As MySqlParameter = New MySqlParameter(parameterName, parameterValue)
             Select Case direction
