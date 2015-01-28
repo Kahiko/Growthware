@@ -2,6 +2,9 @@
     ''' <summary>
     ''' Enumeration of Encryption Types
     ''' </summary>
+    ''' <remarks>
+    ''' Used for indicating En/Decryption type.
+    ''' </remarks>
     Public Enum EncryptionType
         ''' <summary>
         ''' Indicates Triple DES encryption

@@ -2,6 +2,9 @@
 Imports System.Runtime.Serialization
 
 Namespace Common
+    ''' <summary>
+    ''' Class NaturalComparer
+    ''' </summary>
     Public Class NaturalComparer
         Implements IComparer(Of String)
         Implements IComparer
@@ -16,7 +19,6 @@ Namespace Common
             Numerical
             [String]
         End Enum
-
 
         Private Class StringParser
             Private m_TokenType As TokenType
@@ -298,6 +300,9 @@ Namespace Common
         Descending
     End Enum
 
+    ''' <summary>
+    ''' Created to distinguish errors created in the NaturalComparer class.
+    ''' </summary>
     <Serializable()>
     Public Class NaturalComparerException
         Inherits Exception

@@ -703,6 +703,12 @@ Namespace Common
             Return [text]
         End Function 'TruncateWithEllipsis
 
+        ''' <summary>
+        ''' Return a value from the configuration file appsettings section
+        ''' </summary>
+        ''' <param name="settingName"></param>
+        ''' <param name="fromEnvironment"></param>
+        ''' <returns>String</returns>
         Public Function GetAppSettingValue(ByVal settingName As String, ByVal fromEnvironment As Boolean) As String
             If fromEnvironment Then
                 Return ConfigurationManager.AppSettings(Environment & settingName)
@@ -710,6 +716,13 @@ Namespace Common
                 Return ConfigurationManager.AppSettings(settingName)
             End If
         End Function
+
+        ''' <summary>
+        ''' Return a value from the configuration file appsettings section
+        ''' </summary>
+        ''' <param name="settingName"></param>
+        ''' <returns>String</returns>
+        ''' <remarks>Overloaded method calls GetAppSettingValue(string settingName, Boolean fromEnvironment) passing false for fromEnvironment</remarks>
 
         Public Function GetAppSettingValue(ByVal settingName As String) As String
             Return GetAppSettingValue(settingName, False)

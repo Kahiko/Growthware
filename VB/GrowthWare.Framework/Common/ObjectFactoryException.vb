@@ -9,6 +9,9 @@ Namespace Common
     Public Class ObjectFactoryException
         Inherits Exception
 
+        ''' <summary>
+        ''' Creates a new instance of the ObjectFactoryException class
+        ''' </summary>
         Public Sub New()
 
         End Sub
