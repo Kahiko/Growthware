@@ -7,6 +7,9 @@ Imports System.Web
 Imports System.Globalization
 
 Namespace Base
+    ''' <summary>
+    ''' Used as the base class for user control objected and handles all view state loading
+    ''' </summary>
     Public Class BaseUserControl
         Inherits System.Web.UI.UserControl
 

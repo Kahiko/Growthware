@@ -8,6 +8,9 @@ Imports GrowthWare.Framework.Common
 Imports System.Globalization
 
 Namespace Base
+    ''' <summary>
+    ''' Used as the base class for pages objected and handles all view state loading
+    ''' </summary>
     Public Class BaseWebpage
         Inherits System.Web.UI.Page
 

@@ -1,6 +1,12 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 
 Namespace Base
+    ''' <summary>
+    ''' used by pages needed access to ClientChoicesState.
+    ''' Also inerits from GrowthWare.Framework.Web.Base.Page that
+    ''' stored session on the server keeping the view state returned
+    ''' to the browser down to a minimum.
+    ''' </summary>
     Public Class ClientChoicesPage
         Inherits BaseWebpage
 

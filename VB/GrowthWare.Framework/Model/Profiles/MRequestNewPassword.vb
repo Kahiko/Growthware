@@ -1,4 +1,7 @@
 ﻿Namespace Model.Profiles
+    ''' <summary>
+    ''' Model object representing the Request New Password Profile
+    ''' </summary>
     <Serializable(), CLSCompliant(True)> _
     Public Class MRequestNewPassword
         Inherits MMessageProfile

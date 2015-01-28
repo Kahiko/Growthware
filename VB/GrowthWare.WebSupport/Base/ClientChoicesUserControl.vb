@@ -1,6 +1,9 @@
 ﻿Imports GrowthWare.Framework.Model.Profiles
 
 Namespace Base
+    ''' <summary>
+    ''' Used as the base class for user control objected requiring ClientChoicesState
+    ''' </summary>
     Public Class ClientChoicesUserControl
         Inherits BaseUserControl
 
