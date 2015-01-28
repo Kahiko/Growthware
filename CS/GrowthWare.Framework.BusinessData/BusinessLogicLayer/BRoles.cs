@@ -15,7 +15,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+    /// MSecurityEntityProfile can be found in the GrowthWare.Framework.Model.Profiles namespace.  
     /// 
     /// The following properties are necessary for correct business logic operation.
     /// .ConnectionString

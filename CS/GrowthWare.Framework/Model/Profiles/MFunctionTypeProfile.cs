@@ -42,7 +42,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <summary>
         /// Initializes the specified datarow.
         /// </summary>
-        /// <param name="Datarow">The datarow.</param>
+        /// <param name="detailRow">The datarow.</param>
         protected new void Initialize(DataRow detailRow)
         {
             base.NameColumnName = "NAME";

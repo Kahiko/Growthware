@@ -14,7 +14,7 @@ using System.Web.UI;
 namespace GrowthWare.WebSupport.Base
 {
     /// <summary>
-    /// Class Page
+    /// Used as the base class for pages objected and handles all view state loading
     /// </summary>
     public class BaseWebpage : System.Web.UI.Page
     {

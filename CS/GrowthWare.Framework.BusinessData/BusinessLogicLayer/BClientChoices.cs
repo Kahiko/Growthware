@@ -16,7 +16,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
     /// </summary>
     /// <remarks>
     /// <![CDATA[
-    /// MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+    /// MSecurityEntityProfile can be found in the GrowthWare.Framework.Model.Profiles namespace.  
     /// 
     /// The following properties are necessary for correct business logic operation.
     /// .ConnectionString
@@ -124,7 +124,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// Saves the choices a client may have made during usage of the application.
         /// </summary>
         /// <param name="clientChoicesState">A populated MClientChoicesState object.</param>
-        /// <remarks>MClientChoicesState can be found in the GrowthWare.Framework.ModelObjects namespace.</remarks>
+        /// <remarks>MClientChoicesState can be found in the GrowthWare.Framework.Model.Profiles namespace.</remarks>
         public void Save(MClientChoicesState clientChoicesState)
         {
             if (clientChoicesState != null)

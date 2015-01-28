@@ -7,11 +7,15 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.WebSupport.Base
 {
+    /// <summary>
+    /// Used as the base class for user control objected requiring ClientChoicesState
+    /// </summary>
     public class ClientChoicesUserControl : BaseUserControl
     {
         /// <summary>
-        /// Returns the ClientChoices state from context.
+        /// Gets the state of the client choices.
         /// </summary>
+        /// <value>The state of the client choices.</value>
         public MClientChoicesState ClientChoicesState
         {
             get { return (MClientChoicesState)Context.Items[MClientChoices.SessionName]; }

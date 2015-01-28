@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.Model.Profiles
 {
+    /// <summary>
+    /// Model object representing the Request New Password Profile
+    /// </summary>
+    [Serializable(), CLSCompliant(true)]
     public class MRequestNewPassword : MMessageProfile
     {
         /// <summary>

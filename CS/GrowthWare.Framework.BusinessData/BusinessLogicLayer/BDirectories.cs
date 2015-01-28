@@ -7,6 +7,19 @@ using System.Data;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
+    /// <summary>
+    /// Process business logic for Directories
+    /// </summary>
+    /// <remarks>
+    /// <![CDATA[
+    /// MSecurityEntityProfile can be found in the GrowthWare.Framework.Model.Profiles namespace.  
+    /// 
+    /// The following properties are necessary for correct business logic operation.
+    /// .ConnectionString
+    /// .DALName
+    /// .DALNameSpace
+    /// ]]>
+    /// </remarks>
     public class BDirectories : BaseBusinessLogic
     {
         private IDDirectories m_DDirectories;

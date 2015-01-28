@@ -13,6 +13,9 @@ using System.Web.UI;
 
 namespace GrowthWare.WebSupport.Base
 {
+    /// <summary>
+    /// Used as the base class for user control objected and handles all view state loading
+    /// </summary>
     public class BaseUserControl : UserControl
     {
 		/// <summary>
