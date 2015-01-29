@@ -441,6 +441,7 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.cs">
       <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.designer.cs">
       <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
