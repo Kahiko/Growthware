@@ -34,7 +34,7 @@ namespace GrowthWare.Framework.Model.Profiles
         protected new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "Name";
-            base.IdColumnName = "Message_SeqID";
+            base.IdColumnName = "MESSAGE_SEQ_ID";
             base.Initialize(dataRow);
             m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "SE_SEQ_ID");
             m_Title = base.GetString(dataRow, "TITLE");

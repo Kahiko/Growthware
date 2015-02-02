@@ -151,6 +151,9 @@
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
+    <Content Include="Functions\System\Administration\Messages\AddEditMessage.aspx" />
+    <Content Include="Functions\System\Administration\Messages\SearchMessageResults.aspx" />
+    <Content Include="Functions\System\Administration\Messages\SearchMessages.aspx" />
     <Content Include="Functions\System\Administration\Roles\AddEditRole.aspx" />
     <Content Include="Functions\System\Administration\Roles\EditRoleMembers.aspx" />
     <Content Include="Functions\System\Administration\Roles\SearchRoleResults.aspx" />
@@ -466,6 +469,27 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.designer.cs">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\AddEditMessage.aspx.cs">
+      <DependentUpon>AddEditMessage.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\AddEditMessage.aspx.designer.cs">
+      <DependentUpon>AddEditMessage.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\SearchMessageResults.aspx.cs">
+      <DependentUpon>SearchMessageResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\SearchMessageResults.aspx.designer.cs">
+      <DependentUpon>SearchMessageResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\SearchMessages.aspx.cs">
+      <DependentUpon>SearchMessages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Messages\SearchMessages.aspx.designer.cs">
+      <DependentUpon>SearchMessages.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.cs">
       <DependentUpon>AddEditRole.aspx</DependentUpon>
