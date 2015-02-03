@@ -227,6 +227,8 @@
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
+    <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
+    <Content Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx" />
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
@@ -460,6 +462,20 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.vb">
       <DependentUpon>EncryptDecrypt.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx.designer.vb">
+      <DependentUpon>GUIDHelper.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx.vb">
+      <DependentUpon>GUIDHelper.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx.designer.vb">
+      <DependentUpon>RandomNumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx.vb">
+      <DependentUpon>RandomNumbers.aspx</DependentUpon>
       <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.designer.vb">

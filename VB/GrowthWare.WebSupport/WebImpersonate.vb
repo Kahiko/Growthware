@@ -120,5 +120,5 @@ Friend Module NativeMethods
 
     Public Declare Auto Function DuplicateToken Lib "advapi32.dll" (ByVal existingTokenHandle As IntPtr, ByVal securityImpersonationLevel As Integer, ByRef duplicateTokenHandle As IntPtr) As <MarshalAs(UnmanagedType.Bool)> Boolean
 
-    'Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Integer)
+    Public Declare Sub Sleep Lib "kernel32" (ByVal dwMilliseconds As Integer)
 End Module

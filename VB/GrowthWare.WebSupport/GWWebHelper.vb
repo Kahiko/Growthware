@@ -103,6 +103,16 @@ Public Class GWWebHelper
     End Property
 
     ''' <summary>
+    ''' Gets the new GUID.
+    ''' </summary>
+    ''' <returns>System.String.</returns>
+    Public Shared Function GetNewGuid() As String
+        Dim retVal As String
+        retVal = Guid.NewGuid().ToString()
+        Return retVal
+    End Function
+
+    ''' <summary>
     ''' Gets the query value.
     ''' </summary>
     ''' <param name="request">The request.</param>
@@ -115,6 +125,28 @@ Public Class GWWebHelper
             mRetVal = request.QueryString(queryString)
         End If
         Return mRetVal
+    End Function
+
+    ''' <summary>
+    ''' Gets the random number.
+    ''' </summary>
+    ''' <param name="startingNumber">The starting number.</param>
+    ''' <param name="endingNumber">The ending number.</param>
+    ''' <returns>System.String.</returns>
+    Shared Function GetRandomNumber(ByVal startingNumber As Integer, ByVal endingNumber As Integer) As String
+        Dim retVal As Integer = 0
+        'initialize random number generator
+        Dim r As New Random(System.DateTime.Now.Millisecond)
+        'if passed incorrect arguments, swap them
+        'can also throw exception or return 0
+        If startingNumber > endingNumber Then
+            Dim t As Integer = startingNumber
+            startingNumber = endingNumber
+            endingNumber = t
+        End If
+        retVal = r.Next(startingNumber, endingNumber)
+        Sleep(CType((System.DateTime.Now.Millisecond * (retVal / 100)), Long))
+        Return retVal
     End Function
 
     ''' <summary>
