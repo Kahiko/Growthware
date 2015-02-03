@@ -552,7 +552,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="fileArray">The file array.</param>
         /// <returns>System.String.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
-        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, int totalLinesOfCode, String[] fileArray)
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
         {
             if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
             if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
@@ -586,7 +586,7 @@ namespace GrowthWare.WebSupport.Utilities
                     {
                         level = level + 1;
                     }
-                    GetLineCount(subDirectories[x], level, outputBuilder, excludeList, directoryLineCount, totalLinesOfCode, fileArray);
+                    GetLineCount(subDirectories[x], level, outputBuilder, excludeList, directoryLineCount, ref totalLinesOfCode, fileArray);
                 }
             }
             catch (NullReferenceException)

@@ -30,7 +30,7 @@ namespace GrowthWare.WebApplication.Functions.System
             litLineCount.InnerHtml = "";
             litTotalLines.InnerHtml = "";
             DirectoryInfo currentDirectory = new DirectoryInfo(txtDirectoryName.Value);
-            litLineCount.InnerHtml = FileUtility.GetLineCount(currentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, mTotalLinesOfCode, mFileArray);
+            litLineCount.InnerHtml = FileUtility.GetLineCount(currentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, ref mTotalLinesOfCode, mFileArray);
         }
 
         [WebMethod(CacheDuration = 0, EnableSession = false)]
@@ -47,7 +47,7 @@ namespace GrowthWare.WebApplication.Functions.System
                 mExcludeList.Add(item.ToString().Trim().ToUpper());
             }
             DirectoryInfo currentDirectory = new DirectoryInfo(countInfo.TheDirectory);
-            return FileUtility.GetLineCount(currentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, mTotalLinesOfCode, mFileArray);
+            return FileUtility.GetLineCount(currentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, ref mTotalLinesOfCode, mFileArray);
         }
     }
 	public class CountInfo

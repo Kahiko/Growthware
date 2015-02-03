@@ -18,7 +18,7 @@
 					<span id="Span1" class="Form_LabelText">Files :</span>
 				</td>
 				<td align="left" colspan="3">
-					<input type="text" id="txtFiles" class="rounded" value="*.vb, *.aspx, *.ascx, *.asax, *.config, *.js" style="width: 500px;" runat="server" />
+					<input type="text" id="txtFiles" class="rounded" value="*.cs, *.aspx, *.ascx, *.asax, *.config, *.js" style="width: 500px;" runat="server" />
 				</td>
 			</tr>
 			<tr>
