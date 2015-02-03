@@ -422,7 +422,7 @@ Namespace Utilities
         ''' <param name="fileArray">The file array.</param>
         ''' <returns>System.String.</returns>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")>
-        Public Shared Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByVal totalLinesOfCode As Integer, ByVal fileArray As String()) As String
+        Public Shared Function GetLineCount(ByVal theDirectory As DirectoryInfo, ByVal level As Integer, ByVal outputBuilder As StringBuilder, ByVal excludeList As List(Of String), ByVal directoryLineCount As Integer, ByRef totalLinesOfCode As Integer, ByVal fileArray As String()) As String
             If theDirectory Is Nothing Then Throw New ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!")
             If outputBuilder Is Nothing Then Throw New ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!")
             Dim subDirectories As DirectoryInfo() = Nothing
