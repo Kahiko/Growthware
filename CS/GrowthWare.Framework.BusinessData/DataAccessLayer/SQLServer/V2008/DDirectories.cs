@@ -7,6 +7,9 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 {
+    /// <summary>
+    /// Class DDirectories.
+    /// </summary>
     public class DDirectories : DDBInteraction, IDDirectories
     {
         DataTable IDDirectories.Directories()

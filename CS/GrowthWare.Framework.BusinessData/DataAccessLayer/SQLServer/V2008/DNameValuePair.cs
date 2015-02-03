@@ -26,6 +26,10 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
             set { m_Profile = value; }
         }
 
+        /// <summary>
+        /// Gets or sets the primary key.
+        /// </summary>
+        /// <value>The primary key.</value>
         public int PrimaryKey { get; set; }
 
         int IDNameValuePair.SecurityEntitySeqId

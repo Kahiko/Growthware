@@ -8,6 +8,9 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 {
+    /// <summary>
+    /// Class DRoles.
+    /// </summary>
     public class DRoles : DDBInteraction, IDRoles
     {
         private int m_SE_SEQ_ID;
