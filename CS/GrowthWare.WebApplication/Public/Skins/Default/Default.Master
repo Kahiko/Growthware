@@ -81,6 +81,7 @@
             var $loader = $('#loading'), timer = 0;
             $loader.hide();
             $(document).ajaxStart(function () {
+                $loader.show();
                 timer && clearTimeout(timer);
 
                 timer = setTimeout(function () {

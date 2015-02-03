@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
@@ -30,6 +31,8 @@ namespace GrowthWare.WebSupport
         public const string RoleDataKeyField = "ROLE_SEQ_ID";
 
         private static Exception s_ExceptionError = null;
+
+        private static Random s_Random = new Random(System.DateTime.Now.Millisecond);
 
         /// <summary>
         /// Gets the core web administration version.
@@ -93,6 +96,17 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
+        /// Gets the random password.
+        /// </summary>
+        /// <returns>System.String.</returns>
+        public static string GetNewGuid()
+        {
+            string retVal = null;
+            retVal = System.Guid.NewGuid().ToString();
+            return retVal;
+        }
+
+        /// <summary>
         /// Gets the query value.
         /// </summary>
         /// <param name="request">The request.</param>
@@ -108,6 +122,27 @@ namespace GrowthWare.WebSupport
                 mRetVal = request.QueryString[queryString].ToString();
             }
             return mRetVal;
+        }
+
+        /// <summary>
+        /// Gets the random number.
+        /// </summary>
+        /// <param name="startingNumber">The starting number.</param>
+        /// <param name="endingNumber">The ending number.</param>
+        /// <returns>System.String.</returns>
+        public static string GetRandomNumber(int startingNumber, int endingNumber)
+        {
+            int retVal = 0;
+            //if passed incorrect arguments, swap them
+            //can also throw exception or return 0
+            if (startingNumber > endingNumber)
+            {
+                int t = startingNumber;
+                startingNumber = endingNumber;
+                endingNumber = t;
+            }
+            retVal = s_Random.Next(startingNumber, endingNumber);
+            return retVal.ToString();
         }
 
         /// <summary>
@@ -154,9 +189,16 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
-        /// Gets the verison.
+        /// Sleeps the specified dw milliseconds.
         /// </summary>
-        /// <value>The verison.</value>
+        /// <param name="dwMilliseconds">The dw milliseconds.</param>
+        [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        public static extern void Sleep(long dwMilliseconds);
+
+        /// <summary>
+        /// Gets the version.
+        /// </summary>
+        /// <value>The version.</value>
         public static string Version
         {
             get
