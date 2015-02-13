@@ -153,6 +153,7 @@
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
+    <Content Include="Functions\System\Administration\Logs\SetLogLevel.aspx" />
     <Content Include="Functions\System\Administration\Messages\AddEditMessage.aspx" />
     <Content Include="Functions\System\Administration\Messages\SearchMessageResults.aspx" />
     <Content Include="Functions\System\Administration\Messages\SearchMessages.aspx" />
@@ -485,6 +486,13 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.designer.cs">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Logs\SetLogLevel.aspx.cs">
+      <DependentUpon>SetLogLevel.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Logs\SetLogLevel.aspx.designer.cs">
+      <DependentUpon>SetLogLevel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\AddEditMessage.aspx.cs">
       <DependentUpon>AddEditMessage.aspx</DependentUpon>
