@@ -19,7 +19,9 @@
 </form>
 <script type="text/ecmascript" language="javascript">
     $(document).ready(function () {
-        $('#btnSubmit').button();
+        if (typeof jQuery.ui != 'undefined') {
+            $('#btnSubmit').button();
+        }
     });
 
     function setLogLevel() {
