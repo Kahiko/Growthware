@@ -66,6 +66,7 @@ namespace GrowthWare.Framework.Model.Profiles
             Description = base.GetString(profileDataRow, "DESCRIPTION");
             Notes = base.GetString(profileDataRow, "NOTES");
             Source = base.GetString(profileDataRow, "SOURCE");
+            Controller = base.GetString(profileDataRow, "Controller");
             EnableViewState = base.GetBool(profileDataRow, "ENABLE_VIEW_STATE");
             EnableNotifications = base.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS");
             RedirectOnTimeout = base.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT");
@@ -76,7 +77,7 @@ namespace GrowthWare.Framework.Model.Profiles
             m_ParentmFunctionSeqId = base.GetInt(profileDataRow, "PARENT_Function_Seq_ID");
             Action = base.GetString(profileDataRow, "ACTION");
             // need to set the the base class name with the action.
-            // the names can repeate but the action is unique and lower case.
+            // the names can repeat but the action is unique and lower case.
             base.Name = Action.ToString();
             MetaKeywords = base.GetString(profileDataRow, "META_KEY_WORDS");
             base.Initialize(profileDataRow, derivedRoles, assignedRoles, groups);
@@ -191,6 +192,12 @@ namespace GrowthWare.Framework.Model.Profiles
         /// </summary>
         /// <value>The source.</value>
         public string Source { get; set; }
+
+        /// <summary>
+        /// Gets or sets the controller.
+        /// </summary>
+        /// <value>The controller.</value>
+        public string Controller { get; set; }
 
         #endregion
     }
