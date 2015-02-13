@@ -7,7 +7,7 @@ Namespace Common
     ''' <summary>
     ''' Servers as a collection of configuration information
     ''' </summary>
-    Public Module ConfigSettings
+    Public Class ConfigSettings
 
         ''' <summary>
         ''' Returns App_Displayed_Name from the CONFIG file
@@ -15,7 +15,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property AppDisplayedName() As String
+        Shared ReadOnly Property AppDisplayedName() As String
             Get
                 Return GetAppSettingValue("App_Displayed_Name")
             End Get
@@ -27,7 +27,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property AppendToFile() As String
+        Shared ReadOnly Property AppendToFile() As String
             Get
                 Return GetAppSettingValue("Append_To_File")
             End Get
@@ -39,7 +39,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property AppName() As String
+        Shared ReadOnly Property AppName() As String
             Get
                 Return GetAppSettingValue("App_Name", True)
             End Get
@@ -51,7 +51,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property AuthenticationType() As String
+        Shared ReadOnly Property AuthenticationType() As String
             Get
                 Return GetAppSettingValue("Authentication_Type", True)
             End Get
@@ -63,7 +63,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property BasePage() As String
+        Shared ReadOnly Property BasePage() As String
             Get
                 Return GetAppSettingValue("Base_Page")
             End Get
@@ -75,7 +75,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SecurityEntityTranslation() As String
+        Shared ReadOnly Property SecurityEntityTranslation() As String
             Get
                 Return GetAppSettingValue("Security_Entity_Translation")
             End Get
@@ -87,7 +87,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property CentralManagement() As Boolean
+        Shared ReadOnly Property CentralManagement() As Boolean
             Get
                 Return CBool(GetAppSettingValue("Central_Management"))
             End Get
@@ -102,7 +102,7 @@ Namespace Common
         ''' <param name="configValue">The config value.</param>
         ''' <param name="deleteEnvironment">if set to <c>true</c> [delete environment].</param>
         <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")>
-        Sub SetEnvironmentValue(ByVal config As Configuration, ByVal isNew As Boolean, ByVal configName As String, ByVal configValue As String, ByVal deleteEnvironment As Boolean)
+        Shared Sub SetEnvironmentValue(ByVal config As Configuration, ByVal isNew As Boolean, ByVal configName As String, ByVal configValue As String, ByVal deleteEnvironment As Boolean)
             If config Is Nothing Then Throw New ArgumentNullException("config", "config cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(configName) Then Throw New ArgumentNullException("configName", "configName cannot be a null reference (Nothing in Visual Basic)!")
             If String.IsNullOrEmpty(configValue) Then Throw New ArgumentNullException("configValue", "configValue cannot be a null reference (Nothing in Visual Basic)!")
@@ -130,7 +130,7 @@ Namespace Common
         ''' <value>Desired data access layer "Oracle" and default "SQLServer" connection string information</value>
         ''' <returns>String</returns>
         ''' <remarks>The CONFIG value can be encrypted or clear text</remarks>
-        ReadOnly Property ConnectionString(ByVal dataAccessLayer As String) As String
+        Shared ReadOnly Property ConnectionString(ByVal dataAccessLayer As String) As String
             Get
                 Dim mRetVal As String = GetAppSettingValue("DAL_" & dataAccessLayer & "_Connectionstring", True)
                 Try
@@ -149,7 +149,7 @@ Namespace Common
         ''' <value>Desired data access layer "Oracle" and default "SQLServer" connection string information</value>
         ''' <returns>String</returns>
         ''' <remarks>The CONFIG value can be encrypted or clear text</remarks>
-        ReadOnly Property ConnectionString() As String
+        Shared ReadOnly Property ConnectionString() As String
             Get
                 Return ConnectionString("SQLServer")
             End Get
@@ -161,7 +161,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property ConversionPattern() As String
+        Shared ReadOnly Property ConversionPattern() As String
             Get
                 Return GetAppSettingValue("Conversion_Pattern")
             End Get
@@ -173,7 +173,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DataAccessLayer() As String
+        Shared ReadOnly Property DataAccessLayer() As String
             Get
                 Return GetAppSettingValue("DAL", True)
             End Get
@@ -186,7 +186,7 @@ Namespace Common
         ''' <value>Desired data access layer "Oracle" and default "SQLServer"</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DataAccessLayerAssemblyName(ByVal dataAccessLayer As String) As String
+        Shared ReadOnly Property DataAccessLayerAssemblyName(ByVal dataAccessLayer As String) As String
             Get
                 Return GetAppSettingValue("DAL_" + dataAccessLayer + "_Assembly_Name", True)
             End Get
@@ -197,7 +197,7 @@ Namespace Common
         ''' </summary>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DataAccessLayerAssemblyName() As String
+        Shared ReadOnly Property DataAccessLayerAssemblyName() As String
             Get
                 Return DataAccessLayerAssemblyName("SQLServer")
             End Get
@@ -210,7 +210,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        ReadOnly Property DataAccessLayerNamespace(ByVal dataAccessLayer As String) As String
+        Shared ReadOnly Property DataAccessLayerNamespace(ByVal dataAccessLayer As String) As String
             Get
                 Return GetAppSettingValue("DAL_" & dataAccessLayer & "_Name_Space", True)
             End Get
@@ -222,7 +222,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns>DataAccessLayerNamespace using SQLServer</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DataAccessLayerNamespace() As String
+        Shared ReadOnly Property DataAccessLayerNamespace() As String
             Get
                 Return DataAccessLayerNamespace("SQLServer")
             End Get
@@ -234,7 +234,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DefaultAction() As String
+        Shared ReadOnly Property DefaultAction() As String
             Get
                 Return GetAppSettingValue("Default_Action")
             End Get
@@ -246,7 +246,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DefaultAuthenticatedAction() As String
+        Shared ReadOnly Property DefaultAuthenticatedAction() As String
             Get
                 Return GetAppSettingValue("Default_Authenticated_Action")
             End Get
@@ -258,7 +258,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DefaultSecurityEntityId() As String
+        Shared ReadOnly Property DefaultSecurityEntityId() As String
             Get
                 Return GetAppSettingValue("Default_Security_Entity_ID", True)
             End Get
@@ -270,7 +270,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        ReadOnly Property ExpectedUpBy() As String
+        Shared ReadOnly Property ExpectedUpBy() As String
             Get
                 Return GetAppSettingValue("Expected_Up_By")
             End Get
@@ -282,19 +282,19 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property EnableCache() As Boolean
+        Shared ReadOnly Property EnableCache() As Boolean
             Get
                 Return GetAppSettingValue("Enable_Cache", True)
             End Get
         End Property
 
         ''' <summary>
-        ''' Retruns Enable_Pooling from the CONFIF file
+        ''' Reruns Enable_Pooling from the CONFIF file
         ''' </summary>
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks>For future use</remarks>
-        ReadOnly Property EnablePooling() As String
+        Shared ReadOnly Property EnablePooling() As String
             Get
                 Return GetAppSettingValue("Enable_Pooling", True)
             End Get
@@ -306,7 +306,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks>Used as a prefix to appSettings, allows multipule environment settings to co-exist in one CONFIG file.</remarks>
-        ReadOnly Property Environment() As String
+        Shared ReadOnly Property Environment() As String
             Get
                 Return GetAppSettingValue("Environment") & "_"
             End Get
@@ -317,8 +317,8 @@ Namespace Common
         ''' </summary>
         ''' <value>String</value>
         ''' <returns>String</returns>
-        ''' <remarks>Comma seportated "list" of environments </remarks>
-        ReadOnly Property Environments() As String
+        ''' <remarks>Comma separated "list" of environments </remarks>
+        Shared ReadOnly Property Environments() As String
             Get
                 Return GetAppSettingValue("Environments")
             End Get
@@ -330,7 +330,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property EnvironmentDisplayed() As String
+        Shared ReadOnly Property EnvironmentDisplayed() As String
             Get
                 If Right(Environment, 1) = "_" Then
                     Return Left(Environment, Environment.Length - 1)
@@ -346,7 +346,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property EncryptionType() As String
+        Shared ReadOnly Property EncryptionType() As String
             Get
                 Return CInt(GetAppSettingValue("Encryption_Type"))
             End Get
@@ -358,7 +358,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property FailedAttempts() As Integer
+        Shared ReadOnly Property FailedAttempts() As Integer
             Get
                 Return CInt(GetAppSettingValue("Failed_Attempts", True))
             End Get
@@ -370,7 +370,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property ForceHttps() As Boolean
+        Shared ReadOnly Property ForceHttps() As Boolean
             Get
                 Return CBool(GetAppSettingValue("Force_HTTPS", True))
             End Get
@@ -382,7 +382,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property DBStatus() As String
+        Shared ReadOnly Property DBStatus() As String
             Get
                 Return GetAppSettingValue("DB_Status")
             End Get
@@ -393,7 +393,7 @@ Namespace Common
         ''' </summary>
         ''' <value>string value from config file</value>
         ''' <returns>string</returns>
-        ReadOnly Property RegistrationAccountChoicesAccount() As String
+        Shared ReadOnly Property RegistrationAccountChoicesAccount() As String
             Get
                 Return GetAppSettingValue("RegistrationAccountChoicesAccount", True)
             End Get
@@ -405,7 +405,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property RegistrationGroups As String
+        Shared ReadOnly Property RegistrationGroups As String
             Get
                 Return GetAppSettingValue("RegistrationGroups", True)
             End Get
@@ -417,7 +417,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks>String</remarks>
-        ReadOnly Property RegistrationPassword As String
+        Shared ReadOnly Property RegistrationPassword As String
             Get
                 Return GetAppSettingValue("RegistrationPassword", True)
             End Get
@@ -429,7 +429,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks>String</remarks>
-        ReadOnly Property RegistrationPostAction() As String
+        Shared ReadOnly Property RegistrationPostAction() As String
             Get
                 Return GetAppSettingValue("RegistrationPostAction", True)
             End Get
@@ -439,7 +439,7 @@ Namespace Common
         ''' Gets the registration create roles.
         ''' </summary>
         ''' <value>The registration roles.</value>
-        ReadOnly Property RegistrationRoles As String
+        Shared ReadOnly Property RegistrationRoles As String
             Get
                 Return GetAppSettingValue("RegistrationRoles", True)
             End Get
@@ -449,7 +449,7 @@ Namespace Common
         ''' Gets the RegistrationStatusIds account.
         ''' </summary>
         ''' <value>The RegistrationStatusIds.</value>
-        ReadOnly Property RegistrationStatusId As String
+        Shared ReadOnly Property RegistrationStatusId As String
             Get
                 Return GetAppSettingValue("RegistrationStatusId", True)
             End Get
@@ -459,7 +459,7 @@ Namespace Common
         ''' Gets the RegistrationSecurityEntityId.
         ''' </summary>
         ''' <value>The RegistrationSecurityEntityId.</value>
-        ReadOnly Property RegistrationSecurityEntityId As String
+        Shared ReadOnly Property RegistrationSecurityEntityId As String
             Get
                 Return GetAppSettingValue("RegistrationSecurityEntityId", True)
             End Get
@@ -471,7 +471,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property RememberCookieName() As String
+        Shared ReadOnly Property RememberCookieName() As String
             Get
                 Return AppDisplayedName & "Remember_Me"
             End Get
@@ -483,7 +483,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns>String</returns>
         ''' <remarks>String</remarks>
-        ReadOnly Property LdapDomain() As String
+        Shared ReadOnly Property LdapDomain() As String
             Get
                 Return GetAppSettingValue("LDAP_Domain", True)
             End Get
@@ -495,7 +495,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property LdapServer() As String
+        Shared ReadOnly Property LdapServer() As String
             Get
                 Return GetAppSettingValue("LDAP_Server", True)
             End Get
@@ -507,7 +507,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property LogPath() As String
+        Shared ReadOnly Property LogPath() As String
             Get
                 Return GetAppSettingValue("Log_Path", True)
             End Get
@@ -519,7 +519,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property LogPriority() As String
+        Shared ReadOnly Property LogPriority() As String
             Get
                 Return GetAppSettingValue("Log_Priority", True)
             End Get
@@ -531,7 +531,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property LogRetention() As String
+        Shared ReadOnly Property LogRetention() As String
             Get
                 Return GetAppSettingValue("Log_Retention", True)
             End Get
@@ -543,7 +543,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property ServerSideViewState() As Boolean
+        Shared ReadOnly Property ServerSideViewState() As Boolean
             Get
                 Return CBool(GetAppSettingValue("Server_Side_View_State"))
             End Get
@@ -553,7 +553,7 @@ Namespace Common
         ''' Returns config setting for Strip_Domain_From_Http_Context_UserName.
         ''' </summary>
         ''' <value><c>true</c> if [strip domain from HTTP context user name]; otherwise, <c>false</c>.</value>
-        ReadOnly Property StripDomainFromHttpContextUserName() As Boolean
+        Shared ReadOnly Property StripDomainFromHttpContextUserName() As Boolean
             Get
                 Dim mRetVal As Boolean = False
                 Try
@@ -575,7 +575,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property ServerSideViewStatePages() As Integer
+        Shared ReadOnly Property ServerSideViewStatePages() As Integer
             Get
                 Return CInt(GetAppSettingValue("Server_Side_View_State_Pages"))
             End Get
@@ -587,7 +587,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SmtpAccount() As String
+        Shared ReadOnly Property SmtpAccount() As String
             Get
                 Try
                     Return CryptoUtility.Decrypt(GetAppSettingValue("SMTP_Account", True), EncryptionType)
@@ -603,7 +603,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SmtpFrom() As String
+        Shared ReadOnly Property SmtpFrom() As String
             Get
                 Return GetAppSettingValue("SMTP_From", True)
             End Get
@@ -615,7 +615,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SmtpServer() As String
+        Shared ReadOnly Property SmtpServer() As String
             Get
                 Return GetAppSettingValue("SMTP_Server", True)
             End Get
@@ -627,7 +627,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        ReadOnly Property SmtpPassword() As String
+        Shared ReadOnly Property SmtpPassword() As String
             Get
                 Try
                     Return CryptoUtility.Decrypt(GetAppSettingValue("SMTP_Password", True), EncryptionType)
@@ -645,7 +645,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SmtpDomain() As String
+        Shared ReadOnly Property SmtpDomain() As String
             Get
                 Return GetAppSettingValue("SMTP_Domain", True)
             End Get
@@ -657,7 +657,7 @@ Namespace Common
         ''' <value></value>
         ''' <returns></returns>
         ''' <remarks></remarks>
-        ReadOnly Property SyncPassword() As String
+        Shared ReadOnly Property SyncPassword() As String
             Get
                 Return CBool(GetAppSettingValue("Synchronize_Password", True))
             End Get
@@ -669,7 +669,7 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property SkinType() As String
+        Shared ReadOnly Property SkinType() As String
             Get
                 Return GetAppSettingValue("SKIN_TYPE", True)
             End Get
@@ -678,10 +678,10 @@ Namespace Common
         ''' <summary>
         ''' Returns Under_Construction from the CONFIG file
         ''' </summary>
-        ''' <value>Stirng</value>
+        ''' <value>Sting</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        ReadOnly Property UnderConstruction() As Boolean
+        Shared ReadOnly Property UnderConstruction() As Boolean
             Get
                 Return CBool(GetAppSettingValue("Under_Construction"))
             End Get
@@ -694,7 +694,7 @@ Namespace Common
         ''' <param name="length">Point at which the texted is truncated</param>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        Public Function TruncateWithEllipsis(ByVal [text] As String, ByVal length As Integer) As String
+        Public Shared Function TruncateWithEllipsis(ByVal [text] As String, ByVal length As Integer) As String
             If Not String.IsNullOrEmpty([text]) Then
                 If [text].Length > length Then
                     [text] = [text].Substring(0, length) + "..."
@@ -709,7 +709,7 @@ Namespace Common
         ''' <param name="settingName"></param>
         ''' <param name="fromEnvironment"></param>
         ''' <returns>String</returns>
-        Public Function GetAppSettingValue(ByVal settingName As String, ByVal fromEnvironment As Boolean) As String
+        Public Shared Function GetAppSettingValue(ByVal settingName As String, ByVal fromEnvironment As Boolean) As String
             If fromEnvironment Then
                 Return ConfigurationManager.AppSettings(Environment & settingName)
             Else
@@ -724,8 +724,8 @@ Namespace Common
         ''' <returns>String</returns>
         ''' <remarks>Overloaded method calls GetAppSettingValue(string settingName, Boolean fromEnvironment) passing false for fromEnvironment</remarks>
 
-        Public Function GetAppSettingValue(ByVal settingName As String) As String
+        Public Shared Function GetAppSettingValue(ByVal settingName As String) As String
             Return GetAppSettingValue(settingName, False)
         End Function
-    End Module
+    End Class
 End Namespace
