@@ -22,7 +22,7 @@ Namespace Model.Profiles
         Private m_FunctionTypeSeqId As Integer = -1
         'Private m_ALLOW_HTML_INPUT As Integer = 1
         'Private m_ALLOW_COMMENT_HTML_INPUT As Integer = 1
-        Private m_ParentmFunctionSeqId As Integer = 1
+        Private m_ParentFunctionSeqId As Integer = 1
         Private m_LinkBehavior As Integer = 1
 #End Region
 
@@ -49,12 +49,12 @@ Namespace Model.Profiles
 
 #Region "Private methods"
         ''' <summary>
-        ''' Popluates the profile.
+        ''' Populates the profile.
         ''' </summary>
-        ''' <param name="profileDatarow">Datarow containing the profile information</param>
-        ''' <param name="derivedRoles">An array of datarows</param>
-        ''' <param name="assignedRoles">An array of datarows</param>
-        ''' <param name="groups">An array of datarows</param>
+        ''' <param name="profileDataRow">Data row containing the profile information</param>
+        ''' <param name="derivedRoles">An array of data rows</param>
+        ''' <param name="assignedRoles">An array of data rows</param>
+        ''' <param name="groups">An array of data rows</param>
         ''' <remarks></remarks>
         Friend Overloads Sub Initialize(ByVal profileDataRow As DataRow, ByVal derivedRoles() As DataRow, ByVal assignedRoles() As DataRow, ByVal groups() As DataRow)
             MyBase.IdColumnName = "FUNCTION_SEQ_ID"
@@ -72,7 +72,8 @@ Namespace Model.Profiles
             NoUI = MyBase.GetBool(profileDataRow, "No_UI")
             RedirectOnTimeout = MyBase.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT")
             Source = MyBase.GetString(profileDataRow, "SOURCE")
-            m_ParentmFunctionSeqId = MyBase.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
+            Controller = MyBase.GetString(profileDataRow, "Controller")
+            m_ParentFunctionSeqId = MyBase.GetInt(profileDataRow, "PARENT_FUNCTION_SEQ_ID")
             m_FunctionTypeSeqId = MyBase.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID")
         End Sub
 #End Region
@@ -102,7 +103,7 @@ Namespace Model.Profiles
         Public Property EnableNotifications() As Boolean
 
         ''' <summary>
-        ''' Use to determin if a function is a navigation function
+        ''' Use to determine if a function is a navigation function
         ''' </summary>
         ''' <remarks>
         ''' Should be replaced by LinkBehavior
@@ -142,6 +143,10 @@ Namespace Model.Profiles
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the meta keywords.
+        ''' </summary>
+        ''' <value>The meta keywords.</value>
         Public Property MetaKeywords() As String
 
         Public Property NavigationTypeSeqId() As Integer
@@ -153,22 +158,44 @@ Namespace Model.Profiles
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets the notes.
+        ''' </summary>
+        ''' <value>The notes.</value>
         Public Property Notes() As String
 
+        ''' <summary>
+        ''' Gets or sets a value indicating whether [no UI].
+        ''' </summary>
+        ''' <value><c>true</c> if [no UI]; otherwise, <c>false</c>.</value>
         Public Property NoUI() As Boolean
 
         Public Property ParentId() As Integer
             Get
-                Return m_ParentmFunctionSeqId
+                Return m_ParentFunctionSeqId
             End Get
             Set(ByVal Value As Integer)
-                m_ParentmFunctionSeqId = Value
+                m_ParentFunctionSeqId = Value
             End Set
         End Property
 
+        ''' <summary>
+        ''' Gets or sets a value indicating whether [redirect on timeout].
+        ''' </summary>
+        ''' <value><c>true</c> if [redirect on timeout]; otherwise, <c>false</c>.</value>
         Public Property RedirectOnTimeout() As Boolean
 
+        ''' <summary>
+        ''' Gets or sets the source.
+        ''' </summary>
+        ''' <value>The source.</value>
         Public Property Source() As String
+
+        ''' <summary>
+        ''' Gets or sets the controller.
+        ''' </summary>
+        ''' <value>The controller.</value>
+        Public Property Controller() As String
 #End Region
 
     End Class
