@@ -110,7 +110,7 @@ Namespace Model.Profiles
         Public Property Password() As String
 
         ''' <summary>
-        ''' The number of failed logon attemps
+        ''' The number of failed logon attempts
         ''' </summary>
         Public Property FailedAttempts() As Integer
 

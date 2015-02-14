@@ -112,6 +112,7 @@
     </Compile>
     <Compile Include="Utilities\AccountUtility.vb" />
     <Compile Include="Utilities\ClientChoicesUtility.vb" />
+    <Compile Include="Utilities\DBInformationUtility.vb" />
     <Compile Include="Utilities\DirectoryUtility.vb" />
     <Compile Include="Utilities\FileUtility.vb" />
     <Compile Include="Utilities\FunctionTypeUtility.vb" />

@@ -108,7 +108,7 @@ Namespace Utilities
             ' the db to help ensure passwords are correct and what not.
             ' besides which a list of accounts is only necessary
             ' when editing an account and it that case
-            ' what accounts that are returned are dependend on the requesting account.IsSysAdmin bit.
+            ' what accounts that are returned are depended on the requesting account.IsSysAdmin bit.
             Dim mBAccount As BAccounts = New BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBAccount.GetAccounts(profile)
         End Function
@@ -142,7 +142,7 @@ Namespace Utilities
                     If Not mRetProfile Is Nothing Then
                         HttpContext.Current.Cache.Item(mAccountName + "_Session") = mRetProfile
                     Else
-                        mLog.Debug("AccountUtility::GetCurrentProfile() No cache avalible")
+                        mLog.Debug("AccountUtility::GetCurrentProfile() No cache available")
                     End If
                 End If
             End If

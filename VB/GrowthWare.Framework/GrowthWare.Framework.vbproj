@@ -95,6 +95,7 @@
     <Compile Include="Model\Profiles\Interfaces\IMSecurityInfo.vb" />
     <Compile Include="Model\Profiles\MClientChoices.vb" />
     <Compile Include="Model\Profiles\MClientChoicesState.vb" />
+    <Compile Include="Model\Profiles\MDBInformation.vb" />
     <Compile Include="Model\Profiles\MFunctionProfile.vb" />
     <Compile Include="Model\Profiles\MFunctionTypeProfile.vb" />
     <Compile Include="Model\Profiles\MGroupProfile.vb" />

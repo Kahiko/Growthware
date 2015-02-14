@@ -145,7 +145,7 @@ Namespace BusinessLogicLayer
         End Function
 
         ''' <summary>
-        ''' Performs either insert or update of an MAcountProfile, and re-populates the MAccountProfile with DB information.
+        ''' Performs either insert or update of an MAccountProfile, and re-populates the MAccountProfile with DB information.
         ''' </summary>
         ''' <param name="profile">MAccountProfile</param>
         ''' <param name="saveRoles">MAccountProfile</param>
@@ -162,11 +162,11 @@ Namespace BusinessLogicLayer
         ''' mMAccountProfile.Account = "Account"
         ''' mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType)
         ''' mMAccountProfile.UpdatedBy = 1
-        ''' mMAccountProfile.UpdagedDate = Date.Now
+        ''' mMAccountProfile.UpdatedDate = Date.Now
         ''' Dim mBll as new BAccounts(mySecurityEntityProfile)
         ''' Dim mSaveRoles As Boolean = False;
         ''' Dim mSaveGroups As Boolean = False;
-        ''' mMAccountProfile = mbill.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
+        ''' mMAccountProfile = mBll.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
         ''' ]]>
         ''' </code>
         ''' <code language="C#">
@@ -174,15 +174,16 @@ Namespace BusinessLogicLayer
         ''' mMAccountProfile.Account = "Account";
         ''' mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType);
         ''' mMAccountProfile.UpdatedBy = 1;
-        ''' mMAccountProfile.UpdagedDate = Date.Now();
+        ''' mMAccountProfile.UpdatedDate = Date.Now();
         ''' BAccounts mBll = new BAccounts(mySecurityEntityProfile);
         ''' bool mSaveRoles = false;
         ''' bool mSaveGroups = true;
-        ''' mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, mSaveRoles, mSaveGroups);
+        ''' mMAccountProfile = mBll.SaveAccount(ref mMAccountProfile, mSaveRoles, mSaveGroups);
         ''' </code>
         ''' </example>
         Public Sub Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
-            If profile Is Nothing Then Throw New ArgumentException("profile can not be null")
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic)")
+
             If DatabaseIsOnline() Then
                 m_DAccounts.Profile = profile
                 profile.Id = m_DAccounts.Save()
