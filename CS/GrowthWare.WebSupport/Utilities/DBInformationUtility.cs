@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.WebSupport.Utilities
 {
-    public class DBInformationUtility
+    public static class DBInformationUtility
     {
 
         public static MDBInformation DBInformation()

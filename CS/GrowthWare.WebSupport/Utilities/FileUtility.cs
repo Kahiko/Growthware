@@ -551,7 +551,8 @@ namespace GrowthWare.WebSupport.Utilities
         /// <param name="totalLinesOfCode">The total lines of code.</param>
         /// <param name="fileArray">The file array.</param>
         /// <returns>System.String.</returns>
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "5#"), 
+        System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists")]
         public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
         {
             if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
