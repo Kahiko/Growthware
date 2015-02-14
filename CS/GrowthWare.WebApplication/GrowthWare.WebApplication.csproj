@@ -147,6 +147,7 @@
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx" />
     <Content Include="Functions\System\Administration\Configuration\AddEditWebConfig.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
@@ -445,6 +446,13 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.designer.cs">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.cs">
+      <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.designer.cs">
+      <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Configuration\AddEditWebConfig.aspx.cs">
       <DependentUpon>AddEditWebConfig.aspx</DependentUpon>

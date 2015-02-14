@@ -61,6 +61,7 @@
     <Compile Include="BusinessLogicLayer\BAccounts.cs" />
     <Compile Include="BusinessLogicLayer\BaseBusinessLogic.cs" />
     <Compile Include="BusinessLogicLayer\BClientChoices.cs" />
+    <Compile Include="BusinessLogicLayer\BDBInformation.cs" />
     <Compile Include="BusinessLogicLayer\BDirectories.cs" />
     <Compile Include="BusinessLogicLayer\BFunctions.cs" />
     <Compile Include="BusinessLogicLayer\BGroups.cs" />
@@ -71,6 +72,7 @@
     <Compile Include="DataAccessLayer\DataAccessLayerException.cs" />
     <Compile Include="DataAccessLayer\Interfaces\Base\IDDBInteraction.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDAccount.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDBInformation.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDClientChoices.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDDirectories.cs" />
     <Compile Include="DataAccessLayer\Interfaces\IDFunctions.cs" />
@@ -82,6 +84,7 @@
     <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DAccounts.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DClientChoices.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DDBInformation.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DDirectories.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DFunctions.cs" />
     <Compile Include="DataAccessLayer\SQLServer\V2008\DGroups.cs" />

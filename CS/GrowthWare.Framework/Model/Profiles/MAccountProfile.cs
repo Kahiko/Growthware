@@ -130,7 +130,7 @@ namespace GrowthWare.Framework.Model.Profiles
 
         /// <summary>
         /// Will populate values based on the contents of the data row.
-        /// Also populates the roles and gropus properties.
+        /// Also populates the roles and groups properties.
         /// </summary>
         /// <param name="detailRow">DataRow containing base values</param>
         /// <param name="assignedRolesData">DataRow containing Role data</param>

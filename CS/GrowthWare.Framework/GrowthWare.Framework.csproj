@@ -82,6 +82,7 @@
     <Compile Include="Model\Profiles\MAccountProfile.cs" />
     <Compile Include="Model\Profiles\MClientChoices.cs" />
     <Compile Include="Model\Profiles\MClientChoicesState.cs" />
+    <Compile Include="Model\Profiles\MDBInformation.cs" />
     <Compile Include="Model\Profiles\MDirectoryProfile.cs" />
     <Compile Include="Model\Profiles\MFunctionProfile.cs" />
     <Compile Include="Model\Profiles\MFunctionTypeProfile.cs" />
