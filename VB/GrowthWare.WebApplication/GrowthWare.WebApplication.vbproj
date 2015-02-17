@@ -384,7 +384,9 @@
     <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
     <Content Include="UserControls\Search.ascx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.vb" />
