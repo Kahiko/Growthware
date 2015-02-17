@@ -4,6 +4,7 @@
     [Description]                       VARCHAR (512)        NOT NULL,
     [Function_Type_SeqID]               INT                  NULL,
     [Source]                            VARCHAR (512) SPARSE NULL,
+	[Controller]                         VARCHAR (512) SPARSE NULL,
     [Enable_View_State]                 INT                  NOT NULL,
     [Enable_Notifications]              INT                  CONSTRAINT [DF_ZGWSecurity_Functions_ENABLE_NOTIFICATIONS] DEFAULT ((0)) NOT NULL,
     [Redirect_On_Timeout]               INT                  CONSTRAINT [DF_ZGWSecurity_Functions_REDIRECT_ON_TIMEOUT] DEFAULT ((1)) NOT NULL,
