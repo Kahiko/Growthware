@@ -30,12 +30,8 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Accounts
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Init(Object sender, EventArgs e)
         {
-            string mAction = GWWebHelper.GetQueryValue(Request, "action");
-            if (!String.IsNullOrEmpty(mAction))
-            {
-                m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                m_ShowDeleteLink = m_SecurityInfo.MayDelete;
-            }
+            m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
+            m_ShowDeleteLink = m_SecurityInfo.MayDelete;
             if (!m_SecurityInfo.MayView)
             {
                 this.searchResults.Columns.RemoveAt(0);

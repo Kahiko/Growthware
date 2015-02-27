@@ -14,6 +14,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Messages
     public partial class SearchMessageResults : ClientChoicesPage
     {
         private bool m_ShowDeleteLink = false;
+        MSecurityInfo m_SecurityInfo = null;
 
         public bool ShowDeleteLink
         {
@@ -28,6 +29,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Messages
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Load(object sender, EventArgs e)
         {
+            m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
             noResults.Visible = false;
             searchResults.HeaderStyle.ForeColor = ColorTranslator.FromHtml(ClientChoicesState[MClientChoices.HeaderForeColor]);
             searchResults.HeaderStyle.BackColor = ColorTranslator.FromHtml(ClientChoicesState[MClientChoices.HeadColor]);
@@ -73,17 +75,10 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Messages
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                string mEditOnClick = "javascript:" + string.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString());
-                string mDeleteOnClick = "javascript:" + string.Format("deleteMessage('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString());
+                String mEditOnClick = "javascript:" + string.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString(), m_SecurityInfo.MayEdit);
                 HtmlImage btnDetails = (HtmlImage)e.Row.FindControl("btnDetails");
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)e.Row.FindControl("btnDelete");
-                if ((btnDelete != null))
-                {
-                    // Add confirmation to delete button
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                }
                 // add the hover behavior
                 if (e.Row.RowState == DataControlRowState.Normal)
                 {

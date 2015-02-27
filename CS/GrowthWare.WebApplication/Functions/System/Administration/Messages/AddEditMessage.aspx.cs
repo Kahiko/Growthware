@@ -21,6 +21,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Messages
                 int mMessageSeqId = int.Parse(Request.QueryString["messageSeqId"].ToString());
                 MMessageProfile mProfile = new MMessageProfile();
                 if (mMessageSeqId > -1) mProfile = MessageUtility.GetProfile(mMessageSeqId);
+                HttpContext.Current.Session.Add("EditId", mProfile.Id);
                 populatePage(mProfile);
             }
         }

@@ -276,6 +276,7 @@ namespace GrowthWare.WebApplication.Controllers
                     profile.RedirectOnTimeout = uiProfile.RedirectOnTimeout;
                     FunctionUtility.Save(profile, saveGroups, saveRoles);
                     profile = FunctionUtility.GetProfile(uiProfile.Action);
+                    directoryProfile = DirectoryUtility.GetProfile(profile.Id);
                     if (!String.IsNullOrEmpty(uiProfile.DirectoryData.Directory))
                     {
                         if(directoryProfile == null) directoryProfile = new MDirectoryProfile();

@@ -381,6 +381,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\FunctionsController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\SecurityEntitiesController.cs" />
     <Compile Include="Controllers\SessionableControllerHandler.cs" />
     <Compile Include="Controllers\SessionStateRouteHandler.cs" />

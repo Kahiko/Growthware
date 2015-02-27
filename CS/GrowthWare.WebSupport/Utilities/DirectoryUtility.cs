@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.BusinessData.BusinessLogicLayer;
+using GrowthWare.Framework.BusinessData.DataAccessLayer;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
 using System;
@@ -130,6 +131,7 @@ namespace GrowthWare.WebSupport.Utilities
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             CacheController.RemoveFromCache(s_DirectoryInfoCachedName);
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+            Logger mLog = Logger.Instance();
             try
             {
                 profile.ImpersonatePassword = CryptoUtility.Decrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType);
@@ -155,7 +157,15 @@ namespace GrowthWare.WebSupport.Utilities
                 profile.ImpersonateAccount = CryptoUtility.Encrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType);
             }
             BDirectories myBLL = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-            myBLL.Save(profile);
+            try
+            {
+                myBLL.Save(profile);
+            }
+            catch (DataAccessLayerException ex)
+            {
+                mLog.Error(ex);
+                throw new Exception("Could not save the directory infomation!");
+            }
             String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName;
             CacheController.RemoveFromCache(mCacheName);
         }

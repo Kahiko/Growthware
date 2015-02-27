@@ -157,6 +157,24 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions {
         protected global::System.Web.UI.WebControls.RequiredFieldValidator RequiredFieldValidator3;
         
         /// <summary>
+        /// trController control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlTableRow trController;
+        
+        /// <summary>
+        /// txtController control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox txtController;
+        
+        /// <summary>
         /// chkEnableViewState control.
         /// </summary>
         /// <remarks>

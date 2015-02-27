@@ -31,79 +31,80 @@
 
 	    function move(direction) {
 	        var functionSeqId = parseInt($("#<%=dropFunctions.ClientID %> option:selected").val());
-	        var options = GW.Model.DefaultWebMethodOptions();
-	        options.async = true;
-	        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
-	        GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
-	    }
+		    var options = GW.Model.DefaultWebMethodOptions();
+		    options.async = true;
+		    options.url = GW.Common.getBaseURL() + "/gw/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
+		    GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
+		}
 
-	    function moveError(xhr, status, error) {
-	        var mErrorMessage = 'Error getting content';
-	        mErrorMessage += '\nStatus: ' + status;
-	        mErrorMessage += '\nError: ' + error;
-	        mErrorMessage += '\nMessage: ' + xhr;
-	        alert(mErrorMessage);
-	    }
+		function moveError(xhr, status, error) {
+		    var mErrorException = JSON.parse(xhr.responseText);
+		    var mErrorMessage = 'Error getting content';
+		    mErrorMessage += '\nStatus: ' + status;
+		    mErrorMessage += '\nError: ' + error;
+		    mErrorMessage += '\nMessage: ' + mErrorException.ExceptionMessage;
+		    alert(mErrorMessage);
+		    GW.Search.GetSearchResults();
+		}
 
 		function getFunctionMenuOrder() {
 		    var functionSeqID = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
-		    var options = GW.Model.DefaultWebMethodOptions();
-		    var profile = {};
-		    profile.functionSeqId = functionSeqID;
-		    options.async = true;
-		    options.type = 'GET';
-		    //options.data = profile;
-		    options.contentType = 'application/json; charset=utf-8';
-		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
-		    GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
-		}
+	        var options = GW.Model.DefaultWebMethodOptions();
+	        var profile = {};
+	        profile.functionSeqId = functionSeqID;
+	        options.async = true;
+	        options.type = 'GET';
+	        options.contentType = 'application/json; charset=utf-8';
+	        options.dataType = 'json';
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
+	        GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
+	    }
 
-		function getFunctionMenuOrderSucess(xhr) {
-		    $("#functionOrderTable > tbody").empty()
-		    $("#functionOrderTemplate").tmpl(xhr).appendTo("#functionOrderTable > tbody");
-		    $("#functionOrderTable").css('display', '');
-		}
+	    function getFunctionMenuOrderSucess(xhr) {
+	        $("#functionOrderTable > tbody").empty()
+	        $("#functionOrderTemplate").tmpl(xhr).appendTo("#functionOrderTable > tbody");
+	        $("#functionOrderTable").css('display', '');
+	    }
 
-		// update the DOM level accessable variables to be used by SearchFuctions.aspx
-		function updateData() {
-		    var profile = {};
-		    var directoryInfo = {};
-		    var viewRoles = '';
-		    var addRoles = '';
-		    var editRoles = '';
-		    var deleteRoles = '';
+	    // update the DOM level accessable variables to be used by SearchFuctions.aspx
+	    function updateData() {
+	        var profile = {};
+	        var directoryInfo = {};
+	        var viewRoles = '';
+	        var addRoles = '';
+	        var editRoles = '';
+	        var deleteRoles = '';
 
-		    viewRoles = $.map($('#RolesControl_ctlViewRoles_DstList option'), function (e) { return $(e).val(); });
-		    addRoles = $.map($('#RolesControl_ctlAddRoles_DstList option'), function (e) { return $(e).val(); });
-		    editRoles = $.map($('#RolesControl_ctlEditRoles_DstList option'), function (e) { return $(e).val(); });
-		    deleteRoles = $.map($('#RolesControl_ctlDeleteRoles_DstList option'), function (e) { return $(e).val(); });
+	        viewRoles = $.map($('#RolesControl_ctlViewRoles_DstList option'), function (e) { return $(e).val(); });
+	        addRoles = $.map($('#RolesControl_ctlAddRoles_DstList option'), function (e) { return $(e).val(); });
+	        editRoles = $.map($('#RolesControl_ctlEditRoles_DstList option'), function (e) { return $(e).val(); });
+	        deleteRoles = $.map($('#RolesControl_ctlDeleteRoles_DstList option'), function (e) { return $(e).val(); });
 
-		    viewGroups = $.map($('#GroupsControl_ctlViewGroups_DstList option'), function (e) { return $(e).val(); });
-		    addGroups = $.map($('#GroupsControl_ctlAddGroups_DstList option'), function (e) { return $(e).val(); });
-		    editGroups = $.map($('#GroupsControl_ctlEditGroups_DstList option'), function (e) { return $(e).val(); });
-		    deleteGroups = $.map($('#GroupsControl_ctlDeleteGroups_DstList option'), function (e) { return $(e).val(); });
+	        viewGroups = $.map($('#GroupsControl_ctlViewGroups_DstList option'), function (e) { return $(e).val(); });
+	        addGroups = $.map($('#GroupsControl_ctlAddGroups_DstList option'), function (e) { return $(e).val(); });
+	        editGroups = $.map($('#GroupsControl_ctlEditGroups_DstList option'), function (e) { return $(e).val(); });
+	        deleteGroups = $.map($('#GroupsControl_ctlDeleteGroups_DstList option'), function (e) { return $(e).val(); });
 
-		    functionRolesGroups = {};
-		    functionRolesGroups.ViewRoles = viewRoles;
-		    functionRolesGroups.AddRoles = addRoles;
-		    functionRolesGroups.EditRoles = editRoles;
-		    functionRolesGroups.DeleteRoles = deleteRoles;
+	        functionRolesGroups = {};
+	        functionRolesGroups.ViewRoles = viewRoles;
+	        functionRolesGroups.AddRoles = addRoles;
+	        functionRolesGroups.EditRoles = editRoles;
+	        functionRolesGroups.DeleteRoles = deleteRoles;
 
-		    functionRolesGroups.ViewGroups = viewGroups;
-		    functionRolesGroups.AddGroups = addGroups;
-		    functionRolesGroups.EditGroups = editGroups;
-		    functionRolesGroups.DeleteGroups = deleteGroups;
+	        functionRolesGroups.ViewGroups = viewGroups;
+	        functionRolesGroups.AddGroups = addGroups;
+	        functionRolesGroups.EditGroups = editGroups;
+	        functionRolesGroups.DeleteGroups = deleteGroups;
 
-		    profile = {};
-		    profile.Id = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
+	        profile = {};
+	        profile.Id = parseInt($("#<%=divFunctionSeqId.ClientID %>").html());
 		    // action is not being picked up ...
-		    if (profile.Id == -1) {
-		        profile.Action = $("#<%=txtAction.ClientID %>").val();
-		    } else {
-		        profile.Action = $("#<%=divAction.ClientID %>").html();
-		    }
-		    profile.Description = $("#<%=txtDescription.ClientID %>").val();
+			if (profile.Id == -1) {
+			    profile.Action = $("#<%=txtAction.ClientID %>").val();
+			} else {
+			    profile.Action = $("#<%=divAction.ClientID %>").html();
+			}
+            profile.Description = $("#<%=txtDescription.ClientID %>").val();
 		    profile.EnableNotifications = $("#<%=chkEnableNotifications.ClientID %>").is(":checked");
 		    profile.EnableViewState = $("#<%=chkEnableViewState.ClientID %>").is(':checked');
 		    profile.FunctionTypeSeqID = parseInt($("#<%=dropFunctionType.ClientID %> option:selected").val());
@@ -117,7 +118,7 @@
 		    profile.ParentID = parseInt($("#<%=dropNavParent.ClientID %> option:selected").val());
 		    profile.RedirectOnTimeout = $("#<%=chkRedirectOnTimeout.ClientID %>").is(':checked');
 		    profile.Source = $("#<%=txtSource.ClientID %>").val();
-
+		    profile.Controller = $("#<%=txtController.ClientID%>").val();
 		    directoryInfo = {};
 		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
 		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
@@ -133,23 +134,25 @@
 		}
 
 		function saveAddEditFunciton($dialogWindow) {
-		    var theData = updateData();
-		    GW.Common.debug(theData);
-		    var options = GW.Model.DefaultWebMethodOptions();
-		    options.height = 585;
-		    options.width = 1050;
-		    options.async = false;
-		    options.data = theData;
-		    options.contentType = 'application/json; charset=utf-8';
-		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save?Action=SearchAccounts";
-		    GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
-		    profile = {};
-		    $dialogWindow.dialog("destroy");
-		    $dialogWindow.remove();
+		    if (Page_ClientValidate()) {
+		        var theData = updateData();
+		        GW.Common.debug(theData);
+		        var options = GW.Model.DefaultWebMethodOptions();
+		        options.height = 585;
+		        options.width = 1050;
+		        options.async = false;
+		        options.data = theData;
+		        options.contentType = 'application/json; charset=utf-8';
+		        options.dataType = 'json';
+		        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save?Action=SearchFunctions";
+		        GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
+		        profile = {};
+		        $dialogWindow.dialog("destroy");
+		        $dialogWindow.remove();
+		    }
 		}
 
-		function saveAddEditFuncitonSucess(xhr) {
+		function saveAddEditFuncitonSucess(xhr, status, error) {
 		    GW.Navigation.NavigationController.Refresh();
 		    GW.Search.GetSearchResults();
 		}
@@ -268,6 +271,17 @@
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" CssClass="failureNotification" ErrorMessage="Required (Relitive location of the module)" Text="(required)" Display="Dynamic" ControlToValidate="txtSource">(required)</asp:RequiredFieldValidator>
                                 </td>
                             </tr>
+                            <tr id="trController" runat="server">
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Controller: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtController" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
+                                </td>
+                            </tr>
                             <tr>
                                 <td colspan="3">
                                     <table style="width: 100%">
@@ -303,6 +317,9 @@
                         </div>
                         <div id="helpSource" style="display: none">
                             Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+                        </div>
+                        <div id="helpController" style="display: none">
+                            Note: Used for AngularJs implementations.<br />
                         </div>
                     </p>
                 </div>

@@ -150,6 +150,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
 				new SqlParameter("@P_Description", m_Profile.Description), 
 				new SqlParameter("@P_Function_Type_SeqID", m_Profile.FunctionTypeSeqId), 
 				new SqlParameter("@P_Source", m_Profile.Source), 
+                new SqlParameter("@P_Controller", m_Profile.Controller), 
 				new SqlParameter("@P_Enable_View_State", m_Profile.EnableViewState), 
 				new SqlParameter("@P_Enable_Notifications", m_Profile.EnableNotifications), 
 				new SqlParameter("@P_Redirect_On_Timeout", m_Profile.RedirectOnTimeout), 

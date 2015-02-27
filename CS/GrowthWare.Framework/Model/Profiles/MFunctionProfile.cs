@@ -59,10 +59,9 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="groups">The groups.</param>
         internal new void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            base.NameColumnName = "ACTION";
+            base.NameColumnName = "NAME";
             base.IdColumnName = "FUNCTION_SEQ_ID";
             m_FunctionTypeSeqId = base.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID");
-            Name = base.GetString(profileDataRow, "NAME");
             Description = base.GetString(profileDataRow, "DESCRIPTION");
             Notes = base.GetString(profileDataRow, "NOTES");
             Source = base.GetString(profileDataRow, "SOURCE");
