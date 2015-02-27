@@ -49,7 +49,7 @@ Public Class AddEditFunction
         txtAction.Text = m_Profile.Action
 
         txtSource.Text = m_Profile.Source
-
+        txtController.Text = m_Profile.Controller
         chkEnableViewState.Checked = m_Profile.EnableViewState
         chkEnableNotifications.Checked = m_Profile.EnableNotifications
         chkRedirectOnTimeout.Checked = m_Profile.RedirectOnTimeout

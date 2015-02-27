@@ -158,6 +158,24 @@ Partial Public Class AddEditFunction
     Protected WithEvents RequiredFieldValidator3 As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''trController control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents trController As Global.System.Web.UI.HtmlControls.HtmlTableRow
+
+    '''<summary>
+    '''txtController control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents txtController As Global.System.Web.UI.WebControls.TextBox
+
+    '''<summary>
     '''chkEnableViewState control.
     '''</summary>
     '''<remarks>

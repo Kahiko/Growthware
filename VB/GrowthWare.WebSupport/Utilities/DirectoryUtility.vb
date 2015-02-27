@@ -4,6 +4,7 @@ Imports GrowthWare.Framework.BusinessData.BusinessLogicLayer
 Imports System.Web
 Imports System.Collections.ObjectModel
 Imports System.Globalization
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
     Public Class DirectoryUtility
@@ -71,6 +72,7 @@ Namespace Utilities
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
             CacheController.RemoveFromCache(s_DirectoryInfoCachedName)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+            Dim mLog As Logger = Logger.Instance()
             Try
                 profile.ImpersonatePassword = CryptoUtility.Decrypt(profile.ImpersonatePassword, mSecurityEntityProfile.EncryptionType)
             Catch ex As CryptoUtilityException
@@ -87,7 +89,12 @@ Namespace Utilities
                 profile.ImpersonateAccount = CryptoUtility.Encrypt(profile.ImpersonateAccount, mSecurityEntityProfile.EncryptionType)
             End Try
             Dim mBLL As BDirectories = New BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement)
-            mBLL.Save(profile)
+            Try
+                mBLL.Save(profile)
+            Catch ex As DataAccessLayerException
+                mLog.Error(ex)
+                Throw New Exception("Could not save the directory infomation!")
+            End Try
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName
             CacheController.RemoveFromCache(mCacheName)
         End Sub

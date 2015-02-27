@@ -263,10 +263,16 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
 						if (typeof (onError) == 'function') {
 							onError(xhr, status, error);
 						} else {
-							var msgText = 'Error GW.Common.JQueryHelper.callWeb::\n responseText:' + xhr.responseText + '\n';
-							msgText = msgText + 'status: ' + status + '\n';
-							msgText = msgText + 'error: ' + error;
-							throw (msgText);
+						    var mErrorException = JSON.parse(xhr.responseText);
+						    var mErrorMessage = 'Error getting content';
+						    mErrorMessage += '\nStatus: ' + status;
+						    mErrorMessage += '\nError: ' + error;
+						    mErrorMessage += '\nMessage: ' + mErrorException.ExceptionMessage;
+						    alert(mErrorMessage);
+							//var msgText = 'Error GW.Common.JQueryHelper.callWeb::\n responseText:' + xhr.responseText + '\n';
+							//msgText = msgText + 'status: ' + status + '\n';
+							//msgText = msgText + 'error: ' + error;
+							//throw (msgText);
 						}
 					}
 				});

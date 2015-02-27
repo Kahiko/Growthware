@@ -1,50 +1,6 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="AddEditMessage.aspx.vb" Inherits="GrowthWare.WebApplication.AddEditMessage" %>
 
 <!DOCTYPE html>
-
-<script type="text/javascript" language="javascript">
-	$(document).ready(function () {
-	});
-
-	function updateData() {
-	    var profile = {};
-	    profile.Id = parseInt($("#<%=txtMessageSeqID.ClientID %>").val());
-		profile.Name = $("#<%=txtName.ClientID %>").val();
-		profile.Description = $("#<%=txtDescription.ClientID %>").val();
-		profile.Title = $("#<%=txtMessageTitle.ClientID %>").val();
-		profile.Body = escape($("#<%=txtMessageBody.ClientID%>").val());
-		profile.FormatAsHTML = $("#<%=chkFormatAsHTML.ClientID %>").is(":checked");
-		//The following properties will be handeled in the web method
-		// adding them here to prevent have to create new object to use in the server.
-		profile.SE_SEQ_ID = profile.Id;
-		profile.AddedBy = 0;
-		profile.AddedDate = new Date();
-		profile.UpdatedBy = 0;
-		profile.UpdatedDate = new Date();
-		var theData = { "profile": profile };
-		return theData;
-	}
-
-	function saveAddEdit($dialogWindow) {
-		if (Page_ClientValidate()) {
-		    var theData = updateData();
-		    // profile is defined in AddEditAccounts.aspx
-		    GW.Common.debug(theData);
-		    var options = GW.Model.DefaultWebMethodOptions();
-		    options.async = false;
-		    options.data = theData;
-		    options.contentType = 'application/json; charset=utf-8';
-		    options.dataType = 'json';
-		    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Messages/AddEditMessage.aspx/InvokeSave"
-		    GW.Common.JQueryHelper.callWeb(options);
-		    if (!($dialogWindow === undefined)) {
-		        $dialogWindow.dialog("destroy")
-		        $dialogWindow.remove();
-		    };
-		    GW.Search.GetSearchResults();
-		}
-	}
-</script>
 <form id="frmAddEditMessage" runat="server">
     <div>
 		<div class="pageDescription">
@@ -117,3 +73,51 @@
 		</table>
 	</div>
 </form>
+<script type="text/javascript" language="javascript">
+    $(document).ready(function () {
+    });
+
+    function updateData() {
+        var profile = {};
+        profile.Body = escape($("#<%=txtMessageBody.ClientID%>").val());
+        profile.Description = $("#<%=txtDescription.ClientID %>").val();
+        profile.FormatAsHtml = $("#<%=chkFormatAsHTML.ClientID %>").is(":checked");
+        profile.Id = parseInt($("#<%=txtMessageSeqID.ClientID %>").val());
+	    profile.Name = $("#<%=txtName.ClientID %>").val();
+        profile.Title = $("#<%=txtMessageTitle.ClientID %>").val();
+	    return profile;
+	}
+
+    function saveAddEditMessage($dialogWindow) {
+	    if (Page_ClientValidate()) {
+	        var profile = updateData();
+	        GW.Common.debug(profile);
+	        var options = GW.Model.DefaultWebMethodOptions();
+	        options.async = false;
+	        options.data = profile;
+	        options.contentType = 'application/json; charset=utf-8';
+	        options.dataType = 'json';
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Messages/Save?Action=SearchFunctions";
+	        GW.Common.JQueryHelper.callWeb(options, saveAddEditMessageSucess, saveAddEditMessageError);
+	        if (!($dialogWindow === undefined)) {
+	            $dialogWindow.dialog("destroy")
+	            $dialogWindow.remove();
+	        };
+	    }
+    }
+
+    function saveAddEditMessageSucess(xhr) {
+        GW.Search.GetSearchResults();
+    }
+
+
+    function saveAddEditMessageError(xhr, status, error) {
+        var mErrorException = JSON.parse(xhr.responseText);
+        var mErrorMessage = 'Error getting content';
+        mErrorMessage += '\nStatus: ' + status;
+        mErrorMessage += '\nError: ' + error;
+        mErrorMessage += '\nMessage: ' + mErrorException.ExceptionMessage;
+        alert(mErrorMessage);
+        GW.Search.GetSearchResults();
+    }
+</script>

@@ -38,11 +38,13 @@
 		}
 
 	    function moveError(xhr, status, error) {
+	        var mErrorException = JSON.parse(xhr.responseText);
 	        var mErrorMessage = 'Error getting content';
 	        mErrorMessage += '\nStatus: ' + status;
 	        mErrorMessage += '\nError: ' + error;
-	        mErrorMessage += '\nMessage: ' + xhr;
+	        mErrorMessage += '\nMessage: ' + mErrorException.ExceptionMessage;
 	        alert(mErrorMessage);
+	        GW.Search.GetSearchResults();
 	    }
 
 		function getFunctionMenuOrder() {
@@ -116,7 +118,7 @@
 			profile.ParentID = parseInt($("#<%=dropNavParent.ClientID %> option:selected").val());
 			profile.RedirectOnTimeout = $("#<%=chkRedirectOnTimeout.ClientID %>").is(':checked');
 			profile.Source = $("#<%=txtSource.ClientID %>").val();
-
+		    profile.Controller = $("#<%=txtController.ClientID%>").val();
 		    directoryInfo = {};
 		    directoryInfo.Directory = $("#<%=txtDirectory.ClientID %>").val();
 		    directoryInfo.Impersonate = $("#<%=chkImpersonation.ClientID %>").is(":checked");
@@ -150,10 +152,10 @@
 	        }
 		}
 
-		function saveAddEditFuncitonSucess(xhr) {
+	    function saveAddEditFuncitonSucess(xhr, status, error) {
 		    GW.Navigation.NavigationController.Refresh();
 			GW.Search.GetSearchResults();
-		}
+	    }
 	</script>
 </head>
 <body>
@@ -262,11 +264,22 @@
                                     <span class="formLabelText">Source: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
-                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Action Source')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Source Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
                                 </td>
                                 <td align="left">
                                     <asp:TextBox ID="txtSource" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
                                     <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" CssClass="failureNotification" ErrorMessage="Required (Relitive location of the module)" Text="(required)" Display="Dynamic" ControlToValidate="txtSource">(required)</asp:RequiredFieldValidator>
+                                </td>
+                            </tr>
+                            <tr id="trController" runat="server">
+                                <td align="right" valign="top">
+                                    <span class="formLabelText">Controller: </span>
+                                </td>
+                                <td style="width: 0px;" valign="top">
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
+                                </td>
+                                <td align="left">
+                                    <asp:TextBox ID="txtController" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
                                 </td>
                             </tr>
                             <tr>
@@ -304,6 +317,9 @@
                         </div>
                         <div id="helpSource" style="display: none">
                             Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+                        </div>
+                        <div id="helpController" style="display: none">
+                            Note: Used for AngularJs implementations.<br />
                         </div>
                     </p>
                 </div>

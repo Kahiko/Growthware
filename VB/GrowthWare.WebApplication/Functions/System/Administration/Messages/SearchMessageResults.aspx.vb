@@ -8,6 +8,7 @@ Public Class SearchMessageResults
     Inherits ClientChoicesPage
 
     Private m_ShowDeleteLink As Boolean = False
+    Protected m_SecurityInfo As MSecurityInfo = Nothing
 
     Public Property ShowDeleteLink() As Boolean
         Get
@@ -19,6 +20,7 @@ Public Class SearchMessageResults
     End Property
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
+        m_SecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
         noResults.Visible = False
         searchResults.HeaderStyle.ForeColor = ColorTranslator.FromHtml(ClientChoicesState(MClientChoices.HeaderForeColor))
         searchResults.HeaderStyle.BackColor = ColorTranslator.FromHtml(ClientChoicesState(MClientChoices.HeadColor))
@@ -61,16 +63,10 @@ Public Class SearchMessageResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString())
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteMessage('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString())
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Message_SeqID").ToString(), m_SecurityInfo.MayEdit)
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
             btnDetails.Attributes.Add("onclick", mEditOnClick)
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
-            End If
             ' add the hover behavior
             If e.Row.RowState = DataControlRowState.Normal Then
                 e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'")

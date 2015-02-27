@@ -14,6 +14,7 @@ Public Class AddEditMessage
             If mMessageSeqId > -1 Then
                 mProfile = MessageUtility.GetProfile(mMessageSeqId)
             End If
+            HttpContext.Current.Session.Add("EditId", mProfile.Id)
             populatePage(mProfile)
         End If
     End Sub

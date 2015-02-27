@@ -56,7 +56,7 @@
 				</asp:TemplateField>
 				<asp:TemplateField>
 					<HeaderTemplate>
-						<span><a href="#" name="headerSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);">Added_By</a>
+						<span><a href="#" name="headerSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);">Added By</a>
 							<img alt="" name="headerSortAdded_By" id="imgSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);" style="height: 16px; width: 16px;" />
 						</span>
 					</HeaderTemplate>
@@ -96,8 +96,6 @@
 		No results found
 	</div>
 </form>
-
-
 <script type="text/javascript">
 	$(document).ready(function () {
 		GW.Search.RecordsReturned = $('#recordsReturned').val();

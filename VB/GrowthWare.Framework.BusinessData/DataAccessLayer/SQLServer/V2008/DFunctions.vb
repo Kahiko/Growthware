@@ -131,6 +131,7 @@ Namespace DataAccessLayer.SQLServer.V2008
               New SqlParameter("@P_Description", m_Profile.Description),
               New SqlParameter("@P_Function_Type_SeqID", m_Profile.FunctionTypeSeqId),
               New SqlParameter("@P_Source", m_Profile.Source),
+              New SqlParameter("@P_Controller", m_Profile.Controller),
               New SqlParameter("@P_Enable_View_State", m_Profile.EnableViewState),
               New SqlParameter("@P_Enable_Notifications", m_Profile.EnableNotifications),
               New SqlParameter("@P_Redirect_On_Timeout", m_Profile.RedirectOnTimeout),

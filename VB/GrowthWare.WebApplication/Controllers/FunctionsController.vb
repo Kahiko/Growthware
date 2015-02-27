@@ -194,6 +194,7 @@ Namespace Controllers
                     profile.NoUI = uiProfile.NoUI
                     profile.ParentId = uiProfile.ParentID
                     profile.Source = uiProfile.Source
+                    profile.Controller = uiProfile.Controller
                     profile.Description = uiProfile.Description
                     profile.RedirectOnTimeout = uiProfile.RedirectOnTimeout
                     FunctionUtility.Save(profile, saveGroups, saveRoles)
@@ -251,6 +252,7 @@ Namespace Controllers
         Public RedirectOnTimeout As Boolean
         Public RolesAndGroups As UIFunctionRolesGroups
         Public Source As String
+        Public Controller As String
     End Class
 
     Public Class UIDirectoryProfile

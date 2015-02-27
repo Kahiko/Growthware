@@ -89,7 +89,7 @@
 				</asp:TemplateField>
 				<asp:TemplateField>
 					<HeaderTemplate>
-						<span style="white-space: nowrap;"><a href="#" name="headerSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);">Added_By</a>
+						<span style="white-space: nowrap;"><a href="#" name="headerSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);">Added By</a>
 							<img alt="" name="headerSortAdded_By" id="imgSortAdded_By" onclick="javascript:GW.Search.toggleSort(this);" style="height: 16px; width: 16px;" />
 						</span>
 					</HeaderTemplate>
@@ -105,7 +105,7 @@
 				</asp:TemplateField>
 				<asp:TemplateField>
 					<HeaderTemplate>
-						<span style="white-space: nowrap;"><a href="#" name="headerSortAdded_Date" onclick="javascript:GW.Search.toggleSort(this);">Added_Date</a>
+						<span style="white-space: nowrap;"><a href="#" name="headerSortAdded_Date" onclick="javascript:GW.Search.toggleSort(this);">Added Date</a>
 							<img alt="" name="headerSortAdded_Date" id="imgSortAdded_Date" onclick="javascript:GW.Search.toggleSort(this);" style="height: 16px; width: 16px;" />
 						</span>
 					</HeaderTemplate>

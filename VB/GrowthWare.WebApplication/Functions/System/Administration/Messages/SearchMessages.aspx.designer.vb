@@ -14,6 +14,15 @@ Option Explicit On
 Partial Public Class SearchMessages
 
     '''<summary>
+    '''frmSearchMessages control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents frmSearchMessages As Global.System.Web.UI.HtmlControls.HtmlForm
+
+    '''<summary>
     '''SearchControl control.
     '''</summary>
     '''<remarks>
