@@ -100,15 +100,18 @@ namespace GrowthWare.WebApplication.Controllers
         public List<UIFunctionMenuOrder> GetFunctionOrder([FromUri()] int functionSeqId) 
         {
             List<UIFunctionMenuOrder> mRetVal = new List<UIFunctionMenuOrder>();
-            MFunctionProfile profile = FunctionUtility.GetProfile(functionSeqId);
-            DataView myDataView = FunctionUtility.GetFunctionMenuOrder(profile).DefaultView;
-            foreach (DataRowView mRow in myDataView)
+            if (functionSeqId > 0) 
             {
-                UIFunctionMenuOrder mItem = new UIFunctionMenuOrder();
-                mItem.Function_Seq_Id = mRow["Function_Seq_Id"].ToString();
-                mItem.Name = mRow["Name"].ToString();
-                mItem.Action = mRow["Action"].ToString();
-                mRetVal.Add(mItem);
+                MFunctionProfile profile = FunctionUtility.GetProfile(functionSeqId);
+                DataView myDataView = FunctionUtility.GetFunctionMenuOrder(profile).DefaultView;
+                foreach (DataRowView mRow in myDataView)
+                {
+                    UIFunctionMenuOrder mItem = new UIFunctionMenuOrder();
+                    mItem.Function_Seq_Id = mRow["Function_Seq_Id"].ToString();
+                    mItem.Name = mRow["Name"].ToString();
+                    mItem.Action = mRow["Action"].ToString();
+                    mRetVal.Add(mItem);
+                }
             }
             return mRetVal;
         }

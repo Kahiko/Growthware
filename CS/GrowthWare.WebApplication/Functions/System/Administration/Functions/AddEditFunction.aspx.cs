@@ -91,17 +91,20 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 
         private void populateFucntionDrop()
         {
-            DataView mDataView = FunctionUtility.GetFunctionMenuOrder(m_Profile).DefaultView;
-            if (mDataView.Count > 0)
+            if (m_Profile.Id > 0) 
             {
-                mDataView.Sort = "[Name] ASC";
-                dropFunctions.DataSource = mDataView;
-                dropFunctions.DataValueField = "FUNCTION_SEQ_ID";
-                dropFunctions.DataTextField = "NAME";
-                dropFunctions.DataBind();
-                if (m_Profile.Id != -1)
+                DataView mDataView = FunctionUtility.GetFunctionMenuOrder(m_Profile).DefaultView;
+                if (mDataView.Count > 0)
                 {
-                    NameValuePairUtility.SetDropSelection(dropFunctions, m_Profile.Id.ToString());
+                    mDataView.Sort = "[Name] ASC";
+                    dropFunctions.DataSource = mDataView;
+                    dropFunctions.DataValueField = "FUNCTION_SEQ_ID";
+                    dropFunctions.DataTextField = "NAME";
+                    dropFunctions.DataBind();
+                    if (m_Profile.Id != -1)
+                    {
+                        NameValuePairUtility.SetDropSelection(dropFunctions, m_Profile.Id.ToString());
+                    }
                 }
             }
         }
