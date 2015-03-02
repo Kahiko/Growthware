@@ -20,7 +20,7 @@
     });
 
     function addNew() {
-        editAccount(-1);
+        editAccount(-1, true);
         return true;
     }
 

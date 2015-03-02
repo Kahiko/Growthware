@@ -19,11 +19,12 @@
     });
 
     function addNew(e) {
-        edit(-1);
+        edit(-1, true);
         return true;
     }
 
     function edit(messageSeqId, mayEdit) {
+        if (typeof mayEdit == undefined) mayEdit = false;
         var options = GW.Model.DefaultDialogOptions();
         options.title = 'Add or Edit Messages';
         options.height = 700;

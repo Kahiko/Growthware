@@ -15,7 +15,7 @@
 	});
 
 	function addNew(e) {
-		edit(-1);
+	    edit(-1, true);
 		return true;
 	}
 
