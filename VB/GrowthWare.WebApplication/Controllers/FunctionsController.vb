@@ -76,15 +76,17 @@ Namespace Controllers
         <HttpGet>
         Public Function GetFunctionOrder(<FromUri()> ByVal functionSeqId As Integer) As List(Of UIFunctionMenuOrder)
             Dim mRetVal As List(Of UIFunctionMenuOrder) = New List(Of UIFunctionMenuOrder)
-            Dim mProfile As MFunctionProfile = FunctionUtility.GetProfile(functionSeqId)
-            Dim mDataView As DataView = FunctionUtility.GetFunctionMenuOrder(mProfile).DefaultView
-            For Each mRow As DataRowView In mDataView
-                Dim mItem As UIFunctionMenuOrder = New UIFunctionMenuOrder()
-                mItem.Function_Seq_Id = mRow("Function_Seq_Id").ToString()
-                mItem.Name = mRow("Name").ToString()
-                mItem.Action = mRow("Action").ToString()
-                mRetVal.Add(mItem)
-            Next
+            If functionSeqId > 0 Then
+                Dim mProfile As MFunctionProfile = FunctionUtility.GetProfile(functionSeqId)
+                Dim mDataView As DataView = FunctionUtility.GetFunctionMenuOrder(mProfile).DefaultView
+                For Each mRow As DataRowView In mDataView
+                    Dim mItem As UIFunctionMenuOrder = New UIFunctionMenuOrder()
+                    mItem.Function_Seq_Id = mRow("Function_Seq_Id").ToString()
+                    mItem.Name = mRow("Name").ToString()
+                    mItem.Action = mRow("Action").ToString()
+                    mRetVal.Add(mItem)
+                Next
+            End If
             Return mRetVal
         End Function
 

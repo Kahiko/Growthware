@@ -70,17 +70,18 @@ Public Class AddEditFunction
     End Sub
 
     Private Sub populateFucntionDrop()
-        Dim mDataView As DataView = FunctionUtility.GetFunctionMenuOrder(m_Profile).DefaultView
-        If mDataView.Count > 0 Then
-            mDataView.Sort = "[Name] ASC"
-            dropFunctions.DataSource = mDataView
-            dropFunctions.DataValueField = "FUNCTION_SEQ_ID"
-            dropFunctions.DataTextField = "NAME"
-            dropFunctions.DataBind()
-            If m_Profile.Id <> -1 Then
-                NameValuePairUtility.SetDropSelection(dropFunctions, m_Profile.Id.ToString())
+        If m_Profile.Id > 0 Then
+            Dim mDataView As DataView = FunctionUtility.GetFunctionMenuOrder(m_Profile).DefaultView
+            If mDataView.Count > 0 Then
+                mDataView.Sort = "[Name] ASC"
+                dropFunctions.DataSource = mDataView
+                dropFunctions.DataValueField = "FUNCTION_SEQ_ID"
+                dropFunctions.DataTextField = "NAME"
+                dropFunctions.DataBind()
+                If m_Profile.Id <> -1 Then
+                    NameValuePairUtility.SetDropSelection(dropFunctions, m_Profile.Id.ToString())
+                End If
             End If
-
         End If
     End Sub
 
