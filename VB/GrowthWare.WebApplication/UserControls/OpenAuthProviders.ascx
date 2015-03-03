@@ -4,8 +4,8 @@
         //window.location.hash = "?Action=GenericHome";
         //window.location.hash = "?Action=OpenAuthProviderLogon&provider=" + provider;
         //window.location = GW.Common.getBaseURL() + "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
-        window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
-        //window.location = GW.Common.getBaseURL() + "#?Action=OpenAuthProviderLogon&provider=" + provider;
+        //window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
+        window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon.aspx?provider=" + provider;
     }
 
 </script>
