@@ -11,7 +11,7 @@ Public Class SearchFunctionResults
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         'Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
-        Dim mAction = "SearchFunctions"
+        Dim mAction = "Search_Functions"
         If (Not String.IsNullOrEmpty(mAction)) Then
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
             m_SecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())

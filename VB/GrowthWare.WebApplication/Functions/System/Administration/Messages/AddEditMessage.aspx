@@ -97,7 +97,7 @@
 	        options.data = profile;
 	        options.contentType = 'application/json; charset=utf-8';
 	        options.dataType = 'json';
-	        options.url = GW.Common.getBaseURL() + "/gw/api/Messages/Save?Action=SearchFunctions";
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Messages/Save?Action=Search_Functions";
 	        GW.Common.JQueryHelper.callWeb(options, saveAddEditMessageSucess, saveAddEditMessageError);
 	        if (!($dialogWindow === undefined)) {
 	            $dialogWindow.dialog("destroy")

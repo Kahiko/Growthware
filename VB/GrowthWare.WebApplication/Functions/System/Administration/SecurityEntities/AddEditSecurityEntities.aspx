@@ -36,7 +36,7 @@
 	                    options.data = theData;
 	                    options.contentType = 'application/json; charset=utf-8';
 	                    options.dataType = 'json';
-	                    options.url = GW.Common.getBaseURL() + "/gw/api/SecurityEntities/Save?Action=SearchSecurityEntities"
+	                    options.url = GW.Common.getBaseURL() + "/gw/api/SecurityEntities/Save?Action=Search_Security_Entities"
 	                    GW.Common.JQueryHelper.callWeb(options, saveAddEditSucess, saveAddEditError);
 	                    if (!($dialogWindow === undefined)) {
 	                        $dialogWindow.dialog("close");

@@ -33,7 +33,7 @@
 			var functionSeqId = parseInt($("#<%=dropFunctions.ClientID %> option:selected").val());
 		    var options = GW.Model.DefaultWebMethodOptions();
 			options.async = true;
-			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/MoveMenu?Action=SearchFunctions&functionSeqId=" + functionSeqId + "&direction=" + direction
+			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/MoveMenu?Action=Search_Functions&functionSeqId=" + functionSeqId + "&direction=" + direction
 			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrder, moveError);
 		}
 
@@ -56,7 +56,7 @@
 		    options.type = 'GET';
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionOrder?Action=SearchAccounts&functionSeqId=" + functionSeqID;
+			options.url = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionOrder?Action=Search_Accounts&functionSeqId=" + functionSeqID;
 			GW.Common.JQueryHelper.callWeb(options, getFunctionMenuOrderSucess);
 		}
 
@@ -113,7 +113,7 @@
 			profile.MetaKeyWords = $("#<%=txtKeyWords.ClientID %>").val();
 			profile.Name = $("#<%=txtName.ClientID %>").val();
 			profile.NavigationTypeSeqId = parseInt($("#<%=dropNavType.ClientID %> option:selected").val());
-			profile.Notes = $("#<%=txtDescription.ClientID %>").val();
+			profile.Notes = $("#<%=txtNotes.ClientID %>").val();
 			profile.NoUI = $("#<%=chkNoUI.ClientID %>").is(':checked');
 			profile.ParentID = parseInt($("#<%=dropNavParent.ClientID %> option:selected").val());
 			profile.RedirectOnTimeout = $("#<%=chkRedirectOnTimeout.ClientID %>").is(':checked');
@@ -144,7 +144,7 @@
 	            options.data = theData;
 	            options.contentType = 'application/json; charset=utf-8';
 	            options.dataType = 'json';
-	            options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save?Action=SearchFunctions";
+	            options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save?Action=Search_Functions";
 	            GW.Common.JQueryHelper.callWeb(options, saveAddEditFuncitonSucess);
 	            profile = {};
 	            $dialogWindow.dialog("destroy");

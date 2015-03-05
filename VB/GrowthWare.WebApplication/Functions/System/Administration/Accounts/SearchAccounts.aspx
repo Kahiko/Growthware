@@ -10,7 +10,7 @@
 	$(document).ready(function () {
 		GW.Search.init();
 		GW.Search.SearchColumn = 'Account';
-		GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/SearchAccountResults.aspx?Action=SearchAccounts&";
+		GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Accounts/SearchAccountResults.aspx?Action=Search_Accounts&";
 		GW.Search.Criteria.SelectedPage = 1;
 		GW.Search.Criteria.Columns = 'Account_SeqID, Account, First_Name, Last_Name, Email, Added_Date, Last_Login';
 		GW.Search.Criteria.OrderByColumn = 'Account';

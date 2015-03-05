@@ -13,7 +13,7 @@ Public Class EncryptDecrypt
     <WebMethod(CacheDuration:=0, EnableSession:=False)>
     Public Shared Function Encrypt(ByVal textValue) As String
         Dim mRetVal As String = "Not authroized"
-        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("EncryptionHelper"), AccountUtility.CurrentProfile())
+        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("Encryption_Helper"), AccountUtility.CurrentProfile())
         If mSecurityInfo.MayView Then
             mRetVal = CryptoUtility.Encrypt(textValue.Trim, SecurityEntityUtility.CurrentProfile().EncryptionType)
         End If

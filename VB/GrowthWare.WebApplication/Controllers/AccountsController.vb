@@ -196,8 +196,8 @@ Namespace Controllers
                         If Not mSecurityInfo Is Nothing Then
                             If mEditId <> -1 Then
                                 If mSecurityInfo.MayEdit Then
-                                    Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("ViewAccountRoleTab"), mCurrentAccountProfile)
-                                    Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("ViewAccountGroupTab"), mCurrentAccountProfile)
+                                    Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("View_Account_Role_Tab"), mCurrentAccountProfile)
+                                    Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("View_Account_Group_Tab"), mCurrentAccountProfile)
                                     mAccountProfileToSave = AccountUtility.GetProfile(mEditId)
                                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                                     mAccountProfileToSave.Id = uiProfile.Id

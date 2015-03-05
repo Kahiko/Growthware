@@ -5,7 +5,7 @@
 	$(document).ready(function () {
 	    GW.Search.init();
 	    GW.Search.SearchColumn = '[Name]';
-	    GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/SearchRoleResults.aspx?Action=SearchRoles&";
+	    GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/SearchRoleResults.aspx?Action=Search_Roles&";
 	    GW.Search.Criteria.SelectedPage = 1;
 	    GW.Search.Criteria.Columns = 'ROLE_SEQ_ID, Name, Description, Is_System, Is_System_Only, Added_By, Added_Date, Updated_by, Updated_Date';
 	    GW.Search.Criteria.OrderByColumn = '[Name]';
@@ -45,7 +45,7 @@
 		options.width = 500;
 		options.async = false;
 		options.resizable = true;
-		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/EditRoleMembers.aspx?Action=EditRoleMembers&ROLE_SEQ_ID=" + roleSeqId;
+		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/EditRoleMembers.aspx?Action=Edit_Role_Members&ROLE_SEQ_ID=" + roleSeqId;
 		options.buttons = {
 			'Save': function () { saveMembers($(this)); },
 			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }

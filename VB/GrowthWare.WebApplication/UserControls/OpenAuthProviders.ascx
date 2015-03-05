@@ -1,10 +1,6 @@
 ﻿<%@ Control Language="vb" AutoEventWireup="false" CodeBehind="OpenAuthProviders.ascx.vb" Inherits="GrowthWare.WebApplication.OpenAuthProviders" %>
 <script type="text/javascript">
     function useProvider(provider) {
-        //window.location.hash = "?Action=GenericHome";
-        //window.location.hash = "?Action=OpenAuthProviderLogon&provider=" + provider;
-        //window.location = GW.Common.getBaseURL() + "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
-        //window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon?provider=" + provider;
         window.location = "/Functions/System/ExternalAuth/OpenAuthProviderLogon.aspx?provider=" + provider;
     }
 
