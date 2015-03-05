@@ -210,7 +210,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 Print 'Adding GenericHome'
-set @V_MyAction = 'GenericHome'
+set @V_MyAction = 'Generic_Home'
 exec ZGWSecurity.Set_Function -1,'Home','Home',@V_Function_Type_SeqID,'Functions/System/Home/GenericHome.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,1,'Shown when not authenticated', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous',@V_ViewPermission,@V_SystemID,@V_Debug
@@ -313,7 +313,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 -- Search Security Entitys
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchSecurityEntities'
+set @V_MyAction = 'Search_Security_Entities'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
 exec ZGWSecurity.Set_Function -1,'Manage Security Entitys','Search Security Entitys',@V_Function_Type_SeqID,'Functions/System/Administration/SecurityEntities/SearchSecurityEntities.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to search a Security Entity.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -333,7 +333,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 print 'cache directory management'
 -- Add module
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'File Manager')
-SET @V_MyAction = 'ManageCacheDependency'
+SET @V_MyAction = 'Manage_Cache_Dependency'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageFiles')
 EXEC ZGWSecurity.Set_Function -1,'Manage Cachedependency','Manage Cachedependency',@V_Function_Type_SeqID,'Functions/System/FileManagement/FileManager.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to manage the cache dependency direcory.', @V_SystemID, @V_Debug
 -- Set security
@@ -349,7 +349,7 @@ EXEC ZGWOptional.Set_Directory @V_FunctionID ,'D:\Development\GrowthWare\2010\Gr
 PRINT 'cache directory management'
 -- Add module
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'File Manager')
-SET @V_MyAction = 'ManageLogs'
+SET @V_MyAction = 'Manage_Logs'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageFiles')
 EXEC ZGWSecurity.Set_Function -1,'Manage Logs','Manage Logs',@V_Function_Type_SeqID,'Functions/System/FileManagement/FileManager.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to manage the logs direcory.', @V_SystemID, @V_Debug
 SET @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -364,7 +364,7 @@ EXEC ZGWOptional.Set_Directory @V_FunctionID ,'D:\Development\GrowthWare\2010\Gr
 
 print 'Adding Manage Name/Value Pairs'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Menu Item')
-set @V_MyAction = 'ManageNameValuePairs'
+set @V_MyAction = 'Manage_Name_Value_Pairs'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
 exec ZGWSecurity.Set_Function -1,'Manage Name/Value Pairs','Manage Name/Value Pairs',@V_Function_Type_SeqID,'none','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Menu item for name/value pairs.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -383,7 +383,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_DeletePermiss
 
 print 'Adding Manage Groups'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'ManageGroups'
+set @V_MyAction = 'Manage_Groups'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Manage Groups','Manage Groups',@V_Function_Type_SeqID,'Functions/System/Administration/Groups/SearchGroups.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or edit roles.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -418,7 +418,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding Encryption Helper'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'EncryptionHelper'
+set @V_MyAction = 'Encryption_Helper'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
 exec ZGWSecurity.Set_Function -1,'Encryption Helper','Encryption Helper',@V_Function_Type_SeqID,'Functions/System/Administration/Encrypt/EncryptDecrypt.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Menu item for work flows.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -458,7 +458,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding Search Functions'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchFunctions'
+set @V_MyAction = 'Search_Functions'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageFunctions')
 exec ZGWSecurity.Set_Function -1,'Search Functions','Search Functions',@V_Function_Type_SeqID,'Functions/System/Administration/Functions/SearchFunctions.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Searches for functions in the system.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -583,7 +583,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_DeletePermiss
 
 print 'Adding Manage Roles'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchRoles'
+set @V_MyAction = 'Search_Roles'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Manage Roles','Manage Roles',@V_Function_Type_SeqID,'Functions/System/Administration/Roles/SearchRoles.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or edit roles.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -602,7 +602,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding ViewAccountRoleTab'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Security')
-set @V_MyAction = 'ViewAccountRoleTab'
+set @V_MyAction = 'View_Account_Role_Tab'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'ViewAccountRoleTab','View Accounts Roles Tab',@V_Function_Type_SeqID,'None','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used as a security holder for roles that can view the accounts role tab.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -610,7 +610,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding ViewFunctionRoleTab'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Security')
-set @V_MyAction = 'ViewFunctionRoleTab'
+set @V_MyAction = 'View_Function_Role_Tab'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'ViewFunctionRoleTab','View Functions Roles Tab',@V_Function_Type_SeqID,'None','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used as a security holder for roles that can view the functions role tab.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -618,7 +618,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding ViewAccountGroupTab'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Security')
-set @V_MyAction = 'ViewAccountGroupTab'
+set @V_MyAction = 'View_Account_Group_Tab'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'ViewAccountGroupTab','View Accounts Groups Tab',@V_Function_Type_SeqID,'None','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used as a security holder for groups that can view the accounts group tab.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -626,7 +626,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding ViewFunctionGroupTab'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Security')
-set @V_MyAction = 'ViewFunctionGroupTab'
+set @V_MyAction = 'View_Function_Group_Tab'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'ViewFunctionGroupTab','View Function Groups Tab',@V_Function_Type_SeqID,'None','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used as a security holder for groups that can view the functions group tab.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -634,7 +634,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding Search Accounts'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchAccounts'
+set @V_MyAction = 'Search_Accounts'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Manage Accounts','Manage Accounts',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/SearchAccounts.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to select accounts for edit.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -645,7 +645,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 print 'Adding Edit Role Members'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'EditRoleMembers'
+set @V_MyAction = 'Edit_Role_Members'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Edit Role Members','Edit Role Members',@V_Function_Type_SeqID,'Functions/System/Administration/Roles/EditRoleMembers.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UITrue,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or remove members of a role.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -663,7 +663,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermissio
 
 print 'Adding Edit Group Members'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'EditGroupMembers'
+set @V_MyAction = 'Edit_Group_Members'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Edit Group Members','Edit Group Members',@V_Function_Type_SeqID,'Functions/System/Administration/Groups/EditGroupMembers.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UITrue,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or remove members of a role.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -676,14 +676,6 @@ SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Actio
 exec ZGWSecurity.Set_Function -1,'Add A Group','Add A Group',@V_Function_Type_SeqID,'Functions/System/Administration/Groups/AddGroup.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UITrue,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add or remove members of a role.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
-
---print 'Adding Navigation'
---SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
---set @V_MyAction = 'VerticalMenu'
---SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
---exec ZGWSecurity.Set_Function -1,'Navigation','Navigation',@V_Function_Type_SeqID,'Functions/System/Navigation/VerticalMenuUserControl.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Contains link items for the vertical menus.', @V_SystemID, @V_Debug
---set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
---exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V_ViewPermission,@V_SystemID, @V_Debug
 
 print 'Adding Not Avalible'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
@@ -720,7 +712,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V
 
 print 'Adding Horizontal Hierarchical menu'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'HorizontalHierarchicalMenu'
+set @V_MyAction = 'Horizontal_Hierarchical_Menu'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Horizontal Hierarchical menu','Horizontal Hierarchical menu',@V_Function_Type_SeqID,'Functions/System/Menus/HHMenu.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsTrue,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Display''s Horizontal Hierarchical menu.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -728,7 +720,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V
 
 print 'Adding Vertical Hierarchical menu'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'VerticalHierarchicalMenu'
+set @V_MyAction = 'Vertical_Hierarchical_Menu'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Vertical Hierarchical menu','Vertical Hierarchical menu',@V_Function_Type_SeqID,'Functions/System/Menus/VHMenu.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsTrue,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Display''s Vertical Hierarchical menu.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -736,7 +728,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V
 
 print 'Adding Vertical menu'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'VerticalMenu'
+set @V_MyAction = 'Vertical_Menu'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Vertical menu','Vertical menu',@V_Function_Type_SeqID,'Functions/System/Menus/VMenu.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsTrue,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Display''s Vertical menu.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -744,7 +736,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Anonymous,Authenticated',@V
 
 print 'Adding Horizontal menu'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'HorizontalMenu'
+set @V_MyAction = 'Horizontal_Menu'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Horizontal menu','Horizontal menu',@V_Function_Type_SeqID,'Functions/System/Menus/HMenu.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsTrue,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Display''s Horizontal menu.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -779,21 +771,21 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 print 'Adding Add Security Entitys'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'AddSecurityEntities'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SearchSecurityEntities')
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Search_Security_Entities')
 exec ZGWSecurity.Set_Function -1,'Add Security Entitys','Add Security Entitys',@V_Function_Type_SeqID,'Functions/System/Administration/SecurityEntities/AddEditSecurityEntities.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to add a Security Entity.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Edit a Security Entity
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'EditASecurityEntity'
-SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SearchSecurityEntities')
+SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Search_Security_Entities')
 exec ZGWSecurity.Set_Function -1,'Edit a Security Entity','Edit a Security Entity',@V_Function_Type_SeqID,'Functions/System/Administration/SecurityEntities/AddEditSecurityEntities.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit a Security Entity.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 
 -- Search Name Value Pairs
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchNameValuePairs'
+set @V_MyAction = 'Search_Name_Value_Pairs'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'SystemAdministration')
 exec ZGWSecurity.Set_Function -1,'Manage Name/Value Pairs','Search Name Value Pairs',@V_Function_Type_SeqID,'Functions/System/Administration/NVP/SearchNVP.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to search a name/value pair.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -828,7 +820,7 @@ set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where acti
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Search Message
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchMessages'
+set @V_MyAction = 'Search_Messages'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
 exec ZGWSecurity.Set_Function -1,'Manage Messages','Manage Messages',@V_Function_Type_SeqID,'Functions/System/Administration/Messages/SearchMessages.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to search a Message.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -847,7 +839,7 @@ set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where acti
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 -- Search State
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
-set @V_MyAction = 'SearchStates'
+set @V_MyAction = 'Search_States'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'ManageStates')
 exec ZGWSecurity.Set_Function -1,'Search States','Search States',@V_Function_Type_SeqID,'Functions/System/Administration/States/SearchStates.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to search a State.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
@@ -928,7 +920,7 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 --Print 'Adding work flow details'
 ---- Setup Navigation_Types
 SET @V_NVP_SeqID = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Work_Flows')
-SET @V_MyAction = 'ChangePassword'
+SET @V_MyAction = 'Change_Password'
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 SET @V_Sort_Order = 1
 exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Change Password',@V_FunctionID,@V_ACTIVE, @V_Sort_Order,@V_SystemID, @V_PRIMARY_KEY, NULL, @v_Debug

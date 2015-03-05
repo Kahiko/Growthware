@@ -212,6 +212,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="GrowthWare_DB.publish.xml" />
+    <None Include="Changes For Previous DB Release.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GrowthWare_DB.refactorlog" />
