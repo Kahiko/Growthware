@@ -65,8 +65,8 @@ namespace GrowthWare.WebApplication.UserControls
                 hdnCanSaveStatus.Value = true.ToString();
             }
 
-            MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountRoleTab"), AccountUtility.CurrentProfile());
-            MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountGroupTab"), AccountUtility.CurrentProfile());
+            MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Role_Tab"), AccountUtility.CurrentProfile());
+            MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Group_Tab"), AccountUtility.CurrentProfile());
             if (String.IsNullOrEmpty(hdnCanSaveRoles.Value.ToString()))
             {
                 hdnCanSaveRoles.Value = mRoleTabSecurity.MayView.ToString();

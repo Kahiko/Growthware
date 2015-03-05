@@ -29,7 +29,7 @@
             mRefreshObject = new GW.Navigation.RefreshObject();
             mRefreshObject.ContentAreaID = 'VMenuDiv';
             mRefreshObject.Refresh = function refreshFunction() {
-                GW.Navigation.NavigationController.LoadPage('VerticalMenu', 'VMenuDiv');
+                GW.Navigation.NavigationController.LoadPage('Vertical_Menu', 'VMenuDiv');
             }
             GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 
@@ -37,7 +37,7 @@
             mRefreshObject = new GW.Navigation.RefreshObject();
             mRefreshObject.ContentAreaID = 'HorizontalDiv';
             mRefreshObject.Refresh = function refreshFunction() {
-                GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv');
+                GW.Navigation.NavigationController.LoadPage('Horizontal_Menu', 'HorizontalDiv');
             }
             GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 
@@ -45,7 +45,7 @@
             mRefreshObject = new GW.Navigation.RefreshObject();
             mRefreshObject.ContentAreaID = 'HorizontalDiv';
             mRefreshObject.Refresh = function refreshFunction() {
-                GW.Navigation.NavigationController.LoadPage('HorizontalMenu', 'HorizontalDiv2');
+                GW.Navigation.NavigationController.LoadPage('Horizontal_Menu', 'HorizontalDiv2');
             }
             GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 

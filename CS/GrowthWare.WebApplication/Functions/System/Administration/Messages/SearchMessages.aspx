@@ -9,7 +9,7 @@
     $(document).ready(function () {
         GW.Search.init();
         GW.Search.SearchColumn = '[Name]';
-        GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Messages/SearchMessageResults.aspx?Action=SearchMessages&";
+        GW.Search.URL = GW.Common.getBaseURL() + "/Functions/System/Administration/Messages/SearchMessageResults.aspx?Action=Search_Messages&";
         GW.Search.Criteria.SelectedPage = 1;
         GW.Search.Criteria.Columns = 'Message_SeqID, Name, Title, Description, Added_By, Added_Date, Updated_by, Updated_Date';
         GW.Search.Criteria.OrderByColumn = '[Name]';

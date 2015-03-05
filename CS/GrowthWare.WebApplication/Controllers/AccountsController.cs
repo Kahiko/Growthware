@@ -180,8 +180,8 @@ public class AccountsController : ApiController
                         {
                             if (mSecurityInfo.MayEdit) 
                             {
-                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountGroupTab"), mCurrentAccountProfile);
-                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("ViewAccountRoleTab"), mCurrentAccountProfile);
+                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Group_Tab"), mCurrentAccountProfile);
+                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Role_Tab"), mCurrentAccountProfile);
                                 mAccountProfileToSave = AccountUtility.GetProfile(mEditId);
                                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                                 string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
