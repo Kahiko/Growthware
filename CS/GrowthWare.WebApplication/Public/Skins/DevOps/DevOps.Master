@@ -25,8 +25,8 @@
                 // Create the refresh objects for all of the necessary UI elements
                 var mRefreshObject = new GW.Navigation.RefreshObject();
                 mRefreshObject.ContentAreaID = 'HorizontalHierarchicalDiv';
-                mRefreshObject.Refresh = function refresh() Horizontal_Hierarchical_Menu
-                    GW.Navigation.NavigationController.LoadPage("HorizontalHierarchicalMenu", "HorizontalHierarchicalDiv");
+                mRefreshObject.Refresh = function refresh() {
+                    GW.Navigation.NavigationController.LoadPage("Horizontal_Hierarchical_Menu", "HorizontalHierarchicalDiv");
                 }
                 GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 
