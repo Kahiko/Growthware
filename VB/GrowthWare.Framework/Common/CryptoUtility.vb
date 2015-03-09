@@ -79,7 +79,7 @@ Namespace Common
         ''' <returns>Encrypted string</returns>
         ''' <remarks>EncryptionType is case sensitive.</remarks>
         Public Shared Function Encrypt(ByVal valueToEncrypt As String, ByVal encryptionType As EncryptionType) As String
-            Return Encrypt(valueToEncrypt, encryptionType, "")
+            Return Encrypt(valueToEncrypt, encryptionType, ConfigSettings.EncryptionSaltExpression)
         End Function
 
         ''' <summary>
@@ -110,7 +110,7 @@ Namespace Common
         ''' <returns>Decrypted string</returns>
         ''' <remarks>EncryptionType is case sensitive</remarks>
         Public Shared Function Decrypt(ByVal valueToDecrypt As String, ByVal encryptionType As EncryptionType) As String
-            Return Decrypt(valueToDecrypt, encryptionType, "")
+            Return Decrypt(valueToDecrypt, encryptionType, ConfigSettings.EncryptionSaltExpression)
         End Function
 
         ''' <summary>
