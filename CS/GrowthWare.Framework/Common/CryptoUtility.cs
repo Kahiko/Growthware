@@ -85,7 +85,7 @@ namespace GrowthWare.Framework.Common
         /// <remarks>encryptionType is case sensitive.</remarks>
         public static string Encrypt(string valueToEncrypt, EncryptionType encryptionType)
         {
-            return Encrypt(valueToEncrypt, encryptionType, "");
+            return Encrypt(valueToEncrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
         }
 
         /// <summary>
@@ -119,7 +119,7 @@ namespace GrowthWare.Framework.Common
         /// <remarks></remarks>
         public static string Decrypt(string valueToDecrypt, EncryptionType encryptionType)
         {
-            return Decrypt(valueToDecrypt, encryptionType, "");
+            return Decrypt(valueToDecrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
         }
 
         /// <summary>
