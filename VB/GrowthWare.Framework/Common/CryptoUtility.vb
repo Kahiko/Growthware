@@ -79,26 +79,7 @@ Namespace Common
         ''' <returns>Encrypted string</returns>
         ''' <remarks>EncryptionType is case sensitive.</remarks>
         Public Shared Function Encrypt(ByVal valueToEncrypt As String, ByVal encryptionType As EncryptionType) As String
-            Select Case encryptionType
-                Case encryptionType.TripleDES
-                    '24 byte or 192 bit key for TripleDES
-                    Dim mKEY_192() As Byte = {83, 68, 91, 37, 128, 64, 92, 197, _
-                      87, 215, 61, 243, 148, 20, 252, 34, _
-                      38, 69, 83, 201, 74, 211, 6, 98}
-                    '24 byte or 192 bit Initialization Vector for TripleDES
-                    Dim mIV_192() As Byte = _
-                     {6, 55, 118, 219, 92, 197, 78, 69, _
-                      247, 110, 61, 189, 247, 110, 61, 189, _
-                      243, 148, 20, 252, 34, 133, 174, 189}
-
-                    s_KEY_192 = mKEY_192
-                    s_IV_192 = mIV_192
-                    Return encryptTripleDES(valueToEncrypt)
-                Case encryptionType.DES
-                    Return Encrypt(valueToEncrypt)
-                Case Else
-                    Return valueToEncrypt
-            End Select
+            Return Encrypt(valueToEncrypt, encryptionType, "")
         End Function
 
         ''' <summary>
@@ -129,24 +110,7 @@ Namespace Common
         ''' <returns>Decrypted string</returns>
         ''' <remarks>EncryptionType is case sensitive</remarks>
         Public Shared Function Decrypt(ByVal valueToDecrypt As String, ByVal encryptionType As EncryptionType) As String
-            Select Case encryptionType
-                Case encryptionType.TripleDES
-                    Return decryptTripleDES(valueToDecrypt)
-                Case encryptionType.DES
-                    Return decrypt(valueToDecrypt)
-                Case Else
-                    Try
-                        Return decryptTripleDES(valueToDecrypt)
-                    Catch ex As CryptoUtilityException
-                        ' do nothing
-                    End Try
-                    Try
-                        Return decrypt(valueToDecrypt)
-                    Catch ex As CryptoUtilityException
-                        ' do nothing
-                    End Try
-                    Return valueToDecrypt
-            End Select
+            Return Decrypt(valueToDecrypt, encryptionType, "")
         End Function
 
         ''' <summary>

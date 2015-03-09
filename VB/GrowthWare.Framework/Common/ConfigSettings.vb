@@ -353,6 +353,17 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Returns Encryption_SaltExpression from the CONFIG file
+        ''' </summary>
+        ''' <value>String</value>
+        ''' <returns>String</returns>
+        ''' <remarks></remarks>
+        Shared ReadOnly Property EncryptionSaltExpression() As String
+            Get
+                Return GetAppSettingValue("Encryption_SaltExpression")
+            End Get
+        End Property
+        ''' <summary>
         ''' Returns Failed_Attempts from the CONFIG file
         ''' </summary>
         ''' <value>String</value>
