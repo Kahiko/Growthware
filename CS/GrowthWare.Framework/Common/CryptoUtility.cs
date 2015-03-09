@@ -85,26 +85,7 @@ namespace GrowthWare.Framework.Common
         /// <remarks>encryptionType is case sensitive.</remarks>
         public static string Encrypt(string valueToEncrypt, EncryptionType encryptionType)
         {
-            switch (encryptionType)
-            {
-                case EncryptionType.TripleDes:
-                    //24 byte or 192 bit key for TripleDES
-                    byte[] mKEY_192 = { 83, 68, 91, 37, 128, 64, 92, 197, 87, 215, 
-					61, 243, 148, 20, 252, 34, 38, 69, 83, 201, 
-					74, 211, 6, 98 };
-                    //24 byte or 192 bit Initialization Vector for TripleDES
-                    byte[] mIV_192 = { 6, 55, 118, 219, 92, 197, 78, 69, 247, 110, 
-					61, 189, 247, 110, 61, 189, 243, 148, 20, 252, 
-					34, 133, 174, 189 };
-
-                    s_KEY_192 = mKEY_192;
-                    s_IV_192 = mIV_192;
-                    return encryptTripleDES(valueToEncrypt);
-                case EncryptionType.Des:
-                    return encrypt(valueToEncrypt);
-                default:
-                    return valueToEncrypt;
-            }
+            return Encrypt(valueToEncrypt, encryptionType, "");
         }
 
         /// <summary>
@@ -138,33 +119,7 @@ namespace GrowthWare.Framework.Common
         /// <remarks></remarks>
         public static string Decrypt(string valueToDecrypt, EncryptionType encryptionType)
         {
-            switch (encryptionType)
-            {
-                case EncryptionType.TripleDes:
-                    return decryptTripleDES(valueToDecrypt);
-                case EncryptionType.Des:
-                    return decrypt(valueToDecrypt);
-                default:
-                    try
-                    {
-                        return decryptTripleDES(valueToDecrypt);
-                    }
-                    catch (CryptoUtilityException)
-                    {
-                        // do nothing
-                    }
-
-                    try
-                    {
-                        return decrypt(valueToDecrypt);
-                    }
-                    catch (CryptoUtilityException)
-                    {
-                        // do nothing
-                    }
-
-                    return valueToDecrypt;
-            }
+            return Decrypt(valueToDecrypt, encryptionType, "");
         }
 
         /// <summary>

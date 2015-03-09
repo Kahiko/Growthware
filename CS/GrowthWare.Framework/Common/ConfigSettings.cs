@@ -291,6 +291,19 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
+        /// Returns Encryption_SaltExpression from the CONFIG file
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
+        public static String EncryptionSaltExpression
+        {
+            get
+            {
+                return GetAppSettingValue("Encryption_SaltExpression");
+            }
+        }
+        /// <summary>
         /// Returns Failed_Attempts from the CONFIG file
         /// </summary>
         /// <value>String</value>

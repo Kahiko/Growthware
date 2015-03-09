@@ -25,7 +25,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Encrypt
             MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile("Encryption_Helper"), AccountUtility.CurrentProfile());
             if (mSecurityInfo.MayView) 
             {
-                mRetVal = CryptoUtility.Encrypt(textValue.Trim(), SecurityEntityUtility.CurrentProfile().EncryptionType);
+                mRetVal = CryptoUtility.Encrypt(textValue.Trim(), SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression);
             }
             return mRetVal;
         }
@@ -34,10 +34,10 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Encrypt
         public static string Decrypt(string textValue)
         {
             string mRetVal = "Not Authorized";
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile("EncryptionHelper"), AccountUtility.CurrentProfile());
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile("Encryption_Helper"), AccountUtility.CurrentProfile());
             if (mSecurityInfo.MayView)
             {
-                mRetVal = CryptoUtility.Decrypt(textValue.Trim(), SecurityEntityUtility.CurrentProfile().EncryptionType);
+                mRetVal = CryptoUtility.Decrypt(textValue.Trim(), SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression);
             }
             return mRetVal;
         }
