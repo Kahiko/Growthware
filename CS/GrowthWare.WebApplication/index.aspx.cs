@@ -1,4 +1,5 @@
-﻿using GrowthWare.Framework.Model.Profiles;
+﻿using GrowthWare.Framework.Common;
+using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport.Base;
 using GrowthWare.WebSupport.Utilities;
 using System;
@@ -12,6 +13,10 @@ namespace GrowthWare.WebApplication
         protected new void Page_PreInit(object sender, EventArgs e)
         {
             base.Page_PreInit(sender, e);
+            if (ConfigSettings.ForceHttps && HttpContext.Current.Request.Url.Scheme.ToLowerInvariant() != "https") 
+            { 
+                Response.Redirect(ConfigSettings.RootSite); 
+            }
             MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
             String mMasterPage = "Public/Skins/" + mSecProfile.Skin + "/" + mSecProfile.Skin + ".master";
             string fileName = null;

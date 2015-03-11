@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Globalization;
+using System.Web;
 
 namespace GrowthWare.Framework.Common
 {
@@ -425,6 +426,28 @@ namespace GrowthWare.Framework.Common
         public static string RememberCookieName
         {
             get { return AppDisplayedName + "Remember_Me"; }
+        }
+
+        public static string RootSite
+        {
+            get
+            {
+                string mRetVal = string.Empty;
+                string mSchema = HttpContext.Current.Request.Url.Scheme;
+                if (ForceHttps)
+                {
+                    mSchema = "HTTPS";
+                }
+                if (HttpContext.Current.Request.ApplicationPath == "/")
+                {
+                    mRetVal = mSchema + "://" + HttpContext.Current.Request.ServerVariables["HTTP_HOST"] + "/";
+                }
+                else
+                {
+                    mRetVal = mSchema + "://" + HttpContext.Current.Request.ServerVariables["HTTP_HOST"] + "/" + AppName + "/";
+                }
+                return mRetVal;
+            }
         }
 
         /// <summary>
