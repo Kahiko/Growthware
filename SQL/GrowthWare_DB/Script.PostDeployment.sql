@@ -522,6 +522,7 @@ SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Actio
 exec ZGWSecurity.Set_Function -1,'Edit Account','Edit Account',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx','',@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit an account profile.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Authenticated',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Authenticated',@V_EditPermission,@V_SystemID,@V_Debug
 
 print 'Adding Edit Other Account'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
