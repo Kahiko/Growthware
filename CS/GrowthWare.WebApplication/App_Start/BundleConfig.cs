@@ -55,20 +55,20 @@ namespace GrowthWare.WebApplication
         );
 
         bundles.Add(
-            new StyleBundle("~/bundles/Content/Bootstrap").Include(
+            new StyleBundle("~/Content/Bootstrap").Include(
                 "~/" + ConfigSettings.AppName + "/Content/bootstrap-theme.css",
                 "~/" + ConfigSettings.AppName + "/Content/bootstrap.css"
             )
         );
 
         bundles.Add(
-            new StyleBundle("~/bundles/Content/GrowthWare").Include(
+            new StyleBundle("~/Content/GrowthWare").Include(
                 "~/" + ConfigSettings.AppName + "/Public/Growthware/Styles/GrowthWare.css"
             )
         );
 
         bundles.Add(
-            new StyleBundle("~/bundles/Content/jQueryUIRedmond").Include(
+            new StyleBundle("~/Content/jQueryUIRedmond").Include(
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"

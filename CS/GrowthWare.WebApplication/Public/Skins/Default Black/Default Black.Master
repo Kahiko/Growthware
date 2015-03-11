@@ -9,7 +9,7 @@
         <%: Scripts.Render("~/bundles/jquery") %>
         <%: Scripts.Render("~/bundles/jqueryUI") %>
         <%: Scripts.Render("~/bundles/GrowthWare")%>
-        <%: Styles.Render("~/bundles/Content/jQueryUIRedmond")%>
+        <%: Styles.Render("~/Content/jQueryUIRedmond")%>
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
         <script type="text/javascript" language="javascript">
@@ -96,7 +96,7 @@
                 });
             });
         </script>
-        <%: Styles.Render("~/bundles/Content/GrowthWare")%>
+        <%: Styles.Render("~/Content/GrowthWare")%>
         <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
         <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />    
     </head>
