@@ -489,6 +489,26 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Returns the FQDN of the web site.
+        ''' </summary>
+        ''' <value></value>
+        ''' <returns></returns>
+        ''' <remarks></remarks>
+        Shared ReadOnly Property RootSite() As String
+            Get
+                Dim mRetVal As String = String.Empty
+                Dim mSchema As String = HttpContext.Current.Request.Url.Scheme
+                If ForceHttps Then mSchema = "HTTPS"
+                If HttpContext.Current.Request.ApplicationPath = "/" Then
+                    mRetVal = mSchema + "://" + HttpContext.Current.Request.ServerVariables("HTTP_HOST") + "/"
+                Else
+                    mRetVal = mSchema + "://" + HttpContext.Current.Request.ServerVariables("HTTP_HOST") + "/" + AppName + "/"
+                End If
+                Return mRetVal
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Return LDAP_Domain from the CONFIG file
         ''' </summary>
         ''' <value></value>
