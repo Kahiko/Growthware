@@ -94,13 +94,24 @@
 
 	function logonSuccess(xhr) {
 	    GW.Common.debug(xhr);
+	    var currentAction = window.location.hash.substring(1);
+	    currentAction = currentAction.replace("?Action=", "");
 	    var $mClientMessage = $("#<%=clientMessage.ClientID %>");
-		var $mIncorrectLogon = $("#<%=incorrectLogon.ClientID %>");
+	    var $mIncorrectLogon = $("#<%=incorrectLogon.ClientID %>");
 	    var $mBtnRequestChange = $('#btnRequestChange');
 	    var $mLogonPage = $('#LogonPage');
 	    if (xhr.toString() == "true") {
-	        window.location.hash = "?Action=Favorite";
-	        jQuery.event.trigger('~reLoadUI');
+	        if (currentAction.length == 0) {
+	            window.location.hash = "?Action=Favorite";
+	        } else {
+	            if (currentAction.toLowerCase() != "logon") {
+	                window.location.hash = "?Action=" + currentAction;
+	            } else {
+	                window.location.hash = "?Action=Favorite";
+	            }
+	        }
+	        //jQuery.event.trigger('~reLoadUI');
+	        location.reload();
 	    } else {
 	        if (xhr.toString() == "Request") {
 	            $mBtnRequestChange.css({ display: 'inline' });
