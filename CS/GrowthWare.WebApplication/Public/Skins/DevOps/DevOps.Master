@@ -19,7 +19,7 @@
         </asp:ContentPlaceHolder>
         <%: Scripts.Render("~/bundles/bootstrap")%>
         <%--<%: Scripts.Render("~/bundles/angular")%>--%>
-        <%: Styles.Render("~/bundles/Content/Bootstrap")%>
+        <%: Styles.Render("~/Content/Bootstrap")%>
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {
                 // Create the refresh objects for all of the necessary UI elements
@@ -122,7 +122,7 @@
                 });
             });
         </script>
-        <%: Styles.Render("~/bundles/Content/GrowthWare")%>
+        <%: Styles.Render("~/Content/GrowthWare")%>
         <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
         <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 	</head>
