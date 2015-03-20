@@ -47,8 +47,8 @@ Public Class AddEditAccount1
         If String.IsNullOrEmpty(hdnCanSaveStatus.Value.ToString()) Then
             hdnCanSaveStatus.Value = True
         End If
-        Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Group_Tab", True)), AccountUtility.CurrentProfile)
-        Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Role_Tab", True)), AccountUtility.CurrentProfile)
+        Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Group_Tab", True)), AccountUtility.CurrentProfile)
+        Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Role_Tab", True)), AccountUtility.CurrentProfile)
         If String.IsNullOrEmpty(hdnCanSaveRoles.Value.ToString()) Then
             hdnCanSaveRoles.Value = mRoleTabSecurity.MayView
             tabsRoles.Visible = mRoleTabSecurity.MayView
