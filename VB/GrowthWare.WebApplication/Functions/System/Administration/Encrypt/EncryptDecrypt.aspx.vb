@@ -13,7 +13,7 @@ Public Class EncryptDecrypt
     <WebMethod(CacheDuration:=0, EnableSession:=False)>
     Public Shared Function Encrypt(ByVal textValue) As String
         Dim mRetVal As String = "Not authroized"
-        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("Encryption_Helper"), AccountUtility.CurrentProfile())
+        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Encryption_Helper", True)), AccountUtility.CurrentProfile())
         If mSecurityInfo.MayView Then
             mRetVal = CryptoUtility.Encrypt(textValue.Trim, SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression)
         End If
@@ -23,7 +23,7 @@ Public Class EncryptDecrypt
     <WebMethod(CacheDuration:=0, EnableSession:=False)>
     Public Shared Function Decrypt(ByVal textValue) As String
         Dim mRetVal As String = "Not authroized"
-        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("Encryption_Helper"), AccountUtility.CurrentProfile())
+        Dim mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Encryption_Helper", True)), AccountUtility.CurrentProfile())
         If mSecurityInfo.MayView Then
             mRetVal = CryptoUtility.Decrypt(textValue.Trim, SecurityEntityUtility.CurrentProfile().EncryptionType, ConfigSettings.EncryptionSaltExpression)
         End If

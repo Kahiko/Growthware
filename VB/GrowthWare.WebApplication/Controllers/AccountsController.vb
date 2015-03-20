@@ -195,21 +195,22 @@ Namespace Controllers
                         Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
                         If Not mSecurityInfo Is Nothing Then
                             If mEditId <> -1 Then
+                                If mCurrentAccountProfile.Id <> uiProfile.Id Then mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), mCurrentAccountProfile)
                                 If mSecurityInfo.MayEdit Then
-                                    Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("View_Account_Role_Tab"), mCurrentAccountProfile)
-                                    Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile("View_Account_Group_Tab"), mCurrentAccountProfile)
+                                    Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Group_Tab", True)), mCurrentAccountProfile)
+                                    Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Role_Tab", True)), mCurrentAccountProfile)
                                     mAccountProfileToSave = AccountUtility.GetProfile(mEditId)
                                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                                     mAccountProfileToSave.Id = uiProfile.Id
                                     Dim mGroups As String = String.Join(",", uiProfile.AccountGroups.Groups)
                                     Dim mRoles As String = String.Join(",", uiProfile.AccountRoles.Roles)
-                                    If mGroupTabSecurity.MayView Then
+                                    If mGroupTabSecurity.MayView And FunctionUtility.CurrentProfile().Action.ToLowerInvariant() = ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True).ToLower(CultureInfo.InvariantCulture) Then
                                         If mAccountProfileToSave.GetCommaSeparatedAssignedGroups <> mGroups Then
                                             mSaveGroups = True
                                             mAccountProfileToSave.SetGroups(mGroups)
                                         End If
                                     End If
-                                    If mRoleTabSecurity.MayView Then
+                                    If mRoleTabSecurity.MayView And FunctionUtility.CurrentProfile().Action.ToLowerInvariant() = ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True).ToLower(CultureInfo.InvariantCulture) Then
                                         If mAccountProfileToSave.GetCommaSeparatedAssignedRoles <> mRoles Then
                                             mSaveRoles = True
                                             mAccountProfileToSave.SetRoles(mRoles)

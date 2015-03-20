@@ -85,8 +85,8 @@ Namespace Model.Profiles
         ''' Initializes a new MSecurityInfo object given an object that implements ISecurityInfo.
         '''  All client permissions are calculated relative to the object and the client roles.
         ''' </summary>
-        ''' <param name="groupRolePermissionSecurity">IMGroupRolePermissionSecurity</param>
-        ''' <param name="profileWithDerivedRoles">A profile that implements IMGroupRoleSecurity.</param>
+        ''' <param name="groupRolePermissionSecurity">A profile(Function) that implements IMGroupRolePermissionSecurity.</param>
+        ''' <param name="profileWithDerivedRoles">A profile(Account) that implements IMGroupRoleSecurity.</param>
         ''' <remarks></remarks>
         Public Sub New(ByVal groupRolePermissionSecurity As IMGroupRolePermissionSecurity, ByVal profileWithDerivedRoles As IMGroupRoleSecurity)
             If groupRolePermissionSecurity Is Nothing Then Throw New ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!")
