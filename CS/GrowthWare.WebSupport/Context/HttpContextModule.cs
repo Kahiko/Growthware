@@ -171,13 +171,11 @@ namespace GrowthWare.WebSupport.Context
                                         {
                                             WebSupportException mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
                                             GWWebHelper.ExceptionError = mException;
-                                            //processOverridePage(FunctionUtility.GetProfile("Logon"));
-                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("Logon").Source;
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true)).Source;
                                             HttpContext.Current.Response.Redirect(mPage + "?Action=Logon");
                                         }
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                        //processOverridePage(FunctionUtility.GetProfile("AccessDenied"));
-                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("AccessDenied").Source;
+                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true)).Source;
                                         HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied");
                                     }
                                 }
@@ -185,7 +183,7 @@ namespace GrowthWare.WebSupport.Context
                                 {
                                     WebSupportException mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
                                     GWWebHelper.ExceptionError = mException;
-                                    MFunctionProfile mChangePasswordProfile = FunctionUtility.GetProfile("ChangePassword");
+                                    MFunctionProfile mChangePasswordProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
                                     string mChangePasswordPage = GWWebHelper.RootSite + ConfigSettings.AppName + mChangePasswordProfile.Source;
                                     HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword");
                                 }
