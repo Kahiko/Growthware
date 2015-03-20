@@ -178,15 +178,16 @@ public class AccountsController : ApiController
                     {
                         if (mEditId != 1)
                         {
+                            if(mCurrentAccountProfile.Id != uiProfile.Id) mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), mCurrentAccountProfile);
                             if (mSecurityInfo.MayEdit) 
                             {
-                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Group_Tab"), mCurrentAccountProfile);
-                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile("View_Account_Role_Tab"), mCurrentAccountProfile);
+                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Group_Tab", true)), mCurrentAccountProfile);
+                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Role_Tab", true)), mCurrentAccountProfile);
                                 mAccountProfileToSave = AccountUtility.GetProfile(mEditId);
                                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                                 string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
                                 string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
-                                if (mGroupTabSecurity.MayView) 
+                                if (mGroupTabSecurity.MayView && FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture)) 
                                 {
                                     if (mAccountProfileToSave.GetCommaSeparatedAssignedGroups != mGroups) 
                                     {
@@ -194,7 +195,7 @@ public class AccountsController : ApiController
                                         mAccountProfileToSave.SetGroups(mGroups);
                                     }
                                 }
-                                if (mRoleTabSecurity.MayView) 
+                                if (mRoleTabSecurity.MayView && FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture)) 
                                 {
                                     if (mAccountProfileToSave.GetCommaSeparatedAssignedRoles != mRoles) 
                                     {

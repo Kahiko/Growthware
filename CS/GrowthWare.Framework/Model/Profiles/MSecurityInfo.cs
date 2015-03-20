@@ -89,8 +89,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Initializes a new HSecurityInfo object given an object that implements ISecurityInfo.
         ///  All client permissions are calculated relative to the object and the client roles.
         /// </summary>
-        /// <param name="groupRolePermissionSecurity">The security info object.</param>
-        /// <param name="profileWithDerivedRoles">A profile that implements IMGroupRoleSecurity.</param>
+        /// <param name="groupRolePermissionSecurity">A profile(Function) that implements IMGroupRolePermissionSecurity.</param>
+        /// <param name="profileWithDerivedRoles">A profile(Account) that implements IMGroupRoleSecurity.</param>
         public MSecurityInfo(IMGroupRolePermissionSecurity groupRolePermissionSecurity, IMGroupRoleSecurity profileWithDerivedRoles)
         {
             if (groupRolePermissionSecurity == null) throw new ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!");
