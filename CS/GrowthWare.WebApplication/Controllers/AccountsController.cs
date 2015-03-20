@@ -181,8 +181,8 @@ public class AccountsController : ApiController
                             if(mCurrentAccountProfile.Id != uiProfile.Id) mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), mCurrentAccountProfile);
                             if (mSecurityInfo.MayEdit) 
                             {
-                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Group_Tab", true)), mCurrentAccountProfile);
-                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("View_Account_Role_Tab", true)), mCurrentAccountProfile);
+                                MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Group_Tab", true)), mCurrentAccountProfile);
+                                MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Role_Tab", true)), mCurrentAccountProfile);
                                 mAccountProfileToSave = AccountUtility.GetProfile(mEditId);
                                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                                 string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
