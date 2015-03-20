@@ -120,20 +120,18 @@ Namespace Context
                                         If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                                             Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
                                             GWWebHelper.ExceptionError = mException
-                                            'processOverridePage(FunctionUtility.GetProfile("Logon"))
-                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("Logon").Source
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True)).Source
                                             HttpContext.Current.Response.Redirect(mPage + "?Action=Logon")
                                         End If
                                         mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
-                                        'Dim mAccessDeniedProfile As MFunctionProfile = FunctionUtility.GetProfile("AccessDenied")
                                         'processOverridePage(mAccessDeniedProfile)
-                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile("AccessDenied").Source
+                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True)).Source
                                         HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied")
                                     End If
                                 Else
                                     Dim mException As WebSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
                                     GWWebHelper.ExceptionError = mException
-                                    Dim mChangePasswordProfile As MFunctionProfile = FunctionUtility.GetProfile("ChangePassword")
+                                    Dim mChangePasswordProfile As MFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
                                     Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mChangePasswordProfile.Source
                                     HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword")
                                 End If
