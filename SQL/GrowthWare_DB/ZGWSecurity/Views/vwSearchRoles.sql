@@ -6,8 +6,8 @@
 		R.[Is_System],
 		R.[Is_System_Only],
 		Added_By = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = R.Added_By),
-		Added_Date = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = R.Added_Date),
-		R.[Updated_By],
+		R.Added_Date,
+		[Updated_By] = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = R.Updated_By),
 		R.[Updated_Date],
 		RSE.Security_Entity_SeqID
 	FROM
