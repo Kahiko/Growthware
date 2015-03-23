@@ -192,7 +192,7 @@ Namespace Controllers
                 If Not HttpContext.Current.Items("EditId") Is Nothing Then
                     Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
                     If mEditId = uiProfile.Id Then
-                        Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
+                        Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
                         If Not mSecurityInfo Is Nothing Then
                             If mEditId <> -1 Then
                                 If mCurrentAccountProfile.Id <> uiProfile.Id Then mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), mCurrentAccountProfile)
@@ -293,7 +293,7 @@ Namespace Controllers
             If Not HttpContext.Current.Items("EditId") Is Nothing Then
                 Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
                 If mEditId = accountSeqId Then
-                    Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
+                    Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
                         If mSecurityInfo.MayDelete Then
                             Try
@@ -308,7 +308,7 @@ Namespace Controllers
                             Return Me.InternalServerError(mError)
                         End If
                     Else
-                        Dim mError As Exception = New Exception("Security Info is not in context nothing has been saved!!!!")
+                        Dim mError As Exception = New Exception("Security Info can not be determined nothing has been saved!!!!")
                         mLog.Error(mError)
                         Return Me.InternalServerError(mError)
                     End If

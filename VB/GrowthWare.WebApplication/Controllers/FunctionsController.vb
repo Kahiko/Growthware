@@ -18,7 +18,7 @@ Namespace Controllers
             If Not HttpContext.Current.Items("EditId") Is Nothing Then
                 Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
                 If mEditId = functionSeqID Then
-                    Dim mSecurityInfo As MSecurityInfo = DirectCast(HttpContext.Current.Items("SecurityInfo"), MSecurityInfo)
+                    Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
                         If mSecurityInfo.MayDelete Then
                             Try
@@ -114,6 +114,7 @@ Namespace Controllers
             If uiProfile Is Nothing Then Throw New ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!")
             Dim mLog As Logger = Logger.Instance()
             Dim mRetVal As String = "false"
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", True)), AccountUtility.CurrentProfile())
 
             If Not HttpContext.Current.Items("EditId") Is Nothing Then
                 Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
@@ -122,10 +123,20 @@ Namespace Controllers
                     Dim profile As MFunctionProfile = New MFunctionProfile()
                     Dim directoryProfile As MDirectoryProfile = Nothing
                     If Not uiProfile.Id = -1 Then
+                        If Not mSecurityInfo.MayAdd Then
+                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                            mLog.Error(mError)
+                            Return Me.InternalServerError(mError)
+                        End If
                         profile = FunctionUtility.GetProfile(uiProfile.Id)
                         profile.UpdatedBy = accountProfile.Id
                         profile.UpdatedDate = DateTime.Now
                     Else
+                        If Not mSecurityInfo.MayEdit Then
+                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to edit")
+                            mLog.Error(mError)
+                            Return Me.InternalServerError(mError)
+                        End If
                         profile.AddedBy = accountProfile.Id
                         profile.AddedDate = DateTime.Now
                     End If
