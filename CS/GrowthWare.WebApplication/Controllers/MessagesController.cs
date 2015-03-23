@@ -27,7 +27,7 @@ namespace GrowthWare.WebApplication.Controllers
                 int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
                 if (mEditId == messageSeqId)
                 {
-                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditMessages", true)), AccountUtility.CurrentProfile());
                     if (mSecurityInfo != null)
                     {
                         if (mSecurityInfo.MayDelete)
@@ -80,7 +80,7 @@ namespace GrowthWare.WebApplication.Controllers
                 int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
                 if (mEditId == profile.Id)
                 {
-                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditMessages", true)), AccountUtility.CurrentProfile());
                     if (mSecurityInfo != null)
                     {
                         if (mEditId != 1)
