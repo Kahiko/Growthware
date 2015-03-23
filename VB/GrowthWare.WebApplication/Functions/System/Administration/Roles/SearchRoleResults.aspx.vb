@@ -76,18 +76,9 @@ Public Class SearchRoleResults
         If rowType = DataControlRowType.DataRow Then
             Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString())
             Dim mEditMembersOnClick As String = "javascript:" + String.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString())
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteRole('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Name")))
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
             btnDetails.Attributes.Add("onclick", mEditOnClick)
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
-                If (DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() = "1" Or DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() = "1") Then
-                    btnDelete.Visible = False
-                End If
-            End If
             Dim btnMembers As HtmlImage = CType(e.Row.FindControl("btnMembers"), HtmlImage)
             If Not btnMembers Is Nothing Then btnMembers.Attributes.Add("onclick", mEditMembersOnClick)
             ' add the hover behavior
