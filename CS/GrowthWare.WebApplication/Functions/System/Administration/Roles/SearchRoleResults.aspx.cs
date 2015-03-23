@@ -15,13 +15,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
     {
         protected MAccountProfile m_AccountProfile = AccountUtility.CurrentProfile();
 
-        private bool m_ShowDeleteLink = false;
-
-        public bool ShowDeleteLink
-        {
-            get { return m_ShowDeleteLink; }
-            set { m_ShowDeleteLink = value; }
-        }
+        protected MSecurityInfo m_SecurityInfo = null;
 
         /// <summary>
         /// Page_s the init.
@@ -30,16 +24,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Init(Object sender, EventArgs e)
         {
-            string mAction = GWWebHelper.GetQueryValue(Request, "action");
-            if (!String.IsNullOrEmpty(mAction))
-            {
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                m_ShowDeleteLink = mSecurityInfo.MayDelete;
-            }
-            if (!m_ShowDeleteLink)
-            {
-                this.searchResults.Columns.RemoveAt(1);
-            }
+            m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
         }
 
         /// <summary>
@@ -95,7 +80,12 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString());
+                bool mayDelete = m_SecurityInfo.MayDelete;
+                if(DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() == "1" || DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() == "1")
+                {
+                    mayDelete = false;
+                }
+                String mEditOnClick = "javascript:" + string.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant());
                 String mEditMembersOnClick = "javascript:" + string.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString());
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
