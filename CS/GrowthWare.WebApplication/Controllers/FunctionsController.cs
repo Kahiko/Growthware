@@ -29,7 +29,7 @@ namespace GrowthWare.WebApplication.Controllers
                 int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
                 if (mEditId == functionSeqID)
                 {
-                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", true)), AccountUtility.CurrentProfile());
                     if (mSecurityInfo != null)
                     {
                         if (mSecurityInfo.MayDelete)
@@ -184,6 +184,7 @@ namespace GrowthWare.WebApplication.Controllers
         {
             if (uiProfile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
             string mRetVal = "false";
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", true)), AccountUtility.CurrentProfile());
             Logger mLog = Logger.Instance();
             if (HttpContext.Current.Items["EditId"] != null)
             {
@@ -195,12 +196,24 @@ namespace GrowthWare.WebApplication.Controllers
                     MDirectoryProfile directoryProfile = new MDirectoryProfile();
                     if (uiProfile.Id != -1)
                     {
+                        if (!mSecurityInfo.MayEdit) 
+                        {
+                            Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to edit");
+                            mLog.Error(mError);
+                            return this.InternalServerError(mError);
+                        }
                         profile = FunctionUtility.GetProfile(uiProfile.Id);
                         profile.UpdatedBy = mAccountProfile.Id;
                         profile.UpdatedDate = DateTime.Now;
                     }
                     else 
                     {
+                        if (!mSecurityInfo.MayAdd)
+                        {
+                            Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to add");
+                            mLog.Error(mError);
+                            return this.InternalServerError(mError);
+                        }
                         profile.AddedBy = mAccountProfile.Id;
                         profile.AddedDate = DateTime.Now;                    
                     }

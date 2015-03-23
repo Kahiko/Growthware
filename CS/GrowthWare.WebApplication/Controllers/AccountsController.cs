@@ -173,7 +173,7 @@ public class AccountsController : ApiController
                 int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
                 if (mEditId == uiProfile.Id)
                 {
-                    MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                    MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
                     if (mSecurityInfo != null)
                     {
                         if (mEditId != 1)
@@ -244,7 +244,7 @@ public class AccountsController : ApiController
                     }
                     else 
                     {
-                        Exception mError = new Exception("Security Info is not in context nothing has been saved!!!!");
+                        Exception mError = new Exception("Security Info can not be determined nothing has been saved!!!!");
                         mLog.Error(mError);
                         return this.InternalServerError(mError);            
                     }
@@ -292,7 +292,7 @@ public class AccountsController : ApiController
             int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
             if (mEditId == accountSeqId)
             {
-                MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
                 if (mSecurityInfo != null)
                 {
                     if (mSecurityInfo.MayDelete)
@@ -317,7 +317,7 @@ public class AccountsController : ApiController
                 }
                 else
                 {
-                    Exception mError = new Exception("Security Info is not in context nothing has been saved!!!!");
+                    Exception mError = new Exception("Security Info can not be determined nothing has been deleted!!!!");
                     mLog.Error(mError);
                     return this.InternalServerError(mError);
                 }
