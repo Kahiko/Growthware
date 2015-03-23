@@ -397,6 +397,7 @@
     <Compile Include="Controllers\AccountsController.vb" />
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\MessagesController.vb" />
+    <Compile Include="Controllers\RolesController.vb" />
     <Compile Include="Controllers\SecurityEntitiesController.vb" />
     <Compile Include="Controllers\SessionableControllerHandler .vb" />
     <Compile Include="Controllers\SessionStateRouteHandler .vb" />
