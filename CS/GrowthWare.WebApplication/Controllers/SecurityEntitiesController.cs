@@ -23,7 +23,7 @@ namespace GrowthWare.WebApplication.Controllers
             bool mRetVal = false;
             Logger mLog = Logger.Instance();
             var session = SessionStateUtility.GetHttpSessionStateFromContext(HttpContext.Current);
-            MSecurityInfo mSecurityInfo = (MSecurityInfo)HttpContext.Current.Items["SecurityInfo"];
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditSecurityEntity", true)), AccountUtility.CurrentProfile());
             if (mSecurityInfo != null)
             {
                 if (HttpContext.Current.Session["EditId"] != null)
