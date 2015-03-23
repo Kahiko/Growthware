@@ -32,7 +32,7 @@
 	        options.contentType = 'application/json; charset=utf-8';
 	        options.dataType = 'json';
 	        //options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx/InvokeSave"
-	        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save";
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Roles/Save";
 	        GW.Common.JQueryHelper.callWeb(options);
 	        if (!($dialogWindow === undefined)) {
 	            $dialogWindow.dialog("destroy")
