@@ -17,8 +17,9 @@
 		profile.Id = parseInt($("#<%=txtRoleSeqId.ClientID %>").val());
 		profile.Name = $("#<%=txtRole.ClientID %>").val();
 		profile.Description = $("#<%=txtDescription.ClientID %>").val();
-		var theData = { profile: profile };
-		return theData;
+		//var theData = { profile: profile };
+	    //return theData;
+	    return profile;
 	}
 
 	function saveAddEdit($dialogWindow) {
@@ -30,7 +31,8 @@
 	        options.data = theData;
 	        options.contentType = 'application/json; charset=utf-8';
 	        options.dataType = 'json';
-	        options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx/InvokeSave"
+	        //options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx/InvokeSave"
+	        options.url = GW.Common.getBaseURL() + "/gw/api/Functions/Save";
 	        GW.Common.JQueryHelper.callWeb(options);
 	        if (!($dialogWindow === undefined)) {
 	            $dialogWindow.dialog("destroy")

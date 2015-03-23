@@ -33,7 +33,7 @@
 	    var myButtons = {};
 	    if (mayEdit) {
 	        myButtons["Save"] = function () {
-	            saveAddEditFunciton($(this));
+	            saveAddEdit($(this));
 	        }
 	    }
 	    if (mayDelete) {
