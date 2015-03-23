@@ -9,26 +9,12 @@ Public Class SearchRoleResults
 
     Protected m_AccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
 
+    Protected m_SecurityInfo As MSecurityInfo = Nothing
+
     Private m_ShowDeleteLink As Boolean = False
 
-    Public Property ShowDeleteLink() As Boolean
-        Get
-            Return m_ShowDeleteLink
-        End Get
-        Set(ByVal value As Boolean)
-            m_ShowDeleteLink = value
-        End Set
-    End Property
-
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.PreInit
-        Dim mAction As String = GWWebHelper.GetQueryValue(Request, "action")
-        If Not String.IsNullOrEmpty(mAction) Then
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
-            m_ShowDeleteLink = mSecurityInfo.MayDelete
-        End If
-        If Not m_ShowDeleteLink Then
-            Me.searchResults.Columns.RemoveAt(1)
-        End If
+            m_SecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
@@ -74,7 +60,12 @@ Public Class SearchRoleResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString())
+            Dim mayDelete As Boolean = m_SecurityInfo.MayDelete
+            If DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() = "1" Or DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() = "1" Then
+                mayDelete = False
+            End If
+
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant())
             Dim mEditMembersOnClick As String = "javascript:" + String.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString())
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)

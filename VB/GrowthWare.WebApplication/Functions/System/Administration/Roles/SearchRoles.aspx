@@ -15,12 +15,13 @@
 	});
 
 	function addNew(e) {
-		edit(-1);
+	    edit(-1, true, false);
 		return true;
 	}
 
-	function edit(roleSeqId) {
-		mFunctionSeqID = roleSeqId;
+	function edit(roleSeqId, mayEdit, mayDelete) {
+	    if (typeof mayEdit == undefined) mayEdit = false;
+	    if (typeof mayDelete == undefined) mayDelete = false;
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Edit Role';
 		if (roleSeqId == -1) options.title = 'Add Role';
@@ -29,10 +30,28 @@
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/AddEditRole.aspx?RoleSeqID=" + roleSeqId;
-		options.buttons = {
-			'Save': function () { saveAddEdit($(this)); },
-			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+		var myButtons = {};
+		if (mayEdit) {
+		    myButtons["Save"] = function () {
+		        saveAddEditFunciton($(this));
+		    }
+		}
+		if (mayDelete) {
+		    myButtons["Delete"] = function () {
+		        var options = GW.Model.DefaultWebMethodOptions();
+		        options.async = true;
+		        options.url = GW.Common.getBaseURL() + "/gw/api/Roles/Delete?roleSeqId=" + roleSeqId;
+		        options.contentType = 'application/json; charset=utf-8';
+		        options.dataType = 'json';
+		        GW.Common.JQueryHelper.callWeb(options);
+		        $(this).dialog("close");
+		        GW.Search.GetSearchResults();
+		    }
 		};
+		myButtons["Cancel"] = function () {
+		    $(this).dialog("close");
+		}
+		options.buttons = myButtons;
 		var dialogId = 'addEditRole';
 		GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}
