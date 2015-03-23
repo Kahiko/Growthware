@@ -97,21 +97,9 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
             {
                 String mEditOnClick = "javascript:" + string.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString());
                 String mEditMembersOnClick = "javascript:" + string.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString());
-                String mDeleteOnClick = "javascript:" + string.Format("deleteRole('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString()).ToString();
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                //' Add confirmation to delete button
-                if (btnDelete != null)
-                {
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                    if (DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() == "1" || DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() == "1")
-                    {
-                        btnDelete.Visible = false;
-                    }
-
-                }
 
                 HtmlImage btnMembers = (HtmlImage)(e.Row.FindControl("btnMembers"));
                 btnMembers.Attributes.Add("onclick", mEditMembersOnClick);
