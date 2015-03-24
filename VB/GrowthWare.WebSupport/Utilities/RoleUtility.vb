@@ -4,6 +4,7 @@ Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.Model.Enumerations
 Imports System.Web
 Imports System.Globalization
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
     Public Class RoleUtility
@@ -120,9 +121,16 @@ Namespace Utilities
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             profile.SecurityEntityId = SecurityEntityUtility.CurrentProfile.Id
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
-            mBRoles.Save(profile)
-            RoleUtility.RemoveRoleCache(profile.SecurityEntityId)
-            FunctionUtility.RemoveCachedFunctions()
+            Try
+                mBRoles.Save(profile)
+                RoleUtility.RemoveRoleCache(profile.SecurityEntityId)
+                FunctionUtility.RemoveCachedFunctions()
+            Catch ex As DataAccessLayerException
+                Dim mEx As New Exception("Could not save the information due to database error please have your administrator check the logs for details.")
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(ex)
+                Throw mEx
+            End Try
         End Sub
 
         ''' <summary>

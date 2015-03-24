@@ -61,11 +61,13 @@ Public Class SearchRoleResults
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
             Dim mayDelete As Boolean = m_SecurityInfo.MayDelete
+            Dim mayEdit As Boolean = m_SecurityInfo.MayEdit
             If DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() = "1" Or DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() = "1" Then
                 mayDelete = False
+                mayEdit = False
             End If
 
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant())
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), mayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant())
             Dim mEditMembersOnClick As String = "javascript:" + String.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString())
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
