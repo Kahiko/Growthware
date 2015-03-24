@@ -7,8 +7,8 @@
 		var accounts = {};
 		accounts.Accounts = uiAccounts;
 		var roleSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
-		var theData = { roleSeqId: roleSeqId, accounts: accounts };
-		return theData;
+	    accounts.RoleSeqId = roleSeqId;
+	    return accounts;
 	}
 
 	function saveMembers($dialogWindow) {
@@ -19,8 +19,8 @@
 		options.data = theData;
 		options.contentType = 'application/json; charset=utf-8';
 		options.dataType = 'json';
-		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Roles/EditRoleMembers.aspx/InvokeSave"
-		GW.Common.JQueryHelper.callWeb(options, saveMembersSucess, saveMembersError);
+		options.url = GW.Common.getBaseURL() + "/gw/api/Roles/SaveRoleMembers";
+		GW.Common.JQueryHelper.callWeb(options, saveMembersSucess);
 		if (!($dialogWindow === undefined)) {
 			$dialogWindow.dialog("destroy")
 			$dialogWindow.remove();

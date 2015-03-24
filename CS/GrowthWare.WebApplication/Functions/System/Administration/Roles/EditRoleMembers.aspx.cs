@@ -20,6 +20,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
             txtEditID.Text = Request.QueryString[GWWebHelper.RoleDataKeyField].ToString();
             //HttpContext.Current.Session.Remove(AppConstants.ROLE_DATA_KEY_FIELD);
             myProfile.Id = int.Parse(txtEditID.Text);
+            HttpContext.Current.Session.Add("EditId", myProfile.Id);
             myProfile = RoleUtility.GetProfile(myProfile.Id);
             litRole.Text = myProfile.Name;
             myProfile.SecurityEntityId = int.Parse(ClientChoicesState[MClientChoices.SecurityEntityId].ToString());

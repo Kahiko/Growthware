@@ -201,7 +201,17 @@ namespace GrowthWare.WebSupport.Utilities
             if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be blank or a null reference (Nothing in Visual Basic)");
             bool success = false;
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            success = myBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
+            try
+            {
+                success = myBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
+            }
+            catch (DataAccessLayerException ex)
+            {
+                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw mEx;
+            }
             return success;
         }
 

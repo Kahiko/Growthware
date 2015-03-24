@@ -104,6 +104,30 @@ namespace GrowthWare.WebApplication.Controllers
             return Ok(mRetVal);
         }
 
+        [HttpPost()]
+        public IHttpActionResult SaveRoleMembers(UIRoleAccounts roleAccounts) 
+        {
+            string mRetVal = "false";
+            Logger mLog = Logger.Instance();
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditRoles", true)), AccountUtility.CurrentProfile());
+            if (!mSecurityInfo.MayEdit) 
+            {
+                Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to add");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);            
+            }
+            if (HttpContext.Current.Items["EditId"] == null)
+            {
+                Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            MAccountProfile accountProfile = AccountUtility.CurrentProfile();
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account);
+            bool success = RoleUtility.UpdateAllAccountsForRole(roleAccounts.RoleSeqId, int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId]), roleAccounts.Accounts, accountProfile.Id);
+            return Ok(mRetVal);
+        }
+
         MRoleProfile populateProfile(MUIRoleProfile profile) 
         { 
             MRoleProfile mRetVal = new MRoleProfile();
@@ -128,5 +152,11 @@ namespace GrowthWare.WebApplication.Controllers
         public bool IsSystem { get; set; }
 
         public bool IsSystemOnly { get; set; }
+    }
+
+    public class UIRoleAccounts
+    {
+        public int RoleSeqId;
+        public string[] Accounts;
     }
 }
