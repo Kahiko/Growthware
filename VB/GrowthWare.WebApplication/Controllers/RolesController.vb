@@ -75,6 +75,28 @@ Namespace Controllers
             Return Ok(mRetVal)
         End Function
 
+        <HttpPost>
+        Public Function SaveRoleMembers(ByVal roleAccounts As UIRoleAccounts) As IHttpActionResult
+            If roleAccounts Is Nothing Then Throw New ArgumentNullException("roleAccounts", "roleAccounts cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mLog As Logger = Logger.Instance()
+            Dim mRetVal As String = "false"
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditRoles", True)), AccountUtility.CurrentProfile())
+            If Not mSecurityInfo.MayEdit Then
+                Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            If HttpContext.Current.Items("EditId") Is Nothing Then
+                Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            Dim accountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+            Dim MClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account)
+            Dim success As Boolean = RoleUtility.UpdateAllAccountsForRole(roleAccounts.RoleSeqId, Integer.Parse(MClientChoicesState(MClientChoices.SecurityEntityId)), roleAccounts.Accounts, accountProfile.Id)
+            Return Ok(mRetVal)
+        End Function
+
         Private Function populateProfile(ByVal profile As MUIRoleProfile) As MRoleProfile
             Dim mRetVal As MRoleProfile = New MRoleProfile()
             mRetVal.Name = profile.Name
@@ -86,6 +108,11 @@ Namespace Controllers
             Return mRetVal
         End Function
 
+    End Class
+
+    Public Class UIRoleAccounts
+        Public RoleSeqId As Integer
+        Public Accounts() As String
     End Class
 
     Public Class MUIRoleProfile

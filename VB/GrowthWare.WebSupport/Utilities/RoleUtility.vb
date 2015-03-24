@@ -155,7 +155,16 @@ Namespace Utilities
         Public Shared Function UpdateAllAccountsForRole(roleId As Integer, securityEntitySeqId As Integer, accounts As String(), accountId As Integer) As Boolean
             If accounts Is Nothing Then Throw New ArgumentNullException("accounts", "accounts cannot be blank or a null reference (Nothing in Visual Basic)")
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
-            Return mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId)
+            Dim mRetVal As Boolean = False
+            Try
+                mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId)
+            Catch ex As DataAccessLayerException
+                Dim mEx As New Exception("Could not save the information due to database error please have your administrator check the logs for details.")
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(ex)
+                Throw mEx
+            End Try
+            Return mRetVal
         End Function
 
     End Class

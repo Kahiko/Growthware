@@ -9,11 +9,9 @@ Public Class EditRoleMembers
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim myProfile As MRoleProfile = New MRoleProfile()
         Dim accountSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
-        'if not accountSecurityInfo.MayEdit then btnSave.Visible = false
-        'txtEditID.Text = HttpContext.Current.Session(AppConstants.ROLE_DATA_KEY_FIELD).ToString()
         txtEditID.Text = Request.QueryString(GWWebHelper.RoleDataKeyField).ToString()
-        'HttpContext.Current.Session.Remove(AppConstants.ROLE_DATA_KEY_FIELD)
         myProfile.Id = Integer.Parse(txtEditID.Text)
+        HttpContext.Current.Session.Add("EditId", myProfile.Id)
         myProfile = RoleUtility.GetProfile(myProfile.Id)
         litRole.Text = myProfile.Name
         myProfile.SecurityEntityId = Integer.Parse(ClientChoicesState(MClientChoices.SecurityEntityId).ToString())
