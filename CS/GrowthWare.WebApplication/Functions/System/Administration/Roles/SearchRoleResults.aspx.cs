@@ -81,11 +81,13 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
             if (rowType == DataControlRowType.DataRow)
             {
                 bool mayDelete = m_SecurityInfo.MayDelete;
+                bool mayEdit = m_SecurityInfo.MayEdit;
                 if(DataBinder.Eval(e.Row.DataItem, "Is_System").ToString() == "1" || DataBinder.Eval(e.Row.DataItem, "Is_System_Only").ToString() == "1")
                 {
                     mayDelete = false;
+                    mayEdit = false;
                 }
-                String mEditOnClick = "javascript:" + string.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant());
+                String mEditOnClick = "javascript:" + string.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString(), mayEdit.ToString().ToLowerInvariant(), mayDelete.ToString().ToLowerInvariant());
                 String mEditMembersOnClick = "javascript:" + string.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "ROLE_SEQ_ID").ToString());
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);

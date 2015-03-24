@@ -15,10 +15,53 @@ namespace GrowthWare.WebApplication.Controllers
     {
 
         [HttpPost()]
-        public IHttpActionResult Save(MRoleProfile profile) 
+        public IHttpActionResult Delete([FromUri] int roleSeqId)
+        {
+            string mRetVal = "false";
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditRoles", true)), AccountUtility.CurrentProfile());
+            if (!mSecurityInfo.MayDelete)
+            {
+                Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
+                Logger mLog = Logger.Instance();
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            else 
+            {
+                if (HttpContext.Current.Items["EditId"] != null)
+                {
+                    int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                    if (mEditId == roleSeqId)
+                    {
+                        MRoleProfile mProfile = RoleUtility.GetProfile(roleSeqId);
+                        RoleUtility.DeleteRole(mProfile);
+                    }
+                    else
+                    {
+                        Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                        Logger mLog = Logger.Instance();
+                        mLog.Error(mError);
+                        return this.InternalServerError(mError);
+                    }
+                }
+                else 
+                {
+                    Exception mError = new Exception("The identifier unknown and nothing has been saved!!!!");
+                    Logger mLog = Logger.Instance();
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);
+                }
+            }
+
+            return Ok(mRetVal);
+        }
+
+        [HttpPost()]
+        public IHttpActionResult Save(MUIRoleProfile profile) 
         {
             if (profile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
             string mRetVal = "false";
+            MRoleProfile mProfileToSave = new MRoleProfile();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditRoles", true)), AccountUtility.CurrentProfile());
             Logger mLog = Logger.Instance();
             if (HttpContext.Current.Items["EditId"] != null) 
@@ -31,8 +74,8 @@ namespace GrowthWare.WebApplication.Controllers
                         mLog.Error(mError);
                         return this.InternalServerError(mError);
                     }
-                    profile.AddedBy = AccountUtility.CurrentProfile().Id;
-                    profile.AddedDate = DateTime.Now;
+                    mProfileToSave.AddedBy = AccountUtility.CurrentProfile().Id;
+                    mProfileToSave.AddedDate = DateTime.Now;
                 }
                 else 
                 {
@@ -42,20 +85,48 @@ namespace GrowthWare.WebApplication.Controllers
                         mLog.Error(mError);
                         return this.InternalServerError(mError);
                     }
-                    profile.UpdatedBy = AccountUtility.CurrentProfile().Id;
-                    profile.UpdatedDate = DateTime.Now;
+                    if (profile.IsSystem)
+                    {
+                        mProfileToSave.IsSystem = true;
+                    }
+                    if (profile.IsSystemOnly)
+                    {
+                        mProfileToSave.IsSystemOnly = true;
+                    }
+                    mProfileToSave = RoleUtility.GetProfile(profile.Id);
+
+                    mProfileToSave.UpdatedBy = AccountUtility.CurrentProfile().Id;
+                    mProfileToSave.UpdatedDate = DateTime.Now;
                 }
             }
-            if (profile.IsSystem)
-            {
-                profile.IsSystem = true;
-            }
-            if (profile.IsSystemOnly)
-            {
-                profile.IsSystemOnly = true;
-            }
-            RoleUtility.Save(profile);
+            mProfileToSave = populateProfile(profile);
+            RoleUtility.Save(mProfileToSave);
             return Ok(mRetVal);
         }
+
+        MRoleProfile populateProfile(MUIRoleProfile profile) 
+        { 
+            MRoleProfile mRetVal = new MRoleProfile();
+            mRetVal.Name = profile.Name;
+            mRetVal.Description = profile.Description;
+            mRetVal.Id = profile.Id;
+            mRetVal.IsSystem = profile.IsSystem;
+            mRetVal.IsSystemOnly = profile.IsSystemOnly;
+            mRetVal.SecurityEntityId = SecurityEntityUtility.CurrentProfile().Id;
+            return mRetVal;
+        }
+    }
+
+    public class MUIRoleProfile
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public string Description { get; set; }
+
+        public bool IsSystem { get; set; }
+
+        public bool IsSystemOnly { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using GrowthWare.WebSupport;
 using GrowthWare.WebSupport.Base;
 using GrowthWare.WebSupport.Utilities;
 using System;
+using System.Web;
 
 namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
 {
@@ -24,6 +25,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Roles
                 {
                     m_Profile = new MRoleProfile();
                 }
+                HttpContext.Current.Session.Add("EditId", m_Profile.Id);
                 populatePage();
             }
         }

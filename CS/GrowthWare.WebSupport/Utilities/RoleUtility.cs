@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.BusinessData.BusinessLogicLayer;
+using GrowthWare.Framework.BusinessData.DataAccessLayer;
 using GrowthWare.Framework.Common;
 using GrowthWare.Framework.Model.Profiles;
 using System;
@@ -49,7 +50,17 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if(profile == null)  throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            myBRoles.DeleteRole(profile);
+            try
+            {
+                myBRoles.DeleteRole(profile);
+            }
+            catch (DataAccessLayerException ex)
+            {
+                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw mEx;
+            }
             RemoveRoleCache(profile.SecurityEntityId);
             FunctionUtility.RemoveCachedFunctions();
         }
@@ -150,9 +161,19 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)");
             BRoles myBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            myBRoles.Save(profile);
-            RemoveRoleCache(profile.SecurityEntityId);
-            FunctionUtility.RemoveCachedFunctions();
+            try
+            {
+                myBRoles.Save(profile);
+                RemoveRoleCache(profile.SecurityEntityId);
+                FunctionUtility.RemoveCachedFunctions();
+            }
+            catch (DataAccessLayerException ex)
+            {
+                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw mEx;
+            }
         }
 
         /// <summary>
