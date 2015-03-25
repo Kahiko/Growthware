@@ -155,6 +155,10 @@
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
+    <Content Include="Functions\System\Administration\Groups\AddEditGroup.aspx" />
+    <Content Include="Functions\System\Administration\Groups\EditGroupMembers.aspx" />
+    <Content Include="Functions\System\Administration\Groups\SearchGroupResults.aspx" />
+    <Content Include="Functions\System\Administration\Groups\SearchGroups.aspx" />
     <Content Include="Functions\System\Administration\Logs\SetLogLevel.aspx" />
     <Content Include="Functions\System\Administration\Messages\AddEditMessage.aspx" />
     <Content Include="Functions\System\Administration\Messages\SearchMessageResults.aspx" />
@@ -381,6 +385,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountsController.cs" />
     <Compile Include="Controllers\FunctionsController.cs" />
+    <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecurityEntitiesController.cs" />
@@ -504,6 +509,34 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.designer.cs">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\AddEditGroup.aspx.cs">
+      <DependentUpon>AddEditGroup.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\AddEditGroup.aspx.designer.cs">
+      <DependentUpon>AddEditGroup.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.cs">
+      <DependentUpon>EditGroupMembers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.designer.cs">
+      <DependentUpon>EditGroupMembers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\SearchGroupResults.aspx.cs">
+      <DependentUpon>SearchGroupResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\SearchGroupResults.aspx.designer.cs">
+      <DependentUpon>SearchGroupResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\SearchGroups.aspx.cs">
+      <DependentUpon>SearchGroups.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\Groups\SearchGroups.aspx.designer.cs">
+      <DependentUpon>SearchGroups.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Logs\SetLogLevel.aspx.cs">
       <DependentUpon>SetLogLevel.aspx</DependentUpon>
