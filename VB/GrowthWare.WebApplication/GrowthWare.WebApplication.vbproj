@@ -530,14 +530,14 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\AddEditGroup.aspx.vb">
       <DependentUpon>AddEditGroup.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.designer.vb">
       <DependentUpon>EditGroupMembers.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.vb">
       <DependentUpon>EditGroupMembers.aspx</DependentUpon>
-      <SubType>ASPXCodebehind</SubType>
+      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\SearchGroupResults.aspx.designer.vb">
       <DependentUpon>SearchGroupResults.aspx</DependentUpon>

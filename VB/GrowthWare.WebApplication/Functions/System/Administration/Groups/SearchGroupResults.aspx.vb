@@ -9,23 +9,10 @@ Public Class SearchGroupResults
 
     Protected m_AccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
 
-    Private m_ShowDeleteLink As Boolean = False
-
-    Public Property ShowDeleteLink() As Boolean
-        Get
-            Return m_ShowDeleteLink
-        End Get
-        Set(ByVal value As Boolean)
-            m_ShowDeleteLink = value
-        End Set
-    End Property
+    Protected m_SecurityInfo As MSecurityInfo = Nothing
 
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As EventArgs) Handles Me.PreInit
-        Dim mAction As String = GWWebHelper.GetQueryValue(Request, "action")
-        If Not String.IsNullOrEmpty(mAction) Then
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(mAction), AccountUtility.CurrentProfile())
-            m_ShowDeleteLink = mSecurityInfo.MayDelete
-        End If
+        m_SecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
     End Sub
 
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As EventArgs) Handles Me.Load
@@ -71,17 +58,11 @@ Public Class SearchGroupResults
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString())
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), m_SecurityInfo.MayDelete.ToString().ToLowerInvariant())
             Dim mEditMembersOnClick As String = "javascript:" + String.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString())
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteGroup('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString())
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
             btnDetails.Attributes.Add("onclick", mEditOnClick)
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
-            End If
             Dim btnMembers As HtmlImage = CType(e.Row.FindControl("btnMembers"), HtmlImage)
             If Not btnMembers Is Nothing Then btnMembers.Attributes.Add("onclick", mEditMembersOnClick)
             ' add the hover behavior
