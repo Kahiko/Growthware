@@ -18,13 +18,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Groups
     {
         protected MAccountProfile m_AccountProfile = AccountUtility.CurrentProfile();
 
-        private bool m_ShowDeleteLink = false;
-
-        public bool ShowDeleteLink
-        {
-            get { return m_ShowDeleteLink; }
-            set { m_ShowDeleteLink = value; }
-        }
+        private MSecurityInfo m_SecurityInfo = null ;
 
         /// <summary>
         /// Page_s the init.
@@ -36,8 +30,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Groups
             string mAction = GWWebHelper.GetQueryValue(Request, "action");
             if (!String.IsNullOrEmpty(mAction))
             {
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                m_ShowDeleteLink = mSecurityInfo.MayDelete;
+                m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
             }
         }
 
@@ -89,18 +82,11 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Groups
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString());
+                String mEditOnClick = "javascript:" + String.Format("edit('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), m_SecurityInfo.MayDelete.ToString().ToLowerInvariant());
                 String mEditMembersOnClick = "javascript:" + String.Format("editMembers('{0}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString());
-                String mDeleteOnClick = "javascript:" + String.Format("deleteGroup('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "GROUP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString());
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                //' Add confirmation to delete button
-                if (btnDelete != null)
-                {
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                }
 
                 HtmlImage btnMembers = (HtmlImage)(e.Row.FindControl("btnMembers"));
                 btnMembers.Attributes.Add("onclick", mEditMembersOnClick);
