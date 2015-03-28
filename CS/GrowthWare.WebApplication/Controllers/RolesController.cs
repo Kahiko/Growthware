@@ -105,7 +105,7 @@ namespace GrowthWare.WebApplication.Controllers
         }
 
         [HttpPost()]
-        public IHttpActionResult SaveRoleMembers(UIRoleAccounts roleAccounts) 
+        public IHttpActionResult SaveMembers(UIAccounts roleAccounts) 
         {
             string mRetVal = "false";
             Logger mLog = Logger.Instance();
@@ -124,7 +124,7 @@ namespace GrowthWare.WebApplication.Controllers
             }
             MAccountProfile accountProfile = AccountUtility.CurrentProfile();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account);
-            bool success = RoleUtility.UpdateAllAccountsForRole(roleAccounts.RoleSeqId, int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId]), roleAccounts.Accounts, accountProfile.Id);
+            bool success = RoleUtility.UpdateAllAccountsForRole(roleAccounts.SeqId, int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId]), roleAccounts.Accounts, accountProfile.Id);
             return Ok(mRetVal);
         }
 
@@ -154,9 +154,9 @@ namespace GrowthWare.WebApplication.Controllers
         public bool IsSystemOnly { get; set; }
     }
 
-    public class UIRoleAccounts
+    public class UIAccounts
     {
-        public int RoleSeqId;
+        public int SeqId;
         public string[] Accounts;
     }
 }
