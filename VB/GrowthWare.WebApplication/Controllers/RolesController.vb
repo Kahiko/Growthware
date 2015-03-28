@@ -76,7 +76,7 @@ Namespace Controllers
         End Function
 
         <HttpPost>
-        Public Function SaveRoleMembers(ByVal roleAccounts As UIRoleAccounts) As IHttpActionResult
+        Public Function SaveMembers(ByVal roleAccounts As UIAccounts) As IHttpActionResult
             If roleAccounts Is Nothing Then Throw New ArgumentNullException("roleAccounts", "roleAccounts cannot be a null reference (Nothing in Visual Basic)!")
             Dim mLog As Logger = Logger.Instance()
             Dim mRetVal As String = "false"
@@ -93,7 +93,7 @@ Namespace Controllers
             End If
             Dim accountProfile As MAccountProfile = AccountUtility.CurrentProfile()
             Dim MClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account)
-            Dim success As Boolean = RoleUtility.UpdateAllAccountsForRole(roleAccounts.RoleSeqId, Integer.Parse(MClientChoicesState(MClientChoices.SecurityEntityId)), roleAccounts.Accounts, accountProfile.Id)
+            Dim success As Boolean = RoleUtility.UpdateAllAccountsForRole(roleAccounts.SeqId, Integer.Parse(MClientChoicesState(MClientChoices.SecurityEntityId)), roleAccounts.Accounts, accountProfile.Id)
             Return Ok(mRetVal)
         End Function
 
@@ -110,8 +110,8 @@ Namespace Controllers
 
     End Class
 
-    Public Class UIRoleAccounts
-        Public RoleSeqId As Integer
+    Public Class UIAccounts
+        Public SeqId As Integer
         Public Accounts() As String
     End Class
 

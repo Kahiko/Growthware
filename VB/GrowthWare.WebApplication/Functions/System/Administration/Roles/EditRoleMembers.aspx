@@ -19,7 +19,7 @@
 		options.data = theData;
 		options.contentType = 'application/json; charset=utf-8';
 		options.dataType = 'json';
-		options.url = GW.Common.getBaseURL() + "/gw/api/Roles/SaveRoleMembers";
+		options.url = GW.Common.getBaseURL() + "/gw/api/Roles/SaveMembers";
 		GW.Common.JQueryHelper.callWeb(options, saveMembersSucess, saveMembersError);
 		if (!($dialogWindow === undefined)) {
 			$dialogWindow.dialog("destroy")
