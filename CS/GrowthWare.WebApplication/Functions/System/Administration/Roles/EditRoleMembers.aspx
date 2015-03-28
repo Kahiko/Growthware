@@ -3,11 +3,11 @@
 
 <script type="text/javascript" language="javascript">
 	function updateData() {
-		var uiAccounts = $.map($('#ctlMembers_DstList option'), function (e) { return $(e).val(); });
-		var accounts = {};
-		accounts.Accounts = uiAccounts;
-		var roleSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
-	    accounts.SeqId = roleSeqId;
+	    var uiAccounts = $.map($('#ctlMembers_DstList option'), function (e) { return $(e).val(); });
+	    var accounts = {};
+	    accounts.Accounts = uiAccounts;
+	    var groupSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
+	    accounts.SeqId = groupSeqId;
 	    return accounts;
 	}
 
