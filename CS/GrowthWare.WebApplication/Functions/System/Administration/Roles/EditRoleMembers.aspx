@@ -7,7 +7,7 @@
 		var accounts = {};
 		accounts.Accounts = uiAccounts;
 		var roleSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
-	    accounts.RoleSeqId = roleSeqId;
+	    accounts.SeqId = roleSeqId;
 	    return accounts;
 	}
 
