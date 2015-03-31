@@ -26,8 +26,6 @@
         var roles = {};
         roles.Roles = uiRoles;
         var groupSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
-        var theData = { groupSeqId: groupSeqId, roles: roles };
-        return theData;
     }
 
     function saveMembers($dialogWindow) {
@@ -38,7 +36,7 @@
         options.data = theData;
         options.contentType = 'application/json; charset=utf-8';
         options.dataType = 'json';
-        options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/EditGroupMembers.aspx/InvokeSave"
+        options.url = GW.Common.getBaseURL() + "/gw/api/Groups/SaveMembers";
         GW.Common.JQueryHelper.callWeb(options, saveMembersSucess, saveMembersError);
         if (!($dialogWindow === undefined)) {
             $dialogWindow.dialog("destroy")
