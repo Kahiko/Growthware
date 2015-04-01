@@ -74,20 +74,26 @@ Namespace Controllers
             If groupAccounts Is Nothing Then Throw New ArgumentNullException("groupAccounts", "groupAccounts cannot be a null reference (Nothing in Visual Basic)!")
             Dim mLog As Logger = Logger.Instance()
             Dim mRetVal As String = "false"
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", True)), AccountUtility.CurrentProfile())
+            Dim mManageGroupsProfile As MFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", True))
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mManageGroupsProfile, AccountUtility.CurrentProfile())
             If Not mSecurityInfo.MayEdit Then
                 Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)
             End If
-            If HttpContext.Current.Items("EditId") Is Nothing Then
+            If HttpContext.Current.Items("EditId") Is Nothing Or HttpContext.Current.Items("EditId").ToString().ToLowerInvariant() <> groupAccounts.SeqId.ToString().ToLowerInvariant() Then
                 Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)
             End If
             Dim accountProfile As MAccountProfile = AccountUtility.CurrentProfile()
             Dim MClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account)
-            'Dim success As Boolean = GroupUtility.UpdateGroupRoles(groupAccounts.SeqId, Integer.Parse(MClientChoicesState(MClientChoices.SecurityEntityId)), groupAccounts.Accounts, accountProfile.Id)
+            Dim mProfile As New MGroupRoles
+            mProfile.SecurityEntityId = SecurityEntityUtility.CurrentProfile.Id
+            mProfile.GroupSeqId = groupAccounts.SeqId
+            mProfile.Roles = String.Join(",", groupAccounts.Accounts)
+            mProfile.AddedUpdatedBy = accountProfile.Id
+            GroupUtility.UpdateGroupRoles(mProfile)
             Return Ok(mRetVal)
         End Function
 

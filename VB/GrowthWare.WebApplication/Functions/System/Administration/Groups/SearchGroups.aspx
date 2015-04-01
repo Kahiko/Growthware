@@ -71,7 +71,7 @@
 			options.width = 500;
 			options.async = false;
 			options.resizable = true;
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/EditGroupMembers.aspx?Action=Edit_Group_Members&GROUP_SEQ_ID=" + groupSeqId;
+			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/EditGroupMembers.aspx?Action=Edit_Group_Members&GroupSeqId=" + groupSeqId;
 			options.buttons = {
 				'Save': function () { saveMembers($(this)); },
 				'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }

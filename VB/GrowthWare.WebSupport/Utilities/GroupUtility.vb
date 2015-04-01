@@ -2,6 +2,7 @@
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Web
+Imports GrowthWare.Framework.BusinessData.DataAccessLayer
 
 Namespace Utilities
     Public Class GroupUtility
@@ -74,6 +75,18 @@ Namespace Utilities
         End Function
 
         ''' <summary>
+        ''' Gets the selected roles.
+        ''' </summary>
+        ''' <param name="profile">The profile.</param>
+        ''' <returns>System.String[][].</returns>
+        Public Shared Function GetSelectedRoles(ByVal profile As MGroupRoles) As String()
+            If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim ClientRoles As New ArrayList
+            Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
+            Return mBGroups.GetSelectedRoles(profile)
+        End Function
+
+        ''' <summary>
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
@@ -108,10 +121,15 @@ Namespace Utilities
         Public Shared Sub UpdateGroupRoles(ByVal profile As MGroupRoles)
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
-            mBGroups.UpdateGroupRoles(profile)
+            Try
+                mBGroups.UpdateGroupRoles(profile)
+            Catch ex As Exception
+                Dim mLogger As Logger = Logger.Instance()
+                mLogger.Error(ex)
+                Throw New Exception("Could not associate the roles to the group please see the logs for details.")
+            End Try
             CacheController.RemoveAllCache()
         End Sub
-
     End Class
 End Namespace
 

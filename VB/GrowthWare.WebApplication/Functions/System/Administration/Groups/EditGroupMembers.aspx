@@ -39,7 +39,7 @@
 		options.contentType = 'application/json; charset=utf-8';
 		options.dataType = 'json';
 		options.url = GW.Common.getBaseURL() + "/gw/api/Groups/SaveMembers";
-		GW.Common.JQueryHelper.callWeb(options, saveMembersSucess, saveMembersError);
+		GW.Common.JQueryHelper.callWeb(options, saveMembersSucess);
 		if (!($dialogWindow === undefined)) {
 			$dialogWindow.dialog("destroy")
 			$dialogWindow.remove();
@@ -48,9 +48,5 @@
 
 	function saveMembersSucess() {
 		GW.Common.debug('done');
-	}
-
-	function saveMembersError() {
-		GW.Common.debug('error');
 	}
 </script>

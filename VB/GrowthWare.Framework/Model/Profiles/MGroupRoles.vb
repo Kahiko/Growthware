@@ -1,10 +1,13 @@
-﻿Namespace Model.Profiles
+﻿Imports GrowthWare.Framework.Model.Profiles.Base
+
+Namespace Model.Profiles
     ''' <summary>
     ''' Model object representing GroupRoles
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable(), CLSCompliant(True)>
     Public Class MGroupRoles
+        Inherits MProfile
 
         Private m_AddedUpdatedBy As Integer
         Private m_SecurityEntityId As Integer = -1
