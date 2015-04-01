@@ -77,6 +77,7 @@
     <Compile Include="Common\ConfigSettings.vb" />
     <Compile Include="Common\CryptoUtility.vb" />
     <Compile Include="Common\CryptoUtilityException.vb" />
+    <Compile Include="Common\DataHelper.vb" />
     <Compile Include="Common\Logger.vb" />
     <Compile Include="Common\NaturalComparer.vb" />
     <Compile Include="Common\ObjectFactory.vb" />
