@@ -106,6 +106,18 @@ namespace GrowthWare.WebSupport.Utilities
         }
 
         /// <summary>
+        /// Gets the selected roles.
+        /// </summary>
+        /// <param name="profile">The profile.</param>
+        /// <returns>System.String[][].</returns>
+        public static string[] GetSelectedRoles(MGroupRoles profile) 
+        {
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            return mBGroups.GetSelectedRoles(profile);
+        }
+
+        /// <summary>
         /// Adds the group.
         /// </summary>
         /// <param name="profile">The profile.</param>
@@ -144,7 +156,16 @@ namespace GrowthWare.WebSupport.Utilities
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            mBGroups.UpdateGroupRoles(profile);
+            try
+            {
+                mBGroups.UpdateGroupRoles(profile);
+            }
+            catch (Exception ex)
+            {
+                Logger mLogger = Logger.Instance();
+                mLogger.Error(ex);
+                throw new Exception("Could not associate the roles to the group please see the logs for details.");
+            }
             CacheController.RemoveAllCache();
         }
     }

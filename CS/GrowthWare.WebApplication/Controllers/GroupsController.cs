@@ -96,18 +96,18 @@ namespace GrowthWare.WebApplication.Controllers
         }
 
         [HttpPost()]
-        public IHttpActionResult SaveRoleMembers(UIAccounts roleAccounts)
+        public IHttpActionResult SaveMembers(UIAccounts groupAccounts)
         {
             string mRetVal = "false";
             Logger mLog = Logger.Instance();
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", true)), AccountUtility.CurrentProfile());
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", true)), AccountUtility.CurrentProfile());
             if (!mSecurityInfo.MayEdit)
             {
                 Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to add");
                 mLog.Error(mError);
                 return this.InternalServerError(mError);
             }
-            if (HttpContext.Current.Items["EditId"] == null)
+            if (HttpContext.Current.Items["EditId"] == null || HttpContext.Current.Items["EditId"].ToString().ToLowerInvariant() != groupAccounts.SeqId.ToString().ToLowerInvariant())
             {
                 Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
                 mLog.Error(mError);
@@ -115,7 +115,12 @@ namespace GrowthWare.WebApplication.Controllers
             }
             MAccountProfile accountProfile = AccountUtility.CurrentProfile();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountProfile.Account);
-            bool success = RoleUtility.UpdateAllAccountsForRole(roleAccounts.SeqId, int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId]), roleAccounts.Accounts, accountProfile.Id);
+            MGroupRoles mProfile = new MGroupRoles();
+            mProfile.SecurityEntityId = SecurityEntityUtility.CurrentProfile().Id;
+            mProfile.GroupSeqId = groupAccounts.SeqId;
+            mProfile.Roles = String.Join(",", groupAccounts.Accounts);
+            mProfile.AddedUpdatedBy = accountProfile.Id;
+            GroupUtility.UpdateGroupRoles(mProfile);
             return Ok(mRetVal);
         }
 

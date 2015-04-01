@@ -22,10 +22,12 @@
 </form>
 <script type="text/javascript" language="javascript">
     function updateData() {
-        var uiRoles = $.map($('#ctlMembers_DstList option'), function (e) { return $(e).val(); });
-        var roles = {};
-        roles.Roles = uiRoles;
+        var uiAccounts = $.map($('#ctlMembers_DstList option'), function (e) { return $(e).val(); });
+        var accounts = {};
+        accounts.Accounts = uiAccounts;
         var groupSeqId = parseInt($("#<%=txtEditID.ClientID %>").val());
+        accounts.SeqId = groupSeqId;
+        return accounts;
     }
 
     function saveMembers($dialogWindow) {
@@ -37,7 +39,7 @@
         options.contentType = 'application/json; charset=utf-8';
         options.dataType = 'json';
         options.url = GW.Common.getBaseURL() + "/gw/api/Groups/SaveMembers";
-        GW.Common.JQueryHelper.callWeb(options, saveMembersSucess, saveMembersError);
+        GW.Common.JQueryHelper.callWeb(options, saveMembersSucess);
         if (!($dialogWindow === undefined)) {
             $dialogWindow.dialog("destroy")
             $dialogWindow.remove();
@@ -46,9 +48,5 @@
 
     function saveMembersSucess() {
         GW.Common.debug('done');
-    }
-
-    function saveMembersError() {
-        GW.Common.debug('error');
     }
 </script>

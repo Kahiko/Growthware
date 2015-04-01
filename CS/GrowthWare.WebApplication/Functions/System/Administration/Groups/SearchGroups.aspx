@@ -65,19 +65,19 @@
 		}
 
 		function editMembers(groupSeqId) {
-			var options = GW.Model.DefaultDialogOptions();
-			options.title = 'Associate roles to the group';
-			options.height = 300;
-			options.width = 500;
-			options.async = false;
-			options.resizable = true;
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/EditGroupMembers.aspx?Action=Edit_Group_Members&GROUP_SEQ_ID=" + groupSeqId;
-			options.buttons = {
-				'Save': function () { saveMembers($(this)); },
-				'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
-			};
-			var dialogId = 'addEditGroup';
-			GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
+		    var options = GW.Model.DefaultDialogOptions();
+		    options.title = 'Associate roles to the group';
+		    options.height = 300;
+		    options.width = 500;
+		    options.async = false;
+		    options.resizable = true;
+		    options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/EditGroupMembers.aspx?Action=Edit_Group_Members&GroupSeqId=" + groupSeqId;
+		    options.buttons = {
+		        'Save': function () { saveMembers($(this)); },
+		        'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+		    };
+		    var dialogId = 'addEditGroup';
+		    GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 		}
 
 		function deleteGroup(groupSeqId, name) {
