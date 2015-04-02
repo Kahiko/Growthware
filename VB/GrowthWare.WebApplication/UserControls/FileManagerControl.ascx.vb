@@ -7,7 +7,7 @@ Public Class FileManagerControl
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         SearchControl.ShowAddLink = False
         Dim mDirectoryProfile As MDirectoryProfile = DirectoryUtility.GetProfile(FunctionUtility.CurrentProfile().Id)
-        Dim mLinks As String = GrowthWare.WebApplication.FileManager.GetDirectoryLinks("/", mDirectoryProfile.FunctionSeqId)
+        Dim mLinks As String = FileUtility.GetDirectoryLinks("/", mDirectoryProfile.FunctionSeqId)
         directorySelector.InnerHtml = mLinks
         Dim mFunctionProfile As MFunctionProfile = FunctionUtility.CurrentProfile()
         Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()

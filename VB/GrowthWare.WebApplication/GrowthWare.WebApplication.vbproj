@@ -403,6 +403,7 @@
     <Compile Include="App_Start\Startup.vb" />
     <Compile Include="App_Start\WebApiConfig.vb" />
     <Compile Include="Controllers\AccountsController.vb" />
+    <Compile Include="Controllers\FileManagerController.vb" />
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\GroupsController.vb" />
     <Compile Include="Controllers\MessagesController.vb" />

@@ -7,6 +7,8 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports System.Security.Principal
 Imports System.Web
 Imports GrowthWare.Framework.Common
+Imports System.Web.UI
+Imports System.Web.UI.WebControls
 
 Namespace Utilities
     Public Class FileUtility
@@ -22,6 +24,38 @@ Namespace Utilities
             Dim mDirInfo As New DirectoryInfo(path)
             mRetVal = mDirInfo.Parent.FullName.ToString
             Return mRetVal
+        End Function
+
+        Public Shared Function GetDirectoryLinks(ByVal currentDirectoryString As String, ByVal functionSeqId As Integer) As String
+            Dim context As HttpContext = HttpContext.Current
+            Dim mStringBuilder As StringBuilder = New StringBuilder()
+            Dim mStringWriter As StringWriter = New StringWriter(mStringBuilder)
+            Dim mWriter As HtmlTextWriter = New HtmlTextWriter(mStringWriter)
+            Dim mPath As String = String.Empty
+            Dim mCurrentDirectory As String = "/"
+
+            Dim mFirstLink As HyperLink = New HyperLink()
+            mFirstLink.Attributes.Add("href", "#")
+            mFirstLink.Attributes.Add("onclick", String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mCurrentDirectory, functionSeqId))
+            mFirstLink.Text = "Home\"
+            mFirstLink.RenderControl(mWriter)
+            mCurrentDirectory = context.Server.UrlDecode(currentDirectoryString)
+            If context.Server.UrlDecode(mCurrentDirectory).Length > 1 Then
+                Dim mArray As Array = mCurrentDirectory.Split("/")
+                For Each item As String In mArray
+                    If item.Length > 0 Then
+                        mPath += "/" + item
+                        Dim mLink As HyperLink = New HyperLink()
+                        mLink.Attributes.Add("href", "#")
+                        mLink.Attributes.Add("onclick", String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId))
+                        mLink.Text = item + "\"
+                        mLink.RenderControl(mWriter)
+                    End If
+
+                Next
+
+            End If
+            Return mStringBuilder.ToString()
         End Function
 
         ''' <summary>
