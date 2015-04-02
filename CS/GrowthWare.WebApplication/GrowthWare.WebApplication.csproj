@@ -152,6 +152,8 @@
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx" />
+    <Content Include="Functions\System\FileManagement\FileManager.aspx" />
+    <Content Include="Functions\System\FileManagement\FileManagerSearchResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\SearchFunctions.aspx" />
@@ -368,10 +370,12 @@
     <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="UserControls\AddEditAccount.ascx" />
+    <Content Include="UserControls\FileManagerControl.ascx" />
     <Content Include="UserControls\GroupControl.ascx" />
     <Content Include="UserControls\OpenAuthProviders.ascx" />
     <Content Include="UserControls\RolesControl.ascx" />
     <Content Include="UserControls\Search.ascx" />
+    <Content Include="UserControls\UploadControl.ascx" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -488,6 +492,20 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx.designer.cs">
       <DependentUpon>RandomNumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\FileManager.aspx.cs">
+      <DependentUpon>FileManager.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\FileManager.aspx.designer.cs">
+      <DependentUpon>FileManager.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\FileManagerSearchResults.aspx.cs">
+      <DependentUpon>FileManagerSearchResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\FileManagerSearchResults.aspx.designer.cs">
+      <DependentUpon>FileManagerSearchResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.cs">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
@@ -732,6 +750,13 @@
     <Compile Include="UserControls\AddEditAccount.ascx.designer.cs">
       <DependentUpon>AddEditAccount.ascx</DependentUpon>
     </Compile>
+    <Compile Include="UserControls\FileManagerControl.ascx.cs">
+      <DependentUpon>FileManagerControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\FileManagerControl.ascx.designer.cs">
+      <DependentUpon>FileManagerControl.ascx</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\GroupControl.ascx.cs">
       <DependentUpon>GroupControl.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -759,6 +784,13 @@
     </Compile>
     <Compile Include="UserControls\Search.ascx.designer.cs">
       <DependentUpon>Search.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UploadControl.ascx.cs">
+      <DependentUpon>UploadControl.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\UploadControl.ascx.designer.cs">
+      <DependentUpon>UploadControl.ascx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

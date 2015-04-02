@@ -61,6 +61,7 @@
     <Compile Include="Common\ConfigSettings.cs" />
     <Compile Include="Common\CryptoUtility.cs" />
     <Compile Include="Common\CryptoUtilityException.cs" />
+    <Compile Include="Common\DataHelper.cs" />
     <Compile Include="Common\Logger.cs" />
     <Compile Include="Common\NaturalComparer.cs" />
     <Compile Include="Common\ObjectFactory.cs" />
