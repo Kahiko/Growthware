@@ -20,41 +20,5 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
             String mScript = "<script type='text/javascript' language='javascript'>GW.FileManager.currentDirectory = '/'; GW.FileManager.currentFunctionSeqID=" + mFunctionProfile.Id.ToString() + "</script>";
             Page.ClientScript.RegisterStartupScript(this.GetType(), "", mScript);
         }
-
-        [WebMethod(EnableSession = false)]
-        public static string GetDirectoryLinks(string currentDirectoryString, int functionSeqId)
-        {
-            HttpContext context = null;
-            context = HttpContext.Current;
-            string mCurrentDirectory = context.Server.UrlDecode(currentDirectoryString);
-            StringBuilder mStringBuilder = new StringBuilder();
-            StringWriter mStringWriter = new StringWriter(mStringBuilder);
-            HtmlTextWriter mWriter = new HtmlTextWriter(mStringWriter);
-            string mPath = string.Empty;
-            HyperLink mFirstLink = new HyperLink();
-            mFirstLink = new HyperLink();
-            mFirstLink.Attributes.Add("href", "#");
-            mFirstLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", "/", functionSeqId));
-            mFirstLink.Text = @"Home\";
-            mFirstLink.RenderControl(mWriter);
-            if (mCurrentDirectory.Length > 2)
-            {
-
-                Array mArray = mCurrentDirectory.Split('/');
-                foreach (string item in mArray)
-                {
-                    if (item.Length > 0)
-                    {
-                        mPath += "/" + item;
-                        HyperLink mLink = new HyperLink();
-                        mLink.Attributes.Add("href", "#");
-                        mLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId));
-                        mLink.Text = item + @"\";
-                        mLink.RenderControl(mWriter);
-                    }
-                }
-            }
-            return mStringBuilder.ToString();
-        }
     }
 }

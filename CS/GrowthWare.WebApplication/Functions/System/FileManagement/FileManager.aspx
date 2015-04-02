@@ -52,7 +52,7 @@
 				}
 				GW.Common.debug(theData);
 				// currently in a user control and can't be there must move it to a page
-				options.url = GW.Common.getBaseURL() + "/Functions/System/FileManagement/FileManager.aspx/GetDirectoryLinks";
+				options.url = GW.Common.getBaseURL() + "/gw/api/FileManager/GetDirectoryLinks?Action=" + GW.Navigation.currentAction;
 				options.data = theData;
 				options.contentType = 'application/json; charset=utf-8';
 				options.dataType = 'json';
@@ -60,8 +60,8 @@
 			});
 
 			function getDirectoryLinksSuccess(xhr) {
-				//alert(xhr.d);
-				GW.FileManager.directorySelector.html(unescape(xhr.d));
+				//alert(xhr);
+				GW.FileManager.directorySelector.html(unescape(xhr));
 			}
 
 			function getDirectoryLinksError(xhr, status, error) {

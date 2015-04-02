@@ -8,7 +8,9 @@ using System.IO;
 using System.Security.Principal;
 using System.Text;
 using System.Web;
+using System.Web.UI;
 using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
 
 namespace GrowthWare.WebSupport.Utilities
 {
@@ -30,6 +32,47 @@ namespace GrowthWare.WebSupport.Utilities
             DirectoryInfo mDirInfo = new DirectoryInfo(path);
             mRetVal = mDirInfo.Parent.FullName.ToString();
             return mRetVal;
+        }
+
+        /// <summary>
+        /// Retuns a string representing the depth of the "url" link used in file manager.
+        /// </summary>
+        /// <param name="currentDirectoryString">String</param>
+        /// <param name="functionSeqId">Int</param>
+        /// <returns></returns>
+        public static string GetDirectoryLinks(string currentDirectoryString, int functionSeqId)
+        {
+            HttpContext context = null;
+            context = HttpContext.Current;
+            string mCurrentDirectory = context.Server.UrlDecode(currentDirectoryString);
+            StringBuilder mStringBuilder = new StringBuilder();
+            StringWriter mStringWriter = new StringWriter(mStringBuilder);
+            HtmlTextWriter mWriter = new HtmlTextWriter(mStringWriter);
+            string mPath = string.Empty;
+            HyperLink mFirstLink = new HyperLink();
+            mFirstLink = new HyperLink();
+            mFirstLink.Attributes.Add("href", "#");
+            mFirstLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", "/", functionSeqId));
+            mFirstLink.Text = @"Home\";
+            mFirstLink.RenderControl(mWriter);
+            if (mCurrentDirectory.Length > 2)
+            {
+
+                Array mArray = mCurrentDirectory.Split('/');
+                foreach (string item in mArray)
+                {
+                    if (item.Length > 0)
+                    {
+                        mPath += "/" + item;
+                        HyperLink mLink = new HyperLink();
+                        mLink.Attributes.Add("href", "#");
+                        mLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId));
+                        mLink.Text = item + @"\";
+                        mLink.RenderControl(mWriter);
+                    }
+                }
+            }
+            return mStringBuilder.ToString();
         }
 
         /// <summary>

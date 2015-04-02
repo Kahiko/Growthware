@@ -15,7 +15,7 @@ namespace GrowthWare.WebApplication.UserControls
         {
             SearchControl.ShowAddLink = false;
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetProfile(FunctionUtility.CurrentProfile().Id);
-            String mLinks = GrowthWare.WebApplication.Functions.System.FileManagement.FileManager.GetDirectoryLinks("/", mDirectoryProfile.FunctionSeqId);
+            String mLinks = FileUtility.GetDirectoryLinks("/", mDirectoryProfile.FunctionSeqId);
             directorySelector.InnerHtml = mLinks;
             MFunctionProfile mFunctionProfile = FunctionUtility.CurrentProfile();
             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
