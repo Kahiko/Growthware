@@ -192,6 +192,6 @@ GW.Search = {
         this.$TotalPages = $('#totalPages');
         this.$CurrentPage = $('#SearchControl_currentPage');
         this.$TotalRecords = $('#totalRecords');
-        GW.Search.Criteria.PageSize = $('#SearchControl_txtRecordsPerPage').val();
+        GW.Search.Criteria.PageSize = $('input[id*="SearchControl_txtRecordsPerPage"]').val();
     }
 }
