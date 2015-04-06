@@ -12,7 +12,7 @@ Namespace Controllers
         Public Function Delete(<FromUri> groupSeqId As Integer) As IHttpActionResult
             Dim mLog As Logger = Logger.Instance()
             Dim mRetVal As String = "false"
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", True)), AccountUtility.CurrentProfile())
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", True)), AccountUtility.CurrentProfile())
             If Not mSecurityInfo.MayDelete Then
                 Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete")
                 mLog.Error(mError)
@@ -43,7 +43,7 @@ Namespace Controllers
             Dim mLog As Logger = Logger.Instance()
             Dim mRetVal As String = "false"
             Dim mProfileToSave As MGroupProfile = New MGroupProfile()
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", True)), AccountUtility.CurrentProfile())
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", True)), AccountUtility.CurrentProfile())
             If Not HttpContext.Current.Items("EditId") Is Nothing Then
                 If profile.Id = -1 Then
                     If Not mSecurityInfo.MayAdd Then
