@@ -273,6 +273,7 @@
     <Content Include="Public\Skins\Professional\Professional.Master" />
     <Content Include="Public\Web.config" />
     <Content Include="Functions\System\ExternalAuth\Web.config" />
+    <Content Include="Functions\System\FileManagement\UploadHandler.ashx" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Global.asax" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -676,6 +677,9 @@
     <Compile Include="Functions\System\FileManagement\FileManagerSearchResults.aspx.vb">
       <DependentUpon>FileManagerSearchResults.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\UploadHandler.ashx.vb">
+      <DependentUpon>UploadHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.designer.vb">
       <DependentUpon>GenericHome.aspx</DependentUpon>
