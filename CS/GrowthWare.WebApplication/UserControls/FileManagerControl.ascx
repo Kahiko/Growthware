@@ -7,12 +7,8 @@
 <table id="Table1" cellspacing="0" cellpadding="0" width="90%" border="0">
 	<tr style="font-size: 8pt; font-family: verdana; height: 20px;" align="left">
 		<td align="left" valign="middle" style="white-space: nowrap;" colspan="2">
-			Select Directory:&nbsp;<div id="directorySelector" style="position: relative; display: inline-block;" runat="server">
-			</div>
-			&nbsp;&nbsp; 
-			<b>
-				<asp:Label ID="lblClientMSG" runat="server" Visible="False"></asp:Label>
-			</b>
+			Select Directory:&nbsp;<div id="directorySelector" style="position: relative; display: inline-block;" runat="server"></div>&nbsp;&nbsp; 
+			<b><asp:Label ID="lblClientMSG" runat="server" Visible="False"></asp:Label></b>
 		</td>
 	</tr>
 	<tr id="firstRow" style="font-size: 8pt; font-family: verdana; height: 18px;" runat="server">

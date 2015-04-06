@@ -244,6 +244,7 @@
     <Content Include="Public\Skins\Professional\Professional.Master" />
     <Content Include="Public\Web.config" />
     <Content Include="Functions\System\ExternalAuth\Web.config" />
+    <Content Include="Functions\System\FileManagement\UploadHandler.ashx" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -661,6 +662,9 @@
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.designer.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\UploadHandler.ashx.cs">
+      <DependentUpon>UploadHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Home\GenericHome.aspx.cs">
       <DependentUpon>GenericHome.aspx</DependentUpon>
