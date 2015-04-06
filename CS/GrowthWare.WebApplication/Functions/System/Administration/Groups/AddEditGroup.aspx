@@ -32,35 +32,37 @@
 	</div>
 </form>
 <script type="text/javascript" language="javascript">
-	$(document).ready(function () {
-	});
+    $(document).ready(function () {
+    });
 
-	function updateData() {
-		var profile = {};
-		profile.Id = parseInt($("#<%=txtGroupSeqId.ClientID %>").val());
+    function updateData() {
+        var profile = {};
+        profile.Id = parseInt($("#<%=txtGroupSeqId.ClientID %>").val());
 		profile.Name = $("#<%=txtGroup.ClientID %>").val();
 	    profile.Description = $("#<%=txtDescription.ClientID %>").val();
+	    //var theData = { profile: profile };
+	    //return theData;
 	    return profile;
-		//var theData = { profile: profile };
-		//return theData;
 	}
 
 	function saveAddEdit($dialogWindow) {
-		var theData = updateData();
-		// profile is defined in AddEditAccounts.aspx
-		GW.Common.debug(theData);
-		var options = GW.Model.DefaultWebMethodOptions();
-		options.async = false;
-		options.data = theData;
-		options.contentType = 'application/json; charset=utf-8';
-		options.dataType = 'json';
-		//options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/Groups/AddEditGroup.aspx/InvokeSave"
-		options.url = GW.Common.getBaseURL() + "/gw/api/Groups/Save";
-		GW.Common.JQueryHelper.callWeb(options);
-		if (!($dialogWindow === undefined)) {
-			$dialogWindow.dialog("destroy")
-			$dialogWindow.remove();
-		};
-		GW.Search.GetSearchResults();
+	    var theData = updateData();
+	    // profile is defined in AddEditAccounts.aspx
+	    GW.Common.debug(theData);
+	    var options = GW.Model.DefaultWebMethodOptions();
+	    options.async = false;
+	    options.data = theData;
+	    options.contentType = 'application/json; charset=utf-8';
+	    options.dataType = 'json';
+	    options.url = GW.Common.getBaseURL() + "/gw/api/Groups/Save";
+	    GW.Common.JQueryHelper.callWeb(options, saveAddEditSuccess);
+	    if (!($dialogWindow === undefined)) {
+	        $dialogWindow.dialog("destroy")
+	        $dialogWindow.remove();
+	    };
+	}
+
+	function saveAddEditSuccess(xhr) {
+	    GW.Search.GetSearchResults();
 	}
 </script>

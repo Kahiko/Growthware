@@ -17,7 +17,7 @@ namespace GrowthWare.WebApplication.Controllers
         public IHttpActionResult Delete([FromUri] int groupSeqId)
         {
             string mRetVal = "false";
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", true)), AccountUtility.CurrentProfile());
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", true)), AccountUtility.CurrentProfile());
             if (!mSecurityInfo.MayDelete)
             {
                 Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
@@ -61,7 +61,7 @@ namespace GrowthWare.WebApplication.Controllers
             if (profile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
             string mRetVal = "false";
             MGroupProfile mProfileToSave = new MGroupProfile();
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Manage_Groups", true)), AccountUtility.CurrentProfile());
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", true)), AccountUtility.CurrentProfile());
             Logger mLog = Logger.Instance();
             if (HttpContext.Current.Items["EditId"] != null)
             {
@@ -91,7 +91,7 @@ namespace GrowthWare.WebApplication.Controllers
                 }
             }
             mProfileToSave = populateProfile(profile);
-            //RoleUtility.Save(mProfileToSave);
+            GroupUtility.Save(mProfileToSave);
             return Ok(mRetVal);
         }
 
