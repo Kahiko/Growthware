@@ -37,17 +37,17 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
         /// <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         protected void Page_Init(Object sender, EventArgs e)
         {
-            string mAction = GWWebHelper.GetQueryValue(Request, "action");
-            if (!String.IsNullOrEmpty(mAction))
-            {
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                m_ShowDeleteLink = mSecurityInfo.MayDelete;
-            }
-            if (!m_ShowDeleteLink)
-            {
-                this.searchResults.Columns.RemoveAt(1);
-            }
-            this.searchResults.Columns.RemoveAt(0);
+            //string mAction = GWWebHelper.GetQueryValue(Request, "action");
+            //if (!String.IsNullOrEmpty(mAction))
+            //{
+            //    MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(mAction), AccountUtility.CurrentProfile());
+            //    if (!mSecurityInfo.MayDelete)
+            //    {
+            //        this.searchResults.Columns.RemoveAt(1);
+            //    }
+            //}
+
+            //this.searchResults.Columns.RemoveAt(0);
         }
 
         /// <summary>
