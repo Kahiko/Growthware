@@ -245,6 +245,7 @@
     <Content Include="Public\Web.config" />
     <Content Include="Functions\System\ExternalAuth\Web.config" />
     <Content Include="Functions\System\FileManagement\UploadHandler.ashx" />
+    <Content Include="Functions\System\FileManagement\DownloadHandler.ashx" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -494,6 +495,9 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx.designer.cs">
       <DependentUpon>RandomNumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\DownloadHandler.ashx.cs">
+      <DependentUpon>DownloadHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\FileManagement\FileManager.aspx.cs">
       <DependentUpon>FileManager.aspx</DependentUpon>
