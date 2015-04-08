@@ -133,12 +133,14 @@ namespace GrowthWare.WebSupport.Context
         {
             Logger mLog = Logger.Instance();
             mLog.Debug("onAcquireRequestState():: Started");
+            mLog.Debug("onAcquireRequestState():: " + HttpContext.Current.Request.CurrentExecutionFilePath);
 
             if ((HttpContext.Current.Session != null))
             {
                 if (HttpContext.Current.Session["EditId"] != null) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
                 if (processRequest())
                 {
+                    mLog.Debug("onAcquireRequestState():: Processing request for security");
                     if ((!String.IsNullOrEmpty(HttpContext.Current.Request.QueryString["Action"])))
                     {
                         string mAction = HttpContext.Current.Request.QueryString["Action"].ToString(CultureInfo.InvariantCulture);
