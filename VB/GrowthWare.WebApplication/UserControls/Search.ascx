@@ -93,10 +93,9 @@
             //GW.Common.debug(filesToDelete);
             try {
                 var options = GW.Model.DefaultWebMethodOptions();
-                var theData = { filesToDelete: filesToDelete };
-                GW.Common.debug(theData);
-                options.url = GW.Common.getBaseURL() + "/Functions/System/FileManagement/FileManager.aspx/DeleteFiles";
-                options.data = theData;
+                GW.Common.debug(filesToDelete);
+                options.url = GW.Common.getBaseURL() + "/gw/api/FileManager/DeleteFiles";
+                options.data = filesToDelete;
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
                 GW.Common.JQueryHelper.callWeb(options, deletFilesSuccess, deleteFilesError);
@@ -115,9 +114,9 @@
     }
 
     function deletFilesSuccess(xhr) {
-        GW.Common.debug(xhr.d);
-        if (xhr.d.indexOf("Successfully") == -1) {
-            alert(xhr.d);
+        GW.Common.debug(xhr);
+        if (xhr.indexOf("Successfully") == -1) {
+            alert(xhr);
         }
         var btn = document.getElementById('<%=cmdSelect.ClientID %>');
         btn.value = "Select All";
