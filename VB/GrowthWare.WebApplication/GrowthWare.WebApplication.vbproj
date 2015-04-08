@@ -274,6 +274,7 @@
     <Content Include="Public\Web.config" />
     <Content Include="Functions\System\ExternalAuth\Web.config" />
     <Content Include="Functions\System\FileManagement\UploadHandler.ashx" />
+    <Content Include="Functions\System\FileManagement\DownloadHandler.ashx" />
     <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="Global.asax" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
@@ -663,6 +664,9 @@
     <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.vb">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\FileManagement\DownloadHandler.ashx.vb">
+      <DependentUpon>DownloadHandler.ashx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\FileManagement\FileManager.aspx.designer.vb">
       <DependentUpon>FileManager.aspx</DependentUpon>
