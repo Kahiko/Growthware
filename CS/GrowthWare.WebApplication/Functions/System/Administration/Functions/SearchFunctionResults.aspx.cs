@@ -93,7 +93,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("editFunction('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), m_SecurityInfo.MayEdit, m_SecurityInfo.MayDelete);
+                String mEditOnClick = "javascript:" + string.Format("editFunction('{0}',{1},{2})", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), m_SecurityInfo.MayDelete.ToString().ToLowerInvariant());
                 String mDeleteOnClick = "javascript:" + string.Format("deleteFunction('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "Function_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString()).ToString();
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
