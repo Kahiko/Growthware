@@ -92,9 +92,11 @@ Namespace Context
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
             Dim mLog As Logger = Logger.Instance()
             mLog.Debug("onAcquireRequestState():: Started")
+            mLog.Debug("onAcquireRequestState():: " + HttpContext.Current.Request.CurrentExecutionFilePath)
             If Not HttpContext.Current.Session Is Nothing Then
                 If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
                 If processRequest() Then
+                    mLog.Debug("onAcquireRequestState():: Processing request for security")
                     If Not HttpContext.Current.Request.QueryString("Action") Is Nothing Then
                         Dim mAction As String = HttpContext.Current.Request.QueryString("Action").ToString(CultureInfo.InvariantCulture)
                         Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
