@@ -18,7 +18,7 @@
 		<td valign="middle" id="tdNewDirectory" style="white-space: nowrap;" align="right" width="286px" runat="server">
 			<asp:Literal ID="CreateNewDirectory" runat="server" Text="Create New Directory&nbsp;&nbsp;"></asp:Literal>
 			<asp:TextBox ID="txtNewDirectory" CssClass="rounded" runat="server" EnableViewState="True"></asp:TextBox>
-			<img alt="New Folder" onclick="javascript:GW.FileManager.createDirectory();" src="Public/Images/GrowthWare/new_folder.png" height="16px" width="16px" />
+			<img alt="New Folder" onclick="javascript:GW.FileManager.createDirectory();" src="Public/GrowthWare/Images/new_folder.png" height="16px" width="16px" />
 		</td>
 	</tr>
 	<tr style="font-size: 8pt; font-family: verdana">
