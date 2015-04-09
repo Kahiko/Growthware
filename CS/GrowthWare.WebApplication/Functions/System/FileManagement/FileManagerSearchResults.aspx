@@ -14,20 +14,6 @@
 			<Columns>
 				<asp:TemplateField>
 					<HeaderTemplate>
-						<span>Edit</span>
-					</HeaderTemplate>
-					<ItemTemplate>
-						<table border="0" cellpadding="0" cellspacing="0" width="100%">
-							<tr>
-								<td align="center">
-									<img alt="Edit" id="btnDetails" src="Public/Images/GrowthWare/list-edit.png" style="height: 16px; width: 16px;" runat="server" />
-								</td>
-							</tr>
-						</table>
-					</ItemTemplate>
-				</asp:TemplateField>
-				<asp:TemplateField>
-					<HeaderTemplate>
 						<span>Delete</span>
 					</HeaderTemplate>
 					<ItemTemplate>
