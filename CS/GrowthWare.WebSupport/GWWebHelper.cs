@@ -107,19 +107,19 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
-        /// Gets the query value.
+        /// Gets the query or form value.
         /// </summary>
-        /// <param name="request">The request.</param>
+        /// <param name="request">The HttpContext.Current.Request</param>
         /// <param name="queryString">The query string.</param>
-        /// <returns>String.</returns>
+        /// <returns>String.Empty or value as string.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         public static String GetQueryValue(HttpRequest request, String queryString)
         {
             if (request == null) throw new ArgumentNullException("request", "request cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
             String mRetVal = String.Empty;
-            if (request.QueryString[queryString] != null)
+            if (request[queryString] != null)
             {
-                mRetVal = request.QueryString[queryString].ToString();
+                mRetVal = request[queryString].ToString();
             }
             return mRetVal;
         }
