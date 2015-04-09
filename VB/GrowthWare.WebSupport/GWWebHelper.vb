@@ -113,16 +113,16 @@ Public Class GWWebHelper
     End Function
 
     ''' <summary>
-    ''' Gets the query value.
+    ''' Gets the query or form value.
     ''' </summary>
-    ''' <param name="request">The request.</param>
+    ''' <param name="request">The HttpContext.Current.Request</param>
     ''' <param name="queryString">The query string.</param>
-    ''' <returns>System.String.</returns>
+    ''' <returns>String.Empty or value as string.</returns>
     Public Shared Function GetQueryValue(ByVal request As HttpRequest, ByVal queryString As String) As String
         If request Is Nothing Then Throw New ArgumentNullException("request", "request can not be null (Nothing in VB)")
         Dim mRetVal As String = String.Empty
-        If Not request.QueryString(queryString) Is Nothing Then
-            mRetVal = request.QueryString(queryString)
+        If Not request(queryString) Is Nothing Then
+            mRetVal = request(queryString)
         End If
         Return mRetVal
     End Function
