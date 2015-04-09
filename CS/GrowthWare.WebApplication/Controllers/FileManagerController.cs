@@ -1,4 +1,5 @@
-﻿using GrowthWare.Framework.Model.Profiles;
+﻿using GrowthWare.Framework.Common;
+using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.WebSupport.Utilities;
 using System;
 using System.Collections.Generic;
@@ -12,6 +13,29 @@ namespace GrowthWare.WebApplication.Controllers
 {
     public class FileManagerController : ApiController
     {
+        [HttpPost()]
+        public IHttpActionResult CreateDirectory(string currentDirectoryString, int functionSeqId, string newDirectory) 
+        {
+            string mRetVal = "Unable to create directory";
+            if (String.IsNullOrEmpty(currentDirectoryString) || String.IsNullOrEmpty(newDirectory))
+            {
+                mRetVal = "All parameters must be passed!";
+                ArgumentException ex = new ArgumentException(mRetVal);
+                Logger mLog = Logger.Instance();
+                mLog.Error(mRetVal);
+                throw (ex);
+            }
+            HttpServerUtility mServer = HttpContext.Current.Server;
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetProfile(functionSeqId);
+            String mCurrentDirectory = mDirectoryProfile.Directory;
+            if (currentDirectoryString.Length > 0)
+            {
+                mCurrentDirectory += @"\" + currentDirectoryString;
+            }
+            mRetVal = FileUtility.CreateDirectory(mServer.UrlDecode(mCurrentDirectory), mServer.UrlDecode(newDirectory), mDirectoryProfile);
+            return this.Ok(mRetVal);
+        }
+
         [HttpPost()]
         public IHttpActionResult DeleteFiles(List<UIFileInfo> filesToDelete) 
         {

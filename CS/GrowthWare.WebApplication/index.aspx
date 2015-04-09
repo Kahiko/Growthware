@@ -2,7 +2,7 @@
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
-    <%: Styles.Render("~/bundles/Content/GrowthWare")%>
+    <%: Styles.Render("~/bundles/GrowthWare")%>
     <script type="text/javascript" language="javascript">
         $(document).ready(function () {
             GW.Navigation.NavigationController.LoadFunctions(afterLoadFunctions);
