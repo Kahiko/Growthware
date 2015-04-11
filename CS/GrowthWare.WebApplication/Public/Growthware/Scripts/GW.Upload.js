@@ -35,21 +35,21 @@ if (typeof GW.Upload == "undefined" || !GW.Upload) {
 		uploadDirectory: '\\',
 
 		form: function () {
-			var retVal = "<form id='uploadForm' method='post' enctype='multipart/form-data'>";
-			retVal = retVal + "	<table>";
-			retVal = retVal + "	<tr>";
-			retVal = retVal + "	<td>";
-			retVal = retVal + "		<input id='fileUploadControl' type='file' />";
-			retVal = retVal + "	</td>";
-			retVal = retVal + "	<td>";
-			retVal = retVal + "	<div id='divUpload' style='padding-top: 4px'>";
-			retVal = retVal + "		<img alt='Upload File' onclick='javascript:alert(" + "\"" + "hi" + "\"" + ");' id='btnUpload' src='" + GW.Common.getBaseURL() + "/Public/GrowthWare/Images/Add.png' height='16px' width='16px' />";
-			retVal = retVal + "	</div>"
-			retVal = retVal + "	<div>";
-			retVal = retVal + "	</td>";
-			retVal = retVal + "	</tr>";
-			retVal = retVal + "	</table>";
-			retVal = retVal + "</form>";
+		    var retVal = "<form id='uploadForm' method='post' enctype='multipart/form-data'>";
+		    retVal = retVal + "	<table>";
+		    retVal = retVal + "	<tr>";
+		    retVal = retVal + "	<td>";
+		    retVal = retVal + "	<div id='divUpload' style='padding-top: 4px'>";
+		    retVal = retVal + "		<img alt='Upload File' onclick='javascript:alert(" + "\"" + "hi" + "\"" + ");' id='btnUpload' src='" + GW.Common.getBaseURL() + "/Public/GrowthWare/Images/Add.png' height='16px' width='16px' />";
+		    retVal = retVal + "	</div>"
+		    retVal = retVal + "	</td>";
+		    retVal = retVal + "	<td>";
+		    retVal = retVal + "		<input id='fileUploadControl' type='file' />";
+		    retVal = retVal + "	</td>";
+		    retVal = retVal + "	</tr>";
+		    retVal = retVal + "	</table>";
+		    retVal = retVal + "</form>";
+		    return retVal;
 			return retVal;
 		},
 
