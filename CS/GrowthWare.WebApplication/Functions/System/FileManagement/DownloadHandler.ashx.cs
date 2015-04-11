@@ -2,6 +2,7 @@
 using GrowthWare.WebSupport;
 using GrowthWare.WebSupport.Utilities;
 using System;
+using System.IO;
 using System.Web;
 
 namespace GrowthWare.WebApplication.Functions.System.FileManagement
@@ -28,7 +29,10 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetProfile(mFunctionSeqID);
                 context.Response.ContentType = "application/octet-stream";
                 context.Response.AddHeader("Content-Disposition", string.Format("attachment; filename=\"{0}\"", mFilename));
-                context.Response.WriteFile(mDirectoryProfile.Directory + mPath + "/" + mFilename);
+                using (Stream s = new FileStream(mDirectoryProfile.Directory + mPath + "/" + mFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    s.CopyTo(context.Response.OutputStream);
+                }
             }
             else
             {
