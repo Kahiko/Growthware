@@ -35,14 +35,7 @@ GW.FileManager = {
 	createDirectory: function () {
 		GW.Common.debug('createDirectory start');
 		var options = GW.Model.DefaultWebMethodOptions();
-		var theData = {
-		    'currentDirectoryString': escape(GW.FileManager.currentDirectory),
-		    'functionSeqId': GW.FileManager.currentFunctionSeqID,
-		    'newDirectory': escape($("#FileManagerUC_txtNewDirectory").val())
-		}
-		GW.Common.debug('theData: ' + JSON.stringify(theData));
-		options.url = GW.Common.getBaseURL() + "/gw/api/FileManager/CreateDirectory";
-		options.data = theData;
+		options.url = GW.Common.getBaseURL() + "/gw/api/FileManager/CreateDirectory?currentDirectoryString=" + escape(GW.FileManager.currentDirectory) + "&functionSeqId=" + GW.FileManager.currentFunctionSeqID + "&newDirectory=" + escape($("#FileManagerUC_txtNewDirectory").val());
 		options.contentType = 'application/json; charset=utf-8';
 		options.dataType = 'json';
 		GW.Common.JQueryHelper.callWeb(options, GW.FileManager.createDirectorySuccess, GW.FileManager.createDirectoryError);

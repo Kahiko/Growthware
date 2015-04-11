@@ -14,7 +14,7 @@ namespace GrowthWare.WebApplication.Controllers
     public class FileManagerController : ApiController
     {
         [HttpPost()]
-        public IHttpActionResult CreateDirectory(string currentDirectoryString, int functionSeqId, string newDirectory) 
+        public IHttpActionResult CreateDirectory([FromUri()] string currentDirectoryString, [FromUri()] int functionSeqId, [FromUri()] string newDirectory) 
         {
             string mRetVal = "Unable to create directory";
             if (String.IsNullOrEmpty(currentDirectoryString) || String.IsNullOrEmpty(newDirectory))

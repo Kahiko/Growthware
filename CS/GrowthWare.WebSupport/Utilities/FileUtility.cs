@@ -51,7 +51,7 @@ namespace GrowthWare.WebSupport.Utilities
             string mPath = string.Empty;
             HyperLink mFirstLink = new HyperLink();
             mFirstLink = new HyperLink();
-            mFirstLink.Attributes.Add("href", "#");
+            mFirstLink.Attributes.Add("href", "javascript:void(0);");
             mFirstLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", "/", functionSeqId));
             mFirstLink.Text = @"Home\";
             mFirstLink.RenderControl(mWriter);
