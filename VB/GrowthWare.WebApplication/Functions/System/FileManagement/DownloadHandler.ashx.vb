@@ -1,5 +1,6 @@
 ﻿Imports System.Web
 Imports System.Web.Services
+Imports System.IO
 Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport
 Imports GrowthWare.WebSupport.Utilities
@@ -22,7 +23,9 @@ Public Class DownloadHandler
             Dim mDirectoryProfile As MDirectoryProfile = DirectoryUtility.GetProfile(mFunctionSeqID)
             context.Response.ContentType = "application/octet-stream"
             context.Response.AddHeader("Content-Disposition", String.Format("attachment; filename=" + """{0}" + """", mFilename))
-            context.Response.WriteFile(mDirectoryProfile.Directory + mPath + "/" + mFilename)
+            Using resource As New FileStream(mDirectoryProfile.Directory + mPath + "/" + mFilename, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)
+                resource.CopyTo(context.Response.OutputStream)
+            End Using
         Else
             context.Response.ContentType = "text/plain"
             context.Response.Write("Invalid filename")
