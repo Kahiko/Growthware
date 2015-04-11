@@ -5,10 +5,33 @@ Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Model.Profiles
 Imports System.Web.Script.Serialization
 Imports Newtonsoft.Json
+Imports GrowthWare.Framework.Common
 
 Namespace Controllers
     Public Class FileManagerController
         Inherits ApiController
+
+        <HttpPost>
+        Public Function CreateDirectory(<FromUri()> ByVal currentDirectoryString As String, <FromUri()> ByVal functionSeqId As Nullable(Of Integer), <FromUri()> ByVal newDirectory As String) As IHttpActionResult
+            Dim mRetVal As String = "Unable to create directory"
+
+            If String.IsNullOrEmpty(currentDirectoryString) Or functionSeqId Is Nothing Or String.IsNullOrEmpty(newDirectory) Then
+                mRetVal = "All parameters must be passed!"
+                Dim ex As ArgumentException = New ArgumentException(mRetVal)
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(mRetVal)
+                Throw ex
+            End If
+            Dim mFunctionSeqId = Integer.Parse(functionSeqId)
+            Dim mServer As HttpServerUtility = HttpContext.Current.Server
+            Dim mDirectoryProfile As MDirectoryProfile = DirectoryUtility.GetProfile(mFunctionSeqId)
+            Dim mCurrentDirectory As String = mDirectoryProfile.Directory
+            If currentDirectoryString.Length > 0 Then
+                mCurrentDirectory += "\" + currentDirectoryString
+            End If
+            mRetVal = FileUtility.CreateDirectory(mServer.UrlDecode(mCurrentDirectory), mServer.UrlDecode(newDirectory), mDirectoryProfile)
+            Return Me.Ok(mRetVal)
+        End Function
 
         <HttpPost>
         Public Function DeleteFiles(ByVal filesToDelete As List(Of UIFileInfo)) As IHttpActionResult

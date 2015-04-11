@@ -8,7 +8,6 @@
 		<ucFileManager:FileManagerUC ID="FileManagerUC" runat="server" />
 	</div>
 </form>
-<script src="Public/Growthware/Scripts/GW.FileManager.js" type="text/javascript"></script>
 <script language="javascript" type="text/javascript">
 	$(document).ready(function () {
 		var uploadHandler = GW.Common.getBaseURL();

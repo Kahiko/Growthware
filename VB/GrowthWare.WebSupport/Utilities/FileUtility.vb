@@ -35,7 +35,7 @@ Namespace Utilities
             Dim mCurrentDirectory As String = "/"
 
             Dim mFirstLink As HyperLink = New HyperLink()
-            mFirstLink.Attributes.Add("href", "#")
+            mFirstLink.Attributes.Add("href", "javascript:void(0);")
             mFirstLink.Attributes.Add("onclick", String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mCurrentDirectory, functionSeqId))
             mFirstLink.Text = "Home\"
             mFirstLink.RenderControl(mWriter)

@@ -5,7 +5,7 @@ if (typeof GW == "undefined" || !GW) {
 };
 GW.FileManager = {
 
-	currentDirectory: {},
+    currentDirectory: {},
 
 	currentFunctionSeqID: {},
 
@@ -33,20 +33,13 @@ GW.FileManager = {
 	},
 
 	createDirectory: function () {
-		GW.Common.debug('createDirectory start');
-		var options = GW.Model.DefaultWebMethodOptions();
-		var theData = {
-			'currentDirectoryString': GW.FileManager.currentDirectory,
-			'functionSeqId': GW.FileManager.currentFunctionSeqID,
-			'newDirectory': escape($("#FileManagerUC_txtNewDirectory").val())
-		}
-		options.url = GW.Common.getBaseURL() + "/Functions/System/FileManagement/FileManager.aspx/CreateDirectory";
-		options.data = theData;
-		GW.Common.debug('theData: ' + JSON.stringify(theData));
-		options.contentType = 'application/json; charset=utf-8';
-		options.dataType = 'json';
-		GW.Common.JQueryHelper.callWeb(options, GW.FileManager.createDirectorySuccess, GW.FileManager.createDirectoryError);
-		GW.Common.debug('createDirectory done');
+	    GW.Common.debug('createDirectory start');
+	    var options = GW.Model.DefaultWebMethodOptions();
+	    options.url = GW.Common.getBaseURL() + "/gw/api/FileManager/CreateDirectory?currentDirectoryString=" + escape(GW.FileManager.currentDirectory) + "&functionSeqId=" + GW.FileManager.currentFunctionSeqID + "&newDirectory=" + escape($("#FileManagerUC_txtNewDirectory").val());
+	    options.contentType = 'application/json; charset=utf-8';
+	    options.dataType = 'json';
+	    GW.Common.JQueryHelper.callWeb(options, GW.FileManager.createDirectorySuccess, GW.FileManager.createDirectoryError);
+	    GW.Common.debug('createDirectory done');
 	},
 
 	createDirectorySuccess: function (xhr) {
