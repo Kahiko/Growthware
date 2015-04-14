@@ -40,6 +40,12 @@ Public Class UploadHandler
             If context.Request("completed") = Nothing Then
                 If Not mDirectoryInfo Is Nothing Then
                     FileUtility.DoUpload(context.Request.Files.AllKeys(0), context.Request.Files(0), mUploadDirectory, mDirectoryInfo)
+                    If Not context.Request("single") Is Nothing Then
+                        Dim mFileName As String = context.Request.Files(0).FileName()
+                        Dim mNewpath As String = Path.Combine(mUploadDirectory, mFileName)
+                        FileUtility.RenameFile(mNewpath, mDirectory + mFileName, mDirectoryInfo)
+                        FileUtility.DeleteDirectory(mUploadDirectory, mDirectoryInfo)
+                    End If
                 End If
             Else
                 If context.Request("completed").ToString().ToLowerInvariant() = "true" Then
