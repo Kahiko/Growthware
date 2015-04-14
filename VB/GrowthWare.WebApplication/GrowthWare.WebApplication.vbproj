@@ -249,6 +249,7 @@
     <Content Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntities.aspx" />
     <Content Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx" />
+    <Content Include="Functions\System\Calendar\CommunityCalendar.aspx" />
     <Content Include="Functions\System\Errors\AccessDenied.aspx" />
     <Content Include="Functions\System\Errors\UnknownAction.aspx" />
     <Content Include="Functions\System\ExternalAuth\OpenAuthProviderLogon.aspx" />
@@ -635,6 +636,13 @@
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.vb">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Calendar\CommunityCalendar.aspx.designer.vb">
+      <DependentUpon>CommunityCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Calendar\CommunityCalendar.aspx.vb">
+      <DependentUpon>CommunityCalendar.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Errors\AccessDenied.aspx.designer.vb">
