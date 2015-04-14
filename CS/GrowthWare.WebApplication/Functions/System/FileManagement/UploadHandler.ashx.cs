@@ -52,6 +52,13 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
 					if (mDirectoryInfo != null)
 					{
 						FileUtility.DoUpload(context.Request.Files.AllKeys[0], context.Request.Files[0], mUploadDirectory, mDirectoryInfo);
+                        if (context.Request["single"] != null) 
+                        {
+                            string mFileName = context.Request.Files[0].FileName;
+                            string mNewpath = Path.Combine(mUploadDirectory, mFileName);
+                            FileUtility.RenameFile(mNewpath, mDirectory + mFileName, mDirectoryInfo);
+                            FileUtility.DeleteDirectory(mUploadDirectory, mDirectoryInfo);
+                        }
 					}
 				}
 				else 

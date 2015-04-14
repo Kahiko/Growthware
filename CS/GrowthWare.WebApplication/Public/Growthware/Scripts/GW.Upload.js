@@ -82,10 +82,6 @@ if (typeof GW.Upload == "undefined" || !GW.Upload) {
 						if (mUploadIframe != null) {
 							// add the form to the iframe
 							$('#ifrUpload').contents().find('body').append(form);
-							//						if (mUploadIframe.contentWindow.document.getElementById('uploadForm') != 'undefined') {
-							//							// set the action for the dynamically added form
-							//							mUploadIframe.contentWindow.document.getElementById('uploadForm').action = GW.Upload.uploadHandler;
-							//						}
 							if (mUploadIframe.contentWindow.document.getElementById('btnUpload') !== 'undefined' && mUploadIframe.contentWindow.document.getElementById('btnUpload') != null) {
 								clearInterval(t);
 								var btnUpload = mUploadIframe.contentWindow.document.getElementById('btnUpload');
@@ -173,6 +169,7 @@ if (typeof GW.Upload == "undefined" || !GW.Upload) {
 			} else {
 				var formData = new FormData();
 				formData.append(file.name, file);
+				formData.append('single', true);
 				var xhr = new XMLHttpRequest();
 				xhr.open("POST", uri, true);
 				xhr.onreadystatechange = function () {
