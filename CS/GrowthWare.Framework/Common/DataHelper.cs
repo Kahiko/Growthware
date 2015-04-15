@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,8 +29,10 @@ namespace GrowthWare.Framework.Common
         /// Adds the auto increment field named using the RowNumberColumnName property.
         /// </summary>
         /// <param name="table">The table.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
         public static void AddAutoIncrementField(ref DataTable table)
         {
+            if (table == null) throw new ArgumentNullException("table", "table cannot be a null reference (Nothing in VB) or empty!");
             AddAutoIncrementField(ref table, RowNumberColumnName);
         }
 
@@ -38,22 +41,38 @@ namespace GrowthWare.Framework.Common
         /// </summary>
         /// <param name="table">The table.</param>
         /// <param name="columnName">Name of the column.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
         public static void AddAutoIncrementField(ref DataTable table, string columnName)
         {
-            if (!table.Columns.Contains(columnName))
+            if (table == null) throw new ArgumentNullException("table", "table cannot be a null reference (Nothing in VB) or empty!");
+            DataColumn mColumn = null;
+            try
             {
-                DataColumn mColumn = new DataColumn(columnName, Type.GetType("System.Int32"));
-                mColumn.AutoIncrement = true;
-                mColumn.AutoIncrementSeed = 1;
-                mColumn.AutoIncrementStep = 1;
-                table.Columns.Add(mColumn);
-                int intCtr = 0;
-                foreach (DataRow mRow in table.Rows)
+                if (!table.Columns.Contains(columnName))
                 {
-                    intCtr += 1;
-                    mRow[columnName] = intCtr;
+                    mColumn = new DataColumn(columnName, Type.GetType("System.Int32"));
+                    mColumn.AutoIncrement = true;
+                    mColumn.AutoIncrementSeed = 1;
+                    mColumn.AutoIncrementStep = 1;
+                    table.Columns.Add(mColumn);
+                    int intCtr = 0;
+                    foreach (DataRow mRow in table.Rows)
+                    {
+                        intCtr += 1;
+                        mRow[columnName] = intCtr;
+                    }
+                    mColumn.ReadOnly = true;
                 }
-                mColumn.ReadOnly = true;
+            }
+            catch (Exception ex)
+            {
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw;
+            }
+            finally 
+            {
+                if (mColumn != null) mColumn.Dispose();
             }
         }
 
@@ -61,8 +80,10 @@ namespace GrowthWare.Framework.Common
         /// Adds the total rows field.
         /// </summary>
         /// <param name="table">The table.</param>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
         public static void AddTotalRowsField(ref DataTable table)
         {
+            if (table == null) throw new ArgumentNullException("table", "table cannot be a null reference (Nothing in VB) or empty!");
             string mColumnName = TotalRowColumnName;
             if (!table.Columns.Contains(mColumnName))
             {
@@ -83,11 +104,13 @@ namespace GrowthWare.Framework.Common
         /// </summary>
         /// <param name="dataTable">The data table.</param>
         /// <param name="sort">DataView.Sort</param>
-        /// <param name="filter">DataView.RowFilter</param>
         /// <param name="searchCriteria">The search criteria.</param>
         /// <returns>DataTable.</returns>
-        public static DataTable GetPageOfData(ref DataTable dataTable, string sort, string filter, ref MSearchCriteria searchCriteria)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
+        public static DataTable GetPageOfData(ref DataTable dataTable, string sort, MSearchCriteria searchCriteria)
         {
+            if (dataTable == null) throw new ArgumentNullException("dataTable", "dataTable cannot be a null reference (Nothing in VB) or empty!");
+            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
             // create a dataview object
             DataView mSortingDataView = dataTable.DefaultView;
             // apply any sorting using the searchCriteria
@@ -122,7 +145,7 @@ namespace GrowthWare.Framework.Common
                 mStartingRow = searchCriteria.PageSize * (searchCriteria.SelectedPage - 1);
             }
             int mEndingRow = mStartingRow + searchCriteria.PageSize;
-            mSortingDataView.RowFilter = "RowNumber >= " + mStartingRow.ToString() + " and RowNumber <= " + mEndingRow.ToString();
+            mSortingDataView.RowFilter = "RowNumber >= " + mStartingRow.ToString(CultureInfo.InvariantCulture) + " and RowNumber <= " + mEndingRow.ToString(CultureInfo.InvariantCulture);
             DataTable mRetTable = mSortingDataView.Table.Clone();
             foreach (DataRowView item in mSortingDataView)
             {
@@ -131,13 +154,27 @@ namespace GrowthWare.Framework.Common
             return mRetTable;
         }
 
-        public static DataTable GetPageOfData(ref DataTable dataTable, ref MSearchCriteria searchCriteria)
+        /// <summary>
+        /// Gets the page of data.
+        /// </summary>
+        /// <param name="dataTable">The data table.</param>
+        /// <param name="searchCriteria">The search criteria.</param>
+        /// <returns>DataTable.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
+        public static DataTable GetPageOfData(ref DataTable dataTable, MSearchCriteria searchCriteria)
         {
-            return GetPageOfData(ref dataTable, null, null, ref searchCriteria);
+            return GetPageOfData(ref dataTable, null, searchCriteria);
         }
 
+        /// <summary>
+        /// Gets a table given a DataView.
+        /// </summary>
+        /// <param name="dataView">The data view.</param>
+        /// <returns>DataTable.</returns>
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1045:DoNotPassTypesByReference", MessageId = "0#")]
         public static DataTable GetTable(ref DataView dataView)
         {
+            if (dataView == null) throw new ArgumentNullException("dataView", "table cannot be a null reference (Nothing in VB) or empty!");
             DataTable mRetVal = dataView.Table.Clone();
             foreach (DataRowView item in dataView)
             {

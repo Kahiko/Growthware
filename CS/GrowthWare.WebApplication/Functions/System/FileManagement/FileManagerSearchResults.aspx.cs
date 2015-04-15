@@ -202,7 +202,7 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
                 mDataTable = DataHelper.GetTable(ref mView);
                 //mDataTable = DataHelper.GetPageOfData(ref mDataTable, ref searchCriteria);
                 string mSort = "type desc, " + searchCriteria.OrderByColumn + " " + searchCriteria.OrderByDirection;
-                mDataTable = DataHelper.GetPageOfData(ref mDataTable, mSort, searchCriteria.WhereClause, ref searchCriteria);
+                mDataTable = DataHelper.GetPageOfData(ref mDataTable, mSort, ref searchCriteria);
                 if (mDataTable != null && mDataTable.Rows.Count > 0)
                 {
                     DataView mDataView = mDataTable.DefaultView;
