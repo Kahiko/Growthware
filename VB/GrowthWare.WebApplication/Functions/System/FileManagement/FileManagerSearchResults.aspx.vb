@@ -86,7 +86,7 @@ Public Class FileManagerSearchResults
         mView.Sort = "type desc"
         mDataTable = DataHelper.GetTable(mView)
         Dim mSort As String = "type desc, " + searchCriteria.OrderByColumn + " " + searchCriteria.OrderByDirection
-        mDataTable = DataHelper.GetPageOfData(mDataTable, mSort, searchCriteria.WhereClause, searchCriteria)
+        mDataTable = DataHelper.GetPageOfData(mDataTable, mSort, searchCriteria)
 
 
         If Not mDataTable Is Nothing And mDataTable.Rows.Count > 0 Then

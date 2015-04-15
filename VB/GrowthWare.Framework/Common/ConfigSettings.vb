@@ -7,7 +7,15 @@ Namespace Common
     ''' <summary>
     ''' Servers as a collection of configuration information
     ''' </summary>
-    Public Class ConfigSettings
+    Public NotInheritable Class ConfigSettings
+        ''' <summary>
+        ''' Added to prevent the complier from creating a default.
+        ''' Resolves CA1053 Static holder types should not have constructors
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub New()
+
+        End Sub
 
         ''' <summary>
         ''' Returns App_Displayed_Name from the CONFIG file
