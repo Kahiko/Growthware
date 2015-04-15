@@ -4,7 +4,17 @@
     ''' </summary>
     ''' <remarks></remarks>
     <Serializable(), CLSCompliant(True)> _
-    Public Class MClientChoices
+    Public NotInheritable Class MClientChoices
+
+        ''' <summary>
+        ''' Added to prevent the compiler from creating a default constructor.
+        ''' Resolves CA 1053
+        ''' </summary>
+        ''' <remarks></remarks>
+        Private Sub New()
+
+        End Sub
+
         ''' <summary>
         ''' Gets the records per page.
         ''' </summary>
