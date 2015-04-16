@@ -16,7 +16,7 @@ namespace GrowthWare.Framework.Model.Profiles
     /// Store procedures: 
     /// ZGWSystem.Set_DataBase_Information, ZGWSystem.Get_Database_Information
     /// </remarks>
-    [Serializable(), CLSCompliant(true)]
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "MDB"), Serializable(), CLSCompliant(true)]
     public class MDBInformation : MProfile
     {
 #region "Member Properties"
@@ -26,18 +26,29 @@ namespace GrowthWare.Framework.Model.Profiles
 #endregion
 
 #region "Public Properties"
-        public int Information_SEQ_ID
+        /// <summary>
+        /// The informatino Sequence Identifier
+        /// </summary>
+        public int InformationSeqId
         {
             get { return mInformationSeqId; }
             set { mInformationSeqId = value; }
         }
-
+        /// <summary>
+        /// The version of the database
+        /// </summary>
         public string Version
         {
             get { return mVersion.Trim(); }
-            set { mVersion = value.Trim(); }
+            set 
+            {
+                if (value != null) mVersion = value.Trim(); 
+            }
         }
-
+        /// <summary>
+        /// Determins if the database should use Inheritance when 
+        /// calculating roles and or groups.
+        /// </summary>
         public int EnableInheritance
         {
             get { return mEnableInheritance; }
@@ -46,7 +57,7 @@ namespace GrowthWare.Framework.Model.Profiles
 #endregion
 
 #region "Private Methods"
-        protected new void Initialize(ref DataRow dataRow)
+        protected new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "VERSION";
             base.IdColumnName = "Information_SEQ_ID";
@@ -72,7 +83,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="dataRow">The dataRow.</param>
         public MDBInformation(DataRow dataRow)
         {
-            this.Initialize(ref dataRow);
+            this.Initialize(dataRow);
         }
 #endregion
     }

@@ -36,7 +36,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         public bool UpdateProfile()
         {
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Database_Information_SeqID", m_Profile.Information_SEQ_ID), 
+				new SqlParameter("@P_Database_Information_SeqID", m_Profile.InformationSeqId), 
 				new SqlParameter("@P_Version", m_Profile.Version), 
 				new SqlParameter("@P_Enable_Inheritance", m_Profile.EnableInheritance), 
 				new SqlParameter("@P_Added_Updated_By",  GetAddedUpdatedBy(m_Profile)), 

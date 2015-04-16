@@ -427,7 +427,11 @@ namespace GrowthWare.Framework.Common
         {
             get { return AppDisplayedName + "Remember_Me"; }
         }
-
+        /// <summary>
+        /// Returns the FQDN of the web site.
+        /// </summary>
+        /// <value></value>
+        /// <returns>string</returns>
         public static string RootSite
         {
             get
