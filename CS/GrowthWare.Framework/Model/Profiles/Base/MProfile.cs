@@ -29,20 +29,33 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// </summary>
         public DateTime AddedDate { get; set; }
 
+        /// <summary>
+        /// Unique numeric identifier
+        /// </summary>
         public int Id
         {
             get { return m_Id; }
             set { m_Id = value; }
         }
-
+        /// <summary>
+        /// Column Name for the Id property from the DB ... IE Function_Seq_ID for a "function" profile.
+        /// </summary>
         public string IdColumnName { get; set; }
-
+        /// <summary>
+        /// String representation normaly unique
+        /// </summary>
         public string Name { get; set; }
-
+        /// <summary>
+        /// Column Name for the Name property from the DB ... IE Name for a "function" profile.
+        /// </summary>
         public string NameColumnName { get; set; }
-
+        /// <summary>
+        /// Account ID used to update
+        /// </summary>
         public int UpdatedBy { get; set; }
-
+        /// <summary>
+        /// The date lasted updated
+        /// </summary>
         public DateTime UpdatedDate { get; set; }
         #endregion
 

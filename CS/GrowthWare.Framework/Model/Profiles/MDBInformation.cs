@@ -57,6 +57,11 @@ namespace GrowthWare.Framework.Model.Profiles
 #endregion
 
 #region "Private Methods"
+        /// <summary>
+        /// Populates direct properties as well as passing the DataRow to the abstract class
+        /// for the population of the base properties.
+        /// </summary>
+        /// <param name="dataRow">DataRow</param>
         protected new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "VERSION";
