@@ -37,6 +37,9 @@ Namespace Model.Profiles
 
 
 #Region "Public Properties"
+        ''' <summary>
+        ''' The informatino Sequence Identifier
+        ''' </summary>
         Public Property InformationSeqId() As Integer
             Get
                 Return m_InformationSeqId
@@ -45,7 +48,9 @@ Namespace Model.Profiles
                 m_InformationSeqId = value
             End Set
         End Property
-
+        ''' <summary>
+        ''' The version of the database
+        ''' </summary>
         Public Property Version() As String
             Get
                 Return m_Version.Trim
@@ -54,7 +59,10 @@ Namespace Model.Profiles
                 If Not value Is Nothing Then m_Version = value.Trim
             End Set
         End Property
-
+        ''' <summary>
+        ''' Determins if the database should use Inheritance when 
+        ''' calculating roles and or groups.
+        ''' </summary>
         Public Property EnableInheritance() As Integer
             Get
                 Return m_EnableInheritance

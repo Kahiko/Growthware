@@ -500,8 +500,7 @@ Namespace Common
         ''' Returns the FQDN of the web site.
         ''' </summary>
         ''' <value></value>
-        ''' <returns></returns>
-        ''' <remarks></remarks>
+        ''' <returns>string</returns>
         Shared ReadOnly Property RootSite() As String
             Get
                 Dim mRetVal As String = String.Empty
