@@ -164,7 +164,7 @@ namespace GrowthWare.WebSupport.Utilities
             catch (DataAccessLayerException ex)
             {
                 mLog.Error(ex);
-                throw new Exception("Could not save the directory infomation!");
+                throw new WebSupportException("Could not save the directory information!");
             }
             String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName;
             CacheController.RemoveFromCache(mCacheName);

@@ -37,42 +37,63 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Retuns a string representing the depth of the "url" link used in file manager.
         /// </summary>
-        /// <param name="currentDirectoryString">String</param>
+        /// <param name="currentDirectory">String</param>
         /// <param name="functionSeqId">Int</param>
         /// <returns></returns>
-        public static string GetDirectoryLinks(string currentDirectoryString, int functionSeqId)
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Web.UI.WebControls.HyperLink.set_Text(System.String)")]
+        public static string GetDirectoryLinks(string currentDirectory, int functionSeqId)
         {
             HttpContext context = null;
             context = HttpContext.Current;
-            string mCurrentDirectory = context.Server.UrlDecode(currentDirectoryString);
-            StringBuilder mStringBuilder = new StringBuilder();
-            StringWriter mStringWriter = new StringWriter(mStringBuilder);
-            HtmlTextWriter mWriter = new HtmlTextWriter(mStringWriter);
-            string mPath = string.Empty;
-            HyperLink mFirstLink = new HyperLink();
-            mFirstLink = new HyperLink();
-            mFirstLink.Attributes.Add("href", "javascript:void(0);");
-            mFirstLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", "/", functionSeqId));
-            mFirstLink.Text = @"Home\";
-            mFirstLink.RenderControl(mWriter);
-            if (mCurrentDirectory.Length > 2)
+            string mRetVal = string.Empty;
+            StringWriter mStringWriter = null;
+            HtmlTextWriter mWriter = null;
+            HyperLink mFirstLink = null;
+            HyperLink mLink = null;
+            try
             {
-
-                Array mArray = mCurrentDirectory.Split('/');
-                foreach (string item in mArray)
+                string mCurrentDirectory = context.Server.UrlDecode(currentDirectory);
+                StringBuilder mStringBuilder = new StringBuilder();
+                mStringWriter = new StringWriter(mStringBuilder, CultureInfo.InvariantCulture);
+                mWriter = new HtmlTextWriter(mStringWriter);
+                string mPath = string.Empty;
+                mFirstLink = new HyperLink();
+                mFirstLink.Attributes.Add("href", "javascript:void(0);");
+                mFirstLink.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", "/", functionSeqId));
+                mFirstLink.Text = @"Home\";
+                mFirstLink.RenderControl(mWriter);
+                if (mCurrentDirectory.Length > 2)
                 {
-                    if (item.Length > 0)
+
+                    Array mArray = mCurrentDirectory.Split('/');
+                    foreach (string item in mArray)
                     {
-                        mPath += "/" + item;
-                        HyperLink mLink = new HyperLink();
-                        mLink.Attributes.Add("href", "#");
-                        mLink.Attributes.Add("onclick", string.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId));
-                        mLink.Text = item + @"\";
-                        mLink.RenderControl(mWriter);
+                        if (item.Length > 0)
+                        {
+                            mPath += "/" + item;
+                            mLink = new HyperLink();
+                            mLink.Attributes.Add("href", "#");
+                            mLink.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId));
+                            mLink.Text = item + @"\";
+                            mLink.RenderControl(mWriter);
+                        }
                     }
                 }
+                mRetVal = mStringBuilder.ToString();
             }
-            return mStringBuilder.ToString();
+            catch (Exception ex)
+            {
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                throw;
+            }
+            finally 
+            {
+                if (mStringWriter != null) mStringWriter.Dispose();
+                if (mFirstLink != null) mFirstLink.Dispose();
+                if (mLink != null) mLink.Dispose();
+            }
+            return mRetVal.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>

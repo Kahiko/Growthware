@@ -20,7 +20,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Encrypt
         public static string GetGUID()
         {
             string mRetVal = string.Empty;
-            mRetVal = GWWebHelper.GetNewGuid();
+            mRetVal = GWWebHelper.GetNewGuid;
             return mRetVal;
         }
     }

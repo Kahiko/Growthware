@@ -164,7 +164,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 Logger mLogger = Logger.Instance();
                 mLogger.Error(ex);
-                throw new Exception("Could not associate the roles to the group please see the logs for details.");
+                throw new WebSupportException("Could not associate the roles to the group please see the logs for details.");
             }
             CacheController.RemoveAllCache();
         }

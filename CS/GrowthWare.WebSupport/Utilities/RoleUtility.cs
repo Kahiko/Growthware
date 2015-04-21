@@ -56,7 +56,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             catch (DataAccessLayerException ex)
             {
-                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                WebSupportException mEx = new WebSupportException("Could not save the information due to database error please have your administrator check the logs for details.");
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
                 throw mEx;
@@ -169,7 +169,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             catch (DataAccessLayerException ex)
             {
-                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                WebSupportException mEx = new WebSupportException("Could not save the information due to database error please have your administrator check the logs for details.");
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
                 throw mEx;
@@ -207,7 +207,7 @@ namespace GrowthWare.WebSupport.Utilities
             }
             catch (DataAccessLayerException ex)
             {
-                Exception mEx = new Exception("Could not save the information due to database error please have your administrator check the logs for details.");
+                WebSupportException mEx = new WebSupportException("Could not save the information due to database error please have your administrator check the logs for details.");
                 Logger mLog = Logger.Instance();
                 mLog.Error(ex);
                 throw mEx;

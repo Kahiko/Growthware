@@ -1,6 +1,7 @@
 ﻿using GrowthWare.Framework.Common;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
@@ -99,11 +100,14 @@ namespace GrowthWare.WebSupport
         /// Gets the random password.
         /// </summary>
         /// <returns>System.String.</returns>
-        public static string GetNewGuid()
+        public static string GetNewGuid
         {
-            string retVal = null;
-            retVal = System.Guid.NewGuid().ToString();
-            return retVal;
+            get
+            {
+                string retVal = null;
+                retVal = System.Guid.NewGuid().ToString();
+                return retVal;
+            }
         }
 
         /// <summary>
@@ -142,7 +146,7 @@ namespace GrowthWare.WebSupport
                 endingNumber = t;
             }
             retVal = s_Random.Next(startingNumber, endingNumber);
-            return retVal.ToString();
+            return retVal.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -191,9 +195,9 @@ namespace GrowthWare.WebSupport
         /// <summary>
         /// Sleeps the specified dw milliseconds.
         /// </summary>
-        /// <param name="dwMilliseconds">The dw milliseconds.</param>
+        /// <param name="milliseconds">The dw milliseconds.</param>
         [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        public static extern void Sleep(long dwMilliseconds);
+        public static extern void Sleep(long milliseconds);
 
         /// <summary>
         /// Gets the version.
