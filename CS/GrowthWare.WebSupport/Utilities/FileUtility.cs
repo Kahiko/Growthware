@@ -43,8 +43,6 @@ namespace GrowthWare.WebSupport.Utilities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1303:Do not pass literals as localized parameters", MessageId = "System.Web.UI.WebControls.HyperLink.set_Text(System.String)")]
         public static string GetDirectoryLinks(string currentDirectory, int functionSeqId)
         {
-            HttpContext context = null;
-            context = HttpContext.Current;
             string mRetVal = string.Empty;
             StringWriter mStringWriter = null;
             HtmlTextWriter mWriter = null;
@@ -52,7 +50,7 @@ namespace GrowthWare.WebSupport.Utilities
             HyperLink mLink = null;
             try
             {
-                string mCurrentDirectory = context.Server.UrlDecode(currentDirectory);
+                string mCurrentDirectory = HttpContext.Current.Server.UrlDecode(currentDirectory);
                 StringBuilder mStringBuilder = new StringBuilder();
                 mStringWriter = new StringWriter(mStringBuilder, CultureInfo.InvariantCulture);
                 mWriter = new HtmlTextWriter(mStringWriter);
@@ -72,7 +70,7 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             mPath += "/" + item;
                             mLink = new HyperLink();
-                            mLink.Attributes.Add("href", "#");
+                            mLink.Attributes.Add("href", "javascript:void(0);");
                             mLink.Attributes.Add("onclick", string.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId));
                             mLink.Text = item + @"\";
                             mLink.RenderControl(mWriter);
