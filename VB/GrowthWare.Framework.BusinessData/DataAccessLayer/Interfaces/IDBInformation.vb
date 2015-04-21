@@ -18,7 +18,7 @@ Namespace DataAccessLayer.Interfaces
         ''' Gets the profile.
         ''' </summary>
         ''' <returns>DataRow.</returns>
-        Function GetProfile() As DataRow
+        ReadOnly Property GetProfileRow() As DataRow
 
         ''' <summary>
         ''' Updates the profile.

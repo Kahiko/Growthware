@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 
 Namespace BusinessLogicLayer
-    Public Class BDBInformation
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="BDB")> Public Class BDBInformation
         Inherits BaseBusinessLogic
 
         Private m_DDBInformation As IDBInformation
@@ -49,25 +49,27 @@ Namespace BusinessLogicLayer
         ''' </example>
         Public Sub New(ByVal securityEntityProfile As MSecurityEntityProfile, ByVal centralManagement As Boolean)
             If (securityEntityProfile Is Nothing) Then
-                Throw New ArgumentException("securityEntityProfile can not be null or empty!")
+                Throw New ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!")
             End If
             If Not centralManagement Then
-                If m_DDBInformation Is Nothing Then
-                    m_DDBInformation = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation")
+                If Me.m_DDBInformation Is Nothing Then
+                    Me.m_DDBInformation = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation")
                 End If
             Else
-                m_DDBInformation = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation")
+                Me.m_DDBInformation = ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation")
             End If
-            m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString
+            Me.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString
         End Sub
 
         ''' <summary>
         ''' Gets the profile.
         ''' </summary>
         ''' <returns>MDBInformation.</returns>
-        Public Function GetProfile() As MDBInformation
-            Return New MDBInformation(m_DDBInformation.GetProfile())
-        End Function
+        Public ReadOnly Property GetProfile As MDBInformation
+            Get
+                Return New MDBInformation(Me.m_DDBInformation.GetProfileRow)
+            End Get
+        End Property
 
         ''' <summary>
         ''' Updates the profile.
@@ -77,9 +79,9 @@ Namespace BusinessLogicLayer
         Public Function UpdateProfile(ByVal profile As MDBInformation) As Boolean
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic)")
             Dim mRetVal As Boolean = False
-            m_DDBInformation.Profile = profile
+            Me.m_DDBInformation.Profile = profile
             If DatabaseIsOnline() Then
-                mRetVal = m_DDBInformation.UpdateProfile()
+                mRetVal = Me.m_DDBInformation.UpdateProfile()
             End If
             Return mRetVal
         End Function

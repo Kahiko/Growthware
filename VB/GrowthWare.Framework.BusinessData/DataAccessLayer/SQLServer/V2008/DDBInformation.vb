@@ -4,16 +4,18 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports System.Data.SqlClient
 
 Namespace DataAccessLayer.SQLServer.V2008
-    Public Class DDBInformation
+    <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="DDB")> Public Class DDBInformation
         Inherits DDBInteraction
         Implements IDBInformation
 
         Private m_Profile As MDBInformation = Nothing
 
-        Public Function GetProfile() As DataRow Implements IDBInformation.GetProfile
-            Dim mStoredProcedure As String = "ZGWSystem.Get_Database_Information"
-            Return MyBase.GetDataRow(mStoredProcedure)
-        End Function
+        Public ReadOnly Property GetProfileRow() As DataRow Implements IDBInformation.GetProfileRow
+            Get
+                Dim mStoredProcedure As String = "ZGWSystem.Get_Database_Information"
+                Return MyBase.GetDataRow(mStoredProcedure)
+            End Get
+        End Property
 
         Public Property Profile As MDBInformation Implements IDBInformation.Profile
             Get
@@ -37,7 +39,7 @@ Namespace DataAccessLayer.SQLServer.V2008
                 MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
                 Return True
             Catch ex As Exception
-                Throw ex
+                Throw
             End Try
 
         End Function
