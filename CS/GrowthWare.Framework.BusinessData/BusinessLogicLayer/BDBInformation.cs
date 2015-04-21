@@ -9,6 +9,9 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
+    /// <summary>
+    /// BDBInformation is the business implementation for the DB information.
+    /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BDB")]
     public class BDBInformation : BaseBusinessLogic
     {

@@ -4,6 +4,9 @@ using System.Data;
 
 namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 {
+    /// <summary>
+    /// Public interface for DDBInformation
+    /// </summary>
     public interface IDBInformation : IDDBInteraction
     {
         /// <summary>
