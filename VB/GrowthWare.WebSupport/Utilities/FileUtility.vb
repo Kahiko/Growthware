@@ -62,7 +62,7 @@ Namespace Utilities
             Catch ex As Exception
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
-                Throw ex
+                Throw
             Finally
                 If Not mStringWriter Is Nothing Then mStringWriter.Dispose()
                 If Not mFirstLink Is Nothing Then mFirstLink.Dispose()

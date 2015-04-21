@@ -148,7 +148,7 @@ Public Class GWWebHelper
             endingNumber = t
         End If
         retVal = r.Next(startingNumber, endingNumber)
-        Sleep(CType((System.DateTime.Now.Millisecond * (retVal / 100)), Long))
+        Sleep((System.DateTime.Now.Millisecond * (retVal / 100)))
         Return retVal.ToString(CultureInfo.InvariantCulture)
     End Function
 
