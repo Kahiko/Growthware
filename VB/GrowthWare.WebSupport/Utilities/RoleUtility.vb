@@ -126,7 +126,7 @@ Namespace Utilities
                 RoleUtility.RemoveRoleCache(profile.SecurityEntityId)
                 FunctionUtility.RemoveCachedFunctions()
             Catch ex As DataAccessLayerException
-                Dim mEx As New Exception("Could not save the information due to database error please have your administrator check the logs for details.")
+                Dim mEx As New WebSupportException("Could not save the information due to database error please have your administrator check the logs for details.")
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
                 Throw mEx
@@ -159,7 +159,7 @@ Namespace Utilities
             Try
                 mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId)
             Catch ex As DataAccessLayerException
-                Dim mEx As New Exception("Could not save the information due to database error please have your administrator check the logs for details.")
+                Dim mEx As New WebSupportException("Could not save the information due to database error please have your administrator check the logs for details.")
                 Dim mLog As Logger = Logger.Instance()
                 mLog.Error(ex)
                 Throw mEx

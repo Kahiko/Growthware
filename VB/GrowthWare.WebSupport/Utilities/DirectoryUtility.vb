@@ -93,7 +93,7 @@ Namespace Utilities
                 mBLL.Save(profile)
             Catch ex As DataAccessLayerException
                 mLog.Error(ex)
-                Throw New Exception("Could not save the directory infomation!")
+                Throw New WebSupportException("Could not save the directory information!")
             End Try
             Dim mCacheName As String = mSecurityEntityProfile.Id.ToString(CultureInfo.CurrentCulture) + "_" + s_DirectoryInfoCachedName
             CacheController.RemoveFromCache(mCacheName)

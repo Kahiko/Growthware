@@ -26,36 +26,49 @@ Namespace Utilities
             Return mRetVal
         End Function
 
-        Public Shared Function GetDirectoryLinks(ByVal currentDirectoryString As String, ByVal functionSeqId As Integer) As String
+        Public Shared Function GetDirectoryLinks(ByVal currentDirectory As String, ByVal functionSeqId As Integer) As String
             Dim context As HttpContext = HttpContext.Current
-            Dim mStringBuilder As StringBuilder = New StringBuilder()
-            Dim mStringWriter As StringWriter = New StringWriter(mStringBuilder)
-            Dim mWriter As HtmlTextWriter = New HtmlTextWriter(mStringWriter)
-            Dim mPath As String = String.Empty
-            Dim mCurrentDirectory As String = "/"
-
-            Dim mFirstLink As HyperLink = New HyperLink()
-            mFirstLink.Attributes.Add("href", "javascript:void(0);")
-            mFirstLink.Attributes.Add("onclick", String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mCurrentDirectory, functionSeqId))
-            mFirstLink.Text = "Home\"
-            mFirstLink.RenderControl(mWriter)
-            mCurrentDirectory = context.Server.UrlDecode(currentDirectoryString)
-            If context.Server.UrlDecode(mCurrentDirectory).Length > 1 Then
-                Dim mArray As Array = mCurrentDirectory.Split("/")
-                For Each item As String In mArray
-                    If item.Length > 0 Then
-                        mPath += "/" + item
-                        Dim mLink As HyperLink = New HyperLink()
-                        mLink.Attributes.Add("href", "#")
-                        mLink.Attributes.Add("onclick", String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId))
-                        mLink.Text = item + "\"
-                        mLink.RenderControl(mWriter)
-                    End If
-
-                Next
-
-            End If
-            Return mStringBuilder.ToString()
+            Dim mRetVal As String = String.Empty
+            Dim mStringWriter As StringWriter = Nothing
+            Dim mWriter As HtmlTextWriter = Nothing
+            Dim mFirstLink As HyperLink = Nothing
+            Dim mLink As HyperLink = Nothing
+            Try
+                Dim mStringBuilder As StringBuilder = New StringBuilder()
+                mStringWriter = New StringWriter(mStringBuilder, CultureInfo.InvariantCulture)
+                mWriter = New HtmlTextWriter(mStringWriter)
+                Dim mPath As String = String.Empty
+                Dim mCurrentDirectory As String = "/"
+                mFirstLink = New HyperLink()
+                mFirstLink.Attributes.Add("href", "javascript:void(0);")
+                mFirstLink.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mCurrentDirectory, functionSeqId))
+                mFirstLink.Text = "Home\"
+                mFirstLink.RenderControl(mWriter)
+                mCurrentDirectory = context.Server.UrlDecode(currentDirectory)
+                If context.Server.UrlDecode(mCurrentDirectory).Length > 1 Then
+                    Dim mArray As Array = mCurrentDirectory.Split("/")
+                    For Each item As String In mArray
+                        If item.Length > 0 Then
+                            mPath += "/" + item
+                            mLink = New HyperLink()
+                            mLink.Attributes.Add("href", "#")
+                            mLink.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId))
+                            mLink.Text = item + "\"
+                            mLink.RenderControl(mWriter)
+                        End If
+                    Next
+                End If
+                mRetVal = mStringBuilder.ToString()
+            Catch ex As Exception
+                Dim mLog As Logger = Logger.Instance()
+                mLog.Error(ex)
+                Throw ex
+            Finally
+                If Not mStringWriter Is Nothing Then mStringWriter.Dispose()
+                If Not mFirstLink Is Nothing Then mFirstLink.Dispose()
+                If Not mLink Is Nothing Then mLink.Dispose()
+            End Try
+            Return mRetVal.ToString(CultureInfo.InvariantCulture)
         End Function
 
         ''' <summary>

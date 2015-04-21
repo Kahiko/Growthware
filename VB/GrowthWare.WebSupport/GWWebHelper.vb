@@ -1,5 +1,6 @@
 ﻿Imports System.Web
 Imports GrowthWare.Framework.Common
+Imports System.Globalization
 
 ''' <summary>
 ''' GWWebHelper Contains non volatile data needed throughout the system.
@@ -106,11 +107,13 @@ Public Class GWWebHelper
     ''' Gets the new GUID.
     ''' </summary>
     ''' <returns>System.String.</returns>
-    Public Shared Function GetNewGuid() As String
-        Dim retVal As String
-        retVal = Guid.NewGuid().ToString()
-        Return retVal
-    End Function
+    Public Shared ReadOnly Property GetNewGuid As String
+        Get
+            Dim retVal As String
+            retVal = Guid.NewGuid().ToString()
+            Return retVal
+        End Get
+    End Property
 
     ''' <summary>
     ''' Gets the query or form value.
@@ -146,7 +149,7 @@ Public Class GWWebHelper
         End If
         retVal = r.Next(startingNumber, endingNumber)
         Sleep(CType((System.DateTime.Now.Millisecond * (retVal / 100)), Long))
-        Return retVal
+        Return retVal.ToString(CultureInfo.InvariantCulture)
     End Function
 
     ''' <summary>

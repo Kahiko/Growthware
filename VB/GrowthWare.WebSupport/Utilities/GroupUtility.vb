@@ -126,7 +126,7 @@ Namespace Utilities
             Catch ex As Exception
                 Dim mLogger As Logger = Logger.Instance()
                 mLogger.Error(ex)
-                Throw New Exception("Could not associate the roles to the group please see the logs for details.")
+                Throw New WebSupportException("Could not associate the roles to the group please see the logs for details.")
             End Try
             CacheController.RemoveAllCache()
         End Sub
