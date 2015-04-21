@@ -27,7 +27,6 @@ Namespace Utilities
         End Function
 
         Public Shared Function GetDirectoryLinks(ByVal currentDirectory As String, ByVal functionSeqId As Integer) As String
-            Dim context As HttpContext = HttpContext.Current
             Dim mRetVal As String = String.Empty
             Dim mStringWriter As StringWriter = Nothing
             Dim mWriter As HtmlTextWriter = Nothing
@@ -44,14 +43,14 @@ Namespace Utilities
                 mFirstLink.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mCurrentDirectory, functionSeqId))
                 mFirstLink.Text = "Home\"
                 mFirstLink.RenderControl(mWriter)
-                mCurrentDirectory = context.Server.UrlDecode(currentDirectory)
-                If context.Server.UrlDecode(mCurrentDirectory).Length > 1 Then
+                mCurrentDirectory = HttpContext.Current.Server.UrlDecode(currentDirectory)
+                If HttpContext.Current.Server.UrlDecode(mCurrentDirectory).Length > 1 Then
                     Dim mArray As Array = mCurrentDirectory.Split("/")
                     For Each item As String In mArray
                         If item.Length > 0 Then
                             mPath += "/" + item
                             mLink = New HyperLink()
-                            mLink.Attributes.Add("href", "#")
+                            mLink.Attributes.Add("href", "javascript:void(0);")
                             mLink.Attributes.Add("onclick", String.Format(CultureInfo.InvariantCulture, "javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, functionSeqId))
                             mLink.Text = item + "\"
                             mLink.RenderControl(mWriter)
