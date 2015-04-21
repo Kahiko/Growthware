@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
 {
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BDB")]
     public class BDBInformation : BaseBusinessLogic
     {
-        private static IDBInformation m_DDBInformation;
+        private IDBInformation m_DDBInformation;
 
         /// <summary>
         /// Private BDBInformation() to ensure only new instances with passed parameters is used.
@@ -53,18 +54,19 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </example>
         public BDBInformation(MSecurityEntityProfile securityEntityProfile, bool centralManagement)
         {
+            if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
             if (!centralManagement)
             {
-                if (m_DDBInformation == null)
+                if (this.m_DDBInformation == null)
                 {
-                    m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
-                    m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
+                    this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
+                    this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
                 }
             }
             else
             {
-                m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
-                m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
+                this.m_DDBInformation = (IDBInformation)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DDBInformation");
+                this.m_DDBInformation.ConnectionString = securityEntityProfile.ConnectionString;
             }
         }
 
@@ -73,9 +75,12 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// </summary>
         /// <returns>MDBInformation</returns>
         /// <remarks></remarks>
-        public MDBInformation GetProfile()
+        public MDBInformation GetProfile
         {
-            return new MDBInformation(m_DDBInformation.GetProfile());
+            get
+            {
+                return new MDBInformation(this.m_DDBInformation.GetProfileRow);
+            }
         }
 
         /// <summary>
@@ -88,10 +93,10 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic)");
             bool mRetVal = false;
-            m_DDBInformation.Profile = profile;
+            this.m_DDBInformation.Profile = profile;
             if (DatabaseIsOnline()) 
             {
-                mRetVal = m_DDBInformation.UpdateProfile();
+                mRetVal = this.m_DDBInformation.UpdateProfile();
             }
             return mRetVal;
         }

@@ -6,13 +6,27 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 {
     public interface IDBInformation : IDDBInteraction
     {
+        /// <summary>
+        /// Gets or sets the profile.
+        /// </summary>
+        /// <value>The profile.</value>
         MDBInformation Profile
         {
             get;
             set;
 
         }
-        DataRow GetProfile();
+
+        /// <summary>
+        /// Gets the profile.
+        /// </summary>
+        /// <returns>DataRow.</returns>
+        DataRow GetProfileRow { get; }
+
+        /// <summary>
+        /// Updates the profile.
+        /// </summary>
+        /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
         bool UpdateProfile();
     }
 }

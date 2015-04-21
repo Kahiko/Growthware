@@ -10,6 +10,7 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
     /// <summary>
     /// Class DDBInformation.
     /// </summary>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "DDB")]
     public class DDBInformation : DDBInteraction, IDBInformation
     {
         #region "Private Properties"
@@ -21,11 +22,14 @@ namespace GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008
         /// </summary>
         /// <returns>SQL Parameters</returns>
         /// <remarks></remarks>
-        public DataRow GetProfile()
+        public DataRow GetProfileRow
         {
-            SqlParameter[] myParameters = null;
-            String mStoredProcedure = "ZGWSystem.Get_Database_Information";
-            return base.GetDataRow(mStoredProcedure, myParameters);
+            get
+            {
+                SqlParameter[] myParameters = null;
+                String mStoredProcedure = "ZGWSystem.Get_Database_Information";
+                return base.GetDataRow(mStoredProcedure, myParameters);
+            }
         }
 
         /// <summary>
