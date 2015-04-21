@@ -3,6 +3,9 @@ Imports GrowthWare.Framework.Common
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer.Interfaces
 
 Namespace BusinessLogicLayer
+    ''' <summary>
+    ''' BDBInformation is the business implementation for the DB information.
+    ''' </summary>
     <System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId:="BDB")> Public Class BDBInformation
         Inherits BaseBusinessLogic
 

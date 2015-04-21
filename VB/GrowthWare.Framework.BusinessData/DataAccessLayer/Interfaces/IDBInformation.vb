@@ -3,7 +3,7 @@ Imports GrowthWare.Framework.Model.Profiles
 
 Namespace DataAccessLayer.Interfaces
     ''' <summary>
-    ''' Interface IDBInformation
+    ''' Public interface for DDBInformation
     ''' </summary>
     Public Interface IDBInformation
         Inherits IDDBInteraction
