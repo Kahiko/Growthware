@@ -142,6 +142,14 @@ namespace GrowthWare.WebSupport
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool DuplicateToken(IntPtr existingTokenHandle, int SECURITY_IMPERSONATION_LEVEL, ref IntPtr duplicateTokenHandle);
 
+
+        /// <summary>
+        /// Sleeps the specified dw milliseconds.
+        /// </summary>
+        /// <param name="milliseconds">The dw milliseconds.</param>
+        [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
+        public static extern void Sleep(int milliseconds);
+
         ///// <summary>
         /////     GetErrorMessage formats and returns an error message
         /////     corresponding to the input errorCode.

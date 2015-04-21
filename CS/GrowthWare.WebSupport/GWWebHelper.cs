@@ -146,6 +146,7 @@ namespace GrowthWare.WebSupport
                 endingNumber = t;
             }
             retVal = s_Random.Next(startingNumber, endingNumber);
+            NativeMethods.Sleep((int)(System.DateTime.Now.Millisecond * (retVal / 100)));
             return retVal.ToString(CultureInfo.InvariantCulture);
         }
 
@@ -191,13 +192,6 @@ namespace GrowthWare.WebSupport
         {
             get { return HttpContext.Current.Server.MapPath(@"~\Public\Skins\"); }
         }
-
-        /// <summary>
-        /// Sleeps the specified dw milliseconds.
-        /// </summary>
-        /// <param name="milliseconds">The dw milliseconds.</param>
-        [DllImport("kernel32", CharSet = CharSet.Ansi, SetLastError = true, ExactSpelling = true)]
-        public static extern void Sleep(long milliseconds);
 
         /// <summary>
         /// Gets the version.
