@@ -6,7 +6,7 @@ using System.Web.Routing;
 
 namespace GrowthWare.WebApplication.Controllers
 {
-    public class SessionStateRouteHandler : IRouteHandler
+    public sealed class SessionStateRouteHandler : IRouteHandler
     {
         IHttpHandler IRouteHandler.GetHttpHandler(RequestContext requestContext)
         {
