@@ -44,7 +44,7 @@ Public Class BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/bundles/Content/jQueryUIRedmond").Include(
+            New StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/UI").Include(
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
                 "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
