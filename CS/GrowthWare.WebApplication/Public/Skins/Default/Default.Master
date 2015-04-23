@@ -7,7 +7,7 @@
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/jqueryUI") %>
     <%: Scripts.Render("~/bundles/GrowthWare")%>
-    <%: Styles.Render("~/Content/jQueryUIRedmond")%>
+    <%: Styles.Render("~/Public/CSS/jQueryUIThemes/Redmond/UI")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">
