@@ -242,6 +242,12 @@
     <Content Include="Functions\System\Administration\Messages\AddEditMessage.aspx" />
     <Content Include="Functions\System\Administration\Messages\SearchMessageResults.aspx" />
     <Content Include="Functions\System\Administration\Messages\SearchMessages.aspx" />
+    <Content Include="Functions\System\Administration\NVP\AddEditNVP.aspx" />
+    <Content Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVP.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPResults.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx" />
     <Content Include="Functions\System\Administration\Roles\AddEditRole.aspx" />
     <Content Include="Functions\System\Administration\Roles\EditRoleMembers.aspx" />
     <Content Include="Functions\System\Administration\Roles\SearchRoleResults.aspx" />
@@ -410,6 +416,7 @@
     <Compile Include="Controllers\FunctionsController.vb" />
     <Compile Include="Controllers\GroupsController.vb" />
     <Compile Include="Controllers\MessagesController.vb" />
+    <Compile Include="Controllers\NameValuePairController.vb" />
     <Compile Include="Controllers\RolesController.vb" />
     <Compile Include="Controllers\SecurityEntitiesController.vb" />
     <Compile Include="Controllers\SessionableControllerHandler .vb" />
@@ -587,6 +594,48 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\SearchMessages.aspx.vb">
       <DependentUpon>SearchMessages.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.designer.vb">
+      <DependentUpon>AddEditNVP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.vb">
+      <DependentUpon>AddEditNVP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx.designer.vb">
+      <DependentUpon>AddEditNVPDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx.vb">
+      <DependentUpon>AddEditNVPDetails.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVP.aspx.designer.vb">
+      <DependentUpon>SearchNVP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVP.aspx.vb">
+      <DependentUpon>SearchNVP.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.designer.vb">
+      <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.vb">
+      <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.designer.vb">
+      <DependentUpon>SearchNVPResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.vb">
+      <DependentUpon>SearchNVPResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.designer.vb">
+      <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.vb">
+      <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.designer.vb">
