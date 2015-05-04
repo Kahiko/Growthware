@@ -152,6 +152,12 @@
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx" />
+    <Content Include="Functions\System\Administration\NVP\AddEditNVP.aspx" />
+    <Content Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVP.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPResults.aspx" />
+    <Content Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx" />
     <Content Include="Functions\System\FileManagement\FileManager.aspx" />
     <Content Include="Functions\System\FileManagement\FileManagerSearchResults.aspx" />
     <Content Include="Functions\System\Administration\Functions\AddEditFunction.aspx" />
@@ -394,6 +400,7 @@
     <Compile Include="Controllers\FunctionsController.cs" />
     <Compile Include="Controllers\GroupsController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
+    <Compile Include="Controllers\NameValuePairController.cs" />
     <Compile Include="Controllers\RolesController.cs" />
     <Compile Include="Controllers\SecurityEntitiesController.cs" />
     <Compile Include="Controllers\SessionableControllerHandler.cs" />
@@ -495,6 +502,48 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx.designer.cs">
       <DependentUpon>RandomNumbers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.cs">
+      <DependentUpon>AddEditNVP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.designer.cs">
+      <DependentUpon>AddEditNVP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx.cs">
+      <DependentUpon>AddEditNVPDetails.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\AddEditNVPDetails.aspx.designer.cs">
+      <DependentUpon>AddEditNVPDetails.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVP.aspx.cs">
+      <DependentUpon>SearchNVP.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVP.aspx.designer.cs">
+      <DependentUpon>SearchNVP.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.cs">
+      <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.designer.cs">
+      <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.cs">
+      <DependentUpon>SearchNVPResults.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.designer.cs">
+      <DependentUpon>SearchNVPResults.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.cs">
+      <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.designer.cs">
+      <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\FileManagement\DownloadHandler.ashx.cs">
       <DependentUpon>DownloadHandler.ashx</DependentUpon>
