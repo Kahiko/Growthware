@@ -332,7 +332,7 @@ namespace GrowthWare.WebSupport.Utilities
             {
                 GetNameValuePairDetails(ref mDataTable);
                 mDataTable.Locale = CultureInfo.InvariantCulture;
-                mDataView = mDataTable.DefaultView;
+                mDataView = new DataView(mDataTable);
                 mReturnTable = mDataView.Table.Clone();
                 mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
                 foreach (DataRowView drv in mDataView)
