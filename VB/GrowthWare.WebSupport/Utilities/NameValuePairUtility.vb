@@ -257,7 +257,7 @@ Namespace Utilities
             Try
                 GetNameValuePairDetails(mDataTable)
                 mDataTable.Locale = CultureInfo.InvariantCulture
-                mDataView = mDataTable.DefaultView
+                mDataView = New DataView(mDataTable)
                 mReturnTable = mDataView.Table.Clone()
                 mDataView.RowFilter = "NVP_SEQ_ID = " & nameValuePairSeqId
                 For Each drv As DataRowView In mDataView
