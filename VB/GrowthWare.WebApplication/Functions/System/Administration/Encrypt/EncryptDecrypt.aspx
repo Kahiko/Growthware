@@ -4,7 +4,7 @@
 		<table border="0" cellpadding="0" cellspacing="3">
 			<tr>
 				<td valign="top" align="right" style="height: 40px">
-					<span class="formLabelText">Text:</span>
+					<span class="Form_LabelText">Text:</span>
 				</td>
 				<td valign="top" align="left" style="width: 600px; height: 40px">
 					<asp:TextBox ID="txtValue" TextMode="multiLine" runat="server" Height="70px" Width="600px"></asp:TextBox>
@@ -12,7 +12,7 @@
 			</tr>
 			<tr>
 				<td valign="top" align="right">
-					<span class="formLabelText">Processed Text:</span>
+					<span class="Form_LabelText">Processed Text:</span>
 				</td>
 				<td valign="top" style="width: 600px">
 					<asp:TextBox ID="txtProcessed" TextMode="multiLine" runat="server" Height="70px" Width="600px"></asp:TextBox>

@@ -177,7 +177,7 @@
                         <table border="0" style="width: 100%;" cellpadding="2">
                             <tr id="trID" runat="server">
                                 <td align="right">
-                                    <span class="formLabelText">ID:</span>
+                                    <span class="Form_LabelText">ID:</span>
                                 </td>
                                 <td style="width: 0px;">
                                     &nbsp;
@@ -189,7 +189,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Name:</span>
+                                    <span class="Form_LabelText">Name:</span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     &nbsp;
@@ -201,7 +201,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Description: </span>
+                                    <span class="Form_LabelText">Description: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     &nbsp;
@@ -214,7 +214,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Notes: </span>
+                                    <span class="Form_LabelText">Notes: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     &nbsp;
@@ -225,7 +225,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Key Words: </span>
+                                    <span class="Form_LabelText">Key Words: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     &nbsp;
@@ -236,7 +236,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Action:</span>
+                                    <span class="Form_LabelText">Action:</span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     <img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
@@ -249,7 +249,7 @@
                             </tr>
                             <tr>
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Type: </span>
+                                    <span class="Form_LabelText">Type: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     &nbsp;
@@ -261,7 +261,7 @@
                             </tr>
                             <tr id="trSource" runat="server">
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Source: </span>
+                                    <span class="Form_LabelText">Source: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Source Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
@@ -273,7 +273,7 @@
                             </tr>
                             <tr id="trController" runat="server">
                                 <td align="right" valign="top">
-                                    <span class="formLabelText">Controller: </span>
+                                    <span class="Form_LabelText">Controller: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
                                     <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
@@ -296,14 +296,14 @@
                             <tr id="trParent" runat="server">
                                 <td colspan="3">
                                     <table border="0" style="width: 100%;">
-                                        <span class="formLabelText">Nav type: </span>
+                                        <span class="Form_LabelText">Nav type: </span>
                                         <asp:DropDownList ID="dropNavType" runat="server" CssClass="rounded">
                                         </asp:DropDownList>
-                                        &nbsp; <span class="formLabelText">Parent: </span>
+                                        &nbsp; <span class="Form_LabelText">Parent: </span>
                                         <asp:DropDownList ID="dropNavParent" runat="server" CssClass="rounded">
                                             <asp:ListItem Text="None" Value="0" />
                                         </asp:DropDownList>
-                                        &nbsp; <span class="formLabelText">Link Behavior: </span>
+                                        &nbsp; <span class="Form_LabelText">Link Behavior: </span>
                                         <asp:DropDownList ID="dropLinkBehavior" runat="server" CssClass="rounded">
                                             <asp:ListItem Text="None" Value="0" />
                                         </asp:DropDownList>

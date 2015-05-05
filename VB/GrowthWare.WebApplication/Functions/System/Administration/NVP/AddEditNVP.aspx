@@ -30,7 +30,7 @@
 									</tr>
 									<tr>
 										<td>
-											<span class="formLabelText">Table Name: </span>
+											<span class="Form_LabelText">Table Name: </span>
 										</td>
 										<td align="left">
 											<div id="lblTableName" runat="server"></div>
@@ -38,7 +38,7 @@
 									</tr>
 									<tr>
 										<td>
-											<span class="formLabelText">Schema Name: </span>
+											<span class="Form_LabelText">Schema Name: </span>
 										</td>
 										<td colspan="3">
 											<asp:TextBox ID="txtSchemaName" CssClass="rounded" MaxLength="128" runat="server" />
@@ -50,7 +50,7 @@
 									</tr>
 									<tr>
 										<td valign="top">
-											<span class="formLabelText">Static Name: </span>
+											<span class="Form_LabelText">Static Name: </span>
 										</td>
 										<td valign="top">
 											<table border="0" cellpadding="0" cellspacing="0">
@@ -67,7 +67,7 @@
 											</table>
 										</td>
 										<td id="tdStatus" valign="top" runat="server">
-											<span class="formLabelText">Status: </span>
+											<span class="Form_LabelText">Status: </span>
 										</td>
 										<td valign="top">
 											<asp:DropDownList ID="dropStatus" CssClass="rounded" runat="server">
@@ -78,13 +78,13 @@
 									</tr>
 									<tr>
 										<td valign="top">
-											<span class="formLabelText">Display: </span>
+											<span class="Form_LabelText">Display: </span>
 										</td>
 										<td valign="top">
 											<asp:TextBox ID="txtDisplay" MaxLength="128" TextMode="MultiLine" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128)" CssClass="rounded" runat="Server" Height="90px" Width="330px" />
 										</td>
 										<td valign="top">
-											<span class="formLabelText">Description: </span>
+											<span class="Form_LabelText">Description: </span>
 										</td>
 										<td valign="top">
 											<asp:TextBox ID="txtDescription" MaxLength="256" TextMode="MultiLine" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256)" CssClass="rounded" runat="Server" Height="90px" Width="331px" />

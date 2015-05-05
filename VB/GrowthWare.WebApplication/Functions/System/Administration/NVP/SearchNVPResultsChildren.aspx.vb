@@ -48,7 +48,6 @@ Public Class SearchNVPResultsChildren
     End Sub
 
     Private Sub bindData(ByVal searchCriteria As MSearchCriteria)
-        'Dim mDataTable As DataTable = NameValuePairUtility.SearchChildren(searchCriteria)
         Dim mNVP_SeqID As Integer = Integer.Parse(searchCriteria.WhereClause.Replace("NVP_SEQ_ID = ", ""))
         Dim mDataTable As DataTable = NameValuePairUtility.GetNameValuePairDetails(mNVP_SeqID)
         searchCriteria.OrderByColumn = "Table_Name"

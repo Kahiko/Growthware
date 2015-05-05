@@ -76,19 +76,19 @@
 								<input type="radio" name="colors" value="Blue,#C7C7C7,Black,#b6cbeb,#6699cc,#b6cbeb,#ffffff,#eeeeee" runat="server" id="Radio1" />
 							</td>
 							<td align="center">
-								<span class="formLabelText"><b>Blue</b></span>
+								<span class="Form_LabelText"><b>Blue</b></span>
 							</td>
 							<td align="right">
 								<input type="radio" name="colors" value="Green,#808577,White,#879966,#c5e095,#879966,#ffffff,#eeeeee" runat="server" id="Radio2" />
 							</td>
 							<td align="center">
-								<span class="formLabelText"><b>Green</b></span>
+								<span class="Form_LabelText"><b>Green</b></span>
 							</td>
 							<td align="right">
 								<input type="radio" name="colors" value="Yellow,#CF9C00,Black,#f8bc03,#f8e094,#f8bc03,#ffffff,#f8e094" runat="server" id="Radio3" />
 							</td>
 							<td align="center">
-								<span class="formLabelText"><b>Yellow</b></span>
+								<span class="Form_LabelText"><b>Yellow</b></span>
 							</td>
 						</tr>
 						<tr>
@@ -96,13 +96,13 @@
 								<input type="radio" name="colors" value="Purple,#C7C7C7,Black,#be9cc5,#91619b,#be9cc5,#ffffff,#eeeeee" runat="server" id="Radio4" />
 							</td>
 							<td align="center">
-								<span class="formLabelText"><b>Purple</b></span>
+								<span class="Form_LabelText"><b>Purple</b></span>
 							</td>
 							<td align="right">
 								<input type="radio" name="colors" value="Red,#BA706A,White,#DE8587,#A72A49,#df867f,#ffffff,#eeeeee" runat="server" id="Radio5" />
 							</td>
 							<td align="center">
-								<span class="formLabelText"><b>Red</b></span>
+								<span class="Form_LabelText"><b>Red</b></span>
 							</td>
 						</tr>
 					</table>
@@ -110,7 +110,7 @@
 			</tr>
 			<tr>
 				<td align="right" style="width: 50%;">
-					<span class="formLabelText">Favorite Link:</span>
+					<span class="Form_LabelText">Favorite Link:</span>
 				</td>
 				<td align="left">
 					<asp:DropDownList ID="dropFavorite" CssClass="rounded" runat="server" />
@@ -118,7 +118,7 @@
 			</tr>
 			<tr>
 				<td align="right">
-					<span class="formLabelText">Prefered records per page: </span>
+					<span class="Form_LabelText">Prefered records per page: </span>
 				</td>
 				<td align="left">
 					<asp:TextBox ID="txtPreferedRecordsPerPage" Columns="1" MaxLength="3" CssClass="rounded" runat="Server" />

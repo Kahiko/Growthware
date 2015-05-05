@@ -18,7 +18,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Append to file :</span>
+							<span class="Form_LabelText">Append to file :</span>
 						</td>
 						<td valign="top" style="width: 16px;">
 							<img onclick="GW.Common.showHelpMSG('Works with the applicaiton logger appender to append to the log file.','Help Append to file')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -30,7 +30,7 @@
 							</asp:DropDownList>
 						</td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Always show lefthand navigation :</span>
+							<span class="Form_LabelText">Always show lefthand navigation :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used to determine if the left hand menu should always be displyed.','Always show lefthand navigation')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -44,7 +44,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Application name for display :</span>
+							<span class="Form_LabelText">Application name for display :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('This is what should be displayed as the application name.','Application name for display')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -53,7 +53,7 @@
 							<asp:TextBox ID="txtApp_Displayed_Name" runat="server" CssClass="rounded" />
 						</td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Security Entity Translation :</span>
+							<span class="Form_LabelText">Security Entity Translation :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Most projects will not call what the system refers to as a Security Entity.  This is used in various pages in the system to in stead of Security Entity.','Security Entity Translation')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -65,7 +65,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Base Page :</span>
+							<span class="Form_LabelText">Base Page :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used as the redirection file name.  If blank no page will be displayed in the URL','Base Page')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -74,7 +74,7 @@
 							<asp:TextBox ID="txtBase_Page" runat="server" CssClass="rounded" />
 						</td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Central Management :</span>
+							<span class="Form_LabelText">Central Management :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Prevents caching and allows for central security management for multipule databases.','Central Management')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -86,7 +86,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Conversion Pattern :</span>
+							<span class="Form_LabelText">Conversion Pattern :</span>
 						</td>
 						<td valign="top" style="width: 16px">
 							<img onclick="GW.Common.showHelpMSG('Conversion pattern for the application logger.','Help Append to file','Conversion Pattern')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -94,7 +94,7 @@
 							&nbsp;<asp:TextBox ID="txtConversion_Pattern" runat="server" 
 								TextMode="MultiLine" CssClass="rounded" /></td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Default Action :</span></td>
+							<span class="Form_LabelText">Default Action :</span></td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used as the navigation point for the anonymous account.','Default Action')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />&nbsp;</td>
 						<td align="left" valign="top">
@@ -103,7 +103,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Default Authenticated Action :</span>
+							<span class="Form_LabelText">Default Authenticated Action :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used as the navigation point for anyone logged onto the system and the action is unknown.','Default Authenticated Action')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -111,7 +111,7 @@
 							&nbsp;<asp:TextBox ID="txtDefault_Authenticated_Action" 
 								runat="server" CssClass="rounded" /></td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Expected Up By :</span>
+							<span class="Form_LabelText">Expected Up By :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Message to display on the under construction page.','Expected Up By')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -120,7 +120,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Encryption Type :</span>
+							<span class="Form_LabelText">Encryption Type :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The type of encryption will be used within the applicaiton.','Encryption Type')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -131,7 +131,7 @@
 								<asp:ListItem Value="3" Text="None" />
 							</asp:DropDownList></td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Enforce Action :</span></td>
+							<span class="Form_LabelText">Enforce Action :</span></td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Causes the application to ensure the Action= is always apart of the URL.','Enforce Action')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
 						<td align="left" valign="top">
@@ -142,14 +142,14 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Environment :</span></td>
+							<span class="Form_LabelText">Environment :</span></td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Determins which environment settings to use.','Environment')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
 						<td align="left" valign="top">
 							&nbsp;<asp:DropDownList ID="dropEnvironment" CssClass="rounded" runat="server">
 							</asp:DropDownList></td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Database Status : </span>
+							<span class="Form_LabelText">Database Status : </span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used to determine the database status.<br>When Online database access is permitted.<br>When Install the install database process occurs.<br>When OffLine no database access is attempted','Database Status')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" /></td>
@@ -162,7 +162,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Enable Server Side View State :</span>
+							<span class="Form_LabelText">Enable Server Side View State :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Determines if the application will maintain view state.  <br>Doing this will decrease the amount of viewstate data sent to the client.<br> this is also slightly more secure because any data obtained will only make sense to this application.','Enable Server Side View State')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -174,7 +174,7 @@
 							</asp:DropDownList>
 						</td>
 						<td align="right" valign="top">
-							<span class="formLabelText">Number of View State Pages :</span>
+							<span class="Form_LabelText">Number of View State Pages :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Sets the number of pages view state data to keep.','Number of View State Pages')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -186,7 +186,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Under Construction :</span>
+							<span class="Form_LabelText">Under Construction :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('When set to true the system will only show the under construction page.','Under Construction')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -213,7 +213,7 @@
 				<table border="0" cellpadding="3" cellspacing="0">
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Environment :</span>
+							<span class="Form_LabelText">Environment :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Selects which evnironment settings to save.<br>Use New to create a new set of environment specific settings.','Environment')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -227,7 +227,7 @@
 					</tr>
 					<tr id="trNewEnvironment">
 						<td align="right" valign="top">
-							<span class="formLabelText">New Environment :</span>
+							<span class="Form_LabelText">New Environment :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Name of the new environment.<br>Use New to create a new set of environment specific settings.','New environment name')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -239,7 +239,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Virtual directory name :</span>
+							<span class="Form_LabelText">Virtual directory name :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('When running on a non IIS server this setting should be the virtual directory name<br /> else this should be blank.','Virtual Directory Name')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -250,7 +250,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Authentication Type :</span>
+							<span class="Form_LabelText">Authentication Type :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Defines what authentication method to use.','Authentication Type')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -264,7 +264,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Autocreate :</span>
+							<span class="Form_LabelText">Autocreate :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Used to ','Autocreate')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -278,7 +278,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Autocreate client choices account :</span>
+							<span class="Form_LabelText">Autocreate client choices account :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Defind the account to use for client choices','Autocreate Client Choices Account')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -289,7 +289,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Autocreate Security Entity:</span>
+							<span class="Form_LabelText">Autocreate Security Entity:</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Defines what security entity to use when auto creating an account.','Autocreate Security Entity')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -300,7 +300,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Autocreate Roles:</span>
+							<span class="Form_LabelText">Autocreate Roles:</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Defines what roles to use when auto creating an account.','Autocreate Roles')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -311,7 +311,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Data Access Layer :</span>
+							<span class="Form_LabelText">Data Access Layer :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Which data access layer will the system be using.','Data Access Layer')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -325,7 +325,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Data access layer DLL Name :</span>
+							<span class="Form_LabelText">Data access layer DLL Name :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('This is the name of the DLL for you data access layer without \'.DLL\'.','Data access layer DLL Name')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -336,7 +336,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Data access layer Namespace :</span>
+							<span class="Form_LabelText">Data access layer Namespace :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The namespace the class object resides in.','Data access layer Namespace')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -347,7 +347,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Connection String :</span>
+							<span class="Form_LabelText">Connection String :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('This is the connection string.','Connection String')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -361,7 +361,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Default Security Entity ID :</span>
+							<span class="Form_LabelText">Default Security Entity ID :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('This is the default Security Entity the system should use ... normaly this would be \'1\'.','Default Security Entity ID')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -373,7 +373,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Enable Cache :</span>
+							<span class="Form_LabelText">Enable Cache :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Enables cache, if false nothing will be cached.','Enable Cache')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -387,7 +387,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Enable Encryption :</span>
+							<span class="Form_LabelText">Enable Encryption :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Enables Encryption','Enable Encryption')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -401,7 +401,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Enable Pooling :</span>
+							<span class="Form_LabelText">Enable Pooling :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('Enables Pooling','Enable Pooling')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -415,7 +415,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Force HTTPS :</span>
+							<span class="Form_LabelText">Force HTTPS :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('When true the system will redirect to https.','Force HTTPS')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -429,7 +429,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">LDAP Domain :</span>
+							<span class="Form_LabelText">LDAP Domain :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The name of the LDAP domain.','LDAP Domain')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -440,7 +440,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">LDAP Server :</span>
+							<span class="Form_LabelText">LDAP Server :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The name or IP of the LDAP server.','LDAP Server')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -452,7 +452,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Log Path :</span>
+							<span class="Form_LabelText">Log Path :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The path for the logs.','Log Path')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -463,7 +463,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Log Retention :</span>
+							<span class="Form_LabelText">Log Retention :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('How many days to retain log files.  0 (zero) never deletes the logs.','Log Retention')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -477,7 +477,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Registering Roles :</span>
+							<span class="Form_LabelText">Registering Roles :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The roles used for registering accounts.  Comma seporated.','Registering Roles')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -489,7 +489,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Registration Post Action :</span>
+							<span class="Form_LabelText">Registration Post Action :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The action take after registration..','Registration Post Action')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -501,7 +501,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Starting Log Priority :</span>
+							<span class="Form_LabelText">Starting Log Priority :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The value to use when the application first starts.','Starting Log Priority')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -518,7 +518,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Skining type :</span>
+							<span class="Form_LabelText">Skining type :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The value to use when the application first starts.','Skining type')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -532,7 +532,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">SMTP Server :</span>
+							<span class="Form_LabelText">SMTP Server :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The SMTP Server name.','SMTP Server')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -544,7 +544,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">SMTP Authentication Account :</span>
+							<span class="Form_LabelText">SMTP Authentication Account :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The account used to authenticate to the SMTP Server.  Leave Blank when not needed','SMTP Authentication Account')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -556,7 +556,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">SMTP Authentication Password :</span>
+							<span class="Form_LabelText">SMTP Authentication Password :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The password to use when authenticating to the SMTP Server.  Leave Blank when not needed','SMTP Authentication Password')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -568,7 +568,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">SMTP From :</span>
+							<span class="Form_LabelText">SMTP From :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The email addres to use when the application sends an email.','SMTP From')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -580,7 +580,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Synchronize Password :</span>
+							<span class="Form_LabelText">Synchronize Password :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('When true the system will allways set the password when an account logs on.','Synchronize Password')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />
@@ -594,7 +594,7 @@
 					</tr>
 					<tr>
 						<td align="right" valign="top">
-							<span class="formLabelText">Failed Attempts :</span>
+							<span class="Form_LabelText">Failed Attempts :</span>
 						</td>
 						<td valign="top">
 							<img onclick="GW.Common.showHelpMSG('The number of times an account can fail login before the account is disabled.<br>Set to 0 to turn off.','Failed Attempts')" style="border: 0px;" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help_and_support.png")%>' alt="Help" />

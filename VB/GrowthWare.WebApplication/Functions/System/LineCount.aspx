@@ -7,7 +7,7 @@
 		<table border="0" cellpadding="0" cellspacing="3" width="100%">
 			<tr>
 				<td align="right">
-					<span id="Span3" class="formLabelText">Exclusion Pattern :</span>
+					<span id="Span3" class="Form_LabelText">Exclusion Pattern :</span>
 				</td>
 				<td align="left" colspan="3">
 					<input type="text" id="txtExclusionPattern" value="ASSEMBLYINFO, .DESIGNER., JQUERY-, JQUERY.VALIDATE, MODERNIZR-, jquery.tmpl., jquery.unobtrusive" style="width: 500px;" runat="server" />
@@ -15,7 +15,7 @@
 			</tr>
 			<tr>
 				<td align="right">
-					<span id="Span1" class="formLabelText">Files :</span>
+					<span id="Span1" class="Form_LabelText">Files :</span>
 				</td>
 				<td align="left" colspan="3">
 					<input type="text" id="txtFiles" value="*.vb, *.aspx, *.ascx, *.asax, *.config, *.js" style="width: 500px;" runat="server" />
@@ -23,7 +23,7 @@
 			</tr>
 			<tr>
 				<td align="right">
-					<span id="Span2" class="formLabelText">Directory :</span>
+					<span id="Span2" class="Form_LabelText">Directory :</span>
 				</td>
 				<td align="left">
 					<input type="text" id="txtDirectoryName" style="width: 500px;" runat="server" />

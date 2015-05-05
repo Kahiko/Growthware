@@ -14,7 +14,7 @@
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td colspan="2">
-								<span class="formLabelText">Name: </span>&nbsp;&nbsp;
+								<span class="Form_LabelText">Name: </span>&nbsp;&nbsp;
 								<asp:Label ID="lblName" runat="server" />
 								<asp:TextBox ID="txtName" CssClass="rounded" Style="display: none;" runat="server" MaxLength="50" />
 								<asp:RequiredFieldValidator ID="RequiredFieldValidator1" CssClass="failureNotification" runat="server" ErrorMessage="(required)" ControlToValidate="txtName"></asp:RequiredFieldValidator>
@@ -28,7 +28,7 @@
 					<table border="0" cellpadding="0" cellspacing="3">
 						<tr>
 							<td style="width: 330px">
-								<span class="formLabelText">Description: </span>
+								<span class="Form_LabelText">Description: </span>
 							</td>
 						</tr>
 						<tr>
@@ -44,10 +44,10 @@
 					<table border="0" cellpadding="0" cellspacing="3" width="98%">
 						<tr>
 							<td style="width:30px;">
-								<span class="formLabelText">Title: </span>
+								<span class="Form_LabelText">Title: </span>
 							</td>
 							<td>
-								<span class="formLabelText">Avalible Tags: </span>
+								<span class="Form_LabelText">Avalible Tags: </span>
 							</td>
 						</tr>
 						<tr>
@@ -63,7 +63,7 @@
 			</tr>
 			<tr>
 				<td>
-					<span class="formLabelText">Message Body:
+					<span class="Form_LabelText">Message Body:
 						<asp:CheckBox ID="chkFormatAsHTML" Text="Format as HTML?" runat="server" />
 					</span>
 					<br />
