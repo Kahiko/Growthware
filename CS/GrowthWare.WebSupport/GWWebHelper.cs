@@ -8,6 +8,9 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using System.Net;
+using System.Net.Http;
+using Newtonsoft.Json;
 
 namespace GrowthWare.WebSupport
 {
@@ -95,6 +98,8 @@ namespace GrowthWare.WebSupport
                 return myVersion;
             }
         }
+
+
 
         /// <summary>
         /// Gets the random password.

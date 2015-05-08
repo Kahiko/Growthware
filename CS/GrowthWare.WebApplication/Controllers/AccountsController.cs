@@ -4,15 +4,31 @@ using GrowthWare.Framework.Model.Profiles;
 using GrowthWare.Framework.Model.Profiles.Base;
 using GrowthWare.WebSupport;
 using GrowthWare.WebSupport.Utilities;
+using Newtonsoft.Json;
 using System;
 using System.Globalization;
+using System.Collections.Generic;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
+using System.Linq;
 
 namespace GrowthWare.WebApplication.Controllers
 {
 public class AccountsController : ApiController
 {
+    // Extracts Request FormatData as a strongly typed model
+    public static object GetFormData<T>(MultipartFormDataStreamProvider result)
+    {
+        if (result.FormData.HasKeys())
+        {
+            var unescapedFormData = Uri.UnescapeDataString(result.FormData.GetValues(0).FirstOrDefault() ?? String.Empty);
+            if (!String.IsNullOrEmpty(unescapedFormData))
+                return JsonConvert.DeserializeObject<T>(unescapedFormData);
+        }
+        //UploadFileSetting uploadFileSetting = GetFormData<UploadFileSetting>(result) as UploadFileSetting;
+        return null;
+    }
 
 	[HttpGet()]
 	public MUIAccountChoices GetPreferences()
