@@ -111,7 +111,7 @@
 	        <asp:TextBox ID="txtSeqID" Style="display: none;" runat="server"></asp:textbox>
 			<b><asp:literal id="litClientMsg" runat="server"></asp:literal></b>
             <div class="formLayout">
-		        <label for="txtSecurityEntity" class="formLabelText">
+		        <label for="txtSecurityEntity" class="Form_LabelText">
 			        <asp:literal id="litSecurityEntityTranslation" runat="server"></asp:literal>
 			        :&nbsp;
 		        </label>
@@ -119,48 +119,48 @@
 			    <asp:TextBox ID="txtSecurityEntity" CssClass="rounded" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" Style="display: none;" runat="server" TextMode="MultiLine" Width="500px"></asp:TextBox>
 			    <asp:requiredfieldvalidator controltovalidate="txtSecurityEntity" display="Dynamic" text="(required)" errormessage="Required" CssClass="failureNotification" runat="Server" id="Requiredfieldvalidator2">(required)</asp:requiredfieldvalidator>
                 <br />
-                <label for="txtDescription" class="formLabelText">Description: </label>
+                <label for="txtDescription" class="Form_LabelText">Description: </label>
 				<asp:TextBox ID="txtDescription" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512,event)" CssClass="rounded" runat="Server" TextMode="MultiLine" Width="500px" />
 				<asp:requiredfieldvalidator controltovalidate="txtDescription" display="Dynamic" text="(required)" errormessage="Required" CssClass="failureNotification" runat="Server" id="Requiredfieldvalidator1">(required)</asp:requiredfieldvalidator>
                 <br />
-				<label for="txtURL" class="formLabelText">URL: </label>
+				<label for="txtURL" class="Form_LabelText">URL: </label>
 				<asp:textbox id="txtURL" maxlength="128" CssClass="rounded" runat="Server" width="500px" />
                 <br />
-				<label for="dropDAL" class="formLabelText">Data Access Layer :</label>
+				<label for="dropDAL" class="Form_LabelText">Data Access Layer :</label>
 				<asp:dropdownlist id="dropDAL" CssClass="rounded" runat="server">
 					<asp:ListItem Value="SQLServer" Text="SQL Server" />
                     <asp:ListItem Value="MySql" Text="MySql" />
 					<asp:ListItem Value="Oracle" Text="Oracle" />
 				</asp:dropdownlist>
                 <br />
-				<label for="txtAssembly_Name" class="formLabelText">Data access layer DLL Name :</label>
+				<label for="txtAssembly_Name" class="Form_LabelText">Data access layer DLL Name :</label>
 				<asp:textbox id="txtAssembly_Name" width="500px" runat="server" maxlength="50" />
                 <br />
-                <label for="txtName_Space" class="formLabelText">Data access layer Namespace :</label>
+                <label for="txtName_Space" class="Form_LabelText">Data access layer Namespace :</label>
 			    <asp:textbox id="txtName_Space" width="500px" runat="server" maxlength="256" />
                 <br />
-				<label for="txtConnectionstring" class="formLabelText">Connection String :</label>
+				<label for="txtConnectionstring" class="Form_LabelText">Connection String :</label>
 				<asp:TextBox ID="txtConnectionstring" TextMode="multiLine" MaxLength="512" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" runat="server" Rows="3" Wrap="true" Width="500px" />
 				&nbsp;
 				<asp:hyperlink id="hyperConnectionString" NavigateUrl="http://www.connectionstrings.com/" Target="_blank" runat="server">Build</asp:hyperlink>
                 <br />
-			    <label for="dropParent" class="formLabelText">Parent: </label>
+			    <label for="dropParent" class="Form_LabelText">Parent: </label>
 			    <asp:dropdownlist id="dropParent" CssClass="rounded" runat="server" />
                 <br />
-				<label for="dropSkin" class="formLabelText">Skin: </label>
+				<label for="dropSkin" class="Form_LabelText">Skin: </label>
 				<asp:dropdownlist id="dropSkin" CssClass="rounded" runat="server" />
                 <br />
-				<label for="dropStyles" class="formLabelText">Style: </label>
+				<label for="dropStyles" class="Form_LabelText">Style: </label>
 				<asp:dropdownlist id="dropStyles" CssClass="rounded" runat="server" />
                 <br />
-				<label for="dropEncryptionType" class="formLabelText">Encrypt Type:</label>
+				<label for="dropEncryptionType" class="Form_LabelText">Encrypt Type:</label>
 				<asp:dropdownlist id="dropEncryptionType" CssClass="rounded" runat="server">
 					<asp:ListItem Value="1" Text="Triple DES" />
 					<asp:ListItem Value="2" Text="DES" />
 					<asp:ListItem Value="3" Text="None" />
 				</asp:dropdownlist>
                 <br />
-				<label for="dropStatus" class="formLabelText">Status: </label>
+				<label for="dropStatus" class="Form_LabelText">Status: </label>
 				<asp:dropdownlist id="dropStatus" CssClass="rounded" runat="server">
 					<asp:ListItem Value="1">Active</asp:ListItem>
 					<asp:ListItem Value="2">Inactive</asp:ListItem>
