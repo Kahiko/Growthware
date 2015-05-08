@@ -17,19 +17,6 @@ namespace GrowthWare.WebApplication.Controllers
 {
 public class AccountsController : ApiController
 {
-    // Extracts Request FormatData as a strongly typed model
-    public static object GetFormData<T>(MultipartFormDataStreamProvider result)
-    {
-        if (result.FormData.HasKeys())
-        {
-            var unescapedFormData = Uri.UnescapeDataString(result.FormData.GetValues(0).FirstOrDefault() ?? String.Empty);
-            if (!String.IsNullOrEmpty(unescapedFormData))
-                return JsonConvert.DeserializeObject<T>(unescapedFormData);
-        }
-        //UploadFileSetting uploadFileSetting = GetFormData<UploadFileSetting>(result) as UploadFileSetting;
-        return null;
-    }
-
 	[HttpGet()]
 	public MUIAccountChoices GetPreferences()
 	{
