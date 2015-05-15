@@ -4,13 +4,14 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.WebSupport
+Imports GrowthWare.WebApplication.Models
 
 Namespace Controllers
     Public Class NameValuePairController
         Inherits ApiController
 
         <HttpPost>
-        Public Function SaveNameValuePair(ByVal uiProfile As UINVPProfile, ByVal uiRoles As UIAccountRoles, ByVal uiGroups As UIAccountGroups) As IHttpActionResult
+        Public Function SaveNameValuePair(ByVal uiProfile As UINVPProfile) As IHttpActionResult
             Dim mRetVal As String = False
             Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
@@ -24,8 +25,8 @@ Namespace Controllers
             Dim mProfile As MNameValuePair = New MNameValuePair()
             Dim mUpdatingAccount As MAccountProfile = AccountUtility.CurrentProfile()
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-            Dim mGroups As String = String.Join(",", uiGroups.Groups)
-            Dim mRoles As String = String.Join(",", uiRoles.Roles)
+            Dim mGroups As String = String.Join(",", uiProfile.Groups)
+            Dim mRoles As String = String.Join(",", uiProfile.Roles)
             Dim mCommaSepRoles As String = mUpdatingAccount.GetCommaSeparatedAssignedRoles()
             Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingAccount)
             If uiProfile.NVP_SEQ_ID = -1 Then
@@ -36,7 +37,7 @@ Namespace Controllers
                 End If
             Else
                 If Not mSecurityInfo.MayEdit Then
-                    Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to edit")
+                    Dim mError As Exception = New Exception("The account (" + mUpdatingAccount.Account + ") being used does not have the correct permissions to edit")
                     mLog.Error(mError)
                     Return Me.InternalServerError(mError)
                 End If
@@ -66,12 +67,5 @@ Namespace Controllers
             Return Me.Ok(mRetVal)
         End Function
     End Class
-    Public Class UINVPProfile
-        Public SchemaName As String
-        Public STATIC_NAME As String
-        Public Display As String
-        Public Description As String
-        Public NVP_SEQ_ID As Integer
-        Public Status As Integer
-    End Class
+
 End Namespace
