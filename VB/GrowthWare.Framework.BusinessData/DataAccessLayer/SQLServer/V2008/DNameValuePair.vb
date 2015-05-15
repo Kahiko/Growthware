@@ -169,7 +169,7 @@ Namespace DataAccessLayer.SQLServer.V2008
              New SqlParameter("@P_Display", NameValuePairProfile.Display),
              New SqlParameter("@P_Description", NameValuePairProfile.Description),
              New SqlParameter("@P_Status_SeqID", NameValuePairProfile.Status),
-             New SqlParameter("@P_Added_Updated_BY", NameValuePairProfile.AddedBy),
+             New SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(NameValuePairProfile)),
              GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output),
              GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output)
             }
