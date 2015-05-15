@@ -793,6 +793,7 @@
       <DependentUpon>index.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\UINVPProfile.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Public\Skins\Default\Default.Master.cs">
       <DependentUpon>Default.Master</DependentUpon>

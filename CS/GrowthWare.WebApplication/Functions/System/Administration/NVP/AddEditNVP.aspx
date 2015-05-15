@@ -125,12 +125,6 @@
 		var canSaveGroups = false;
 		roles = $.map($('#ctlRoles_DstList option'), function (e) { return $(e).val(); });
 		groups = $.map($('#ctlGroups_DstList option'), function (e) { return $(e).val(); });
-
-		UIRoles = {};
-		UIRoles.Roles = roles;
-
-		UIGroups = {};
-		UIGroups.Groups = groups;
 		canSaveRoles = $("#<%=hdnCanSaveRoles.ClientID %>").val();
 		canSaveGroups = $("#<%=hdnCanSaveGroups.ClientID %>").val();
 		profile = {};
@@ -140,10 +134,9 @@
 		profile.Display = $("#<%=txtDisplay.ClientID %>").val();
 		profile.Description = $("#<%=txtDescription.ClientID %>").val();
 		profile.Status = parseInt($("#<%=dropStatus.ClientID %> option:selected").val());
-		//var theData = { uiProfile: profile, canSaveRoles: canSaveRoles, canSaveGroups: canSaveGroups, uiRoles: UIRoles, uiGroups: UIGroups };
-		var theData = { uiProfile: profile, uiRoles: UIRoles, uiGroups: UIGroups };
-
-		return theData;
+		profile.Groups = groups;
+		profile.Roles = roles;
+		return profile;
 	}
 
 	function saveAddEditNVP($dialogWindow) {
@@ -156,7 +149,7 @@
 			options.data = theData;
 			options.contentType = 'application/json; charset=utf-8';
 			options.dataType = 'json';
-			options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/NVP/AddEditNVP.aspx/InvokeSave"
+			options.url = GW.Common.getBaseURL() + "/gw/api/NameValuePair/SaveNameValuePair";
 			GW.Common.JQueryHelper.callWeb(options, saveAddEditNVPSucess, saveAddEditNVPError);
 			if (!($dialogWindow === undefined)) {
 				$dialogWindow.dialog("destroy")
