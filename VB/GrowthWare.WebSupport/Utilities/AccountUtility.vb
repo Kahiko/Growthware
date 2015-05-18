@@ -136,14 +136,17 @@ Namespace Utilities
                 End If
             End If
             If mRetProfile Is Nothing Then
-                mRetProfile = CType(HttpContext.Current.Cache(mAccountName + "_Session"), MAccountProfile)
-                If mRetProfile Is Nothing Then
-                    mRetProfile = GetProfile(mAccountName)
-                    If Not mRetProfile Is Nothing Then
-                        HttpContext.Current.Cache.Item(mAccountName + "_Session") = mRetProfile
-                    Else
-                        mLog.Debug("AccountUtility::GetCurrentProfile() No cache available")
+                If Not HttpContext.Current.Session Is Nothing Then
+                    mRetProfile = CType(HttpContext.Current.Session(mAccountName + "_Session"), MAccountProfile)
+                    If mRetProfile Is Nothing Then
+                        mRetProfile = GetProfile(mAccountName)
+                        If Not mRetProfile Is Nothing Then
+                            HttpContext.Current.Session(mAccountName + "_Session") = mRetProfile
+                        End If
                     End If
+                Else
+                    mLog.Debug("AccountUtility::GetCurrentProfile() No Session available")
+                    mRetProfile = GetProfile(mAccountName)
                 End If
             End If
             mLog.Debug("AccountUtility::GetCurrentProfile() Done")
@@ -269,6 +272,7 @@ Namespace Utilities
         ''' <remarks></remarks>
         Public Shared Sub RemoveInMemoryInformation(ByVal removeWorkflow As Boolean)
             HttpContext.Current.Session.Remove(MClientChoices.SessionName)
+            HttpContext.Current.Session.Remove(HttpContextUserName() + "_Session")
             If removeWorkflow Then
 
             End If
