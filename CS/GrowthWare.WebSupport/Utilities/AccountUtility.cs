@@ -321,10 +321,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void RemoveInMemoryInformation(Boolean removeWorkflow)
         {
-            String mAccountName = HttpContext.Current.User.Identity.Name;
-            //HttpContext.Current.Session.Remove(mAccountName + "_Session");
-            HttpContext.Current.Cache.Remove(mAccountName + "_Session");
-            HttpContext.Current.Cache.Remove(MClientChoices.SessionName);
+            HttpContext.Current.Session.Remove(MClientChoices.SessionName);
             if (removeWorkflow) 
             { 
             

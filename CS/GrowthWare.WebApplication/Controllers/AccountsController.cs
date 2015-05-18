@@ -340,7 +340,7 @@ public class AccountsController : ApiController
     {
         MSecurityEntityProfile targetSEProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId);
         MSecurityEntityProfile currentSEProfile = SecurityEntityUtility.CurrentProfile();
-        MClientChoicesState mClientChoicesState = (MClientChoicesState)HttpContext.Current.Cache[MClientChoices.SessionName];
+        MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account);
         MMessageProfile mMessageProfile = null;
         try
         {
