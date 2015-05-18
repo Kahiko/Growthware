@@ -240,7 +240,20 @@ namespace GrowthWare.WebSupport.Utilities
             }
             else
             {
-                mRetVal = mBAccount.GetMenu(account, menuType);
+                String mMenuName = account + "_" + menuType.ToString() + "_MenuData";
+                if (HttpContext.Current.Session != null) 
+                {
+                    mRetVal = (DataTable)HttpContext.Current.Session[mMenuName];
+                    if (mRetVal == null)
+                    {
+                        mRetVal = mBAccount.GetMenu(account, menuType);
+                        HttpContext.Current.Session[mMenuName] = mRetVal;
+                    }
+                }
+                else 
+                {
+                    mRetVal = mBAccount.GetMenu(account, menuType);
+                }
             }
             return mRetVal;
         }
@@ -324,8 +337,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void RemoveInMemoryInformation(Boolean removeWorkflow)
         {
-            HttpContext.Current.Session.Remove(MClientChoices.SessionName);
-            HttpContext.Current.Session.Remove(HttpContextUserName() + "_Session");
+            HttpContext.Current.Session.Clear();
             if (removeWorkflow) 
             { 
             
