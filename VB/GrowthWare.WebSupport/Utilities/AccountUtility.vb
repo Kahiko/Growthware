@@ -191,7 +191,14 @@ Namespace Utilities
                     CacheController.AddToCacheDependency(mAnonMenu, mRetVal)
                 End If
             Else
-                mRetVal = mBAccount.GetMenu(account, menuType)
+                Dim mMenuName As String = account + "_" + menuType.ToString() + "_MenuData"
+                If Not HttpContext.Current.Session Is Nothing Then
+                    mRetVal = CType(HttpContext.Current.Session(mMenuName), DataTable)
+                    If mRetVal Is Nothing Then mRetVal = mBAccount.GetMenu(account, menuType)
+                    HttpContext.Current.Session(mMenuName) = mRetVal
+                Else
+                    mRetVal = mBAccount.GetMenu(account, menuType)
+                End If
             End If
             Return mRetVal
         End Function
@@ -271,8 +278,7 @@ Namespace Utilities
         ''' <param name="removeWorkflow"></param>
         ''' <remarks></remarks>
         Public Shared Sub RemoveInMemoryInformation(ByVal removeWorkflow As Boolean)
-            HttpContext.Current.Session.Remove(MClientChoices.SessionName)
-            HttpContext.Current.Session.Remove(HttpContextUserName() + "_Session")
+            HttpContext.Current.Session.Clear()
             If removeWorkflow Then
 
             End If
