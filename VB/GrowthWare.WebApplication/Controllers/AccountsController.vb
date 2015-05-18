@@ -115,7 +115,7 @@ Namespace Controllers
         Public Function SelectSecurityEntity(<FromUri()> ByVal selectedSecurityEntityId As Integer) As IHttpActionResult
             Dim targetSEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId)
             Dim currentSEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-            Dim mClientChoicesState As MClientChoicesState = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
             Dim mMessageProfile As MMessageProfile = Nothing
             Try
                 If Not ConfigSettings.CentralManagement Then

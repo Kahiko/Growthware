@@ -29,14 +29,18 @@ Namespace Utilities
         ''' <returns>MClientChoicesState.</returns>
         Public Shared Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
+            If HttpContext.Current.Session Is Nothing Then Return Nothing
             Dim mRetVal As MClientChoicesState = Nothing
             Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             If fromDB Then Return mBClientChoices.GetClientChoicesState(account)
             If account.Trim().ToLower(CultureInfo.CurrentCulture) <> "anonymous" Then
-                mRetVal = CType(HttpContext.Current.Cache(MClientChoices.SessionName), MClientChoicesState)
+                mRetVal = CType(HttpContext.Current.Session(MClientChoices.SessionName), MClientChoicesState)
                 If mRetVal Is Nothing Then
                     mRetVal = mBClientChoices.GetClientChoicesState(account)
-                    HttpContext.Current.Cache(MClientChoices.SessionName) = mRetVal
+                    HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
+                ElseIf mRetVal.AccountName.Trim.ToLower(CultureInfo.InvariantCulture) <> account.Trim.ToLower(CultureInfo.InvariantCulture) Then
+                    mRetVal = mBClientChoices.GetClientChoicesState(account)
+                    HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
                 End If
             Else
                 mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.s_CachedAnonymousChoicesState), MClientChoicesState)

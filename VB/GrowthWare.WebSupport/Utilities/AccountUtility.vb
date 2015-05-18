@@ -268,9 +268,7 @@ Namespace Utilities
         ''' <param name="removeWorkflow"></param>
         ''' <remarks></remarks>
         Public Shared Sub RemoveInMemoryInformation(ByVal removeWorkflow As Boolean)
-            Dim mAccountName As String = HttpContext.Current.User.Identity.Name
-            HttpContext.Current.Cache.Remove(mAccountName + "_Session")
-            HttpContext.Current.Cache.Remove(MClientChoices.SessionName)
+            HttpContext.Current.Session.Remove(MClientChoices.SessionName)
             If removeWorkflow Then
 
             End If
