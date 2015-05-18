@@ -150,8 +150,7 @@ namespace GrowthWare.WebSupport.Utilities
             Logger mLog = Logger.Instance();
             mLog.Debug("AccountUtility::GetCurrentProfile() Started");
             MAccountProfile mRetProfile = null;
-            String mAccountName = HttpContext.Current.User.Identity.Name;
-            if (string.IsNullOrEmpty(mAccountName)) mAccountName = s_AnonymousAccount;
+            String mAccountName = HttpContextUserName();
             if (mAccountName.Trim() == s_AnonymousAccount)
             {
                 if (HttpContext.Current.Cache != null)
@@ -170,18 +169,22 @@ namespace GrowthWare.WebSupport.Utilities
             }
             if (mRetProfile == null)
             {
-                mRetProfile = (MAccountProfile)HttpContext.Current.Cache[mAccountName + "_Session"];
-                if (mRetProfile == null)
+                if (HttpContext.Current.Session != null)
                 {
+                    mRetProfile = (MAccountProfile)HttpContext.Current.Session[mAccountName + "_Session"];
+                    if (mRetProfile == null)
+                    {
+                        mRetProfile = GetProfile(mAccountName);
+                        if (mRetProfile != null)
+                        {
+                            HttpContext.Current.Session[mAccountName + "_Session"] = mRetProfile;
+                        }
+                    }
+                }
+                else 
+                {
+                    mLog.Debug("AccountUtility::GetCurrentProfile() No Session available");
                     mRetProfile = GetProfile(mAccountName);
-                    if (mRetProfile != null)
-                    {
-                        HttpContext.Current.Cache[mAccountName + "_Session"] = mRetProfile;
-                    }
-                    else
-                    {
-                        mLog.Debug("AccountUtility::GetCurrentProfile() No cache available");
-                    }
                 }
             }
             mLog.Debug("AccountUtility::GetCurrentProfile() Done");
@@ -322,6 +325,7 @@ namespace GrowthWare.WebSupport.Utilities
         public static void RemoveInMemoryInformation(Boolean removeWorkflow)
         {
             HttpContext.Current.Session.Remove(MClientChoices.SessionName);
+            HttpContext.Current.Session.Remove(HttpContextUserName() + "_Session");
             if (removeWorkflow) 
             { 
             
