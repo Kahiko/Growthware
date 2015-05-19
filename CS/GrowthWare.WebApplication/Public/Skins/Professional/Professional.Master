@@ -20,7 +20,7 @@
                 mRefreshObject = new GW.Navigation.RefreshObject();
                 mRefreshObject.ContentAreaID = 'VHMenuDiv';
                 mRefreshObject.Refresh = function refreshFunction() {
-                    GW.Navigation.NavigationController.LoadPage('VerticalHierarchicalMenu', 'VHMenuDiv');
+                    GW.Navigation.NavigationController.LoadPage('Vertical_Hierarchical_Menu', 'VHMenuDiv');
                 }
                 GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
 
