@@ -46,6 +46,10 @@ public class AccountsController : ApiController
 		}
 		if (AccountUtility.Authenticated(jsonData.Account, jsonData.Password)) {
 			MAccountProfile mAccountProfile = AccountUtility.GetProfile(jsonData.Account);
+            mAccountProfile.LastLogOn = DateTime.Now;
+            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Active);
+            mAccountProfile.FailedAttempts = 0;
+            AccountUtility.Save(mAccountProfile, false, false);
 			AccountUtility.SetPrincipal(mAccountProfile);
 			mRetVal = "true";
 		} else {
@@ -53,7 +57,18 @@ public class AccountsController : ApiController
 			if (mAccountProfile != null) {
 				if (mAccountProfile.Account.ToUpper(new CultureInfo("en-US", false)) == jsonData.Account.ToUpper(new CultureInfo("en-US", false))) {
 					if (ConfigSettings.AuthenticationType.ToUpper() == "INTERNAL") {
-						mRetVal = "Request";
+                        if (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled))
+                        {
+                            mRetVal = "Request";
+                        }
+                        else 
+                        {
+                            MMessageProfile mMessageProfile = MessageUtility.GetProfile("Logon Error");
+                            if (mMessageProfile != null)
+                            {
+                                mRetVal = mMessageProfile.Body;
+                            }                      
+                        }
 					} else {
 						MMessageProfile mMessageProfile = MessageUtility.GetProfile("Logon Error");
 						if (mMessageProfile != null) {
@@ -90,11 +105,10 @@ public class AccountsController : ApiController
 			if (mChangePassword.OldPassword != mCurrentPassword) {
 				mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
 			} else {
-				var _with1 = mAccountProfile;
-				_with1.PasswordLastSet = System.DateTime.Now;
-				_with1.Status = (int)SystemStatus.Active;
-				_with1.FailedAttempts = 0;
-				_with1.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
+                mAccountProfile.PasswordLastSet = System.DateTime.Now;
+                mAccountProfile.Status = (int)SystemStatus.Active;
+                mAccountProfile.FailedAttempts = 0;
+                mAccountProfile.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
 				try {
 					AccountUtility.Save(mAccountProfile, false, false);
 				} catch (Exception) {

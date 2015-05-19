@@ -68,12 +68,16 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             profilePassword = mAccountProfile.Password;
                         }
-                        if (password == profilePassword)
+                        if (password == profilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive)))
                         {
-                            mAccountProfile.LastLogOn = DateTime.Now;
-                            AccountUtility.Save(mAccountProfile, false, false);
                             retVal = true;
                         }
+                        if (!retVal) mAccountProfile.FailedAttempts += 1;
+                        if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts) != -1) 
+                        {
+                            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled);
+                        }
+                        AccountUtility.Save(mAccountProfile, false, false);
                     }
                 }
                 else // LDAP authentication
