@@ -37,7 +37,11 @@ Namespace Controllers
             End If
             If AccountUtility.Authenticated(jsonData.Account, jsonData.Password) Then
                 Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(jsonData.Account)
-                mAccountProfile.LastLogOn = DateTime.Now()
+                With mAccountProfile
+                    .LastLogOn = DateTime.Now
+                    .Status = Convert.ToInt32(SystemStatus.Active)
+                    .FailedAttempts = 0
+                End With
                 AccountUtility.Save(mAccountProfile, False, False)
                 AccountUtility.SetPrincipal(mAccountProfile)
                 mRetVal = "true"
@@ -46,7 +50,14 @@ Namespace Controllers
                 If mAccountProfile IsNot Nothing Then
                     If mAccountProfile.Account.ToUpper(New CultureInfo("en-US", False)) = jsonData.Account.ToUpper(New CultureInfo("en-US", False)) Then
                         If ConfigSettings.AuthenticationType.ToUpper() = "INTERNAL" Then
-                            mRetVal = "Request"
+                            If Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Or Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Then
+                                mRetVal = "Request"
+                            Else
+                                Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("Logon Error")
+                                If mMessageProfile IsNot Nothing Then
+                                    mRetVal = mMessageProfile.Body
+                                End If
+                            End If
                         Else
                             Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("Logon Error")
                             If mMessageProfile IsNot Nothing Then
