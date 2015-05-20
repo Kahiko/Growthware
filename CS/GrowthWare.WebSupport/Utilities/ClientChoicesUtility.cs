@@ -40,15 +40,19 @@ namespace GrowthWare.WebSupport.Utilities
             if (fromDB) return mBClientChoices.GetClientChoicesState(account);
             if (account.Trim().ToLower(CultureInfo.CurrentCulture) != "anonymous")
             {
-                mRetVal = (MClientChoicesState)HttpContext.Current.Session[MClientChoices.SessionName];
-                if (mRetVal == null) 
+                if (HttpContext.Current.Session != null) 
                 {
-                    mRetVal = mBClientChoices.GetClientChoicesState(account);
-                    HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;
-                }else if(mRetVal.AccountName.Trim().ToLower(CultureInfo.InvariantCulture) != account.Trim().ToLower(CultureInfo.InvariantCulture))
-                {
-                    mRetVal = mBClientChoices.GetClientChoicesState(account);
-                    HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;                
+                    mRetVal = (MClientChoicesState)HttpContext.Current.Session[MClientChoices.SessionName];
+                    if (mRetVal == null)
+                    {
+                        mRetVal = mBClientChoices.GetClientChoicesState(account);
+                        HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;
+                    }
+                    else if (mRetVal.AccountName.Trim().ToLower(CultureInfo.InvariantCulture) != account.Trim().ToLower(CultureInfo.InvariantCulture))
+                    {
+                        mRetVal = mBClientChoices.GetClientChoicesState(account);
+                        HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;
+                    }
                 }
             }
             else 

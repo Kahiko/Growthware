@@ -88,13 +88,13 @@ namespace GrowthWare.WebApplication.Controllers
             Logger mLog = Logger.Instance();
             MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingAccount);
 
-            if (mEditId != uiProfile.NVP_SEQ_ID)
+            if (mEditId != uiProfile.NVP_SEQ_DET_ID)
             {
                 Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
                 mLog.Error(mError);
                 return this.InternalServerError(mError);
             }
-            if (uiProfile.NVP_SEQ_ID != -1)
+            if (uiProfile.NVP_SEQ_DET_ID != -1)
             {
                 if (!mSecurityInfo.MayAdd)
                 {
@@ -133,12 +133,56 @@ namespace GrowthWare.WebApplication.Controllers
 			    mProfile.Value = uiProfile.Value;
 			    mProfile.Status = uiProfile.Status;
 			    NameValuePairUtility.SaveDetail(mProfile);
+                mRetVal = true.ToString();
             }
             catch (Exception ex)
             {
-                mLog.Error(mUpdatingAccount);
+                mLog.Error(ex);
             }
 
+            return this.Ok(mRetVal);
+        }
+
+        [HttpPost]
+        public IHttpActionResult DeleteNameValuePairDetail(UINVPDetailProfile uiProfile) 
+        {
+            string mRetVal = false.ToString();
+            String mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
+            int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+            MAccountProfile mUpdatingAccount = AccountUtility.CurrentProfile();
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingAccount);
+
+            Logger mLog = Logger.Instance();
+            if (mEditId != uiProfile.NVP_SEQ_DET_ID)
+            {
+                Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            if (!mSecurityInfo.MayDelete)
+            {
+                Exception mError = new Exception("The account (" + mUpdatingAccount.Account + ") being used does not have the correct permissions to delete");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            try
+            {
+                MNameValuePairDetail mProfile = new MNameValuePairDetail();
+                mProfile.NameValuePairSeqId = uiProfile.NVP_SEQ_ID;
+                mProfile.Id = uiProfile.NVP_SEQ_DET_ID;
+                mProfile.UpdatedBy = mUpdatingAccount.Id;
+                mProfile.UpdatedDate = DateTime.Now;
+                mProfile.SortOrder = uiProfile.SortOrder;
+                mProfile.Text = uiProfile.Text;
+                mProfile.Value = uiProfile.Value;
+                mProfile.Status = uiProfile.Status;
+                NameValuePairUtility.DeleteDetail(mProfile);
+            }
+            catch (Exception ex)
+            {
+                mLog.Error(ex);
+                throw;
+            }
             return this.Ok(mRetVal);
         }
     }

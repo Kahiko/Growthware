@@ -29,13 +29,14 @@
 	});
 
 	function addNew() {
-		edit(-1, -1);
+		edit(-1, -1, true, false);
 		return true;
 	}
 
-	function edit(seqID, detailSeqID) {
+	function edit(seqID, detailSeqID, mayEdit, mayDelete) {
+	    if (typeof mayEdit == undefined) mayEdit = false;
+	    if (typeof mayDelete == undefined) mayDelete = false;
 		seqID = $("#NVP_SEQ_ID").val();
-		//alert('seqID: ' + seqID + ' detailSeqID: ' + detailSeqID)
 		var options = GW.Model.DefaultDialogOptions();
 		options.title = 'Add or Edit Name Value Pair Detail';
 		options.height = 300;
@@ -43,29 +44,28 @@
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/NVP/AddEditNVPDetails.aspx?NVP_SEQ_ID=" + seqID + "&NVP_Detail_SeqID=" + detailSeqID;
-		options.buttons = {
-			'Save': function () { saveAddEditNVPDetails($(this)); },
-			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+		var myButtons = {};
+		if (mayEdit) {
+		    myButtons["Save"] = function () {
+		        saveAddEditNVPDetails($(this));
+		    }
+		}
+
+		if (mayDelete) {
+		    myButtons["Delete"] = function () {
+		        deleteNVPDetails($(this));
+		    }
 		};
+		myButtons["Cancel"] = function () {
+		    $(this).dialog("close");
+		}
+		options.buttons = myButtons;
 		var dialogId = 'popupAddEditNVP';
 		GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}
 
 	function getAddEditError() {
 		alert('sorry');
-	}
-
-	function deleteNVPDetail(seqID, name) {
-		mSeqID = seqID;
-		var dialogId = '#popupAddEditNVP';
-		var dialogTitle = 'Are you Sure';
-		var dialogMessageTemplate = 'You would like to delete Name Value Pair \n"' + name + '"';
-		GW.Common.JQueryHelper.customConfirm(dialogId, 300, 300, okDelete, null, dialogTitle, dialogMessageTemplate);
-	}
-
-	function okDelete() {
-		alert('deleting ' + mSeqID);
-		getSearchResults();
 	}
 
 	function successLoadPage(msg) {

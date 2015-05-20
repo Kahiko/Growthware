@@ -17,17 +17,14 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.NVP
 {
     public partial class SearchNVPResultsChildren : ClientChoicesPage
     {
+        MSecurityInfo m_SecurityInfo = null;
+
         protected void Page_Init(object sender, EventArgs e)
         {
             string mAction = GWWebHelper.GetQueryValue(Request, "action");
             if (!String.IsNullOrEmpty(mAction))
             {
-                MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile());
-                if (!mSecurityInfo.MayDelete)
-                {
-                    searchResults.Columns.RemoveAt(1);
-                }
+                m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
             }
         }
 
@@ -74,17 +71,10 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.NVP
             DataControlRowType rowType = e.Row.RowType;
             if (rowType == DataControlRowType.DataRow)
             {
-                String mEditOnClick = "javascript:" + string.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_DET_ID").ToString());
-                String mDeleteOnClick = "javascript:" + string.Format("deleteNVPDetail('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "NVP_DET_TEXT").ToString()).ToString();
+                String mEditOnClick = "javascript:" + string.Format("edit('{0}','{1}',{2},{3})", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_DET_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), m_SecurityInfo.MayDelete.ToString().ToLowerInvariant());
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                //' Add confirmation to delete button
-                if (btnDelete != null)
-                {
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                }
 
                 //' add the hover behavior
                 if (e.Row.RowState == DataControlRowState.Normal)

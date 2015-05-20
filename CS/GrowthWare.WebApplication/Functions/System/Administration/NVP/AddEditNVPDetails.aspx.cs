@@ -16,11 +16,11 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.NVP
         {
             string NVP_SEQ_ID = GWWebHelper.GetQueryValue(Request, "NVP_SEQ_ID");
             string NVP_Detail_SeqID = GWWebHelper.GetQueryValue(Request, "NVP_Detail_SeqID");
+            MNameValuePairDetail mProfile = new MNameValuePairDetail();
             if (!String.IsNullOrEmpty(NVP_SEQ_ID) && !String.IsNullOrEmpty(NVP_Detail_SeqID))
             {
                 int mSeqId = int.Parse(NVP_SEQ_ID);
                 int mSeqDetId = int.Parse(NVP_Detail_SeqID);
-                MNameValuePairDetail mProfile = new MNameValuePairDetail();
                 if (mSeqDetId != -1)
                 {
                     mProfile = NameValuePairUtility.GetNameValuePairDetail(mSeqDetId, mSeqId);
@@ -32,6 +32,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.NVP
                 txtSortOrder.Value = mProfile.SortOrder.ToString();
                 HttpContext.Current.Session.Add("EditId", mProfile.Id);
             }
+            HttpContext.Current.Session.Add("EditId", mProfile.Id);
         }
     }
 }
