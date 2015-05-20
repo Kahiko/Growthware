@@ -39,9 +39,10 @@ Namespace Controllers
                 Dim mAccountProfile As MAccountProfile = AccountUtility.GetProfile(jsonData.Account)
                 With mAccountProfile
                     .LastLogOn = DateTime.Now
-                    .Status = Convert.ToInt32(SystemStatus.Active)
                     .FailedAttempts = 0
                 End With
+                If mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Then mAccountProfile.Status = Convert.ToInt32(SystemStatus.Active)
+
                 AccountUtility.Save(mAccountProfile, False, False)
                 AccountUtility.SetPrincipal(mAccountProfile)
                 mRetVal = "true"
