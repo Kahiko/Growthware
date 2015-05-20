@@ -77,5 +77,69 @@ namespace GrowthWare.WebApplication.Controllers
             NameValuePairUtility.UpdateGroups(mID, mSecurityId, mGroups, mProfile);
             return this.Ok(mRetVal);
         }
+
+        [HttpPost]
+        public IHttpActionResult SaveNameValuePairDetail(UINVPDetailProfile uiProfile) 
+        {
+            string mRetVal = false.ToString();
+            MAccountProfile mUpdatingAccount = AccountUtility.CurrentProfile();
+            String mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
+            int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+            Logger mLog = Logger.Instance();
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingAccount);
+
+            if (mEditId != uiProfile.NVP_SEQ_ID)
+            {
+                Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+            if (uiProfile.NVP_SEQ_ID != -1)
+            {
+                if (!mSecurityInfo.MayAdd)
+                {
+                    Exception mError = new Exception("The account (" + mUpdatingAccount.Account + ") being used does not have the correct permissions to add");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);
+                }
+            }
+            else
+            {
+                if (!mSecurityInfo.MayAdd)
+                {
+                    Exception mError = new Exception("The account (" + mUpdatingAccount.Account + ") being used does not have the correct permissions to edit");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);
+                }
+            }
+
+            try
+            {
+			    MNameValuePairDetail mProfile = new MNameValuePairDetail();
+			    if (uiProfile.NVP_SEQ_DET_ID != -1)
+			    {
+                    mProfile = NameValuePairUtility.GetNameValuePairDetail(uiProfile.NVP_SEQ_DET_ID, uiProfile.NVP_SEQ_ID);
+			    }
+			    else 
+			    {
+                    mProfile.AddedBy = mUpdatingAccount.Id;
+				    mProfile.AddedDate = DateTime.Now;
+			    }
+			    mProfile.NameValuePairSeqId = uiProfile.NVP_SEQ_ID;
+                mProfile.UpdatedBy = mUpdatingAccount.Id;
+			    mProfile.UpdatedDate = DateTime.Now;
+			    mProfile.SortOrder = uiProfile.SortOrder;
+			    mProfile.Text = uiProfile.Text;
+			    mProfile.Value = uiProfile.Value;
+			    mProfile.Status = uiProfile.Status;
+			    NameValuePairUtility.SaveDetail(mProfile);
+            }
+            catch (Exception ex)
+            {
+                mLog.Error(mUpdatingAccount);
+            }
+
+            return this.Ok(mRetVal);
+        }
     }
 }

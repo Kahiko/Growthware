@@ -26,8 +26,8 @@ namespace GrowthWare.Framework.Model.Profiles
         /// <param name="dataRow">The dr.</param>
         protected new void Initialize(DataRow dataRow)
         {
-            base.NameColumnName = "STATIC_NAME";
             base.IdColumnName = "NVP_SEQ_DET_ID";
+            base.NameColumnName = "NVP_DET_TEXT";
             base.Initialize(dataRow);
             m_NameValuePairSeqId = base.GetInt(dataRow, "NVP_SEQ_ID"); ;
             m_Text = base.Name;

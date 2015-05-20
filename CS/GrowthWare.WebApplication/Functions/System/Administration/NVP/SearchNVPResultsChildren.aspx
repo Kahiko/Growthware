@@ -6,7 +6,7 @@
 <form id="frmSearchNVPResultsChildren" runat="server">
 	<input id="recordsReturned" type="hidden" runat="server" />
 	<div>
-		<asp:GridView ID="searchResults" Width="100%" AutoGenerateColumns="False" runat="server" CellPadding="4" ForeColor="#333333" GridLines="Both">
+		<asp:GridView ID="searchResults" Width="100%" AutoGenerateColumns="False" runat="server" CellPadding="4" ForeColor="#333333" GridLines="Both" OnRowDataBound="searchResults_RowDatabound">
 			<AlternatingRowStyle BackColor="#6699cc" />
 			<Columns>
 				<asp:TemplateField>
