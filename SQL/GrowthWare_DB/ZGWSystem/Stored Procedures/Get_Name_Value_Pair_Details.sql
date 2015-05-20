@@ -74,9 +74,9 @@ AS
 			#NVP_DETAILS.NVP_Detail_Value as NVP_DET_TEXT, 
 			#NVP_DETAILS.Status_SeqID as STATUS_SEQ_ID, 
 			#NVP_DETAILS.Sort_Order, 
-			#NVP_DETAILS.Added_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Added_By) AS Added_By,  
 			#NVP_DETAILS.Added_Date, 
-			#NVP_DETAILS.Updated_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Updated_By) AS Updated_By,  
 			#NVP_DETAILS.Updated_Date 
 		FROM 
 			#NVP_DETAILS,
@@ -95,9 +95,9 @@ AS
 			#NVP_DETAILS.NVP_Detail_Value as NVP_DET_TEXT, 
 			#NVP_DETAILS.Status_SeqID as STATUS_SEQ_ID, 
 			#NVP_DETAILS.Sort_Order, 
-			#NVP_DETAILS.Added_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Added_By) AS Added_By, 
 			#NVP_DETAILS.Added_Date, 
-			#NVP_DETAILS.Updated_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Updated_By) AS Updated_By, 
 			#NVP_DETAILS.Updated_Date 
 		FROM 
 			#NVP_DETAILS,
