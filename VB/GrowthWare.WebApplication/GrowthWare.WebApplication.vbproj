@@ -227,7 +227,6 @@
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
     <Content Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx" />
-    <Content Include="Functions\System\Administration\Configuration\AddEditWebConfig.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\RandomNumbers.aspx" />
@@ -489,13 +488,6 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.vb">
       <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Functions\System\Administration\Configuration\AddEditWebConfig.aspx.designer.vb">
-      <DependentUpon>AddEditWebConfig.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Functions\System\Administration\Configuration\AddEditWebConfig.aspx.vb">
-      <DependentUpon>AddEditWebConfig.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx.designer.vb">
