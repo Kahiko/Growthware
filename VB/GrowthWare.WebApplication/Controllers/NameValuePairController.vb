@@ -66,6 +66,57 @@ Namespace Controllers
 
             Return Me.Ok(mRetVal)
         End Function
+
+        <HttpPost>
+        Public Function SaveNameValuePairDetail(ByVal uiProfile As UINVPDetailProfile) As IHttpActionResult
+            Dim mRetVal As String = False
+            Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
+            Dim mLog As Logger = Logger.Instance()
+            Dim mUpdatingProfile As MAccountProfile = AccountUtility.CurrentProfile()
+
+            If mEditId <> uiProfile.NVP_Seq_ID Then
+                Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingProfile)
+            If uiProfile.NVP_Seq_ID = -1 Then
+                If Not mSecurityInfo.MayAdd Then
+                    Dim mError As Exception = New Exception("The account (" + mUpdatingProfile.Account + ") being used does not have the correct permissions to add")
+                    mLog.Error(mError)
+                    Return Me.InternalServerError(mError)
+                End If
+            Else
+                If Not mSecurityInfo.MayEdit Then
+                    Dim mError As Exception = New Exception("The account (" + mUpdatingProfile.Account + ") being used does not have the correct permissions to edit")
+                    mLog.Error(mError)
+                    Return Me.InternalServerError(mError)
+                End If
+            End If
+
+            Try
+                Dim mProfile As New MNameValuePairDetail
+                If Not uiProfile.NVP_SEQ_DET_ID = -1 Then
+                    mProfile = NameValuePairUtility.GetNameValuePairDetail(uiProfile.NVP_SEQ_DET_ID, uiProfile.NVP_Seq_ID)
+                Else
+                    mProfile.AddedBy = mUpdatingProfile.Id
+                    mProfile.AddedDate = DateTime.Now
+                End If
+                mProfile.NameValuePairSeqId = uiProfile.NVP_Seq_ID
+                mProfile.UpdatedBy = mUpdatingProfile.Id
+                mProfile.UpdatedDate = DateTime.Now
+                mProfile.SortOrder = uiProfile.SortOrder
+                mProfile.Text = uiProfile.Text
+                mProfile.Value = uiProfile.Value
+                mProfile.Status = uiProfile.Status
+                NameValuePairUtility.SaveDetail(mProfile)
+            Catch ex As Exception
+                mLog.Error(ex)
+            End Try
+
+            Return Me.Ok(mRetVal)
+        End Function
     End Class
 
 End Namespace
