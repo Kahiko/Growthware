@@ -47,7 +47,7 @@ public class AccountsController : ApiController
 		if (AccountUtility.Authenticated(jsonData.Account, jsonData.Password)) {
 			MAccountProfile mAccountProfile = AccountUtility.GetProfile(jsonData.Account);
             mAccountProfile.LastLogOn = DateTime.Now;
-            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Active);
+            if(mAccountProfile.Status == Convert.ToInt32(SystemStatus.Disabled)) mAccountProfile.Status = Convert.ToInt32(SystemStatus.Active);
             mAccountProfile.FailedAttempts = 0;
             AccountUtility.Save(mAccountProfile, false, false);
 			AccountUtility.SetPrincipal(mAccountProfile);
