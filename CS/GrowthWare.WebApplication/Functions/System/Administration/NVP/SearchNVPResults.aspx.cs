@@ -72,17 +72,10 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.NVP
             if (rowType == DataControlRowType.DataRow)
             {
                 String mEditOnClick = "javascript:" + string.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString());
-                String mDeleteOnClick = "javascript:" + string.Format("deleteNVP('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString(), DataBinder.Eval(e.Row.DataItem, "Name").ToString()).ToString();
                 String mEditChildrenOnClick = "javascript:" + String.Format("manageChildren('{0}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString());
                 HtmlImage btnDetails = (HtmlImage)(e.Row.FindControl("btnDetails"));
                 e.Row.Attributes.Add("ondblclick", mEditOnClick);
                 btnDetails.Attributes.Add("onclick", mEditOnClick);
-                HtmlImage btnDelete = (HtmlImage)(e.Row.FindControl("btnDelete"));
-                //' Add confirmation to delete button
-                if (btnDelete != null)
-                {
-                    btnDelete.Attributes.Add("onclick", mDeleteOnClick);
-                }
 
                 HtmlImage btnEditChildren = (HtmlImage)(e.Row.FindControl("btnEditChildren"));
                 //' Add confirmation to delete button
