@@ -70,16 +70,10 @@ Public Class SearchNVPResults
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
             Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString())
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteNVP('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "Name")))
             Dim mEditChildrenOnClick As String = "javascript:" + String.Format("manageChildren('{0}')", DataBinder.Eval(e.Row.DataItem, "NVP_SeqID").ToString())
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
             btnDetails.Attributes.Add("onclick", mEditOnClick)
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
-            End If
 
             Dim btnEditChildren As HtmlImage = CType(e.Row.FindControl("btnEditChildren"), HtmlImage)
             If Not btnEditChildren Is Nothing Then
