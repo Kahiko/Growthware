@@ -75,13 +75,13 @@ Namespace Controllers
             Dim mLog As Logger = Logger.Instance()
             Dim mUpdatingProfile As MAccountProfile = AccountUtility.CurrentProfile()
 
-            If mEditId <> uiProfile.NVP_Seq_ID Then
+            If mEditId <> uiProfile.NVP_SEQ_DET_ID Then
                 Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)
             End If
             Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingProfile)
-            If uiProfile.NVP_Seq_ID = -1 Then
+            If uiProfile.NVP_SEQ_DET_ID = -1 Then
                 If Not mSecurityInfo.MayAdd Then
                     Dim mError As Exception = New Exception("The account (" + mUpdatingProfile.Account + ") being used does not have the correct permissions to add")
                     mLog.Error(mError)
@@ -111,10 +111,47 @@ Namespace Controllers
                 mProfile.Value = uiProfile.Value
                 mProfile.Status = uiProfile.Status
                 NameValuePairUtility.SaveDetail(mProfile)
+                mRetVal = True.ToString()
             Catch ex As Exception
                 mLog.Error(ex)
             End Try
 
+            Return Me.Ok(mRetVal)
+        End Function
+
+        <HttpPost>
+        Public Function DeleteNameValuePairDetail(ByVal uiProfile As UINVPDetailProfile) As IHttpActionResult
+            Dim mRetVal As String = False
+            Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
+            Dim mLog As Logger = Logger.Instance()
+            Dim mUpdatingProfile As MAccountProfile = AccountUtility.CurrentProfile()
+
+            If mEditId <> uiProfile.NVP_SEQ_DET_ID Then
+                Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(mAction), mUpdatingProfile)
+            If Not mSecurityInfo.MayDelete Then
+                Dim mError As Exception = New Exception("The account (" + mUpdatingProfile.Account + ") being used does not have the correct permissions to delete")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            Try
+                Dim mProfile As New MNameValuePairDetail
+                mProfile.NameValuePairSeqId = uiProfile.NVP_Seq_ID
+                mProfile.Id = uiProfile.NVP_SEQ_DET_ID
+                mProfile.UpdatedBy = mUpdatingProfile.Id
+                mProfile.UpdatedDate = DateTime.Now
+                mProfile.SortOrder = uiProfile.SortOrder
+                mProfile.Text = uiProfile.Text
+                mProfile.Value = uiProfile.Value
+                mProfile.Status = uiProfile.Status
+                NameValuePairUtility.DeleteDetail(mProfile)
+            Catch ex As Exception
+                mLog.Error(ex)
+            End Try
             Return Me.Ok(mRetVal)
         End Function
     End Class

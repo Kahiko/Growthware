@@ -8,14 +8,12 @@ Imports System.Drawing
 Public Class SearchNVPResultsChildren
     Inherits ClientChoicesPage
 
+    Dim m_SecurityInfo As MSecurityInfo = Nothing
+
     Protected Sub Page_Init(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Init
         Dim mAction = GWWebHelper.GetQueryValue(Request, "action")
         If (Not String.IsNullOrEmpty(mAction)) Then
-            Dim mFunctionProfile As MFunctionProfile = FunctionUtility.GetProfile(mAction)
-            Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile())
-            If Not mSecurityInfo.MayDelete Then
-                searchResults.Columns.RemoveAt(1)
-            End If
+            m_SecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile())
         End If
     End Sub
 
@@ -69,16 +67,10 @@ Public Class SearchNVPResultsChildren
     Private Sub searchResults_DataBound(sender As Object, e As GridViewRowEventArgs) Handles searchResults.RowDataBound
         Dim rowType As DataControlRowType = e.Row.RowType
         If rowType = DataControlRowType.DataRow Then
-            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_DET_ID").ToString())
-            Dim mDeleteOnClick As String = "javascript:" + String.Format("deleteNVPDetail('{0}','{1}')", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), CStr(DataBinder.Eval(e.Row.DataItem, "NVP_DET_TEXT")))
+            Dim mEditOnClick As String = "javascript:" + String.Format("edit('{0}','{1}',{2},{3})", DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_ID").ToString(), DataBinder.Eval(e.Row.DataItem, "NVP_SEQ_DET_ID").ToString(), m_SecurityInfo.MayEdit.ToString().ToLowerInvariant(), m_SecurityInfo.MayDelete.ToString().ToLowerInvariant())
             Dim btnDetails As HtmlImage = CType(e.Row.FindControl("btnDetails"), HtmlImage)
             e.Row.Attributes.Add("ondblclick", mEditOnClick)
             btnDetails.Attributes.Add("onclick", mEditOnClick)
-            Dim btnDelete As HtmlImage = CType(e.Row.FindControl("btnDelete"), HtmlImage)
-            If Not btnDelete Is Nothing Then
-                ' Add confirmation to delete button
-                btnDelete.Attributes.Add("onclick", mDeleteOnClick)
-            End If
             ' add the hover behavior
             If e.Row.RowState = DataControlRowState.Normal Then
                 e.Row.Attributes.Add("onmouseover", "this.style.backgroundColor='Beige'")

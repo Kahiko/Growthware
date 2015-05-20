@@ -29,11 +29,13 @@
 	});
 
 	function addNew() {
-		edit(-1, -1);
+		edit(-1, -1, true, false);
 		return true;
 	}
 
-	function edit(seqID, detailSeqID) {
+	function edit(seqID, detailSeqID, mayEdit, mayDelete) {
+	    if (typeof mayEdit == undefined) mayEdit = false;
+	    if (typeof mayDelete == undefined) mayDelete = false;
 		seqID = $("#NVP_SEQ_ID").val();
 		//alert('seqID: ' + seqID + ' detailSeqID: ' + detailSeqID)
 		var options = GW.Model.DefaultDialogOptions();
@@ -43,10 +45,22 @@
 		options.async = false;
 		options.resizable = true;
 		options.url = GW.Common.getBaseURL() + "/Functions/System/Administration/NVP/AddEditNVPDetails.aspx?NVP_SEQ_ID=" + seqID + "&NVP_Detail_SeqID=" + detailSeqID;
-		options.buttons = {
-			'Save': function () { saveAddEditNVPDetails($(this)); },
-			'Cancel': function () { $(this).dialog("destroy"); $(this).remove(); }
+		var myButtons = {};
+		if (mayEdit) {
+		    myButtons["Save"] = function () {
+		        saveAddEditNVPDetails($(this));
+		    }
+		}
+
+		if (mayDelete) {
+		    myButtons["Delete"] = function () {
+		        deleteNVPDetails($(this));
+		    }
 		};
+		myButtons["Cancel"] = function () {
+		    $(this).dialog("close");
+		}
+		options.buttons = myButtons;
 		var dialogId = 'popupAddEditNVP';
 		GW.Common.JQueryHelper.openDialogWithWebContent(options, dialogId);
 	}

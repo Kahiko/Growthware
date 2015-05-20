@@ -76,6 +76,23 @@
 		}
 	}
 
+	function deleteNVPDetails($dialogWindow) {
+	    if (Page_ClientValidate()) {
+	        var theData = updateData();
+	        GW.Common.debug(theData);
+	        var options = GW.Model.DefaultWebMethodOptions();
+	        options.async = false;
+	        options.data = theData;
+	        options.contentType = 'application/json; charset=utf-8';
+	        options.dataType = 'json';
+	        options.url = GW.Common.getBaseURL() + "/gw/api/NameValuePair/DeleteNameValuePairDetail"
+	        GW.Common.JQueryHelper.callWeb(options, saveAddEditNVPDetailsSucess, saveAddEditNVPDetailsError);
+	        if (!($dialogWindow === undefined)) {
+	            $dialogWindow.dialog("destroy")
+	            $dialogWindow.remove();
+	        }
+	    }
+	}
 	function updateData() {
 		var profile = {};
 		profile.Value = $("#<%=txtValue.ClientID %>").val();
@@ -92,6 +109,6 @@
 	}
 
 	function saveAddEditNVPDetailsError(xhr, status, error) {
-
+	    alert(error);
 	}
 </script>

@@ -34,13 +34,15 @@ Namespace Utilities
             Dim mBClientChoices As BClientChoices = New BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement)
             If fromDB Then Return mBClientChoices.GetClientChoicesState(account)
             If account.Trim().ToLower(CultureInfo.CurrentCulture) <> "anonymous" Then
-                mRetVal = CType(HttpContext.Current.Session(MClientChoices.SessionName), MClientChoicesState)
-                If mRetVal Is Nothing Then
-                    mRetVal = mBClientChoices.GetClientChoicesState(account)
-                    HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
-                ElseIf mRetVal.AccountName.Trim.ToLower(CultureInfo.InvariantCulture) <> account.Trim.ToLower(CultureInfo.InvariantCulture) Then
-                    mRetVal = mBClientChoices.GetClientChoicesState(account)
-                    HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
+                If HttpContext.Current.Session IsNot Nothing Then
+                    mRetVal = CType(HttpContext.Current.Session(MClientChoices.SessionName), MClientChoicesState)
+                    If mRetVal Is Nothing Then
+                        mRetVal = mBClientChoices.GetClientChoicesState(account)
+                        HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
+                    ElseIf mRetVal.AccountName.Trim.ToLower(CultureInfo.InvariantCulture) <> account.Trim.ToLower(CultureInfo.InvariantCulture) Then
+                        mRetVal = mBClientChoices.GetClientChoicesState(account)
+                        HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
+                    End If
                 End If
             Else
                 mRetVal = CType(HttpContext.Current.Cache(ClientChoicesUtility.s_CachedAnonymousChoicesState), MClientChoicesState)

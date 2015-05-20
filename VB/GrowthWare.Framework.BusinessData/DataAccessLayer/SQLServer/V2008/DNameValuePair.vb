@@ -24,7 +24,7 @@ Namespace DataAccessLayer.SQLServer.V2008
 
         Public Sub DeleteNameValuePairDetail(ByVal profile As MNameValuePairDetail) Implements IDNameValuePair.DeleteNameValuePairDetail
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")
-            Dim mStoreProcedure As String = "ZGWSystem.Del_Name_Value_Pair_Detail"
+            Dim mStoreProcedure As String = "ZGWSystem.Delete_Name_Value_Pair_Detail"
             Dim myParameters() As SqlParameter =
              {
               New SqlParameter("@P_NVP_Detail_SeqID", profile.Id),
