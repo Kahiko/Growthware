@@ -587,6 +587,9 @@ if (typeof GW.Common.Validation == "undefined" || !GW.Common.Validation) {
         isDebug: true,
 
         textboxMultilineMaxNumber: function (txt, maxLen, msg, event) {
+            //			if (msg.length == 'undefined' || !msg.length) {
+            //				event = msg;
+            //			}
             try {
                 if (!GW.Common.checkSpecialKeys(event)) {
                     if (txt.value.length > (maxLen - 1)) {
