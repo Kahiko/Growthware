@@ -12,7 +12,7 @@ Imports System.Runtime.InteropServices
 <Assembly: AssemblyDescription("Framework for supporting GrowthWare products for data access")> 
 <Assembly: AssemblyCompany("GrowthWare")> 
 <Assembly: AssemblyProduct("GrowthWare.Framework")> 
-<Assembly: AssemblyCopyright("Copyright ©  2014")> 
+<Assembly: AssemblyCopyright("Copyright ©  2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)> 
@@ -33,5 +33,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("6.0.0.0")> 
+<Assembly: AssemblyVersion("6.0.0.*")> 
 <Assembly: AssemblyFileVersion("6.0.0.0")> 
