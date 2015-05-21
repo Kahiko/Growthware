@@ -226,6 +226,7 @@
     <Content Include="Functions\System\Administration\Accounts\AddEditAccount.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx" />
     <Content Include="Functions\System\Administration\Accounts\SearchAccounts.aspx" />
+    <Content Include="Functions\System\Administration\AnonymousAccount\UpdateAnonymousCache.aspx" />
     <Content Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\EncryptDecrypt.aspx" />
     <Content Include="Functions\System\Administration\Encrypt\GUIDHelper.aspx" />
@@ -481,6 +482,13 @@
     <Compile Include="Functions\System\Administration\Accounts\SearchAccounts.aspx.vb">
       <DependentUpon>SearchAccounts.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Functions\System\Administration\AnonymousAccount\UpdateAnonymousCache.aspx.designer.vb">
+      <DependentUpon>UpdateAnonymousCache.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Functions\System\Administration\AnonymousAccount\UpdateAnonymousCache.aspx.vb">
+      <DependentUpon>UpdateAnonymousCache.aspx</DependentUpon>
+      <SubType>ASPXCodebehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.designer.vb">
       <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
