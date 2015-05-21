@@ -379,6 +379,7 @@
     <Content Include="Public\Skins\Professional\Images\top_black_stripes.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_curve.gif" />
     <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
+    <Content Include="Scripts\bootstrap-dialog.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
