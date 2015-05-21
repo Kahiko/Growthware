@@ -24,6 +24,7 @@ public class AccountsController : ApiController
 		MUIAccountChoices mRetVal = new MUIAccountChoices(mClientChoicesState);
 		mRetVal.Environment = GWWebHelper.DisplayEnvironment;
 		mRetVal.Version = GWWebHelper.Version;
+        mRetVal.FrameWorkVersion = GWWebHelper.FrameworkVersion;
 		return mRetVal;
 	}
 
@@ -541,6 +542,11 @@ public class MUIAccountChoices : MProfile
     /// <value>The version.</value>
     public string Version { get; set; }
 
+    /// <summary>
+    /// Gets or sets the framework version.
+    /// </summary>
+    /// <value>The version.</value>
+    public string FrameWorkVersion { get; set; }
     /// <summary>
     /// Gets or sets the name of the security entity.
     /// </summary>
