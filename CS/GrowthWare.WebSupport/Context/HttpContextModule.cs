@@ -159,13 +159,13 @@ namespace GrowthWare.WebSupport.Context
                         if (mFunctionProfile != null && !mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
                         {
                             MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-                            if (mAccountProfile != null) 
+                            if (mAccountProfile != null)
                             {
                                 if (!(mAccountProfile.Status == (int)SystemStatus.ChangePassword))
                                 {
                                     mLog.Debug("Processing for account " + mAccountProfile.Account);
                                     MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-                                    if(mSecurityInfo != null) HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
+                                    if (mSecurityInfo != null) HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
                                     string mPage = string.Empty;
                                     if (!mSecurityInfo.MayView)
                                     {
@@ -190,6 +190,47 @@ namespace GrowthWare.WebSupport.Context
                                     HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword");
                                 }
                                 processOverridePage(mFunctionProfile);
+                            }
+                            else 
+                            { 
+                                String mMessage = "Could not find account '" + AccountUtility.HttpContextUserName + "' from the database creating new one.";
+                                mLog.Error(mMessage);
+
+                                MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");
+                                MAccountProfile mAccountProfileToSave = new MAccountProfile();
+                                mAccountProfileToSave.Id = -1;
+                                String mGroups = ConfigSettings.RegistrationGroups;
+                                String mRoles = ConfigSettings.RegistrationRoles;
+                                mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
+                                mAccountProfileToSave.FirstName = "Autocreated";
+                                mAccountProfileToSave.LastName = "Autocreated";
+                                mAccountProfileToSave.MiddleName = "Autocreated";
+                                mAccountProfileToSave.PreferredName = "Autocreated";
+                                mAccountProfileToSave.Email = "change@me.com";
+                                mAccountProfileToSave.Location = "Hawaii";
+                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+                                mAccountProfileToSave.AddedDate = DateTime.Now;
+                                mAccountProfileToSave.SetGroups(mGroups);
+                                mAccountProfileToSave.SetRoles(mRoles);
+                                mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+                                mAccountProfileToSave.LastLogOn = DateTime.Now;
+                                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+                                mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
+                                MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True);
+                                MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+                                String mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
+
+                                mClientChoiceState.IsDirty = false;
+                                mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
+                                mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+                                mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+                                try{
+                                    AccountUtility.Save(mAccountProfileToSave, true, true, mSecurityEntityProfile);
+                                    ClientChoicesUtility.Save(mClientChoiceState, false);
+                                    AccountUtility.SetPrincipal(mAccountProfileToSave);
+                                }catch( Exception ex){
+                                    mLog.Error(ex);
+                                }
                             }
                         }
                         else
