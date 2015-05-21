@@ -68,14 +68,14 @@ namespace GrowthWare.WebSupport.Utilities
                         {
                             profilePassword = mAccountProfile.Password;
                         }
-                        if (password == profilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive)))
+                        if (password == profilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
                         {
                             retVal = true;
                         }
                         if (!retVal) mAccountProfile.FailedAttempts += 1;
-                        if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts) != -1) 
+                        if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1) 
                         {
-                            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled);
+                            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
                         }
                         AccountUtility.Save(mAccountProfile, false, false);
                     }

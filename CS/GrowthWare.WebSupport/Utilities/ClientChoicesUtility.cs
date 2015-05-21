@@ -48,7 +48,7 @@ namespace GrowthWare.WebSupport.Utilities
                         mRetVal = mBClientChoices.GetClientChoicesState(account);
                         HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;
                     }
-                    else if (mRetVal.AccountName.Trim().ToLower(CultureInfo.InvariantCulture) != account.Trim().ToLower(CultureInfo.InvariantCulture))
+                    else if (mRetVal.AccountName.Trim().ToUpper(CultureInfo.InvariantCulture) != account.Trim().ToUpper(CultureInfo.InvariantCulture))
                     {
                         mRetVal = mBClientChoices.GetClientChoicesState(account);
                         HttpContext.Current.Session[MClientChoices.SessionName] = mRetVal;
