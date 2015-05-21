@@ -19,6 +19,7 @@ Namespace Controllers
             Dim mRetVal As MUIAccountChoices = New MUIAccountChoices(mClientChoicesState)
             mRetVal.Environment = GWWebHelper.DisplayEnvironment
             mRetVal.Version = GWWebHelper.Version
+            mRetVal.FrameworkVersion = GWWebHelper.FrameworkVersion
             Return mRetVal
         End Function
 
@@ -468,6 +469,12 @@ Namespace Controllers
         ''' </summary>
         ''' <value>The version.</value>
         Public Property Version As String
+
+        ''' <summary>
+        ''' Gets or sets the framework version.
+        ''' </summary>
+        ''' <value>The version.</value>
+        Public Property FrameworkVersion As String
 
         ''' <summary>
         ''' Gets or sets the name of the security entity.
