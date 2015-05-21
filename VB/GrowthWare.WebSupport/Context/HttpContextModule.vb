@@ -138,6 +138,45 @@ Namespace Context
                                     HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword")
                                 End If
                                 processOverridePage(mFunctionProfile)
+                            Else
+                                Dim mMessage As String = "Could not find account '" + AccountUtility.HttpContextUserName + "' from the database creating new one."
+                                mLog.Error(mMessage)
+
+                                Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
+                                Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
+                                mAccountProfileToSave.Id = -1
+                                Dim mGroups = ConfigSettings.RegistrationGroups
+                                Dim mRoles = ConfigSettings.RegistrationRoles
+                                mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
+                                mAccountProfileToSave.FirstName = "Autocreated"
+                                mAccountProfileToSave.LastName = "Autocreated"
+                                mAccountProfileToSave.MiddleName = "Autocreated"
+                                mAccountProfileToSave.PreferredName = "Autocreated"
+                                mAccountProfileToSave.Email = "change@me.com"
+                                mAccountProfileToSave.Location = "Hawaii"
+                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
+                                mAccountProfileToSave.AddedDate = Now
+                                mAccountProfileToSave.SetGroups(mGroups)
+                                mAccountProfileToSave.SetRoles(mRoles)
+                                mAccountProfileToSave.PasswordLastSet = DateTime.Now
+                                mAccountProfileToSave.LastLogOn = DateTime.Now
+                                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+                                mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
+                                Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
+                                Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
+                                Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
+
+                                mClientChoiceState.IsDirty = False
+                                mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
+                                mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+                                mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
+                                Try
+                                    AccountUtility.Save(mAccountProfileToSave, True, True, mSecurityEntityProfile)
+                                    ClientChoicesUtility.Save(mClientChoiceState, False)
+                                    AccountUtility.SetPrincipal(mAccountProfileToSave)
+                                Catch ex As Exception
+                                    mLog.Error(ex)
+                                End Try
                             End If
                         Else
                             mLog.Debug("Menu data or Logoff/Logon requested")
