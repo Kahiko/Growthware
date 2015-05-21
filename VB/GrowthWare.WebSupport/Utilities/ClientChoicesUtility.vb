@@ -39,7 +39,7 @@ Namespace Utilities
                     If mRetVal Is Nothing Then
                         mRetVal = mBClientChoices.GetClientChoicesState(account)
                         HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
-                    ElseIf mRetVal.AccountName.Trim.ToLower(CultureInfo.InvariantCulture) <> account.Trim.ToLower(CultureInfo.InvariantCulture) Then
+                    ElseIf mRetVal.AccountName.Trim.ToUpper(CultureInfo.InvariantCulture) <> account.Trim.ToUpper(CultureInfo.InvariantCulture) Then
                         mRetVal = mBClientChoices.GetClientChoicesState(account)
                         HttpContext.Current.Session(MClientChoices.SessionName) = mRetVal
                     End If

@@ -53,12 +53,12 @@ Namespace Utilities
                         Catch ex As CryptoUtilityException
                             profilePassword = mAccountProfile.Password
                         End Try
-                        If password = profilePassword And Not (mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Or mAccountProfile.Status = Convert.ToInt32(SystemStatus.Inactive)) Then
+                        If password = profilePassword And Not (mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) Or mAccountProfile.Status = Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)) Then
                             retVal = True
                         End If
                         If Not retVal Then mAccountProfile.FailedAttempts += 1
-                        If mAccountProfile.FailedAttempts >= Convert.ToInt32(ConfigSettings.FailedAttempts) And Not Convert.ToInt32(ConfigSettings.FailedAttempts) = -1 Then
-                            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled)
+                        If mAccountProfile.FailedAttempts >= Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) And Not Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) = -1 Then
+                            mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture)
                         End If
                         AccountUtility.Save(mAccountProfile, False, False)
                     Else
