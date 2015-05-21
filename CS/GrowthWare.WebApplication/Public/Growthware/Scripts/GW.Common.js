@@ -561,7 +561,9 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                             saveBtnFunction = value;
                         }
                     });
+                    //$('#MainContentDiv').load(options.url);
                     $('.modal-body').load(options.url);
+                    //$mModal.find('.callback-btn').off('click.callback').on('click.callback', function () {saveBtnFunction;$mModal.modal('hide');}).end();
                     $('#mModalBtnSave').click(function () {
                         eval("var fn = " + saveBtnFunction);
                         fn();
@@ -585,6 +587,9 @@ if (typeof GW.Common.Validation == "undefined" || !GW.Common.Validation) {
         isDebug: true,
 
         textboxMultilineMaxNumber: function (txt, maxLen, msg, event) {
+            //			if (msg.length == 'undefined' || !msg.length) {
+            //				event = msg;
+            //			}
             try {
                 if (!GW.Common.checkSpecialKeys(event)) {
                     if (txt.value.length > (maxLen - 1)) {
