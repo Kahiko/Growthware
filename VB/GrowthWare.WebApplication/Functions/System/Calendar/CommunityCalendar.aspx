@@ -17,7 +17,7 @@
 			        <table width="95%">
 				        <tr>
 					        <td>
-						        <asp:Calendar ID="CalendarControl" runat="server" Height="250px" Font-Size="9pt" Font-Names="Verdana" DayHeaderStyle-Wrap="false" Width="100%" DayHeaderStyle-HorizontalAlign="NotSet" DayStyle-HorizontalAlign="Left" BorderStyle="Solid" NextPrevFormat="ShortMonth" BackColor="White" ForeColor="Black" CellSpacing="1" BorderColor="Black">
+						        <asp:Calendar ID="CalendarControl" class="table table-striped table-bordered" runat="server" Height="250px" Font-Size="9pt" Font-Names="Verdana" DayHeaderStyle-Wrap="false" Width="100%" DayHeaderStyle-HorizontalAlign="NotSet" DayStyle-HorizontalAlign="Left" BorderStyle="Solid" NextPrevFormat="ShortMonth" BackColor="White" ForeColor="Black" CellSpacing="1" BorderColor="Black">
 							        <TodayDayStyle ForeColor="White" BackColor="#999999"></TodayDayStyle>
 							        <DayStyle BackColor="#CCCCCC"></DayStyle>
 							        <NextPrevStyle Font-Size="8pt" Font-Bold="True" ForeColor="White"></NextPrevStyle>
@@ -33,7 +33,7 @@
 	        </tr>
 	        <tr>
 		        <td>
-			        <table width="100%">
+			        <table width="100%" class="table table-striped table-bordered">
 				        <tr>
 					        <td valign="top">
 							    To Enter:
@@ -62,7 +62,7 @@
 	        </tr>
 	        <tr>
 		        <td>
-			        <table width="100%">
+			        <table width="100%" class="table table-striped table-bordered">
 				        <tr>
 					        <td align="left">
 						        <asp:Button ID="BtnSave" runat="server" BackColor="SteelBlue" Width="82px" ForeColor="White" Font-Names="Arial" Text="Save" BorderStyle="None" Font-Bold="True" Visible="False"></asp:Button>

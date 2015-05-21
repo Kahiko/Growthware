@@ -6,9 +6,9 @@
 	<head runat="server">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Growhtware DevOops VB</title>
+        <%: Scripts.Render("~/bundles/modernizr")%>
         <%: Scripts.Render("~/bundles/jquery") %>
         <%: Scripts.Render("~/bundles/GrowthWare")%>
-
 		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
 		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
 		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -19,6 +19,7 @@
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
         <%: Scripts.Render("~/bundles/bootstrap")%>
+        <%--<%: Scripts.Render("~/bundles/angular")%>--%>
         <%: Styles.Render("~/Content/Bootstrap")%>
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {
@@ -122,6 +123,7 @@
                 });
             });
         </script>
+        <%: Styles.Render("~/Content/GrowthWare")%>
         <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
         <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 	</head>
@@ -153,7 +155,7 @@
 	<div class="container-fluid expanded-panel">
 		<div class="row">
 			<div id="logo" class="col-xs-12 col-sm-2">
-				<a href="#">GrowthWare VB</a>
+				<a href="#">Growthware VB</a>
 			</div>
 			<div id="top-panel" class="col-xs-12 col-sm-10">
 				<div class="row">
