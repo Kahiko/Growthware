@@ -251,7 +251,6 @@
     <Content Include="Functions\System\ExternalAuth\Web.config" />
     <Content Include="Functions\System\FileManagement\UploadHandler.ashx" />
     <Content Include="Functions\System\FileManagement\DownloadHandler.ashx" />
-    <None Include="Scripts\jquery-1.9.0.intellisense.js" />
     <Content Include="index.aspx" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Public\CSS\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
@@ -304,18 +303,7 @@
     <Content Include="Public\Growthware\Scripts\GW.Search.js" />
     <Content Include="Public\Growthware\Scripts\GW.Upload.js" />
     <Content Include="Public\Growthware\Styles\GrowthWare.css" />
-    <Content Include="Public\Scripts\angular-1.2.js" />
-    <Content Include="Public\Scripts\angular-1.3.js" />
-    <Content Include="Public\Scripts\bootstrap-dialog.js" />
-    <Content Include="Public\Scripts\bootstrap.js" />
-    <None Include="Public\Scripts\jquery-1.10.2.intellisense.js" />
-    <Content Include="Public\Scripts\jquery-1.10.2.js" />
-    <Content Include="Public\Scripts\jquery-ui.js" />
-    <Content Include="Public\Scripts\jquery.js" />
-    <Content Include="Public\Scripts\jquery.tmpl.js" />
-    <Content Include="Public\Scripts\jSon2.js" />
-    <Content Include="Public\Scripts\modernizr-2.6.2.js" />
-    <Content Include="Public\Scripts\respond.js" />
+    <Content Include="Scripts\bootstrap-dialog.js" />
     <Content Include="Public\SiteStyles\Arc.css" />
     <Content Include="Public\SiteStyles\Blue Arrow.css" />
     <Content Include="Public\SiteStyles\Default.css" />
@@ -365,8 +353,7 @@
     <Content Include="Public\Skins\Professional\Images\top_blue_strip.gif" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-1.9.0.js" />
-    <Content Include="Scripts\jquery-1.9.0.min.js" />
+    <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.js" />
     <Content Include="Scripts\jquery-ui-1.11.2.min.js" />
     <Content Include="Scripts\jquery.tmpl.js" />
@@ -386,7 +373,6 @@
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
-    <Content Include="Scripts\jquery-1.9.0.min.map" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
