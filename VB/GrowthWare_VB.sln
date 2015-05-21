@@ -7,11 +7,9 @@ Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.Framework", "Gro
 EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.Framework.BusinessData", "GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.vbproj", "{055A674B-3AF2-450A-BE49-DAFF60828878}"
 EndProject
+Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebAngularJSApplication", "GrowthWare.WebAngularJSApplication\GrowthWare.WebAngularJSApplication.vbproj", "{C73800A9-9A89-4439-8D54-111F76548D98}"
+EndProject
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj", "{CE3E125D-0A3E-4F4D-B246-7A7931744A58}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication.Tests", "GrowthWare.WebApplication.Tests\GrowthWare.WebApplication.Tests.vbproj", "{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}"
-EndProject
-Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "GrowthWare.WebApplication", "GrowthWare.WebApplication\GrowthWare.WebApplication.vbproj", "{E9106579-77EB-4539-AF50-CAD33D6881A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,18 +25,14 @@ Global
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{055A674B-3AF2-450A-BE49-DAFF60828878}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C73800A9-9A89-4439-8D54-111F76548D98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C73800A9-9A89-4439-8D54-111F76548D98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C73800A9-9A89-4439-8D54-111F76548D98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C73800A9-9A89-4439-8D54-111F76548D98}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE3E125D-0A3E-4F4D-B246-7A7931744A58}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D92A57CD-9BD0-4DEA-A9B1-A94321B66F6B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E9106579-77EB-4539-AF50-CAD33D6881A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
