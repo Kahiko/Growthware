@@ -20,11 +20,17 @@ public class AccountsController : ApiController
 	[HttpGet()]
 	public MUIAccountChoices GetPreferences()
 	{
-		MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account.ToString(CultureInfo.InvariantCulture));
-		MUIAccountChoices mRetVal = new MUIAccountChoices(mClientChoicesState);
-		mRetVal.Environment = GWWebHelper.DisplayEnvironment;
-		mRetVal.Version = GWWebHelper.Version;
-        mRetVal.FrameWorkVersion = GWWebHelper.FrameworkVersion;
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+        MClientChoicesState mClientChoicesState = null;
+        MUIAccountChoices mRetVal = null;
+        if (mAccountProfile != null) 
+        {
+            mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountProfile.Account.ToString(CultureInfo.InvariantCulture));
+            mRetVal = new MUIAccountChoices(mClientChoicesState);
+            mRetVal.Environment = GWWebHelper.DisplayEnvironment;
+            mRetVal.Version = GWWebHelper.Version;
+            mRetVal.FrameWorkVersion = GWWebHelper.FrameworkVersion;
+        }
 		return mRetVal;
 	}
 
