@@ -82,6 +82,7 @@ exec [ZGWSystem].[Set_System_Status] -1,'Active','Active Status',@V_Added_Update
 exec [ZGWSystem].[Set_System_Status] -1,'Inactive','Inactive Status',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
 exec [ZGWSystem].[Set_System_Status] -1,'Disabled','Disabled Status',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
 exec [ZGWSystem].[Set_System_Status] -1,'ChangePassword','ChangePassword Status used by the CoreWebApplication',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
+exec [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
 --************************
 
 SET @V_CHANGE_PASSWORD = (select Status_SeqID from ZGWSystem.Statuses where [Name] = 'ChangePassword')

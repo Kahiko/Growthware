@@ -162,3 +162,5 @@ UPDATE ZGWSecurity.Functions SET
 	[Source] = 'Functions/System/Accounts/Logon.aspx'
 WHERE
 	[Action] = 'Logon'
+
+exec [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
