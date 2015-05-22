@@ -33,6 +33,10 @@ namespace GrowthWare.Framework.Model.Enumerations
         /// <summary>
         /// Not used
         /// </summary>
-        None = 0
+        None = 0,
+        /// <summary>
+        /// Not used
+        /// </summary>
+        SetAccountDetails = 5
     }
 }

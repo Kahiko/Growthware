@@ -58,13 +58,13 @@ public class AccountsController : ApiController
 			if (mAccountProfile != null) {
 				if (mAccountProfile.Account.ToUpper(new CultureInfo("en-US", false)) == jsonData.Account.ToUpper(new CultureInfo("en-US", false))) {
 					if (ConfigSettings.AuthenticationType.ToUpper() == "INTERNAL") {
-                        if (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled))
+                        if (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive))
                         {
                             mRetVal = "Request";
                         }
                         else 
                         {
-                            MMessageProfile mMessageProfile = MessageUtility.GetProfile("Logon Error");
+                            MMessageProfile mMessageProfile = MessageUtility.GetProfile("DisabledAccount");
                             if (mMessageProfile != null)
                             {
                                 mRetVal = mMessageProfile.Body;

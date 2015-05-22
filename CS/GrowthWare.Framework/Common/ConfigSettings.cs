@@ -14,14 +14,21 @@ namespace GrowthWare.Framework.Common
 
 
         /// <summary>
-        /// Gets the automatic create security entity.
+        /// Gets or sets a value indicating whether [auto create account].
         /// </summary>
-        /// <value>The automatic create security entity.</value>
-        public static string AutoCreateSecurityEntity
+        /// <value><c>true</c> if [auto create account]; otherwise, <c>false</c>..</value>
+        public static bool AutoCreateAccount
         {
-            get { return GetAppSettingValue("Auto_Create_SecurityEntity", true); }
+            get { return Boolean.Parse(GetAppSettingValue("Auto_Create_Account", true)); }
         }
-
+        /// <summary>
+        /// Gets the automatic create StatusId.
+        /// </summary>
+        /// <value>The automatic create StatusId.</value>
+        public static int AutoCreateAccountStatusId
+        {
+            get { return int.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", true)); }
+        }
         /// <summary>
         /// Retruns App_Displayed_Name from the WEB.CONFIG file
         /// </summary>
