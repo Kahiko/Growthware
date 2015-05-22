@@ -173,11 +173,14 @@ namespace GrowthWare.WebSupport.Context
                                         HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action);
                                         break;
                                     case (int)SystemStatus.SetAccountDetails:
-                                        mException = new WebSupportException("Your account details need to be set.");
-                                        GWWebHelper.ExceptionError = mException;
                                         mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                                        string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source;
-                                        HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFuncitonProfile.Action);
+                                        if (mAction.ToUpper(CultureInfo.InvariantCulture) != mFuncitonProfile.Action.ToUpper(CultureInfo.InvariantCulture))
+                                        {
+                                            mException = new WebSupportException("Your account details need to be set.");
+                                            GWWebHelper.ExceptionError = mException;
+                                            string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source;
+                                            HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFuncitonProfile.Action);
+                                        }
                                         break;
                                     default:
                                         mLog.Debug("Processing for account " + mAccountProfile.Account);
