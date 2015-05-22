@@ -15,11 +15,15 @@ Namespace Controllers
 
         <HttpGet>
         Public Function GetPreferences() As MUIAccountChoices
-            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
-            Dim mRetVal As MUIAccountChoices = New MUIAccountChoices(mClientChoicesState)
-            mRetVal.Environment = GWWebHelper.DisplayEnvironment
-            mRetVal.Version = GWWebHelper.Version
-            mRetVal.FrameworkVersion = GWWebHelper.FrameworkVersion
+            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+            Dim mRetVal As MUIAccountChoices = Nothing
+            If Not mAccountProfile Is Nothing Then
+                Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
+                mRetVal = New MUIAccountChoices(mClientChoicesState)
+                mRetVal.Environment = GWWebHelper.DisplayEnvironment
+                mRetVal.Version = GWWebHelper.Version
+                mRetVal.FrameworkVersion = GWWebHelper.FrameworkVersion
+            End If
             Return mRetVal
         End Function
 
@@ -205,7 +209,7 @@ Namespace Controllers
                 If Not HttpContext.Current.Items("EditId") Is Nothing Then
                     Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
                     If mEditId = uiProfile.Id Then
-                        Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
+                        Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile, AccountUtility.CurrentProfile())
                         If Not mSecurityInfo Is Nothing Then
                             If mEditId <> -1 Then
                                 If mCurrentAccountProfile.Id <> uiProfile.Id Then mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), mCurrentAccountProfile)

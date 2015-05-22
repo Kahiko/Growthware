@@ -114,6 +114,7 @@ Namespace Context
                         If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                             If Not mAccountProfile Is Nothing Then
+                                mLog.Debug("Processing for account " + mAccountProfile.Account)
                                 Select Case mAccountProfile.Status
                                     Case DirectCast(SystemStatus.ChangePassword, Integer)
                                         mException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
@@ -122,13 +123,14 @@ Namespace Context
                                         Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
                                         HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
                                     Case DirectCast(SystemStatus.SetAccountDetails, Integer)
-                                        mException = New WebSupportException("Your account details need to be set.")
-                                        GWWebHelper.ExceptionError = mException
                                         mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                                        Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
-                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                        If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFuncitonProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
+                                            mException = New WebSupportException("Your account details need to be set.")
+                                            GWWebHelper.ExceptionError = mException
+                                            Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
+                                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                        End If
                                     Case Else
-                                        mLog.Debug("Processing for account " + mAccountProfile.Account)
                                         Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
                                         Dim mPage As String = String.Empty
                                         If Not mSecurityInfo Is Nothing Then HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
