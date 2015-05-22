@@ -26,5 +26,9 @@
         ''' Not used
         ''' </summary>
         None = 0
+        ''' <summary>
+        ''' Need to set the account details normaly used when auto creating account
+        ''' </summary>
+        SetAccountDetails = 5
     End Enum
 End Namespace

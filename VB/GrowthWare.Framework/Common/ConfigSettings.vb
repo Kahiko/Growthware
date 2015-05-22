@@ -66,6 +66,25 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Gets or sets a value indicating whether [auto create account].
+        ''' </summary>
+        ''' <value><c>true</c> if [auto create account]; otherwise, <c>false</c>.</value>
+        Shared ReadOnly Property AutoCreateAccount() As Boolean
+            Get
+                Return Boolean.Parse(GetAppSettingValue("Auto_Create_Account", True))
+            End Get
+        End Property
+        ''' <summary>
+        ''' Gets the automatic create StatusId.
+        ''' </summary>
+        ''' <value>The automatic create StatusId.</value>
+        Shared ReadOnly Property AutoCreateAccountStatusId As Integer
+            Get
+                Return Integer.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", True))
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Returns Base_Page from the CONFIG file
         ''' </summary>
         ''' <value>String</value>

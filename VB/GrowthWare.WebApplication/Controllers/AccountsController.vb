@@ -52,10 +52,10 @@ Namespace Controllers
                 If mAccountProfile IsNot Nothing Then
                     If mAccountProfile.Account.ToUpper(New CultureInfo("en-US", False)) = jsonData.Account.ToUpper(New CultureInfo("en-US", False)) Then
                         If ConfigSettings.AuthenticationType.ToUpper() = "INTERNAL" Then
-                            If Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Or Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Then
+                            If Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled) Or Not mAccountProfile.Status = Convert.ToInt32(SystemStatus.Inactive) Then
                                 mRetVal = "Request"
                             Else
-                                Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("Logon Error")
+                                Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("DisabledAccount")
                                 If mMessageProfile IsNot Nothing Then
                                     mRetVal = mMessageProfile.Body
                                 End If

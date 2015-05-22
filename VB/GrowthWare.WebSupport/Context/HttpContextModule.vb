@@ -109,74 +109,84 @@ Namespace Context
                         If mUrlParts.Length > 1 Then mHashCode = mUrlParts(1)
                         mLog.Debug("hashCode: " + mHashCode)
                         mLog.Debug("Processing action: " + mAction)
-
+                        Dim mException As WebSupportException = Nothing
+                        Dim mFuncitonProfile As MFunctionProfile = Nothing
                         If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                             If Not mAccountProfile Is Nothing Then
-                                If Not mAccountProfile.Status = DirectCast(SystemStatus.ChangePassword, Integer) Then
-                                    mLog.Debug("Processing for account " + mAccountProfile.Account)
-                                    Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
-                                    Dim mPage As String = String.Empty
-                                    If Not mSecurityInfo Is Nothing Then HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
-                                    If Not mSecurityInfo.MayView Then
-                                        If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
-                                            Dim mException As WebSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
-                                            GWWebHelper.ExceptionError = mException
-                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True)).Source
-                                            HttpContext.Current.Response.Redirect(mPage + "?Action=Logon")
+                                Select Case mAccountProfile.Status
+                                    Case DirectCast(SystemStatus.ChangePassword, Integer)
+                                        mException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
+                                        GWWebHelper.ExceptionError = mException
+                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
+                                        Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
+                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                    Case DirectCast(SystemStatus.SetAccountDetails, Integer)
+                                        mException = New WebSupportException("Your account details need to be set.")
+                                        GWWebHelper.ExceptionError = mException
+                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                                        Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
+                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                    Case Else
+                                        mLog.Debug("Processing for account " + mAccountProfile.Account)
+                                        Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
+                                        Dim mPage As String = String.Empty
+                                        If Not mSecurityInfo Is Nothing Then HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
+                                        If Not mSecurityInfo.MayView Then
+                                            If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
+                                                mException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
+                                                GWWebHelper.ExceptionError = mException
+                                                mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
+                                                mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
+                                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFuncitonProfile.Action)
+                                            End If
+                                            mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
+                                            mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
+                                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFuncitonProfile.Action)
                                         End If
-                                        mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
-                                        'processOverridePage(mAccessDeniedProfile)
-                                        mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True)).Source
-                                        HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied")
-                                    End If
-                                Else
-                                    Dim mException As WebSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
-                                    GWWebHelper.ExceptionError = mException
-                                    Dim mChangePasswordProfile As MFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
-                                    Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mChangePasswordProfile.Source
-                                    HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=ChangePassword")
-                                End If
+                                End Select
                                 processOverridePage(mFunctionProfile)
                             Else
                                 Dim mMessage As String = "Could not find account '" + AccountUtility.HttpContextUserName + "' from the database creating new one."
                                 mLog.Error(mMessage)
+                                If ConfigSettings.AutoCreateAccount Then
+                                    Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
+                                    Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
+                                    mAccountProfileToSave.Id = -1
+                                    Dim mGroups = ConfigSettings.RegistrationGroups
+                                    Dim mRoles = ConfigSettings.RegistrationRoles
+                                    mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
+                                    mAccountProfileToSave.FirstName = "Autocreated"
+                                    mAccountProfileToSave.LastName = "Autocreated"
+                                    mAccountProfileToSave.MiddleName = "Autocreated"
+                                    mAccountProfileToSave.PreferredName = "Autocreated"
+                                    mAccountProfileToSave.Email = "change@me.com"
+                                    mAccountProfileToSave.Location = "Hawaii"
+                                    mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
+                                    mAccountProfileToSave.AddedDate = Now
+                                    mAccountProfileToSave.SetGroups(mGroups)
+                                    mAccountProfileToSave.SetRoles(mRoles)
+                                    mAccountProfileToSave.PasswordLastSet = DateTime.Now
+                                    mAccountProfileToSave.LastLogOn = DateTime.Now
+                                    mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+                                    mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.AutoCreateAccountStatusId)
+                                    Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
+                                    Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
+                                    Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
 
-                                Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
-                                Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
-                                mAccountProfileToSave.Id = -1
-                                Dim mGroups = ConfigSettings.RegistrationGroups
-                                Dim mRoles = ConfigSettings.RegistrationRoles
-                                mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
-                                mAccountProfileToSave.FirstName = "Autocreated"
-                                mAccountProfileToSave.LastName = "Autocreated"
-                                mAccountProfileToSave.MiddleName = "Autocreated"
-                                mAccountProfileToSave.PreferredName = "Autocreated"
-                                mAccountProfileToSave.Email = "change@me.com"
-                                mAccountProfileToSave.Location = "Hawaii"
-                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
-                                mAccountProfileToSave.AddedDate = Now
-                                mAccountProfileToSave.SetGroups(mGroups)
-                                mAccountProfileToSave.SetRoles(mRoles)
-                                mAccountProfileToSave.PasswordLastSet = DateTime.Now
-                                mAccountProfileToSave.LastLogOn = DateTime.Now
-                                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
-                                mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
-                                Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
-                                Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
-                                Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
-
-                                mClientChoiceState.IsDirty = False
-                                mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
-                                mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
-                                mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
-                                Try
-                                    AccountUtility.Save(mAccountProfileToSave, True, True, mSecurityEntityProfile)
-                                    ClientChoicesUtility.Save(mClientChoiceState, False)
-                                    AccountUtility.SetPrincipal(mAccountProfileToSave)
-                                Catch ex As Exception
-                                    mLog.Error(ex)
-                                End Try
+                                    mClientChoiceState.IsDirty = False
+                                    mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
+                                    mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+                                    mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
+                                    Try
+                                        AccountUtility.Save(mAccountProfileToSave, True, True, mSecurityEntityProfile)
+                                        ClientChoicesUtility.Save(mClientChoiceState, False)
+                                        AccountUtility.SetPrincipal(mAccountProfileToSave)
+                                    Catch ex As Exception
+                                        mLog.Error(ex)
+                                    End Try
+                                End If
                             End If
                         Else
                             mLog.Debug("Menu data or Logoff/Logon requested")
