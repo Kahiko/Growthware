@@ -110,7 +110,6 @@ Namespace Context
                         mLog.Debug("hashCode: " + mHashCode)
                         mLog.Debug("Processing action: " + mAction)
                         Dim mException As WebSupportException = Nothing
-                        Dim mFuncitonProfile As MFunctionProfile = Nothing
                         If Not mFunctionProfile Is Nothing AndAlso Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                             If Not mAccountProfile Is Nothing Then
@@ -119,16 +118,16 @@ Namespace Context
                                     Case DirectCast(SystemStatus.ChangePassword, Integer)
                                         mException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
                                         GWWebHelper.ExceptionError = mException
-                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
-                                        Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
-                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
+                                        Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
                                     Case DirectCast(SystemStatus.SetAccountDetails, Integer)
-                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                                        If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFuncitonProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
+                                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                                        If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
                                             mException = New WebSupportException("Your account details need to be set.")
                                             GWWebHelper.ExceptionError = mException
-                                            Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
-                                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action)
+                                            Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
                                         End If
                                     Case Else
                                         Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
@@ -138,14 +137,14 @@ Namespace Context
                                             If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
                                                 mException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
                                                 GWWebHelper.ExceptionError = mException
-                                                mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
-                                                mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
-                                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFuncitonProfile.Action)
+                                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
+                                                mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
                                             End If
-                                            mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
+                                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
                                             mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
-                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source
-                                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFuncitonProfile.Action)
+                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
                                         End If
                                 End Select
                                 processOverridePage(mFunctionProfile)
@@ -159,10 +158,9 @@ Namespace Context
                                     Dim mGroups = ConfigSettings.RegistrationGroups
                                     Dim mRoles = ConfigSettings.RegistrationRoles
                                     mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
-                                    mAccountProfileToSave.FirstName = "Autocreated"
-                                    mAccountProfileToSave.LastName = "Autocreated"
-                                    mAccountProfileToSave.MiddleName = "Autocreated"
-                                    mAccountProfileToSave.PreferredName = "Autocreated"
+                                    mAccountProfileToSave.FirstName = "Auto created"
+                                    mAccountProfileToSave.LastName = "Auto created"
+                                    mAccountProfileToSave.PreferredName = "Auto created"
                                     mAccountProfileToSave.Email = "change@me.com"
                                     mAccountProfileToSave.Location = "Hawaii"
                                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
