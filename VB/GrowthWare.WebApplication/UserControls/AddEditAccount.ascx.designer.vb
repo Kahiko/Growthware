@@ -203,6 +203,15 @@ Partial Public Class AddEditAccount1
     Protected WithEvents Requiredfieldvalidator5 As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''CompareValidator1 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents CompareValidator1 As Global.System.Web.UI.WebControls.CompareValidator
+
+    '''<summary>
     '''txtLastName control.
     '''</summary>
     '''<remarks>
@@ -219,6 +228,15 @@ Partial Public Class AddEditAccount1
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Requiredfieldvalidator6 As Global.System.Web.UI.WebControls.RequiredFieldValidator
+
+    '''<summary>
+    '''CompareValidator2 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents CompareValidator2 As Global.System.Web.UI.WebControls.CompareValidator
 
     '''<summary>
     '''txtMiddleName control.
@@ -248,6 +266,15 @@ Partial Public Class AddEditAccount1
     Protected WithEvents Requiredfieldvalidator4 As Global.System.Web.UI.WebControls.RequiredFieldValidator
 
     '''<summary>
+    '''CompareValidator3 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents CompareValidator3 As Global.System.Web.UI.WebControls.CompareValidator
+
+    '''<summary>
     '''txtEmail control.
     '''</summary>
     '''<remarks>
@@ -273,6 +300,15 @@ Partial Public Class AddEditAccount1
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
     Protected WithEvents Regularexpressionvalidator1 As Global.System.Web.UI.WebControls.RegularExpressionValidator
+
+    '''<summary>
+    '''CompareValidator4 control.
+    '''</summary>
+    '''<remarks>
+    '''Auto-generated field.
+    '''To modify move field declaration from designer file to code-behind file.
+    '''</remarks>
+    Protected WithEvents CompareValidator4 As Global.System.Web.UI.WebControls.CompareValidator
 
     '''<summary>
     '''dropTimezone control.

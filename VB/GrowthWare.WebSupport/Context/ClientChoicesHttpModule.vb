@@ -22,8 +22,8 @@ Namespace Context
         ''' <param name="context"></param>
         Public Sub Init(ByVal context As HttpApplication) Implements IHttpModule.Init
             If context Is Nothing Then Throw New ArgumentNullException("context", "context cannot be a null reference (Nothing in Visual Basic)!")
-            AddHandler context.AcquireRequestState, AddressOf Me.AcquireRequestState
-            AddHandler context.EndRequest, AddressOf Me.EndRequest
+            'AddHandler context.AcquireRequestState, AddressOf Me.AcquireRequestState
+            'AddHandler context.EndRequest, AddressOf Me.EndRequest
         End Sub
 
         ''' <summary>
@@ -81,7 +81,7 @@ Namespace Context
                 Dim mFileExtension = mPath.Substring(mPath.LastIndexOf(".", StringComparison.OrdinalIgnoreCase) + 1)
                 Dim mProcessingTypes As String() = {"ASPX", "ASHX", "ASMX"}
                 mLogger.Debug("mPath: " + mPath.ToString())
-                mLogger.Debug("Processing types: " + mProcessingTypes.ToString() + System.Environment.NewLine + " mFileExtension: " + mFileExtension.ToString() + " mPath.IndexOf(/API/, StringComparison.OrdinalIgnoreCase): " + mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase).ToString())
+                mLogger.Debug(System.Environment.NewLine + "Processing types: " + String.Join(",", mProcessingTypes) + System.Environment.NewLine + " mFileExtension: '" + mFileExtension.ToString() + "' mPath.IndexOf(/API/, StringComparison.OrdinalIgnoreCase): " + mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase).ToString())
                 If mProcessingTypes.Contains(mFileExtension) Or mPath.IndexOf("/API/", StringComparison.OrdinalIgnoreCase) > -1 Then
                     mRetval = True
                 End If

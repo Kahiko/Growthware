@@ -66,6 +66,7 @@
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
                 var mAction = GW.Common.getParameterByName('Action');
+                if (mAction.length == 0) mAction = "EditAccount";
                 options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=" + mAction;
                 //options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=EditAccount";
                 GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
@@ -78,8 +79,16 @@
         function saveAddEditAccountSucess(xhr) {
             switch (xhr) {
                 case "True":
-                    GW.Navigation.NavigationController.Refresh();
-                    GW.Search.GetSearchResults();
+                    var mAction = GW.Common.getParameterByName('Action');
+                    if (mAction.length >= 0) {
+                        //GW.Navigation.NavigationController.Refresh();
+                        //GW.Search.GetSearchResults();
+                        location.reload();
+                    } else
+                    {
+                        window.location.hash = "?Action=Favorite";
+                        location.reload();
+                    }
                     break;
                 case "Your account has been created":
                     location.reload();
@@ -169,6 +178,8 @@
 											<td valign="top">
 												<asp:TextBox ID="txtFirstName" MaxLength="35" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtFirstName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter your first name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator5"/>
+                                                <br />
+                                                <asp:CompareValidator ControlToValidate="txtFirstName" ValueToCompare="Auto created" Operator="NotEqual" Text="'Auto Created' not allowed" ErrorMessag="Can not be Auto Created" CssClass="failureNotification" runat="server" ID="CompareValidator1" />
 											</td>
 											<td valign="top">
 												<span class="Form_LabelText">Last Name: </span>
@@ -176,6 +187,8 @@
 											<td valign="top">
 												<asp:TextBox ID="txtLastName" MaxLength="35" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtLastName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter a last name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator6"/>
+                                                <br />
+                                                <asp:CompareValidator ControlToValidate="txtLastName" ValueToCompare="Auto created" Operator="NotEqual" Text="'Auto Created' not allowed" ErrorMessag="Can not be Auto Created" CssClass="failureNotification" runat="server" ID="CompareValidator2" />
 											</td>
 										</tr>
 										<tr>
@@ -191,6 +204,8 @@
 											<td valign="top">
 												<asp:TextBox ID="txtPreferredName" MaxLength="50" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtPreferredName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter a prefered name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator4" />
+                                                <br />
+                                                <asp:CompareValidator ControlToValidate="txtPreferredName" ValueToCompare="Auto created" Operator="NotEqual" Text="'Auto Created' not allowed" ErrorMessag="Can not be Auto Created" CssClass="failureNotification" runat="server" ID="CompareValidator3" />
 											</td>
 										</tr>
 										<tr>
@@ -201,6 +216,8 @@
 												<asp:TextBox ID="txtEmail" MaxLength="128" Columns="25" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtEmail" Display="Dynamic" Text="(required)" ErrorMessage="You must enter an email address" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator2" />
 												<asp:RegularExpressionValidator ControlToValidate="txtEmail" Text="(invalid email)" ValidationExpression="\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*" runat="Server" ID="Regularexpressionvalidator1" />
+                                                <br />
+                                                <asp:CompareValidator ControlToValidate="txtEmail" ValueToCompare="change@me.com" Operator="NotEqual" Text="'change@me.com' not allowed" ErrorMessag="Can not be Auto Created" CssClass="failureNotification" runat="server" ID="CompareValidator4" />
 											</td>
 											<td valign="top">
 												<span class="Form_LabelText">Timezone: </span>

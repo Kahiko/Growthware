@@ -208,8 +208,13 @@ Namespace Controllers
                     mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email"
                 End If
             Else
-                If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                    Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If Not HttpContext.Current.Items("EditId") Is Nothing Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
+                    Dim mEditId As Integer
+                    If Not HttpContext.Current.Items("EditId") Is Nothing Then
+                        mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                    Else
+                        mEditId = mCurrentAccountProfile.Id
+                    End If
                     If mEditId = uiProfile.Id Then
                         Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.CurrentProfile, AccountUtility.CurrentProfile())
                         If Not mSecurityInfo Is Nothing Then
