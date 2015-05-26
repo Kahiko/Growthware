@@ -167,14 +167,14 @@
 												<span class="Form_LabelText">First Name: </span>
 											</td>
 											<td valign="top">
-												<asp:TextBox ID="txtFirstName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
+												<asp:TextBox ID="txtFirstName" MaxLength="35" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtFirstName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter your first name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator5"/>
 											</td>
 											<td valign="top">
 												<span class="Form_LabelText">Last Name: </span>
 											</td>
 											<td valign="top">
-												<asp:TextBox ID="txtLastName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
+												<asp:TextBox ID="txtLastName" MaxLength="35" CssClass="Form_Field rounded" runat="Server" />
 												<asp:RequiredFieldValidator ControlToValidate="txtLastName" Display="Dynamic" Text="(required)" ErrorMessage="You must enter a last name" CssClass="failureNotification" runat="Server" ID="Requiredfieldvalidator6"/>
 											</td>
 										</tr>
@@ -183,7 +183,7 @@
 												<span class="Form_LabelText">Middle Name: </span>
 											</td>
 											<td valign="top">
-												<asp:TextBox ID="txtMiddleName" MaxLength="15" CssClass="Form_Field rounded" runat="Server" />
+												<asp:TextBox ID="txtMiddleName" MaxLength="35" CssClass="Form_Field rounded" runat="Server" />
 											</td>
 											<td valign="top">
 												<span class="Form_LabelText">Preferred Name: </span>
