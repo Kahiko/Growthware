@@ -250,11 +250,21 @@ public class AccountsController : ApiController
                                 mAccountProfileToSave.Id = -1;
                                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                                 mAccountProfileToSave.AddedDate = DateTime.Now;
-                                mAccountProfileToSave.UpdatedBy = mAccountProfileToSave.AddedBy;
-                                mAccountProfileToSave.UpdatedDate = mAccountProfileToSave.AddedDate;
+                                mAccountProfileToSave.AddedDate = DateTime.Now;
+                                mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+                                mAccountProfileToSave.LastLogOn = DateTime.Now;
+                                mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+                                mAccountProfileToSave.Status = ConfigSettings.AutoCreateAccountStatusId;
                                 string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
                                 string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
-                                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                try
+                                {
+                                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
+                                }
+                                catch (Exception ex)
+                                {
+                                    mLog.Error(ex);
+                                }
                                 mLog.Debug("Added account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account);
                                 mRetVal = "true";
                             }

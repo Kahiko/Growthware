@@ -66,8 +66,8 @@
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
                 var mAction = GW.Common.getParameterByName('Action');
-                //options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=" + mAction;
-                options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=EditAccount";
+                options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=" + mAction;
+                //options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=EditAccount";
                 GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                 if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
                     $dialogWindow.dialog("close");

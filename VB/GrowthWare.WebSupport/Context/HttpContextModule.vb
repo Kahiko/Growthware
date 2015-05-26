@@ -122,12 +122,14 @@ Namespace Context
                                         Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
                                         HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
                                     Case DirectCast(SystemStatus.SetAccountDetails, Integer)
-                                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                                        If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
-                                            mException = New WebSupportException("Your account details need to be set.")
-                                            GWWebHelper.ExceptionError = mException
-                                            Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
+                                        If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
+                                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                                            If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
+                                                mException = New WebSupportException("Your account details need to be set.")
+                                                GWWebHelper.ExceptionError = mException
+                                                Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                                HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
+                                            End If
                                         End If
                                     Case Else
                                         Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
@@ -155,10 +157,15 @@ Namespace Context
                                     Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
                                     Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
                                     mAccountProfileToSave.Id = -1
+                                    Dim mSaveGroups As Boolean = True
+                                    Dim mSaveRoles As Boolean = True
                                     Dim mGroups = ConfigSettings.RegistrationGroups
                                     Dim mRoles = ConfigSettings.RegistrationRoles
+                                    If String.IsNullOrEmpty(mGroups) Then mSaveGroups = False
+                                    If String.IsNullOrEmpty(mRoles) Then mSaveRoles = False
                                     mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
                                     mAccountProfileToSave.FirstName = "Auto created"
+                                    mAccountProfileToSave.MiddleName = ""
                                     mAccountProfileToSave.LastName = "Auto created"
                                     mAccountProfileToSave.PreferredName = "Auto created"
                                     mAccountProfileToSave.Email = "change@me.com"
@@ -180,7 +187,7 @@ Namespace Context
                                     mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
                                     mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
                                     Try
-                                        AccountUtility.Save(mAccountProfileToSave, True, True, mSecurityEntityProfile)
+                                        AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
                                         ClientChoicesUtility.Save(mClientChoiceState, False)
                                         AccountUtility.SetPrincipal(mAccountProfileToSave)
                                     Catch ex As Exception

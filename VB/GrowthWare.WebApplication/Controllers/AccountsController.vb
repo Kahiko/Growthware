@@ -177,6 +177,8 @@ Namespace Controllers
                     mAccountProfileToSave.Id = uiProfile.Id
                     Dim mGroups = ConfigSettings.RegistrationGroups
                     Dim mRoles = ConfigSettings.RegistrationRoles
+                    If String.IsNullOrEmpty(mGroups) Then mSaveGroups = False
+                    If String.IsNullOrEmpty(mRoles) Then mSaveRoles = False
                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
                     mAccountProfileToSave.AddedDate = Now
                     mAccountProfileToSave.SetGroups(mGroups)
@@ -213,7 +215,7 @@ Namespace Controllers
                         If Not mSecurityInfo Is Nothing Then
                             If mEditId <> -1 Then
                                 If mCurrentAccountProfile.Id <> uiProfile.Id Then mSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), mCurrentAccountProfile)
-                                If mSecurityInfo.MayEdit Then
+                                If mSecurityInfo.MayEdit Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
                                     Dim mGroupTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Group_Tab", True)), mCurrentAccountProfile)
                                     Dim mRoleTabSecurity As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Role_Tab", True)), mCurrentAccountProfile)
                                     mAccountProfileToSave = AccountUtility.GetProfile(mEditId)
@@ -250,14 +252,23 @@ Namespace Controllers
                                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                                     mAccountProfileToSave.Id = -1
                                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
-                                    mAccountProfileToSave.AddedDate = Now
-                                    mAccountProfileToSave.UpdatedBy = mAccountProfileToSave.AddedBy
-                                    mAccountProfileToSave.UpdatedDate = mAccountProfileToSave.AddedDate
+                                    mAccountProfileToSave.AddedDate = DateTime.Now
+
+                                    mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
+                                    mAccountProfileToSave.AddedDate = DateTime.Now
+                                    mAccountProfileToSave.PasswordLastSet = DateTime.Now
+                                    mAccountProfileToSave.LastLogOn = DateTime.Now
+                                    mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+                                    mAccountProfileToSave.Status = ConfigSettings.AutoCreateAccountStatusId
                                     Dim mGroups As String = String.Join(",", uiProfile.AccountGroups.Groups)
                                     Dim mRoles As String = String.Join(",", uiProfile.AccountRoles.Roles)
                                     mAccountProfileToSave.SetGroups(mGroups)
                                     mAccountProfileToSave.SetRoles(mRoles)
-                                    AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                                    Try
+                                        AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups)
+                                    Catch ex As Exception
+                                        mLog.Error(ex)
+                                    End Try
                                     mLog.Debug("Added account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account)
                                     mRetVal = "true"
                                 Else

@@ -216,10 +216,9 @@ namespace GrowthWare.WebSupport.Context
                                     String mGroups = ConfigSettings.RegistrationGroups;
                                     String mRoles = ConfigSettings.RegistrationRoles;
                                     mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
-                                    mAccountProfileToSave.FirstName = "Autocreated";
-                                    mAccountProfileToSave.LastName = "Autocreated";
-                                    mAccountProfileToSave.MiddleName = "Autocreated";
-                                    mAccountProfileToSave.PreferredName = "Autocreated";
+                                    mAccountProfileToSave.FirstName = "Auto created";
+                                    mAccountProfileToSave.LastName = "Auto created";
+                                    mAccountProfileToSave.PreferredName = "Auto created";
                                     mAccountProfileToSave.Email = "change@me.com";
                                     mAccountProfileToSave.Location = "Hawaii";
                                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
