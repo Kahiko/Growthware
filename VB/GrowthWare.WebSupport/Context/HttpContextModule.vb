@@ -90,12 +90,17 @@ Namespace Context
         ''' <param name="sender">The sender.</param>
         ''' <param name="e">The <see cref="EventArgs" /> instance containing the event data.</param>
         Private Sub onAcquireRequestState(ByVal sender As Object, ByVal e As EventArgs)
-            If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
             Dim mLog As Logger = Logger.Instance()
             Dim mAccountName As String = AccountUtility.HttpContextUserName()
             mLog.Debug("Started")
             mLog.Debug("CurrentExecutionFilePath " + HttpContext.Current.Request.CurrentExecutionFilePath)
             mLog.Debug("HttpContextUserName: " + mAccountName)
+            If HttpContext.Current.Session Is Nothing Then
+                mLog.Debug("No Session!")
+                mLog.Debug("Ended")
+                Exit Sub
+            End If
+            If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
             Dim mAccountProfile = AccountUtility.GetProfile(mAccountName)
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
             HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
