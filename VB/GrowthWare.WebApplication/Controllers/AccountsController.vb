@@ -177,8 +177,8 @@ Namespace Controllers
                     mAccountProfileToSave.Id = uiProfile.Id
                     Dim mGroups = ConfigSettings.RegistrationGroups
                     Dim mRoles = ConfigSettings.RegistrationRoles
-                    If String.IsNullOrEmpty(mGroups) Then mSaveGroups = False
-                    If String.IsNullOrEmpty(mRoles) Then mSaveRoles = False
+                    If Not String.IsNullOrEmpty(mGroups) Then mSaveGroups = True
+                    If Not String.IsNullOrEmpty(mRoles) Then mSaveRoles = True
                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
                     mAccountProfileToSave.AddedDate = Now
                     mAccountProfileToSave.SetGroups(mGroups)
@@ -187,7 +187,7 @@ Namespace Controllers
                     mAccountProfileToSave.LastLogOn = DateTime.Now
                     mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
                     mAccountProfileToSave.Status = Integer.Parse(ConfigSettings.RegistrationStatusId)
-                    If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTEREXTERNALLOGIN") > -1 Then mAccountProfileToSave.Status = SystemStatus.Active
+                    If HttpContext.Current.Request.QueryString("Action").ToString.ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1 Then mAccountProfileToSave.Status = SystemStatus.Active
                     Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
                     Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
                     Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
