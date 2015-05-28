@@ -36,8 +36,8 @@ namespace GrowthWare.WebSupport.Context
         {
             if (context != null && ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) != "INSTALL")
             {
-                ClientChoicesHttpModule mInitClientChoices = new ClientChoicesHttpModule();
-                mInitClientChoices.Init(context);
+                //ClientChoicesHttpModule mInitClientChoices = new ClientChoicesHttpModule();
+                //mInitClientChoices.Init(context);
                 context.Error += this.onApplicationError;
                 context.AcquireRequestState += this.onAcquireRequestState;
                 context.BeginRequest += this.onBeginRequest;
@@ -132,150 +132,154 @@ namespace GrowthWare.WebSupport.Context
         private void onAcquireRequestState(object sender, EventArgs e)
         {
             Logger mLog = Logger.Instance();
-            mLog.Debug("onAcquireRequestState():: Started");
-            mLog.Debug("onAcquireRequestState():: " + HttpContext.Current.Request.CurrentExecutionFilePath);
-
-            if ((HttpContext.Current.Session != null))
+            string mAccountName = AccountUtility.HttpContextUserName();
+            mLog.Debug("Started");
+            mLog.Debug("CurrentExecutionFilePath " + HttpContext.Current.Request.CurrentExecutionFilePath);
+            mLog.Debug("HttpContextUserName: " + mAccountName);
+            if (HttpContext.Current.Session == null)
             {
-                if (HttpContext.Current.Session["EditId"] != null) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
-                if (processRequest())
+                mLog.Debug("No Session!");
+                mLog.Debug("Ended");
+                return;
+            }
+            if ((HttpContext.Current.Session["EditId"] != null))
+                HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
+            dynamic mAccountProfile = AccountUtility.GetProfile(mAccountName);
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
+            HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
+            string mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
+            if (string.IsNullOrEmpty(mAction))
+            {
+                mLog.Debug("No Action!");
+                mLog.Debug("Ended");
+                return;
+            }
+            if (!processRequest())
+            {
+                mLog.Debug("Request not for processing!");
+                mLog.Debug("Ended");
+                return;
+            }
+            WebSupportException mException = null;
+
+            mLog.Debug("Action: " + mAction);
+            MFunctionProfile mFunctionProfile = FunctionUtility.CurrentProfile();
+            if (mFunctionProfile == null)
+                mFunctionProfile = FunctionUtility.GetProfile(mAction);
+
+            if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
+            {
+                if (mAccountProfile == null & mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS")
                 {
-                    mLog.Debug("onAcquireRequestState():: Processing request for security");
-                    if ((!String.IsNullOrEmpty(HttpContext.Current.Request.QueryString["Action"])))
+                    string mMessage = "Could not find account '" + mAccountName + "'";
+                    mLog.Info(mMessage);
+                    if (ConfigSettings.AutoCreateAccount)
                     {
-                        string mAction = HttpContext.Current.Request.QueryString["Action"].ToString(CultureInfo.InvariantCulture);
-                        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
-                        if (mFunctionProfile != null) FunctionUtility.SetCurrentFunction(mFunctionProfile);
+                        mMessage = "Creating new account for '" + mAccountName + "'";
+                        mLog.Info(mMessage);
+                        MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");
+                        MAccountProfile mAccountProfileToSave = new MAccountProfile();
+                        mAccountProfileToSave.Id = -1;
+                        bool mSaveGroups = true;
+                        bool mSaveRoles = true;
+                        dynamic mGroups = ConfigSettings.RegistrationGroups;
+                        dynamic mRoles = ConfigSettings.RegistrationRoles;
+                        if (string.IsNullOrEmpty(mGroups))
+                            mSaveGroups = false;
+                        if (string.IsNullOrEmpty(mRoles))
+                            mSaveRoles = false;
+                        mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
+                        mAccountProfileToSave.FirstName = "Auto created";
+                        mAccountProfileToSave.MiddleName = "";
+                        mAccountProfileToSave.LastName = "Auto created";
+                        mAccountProfileToSave.PreferredName = "Auto created";
+                        mAccountProfileToSave.Email = "change@me.com";
+                        mAccountProfileToSave.Location = "Hawaii";
+                        mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+                        mAccountProfileToSave.AddedDate = DateTime.Now;
+                        mAccountProfileToSave.SetGroups(mGroups);
+                        mAccountProfileToSave.SetRoles(mRoles);
+                        mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+                        mAccountProfileToSave.LastLogOn = DateTime.Now;
+                        mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+                        mAccountProfileToSave.Status = (int)SystemStatus.SetAccountDetails;
+                        MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
+                        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+                        string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
 
-                        string mHashCode = string.Empty;
-                        string mWindowUrl = HttpContext.Current.Request.Url.ToString();
-                        string[] mUrlParts = mWindowUrl.Split('?');
-
-                        if (mUrlParts.Length > 1)
-                            mHashCode = mUrlParts[1];
-                        mLog.Debug("hashCode: " + mHashCode);
-                        mLog.Debug("Processing action: " + mAction);
-
-                        if (mFunctionProfile != null && !mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") & !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
+                        mClientChoiceState.IsDirty = false;
+                        mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
+                        mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+                        mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+                        try
                         {
-                            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-                            WebSupportException mException = null;
-                            MFunctionProfile mFuncitonProfile = null;
-                            if (mAccountProfile != null)
-                            {
-                                switch (mAccountProfile.Status)
-                                {
-                                    case (int)SystemStatus.ChangePassword:
-                                        mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
-                                        GWWebHelper.ExceptionError = mException;
-                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
-                                        string mChangePasswordPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source;
-                                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFuncitonProfile.Action);
-                                        break;
-                                    case (int)SystemStatus.SetAccountDetails:
-                                        mFuncitonProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                                        if (mAction.ToUpper(CultureInfo.InvariantCulture) != mFuncitonProfile.Action.ToUpper(CultureInfo.InvariantCulture))
-                                        {
-                                            mException = new WebSupportException("Your account details need to be set.");
-                                            GWWebHelper.ExceptionError = mException;
-                                            string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFuncitonProfile.Source;
-                                            HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFuncitonProfile.Action);
-                                        }
-                                        break;
-                                    default:
-                                        mLog.Debug("Processing for account " + mAccountProfile.Account);
-                                        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-                                        if (mSecurityInfo != null) HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
-                                        string mPage = string.Empty;
-                                        if (!mSecurityInfo.MayView)
-                                        {
-                                            if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
-                                            {
-                                                mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
-                                                GWWebHelper.ExceptionError = mException;
-                                                mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true)).Source;
-                                                HttpContext.Current.Response.Redirect(mPage + "?Action=Logon");
-                                            }
-                                            mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
-                                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true)).Source;
-                                            HttpContext.Current.Response.Redirect(mPage + "?Action=AccessDenied");
-                                        }
-                                        break;
-                                }
-                                processOverridePage(mFunctionProfile);
-                            }
-                            else 
-                            { 
-                                String mMessage = "Could not find account '" + AccountUtility.HttpContextUserName() + "' from the database creating new one.";
-                                mLog.Error(mMessage);
-                                if (ConfigSettings.AutoCreateAccount) 
-                                {
-                                    MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");
-                                    MAccountProfile mAccountProfileToSave = new MAccountProfile();
-                                    mAccountProfileToSave.Id = -1;
-                                    String mGroups = ConfigSettings.RegistrationGroups;
-                                    String mRoles = ConfigSettings.RegistrationRoles;
-                                    mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
-                                    mAccountProfileToSave.FirstName = "Auto created";
-                                    mAccountProfileToSave.LastName = "Auto created";
-                                    mAccountProfileToSave.PreferredName = "Auto created";
-                                    mAccountProfileToSave.Email = "change@me.com";
-                                    mAccountProfileToSave.Location = "Hawaii";
-                                    mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
-                                    mAccountProfileToSave.AddedDate = DateTime.Now;
-                                    mAccountProfileToSave.SetGroups(mGroups);
-                                    mAccountProfileToSave.SetRoles(mRoles);
-                                    mAccountProfileToSave.PasswordLastSet = DateTime.Now;
-                                    mAccountProfileToSave.LastLogOn = DateTime.Now;
-                                    mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
-                                    mAccountProfileToSave.Status = ConfigSettings.AutoCreateAccountStatusId;
-                                    MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
-                                    MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
-                                    String mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
-
-                                    mClientChoiceState.IsDirty = false;
-                                    mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
-                                    mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
-                                    mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
-                                    try
-                                    {
-                                        AccountUtility.Save(mAccountProfileToSave, true, true, mSecurityEntityProfile);
-                                        ClientChoicesUtility.Save(mClientChoiceState, false);
-                                        AccountUtility.SetPrincipal(mAccountProfileToSave);
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        mLog.Error(ex);
-                                    }
-                                }
-                            }
+                            AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
+                            ClientChoicesUtility.Save(mClientChoiceState, false);
+                            AccountUtility.SetPrincipal(mAccountProfileToSave);
+                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
+                            mException = new WebSupportException("Your account details need to be set.");
+                            GWWebHelper.ExceptionError = mException;
+                            string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                            FunctionUtility.SetCurrentProfile(mFunctionProfile);
+                            HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
                         }
-                        else
+                        catch (Exception ex)
                         {
-                            mLog.Debug("Menu data or Logoff/Logon requested");
-                            if (!string.IsNullOrEmpty(mAction) && mFunctionProfile == null)
-                            {
-                                mLog.Error("Could not find Action \"" + mAction + "\"");
-                            }
-                            processOverridePage(mFunctionProfile);
+                            mLog.Error(ex);
                         }
-                    }
-                    else
-                    {
-                        mLog.Debug("QueryString(Action) is nothing");
+                        mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account);
                     }
                 }
-                else
+                FunctionUtility.SetCurrentProfile(mFunctionProfile);
+                dynamic mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+                HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
+                switch ((int)mAccountProfile.Status)
                 {
-                    mLog.Debug("Request is not for a processing event.");
+                    case (int)SystemStatus.ChangePassword:
+                        mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
+                        GWWebHelper.ExceptionError = mException;
+                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
+                        string mChangePasswordPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action);
+                        break;
+                    case (int)SystemStatus.SetAccountDetails:
+                        if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1)
+                        {
+                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
+                            if (mAction.ToUpper(CultureInfo.InvariantCulture) != mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture))
+                            {
+                                mException = new WebSupportException("Your account details need to be set.");
+                                GWWebHelper.ExceptionError = mException;
+                                string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                                HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
+                            }
+                        }
+                        break;
+                    default:
+                        string mPage = string.Empty;
+                        if (!mSecurityInfo.MayView)
+                        {
+                            if (mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+                            {
+                                mException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
+                                GWWebHelper.ExceptionError = mException;
+                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true));
+                                mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                            }
+                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true));
+                            mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                            mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                        }
+                        break;
                 }
             }
             else
             {
-                mLog.Debug("No session exiting");
+                mLog.Debug("Menu data or Logoff/Logon requested");
             }
-
-            mLog.Debug("onAcquireRequestState():: Done");
+            processOverridePage(mFunctionProfile);
         }
 
         /// <summary>
@@ -288,6 +292,15 @@ namespace GrowthWare.WebSupport.Context
         {
             if (processRequest())
             {
+                MClientChoicesState mState = (MClientChoicesState)HttpContext.Current.Items[MClientChoices.SessionName];
+                //Save ClientChoicesState back to data store
+                if (mState != null)
+                {
+                    if (mState.IsDirty)
+                    {
+                        ClientChoicesUtility.Save(mState);
+                    }
+                }
                 HttpContext mContext = (sender as HttpApplication).Context;
                 bool mSendError = false;
                 try

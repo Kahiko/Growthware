@@ -66,6 +66,7 @@
                 options.contentType = 'application/json; charset=utf-8';
                 options.dataType = 'json';
                 var mAction = GW.Common.getParameterByName('Action');
+                if (mAction.length == 0) mAction = "EditAccount";
                 options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/Save?Action=" + mAction;
                 GW.Common.JQueryHelper.callWeb(options, saveAddEditAccountSucess, saveAddEditAccountError);
                 if (!($dialogWindow === undefined) && typeof jQuery.ui != 'undefined') {
@@ -77,10 +78,18 @@
         function saveAddEditAccountSucess(xhr) {
             switch (xhr) {
                 case "true":
-                    GW.Navigation.NavigationController.Refresh();
-                    GW.Search.GetSearchResults();
+                    var mAction = GW.Common.getParameterByName('Action');
+                    if (mAction.length >= 0) {
+                        //GW.Navigation.NavigationController.Refresh();
+                        //GW.Search.GetSearchResults();
+                        location.reload();
+                    } else {
+                        window.location.hash = "?Action=Favorite";
+                        location.reload();
+                    }
                     break;
                 case "Your account has been created":
+                    window.location.hash = "?Action=Favorite";
                     location.reload();
                     break;
                 default:

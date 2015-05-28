@@ -198,7 +198,7 @@ namespace GrowthWare.WebSupport.Utilities
         /// Sets the current function.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        public static void SetCurrentFunction(MFunctionProfile profile)
+        public static void SetCurrentProfile(MFunctionProfile profile)
         {
             HttpContext.Current.Items[s_FunctionProfileInfoName] = profile;
         }

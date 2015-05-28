@@ -142,7 +142,7 @@ public class AccountsController : ApiController
     public IHttpActionResult Save(UIAccountProfile uiProfile) 
     {
         if (uiProfile == null) throw new ArgumentNullException("uiProfile", "uiProfile cannot be a null reference (Nothing in Visual Basic)!");
-        string mRetVal = "False";
+        string mRetVal = "false";
         bool mSaveGroups = false;
         bool mSaveRoles = false;
         MAccountProfile mCurrentAccountProfile = AccountUtility.CurrentProfile();
@@ -153,10 +153,14 @@ public class AccountsController : ApiController
             MAccountProfile mExistingAccount = AccountUtility.GetProfile(uiProfile.Account);
             if (mExistingAccount == null)
             {
-                String mGroups = ConfigSettings.RegistrationGroups;
-                String mRoles = ConfigSettings.RegistrationRoles;
                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                 mAccountProfileToSave.Id = uiProfile.Id;
+                dynamic mGroups = ConfigSettings.RegistrationGroups;
+                dynamic mRoles = ConfigSettings.RegistrationRoles;
+                if (!string.IsNullOrEmpty(mGroups))
+                    mSaveGroups = true;
+                if (!string.IsNullOrEmpty(mRoles))
+                    mSaveRoles = true;
                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                 mAccountProfileToSave.AddedDate = DateTime.Now;
                 mAccountProfileToSave.SetGroups(mGroups);
@@ -165,12 +169,14 @@ public class AccountsController : ApiController
                 mAccountProfileToSave.LastLogOn = DateTime.Now;
                 mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
                 mAccountProfileToSave.Status = int.Parse(ConfigSettings.RegistrationStatusId);
-                if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTEREXTERNALLOGIN") > -1) mAccountProfileToSave.Status = (int)SystemStatus.Active;
+                if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1)
+                    mAccountProfileToSave.Status = (int)SystemStatus.Active;
                 MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
                 MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+                string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
 
                 mClientChoiceState.IsDirty = false;
-                mClientChoiceState.AccountName = mAccountProfileToSave.Account;
+                mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
                 mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
                 mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
                 try
@@ -185,43 +191,53 @@ public class AccountsController : ApiController
                     mLog.Error(ex);
                 }
             }
-            else 
+            else
             {
                 mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email";
             }
         }
-        else 
+        else
         {
-            if (HttpContext.Current.Items["EditId"] != null)
+            if ((HttpContext.Current.Items["EditId"] != null) | mCurrentAccountProfile.Status == (int)SystemStatus.SetAccountDetails)
             {
-                int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                int mEditId = 0;
+                if ((HttpContext.Current.Items["EditId"] != null))
+                {
+                    mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+                }
+                else
+                {
+                    mEditId = mCurrentAccountProfile.Id;
+                }
                 if (mEditId == uiProfile.Id)
                 {
                     MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
-                    if (mSecurityInfo != null)
+                    if ((mSecurityInfo != null))
                     {
-                        if (mEditId != 1)
+                        if (mEditId != -1)
                         {
-                            if(mCurrentAccountProfile.Id != uiProfile.Id) mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), mCurrentAccountProfile);
-                            if (mSecurityInfo.MayEdit) 
+                            if (mCurrentAccountProfile.Id != uiProfile.Id)
+                                mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), mCurrentAccountProfile);
+                            if (mSecurityInfo.MayEdit | mCurrentAccountProfile.Status == (int)SystemStatus.SetAccountDetails)
                             {
                                 MSecurityInfo mGroupTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Group_Tab", true)), mCurrentAccountProfile);
                                 MSecurityInfo mRoleTabSecurity = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_View_Account_Role_Tab", true)), mCurrentAccountProfile);
                                 mAccountProfileToSave = AccountUtility.GetProfile(mEditId);
                                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
-                                string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
-                                string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
-                                if (mGroupTabSecurity.MayView && FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture)) 
+                                mAccountProfileToSave.Id = uiProfile.Id;
+                                string mGroups = string.Join(",", uiProfile.AccountGroups.Groups);
+                                string mRoles = string.Join(",", uiProfile.AccountRoles.Roles);
+                                if (mGroupTabSecurity.MayView & FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture))
                                 {
-                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedGroups != mGroups) 
+                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedGroups != mGroups)
                                     {
                                         mSaveGroups = true;
                                         mAccountProfileToSave.SetGroups(mGroups);
                                     }
                                 }
-                                if (mRoleTabSecurity.MayView && FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture)) 
+                                if (mRoleTabSecurity.MayView & FunctionUtility.CurrentProfile().Action.ToLowerInvariant() == ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true).ToLower(CultureInfo.InvariantCulture))
                                 {
-                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedRoles != mRoles) 
+                                    if (mAccountProfileToSave.GetCommaSeparatedAssignedRoles != mRoles)
                                     {
                                         mSaveRoles = true;
                                         mAccountProfileToSave.SetRoles(mRoles);
@@ -240,23 +256,27 @@ public class AccountsController : ApiController
                                 return this.InternalServerError(mError);
                             }
                         }
-                        else 
+                        else
                         {
                             if (mSecurityInfo.MayAdd)
                             {
-                                mSaveRoles = true;
                                 mSaveGroups = true;
+                                mSaveRoles = true;
                                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                                 mAccountProfileToSave.Id = -1;
                                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                                 mAccountProfileToSave.AddedDate = DateTime.Now;
+
+                                mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                                 mAccountProfileToSave.AddedDate = DateTime.Now;
                                 mAccountProfileToSave.PasswordLastSet = DateTime.Now;
                                 mAccountProfileToSave.LastLogOn = DateTime.Now;
                                 mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
                                 mAccountProfileToSave.Status = ConfigSettings.AutoCreateAccountStatusId;
-                                string mGroups = String.Join(",", uiProfile.AccountGroups.Groups);
-                                string mRoles = String.Join(",", uiProfile.AccountRoles.Roles);
+                                string mGroups = string.Join(",", uiProfile.AccountGroups.Groups);
+                                string mRoles = string.Join(",", uiProfile.AccountRoles.Roles);
+                                mAccountProfileToSave.SetGroups(mGroups);
+                                mAccountProfileToSave.SetRoles(mRoles);
                                 try
                                 {
                                     AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups);
@@ -268,7 +288,7 @@ public class AccountsController : ApiController
                                 mLog.Debug("Added account " + mAccountProfileToSave.Account + " by " + mCurrentAccountProfile.Account);
                                 mRetVal = "true";
                             }
-                            else 
+                            else
                             {
                                 Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to add");
                                 mLog.Error(mError);
@@ -276,21 +296,23 @@ public class AccountsController : ApiController
                             }
                         }
                     }
-                    else 
+                    else
                     {
-                        Exception mError = new Exception("Security Info can not be determined nothing has been saved!!!!");
+                        Exception mError = new Exception("Security Info is not in context nothing has been saved!!!!");
                         mLog.Error(mError);
-                        return this.InternalServerError(mError);            
+                        return this.InternalServerError(mError);
                     }
                 }
-                else 
+                else
                 {
                     Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
                     mLog.Error(mError);
-                    return this.InternalServerError(mError);            
+                    return this.InternalServerError(mError);
                 }
             }
+
         }
+
         return Ok(mRetVal);
     }
 
