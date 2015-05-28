@@ -76,20 +76,21 @@
         }
 
         function saveAddEditAccountSucess(xhr) {
-            switch (xhr) {
+            switch (xhr.toLowerCase()) {
                 case "true":
                     var mAction = GW.Common.getParameterByName('Action');
                     if (mAction.length >= 0) {
-                        //GW.Navigation.NavigationController.Refresh();
-                        //GW.Search.GetSearchResults();
-                        location.reload();
+                        GW.Navigation.NavigationController.Refresh();
+                        GW.Search.GetSearchResults();
+                        //location.reload();
                     } else {
                         window.location.hash = "?Action=Favorite";
                         location.reload();
                     }
                     break;
-                case "Your account has been created":
+                case "your account has been created":
                     window.location.hash = "?Action=Favorite";
+                    alert(xhr);
                     location.reload();
                     break;
                 default:
