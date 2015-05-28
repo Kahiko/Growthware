@@ -175,8 +175,8 @@ Namespace Controllers
                 If mExistingAccount Is Nothing Then
                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                     mAccountProfileToSave.Id = uiProfile.Id
-                    Dim mGroups = ConfigSettings.RegistrationGroups
-                    Dim mRoles = ConfigSettings.RegistrationRoles
+                    Dim mGroups As String = ConfigSettings.RegistrationGroups
+                    Dim mRoles As String = ConfigSettings.RegistrationRoles
                     If Not String.IsNullOrEmpty(mGroups) Then mSaveGroups = True
                     If Not String.IsNullOrEmpty(mRoles) Then mSaveRoles = True
                     mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
