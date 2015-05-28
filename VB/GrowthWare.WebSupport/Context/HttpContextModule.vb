@@ -55,8 +55,8 @@ Namespace Context
         ''' </remarks>
         Public Sub Init(ByVal context As System.Web.HttpApplication) Implements System.Web.IHttpModule.Init
             If Not context Is Nothing Then
-                Dim mInitClientChoices As New ClientChoicesHttpModule()
-                mInitClientChoices.Init(context)
+                'Dim mInitClientChoices As New ClientChoicesHttpModule()
+                'mInitClientChoices.Init(context)
                 AddHandler context.Context.ApplicationInstance.Error, AddressOf Me.onApplicationError
                 AddHandler context.BeginRequest, AddressOf Me.onBeginRequest
                 AddHandler context.AcquireRequestState, AddressOf Me.onAcquireRequestState
