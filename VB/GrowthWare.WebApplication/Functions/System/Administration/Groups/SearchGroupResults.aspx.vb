@@ -38,6 +38,7 @@ Public Class SearchGroupResults
                 mSearchCriteria.SelectedPage = 1
             End If
             mSearchCriteria.WhereClause = Server.UrlDecode(GWWebHelper.GetQueryValue(Request, "WhereClause"))
+            mSearchCriteria.WhereClause += " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile().Id.ToString()
             mSearchCriteria.WhereClause = mSearchCriteria.WhereClause.Replace("""", String.Empty)
             bindData(mSearchCriteria)
         End If
