@@ -155,12 +155,10 @@ public class AccountsController : ApiController
             {
                 mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave);
                 mAccountProfileToSave.Id = uiProfile.Id;
-                dynamic mGroups = ConfigSettings.RegistrationGroups;
-                dynamic mRoles = ConfigSettings.RegistrationRoles;
-                if (!string.IsNullOrEmpty(mGroups))
-                    mSaveGroups = true;
-                if (!string.IsNullOrEmpty(mRoles))
-                    mSaveRoles = true;
+                string mGroups = ConfigSettings.RegistrationGroups;
+                string mRoles = ConfigSettings.RegistrationRoles;
+                if (!string.IsNullOrEmpty(mGroups)) mSaveGroups = true;
+                if (!string.IsNullOrEmpty(mRoles)) mSaveRoles = true;
                 mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
                 mAccountProfileToSave.AddedDate = DateTime.Now;
                 mAccountProfileToSave.SetGroups(mGroups);
