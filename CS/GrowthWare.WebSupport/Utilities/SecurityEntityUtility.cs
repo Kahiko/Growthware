@@ -55,8 +55,12 @@ namespace GrowthWare.WebSupport.Utilities
             MSecurityEntityProfile mRetProfile = null;
             String mAccount = AccountUtility.HttpContextUserName();
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
-            int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
-            mRetProfile = GetProfile(mSecurityEntity);
+            if (mClientChoicesState != null) 
+            {
+                int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityId].ToString(), CultureInfo.InvariantCulture);
+                mRetProfile = GetProfile(mSecurityEntity);
+            }
+            if (mRetProfile == null) mRetProfile = DefaultProfile();
             return mRetProfile;
         }
 
@@ -103,13 +107,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <summary>
         /// Get a single function given it's id.
         /// </summary>
-        /// <param name="accountSeqId">int or Integer</param>
+        /// <param name="securityEntitySeqId">int or Integer</param>
         /// <returns>MSecurityEntityProfile</returns>
-        public static MSecurityEntityProfile GetProfile(int accountSeqId)
+        public static MSecurityEntityProfile GetProfile(int securityEntitySeqId)
         {
             MSecurityEntityProfile mRetVal = new MSecurityEntityProfile();
             var mResult = from mProfile in Profiles()
-                          where mProfile.Id == accountSeqId
+                          where mProfile.Id == securityEntitySeqId
                           select mProfile;
             try
             {
