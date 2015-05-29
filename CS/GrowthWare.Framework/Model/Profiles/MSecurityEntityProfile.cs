@@ -21,7 +21,7 @@ namespace GrowthWare.Framework.Model.Profiles
         /// Initializes all of the properties given a data row.
         /// </summary>
         /// <param name="dataRow">DataRow</param>
-        internal override void Initialize(DataRow dataRow)
+        internal new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "Name";
             base.IdColumnName = "SE_SEQ_ID";

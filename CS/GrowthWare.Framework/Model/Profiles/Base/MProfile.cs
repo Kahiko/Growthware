@@ -67,7 +67,7 @@ namespace GrowthWare.Framework.Model.Profiles.Base
         /// <remarks>
         /// Only sets Id and Name if IdColumnName or NameColumnName is not null
         /// </remarks>
-        internal virtual void Initialize(DataRow dataRow)
+        protected virtual void Initialize(DataRow dataRow)
         {
             this.AddedBy = base.GetInt(dataRow, "Added_By");
             this.AddedDate = base.GetDateTime(dataRow, "Added_Date", DateTime.Now);
