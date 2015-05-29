@@ -30,7 +30,7 @@ Namespace Model.Profiles.Base
         ''' </summary>
         ''' <param name="Datarow">datarow</param>
         ''' <remarks>Only sets Id and Name if IdColumnName or NameColumnName is not null</remarks>
-        Friend Overridable Sub Initialize(ByVal dataRow As DataRow)
+        Protected Overridable Sub Initialize(ByVal dataRow As DataRow)
             Me.AddedBy = Me.GetInt(dataRow, "Added_By")
             Me.AddedDate = Me.GetDateTime(dataRow, "Added_Date", DateTime.Now)
             Me.UpdatedBy = Me.GetInt(dataRow, "Updated_By")
