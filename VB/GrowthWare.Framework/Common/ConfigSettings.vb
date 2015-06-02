@@ -2,6 +2,7 @@
 Imports System.Web
 Imports System.Text
 Imports System.Text.RegularExpressions
+Imports System.Globalization
 
 Namespace Common
     ''' <summary>
@@ -80,7 +81,7 @@ Namespace Common
         ''' <value>The automatic create StatusId.</value>
         Shared ReadOnly Property AutoCreateAccountStatusId As Integer
             Get
-                Return Integer.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", True))
+                Return Integer.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", True), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -285,9 +286,9 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        Shared ReadOnly Property DefaultSecurityEntityId() As String
+        Shared ReadOnly Property DefaultSecurityEntityId() As Integer
             Get
-                Return GetAppSettingValue("Default_Security_Entity_ID", True)
+                Return Integer.Parse(GetAppSettingValue("Default_Security_Entity_ID", True), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -373,9 +374,9 @@ Namespace Common
         ''' <value>String</value>
         ''' <returns>String</returns>
         ''' <remarks></remarks>
-        Shared ReadOnly Property EncryptionType() As String
+        Shared ReadOnly Property EncryptionType() As Integer
             Get
-                Return CInt(GetAppSettingValue("Encryption_Type"))
+                Return Integer.Parse(GetAppSettingValue("Encryption_Type"), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -398,7 +399,7 @@ Namespace Common
         ''' <remarks></remarks>
         Shared ReadOnly Property FailedAttempts() As Integer
             Get
-                Return CInt(GetAppSettingValue("Failed_Attempts", True))
+                Return Integer.Parse(GetAppSettingValue("Failed_Attempts", True), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -410,7 +411,7 @@ Namespace Common
         ''' <remarks></remarks>
         Shared ReadOnly Property ForceHttps() As Boolean
             Get
-                Return CBool(GetAppSettingValue("Force_HTTPS", True))
+                Return Boolean.Parse(GetAppSettingValue("Force_HTTPS", True), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -497,9 +498,9 @@ Namespace Common
         ''' Gets the RegistrationSecurityEntityId.
         ''' </summary>
         ''' <value>The RegistrationSecurityEntityId.</value>
-        Shared ReadOnly Property RegistrationSecurityEntityId As String
+        Shared ReadOnly Property RegistrationSecurityEntityId As Integer
             Get
-                Return GetAppSettingValue("RegistrationSecurityEntityId", True)
+                Return Integer.Parse(GetAppSettingValue("RegistrationSecurityEntityId", True), CultureInfo.InvariantCulture)
             End Get
         End Property
 
@@ -602,7 +603,7 @@ Namespace Common
         ''' <remarks></remarks>
         Shared ReadOnly Property ServerSideViewState() As Boolean
             Get
-                Return CBool(GetAppSettingValue("Server_Side_View_State"))
+                Return Boolean.Parse(GetAppSettingValue("Server_Side_View_State"))
             End Get
         End Property
 
@@ -634,7 +635,7 @@ Namespace Common
         ''' <remarks></remarks>
         Shared ReadOnly Property ServerSideViewStatePages() As Integer
             Get
-                Return CInt(GetAppSettingValue("Server_Side_View_State_Pages"))
+                Return Integer.Parse(GetAppSettingValue("Server_Side_View_State_Pages"), CultureInfo.InvariantCulture)
             End Get
         End Property
 
