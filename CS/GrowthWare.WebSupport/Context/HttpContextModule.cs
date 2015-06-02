@@ -177,57 +177,15 @@ namespace GrowthWare.WebSupport.Context
                     {
                         mMessage = "Creating new account for '" + mAccountName + "'";
                         mLog.Info(mMessage);
-                        MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");
-                        MAccountProfile mAccountProfileToSave = new MAccountProfile();
-                        mAccountProfileToSave.Id = -1;
-                        bool mSaveGroups = true;
-                        bool mSaveRoles = true;
-                        dynamic mGroups = ConfigSettings.RegistrationGroups;
-                        dynamic mRoles = ConfigSettings.RegistrationRoles;
-                        if (string.IsNullOrEmpty(mGroups))
-                            mSaveGroups = false;
-                        if (string.IsNullOrEmpty(mRoles))
-                            mSaveRoles = false;
-                        mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
-                        mAccountProfileToSave.FirstName = "Auto created";
-                        mAccountProfileToSave.MiddleName = "";
-                        mAccountProfileToSave.LastName = "Auto created";
-                        mAccountProfileToSave.PreferredName = "Auto created";
-                        mAccountProfileToSave.Email = "change@me.com";
-                        mAccountProfileToSave.Location = "Hawaii";
-                        mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
-                        mAccountProfileToSave.AddedDate = DateTime.Now;
-                        mAccountProfileToSave.SetGroups(mGroups);
-                        mAccountProfileToSave.SetRoles(mRoles);
-                        mAccountProfileToSave.PasswordLastSet = DateTime.Now;
-                        mAccountProfileToSave.LastLogOn = DateTime.Now;
-                        mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
-                        mAccountProfileToSave.Status = (int)SystemStatus.SetAccountDetails;
-                        MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
-                        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(ConfigSettings.RegistrationSecurityEntityId);
-                        string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
-
-                        mClientChoiceState.IsDirty = false;
-                        mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
-                        mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
-                        mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
-                        try
-                        {
-                            AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
-                            ClientChoicesUtility.Save(mClientChoiceState, false);
-                            AccountUtility.SetPrincipal(mAccountProfileToSave);
-                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                            mException = new WebSupportException("Your account details need to be set.");
-                            GWWebHelper.ExceptionError = mException;
-                            string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                            FunctionUtility.SetCurrentProfile(mFunctionProfile);
-                            HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
-                        }
-                        catch (Exception ex)
-                        {
-                            mLog.Error(ex);
-                        }
-                        mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account);
+                        //MAccountProfile mAccountProfileToSave = AccountUtility.AutoCreateAccount();
+                        AccountUtility.AutoCreateAccount();
+                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
+                        mException = new WebSupportException("Your account details need to be set.");
+                        GWWebHelper.ExceptionError = mException;
+                        string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                        FunctionUtility.SetCurrentProfile(mFunctionProfile);
+                        HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
+                        //mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account);
                     }
                 }
                 FunctionUtility.SetCurrentProfile(mFunctionProfile);

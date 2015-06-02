@@ -116,6 +116,57 @@ namespace GrowthWare.WebSupport.Utilities
             return retVal;
         }
 
+        public static MAccountProfile AutoCreateAccount()
+        {
+            MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");
+            MAccountProfile mAccountProfileToSave = new MAccountProfile();
+            Logger mLog = Logger.Instance();
+            mAccountProfileToSave.Id = -1;
+            bool mSaveGroups = true;
+            bool mSaveRoles = true;
+            string mGroups = ConfigSettings.RegistrationGroups;
+            string mRoles = ConfigSettings.RegistrationRoles;
+            if (string.IsNullOrEmpty(mGroups))
+                mSaveGroups = false;
+            if (string.IsNullOrEmpty(mRoles))
+                mSaveRoles = false;
+            mAccountProfileToSave.Account = AccountUtility.HttpContextUserName();
+            mAccountProfileToSave.FirstName = "Auto created";
+            mAccountProfileToSave.MiddleName = "";
+            mAccountProfileToSave.LastName = "Auto created";
+            mAccountProfileToSave.PreferredName = "Auto created";
+            mAccountProfileToSave.Email = "change@me.com";
+            mAccountProfileToSave.Location = "Hawaii";
+            mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
+            mAccountProfileToSave.AddedDate = DateTime.Now;
+            mAccountProfileToSave.SetGroups(mGroups);
+            mAccountProfileToSave.SetRoles(mRoles);
+            mAccountProfileToSave.PasswordLastSet = DateTime.Now;
+            mAccountProfileToSave.LastLogOn = DateTime.Now;
+            mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
+            mAccountProfileToSave.Status = (int)SystemStatus.SetAccountDetails;
+            MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
+            MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(ConfigSettings.RegistrationSecurityEntityId);
+
+            mClientChoiceState.IsDirty = false;
+            mClientChoiceState[MClientChoices.AccountName] = mAccountProfileToSave.Account;
+            mClientChoiceState[MClientChoices.SecurityEntityId] = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+            mClientChoiceState[MClientChoices.SecurityEntityName] = mSecurityEntityProfile.Name;
+            try
+            {
+                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile);
+                ClientChoicesUtility.Save(mClientChoiceState, false);
+                AccountUtility.SetPrincipal(mAccountProfileToSave);
+            }
+            catch (Exception ex)
+            {
+                mLog.Error(ex);
+                throw ex;
+            }
+            return mAccountProfileToSave;
+        }
+
+
         /// <summary>
         /// Deletes the specified account seq id.
         /// </summary>
