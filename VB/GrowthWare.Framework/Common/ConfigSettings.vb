@@ -411,7 +411,7 @@ Namespace Common
         ''' <remarks></remarks>
         Shared ReadOnly Property ForceHttps() As Boolean
             Get
-                Return Boolean.Parse(GetAppSettingValue("Force_HTTPS", True), CultureInfo.InvariantCulture)
+                Return Boolean.Parse(GetAppSettingValue("Force_HTTPS", True))
             End Get
         End Property
 
