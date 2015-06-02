@@ -163,4 +163,11 @@ UPDATE ZGWSecurity.Functions SET
 WHERE
 	[Action] = 'Logon'
 
-exec [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
+
+DECLARE @V_Added_Updated_By INT = 2
+		,@V_PRIMARY_KEY INT = 0
+		,@V_ErrorCode INT = 0
+		
+EXEC [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
+
+UPDATE [ZGWSecurity].[Security_Entities] SET [DAL_Name] = 'GrowthWare.Framework.BusinessData', [DAL_Name_Space] = 'GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008' WHERE [DAL] = 'SQLServer'
