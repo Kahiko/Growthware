@@ -22,7 +22,7 @@ Namespace Model.Profiles
         ''' Initializes the specified data row.
         ''' </summary>
         ''' <param name="dataRow">The data row.</param>
-        Private Shadows Sub Initialize(ByVal dataRow As DataRow)
+        Protected Shadows Sub Initialize(ByVal dataRow As DataRow)
             MyBase.IdColumnName = "MESSAGE_SEQ_ID"
             MyBase.NameColumnName = "Name"
             MyBase.Initialize(dataRow)
