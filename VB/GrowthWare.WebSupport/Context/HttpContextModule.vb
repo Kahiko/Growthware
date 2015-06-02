@@ -128,52 +128,15 @@ Namespace Context
                     If ConfigSettings.AutoCreateAccount Then
                         mMessage = "Creating new account for '" + mAccountName + "'"
                         mLog.Info(mMessage)
-                        Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
-                        Dim mAccountProfileToSave As MAccountProfile = New MAccountProfile()
-                        mAccountProfileToSave.Id = -1
-                        Dim mSaveGroups As Boolean = True
-                        Dim mSaveRoles As Boolean = True
-                        Dim mGroups = ConfigSettings.RegistrationGroups
-                        Dim mRoles = ConfigSettings.RegistrationRoles
-                        If String.IsNullOrEmpty(mGroups) Then mSaveGroups = False
-                        If String.IsNullOrEmpty(mRoles) Then mSaveRoles = False
-                        mAccountProfileToSave.Account = AccountUtility.HttpContextUserName
-                        mAccountProfileToSave.FirstName = "Auto created"
-                        mAccountProfileToSave.MiddleName = ""
-                        mAccountProfileToSave.LastName = "Auto created"
-                        mAccountProfileToSave.PreferredName = "Auto created"
-                        mAccountProfileToSave.Email = "change@me.com"
-                        mAccountProfileToSave.Location = "Hawaii"
-                        mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
-                        mAccountProfileToSave.AddedDate = Now
-                        mAccountProfileToSave.SetGroups(mGroups)
-                        mAccountProfileToSave.SetRoles(mRoles)
-                        mAccountProfileToSave.PasswordLastSet = DateTime.Now
-                        mAccountProfileToSave.LastLogOn = DateTime.Now
-                        mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
-                        mAccountProfileToSave.Status = DirectCast(SystemStatus.SetAccountDetails, Integer)
-                        Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
-                        Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(Integer.Parse(ConfigSettings.RegistrationSecurityEntityId))
-                        Dim mCurrentSecurityEntityId As String = mClientChoiceState(MClientChoices.SecurityEntityId)
-
-                        mClientChoiceState.IsDirty = False
-                        mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
-                        mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
-                        mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
-                        Try
-                            AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
-                            ClientChoicesUtility.Save(mClientChoiceState, False)
-                            AccountUtility.SetPrincipal(mAccountProfileToSave)
-                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                            mException = New WebSupportException("Your account details need to be set.")
-                            GWWebHelper.ExceptionError = mException
-                            Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                            FunctionUtility.SetCurrentProfile(mFunctionProfile)
-                            HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
-                        Catch ex As Exception
-                            mLog.Error(ex)
-                        End Try
-                        mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account)
+                        'Dim mAccountProfileToSave As MAccountProfile = AccountUtility.AutoCreateAccount()
+                        AccountUtility.AutoCreateAccount()
+                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                        mException = New WebSupportException("Your account details need to be set.")
+                        GWWebHelper.ExceptionError = mException
+                        Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                        FunctionUtility.SetCurrentProfile(mFunctionProfile)
+                        HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
+                        'mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account)
                     End If
                 End If
                 FunctionUtility.SetCurrentProfile(mFunctionProfile)

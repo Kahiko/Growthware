@@ -92,6 +92,55 @@ Namespace Utilities
             Return retVal
         End Function
 
+        Public Shared Function AutoCreateAccount() As MAccountProfile
+            Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
+            Dim mAccountProfileToSave As New MAccountProfile()
+            Dim mLog As Logger = Logger.Instance()
+            mAccountProfileToSave.Id = -1
+            Dim mSaveGroups As Boolean = True
+            Dim mSaveRoles As Boolean = True
+            Dim mGroups As String = ConfigSettings.RegistrationGroups
+            Dim mRoles As String = ConfigSettings.RegistrationRoles
+            If String.IsNullOrEmpty(mGroups) Then
+                mSaveGroups = False
+            End If
+            If String.IsNullOrEmpty(mRoles) Then
+                mSaveRoles = False
+            End If
+            mAccountProfileToSave.Account = AccountUtility.HttpContextUserName()
+            mAccountProfileToSave.FirstName = "Auto created"
+            mAccountProfileToSave.MiddleName = ""
+            mAccountProfileToSave.LastName = "Auto created"
+            mAccountProfileToSave.PreferredName = "Auto created"
+            mAccountProfileToSave.Email = "change@me.com"
+            mAccountProfileToSave.Location = "Hawaii"
+            mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
+            mAccountProfileToSave.AddedDate = DateTime.Now
+            mAccountProfileToSave.SetGroups(mGroups)
+            mAccountProfileToSave.SetRoles(mRoles)
+            mAccountProfileToSave.PasswordLastSet = DateTime.Now
+            mAccountProfileToSave.LastLogOn = DateTime.Now
+            mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType)
+            mAccountProfileToSave.Status = CInt(SystemStatus.SetAccountDetails)
+            Dim mClientChoiceState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, True)
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(ConfigSettings.RegistrationSecurityEntityId)
+
+            mClientChoiceState.IsDirty = False
+            mClientChoiceState(MClientChoices.AccountName) = mAccountProfileToSave.Account
+            mClientChoiceState(MClientChoices.SecurityEntityId) = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture)
+            mClientChoiceState(MClientChoices.SecurityEntityName) = mSecurityEntityProfile.Name
+            Try
+                AccountUtility.Save(mAccountProfileToSave, mSaveRoles, mSaveGroups, mSecurityEntityProfile)
+                ClientChoicesUtility.Save(mClientChoiceState, False)
+                AccountUtility.SetPrincipal(mAccountProfileToSave)
+            Catch ex As Exception
+                mLog.Error(ex)
+                Throw ex
+            End Try
+            Return mAccountProfileToSave
+        End Function
+
+
         ''' <summary>
         ''' Deletes the specified account seq id.
         ''' </summary>
