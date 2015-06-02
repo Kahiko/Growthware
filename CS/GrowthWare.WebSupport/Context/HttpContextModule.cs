@@ -204,7 +204,7 @@ namespace GrowthWare.WebSupport.Context
                         mAccountProfileToSave.Password = CryptoUtility.Encrypt(ConfigSettings.RegistrationPassword, ConfigSettings.EncryptionType);
                         mAccountProfileToSave.Status = (int)SystemStatus.SetAccountDetails;
                         MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
-                        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+                        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(ConfigSettings.RegistrationSecurityEntityId);
                         string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
 
                         mClientChoiceState.IsDirty = false;

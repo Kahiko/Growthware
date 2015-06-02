@@ -170,7 +170,7 @@ public class AccountsController : ApiController
                 if (HttpContext.Current.Request.QueryString["Action"].ToString().ToUpper(CultureInfo.InvariantCulture).IndexOf("REGISTER") > -1)
                     mAccountProfileToSave.Status = (int)SystemStatus.Active;
                 MClientChoicesState mClientChoiceState = ClientChoicesUtility.GetClientChoicesState(ConfigSettings.RegistrationAccountChoicesAccount, true);
-                MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(int.Parse(ConfigSettings.RegistrationSecurityEntityId));
+                MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(ConfigSettings.RegistrationSecurityEntityId);
                 string mCurrentSecurityEntityId = mClientChoiceState[MClientChoices.SecurityEntityId];
 
                 mClientChoiceState.IsDirty = false;
