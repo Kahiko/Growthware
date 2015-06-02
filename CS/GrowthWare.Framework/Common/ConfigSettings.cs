@@ -27,7 +27,7 @@ namespace GrowthWare.Framework.Common
         /// <value>The automatic create StatusId.</value>
         public static int AutoCreateAccountStatusId
         {
-            get { return int.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", true)); }
+            get { return int.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", true), CultureInfo.InvariantCulture); }
         }
         /// <summary>
         /// Retruns App_Displayed_Name from the WEB.CONFIG file
@@ -420,9 +420,9 @@ namespace GrowthWare.Framework.Common
         /// Gets the RegistrationSecurityEntityId.
         /// </summary>
         /// <value>The RegistrationSecurityEntityId.</value>
-        public static string RegistrationSecurityEntityId
+        public static int RegistrationSecurityEntityId
         {
-            get { return GetAppSettingValue("RegistrationSecurityEntityId", true); }
+            get { return int.Parse(GetAppSettingValue("RegistrationSecurityEntityId", true), CultureInfo.InvariantCulture); }
         }
         /// <summary>
         /// Retrun AppDisplayedName and Remember_Me from the CONFIG file
