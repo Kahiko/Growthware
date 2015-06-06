@@ -463,18 +463,6 @@ Namespace Common
         End Property
 
         ''' <summary>
-        ''' Return RegistrationPostAction from the COFNIG file
-        ''' </summary>
-        ''' <value>String</value>
-        ''' <returns>String</returns>
-        ''' <remarks>String</remarks>
-        Shared ReadOnly Property RegistrationPostAction() As String
-            Get
-                Return GetAppSettingValue("RegistrationPostAction", True)
-            End Get
-        End Property
-
-        ''' <summary>
         ''' Gets the registration create roles.
         ''' </summary>
         ''' <value>The registration roles.</value>
