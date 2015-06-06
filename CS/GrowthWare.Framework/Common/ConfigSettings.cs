@@ -388,17 +388,6 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
-        /// Return RegistrationPostAction from the COFNIG file
-        /// </summary>
-        /// <value>String</value>
-        /// <returns>String</returns>
-        /// <remarks>String</remarks>
-        public static string RegistrationPostAction
-        {
-            get { return GetAppSettingValue("RegistrationPostAction", true); }
-        }
-
-        /// <summary>
         /// Gets the registration create roles.
         /// </summary>
         /// <value>The registration roles.</value>
