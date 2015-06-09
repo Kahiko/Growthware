@@ -17,6 +17,7 @@
     [Updated_By]                   INT           NULL,
     [Updated_Date]                 DATETIME      NULL,
     CONSTRAINT [PK_Entities] PRIMARY KEY CLUSTERED ([Security_Entity_SeqID] ASC),
-    CONSTRAINT [FK_Entities_Statuses] FOREIGN KEY ([Status_SeqID]) REFERENCES [ZGWSystem].[Statuses] ([Status_SeqID])
+    CONSTRAINT [FK_Entities_Statuses] FOREIGN KEY ([Status_SeqID]) REFERENCES [ZGWSystem].[Statuses] ([Status_SeqID]),
+	CONSTRAINT [FK_Entities_Entities] FOREIGN KEY ([Parent_Security_Entity_SeqID]) REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
 );
 
