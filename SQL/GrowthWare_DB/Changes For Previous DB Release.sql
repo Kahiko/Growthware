@@ -171,3 +171,5 @@ DECLARE @V_Added_Updated_By INT = 2
 EXEC [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
 
 UPDATE [ZGWSecurity].[Security_Entities] SET [DAL_Name] = 'GrowthWare.Framework.BusinessData', [DAL_Name_Space] = 'GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008' WHERE [DAL] = 'SQLServer'
+
+UPDATE ZGWSecurity.Functions SET [Source] = 'Functions/System/Accounts/Logon.aspx' WHERE [Source] = 'Functions/System/Logon/Logon.aspx'
