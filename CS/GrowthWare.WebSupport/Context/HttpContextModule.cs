@@ -237,7 +237,7 @@ namespace GrowthWare.WebSupport.Context
             {
                 mLog.Debug("Menu data or Logoff/Logon requested");
             }
-            processOverridePage(mFunctionProfile);
+            //processOverridePage(mFunctionProfile);
         }
 
         /// <summary>
@@ -364,6 +364,7 @@ namespace GrowthWare.WebSupport.Context
                 MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
                 String mSkinLocation = "/Public/Skins/" + mSecProfile.Skin + "/";
                 mPage = mPage.Replace("/", @"\");
+                String currentExecutionFilePath = HttpContext.Current.Request.CurrentExecutionFilePath;
                 String mSystemOverridePage = mPage.Replace(@"\System\", @"\Overrides\");
                 String mSkinOverridePage = mPage.Replace(@"\System\", mSkinLocation);
                 if (File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage))) 
