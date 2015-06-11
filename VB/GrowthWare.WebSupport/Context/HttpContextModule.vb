@@ -178,8 +178,7 @@ Namespace Context
             Else
                 mLog.Debug("Menu data or Logoff/Logon requested")
             End If
-            processOverridePage(mFunctionProfile)
-            Dim mike As String = String.Empty
+            'processOverridePage(mFunctionProfile)
         End Sub
 
         ''' <summary>
