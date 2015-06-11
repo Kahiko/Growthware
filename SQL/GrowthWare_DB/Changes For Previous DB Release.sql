@@ -173,3 +173,48 @@ EXEC [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your a
 UPDATE [ZGWSecurity].[Security_Entities] SET [DAL_Name] = 'GrowthWare.Framework.BusinessData', [DAL_Name_Space] = 'GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008' WHERE [DAL] = 'SQLServer'
 
 UPDATE ZGWSecurity.Functions SET [Source] = 'Functions/System/Accounts/Logon.aspx' WHERE [Source] = 'Functions/System/Logon/Logon.aspx'
+
+
+/****** Object:  View [ZGWCoreWeb].[vwSearchMessages]    Script Date: 06/11/2015 08:11:25 ******/
+IF  EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[vwSearchMessages]'))
+DROP VIEW [ZGWCoreWeb].[vwSearchMessages]
+GO
+
+/****** Object:  View [ZGWCoreWeb].[vwSearchMessages]    Script Date: 06/11/2015 08:11:25 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+/*
+Usage:
+	SELECT * FROM ZGWCoreWeb.vwSearchMessages WHERE Security_Entity_SeqID = 1
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 08/19/2011
+-- Description:	Returns messages from ZGWCoreWeb.Messages
+--	given the Message_SeqID.  If Message_SeqID = -1
+--	all messages are returned.
+-- =============================================
+CREATE VIEW [ZGWCoreWeb].[vwSearchMessages] AS 
+	SELECT 
+		[Message_SeqID]
+		,[Security_Entity_SeqID]
+		,[Name]
+		,[Title]
+		,[Description]
+		,[Format_As_HTML]
+		,[Body]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Added_By) AS [Added_By]
+		,[Added_Date]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Updated_By) AS [Updated_By]
+		,[Updated_Date] 
+	FROM 
+		[ZGWCoreWeb].[Messages] msg WITH(NOLOCK)
+
+GO
+
+
+
