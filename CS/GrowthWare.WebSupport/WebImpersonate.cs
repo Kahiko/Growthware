@@ -29,17 +29,15 @@ namespace GrowthWare.WebSupport
 
             string userName = string.Empty;
             string domainName = string.Empty;
-            int posSlash = account.IndexOf("\\", StringComparison.CurrentCultureIgnoreCase);
-            if (posSlash != 0)
+            String[] accountInfo = account.Split('\\');
+            if (accountInfo.Length == 1)
             {
-                userName = account;
-                domainName = account;
-                userName = userName.Remove(0, posSlash);
-                domainName = domainName.Remove((posSlash - 1), (account.Length - posSlash) + 1);
+                userName = accountInfo[0];
             }
             else
             {
-                userName = account;
+                domainName = accountInfo[0];
+                userName = accountInfo[1];
             }
             bool returnValue = NativeMethods.LogonUser(userName, domainName, password, NativeMethods.Logon32LogonInteractive, NativeMethods.Long32ProviderDefault, ref tokenHandle);
             if (!returnValue)
@@ -116,7 +114,7 @@ namespace GrowthWare.WebSupport
         /// <param name="dwLogonProvider">The logon type</param>
         /// <param name="phToken">A platform-specific that is used to represent a pointer to a handle</param>
         /// <returns></returns>
-        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = true)]
+        [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true, ExactSpelling = false)]
         [return: MarshalAs(UnmanagedType.Bool)]
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword, int dwLogonType, int dwLogonProvider, ref IntPtr phToken);
 
