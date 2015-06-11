@@ -30,14 +30,12 @@ Public NotInheritable Class WebImpersonate
 
         Dim userName As String = String.Empty
         Dim domainName As String = String.Empty
-        Dim posSlash As Integer = InStr(account, "\")
-        If posSlash <> 0 Then
-            userName = account
-            domainName = account
-            userName = userName.Remove(0, posSlash)
-            domainName = domainName.Remove((posSlash - 1), (account.Length - posSlash) + 1)
+        Dim accountInfo As String() = account.Split("\")
+        If accountInfo.Length = 1 Then
+            userName = accountInfo(0)
         Else
-            userName = account
+            domainName = accountInfo(0)
+            userName = accountInfo(1)
         End If
         Dim returnValue As Boolean = NativeMethods.LogonUser(userName, domainName, password, NativeMethods.Logon32LogonInteractive, NativeMethods.Long32ProviderDefault, tokenHandle)
         If Not returnValue Then
