@@ -50,7 +50,6 @@ if (typeof GW.Upload == "undefined" || !GW.Upload) {
 		    retVal = retVal + "	</table>";
 		    retVal = retVal + "</form>";
 		    return retVal;
-			return retVal;
 		},
 
 		userFile: {},
