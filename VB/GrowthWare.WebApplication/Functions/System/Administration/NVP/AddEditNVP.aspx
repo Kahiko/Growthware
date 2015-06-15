@@ -44,7 +44,7 @@
 											<asp:TextBox ID="txtSchemaName" CssClass="rounded" MaxLength="128" runat="server" />
 											<asp:RequiredFieldValidator ID="RequiredFieldValidator1" CssClass="failureNotification" Display="Dynamic" runat="server" ErrorMessage=" (required)" ControlToValidate="txtSchemaName" />
 											<asp:RegularExpressionValidator ID="Alphanumeric" CssClass="failureNotification" Display="Dynamic" runat="server" ErrorMessage=" Must be alphanumeric." ControlToValidate="txtSchemaName" ValidationExpression="^[a-zA-Z0-9_]*$"></asp:RegularExpressionValidator>
-											<asp:Image ID="imgWarningSchemaName" ImageUrl="~/Public/Growthware/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
+											<asp:Image ID="imgWarningSchemaName" ImageUrl="~/Content/GrowthWare/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
 											<asp:Literal ID="litSchemaName" runat="server"></asp:Literal>
 										</td>
 									</tr>
@@ -58,7 +58,7 @@
 													<td>
 														<asp:Literal Visible="False" ID="litSTATIC_NAME" runat="server" />
 														<asp:TextBox ID="txtSTATIC_NAME" CssClass="rounded" MaxLength="128" runat="server" />
-														<asp:Image ID="imgWarningStaticName" ImageUrl="~/Public/Growthware/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
+														<asp:Image ID="imgWarningStaticName" ImageUrl="~/Content/GrowthWare/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
 														<asp:Literal Visible="False" ID="litStaticName" runat="server"></asp:Literal>
 														<asp:RequiredFieldValidator ID="RequiredFieldValidator2" CssClass="failureNotification" Display="Dynamic" runat="server" ErrorMessage=" (required)" ControlToValidate="txtSTATIC_NAME" />
 														<asp:RegularExpressionValidator ID="Alphanumeric2" CssClass="failureNotification" Display="Dynamic" runat="server" ErrorMessage=" Must be alphanumeric." ControlToValidate="txtSTATIC_NAME" ValidationExpression="^[a-zA-Z0-9_]*$"></asp:RegularExpressionValidator>
@@ -106,7 +106,7 @@
 				    </tr>
 				    <tr>
 					    <td class="pickListTableHelp">
-						    Determines what will appear in in the Name Value Page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpRoles').innerHTML,'Help Roles')" src='<%=ResolveUrl("~/Public/Growthware/Images/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
+						    Determines what will appear in in the Name Value Page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpRoles').innerHTML,'Help Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
 					    </td>
 				    </tr>
 				    <tr>
@@ -130,7 +130,7 @@
 				    </tr>
 				    <tr>
 					    <td class="pickListTableHelp">
-						    Determines what will appear in in the Name Value Page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpGroups').innerHTML,'Help Groups')" src='<%=ResolveUrl("~/Public/Growthware/Images/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
+						    Determines what will appear in in the Name Value Page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('helpGroups').innerHTML,'Help Groups')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title="&nbsp;Groups that may Add&nbsp;" />
 					    </td>
 				    </tr>
 				    <tr>

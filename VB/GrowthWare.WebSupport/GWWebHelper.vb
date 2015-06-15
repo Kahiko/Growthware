@@ -47,7 +47,7 @@ Public Class GWWebHelper
     ''' <remarks></remarks>
     Public Shared ReadOnly Property SkinPath() As String
         Get
-            Return HttpContext.Current.Server.MapPath("~\Public\Skins\")
+            Return HttpContext.Current.Server.MapPath("~\Content\Skins\")
         End Get
     End Property
 

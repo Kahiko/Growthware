@@ -11,14 +11,13 @@ Public Class BundleConfig
 
         bundles.Add(
             New ScriptBundle("~/bundles/GrowthWare").Include(
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.Common.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.FileManager.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.Model.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.NavigationController.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.NavigationHandler.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.Search.js",
-            "~/" + ConfigSettings.AppName + "/Public/GrowthWare/Scripts/GW.Upload.js",
-            "~/" + ConfigSettings.AppName + "/Public/Scripts/jSon2.js"
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Common.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.FileManager.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Model.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.NavigationController.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.NavigationHandler.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Search.js",
+            "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Upload.js"
             )
         )
 
@@ -44,10 +43,10 @@ Public Class BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/UI").Include(
-                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
-                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
-                "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+            New StyleBundle("~/Content/jQueryUIThemes/Redmond/UI").Include(
+                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.css",
+                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                "~/" + ConfigSettings.AppName + "/Content/jQueryUIThemes/Redmond/jquery-ui.theme.css"
             )
         )
 
@@ -59,8 +58,8 @@ Public Class BundleConfig
         )
 
         bundles.Add(
-            New StyleBundle("~/Content/GrowthWare").Include(
-                "~/" + ConfigSettings.AppName + "/Public/Growthware/Styles/GrowthWare.css"
+            New StyleBundle("~/Content/Growthware/Styles/UI").Include(
+                "~/" + ConfigSettings.AppName + "/Content/Growthware/Styles/GrowthWare.css"
             )
         )
 

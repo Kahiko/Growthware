@@ -9,15 +9,15 @@ Imports System.Runtime.InteropServices
 ' Review the values of the assembly attributes
 <Assembly: AssemblyTitle("GrowthWare.WebApplication")> 
 <Assembly: AssemblyDescription("")> 
-<Assembly: AssemblyCompany("Microsoft")> 
+<Assembly: AssemblyCompany("")> 
 <Assembly: AssemblyProduct("GrowthWare.WebApplication")> 
-<Assembly: AssemblyCopyright("Copyright © Microsoft 2015")> 
+<Assembly: AssemblyCopyright("Copyright ©  2015")> 
 <Assembly: AssemblyTrademark("")> 
 
 <Assembly: ComVisible(False)>
 
 'The following GUID is for the ID of the typelib if this project is exposed to COM
-<Assembly: Guid("3fbcd16c-3c98-4b15-bda9-3400be23dee0")> 
+<Assembly: Guid("b07a7c92-f152-44e6-b9a5-46e424af2460")> 
 
 ' Version information for an assembly consists of the following four values:
 '
@@ -30,5 +30,5 @@ Imports System.Runtime.InteropServices
 ' by using the '*' as shown below:
 ' <Assembly: AssemblyVersion("1.0.*")> 
 
-<Assembly: AssemblyVersion("1.0.0.*")> 
+<Assembly: AssemblyVersion("1.0.0.0")> 
 <Assembly: AssemblyFileVersion("1.0.0.0")> 

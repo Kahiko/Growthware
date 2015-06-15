@@ -1,0 +1,264 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Arc.master.vb" Inherits="GrowthWare.WebApplication._Default2" %>
+<%@ Import Namespace="System.Web.Optimization" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title>Growthware Arc VB</title>
+    <%: Scripts.Render("~/bundles/jquery") %>
+    <%: Scripts.Render("~/bundles/jqueryUI") %>
+    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
+    <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+    </asp:ContentPlaceHolder>
+    <script type="text/javascript" language="javascript">
+        function afterLoadFunctions() {
+            // Create the refresh objects for all of the necessary UI elements
+            var mRefreshObject = new GW.Navigation.RefreshObject();
+
+            //Put the vertical Hierarchical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VHMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('Vertical_Hierarchical_Menu', 'VHMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the vertical menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'VMenuDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('Vertical_Menu', 'VMenuDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the horizontal menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('Horizontal_Menu', 'HorizontalDiv');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the second horizontal menu into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'HorizontalDiv';
+            mRefreshObject.Refresh = function refreshFunction() {
+                GW.Navigation.NavigationController.LoadPage('Horizontal_Menu', 'HorizontalDiv2');
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+            //Put the GetPreferences into the refresh objects
+            mRefreshObject = new GW.Navigation.RefreshObject();
+            mRefreshObject.ContentAreaID = 'NotUsed';
+            mRefreshObject.Refresh = function refreshFunction() {
+                var options = GW.Model.DefaultWebMethodOptions();
+                options.url = options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/GetPreferences";
+                options.async = true;
+                options.contentType = 'application/json; charset=utf-8';
+                options.dataType = 'json';
+                options.type = "GET";
+                GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+                function getGetPreferencesSuccess(xhr) {
+                    var mClientChoices = GW.Model.ClientChoices();
+                    var mClientChoices = $.extend({}, mClientChoices, xhr);
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#smallMenu').hide();
+                        $('#smallMenuAuthenticated').show();
+                    } else {
+                        $('#smallMenuAuthenticated').hide();
+                        $('#smallMenu').show();
+                    }
+
+                    if (mClientChoices.Environment != 'Prod') {
+                        $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                    } else {
+                        $('#spEnvironment').css({ display: 'none' });
+                    }
+                    if (mClientChoices.AccountName != 'Anonymous') {
+                        $('#spAccountName').html(mClientChoices.AccountName);
+                    } else {
+                        $('#spAccountName').css({ display: 'none' });
+                    }
+                    $('#spVersion').html('Version: ' + mClientChoices.Version);
+                    $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                }
+
+            }
+            GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+        }
+
+        $(document).ready(function () {
+            $('#HorizontalDiv2').delegate("a", "click", function (e) {
+                e.stopImmediatePropagation();
+                e.preventDefault();
+                var mHREF = $(this).attr("href");
+                window.location.hash = "?Action=" + mHREF;
+                return false;
+            });
+        });
+    </script>
+    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />    
+</head>
+<body>
+	<div>
+        <form id="form1" runat="server">
+            <table width="100%" border="0" cellspacing="0" cellpadding="0">
+              <tr>
+                <td bgcolor="#DADFCB" width="2" height="70" alt=""></td>
+
+            <!--Logo-->
+                <td bgcolor="#DADFCB" align="center" valign="middle" colspan="4" width="166" height="80" class="LogoCell">
+                  <img src='<%=ResolveUrl("Images/logo.png")%>' />
+                </td>
+
+            <!--Banner Ad -->
+                <td bgcolor="#DADFCB" align="center" valign="middle" class="BannerCell" width="100%"> 
+                    <span id="spEnvironment" style="color: Black;"></span>&nbsp;&nbsp;
+                    <span id="spSecurityEntity" style="color: Black;"></span>&nbsp;&nbsp;<span id="spVersion" style="color: Black;"></span>
+                </td>
+                <td bgcolor="#DADFCB" width="10" height="70" alt="">&#160;</td>
+                <td bgcolor="#DADFCB" width="200" height="70" alt="">&#160;</td>
+              </tr>
+              <tr>
+                <td colspan="5"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td colspan=5 style="border-top:thick solid #000000 1px;"><img src='<%=ResolveUrl( "Images/black_lines_top.gif")%>' width="192" height="17" alt=""></td>
+
+            <!--Topic Menu-->    
+                <td align="left" valign="middle" style="border-top:thick solid #000000 1px;">
+                  <span id="pageMessage" class="Form_Title"></span>
+                  &#160;
+                </td>
+                <td bgcolor="#ffffff" width="10" height="17" alt="" style="border-top:thick solid #000000 1px;">&#160;</td>
+
+            <!-- Middle: Search -->
+                <td bgcolor="#ffffff" width="200" height="17" alt="" style="border-top:thick solid #000000 1px;" valign="bottom" align="right" class="Search">
+                      <nobr>Search:<asp:TextBox id="txtSearch" height="15px" font-size="7" width="110" Runat="Server"/> <asp:LinkButton id="lnkSearch" Text="Go" Runat="Server"/>&nbsp;&nbsp;&nbsp;</nobr>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="5"></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr>
+                <td bgcolor="#cfd0c2" align="left" valign="top" rowspan="2"></td>
+                <td style="background-color: #807C4F"><img src='<%=ResolveUrl( "Images/small_gray_line.gif")%>' width="50px" height="16px" alt=""></td>
+                <td style="background-color: #807C4F"><img src='<%=ResolveUrl( "Images/thick_gray_line.gif")%>' width="85px" height="16px" alt=""></td>
+                <td colspan="2" style="background-color: #807C4F"><img src='<%=ResolveUrl( "Images/top_curve.gif")%>' width="55" height="16px" alt=""></td>
+                <td style="width: 200px; height: 16px; background-color: #807C4F"></td>
+                <td style="width: 10px; height: 16px; background-color: #807C4F"></td>
+                <td style="width: 200px; height: 16px; background-color: #807C4F"></td>
+              </tr>
+              <tr>
+                <td align="center" valign="top"  colspan=2  bgcolor="#cfd0c2">
+                  <table cellspacing="0" cellpadding="3" border="0">
+                    <tr>     
+                      <td align="left" valign="top" colspan="2">
+            <!--Login-->
+                        <span id="spAccountName" style="color: Black;"></span>
+                        <br><br> 
+            <!--Section Menu-->
+					    <div id="VMenuDiv" style="overflow: auto"></div>
+                        <br />
+                        <div id="VHMenuDiv" class="clear" style="margin: auto; z-index: 1000;"></div>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+                <td align="left" valign="top" colspan="2" background='<%=ResolveUrl( "Images/menubg.gif")%>'><img src='<%=ResolveUrl( "Images/right_curve.gif")%>' width="55" height="129" alt=""></td>
+                <td align="left" valign="top" rowspan="3">
+                  <p>&nbsp;<br>
+
+            <!--Middle-->
+                  <table width="100%" border="0" cellpadding="0" cellspacing="0" >
+                    <tr>
+                        <td align="left">
+            <!-- Middle: Content -->
+                           <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+                        </td>
+                        <td width="3%">&nbsp;</td>
+                    </tr>
+                  </table>
+                  <br>
+                </td>
+                <td rowspan="3" style="border-right: thick solid #A7A7A5 1px;" height="217" alt=""><img border="0" src='<%=ResolveUrl( "Images/space.gif")%>' width="1"></td>
+                <td align="left" valign="top" rowspan="3">
+                  <br>
+
+            <!--Box Ad -->
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr> 
+                      <td>
+                        <div align="center">
+                          <div id="HorizontalDiv"></div>
+                        </div>
+                      </td>
+                    </tr>
+                  </table>
+                  <p></p>
+                </td>
+              </tr>
+
+              <tr>
+                <td align="left" valign="top" colspan="5">
+                  <p>
+                </td>
+              </tr>
+              <tr>
+                <td></td>
+                <td colspan="3"><img src='<%=ResolveUrl( "Images/space.gif")%>' height="33" alt=""></td>
+                <td width="32" height="33" alt=""></td>
+              </tr>
+              <tr>
+                <td width="2" height="36"></td>
+                <td colspan="3"><img src='<%=ResolveUrl( "Images/space.gif")%>' height="36" alt=""></td>
+                <td height="36"></td>
+                <td align="left" valign="middle">
+
+            <!--Section Menu Bottom-->
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" valign="top">
+                      <div id="HorizontalDiv2"></div>
+                      </td>
+                    </tr>
+                  </table>
+
+            <!--Copyright-->
+                  <table width="100%" border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                      <td align="center" valign="top" class="Footer">
+                        Powered by GrowthWare... Click <a href="http://sourceforge.net/projects/bedrockgrowth/" target="_blank">here</a> for the latest version of GrowthWare!
+                      </td>
+                    </tr>
+                  </table>
+                  <p>
+                </td>
+                <td bgcolor="#ffffff" height="36" alt=""></td>
+                <td height="36"></td>
+              </tr>
+              <tr>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="2" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="50" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="85" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="23" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="32" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="602" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="10" height="1" alt=""></td>
+                <td><img src='<%=ResolveUrl( "Images/space.gif")%>' width="200" height="1" alt=""></td>
+              </tr>
+            </table>
+        </form>
+	</div>
+</body>
+</html>

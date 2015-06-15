@@ -122,7 +122,7 @@ Public Class FileManagerSearchResults
                 Dim mFileName As String = DataBinder.Eval(e.Row.DataItem, "Name").ToString()
                 Select Case type.ToLower()
                     Case "folder"
-                        imgType.ImageUrl = "Public/GrowthWare/Images/Folder.gif"
+                        imgType.ImageUrl = "Content/GrowthWare/Images/Folder.gif"
                         Dim changeDirectoryLink As HtmlAnchor = CType(e.Row.FindControl("lnkName"), HtmlAnchor)
                         If Not changeDirectoryLink Is Nothing Then
                             Dim mCurrentDirectory As String = m_CurrentDirectory
@@ -131,7 +131,7 @@ Public Class FileManagerSearchResults
                             changeDirectoryLink.HRef = String.Format("javascript:GW.FileManager.changeDirectory('{0}','{1}')", mPath, m_DirectoryProfile.FunctionSeqId.ToString())
                         End If
                     Case "file"
-                        imgType.ImageUrl = "Public/GrowthWare/Images/File.gif"
+                        imgType.ImageUrl = "Content/GrowthWare/Images/File.gif"
                         Dim downloadLink As HtmlAnchor = CType(e.Row.FindControl("lnkName"), HtmlAnchor)
                         If Not downloadLink Is Nothing Then
                             Dim mCurrentDirectory As String = m_CurrentDirectory

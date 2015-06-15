@@ -1,0 +1,251 @@
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="DevOps.master.vb" Inherits="GrowthWare.WebApplication._Default2" %>
+<%@ Import Namespace="System.Web.Optimization" %>
+<!DOCTYPE html>
+
+<html lang="en">
+	<head runat="server">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Growhtware DevOops VB</title>
+        <%: Scripts.Render("~/bundles/modernizr")%>
+        <%: Scripts.Render("~/bundles/jquery") %>
+        <%: Scripts.Render("~/bundles/GrowthWare")%>
+		<link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+		<link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+		<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+				<script src="http://getbootstrap.com/docs-assets/js/html5shiv.js"></script>
+				<script src="http://getbootstrap.com/docs-assets/js/respond.min.js"></script>
+		<![endif]-->
+        <asp:ContentPlaceHolder ID="HeadContent" runat="server">
+        </asp:ContentPlaceHolder>
+        <%: Scripts.Render("~/bundles/bootstrap")%>
+        <%--<%: Scripts.Render("~/bundles/angular")%>--%>
+        <%: Styles.Render("~/Content/Bootstrap")%>
+        <script type="text/javascript" language="javascript">
+            function afterLoadFunctions() {
+                // Create the refresh objects for all of the necessary UI elements
+                var mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'HorizontalHierarchicalDiv';
+                mRefreshObject.Refresh = function refresh() {
+                    GW.Navigation.NavigationController.LoadPage("Horizontal_Hierarchical_Menu", "HorizontalHierarchicalDiv");
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the vertical menu into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'VMenuDiv';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    GW.Navigation.NavigationController.LoadPage('Vertical_Menu', 'VMenuDiv');
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the horizontal menu into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'HorizontalDiv';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    GW.Navigation.NavigationController.LoadPage('Horizontal_Menu', 'HorizontalDiv');
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+
+                //Put the GetPreferences into the refresh objects
+                mRefreshObject = new GW.Navigation.RefreshObject();
+                mRefreshObject.ContentAreaID = 'NotUsed';
+                mRefreshObject.Refresh = function refreshFunction() {
+                    var options = GW.Model.DefaultWebMethodOptions();
+                    options.url = options.url = GW.Common.getBaseURL() + "/gw/api/Accounts/GetPreferences";
+                    options.async = true;
+                    options.contentType = 'application/json; charset=utf-8';
+                    options.dataType = 'json';
+                    options.type = "GET";
+                    GW.Common.JQueryHelper.callWeb(options, getGetPreferencesSuccess);
+
+                    function getGetPreferencesSuccess(xhr) {
+                        var mClientChoices = GW.Model.ClientChoices();
+                        var mClientChoices = $.extend({}, mClientChoices, xhr);
+                        if (mClientChoices.AccountName != 'Anonymous') {
+                            $('#smallMenu').hide();
+                            $('#smallMenuAuthenticated').show();
+                        } else {
+                            $('#smallMenuAuthenticated').hide();
+                            $('#smallMenu').show();
+                        }
+
+                        if (mClientChoices.Environment != 'Prod') {
+                            $('#spEnvironment').html('Environment: ' + mClientChoices.Environment);
+                        } else {
+                            $('#spEnvironment').css({ display: 'none' });
+                        }
+                        if (mClientChoices.AccountName != 'Anonymous') {
+                            $('#spAccountName').html(mClientChoices.AccountName);
+                        } else {
+                            $('#spAccountName').css({ display: 'none' });
+                        }
+                        $('#spVersion').html('Version: ' + mClientChoices.Version);
+                        $('#spSecurityEntity').html('Application: ' + mClientChoices.SecurityEntityName);
+                    }
+
+                }
+                GW.Navigation.NavigationController.RegisterRefreshObject(mRefreshObject);
+            }
+
+            //
+            //  Helper for correct size of Messages page
+            //
+            function MessagesMenuWidth() {
+                var W = window.innerWidth;
+                var W_menu = $('#sidebar-left').outerWidth();
+                var w_messages = (W - W_menu) * 16.666666666666664 / 100;
+                $('#messages-menu').width(w_messages);
+            }
+
+            $(document).ready(function () {
+                $('[data-toggle=offcanvas]').click(function () {
+                    $('.row-offcanvas').toggleClass('active');
+                });
+                $('.show-sidebar').on('click', function (e) {
+                    e.preventDefault();
+                    $('div#main').toggleClass('sidebar-show');
+                    setTimeout(MessagesMenuWidth, 250);
+                });
+                var $loader = $('#loading'), timer = 0;
+                $loader.hide();
+                $(document).ajaxStart(function () {
+                    timer && clearTimeout(timer);
+
+                    timer = setTimeout(function () {
+                        $loader.show();
+                    },
+                    100);
+                })
+                $(document).ajaxStop(function () {
+                    clearTimeout(timer);
+                    $loader.hide();
+                });
+            });
+        </script>
+        <%: Styles.Render("~/Content/GrowthWare")%>
+        <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+        <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
+	</head>
+<body>
+<!--Start Header-->
+<div id="screensaver">
+	<canvas id="canvas"></canvas>
+	<i class="fa fa-lock" id="screen_unlock"></i>
+</div>
+<div id="modalbox">
+	<div class="devoops-modal">
+		<div class="devoops-modal-header">
+			<div class="modal-header-name">
+				<span>Basic table</span>
+			</div>
+			<div class="box-icons">
+				<a class="close-link">
+					<i class="fa fa-times"></i>
+				</a>
+			</div>
+		</div>
+		<div class="devoops-modal-inner">
+		</div>
+		<div class="devoops-modal-bottom">
+		</div>
+	</div>
+</div>
+<header class="navbar">
+	<div class="container-fluid expanded-panel">
+		<div class="row">
+			<div id="logo" class="col-xs-12 col-sm-2">
+				<a href="#">Growthware VB</a>
+			</div>
+			<div id="top-panel" class="col-xs-12 col-sm-10">
+				<div class="row">
+					<div class="col-xs-8 col-sm-4">
+						<a href="#" class="show-sidebar">
+						  <i class="fa fa-bars"></i>
+						</a>
+					</div>
+					<div class="container-fluid col-xs-4 col-sm-8 top-panel-right">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+		                <div class="nav navbar-nav pull-left panel-menu" style="width: 500px;" id="HorizontalHierarchicalDiv"></div>
+						<ul class="nav navbar-nav pull-right panel-menu">
+							<li class="dropdown" id="smallMenu">
+								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
+									<i class="fa fa-angle-down pull-right"></i>
+									<div class="user-mini pull-right">
+										<span class="welcome">Welcome</span>
+									</div>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#?Action=Logon">
+											<i class="fa fa-user"></i>
+											<span>Logon</span>
+										</a>
+									</li>
+                                </ul>
+                            </li>
+
+							<li class="dropdown" id="smallMenuAuthenticated">
+								<a href="#" class="dropdown-toggle account" data-toggle="dropdown">
+									<i class="fa fa-angle-down pull-right"></i>
+									<div class="user-mini pull-right">
+										<span class="welcome">Welcome,</span>
+										<span id="spAccountName" />
+									</div>
+								</a>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#?Action=EditAccount">
+											<i class="fa fa-user"></i>
+											<span>Profile</span>
+										</a>
+									</li>
+									<li>
+										<a href="#?Action=SelectPreferences">
+											<i class="fa fa-cog"></i>
+											<span>Settings</span>
+										</a>
+									</li>
+									<li>
+										<a href="#?Action=Logoff" title="Logoff">
+											<i class="fa fa-power-off"></i>
+											<span>Logoff</span>
+										</a>
+									</li>
+								</ul>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+<!--End Header-->
+<!--Start Container-->
+<div id="main" class="container-fluid">
+	<div class="row">
+		<div id="sidebar-left" class="col-xs-2 col-sm-2">
+			<div class="nav main-menu" id="VMenuDiv" style="overflow: auto"></div>
+		</div>
+		<!--Start Content-->
+		<div id="content" class="col-xs-12 col-sm-10">
+            <div id="loading" style=" height: 26px; float:left;">
+	            &nbsp;<img style=" margin-top: 1.5em;" alt="Loading, please wait.." src='<%=ResolveUrl("~/Content/GrowthWare/Images/ajax-loader_Green.gif")%>' />
+            </div>
+			<div id="ajax-content" class="clear" style="margin-top: 0.5em; margin-left: 0.5em;">
+                <div id="HorizontalDiv"></div>
+                <asp:ContentPlaceHolder ID="MainContent" runat="server" />
+			</div>
+		</div>
+		<!--End Content-->
+	</div>
+</div>
+<!--End Container-->
+</body>
+</html>

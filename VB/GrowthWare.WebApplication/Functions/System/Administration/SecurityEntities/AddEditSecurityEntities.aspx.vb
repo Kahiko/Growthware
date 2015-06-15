@@ -58,7 +58,7 @@ Public Class AddEditSecurityEntities
         dropSkin.DataBind()
 
         Dim dvStyles As New DataView
-        dvStyles = FileUtility.GetDirectoryTableData(Server.MapPath("~\Public\SiteStyles"), myDirectoryInfo, True).DefaultView
+        dvStyles = FileUtility.GetDirectoryTableData(Server.MapPath("~\Content\SiteStyles"), myDirectoryInfo, True).DefaultView
         dvStyles.RowFilter = "[Name] like '%.css'"
         dropStyles.DataSource = dvStyles
         dropStyles.DataTextField = "ShortFileName"
