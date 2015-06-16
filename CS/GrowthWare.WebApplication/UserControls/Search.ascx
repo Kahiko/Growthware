@@ -134,7 +134,7 @@
         </span>
         <span style="display: inline-block; width: 33%;">
             <input id="cmdSelect" class="btn btn-primary" type="button" value="Select All" onclick="selectAll();" name="cmdSelect" runat="server" />&nbsp;
-            <img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="Public/GrowthWare/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" runat="server" />
+            <img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="Content/Growthware/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" runat="server" />
         </span>
         <span style="display: inline-block; width: 33%; text-align: right;">
             <a id="btnRefesh" class="btn btn-primary" runat="server" onclick="javascript:GW.Search.GetSearchResults();">Refresh </a>
@@ -152,19 +152,19 @@
 			<table>
 				<tr>
 					<td>
-						<img alt="Go to first page" onclick="javascript:GW.Search.FirstPage();" src="Public/GrowthWare/Images/Paging/first_blue.png" height="16px" width="16px" />
+						<img alt="Go to first page" onclick="javascript:GW.Search.FirstPage();" src="Content/GrowthWare/Images/Paging/first_blue.png" height="16px" width="16px" />
 					</td>
 					<td style="vertical-align: middle;">
-						<img alt="Previous page" onclick="javascript:GW.Search.PreviousPage();" src="Public/GrowthWare/Images/Paging/previous_blue.png" height="16px" width="16px" />
+						<img alt="Previous page" onclick="javascript:GW.Search.PreviousPage();" src="Content/GrowthWare/Images/Paging/previous_blue.png" height="16px" width="16px" />
 					</td>
 					<td>
 						Page&nbsp;<select id="ddSelectPage" onclick="javascript:GW.Search.onDropSelectPageChanged();"></select>
 					</td>
 					<td>
-						<img alt="Next page" onclick="javascript:GW.Search.NextPage();" src="Public/GrowthWare/Images/Paging/next_blue.png" height="16px" width="16px" />
+						<img alt="Next page" onclick="javascript:GW.Search.NextPage();" src="Content/GrowthWare/Images/Paging/next_blue.png" height="16px" width="16px" />
 					</td>
 					<td>
-						<img alt="Go to last page" onclick="javascript:GW.Search.LastPage();" src="Public/GrowthWare/Images/Paging/last_blue.png" height="16px" width="16px" />
+						<img alt="Go to last page" onclick="javascript:GW.Search.LastPage();" src="Content/GrowthWare/Images/Paging/last_blue.png" height="16px" width="16px" />
 					</td>
 					<td style="width: 16px;">
 						&nbsp;

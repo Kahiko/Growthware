@@ -135,7 +135,7 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
                     switch (type.ToLower())
                     {
                         case "folder":
-                            imgType.ImageUrl = "Public/GrowthWare/Images/Folder.gif";
+                            imgType.ImageUrl = "Content/GrowthWare/Images/Folder.gif";
                             HtmlAnchor changeDirectoryLink = ((HtmlAnchor)e.Row.FindControl("lnkName"));
                             if (changeDirectoryLink != null)
                             {
@@ -148,7 +148,7 @@ namespace GrowthWare.WebApplication.Functions.System.FileManagement
 
                             break;
                         case "file":
-                            imgType.ImageUrl = "Public/GrowthWare/Images/File.gif";
+                            imgType.ImageUrl = "Content/GrowthWare/Images/File.gif";
                             HtmlAnchor downloadLink = ((HtmlAnchor)e.Row.FindControl("lnkName"));
                             if (downloadLink != null)
                             {

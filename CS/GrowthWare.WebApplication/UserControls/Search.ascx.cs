@@ -58,7 +58,7 @@ namespace GrowthWare.WebApplication.UserControls
             addNew.Visible = m_ShowAddLink;
             btnRefesh.Visible = m_ShowRefresh;
             txtRecordsPerPage.Value = ClientChoicesState[MClientChoices.RecordsPerPage];
-            imgDeleteAll.Src = GWWebHelper.RootSite + ConfigSettings.AppName + "Public/GrowthWare/Images/delete_red.png";
+            imgDeleteAll.Src = GWWebHelper.RootSite + ConfigSettings.AppName + "Content/GrowthWare/Images/delete_red.png";
         }
     }
 }

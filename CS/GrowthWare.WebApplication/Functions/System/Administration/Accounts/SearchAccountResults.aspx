@@ -36,7 +36,7 @@
 							<table border="0" cellpadding="0" cellspacing="0" width="100%">
 								<tr>
 									<td align="center">
-										<img alt="Edit" id="btnDetails" src="Public/GrowthWare/Images/list-edit.png" style="height: 16px; width: 16px;" runat="server" />
+										<img alt="Edit" id="btnDetails" src="Content/GrowthWare/Images/list-edit.png" style="height: 16px; width: 16px;" runat="server" />
 									</td>
 								</tr>
 							</table>

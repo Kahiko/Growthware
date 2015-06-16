@@ -8,7 +8,7 @@ if (typeof GW == "undefined" || !GW) {
 GW.Search = {
 
     DefaultImageSrc: function () {
-        return "Public/GrowthWare/Images/sort_asc.png";
+        return "Content/GrowthWare/Images/sort_asc.png";
     },
 
     Criteria: {
