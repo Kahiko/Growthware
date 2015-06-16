@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Home Page" Language="VB" MasterPageFile="~/Content/Skins/Default/Default.Master" AutoEventWireup="true" CodeBehind="Default.aspx.vb" Inherits="GrowthWare.WebApplication._Default" %>
+<%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">
     <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
