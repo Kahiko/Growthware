@@ -4,7 +4,7 @@
 	<table border="0" width="100%" cellpadding="0" cellspacing="0" style="FONT: 8pt verdana, arial">
 		<tr>
 			<td align="left" valign="top" style="PADDING-RIGHT:0px; PADDING-LEFT:0px; PADDING-BOTTOM:0px; PADDING-TOP:0px">
-				<asp:Image ID="SideImage" ImageUrl='<%=ResolveUrl( "~/Public/GrowthWare/Images/Misc/sidebar_blue.gif" )%>' Runat="server"></asp:Image>
+				<asp:Image ID="SideImage" ImageUrl='<%=ResolveUrl( "~/Content/GrowthWare/Images/Misc/sidebar_blue.gif" )%>' Runat="server"></asp:Image>
 			</td>
 			<td align="left" valign="top" style="PADDING-RIGHT:15px; PADDING-LEFT:15px; PADDING-BOTTOM:15px; PADDING-TOP:15px; width: 100%;">
 				<b>Welcome to the <asp:Label id="lblAppName" runat="server">lblAppName</asp:Label></b>

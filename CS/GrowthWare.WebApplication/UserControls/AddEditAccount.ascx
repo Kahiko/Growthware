@@ -137,7 +137,7 @@
 													<tr>
 														<td>
 															<asp:TextBox ID="txtAccount" CssClass="Form_Field rounded" MaxLength="128" runat="server" />
-															<asp:Image ID="imgWarningAccount" ImageUrl="~/Public/GrowthWare/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
+															<asp:Image ID="imgWarningAccount" ImageUrl="~/Content/GrowthWare/Images/help.gif" AlternateText="Help Image" Visible="false" runat="server" />
 															<asp:Literal Visible="False" ID="litAccountWarning" runat="server"></asp:Literal>
 														</td>
 														<td>
@@ -329,7 +329,7 @@
 									    </tr>
 									    <tr>
 										    <td class="pickListTableHelp">
-											    &nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpRoles').innerHTML,'Help Derived Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
+											    &nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpRoles').innerHTML,'Help Derived Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
 										    </td>
 									    </tr>
 									    <tr>

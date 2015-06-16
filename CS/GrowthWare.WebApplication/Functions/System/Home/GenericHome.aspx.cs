@@ -13,7 +13,7 @@ namespace GrowthWare.WebApplication.Functions.System.Home
         protected void Page_Load(object sender, EventArgs e)
         {
             lblAppName.Text = ConfigSettings.AppDisplayedName;
-            SideImage.ImageUrl = ResolveUrl("~/Public/GrowthWare/Images/Misc/sidebar_blue.gif");
+            SideImage.ImageUrl = ResolveUrl("~/Content/GrowthWare/Images/Misc/sidebar_blue.gif");
         }
     }
 }

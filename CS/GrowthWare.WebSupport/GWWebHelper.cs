@@ -191,7 +191,7 @@ namespace GrowthWare.WebSupport
         /// <remarks></remarks>
         public static string SkinPath
         {
-            get { return HttpContext.Current.Server.MapPath(@"~\Public\Skins\"); }
+            get { return HttpContext.Current.Server.MapPath(@"~\Content\Skins\"); }
         }
 
         /// <summary>

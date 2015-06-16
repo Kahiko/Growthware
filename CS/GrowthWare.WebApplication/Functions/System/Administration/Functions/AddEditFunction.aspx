@@ -239,7 +239,7 @@
                                     <span class="formLabelText">Action:</span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
-                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
                                 </td>
                                 <td align="left">
                                     <div id="divAction" runat="server">
@@ -264,7 +264,7 @@
                                     <span class="formLabelText">Source: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
-                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Action Source')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Action Source')" style="border: 0px;" src="<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
                                 </td>
                                 <td align="left">
                                     <asp:TextBox ID="txtSource" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
@@ -276,7 +276,7 @@
                                     <span class="formLabelText">Controller: </span>
                                 </td>
                                 <td style="width: 0px;" valign="top">
-                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
+                                    <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
                                 </td>
                                 <td align="left">
                                     <asp:TextBox ID="txtController" MaxLength="512" runat="Server" CssClass="rounded" Width="500px" Columns="100" />
@@ -418,7 +418,7 @@
                                         </tr>
                                         <tr>
                                             <td class="pickListTableHelp">
-                                                Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpViewRoles').innerHTML,'Help Derived View Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
+                                                Determines who can view pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpViewRoles').innerHTML,'Help Derived View Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title=" &nbsp;Roles that may View&nbsp;" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -444,7 +444,7 @@
                                         </tr>
                                         <tr>
                                             <td class="pickListTableHelp">
-                                                Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpAddRoles').innerHTML,'Help Derived Add Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Add&nbsp;" />
+                                                Determines who can add information on&nbsp;pages.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpAddRoles').innerHTML,'Help Derived Add Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Add&nbsp;" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -472,7 +472,7 @@
                                         </tr>
                                         <tr>
                                             <td class="formSectionHelp">
-                                                Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpEditRoles').innerHTML,'Help Derived Edit Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Edit&nbsp;" />
+                                                Determines who can edit or save&nbsp;information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpEditRoles').innerHTML,'Help Derived Edit Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title="&nbsp;Roles that may Edit&nbsp;" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -498,7 +498,7 @@
                                         </tr>
                                         <tr>
                                             <td class="pickListTableHelp">
-                                                Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpDeleteRoles').innerHTML,'Help Derived Delete Roles')" src='<%=ResolveUrl("~/Public/GrowthWare/Images/help.gif")%>' title="Roles that may Delete" />
+                                                Determines who can delete information on a page.&nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpDeleteRoles').innerHTML,'Help Derived Delete Roles')" src='<%=ResolveUrl("~/Content/GrowthWare/Images/help.gif")%>' title="Roles that may Delete" />
                                             </td>
                                         </tr>
                                         <tr>
