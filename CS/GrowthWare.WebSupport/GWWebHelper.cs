@@ -184,7 +184,7 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
-        /// Returns MapPath("~\Public\Skins\")
+        /// Returns MapPath("~\Content\Skins\")
         /// </summary>
         /// <value>String</value>
         /// <returns>String</returns>

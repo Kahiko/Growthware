@@ -69,10 +69,10 @@ namespace GrowthWare.WebApplication
             );
 
             bundles.Add(
-                new StyleBundle("~/Public/CSS/jQueryUIThemes/Redmond/UI").Include(
-                    "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
-                    "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
-                    "~/" + ConfigSettings.AppName + "/Public/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
+                new StyleBundle("~/Content/CSS/jQueryUIThemes/Redmond/UI").Include(
+                    "~/" + ConfigSettings.AppName + "/Content/CSS/jQueryUIThemes/Redmond/jquery-ui.css",
+                    "~/" + ConfigSettings.AppName + "/Content/CSS/jQueryUIThemes/Redmond/jquery-ui.structure.css",
+                    "~/" + ConfigSettings.AppName + "/Content/CSS/jQueryUIThemes/Redmond/jquery-ui.theme.css"
                 )
             );
 

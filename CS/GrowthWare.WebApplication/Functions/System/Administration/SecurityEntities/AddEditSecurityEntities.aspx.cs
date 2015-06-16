@@ -73,7 +73,7 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.SecurityEnti
             dropSkin.DataBind();
 
             DataView dvStyles = new DataView();
-            dvStyles = FileUtility.GetDirectoryTableData(Server.MapPath(@"~\Public\SiteStyles"), myDirectoryInfo, true).DefaultView;
+            dvStyles = FileUtility.GetDirectoryTableData(Server.MapPath(@"~\Content\SiteStyles"), myDirectoryInfo, true).DefaultView;
             dvStyles.RowFilter = "[Name] like '%.css'";
             dropStyles.DataSource = dvStyles;
             dropStyles.DataTextField = "ShortFileName";
