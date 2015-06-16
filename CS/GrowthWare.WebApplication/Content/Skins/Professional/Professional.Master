@@ -9,7 +9,7 @@
         <%: Scripts.Render("~/bundles/jquery") %>
         <%: Scripts.Render("~/bundles/jqueryUI") %>
         <%: Scripts.Render("~/bundles/GrowthWare")%>
-        <%: Styles.Render("~/Content/CSS/jQueryUIThemes/Redmond/UI")%>
+        <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
         <asp:ContentPlaceHolder ID="HeadContent" runat="server" />
         <script type="text/javascript" language="javascript">
             function afterLoadFunctions() {

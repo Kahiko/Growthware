@@ -9,7 +9,12 @@
     <%: Scripts.Render("~/bundles/jquery") %>
     <%: Scripts.Render("~/bundles/jqueryUI") %>
     <%: Scripts.Render("~/bundles/GrowthWare")%>
-    <%: Styles.Render("~/Content/CSS/jQueryUIThemes/Redmond/UI")%>
+
+    <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
+    <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
+    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
+    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
+    
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
     <script type="text/javascript" language="javascript">
@@ -97,9 +102,6 @@
             });
         });
     </script>
-    <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
-    <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
-    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 </head>
 <body>
 	<div class="page">
