@@ -242,6 +242,9 @@ Namespace Utilities
                 mRetVal = CType(HttpContext.Current.Cache(mAnonMenu), DataTable)
                 If mRetVal Is Nothing Then
                     mRetVal = mBAccount.GetMenu(account, menuType)
+                    For Each item As DataRow In mRetVal.Rows
+                        item("URL") = "?Action=" + item("URL").ToString()
+                    Next
                     CacheController.AddToCacheDependency(mAnonMenu, mRetVal)
                 End If
             Else
@@ -252,12 +255,11 @@ Namespace Utilities
                     HttpContext.Current.Session(mMenuName) = mRetVal
                 Else
                     mRetVal = mBAccount.GetMenu(account, menuType)
+                    For Each item As DataRow In mRetVal.Rows
+                        item("URL") = "?Action=" + item("URL").ToString()
+                    Next
                 End If
             End If
-            For Each item As DataRow In mRetVal.Rows
-                item("URL") = "?Action=" + item("URL").ToString()
-            Next
-
             Return mRetVal
         End Function
 
