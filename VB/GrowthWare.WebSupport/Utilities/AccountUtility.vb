@@ -254,6 +254,10 @@ Namespace Utilities
                     mRetVal = mBAccount.GetMenu(account, menuType)
                 End If
             End If
+            For Each item As DataRow In mRetVal.Rows
+                item("URL") = "?Action=" + item("URL").ToString()
+            Next
+
             Return mRetVal
         End Function
 
