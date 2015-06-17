@@ -302,17 +302,21 @@ namespace GrowthWare.WebSupport.Utilities
                     if (mRetVal == null)
                     {
                         mRetVal = mBAccount.GetMenu(account, menuType);
+                        foreach (DataRow item in mRetVal.Rows)
+                        {
+                            item["URL"] = "?Action=" + item["URL"].ToString();
+                        }
                         HttpContext.Current.Session[mMenuName] = mRetVal;
                     }
                 }
                 else 
                 {
                     mRetVal = mBAccount.GetMenu(account, menuType);
+                    foreach (DataRow item in mRetVal.Rows)
+                    {
+                        item["URL"] = "?Action=" + item["URL"].ToString();
+                    }
                 }
-            }
-            foreach (DataRow item in mRetVal.Rows)
-            {
-                item["URL"] = "?Action=" + item["URL"].ToString();
             }
             return mRetVal;
         }
