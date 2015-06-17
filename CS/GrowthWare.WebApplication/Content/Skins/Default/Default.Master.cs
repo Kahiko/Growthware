@@ -8,7 +8,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
-namespace GrowthWare.WebApplication.Public.Skins.Default
+namespace GrowthWare.WebApplication.Content.Skins.Default
 {
     public partial class Default : System.Web.UI.MasterPage
     {

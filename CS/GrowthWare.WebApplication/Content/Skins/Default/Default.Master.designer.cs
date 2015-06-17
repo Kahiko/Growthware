@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace GrowthWare.WebApplication.Public.Skins.Default {
+namespace GrowthWare.WebApplication.Content.Skins.Default {
     
     
     public partial class Default {
