@@ -3,6 +3,8 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         var mHREF = $(this).attr("href");
+        mHREF = mHREF.replace("?Action=", "");
+        mHREF = mHREF.replace("&Action=", "");
         window.location.hash = "?Action=" + mHREF;
         return false;
     });
@@ -11,6 +13,8 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         var mHREF = $(this).attr("href");
+        mHREF = mHREF.replace("?Action=", "");
+        mHREF = mHREF.replace("&Action=", "");
         window.location.hash = "?Action=" + mHREF;
         return false;
     });
@@ -19,6 +23,8 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         var mHREF = $(this).attr("href");
+        mHREF = mHREF.replace("?Action=", "");
+        mHREF = mHREF.replace("&Action=", "");
         window.location.hash = "?Action=" + mHREF;
         return false;
     });
@@ -27,6 +33,8 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         var mHREF = $(this).attr("href");
+        mHREF = mHREF.replace("?Action=", "");
+        mHREF = mHREF.replace("&Action=", "");
         window.location.hash = "?Action=" + mHREF;
         return false;
     });
@@ -35,6 +43,8 @@
         e.stopImmediatePropagation();
         e.preventDefault();
         var mHREF = $(this).attr("href");
+        mHREF = mHREF.replace("?Action=", "");
+        mHREF = mHREF.replace("&Action=", "");
         window.location.hash = "?Action=" + mHREF;
         return false;
     });

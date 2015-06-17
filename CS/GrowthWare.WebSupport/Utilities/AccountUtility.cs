@@ -310,6 +310,10 @@ namespace GrowthWare.WebSupport.Utilities
                     mRetVal = mBAccount.GetMenu(account, menuType);
                 }
             }
+            foreach (DataRow item in mRetVal.Rows)
+            {
+                item["URL"] = "?Action=" + item["URL"].ToString();
+            }
             return mRetVal;
         }
 
