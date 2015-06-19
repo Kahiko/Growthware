@@ -105,6 +105,7 @@
 
         }
     </script>
+    <div id="helpPopup" style="display: none;"></div>
 	<input type="hidden" id="hdnCanSaveRoles" runat="server" />
 	<input type="hidden" id="hdnCanSaveGroups" runat="server" />
 	<input type="hidden" id="hdnCanSaveStatus" runat="server" />
