@@ -221,9 +221,9 @@
     <Content Include="Content\Growthware\Images\sort_asc.png" />
     <Content Include="Content\Growthware\Images\sort_desc.png" />
     <Content Include="Content\Growthware\Images\Spacer.gif" />
-    <Content Include="Content\SiteStyles\Arc.css" />
-    <Content Include="Content\SiteStyles\Blue Arrow.css" />
-    <Content Include="Content\SiteStyles\Default.css" />
+    <Content Include="Content\FormStyles\Arc.css" />
+    <Content Include="Content\FormStyles\Blue Arrow.css" />
+    <Content Include="Content\FormStyles\Default.css" />
     <Content Include="Content\Growthware\Styles\GrowthWare.css" />
     <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />

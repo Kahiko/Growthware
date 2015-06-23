@@ -8,7 +8,7 @@ Public Class _Default2
     Protected Sub Page_Load(ByVal sender As Object, ByVal e As System.EventArgs) Handles Me.Load
         Dim mSecurityEntityID As Integer = Integer.Parse(ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile.Account).Item(MClientChoices.SecurityEntityId).ToString())
         Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID)
-        formStyles.Attributes("href") = GWWebHelper.RootSite + "/Content/SiteStyles/" + mSecurityEntityProfile.Style + ".css"
+        formStyles.Attributes("href") = GWWebHelper.RootSite + "/Content/FormStyles/" + mSecurityEntityProfile.Style + ".css"
     End Sub
 
 End Class
