@@ -228,9 +228,9 @@
     <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.css" />
     <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.structure.css" />
     <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
-    <Content Include="Content\SiteStyles\Arc.css" />
-    <Content Include="Content\SiteStyles\Blue Arrow.css" />
-    <Content Include="Content\SiteStyles\Default.css" />
+    <Content Include="Content\FormStyles\Arc.css" />
+    <Content Include="Content\FormStyles\Blue Arrow.css" />
+    <Content Include="Content\FormStyles\Default.css" />
     <Content Include="Content\Skins\Arc\CSS\Skin.css" />
     <Content Include="Content\Skins\Arc\Images\black_lines_top.gif" />
     <Content Include="Content\Skins\Arc\Images\bullet.gif" />

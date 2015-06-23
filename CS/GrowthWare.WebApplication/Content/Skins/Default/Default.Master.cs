@@ -16,7 +16,7 @@ namespace GrowthWare.WebApplication.Content.Skins.Default
         {
             int mSecurityEntityID = int.Parse(ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)[MClientChoices.SecurityEntityId].ToString());
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID);
-            formStyles.Attributes["href"] = GWWebHelper.RootSite + "/Content/SiteStyles/" + mSecurityEntityProfile.Style + ".css";
+            formStyles.Attributes["href"] = GWWebHelper.RootSite + "/Content/FormStyles/" + mSecurityEntityProfile.Style + ".css";
 
         }
     }
