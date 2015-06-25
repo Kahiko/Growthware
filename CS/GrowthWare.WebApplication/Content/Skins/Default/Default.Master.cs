@@ -14,7 +14,12 @@ namespace GrowthWare.WebApplication.Content.Skins.Default
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            int mSecurityEntityID = int.Parse(ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)[MClientChoices.SecurityEntityId].ToString());
+            int mSecurityEntityID = SecurityEntityUtility.DefaultProfile().Id;
+            MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+            if (mAccountProfile != null) 
+            {
+                mSecurityEntityID = int.Parse(ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)[MClientChoices.SecurityEntityId].ToString());
+            }
             MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID);
             formStyles.Attributes["href"] = GWWebHelper.RootSite + "/Content/FormStyles/" + mSecurityEntityProfile.Style + ".css";
 
