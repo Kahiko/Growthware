@@ -142,11 +142,17 @@ namespace GrowthWare.WebSupport.Context
                 mLog.Debug("Ended");
                 return;
             }
-            if ((HttpContext.Current.Session["EditId"] != null))
+            if (!processRequest())
+            {
+                mLog.Debug("Request not for processing!");
+                mLog.Debug("Ended");
+                return;
+            }
+            if ((HttpContext.Current.Session["EditId"] != null)) 
+            {
                 HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
-            dynamic mAccountProfile = AccountUtility.GetProfile(mAccountName);
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
-            HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
+            }
+            MAccountProfile mAccountProfile = AccountUtility.GetProfile(mAccountName);
             string mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
             if (string.IsNullOrEmpty(mAction))
             {
@@ -154,40 +160,32 @@ namespace GrowthWare.WebSupport.Context
                 mLog.Debug("Ended");
                 return;
             }
-            if (!processRequest())
-            {
-                mLog.Debug("Request not for processing!");
-                mLog.Debug("Ended");
-                return;
-            }
             WebSupportException mException = null;
-
-            mLog.Debug("Action: " + mAction);
             MFunctionProfile mFunctionProfile = FunctionUtility.CurrentProfile();
             if (mFunctionProfile == null)
                 mFunctionProfile = FunctionUtility.GetProfile(mAction);
-
-            if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
+            if (mAccountProfile == null & mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS")
             {
-                if (mAccountProfile == null & mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS")
+                string mMessage = "Could not find account '" + mAccountName + "'";
+                mLog.Info(mMessage);
+                if (ConfigSettings.AutoCreateAccount)
                 {
-                    string mMessage = "Could not find account '" + mAccountName + "'";
+                    mMessage = "Creating new account for '" + mAccountName + "'";
                     mLog.Info(mMessage);
-                    if (ConfigSettings.AutoCreateAccount)
-                    {
-                        mMessage = "Creating new account for '" + mAccountName + "'";
-                        mLog.Info(mMessage);
-                        //MAccountProfile mAccountProfileToSave = AccountUtility.AutoCreateAccount();
-                        AccountUtility.AutoCreateAccount();
-                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                        mException = new WebSupportException("Your account details need to be set.");
-                        GWWebHelper.ExceptionError = mException;
-                        string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                        FunctionUtility.SetCurrentProfile(mFunctionProfile);
-                        HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
-                        //mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account);
-                    }
+                    AccountUtility.AutoCreateAccount();
+                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
+                    mException = new WebSupportException("Your account details need to be set.");
+                    GWWebHelper.ExceptionError = mException;
+                    string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                    HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
+                    FunctionUtility.SetCurrentProfile(mFunctionProfile);
                 }
+            }
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
+            HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
+            string[] mPassthroughActions = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"};
+            if (!mPassthroughActions.Contains(mAction.ToUpper(CultureInfo.InvariantCulture)))
+            {
                 FunctionUtility.SetCurrentProfile(mFunctionProfile);
                 dynamic mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
                 HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
@@ -235,7 +233,7 @@ namespace GrowthWare.WebSupport.Context
             }
             else
             {
-                mLog.Debug("Menu data or Logoff/Logon requested");
+                mLog.Debug("Menu data or Logoff/Logon or ChangePassword requested");
             }
             //processOverridePage(mFunctionProfile);
         }
@@ -355,32 +353,32 @@ namespace GrowthWare.WebSupport.Context
             return mRetVal;
         }
 
-        private static void processOverridePage(MFunctionProfile functionProfile) 
-        {
-            if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1 && functionProfile != null) 
-            {
-                Logger mLog = Logger.Instance();
-                String mPage = @"/" + ConfigSettings.AppName + functionProfile.Source;
-                MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
-                String mSkinLocation = "/Public/Skins/" + mSecProfile.Skin + "/";
-                mPage = mPage.Replace("/", @"\");
-                String currentExecutionFilePath = HttpContext.Current.Request.CurrentExecutionFilePath;
-                String mSystemOverridePage = mPage.Replace(@"\System\", @"\Overrides\");
-                String mSkinOverridePage = mPage.Replace(@"\System\", mSkinLocation);
-                if (File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage))) 
-                {
-                    mLog.Debug("Transferring to system override page: " + mSystemOverridePage);
-                    HttpContext.Current.Server.Execute(mSystemOverridePage, false);
-                    HttpContext.Current.ApplicationInstance.CompleteRequest();
-                }
-                else if (File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)))
-                {
-                    mLog.Debug("Transferring to skin override override page: " + mSkinOverridePage);
-                    HttpContext.Current.Server.Execute(mSkinOverridePage, false);
-                    HttpContext.Current.ApplicationInstance.CompleteRequest();
-                }
-            }
-        }
+        //private static void processOverridePage(MFunctionProfile functionProfile) 
+        //{
+        //    if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1 && functionProfile != null) 
+        //    {
+        //        Logger mLog = Logger.Instance();
+        //        String mPage = @"/" + ConfigSettings.AppName + functionProfile.Source;
+        //        MSecurityEntityProfile mSecProfile = SecurityEntityUtility.CurrentProfile();
+        //        String mSkinLocation = "/Public/Skins/" + mSecProfile.Skin + "/";
+        //        mPage = mPage.Replace("/", @"\");
+        //        String currentExecutionFilePath = HttpContext.Current.Request.CurrentExecutionFilePath;
+        //        String mSystemOverridePage = mPage.Replace(@"\System\", @"\Overrides\");
+        //        String mSkinOverridePage = mPage.Replace(@"\System\", mSkinLocation);
+        //        if (File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage))) 
+        //        {
+        //            mLog.Debug("Transferring to system override page: " + mSystemOverridePage);
+        //            HttpContext.Current.Server.Execute(mSystemOverridePage, false);
+        //            HttpContext.Current.ApplicationInstance.CompleteRequest();
+        //        }
+        //        else if (File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)))
+        //        {
+        //            mLog.Debug("Transferring to skin override override page: " + mSkinOverridePage);
+        //            HttpContext.Current.Server.Execute(mSkinOverridePage, false);
+        //            HttpContext.Current.ApplicationInstance.CompleteRequest();
+        //        }
+        //    }
+        //}
 
         /// <summary>
         /// Implements IDispose

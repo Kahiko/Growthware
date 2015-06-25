@@ -161,7 +161,7 @@ namespace GrowthWare.WebSupport.Utilities
             catch (Exception ex)
             {
                 mLog.Error(ex);
-                throw ex;
+                throw;
             }
             return mAccountProfileToSave;
         }
