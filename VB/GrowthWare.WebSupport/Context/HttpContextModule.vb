@@ -100,45 +100,40 @@ Namespace Context
                 mLog.Debug("Ended")
                 Exit Sub
             End If
+            If Not processRequest() Then
+                mLog.Debug("Request not for processing!")
+                mLog.Debug("Ended")
+                Exit Sub
+            End If
             If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
             Dim mAccountProfile = AccountUtility.GetProfile(mAccountName)
-            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
-            HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             If String.IsNullOrEmpty(mAction) Then
                 mLog.Debug("No Action!")
                 mLog.Debug("Ended")
                 Exit Sub
             End If
-            If Not processRequest() Then
-                mLog.Debug("Request not for processing!")
-                mLog.Debug("Ended")
-                Exit Sub
-            End If
             Dim mException As WebSupportException = Nothing
-
-            mLog.Debug("Action: " + mAction)
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.CurrentProfile()
             If mFunctionProfile Is Nothing Then mFunctionProfile = FunctionUtility.GetProfile(mAction)
-
-            If Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
-                If mAccountProfile Is Nothing And mAccountName.ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" Then
-                    Dim mMessage As String = "Could not find account '" + mAccountName + "'"
+            If mAccountProfile Is Nothing And mAccountName.ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" Then
+                Dim mMessage As String = "Could not find account '" + mAccountName + "'"
+                mLog.Info(mMessage)
+                If ConfigSettings.AutoCreateAccount Then
+                    mMessage = "Creating new account for '" + mAccountName + "'"
                     mLog.Info(mMessage)
-                    If ConfigSettings.AutoCreateAccount Then
-                        mMessage = "Creating new account for '" + mAccountName + "'"
-                        mLog.Info(mMessage)
-                        'Dim mAccountProfileToSave As MAccountProfile = AccountUtility.AutoCreateAccount()
-                        AccountUtility.AutoCreateAccount()
-                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                        mException = New WebSupportException("Your account details need to be set.")
-                        GWWebHelper.ExceptionError = mException
-                        Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                        FunctionUtility.SetCurrentProfile(mFunctionProfile)
-                        HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
-                        'mAccountProfile = AccountUtility.GetProfile(mAccountProfileToSave.Account)
-                    End If
+                    AccountUtility.AutoCreateAccount()
+                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                    mException = New WebSupportException("Your account details need to be set.")
+                    GWWebHelper.ExceptionError = mException
+                    Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                    FunctionUtility.SetCurrentProfile(mFunctionProfile)
                 End If
+            End If
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
+            HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
+            Dim mPassthroughActions As String() = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"}
+            If Not mPassthroughActions.Contains(mAction.ToUpper(CultureInfo.InvariantCulture)) Then
                 FunctionUtility.SetCurrentProfile(mFunctionProfile)
                 Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
                 HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
@@ -155,8 +150,8 @@ Namespace Context
                             If mAction.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
                                 mException = New WebSupportException("Your account details need to be set.")
                                 GWWebHelper.ExceptionError = mException
-                                Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
+                                Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
                             End If
                         End If
                     Case Else
@@ -176,9 +171,8 @@ Namespace Context
                         End If
                 End Select
             Else
-                mLog.Debug("Menu data or Logoff/Logon requested")
+                mLog.Debug("Menu data or Logoff/Logon or ChangePassword requested")
             End If
-            'processOverridePage(mFunctionProfile)
         End Sub
 
         ''' <summary>
@@ -327,30 +321,30 @@ Namespace Context
             Return mRetval
         End Function
 
-        Private Shared Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
-            If Not functionProfile Is Nothing Then
-                ' do not process API calls
-                If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
-                    Dim mLog As Logger = Logger.Instance()
-                    Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
-                    Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-                    Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
-                    mPage = mPage.Replace("/", "\")
-                    Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
-                    Dim mSkinOverridePage As String = mPage.Replace("\System\", mSkinLocation)
-                    If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
-                        mLog.Debug("Transferring to system override page: " + mSystemOverridePage)
-                        HttpContext.Current.Server.Execute(mSystemOverridePage, False)
-                        HttpContext.Current.ApplicationInstance.CompleteRequest()
-                    ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)) Then
-                        mLog.Debug("Transferring to skin override page: " + mSkinOverridePage)
-                        HttpContext.Current.Server.Execute(mSkinOverridePage, False)
-                        HttpContext.Current.ApplicationInstance.CompleteRequest()
-                    End If
-                End If
+        'Private Shared Sub processOverridePage(ByVal functionProfile As MFunctionProfile)
+        '    If Not functionProfile Is Nothing Then
+        '        ' do not process API calls
+        '        If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
+        '            Dim mLog As Logger = Logger.Instance()
+        '            Dim mPage As String = "/" + ConfigSettings.AppName + functionProfile.Source
+        '            Dim mSecProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+        '            Dim mSkinLocation As String = "/Public/Skins/" + mSecProfile.Skin + "/"
+        '            mPage = mPage.Replace("/", "\")
+        '            Dim mSystemOverridePage As String = mPage.Replace("\System\", "\Overrides\")
+        '            Dim mSkinOverridePage As String = mPage.Replace("\System\", mSkinLocation)
+        '            If File.Exists(HttpContext.Current.Server.MapPath(mSystemOverridePage)) Then
+        '                mLog.Debug("Transferring to system override page: " + mSystemOverridePage)
+        '                HttpContext.Current.Server.Execute(mSystemOverridePage, False)
+        '                HttpContext.Current.ApplicationInstance.CompleteRequest()
+        '            ElseIf File.Exists(HttpContext.Current.Server.MapPath(mSkinOverridePage)) Then
+        '                mLog.Debug("Transferring to skin override page: " + mSkinOverridePage)
+        '                HttpContext.Current.Server.Execute(mSkinOverridePage, False)
+        '                HttpContext.Current.ApplicationInstance.CompleteRequest()
+        '            End If
+        '        End If
 
-            End If
-        End Sub
+        '    End If
+        'End Sub
 
     End Class
 

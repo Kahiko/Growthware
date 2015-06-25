@@ -135,7 +135,7 @@ Namespace Utilities
                 AccountUtility.SetPrincipal(mAccountProfileToSave)
             Catch ex As Exception
                 mLog.Error(ex)
-                Throw ex
+                Throw
             End Try
             Return mAccountProfileToSave
         End Function

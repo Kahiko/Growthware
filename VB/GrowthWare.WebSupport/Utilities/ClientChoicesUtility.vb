@@ -16,7 +16,7 @@ Namespace Utilities
         ''' Returns the client choices given the account
         ''' </summary>
         ''' <param name="account">String</param>
-        ''' <returns>MClientChoicesState</returns>
+        ''' <returns>MClientChoicesState and sets it into session.</returns>
         Public Shared Function GetClientChoicesState(ByVal account As String) As MClientChoicesState
             Return GetClientChoicesState(account, False)
         End Function
@@ -26,7 +26,7 @@ Namespace Utilities
         ''' </summary>
         ''' <param name="account">The account.</param>
         ''' <param name="fromDB">if set to <c>true</c> [from database].</param>
-        ''' <returns>MClientChoicesState.</returns>
+        ''' <returns>MClientChoicesState and sets it into session.</returns>
         Public Shared Function GetClientChoicesState(ByVal account As String, ByVal fromDB As Boolean) As MClientChoicesState
             If String.IsNullOrEmpty(account) Then Throw New ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!")
             Dim mRetVal As MClientChoicesState = Nothing
