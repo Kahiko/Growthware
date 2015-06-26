@@ -137,6 +137,7 @@ namespace GrowthWare.WebSupport.Utilities
             mAccountProfileToSave.PreferredName = "Auto created";
             mAccountProfileToSave.Email = "change@me.com";
             mAccountProfileToSave.Location = "Hawaii";
+            mAccountProfileToSave.TimeZone = -8;
             mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id;
             mAccountProfileToSave.AddedDate = DateTime.Now;
             mAccountProfileToSave.SetGroups(mGroups);
@@ -400,10 +401,13 @@ namespace GrowthWare.WebSupport.Utilities
         /// <remarks></remarks>
         public static void RemoveInMemoryInformation(Boolean removeWorkflow)
         {
-            HttpContext.Current.Session.Clear();
-            if (removeWorkflow) 
-            { 
-            
+            if (HttpContext.Current.Session != null) 
+            {
+                HttpContext.Current.Session.Clear();
+                if (removeWorkflow)
+                {
+
+                }
             }
         }
 

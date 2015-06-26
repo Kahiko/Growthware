@@ -136,6 +136,19 @@ namespace GrowthWare.WebSupport.Context
             mLog.Debug("Started");
             mLog.Debug("CurrentExecutionFilePath " + HttpContext.Current.Request.CurrentExecutionFilePath);
             mLog.Debug("HttpContextUserName: " + mAccountName);
+            MAccountProfile mAccountProfile = AccountUtility.GetProfile(mAccountName);
+            WebSupportException mException = null;
+            if (mAccountProfile == null & mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS")
+            {
+                string mMessage = "Could not find account '" + mAccountName + "'";
+                mLog.Info(mMessage);
+                if (ConfigSettings.AutoCreateAccount)
+                {
+                    mMessage = "Creating new account for '" + mAccountName + "'";
+                    mLog.Info(mMessage);
+                    AccountUtility.AutoCreateAccount();
+                }
+            }
             if (HttpContext.Current.Session == null)
             {
                 mLog.Debug("No Session!");
@@ -148,11 +161,7 @@ namespace GrowthWare.WebSupport.Context
                 mLog.Debug("Ended");
                 return;
             }
-            if ((HttpContext.Current.Session["EditId"] != null)) 
-            {
-                HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
-            }
-            MAccountProfile mAccountProfile = AccountUtility.GetProfile(mAccountName);
+            if ((HttpContext.Current.Session["EditId"] != null)) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
             string mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
             if (string.IsNullOrEmpty(mAction))
             {
@@ -160,36 +169,16 @@ namespace GrowthWare.WebSupport.Context
                 mLog.Debug("Ended");
                 return;
             }
-            WebSupportException mException = null;
             MFunctionProfile mFunctionProfile = FunctionUtility.CurrentProfile();
-            if (mFunctionProfile == null)
-                mFunctionProfile = FunctionUtility.GetProfile(mAction);
-            if (mAccountProfile == null & mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS")
-            {
-                string mMessage = "Could not find account '" + mAccountName + "'";
-                mLog.Info(mMessage);
-                if (ConfigSettings.AutoCreateAccount)
-                {
-                    mMessage = "Creating new account for '" + mAccountName + "'";
-                    mLog.Info(mMessage);
-                    AccountUtility.AutoCreateAccount();
-                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                    mException = new WebSupportException("Your account details need to be set.");
-                    GWWebHelper.ExceptionError = mException;
-                    string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                    HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
-                    FunctionUtility.SetCurrentProfile(mFunctionProfile);
-                }
-            }
+            if (mFunctionProfile == null) mFunctionProfile = FunctionUtility.GetProfile(mAction);
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
             HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
-            string[] mPassthroughActions = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"};
-            if (!mPassthroughActions.Contains(mAction.ToUpper(CultureInfo.InvariantCulture)))
+            if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
             {
                 FunctionUtility.SetCurrentProfile(mFunctionProfile);
                 dynamic mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
                 HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
-                switch ((int)mAccountProfile.Status)
+                switch (mAccountProfile.Status)
                 {
                     case (int)SystemStatus.ChangePassword:
                         mException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
