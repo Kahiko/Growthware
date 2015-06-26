@@ -95,6 +95,17 @@ Namespace Context
             mLog.Debug("Started")
             mLog.Debug("CurrentExecutionFilePath " + HttpContext.Current.Request.CurrentExecutionFilePath)
             mLog.Debug("HttpContextUserName: " + mAccountName)
+            Dim mAccountProfile = AccountUtility.GetProfile(mAccountName)
+            Dim mException As WebSupportException = Nothing
+            If mAccountProfile Is Nothing And mAccountName.ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" Then
+                Dim mMessage As String = "Could not find account '" + mAccountName + "'"
+                mLog.Info(mMessage)
+                If ConfigSettings.AutoCreateAccount Then
+                    mMessage = "Creating new account for '" + mAccountName + "'"
+                    mLog.Info(mMessage)
+                    AccountUtility.AutoCreateAccount()
+                End If
+            End If
             If HttpContext.Current.Session Is Nothing Then
                 mLog.Debug("No Session!")
                 mLog.Debug("Ended")
@@ -106,34 +117,17 @@ Namespace Context
                 Exit Sub
             End If
             If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
-            Dim mAccountProfile = AccountUtility.GetProfile(mAccountName)
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             If String.IsNullOrEmpty(mAction) Then
                 mLog.Debug("No Action!")
                 mLog.Debug("Ended")
                 Exit Sub
             End If
-            Dim mException As WebSupportException = Nothing
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.CurrentProfile()
             If mFunctionProfile Is Nothing Then mFunctionProfile = FunctionUtility.GetProfile(mAction)
-            If mAccountProfile Is Nothing And mAccountName.ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" Then
-                Dim mMessage As String = "Could not find account '" + mAccountName + "'"
-                mLog.Info(mMessage)
-                If ConfigSettings.AutoCreateAccount Then
-                    mMessage = "Creating new account for '" + mAccountName + "'"
-                    mLog.Info(mMessage)
-                    AccountUtility.AutoCreateAccount()
-                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                    mException = New WebSupportException("Your account details need to be set.")
-                    GWWebHelper.ExceptionError = mException
-                    Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                    FunctionUtility.SetCurrentProfile(mFunctionProfile)
-                End If
-            End If
             Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
             HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
-            Dim mPassthroughActions As String() = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"}
-            If Not mPassthroughActions.Contains(mAction.ToUpper(CultureInfo.InvariantCulture)) Then
+            If Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                 FunctionUtility.SetCurrentProfile(mFunctionProfile)
                 Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
                 HttpContext.Current.Items("SecurityInfo") = mSecurityInfo

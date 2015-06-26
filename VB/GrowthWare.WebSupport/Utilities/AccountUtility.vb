@@ -114,6 +114,7 @@ Namespace Utilities
             mAccountProfileToSave.PreferredName = "Auto created"
             mAccountProfileToSave.Email = "change@me.com"
             mAccountProfileToSave.Location = "Hawaii"
+            mAccountProfileToSave.TimeZone = -8
             mAccountProfileToSave.AddedBy = mCurrentAccountProfile.Id
             mAccountProfileToSave.AddedDate = DateTime.Now
             mAccountProfileToSave.SetGroups(mGroups)
