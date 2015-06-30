@@ -162,6 +162,8 @@ namespace GrowthWare.WebSupport.Context
                 return;
             }
             if ((HttpContext.Current.Session["EditId"] != null)) HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
+            HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
             string mAction = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action");
             if (string.IsNullOrEmpty(mAction))
             {
@@ -171,8 +173,6 @@ namespace GrowthWare.WebSupport.Context
             }
             MFunctionProfile mFunctionProfile = FunctionUtility.CurrentProfile();
             if (mFunctionProfile == null) mFunctionProfile = FunctionUtility.GetProfile(mAction);
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
-            HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
             if (!mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") && !(mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGOFF" | mAction.ToUpper(CultureInfo.InvariantCulture) == "LOGON" | mAction.ToUpper(CultureInfo.InvariantCulture) == "CHANGEPASSWORD"))
             {
                 FunctionUtility.SetCurrentProfile(mFunctionProfile);
