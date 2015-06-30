@@ -116,6 +116,8 @@ Namespace Context
                 mLog.Debug("Ended")
                 Exit Sub
             End If
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
+            HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
             If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             If String.IsNullOrEmpty(mAction) Then
@@ -125,8 +127,6 @@ Namespace Context
             End If
             Dim mFunctionProfile As MFunctionProfile = FunctionUtility.CurrentProfile()
             If mFunctionProfile Is Nothing Then mFunctionProfile = FunctionUtility.GetProfile(mAction)
-            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName)
-            HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
             If Not mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains("MENUS") AndAlso Not (mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGOFF" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "LOGON" Or mAction.ToUpper(CultureInfo.InvariantCulture) = "CHANGEPASSWORD") Then
                 FunctionUtility.SetCurrentProfile(mFunctionProfile)
                 Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
