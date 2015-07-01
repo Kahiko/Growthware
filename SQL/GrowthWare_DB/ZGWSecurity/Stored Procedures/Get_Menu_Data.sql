@@ -1,8 +1,8 @@
 ﻿/*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT,
-		@P_Navigation_Types_NVP_Detail_SeqID AS INT,
+		@P_Security_Entity_SeqID AS INT = 1,
+		@P_Navigation_Types_NVP_Detail_SeqID AS INT = 3,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Debug INT = 1
 
