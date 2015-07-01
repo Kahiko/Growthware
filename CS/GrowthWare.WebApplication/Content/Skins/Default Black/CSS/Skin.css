@@ -136,15 +136,15 @@ first child of the left and right table columns */
 }
 
 /* Horizontal Hierarchical Menu ----------------------------------------------------------*/
-#cssmenu ul,
-#cssmenu li,
-#cssmenu span,
-#cssmenu a {
+#cssMenu ul,
+#cssMenu li,
+#cssMenu span,
+#cssMenu a {
 	margin: 0;
 	padding: 0;
 	position: relative;
 }
-#cssmenu {
+#cssMenu {
 	height: 49px;
 	background: #141414;
 	background: -moz-linear-gradient(top, #32323a 0%, #141414 100%);
@@ -156,13 +156,13 @@ first child of the left and right table columns */
 	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#32323a', EndColorStr='#141414', GradientType=0);
 	border-bottom: 2px solid #0fa1e0;
 }
-#cssmenu:after,
-#cssmenu ul:after {
+#cssMenu:after,
+#cssMenu ul:after {
 	content: '';
 	display: block;
 	clear: both;
 }
-#cssmenu a {
+#cssMenu a {
 	background: #141414;
 	background: -moz-linear-gradient(top, #32323a 0%, #141414 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #32323a), color-stop(100%, #141414));
@@ -179,16 +179,16 @@ first child of the left and right table columns */
 	padding: 0 20px;
 	text-decoration: none;
 }
-#cssmenu ul {
+#cssMenu ul {
 	list-style: none;
 }
-#cssmenu > ul {
+#cssMenu > ul {
 	float: left;
 }
-#cssmenu > ul > li {
+#cssMenu > ul > li {
 	float: left;
 }
-#cssmenu > ul > li:hover:after {
+#cssMenu > ul > li:hover:after {
 	content: '';
 	display: block;
 	width: 0;
@@ -201,7 +201,7 @@ first child of the left and right table columns */
 	border-bottom: 10px solid #0fa1e0;
 	margin-left: -10px;
 }
-#cssmenu > ul > li.active a {
+#cssMenu > ul > li.active a {
 	-moz-box-shadow: inset 0 0 3px #000000;
 	-webkit-box-shadow: inset 0 0 3px #000000;
 	background: #070707;
@@ -213,7 +213,7 @@ first child of the left and right table columns */
 	background: linear-gradient(to bottom, #26262c 0%, #070707 100%);
 	filter: progid:DXImageTransform.Microsoft.Gradient(StartColorStr='#26262c', EndColorStr='#070707', GradientType=0);
 }
-#cssmenu > ul > li:hover > a {
+#cssMenu > ul > li:hover > a {
 	background: #070707;
 	background: -moz-linear-gradient(top, #26262c 0%, #070707 100%);
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #26262c), color-stop(100%, #070707));
@@ -230,23 +230,23 @@ first child of the left and right table columns */
 	-moz-border-radius: 15px 15px 0 0;
 	-webkit-border-radius: 15px 15px 0 0;
 }
-#cssmenu .has-sub {
+#cssMenu .has-sub {
 	z-index: 1;
 }
-#cssmenu .has-sub:hover > ul {
+#cssMenu .has-sub:hover > ul {
 	display: block;
 }
-#cssmenu .has-sub ul {
+#cssMenu .has-sub ul {
 	display: none;
 	position: absolute;
 	width: 200px;
 	top: 100%;
 	left: 0;
 }
-#cssmenu .has-sub ul li {
+#cssMenu .has-sub ul li {
 	*margin-bottom: -1px;
 }
-#cssmenu .has-sub ul li a {
+#cssMenu .has-sub ul li a {
 	background: #0fa1e0;
 	border-bottom: 1px dotted #6fc7ec;
 	filter: none;
@@ -255,23 +255,23 @@ first child of the left and right table columns */
 	line-height: 120%;
 	padding: 10px;
 }
-#cssmenu .has-sub ul li:hover a {
+#cssMenu .has-sub ul li:hover a {
 	background: #0c7fb0;
 }
-#cssmenu .has-sub .has-sub:hover > ul {
+#cssMenu .has-sub .has-sub:hover > ul {
 	display: block;
 }
-#cssmenu .has-sub .has-sub ul {
+#cssMenu .has-sub .has-sub ul {
 	display: none;
 	position: absolute;
 	left: 100%;
 	top: 0;
 }
-#cssmenu .has-sub .has-sub ul li a {
+#cssMenu .has-sub .has-sub ul li a {
 	background: #0c7fb0;
 	border-bottom: 1px dotted #6db2d0;
 }
-#cssmenu .has-sub .has-sub ul li a:hover {
+#cssMenu .has-sub .has-sub ul li a:hover {
 	background: #095c80;
 }
 /******** Vertical Menu ************/

@@ -12,6 +12,7 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Linq;
+using System.Data;
 
 namespace GrowthWare.WebApplication.Controllers
 {
@@ -93,6 +94,15 @@ public class AccountsController : ApiController
 
 		return Ok(mRetVal);
 	}
+
+    [HttpPost()]
+    public IHttpActionResult GetMenuData([FromUri] int menuType)
+    {
+        String mAccount = AccountUtility.HttpContextUserName();
+        MenuType mMenuType = (MenuType)(menuType);
+        DataTable mDataTable = AccountUtility.GetMenu(mAccount, mMenuType);
+        return Ok(mDataTable);
+    }
 
 	[HttpPost()]
 	public IHttpActionResult ChangePassword(MChangePassword mChangePassword)

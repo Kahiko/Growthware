@@ -13,12 +13,12 @@ namespace GrowthWare.WebApplication.Functions.System.Menus {
     public partial class VHMenu {
         
         /// <summary>
-        /// cssmenuVHMenu control.
+        /// cssMenuVHMenu control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cssmenuVHMenu;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl cssMenuVHMenu;
     }
 }

@@ -33,7 +33,7 @@ namespace GrowthWare.WebSupport.Utilities
                 foreach (DataRowView rowVeiw in datView)
                 {
                     //Define new menu item
-                    if (int.Parse(rowVeiw["FUNCTION_TYPE_SEQ_ID"].ToString(), CultureInfo.InvariantCulture) == 3)
+                    if (int.Parse(rowVeiw["Function_Type_SeqID"].ToString(), CultureInfo.InvariantCulture) == 3)
                     {
                         value.AppendLine(createLIItem(rowVeiw["Title"].ToString(), rowVeiw["URL"].ToString(), rowVeiw["Description"].ToString(), true));
                     }
@@ -79,7 +79,7 @@ namespace GrowthWare.WebSupport.Utilities
                 foreach (DataRowView datRow in datView)
                 {
                     //Define new menu item
-                    if (int.Parse(datRow["FUNCTION_TYPE_SEQ_ID"].ToString(), CultureInfo.InvariantCulture) == 3)
+                    if (int.Parse(datRow["Function_Type_SeqID"].ToString(), CultureInfo.InvariantCulture) == 3)
                     {
                         stringBuilder.AppendLine(createLIItem(datRow["Title"].ToString(), datRow["URL"].ToString(), datRow["Description"].ToString(), true));
                     }
