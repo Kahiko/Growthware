@@ -256,9 +256,6 @@ Namespace Utilities
                     HttpContext.Current.Session(mMenuName) = mRetVal
                 Else
                     mRetVal = mBAccount.GetMenu(account, menuType)
-                    For Each item As DataRow In mRetVal.Rows
-                        item("URL") = "?Action=" + item("URL").ToString()
-                    Next
                 End If
             End If
             Return mRetVal

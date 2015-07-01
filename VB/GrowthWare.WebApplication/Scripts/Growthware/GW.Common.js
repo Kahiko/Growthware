@@ -526,7 +526,8 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                             });
                         } else {
                             var msg = "Sorry but there was an error: ";
-                            $container.html(msg + xhr.status + " " + xhr.statusText);
+                            //$container.html(msg + xhr.status + " " + xhr.statusText);
+                            alert(msg + xhr.status + " " + xhr.statusText);
                         }
                     });
                 } else {

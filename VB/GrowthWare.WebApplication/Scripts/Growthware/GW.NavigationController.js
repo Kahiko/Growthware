@@ -32,6 +32,56 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
             return true;
         },
 
+        buildUL: function (parent, items) {
+            $.each(items, function () {
+                if (this.label) {
+                    // create LI element and append it to the parent element.
+                    var li = $("<li></li>");
+                    // if there are sub items, call the buildUL function.
+                    if (this.items && this.items.length > 0) {
+                        var anchor = $("<a title='" + this.Description + "' href='#'><span>" + this.label + "</span></a>");
+                        anchor.appendTo(li);
+                        li.addClass("has-sub");
+                        var ul = $("<ul></ul>");
+                        ul.appendTo(li);
+                        GW.Navigation.buildUL(ul, this.items);
+                    } else {
+                        var anchor = $("<a title='" + this.Description + "' href='?Action=" + this.Action + "'><span>" + this.label + "</span></a>");
+                        anchor.appendTo(li);
+                    }
+                    li.appendTo(parent);
+                }
+            });
+        },
+
+        buildData: function (menuData) {
+            var source = [];
+            var items = [];
+            // build hierarchical source.
+            for (i = 0; i < menuData.length; i++) {
+                var item = menuData[i];
+                var id = item["MenuID"];
+                var label = item["Title"];
+                var description = item["Description"];
+                var action = item["URL"];
+                var parentid = item["ParentID"];
+
+                if (items[parentid]) {
+                    var item = { parentid: parentid, label: label, Description: description, Action: action, item: item };
+                    if (!items[parentid].items) {
+                        items[parentid].items = [];
+                    }
+                    items[parentid].items[items[parentid].items.length] = item;
+                    items[id] = item;
+                }
+                else {
+                    items[id] = { parentid: parentid, label: label, Description: description, Action: action, item: item };
+                    source[id] = items[id];
+                }
+            }
+            return source;
+        },
+
         NavigationController: {
             // Methods
             RegisterRefreshObject: function (refreshObject) {
@@ -61,20 +111,15 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                         vars[hash[0]] = hash[1];
                     }
                     for (var i in vars) {
-                        if (i != "Action")
-                        {
+                        if (i != "Action") {
                             mURL += "&" + i + "=" + vars[i];
                         }
-                        //alert(i + " == " + vars[i]);
                     }
-                    //alert(mURL)
                     var $contentContainer = $('#' + containerID);
                     var $pageMessage = $('#pageMessage');
                     switch (mNavObject.LinkBehavior) {
                         case 1: // internal
                             var options = GW.Model.DefaultWebMethodOptions();
-                            // The next line is for VB site ONLY
-                            //mURL = mURL.replace('.aspx', '');
                             options.url = mURL;
                             options.async = true;
                             options.abortable = true;
@@ -82,6 +127,8 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                             break;
                         case 2: // Popup
                             var options = GW.Model.DefaultDialogOptions();
+                            mLocation = mLocation.substring(1, mLocation.length);
+                            options.type = 'get';
                             options.async = false;
                             options.resizable = true;
                             options.url = mLocation;

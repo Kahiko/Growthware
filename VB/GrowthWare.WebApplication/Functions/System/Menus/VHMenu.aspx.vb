@@ -24,7 +24,7 @@ Public Class VHMenu
             End Try
 
         End If
-        cssmenuVHMenu.InnerHtml = mMenuString
+        cssMenuVHMenu.InnerHtml = mMenuString
     End Sub
 
 End Class

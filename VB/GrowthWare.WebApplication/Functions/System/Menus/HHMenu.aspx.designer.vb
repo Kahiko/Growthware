@@ -14,11 +14,11 @@ Option Explicit On
 Partial Public Class HHMenu
 
     '''<summary>
-    '''cssmenu control.
+    '''cssMenu control.
     '''</summary>
     '''<remarks>
     '''Auto-generated field.
     '''To modify move field declaration from designer file to code-behind file.
     '''</remarks>
-    Protected WithEvents cssmenu As Global.System.Web.UI.HtmlControls.HtmlGenericControl
+    Protected WithEvents cssMenu As Global.System.Web.UI.HtmlControls.HtmlGenericControl
 End Class

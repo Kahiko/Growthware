@@ -358,6 +358,14 @@ Namespace Controllers
             Return Me.Ok(mRetVal)
         End Function
 
+        <HttpPost>
+        Public Function GetMenuData(<FromUri()> ByVal menuType As Integer) As IHttpActionResult
+            Dim mAccount As String = AccountUtility.HttpContextUserName()
+            Dim mMenuType As MenuType = DirectCast(menuType, MenuType)
+            Dim mDataTable As DataTable = AccountUtility.GetMenu(mAccount, mMenuType)
+            Return Ok(mDataTable)
+        End Function
+
         Private Function populateAccountProfile(ByVal uiProfile As UIAccountProfile, ByVal accountProfile As MAccountProfile) As MAccountProfile
             If accountProfile Is Nothing Then accountProfile = New MAccountProfile()
             accountProfile.Account = uiProfile.Account
