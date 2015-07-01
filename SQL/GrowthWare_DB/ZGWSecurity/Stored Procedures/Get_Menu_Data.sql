@@ -128,12 +128,12 @@ AS
 
 	SELECT
 		ID as MenuID,
-		TITLE,
+		Title,
 		[Description],
 		URL,                                                                                                                                                                                                                                                              
 		Parent as ParentID,
-		Sort_Order,
-		Function_Type_SeqID as FUNCTION_TYPE_SEQ_ID
+		SortOrder,
+		Function_Type_SeqID as FunctionTypeSeqID
 	FROM
 		@V_DistinctItems
 	ORDER BY
