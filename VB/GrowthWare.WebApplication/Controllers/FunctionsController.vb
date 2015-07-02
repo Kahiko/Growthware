@@ -230,6 +230,7 @@ Namespace Controllers
                             DirectoryUtility.Save(directoryProfile)
                         End If
                     End If
+                    AccountUtility.RemoveInMemoryInformation(True)
                     mRetVal = "true"
                 Else
                     Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
