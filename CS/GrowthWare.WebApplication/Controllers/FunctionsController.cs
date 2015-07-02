@@ -314,6 +314,8 @@ namespace GrowthWare.WebApplication.Controllers
                             DirectoryUtility.Save(directoryProfile);              
                         }
                     }
+                    AccountUtility.RemoveInMemoryInformation(true);
+                    mRetVal = "true";
                 } else 
                 {
                     Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
