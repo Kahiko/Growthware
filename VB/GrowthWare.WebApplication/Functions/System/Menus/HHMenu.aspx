@@ -1,6 +1,7 @@
 ﻿<%@ Page Language="vb" AutoEventWireup="false" CodeBehind="HHMenu.aspx.vb" Inherits="GrowthWare.WebApplication.HHMenu" %>
 <script type="text/javascript" language="javascript">
     $(document).ready(function () {
+        $("#cssMenu").html('');
         var menuType = 3;  //MenuType.Hierarchical = 3
         var options = GW.Model.DefaultWebMethodOptions();
         options.async = true;
