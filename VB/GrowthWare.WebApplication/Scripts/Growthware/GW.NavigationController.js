@@ -63,7 +63,8 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                 var id = item["MenuID"];
                 var label = item["Title"];
                 var description = item["Description"];
-                var action = item["URL"];
+                var action = item["URL"].replace("?Action=", "");
+                action = action.replace("&Action=", "");
                 var parentid = item["ParentID"];
 
                 if (items[parentid]) {
