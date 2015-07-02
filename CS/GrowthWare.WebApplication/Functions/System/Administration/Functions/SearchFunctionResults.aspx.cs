@@ -25,10 +25,12 @@ namespace GrowthWare.WebApplication.Functions.System.Administration.Functions
 
         protected void Page_Init(Object sender, EventArgs e)
         {
-            string mAction = GWWebHelper.GetQueryValue(Request, "action");
+            string mAction = "Search_Functions";
             if (!String.IsNullOrEmpty(mAction))
             {
-                m_SecurityInfo = new MSecurityInfo(FunctionUtility.CurrentProfile(), AccountUtility.CurrentProfile());
+                MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
+                m_SecurityInfo = new MSecurityInfo(mFunctionProfile, AccountUtility.CurrentProfile());
+                if (!m_SecurityInfo.MayEdit) searchResults.Columns.RemoveAt(0);
                 m_ShowDeleteLink = m_SecurityInfo.MayDelete;
             }
         }
