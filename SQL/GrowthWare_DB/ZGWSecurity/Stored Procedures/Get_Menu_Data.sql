@@ -133,7 +133,7 @@ AS
 		URL,                                                                                                                                                                                                                                                              
 		Parent as ParentID,
 		Sort_Order,
-		Function_Type_SeqID as Function_Type_SeqID
+		Function_Type_SeqID as Function_Type_Seq_ID
 	FROM
 		@V_DistinctItems
 	ORDER BY
