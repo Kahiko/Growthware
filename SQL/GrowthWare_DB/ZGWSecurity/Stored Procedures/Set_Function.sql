@@ -55,7 +55,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Function]
 	@P_Description VARCHAR(512),
 	@P_Function_Type_SeqID INT,
 	@P_Source VARCHAR(512),
-	@P_Controller VARCHAR(512),
+	@P_Controller VARCHAR(512) = NULL,
 	@P_Enable_View_State int,
 	@P_Enable_Notifications int,
 	@P_Redirect_On_Timeout int,
