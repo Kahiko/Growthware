@@ -31,6 +31,7 @@ AS
 				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
+				, [Resolve]
 				, Enable_View_State
 				, Enable_Notifications
 				, Redirect_On_Timeout
@@ -64,6 +65,7 @@ AS
 				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
+				, [Resolve]
 				, Enable_View_State
 				, Enable_Notifications
 				, Redirect_On_Timeout
