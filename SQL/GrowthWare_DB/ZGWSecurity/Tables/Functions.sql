@@ -29,3 +29,22 @@
     CONSTRAINT [UK_ZGWSecurity_Functions] UNIQUE NONCLUSTERED ([Action] ASC)
 );
 
+
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'Used by AnjularJs for building routes',
+    @level0type = N'SCHEMA',
+    @level0name = N'ZGWSecurity',
+    @level1type = N'TABLE',
+    @level1name = N'Functions',
+    @level2type = N'COLUMN',
+    @level2name = N'Resolve'
+GO
+EXEC sp_addextendedproperty @name = N'MS_Description',
+    @value = N'Used by AnjularJs for building routes',
+    @level0type = N'SCHEMA',
+    @level0name = N'ZGWSecurity',
+    @level1type = N'TABLE',
+    @level1name = N'Functions',
+    @level2type = N'COLUMN',
+    @level2name = N'Controller'
