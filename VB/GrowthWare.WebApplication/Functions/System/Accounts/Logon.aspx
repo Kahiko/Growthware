@@ -49,10 +49,6 @@
         var $mIncorrectLogon = $("<%=incorrectLogon.ClientID %>");
         var $mBtnRequestChange = $('#btnRequestChange');
         var $mLogonPage = $('#LogonPage');
-        //$mIncorrectLogon.css({ display: 'none' });
-        //$mClientMessage.css({ display: 'none' });
-        //$mBtnRequestChange.css({ display: 'none' });
-
         $mIncorrectLogon.css('visibility', 'hidden');
         $mClientMessage.css('visibility', 'hidden');
         $mBtnRequestChange.css('visibility', 'hidden');
@@ -75,7 +71,6 @@
             GW.Common.JQueryHelper.callWeb(options, logonSuccess, logonError);
         } catch (e) {
             mRetHTML = 'Error attempting to call logon\n' + e.Message;
-            //$mClientMessage.css({ display: 'none' });
             $mClientMessage.css('visibility', 'hidden');
             $mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
         }
@@ -142,13 +137,11 @@
 	        jQuery.event.trigger('~reLoadUI');
 	    } else {
 	        if (xhr.toString() == "Request") {
-	            //$mBtnRequestChange.css({ display: 'inline' });
 	            $mBtnRequestChange.css('visibility', 'visible');
 	        } else {
-	            mRetHTML = xhr.d;
+	            mRetHTML = xhr;
 	            $mClientMessage.html(mRetHTML.toString()).fadeIn(3000);
 	            $mClientMessage.css('visibility', 'visible');
-	            //$mIncorrectLogon.fadeIn(3000);
 	        }
 	    }
 	}

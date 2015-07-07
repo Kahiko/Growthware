@@ -13,5 +13,9 @@
         Public Property Password As String
 
         Public Property Server As String
+
+        Public Sub New(ByVal profile As MMessageProfile)
+            MyBase.New(profile)
+        End Sub
     End Class
 End Namespace

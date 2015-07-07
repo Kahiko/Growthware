@@ -92,6 +92,11 @@ Namespace Utilities
             Return retVal
         End Function
 
+        ''' <summary>
+        ''' AutoCreateAccount will automatically create an account based on infomration found both in the web.config file
+        ''' and the database.
+        ''' </summary>
+        ''' <returns>MAccountProfile</returns>
         Public Shared Function AutoCreateAccount() As MAccountProfile
             Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.GetProfile("System")
             Dim mAccountProfileToSave As New MAccountProfile()
@@ -140,7 +145,6 @@ Namespace Utilities
             End Try
             Return mAccountProfileToSave
         End Function
-
 
         ''' <summary>
         ''' Deletes the specified account seq id.

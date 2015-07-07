@@ -121,6 +121,7 @@
     <Compile Include="Utilities\MenuUtility.vb" />
     <Compile Include="Utilities\MessageUtility.vb" />
     <Compile Include="Utilities\NameValuePairUtility.vb" />
+    <Compile Include="Utilities\NotifyUtility.vb" />
     <Compile Include="Utilities\RoleUtility.vb" />
     <Compile Include="Utilities\SecurityEntityUtility.vb" />
     <Compile Include="WebImpersonate.vb" />

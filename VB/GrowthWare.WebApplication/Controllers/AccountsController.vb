@@ -13,6 +13,100 @@ Namespace Controllers
     Public Class AccountsController
         Inherits ApiController
 
+        <HttpPost>
+        Public Function ChangePassword(ByVal mChangePassword As MChangePassword) As IHttpActionResult
+            If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
+            Dim mMessageProfile As New MMessageProfile
+            Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
+            Dim mCurrentPassword = ""
+            mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword")
+            Try
+                mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType)
+            Catch ex As Exception
+                mCurrentPassword = mAccountProfile.Password
+            End Try
+            If mAccountProfile.Status <> SystemStatus.ChangePassword Then
+                If mChangePassword.OldPassword <> mCurrentPassword Then
+                    mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
+                Else
+                    With mAccountProfile
+                        .PasswordLastSet = Date.Now
+                        .Status = SystemStatus.Active
+                        .FailedAttempts = 0
+                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    End With
+                    Try
+                        AccountUtility.Save(mAccountProfile, False, False)
+                    Catch ex As Exception
+                        mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                    End Try
+                End If
+            Else
+                Try
+                    With mAccountProfile
+                        .PasswordLastSet = Date.Now
+                        .Status = SystemStatus.Active
+                        .FailedAttempts = 0
+                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    End With
+                    AccountUtility.Save(mAccountProfile, False, False)
+                Catch ex As Exception
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                End Try
+            End If
+            AccountUtility.RemoveInMemoryInformation(True)
+            Return Ok(mMessageProfile.Body)
+        End Function
+
+        <HttpPost>
+        Public Function Delete(<FromUri()> ByVal accountSeqId As Integer) As IHttpActionResult
+            If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
+            Dim mRetVal As String = False
+            Dim mLog As Logger = Logger.Instance()
+            If Not HttpContext.Current.Items("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If mEditId = accountSeqId Then
+                    Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
+                    If Not mSecurityInfo Is Nothing Then
+                        If mSecurityInfo.MayDelete Then
+                            Try
+                                AccountUtility.Delete(accountSeqId)
+                                mRetVal = True
+                            Catch ex As Exception
+                                mLog.Error(ex)
+                            End Try
+                        Else
+                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to delete")
+                            mLog.Error(mError)
+                            Return Me.InternalServerError(mError)
+                        End If
+                    Else
+                        Dim mError As Exception = New Exception("Security Info can not be determined nothing has been saved!!!!")
+                        mLog.Error(mError)
+                        Return Me.InternalServerError(mError)
+                    End If
+                Else
+                    Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
+                    mLog.Error(mError)
+                    Return Me.InternalServerError(mError)
+                End If
+            Else
+                Dim mError As Exception = New Exception("Can not verify the identifier you are trying to work with!")
+                mLog.Error(mError)
+                Return Me.InternalServerError(mError)
+            End If
+            Return Me.Ok(mRetVal)
+        End Function
+
+        <HttpPost>
+        Public Function GetMenuData(<FromUri()> ByVal menuType As Integer) As IHttpActionResult
+            Dim mAccount As String = AccountUtility.HttpContextUserName()
+            Dim mMenuType As MenuType = DirectCast(menuType, MenuType)
+            Dim mDataTable As DataTable = AccountUtility.GetMenu(mAccount, mMenuType)
+            Return Ok(mDataTable)
+        End Function
+
         <HttpGet>
         Public Function GetPreferences() As MUIAccountChoices
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
@@ -83,82 +177,52 @@ Namespace Controllers
         End Function
 
         <HttpPost>
-        Public Function ChangePassword(ByVal mChangePassword As MChangePassword) As IHttpActionResult
-            If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
-            Dim mMessageProfile As New MMessageProfile
+        Public Function RequestChange(ByVal account As String) As IHttpActionResult
+            Dim mRetVal As String = String.Empty
+            Dim mProfile As MAccountProfile = AccountUtility.GetProfile(account)
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-            Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
-            Dim mCurrentPassword = ""
-            mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword")
-            Try
-                mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType)
-            Catch ex As Exception
-                mCurrentPassword = mAccountProfile.Password
-            End Try
-            If mAccountProfile.Status <> SystemStatus.ChangePassword Then
-                If mChangePassword.OldPassword <> mCurrentPassword Then
-                    mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
-                Else
-                    With mAccountProfile
-                        .PasswordLastSet = Date.Now
-                        .Status = SystemStatus.Active
-                        .FailedAttempts = 0
-                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
-                    End With
-                    Try
-                        AccountUtility.Save(mAccountProfile, False, False)
-                    Catch ex As Exception
-                        mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
-                    End Try
-                End If
-            Else
+            Dim mMessageProfile As MMessageProfile = MessageUtility.GetProfile("ErrorAccountDetails")
+            Dim mRequestNewPassword As MRequestNewPassword = Nothing
+            Dim isEncryptedPassword As Boolean = False
+            Dim clearTextAccount As String = String.Empty
+            Dim mLog As Logger = Logger.Instance()
+            If Not mProfile Is Nothing Then
+                With mProfile
+                    .FailedAttempts = 0
+                    .Status = SystemStatus.ChangePassword
+                    .Password = CryptoUtility.Encrypt(GWWebHelper.GetNewGuid, mSecurityEntityProfile.EncryptionType)
+                    .UpdatedBy = AccountUtility.GetProfile("anonymous").Id
+                    .UpdatedDate = Date.Now
+                End With
+                clearTextAccount = CryptoUtility.Decrypt(mProfile.Password, mSecurityEntityProfile.EncryptionType)
                 Try
-                    With mAccountProfile
-                        .PasswordLastSet = Date.Now
-                        .Status = SystemStatus.Active
-                        .FailedAttempts = 0
-                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    mMessageProfile = MessageUtility.GetProfile("Request Password Reset UI")
+                    mRetVal = mMessageProfile.Body
+                    mMessageProfile = MessageUtility.GetProfile("RequestNewPassword")
+                    mRequestNewPassword = New MRequestNewPassword(mMessageProfile)
+                    With mRequestNewPassword
+                        .AccountName = HttpUtility.UrlEncode(CryptoUtility.Encrypt(mProfile.Account, mSecurityEntityProfile.EncryptionType))
+                        .FullName = mProfile.FirstName + " " + mProfile.LastName
+                        .Password = HttpUtility.UrlEncode(mProfile.Password)
+                        .Server = GWWebHelper.RootSite
                     End With
-                    AccountUtility.Save(mAccountProfile, False, False)
+                    mProfile = AccountUtility.Save(mProfile, False, False)
+                    NotifyUtility.SendMail(mRequestNewPassword, mProfile)
+                    'btnRequestPasswordReset.Visible = False
+                    mLog.Debug("Reset password for account " & clearTextAccount)
+                Catch ex As Net.Mail.SmtpException
+                    Dim myException As New Exception("Could not send e-mail." & ex.Message)
+                    mLog.Error(myException)
+                    mMessageProfile = MessageUtility.GetProfile("PasswordSendMailError")
+                    mRetVal = mMessageProfile.Body
                 Catch ex As Exception
-                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                    Dim myException As New Exception("Could not set account details." & ex.Message)
+                    mLog.Error(myException)
+                    mMessageProfile = MessageUtility.GetProfile("ErrorAccountDetails")
+                    mRetVal = mMessageProfile.Body
                 End Try
             End If
-            AccountUtility.RemoveInMemoryInformation(True)
-            Return Ok(mMessageProfile.Body)
-        End Function
-
-        <HttpPost>
-        Public Function SelectSecurityEntity(<FromUri()> ByVal selectedSecurityEntityId As Integer) As IHttpActionResult
-            Dim targetSEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId)
-            Dim currentSEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
-            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
-            Dim mMessageProfile As MMessageProfile = Nothing
-            Try
-                If Not ConfigSettings.CentralManagement Then
-                    'SecurityEntityUtility.SetSessionSecurityEntity(targetSEProfile)
-                    mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
-                    mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
-                Else
-                    If currentSEProfile.ConnectionString = targetSEProfile.ConnectionString Then
-                        mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
-                        mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
-                    Else
-                        mClientChoicesState(MClientChoices.SecurityEntityId) = ConfigSettings.DefaultSecurityEntityId
-                        mClientChoicesState(MClientChoices.SecurityEntityName) = "System"
-                    End If
-                End If
-                ClientChoicesUtility.Save(mClientChoicesState)
-                AccountUtility.RemoveInMemoryInformation(True)
-                mMessageProfile = MessageUtility.GetProfile("ChangedSelectedSecurityEntity")
-            Catch ex As Exception
-                Dim mLog As Logger = Logger.Instance()
-                mMessageProfile = MessageUtility.GetProfile("NoDataFound")
-                Dim myEx As New Exception("SelectSecurityEntity:: reported an error.", ex)
-                mLog.Error(myEx)
-            End Try
-            ' update all of your in memory information
-            Return Ok(mMessageProfile.Body)
+            Return Ok(mRetVal)
         End Function
 
         <HttpPost>
@@ -319,51 +383,36 @@ Namespace Controllers
         End Function
 
         <HttpPost>
-        Public Function Delete(<FromUri()> ByVal accountSeqId As Integer) As IHttpActionResult
-            If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
-            Dim mRetVal As String = False
-            Dim mLog As Logger = Logger.Instance()
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
-                If mEditId = accountSeqId Then
-                    Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
-                    If Not mSecurityInfo Is Nothing Then
-                        If mSecurityInfo.MayDelete Then
-                            Try
-                                AccountUtility.Delete(accountSeqId)
-                                mRetVal = True
-                            Catch ex As Exception
-                                mLog.Error(ex)
-                            End Try
-                        Else
-                            Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to delete")
-                            mLog.Error(mError)
-                            Return Me.InternalServerError(mError)
-                        End If
-                    Else
-                        Dim mError As Exception = New Exception("Security Info can not be determined nothing has been saved!!!!")
-                        mLog.Error(mError)
-                        Return Me.InternalServerError(mError)
-                    End If
+        Public Function SelectSecurityEntity(<FromUri()> ByVal selectedSecurityEntityId As Integer) As IHttpActionResult
+            Dim targetSEProfile As MSecurityEntityProfile = SecurityEntityUtility.GetProfile(selectedSecurityEntityId)
+            Dim currentSEProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
+            Dim mClientChoicesState As MClientChoicesState = ClientChoicesUtility.GetClientChoicesState(AccountUtility.CurrentProfile().Account)
+            Dim mMessageProfile As MMessageProfile = Nothing
+            Try
+                If Not ConfigSettings.CentralManagement Then
+                    'SecurityEntityUtility.SetSessionSecurityEntity(targetSEProfile)
+                    mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
+                    mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
                 Else
-                    Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
-                    mLog.Error(mError)
-                    Return Me.InternalServerError(mError)
+                    If currentSEProfile.ConnectionString = targetSEProfile.ConnectionString Then
+                        mClientChoicesState(MClientChoices.SecurityEntityId) = targetSEProfile.Id
+                        mClientChoicesState(MClientChoices.SecurityEntityName) = targetSEProfile.Name
+                    Else
+                        mClientChoicesState(MClientChoices.SecurityEntityId) = ConfigSettings.DefaultSecurityEntityId
+                        mClientChoicesState(MClientChoices.SecurityEntityName) = "System"
+                    End If
                 End If
-            Else
-                Dim mError As Exception = New Exception("Can not verify the identifier you are trying to work with!")
-                mLog.Error(mError)
-                Return Me.InternalServerError(mError)
-            End If
-            Return Me.Ok(mRetVal)
-        End Function
-
-        <HttpPost>
-        Public Function GetMenuData(<FromUri()> ByVal menuType As Integer) As IHttpActionResult
-            Dim mAccount As String = AccountUtility.HttpContextUserName()
-            Dim mMenuType As MenuType = DirectCast(menuType, MenuType)
-            Dim mDataTable As DataTable = AccountUtility.GetMenu(mAccount, mMenuType)
-            Return Ok(mDataTable)
+                ClientChoicesUtility.Save(mClientChoicesState)
+                AccountUtility.RemoveInMemoryInformation(True)
+                mMessageProfile = MessageUtility.GetProfile("ChangedSelectedSecurityEntity")
+            Catch ex As Exception
+                Dim mLog As Logger = Logger.Instance()
+                mMessageProfile = MessageUtility.GetProfile("NoDataFound")
+                Dim myEx As New Exception("SelectSecurityEntity:: reported an error.", ex)
+                mLog.Error(myEx)
+            End Try
+            ' update all of your in memory information
+            Return Ok(mMessageProfile.Body)
         End Function
 
         Private Function populateAccountProfile(ByVal uiProfile As UIAccountProfile, ByVal accountProfile As MAccountProfile) As MAccountProfile
