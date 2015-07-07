@@ -116,6 +116,11 @@ namespace GrowthWare.WebSupport.Utilities
             return retVal;
         }
 
+        /// <summary>
+        /// AutoCreateAccount will automatically create an account based on infomration found both in the web.config file
+        /// and the database.
+        /// </summary>
+        /// <returns>MAccountProfile</returns>
         public static MAccountProfile AutoCreateAccount()
         {
             MAccountProfile mCurrentAccountProfile = AccountUtility.GetProfile("System");

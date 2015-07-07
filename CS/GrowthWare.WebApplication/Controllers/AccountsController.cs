@@ -13,12 +13,132 @@ using System.Web;
 using System.Web.Http;
 using System.Linq;
 using System.Data;
+using System.Net.Mail;
 
 namespace GrowthWare.WebApplication.Controllers
 {
 public class AccountsController : ApiController
 {
-	[HttpGet()]
+    [HttpPost()]
+    public IHttpActionResult ChangePassword(MChangePassword mChangePassword)
+    {
+        if (mChangePassword == null) throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!");
+        MMessageProfile mMessageProfile = new MMessageProfile();
+        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
+        string mCurrentPassword = "";
+        mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
+        try
+        {
+            mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType);
+        }
+        catch (Exception)
+        {
+            mCurrentPassword = mAccountProfile.Password;
+        }
+        if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
+        {
+            if (mChangePassword.OldPassword != mCurrentPassword)
+            {
+                mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
+            }
+            else
+            {
+                mAccountProfile.PasswordLastSet = System.DateTime.Now;
+                mAccountProfile.Status = (int)SystemStatus.Active;
+                mAccountProfile.FailedAttempts = 0;
+                mAccountProfile.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
+                try
+                {
+                    AccountUtility.Save(mAccountProfile, false, false);
+                }
+                catch (Exception)
+                {
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+                }
+            }
+        }
+        else
+        {
+            try
+            {
+                var _with2 = mAccountProfile;
+                _with2.PasswordLastSet = System.DateTime.Now;
+                _with2.Status = (int)SystemStatus.Active;
+                _with2.FailedAttempts = 0;
+                _with2.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
+                AccountUtility.Save(mAccountProfile, false, false);
+            }
+            catch (Exception)
+            {
+                mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+            }
+        }
+        AccountUtility.RemoveInMemoryInformation(true);
+        return Ok(mMessageProfile.Body);
+    }
+
+    [HttpPost()]
+    public IHttpActionResult Delete([FromUri] int accountSeqId)
+    {
+        if (accountSeqId <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        string mRetVal = "False";
+        Logger mLog = Logger.Instance();
+        if (HttpContext.Current.Items["EditId"] != null)
+        {
+            int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
+            if (mEditId == accountSeqId)
+            {
+                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
+                if (mSecurityInfo != null)
+                {
+                    if (mSecurityInfo.MayDelete)
+                    {
+                        try
+                        {
+                            AccountUtility.Delete(accountSeqId);
+                            mRetVal = "True";
+                        }
+                        catch (Exception ex)
+                        {
+                            mLog.Error(ex);
+                            throw;
+                        }
+                    }
+                    else
+                    {
+                        Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
+                        mLog.Error(mError);
+                        return this.InternalServerError(mError);
+                    }
+                }
+                else
+                {
+                    Exception mError = new Exception("Security Info can not be determined nothing has been deleted!!!!");
+                    mLog.Error(mError);
+                    return this.InternalServerError(mError);
+                }
+            }
+            else
+            {
+                Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+                mLog.Error(mError);
+                return this.InternalServerError(mError);
+            }
+        }
+        return Ok(mRetVal);
+    }
+
+    [HttpPost()]
+    public IHttpActionResult GetMenuData([FromUri] int menuType)
+    {
+        String mAccount = AccountUtility.HttpContextUserName();
+        MenuType mMenuType = (MenuType)(menuType);
+        DataTable mDataTable = AccountUtility.GetMenu(mAccount, mMenuType);
+        return Ok(mDataTable);
+    }
+
+    [HttpGet()]
 	public MUIAccountChoices GetPreferences()
 	{
         MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
@@ -96,57 +216,55 @@ public class AccountsController : ApiController
 	}
 
     [HttpPost()]
-    public IHttpActionResult GetMenuData([FromUri] int menuType)
+    public IHttpActionResult RequestChange(string account)
     {
-        String mAccount = AccountUtility.HttpContextUserName();
-        MenuType mMenuType = (MenuType)(menuType);
-        DataTable mDataTable = AccountUtility.GetMenu(mAccount, mMenuType);
-        return Ok(mDataTable);
-    }
+        string mRetVal = string.Empty;
+        MAccountProfile mProfile = AccountUtility.GetProfile(account);
+        MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MMessageProfile mMessageProfile = MessageUtility.GetProfile("Request Password Reset UI");
+        mRetVal = mMessageProfile.Body;
+        string clearTextAccount = string.Empty;
+        Logger mLog = Logger.Instance();
+        if (mProfile != null)
+        {
+            MAccountProfile mAccountProfile = mProfile;
+            mAccountProfile.FailedAttempts = 0;
+            mAccountProfile.Status = 4;
+            mAccountProfile.Password = CryptoUtility.Encrypt(GWWebHelper.GetNewGuid, mSecurityEntityProfile.EncryptionType);
+            mAccountProfile.UpdatedBy = AccountUtility.GetProfile("anonymous").Id;
+            mAccountProfile.UpdatedDate = DateTime.Now;
 
-	[HttpPost()]
-	public IHttpActionResult ChangePassword(MChangePassword mChangePassword)
-	{
-		if (mChangePassword == null) throw new ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!");
-		MMessageProfile mMessageProfile = new MMessageProfile();
-		MSecurityEntityProfile mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-		MAccountProfile mAccountProfile = AccountUtility.CurrentProfile();
-		string mCurrentPassword = "";
-		mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
-		try {
-			mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType);
-		} catch (Exception) {
-			mCurrentPassword = mAccountProfile.Password;
-		}
-		if (mAccountProfile.Status != (int)SystemStatus.ChangePassword) {
-			if (mChangePassword.OldPassword != mCurrentPassword) {
-				mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
-			} else {
-                mAccountProfile.PasswordLastSet = System.DateTime.Now;
-                mAccountProfile.Status = (int)SystemStatus.Active;
-                mAccountProfile.FailedAttempts = 0;
-                mAccountProfile.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
-				try {
-					AccountUtility.Save(mAccountProfile, false, false);
-				} catch (Exception) {
-					mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-				}
-			}
-		} else {
-			try {
-				var _with2 = mAccountProfile;
-				_with2.PasswordLastSet = System.DateTime.Now;
-				_with2.Status = (int)SystemStatus.Active;
-				_with2.FailedAttempts = 0;
-				_with2.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
-				AccountUtility.Save(mAccountProfile, false, false);
-			} catch (Exception) {
-				mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-			}
-		}
-		AccountUtility.RemoveInMemoryInformation(true);
-		return Ok(mMessageProfile.Body);
-	}
+            clearTextAccount = CryptoUtility.Decrypt(mProfile.Password, mSecurityEntityProfile.EncryptionType);
+            try
+            {
+                mMessageProfile = MessageUtility.GetProfile("RequestNewPassword");
+                MRequestNewPassword mRequestNewPassword = new MRequestNewPassword(mMessageProfile);
+                mRequestNewPassword.AccountName = HttpUtility.UrlEncode(CryptoUtility.Encrypt(mProfile.Account, mSecurityEntityProfile.EncryptionType));
+                mRequestNewPassword.FullName = mProfile.FirstName + " " + mProfile.LastName;
+                mRequestNewPassword.Password = HttpUtility.UrlEncode(mProfile.Password);
+                mRequestNewPassword.Server = GWWebHelper.RootSite;
+                mProfile = AccountUtility.Save(mProfile, false, false);
+                NotifyUtility.SendMail(mRequestNewPassword, mProfile);
+                mLog.Debug("Reset password for account " + clearTextAccount);
+            }
+            catch (SmtpException ex)
+            {
+                Exception myException = new Exception("Could not send e-mail." + ex.Message);
+                mLog.Error(myException);
+                mMessageProfile = (MMessageProfile)MessageUtility.GetProfile("PasswordSendMailError");
+                mRetVal = mMessageProfile.Body;
+            }
+            catch (Exception ex)
+            {
+                Exception mException = new Exception("Could not set account details." + ex.Message);
+                mLog.Error(mException);
+                mMessageProfile = (MMessageProfile)MessageUtility.GetProfile("ErrorAccountDetails");
+                mRetVal = mMessageProfile.Body;
+            }
+
+        }
+        return Ok(mRetVal);
+    }
 
     [HttpPost()]
     public IHttpActionResult Save(UIAccountProfile uiProfile) 
@@ -342,57 +460,6 @@ public class AccountsController : ApiController
         mClientChoicesState[MClientChoices.SubheadColor] = choices.SubheadColor;
         ClientChoicesUtility.Save(mClientChoicesState);
         AccountUtility.RemoveInMemoryInformation(true);
-        return Ok(mRetVal);
-    }
-
-    [HttpPost()]
-    public IHttpActionResult Delete([FromUri] int accountSeqId) 
-    {
-        if (accountSeqId <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
-        string mRetVal = "False";
-        Logger mLog = Logger.Instance();
-        if (HttpContext.Current.Items["EditId"] != null)
-        {
-            int mEditId = int.Parse(HttpContext.Current.Items["EditId"].ToString());
-            if (mEditId == accountSeqId)
-            {
-                MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
-                if (mSecurityInfo != null)
-                {
-                    if (mSecurityInfo.MayDelete)
-                    {
-                        try
-                        {
-                            AccountUtility.Delete(accountSeqId);
-                            mRetVal = "True";
-                        }
-                        catch (Exception ex)
-                        {
-                            mLog.Error(ex);
-                            throw;
-                        }
-                    }
-                    else
-                    {
-                        Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
-                        mLog.Error(mError);
-                        return this.InternalServerError(mError);
-                    }
-                }
-                else
-                {
-                    Exception mError = new Exception("Security Info can not be determined nothing has been deleted!!!!");
-                    mLog.Error(mError);
-                    return this.InternalServerError(mError);
-                }
-            }
-            else
-            {
-                Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
-                mLog.Error(mError);
-                return this.InternalServerError(mError);
-            }
-        }
         return Ok(mRetVal);
     }
 
