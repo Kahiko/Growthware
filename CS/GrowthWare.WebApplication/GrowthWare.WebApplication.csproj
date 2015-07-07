@@ -432,7 +432,6 @@
     <Compile Include="Controllers\SessionStateRouteHandler.cs" />
     <Compile Include="Default.aspx.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
@@ -446,7 +445,6 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\Favorite.aspx.cs">
       <DependentUpon>Favorite.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Accounts\Favorite.aspx.designer.cs">
       <DependentUpon>Favorite.aspx</DependentUpon>
@@ -467,28 +465,24 @@
     </Compile>
     <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.cs">
       <DependentUpon>SelectPreferences.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Accounts\SelectPreferences.aspx.designer.cs">
       <DependentUpon>SelectPreferences.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Accounts\UpdateSession.aspx.cs">
       <DependentUpon>UpdateSession.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Accounts\UpdateSession.aspx.designer.cs">
       <DependentUpon>UpdateSession.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.cs">
       <DependentUpon>AddEditAccount.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\AddEditAccount.aspx.designer.cs">
       <DependentUpon>AddEditAccount.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.cs">
       <DependentUpon>SearchAccountResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Accounts\SearchAccountResults.aspx.designer.cs">
       <DependentUpon>SearchAccountResults.aspx</DependentUpon>
@@ -509,7 +503,6 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.cs">
       <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Configuration\AddEditDBInformation.aspx.designer.cs">
       <DependentUpon>AddEditDBInformation.aspx</DependentUpon>
@@ -537,70 +530,60 @@
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.cs">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\AddEditFunction.aspx.designer.cs">
       <DependentUpon>AddEditFunction.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx.cs">
       <DependentUpon>SearchFunctionResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctionResults.aspx.designer.cs">
       <DependentUpon>SearchFunctionResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.cs">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Functions\SearchFunctions.aspx.designer.cs">
       <DependentUpon>SearchFunctions.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\AddEditGroup.aspx.cs">
       <DependentUpon>AddEditGroup.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\AddEditGroup.aspx.designer.cs">
       <DependentUpon>AddEditGroup.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.cs">
       <DependentUpon>EditGroupMembers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\EditGroupMembers.aspx.designer.cs">
       <DependentUpon>EditGroupMembers.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\SearchGroupResults.aspx.cs">
       <DependentUpon>SearchGroupResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\SearchGroupResults.aspx.designer.cs">
       <DependentUpon>SearchGroupResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\SearchGroups.aspx.cs">
       <DependentUpon>SearchGroups.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Groups\SearchGroups.aspx.designer.cs">
       <DependentUpon>SearchGroups.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Logs\SetLogLevel.aspx.cs">
       <DependentUpon>SetLogLevel.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Logs\SetLogLevel.aspx.designer.cs">
       <DependentUpon>SetLogLevel.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\AddEditMessage.aspx.cs">
       <DependentUpon>AddEditMessage.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\AddEditMessage.aspx.designer.cs">
       <DependentUpon>AddEditMessage.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\SearchMessageResults.aspx.cs">
       <DependentUpon>SearchMessageResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Messages\SearchMessageResults.aspx.designer.cs">
       <DependentUpon>SearchMessageResults.aspx</DependentUpon>
@@ -614,7 +597,6 @@
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.cs">
       <DependentUpon>AddEditNVP.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\AddEditNVP.aspx.designer.cs">
       <DependentUpon>AddEditNVP.aspx</DependentUpon>
@@ -635,56 +617,48 @@
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.cs">
       <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPChildren.aspx.designer.cs">
       <DependentUpon>SearchNVPChildren.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.cs">
       <DependentUpon>SearchNVPResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPResults.aspx.designer.cs">
       <DependentUpon>SearchNVPResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.cs">
       <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\NVP\SearchNVPResultsChildren.aspx.designer.cs">
       <DependentUpon>SearchNVPResultsChildren.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.cs">
       <DependentUpon>AddEditRole.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\AddEditRole.aspx.designer.cs">
       <DependentUpon>AddEditRole.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\EditRoleMembers.aspx.cs">
       <DependentUpon>EditRoleMembers.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\EditRoleMembers.aspx.designer.cs">
       <DependentUpon>EditRoleMembers.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\SearchRoleResults.aspx.cs">
       <DependentUpon>SearchRoleResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\SearchRoleResults.aspx.designer.cs">
       <DependentUpon>SearchRoleResults.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\SearchRoles.aspx.cs">
       <DependentUpon>SearchRoles.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\Roles\SearchRoles.aspx.designer.cs">
       <DependentUpon>SearchRoles.aspx</DependentUpon>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.cs">
       <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\AddEditSecurityEntities.aspx.designer.cs">
       <DependentUpon>AddEditSecurityEntities.aspx</DependentUpon>
@@ -698,7 +672,6 @@
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.cs">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Administration\SecurityEntities\SearchSecurityEntitiesResults.aspx.designer.cs">
       <DependentUpon>SearchSecurityEntitiesResults.aspx</DependentUpon>
@@ -712,7 +685,6 @@
     </Compile>
     <Compile Include="Functions\System\Errors\UnknownAction.aspx.cs">
       <DependentUpon>UnknownAction.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\Errors\UnknownAction.aspx.designer.cs">
       <DependentUpon>UnknownAction.aspx</DependentUpon>
@@ -726,7 +698,6 @@
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\ExternalAuth\RegisterExternalLogin.aspx.designer.cs">
       <DependentUpon>RegisterExternalLogin.aspx</DependentUpon>
@@ -743,7 +714,6 @@
     </Compile>
     <Compile Include="Functions\System\FileManagement\FileManagerSearchResults.aspx.cs">
       <DependentUpon>FileManagerSearchResults.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\FileManagement\FileManagerSearchResults.aspx.designer.cs">
       <DependentUpon>FileManagerSearchResults.aspx</DependentUpon>
@@ -767,7 +737,6 @@
     </Compile>
     <Compile Include="Functions\System\LineCount.aspx.cs">
       <DependentUpon>LineCount.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\LineCount.aspx.designer.cs">
       <DependentUpon>LineCount.aspx</DependentUpon>
@@ -802,7 +771,6 @@
     </Compile>
     <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.cs">
       <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Functions\System\SecurityEntities\SelectSecurityEntity.aspx.designer.cs">
       <DependentUpon>SelectSecurityEntity.aspx</DependentUpon>
@@ -823,7 +791,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserControls\AddEditAccount.ascx.cs">
       <DependentUpon>AddEditAccount.ascx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="UserControls\AddEditAccount.ascx.designer.cs">
       <DependentUpon>AddEditAccount.ascx</DependentUpon>
