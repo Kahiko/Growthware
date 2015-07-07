@@ -149,6 +149,11 @@ namespace GrowthWare.WebSupport.Context
                     AccountUtility.AutoCreateAccount();
                 }
             }
+            if (mAccountName.ToUpper(CultureInfo.InvariantCulture) != "ANONYMOUS" & (mAccountProfile.LastLogOn.ToShortDateString() != DateTime.Now.ToShortDateString())) 
+            {
+                mAccountProfile.LastLogOn = DateTime.Now;
+                AccountUtility.Save(mAccountProfile, false, false);
+            }
             if (HttpContext.Current.Session == null)
             {
                 mLog.Debug("No Session!");
