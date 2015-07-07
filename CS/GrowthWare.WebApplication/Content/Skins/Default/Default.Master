@@ -6,9 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title>Growhtware Default CS</title>
-    <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryUI") %>
-    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Scripts.Render("~/bundles/GrowthWareAndjQueryUI")%>
 
     <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
     <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
