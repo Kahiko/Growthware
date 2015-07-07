@@ -6,9 +6,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <title>Growth Ware Blue Arrow VB</title>
-    <%: Scripts.Render("~/bundles/jquery") %>
-    <%: Scripts.Render("~/bundles/jqueryUI") %>
-    <%: Scripts.Render("~/bundles/GrowthWare")%>
+    <%: Scripts.Render("~/bundles/GrowthWareAndjQueryUI")%>
     <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
