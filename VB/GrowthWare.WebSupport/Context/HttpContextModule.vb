@@ -106,6 +106,10 @@ Namespace Context
                     AccountUtility.AutoCreateAccount()
                 End If
             End If
+            If mAccountProfile.Account.ToUpper(CultureInfo.InvariantCulture) <> "ANONYMOUS" And (mAccountProfile.LastLogOn.ToShortDateString() <> DateTime.Now.ToShortDateString()) Then
+                mAccountProfile.LastLogOn = DateTime.Now()
+                AccountUtility.Save(mAccountProfile, False, False)
+            End If
             If HttpContext.Current.Session Is Nothing Then
                 mLog.Debug("No Session!")
                 mLog.Debug("Ended")
