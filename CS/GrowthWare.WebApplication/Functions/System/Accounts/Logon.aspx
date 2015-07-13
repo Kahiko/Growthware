@@ -101,15 +101,23 @@
 	    var $mBtnRequestChange = $('#btnRequestChange');
 	    var $mLogonPage = $('#LogonPage');
 	    if (xhr.toString() == "true") {
+	        var newHash = '';
 	        if (currentAction.length == 0) {
-	            window.location.hash = "?Action=Favorite";
+	            newHash = "?Action=Favorite";
 	        } else {
 	            if (currentAction.toLowerCase() != "logon") {
-	                window.location.hash = "?Action=" + currentAction;
+	                newHash = "?Action=" + currentAction;
 	            } else {
-	                window.location.hash = "?Action=Favorite";
+	                newHash = "?Action=Favorite";
 	            }
 	        }
+
+	        if (navigator.userAgent.indexOf('Chrome/') != -1) {
+	            top.history.replaceState("", "", "#" + newHash);
+	            location.reload();
+	            return;
+	        };
+	        window.location.hash = newHash;
 	        //jQuery.event.trigger('~reLoadUI');
 	        location.reload();
 	    } else {
