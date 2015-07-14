@@ -6,10 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml" ng-app="main">
 <head runat="server">
     <title>Growhtware Default CS</title>
-    <%: Scripts.Render("~/bundles/GrowthWareAndjQueryUI")%>
-
-    <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
-    <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
+    <%: Scripts.Render("~/bundles/modernizr","~/bundles/jquery","~/bundles/jqueryUI","~/bundles/GrowthWare")%>
+    <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI","~/Content/Growthware/Styles/UI")%>
     <link href="../../SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
     

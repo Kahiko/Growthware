@@ -1,5 +1,4 @@
 ﻿<%@ Page Title="Home Page" Language="C#" MasterPageFile="~/Content/Skins/Default/Default.Master" AutoEventWireup="true" CodeBehind="Default.aspx.cs" Inherits="GrowthWare.WebApplication._Default" %>
-<%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="HeadContent" runat="server">
     <script type="text/javascript" language="javascript">

@@ -39,20 +39,6 @@ namespace GrowthWare.WebApplication
                 )
             );
 
-            bundles.Add(
-                new ScriptBundle("~/bundles/GrowthWareAndjQueryUI").Include(
-                "~/" + ConfigSettings.AppName + "/Scripts/jquery-{version}.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/jquery.tmpl.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/jquery-ui-{version}.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Common.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.FileManager.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Model.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.NavigationController.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.NavigationHandler.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Search.js",
-                "~/" + ConfigSettings.AppName + "/Scripts/GrowthWare/GW.Upload.js"
-                )
-            );
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
