@@ -6,8 +6,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head runat="server">
         <title>Growhtware Default Black VB</title>
-        <%: Scripts.Render("~/bundles/GrowthWareAndjQueryUI")%>
-        <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI")%>
+        <%: Scripts.Render("~/bundles/modernizr","~/bundles/jquery","~/bundles/jqueryUI","~/bundles/GrowthWare")%>
+        <%: Styles.Render("~/Content/jQueryUIThemes/Redmond/UI","~/Content/Growthware/Styles/UI")%>
         <asp:ContentPlaceHolder ID="HeadContent" runat="server">
         </asp:ContentPlaceHolder>
         <script type="text/javascript" language="javascript">
