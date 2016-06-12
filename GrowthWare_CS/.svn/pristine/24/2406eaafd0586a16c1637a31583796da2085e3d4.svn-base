@@ -1,0 +1,436 @@
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using GrowthWare.Framework.DataAccessLayer.Interfaces.Base;
+using GrowthWare.Framework.Model.Profiles.Base.Interfaces;
+using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
+
+namespace GrowthWare.Framework.DataAccessLayer.SQLServer.Base
+{
+	/// <summary>
+	/// Performs all data store interaction to SQL Server through the use of stored procedures only.
+	/// </summary>
+	/// <remarks>Uses Microsoft.Practices.EnterpriseLibrary.Data for underlying database access.</remarks>
+	public abstract class DDBInteraction : IDDBInteraction, IDisposable
+	{
+#region Private Fields
+		private bool m_DisposedValue;
+#endregion
+
+#region Public Properties
+		/// <summary>
+		/// Used for all methods to connect to the database.
+		/// </summary>
+		public string ConnectionString { get; set; }
+#endregion
+
+#region Private Methods
+		/// <summary>
+		/// Formats an error message containging the store procedure name and the parameters/values.
+		/// </summary>
+		/// <param name="parameters">The sql parameters used when the error was created.</param>
+		/// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
+		/// <param name="yourExMSG">The message for the exception object.</param>
+		/// <returns>A formatted string</returns>
+		/// <remarks></remarks>
+		private string formatError(SqlParameter[] parameters, string storedProcedure, string yourExMSG)
+		{
+			string mMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
+			SqlParameter testParameter = null;
+			mMessage += "Parameters are as follows:" + Environment.NewLine;
+			foreach (SqlParameter testParameter_loopVariable in parameters)
+			{
+				testParameter = testParameter_loopVariable;
+				mMessage += testParameter.ParameterName.ToString() + " = ";
+				if (testParameter.Value != null)
+				{
+					mMessage += testParameter.Value.ToString() + Environment.NewLine;
+				}
+				else 
+				{ 
+					mMessage += Environment.NewLine;
+				}
+
+			}
+			mMessage += "Connection string : " +  ConnectionString + Environment.NewLine;
+			mMessage += yourExMSG + Environment.NewLine;
+			return mMessage;
+		}
+
+		/// <summary>
+		/// Ensures  ConnectionString has a value.
+		/// </summary>
+		/// <remarks>Throws ArgumentException</remarks>
+		protected virtual void isValid()
+		{
+			bool mTest = true;
+			if(string.IsNullOrEmpty(ConnectionString))
+			{
+				mTest = false;
+			}
+			if(!mTest)
+			{
+				throw new ArgumentNullException("ConnectionString cannot be blank!");
+			}
+		}
+#endregion
+
+#region IDDBInteraction Members
+		/// <summary>
+		/// Executes a non Query given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">SqlParmeter</param>
+		/// <remarks></remarks>
+		protected void ExecuteNonQuery(ref string storedProcedure, ref SqlParameter[] parameters)
+		{
+			this.isValid();
+			SqlParameter myParameter = null;
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						SqlDatabase db = new SqlDatabase (ConnectionString);
+						DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+						foreach (SqlParameter myParameter_loopVariable in parameters)
+						{
+							myParameter = myParameter_loopVariable;
+							dbCommand.Parameters.Add(myParameter);
+						}
+						db.ExecuteNonQuery(dbCommand);
+					}
+					else
+					{
+						SqlDatabase db = new SqlDatabase (ConnectionString);
+						db.ExecuteNonQuery(storedProcedure, parameters);
+					}
+				}
+				else
+				{
+					SqlDatabase db = new SqlDatabase (ConnectionString);
+					db.ExecuteNonQuery(CommandType.StoredProcedure, storedProcedure);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if (ex.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else 
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+		}
+
+		/// <summary>
+		/// Executes a non Query given the store procedure
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <remarks>contains no logic</remarks>
+		protected void ExecuteNonQuery(ref String storedProcedure)
+		{
+			SqlParameter[] mParameters = null;
+			this.ExecuteNonQuery(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns a DataSet given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">SqlParmeter</param>
+		/// <returns>DataSet</returns>
+		/// <remarks></remarks>
+		protected virtual DataSet GetDataSet(ref String storedProcedure, ref SqlParameter[] parameters)
+		{
+			this.isValid();
+			SqlParameter mParameter = null;
+			SqlDatabase db = new SqlDatabase(ConnectionString);
+			DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+			try
+			{
+				if (parameters != null)
+				{
+					if (parameters.Length > 0)
+					{
+						foreach (SqlParameter myParameter_loopVariable in parameters)
+						{
+							mParameter = myParameter_loopVariable;
+							dbCommand.Parameters.Add(mParameter);
+						}
+						return db.ExecuteDataSet(dbCommand);
+					}
+					else 
+					{ 
+						return db.ExecuteDataSet(dbCommand);
+					}
+				}
+				else
+				{
+					return db.ExecuteDataSet(dbCommand);
+				}
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+			finally 
+			{ 
+				dbCommand.Dispose();
+			}
+		}
+
+		/// <summary>
+		/// Returns a DataSet given the stored procedure
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <returns>DataSet</returns>
+		/// <remarks>Containts no logic</remarks>
+		protected virtual DataSet GetDataSet(ref String storedProcedure)
+		{
+			SqlParameter[] mParameters = null;
+			return this.GetDataSet(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns a DataTable given the stored procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">SqlParameter</param>
+		/// <returns>DataTable</returns>
+		/// <remarks></remarks>
+		protected virtual DataTable GetDataTable(ref String storedProcedure, ref SqlParameter[] parameters)
+		{
+			this.isValid();
+			DataTable mDataTable = new DataTable();
+			IDataReader mReader = null;
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+						foreach (SqlParameter parameter in parameters)
+						{
+							dbCommand.Parameters.Add(parameter);
+						}
+						mReader = db.ExecuteReader(dbCommand);
+					}
+					else
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+					}
+				}
+				else
+				{
+					SqlDatabase db = new SqlDatabase(ConnectionString);
+					mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+				}
+				if ((mReader != null))
+				{
+					mDataTable.Load(mReader);
+					return mDataTable;
+				}
+				else
+				{
+					string mMessage = Environment.NewLine + "Store procedure '" + storedProcedure + "' executed and no data was found." + Environment.NewLine;
+					mMessage += "Parameters are as follows:" + Environment.NewLine;
+					foreach (SqlParameter parameter in parameters)
+					{
+						mMessage += parameter.ParameterName + " = " + parameter.Value + Environment.NewLine;
+					}
+					throw new DataAccessLayerException(mMessage);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if (ex.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+			finally
+			{
+				if ((mReader != null))
+				{
+					mReader.Close();
+				}
+				if (mDataTable != null)
+				{
+					mDataTable.Dispose();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns a DataTable given the stored procedure
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <returns>DataTable</returns>
+		/// <remarks>Containts no logic</remarks>
+		protected virtual DataTable GetDataTable(ref String storedProcedure)
+		{
+			SqlParameter[] mParameters = null;
+			return this.GetDataTable(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns a DataRow given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">Stirng</param>
+		/// <param name="parameters">SqlParameter</param>
+		/// <returns>DataRow</returns>
+		/// <remarks></remarks>
+		protected virtual DataRow GetDataRow(ref String storedProcedure, ref SqlParameter[] parameters)
+		{
+			this.isValid();
+			return this.GetDataTable(ref storedProcedure, ref parameters).Rows[0];
+		}
+
+		/// <summary>
+		/// Returns a DataRow given the stored procedure
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <returns>DataRow</returns>
+		/// <remarks>Containts no logic</remarks>
+		protected virtual DataRow GetDataRow(ref String storedProcedure)
+		{
+			SqlParameter[] mParameters = null;
+			return this.GetDataRow(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns the value of an output parameter given the parameter name and an array of parameters
+		/// </summary>
+		/// <param name="parameterName">parameterName</param>
+		/// <param name="parameters">parameters</param>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		protected string GetParameterValue(String parameterName, ref SqlParameter[] parameters)
+		{
+			String mRetVal = string.Empty;
+			foreach (SqlParameter parameter in parameters)
+			{
+				if (parameter.ParameterName == parameterName)
+				{
+					if (!Convert.IsDBNull(parameter.Value))
+					{
+						mRetVal = parameter.Value.ToString();
+					}
+				}
+			}
+			return mRetVal;
+		}
+
+		/// <summary>
+		/// Retruns a SqlParameter given the ParameterName, ParameterValue and Direction.
+		/// </summary>
+		/// <param name="parameterName">String</param>
+		/// <param name="parameterValue">Object</param>
+		/// <param name="direction">ParameterDirection</param>
+		/// <returns>SqlParameter</returns>
+		protected SqlParameter GetSqlParameter(String parameterName, Object parameterValue, ParameterDirection direction)
+		{
+			SqlParameter mRetVal = new SqlParameter(parameterName,parameterValue);
+			switch (direction)
+			{
+				case ParameterDirection.Input:
+					mRetVal.Direction = ParameterDirection.Input;
+					break;
+				case ParameterDirection.InputOutput:
+					mRetVal.Direction = ParameterDirection.InputOutput;
+					break;
+				case ParameterDirection.Output:
+					mRetVal.Direction = ParameterDirection.Output;
+					break;
+				case ParameterDirection.ReturnValue:
+					mRetVal.Direction = ParameterDirection.ReturnValue;
+					break;
+				default:
+					mRetVal.Direction = ParameterDirection.Input;
+					break;
+			}
+			return mRetVal;			
+		}
+
+		/// <summary>
+		/// Returns the correct integer for added or updated by
+		/// </summary>
+		/// <param name="profile">Object implementing IProfile</param>
+		/// <returns>int</returns>
+		protected int GetAddedUpdatedBy(IMProfile profile)
+		{
+			int mAdded_Updated_By = 0;
+			if (profile.Id == -1)
+			{
+				mAdded_Updated_By = profile.AddedBy;
+			}
+			else
+			{
+				mAdded_Updated_By = profile.UpdatedBy;
+			}
+			return mAdded_Updated_By;
+		}
+#endregion
+
+#region IDisposable Members
+		/// <summary>
+		/// Implements IDispose
+		/// </summary>
+		/// <param name="disposing">Boolean</param>
+		/// <remarks></remarks>
+		protected virtual void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if (!m_DisposedValue)
+			{
+				if (disposing)
+				{
+					// // Dispose managed resources if you have any.
+				}
+				// TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+				// TODO: set large fields to null.
+
+			}
+			m_DisposedValue = true;
+		}
+
+		//// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+		//~DDBInteraction() 
+		//{
+		//    // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+		//    Dispose(false);
+		//}
+
+		/// <summary>
+		/// Implements Dispose
+		/// </summary>
+		/// <remarks></remarks>
+		public void Dispose()
+		{
+			//Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+#endregion
+	}
+}

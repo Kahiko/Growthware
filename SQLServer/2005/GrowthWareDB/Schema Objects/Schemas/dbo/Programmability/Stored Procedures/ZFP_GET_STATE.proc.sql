@@ -1,0 +1,35 @@
+﻿CREATE PROCEDURE [ZFP_GET_STATE](
+	@P_STATE VARCHAR(2),
+	@P_ErrorCode int OUTPUT
+) AS
+BEGIN
+	IF @P_STATE = 'NEG1'
+		BEGIN
+			SELECT
+				[STATE],
+				[DESCRIPTION],
+				STATUS_SEQ_ID,
+				ADDED_BY,
+				ADDED_DATE,
+				UPDATED_BY,
+				UPDATED_DATE
+			FROM
+				ZOP_STATES
+			WHERE [STATE] = @P_STATE
+		END
+	ELSE
+		BEGIN
+			SELECT
+				[STATE],
+				[DESCRIPTION],
+				STATUS_SEQ_ID,
+				ADDED_BY,
+				ADDED_DATE,
+				UPDATED_BY,
+				UPDATED_DATE
+			FROM
+				ZOP_STATES
+		END
+END
+-- Get the Error Code for the statement just executed.
+	SELECT @P_ErrorCode=@@ERROR

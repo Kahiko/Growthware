@@ -1,0 +1,787 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="c:\program files (x86)\microsoft visual studio 10.0\team tools\static analysis tools\fxcop\Xml\CodeAnalysisReport.xsl"?>
+<FxCopReport Version="10.0">
+ <Namespaces>
+  <Namespace Name="GrowthWare.Framework.Web.Controllers">
+   <Messages>
+    <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+     <Issue Certainty="50" Level="Warning">Consider merging the types defined in 'GrowthWare.Framework.Web.Controllers' with another namespace.</Issue>
+    </Message>
+   </Messages>
+  </Namespace>
+ </Namespaces>
+ <Targets>
+  <Target Name="D:\Development\GrowthWare\2010\GrowthWareDLLs\GrowthWareFrameworkWeb.dll">
+   <Modules>
+    <Module Name="growthwareframeworkweb.dll">
+     <Namespaces>
+      <Namespace Name="GrowthWare.Framework.Web">
+       <Types>
+        <Type Name="GWWebHelper" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#m_ExceptionError" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'GWWebHelper.m_ExceptionError' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'GWWebHelper.m_ExceptionError' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_FQDNBasePage" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'GWWebHelper.m_FQDNBasePage' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'GWWebHelper.m_FQDNBasePage' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_skin" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'GWWebHelper.m_skin' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'GWWebHelper.m_skin' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_Version" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'GWWebHelper.m_Version' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'GWWebHelper.m_Version' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="NativeMethods" Kind="Class" Accessibility="Assembly" ExternallyVisible="False">
+         <Members>
+          <Member Name="#Sleep(System.Int64)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">'NativeMethods.Sleep(Long)' appears to have no upstream public or protected callers.</Issue>
+            </Message>
+            <Message Id="0" TypeName="PInvokeDeclarationsShouldBePortable" Category="Microsoft.Portability" CheckId="CA1901" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Parameter" Certainty="95" Level="Error">As it is declared in your code, parameter 'dwMilliseconds' of P/Invoke 'NativeMethods.Sleep(Long)' will be 8 bytes wide on 32-bit platforms. This is not correct, as the actual native declaration of this API indicates it should be 4 bytes wide on 32-bit platforms. Consult the MSDN Platform SDK documentation for help determining what data type should be used instead of 'Long'.</Issue>
+             <Issue Name="Parameter" Certainty="95" Level="Error">As it is declared in your code, parameter 'dwMilliseconds' of P/Invoke 'NativeMethods.Sleep(Long)' will be 8 bytes wide on 64-bit platforms. This is not correct, as the actual native declaration of this API indicates it should be 4 bytes wide on 64-bit platforms. Consult the MSDN Platform SDK documentation for help determining what data type should be used instead of 'Long'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebConfigSettings" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#FQDNPage" Kind="Property" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="FQDN" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="Member" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb" File="WebConfigSettings.vb" Line="77">Correct the casing of 'FQDN' in member name 'WebConfigSettings.FQDNPage()' by changing it to 'Fqdn'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="WebImpersonate" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#ImpersonateNow(System.String,System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="TooGeneric" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb" File="WebImpersonate.vb" Line="46">'WebImpersonate.ImpersonateNow(String, String)' creates an exception of type 'Exception', an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Issue>
+             <Issue Name="TooGeneric" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb" File="WebImpersonate.vb" Line="55">'WebImpersonate.ImpersonateNow(String, String)' creates an exception of type 'Exception', an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="GrowthWare.Framework.Web.Context">
+       <Types>
+        <Type Name="ClientChoicesHttpModule" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#AcquireRequestState(System.Object,System.EventArgs)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="E" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="26">In member 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)', correct the casing of 'E' in parameter name 'E' by changing it to 'e'.</Issue>
+            </Message>
+            <Message Id="Sender" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="26">In member 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)', correct the casing of 'Sender' in parameter name 'Sender' by changing it to 'sender'.</Issue>
+            </Message>
+            <Message Id="E" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameterMoreMeaningfulName" Certainty="75" Level="CriticalWarning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="26">In method 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)', consider providing a more meaningful name than parameter name 'E'.</Issue>
+            </Message>
+            <Message Id="System.String.ToUpper" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="28">Because the behavior of 'String.ToUpper()' could vary based on the current user's locale settings, replace this call in 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)' with a call to 'String.ToUpper(CultureInfo)'. If the result of 'String.ToUpper(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="28">Because the behavior of 'String.ToUpper()' could vary based on the current user's locale settings, replace this call in 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)' with a call to 'String.ToUpper(CultureInfo)'. If the result of 'String.ToUpper(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="29">Because the behavior of 'String.ToUpper()' could vary based on the current user's locale settings, replace this call in 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)' with a call to 'String.ToUpper(CultureInfo)'. If the result of 'String.ToUpper(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+            </Message>
+            <Message Id="System.String.IndexOf(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="29">Because the behavior of 'String.IndexOf(String)' could vary based on the current user's locale settings, replace this call in 'ClientChoicesHttpModule.AcquireRequestState(Object, EventArgs)' with a call to 'String.IndexOf(String, StringComparison)'. If the result of 'String.IndexOf(String, StringComparison)' will be displayed to the user, such as when sorting a list of items for display in a list box, specify 'StringComparison.CurrentCulture' or 'StringComparison.CurrentCultureIgnoreCase' as the 'StringComparison' parameter. If comparing case-insensitive identifiers, such as file paths, environment variables, or registry keys and values, specify 'StringComparison.OrdinalIgnoreCase'. Otherwise, if comparing case-sensitive identifiers, specify 'StringComparison.Ordinal'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#EndRequest(System.Object,System.EventArgs)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="E" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="43">In member 'ClientChoicesHttpModule.EndRequest(Object, EventArgs)', correct the casing of 'E' in parameter name 'E' by changing it to 'e'.</Issue>
+            </Message>
+            <Message Id="Sender" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="43">In member 'ClientChoicesHttpModule.EndRequest(Object, EventArgs)', correct the casing of 'Sender' in parameter name 'Sender' by changing it to 'sender'.</Issue>
+            </Message>
+            <Message Id="E" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameterMoreMeaningfulName" Certainty="75" Level="CriticalWarning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="43">In method 'ClientChoicesHttpModule.EndRequest(Object, EventArgs)', consider providing a more meaningful name than parameter name 'E'.</Issue>
+            </Message>
+            <Message Id="System.String.ToUpper" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="44">Because the behavior of 'String.ToUpper()' could vary based on the current user's locale settings, replace this call in 'ClientChoicesHttpModule.EndRequest(Object, EventArgs)' with a call to 'String.ToUpper(CultureInfo)'. If the result of 'String.ToUpper(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Init(System.Web.HttpApplication)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="0#" TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="18">In member 'ClientChoicesHttpModule.Init(HttpApplication)', change parameter name 'App' to 'context' in order to match the identifier as it has been declared in 'IHttpModule.Init(HttpApplication)'.</Issue>
+            </Message>
+            <Message Id="0" TypeName="Validate arguments of public methods" Category="Microsoft.Design" CheckId="CA1062" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="ClientChoicesHttpModule.vb" Line="19">In externally visible method 'ClientChoicesHttpModule.Init(HttpApplication)', validate parameter 'App' before using it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_SEProfile" Kind="Field" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'ClientChoicesHttpModule.m_SEProfile' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="HttpContextModule" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#acquireRequestState(System.Object,System.EventArgs)" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="mSecurityInfo" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context" File="HttpContextModule.vb" Line="108">'HttpContextModule.acquireRequestState(Object, EventArgs)' declares a variable, 'mSecurityInfo', of type 'MSecurityInfo', which is never used or is only assigned to. Use this variable or remove it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="GrowthWare.Framework.Web.Controllers">
+       <Types>
+        <Type Name="CacheController" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+           <Issue Certainty="90" Level="Error">Because type 'CacheController' contains only 'static' ('Shared' in Visual Basic) members, add a default private constructor to prevent the compiler from adding a default public constructor.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#AddToCacheDependency(System.String,System.Object)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Dispose objects before losing scope" Category="Microsoft.Reliability" CheckId="CA2000" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Name="ExceptionEdge" Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="71">In method 'CacheController.AddToCacheDependency(String, Object)', object 'fileStream' is not disposed along all exception paths. Call System.IDisposable.Dispose on object 'fileStream' before all references to it are out of scope.</Issue>
+             <Issue Name="NonExceptionEdge" Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="83">In method 'CacheController.AddToCacheDependency(String, Object)', call System.IDisposable.Dispose on object 'New CacheDependency(fileName)' before all references to it are out of scope.</Issue>
+            </Message>
+            <Message TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="75">Object 'fileStream' can be disposed more than once in method 'CacheController.AddToCacheDependency(String, Object)'. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 75</Issue>
+            </Message>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="58">Modify 'CacheController.AddToCacheDependency(String, Object)' to catch a more specific exception than 'Exception' or rethrow the exception.</Issue>
+            </Message>
+            <Message Id="Key" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="48">In member 'CacheController.AddToCacheDependency(String, Object)', correct the casing of 'Key' in parameter name 'Key' by changing it to 'key'.</Issue>
+            </Message>
+            <Message Id="Value" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="48">In member 'CacheController.AddToCacheDependency(String, Object)', correct the casing of 'Value' in parameter name 'Value' by changing it to 'value'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#CheckCallback(System.String,System.Object,System.Web.Caching.CacheItemRemovedReason)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="Key" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="121">In member 'CacheController.CheckCallback(String, Object, CacheItemRemovedReason)', correct the casing of 'Key' in parameter name 'Key' by changing it to 'key'.</Issue>
+            </Message>
+            <Message Id="Value" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="121">In member 'CacheController.CheckCallback(String, Object, CacheItemRemovedReason)', correct the casing of 'Value' in parameter name 'Value' by changing it to 'value'.</Issue>
+            </Message>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="121">'CacheController.CheckCallback(String, Object, CacheItemRemovedReason)' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#RemoveAllCache()" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="directoryInfo" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="142">'CacheController.RemoveAllCache()' declares a variable, 'directoryInfo', of type 'MDirectoryProfile', which is never used or is only assigned to. Use this variable or remove it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#RemoveFromCache(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="Cache" TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="85" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Controllers" File="CacheController.vb" Line="102">In member 'CacheController.RemoveFromCache(String)', correct the casing of 'Cache' in parameter name 'CacheName' by changing it to 'cache'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+      <Namespace Name="GrowthWare.Framework.Web.Utilities">
+       <Types>
+        <Type Name="AccountUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetCurrentProfile()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="AccountUtility.vb" Line="51">Change 'AccountUtility.GetCurrentProfile()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="ClientChoicesUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#SaveClientChoicesState(GrowthWare.Framework.Model.Profiles.MClientChoicesState&amp;)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="0#" TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="CriticalWarning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="ClientChoicesUtility.vb" Line="59">Consider a design that does not require that 'clientChoicesState' be a reference parameter.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="FileUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#CreateDirectory(System.String,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IncorrectMessage" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="250">Method 'FileUtility.CreateDirectory(String, String, MDirectoryProfile)' passes parameter name 'directoryProfile' as the 'message' argument to a 'ArgumentException' constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Issue>
+             <Issue Name="IncorrectParameterName" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="250">Method 'FileUtility.CreateDirectory(String, String, MDirectoryProfile)' passes 'Can not be null.' as the 'paramName' argument to a 'ArgumentException' constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#DeleteDirectory(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IncorrectMessage" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="287">Method 'FileUtility.DeleteDirectory(String, MDirectoryProfile)' passes parameter name 'directoryProfile' as the 'message' argument to a 'ArgumentException' constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Issue>
+             <Issue Name="IncorrectParameterName" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="287">Method 'FileUtility.DeleteDirectory(String, MDirectoryProfile)' passes 'Can not be null.' as the 'paramName' argument to a 'ArgumentException' constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#DoUpload(System.Web.UI.HtmlControls.HtmlInputFile,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IncorrectMessage" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="202">Method 'FileUtility.DoUpload(HtmlInputFile, String, MDirectoryProfile)' passes parameter name 'directoryProfile' as the 'message' argument to a 'ArgumentException' constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Issue>
+             <Issue Name="IncorrectParameterName" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="202">Method 'FileUtility.DoUpload(HtmlInputFile, String, MDirectoryProfile)' passes 'Can not be null.' as the 'paramName' argument to a 'ArgumentException' constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetDirectoryTableData(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile,System.Boolean)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="Dispose objects before losing scope" Category="Microsoft.Reliability" CheckId="CA2000" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Name="ExceptionEdge" Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="58">In method 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)', object 'mRetTable' is not disposed along all exception paths. Call System.IDisposable.Dispose on object 'mRetTable' before all references to it are out of scope.</Issue>
+            </Message>
+            <Message TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IncorrectMessage" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="46">Method 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)' passes parameter name 'directoryProfile' as the 'message' argument to a 'ArgumentException' constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Issue>
+             <Issue Name="IncorrectParameterName" Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="46">Method 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)' passes 'Can not be null.' as the 'paramName' argument to a 'ArgumentException' constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Issue>
+            </Message>
+            <Message TypeName="SetLocaleForDataTypes" Category="Microsoft.Globalization" CheckId="CA1306" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="90" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="58">Be sure to set the DataTable Locale property wherever 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)' creates an instance of that type.</Issue>
+            </Message>
+            <Message Id="System.DateTime.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IFormatProviderAlternateString" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="109">Because the behavior of 'Date.ToString()' could vary based on the current user's locale settings, replace this call in 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)' with a call to 'Date.ToString(IFormatProvider)'. If the result of 'Date.ToString(IFormatProvider)' will be displayed to the user, specify 'CultureInfo.CurrentCulture()' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture()'.</Issue>
+             <Issue Name="IFormatProviderAlternateString" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="167">Because the behavior of 'Date.ToString()' could vary based on the current user's locale settings, replace this call in 'FileUtility.GetDirectoryTableData(String, MDirectoryProfile, Boolean)' with a call to 'Date.ToString(IFormatProvider)'. If the result of 'Date.ToString(IFormatProvider)' will be displayed to the user, specify 'CultureInfo.CurrentCulture()' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture()'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#RenameFile(System.String,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="destinationfile" TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Name="MemberParameter" Certainty="75" Level="CriticalWarning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FileUtility.vb" Line="357">In method 'FileUtility.RenameFile(String, String, MDirectoryProfile)', correct the spelling of 'destinationfile' in parameter name 'destinationfileName' or remove it entirely if it represents any sort of Hungarian notation.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="FunctionUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#GetFunction(System.String)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FunctionUtility.vb" Line="50">Modify 'FunctionUtility.GetFunction(String)' to catch a more specific exception than 'Exception' or rethrow the exception.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetFunctions()" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="System.Int32.ToString" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IFormatProviderAlternateString" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FunctionUtility.vb" Line="31">Because the behavior of 'Integer.ToString()' could vary based on the current user's locale settings, replace this call in 'FunctionUtility.GetFunctions()' with a call to 'Integer.ToString(IFormatProvider)'. If the result of 'Integer.ToString(IFormatProvider)' will be displayed to the user, specify 'CultureInfo.CurrentCulture()' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture()'.</Issue>
+            </Message>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="FunctionUtility.vb" Line="30">Change 'FunctionUtility.GetFunctions()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="LogUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Members>
+          <Member Name="#.cctor()" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="System.DateTime.ToString(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IFormatProviderAlternateString" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="18">Because the behavior of 'Date.ToString(String)' could vary based on the current user's locale settings, replace this call in 'LogUtility.New()' with a call to 'Date.ToString(String, IFormatProvider)'. If the result of 'Date.ToString(String, IFormatProvider)' will be displayed to the user, specify 'CultureInfo.CurrentCulture()' as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture()'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#ConvertPriorityTextToPriority(System.String)" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message Id="System.String.ToUpper" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="209">Because the behavior of 'String.ToUpper()' could vary based on the current user's locale settings, replace this call in 'LogUtility.ConvertPriorityTextToPriority(String)' with a call to 'String.ToUpper(CultureInfo)'. If the result of 'String.ToUpper(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+            </Message>
+            <Message Id="0" TypeName="Validate arguments of public methods" Category="Microsoft.Design" CheckId="CA1062" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="209">In externally visible method 'LogUtility.ConvertPriorityTextToPriority(String)', validate parameter 'priority' before using it.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#CurrentLogLevel" Kind="Property" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="33">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.CurrentLogLevel()' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Debug(System.Object)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="166">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.Debug(Object)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#DeleteOldLogs()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="117">Modify 'LogUtility.DeleteOldLogs()' to catch a more specific exception than 'Exception' or rethrow the exception.</Issue>
+            </Message>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="98">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.DeleteOldLogs()' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+            <Message Id="System.Int32.Parse(System.String)" TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="IFormatProviderAlternate" Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="104">Because the behavior of 'Integer.Parse(String)' could vary based on the current user's locale settings, replace this call in 'LogUtility.DeleteOldLogs()' with a call to 'Integer.Parse(String, IFormatProvider)'. If the result of 'Integer.Parse(String, IFormatProvider)' will be based on input from the user, specify 'CultureInfo.CurrentCulture()' as the 'IFormatProvider' parameter. Otherwise, if the result will based on input stored and accessed by software, such as when it is loaded from disk or from a database, specify 'CultureInfo.InvariantCulture()'.</Issue>
+            </Message>
+            <Message Id="System.String.LastIndexOf(System.String)" TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="112">Because the behavior of 'String.LastIndexOf(String)' could vary based on the current user's locale settings, replace this call in 'LogUtility.DeleteOldLogs()' with a call to 'String.LastIndexOf(String, StringComparison)'. If the result of 'String.LastIndexOf(String, StringComparison)' will be displayed to the user, such as when sorting a list of items for display in a list box, specify 'StringComparison.CurrentCulture' or 'StringComparison.CurrentCultureIgnoreCase' as the 'StringComparison' parameter. If comparing case-insensitive identifiers, such as file paths, environment variables, or registry keys and values, specify 'StringComparison.OrdinalIgnoreCase'. Otherwise, if comparing case-sensitive identifiers, specify 'StringComparison.Ordinal'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Error(System.Object)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="187">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.Error(Object)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Fatal(System.Object)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="194">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.Fatal(Object)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetAppender()" Kind="Method" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="CriticalError" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="75">Modify 'LogUtility.GetAppender()' to catch a more specific exception than 'Exception' or rethrow the exception.</Issue>
+            </Message>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="72">'LogUtility.GetAppender()' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetInstance()" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="127">'LogUtility.GetInstance()' rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Issue>
+            </Message>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="127">Change 'LogUtility.GetInstance()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Info(System.Object)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="173">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.Info(Object)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#init()" Kind="Method" Static="False" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message Id="System.String.ToLower" TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Error" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="49">Because the behavior of 'String.ToLower()' could vary based on the current user's locale settings, replace this call in 'LogUtility.init()' with a call to 'String.ToLower(CultureInfo)'. If the result of 'String.ToLower(CultureInfo)' will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_FileAppender" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'LogUtility.m_FileAppender' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#SetThreshold(log4net.Priority)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="145">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.SetThreshold(Priority)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#Warn(System.Object)" Kind="Method" Static="False" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="DependsOnFix">
+             <Issue Certainty="95" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="LogUtility.vb" Line="180">The 'this' parameter (or 'Me' in Visual Basic) of 'LogUtility.Warn(Object)' is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+        <Type Name="SecurityEntityUtility" Kind="Class" Accessibility="Public" ExternallyVisible="True">
+         <Messages>
+          <Message TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+           <Issue Certainty="90" Level="Error">Because type 'SecurityEntityUtility' contains only 'static' ('Shared' in Visual Basic) members, add a default private constructor to prevent the compiler from adding a default public constructor.</Issue>
+          </Message>
+         </Messages>
+         <Members>
+          <Member Name="#GetCurrentProfile()" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="SecurityEntityUtility.vb" Line="48">Change 'SecurityEntityUtility.GetCurrentProfile()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetDefaultProfile()" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="75" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="SecurityEntityUtility.vb" Line="30">Change 'SecurityEntityUtility.GetDefaultProfile()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#GetProfiles()" Kind="Method" Static="True" Accessibility="Public" ExternallyVisible="True">
+           <Messages>
+            <Message TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="Breaking">
+             <Issue Certainty="50" Level="Warning" Path="D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities" File="SecurityEntityUtility.vb" Line="68">Change 'SecurityEntityUtility.GetProfiles()' to a property if appropriate.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_BSecurityEntity" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'SecurityEntityUtility.m_BSecurityEntity' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_DefaultProfile" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'SecurityEntityUtility.m_DefaultProfile' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+          <Member Name="#m_ProfileContextName" Kind="Field" Static="True" Accessibility="Private" ExternallyVisible="False">
+           <Messages>
+            <Message TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Certainty="75" Level="Warning">It appears that field 'SecurityEntityUtility.m_ProfileContextName' is never used or is only ever assigned to. Use this field or remove it.</Issue>
+            </Message>
+            <Message TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504" Status="Active" Created="2012-08-11 12:46:34Z" FixCategory="NonBreaking">
+             <Issue Name="Static" Certainty="95" Level="Warning">The field name 'SecurityEntityUtility.m_ProfileContextName' suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Issue>
+            </Message>
+           </Messages>
+          </Member>
+         </Members>
+        </Type>
+       </Types>
+      </Namespace>
+     </Namespaces>
+    </Module>
+   </Modules>
+  </Target>
+ </Targets>
+ <Rules>
+  <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+   <Name>Avoid namespaces with few types</Name>
+   <Description>A namespace should generally have more than five types.</Description>
+   <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182130(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="50">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidUncalledPrivateCode" Category="Microsoft.Performance" CheckId="CA1811">
+   <Name>Avoid uncalled private code</Name>
+   <Description>There is uncalled code that is not externally visible and is not a known runtime entry point. If this violation fires in error, please send a problem report to the Visual Studio Code Analysis team.</Description>
+   <Resolution Name="Default">{0} appears to have no upstream public or protected callers.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182264(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="AvoidUnusedPrivateFields" Category="Microsoft.Performance" CheckId="CA1823">
+   <Name>Avoid unused private fields</Name>
+   <Description>Private fields were detected that do not appear to be accessed within the assembly. If this violation fires in error, please send a problem report to the Visual Studio Code Analysis team.</Description>
+   <Resolution Name="Default">It appears that field {0} is never used or is only ever assigned to. Use this field or remove it.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms245042(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="Dispose objects before losing scope" Category="Microsoft.Reliability" CheckId="CA2000">
+   <Name>Dispose objects before losing scope</Name>
+   <Description>If a disposable object is not explicitly disposed before all references to it are out of scope, the object will be disposed at some indeterminate time when the garbage collector runs the finalizer of the object. Because an exceptional event might occur that will prevent the finalizer of the object from running, the object should be explicitly disposed instead.</Description>
+   <Resolution Name="ExceptionEdge">In method {0}, object {1} is not disposed along all exception paths. Call System.IDisposable.Dispose on object {1} before all references to it are out of scope.</Resolution>
+   <Resolution Name="NonExceptionEdge">In method {0}, call System.IDisposable.Dispose on object {1} before all references to it are out of scope.</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182289(VS.100).aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="Do not dispose objects multiple times" Category="Microsoft.Usage" CheckId="CA2202">
+   <Name>Do not dispose objects multiple times</Name>
+   <Description>A correctly implemented Dispose method can be called multiple times without throwing an exception. However, this is not guaranteed and to avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.</Description>
+   <Resolution Name="Default">Object {0} can be disposed more than once in method {1}. To avoid generating a System.ObjectDisposedException you should not call Dispose more than one time on an object.: Lines: 75</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182334(VS.100).aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotCatchGeneralExceptionTypes" Category="Microsoft.Design" CheckId="CA1031">
+   <Name>Do not catch general exception types</Name>
+   <Description>You should not catch Exception or SystemException. Catching generic exception types can hide run-time problems from the library user, and can complicate debugging. You should catch only those exceptions that you can handle gracefully.</Description>
+   <Resolution Name="Default">Modify {0} to catch a more specific exception than {1} or rethrow the exception.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182137(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="designrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotPassTypesByReference" Category="Microsoft.Design" CheckId="CA1045">
+   <Name>Do not pass types by reference</Name>
+   <Description>Although there are legitimate times to use reference parameters, such use frequently indicates a design that does not conform to the design guidelines for managed code.</Description>
+   <Resolution Name="Default">Consider a design that does not require that {0} be a reference parameter.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182146(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="DoNotRaiseReservedExceptionTypes" Category="Microsoft.Usage" CheckId="CA2201">
+   <Name>Do not raise reserved exception types</Name>
+   <Description>User code should not create and raise exceptions of certain types that are reserved by the runtime or which are of a too general exception type. Exception types that are too general include Exception, SystemException, and ApplicationException. Exception types that are reserved by the runtime include ThreadAbortException, OutOfMemoryException, ExecutionEngineException, and IndexOutOfRangeException.</Description>
+   <Resolution Name="TooGeneric">{0} creates an exception of type {1}, an exception type that is not sufficiently specific and should never be raised by user code. If this exception instance might be thrown, use a different exception type.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182338(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="usagerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="IdentifiersShouldBeCasedCorrectly" Category="Microsoft.Naming" CheckId="CA1709">
+   <Name>Identifiers should be cased correctly</Name>
+   <Description>Type, namespace, and member identifiers are Pascal-cased. Parameter identifiers are camel-cased. Two letter acronyms within these identifiers should be upper-cased, for example, use System.IO instead of System.Io. Acronyms of three or more letters should be Pascal-cased, for example, use System.Xml instead of System.XML. The pascal-casing convention capitalizes the first letter of each word, as in BackColor. The camel-casing convention formats the first letter of the first word in lowercase and capitalizes the first letter of all subsequent words, as in backgroundColor. Although it may be common practice for some two letter acronyms to not be fully capitalized, violations of this rule should not be excluded for this reason. For example, 'DbConnection', is common but incorrect; use DBConnection. A violation of this rule might be required for compatibility with existing, non-managed symbol schemes. In general, however, these symbols should not be visible outside the assembly that uses them.</Description>
+   <Resolution Name="Member">Correct the casing of '{0}' in member name {1} by changing it to '{2}'.</Resolution>
+   <Resolution Name="MemberParameter">In member {0}, correct the casing of '{1}' in parameter name {2} by changing it to '{3}'.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182240(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="85">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="IdentifiersShouldBeSpelledCorrectly" Category="Microsoft.Naming" CheckId="CA1704">
+   <Name>Identifiers should be spelled correctly</Name>
+   <Description>The individual words that make up an identifier should not be abbreviated and should be spelled correctly. If this rule generates a false positive on a term that should be recognized, add the word to the FxCop custom dictionary.</Description>
+   <Resolution Name="MemberParameter">In method {0}, correct the spelling of '{1}' in parameter name {2} or remove it entirely if it represents any sort of Hungarian notation.</Resolution>
+   <Resolution Name="MemberParameterMoreMeaningfulName">In method {0}, consider providing a more meaningful name than parameter name {1}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/bb264492(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">CriticalWarning</MessageLevel>
+   <File Name="namingrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="InstantiateArgumentExceptionsCorrectly" Category="Microsoft.Usage" CheckId="CA2208">
+   <Name>Instantiate argument exceptions correctly</Name>
+   <Description>String arguments passed to constructors of ArgumentException and its derived types should be correct. Types derived from ArgumentException have inconsistent constructor overloads with respect to the message and paramName parameters as compared to ArgumentException.</Description>
+   <Resolution Name="IncorrectMessage">Method {0} passes parameter name '{1}' as the {2} argument to a {3} constructor. Replace this argument with a descriptive message and pass the parameter name in the correct position.</Resolution>
+   <Resolution Name="IncorrectParameterName">Method {0} passes '{1}' as the {2} argument to a {3} constructor. Replace this argument with one of the method's parameter names. Note that the provided parameter name should have the exact casing as declared on the method.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182347(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">CriticalError</MessageLevel>
+   <File Name="usagerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+   <Name>Mark members as static</Name>
+   <Description>Methods which do not access instance data or call instance methods can be marked as static (Shared in Visual Basic). After doing so, the compiler will emit non-virtual call sites to these members which will prevent a check at runtime for each call that ensures the current object pointer is non-null. This can result in a measurable performance gain for performance-sensitive code. In some cases, the failure to access the current object instance represents a correctness issue.</Description>
+   <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms245046(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="PInvokeDeclarationsShouldBePortable" Category="Microsoft.Portability" CheckId="CA1901">
+   <Name>P/Invoke declarations should be portable</Name>
+   <Description>.</Description>
+   <Resolution Name="Parameter">As it is declared in your code, parameter {0} of P/Invoke {1} will be {2} bytes wide on {3} platforms. This is not correct, as the actual native declaration of this API indicates it should be {4} bytes wide on {3} platforms. Consult the MSDN Platform SDK documentation for help determining what data type should be used instead of {5}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182284(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="portabilityrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="ParameterNamesShouldMatchBaseDeclaration" Category="Microsoft.Naming" CheckId="CA1725">
+   <Name>Parameter names should match base declaration</Name>
+   <Description>For usability reasons, parameter names in overridden methods should match those of the base declaration.</Description>
+   <Resolution Name="Default">In member {0}, change parameter name {1} to {2} in order to match the identifier as it has been declared in {3}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182251(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="namingrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+   <Name>Remove unused locals</Name>
+   <Description>Remove locals that are not used or are only assigned to in method implementations.</Description>
+   <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182278(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Warning</MessageLevel>
+   <File Name="performancerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="RethrowToPreserveStackDetails" Category="Microsoft.Usage" CheckId="CA2200">
+   <Name>Rethrow to preserve stack details</Name>
+   <Description>Use the IL rethrow instruction to preserve original stack details when re-raising a caught exception.</Description>
+   <Resolution Name="Default">{0} rethrows a caught exception and specifies it explicitly as an argument. Use 'throw' without an argument instead, in order to preserve the stack location where the exception was initially raised.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182363(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="usagerules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="ReviewMisleadingFieldNames" Category="Microsoft.Maintainability" CheckId="CA1504">
+   <Name>Review misleading field names</Name>
+   <Description>Review field names which, by convention, appear to indicate they are instance or static but, in fact, are not. This rule fires against instance fields which have names prefixed with "s_" and static fields which are prefixed with "m_".</Description>
+   <Resolution Name="Static">The field name {0} suggests that it is instance data but it is declared as static (Shared in Visual Basic). Review this member to verify that it should be static, or consider changing the field name.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/bb164506(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Warning</MessageLevel>
+   <File Name="maintainabilityrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="SetLocaleForDataTypes" Category="Microsoft.Globalization" CheckId="CA1306">
+   <Name>Set locale for data types</Name>
+   <Description>In most cases, Locale should be explicitly set to CultureInfo.InvariantCulture on DataSet and DataTable instances. Upon creation of a DataSet or DataTable instance, the Locale is set to the current culture. In most cases, the Locale should be set to CultureInfo.InvariantCulture to guarantee proper sorting behavior in all cultures.</Description>
+   <Resolution Name="Default">Be sure to set the {0} Locale property wherever {1} creates an instance of that type.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182188(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Error</MessageLevel>
+   <File Name="globalizationrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="SpecifyCultureInfo" Category="Microsoft.Globalization" CheckId="CA1304">
+   <Name>Specify CultureInfo</Name>
+   <Description>If an overload exists that takes a CultureInfo argument, it should always be called in favor of an overload that does not. The CultureInfo type contains culture-specific information required for performing numeric and string operations, such as casing, formatting, and string comparisons. In scenarios where conversion and parsing behavior should never change between cultures, specify CultureInfo.InvariantCulture, otherwise, specify CultureInfo.CurrentCulture.</Description>
+   <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify 'CultureInfo.CurrentCulture' as the 'CultureInfo' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify 'CultureInfo.InvariantCulture'.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182189(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="globalizationrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="SpecifyIFormatProvider" Category="Microsoft.Globalization" CheckId="CA1305">
+   <Name>Specify IFormatProvider</Name>
+   <Description>If an overload exists that takes an IFormatProvider argument, it should always be called in favor of an overload that does not. Some methods in the runtime convert a value to or from a string representation and take a string parameter that contains one or more characters, called format specifiers, which indicate how the value is to be converted. If the meaning of the format specifier varies by culture, a formatting object supplies the actual characters used in the string representation. In scenarios where sorting and comparison behavior should never change between cultures, specify CultureInfo.InvariantCulture, otherwise, specify CultureInfo.CurrentCulture.</Description>
+   <Resolution Name="IFormatProviderAlternate">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be based on input from the user, specify {3} as the 'IFormatProvider' parameter. Otherwise, if the result will based on input stored and accessed by software, such as when it is loaded from disk or from a database, specify {4}.</Resolution>
+   <Resolution Name="IFormatProviderAlternateString">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, specify {3} as the 'IFormatProvider' parameter. Otherwise, if the result will be stored and accessed by software, such as when it is persisted to disk or to a database, specify {4}.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182190(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="globalizationrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="SpecifyStringComparison" Category="Microsoft.Globalization" CheckId="CA1307">
+   <Name>Specify StringComparison</Name>
+   <Description>If an overload exists that takes a StringComparison argument, it should always be called in favor of an overload that does not.</Description>
+   <Resolution Name="Default">Because the behavior of {0} could vary based on the current user's locale settings, replace this call in {1} with a call to {2}. If the result of {2} will be displayed to the user, such as when sorting a list of items for display in a list box, specify 'StringComparison.CurrentCulture' or 'StringComparison.CurrentCultureIgnoreCase' as the 'StringComparison' parameter. If comparing case-insensitive identifiers, such as file paths, environment variables, or registry keys and values, specify 'StringComparison.OrdinalIgnoreCase'. Otherwise, if comparing case-sensitive identifiers, specify 'StringComparison.Ordinal'.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/bb386080(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="95">Error</MessageLevel>
+   <File Name="globalizationrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="StaticHolderTypesShouldNotHaveConstructors" Category="Microsoft.Design" CheckId="CA1053">
+   <Name>Static holder types should not have constructors</Name>
+   <Description>Instances of types that define only static members do not need to be created. Many compilers will automatically add a public default constructor if no constructor is specified. To prevent this, adding an empty private constructor may be required.</Description>
+   <Resolution Name="Default">Because type {0} contains only 'static' ('Shared' in Visual Basic) members, add a default private constructor to prevent the compiler from adding a default public constructor.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182169(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="90">Error</MessageLevel>
+   <File Name="designrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="UsePropertiesWhereAppropriate" Category="Microsoft.Design" CheckId="CA1024">
+   <Name>Use properties where appropriate</Name>
+   <Description>Properties should be used instead of Get/Set methods in most situations. Methods are preferable to properties in the following situations: the operation is a conversion, is expensive or has an observable side-effect; the order of execution is important; calling the member twice in succession creates different results; a member is static but returns a mutable value; or the member returns an array.</Description>
+   <Resolution Name="Default">Change {0} to a property if appropriate.</Resolution>
+   <Owner />
+   <Url>http://msdn.microsoft.com/library/ms182181(VS.100).aspx</Url>
+   <Email>[none]</Email>
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="designrules.dll" Version="10.0.0.0" />
+  </Rule>
+  <Rule TypeName="Validate arguments of public methods" Category="Microsoft.Design" CheckId="CA1062">
+   <Name>Validate arguments of public methods</Name>
+   <Description>All reference arguments passed to externally visible methods should be checked against null (Nothing in VB). If appropriate, throw a System.ArgumentNullException when the argument is null.</Description>
+   <Resolution Name="Default">In externally visible method {0}, validate parameter '{1}' before using it.</Resolution>
+   <Owner>RuleOwner</Owner>
+   <Url>http://msdn.microsoft.com/library/ms182182(VS.100).aspx</Url>
+   <Email />
+   <MessageLevel Certainty="75">Warning</MessageLevel>
+   <File Name="dataflowrules.dll" Version="10.0.0.0" />
+  </Rule>
+ </Rules>
+ <Localized>
+  <String Key="Category">Category</String>
+  <String Key="Certainty">Certainty</String>
+  <String Key="CollapseAll">Collapse All</String>
+  <String Key="CheckId">Check Id</String>
+  <String Key="Error">Error</String>
+  <String Key="Errors">error(s)</String>
+  <String Key="ExpandAll">Expand All</String>
+  <String Key="Help">Help</String>
+  <String Key="Line">Line</String>
+  <String Key="Messages">message(s)</String>
+  <String Key="LocationNotStoredInPdb">[Location not stored in Pdb]</String>
+  <String Key="Project">Project</String>
+  <String Key="Resolution">Resolution</String>
+  <String Key="Rule">Rule</String>
+  <String Key="RuleFile">Rule File</String>
+  <String Key="RuleDescription">Rule Description</String>
+  <String Key="Source">Source</String>
+  <String Key="Status">Status</String>
+  <String Key="Target">Target</String>
+  <String Key="Warning">Warning</String>
+  <String Key="Warnings">warning(s)</String>
+  <String Key="ReportTitle">Code Analysis Report</String>
+ </Localized>
+</FxCopReport>

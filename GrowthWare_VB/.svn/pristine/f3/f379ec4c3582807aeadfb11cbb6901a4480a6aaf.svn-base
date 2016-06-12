@@ -1,0 +1,280 @@
+﻿Imports GrowthWare.Framework.Enumerations
+Imports GrowthWare.Framework.ModelObjects.Base.Interfaces
+Imports GrowthWare.Framework.ModelObjects.Base
+Imports System.Collections.ObjectModel
+
+Namespace ModelObjects
+	''' <summary>
+	''' The MBaseSecurity is a abstract class that when inherited will add 4 types of roles
+	''' to your class/object.  After you have inherited the class pass a data row to the SecurityInit sub 
+	''' to populate the roles.
+	''' </summary>
+	''' <remarks>
+	''' Currently there are 4 permission roles and they are Add, Edit, View, Delete.  
+	''' If you would like to extend this class do so by inheriting this class and adding your
+	''' own types of roles say Moderate if your writing some sort of formum type of class.
+	''' Any of the objects you create should now inherit your class and will now have all of the 
+	''' roles from this class as well as the ones for yours.
+	'''</remarks>
+	Public MustInherit Class MSecurity
+		Inherits MProfile
+		Implements IMSecurityInfo
+
+		Private m_DerivedAddRoles As Collection(Of String)
+		Private m_DerivedDeleteRoles As Collection(Of String)
+		Private m_DerivedEditRoles As Collection(Of String)
+		Private m_DerivedViewRoles As Collection(Of String)
+
+		Private m_AssignedAddRoles As Collection(Of String)
+		Private m_AssignedDeleteRoles As Collection(Of String)
+		Private m_AssignedEditRoles As Collection(Of String)
+		Private m_AssignedViewRoles As Collection(Of String)
+
+		Private m_AddGroups As Collection(Of String)
+		Private m_DeleteGroups As Collection(Of String)
+		Private m_EditGroups As Collection(Of String)
+		Private m_ViewGroups As Collection(Of String)
+		Private m_PermissionColumn As String = "PERMISSIONS_SEQ_ID"
+		Private m_RoleColumn As String = "Roles"
+		Private m_GroupColumn As String = "Groups"
+
+		''' <summary>
+		''' Initialize orverloads and calles mybase.init to will populate the Add, Delete, Edit, and View role properties.
+		''' </summary>
+		''' <param name="DRowSecurity">A data row that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
+		''' <param name="DetailRow">A data row that contains base information</param>
+		''' <remarks></remarks>
+		Protected Overridable Overloads Sub Initialize(ByRef DetailRow As DataRow, ByRef DRowSecurity() As DataRow)
+			MyBase.Initialize(DetailRow)
+			SetDerivedRole(DRowSecurity, RoleType.AddRole)
+			SetDerivedRole(DRowSecurity, RoleType.DeleteRole)
+			SetDerivedRole(DRowSecurity, RoleType.EditRole)
+			SetDerivedRole(DRowSecurity, RoleType.ViewRole)
+		End Sub
+
+		''' <summary>
+		''' Return roles associated with the "Add" permission.
+		''' </summary>
+		Public ReadOnly Property AddRoles() As Collection(Of String) Implements IMSecurityInfo.AddRoles
+			Get
+				Return m_DerivedAddRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Return roles associated with the "Delete" permission.
+		''' </summary>
+		Public ReadOnly Property DeleteRoles() As Collection(Of String) Implements IMSecurityInfo.DeleteRoles
+			Get
+				Return m_DerivedDeleteRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Return roles associated with the "Edit" permission.
+		''' </summary>
+		Public ReadOnly Property EditRoles() As Collection(Of String) Implements IMSecurityInfo.EditRoles
+			Get
+				Return m_DerivedEditRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Return roles associated with the "View" permission.
+		''' </summary>
+		Public ReadOnly Property ViewRoles() As Collection(Of String) Implements IMSecurityInfo.ViewRoles
+			Get
+				Return m_DerivedViewRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Represents the permission column name.
+		''' </summary>
+		Public Property PermissionColumn() As String
+			Get
+				Return m_PermissionColumn
+			End Get
+			Set(ByVal value As String)
+				m_PermissionColumn = value.Trim
+			End Set
+		End Property
+
+		''' <summary>
+		''' Represents the role column name.
+		''' </summary>
+		Public Property RoleColumn() As String
+			Get
+				Return m_RoleColumn
+			End Get
+			Set(ByVal value As String)
+				m_RoleColumn = value.Trim
+			End Set
+		End Property
+
+		' ''' <summary>
+		' ''' Populates the given permissions roles.
+		' ''' </summary>
+		' ''' <param name="Roles">Array of DataRows</param>
+		' ''' <param name="RoleType">Enum RoleType</param>
+		Private Sub SetDerivedRole(ByVal Roles() As DataRow, ByVal RoleType As RoleType)
+			Dim row As DataRow
+			For Each row In Roles
+				If Not IsDBNull(row(m_PermissionColumn)) Then
+					If (Not IsDBNull(row(m_RoleColumn))) Then
+						Select Case RoleType
+							Case Enumerations.RoleType.AddRole
+								m_DerivedAddRoles.Add(row(m_RoleColumn).ToString())
+							Case Enumerations.RoleType.DeleteRole
+								m_DerivedDeleteRoles.Add(row(m_RoleColumn).ToString())
+							Case Enumerations.RoleType.EditRole
+								m_DerivedEditRoles.Add(row(m_RoleColumn).ToString())
+							Case Enumerations.RoleType.ViewRole
+								m_DerivedViewRoles.Add(row(m_RoleColumn).ToString())
+						End Select
+					End If
+				End If
+			Next row
+		End Sub
+
+		''' <summary>
+		''' Populates all permissions.
+		''' </summary>
+		''' <param name="SecurityRows">DataRowCollection containing all derived roles for all permissions</param>
+		Public Sub PopulatePermissions(ByVal SecurityRows As DataRowCollection)
+			Throw New NotImplementedException()
+		End Sub
+
+		''' <summary>
+		''' Will set the collection of roles given a comma seporated string of roles.
+		''' </summary>
+		''' <param name="CommaSeporatedRoles">String of comma seporated roles</param>
+		Public Sub SetAssignedRoles(ByVal commaSeporatedRoles As String, ByVal permission As PermissionTypes)
+			Select Case permission
+				Case PermissionTypes.Add
+					setRolesOrGroups(m_AssignedAddRoles, commaSeporatedRoles)
+				Case PermissionTypes.Delete
+					setRolesOrGroups(m_AssignedDeleteRoles, commaSeporatedRoles)
+				Case PermissionTypes.Edit
+					setRolesOrGroups(m_AssignedEditRoles, commaSeporatedRoles)
+				Case PermissionTypes.View
+					setRolesOrGroups(m_AssignedViewRoles, commaSeporatedRoles)
+				Case Else
+			End Select
+		End Sub
+
+		''' <summary>
+		''' Will set the collection of groups given a comma seporated string of groups.
+		''' </summary>
+		''' <param name="CommaSeporatedGroups">String of comma seporated groups</param>
+		Public Sub SetGroups(ByVal commaSeporatedGroups As String, ByVal permission As PermissionTypes)
+			Select Case permission
+				Case PermissionTypes.Add
+					setRolesOrGroups(m_AddGroups, commaSeporatedGroups)
+				Case PermissionTypes.Delete
+					setRolesOrGroups(m_DeleteGroups, commaSeporatedGroups)
+				Case PermissionTypes.Edit
+					setRolesOrGroups(m_EditGroups, commaSeporatedGroups)
+				Case PermissionTypes.View
+					setRolesOrGroups(m_ViewGroups, commaSeporatedGroups)
+				Case Else
+					'Do nothing
+			End Select
+		End Sub
+
+		''' <summary>
+		''' Converts the collection of AssignedRoles to a comma seporated string.
+		''' </summary>
+		''' <returns>String</returns>
+		Public Function GetCommaSeporatedAssingedRoles(ByVal permission As PermissionTypes) As String
+			Select Case permission
+				Case PermissionTypes.Add
+					Return Me.getCommaSeportatedString(m_DerivedAddRoles)
+				Case PermissionTypes.Delete
+					Return Me.getCommaSeportatedString(m_DerivedDeleteRoles)
+				Case PermissionTypes.Edit
+					Return Me.getCommaSeportatedString(m_DerivedEditRoles)
+				Case PermissionTypes.View
+					Return Me.getCommaSeportatedString(m_DerivedViewRoles)
+				Case Else
+					Return Me.getCommaSeportatedString(m_DerivedViewRoles)
+			End Select
+		End Function
+
+		''' <summary>
+		''' Converts the collection of AssignedGroups to a comma seporated string.
+		''' </summary>
+		''' <returns>String</returns>
+		Public Function GetCommaSeporatedGroups(ByVal permission As PermissionTypes) As String
+			Select Case permission
+				Case PermissionTypes.Add
+					Return Me.getCommaSeportatedString(m_AddGroups)
+				Case PermissionTypes.Delete
+					Return Me.getCommaSeportatedString(m_DeleteGroups)
+				Case PermissionTypes.Edit
+					Return Me.getCommaSeportatedString(m_EditGroups)
+				Case PermissionTypes.View
+					Return Me.getCommaSeportatedString(m_ViewGroups)
+				Case Else
+					Return Me.getCommaSeportatedString(m_ViewGroups)
+			End Select
+		End Function
+
+		' ''' <summary>
+		' ''' Converts the collection of DerivedRoles to a comma seporated string.
+		' ''' </summary>
+		' ''' <returns>String</returns>
+		'Public Function GetCommaSeporatedDerivedRoles() As String
+		'	Return Me.getCommaSeportatedString(m_DerivedRoles)
+		'End Function
+
+
+#Region "Private Methods"
+		''' <summary>
+		''' Sets the assigned roles or groups.
+		''' </summary>
+		''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+		''' <param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
+		''' <param name="ColumnName">The column name to retrieve the data from</param>
+		Private Sub setRolesOrGroups(ByRef stringCollectionObject As Collection(Of String), ByVal groupsOrRoles As DataRowCollection, ByVal columnName As String, ByVal permission As PermissionTypes)
+			For Each mRow In groupsOrRoles
+				If Not IsDBNull(mRow(columnName)) Then
+					If Integer.Parse(mRow(m_PermissionColumn).ToString()) = permission Then
+						stringCollectionObject.Add(mRow(columnName).ToString())
+					End If
+				End If
+			Next
+		End Sub
+
+		''' <summary>
+		''' Sets the assigned roles or groups.
+		''' </summary>
+		''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+		''' <param name="CommaSeporatedString">A comma seporated list of roles or groups 'you, me' as an example</param>
+		Private Sub setRolesOrGroups(ByRef stringCollectionObject As Collection(Of String), ByRef commaSeporatedString As String)
+			Dim mRoles() As String = commaSeporatedString.Split(",")
+			stringCollectionObject = New Collection(Of String)
+			For Each mRole In mRoles
+				stringCollectionObject.Add(mRole.ToString())
+			Next
+		End Sub
+
+		Private Function getCommaSeportatedString(ByVal CollectionOfStrings As Collection(Of String)) As String
+			Dim mRetValue As String = String.Empty
+			If Not CollectionOfStrings Is Nothing Then
+				If CollectionOfStrings.Count > 0 Then
+					For Each item In CollectionOfStrings
+						mRetValue += item.ToString() + ","
+					Next
+				End If
+			End If
+			If mRetValue.Length > 0 Then
+				mRetValue = mRetValue.Substring(0, mRetValue.Length - 1)
+			End If
+			Return mRetValue
+		End Function
+
+#End Region
+
+	End Class
+End Namespace

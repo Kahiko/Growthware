@@ -1,0 +1,122 @@
+﻿using System;
+using System.Linq;
+using System.Globalization;
+using System.Collections.ObjectModel;
+using GrowthWare.Framework.BusinessLogicLayer;
+using GrowthWare.Framework.Common;
+using GrowthWare.Framework.Model.Enumerations;
+using GrowthWare.Framework.Model.Profiles;
+using GrowthWare.Framework.Web.Controllers;
+using System.Web;
+
+namespace GrowthWare.Framework.Web.Utilities
+{
+
+	/// <summary>
+	/// SecurityEntityUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
+	/// Web needs such as caching are handeled here
+	/// </summary>
+	public class SecurityEntityUtility
+	{
+
+		private static string m_ProfileContextName = "ContextSecurityEntityProfile";
+
+		private static MSecurityEntityProfile m_DefaultProfile = null;
+
+		private static MSecurityEntityProfile mRootProfile = new MSecurityEntityProfile();
+
+		private static MSecurityEntityProfile mSessionProfile = new MSecurityEntityProfile();
+
+		const string SESSION_PROFILE_NAME = "SessionSecurityEntityProfile";
+
+		static readonly string SecurityEntityCachedCollection = "SecurityEntityCollection";
+
+		/// <summary>
+		/// Creates and returns MSecurityEntityProfile populated with information from the
+		/// configuration file.
+		/// </summary>
+		/// <returns>MSecurityEntityProfile</returns>
+		public static MSecurityEntityProfile GetDefaultProfile()
+		{
+			if(m_DefaultProfile == null)
+			{
+				MSecurityEntityProfile mDefaultProfile = new MSecurityEntityProfile();
+				mDefaultProfile.Id = int.Parse(ConfigSettings.DefaultSecurityEntityID.ToString());
+				mDefaultProfile.DAL = ConfigSettings.DAL;
+				mDefaultProfile.DALNamespace = ConfigSettings.DAL_Namespace(mDefaultProfile.DAL);
+				mDefaultProfile.DALAssemblyName = ConfigSettings.DAL_AssemblyName(mDefaultProfile.DAL);
+				mDefaultProfile.ConnectionString = ConfigSettings.ConnectionString(mDefaultProfile.DAL);
+				m_DefaultProfile = mDefaultProfile;
+			}
+			return m_DefaultProfile;
+		}
+
+		/// <summary>
+		/// Returns the current MSecurityEntityProfile from context.  If one is not found in context then 
+		/// the default values from the config file will be returned.
+		/// </summary>
+		/// <returns>MSecurityEntityProfile</returns>
+		public static MSecurityEntityProfile GetCurrentProfile()
+		{
+
+			MSecurityEntityProfile mRetProfile = GetDefaultProfile();
+			if(HttpContext.Current != null)
+			{
+				if(HttpContext.Current.Items[m_ProfileContextName] != null)
+				{
+					mRetProfile = (MSecurityEntityProfile)HttpContext.Current.Items[m_ProfileContextName];
+				}
+			}
+			return mRetProfile;			
+		}
+
+		/// <summary>
+		/// Retrieves all security entities from the either the database or cache
+		/// </summary>
+		/// <returns>A Collection of MSecurityEntityProfile</returns>
+		public static Collection<MSecurityEntityProfile> GetProfiles()
+		{
+			String mCacheName = "Cached_SecurityEntities";
+			Collection<MSecurityEntityProfile> mRetVal = null;
+			mRetVal = (Collection<MSecurityEntityProfile>)(HttpContext.Current.Cache[mCacheName]);
+			if (mRetVal == null)
+			{
+				BSecurityEntity m_BSecurityEntity = new BSecurityEntity(GetDefaultProfile(), ConfigSettings.CentralManagement);
+				mRetVal = m_BSecurityEntity.GetSecurityEntities();
+				CacheController.AddToCacheDependency(mCacheName, mRetVal);
+			}
+			return mRetVal;
+		}
+
+		/// <summary>
+		/// Get a single function given it's action.
+		/// </summary>
+		/// <param name="name">String</param>
+		/// <returns>MSecurityEntityProfile</returns>
+		public static MSecurityEntityProfile GetProfile(String name)
+		{
+			var mResult = from mProfile in GetProfiles()
+						  where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
+						  select mProfile;
+			MSecurityEntityProfile mRetVal = mResult.First();
+			return mRetVal;
+
+		}
+
+		/// <summary>
+		/// Get a single function given it's id.
+		/// </summary>
+		/// <param name="id">int or Integer</param>
+		/// <returns>MSecurityEntityProfile</returns>
+		public static MSecurityEntityProfile GetProfile(int id)
+		{
+			var mResult = from mProfile in GetProfiles()
+						  where mProfile.Id == id
+						  select mProfile;
+			MSecurityEntityProfile mRetVal = mResult.First();
+			return mRetVal;
+		}
+
+	}
+
+}

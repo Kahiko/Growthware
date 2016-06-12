@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="554e88b4-3ef3-4552-aff7-535e63be07ac"
+  name="Interfaces"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="be19ecad-34ce-4261-a901-c49c74c0f1d9"
+      handle="viewcode://./CodeSchema_Namespace?Namespace=GrowthWare.Framework.ModelObjects.Base.Interfaces"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <Interface
+        Id="8cdbb543-794b-4aec-92ce-9eefa3c714f3"
+        name="IMProfile"
+        isAbstract="false"
+        isLeaf="false">
+        <referencesInternal>
+          <reference
+            Id="dc7894be-5be2-44c9-9510-e98a50fea2b0"
+            handle="viewcode://./CodeSchema_Interface?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects.Base.Interfaces Type=IMProfile"
+            tag="ViewCode" />
+        </referencesInternal>
+      </Interface>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

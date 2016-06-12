@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="file:///C:/Users/Michael Regan/AppData/Local/Microsoft/VisualStudio/10.0/Extensions/Microsoft/Visualization and Modeling Feature Pack/1.0/Logging/CodeGenLog.xslt"?>
+<Log xmlns="http://schemas.microsoft.com/VisualStudio/2010/CodeGen.RE.Log">
+  <Message Timestamp="2012-01-26T19:45:03" Importance="High" Text="Code generation or text transformation started." />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="Name = InterfaceTemplate" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="Overwrite = True" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="ProjectPath = ..\ModelingProjectLib\ModelingProjectLib.csproj" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="TargetDirectory = GeneratedCode\{PackageStructure}" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="TargetName = {Name}" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="TemplateFilePath = %LocalAppData%\Microsoft\VisualStudio\10.0\Extensions\Microsoft\Visualization and Modeling Feature Pack\1.0\Templates\Text\InterfaceTemplate.t4" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Diagnostic" Text="ResolvedTemplateFilePath = C:\Users\Michael Regan\AppData\Local\Microsoft\VisualStudio\10.0\Extensions\Microsoft\Visualization and Modeling Feature Pack\1.0\Templates\Text\InterfaceTemplate.t4" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Medium" Text="ModelingProject's Text Template Binding: 'InterfaceTemplate' will apply InterfaceTemplate.t4 to: 'ModelingProject::GrowthWare::Framework::DataAccessLayer::IDAccount' -  (Interface) " />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="Medium" Text="'ModelingProject::GrowthWare::Framework::DataAccessLayer::IDAccount' -  (Interface) : success (file replaced) - D:\Development\2011\GrowthWare\GrowthWare_VB\ModelingProjectLib\GeneratedCode\GrowthWare\Framework\DataAccessLayer\IDAccount.cs" />
+  <Message Timestamp="2012-01-26T19:45:03" Importance="High" Text="Code generation complete. Errors: 0. Warnings: 0." />
+</Log>

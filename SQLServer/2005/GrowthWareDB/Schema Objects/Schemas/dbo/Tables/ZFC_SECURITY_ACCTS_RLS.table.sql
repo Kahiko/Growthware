@@ -1,0 +1,7 @@
+﻿CREATE TABLE [dbo].[ZFC_SECURITY_ACCTS_RLS] (
+    [RLS_SE_SEQ_ID] INT      NOT NULL,
+    [ACCT_SEQ_ID]   INT      NOT NULL,
+    [ADDED_BY]      INT      NOT NULL,
+    [ADDED_DATE]    DATETIME NOT NULL
+);
+

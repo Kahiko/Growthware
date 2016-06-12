@@ -1,0 +1,114 @@
+﻿CREATE PROCEDURE [ZFP_SET_MESSAGE]
+	@P_MESSAGE_SEQ_ID INT,
+	@P_SE_SEQ_ID INT,
+	@P_NAME VARCHAR(50),
+	@P_TITLE VARCHAR(100),
+	@P_DESCRIPTION VARCHAR(128),
+	@P_BODY NTEXT,
+	@P_FORMAT_AS_HTML INT,
+	@P_ADDED_BY INT,
+	@P_ADDED_DATE datetime,
+	@P_UPDATED_BY INT,
+	@P_UPDATED_DATE datetime,
+	@P_PRIMARY_KEY int OUTPUT,
+	@P_ErrorCode int OUTPUT
+AS
+	DECLARE @MYMSG AS VARCHAR(128)
+	IF @P_MESSAGE_SEQ_ID > -1
+		BEGIN -- UPDATE PROFILE
+			-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
+			IF EXISTS( SELECT [NAME]
+				   FROM ZFO_MESSAGES
+				   WHERE [NAME] = @P_NAME AND
+					SE_SEQ_ID = @P_SE_SEQ_ID
+			)
+				BEGIN
+					UPDATE ZFO_MESSAGES
+					SET
+						SE_SEQ_ID = @P_SE_SEQ_ID,
+						[NAME] = @P_NAME,
+						TITLE = @P_TITLE,
+						[DESCRIPTION] = @P_DESCRIPTION,
+						FORMAT_AS_HTML = @P_FORMAT_AS_HTML,
+						BODY = @P_BODY
+					WHERE
+						MESSAGE_SEQ_ID = @P_MESSAGE_SEQ_ID
+
+					SELECT @P_PRIMARY_KEY = @P_MESSAGE_SEQ_ID -- set the output id just in case.
+				END
+			ELSE
+				BEGIN
+					INSERT ZFO_MESSAGES
+					(
+						SE_SEQ_ID,
+						[NAME],
+						TITLE,
+						[DESCRIPTION],
+						BODY,
+						FORMAT_AS_HTML,
+						ADDED_BY,
+						ADDED_DATE,
+						UPDATED_BY,
+						UPDATED_DATE
+					)
+					VALUES
+					(
+						@P_SE_SEQ_ID,
+						@P_NAME,
+						@P_TITLE,
+						@P_DESCRIPTION,
+						@P_BODY,
+						@P_FORMAT_AS_HTML,
+						@P_ADDED_BY,
+						@P_ADDED_DATE,
+						@P_ADDED_BY,
+						@P_ADDED_DATE
+					)
+					SELECT @P_PRIMARY_KEY = SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+				END
+		END
+	ELSE
+		BEGIN -- INSERT a new row in the table.
+
+			-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
+			IF EXISTS( SELECT [NAME]
+				   FROM ZFO_MESSAGES
+				   WHERE [NAME] = @P_NAME AND
+					SE_SEQ_ID = @P_SE_SEQ_ID
+			)
+			BEGIN
+				RAISERROR ('THE MESSAGE YOU ENTERED ALREADY EXISTS IN THE DATABASE.',16,1)
+				RETURN
+			END
+
+			INSERT ZFO_MESSAGES
+			(
+				SE_SEQ_ID,
+				[NAME],
+				TITLE,
+				[DESCRIPTION],
+				BODY,
+				FORMAT_AS_HTML,
+				ADDED_BY,
+				ADDED_DATE,
+				UPDATED_BY,
+				UPDATED_DATE
+			)
+			VALUES
+			(
+				@P_SE_SEQ_ID,
+				@P_NAME,
+				@P_TITLE,
+				@P_DESCRIPTION,
+				@P_BODY,
+				@P_FORMAT_AS_HTML,
+				@P_ADDED_BY,
+				@P_ADDED_DATE,
+				@P_ADDED_BY,
+				@P_ADDED_DATE
+			)
+			SELECT @P_PRIMARY_KEY = SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+		END
+	-- END IF
+-- Get the Error Code for the statement just executed.
+SELECT @P_ErrorCode=@@ERROR

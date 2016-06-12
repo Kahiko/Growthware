@@ -1,0 +1,84 @@
+﻿Imports System.Collections.ObjectModel
+Imports System.Web
+Imports GrowthWare.Framework.BusinessLogicLayer
+Imports GrowthWare.Framework.Common
+Imports GrowthWare.Framework.ModelObjects
+
+Namespace Utilities
+
+	''' <summary>
+	''' AccountUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
+    ''' Web needs such as caching are handeled here.
+	''' </summary>
+	Public NotInheritable Class AccountUtility
+
+		'Private m_SecutiryEntityCacheKey As String = "SecurityEntity_XX_Account"
+		Private m_SecurityEntityProfile As MSecurityEntityProfile = Nothing
+		Private m_BAccount As BAccounts = Nothing
+
+		''' <summary>
+		''' Constructor sets up the private fields
+		''' </summary>
+		Public Sub New()
+			Dim mSecurityUtility = New SecurityEntityUtility()
+			m_SecurityEntityProfile = mSecurityUtility.GetCurrentProfile()
+			m_BAccount = New BAccounts(m_SecurityEntityProfile, ConfigSettings.CentralManagement)
+		End Sub
+
+		''' <summary>
+		''' Retrieves the current profile.
+		''' </summary>
+		''' <returns>MAccountProfile</returns>
+		''' <remarks>If context does not contain a referance to an account anonymous will be returned</remarks>
+		Public ReadOnly Property GetCurrentProfile As MAccountProfile
+			Get
+				Dim mRetProfile As MAccountProfile = Nothing
+
+				If Not HttpContext.Current.Cache Is Nothing AndAlso Not HttpContext.Current.Cache("Anonymous") Is Nothing Then
+					mRetProfile = CType(HttpContext.Current.Cache("Anonymous"), MAccountProfile)
+				Else
+					mRetProfile = Me.GetProfile("Anonymous")
+					HttpContext.Current.Cache("Anonymous") = mRetProfile
+				End If
+				If Not HttpContext.Current Is Nothing AndAlso Not HttpContext.Current.User Is Nothing AndAlso Not HttpContext.Current.User.Identity.Name.Length = 0 Then
+					If HttpContext.Current.User.Identity.Name.Trim() <> "Anonymous" Then
+						mRetProfile = Me.GetProfile(HttpContext.Current.User.Identity.Name)
+					End If
+				End If
+				Return mRetProfile
+			End Get
+		End Property
+
+		''' <summary>
+		''' Retrieves an account profile given the account
+		''' </summary>
+		''' <param name="account">String</param>
+		''' <returns>a populated MAccountProfile</returns>
+		Public Function GetProfile(ByVal account As String) As MAccountProfile
+			Return m_BAccount.GetAccountProfile(account)
+		End Function
+
+		''' <summary>
+		''' Retruns a collection of MAccountProfiles given an MAccountProfile and the current SecurityEntitySeqID
+		''' </summary>
+		''' <param name="profile">MAccountProfile</param>
+		''' <remarks>If the Profiles.IsSysAdmin is true then all accounts will be returned</remarks>
+		Public Function GetAccounts(ByVal profile As MAccountProfile) As Collection(Of MAccountProfile)
+			Return m_BAccount.GetAccounts(profile)
+		End Function
+
+		''' <summary>
+		''' Inserts or updates account information
+		''' </summary>
+		''' <param name="profile">MAccountProfile</param>
+		''' <param name="saveRoles">Boolean</param>
+		''' <param name="saveGroups">Boolean</param>
+		''' <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+		Public Function Save(ByVal profile As MAccountProfile, ByVal saveRoles As Boolean, ByVal saveGroups As Boolean)
+			m_BAccount.Save(profile, saveRoles, saveGroups)
+			Return profile
+		End Function
+
+	End Class
+
+End Namespace

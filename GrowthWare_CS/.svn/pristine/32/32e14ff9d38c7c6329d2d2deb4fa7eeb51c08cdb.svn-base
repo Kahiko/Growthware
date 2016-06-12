@@ -1,0 +1,526 @@
+﻿using System;
+using System.Data;
+using System.Data.Common;
+using System.Data.SqlClient;
+using GrowthWare.Framework.DataAccessLayer.Interfaces.Base;
+using Microsoft.Practices.EnterpriseLibrary.Data.Sql;
+using Oracle.DataAccess.Client;
+using GrowthWare.Framework.Model.Profiles.Base.Interfaces;
+using System.Globalization;
+
+namespace GrowthWare.Framework.DataAccessLayer.Oracle.Base
+{
+	/// <summary>
+	/// Performs all data store interaction to Oracle through the use of stored procedures only.
+	/// </summary>
+	/// <remarks>Uses Microsoft.Practices.EnterpriseLibrary.Data for underlying database access.</remarks>
+	public abstract class DDBInteraction : IDDBInteraction, IDisposable
+	{
+#region Member Objects
+		private bool m_DisposedValue;
+#endregion
+
+#region Public Properties
+		/// <summary>
+		/// Used for all methods to connect to the database.
+		/// </summary>
+		public string ConnectionString { get; set; }
+#endregion
+
+#region Private Methods
+		/// <summary>
+		/// Formats an error message containging the store procedure name and the parameters/values.
+		/// </summary>
+		/// <param name="parameters">The sql parameters used when the error was created.</param>
+		/// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
+		/// <param name="yourExMSG">The message for the exception object.</param>
+		/// <returns>A formatted string</returns>
+		/// <remarks></remarks>
+		private string formatError(OracleParameter[] parameters, string storedProcedure, string yourExMSG)
+		{
+			string myMessage = Environment.NewLine + "Error executing '" + storedProcedure + "' :: " + Environment.NewLine;
+			myMessage += "Parameters are as follows:" + Environment.NewLine;
+			foreach (OracleParameter parameter in parameters)
+			{
+				myMessage += parameter.ParameterName.ToString() + " = " + parameter.Value.ToString() + Environment.NewLine;
+			}
+			myMessage += "Connection string : " + ConnectionString + Environment.NewLine;
+			myMessage += yourExMSG + Environment.NewLine;
+			return myMessage;
+		}
+
+		/// <summary>
+		/// Ensures  ConnectionString has a value.
+		/// </summary>
+		/// <remarks>Throws ArgumentException</remarks>
+		protected virtual void isValid()
+		{
+			bool mTest = true;
+			if (string.IsNullOrEmpty(ConnectionString))
+			{
+				mTest = false;
+			}
+			if (!mTest)
+			{
+				throw new ArgumentNullException("ConnectionString cannot be blank!");
+			}
+		}
+#endregion
+
+#region IDDBInteraction Members
+		/// <summary>
+		/// Executes a non Query given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">SqlParmeter</param>
+		/// <remarks></remarks>
+		protected void ExecuteNonQuery(ref string storedProcedure, ref OracleParameter[] parameters)
+		{
+			this.isValid();
+			OracleParameter myParameter = null;
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+						foreach (OracleParameter myParameter_loopVariable in parameters)
+						{
+							myParameter = myParameter_loopVariable;
+							dbCommand.Parameters.Add(myParameter);
+						}
+						db.ExecuteNonQuery(dbCommand);
+					}
+					else
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						db.ExecuteNonQuery(storedProcedure, parameters);
+					}
+				}
+				else
+				{
+					SqlDatabase db = new SqlDatabase(ConnectionString);
+					db.ExecuteNonQuery(CommandType.StoredProcedure, storedProcedure);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if(ex.Message.ToUpper(new CultureInfo("en-US", false)).StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+		}
+
+		/// <summary>
+		/// Executes a non Query given the store procedure
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <remarks>Contains no logic</remarks>
+		protected void ExecuteNonQuery(ref String storedProcedure)
+		{
+			this.isValid();
+			SqlDatabase db = new SqlDatabase(ConnectionString);
+			db.ExecuteNonQuery(storedProcedure);
+		}
+
+		/// <summary>
+		/// Returns a DataSet given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">SqlParmeter</param>
+		/// <returns>DataSet</returns>
+		/// <remarks></remarks>
+		protected virtual DataSet GetDataSet(ref String storedProcedure, ref OracleParameter[] parameters)
+		{
+			this.isValid();
+			SqlDatabase db = new SqlDatabase(ConnectionString);
+			DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						foreach (OracleParameter parameter in parameters)
+						{
+							dbCommand.Parameters.Add(parameter);
+						}
+						return db.ExecuteDataSet(dbCommand);
+					}
+					else
+					{
+						return db.ExecuteDataSet(CommandType.StoredProcedure, storedProcedure);
+					}
+				}
+				else
+				{
+					return db.ExecuteDataSet(CommandType.StoredProcedure, storedProcedure);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if (ex.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+			finally 
+			{
+				dbCommand.Dispose();
+			}
+		}
+
+		/// <summary>
+		/// Returns a DataSet given the store procedure
+		/// </summary>
+		/// <param name="storedProcedure">Stirng</param>
+		/// <returns>DataSet</returns>
+		/// <remarks>Contains no logic</remarks>
+		protected virtual DataSet GetDataSet(ref String storedProcedure)
+		{
+			OracleParameter[] mParametrers = null;
+			return this.GetDataSet(ref storedProcedure, ref mParametrers);
+		}
+
+		/// <summary>
+		/// Returns a DataTable given the stored procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">String</param>
+		/// <param name="parameters">OracleParameter</param>
+		/// <returns>DataTable</returns>
+		/// <remarks></remarks>
+		protected virtual DataTable GetDataTable(ref String storedProcedure, ref OracleParameter[] parameters)
+		{
+			this.isValid();
+			DataTable mDataTable = new DataTable();
+			IDataReader mReader = null;
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+						foreach (OracleParameter parameter in parameters)
+						{
+							dbCommand.Parameters.Add(parameter);
+						}
+						mReader = db.ExecuteReader(dbCommand);
+					}
+					else
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+					}
+				}
+				else
+				{
+					SqlDatabase db = new SqlDatabase(ConnectionString);
+					mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+				}
+				if ((mReader != null))
+				{
+					mDataTable.Load(mReader);
+					return mDataTable;
+				}
+				else
+				{
+					string mMessage = Environment.NewLine + "Store procedure '" + storedProcedure + "' executed and no data was found." + Environment.NewLine;
+					OracleParameter testParameter = null;
+					mMessage += "Parameters are as follows:" + Environment.NewLine;
+					foreach (OracleParameter testParameter_loopVariable in parameters)
+					{
+						testParameter = testParameter_loopVariable;
+						mMessage += testParameter.ParameterName + " = " + testParameter.Value + Environment.NewLine;
+					}
+					throw new DataAccessLayerException(mMessage);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if (ex.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+			finally
+			{
+				if ((mReader != null))
+				{
+					mReader.Close();
+				}
+				if (mDataTable != null) 
+				{
+					mDataTable.Dispose();
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns a DataTable given the store procedure
+		/// </summary>
+		/// <param name="storedProcedure">Stirng</param>
+		/// <returns>DataTable</returns>
+		/// <remarks>Contains no logic</remarks>
+		protected virtual DataTable GetDataTable(ref String storedProcedure)
+		{
+			OracleParameter[] mParameters = null;
+			return this.GetDataTable(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns a DataRow given the store procedure and sql parameters
+		/// </summary>
+		/// <param name="storedProcedure">Stirng</param>
+		/// <param name="parameters">OracleParameter</param>
+		/// <returns>DataRow</returns>
+		/// <remarks></remarks>
+		protected virtual DataRow GetDataRow(ref String storedProcedure, ref OracleParameter[] parameters)
+		{
+			this.isValid();
+			DataTable mDataTable = new DataTable();
+			DataRow mReturnRow = null;
+			IDataReader mReader = null;
+			OracleParameter mParameter = null;
+			try
+			{
+				if ((parameters != null))
+				{
+					if (parameters.Length > 0)
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						DbCommand dbCommand = db.GetStoredProcCommand(storedProcedure);
+						foreach (OracleParameter myParameter_loopVariable in parameters)
+						{
+							mParameter = myParameter_loopVariable;
+							dbCommand.Parameters.Add(mParameter);
+						}
+						mReader = db.ExecuteReader(dbCommand);
+					}
+					else
+					{
+						SqlDatabase db = new SqlDatabase(ConnectionString);
+						mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+					}
+				}
+				else
+				{
+					SqlDatabase db = new SqlDatabase(ConnectionString);
+					mReader = db.ExecuteReader(CommandType.StoredProcedure, storedProcedure);
+				}
+				if ((mReader != null))
+				{
+					mDataTable.Load(mReader);
+					mReturnRow = mDataTable.Rows[0];
+				}
+				else
+				{
+					string mMessage = Environment.NewLine + "Store procedure '" + storedProcedure + "' executed and no data was found." + Environment.NewLine;
+					OracleParameter testParameter = null;
+					mMessage += "Parameters are as follows:" + Environment.NewLine;
+					foreach (OracleParameter testParameter_loopVariable in parameters)
+					{
+						testParameter = testParameter_loopVariable;
+						mMessage += testParameter.ParameterName + " = " + testParameter.Value + Environment.NewLine;
+					}
+					throw new DataAccessLayerException(mMessage);
+				}
+			}
+			catch (SqlException ex)
+			{
+				if (ex.Message.ToUpper().StartsWith("CANNOT OPEN DATABASE"))
+				{
+					throw;
+				}
+				else
+				{
+					throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+				}
+			}
+			catch (Exception ex)
+			{
+				throw new DataAccessLayerException(formatError(parameters, storedProcedure, ex.ToString()), ex);
+			}
+			finally
+			{
+				if ((mReader != null))
+				{
+					mReader.Close();
+					//((IDisposable)mReader).Dispose();
+				}
+				if ((mDataTable != null))
+				{
+					mDataTable.Dispose();
+					mDataTable = null;
+				}
+			}
+			return mReturnRow;
+		}
+
+		/// <summary>
+		/// Returns a DataRow given the store procedure
+		/// </summary>
+		/// <param name="storedProcedure">Stirng</param>
+		/// <returns>DataRow</returns>
+		/// <remarks>Contains no logic</remarks>
+		protected virtual DataRow GetDataRow(ref String storedProcedure)
+		{
+			OracleParameter[] mParameters = null;
+			return this.GetDataRow(ref storedProcedure, ref mParameters);
+		}
+
+		/// <summary>
+		/// Returns the value of an output parameter given the parameter name and an array of OracleParameters
+		/// </summary>
+		/// <param name="parameterName">ParameterName</param>
+		/// <param name="oracleParameters">OracleParameter</param>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		protected string GetParameterValue(String parameterName, ref OracleParameter[] oracleParameters)
+		{
+			String mRetVal = string.Empty;
+			foreach (OracleParameter parameter in oracleParameters)
+			{
+				if (parameter.ParameterName == parameterName)
+				{
+					if (!Convert.IsDBNull(parameter.Value))
+					{
+						mRetVal = parameter.Value.ToString();
+					}
+				}
+			}
+			return mRetVal;
+		}
+
+		/// <summary>
+		/// Retruns a OracleParameter given the ParameterName, ParameterValue and Direction.
+		/// </summary>
+		/// <param name="parameterName">String</param>
+		/// <param name="parameterValue">Object</param>
+		/// <param name="direction">ParameterDirection</param>
+		/// <returns>OracleParameter</returns>
+		protected OracleParameter GetOracleParameter(String parameterName, Object parameterValue, ParameterDirection direction)
+		{
+			OracleParameter mRetVal = new OracleParameter(parameterName, parameterValue);
+			try
+			{
+				switch (direction)
+				{
+					case ParameterDirection.Input:
+						mRetVal.Direction = ParameterDirection.Input;
+						break;
+					case ParameterDirection.InputOutput:
+						mRetVal.Direction = ParameterDirection.InputOutput;
+						break;
+					case ParameterDirection.Output:
+						mRetVal.Direction = ParameterDirection.Output;
+						break;
+					case ParameterDirection.ReturnValue:
+						mRetVal.Direction = ParameterDirection.ReturnValue;
+						break;
+					default:
+						mRetVal.Direction = ParameterDirection.Input;
+						break;
+				}
+				return mRetVal;
+			}
+			catch (Exception)
+			{
+				throw;
+			}
+			finally
+			{ 
+				mRetVal.Dispose();
+			}
+		}
+
+		/// <summary>
+		/// Returns the correct integer for added or updated by
+		/// </summary>
+		/// <param name="profile">Object implementing IProfile</param>
+		/// <returns>int</returns>
+		protected int GetAddedUpdatedBy(IMProfile profile)
+		{
+			int mAdded_Updated_By = 0;
+			if (profile.Id == -1)
+			{
+				mAdded_Updated_By = profile.AddedBy;
+			}
+			else
+			{
+				mAdded_Updated_By = profile.UpdatedBy;
+			}
+			return mAdded_Updated_By;
+		}
+#endregion
+
+#region IDisposable Members
+		/// <summary>
+		/// Implements IDispose
+		/// </summary>
+		/// <param name="disposing">Boolean</param>
+		/// <remarks></remarks>
+		protected virtual void Dispose(bool disposing)
+		{
+			// Check to see if Dispose has already been called.
+			if (!m_DisposedValue)
+			{
+				if (disposing)
+				{
+					// // Dispose managed resources if you have any.
+				}
+				// TODO: free unmanaged resources (unmanaged objects) and override Finalize() below.
+				// TODO: set large fields to null.
+
+			}
+			m_DisposedValue = true;
+		}
+
+		//// TODO: override Finalize() only if Dispose(ByVal disposing As Boolean) above has code to free unmanaged resources.
+		//~DDBInteraction() 
+		//{
+		//    // Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+		//    Dispose(false);
+		//}
+
+		/// <summary>
+		/// Implements Dispose
+		/// </summary>
+		/// <remarks></remarks>
+		public void Dispose()
+		{
+			//Do not change this code.  Put cleanup code in Dispose(bool disposing) above.
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+#endregion
+	}
+}

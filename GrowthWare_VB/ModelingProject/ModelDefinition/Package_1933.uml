@@ -1,0 +1,308 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner" xmlns:dm9="http://schemas.microsoft.com/VisualStudio/TeamArchitect/SequenceDesigner"
+  dslVersion="1.0.0.0"
+  Id="3aaa7457-c3a6-4381-bcee-4cf37d60cb15"
+  name="V2008"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="561df863-4c9e-4784-8479-f969e4742cca"
+      handle="viewcode://./CodeSchema_Namespace?Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="dc598f33-0693-4882-b7ae-a29d54357609"
+        name="DAccounts"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="3e2e32e8-aa26-4321-9157-07744785ba0c"
+            handle="viewcode://./CodeSchema_Class?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts"
+            tag="ViewCode" />
+        </referencesInternal>
+        <suppliersInternal>
+          <interfaceRealization
+            Id="0ddabd78-c078-4dc4-9d23-400179d67eaf">
+            <interfaceMoniker
+              Id="9e471ee0-5610-4eaa-8cc2-215ed0a86054"
+              LastKnownName="IDAccount"
+              LastKnownLocation="Package2_2154.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <generalsInternal>
+          <generalization
+            Id="5f7c3a8a-dcf0-4ac6-addf-f44369484e4d"
+            isSubstitutable="false">
+            <classMoniker
+              Id="c20317ba-89f6-4f27-902a-c8ff45496db1"
+              LastKnownName="DDBInteraction"
+              LastKnownLocation="Package2_2156.uml" />
+          </generalization>
+        </generalsInternal>
+        <ownedAttributesInternal>
+          <property
+            Id="178b3565-3c47-46f8-9308-dccbc4d31e0b"
+            name="GetAccount"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="7eeaa15a-2ab4-4377-9728-a91fe3564731"
+                handle="viewcode://./CodeSchema_Property?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=GetAccount"
+                tag="ViewCode" />
+            </referencesInternal>
+          </property>
+          <property
+            Id="14ac675f-3090-497e-a243-09d6c7ac5d9f"
+            name="Profile"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="2a4e0cb1-5f62-46a6-9c63-4016caf91312"
+                handle="viewcode://./CodeSchema_Property?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=Profile"
+                tag="ViewCode" />
+            </referencesInternal>
+          </property>
+          <property
+            Id="3d61fcdf-1de3-4f97-beaa-29b18492259c"
+            name="GetAccounts"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="4a56c842-6af2-4025-92ad-49daede8facf"
+                handle="viewcode://./CodeSchema_Property?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=GetAccounts"
+                tag="ViewCode" />
+            </referencesInternal>
+          </property>
+          <property
+            Id="4e5e08c1-ecff-41c1-80a2-0ba688b7675c"
+            name="SecurityEntitySeqID"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isReadOnly="false"
+            isDerived="false"
+            isDerivedUnion="false"
+            aggregation="None"
+            isComposite="false">
+            <referencesInternal>
+              <reference
+                Id="d6cf0e1f-576d-4ac5-99b0-b2f5bfda0273"
+                handle="viewcode://./CodeSchema_Property?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=SecurityEntitySeqID"
+                tag="ViewCode" />
+            </referencesInternal>
+          </property>
+        </ownedAttributesInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="bf4e8d73-93e7-4806-9b67-3ab4a622bdbe"
+            name="Delete"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4c9c3019-8f9a-428d-9b71-d52c027595ef"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=Delete"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="9a2ad1b6-e4d8-4d2c-a631-700ce6d5fd55"
+            name="Save"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="c4e7eef5-4fac-47d5-b5b5-5681b3bbad9b"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=Save"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="e35956ef-8e00-4b3a-ba2f-2634661a16ea"
+            name="SaveRoles"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="68128c73-953e-4770-ba98-06f80a21e08f"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=SaveRoles"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="26f2d97a-73da-4e58-b1f1-05ac07012386"
+            name="SaveGroups"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="100f5f6e-c1df-4e7c-89ad-9efc3b111563"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=SaveGroups"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="3b0db3cf-169e-443a-96bb-a08eefdfd397"
+            name="GetRoles"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="62a5587e-8b8e-4b10-bc77-7112a80dc8c1"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=GetRoles"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="48221ea8-296e-4fb0-bb36-2127e366068b"
+            name="GetGroups"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="3f0fa384-a8e3-4318-b2f8-8def1e98d2c4"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=GetGroups"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="86e190f1-277b-4b85-b65e-45186d12ac9b"
+            name="GetSecurity"
+            visibility="Protected"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4388c526-aa6c-434e-b8b9-e4eb3a9e97f6"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.SqlServer.V2008 Type=DAccounts Member=GetSecurity"
+                tag="ViewCode" />
+            </referencesInternal>
+          </operation>
+          <operation
+            Id="120414f4-8f74-4999-9a4c-ca6624317c23"
+            name="SaveGroups"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="762b1d19-6c2f-4a06-bd01-25d59c1b2f2e"
+            name="GetRoles"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="3426f3a3-5181-4fbd-b1d8-6cb055e368cd"
+            name="GetGroups"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="ac95a820-675b-434e-8d4c-612eb4a2c6fe"
+                  direction="Return">
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="73622f9a-af51-4640-b121-9ce59e857bc9"
+            name="GetSecurity"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="0cbe41b8-bdf1-4b36-b18d-071f3479df44"
+            name="Delete"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="880b1e16-b7fc-4f00-813b-1ce0a757e322"
+            name="Save"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+          <operation
+            Id="35ff0763-80fa-4a00-a9a7-457307094943"
+            name="SaveRoles"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false" />
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

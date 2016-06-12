@@ -1,0 +1,118 @@
+﻿@ModelType GrowthWare.Framework.Model.Profiles.MFunctionProfile
+
+@Code
+    ViewData("Title") = "Delete"
+End Code
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<fieldset>
+    <legend>MFunctionProfile</legend>
+
+    <div class="display-label">Action</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.Action)
+    </div>
+
+    <div class="display-label">Description</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.Description)
+    </div>
+
+    <div class="display-label">EnableViewState</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.EnableViewState)
+    </div>
+
+    <div class="display-label">EnableNotifications</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.EnableNotifications)
+    </div>
+
+    <div class="display-label">IsNav</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.IsNav)
+    </div>
+
+    <div class="display-label">LinkBehavior</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.LinkBehavior)
+    </div>
+
+    <div class="display-label">FunctionTypeSeqID</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.FunctionTypeSeqID)
+    </div>
+
+    <div class="display-label">MetaKeyWords</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.MetaKeyWords)
+    </div>
+
+    <div class="display-label">Name</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.Name)
+    </div>
+
+    <div class="display-label">NavigationTypeSeqId</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.NavigationTypeSeqId)
+    </div>
+
+    <div class="display-label">Notes</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.Notes)
+    </div>
+
+    <div class="display-label">No_UI</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.No_UI)
+    </div>
+
+    <div class="display-label">ParentID</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.ParentID)
+    </div>
+
+    <div class="display-label">RedirectOnTimeout</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.RedirectOnTimeout)
+    </div>
+
+    <div class="display-label">Source</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.Source)
+    </div>
+
+    <div class="display-label">IdColumnName</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.IdColumnName)
+    </div>
+
+    <div class="display-label">AddedBy</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.AddedBy)
+    </div>
+
+    <div class="display-label">AddedDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.AddedDate)
+    </div>
+
+    <div class="display-label">UpdatedBy</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.UpdatedBy)
+    </div>
+
+    <div class="display-label">UpdatedDate</div>
+    <div class="display-field">
+        @Html.DisplayFor(Function(model) model.UpdatedDate)
+    </div>
+</fieldset>
+@Using Html.BeginForm()
+    @<p>
+        <input type="submit" value="Delete" /> |
+        @Html.ActionLink("Back to List", "Index")
+    </p>
+End Using

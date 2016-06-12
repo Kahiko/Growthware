@@ -1,0 +1,44 @@
+﻿CREATE PROCEDURE [ZFP_SET_WORK_FLOWS]
+	@P_WORK_FLOW_ID INT,
+	@P_ORDER_ID int,
+	@P_WORK_FLOW_NAME VARCHAR(50),
+	@P_FUNCTION_SEQ_ID int,
+	@P_PRIMARY_KEY int OUTPUT,
+	@P_ErrorCode int OUTPUT
+AS
+SET NOCOUNT ON
+	IF @P_PRIMARY_KEY > -1
+	BEGIN
+		-- UPDATE an existing row in the table.
+		UPDATE ZOP_WORK_FLOWS
+		SET 
+			ORDER_ID = @P_ORDER_ID,
+			WORK_FLOW_NAME = @P_WORK_FLOW_NAME,
+			FUNCTION_SEQ_ID = @P_FUNCTION_SEQ_ID
+		WHERE
+			WORK_FLOW_ID = @P_WORK_FLOW_ID
+
+		SELECT @P_PRIMARY_KEY = @P_WORK_FLOW_ID
+		
+	END
+	ELSE
+	BEGIN
+		-- INSERT a new row in the table.
+		INSERT ZOP_WORK_FLOWS
+		(
+			ORDER_ID,
+			WORK_FLOW_NAME,
+			FUNCTION_SEQ_ID
+		)
+		VALUES
+		(
+			@P_ORDER_ID,
+			@P_WORK_FLOW_NAME,
+			@P_FUNCTION_SEQ_ID
+		)
+		-- Get the IDENTITY value for the row just inserted.
+		SELECT @P_PRIMARY_KEY = SCOPE_IDENTITY()
+	END
+	
+-- Get the Error Code for the statement just executed.
+SELECT @P_ErrorCode=@@ERROR

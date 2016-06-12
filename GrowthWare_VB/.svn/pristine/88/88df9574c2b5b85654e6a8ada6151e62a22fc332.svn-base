@@ -1,0 +1,103 @@
+﻿Imports System.Data.Entity
+Imports System.Collections.ObjectModel
+Imports GrowthWare.Framework.ModelObjects
+Imports GrowthWare.Framework.Web.Utilities
+Imports GrowthWare.MvcCoreWeb.Models.GrowthWare
+
+Namespace GrowthWare.MvcCoreWeb
+	Public Class FunctionController
+		Inherits System.Web.Mvc.Controller
+
+		Private db As MvcCoreWebContext = New MvcCoreWebContext
+
+		'
+		' GET: /Function/
+
+		Function Index() As ViewResult
+			Dim mFunctionUtility = New FunctionUtility()
+			Dim mFunctionCollection As Collection(Of MFunctionProfile) = mFunctionUtility.GetFunctions()
+			Return View(mFunctionCollection)
+			'Return View(db.MFunctionProfiles.ToList())
+		End Function
+
+		'
+		' GET: /Function/Details/5
+
+		Function Details(id As Integer) As ViewResult
+			Dim mFunctionUtility = New FunctionUtility()
+			Dim mProfile As MFunctionProfile = mFunctionUtility.GetFunction(id)
+			Return View(mProfile)
+		End Function
+
+		'
+		' GET: /Function/Create
+
+		Function Create() As ViewResult
+			Return View()
+		End Function
+
+		'
+		' POST: /Function/Create
+
+		<HttpPost()>
+		Function Create(mfunctionprofile As MFunctionProfile) As ActionResult
+			If ModelState.IsValid Then
+				db.MFunctionProfiles.Add(mfunctionprofile)
+				db.SaveChanges()
+				Return RedirectToAction("Index")
+			End If
+
+			Return View(mfunctionprofile)
+		End Function
+
+		'
+		' GET: /Function/Edit/5
+
+		Function Edit(id As Integer) As ViewResult
+			Dim mFunctionUtility = New FunctionUtility()
+			Dim mProfile As MFunctionProfile = mFunctionUtility.GetFunction(id)
+			Return View(mProfile)
+		End Function
+
+		'
+		' POST: /Function/Edit/5
+
+		<HttpPost()>
+		Function Edit(mfunctionprofile As MFunctionProfile) As ActionResult
+			If ModelState.IsValid Then
+				db.Entry(mfunctionprofile).State = EntityState.Modified
+				db.SaveChanges()
+				Return RedirectToAction("Index")
+			End If
+
+			Return View(mfunctionprofile)
+		End Function
+
+		'
+		' GET: /Function/Delete/5
+
+		Function Delete(id As Integer) As ViewResult
+			Dim mFunctionUtility = New FunctionUtility()
+			Dim mProfile As MFunctionProfile = mFunctionUtility.GetFunction(id)
+			Return View(mProfile)
+		End Function
+
+		'
+		' POST: /Function/Delete/5
+
+		<HttpPost()>
+		<ActionName("Delete")>
+		Function DeleteConfirmed(id As Integer) As RedirectToRouteResult
+			Dim mfunctionprofile As MFunctionProfile = db.MFunctionProfiles.Find(id)
+			db.MFunctionProfiles.Remove(mfunctionprofile)
+			db.SaveChanges()
+			Return RedirectToAction("Index")
+		End Function
+
+		Protected Overrides Sub Dispose(disposing As Boolean)
+			db.Dispose()
+			MyBase.Dispose(disposing)
+		End Sub
+
+	End Class
+End Namespace

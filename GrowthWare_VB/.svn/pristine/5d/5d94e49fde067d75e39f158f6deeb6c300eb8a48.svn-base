@@ -1,0 +1,34 @@
+﻿Imports System.Collections.ObjectModel
+Imports System.Web
+Imports System.Linq
+Imports GrowthWare.Framework.BusinessLogicLayer
+Imports GrowthWare.Framework.Common
+Imports GrowthWare.Framework.ModelObjects
+Namespace Utilities
+	Public Class FunctionUtility
+		Private m_SecurityEntityProfile As MSecurityEntityProfile = Nothing
+		Private m_BFunctions As BFunctions = Nothing
+
+
+		Public Sub New()
+			Dim mSecurityUtility = New SecurityEntityUtility()
+			m_SecurityEntityProfile = mSecurityUtility.GetCurrentProfile()
+			m_BFunctions = New BFunctions(m_SecurityEntityProfile, ConfigSettings.CentralManagement)
+		End Sub
+
+		Public Function GetFunctions() As MFunctionProfileCollection
+			' need code to handle caching
+			Dim mFunctionCollection As MFunctionProfileCollection
+			mFunctionCollection = m_BFunctions.GetFunctions(m_SecurityEntityProfile.Id)
+			Return mFunctionCollection
+		End Function
+
+		Public Function GetFunction(ByVal action As String) As MFunctionProfile
+			Return GetFunctions.GetByString(action)
+		End Function
+
+		Public Function GetFunction(ByVal id As Integer) As MFunctionProfile
+			Return GetFunctions().GetByID(id)
+		End Function
+	End Class
+End Namespace

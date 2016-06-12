@@ -1,0 +1,73 @@
+﻿using System.Data;
+using GrowthWare.Framework.DataAccessLayer.Interfaces.Base;
+using GrowthWare.Framework.Model.Profiles;
+using GrowthWare.Framework.Model.Enumerations;
+
+namespace GrowthWare.Framework.DataAccessLayer
+{
+    interface IDFunctions : IDDBInteraction
+    {
+        /// <summary>
+        /// Used by all methds and must be set to send parameters to the datastore
+        /// </summary>
+        MFunctionProfile Profile { get; set; }
+
+        /// <summary>
+        /// Used by all methds and must be set to send parameters to the datastore
+        /// </summary>
+        int SecurityEntitySeqID { get; set; }
+
+        /// <summary>
+        /// Deletes an account
+        /// </summary>
+        void Delete();
+
+        /// <summary>
+        /// Retrieves Function information
+        /// </summary>
+        /// <returns>DataRow</returns>
+        DataRow GetFunction { get; }
+
+        /// <summary>
+        /// Returns all functions associated with a given SecurityEntitySeqID.
+        /// </summary>
+        /// <returns>DataTable</returns>
+        /// <remarks>Does not caculate security for accounts.</remarks>
+        DataSet GetFunctions { get; }
+
+		///// <summary>
+		///// Returns all roles associated with a given SecurityEntitySeqID.
+		///// </summary>
+		///// <returns>DataTable</returns>
+		//DataTable GetGroups(PermissionType Permission);
+
+		///// <summary>
+		///// Returns all groups associated with a given SecurityEntitySeqID.
+		///// </summary>
+		///// <returns>DataTable</returns>
+		//DataTable GetRoles(PermissionType Permission);
+
+		///// <summary>
+		///// Returns all roles either direct association or by association via
+		///// groups.
+		///// </summary>
+		///// <returns>DataTable</returns>
+		//DataTable GetSecurity();
+
+        /// <summary>
+        /// Inserts or updates account information
+        /// </summary>
+        /// <returns>int</returns>
+        int Save();
+
+        /// <summary>
+        /// Save groups by passing a string or comma seporated groups to the database.
+        /// </summary>
+		void SaveGroups(PermissionType permission);
+
+        /// <summary>
+        /// Save roles by passing a string or comma seporated rolse to the database.
+        /// </summary>
+		void SaveRoles(PermissionType permission);
+    }
+}

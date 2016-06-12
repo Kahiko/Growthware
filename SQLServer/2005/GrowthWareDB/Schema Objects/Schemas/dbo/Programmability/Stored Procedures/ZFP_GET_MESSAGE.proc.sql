@@ -1,0 +1,22 @@
+﻿CREATE PROCEDURE [ZFP_GET_MESSAGE]
+	@P_SE_SEQ_ID int,
+	@P_MESSAGE_SEQ_ID INT,
+	@P_ErrorCode int OUTPUT
+AS
+IF @P_MESSAGE_SEQ_ID > -1
+	SELECT
+		*
+	FROM
+		ZFO_MESSAGES
+	WHERE
+		MESSAGE_SEQ_ID = @P_MESSAGE_SEQ_ID
+ELSE
+	SELECT
+		*
+	FROM
+		ZFO_MESSAGES
+	WHERE
+		SE_SEQ_ID = @P_SE_SEQ_ID
+
+-- Get the Error Code for the statement just executed.
+SELECT @P_ErrorCode=@@ERROR

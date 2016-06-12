@@ -1,0 +1,102 @@
+2012-06-20 22:38:46,971 [8080] ERROR HttpContextModule [] - GrowthWare.Framework.DataAccessLayer.DataAccessLayerException: 
+Error executing 'ZGWCoreWeb.Get_Account_Choice' :: 
+Parameters are as follows:
+@P_ACCOUNT = mAccountName
+@P_Debug = mAccountName
+Connection string : server=(local)\SQL2008R2;Integrated Security=SSPI;database=GWDevelopment;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50
+Originating error :: 
+System.Data.SqlClient.SqlException (0x80131904): Error converting data type nvarchar to int.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 168
+ClientConnectionId:425801e4-ca89-4de3-b4de-5156e637bf5c
+ ---> System.Data.SqlClient.SqlException: Error converting data type nvarchar to int.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 168
+   --- End of inner exception stack trace ---
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 193
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataRow(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 216
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DClientChoices.GetChoices(String& account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\V2008\DClientChoices.vb:line 29
+   at GrowthWare.Framework.BusinessLogicLayer.BClientChoices.GetClientChoicesState(String account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\BusinessLogicLayer\BClientChoices.vb:line 91
+   at GrowthWare.Framework.Web.Utilities.ClientChoicesUtility.GetClientChoicesState(Object account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities\ClientChoicesUtility.vb:line 33
+   at GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.AcquireRequestState(Object Sender, EventArgs E) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context\ClientChoicesHttpModule.vb:line 39
+   at System.Web.HttpApplication.SyncEventExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+2012-06-20 22:41:07,262 [12612] ERROR HttpContextModule [] - GrowthWare.Framework.DataAccessLayer.DataAccessLayerException: 
+Error executing 'ZGWCoreWeb.Get_Account_Choice' :: 
+Parameters are as follows:
+@P_ACCOUNT = mAccountName
+@P_Debug = mAccountName
+Connection string : server=(local)\SQL2008R2;Integrated Security=SSPI;database=GWDevelopment;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50
+Originating error :: 
+System.Data.SqlClient.SqlException (0x80131904): Error converting data type nvarchar to int.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 168
+ClientConnectionId:ad0c30e7-4b50-4e80-9061-132209b2b070
+ ---> System.Data.SqlClient.SqlException: Error converting data type nvarchar to int.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at System.Data.Common.DbCommand.ExecuteReader(CommandBehavior behavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.DoExecuteReader(DbCommand command, CommandBehavior cmdBehavior)
+   at Microsoft.Practices.EnterpriseLibrary.Data.Database.ExecuteReader(DbCommand command)
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 168
+   --- End of inner exception stack trace ---
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 193
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataRow(String& storedProcedure, SqlParameter[]& parameters) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\Base\DDBInteraction.vb:line 216
+   at GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DClientChoices.GetChoices(String& account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\DataAccessLayer\SQLServer\V2008\DClientChoices.vb:line 29
+   at GrowthWare.Framework.BusinessLogicLayer.BClientChoices.GetClientChoicesState(String account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFramework\BusinessLogicLayer\BClientChoices.vb:line 91
+   at GrowthWare.Framework.Web.Utilities.ClientChoicesUtility.GetClientChoicesState(Object account) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Utilities\ClientChoicesUtility.vb:line 33
+   at GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.AcquireRequestState(Object Sender, EventArgs E) in D:\Development\GrowthWare\2010\GrowthWare_VB\GrowthWareFrameworkWeb\Context\ClientChoicesHttpModule.vb:line 39
+   at System.Web.HttpApplication.SyncEventExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   at System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)

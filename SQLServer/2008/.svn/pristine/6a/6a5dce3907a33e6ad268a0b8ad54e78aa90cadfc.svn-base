@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [ZGWOptional]
+    AUTHORIZATION [dbo];
+

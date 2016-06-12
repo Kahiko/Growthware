@@ -1,0 +1,33 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Web.SessionState;
+using System.Web;
+
+namespace GrowthWare.Framework.Web.Context
+{
+	/// <summary>
+	/// The HttpContextModule add to context the ClientChoices (A seporate HTTP context module)
+	/// as well as adding the requested function and current security for the requested function.
+	/// </summary>
+	/// <remarks></remarks>
+	class HttpContextModule : IHttpModule, IRequiresSessionState
+	{
+		private bool m_Disposing = false;
+
+		public void Init(HttpApplication App)
+		{
+			//App.AcquireRequestState += this.AcquireRequestState;
+			//App.EndRequest += this.EndRequest;
+		}
+
+		public void Dispose()
+		{
+			if (!m_Disposing) 
+			{
+				m_Disposing = true;
+			}
+		}
+	}
+}

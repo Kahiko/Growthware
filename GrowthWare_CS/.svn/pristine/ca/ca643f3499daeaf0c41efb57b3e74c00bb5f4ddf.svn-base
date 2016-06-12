@@ -1,0 +1,608 @@
+﻿using System;
+using System.Configuration;
+using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Web;
+using GrowthWare.Framework.Model.Enumerations;
+
+namespace GrowthWare.Framework.Common
+{
+	/// <summary>
+	/// Servers as a collection of configuration information
+	/// </summary>
+	public class ConfigSettings
+	{
+
+		/// <summary>
+		/// Retruns Always_Left_Nav from the WEB.CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns>Boolean</returns>
+		/// <remarks></remarks>
+		public static bool AlwaysShowLeftHandNavigation
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings["Always_Left_Nav"]); }
+		}
+
+		/// <summary>
+		/// Retruns App_Displayed_Name from the WEB.CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string AppDisplayedName
+		{
+			get { return ConfigurationManager.AppSettings["App_Displayed_Name"]; }
+		}
+
+		/// <summary>
+		/// Retruns Append_To_File from the WEB.CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string AppendToFile
+		{
+			get { return ConfigurationManager.AppSettings["Append_To_File"]; }
+		}
+
+		/// <summary>
+		/// Returns Authentication_Type from the CONFIG file.
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string AuthenticationType
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Authentication_Type"]; }
+		}
+
+		/// <summary>
+		/// Returns Base_Page from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string BasePage
+		{
+			get { return ConfigurationManager.AppSettings["Base_Page"]; }
+		}
+
+		/// <summary>
+		/// Returns Security_Entity_Translation from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string SecurityEntityTranslation
+		{
+			get { return ConfigurationManager.AppSettings["Security_Entity_Translation"]; }
+		}
+
+		/// <summary>
+		/// Retruns BO_Server from the CONFIG file
+		/// </summary>
+		/// <value>Sting</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string BusinessObjectsServer
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "BO_Server"]; }
+		}
+
+		/// <summary>
+		/// Returns BO_Authentication_Type from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string BusinessObjectsAuthenticationType
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "BO_Authentication_Type"]; }
+		}
+
+		/// <summary>
+		/// Returns Central_Management from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static bool CentralManagement
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings["Central_Management"]); }
+		}
+
+		/// <summary>
+		/// Returns the connection string as defined in the web.conf file by environment/DAL
+		/// </summary>
+		/// <param name="dataAccessLayer">String</param>
+		/// <value>Desired data access layer "Oracle" and defaul "SQLServer" connection string information</value>
+		/// <returns>String</returns>
+		/// <remarks>The web.conf value can be encrypted or clear text</remarks>
+		public static string ConnectionString(String dataAccessLayer)
+		{
+			String retVal = ConfigurationManager.AppSettings[Environment + "DAL_" + dataAccessLayer + "_Connectionstring"];
+			try
+			{
+				retVal = CryptoUtility.Decrypt(retVal, EncryptionType);
+			}
+			catch (Exception)
+			{
+				// do nothing
+			}
+			return retVal;
+		}
+
+		/// <summary>
+		/// Returns the connection string as defined in the web.conf file by environment/DAL
+		/// </summary>
+		/// <returns>String</returns>
+		/// <remarks>The web.conf value can be encrypted or clear text</remarks>
+		public static string ConnectionString()
+		{
+			return ConnectionString("SQLServer");
+		}
+
+		/// <summary>
+		/// Returns the Conversion_Pattern from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string ConversionPattern
+		{
+			get { return ConfigurationManager.AppSettings["Conversion_Pattern"]; }
+		}
+
+		/// <summary>
+		/// Returns DAL from the CONFIG file, and is generaly the name of the 
+		/// datastore being used IE SQLServer or Oracle
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string DAL
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "DAL"]; }
+		}
+
+		/// <summary>
+		/// Returns the name of the data access layer assembly name as defined in the web.conf file by environment
+		/// </summary>
+		/// <param name="dataAccessLayer">String</param>
+		/// <value>Desired data access layer "Oracle" and default "SQLServer"</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string DAL_AssemblyName(string dataAccessLayer)
+		{
+			return ConfigurationManager.AppSettings[Environment + "DAL_" + dataAccessLayer + "_Assembly_Name"];
+		}
+
+		/// <summary>
+		/// Returns the DAL_xx_Name_Space from the CONFIG file
+		/// </summary>
+		/// <param name="dataAccessLayer"></param>
+		/// <value></value>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		public static string DAL_Namespace(string dataAccessLayer)
+		{
+			return ConfigurationManager.AppSettings[Environment + "DAL_" + dataAccessLayer + "_Name_Space"];
+		}
+
+		/// <summary>
+		/// Returns Default_Action from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string DefaultAction
+		{
+			get { return ConfigurationManager.AppSettings["Default_Action"]; }
+		}
+
+		/// <summary>
+		/// Returns Default_Authenticated_Action from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string DefaultAuthenticatedAction
+		{
+			get { return ConfigurationManager.AppSettings["Default_Authenticated_Action"]; }
+		}
+
+		/// <summary>
+		/// Returns Default_Security_Entity_ID from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static int DefaultSecurityEntityID
+		{
+			get { return int.Parse(ConfigurationManager.AppSettings[Environment + "Default_Security_Entity_ID"]); }
+		}
+
+		/// <summary>
+		/// Returns Expected_Up_By from the CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		public static string ExpectedUpBy
+		{
+			get { return ConfigurationManager.AppSettings["Expected_Up_By"]; }
+		}
+
+		/// <summary>
+		/// Returns Enable_Cache from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static bool EnableCache
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings[Environment + "Enable_Cache"]); }
+		}
+
+		/// <summary>
+		/// Retruns Enable_Pooling from the CONFIF file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks>For future use</remarks>
+		public static string EnablePooling
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Enable_Pooling"]; }
+		}
+
+		/// <summary>
+		/// Returns Environment from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks>Used as a prefix to appSettings, allows multipule environment settings to co-exist in one CONFIG file.</remarks>
+		public static string Environment
+		{
+			get { return ConfigurationManager.AppSettings["Environment"] + "_"; }
+		}
+
+		/// <summary>
+		/// Returns Environments from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks>Comma seportated "list" of environments </remarks>
+		public static string Environments
+		{
+			get { return ConfigurationManager.AppSettings["Environments"]; }
+		}
+
+		/// <summary>
+		/// Returns Environment without the leading underscore
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string EnvironmentDisplayed
+		{
+			get
+			{
+				if (Environment.Substring(Environment.Length - 1, 1) == "_")
+				{
+					return Environment.Substring(0, Environment.Length - 1);
+				}
+				else
+				{
+					return Environment;
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns Encryption_Type from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static EncryptionTypes EncryptionType
+		{
+			get
+			{
+				return (EncryptionTypes)int.Parse(ConfigurationManager.AppSettings["Encryption_Type"].ToString());
+			}
+		}
+
+		/// <summary>
+		/// Returns Failed_Attempts from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static int FailedAttempts
+		{
+			get { return int.Parse(ConfigurationManager.AppSettings[Environment + "Failed_Attempts"].ToString()); }
+		}
+
+		/// <summary>
+		/// Returns Force_HTTPS from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static bool ForceHTTPS
+		{
+			get { return Convert.ToBoolean(ConfigurationManager.AppSettings[Environment + "Force_HTTPS"], CultureInfo.InvariantCulture); }
+		}
+
+		/// <summary>
+		/// Returns App_Name from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string AppName
+		{
+			get { return ConfigurationManager.AppSettings[ConfigSettings.Environment + "App_Name"]; }
+		}
+
+		/// <summary>
+		/// Returns DB_Status from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string DBStatus
+		{
+			get { return ConfigurationManager.AppSettings["DB_Status"]; }
+		}
+
+		/// <summary>
+		/// Returns Registering_Roles from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string RegisteringRoles
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Registering_Roles"]; }
+		}
+
+		/// <summary>
+		/// Return Registration_Post_Action from the COFNIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks>String</remarks>
+		public static object RegistrationPostAction
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Registration_Post_Action"]; }
+		}
+
+		/// <summary>
+		/// Retrun AppDisplayedName and Remember_Me from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string RememberCookieName
+		{
+			get { return AppDisplayedName + "Remember_Me"; }
+		}
+
+		/// <summary>
+		/// Return LDAP_Domain from the CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns>String</returns>
+		/// <remarks>String</remarks>
+		public static string LDAPDomain
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "LDAP_Domain"]; }
+		}
+
+		/// <summary>
+		/// Returns LDAP_Server from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string LDAPServer
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "LDAP_Server"]; }
+		}
+
+		/// <summary>
+		/// Returns Log_Path from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string LogPath
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Log_Path"]; }
+		}
+
+		/// <summary>
+		/// Returns Log_Priority from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string LogPriority
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Log_Priority"]; }
+		}
+
+		/// <summary>
+		/// Returns Log_Retention from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string LogRetention
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "Log_Retention"]; }
+		}
+
+		/// <summary>
+		/// Returns Server_Side_View_State from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static bool ServerSideViewState
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings["Server_Side_View_State"]); }
+		}
+
+		/// <summary>
+		/// Returns Server_Side_View_State_Pages from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static int ServerSideViewStatePages
+		{
+			get { return int.Parse(ConfigurationManager.AppSettings["Server_Side_View_State_Pages"], CultureInfo.InvariantCulture); }
+		}
+
+		/// <summary>
+		/// Returns decrypted SMTP_Account from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SMTP")]
+		public static string SMTPAccount
+		{
+			get
+			{
+				try
+				{
+					return CryptoUtility.Decrypt(ConfigurationManager.AppSettings[Environment + "SMTP_Account"], EncryptionType);
+				}
+				catch
+				{
+					return ConfigurationManager.AppSettings[Environment + "SMTP_Account"];
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns SMTP_From from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string SMTPFrom
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "SMTP_From"]; }
+		}
+
+		/// <summary>
+		/// Returns SMTP_Server from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string SMTPServer
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "SMTP_Server"]; }
+		}
+
+		/// <summary>
+		/// This method strips all tags from a string (good for removing all HTML.)
+		/// </summary>
+		/// <param name="text">string</param>
+		/// <returns>string</returns>
+		public static string StripTags(string text)
+		{
+			text = Regex.Replace(text, "&nbsp;", "", RegexOptions.IgnoreCase);
+			return Regex.Replace(text, "<.+?>", "", RegexOptions.Singleline);
+		}
+
+		/// <summary>
+		/// Returns SMTP_Password from CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		[System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "SMTP")]
+		public static string SMTPPassword
+		{
+			get
+			{
+				try
+				{
+					return CryptoUtility.Decrypt(ConfigurationManager.AppSettings[Environment + "SMTP_Password"], EncryptionType);
+				}
+				catch (Exception)
+				{
+					return ConfigurationManager.AppSettings[Environment + "SMTP_Password"];
+				}
+			}
+		}
+
+		/// <summary>
+		/// Returns SMTP_Domain from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string SMTPDomain
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "SMTP_Domain"]; }
+		}
+
+		/// <summary>
+		/// Returns Synchronize_Password from the CONFIG file
+		/// </summary>
+		/// <value></value>
+		/// <returns></returns>
+		/// <remarks></remarks>
+		public static string SyncPassword
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings[Environment + "Synchronize_Password"]).ToString(); }
+		}
+
+		/// <summary>
+		/// Returns SKIN_TYPE from the CONFIG file
+		/// </summary>
+		/// <value>String</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string SkinType
+		{
+			get { return ConfigurationManager.AppSettings[Environment + "SKIN_TYPE"]; }
+		}
+
+		/// <summary>
+		/// Returns Under_Construction from the CONFIG file
+		/// </summary>
+		/// <value>Stirng</value>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static bool UnderConstruction
+		{
+			get { return bool.Parse(ConfigurationManager.AppSettings["Under_Construction"]); }
+		}
+
+		/// <summary>
+		/// Truncates a given string and adds ...
+		/// </summary>
+		/// <param name="text">String to be truncated</param>
+		/// <param name="length">Point at which the texted is truncated</param>
+		/// <returns>String</returns>
+		/// <remarks></remarks>
+		public static string TruncateWithEllipsis(string text, int length)
+		{
+			if (text.Length > length)
+			{
+				text = text.Substring(0, length) + "...";
+			}
+			return text;
+		}
+
+	}
+}

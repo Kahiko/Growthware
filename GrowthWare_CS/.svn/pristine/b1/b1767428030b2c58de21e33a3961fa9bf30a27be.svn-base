@@ -1,0 +1,76 @@
+﻿using System.Data;
+using GrowthWare.Framework.DataAccessLayer.Interfaces.Base;
+using GrowthWare.Framework.Model.Profiles;
+
+namespace GrowthWare.Framework.DataAccessLayer
+{
+	/// <summary>
+	/// IDAccount defines the contract for any
+	/// class implementing the interface.
+	/// </summary>
+	interface IDAccount : IDDBInteraction
+	{
+		/// <summary>
+		/// Used by all methds and must be set to send parameters to the datastore
+		/// </summary>
+		MAccountProfile Profile {get; set;}
+
+		/// <summary>
+		/// Used by all methds and must be set to send parameters to the datastore
+		/// </summary>
+		int SecurityEntitySeqID { get; set; }
+
+		/// <summary>
+		/// Deletes an account
+		/// </summary>
+		void Delete();
+
+		/// <summary>
+		/// Retrieves Account information
+		/// </summary>
+		/// <returns>DataRow</returns>
+		DataRow GetAccount { get; }
+
+		/// <summary>
+		/// Returns all accounts associated with a given SecurityEntitySeqID.
+		/// </summary>
+		/// <returns>DataTable</returns>
+		/// <remarks>Does not caculate security for accounts.</remarks>
+		DataTable GetAccounts { get; }
+
+		/// <summary>
+		/// Returns all roles associated with a given SecurityEntitySeqID.
+		/// </summary>
+		/// <returns>DataTable</returns>
+		DataTable GetGroups();
+
+		/// <summary>
+		/// Returns all groups associated with a given SecurityEntitySeqID.
+		/// </summary>
+		/// <returns>DataTable</returns>
+		DataTable GetRoles();
+
+		/// <summary>
+		/// Returns all roles either direct association or by association via
+		/// groups.
+		/// </summary>
+		/// <returns>DataTable</returns>
+		DataTable GetSecurity();
+
+		/// <summary>
+		/// Inserts or updates account information
+		/// </summary>
+		/// <returns>int</returns>
+		int Save();
+
+		/// <summary>
+		/// Save groups by passing a string or comma seporated groups to the database.
+		/// </summary>
+		void SaveGroups();
+
+		/// <summary>
+		/// Save roles by passing a string or comma seporated rolse to the database.
+		/// </summary>
+		void SaveRoles();
+	}
+}

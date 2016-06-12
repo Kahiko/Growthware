@@ -1,0 +1,485 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>GrowthWareFrameworkWeb</name>
+    </assembly>
+    <members>
+        <member name="T:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility">
+            <summary>
+            SecurityEntityUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
+            Web needs such as caching are handeled here
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility.GetDefaultProfile">
+            <summary>
+            Creates and returns MSecurityEntityProfile populated with information from the
+            configuration file.
+            </summary>
+            <returns>MSecurityEntityProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility.GetCurrentProfile">
+            <summary>
+            Returns the current MSecurityEntityProfile from context.  If one is not found in context then 
+            the default values from the config file will be returned.
+            </summary>
+            <returns>MSecurityEntityProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility.GetProfiles">
+            <summary>
+            Retrieves all security entities from the either the database or cache
+            </summary>
+            <returns>A Collection of MSecurityEntityProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility.GetProfile(System.String)">
+            <summary>
+            Get a single function given it's action.
+            </summary>
+            <param name="name">String</param>
+            <returns>MSecurityEntityProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.SecurityEntityUtility.GetProfile(System.Int32)">
+            <summary>
+            Get a single function given it's id.
+            </summary>
+            <param name="id">int or Integer</param>
+            <returns>MSecurityEntityProfile</returns>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.WebImpersonate">
+            <summary>
+            Use to initiate a web impersonation
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.WebImpersonate.ImpersonateNow(System.String,System.String)">
+            <summary>
+            Begins the impersonation process
+            </summary>
+            <param name="account">String including domain ie domain\useraccount</param>
+            <param name="password">String</param>
+            <returns>WindowsImpersonationContext</returns>
+            <remarks></remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.NativeMethods.LogonUser(System.String,System.String,System.String,System.Int32,System.Int32,System.IntPtr@)">
+            <summary>
+            Performs logon by envoking the LogonUser function from advapi32.dll
+            </summary>
+            <param name="lpszUsername">The user name or acount</param>
+            <param name="lpszDomain">The domain the user name or acount is found in.</param>
+            <param name="lpszPassword">The password for the user name or account.</param>
+            <param name="dwLogonType">The logon type</param>
+            <param name="dwLogonProvider">The logon type</param>
+            <param name="phToken">A platform-specific that is used to represent a pointer to a handle</param>
+            <returns></returns>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.NativeMethods.Long32ProviderDefault">
+            <summary>
+            Represents a 32 bit logon int for the defaut provider
+            </summary>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.NativeMethods.Logon32LogonInteractive">
+            <summary>
+            Represents a 32 bit logon int for interactive
+            </summary>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.NativeMethods.SecurityImpersonation">
+            <summary>
+            Represents the securty impersionation level of 2
+            </summary>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Utilities.ClientChoicesUtility">
+            <summary>
+            ClientChoicesUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework
+            with regards to ClientChoices.
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.ClientChoicesUtility.#ctor">
+            <summary>
+            Constructor sets up the private fields
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.ClientChoicesUtility.GetClientChoicesState(System.String)">
+            <summary>
+            Returns the client choices given the account
+            </summary>
+            <param name="account">String</param>
+            <returns>MClientChoicesState</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.ClientChoicesUtility.Save(GrowthWare.Framework.Model.Profiles.MClientChoicesState@)">
+            <summary>
+            Save the client choices to the database.
+            </summary>
+            <param name="clientChoicesState">MClientChoicesState</param>
+            <remarks></remarks>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.WebConfigSettings">
+            <summary>
+            Servers as a collection of configuration information specific to the web.
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.WebConfigSettings.#ctor">
+            <summary>
+            Private constructure
+            </summary>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.WebConfigSettings.AppPath">
+            <summary>
+            Returns the application path
+            </summary>
+            <value></value>
+            <returns></returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.WebConfigSettings.SkinPath">
+            <summary>
+            Returns MapPath("~\Public\Skins\")
+            </summary>
+            <value>String</value>
+            <returns>String</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.WebConfigSettings.RootSite">
+            <summary>
+            Returns http(s)://FQDN(/AppName)
+            </summary>
+            <value>String</value>
+            <returns>String</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.WebConfigSettings.FQDNPage">
+            <summary>
+            Returns a Fully Quilifed Domain Name and Page
+            </summary>
+            <value>String</value>
+            <returns>String</returns>
+            <remarks>Calculated value based on RootSite and BasePage properties</remarks>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.WebConfigSettings.ImagePath">
+            <summary>
+            Returns "Public/Images/"
+            </summary>
+            <value>String</value>
+            <returns>String</returns>
+            <remarks>Should be moved a CONFIG setting</remarks>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.GWWebHelper">
+            <summary>
+            GWWebHelper Contains non volital data needed throughout the system.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.GWWebHelper.Truncate(System.String,System.Int32)">
+            <summary>
+            Chops off the end of a string when the string is longer than a maximum length.
+            </summary>
+            <param name="text">string</param>
+            <param name="length">int</param>
+            <returns>string</returns>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Utilities.FunctionUtility">
+            <summary>
+            FunctionUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
+            Web needs such as caching are handeled here
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FunctionUtility.#ctor">
+            <summary>
+            Constructor sets up the private fields
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FunctionUtility.GetFunctions">
+            <summary>
+            Retrieves all functions from the either the database or cache
+            </summary>
+            <returns>A Collection of MFunctinProfiles</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FunctionUtility.GetFunction(System.String)">
+            <summary>
+            Get a single function given it's action.
+            </summary>
+            <param name="action">String</param>
+            <returns>MFunctionProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FunctionUtility.GetFunction(System.Int32)">
+            <summary>
+            Get a single function given it's id.
+            </summary>
+            <param name="id">int or Integer</param>
+            <returns>MFunctionProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.LogUtility.ConvertPriorityTextToPriority(System.String)">
+            <summary>
+            The convertPriorityTextToPriority method returns the log4net priority given a text value
+            </summary>
+            <param name="priority">String value for the desired priority.  Valid values are Debug, Info, Warn, Error, and Fatal any other will return Error</param>
+            <returns>Returns a Log4Net Priority object.</returns>
+            <remarks></remarks>
+        </member>
+        <member name="P:GrowthWare.Framework.Web.Utilities.LogUtility.CurrentLogLevel">
+            <summary>
+            Inticates the current logging level.
+            </summary>
+            <value>integer</value>
+            <returns>integer</returns>
+            <remarks></remarks>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Utilities.AccountUtility">
+            <summary>
+            AccountUtility serves as the focal point for any web application needing to utiltize the GrowthWare framework.
+            Web needs such as caching are handeled here
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.AccountUtility.#ctor">
+            <summary>
+            Constructor sets up the private fields
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.AccountUtility.GetAccounts(GrowthWare.Framework.Model.Profiles.MAccountProfile)">
+            <summary>
+            Retruns a collection of MAccountProfiles given an MAccountProfile and the current SecurityEntitySeqID
+            </summary>
+            <param name="profile">MAccountProfile</param>
+            <remarks>If the Profiles.IsSysAdmin is true then all accounts will be returned</remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.AccountUtility.GetCurrentProfile">
+            <summary>
+            Retrieves the current profile.
+            </summary>
+            <returns>MAccountProfile</returns>
+            <remarks>If context does not contain a referance to an account anonymous will be returned</remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.AccountUtility.GetProfile(System.String)">
+            <summary>
+            Retrieves an account profile given the account
+            </summary>
+            <param name="account">String</param>
+            <returns>a populated MAccountProfile</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.AccountUtility.Save(GrowthWare.Framework.Model.Profiles.MAccountProfile,System.Boolean,System.Boolean)">
+            <summary>
+            Inserts or updates account information
+            </summary>
+            <param name="profile">MAccountProfile</param>
+            <param name="saveRoles">Boolean</param>
+            <param name="saveGroups">Boolean</param>
+            <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Exceptions.WebImpersonateException">
+            <summary>
+            Created to distinguish errors created in the WebImpersonate.
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Exceptions.WebImpersonateException.#ctor(System.String)">
+            <summary>
+            Calls base method
+            </summary>
+            <param name="message">string</param>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Exceptions.WebImpersonateException.#ctor(System.String,System.Exception)">
+            <summary>
+            Calls base method
+            </summary>
+            <param name="message">string</param>
+            <param name="innerException">Exception</param>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Exceptions.WebImpersonateException.#ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)">
+            <summary>
+            Calls base method
+            </summary>
+            <param name="info"></param>
+            <param name="context"></param>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Controllers.CacheController">
+            <summary>
+            Facade for System.Web.Caching
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Controllers.CacheController.AddToCacheDependency(System.String,System.Object)">
+            <summary>
+            	addToCacheDependency function Adds an object to the
+            cache as well as creates/re-writes the cacheDependency file
+            based on the appropriate application variable
+            For each cache dependency file a corresponding application variable
+            is created, this is done to better track when a file needs
+            to be changed.
+            
+            The core of the cachecontroler relys on the application
+            running within a web farm and gives the ability
+            to keep cached objects syncronized between the servers.
+            When there is a change to one of the cache dependency objects
+            the cache object is re-created in the servers memory.
+            Should part of the application remove a cache object from memory
+            the corresponding file is altered, file replication occures
+            and the others servers will then update their in memory cache
+            objects the next time the cache objected is requested.
+            </summary>
+            <param name="Key">
+            	String representation of the cached object as
+            the corresponding cache file name "myKey.txt".
+            </param>
+            <param name="Value">
+            	Object being placed into cache.
+            </param>
+            <returns>
+            	Boolean
+            </returns>
+            <remarks>
+            </remarks>
+            <history>
+            	[ReganM1]	12/15/2006	Created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Controllers.CacheController.RemoveFromCache(System.String)">
+            -----------------------------------------------------------------------------
+            <summary>
+            Remove a cache item from the servers memory.
+            </summary>
+            <param name="CacheName"></param>
+            <remarks>
+            </remarks>
+            <history>
+            	[ReganM1]	12/15/2006	Created
+            </history>
+            -----------------------------------------------------------------------------
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Controllers.CacheController.CheckCallback(System.String,System.Object,System.Web.Caching.CacheItemRemovedReason)">
+            <summary>
+            Catches when a cache item has been removed from the servers memory then, 
+            sets the corresponding application "WriteCache" variable to true, 
+            forcing the server to write to the associated cache file upon the next request 
+            for the cached item.
+            </summary>
+            <param name="Key">Name of the cached item.</param>
+            <param name="Value">Generally a object being placed into cache.</param>
+            <param name="reason">The reason the item was removed from cache.</param>
+            <remarks></remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Controllers.CacheController.RemoveAllCache">
+            <summary>
+            Removes all cache items from member by removing all files from the cache dependency directory.
+            </summary>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Context.ClientChoicesHttpModule">
+            <summary>
+            The ClientChoicesModule ensures that the client choices are avalible 
+            to the HTTPCONTEXT
+            </summary>
+            <remarks></remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.Init(System.Web.HttpApplication)">
+            <summary>
+            Initializes the ClientChoicesHttpModule subscribing to HttpModule events.
+            </summary>
+            <param name="httpApplication"></param>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.Dispose">
+            <summary>
+            Implements dispose required by IHttpModule
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.AcquireRequestState(System.Object,System.EventArgs)">
+            <summary>
+            Keeps the MClientChoicesState in context.
+            </summary>
+            <param name="sender">object</param>
+            <param name="e">EventArgs</param>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Context.ClientChoicesHttpModule.EndRequest(System.Object,System.EventArgs)">
+            <summary>
+            Saves changes to MClientChoicesState to the database.
+            </summary>
+            <param name="sender"></param>
+            <param name="e"></param>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Utilities.FileUtility">
+            <summary>
+            The FileUtility is a utility class used to help with file and directory management.
+            </summary>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.GetParent(System.String)">
+            <summary>
+            Retruns the parent full name.
+            </summary>
+            <param name="path">string</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.GetDirectoryTableData(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Returns a table of files and directories.
+            </summary>
+            <param name="path">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns>DataTable</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.GetDirectoryTableData(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile,System.Boolean)">
+            <summary>
+            Returns a table of files and/or directories.
+            </summary>
+            <param name="path">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <param name="filesOnly">bool</param>
+            <returns>DataTable</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.DoUpload(System.Web.UI.HtmlControls.HtmlInputFile,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Up loads file from an HtmlInputFile to the directory specified in the MDirectoryProfile object.
+            </summary>
+            <param name="uploadFile">HtmlInputFile</param>
+            <param name="currentDir">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.CreateDirectory(System.String,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Creates the directory specified in the MDirectoryProfile given the currentDirecty.
+            </summary>
+            <param name="currentDirectory">string</param>
+            <param name="newDirectoryName">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns>string</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.DeleteDirectory(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Deletes a directory specified in the MDirectoryProfile in the current directory.
+            </summary>
+            <param name="currentDirectoryName">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns></returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.DeleteFile(System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Deletes a file in the directory specified in the MDirectoryProfile object.
+            </summary>
+            <param name="fileName"></param>
+            <param name="directoryProfile"></param>
+            <returns>string</returns>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.RenameFile(System.String,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Renames a file from the "source" to the "destination"
+            </summary>
+            <param name="sourceFileName">string</param>
+            <param name="destinationFileName">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns>string</returns>
+            <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
+        </member>
+        <member name="M:GrowthWare.Framework.Web.Utilities.FileUtility.RenameDirectory(System.String,System.String,GrowthWare.Framework.Model.Profiles.MDirectoryProfile)">
+            <summary>
+            Renames a directory from the "source" to the "destination"
+            </summary>
+            <param name="sourceDirectoryName">string</param>
+            <param name="destinationDirectoryName">string</param>
+            <param name="directoryProfile">MDirectoryProfile</param>
+            <returns>string</returns>
+            <remarks>The MDirectoryProfile object is used for impersonation if necessary.</remarks>
+        </member>
+        <member name="T:GrowthWare.Framework.Web.Context.HttpContextModule">
+            <summary>
+            The HttpContextModule add to context the ClientChoices (A seporate HTTP context module)
+            as well as adding the requested function and current security for the requested function.
+            </summary>
+            <remarks></remarks>
+        </member>
+    </members>
+</doc>

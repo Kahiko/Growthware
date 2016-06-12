@@ -1,0 +1,76 @@
+﻿Imports GrowthWare.Framework.DataAccessLayer.Interfaces.Base
+Imports GrowthWare.Framework.Enumerations
+Imports GrowthWare.Framework.ModelObjects
+
+Namespace DataAccessLayer
+	Public Interface IDFunction
+		Inherits IDDBInteraction
+
+		''' <summary>
+		''' Used by all methds and must be set to send parameters to the datastore
+		''' </summary>
+		Property Profile() As MFunctionProfile
+
+		''' <summary>
+		''' Used by all methds and must be set to send parameters to the datastore
+		''' </summary>
+		Property SecurityEntitySeqID() As Integer
+
+		''' <summary>
+		''' Deletes an account
+		''' </summary>
+		Sub Delete()
+
+		''' <summary>
+		''' Retrieves Function information
+		''' </summary>
+		''' <returns>DataRow</returns>
+		ReadOnly Property GetFunction() As DataRow
+
+		''' <summary>
+		''' Returns all functions associated with a given SecurityEntitySeqID.
+		''' </summary>
+		''' <returns>DataTable</returns>
+		''' <remarks>Does not caculate security for accounts.</remarks>
+		ReadOnly Property GetFunctions() As DataTable
+
+		''' <summary>
+		''' Returns all groups associated with a given SecurityEntitySeqID and permission.
+		''' </summary>
+		''' <param name="permission">PermissionTypes</param>
+		''' <returns>DataTable</returns>
+		Function GetGroups(ByVal permission As Enumerations.PermissionTypes) As DataTable
+
+		''' <summary>
+		''' Returns all roles associated with a given SecurityEntitySeqID and permission.
+		''' </summary>
+		''' <param name="permission">PermissionTypes</param>
+		''' <returns>DataTable</returns>
+		Function GetRoles(ByVal permission As Enumerations.PermissionTypes) As DataTable
+
+		''' <summary>
+		''' Returns all roles either direct association or by association via
+		''' groups.
+		''' </summary>
+		''' <returns>DataTable</returns>
+		Function GetSecurity() As DataTable
+
+		''' <summary>
+		''' Inserts or updates account information
+		''' </summary>
+		''' <returns>int</returns>
+		Function Save() As Integer
+
+		''' <summary>
+		''' Save groups by passing a string or comma seporated groups to the database.
+		''' </summary>
+		Sub SaveGroups(ByVal permission As PermissionTypes)
+
+		''' <summary>
+		''' Save roles by passing a string or comma seporated roles to the database.
+		''' </summary>
+		Sub SaveRoles(ByVal permission As PermissionTypes)
+
+
+	End Interface
+End Namespace

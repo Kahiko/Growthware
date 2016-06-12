@@ -1,0 +1,76 @@
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
+namespace GrowthWare.Framework.Model.Profiles.Base.Interfaces
+{
+	/// <summary>
+	/// IMSecurityInfo sets the contract for all
+	/// classing inheriting fromm MSecurity.vb
+	/// </summary>
+	public interface ISecurityInfo
+	{
+		/// <summary>
+		/// A collection of assigned roles that may add
+		/// </summary>
+		Collection<string> AssignedAddRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collection of roles that may add
+		/// </summary>
+		Collection<string> DerivedAddRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of assigned roles that may delete
+		/// </summary>
+		Collection<string> AssignedDeleteRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of roles that may delete
+		/// </summary>
+		Collection<string> DerivedDeleteRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of assigned roles that may edit
+		/// </summary>
+		Collection<string> AssignedEditRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of roles that may edit
+		/// </summary>
+		Collection<string> DerivedEditRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of assigned roles that may view
+		/// </summary>
+		Collection<string> AssignedViewRoles
+		{
+			get;
+		}
+
+		/// <summary>
+		/// A collectionn of roles that may view
+		/// </summary>
+		Collection<string> DerivedViewRoles
+		{
+			get;
+		}
+	}
+}

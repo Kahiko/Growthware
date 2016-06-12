@@ -1,0 +1,423 @@
+﻿Imports System.IO
+Imports System.Security.Cryptography
+Imports System.Text
+Imports System.Text.RegularExpressions
+Imports GrowthWare.Framework.Model.Enumerations
+
+Namespace Common
+	''' <summary>
+	''' The CryptoUtility is a utility to provide encryption/decryption based on either DES or 
+	''' triple DES methods
+	''' </summary>
+	''' <remarks></remarks>
+	Public NotInheritable Class CryptoUtility
+
+#Region "Member Fields"
+		''' <summary> 
+		''' SetKeys will create a 192 bit key and 64 bit IV based on 
+		''' two MD5 methods found in another article (http://www.aspalliance.com/535) 
+		''' </summary> 
+		Private Shared WriteOnly Property setKeys() As String
+			Set(ByVal value As String)
+				' create the byte arrays needed to create the key and iv. 
+				Dim md5key As Byte()
+				Dim hashedkey As Byte()
+
+				' for ease of preparation, we'll utilize code found in a different 
+				' article. http://www.aspalliance.com/535 
+				md5key = MD5Encryption(value)
+				hashedkey = MD5SaltedHashEncryption(value)
+
+				' loop to transfer the keys. 
+				For i As Integer = 0 To hashedkey.Length - 1
+					KEY_192(i) = hashedkey(i)
+				Next
+
+				' create the start and mid portion of the hashed key 
+				Dim startcount As Integer = hashedkey.Length
+				' always 128 
+				Dim midcount As Integer = md5key.Length / 2
+				' always 64 
+
+				' loop to fill in the rest of the key, and create 
+				' the IV with the remaining. 
+				For i As Integer = midcount To md5key.Length - 1
+					KEY_192(startcount + (i - midcount)) = md5key(i)
+					IV_192(i - midcount) = md5key(i - midcount)
+				Next
+
+				' clean up resources. 
+				md5key = Nothing
+				hashedkey = Nothing
+			End Set
+		End Property
+
+		'8 bytes randomly selected for both the Key and the Initialization Vector
+		'the IV is used to encrypt the first block of text so that any repetitive 
+		'patterns are not apparent
+		Private Shared KEY_64() As Byte = {83, 68, 91, 37, 128, 64, 92, 197}
+
+		Private Shared IV_64() As Byte = {6, 55, 118, 219, 92, 197, 78, 69}
+
+		'24 byte or 192 bit key for TripleDES
+		Private Shared KEY_192() As Byte = {83, 68, 91, 37, 128, 64, 92, 197,
+		  87, 215, 61, 243, 148, 20, 252, 34,
+		  38, 69, 83, 201, 74, 211, 6, 98}
+		'24 byte or 192 bit Initialization Vector for TripleDES
+		Private Shared IV_192() As Byte = {6, 55, 118, 219, 92, 197, 78, 69,
+		  247, 110, 61, 189, 247, 110, 61, 189,
+		  243, 148, 20, 252, 34, 133, 174, 189}
+
+#End Region
+
+#Region "Public Methods"
+		''' <summary>
+		''' Performs encryption given the desired encryption type.
+		''' </summary>
+		''' <param name="ValueToEncrypt">String to encrypt</param>
+		''' <param name="EncryptionType">If "TripleDES" is not specified the DES is returned.</param>
+		''' <returns>Encrypted string</returns>
+		''' <remarks>EncryptionType is case sensitive.</remarks>
+		Public Shared Function Encrypt(ByVal ValueToEncrypt As String, ByVal EncryptionType As EncryptionTypes) As String
+			Select Case EncryptionType
+				Case EncryptionTypes.TripleDES
+					'24 byte or 192 bit key for TripleDES
+					Dim mKEY_192() As Byte = {83, 68, 91, 37, 128, 64, 92, 197, _
+					  87, 215, 61, 243, 148, 20, 252, 34, _
+					  38, 69, 83, 201, 74, 211, 6, 98}
+					'24 byte or 192 bit Initialization Vector for TripleDES
+					Dim mIV_192() As Byte = _
+					 {6, 55, 118, 219, 92, 197, 78, 69, _
+					  247, 110, 61, 189, 247, 110, 61, 189, _
+					  243, 148, 20, 252, 34, 133, 174, 189}
+
+					KEY_192 = mKEY_192
+					IV_192 = mIV_192
+					Return EncryptTripleDES(ValueToEncrypt)
+				Case EncryptionTypes.DES
+					Return Encrypt(ValueToEncrypt)
+				Case Else
+					Return ValueToEncrypt
+			End Select
+		End Function
+
+		''' <summary>
+		''' Performs encryption given the desired encryption type.
+		''' </summary>
+		''' <param name="ValueToEncrypt">String</param>
+		''' <param name="EncryptionType">EncryptionType</param>
+		''' <param name="SaltExpression">String</param>
+		''' <returns>Encrypted string</returns>
+		''' <remarks>EncryptionType is case sensitive.</remarks>
+		Public Shared Function Encrypt(ByVal ValueToEncrypt As String, ByVal EncryptionType As EncryptionTypes, ByVal SaltExpression As String) As String
+			setKeys = SaltExpression
+			Select Case EncryptionType
+				Case EncryptionTypes.TripleDES
+					Return EncryptTripleDES(ValueToEncrypt)
+				Case EncryptionTypes.DES
+					Return Encrypt(ValueToEncrypt)
+				Case Else
+					Return ValueToEncrypt
+			End Select
+		End Function
+
+		''' <summary>
+		''' Performs dencryption.
+		''' </summary>
+		''' <param name="ValueToDecrypt">Encrypted string</param>
+		''' <param name="EncryptionType">If "TripleDES" is not specified the DES is returned.</param>
+		''' <returns>Decrypted string</returns>
+		''' <remarks>EncryptionType is case sensitive</remarks>
+		Public Shared Function Decrypt(ByVal ValueToDecrypt As String, ByVal EncryptionType As EncryptionTypes) As String
+			Select Case EncryptionType
+				Case EncryptionTypes.TripleDES
+					Return DecryptTripleDES(ValueToDecrypt)
+				Case EncryptionTypes.DES
+					Return Decrypt(ValueToDecrypt)
+				Case Else
+					Try
+						Return DecryptTripleDES(ValueToDecrypt)
+					Catch ex As Exception
+						' do nothing
+					End Try
+					Try
+						Return Decrypt(ValueToDecrypt)
+					Catch ex As Exception
+						' do nothing
+					End Try
+					Return ValueToDecrypt
+			End Select
+		End Function
+
+		''' <summary>
+		''' Performs dencryption.
+		''' </summary>
+		''' <param name="ValueToDecrypt">String</param>
+		''' <param name="EncryptionType">EncryptionType</param>
+		''' <param name="SaltExpression">SaltExpression</param>
+		''' <returns>Decrypted string</returns>
+		''' <remarks></remarks>
+		Public Shared Function Decrypt(ByVal ValueToDecrypt As String, ByVal EncryptionType As EncryptionTypes, ByVal SaltExpression As String) As String
+			setKeys = SaltExpression
+			Select Case EncryptionType
+				Case EncryptionTypes.TripleDES
+					Return DecryptTripleDES(ValueToDecrypt)
+				Case EncryptionTypes.DES
+					Return Decrypt(ValueToDecrypt)
+				Case Else
+					Try
+						Return DecryptTripleDES(ValueToDecrypt)
+					Catch ex As Exception
+						' do nothing
+					End Try
+					Try
+						Return Decrypt(ValueToDecrypt)
+					Catch ex As Exception
+						' do nothing
+					End Try
+					Return ValueToDecrypt
+			End Select
+		End Function
+#End Region
+
+#Region "Private Methods"
+		Private Sub New()
+
+		End Sub
+
+		''' <summary>
+		''' Encrypts the string to a byte array using the MD5 Encryption Algorithm.
+		''' <see cref="System.Security.Cryptography.MD5CryptoServiceProvider"/>
+		''' </summary>
+		''' <param name="ToEncrypt">System.String.  Usually a password.</param>
+		''' <returns>System.Byte[]</returns>
+		Private Shared Function MD5Encryption(ByVal ToEncrypt As String) As Byte()
+			' Create instance of the crypto provider.
+			Dim mMD5CryptoServiceProvider As MD5CryptoServiceProvider = Nothing
+			Try
+				mMD5CryptoServiceProvider = New MD5CryptoServiceProvider()
+				' Create a Byte array to store the encryption to return.
+				Dim mHashedbytes As Byte()
+				' Required UTF8 Encoding used to encode the input value to a usable state.
+				Dim mTextencoder As New UTF8Encoding()
+
+				' let the show begin.
+				mHashedbytes = mMD5CryptoServiceProvider.ComputeHash(mTextencoder.GetBytes(ToEncrypt))
+
+				' return the hased bytes to the calling method.
+				Return mHashedbytes
+
+			Catch ex As Exception
+				Throw
+			Finally
+				' Destroy objects that aren't needed.
+				If Not mMD5CryptoServiceProvider Is Nothing Then
+					mMD5CryptoServiceProvider.Dispose()
+				End If
+			End Try
+
+		End Function
+
+		''' <summary> 
+		''' Encrypts the string to a byte array using the MD5 Encryption 
+		''' Algorithm with an additional Salted Hash. 
+		''' <see cref="System.Security.Cryptography.MD5CryptoServiceProvider"/> 
+		''' </summary> 
+		''' <param name="ToEncrypt">System.String. Usually a password.</param> 
+		''' <returns>System.Byte[]</returns> 
+		Private Shared Function MD5SaltedHashEncryption(ByVal ToEncrypt As String) As Byte()
+			' Create instance of the crypto provider. 
+			Dim mMD5CryptoServiceProvider As New MD5CryptoServiceProvider()
+			' Create a Byte array to store the encryption to return. 
+			Dim mHashedbytes As Byte()
+
+			' Create a Byte array to store the salted hash. 
+			Dim mSaltedhash As Byte()
+
+			Try
+				' Required UTF8 Encoding used to encode the input value to a usable state. 
+				Dim textencoder As New UTF8Encoding()
+
+				' let the show begin. 
+				mHashedbytes = mMD5CryptoServiceProvider.ComputeHash(textencoder.GetBytes(ToEncrypt))
+
+				' Let's add the salt. 
+				ToEncrypt += textencoder.GetString(mHashedbytes)
+				' Get the new byte array after adding the salt. 
+				mSaltedhash = mMD5CryptoServiceProvider.ComputeHash(textencoder.GetBytes(ToEncrypt))
+
+			Catch ex As Exception
+				Throw
+			Finally
+				' Destroy objects that aren't needed. 
+				mMD5CryptoServiceProvider.Dispose()
+			End Try
+			' return the hased bytes to the calling method. 
+			Return mSaltedhash
+		End Function
+
+		''' <summary>
+		''' Private method to return DES encryption.
+		''' </summary>
+		''' <param name="UnEncryptedValue">String to be encrypted</param>
+		''' <returns>Encrypted string</returns>
+		''' <remarks></remarks>
+		Private Shared Function Encrypt(ByVal UnEncryptedValue As String) As String
+			Dim retVal As String = UnEncryptedValue
+			If Not String.IsNullOrEmpty(UnEncryptedValue) Then
+				Dim mCryptoProvider As DESCryptoServiceProvider = Nothing
+				Dim mMemoryStream As MemoryStream = Nothing
+
+				Try
+					mCryptoProvider = New DESCryptoServiceProvider
+					mMemoryStream = New MemoryStream
+					Dim mCryptoStream As CryptoStream = New CryptoStream(mMemoryStream, mCryptoProvider.CreateEncryptor(KEY_64, IV_64), CryptoStreamMode.Write)
+					Dim mStreamWriter As StreamWriter = New StreamWriter(mCryptoStream)
+					mStreamWriter.Write(UnEncryptedValue)
+					mStreamWriter.Flush()
+					mCryptoStream.FlushFinalBlock()
+					mMemoryStream.Flush()
+					'convert back to a string
+					retVal = Convert.ToBase64String(mMemoryStream.GetBuffer(), 0, mMemoryStream.Length)
+				Catch ex As Exception
+					Throw
+				Finally
+					If Not mCryptoProvider Is Nothing Then
+						mCryptoProvider.Dispose()
+					End If
+					If Not mMemoryStream Is Nothing Then
+						mMemoryStream.Dispose()
+					End If
+				End Try
+
+			End If
+			Return retVal
+		End Function
+
+		''' <summary>
+		''' Private method to perform DES decryption
+		''' </summary>
+		''' <param name="EncryptedValue">DES encrypted string</param>
+		''' <returns>Decrypted DES string</returns>
+		''' <remarks></remarks>
+		Private Shared Function Decrypt(ByVal EncryptedValue As String) As String
+			Dim mRetVal As String = String.Empty
+
+			If Not String.IsNullOrEmpty(EncryptedValue) Then
+				Dim mCryptoProvider As DESCryptoServiceProvider = Nothing
+				Dim mMemoryStream As MemoryStream = Nothing
+				Try
+					mCryptoProvider = New DESCryptoServiceProvider
+					'convert from string to byte array
+					If IsBase64String(EncryptedValue) Then
+						Dim buffer As Byte() = Convert.FromBase64String(EncryptedValue)
+						mMemoryStream = New MemoryStream(buffer)
+						Dim cs As CryptoStream = _
+						 New CryptoStream(mMemoryStream, mCryptoProvider.CreateDecryptor(KEY_64, IV_64), _
+						  CryptoStreamMode.Read)
+						Dim sr As StreamReader = New StreamReader(cs)
+						mRetVal = sr.ReadToEnd
+					Else
+						mRetVal = EncryptedValue
+					End If
+				Catch ex As Exception
+					Throw
+				Finally
+					If Not mCryptoProvider Is Nothing Then
+						mCryptoProvider.Dispose()
+					End If
+					If Not mMemoryStream Is Nothing Then
+						mMemoryStream.Dispose()
+					End If
+				End Try
+			End If
+			Return mRetVal
+		End Function
+
+		''' <summary>
+		''' Private method to perform DES3 encryption
+		''' </summary>
+		''' <param name="EncryptedValue">String to be DES3 encrypted</param>
+		''' <returns>Encrypted string</returns>
+		''' <remarks></remarks>
+		Private Shared Function EncryptTripleDES(ByVal EncryptedValue As String) As String
+			Dim mRetVal As String = EncryptedValue
+			If Not String.IsNullOrEmpty(EncryptedValue) Then
+				Dim mCryptoProvider As TripleDESCryptoServiceProvider = Nothing
+				Dim mMemoryStream As MemoryStream = Nothing
+				Try
+					mCryptoProvider = New TripleDESCryptoServiceProvider
+					mMemoryStream = New MemoryStream
+					Dim mCryptoStream As CryptoStream = New CryptoStream(mMemoryStream, mCryptoProvider.CreateEncryptor(KEY_192, IV_192), CryptoStreamMode.Write)
+					Dim mStreamWriter As StreamWriter = New StreamWriter(mCryptoStream)
+					mStreamWriter.Write(EncryptedValue)
+					mStreamWriter.Flush()
+					mCryptoStream.FlushFinalBlock()
+					mMemoryStream.Flush()
+					'convert back to a string
+					mRetVal = Convert.ToBase64String(mMemoryStream.GetBuffer(), 0, mMemoryStream.Length)
+				Catch ex As Exception
+					Throw
+				Finally
+					If Not mCryptoProvider Is Nothing Then
+						mCryptoProvider.Dispose()
+					End If
+					If Not mMemoryStream Is Nothing Then
+						mMemoryStream.Dispose()
+					End If
+				End Try
+			End If
+			Return mRetVal
+		End Function
+
+		''' <summary>
+		''' Private method to DES3 decryption.
+		''' </summary>
+		''' <param name="EncryptedValue">DES3 encrypted string</param>
+		''' <returns>clear text string</returns>
+		''' <remarks></remarks>
+		Private Shared Function DecryptTripleDES(ByVal EncryptedValue As String) As String
+			Dim mRetVal As String = String.Empty
+			If EncryptedValue <> "" Then
+				Dim mCryptoProvider As TripleDESCryptoServiceProvider = Nothing
+				Dim mMemoryStream As MemoryStream = Nothing
+				Try
+					mCryptoProvider = New TripleDESCryptoServiceProvider
+					'convert from string to byte array
+					If IsBase64String(EncryptedValue) Then
+						Dim buffer As Byte() = Convert.FromBase64String(EncryptedValue)
+						mMemoryStream = New MemoryStream(buffer)
+
+						Dim mCryptoStream As CryptoStream = New CryptoStream(mMemoryStream, mCryptoProvider.CreateDecryptor(KEY_192, IV_192), CryptoStreamMode.Read)
+						Dim mStreamReader As StreamReader = New StreamReader(mCryptoStream)
+						mRetVal = mStreamReader.ReadToEnd
+					Else
+						mRetVal = EncryptedValue
+					End If
+				Catch ex As Exception
+					Throw
+				Finally
+					If Not mCryptoProvider Is Nothing Then
+						mCryptoProvider.Dispose()
+					End If
+					If Not mMemoryStream Is Nothing Then
+						mMemoryStream.Dispose()
+					End If
+				End Try
+
+			End If
+			Return mRetVal
+		End Function
+
+		''' <summary>
+		''' Checks to see if a string value is a base64 string.  Reduces the need for try catch and exceptions.
+		''' </summary>
+		''' <param name="Value">String to be tested</param>
+		''' <returns>Boolean</returns>
+		Private Shared Function IsBase64String(ByVal Value) As Boolean
+			Value = Value.Trim()
+			Return (Value.Length Mod 4 = 0) And Regex.IsMatch(Value, "^[a-zA-Z0-9\+/]*={0,3}$", RegexOptions.None)
+		End Function
+#End Region
+	End Class
+End Namespace

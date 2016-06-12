@@ -1,0 +1,46 @@
+﻿CREATE PROCEDURE [dbo].[ZFP_GET_ACCT_CHOICES]
+	@P_ACCOUNT VARCHAR(128),
+	@P_ErrorCode int OUTPUT
+AS
+-- SELECT an existing row from the table.
+IF EXISTS(SELECT ACCT FROM [dbo].[ZFO_ACCT_CHOICES] WHERE [ACCT] = @P_ACCOUNT)
+	BEGIN
+		SELECT
+			[ACCT],
+			[SE_SEQ_ID],
+			[SE_NAME],
+			[BACK_COLOR],
+			[LEFT_COLOR],
+			[HEAD_COLOR],
+			[SUB_HEAD_COLOR],
+			[COLOR_SCHEME],
+			[FAVORIATE_ACTION],
+			[THIN_ACTIONS],
+			[WIDE_ACTIONS],
+			[RECORDS_PER_PAGE]
+		FROM [dbo].[ZFO_ACCT_CHOICES]
+		WHERE
+			[ACCT] = @P_ACCOUNT
+	END
+ELSE
+	BEGIN
+		SELECT
+			[ACCT],
+			[SE_SEQ_ID],
+			[SE_NAME],
+			[BACK_COLOR],
+			[LEFT_COLOR],
+			[HEAD_COLOR],
+			[SUB_HEAD_COLOR],
+			[COLOR_SCHEME],
+			[FAVORIATE_ACTION],
+			[THIN_ACTIONS],
+			[WIDE_ACTIONS],
+			[RECORDS_PER_PAGE]
+		FROM [dbo].[ZFO_ACCT_CHOICES]
+		WHERE
+			[ACCT] = 'Anonymous'
+	END
+	
+-- Get the Error Code for the statement just executed.
+SELECT @P_ErrorCode=@@ERROR

@@ -1,0 +1,421 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="d22fae04-da28-4b1e-ac92-22636c92d5cd"
+  name="BusinessLogicLayer"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="3062c95e-468a-42d9-a1df-1d6b2efd08d8"
+      handle="viewcode://./CodeSchema_Namespace?Namespace=GrowthWare.Framework.BusinessLogicLayer"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <class
+        Id="069a6b30-f3e6-45c7-8ef9-7bfbb9a2f99b"
+        name="BAccounts"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="f5e9bd25-3264-4c1e-90e9-f8287ede20ba"
+            handle="viewcode://./CodeSchema_Class?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts"
+            tag="ViewCode" />
+        </referencesInternal>
+        <suppliersInternal>
+          <interfaceRealization
+            Id="c435f744-808b-45fa-8adb-a9969a6c4f4f">
+            <interfaceMoniker
+              Id="1183c83e-a59b-41a0-89d5-5d4796872d73"
+              LastKnownName="IBAccounts"
+              LastKnownLocation="Package2_1935.uml" />
+          </interfaceRealization>
+        </suppliersInternal>
+        <ownedOperationsInternal>
+          <operation
+            Id="1cb7844e-3540-4819-ab11-dd52bb07bb20"
+            name="Delete"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4174cb50-14af-439d-ada4-280c45735908"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Delete OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Int32)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9d9db3ea-98a5-4a3f-93fe-9119c786eb60"
+                  name="AccountId"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="0255c2a2-2156-45b2-8b6d-3a2f79706bf3"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Delete OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Int32)]) ParameterIdentifier=AccountId"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                      LastKnownName="Integer"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="0a471bf4-cb05-4b2b-9669-6c65ae7762b1"
+            name="GetAccountProfile"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="639b8774-407f-4264-94ed-c0ed62e519ea"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=GetAccountProfile OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=String)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="9ebc0e49-51a5-418b-a5fe-34bcd97e8a85"
+                  name="Account"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="fc1fe32a-6ab5-42b0-939d-0cd4dc8b3465"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=GetAccountProfile OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=String)]) ParameterIdentifier=Account"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                      LastKnownName="String"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="ef4ea61d-e959-41aa-9b81-d3c62f27c8fb"
+            name="GetAccounts"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="ee2ed167-1780-4161-86b9-ab7f0bc54c91"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=GetAccounts OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="daaba45e-6879-4c9e-875c-5b2e32143e75"
+                  name="Profile"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="fe9913b8-18c2-4d85-bbf4-e029f7cc749d"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=GetAccounts OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile)]) ParameterIdentifier=Profile"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="be124582-7255-4d95-87e4-13c082431ef4"
+                      LastKnownName="MAccountProfile"
+                      LastKnownLocation="Package1_2200.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="f9cfc97d-959b-4de9-b98e-161d19092159"
+            name="Save"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="false"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="70eef624-8382-4961-b7d9-7957c872a438"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="d0f68388-2d43-45b1-8a9c-18d4bf665e14"
+                  name="Profile"
+                  direction="Out">
+                  <referencesInternal>
+                    <reference
+                      Id="e5a94f58-f62b-45a1-a9d2-72bff621741c"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=Profile"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="be124582-7255-4d95-87e4-13c082431ef4"
+                      LastKnownName="MAccountProfile"
+                      LastKnownLocation="Package1_2200.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="98f600ef-f0ab-4918-8c88-ba078e6eb03a"
+                  name="SaveRoles"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="f4751e56-ae70-47ac-b3a1-8149c3a23200"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=SaveRoles"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="73d1103e-ee7c-4984-94d7-3fab64a2caee"
+                  name="SaveGroups"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="5f9ca1ea-f461-44cf-95c2-29697bd1ac54"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=BAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=SaveGroups"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperationsInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <Interface
+        Id="1183c83e-a59b-41a0-89d5-5d4796872d73"
+        name="IBAccounts"
+        isAbstract="false"
+        isLeaf="false">
+        <referencesInternal>
+          <reference
+            Id="9be04a95-b7fe-4f9d-ae9d-4a7eef6a44be"
+            handle="viewcode://./CodeSchema_Interface?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts"
+            tag="ViewCode" />
+        </referencesInternal>
+        <ownedOperations>
+          <operation
+            Id="0fe403c5-cb76-413b-8e06-eb6ccdf62de9"
+            name="Delete"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="b852288b-8f19-4df9-91bf-a62ebb5ec78d"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Delete OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Int32)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="23ef0704-549b-481c-9ff0-cf8ceb4cf3cf"
+                  name="AccountId"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="4afb32fb-a66f-4335-851f-2af25b31927a"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Delete OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Int32)]) ParameterIdentifier=AccountId"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="220a3521-e091-4221-bae9-3ef9018e845c"
+                      LastKnownName="Integer"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="3dd3b383-2f6c-4535-84d1-df102719f5aa"
+            name="GetAccountProfile"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="4da63923-7310-4825-822f-7c9a3441b07f"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=GetAccountProfile OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=String)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="7e63b70a-e40a-46f8-8b84-0772ca4e2e74"
+                  name="Account"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="a4b5905b-6974-4b8a-8c73-355bde11f5c8"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=GetAccountProfile OverloadingParameters=[(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=String)]) ParameterIdentifier=Account"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="59259974-6d55-42c6-b7bd-763d77ac8ef9"
+                      LastKnownName="String"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="5446e00a-8be6-4795-b312-086ffa32be39"
+            name="GetAccounts"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="94cc0aaa-86bf-441a-9a55-0dacaf68b48b"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=GetAccounts OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="a4b0df49-5f6f-4544-93b6-4538e470a0d5"
+                  name="Profile"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="a5603bd4-5d95-4b8c-80f9-c87206ed437c"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=GetAccounts OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile)]) ParameterIdentifier=Profile"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="be124582-7255-4d95-87e4-13c082431ef4"
+                      LastKnownName="MAccountProfile"
+                      LastKnownLocation="Package1_2200.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+          <operation
+            Id="8698cc29-ff28-446b-85a1-efb640c01171"
+            name="Save"
+            isLeaf="false"
+            isStatic="false"
+            isAbstract="true"
+            concurrency="Sequential"
+            isQuery="false">
+            <referencesInternal>
+              <reference
+                Id="1fe39a5f-2837-4dca-8664-b6835e2e1662"
+                handle="viewcode://./CodeSchema_Method?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)])"
+                tag="ViewCode" />
+            </referencesInternal>
+            <ownedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="636906bc-7a4f-4cd1-ade6-fa7a9b81003e"
+                  name="Profile"
+                  direction="Out">
+                  <referencesInternal>
+                    <reference
+                      Id="8c7217a3-7643-4fab-b206-11b225199426"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=Profile"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <classMoniker
+                      Id="be124582-7255-4d95-87e4-13c082431ef4"
+                      LastKnownName="MAccountProfile"
+                      LastKnownLocation="Package1_2200.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="3155fca5-78b3-4dd5-a355-b19438f8cea7"
+                  name="SaveRoles"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="f65b9322-9d95-4061-8f8c-09fc45db35a6"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=SaveRoles"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+              <operationHasOwnedParameters>
+                <parameter
+                  Id="21b8b82a-7db7-4f16-94c8-4ab5a76a0d0d"
+                  name="SaveGroups"
+                  direction="In">
+                  <referencesInternal>
+                    <reference
+                      Id="b4e4589f-85ad-427f-8d99-a90557d1a713"
+                      handle="viewcode://./CodeSchema_Parameter?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.BusinessLogicLayer Type=IBAccounts Member=(Name=Save OverloadingParameters=[(Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean),(Assembly=&quot;file:///C:/Program Files (x86)/Reference Assemblies/Microsoft/Framework/.NETFramework/v4.0/mscorlib.dll&quot; Namespace=System Type=Boolean)]) ParameterIdentifier=SaveGroups"
+                      tag="ViewCode" />
+                  </referencesInternal>
+                  <type_NamedElement>
+                    <primitiveTypeMoniker
+                      Id="8943dc84-709e-4f62-b15a-a3273aa6f165"
+                      LastKnownName="Boolean"
+                      LastKnownLocation="ModelingProject.uml" />
+                  </type_NamedElement>
+                </parameter>
+              </operationHasOwnedParameters>
+            </ownedParameters>
+          </operation>
+        </ownedOperations>
+      </Interface>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

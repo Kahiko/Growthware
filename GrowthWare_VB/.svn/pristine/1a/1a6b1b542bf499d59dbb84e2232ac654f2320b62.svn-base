@@ -1,0 +1,192 @@
+﻿Imports System.Collections.ObjectModel
+Imports GrowthWare.Framework.Common
+Imports GrowthWare.Framework.DataAccessLayer
+Imports GrowthWare.Framework.Model.Profiles
+
+Namespace BusinessLogicLayer
+	''' <summary>
+	''' Process business logic for accounts
+	''' </summary>
+	''' <remarks>
+	''' <![CDATA[
+	''' MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+	''' 
+	''' The following properties are necessary for correct business logic operation.
+	''' .ConnctionString
+	''' .DALName
+	''' .DALNameSpace
+	''' ]]>
+	''' </remarks>
+	''' <example> This sample shows how to create an instance of the class.
+	''' <code language="VB.NET">
+	''' <![CDATA[
+	''' Dim myBll as new BAccounts(mySecurityEntityProfile)
+	''' ]]>
+	''' </code>
+	''' </example>
+	Public Class BAccounts
+			Implements IBAccounts
+
+		Private Shared m_DAccounts As IDAccount
+
+		''' <summary>
+		''' Private sub New() to ensure only new instances with passed parameters is used.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub New()
+
+		End Sub
+
+		''' <summary>
+		''' Parameters are need to pass along to the factory for correct connection to the desired datastore.
+		''' </summary>
+		''' <param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+		''' <param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+		''' <remarks></remarks>
+		''' <example> This sample shows how to create an instance of the class.
+		''' <code language="VB.NET">
+		''' <![CDATA[
+		''' MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+		''' mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+		''' mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+		''' mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+		''' mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+		''' mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+		''' 
+		''' Dim mBAccount As BAccounts = New BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+		''' ]]>
+		''' </code>
+		''' <code language="C#">
+		''' <![CDATA[
+		''' Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+		''' mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+		''' mSecurityEntityProfile.DAL = ConfigSettings.DAL
+		''' mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+		''' mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+		''' mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+		''' 
+		''' BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+		''' ]]>
+		''' </code>
+		''' </example>
+		Public Sub New(ByVal SecurityEntityProfile As MSecurityEntityProfile, ByVal CentralManagement As Boolean)
+			If (SecurityEntityProfile Is Nothing) Then
+				Throw New ArgumentException("securityEntityProfile can not be null or empty!")
+			End If
+			If Not CentralManagement Then
+				If m_DAccounts Is Nothing Then
+					m_DAccounts = FactoryObject.Create(SecurityEntityProfile.DALAssemblyName, SecurityEntityProfile.DALNamespace, "DAccounts")
+				End If
+			Else
+				m_DAccounts = FactoryObject.Create(SecurityEntityProfile.DALAssemblyName, SecurityEntityProfile.DALNamespace, "DAccounts")
+			End If
+			m_DAccounts.ConnectionString = SecurityEntityProfile.ConnectionString
+			m_DAccounts.SecurityEntitySeqID = SecurityEntityProfile.Id
+		End Sub
+
+		Public Sub Delete(ByVal AccountId As Integer) Implements IBAccounts.Delete
+			m_DAccounts.Profile.Id = AccountId
+			m_DAccounts.Delete()
+		End Sub
+
+		''' <summary>
+		''' Returns Account model based given the acccount name 
+		''' </summary>
+		''' <param name="account">String</param>
+		''' <returns>MAccountProfile</returns>
+		''' <remarks></remarks>
+		''' <example> This sample shows how to create an instance of the class.
+		''' <code language="VB.NET">
+		''' <![CDATA[
+		''' Dim mBll as new BAccounts(mySecurityEntityProfile)
+		''' Dim mMAccountProfile as MAccountProfile = mbill.GetAccountProfile("Tester")
+		''' ]]>
+		''' </code>
+		''' <code language="C#">
+		''' <![CDATA[
+		''' BAccounts mBll = new BAccounts(mySecurityEntityProfile);
+		''' MAccountProfile mMAccountProfile = mbill.GetAccountProfile("Tester");
+		''' ]]>
+		''' </code>
+		''' </example>
+		Public Function GetProfile(ByVal Account As String) As MAccountProfile Implements IBAccounts.GetProfile
+			m_DAccounts.Profile = New MAccountProfile()
+			m_DAccounts.Profile.Account = Account
+			Return New MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.GetRoles(), m_DAccounts.GetGroups(), m_DAccounts.GetSecurity())
+		End Function
+
+		''' <summary>
+		''' Returns a collection of MAccountProfiles without any role information
+		''' </summary>
+		''' <param name="Profile">An instance of MAccountProfile</param>
+		''' <returns></returns>
+		Public Function GetAccounts(ByVal Profile As MAccountProfile) As Collection(Of MAccountProfile) Implements IBAccounts.GetAccounts
+				Dim mDataTable As DataTable = Nothing
+				Dim mRetCollection As New Collection(Of MAccountProfile)
+				Try
+					m_DAccounts.Profile = Profile
+					mDataTable = m_DAccounts.GetAccounts()
+					For Each dataRow As DataRow In mDataTable.Rows
+						mRetCollection.Add(New MAccountProfile(dataRow))
+					Next
+				Catch ex As Exception
+					Throw
+				Finally
+					If Not mDataTable Is Nothing Then
+						mDataTable.Dispose()
+					End If
+				End Try
+				Return mRetCollection
+		End Function
+
+		''' <summary>
+		''' Performs either insert or update of an MAcountProfile, and re-populates the MAccountProfile with DB information.
+		''' </summary>
+		''' <param name="Profile">MAccountProfile</param>
+		''' <param name="SaveRoles">MAccountProfile</param>
+		''' <param name="SaveGroups">MAccountProfile</param>
+		''' <remarks>
+		''' Updates the model object with information from the database<br></br>
+		''' For example if you are creating a new account the ID will be sent into<br></br>
+		''' this method as -1, after the call to this method the ID will from the database
+		''' </remarks>
+		''' <example> This sample shows how to create an instance of the class.
+		''' <code language="VB.NET">
+		''' <![CDATA[
+		''' Dim mMAccountProfile as new MAccountProfile()
+		''' mMAccountProfile.Account = "Account"
+		''' mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType)
+		''' mMAccountProfile.UpdatedBy = 1
+		''' mMAccountProfile.UpdagedDate = Date.Now
+		''' Dim mBll as new BAccounts(mySecurityEntityProfile)
+		''' Dim mSaveRoles As Boolean = False;
+		''' Dim mSaveGroups As Boolean = False;
+		''' mMAccountProfile = mbill.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
+		''' ]]>
+		''' </code>
+		''' <code language="C#">
+		''' MAccountProfile mMAccountProfile = new mMAccountProfile();
+		''' mMAccountProfile.Account = "Account";
+		''' mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType);
+		''' mMAccountProfile.UpdatedBy = 1;
+		''' mMAccountProfile.UpdagedDate = Date.Now();
+		''' BAccounts mBll = new BAccounts(mySecurityEntityProfile);
+		''' bool mSaveRoles = false;
+		''' bool mSaveGroups = true;
+		''' mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, mSaveRoles, mSaveGroups);
+		''' </code>
+		''' </example>
+		Public Sub Save(ByRef Profile As MAccountProfile, ByVal SaveRoles As Boolean, ByVal SaveGroups As Boolean) Implements IBAccounts.Save
+			m_DAccounts.Profile = Profile
+			Profile.Id = m_DAccounts.Save()
+			If SaveGroups Then
+				m_DAccounts.SaveGroups()
+			End If
+			If SaveRoles Then
+				m_DAccounts.SaveRoles()
+			End If
+			Profile = New MAccountProfile(m_DAccounts.GetAccount(), m_DAccounts.GetRoles(), m_DAccounts.GetGroups(), m_DAccounts.GetSecurity())
+		End Sub
+
+	End Class
+End Namespace

@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[ZFC_NVP] (
+    [NVP_SEQ_ID]    INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [STATIC_NAME]   VARCHAR (30)  NOT NULL,
+    [DISPLAY]       VARCHAR (128) NOT NULL,
+    [DESCRIPTION]   VARCHAR (256) NOT NULL,
+    [STATUS_SEQ_ID] INT           NOT NULL,
+    [ADDED_BY]      INT           NOT NULL,
+    [ADDED_DATE]    DATETIME      DEFAULT (getdate()) NOT NULL,
+    [UPDATED_BY]    INT           NULL,
+    [UPDATED_DATE]  DATETIME      DEFAULT (getdate()) NULL
+);
+

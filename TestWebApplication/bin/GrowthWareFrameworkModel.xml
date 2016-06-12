@@ -1,0 +1,726 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+GrowthWareFrameworkModel
+</name>
+</assembly>
+<members>
+<member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.setRolesOrGroups(System.Collections.ObjectModel.Collection{System.String}@,System.Data.DataRowCollection,System.String)">
+	<summary>
+ Sets the assigned roles or groups.
+ </summary>
+	<param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+	<param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
+	<param name="ColumnName">The column name to retrieve the data from</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.setRolesOrGroups(System.Collections.ObjectModel.Collection{System.String}@,System.String@)">
+	<summary>
+ Sets the assigned roles or groups.
+ </summary>
+	<param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+	<param name="CommaSeporatedString">A comma seporated list of roles or groups 'you, me' as an example</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.Initialize(System.Data.DataRow@)">
+	<summary>
+ Populates direct properties as well as passing the DataRow to the abstract class
+ for the population of the base properties.
+ </summary>
+	<param name="DetailRow">DataRow</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.#ctor">
+	<summary>
+ Provides a new account profile with the default vaules
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.#ctor(System.Data.DataRow)">
+	<summary>
+ Will populate values based on the contents of the data row.
+ </summary>
+	<param name="DetailRow">Datarow containing base values</param>
+	<remarks>
+ Class should be inherited to extend to your project specific properties
+ </remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.#ctor(System.Data.DataRow,System.Data.DataTable,System.Data.DataTable,System.Data.DataTable)">
+	<summary>
+ Will populate values based on the contents of the data row.
+ Also populates the roles and gropus properties.
+ </summary>
+	<param name="DetailRow">DataRow containing base values</param>
+	<param name="AssignedRolesData">DataRow containing Role data</param>
+	<param name="AssignedGroupsData">DataRow containing Group data</param>
+	<param name="DerivedRolesData">DataRow containing Role data derived from both assigned roles and groups.&gt;</param>
+	<remarks>
+ Class should be inherited to extend to your project specific properties
+ </remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.SetRoles(System.String)">
+	<summary>
+ Will set the collection of roles given a comma seporated string of roles.
+ </summary>
+	<param name="CommaSeporatedRoles">String of comma seporated roles</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.SetGroups(System.String)">
+	<summary>
+ Will set the collection of groups given a comma seporated string of groups.
+ </summary>
+	<param name="CommaSeporatedGroups">String of comma seporated groups</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.GetCommaSeporatedAssingedRoles">
+	<summary>
+ Converts the collection of AssignedRoles to a comma seporated string.
+ </summary>
+	<returns>String</returns>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.GetCommaSeporatedAssignedGroups">
+	<summary>
+ Converts the collection of AssignedGroups to a comma seporated string.
+ </summary>
+	<returns>String</returns>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MAccountProfile.GetCommaSeporatedDerivedRoles">
+	<summary>
+ Converts the collection of DerivedRoles to a comma seporated string.
+ </summary>
+	<returns>String</returns>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.AssignedRoles">
+	<summary>
+ Represents the roles that have been directly assigned to the account.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.DerivedRoles">
+	<summary>
+ Represents the roles that have been assigned either directly or through assoication of a role to a group.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.Groups">
+	<summary>
+ Represents the groups that have been directly assigned to the account.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.Account">
+	<summary>
+ Represents the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.EMail">
+	<summary>
+ Represents the email address
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.Status">
+	<summary>
+ Represents the status of the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.PasswordLastSet">
+	<summary>
+ Indicates the last time the account password was changed
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.Password">
+	<summary>
+ The password for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.FailedAttempts">
+	<summary>
+ The number of failed logon attemps
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.FirstName">
+	<summary>
+ First name of the person for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.IsSystemAdmin">
+	<summary>
+ Indicates if the account is a system administrator ... used to
+ prevent complete lockout when the roles have been
+ damaged.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.LastName">
+	<summary>
+ Last name of the person for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.MiddleName">
+	<summary>
+ Middle name of the person for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.PreferedName">
+	<summary>
+ Prefered or nick name of the person for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.TimeZone">
+	<summary>
+ The timezone for the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.Location">
+	<summary>
+ The location of the account
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.LastLogin">
+	<summary>
+ The date and time the account was last loged on
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MAccountProfile.EnableNotifications">
+	<summary>
+ Used to determine if the client would like to recieve notifications.
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MAccountProfile">
+	<summary>
+ Base properties an account Profile
+ </summary>
+	<remarks>
+ Corresponds to table ZF_ACCTS and 
+ Store procedures: 
+ ZFP_SET_ACCOUNT, ZFP_GET_ACCOUNT
+ </remarks>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MDBInformation">
+	<summary>
+ Base properties an DB Information Profile
+ </summary>
+	<remarks>
+ Corresponds to table ZF_INFORMATION and 
+ Store procedures: 
+ ZFP_SET_INFORMATION, ZFP_GET_INFORMATION
+ </remarks>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MClientChoices">
+	<summary>
+ All propertyies represent the column names in the ZF_ACCT_CHOICES table.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.Initialize(System.Data.DataRow@)">
+	<summary>
+ Initializes values given a DataRow
+ </summary>
+	<param name="Datarow">DataRow</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.GetBool(System.Data.DataRow@,System.String)">
+	<summary>
+ Returns a boolean given the a DataRow and Column name.
+ </summary>
+	<param name="Datarow">DataRow</param>
+	<param name="ColumnName">String</param>
+	<returns>Boolean</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.GetDateTime(System.Data.DataRow@,System.String,System.DateTime)">
+	<summary>
+ Returns a DateTime given the a DataRow and Column name and the defaul value.
+ </summary>
+	<param name="Datarow">DataRow</param>
+	<param name="ColumnName">String</param>
+	<param name="DefaultDateTime">DateTime</param>
+	<returns>DateTime</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.GetInt(System.Data.DataRow@,System.String)">
+	<summary>
+ Returns a Integer given the a DataRow and Column name.
+ </summary>
+	<param name="Datarow">DataRow</param>
+	<param name="ColumnName">String</param>
+	<returns>Integer</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.GetString(System.Data.DataRow@,System.String)">
+	<summary>
+ Returns a String given the a DataRow and Column name.
+ </summary>
+	<param name="Datarow">DataRow</param>
+	<param name="ColumnName">String</param>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.Base.MProfile.GetTags(System.String)">
+	<summary>
+ Returns all properties encapsulated by angle brackets seporated by the Seporator parameter
+ </summary>
+	<param name="Seporator">string</param>
+	<returns>string</returns>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.Base.MProfile">
+	<summary>
+ Contains all profile base properties
+ </summary>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.Model.Enumerations.PermissionType">
+	<summary>
+ Enumeration of permission Types
+ </summary>
+	<remarks>
+ Values match ZF_PERMISSIONS in the database
+ </remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MFunctionProfile.#ctor">
+	<summary>
+ Will return a Function profile with the default vaules
+ </summary>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MFunctionProfile.#ctor(System.Data.DataRow,System.Data.DataRow[],System.Data.DataRow[],System.Data.DataRow[])">
+	<summary>
+ Will return a fully populated Function profile.
+ </summary>
+	<param name="profileDatarow">A data row containing the Function information</param>
+	<param name="derivedRoles">A data row containing all of the derived roles</param>
+	<param name="assignedRoles">A data row containing all of the assigned roles</param>
+	<param name="groups">A data row containing all of the assigned groups</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MFunctionProfile.Initialize(System.Data.DataRow,System.Data.DataRow[],System.Data.DataRow[],System.Data.DataRow[])">
+	<summary>
+ Popluates the profile.
+ </summary>
+	<param name="profileDatarow">Datarow containing the profile information</param>
+	<param name="derivedRoles">An array of datarows</param>
+	<param name="assignedRoles">An array of datarows</param>
+	<param name="groups">An array of datarows</param>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.Action">
+	<summary>
+ Represents the Action to be take within the system.
+ </summary>
+	<remarks>This is a unique value</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.Description">
+	<summary>
+ Used as description of the profile
+ </summary>
+	<remarks>Designed to be used in any search options</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.EnableViewState">
+	<summary>
+ Indicates to the system if the "page's" view state should be enabled.
+ </summary>
+	<remarks>Legacy usage</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.EnableNotifications">
+	<summary>
+ Intended to be used to send notifications when this profile is "used" by the client
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.IsNav">
+	<summary>
+ Use to determin if a function is a navigation function
+ </summary>
+	<remarks>
+ Should be replaced by LinkBehavior
+ </remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.LinkBehavior">
+	<summary>
+ Represents the link behavior of a function.
+ </summary>
+	<returns>Integer</returns>
+	<remarks>
+ Data stored in ZGWSecurity.Functions and related to ZGWCoreWeb.Link_Behaviors
+ </remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MFunctionProfile.FunctionTypeSeqID">
+	<summary>
+ Represents the type of function Module,Security, Menu Item etc
+ </summary>
+	<value>Integer/int</value>
+	<returns>Integer/int</returns>
+	<remarks>
+ Data stored in ZGWSecurity.Functions related to ZGWSecurity.Function_Types
+ </remarks>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MFunctionProfile">
+	<summary>
+ MFunctionProfile contains properties from the ZF_FUNCTIONS table.
+ </summary>
+	<remarks></remarks>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.RoleType.AddRole">
+	<summary>
+ Represents add permission
+ </summary>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.RoleType.DeleteRole">
+	<summary>
+ Represents delete permission
+ </summary>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.RoleType.EditRole">
+	<summary>
+ Represents edit permission
+ </summary>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.RoleType.ViewRole">
+	<summary>
+ Represents view permission
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Enumerations.RoleType">
+	<summary>
+ Enumerates all role types.
+ </summary>
+	<remarks>
+ Closely coupled with table ZF_PERMISSIONS or ZGWSecurity.Permissions.
+ </remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.IdColumnName">
+	<summary>
+ Used as description of the profile
+ </summary>
+	<remarks>Designed to be used in any search options</remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.Initialize(System.Data.DataRow@,System.Data.DataRow[],System.Data.DataRow[],System.Data.DataRow[])">
+	<summary>
+ Initialize orverloads and calles mybase.init to will populate the Add, Delete, Edit, and View role properties.
+ </summary>
+	<param name="detailDatarow">A data row that contains base information</param>
+	<param name="derivedRoles">An array of data rows that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
+	<param name="assignedRoles">An array of data rows that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
+	<param name="groups">An array of data rows that must contain two columns ("PERMISSIONS_SEQ_ID","ROLE")</param>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.AssignedAddRoles">
+	<summary>
+ Return roles associated with the "Add" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.DerivedAddRoles">
+	<summary>
+ Return roles associated with the "Add" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.AssignedDeleteRoles">
+	<summary>
+ Return assigned roles associated with the "Delete" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.DerivedDeleteRoles">
+	<summary>
+ Return roles associated with the "Delete" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.AssignedEditRoles">
+	<summary>
+ Return assigned roles associated with the "Edit" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.DerivedEditRoles">
+	<summary>
+ Return roles associated with the "Edit" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.AssignedViewRoles">
+	<summary>
+ Return assigned roles associated with the "View" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.DerivedViewRoles">
+	<summary>
+ Return roles associated with the "View" permission.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.PermissionColumn">
+	<summary>
+ Represents the permission column name.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurity.RoleColumn">
+	<summary>
+ Represents the role column name.
+ </summary>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.setRoleOrGroup(System.Collections.ObjectModel.Collection{System.String}@,System.Data.DataRow[],GrowthWare.Framework.Model.Enumerations.PermissionType,System.String)">
+	<summary>
+ Populates the given permissions roles.
+ </summary>
+	<param name="refCollection">reference to the role or group colletion</param>
+	<param name="roleOrGroups">An array of rows for the role or group</param>
+	<param name="permissionType">the type of role or group (View, Add, Edit, Delete)</param>
+	<param name="dataColumnName">Name of the column containg the data... will be different for roles and groups.</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.SetAssignedRoles(System.String,GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Will set the collection of roles given a comma seporated string of roles.
+ </summary>
+	<param name="CommaSeporatedRoles">String of comma seporated roles</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.SetGroups(System.String,GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Will set the collection of groups given a comma seporated string of groups.
+ </summary>
+	<param name="CommaSeporatedGroups">String of comma seporated groups</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.GetCommaSeporatedAssingedRoles(GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Converts the collection of AssignedRoles to a comma seporated string.
+ </summary>
+	<returns>String</returns>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.GetCommaSeporatedGroups(GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Converts the collection of AssignedGroups to a comma seporated string.
+ </summary>
+	<returns>String</returns>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.setRolesOrGroups(System.Collections.ObjectModel.Collection{System.String}@,System.Data.DataRowCollection,System.String,GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Sets the assigned roles or groups.
+ </summary>
+	<param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+	<param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
+	<param name="ColumnName">The column name to retrieve the data from</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurity.setRolesOrGroups(System.Collections.ObjectModel.Collection{System.String}@,System.String@)">
+	<summary>
+ Sets the assigned roles or groups.
+ </summary>
+	<param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+	<param name="CommaSeporatedString">A comma seporated list of roles or groups 'you, me' as an example</param>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MSecurity">
+	<summary>
+ The MBaseSecurity is a abstract class that when inherited will add 4 types of roles
+ to your class/object.  After you have inherited the class pass a data row to the SecurityInit sub 
+ to populate the roles.
+ </summary>
+	<remarks>
+ Currently there are 4 permission roles and they are Add, Edit, View, Delete.  
+ If you would like to extend this class do so by inheriting this class and adding your
+ own types of roles say Moderate if your writing some sort of formum type of class.
+ Any of the objects you create should now inherit your class and will now have all of the 
+ roles from this class as well as the ones for yours.
+</remarks>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.EncryptionTypes.TripleDES">
+	<summary>
+ Indicates Triple DES encryption
+ </summary>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.EncryptionTypes.DES">
+	<summary>
+ Indicates DES encryption
+ </summary>
+</member><member name="F:GrowthWare.Framework.Model.Enumerations.EncryptionTypes.None">
+	<summary>
+ Indicates no encryption
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Enumerations.EncryptionTypes">
+	<summary>
+ Enumeration of Encryption Types
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.AssignedAddRoles">
+	<summary>
+ A collectionn of assigned add roles
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.AssignedDeleteRoles">
+	<summary>
+ A collectionn of assigned delete roles
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.AssignedEditRoles">
+	<summary>
+ A collectionn of assigned edit roles
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.AssignedViewRoles">
+	<summary>
+ A collectionn of assigned view roles
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.DerivedAddRoles">
+	<summary>
+ A collectionn of roles that may add
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.DerivedDeleteRoles">
+	<summary>
+ A collectionn of roles that may delete
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.DerivedEditRoles">
+	<summary>
+ A collectionn of roles that may edit
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo.DerivedViewRoles">
+	<summary>
+ A collectionn of roles that may view
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo">
+	<summary>
+ IMSecurityInfo sets the contract for all
+ classing inheriting fromm MSecurity.vb
+ </summary>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MFunctionTypeProfile.#ctor">
+	<summary>
+ Will return a Function profile with the default vaules
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MFunctionTypeProfile.#ctor(System.Data.DataRow)">
+	<summary>
+ Will return a fully populated Function type profile.
+ </summary>
+	<param name="drowProfile">A data row containing the Function type information</param>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityInfo.MayView">
+	<summary>
+ MayView()--
+ This property is calculated relative to the current object that 
+ implements ISecurityInfo.  
+ When true, user can view the module.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityInfo.MayAdd">
+	<summary>
+ MayAdd()--
+ This property is calculated relative to the current object that 
+ implements ISecurityInfo.  
+ When true, user can view the module.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityInfo.MayEdit">
+	<summary>
+ MayEdit()--
+ This property is calculated relative to the current object that 
+ implements ISecurityInfo.  
+ When true, user can view the module.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityInfo.MayDelete">
+	<summary>
+ MayDelete()--
+ This property is calculated relative to the current object that 
+ implements ISecurityInfo.  
+ When true, user can view the module.
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityInfo.#ctor">
+	<summary>
+ Creates a new instance of MSecurityInfo
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityInfo.#ctor(GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMSecurityInfo@,System.Collections.ObjectModel.Collection{System.String}@)">
+	<summary>
+ Initializes a new MSecurityInfo object given an object that implements ISecurityInfo.
+  All client permissions are calculated relative to the object and the client roles.
+ </summary>
+	<param name="securityInfoObject">ISecurityInfo</param>
+	<param name="accountRoles">Collection(of String)</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityInfo.CheckAuthenticatedPermission(System.Collections.ObjectModel.Collection{System.String},System.Collections.ObjectModel.Collection{System.String}@)">
+	<summary>
+ Checks whether an account is in the necessary role for the 4 permissions given an objects roles
+ </summary>
+	<param name="objRoles">Collection(Of String)</param>
+	<param name="accountRoles">Collection(of String)</param>
+	<returns>True/False</returns>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MSecurityInfo">
+	<summary>
+ IMSecurityInfo sets the contract for all
+ classing inheriting fromm MSecurity.vb
+ </summary>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.Initialize(System.Data.DataRow@)">
+	<summary>
+ Initializes all of the properties given a data row.
+ </summary>
+	<param name="DetailRow">DataRow</param>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.#ctor">
+	<summary>
+ Will return a account profile with the default vaules
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.#ctor(System.Data.DataRow)">
+	<summary>
+ Will populate values based on the contents of the data row.
+ </summary>
+	<param name="dr">Datarow containing base values</param>
+	<remarks>
+ Class should be inherited to extend to your project specific properties
+ </remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.Description">
+	<summary>
+ Represents the Descriptionn
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.Url">
+	<summary>
+ Represents the URL associated with the Security Entity.  
+ The intended use was to all a way to retrieve a profile based on the URL
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.Skin">
+	<summary>
+ Represents the "Skin" associated with this Security Entity
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.Style">
+	<summary>
+ Represents the CSS file associated with this Security Entity
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.ParentSeqId">
+	<summary>
+ Security Entities have a hierarchical relationship to each other and this represents the parent of this Security Entity.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.ConnectionString">
+	<summary>
+ Represents the connection string for the given security entity.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.EncryptionType">
+	<summary>
+ Represends the Encrytion used by the security entity.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.StatusSeqId">
+	<summary>
+ Represends the status
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.DAL">
+	<summary>
+ Represents the Data Access Layer.  
+ SQLServer or Oracle or MySQL are examples of a data access.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.DALAssemblyName">
+	<summary>
+ Represents the Data Access Layer's Assembly or DLL name.  
+ GrowthWareFramework for example.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile.DALNamespace">
+	<summary>
+ Represents the Data Access Layer's Namespace.
+ GrowthWare.Framework.DataAccessLayer.SQLServer.V2000 or 
+ GrowthWare.Framework.DataAccessLayer.SQLServer.V2008 are examples.
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile">
+	<summary>
+ Represents all of the prperties associated with a Security Entity.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.AddedBy">
+	<summary>
+ Account ID used to add
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.AddedDate">
+	<summary>
+ Date the row was added.
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.Id">
+	<summary>
+ Unique numeric identifier
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.Name">
+	<summary>
+ String representation normaly unique
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.UpdatedBy">
+	<summary>
+ Account ID used to update
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile.UpdatedDate">
+	<summary>
+ The date lasted updated
+ </summary>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile">
+	<summary>
+ Ensures the basic properties are avalible to all Profile model objects.
+ </summary>
+	<remarks>
+ If it is decided to use entities in the future then
+ this interface should be used for the save, delete, and getitem methods.
+  </remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.#ctor">
+	<summary>
+ Will return a directory profile with the default vaules
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.#ctor(System.Data.DataRow)">
+	<summary>
+ Will return a directory profile with the values from the data row
+ </summary>
+	<param name="Datarow">DataRow</param>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.Function_Seq_ID">
+	<summary>
+ Is the primary key
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.Directory">
+	<summary>
+ Is the full local directory i.e. C:\temp
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>Can also be a network location \\mycomputer\c$\temp</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.Impersonate">
+	<summary>
+ Indicates if impersonation is necessary
+ </summary>
+	<value>Boolean</value>
+	<returns>Boolean</returns>
+	<remarks>Works in conjunction with Impersonate_Account and Impersonate_PWD</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.Impersonate_Account">
+	<summary>
+ Is the account used to impersonate when working with the directory
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>Must be a valid network account with access to the information supplied in the directory property</remarks>
+</member><member name="P:GrowthWare.Framework.Model.Profiles.MDirectoryProfile.Impersonate_PWD">
+	<summary>
+ Is the password associated with the Impersonate_Account property
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+</member><member name="T:GrowthWare.Framework.Model.Profiles.MDirectoryProfile">
+	<summary>
+ Represents the properties necessary to interact with a servers directory(ies)
+ </summary>
+</member><member name="P:GrowthWare.Framework.Model.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:GrowthWare.Framework.Model.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:GrowthWare.Framework.Model.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member>
+</members>
+</doc>

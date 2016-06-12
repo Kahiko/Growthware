@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ZFC_NOTIFICATIONS] (
+    [NOTIFICATION_SEQ_ID] INT      IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [SE_SEQ_ID]           INT      NOT NULL,
+    [FUNCTION_SEQ_ID]     INT      NOT NULL,
+    [ADDED_BY]            INT      NOT NULL,
+    [ADDED_DATE]          DATETIME NOT NULL
+);
+

@@ -1,0 +1,34 @@
+﻿-- =============================================
+-- Author:		<Michael Regan>
+-- Create date: <01010001,,>
+-- Description:	<yep,,>
+-- =============================================
+CREATE PROCEDURE [ZFP_SET_ROLE_ACCTS](
+	@P_ROLE_SEQ_ID		AS INT,
+	@P_SE_SEQ_ID		AS INT,
+	@P_ACCOUNT		AS VARCHAR(128),
+	@P_ADDUPD_BY	INT
+) 
+AS
+BEGIN
+	SET NOCOUNT OFF;
+	DECLARE @V_ACCT_SEQ_ID AS INT
+	DECLARE @V_RLS_SE_SEQ_ID AS INT
+	SET @V_ACCT_SEQ_ID = (SELECT ZFC_ACCTS.ACCT_SEQ_ID FROM ZFC_ACCTS WHERE ACCT = @P_ACCOUNT)
+	SET @V_RLS_SE_SEQ_ID = (
+			SELECT
+				RLS_SE_SEQ_ID
+			FROM
+				ZFC_SECURITY_RLS_SE
+			WHERE
+				ROLE_SEQ_ID = @P_ROLE_SEQ_ID
+				AND SE_SEQ_ID = @P_SE_SEQ_ID
+		)
+	INSERT INTO
+		ZFC_SECURITY_ACCTS_RLS(RLS_SE_SEQ_ID,ACCT_SEQ_ID,ADDED_BY)
+	VALUES(
+		@V_RLS_SE_SEQ_ID,
+		@V_ACCT_SEQ_ID,
+		@P_ADDUPD_BY
+	)
+END

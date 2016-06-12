@@ -1,0 +1,293 @@
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data;
+using System.Diagnostics;
+using System.Web;
+using GrowthWare.Framework.Common;
+using GrowthWare.Framework.Web.Utilities;
+using System.Threading;
+using System.Reflection;
+using log4net;
+using GrowthWare.Framework.Model.Profiles;
+using System.IO;
+
+namespace GrowthWare.Framework.Web.Utilities
+{
+	public class LogUtility : IDisposable
+	{
+
+
+		const string FILE_NAME_FORMAT = "yyyy_MM_dd";
+		private static LogUtility m_GWLogger;
+		private static Mutex m_Mutex = new Mutex();
+		private static log4net.Layout.PatternLayout m_Layout = new log4net.Layout.PatternLayout();
+		private static string m_LogFileName = DateTime.Now.ToString(FILE_NAME_FORMAT) + ".txt";
+		private static string m_LogFilePath = ConfigSettings.LogPath;
+		private static string m_LogFile = m_LogFilePath + m_LogFileName;
+		private static StackTrace m_StackTrace = new StackTrace();
+		private static int m_CurrentLogLevel;
+
+		private static string m_SCurrentLogLevel = string.Empty;
+		/// <summary>
+		/// Inticates the current logging level.
+		/// </summary>
+		/// <value>integer</value>
+		/// <returns>integer</returns>
+		/// <remarks></remarks>
+		public int CurrentLogLevel {
+			get { return m_CurrentLogLevel; }
+		}
+
+		private LogUtility()
+		{
+			init();
+		}
+
+		//*********************************************************************
+		//
+		// Sub init performs all of the first time intialization for the GWLogger
+		//
+		//*********************************************************************
+		private void init()
+		{
+			m_Layout.ConversionPattern = ConfigSettings.ConversionPattern;
+			switch (ConfigSettings.LogPriority.ToString()) {
+				case "debug":
+					m_CurrentLogLevel = 0;
+					m_SCurrentLogLevel = "DEBUG";
+					break;
+				case "info":
+					m_CurrentLogLevel = 1;
+					m_SCurrentLogLevel = "INFO";
+					break;
+				case "warn":
+					m_CurrentLogLevel = 2;
+					m_SCurrentLogLevel = "WARN";
+					break;
+				case "error":
+					m_CurrentLogLevel = 3;
+					m_SCurrentLogLevel = "ERROR";
+					break;
+				case "fatal":
+					m_CurrentLogLevel = 4;
+					m_SCurrentLogLevel = "FATAL";
+					break;
+				default:
+					m_CurrentLogLevel = 3;
+					m_SCurrentLogLevel = "ERROR";
+					break;
+			}
+			DeleteOldLogs();
+		}
+		//init
+
+		private log4net.Appender.FileAppender GetAppender()
+		{
+			log4net.Appender.FileAppender retAppender = null;
+			try {
+				retAppender = new log4net.Appender.FileAppender(m_Layout, m_LogFile, true);
+			}
+			catch {
+				m_LogFilePath = HttpContext.Current.Server.MapPath("~\\Logs\\");
+				m_LogFile = m_LogFilePath + m_LogFileName;
+				try {
+					MDirectoryProfile DirectoryProfile = new MDirectoryProfile();
+					FileUtility.CreateDirectory(HttpContext.Current.Server.MapPath("~\\"), "Logs", DirectoryProfile);
+					m_LogFile = m_LogFilePath + m_LogFileName;
+				}
+				catch (Exception ex2) {
+					throw ex2;
+				}
+				retAppender = new log4net.Appender.FileAppender(m_Layout, m_LogFile, true);
+			}
+			//retAppender.AppendToFile = ConfigSettings.AppendToFile
+			retAppender.Name = m_StackTrace.GetFrame(1).GetMethod().ReflectedType.Name;
+			//retAppender.Name = "GWLogger"
+			retAppender.Threshold = ConvertPriorityTextToPriority(m_SCurrentLogLevel);
+			retAppender.ImmediateFlush = true;
+			log4net.Config.BasicConfigurator.Configure(retAppender);
+			retAppender.ActivateOptions();
+			return retAppender;
+		}
+
+		private void DeleteOldLogs()
+		{
+			int mCounter = 0;
+			int mPosSep = 0;
+			string[] mAFiles = null;
+			string mFile = null;
+			int mLogRetention = 0;
+			mLogRetention = int.Parse(ConfigSettings.LogRetention);
+			if (mLogRetention > 0) {
+				mLogRetention = mLogRetention * -1;
+				System.DateTime mRetentionDate = System.DateTime.Now.AddDays(mLogRetention);
+				if (System.IO.Directory.Exists(m_LogFilePath)) {
+					mAFiles = System.IO.Directory.GetFiles(m_LogFilePath);
+					for (mCounter = 0; mCounter <= mAFiles.GetUpperBound(0); mCounter++) {
+						// Get the position of the trailing separator.
+						mPosSep = mAFiles[mCounter].LastIndexOf("\\");
+						mFile = mAFiles[mCounter].Substring((mPosSep + 1), mAFiles[mCounter].Length - (mPosSep + 1));
+						mFile = m_LogFilePath + mFile;
+						if (File.GetCreationTime(mFile) < mRetentionDate) {
+							try {
+								File.Delete(mFile);
+							}
+							catch {
+								// could not delete don't worrie about it.
+							}
+						}
+					}
+				}
+			}
+		}
+
+		public static LogUtility GetInstance()
+		{
+			try {
+				m_Mutex.WaitOne();
+				if (m_GWLogger == null) {
+					m_GWLogger = new LogUtility();
+				}
+			}
+			catch (Exception ex) {
+				throw ex;
+			}
+			finally {
+				m_Mutex.ReleaseMutex();
+				m_StackTrace = new StackTrace();
+				m_LogFile = m_LogFilePath + m_LogFileName;
+			}
+			return m_GWLogger;
+		}
+		//GetInstance
+
+		// SetThreshold allows a developer to set the 
+		// logging priority during runtime
+		[CLSCompliant(false)] 
+		public void SetThreshold(log4net.Priority Threshold)
+		{
+			if (Threshold.Equals(log4net.Priority.DEBUG)) {
+				m_SCurrentLogLevel = "DEBUG";
+				m_CurrentLogLevel = 0;
+			}
+			else if (Threshold.Equals(log4net.Priority.INFO)) {
+				m_SCurrentLogLevel = "INFO";
+				m_CurrentLogLevel = 1;
+			}
+			else if (Threshold.Equals(log4net.Priority.WARN)) {
+				m_SCurrentLogLevel = "WARN";
+				m_CurrentLogLevel = 2;
+			}
+			else if (Threshold.Equals(log4net.Priority.ERROR)) {
+				m_SCurrentLogLevel = "ERROR";
+				m_CurrentLogLevel = 3;
+			}
+			else if (Threshold.Equals(log4net.Priority.FATAL)) {
+				m_SCurrentLogLevel = "FATAL";
+				m_CurrentLogLevel = 4;
+			}
+		}
+
+		public void Debug(object Message)
+		{
+			log4net.Appender.FileAppender myAppender = GetAppender();
+			ILog log = LogManager.GetLogger(myAppender.Name);
+			log.Debug(Message);
+			myAppender.Close();
+		}
+
+		public void Info(object Message)
+		{
+			log4net.Appender.FileAppender myAppender = GetAppender();
+			ILog log = LogManager.GetLogger(myAppender.Name);
+			log.Info(Message);
+			myAppender.Close();
+		}
+
+		public void Warn(object Message)
+		{
+			log4net.Appender.FileAppender myAppender = GetAppender();
+			ILog log = LogManager.GetLogger(myAppender.Name);
+			log.Warn(Message);
+			myAppender.Close();
+		}
+
+		public void Error(object Message)
+		{
+			log4net.Appender.FileAppender myAppender = GetAppender();
+			ILog log = LogManager.GetLogger(myAppender.Name);
+			log.Error(Message);
+			myAppender.Close();
+		}
+
+		public void Fatal(object Message)
+		{
+			log4net.Appender.FileAppender myAppender = GetAppender();
+			ILog log = LogManager.GetLogger(myAppender.Name);
+			log.Error(Message);
+			myAppender.Close();
+		}
+
+		/// <summary>
+		/// The convertPriorityTextToPriority method returns the log4net priority given a text value
+		/// </summary>
+		/// <param name="priority">String value for the desired priority.  Valid values are Debug, Info, Warn, Error, and Fatal any other will return Error</param>
+		/// <returns>Returns a Log4Net Priority object.</returns>
+		/// <remarks></remarks>
+		[CLSCompliant(false)]
+		public log4net.Priority ConvertPriorityTextToPriority(string priority)
+		{
+			log4net.Priority retPriority = null;
+			switch (priority.ToUpper()) {
+				case "DEBUG":
+					retPriority = log4net.Priority.DEBUG;
+					break;
+				case "INFO":
+					retPriority = log4net.Priority.INFO;
+					break;
+				case "WARN":
+					retPriority = log4net.Priority.WARN;
+					break;
+				case "ERROR":
+					retPriority = log4net.Priority.ERROR;
+					break;
+				case "FATAL":
+					retPriority = log4net.Priority.FATAL;
+					break;
+				default:
+					retPriority = log4net.Priority.ERROR;
+					break;
+			}
+			return retPriority;
+		}
+
+			// To detect redundant calls
+		private bool disposedValue = false;
+
+		// IDisposable
+		protected virtual void Dispose(bool disposing)
+		{
+			if (!this.disposedValue) {
+				if (disposing) {
+					// nothing to do at the moment
+				}
+				// TODO: free shared unmanaged resources
+			}
+			this.disposedValue = true;
+		}
+
+		#region " IDisposable Support "
+		// This code added by Visual Basic to correctly implement the disposable pattern.
+		public void Dispose()
+		{
+			// Do not change this code.  Put cleanup code in Dispose(ByVal disposing As Boolean) above.
+			Dispose(true);
+			GC.SuppressFinalize(this);
+		}
+		#endregion
+
+	}
+}
+//GWLogger

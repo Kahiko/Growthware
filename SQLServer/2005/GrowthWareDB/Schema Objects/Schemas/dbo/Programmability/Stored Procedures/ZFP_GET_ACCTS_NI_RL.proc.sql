@@ -1,0 +1,30 @@
+﻿CREATE PROCEDURE [ZFP_GET_ACCTS_NI_RL]
+	@P_SE_SEQ_ID INT,
+	@P_ROLE_SEQ_ID INT,
+	@P_ErrorCode INT OUTPUT
+AS
+SELECT
+	ACCT
+FROM
+	ZFC_ACCTS
+WHERE
+	ACCT NOT IN(
+		SELECT
+			Accounts.ACCT
+		FROM
+			ZFC_ACCTS Accounts,
+			ZFC_SECURITY_ACCTS_RLS AcctSecurity,
+			ZFC_SECURITY_RLS_SE Security,
+			ZFC_SECURITY_RLS Roles
+		WHERE
+			Accounts.ACCT_SEQ_ID = AcctSecurity.ACCT_SEQ_ID
+			AND AcctSecurity.RLS_SE_SEQ_ID = Security.RLS_SE_SEQ_ID
+			AND Security.ROLE_SEQ_ID = Roles.ROLE_SEQ_ID
+			AND Accounts.STATUS_SEQ_ID <> 2
+			AND Roles.ROLE_SEQ_ID = @P_ROLE_SEQ_ID
+			AND Security.SE_SEQ_ID = @P_SE_SEQ_ID
+		    )
+ORDER BY
+	ACCT
+
+SELECT @P_ErrorCode=@@ERROR

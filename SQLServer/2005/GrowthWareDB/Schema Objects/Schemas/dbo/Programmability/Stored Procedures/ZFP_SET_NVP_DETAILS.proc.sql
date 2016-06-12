@@ -1,0 +1,78 @@
+﻿CREATE PROCEDURE [ZFP_SET_NVP_DETAILS]
+	@P_NVP_SEQ_DET_ID INT,
+	@P_NVP_SEQ_ID int,
+	@P_NVP_DET_VALUE VARCHAR(50),
+	@P_NVP_DET_TEXT VARCHAR(300),
+	@P_STATUS_SEQ_ID INT,
+	@P_SORT_ORDER INT,
+	@P_ADDED_BY INT,
+	@P_ADDED_DATE DATETIME,
+	@P_UPDATED_BY INT,
+	@P_UPDATED_DATE DATETIME,
+	@P_PRIMARY_KEY INT OUTPUT,
+	@P_ErrorCode int OUTPUT
+AS
+	DECLARE @V_STATIC_NAME VARCHAR(30)
+	DECLARE @V_Statement NVARCHAR(4000)
+	SET @V_STATIC_NAME = (SELECT STATIC_NAME FROM ZFC_NVP WHERE NVP_SEQ_ID = @P_NVP_SEQ_ID)
+	IF @P_NVP_SEQ_DET_ID > -1
+		BEGIN -- UPDATE PROFILE
+			SET @V_Statement = 'UPDATE ' + CONVERT(VARCHAR,@V_STATIC_NAME) + '
+			SET 
+				NVP_DET_VALUE = ''' + CONVERT(VARCHAR,@P_NVP_DET_VALUE) + ''',
+				NVP_DET_TEXT = ''' + CONVERT(VARCHAR,@P_NVP_DET_TEXT) + ''',
+				STATUS_SEQ_ID = ' + CONVERT(VARCHAR,@P_STATUS_SEQ_ID) + ',
+				SORT_ORDER = ' + CONVERT(VARCHAR,@P_SORT_ORDER) + ',
+				UPDATED_BY = ' + CONVERT(VARCHAR,@P_UPDATED_BY) + ',
+				UPDATED_DATE = ''' + CONVERT(VARCHAR,@P_UPDATED_DATE) + '''
+			WHERE
+				NVP_SEQ_DET_ID = ' + CONVERT(VARCHAR,@P_NVP_SEQ_DET_ID)
+			--PRINT @V_Statement
+			EXECUTE dbo.sp_executesql @statement = @V_Statement
+			SELECT @P_PRIMARY_KEY = @P_NVP_SEQ_ID
+		END
+	ELSE
+		BEGIN -- INSERT a new row in the table.
+			-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
+			DECLARE @V_COUNT INT
+			SET @V_Statement= 'SET @V_COUNT = (SELECT COUNT(*)
+				   FROM ' + CONVERT(VARCHAR,@V_STATIC_NAME) + '
+				   WHERE NVP_DET_TEXT = ''' + CONVERT(VARCHAR,@P_NVP_DET_TEXT) + ''' AND NVP_DET_VALUE = ''' + CONVERT(VARCHAR,@P_NVP_DET_VALUE) + ''')'
+			--PRINT @V_Statement
+			EXECUTE sp_executesql @V_Statement,N'@V_COUNT int output',@V_COUNT output
+			IF @V_COUNT > 0
+				BEGIN
+					RAISERROR ('The entry already exists in the database.',16,1)
+					RETURN
+				END
+			SET @V_Statement = 'INSERT INTO ' + CONVERT(VARCHAR,@V_STATIC_NAME) + '(
+					NVP_SEQ_ID,
+					NVP_DET_VALUE,
+					NVP_DET_TEXT,
+					STATUS_SEQ_ID,
+					SORT_ORDER,
+					ADDED_BY,
+					ADDED_DATE,
+					UPDATED_BY,
+					UPDATED_DATE
+				)
+				VALUES
+				(
+					' + CONVERT(VARCHAR,@P_NVP_SEQ_ID) + ',
+					''' + CONVERT(VARCHAR,@P_NVP_DET_VALUE) + ''',
+					''' + CONVERT(VARCHAR,@P_NVP_DET_TEXT) + ''',
+					' + CONVERT(VARCHAR,@P_STATUS_SEQ_ID) + ',
+					' + CONVERT(VARCHAR,@P_SORT_ORDER) + ',
+					' + CONVERT(VARCHAR,@P_ADDED_BY) + ',
+					''' + CONVERT(VARCHAR,@P_ADDED_DATE) + ''',
+					' + CONVERT(VARCHAR,@P_ADDED_BY) + ',
+					''' + CONVERT(VARCHAR,@P_ADDED_DATE) + '''
+				)'
+			--PRINT @V_Statement
+			EXECUTE dbo.sp_executesql @statement = @V_Statement
+			SELECT @P_PRIMARY_KEY=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+			--PRINT 'DONE ADDING'
+		END
+-- Get the Error Code for the statement just executed.
+--PRINT 'SETTING ERROR CODE'
+SELECT @P_ErrorCode=@@ERROR

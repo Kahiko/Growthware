@@ -1,0 +1,95 @@
+﻿Imports System.Configuration
+Imports System.Web
+Imports GrowthWare.Framework.Common
+
+''' <summary>
+''' Servers as a collection of configuration information specific to the web.
+''' </summary>
+Public NotInheritable Class WebConfigSettings
+	Inherits ConfigSettings
+
+	''' <summary>
+	''' Private constructure
+	''' </summary>
+	''' <remarks></remarks>
+	Private Sub New()
+
+	End Sub
+
+	''' <summary>
+	''' Returns the application path
+	''' </summary>
+	''' <value>String</value>
+	''' <returns>String</returns>
+	''' <remarks></remarks>
+	Public Shared ReadOnly Property AppPath() As String
+		Get
+			If HttpContext.Current.Request.ApplicationPath = "/" Then
+				Return String.Empty
+			End If
+			Return HttpContext.Current.Request.ApplicationPath
+		End Get
+	End Property
+
+	''' <summary>
+	''' Returns MapPath("~\Public\Skins\")
+	''' </summary>
+	''' <value>String</value>
+	''' <returns>String</returns>
+	''' <remarks></remarks>
+	Shared ReadOnly Property SkinPath() As String
+		Get
+			Return HttpContext.Current.Server.MapPath("~\Public\Skins\")
+		End Get
+	End Property
+
+	''' <summary>
+	''' Returns http(s)://FQDN(/AppName)
+	''' </summary>
+	''' <value>String</value>
+	''' <returns>String</returns>
+	''' <remarks></remarks>
+	Shared ReadOnly Property RootSite() As String
+		Get
+			Dim myRoot_Site As String = String.Empty
+			Dim myHTTP_Schema As String = String.Empty
+			If ForceHTTPS Then
+				myHTTP_Schema = "HTTPS"
+			Else
+				myHTTP_Schema = HttpContext.Current.Request.Url.Scheme
+			End If
+			If HttpContext.Current.Request.ApplicationPath = "/" Then
+				myRoot_Site = myHTTP_Schema & "://" & HttpContext.Current.Request.ServerVariables("HTTP_HOST") & "/"
+			Else
+				myRoot_Site = myHTTP_Schema & "://" & HttpContext.Current.Request.ServerVariables("HTTP_HOST") & "/" & AppName & "/"
+			End If
+			Return myRoot_Site
+		End Get
+	End Property
+
+	''' <summary>
+	''' Returns a Fully Quilifed Domain Name and Page
+	''' </summary>
+	''' <value>String</value>
+	''' <returns>String</returns>
+	''' <remarks>Calculated value based on RootSite and BasePage properties</remarks>
+	Shared ReadOnly Property FQDNPage() As String
+		Get
+			Return RootSite & BasePage
+		End Get
+	End Property
+
+	''' <summary>
+	''' Returns "Public/Images/"
+	''' </summary>
+	''' <value>String</value>
+	''' <returns>String</returns>
+	''' <remarks>Should be moved a CONFIG setting</remarks>
+	Shared ReadOnly Property ImagePath() As String
+		Get
+			Return RootSite & "Public/Images/"
+		End Get
+	End Property
+
+
+End Class

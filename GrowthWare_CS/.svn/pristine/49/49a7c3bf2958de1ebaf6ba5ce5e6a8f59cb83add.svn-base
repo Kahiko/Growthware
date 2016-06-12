@@ -1,0 +1,111 @@
+﻿<?xml version="1.0"?>
+
+<!--
+  For more information on how to configure your ASP.NET application, please visit
+  http://go.microsoft.com/fwlink/?LinkId=169433
+  -->
+
+<configuration>
+  <appSettings>
+    <add key="Append_To_File" value="True" />
+    <add key="Always_Left_Nav" value="False" />
+    <add key="App_Displayed_Name" value="GrowhWare Core Web Administration" />
+    <add key="Security_Entity_Translation" value="Security Entity" />
+    <add key="Base_Page" value="" />
+    <add key="Central_Management" value="False" />
+    <add key="Conversion_Pattern" value="%d [%t] %-5p %c [%x] - %m%n" />
+    <add key="DB_Status" value="OnLine" />
+    <add key="Default_Action" value="Generic_Home" />
+    <add key="Default_Authenticated_Action" value="Home" />
+    <add key="Expected_Up_By" value="Today by 10:00 am" />
+    <add key="Encryption_Type" value="1" />
+    <add key="Environment" value="Local" />
+    <add key="Environments" value="Local" />
+    <add key="IS_Catalog" value="WebBasedDocuments" />
+    <add key="Page_Support" value="True" />
+    <add key="Server_Side_View_State" value="True" />
+    <add key="Server_Side_View_State_Pages" value="16" />
+    <add key="Under_Construction" value="False" />
+    <add key="Local_App_Name" value="CoreWebAdministration" />
+    <add key="Local_Authentication_Type" value="Internal" />
+    <add key="Local_BO_Server" value="rozhenko" />
+    <add key="Local_BO_Authentication_Type" value="secEnterprise" />
+    <add key="Local_DAL" value="SQLServer" />
+    <add key="Local_DAL_SQLServer_Assembly_Name" value="GrowthWareFramework" />
+
+    <!--<add key="Local_DAL_SQLServer_Name_Space" value="GrowthWare.Framework.DataAccessLayer.SQLServer.V2000" />
+		<add key="Local_DAL_SQLServer_Connectionstring" value="server=(local)\SQL2008R2;Integrated Security=SSPI;database=GWStable;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50" />-->
+
+
+    <add key="Local_DAL_SQLServer_Name_Space" value="GrowthWare.Framework.DataAccessLayer.SQLServer.V2008" />
+    <add key="Local_DAL_SQLServer_Connectionstring" value="server=(local)\SQL2008R2;Integrated Security=SSPI;database=GWDevelopment;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50" />
+
+    <add key="Local_Default_Security_Entity_ID" value="1" />
+    <add key="Local_Enable_Encryption" value="True" />
+    <add key="Local_Enable_Cache" value="True" />
+    <add key="Local_Enable_Pooling" value="1" />
+    <add key="Local_Failed_Attempts" value="0" />
+    <add key="Local_Force_HTTPS" value="False" />
+    <add key="Local_LDAP_Domain" value="YourDomain" />
+    <add key="Local_LDAP_Server" value="LDAP://ad.YourDomain.???" />
+    <add key="Local_Log_Path" value="D:\WebProjects\2010\GrowthWare\VB\CoreWebAdministration\Logs\" />
+    <add key="Local_Log_Priority" value="Info" />
+    <add key="Local_Log_Retention" value="5" />
+    <add key="Local_Registering_Roles" value="Authenticated" />
+    <add key="Local_Skin_Type" value="Internal" />
+    <add key="Local_SMTP_Account" value="6/W8QeJG+uBec+1H+Z6o4w==" />
+    <add key="Local_SMTP_Password" value="0pFnpfPY5+1k2dpqRT+zZA==" />
+    <add key="Local_SMTP_Server" value="outgoing.verizon.net" />
+    <add key="Local_SMTP_From" value="michael.regan@verizon.net" />
+    <add key="Local_Synchronize_Password" value="True" />
+    <add key="Local_Registration_Post_Action" value="generic_home" />
+  </appSettings>
+  
+  <connectionStrings>
+    <add name="ApplicationServices"
+         connectionString="data source=.\SQLEXPRESS;Integrated Security=SSPI;AttachDBFilename=|DataDirectory|\aspnetdb.mdf;User Instance=true"
+         providerName="System.Data.SqlClient" />
+  </connectionStrings>
+
+  <system.web>
+    <compilation debug="true" targetFramework="4.0" />
+
+    <authentication mode="Forms">
+      <forms loginUrl="~/Account/Login.aspx" timeout="2880" />
+    </authentication>
+
+    <membership>
+      <providers>
+        <clear/>
+        <add name="AspNetSqlMembershipProvider" type="System.Web.Security.SqlMembershipProvider" connectionStringName="ApplicationServices"
+             enablePasswordRetrieval="false" enablePasswordReset="true" requiresQuestionAndAnswer="false" requiresUniqueEmail="false"
+             maxInvalidPasswordAttempts="5" minRequiredPasswordLength="6" minRequiredNonalphanumericCharacters="0" passwordAttemptWindow="10"
+             applicationName="/" />
+      </providers>
+    </membership>
+
+    <profile>
+      <providers>
+        <clear/>
+        <add name="AspNetSqlProfileProvider" type="System.Web.Profile.SqlProfileProvider" connectionStringName="ApplicationServices" applicationName="/"/>
+      </providers>
+    </profile>
+
+    <roleManager enabled="false">
+      <providers>
+        <clear/>
+        <add name="AspNetSqlRoleProvider" type="System.Web.Security.SqlRoleProvider" connectionStringName="ApplicationServices" applicationName="/" />
+        <add name="AspNetWindowsTokenRoleProvider" type="System.Web.Security.WindowsTokenRoleProvider" applicationName="/" />
+      </providers>
+    </roleManager>
+
+    <httpModules>
+      <add name="GWHttpContextModule" type="GrowthWare.Framework.Web.Context.HttpContextModule,GrowthWareFrameworkWeb"/>
+    </httpModules>    
+    
+  </system.web>
+
+  <system.webServer>
+     <modules runAllManagedModulesForAllRequests="true"/>
+  </system.webServer>
+</configuration>

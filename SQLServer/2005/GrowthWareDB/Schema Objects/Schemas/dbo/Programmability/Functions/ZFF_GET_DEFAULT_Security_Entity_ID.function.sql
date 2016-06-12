@@ -1,0 +1,8 @@
+﻿
+CREATE FUNCTION [ZFF_GET_DEFAULT_Security_Entity_ID] () 
+RETURNS int AS 
+BEGIN
+ 
+ RETURN 1
+END
+

@@ -1,0 +1,138 @@
+﻿Imports System.Collections.ObjectModel
+Imports GrowthWare.Framework.Common
+Imports GrowthWare.Framework.DataAccessLayer
+Imports GrowthWare.Framework.ModelObjects
+
+Namespace BusinessLogicLayer
+	''' <summary>
+	''' Process business logic for functions
+	''' </summary>
+	''' <remarks>
+	''' <![CDATA[
+	''' MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+	''' 
+	''' The following properties are necessary for correct business logic operation.
+	''' .ConnctionString
+	''' .DALName
+	''' .DALNameSpace
+	''' ]]>
+	''' </remarks>
+	''' <example> This sample shows how to create an instance of the class.
+	''' <code language="VB.NET">
+	''' <![CDATA[
+	''' Dim myBll as new BFunctions(mySecurityEntityProfile, ConfigSettings.CentralManagement)
+	''' ]]>
+	''' </code>
+	''' </example>
+	Public Class BFunctions
+		Private Shared m_DFunctions As IDFunction
+
+		''' <summary>
+		''' Private sub New() to ensure only new instances with passed parameters is used.
+		''' </summary>
+		''' <remarks></remarks>
+		Private Sub New()
+
+		End Sub
+
+		''' <summary>
+		''' Parameters are need to pass along to the factory for correct connection to the desired datastore.
+		''' </summary>
+		''' <param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+		''' <param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+		''' <remarks></remarks>
+		''' <example> This sample shows how to create an instance of the class.
+		''' <code language="VB.NET">
+		''' <![CDATA[
+		''' MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+		''' mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+		''' mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+		''' mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+		''' mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+		''' mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+		''' 
+		''' BFunctions mBFunctions = BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+		''' ]]>
+		''' </code>
+		''' <code language="C#">
+		''' <![CDATA[
+		''' Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+		''' mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+		''' mSecurityEntityProfile.DAL = ConfigSettings.DAL
+		''' mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+		''' mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+		''' mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+		''' 
+		''' Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+		''' ]]>
+		''' </code>
+		''' </example>
+		Public Sub New(ByVal securityEntityProfile As MSecurityEntityProfile, ByVal centralManagement As Boolean)
+			If (securityEntityProfile Is Nothing) Then
+				Throw New ArgumentException("securityEntityProfile can not be null or empty!")
+			End If
+			If Not centralManagement Then
+				If m_DFunctions Is Nothing Then
+					m_DFunctions = FactoryObject.Create(securityEntityProfile.DALAssemblyName, securityEntityProfile.DALNamespace, "DFunctions")
+				End If
+			Else
+				m_DFunctions = FactoryObject.Create(securityEntityProfile.DALAssemblyName, securityEntityProfile.DALNamespace, "DFunctions")
+			End If
+			m_DFunctions.ConnectionString = securityEntityProfile.ConnectionString
+			m_DFunctions.SecurityEntitySeqID = securityEntityProfile.Id
+		End Sub
+
+		Public Function GetFunctions(ByVal securityEntitySeqID As Integer) As MFunctionProfileCollection
+			Dim mRetVal As MFunctionProfileCollection = New MFunctionProfileCollection()
+			Dim mDSFunctions As New DataSet
+			Try
+				Dim mHasAssingedRoles As Boolean = False
+				Dim mHasGroups As Boolean = False
+				m_DFunctions.Profile = New MFunctionProfile
+				m_DFunctions.SecurityEntitySeqID = securityEntitySeqID
+				Dim mFunctions As DataTable = m_DFunctions.GetFunctions
+				mFunctions.TableName = "Modules"
+				Dim mFunctionSecurity As DataTable = m_DFunctions.GetSecurity()
+				mFunctionSecurity.TableName = "ModuleSecurity"
+				Dim mAssignedRolesDT As DataTable = m_DFunctions.GetAllRoles()
+				mAssignedRolesDT.TableName = "AssignedRoles"
+				If mAssignedRolesDT.Rows.Count > 0 Then mHasAssingedRoles = True
+				Dim mGroupsTD As DataTable = m_DFunctions.GetAllGroups()
+				mGroupsTD.TableName = "Groups"
+				If mGroupsTD.Rows.Count > 0 Then mHasGroups = True
+				mDSFunctions.Tables.Add(mFunctions.Copy)
+				mDSFunctions.Tables.Add(mFunctionSecurity.Copy)
+				mDSFunctions.Tables.Add(mAssignedRolesDT.Copy)
+				mDSFunctions.Tables.Add(mGroupsTD.Copy)
+				Dim mRelation As DataRelation = New DataRelation("DerivedRoles", mDSFunctions.Tables(0).Columns("Function_Seq_ID"), mDSFunctions.Tables(1).Columns("Function_Seq_ID"))
+				mDSFunctions.Relations.Add(mRelation)
+				If mHasAssingedRoles Then
+					mRelation = New DataRelation("AssignedRoles", mDSFunctions.Tables(0).Columns("Function_Seq_ID"), mDSFunctions.Tables(2).Columns("Function_Seq_ID"))
+					mDSFunctions.Relations.Add(mRelation)
+				End If
+				If mHasGroups Then
+					mRelation = New DataRelation("Groups", mDSFunctions.Tables(0).Columns("Function_Seq_ID"), mDSFunctions.Tables(3).Columns("Function_Seq_ID"))
+					mDSFunctions.Relations.Add(mRelation)
+				End If
+
+				For Each item As DataRow In mDSFunctions.Tables(0).Rows
+					Dim mDerivedRoles() As DataRow = item.GetChildRows("DerivedRoles")
+					Dim mAssignedRoles() As DataRow = Nothing
+					If mHasAssingedRoles Then mAssignedRoles = item.GetChildRows("AssignedRoles")
+					Dim mGroups() As DataRow = Nothing
+					If mHasGroups Then mGroups = item.GetChildRows("Groups")
+					Dim mProfile As New MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups)
+					mRetVal.Add(mProfile.Id, mProfile)
+				Next
+			Catch ex As Exception
+				Throw
+			Finally
+				If Not mDSFunctions Is Nothing Then
+					mDSFunctions.Dispose()
+				End If
+			End Try
+			Return mRetVal
+		End Function
+	End Class
+End Namespace
+

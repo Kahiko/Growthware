@@ -1,0 +1,13 @@
+﻿CREATE TABLE [dbo].[ZFC_NAVIGATION_TYPES] (
+    [NVP_SEQ_DET_ID] INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [NVP_SEQ_ID]     INT           NOT NULL,
+    [NVP_DET_VALUE]  VARCHAR (50)  NOT NULL,
+    [NVP_DET_TEXT]   VARCHAR (300) NOT NULL,
+    [STATUS_SEQ_ID]  INT           NOT NULL,
+    [SORT_ORDER]     INT           NOT NULL,
+    [ADDED_BY]       INT           NOT NULL,
+    [ADDED_DATE]     DATETIME      NOT NULL,
+    [UPDATED_BY]     INT           NULL,
+    [UPDATED_DATE]   DATETIME      NULL
+);
+

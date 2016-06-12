@@ -1,0 +1,293 @@
+﻿Imports GrowthWare.Framework.ModelObjects.Base
+Imports System.Collections.ObjectModel
+
+Namespace ModelObjects
+	''' <summary>
+	''' Base properties an account Profile
+	''' </summary>
+	''' <remarks>
+	''' Corresponds to table ZF_ACCTS and 
+	''' Store procedures: 
+	''' ZFP_SET_ACCOUNT, ZFP_GET_ACCOUNT
+	''' </remarks>
+	<Serializable(), CLSCompliant(True)> _
+	Public Class MAccountProfile
+		Inherits MProfile
+
+#Region "Member Fields"
+		Private m_RoleColumn As String = "Roles"
+		Private m_GroupColumn As String = "Groups"
+		Private m_AssignedRoles As Collection(Of String) = New Collection(Of String)
+		Private m_Groups As Collection(Of String) = New Collection(Of String)
+		Private m_DerivedRoles As Collection(Of String) = New Collection(Of String)
+#End Region
+
+#Region "Private Methods"
+		''' <summary>
+		''' Sets the assigned roles or groups.
+		''' </summary>
+		''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+		''' <param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
+		''' <param name="ColumnName">The column name to retrieve the data from</param>
+		Private Sub setRolesOrGroups(ByRef StringCollectionObject As Collection(Of String), ByVal GroupsOrRoles As DataRowCollection, ByVal ColumnName As String)
+			For Each mRow In GroupsOrRoles
+				If Not IsDBNull(mRow(ColumnName)) Then
+					StringCollectionObject.Add(mRow(ColumnName).ToString())
+				End If
+			Next
+		End Sub
+
+		''' <summary>
+		''' Sets the assigned roles or groups.
+		''' </summary>
+		''' <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
+		''' <param name="CommaSeporatedString">A comma seporated list of roles or groups 'you, me' as an example</param>
+		Private Sub setRolesOrGroups(ByRef StringCollectionObject As Collection(Of String), ByRef CommaSeporatedString As String)
+			Dim mRoles() As String = CommaSeporatedString.Split(",")
+			StringCollectionObject = New Collection(Of String)
+			For Each mRole In mRoles
+				StringCollectionObject.Add(mRole.ToString())
+			Next
+		End Sub
+
+		Private Function getCommaSeportatedString(ByVal CollectionOfStrings As Collection(Of String)) As String
+			Dim mRetValue As String = String.Empty
+			If Not CollectionOfStrings Is Nothing Then
+				If CollectionOfStrings.Count > 0 Then
+					For Each item In CollectionOfStrings
+						mRetValue += item.ToString() + ","
+					Next
+				End If
+			End If
+			If mRetValue.Length > 0 Then
+				mRetValue = mRetValue.Substring(0, mRetValue.Length - 1)
+			End If
+			Return mRetValue
+		End Function
+
+#End Region
+
+#Region "Protected Methods"
+		''' <summary>
+		''' Populates direct properties as well as passing the DataRow to the abstract class
+		''' for the population of the base properties.
+		''' </summary>
+		''' <param name="DetailRow">DataRow</param>
+		Protected Shadows Sub Initialize(ByRef DetailRow As DataRow)
+			MyBase.Initialize(DetailRow)
+			MyBase.Id = MyBase.GetInt(DetailRow, "ACCT_SEQ_ID")
+			Account = MyBase.GetString(DetailRow, "ACCT")
+			MyBase.Name = Account
+			EMail = MyBase.GetString(DetailRow, "EMAIL")
+			EnableNotifications = MyBase.GetBool(DetailRow, "ENABLE_NOTIFICATIONS")
+			IsSystemAdmin = MyBase.GetBool(DetailRow, "IS_SYSTEM_ADMIN")
+			Status = MyBase.GetInt(DetailRow, "STATUS_SEQ_ID")
+			Password = MyBase.GetString(DetailRow, "PWD")
+			FaildAttempts = MyBase.GetInt(DetailRow, "FAILED_ATTEMPTS")
+			FirstName = MyBase.GetString(DetailRow, "FIRST_NAME")
+			LastLogin = MyBase.GetDateTime(DetailRow, "LAST_LOGIN", Date.Now)
+			LastName = MyBase.GetString(DetailRow, "LAST_NAME")
+			Location = MyBase.GetString(DetailRow, "LOCATION")
+			PasswordLastSet = MyBase.GetDateTime(DetailRow, "PASSWORD_LAST_SET", Date.Now)
+			MiddleName = MyBase.GetString(DetailRow, "MIDDLE_NAME")
+			PreferedName = MyBase.GetString(DetailRow, "PREFERED_NAME")
+			TimeZone = MyBase.GetInt(DetailRow, "TIME_ZONE")
+		End Sub
+
+#End Region
+
+#Region "Public Methods"
+		''' <summary>
+		''' Provides a new account profile with the default vaules
+		''' </summary>
+		''' <remarks></remarks>
+		Public Sub New()
+
+		End Sub
+
+		''' <summary>
+		''' Will populate values based on the contents of the data row.
+		''' </summary>
+		''' <param name="DetailRow">Datarow containing base values</param>
+		''' <remarks>
+		''' Class should be inherited to extend to your project specific properties
+		''' </remarks>
+		<System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")>
+		Public Sub New(ByVal DetailRow As DataRow)
+			Me.Initialize(DetailRow)
+		End Sub
+
+		''' <summary>
+		''' Will populate values based on the contents of the data row.
+		''' Also populates the roles and gropus properties.
+		''' </summary>
+		''' <param name="DetailRow">DataRow containing base values</param>
+		''' <param name="AssignedRolesData">DataRow containing Role data</param>
+		''' <param name="AssignedGroupsData">DataRow containing Group data</param>
+		''' <param name="DerivedRolesData">DataRow containing Role data derived from both assigned roles and groups.></param>
+		''' <remarks>
+		''' Class should be inherited to extend to your project specific properties
+		''' </remarks>
+		<System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")>
+		Public Sub New(ByVal DetailRow As DataRow, ByVal AssignedRolesData As DataTable, ByVal AssignedGroupsData As DataTable, ByVal DerivedRolesData As DataTable)
+			'Dim mRowFilter As String = "FUNCTION_SEQ_ID = " + MyBase.Id.ToString()
+			Dim mRowFilter As String = "Roles = '" + MyBase.Id.ToString() + "'"
+			Dim mDataView = DerivedRolesData.DefaultView.RowFilter = mRowFilter
+			'mDataView.RowFilter = mRowFilter
+			'Dim mRowCollection As DataRowCollection = mDataView.Table.Rows
+			Me.Initialize(DetailRow)
+			setRolesOrGroups(m_AssignedRoles, AssignedRolesData.Rows, m_RoleColumn)
+			setRolesOrGroups(m_Groups, AssignedGroupsData.Rows, m_GroupColumn)
+			setRolesOrGroups(m_DerivedRoles, DerivedRolesData.Rows, m_RoleColumn)
+		End Sub
+
+		''' <summary>
+		''' Will set the collection of roles given a comma seporated string of roles.
+		''' </summary>
+		''' <param name="CommaSeporatedRoles">String of comma seporated roles</param>
+		Public Sub SetRoles(ByVal CommaSeporatedRoles As String)
+			setRolesOrGroups(m_AssignedRoles, CommaSeporatedRoles)
+		End Sub
+
+		''' <summary>
+		''' Will set the collection of groups given a comma seporated string of groups.
+		''' </summary>
+		''' <param name="CommaSeporatedGroups">String of comma seporated groups</param>
+		Public Sub SetGroups(ByVal CommaSeporatedGroups As String)
+			setRolesOrGroups(m_Groups, CommaSeporatedGroups)
+		End Sub
+
+		''' <summary>
+		''' Converts the collection of AssignedRoles to a comma seporated string.
+		''' </summary>
+		''' <returns>String</returns>
+		Public Function GetCommaSeporatedAssingedRoles() As String
+			Return Me.getCommaSeportatedString(m_AssignedRoles)
+		End Function
+
+		''' <summary>
+		''' Converts the collection of AssignedGroups to a comma seporated string.
+		''' </summary>
+		''' <returns>String</returns>
+		Public Function GetCommaSeporatedAssignedGroups() As String
+			Return Me.getCommaSeportatedString(m_Groups)
+		End Function
+
+		''' <summary>
+		''' Converts the collection of DerivedRoles to a comma seporated string.
+		''' </summary>
+		''' <returns>String</returns>
+		Public Function GetCommaSeporatedDerivedRoles() As String
+			Return Me.getCommaSeportatedString(m_DerivedRoles)
+		End Function
+#End Region
+
+#Region "Public Properties"
+
+		''' <summary>
+		''' Represents the roles that have been directly assigned to the account.
+		''' </summary>
+		Public ReadOnly Property AssignedRoles As Collection(Of String)
+			Get
+				Return m_AssignedRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Represents the roles that have been assigned either directly or through assoication of a role to a group.
+		''' </summary>
+		Public ReadOnly Property DerivedRoles As Collection(Of String)
+			Get
+				Return m_DerivedRoles
+			End Get
+		End Property
+
+		''' <summary>
+		''' Represents the groups that have been directly assigned to the account.
+		''' </summary>
+		Public ReadOnly Property Groups As Collection(Of String)
+			Get
+				Return m_Groups
+			End Get
+		End Property
+
+		''' <summary>
+		''' Represents the account
+		''' </summary>
+		Public Property Account As String
+
+		''' <summary>
+		''' Represents the email address
+		''' </summary>
+		Public Property EMail() As String
+
+		''' <summary>
+		''' Represents the status of the account
+		''' </summary>
+		Public Property Status() As Integer
+
+		''' <summary>
+		''' Indicates the last time the account password was changed
+		''' </summary>
+		Public Property PasswordLastSet() As DateTime
+
+		''' <summary>
+		''' The password for the account
+		''' </summary>
+		Public Property Password() As String
+
+		''' <summary>
+		''' The number of failed logon attemps
+		''' </summary>
+		Public Property FaildAttempts() As Integer
+
+		''' <summary>
+		''' First name of the person for the account
+		''' </summary>
+		Public Property FirstName() As String
+
+		''' <summary>
+		''' Indicates if the account is a system administrator ... used to
+		''' prevent complete lockout when the roles have been
+		''' damaged.
+		''' </summary>
+		Public Property IsSystemAdmin() As Boolean
+
+		''' <summary>
+		''' Last name of the person for the account
+		''' </summary>
+		Public Property LastName() As String
+
+		''' <summary>
+		''' Middle name of the person for the account
+		''' </summary>
+		Public Property MiddleName() As String
+
+		''' <summary>
+		''' Prefered or nick name of the person for the account
+		''' </summary>
+		Public Property PreferedName() As String
+
+		''' <summary>
+		''' The timezone for the account
+		''' </summary>
+		Public Property TimeZone() As Integer
+
+		''' <summary>
+		''' The location of the account
+		''' </summary>
+		Public Property Location() As String
+
+		''' <summary>
+		''' The date and time the account was last loged on
+		''' </summary>
+		Public Property LastLogin() As DateTime
+
+		''' <summary>
+		''' Used to determine if the client would like to recieve notifications.
+		''' </summary>
+		Public Property EnableNotifications() As Boolean
+
+#End Region
+	End Class
+End Namespace

@@ -1,0 +1,12 @@
+﻿CREATE TABLE [dbo].[ZOP_CALENDAR] (
+    [SE_SEQ_ID]     INT           NOT NULL,
+    [CALENDAR_NAME] VARCHAR (50)  NOT NULL,
+    [ENTRY_DATE]    SMALLDATETIME NOT NULL,
+    [COMMENT]       VARCHAR (100) NOT NULL,
+    [ACTIVE]        INT           NOT NULL,
+    [ADDED_BY]      INT           NOT NULL,
+    [ADDED_DATE]    DATETIME      NOT NULL,
+    [UPDATED_BY]    INT           NOT NULL,
+    [UPDATED_DATE]  DATETIME      NOT NULL
+);
+

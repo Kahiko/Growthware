@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="044a9b0a-0227-4468-99da-fcf87b3347e8"
+  name="ModelObjects"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="9b92c3ee-d1f2-40a9-8e4d-ba350c37ab8c"
+      handle="viewcode://./CodeSchema_Namespace?Namespace=GrowthWare.Framework.ModelObjects"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <packageMoniker
+        Id="08001f36-440a-4b90-8fcd-0600af1ae356"
+        LastKnownName="Base"
+        LastKnownLocation="Package_2200.uml" />
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="be124582-7255-4d95-87e4-13c082431ef4"
+        name="MAccountProfile"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="4c54b342-c05f-49e5-b5a7-99d2bfcd9523"
+            handle="viewcode://./CodeSchema_Class?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MAccountProfile"
+            tag="ViewCode" />
+        </referencesInternal>
+      </class>
+    </packageHasNamedElement>
+    <packageHasNamedElement>
+      <class
+        Id="38af887a-94b1-47cb-b004-f17d15f6617b"
+        name="MSecurityEntityProfile"
+        isAbstract="false"
+        isLeaf="false"
+        isActiveClass="false">
+        <referencesInternal>
+          <reference
+            Id="735b1f87-e5a2-4439-ad05-09b22dca7e12"
+            handle="viewcode://./CodeSchema_Class?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.ModelObjects Type=MSecurityEntityProfile"
+            tag="ViewCode" />
+        </referencesInternal>
+      </class>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

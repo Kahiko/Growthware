@@ -1,0 +1,1335 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+GrowthWareFramework
+</name>
+</assembly>
+<members>
+<member name="P:GrowthWare.Framework.DataAccessLayer.IDFunction.Profile">
+	<summary>
+ Used by all methds and must be set to send parameters to the datastore
+ </summary>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDFunction.SecurityEntitySeqID">
+	<summary>
+ Used by all methds and must be set to send parameters to the datastore
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDFunction.Delete">
+	<summary>
+ Deletes an account
+ </summary>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDFunction.GetFunction">
+	<summary>
+ Retrieves Function information
+ </summary>
+	<returns>DataRow</returns>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDFunction.GetFunctions">
+	<summary>
+ Returns all functions associated with a given SecurityEntitySeqID.
+ </summary>
+	<returns>DataTable</returns>
+	<remarks>Does not caculate security for accounts.</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDFunction.Save">
+	<summary>
+ Inserts or updates account information
+ </summary>
+	<returns>int</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDFunction.SaveGroups(GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Save groups by passing a string or comma seporated groups to the database.
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDFunction.SaveRoles(GrowthWare.Framework.Model.Enumerations.PermissionType)">
+	<summary>
+ Save roles by passing a string or comma seporated roles to the database.
+ </summary>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DFunctions">
+	<summary>
+ DFunctions provides all database interaction to SQL Server 2000 to 2005
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DFunctions">
+	<summary>
+ DFunctions provides all database interaction to SQL Server 2008
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BClientChoices.#ctor">
+	<summary>
+ Private sub New() to ensure only new instances with passed parameters is used.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BClientChoices.#ctor(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile,System.Boolean)">
+	<summary>
+ Parameters are need to pass along to the factory for correct connection to the desired datastore.
+ </summary>
+	<param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+	<param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+	<remarks></remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+ 
+ Dim mBClientChoices As BClientChoices = New BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+ 
+ BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BClientChoices.GetClientChoicesState(System.String)">
+	<summary>
+ Retrieves a data row from the data store and populates a MClientChoicesState object.
+ </summary>
+	<param name="account">The desired account in which to base the MClientChoicesState model object</param>
+	<returns>A populated MClientChoicesState</returns>
+	<remarks>None.</remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BClientChoices.Save(GrowthWare.Framework.Model.Profiles.MClientChoicesState@)">
+	<summary>
+ Saves the choices a client may have made during usage of the application.
+ </summary>
+	<param name="clientChoicesState">A populated MClientChoicesState object.</param>
+	<remarks>MClientChoicesState can be found in the GrowthWare.Framework.ModelObjects namespace.</remarks>
+</member><member name="T:GrowthWare.Framework.BusinessLogicLayer.BClientChoices">
+	<summary>
+ Process business logic for functions
+ </summary>
+	<remarks>
+		<![CDATA[
+ MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+ 
+ The following properties are necessary for correct business logic operation.
+ .ConnctionString
+ .DALName
+ .DALNameSpace
+ ]]>
+	</remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim myBll as new BClientChoices(mySecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+	</example>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.Interfaces.Base.IDDBInteraction.ConnectionString">
+	<summary>
+ Sets or Gets the connection string information.
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>Can not be blank</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.Interfaces.Base.IDDBInteraction">
+	<summary>
+ IDDBInteraction sets the contract for all
+ classing inheriting fromm DBInteraction.cs
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDSecurityEntity.GetSecurityEntities">
+	<summary>
+ Retrieves all Security Entities as a data table.
+ </summary>
+	<returns>DataTable</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDSecurityEntity.GetSecurityEntities(System.String,System.Int32,System.Boolean)">
+	<summary>
+ Retrieves security entities for a given account.
+ </summary>
+	<param name="account">String</param>
+	<param name="securityEntityID">int or Integer</param>
+	<param name="isSecurityEntityAdministrator">Boolean or bool</param>
+	<returns>Datatable</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDSecurityEntity.Save(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile@)">
+	<summary>
+ Saves security entity information to the datastore.
+ </summary>
+	<param name="profile">MSecurityEntityProfile</param>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DAccounts.GetAccount">
+	<summary>
+ Retruns a DataRow of account
+ </summary>
+	<returns>DataRow</returns>
+	<remarks>Usefull for populating MAccountProfile</remarks>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DAccounts.GetAccounts">
+	<summary>
+ Retruns a table of accounts given IS_SYSTEM_ADMIN, Security Entity
+ </summary>
+	<returns>DataTable</returns>
+	<remarks>IS_SYSTEM_ADMIN is a property of the Profile and Security Entity is the SE_SEQ_ID property</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DAccounts.Save">
+	<summary>
+ Inserts or updates account information
+ </summary>
+	<returns>DataRow</returns>
+	<remarks>
+	</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DAccounts">
+	<summary>
+ DAccounts provides all database interaction to SQL Server 2000 to 2005
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="P:GrowthWare.Framework.Common.CryptoUtility.setKeys">
+	<summary> 
+ SetKeys will create a 192 bit key and 64 bit IV based on 
+ two MD5 methods found in another article (http://www.aspalliance.com/535) 
+ </summary>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Encrypt(System.String,GrowthWare.Framework.Model.Enumerations.EncryptionTypes)">
+	<summary>
+ Performs encryption given the desired encryption type.
+ </summary>
+	<param name="ValueToEncrypt">String to encrypt</param>
+	<param name="EncryptionType">If "TripleDES" is not specified the DES is returned.</param>
+	<returns>Encrypted string</returns>
+	<remarks>EncryptionType is case sensitive.</remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Encrypt(System.String,GrowthWare.Framework.Model.Enumerations.EncryptionTypes,System.String)">
+	<summary>
+ Performs encryption given the desired encryption type.
+ </summary>
+	<param name="ValueToEncrypt">String</param>
+	<param name="EncryptionType">EncryptionType</param>
+	<param name="SaltExpression">String</param>
+	<returns>Encrypted string</returns>
+	<remarks>EncryptionType is case sensitive.</remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Decrypt(System.String,GrowthWare.Framework.Model.Enumerations.EncryptionTypes)">
+	<summary>
+ Performs dencryption.
+ </summary>
+	<param name="ValueToDecrypt">Encrypted string</param>
+	<param name="EncryptionType">If "TripleDES" is not specified the DES is returned.</param>
+	<returns>Decrypted string</returns>
+	<remarks>EncryptionType is case sensitive</remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Decrypt(System.String,GrowthWare.Framework.Model.Enumerations.EncryptionTypes,System.String)">
+	<summary>
+ Performs dencryption.
+ </summary>
+	<param name="ValueToDecrypt">String</param>
+	<param name="EncryptionType">EncryptionType</param>
+	<param name="SaltExpression">SaltExpression</param>
+	<returns>Decrypted string</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.MD5Encryption(System.String)">
+	<summary>
+ Encrypts the string to a byte array using the MD5 Encryption Algorithm.
+ <see cref="T:System.Security.Cryptography.MD5CryptoServiceProvider"/>
+	</summary>
+	<param name="ToEncrypt">System.String.  Usually a password.</param>
+	<returns>System.Byte[]</returns>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.MD5SaltedHashEncryption(System.String)">
+	<summary> 
+ Encrypts the string to a byte array using the MD5 Encryption 
+ Algorithm with an additional Salted Hash. 
+ <see cref="T:System.Security.Cryptography.MD5CryptoServiceProvider"/>
+	</summary>
+	<param name="ToEncrypt">System.String. Usually a password.</param>
+	<returns>System.Byte[]</returns>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Encrypt(System.String)">
+	<summary>
+ Private method to return DES encryption.
+ </summary>
+	<param name="UnEncryptedValue">String to be encrypted</param>
+	<returns>Encrypted string</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.Decrypt(System.String)">
+	<summary>
+ Private method to perform DES decryption
+ </summary>
+	<param name="EncryptedValue">DES encrypted string</param>
+	<returns>Decrypted DES string</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.EncryptTripleDES(System.String)">
+	<summary>
+ Private method to perform DES3 encryption
+ </summary>
+	<param name="EncryptedValue">String to be DES3 encrypted</param>
+	<returns>Encrypted string</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.DecryptTripleDES(System.String)">
+	<summary>
+ Private method to DES3 decryption.
+ </summary>
+	<param name="EncryptedValue">DES3 encrypted string</param>
+	<returns>clear text string</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.CryptoUtility.IsBase64String(System.Object)">
+	<summary>
+ Checks to see if a string value is a base64 string.  Reduces the need for try catch and exceptions.
+ </summary>
+	<param name="Value">String to be tested</param>
+	<returns>Boolean</returns>
+</member><member name="T:GrowthWare.Framework.Common.CryptoUtility">
+	<summary>
+ The CryptoUtility is a utility to provide encryption/decryption based on either DES or 
+ triple DES methods
+ </summary>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDAccount.Profile">
+	<summary>
+ Used by all methds and must be set to send parameters to the datastore
+ </summary>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDAccount.SecurityEntitySeqID">
+	<summary>
+ Used by all methds and must be set to send parameters to the datastore
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.Delete">
+	<summary>
+ Deletes an account
+ </summary>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDAccount.GetAccount">
+	<summary>
+ Retrieves Account information
+ </summary>
+	<returns>DataRow</returns>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.IDAccount.GetAccounts">
+	<summary>
+ Returns all accounts associated with a given SecurityEntitySeqID.
+ </summary>
+	<returns>DataTable</returns>
+	<remarks>Does not caculate security for accounts.</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.GetGroups">
+	<summary>
+ Returns all roles associated with a given SecurityEntitySeqID.
+ </summary>
+	<returns>DataTable</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.GetRoles">
+	<summary>
+ Returns all groups associated with a given SecurityEntitySeqID.
+ </summary>
+	<returns>DataTable</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.GetSecurity">
+	<summary>
+ Returns all roles either direct association or by association via
+ groups.
+ </summary>
+	<returns>DataTable</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.Save">
+	<summary>
+ Inserts or updates account information
+ </summary>
+	<returns>int</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.SaveGroups">
+	<summary>
+ Save groups by passing a string or comma seporated groups to the database.
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDAccount.SaveRoles">
+	<summary>
+ Save roles by passing a string or comma seporated roles to the database.
+ </summary>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.IDAccount">
+	<summary>
+ IDAccount defines the contract for any
+ class implementing the interface.
+ </summary>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.ConnectionString">
+	<summary>
+ Used for all methods to connect to the database.
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.formatError(System.Data.SqlClient.SqlParameter[],System.String,System.String)">
+	<summary>
+ Formats a an error message containing the stored procedure name and the sqlparameter/values.
+ </summary>
+	<param name="parameters">SqlParameter</param>
+	<param name="storedProcedure">String</param>
+	<param name="yourExMSG">String</param>
+	<returns>String</returns>
+	<remarks>Used when a DB error occures</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.IsValid">
+	<summary>
+ Ensures ConnectionString has a value.
+ </summary>
+	<remarks>Throws ArgumentException</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.ExecuteNonQuery(System.String@,System.Data.SqlClient.SqlParameter[]@)">
+	<summary>
+ Executes a non Query given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">SqlParmeter</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataSet(System.String@,System.Data.SqlClient.SqlParameter[]@)">
+	<summary>
+ Returns a DataSet given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">SqlParmeter</param>
+	<returns>DataSet</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataTable(System.String@,System.Data.SqlClient.SqlParameter[]@)">
+	<summary>
+ Returns a DataTable given the stored procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">SqlParameter</param>
+	<returns>DataTable</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataRow(System.String@,System.Data.SqlClient.SqlParameter[]@)">
+	<summary>
+ Returns a DataRow given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">Stirng</param>
+	<param name="parameters">SqlParameter</param>
+	<returns>DataRow</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetDataRow(System.String@)">
+	<summary>
+ Returns a DataRow given the store procedure
+ </summary>
+	<param name="storedProcedure">Stirng</param>
+	<returns>DataRow</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetParameterValue(System.String,System.Data.SqlClient.SqlParameter[]@)">
+	<summary>
+ Returns the value of an output parameter given the parameter name and an array of parameters
+ </summary>
+	<param name="parameterName">ParameterName</param>
+	<param name="parameters">SqlParameter</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetSqlParameter(System.String,System.Object,System.Data.ParameterDirection)">
+	<summary>
+ Retruns a SqlParameter given the ParameterName, ParameterValue and Direction.
+ </summary>
+	<param name="parameterName">String</param>
+	<param name="parameterValue">Object</param>
+	<param name="direction">ParameterDirection</param>
+	<returns>SqlParameter</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.GetAddedUpdatedBy(GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile@)">
+	<summary>
+ Returns the correct integer for added or updated by
+ </summary>
+	<param name="profile">Object implementing IProfile</param>
+	<returns>int</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.Dispose(System.Boolean)">
+	<summary>
+ Implements IDispose
+ </summary>
+	<param name="disposing">Boolean</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction.Dispose">
+	<summary>
+ Implements Dispose
+ </summary>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.Base.DDBInteraction">
+	<summary>
+ Performs all data store interaction to SQL Server through the use of stored procedures only.
+ </summary>
+	<remarks>Uses Microsoft.Practices.EnterpriseLibrary.Data for underlying database access.</remarks>
+</member><member name="P:GrowthWare.Framework.My.Resources.Resources.ResourceManager">
+	<summary>
+  Returns the cached ResourceManager instance used by this class.
+</summary>
+</member><member name="P:GrowthWare.Framework.My.Resources.Resources.Culture">
+	<summary>
+  Overrides the current thread's CurrentUICulture property for all
+  resource lookups using this strongly typed resource class.
+</summary>
+</member><member name="T:GrowthWare.Framework.My.Resources.Resources">
+	<summary>
+  A strongly-typed resource class, for looking up localized strings, etc.
+</summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDClientChoices.GetChoices(System.String@)">
+	<summary>
+ Retrieves a row of data given the account
+ </summary>
+	<param name="account">String</param>
+	<returns>DataRow</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.IDClientChoices.Save(System.Collections.Hashtable@)">
+	<summary>
+ Save the client choices
+ </summary>
+	<param name="clientChoicesStateHashTable">Hashtable</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BSecurityEntity.#ctor">
+	<summary>
+ Private sub New() to ensure only new instances with passed parameters is used.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BSecurityEntity.#ctor(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile,System.Boolean)">
+	<summary>
+ Parameters are need to pass along to the factory for correct connection to the desired datastore.
+ </summary>
+	<param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+	<param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+	<remarks></remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+ 
+ BFunctions mBFunctions = BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+ 
+ Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BSecurityEntity.GetSecurityEntities">
+	<summary>
+ Returns a collection of MSecurityEntityProfile objects for the given.
+ </summary>
+	<returns>Collection(of MSecurityEntityProfile)</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BSecurityEntity.Save(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile@)">
+	<summary>
+ Save Function information to the database
+ </summary>
+	<param name="profile">MSecurityEntityProfile</param>
+	<returns>Integer</returns>
+</member><member name="T:GrowthWare.Framework.BusinessLogicLayer.BSecurityEntity">
+	<summary>
+ Process business logic for functions
+ </summary>
+	<remarks>
+		<![CDATA[
+ MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+ 
+ The following properties are necessary for correct business logic operation.
+ .ConnctionString
+ .DALName
+ .DALNameSpace
+ ]]>
+	</remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim myBll as new BSecurityEntity(mySecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+	</example>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.ConnectionString">
+	<summary>
+ Used for all methods to connect to the database.
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.formatError(Oracle.DataAccess.Client.OracleParameter[],System.String,System.String)">
+	<summary>
+ Formats a an error message containing the stored procedure name and the OracleParameter/values.
+ </summary>
+	<param name="parameters">OracleParameter</param>
+	<param name="storedProcedure">String</param>
+	<param name="YourExMSG">String</param>
+	<returns>String</returns>
+	<remarks>Used when a DB error occures</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.isValid">
+	<summary>
+ Ensures ConnectionString has a value.
+ </summary>
+	<remarks>Throws ArgumentException</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.ExecuteNonQuery(System.String@,Oracle.DataAccess.Client.OracleParameter[]@)">
+	<summary>
+ Executes a non Query given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">OracleParameter</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.ExecuteNonQuery(System.String@)">
+	<summary>
+ Executes a non Query given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<remarks>Contains no logic</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataSet(System.String@,Oracle.DataAccess.Client.OracleParameter[]@)">
+	<summary>
+ Returns a DataSet given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">SqlParmeter</param>
+	<returns>DataSet</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataSet(System.String@)">
+	<summary>
+ Returns a DataSet given the store procedure
+ </summary>
+	<param name="storedProcedure">String</param>
+	<returns>DataSet</returns>
+	<remarks>Contains not logic</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataTable(System.String@,Oracle.DataAccess.Client.OracleParameter[]@)">
+	<summary>
+ Returns a DataTable given the stored procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">String</param>
+	<param name="parameters">OracleParameter</param>
+	<returns>DataTable</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataTable(System.String@)">
+	<summary>
+ Returns a DataTable given the stored procedure
+ </summary>
+	<param name="storedProcedure">String</param>
+	<returns>DataTable</returns>
+	<remarks>Contains not logic.</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataRow(System.String@,Oracle.DataAccess.Client.OracleParameter[]@)">
+	<summary>
+ Returns a DataRow given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">Stirng</param>
+	<param name="parameters">OracleParameter</param>
+	<returns>DataRow</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetDataRow(System.String@)">
+	<summary>
+ Returns a DataRow given the store procedure and sql parameters
+ </summary>
+	<param name="storedProcedure">Stirng</param>
+	<returns>DataRow</returns>
+	<remarks>Contains no logic.</remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetParameterValue(System.String,Oracle.DataAccess.Client.OracleParameter[]@)">
+	<summary>
+ Returns the value of an output parameter given the parameter name and an array of parameters
+ </summary>
+	<param name="parameterName">ParameterName</param>
+	<param name="parameters">OracleParameter</param>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetOracleParameter(System.String,System.Object,System.Data.ParameterDirection)">
+	<summary>
+ Retruns a OracleParameter given the ParameterName, ParameterValue and Direction.
+ </summary>
+	<param name="parameterName">String</param>
+	<param name="parameterValue">Object</param>
+	<param name="direction">ParameterDirection</param>
+	<returns>OracleParameter</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.GetAddedUpdatedBy(GrowthWare.Framework.Model.Profiles.Base.Interfaces.IMProfile@)">
+	<summary>
+ Returns the correct integer for added or updated by
+ </summary>
+	<param name="profile">Object implementing IProfile</param>
+	<returns>int</returns>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.Dispose(System.Boolean)">
+	<summary>
+ Implements IDispose
+ </summary>
+	<param name="disposing">Boolean</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction.Dispose">
+	<summary>
+ Implements Dispose
+ </summary>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.Oracle.Base.DDBInteraction">
+	<summary>
+ Performs all data store interaction to SQL Server through the use of stored procedures only.
+ </summary>
+	<remarks>Uses Microsoft.Practices.EnterpriseLibrary.Data for underlying database access.</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DClientChoices">
+	<summary>
+ DClientChoices provides all database interaction to SQL Server 2000 to 2005
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DSecurityEntity">
+	<summary>
+ Provides data access to SQL Server 2008
+ </summary>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BFunctions.#ctor">
+	<summary>
+ Private sub New() to ensure only new instances with passed parameters is used.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BFunctions.#ctor(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile,System.Boolean)">
+	<summary>
+ Parameters are need to pass along to the factory for correct connection to the desired datastore.
+ </summary>
+	<param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+	<param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+	<remarks></remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+ 
+ BFunctions mBFunctions = BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+ 
+ Dim mBFunctions As BFunctions = New BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BFunctions.GetFunctions(System.Int32)">
+	<summary>
+ Returns a collection of MFunctionProfile objects for the given
+ security entity.
+ </summary>
+	<param name="securityEntitySeqID">Integer</param>
+	<returns>Collection(of MFunctionProfile)</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BFunctions.Save(GrowthWare.Framework.Model.Profiles.MFunctionProfile@,System.Boolean,System.Boolean)">
+	<summary>
+ Save Function information to the database
+ </summary>
+	<param name="profile">MFunctionProfile</param>
+	<param name="saveGroups">Boolean</param>
+	<param name="saveRoles">Boolean</param>
+	<returns>Integer</returns>
+</member><member name="T:GrowthWare.Framework.BusinessLogicLayer.BFunctions">
+	<summary>
+ Process business logic for functions
+ </summary>
+	<remarks>
+		<![CDATA[
+ MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+ 
+ The following properties are necessary for correct business logic operation.
+ .ConnctionString
+ .DALName
+ .DALNameSpace
+ ]]>
+	</remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim myBll as new BFunctions(mySecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BAccounts.#ctor">
+	<summary>
+ Private sub New() to ensure only new instances with passed parameters is used.
+ </summary>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BAccounts.#ctor(GrowthWare.Framework.Model.Profiles.MSecurityEntityProfile,System.Boolean)">
+	<summary>
+ Parameters are need to pass along to the factory for correct connection to the desired datastore.
+ </summary>
+	<param name="SecurityEntityProfile">The Security Entity profile used to obtain the DAL name, DAL name space, and the Connection String</param>
+	<param name="CentralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
+	<remarks></remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL;
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL);
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString;
+ 
+ Dim mBAccount As BAccounts = New BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
+ mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
+ mSecurityEntityProfile.DAL = ConfigSettings.DAL
+ mSecurityEntityProfile.DAL_Namespace = ConfigSettings.DAL_NameSpace(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.DAL_Name = ConfigSettings.DAL_AssemblyName(mSecurityEntityProfile.DAL)
+ mSecurityEntityProfile.ConnectionString = ConfigSettings.ConnectionString
+ 
+ BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BAccounts.GetProfile(System.String)">
+	<summary>
+ Returns Account model based given the acccount name 
+ </summary>
+	<param name="account">String</param>
+	<returns>MAccountProfile</returns>
+	<remarks></remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim mBll as new BAccounts(mySecurityEntityProfile)
+ Dim mMAccountProfile as MAccountProfile = mbill.GetAccountProfile("Tester")
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ BAccounts mBll = new BAccounts(mySecurityEntityProfile);
+ MAccountProfile mMAccountProfile = mbill.GetAccountProfile("Tester");
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BAccounts.GetAccounts(GrowthWare.Framework.Model.Profiles.MAccountProfile)">
+	<summary>
+ Returns a collection of MAccountProfiles without any role information
+ </summary>
+	<param name="Profile">An instance of MAccountProfile</param>
+	<returns></returns>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.BAccounts.Save(GrowthWare.Framework.Model.Profiles.MAccountProfile@,System.Boolean,System.Boolean)">
+	<summary>
+ Performs either insert or update of an MAcountProfile, and re-populates the MAccountProfile with DB information.
+ </summary>
+	<param name="Profile">MAccountProfile</param>
+	<param name="SaveRoles">MAccountProfile</param>
+	<param name="SaveGroups">MAccountProfile</param>
+	<remarks>
+ Updates the model object with information from the database<br></br>
+ For example if you are creating a new account the ID will be sent into<br></br>
+ this method as -1, after the call to this method the ID will from the database
+ </remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim mMAccountProfile as new MAccountProfile()
+ mMAccountProfile.Account = "Account"
+ mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType)
+ mMAccountProfile.UpdatedBy = 1
+ mMAccountProfile.UpdagedDate = Date.Now
+ Dim mBll as new BAccounts(mySecurityEntityProfile)
+ Dim mSaveRoles As Boolean = False;
+ Dim mSaveGroups As Boolean = False;
+ mMAccountProfile = mbill.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
+ ]]>
+		</code>
+		<code language="C#">
+ MAccountProfile mMAccountProfile = new mMAccountProfile();
+ mMAccountProfile.Account = "Account";
+ mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType);
+ mMAccountProfile.UpdatedBy = 1;
+ mMAccountProfile.UpdagedDate = Date.Now();
+ BAccounts mBll = new BAccounts(mySecurityEntityProfile);
+ bool mSaveRoles = false;
+ bool mSaveGroups = true;
+ mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, mSaveRoles, mSaveGroups);
+ </code>
+	</example>
+</member><member name="T:GrowthWare.Framework.BusinessLogicLayer.BAccounts">
+	<summary>
+ Process business logic for accounts
+ </summary>
+	<remarks>
+		<![CDATA[
+ MSecurityEntityProfile can be found in the GrowthWare.Framework.ModelObjects namespace.  
+ 
+ The following properties are necessary for correct business logic operation.
+ .ConnctionString
+ .DALName
+ .DALNameSpace
+ ]]>
+	</remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim myBll as new BAccounts(mySecurityEntityProfile)
+ ]]>
+		</code>
+	</example>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.AlwaysLeftNav">
+	<summary>
+ Retruns Always_Left_Nav from the CONFIG file
+ </summary>
+	<value></value>
+	<returns>Boolean</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.AppDisplayedName">
+	<summary>
+ Retruns App_Displayed_Name from the CONFIG file
+ </summary>
+	<value></value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.AppendToFile">
+	<summary>
+ Retruns Append_To_File from the CONFIG file
+ </summary>
+	<value></value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.AppName">
+	<summary>
+ Returns App_Name from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.AuthenticationType">
+	<summary>
+ Returns Authentication_Type from the CONFIG file.
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.BasePage">
+	<summary>
+ Returns Base_Page from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SecurityEntityTranslation">
+	<summary>
+ Returns Security_Entity_Translation from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.BusinessObjectsServer">
+	<summary>
+ Retruns BO_Server from the CONFIG file
+ </summary>
+	<value>Sting</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.BusinessObjectsAuthenticationType">
+	<summary>
+ Returns BO_Authentication_Type from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.CentralManagement">
+	<summary>
+ Returns Central_Management from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ConnectionString(System.String)">
+	<summary>
+ Returns the connection string as defined in the CONFIG file by environment/DAL
+ </summary>
+	<param name="dataAccessLayer">String</param>
+	<value>Desired data access layer "Oracle" and default "SQLServer" connection string information</value>
+	<returns>String</returns>
+	<remarks>The CONFIG value can be encrypted or clear text</remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ConversionPattern">
+	<summary>
+ Returns the Conversion_Pattern from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DAL">
+	<summary>
+ Returns DAL from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DAL_AssemblyName(System.String)">
+	<summary>
+ Returns the name of the data access layer assembly name as defined in the web.conf file by environment
+ </summary>
+	<param name="dataAccessLayer">String</param>
+	<value>Desired data access layer "Oracle" and default "SQLServer"</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DAL_Namespace(System.String)">
+	<summary>
+ Returns the DAL_xx_Name_Space from the CONFIG file
+ </summary>
+	<param name="dataAccessLayer"></param>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DefaultAction">
+	<summary>
+ Returns Default_Action from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DefaultAuthenticatedAction">
+	<summary>
+ Returns Default_Authenticated_Action from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DefaultSecurityEntityID">
+	<summary>
+ Returns Default_Security_Entity_ID from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ExpectedUpBy">
+	<summary>
+ Returns Expected_Up_By from the CONFIG file
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.EnableCache">
+	<summary>
+ Returns Enable_Cache from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.EnablePooling">
+	<summary>
+ Retruns Enable_Pooling from the CONFIF file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>For future use</remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.Environment">
+	<summary>
+ Returns Environment from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>Used as a prefix to appSettings, allows multipule environment settings to co-exist in one CONFIG file.</remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.Environments">
+	<summary>
+ Returns Environments from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>Comma seportated "list" of environments </remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.EnvironmentDisplayed">
+	<summary>
+ Returns Environment without the leading underscore
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.EncryptionType">
+	<summary>
+ Returns Encryption_Type from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.FailedAttempts">
+	<summary>
+ Returns Failed_Attempts from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ForceHTTPS">
+	<summary>
+ Returns Force_HTTPS from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.DBStatus">
+	<summary>
+ Returns DB_Status from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.RegisteringRoles">
+	<summary>
+ Returns Registering_Roles from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.RegistrationPostAction">
+	<summary>
+ Return Registration_Post_Action from the COFNIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks>String</remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.RememberCookieName">
+	<summary>
+ Retrun AppDisplayedName and Remember_Me from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.LDAPDomain">
+	<summary>
+ Return LDAP_Domain from the CONFIG file
+ </summary>
+	<value></value>
+	<returns>String</returns>
+	<remarks>String</remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.LDAPServer">
+	<summary>
+ Returns LDAP_Server from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.LogPath">
+	<summary>
+ Returns Log_Path from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.LogPriority">
+	<summary>
+ Returns Log_Priority from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.LogRetention">
+	<summary>
+ Returns Log_Retention from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ServerSideViewState">
+	<summary>
+ Returns Server_Side_View_State from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.ServerSideViewStatePages">
+	<summary>
+ Returns Server_Side_View_State_Pages from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SMTPAccount">
+	<summary>
+ Returns decrypted SMTP_Account from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SMTPFrom">
+	<summary>
+ Returns SMTP_From from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SMTPServer">
+	<summary>
+ Returns SMTP_Server from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.ConfigSettings.StripTags(System.String)">
+	<summary>
+ This method strips all tags from a string (good for removing all HTML.)
+ </summary>
+	<param name="text">string</param>
+	<returns>string</returns>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SMTPPassword">
+	<summary>
+ Returns SMTP_Password from CONFIG file
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SMTPDomain">
+	<summary>
+ Returns SMTP_Domain from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SyncPassword">
+	<summary>
+ Returns Synchronize_Password from the CONFIG file
+ </summary>
+	<value></value>
+	<returns></returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.SkinType">
+	<summary>
+ Returns SKIN_TYPE from the CONFIG file
+ </summary>
+	<value>String</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="P:GrowthWare.Framework.Common.ConfigSettings.UnderConstruction">
+	<summary>
+ Returns Under_Construction from the CONFIG file
+ </summary>
+	<value>Stirng</value>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.Common.ConfigSettings.TruncateWithEllipsis(System.String,System.Int32)">
+	<summary>
+ Truncates a given string and adds ...
+ </summary>
+	<param name="text">String to be truncated</param>
+	<param name="length">Point at which the texted is truncated</param>
+	<returns>String</returns>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.Common.ConfigSettings">
+	<summary>
+ Servers as a collection of configuration information
+ </summary>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2000.DSecurityEntity">
+	<summary>
+ Provides data access to SQL Server 2000
+ </summary>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.DataAccessLayerException.#ctor(System.String)">
+	<summary>
+ Calls base method
+ </summary>
+	<param name="message">String</param>
+	<remarks></remarks>
+</member><member name="M:GrowthWare.Framework.DataAccessLayer.DataAccessLayerException.#ctor(System.String,System.Exception)">
+	<summary>
+ Calls base method
+ </summary>
+	<param name="message">String</param>
+	<param name="innerException">Exception</param>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.DataAccessLayerException">
+	<summary>
+ Created to distinguish errors created in the data access layer.
+ </summary>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DClientChoices">
+	<summary>
+ DClientChoices provides all database interaction to SQL Server 2000 to 2005
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="M:GrowthWare.Framework.Common.FactoryObject.Create(System.String,System.String,System.String)">
+	<summary>
+ Creates an instance of an object.
+ </summary>
+	<param name="theAssemblyName">
+ The name of the assembley (DLL).  Must be 
+ included in your solution in order to find the file.
+ </param>
+	<param name="TheNamespace">
+ The name space where the class is located.
+ </param>
+	<param name="TheClassName">
+ The name of the class you need an instance of.
+ </param>
+	<returns>An object</returns>
+	<remarks></remarks>
+</member><member name="T:GrowthWare.Framework.Common.FactoryObject">
+	<summary>
+ The FactoryObject will create an instance of an object from any 
+ Assembley give the assembly name, namespace, and the object/class name.
+ </summary>
+	<remarks>
+ None
+ </remarks>
+</member><member name="P:GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DAccounts.GetAccount">
+	<summary>
+ Retruns a DataRow of account the account details
+ </summary>
+	<returns>DataRow</returns>
+	<remarks>Usefull for populating MAccountProfile</remarks>
+</member><member name="T:GrowthWare.Framework.DataAccessLayer.SqlServer.V2008.DAccounts">
+	<summary>
+ DAccounts provides all database interaction to SQL Server 2008
+ </summary>
+	<remarks>
+		The Profile and SecurityEntitySeqID properties must be set
+		before using any methods.
+		Properties where chosen instead of parameters because all
+		methods will need one or both to perform their work.
+	</remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.IBAccounts.Delete(System.Int32)">
+	<summary>
+ Deletes a record from the database.
+ </summary>
+	<param name="AccountId">Integer</param>
+	<remarks>Not to be used lightly.  In most cases any history associated with the account will be lost.</remarks>
+	<example> This sample shows how to create an instance of the class.
+ <code language="VB.NET">
+			<![CDATA[
+ Dim mBll as new BAccounts(mySecurityEntityProfile)
+ mBll.Delete(1)
+ ]]>
+		</code>
+		<code language="C#">
+			<![CDATA[
+ BAccounts mBll = new BAccounts(mySecurityEntityProfile);
+ mBll.Delete(1);
+ ]]>
+		</code>
+	</example>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.IBAccounts.GetProfile(System.String)">
+	<summary>
+ Returns a populated MAccountProfile
+ </summary>
+	<param name="Account">String</param>
+	<returns>MAccountProfile</returns>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.IBAccounts.GetAccounts(GrowthWare.Framework.Model.Profiles.MAccountProfile)">
+	<summary>
+ Retrieves a generic collection of MAccountProfiles
+ </summary>
+	<param name="Profile">MAccountProfile</param>
+	<returns>A generic collection of MAccountProfiles</returns>
+	<remarks>
+ The IsSystemAdmin propery and the Account property are used from the profile object. 
+ If isSysAdmin then all accounts are returned.
+ If not isSysAdmin only accounts with an associated role to the current security entity will be retruned.
+ </remarks>
+</member><member name="M:GrowthWare.Framework.BusinessLogicLayer.IBAccounts.Save(GrowthWare.Framework.Model.Profiles.MAccountProfile@,System.Boolean,System.Boolean)">
+	<summary>
+ Saves the account profile information to the datastore.
+ </summary>
+	<param name="Profile">MAccountProfile</param>
+	<param name="SaveRoles">Boolean</param>
+	<param name="SaveGroups">Boolean</param>
+	<remarks>The profile should be updated as necessary from the business logic layer.</remarks>
+</member><member name="T:GrowthWare.Framework.BusinessLogicLayer.IBAccounts">
+	<summary>
+ Set the contract for the account business logic object
+ </summary>
+	<remarks></remarks>
+</member>
+</members>
+</doc>

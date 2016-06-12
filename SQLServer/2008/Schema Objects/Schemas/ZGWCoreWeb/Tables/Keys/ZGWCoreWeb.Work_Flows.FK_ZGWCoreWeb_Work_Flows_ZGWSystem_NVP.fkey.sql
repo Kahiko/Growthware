@@ -1,0 +1,3 @@
+﻿ALTER TABLE [ZGWCoreWeb].[Work_Flows]
+    ADD CONSTRAINT [FK_ZGWCoreWeb_Work_Flows_ZGWSystem_NVP] FOREIGN KEY ([NVP_SeqID]) REFERENCES [ZGWSystem].[Name_Value_Pairs] ([NVP_SeqID]) ON DELETE CASCADE ON UPDATE CASCADE;
+

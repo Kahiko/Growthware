@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/Kernel" xmlns:dm2="http://schemas.microsoft.com/dsltools/Component" xmlns:dm3="http://schemas.microsoft.com/dsltools/Activity" xmlns:dm4="http://schemas.microsoft.com/dsltools/Interaction" xmlns:dm5="http://schemas.microsoft.com/dsltools/UseCase" xmlns:dm6="http://schemas.microsoft.com/dsltools/UmlModelLibrary" xmlns:dm7="http://schemas.microsoft.com/dsltools/UmlDiagrams" xmlns:dm8="http://schemas.microsoft.com/dsltools/LogicalClassDesigner"
+  dslVersion="1.0.0.0"
+  Id="daea6875-d81f-4161-a9f8-0d4479fe5f22"
+  name="Base"
+  visibility="Private" xmlns="http://schemas.microsoft.com/dsltools/ModelStore">
+  <referencesInternal>
+    <reference
+      Id="cf3a3d01-eaf7-47d8-be3d-42f667fab33b"
+      handle="viewcode://./CodeSchema_Namespace?Namespace=GrowthWare.Framework.DataAccessLayer.Interfaces.Base"
+      tag="ViewCode" />
+  </referencesInternal>
+  <packagedElements>
+    <packageHasNamedElement>
+      <Interface
+        Id="8e92a230-7efb-48e9-bc61-595565b47881"
+        name="IDDBInteraction"
+        isAbstract="false"
+        isLeaf="false">
+        <referencesInternal>
+          <reference
+            Id="c77b2e18-4982-455a-8023-769130e57342"
+            handle="viewcode://./CodeSchema_Interface?Assembly=file:///D:/Development/2011/GrowthWare/GrowthWareDLLs/GrowthWareFramework.dll Namespace=GrowthWare.Framework.DataAccessLayer.Interfaces.Base Type=IDDBInteraction"
+            tag="ViewCode" />
+        </referencesInternal>
+      </Interface>
+    </packageHasNamedElement>
+  </packagedElements>
+</package>

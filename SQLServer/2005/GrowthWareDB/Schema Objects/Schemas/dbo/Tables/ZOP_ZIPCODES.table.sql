@@ -1,0 +1,8 @@
+﻿CREATE TABLE [dbo].[ZOP_ZIPCODES] (
+    [STATE]     VARCHAR (2)   NOT NULL,
+    [ZIP_CODE]  INT           NOT NULL,
+    [AREA_CODE] INT           NOT NULL,
+    [CITY]      VARCHAR (255) NULL,
+    [TIME_ZONE] VARCHAR (255) NULL
+);
+
