@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6FBBCB61-2D21-4D8E-958E-30683DB4E833}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GrowthWare.Framework.BusinessData</RootNamespace>
+    <AssemblyName>GrowthWare.Framework.BusinessData</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\GrowthWareDlls\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\GrowthWareDlls\GrowthWare.Framework.BusinessData.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GrowthWare.Framework.BusinessData.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Common">
+      <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.EnterpriseLibrary.Data">
+      <HintPath>..\..\ExternalDLLs\Microsoft.Practices.EnterpriseLibrary.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BusinessLogicLayerException.cs" />
+    <Compile Include="BusinessLogicLayer\BAccounts.cs" />
+    <Compile Include="BusinessLogicLayer\BaseBusinessLogic.cs" />
+    <Compile Include="BusinessLogicLayer\BClientChoices.cs" />
+    <Compile Include="BusinessLogicLayer\BDBInformation.cs" />
+    <Compile Include="BusinessLogicLayer\BDirectories.cs" />
+    <Compile Include="BusinessLogicLayer\BFunctions.cs" />
+    <Compile Include="BusinessLogicLayer\BGroups.cs" />
+    <Compile Include="BusinessLogicLayer\BMessages.cs" />
+    <Compile Include="BusinessLogicLayer\BNameValuePairs.cs" />
+    <Compile Include="BusinessLogicLayer\BRoles.cs" />
+    <Compile Include="BusinessLogicLayer\BSecurityEntity.cs" />
+    <Compile Include="DataAccessLayer\DataAccessLayerException.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\Base\IDDBInteraction.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDAccount.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDBInformation.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDClientChoices.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDDirectories.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDFunctions.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDGroups.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDMessages.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDNameValuePair.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDRoles.cs" />
+    <Compile Include="DataAccessLayer\Interfaces\IDSecurityEntity.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\Base\DDBInteraction.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DAccounts.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DClientChoices.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DDBInformation.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DDirectories.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DFunctions.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DGroups.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DMessages.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DNameValuePair.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DRoles.cs" />
+    <Compile Include="DataAccessLayer\SQLServer\V2008\DSecurityEntity.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DataAccessLayer\MySQL\" />
+    <Folder Include="DataAccessLayer\Oracle\11g\" />
+    <Folder Include="DataAccessLayer\Oracle\Base\" />
+    <Folder Include="DataAccessLayer\Postgres\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj">
+      <Project>{f12fecfd-d955-4f31-b7a6-e4ef8d88de9d}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GrowthWare.Framework.BusinessData.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

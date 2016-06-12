@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0C246309-844C-4FF0-8083-884E2AABD537}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GrowthWare.WebSupport</RootNamespace>
+    <AssemblyName>GrowthWare.WebSupport</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>Svn</SccProjectName>
+    <SccLocalPath>Svn</SccLocalPath>
+    <SccAuxPath>Svn</SccAuxPath>
+    <SccProvider>SubversionScc</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>..\GrowthWareDlls\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>..\GrowthWareDlls\GrowthWare.WebSupport.XML</DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>GrowthWare.WebSupport.pfx</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Base\BaseUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\BaseWebpage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Base\ClientChoicesUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="CacheController.cs" />
+    <Compile Include="Context\ClientChoicesHttpModule.cs" />
+    <Compile Include="Context\HttpContextModule.cs" />
+    <Compile Include="Context\OutputFilterStream.cs" />
+    <Compile Include="CustomWebControlException.cs" />
+    <Compile Include="CustomWebControls\Designers\CustomDesigner.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomWebControls\ListPicker.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="CustomWebControls\NavTrail.cs" />
+    <Compile Include="GWWebHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\AccountUtility.cs" />
+    <Compile Include="Utilities\ClientChoicesUtility.cs" />
+    <Compile Include="Utilities\DBInformationUtility.cs" />
+    <Compile Include="Utilities\DirectoryUtility.cs" />
+    <Compile Include="Utilities\FileUtility.cs" />
+    <Compile Include="Utilities\FunctionTypeUtility.cs" />
+    <Compile Include="Utilities\FunctionUtility.cs" />
+    <Compile Include="Utilities\GroupUtility.cs" />
+    <Compile Include="Utilities\MenuUtility.cs" />
+    <Compile Include="Utilities\MessageUtility.cs" />
+    <Compile Include="Utilities\NameValuePairUtility.cs" />
+    <Compile Include="Utilities\NotifyUtility.cs" />
+    <Compile Include="Utilities\RoleUtility.cs" />
+    <Compile Include="Utilities\SecurityEntityUtility.cs" />
+    <Compile Include="WebImpersonate.cs" />
+    <Compile Include="WebImpersonateException.cs" />
+    <Compile Include="WebSupportException.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework.BusinessData\GrowthWare.Framework.BusinessData.csproj">
+      <Project>{6fbbcb61-2d21-4d8e-958e-30683db4e833}</Project>
+      <Name>GrowthWare.Framework.BusinessData</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj">
+      <Project>{f12fecfd-d955-4f31-b7a6-e4ef8d88de9d}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomWebControls\JS\ListPicker.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GrowthWare.WebSupport.pfx" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
