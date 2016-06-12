@@ -1,0 +1,33 @@
+2007-03-31 00:04:52,234 [2000] DEBUG Global [] - Starting Base Application version: 4.0.0.16953
+2007-03-31 00:55:23,234 [4032] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 00:55:23,265 [4032] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 00:55:23,265 [4032] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 00:55:23,265 [4032] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 00:55:23,265 [4032] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 01:02:58,109 [2000] DEBUG Global [] - Starting Base Application version: 4.0.0.16953
+2007-03-31 01:03:12,890 [2000] DEBUG Logon [] - Logged on reganm1
+2007-03-31 01:19:47,312 [5528] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 01:19:47,375 [5528] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 01:19:47,375 [5528] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 01:19:47,375 [5528] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2007-03-31 01:19:47,390 [5528] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)

@@ -1,0 +1,4 @@
+"Anonymous","1","All","#ffffff","#eeeeee","#6699cc","#b6cbeb","Blue","home","5"
+"Default","1","All","#ffffff","#eeeeee","#6699cc","#b6cbeb","blue","home","5"
+"SuperUser","1","All","#ffffff","#eeeeee","#6699cc","#b6cbeb","Blue","home","5"
+"SysAdmin","1","All","#ffffff","#eeeeee","#6699cc","#b6cbeb","Blue","selectmodules","5"

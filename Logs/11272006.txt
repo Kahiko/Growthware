@@ -1,0 +1,1360 @@
+2006-11-27 19:35:52,875 [5632] DEBUG Global [] - Starting Base Application version: 4.0.0.240
+2006-11-27 19:36:01,046 [4296] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 19:36:01,046 [4296] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 19:36:01,046 [4296] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 19:36:01,046 [4296] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 19:36:01,046 [4296] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 20:42:31,937 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.240
+2006-11-27 20:42:33,531 [3928] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 20:42:33,546 [3928] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 20:42:33,546 [3928] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 20:42:33,546 [3928] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 20:42:33,546 [3928] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:27:57,250 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:28:13,859 [5480] DEBUG Logon [] - Logged on reganm1
+2006-11-27 21:28:30,078 [5480] ERROR Global [] - System.ArgumentException: DataSource must be a string or XmlDocument instance.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 115
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:28,093 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:28,093 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:28,093 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:28,093 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:28,093 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:38,484 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:33:43,500 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,562 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,609 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,656 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,718 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,765 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,812 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,875 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,921 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:43,984 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,031 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,078 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,140 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,203 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,250 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,296 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,359 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,421 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,484 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,531 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,593 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,640 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,703 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,750 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,812 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,859 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,921 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:44,968 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,031 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,078 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,140 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,187 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,250 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,296 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,359 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,421 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,484 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,546 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,609 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,656 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,718 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,765 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,828 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,875 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,937 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:45,984 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,046 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,109 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,156 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,218 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,265 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,328 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,375 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,453 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,515 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,562 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,640 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,703 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,750 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,812 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,859 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,921 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:46,968 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,031 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,093 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,156 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,203 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,265 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,312 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,375 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,437 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,500 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,546 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,609 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,656 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,718 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,765 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,828 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,875 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:47,937 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:48,015 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:33:56,812 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:33:56,812 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:34:01,515 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:34:25,171 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:34:29,953 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:35:27,000 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:35:27,015 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:35:37,265 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:35:56,718 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:36:56,796 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:37:48,406 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:37:48,406 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:37:58,640 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:38:23,437 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:38:28,703 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:38:40,781 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:38:40,781 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:38:50,734 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:39:14,156 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:39:16,500 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:41:44,406 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:41:44,406 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:41:55,109 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:42:38,375 [5480] ERROR Global [] - System.ArgumentException: The DataSet parameter is invalid. It cannot be null.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:42:47,890 [5480] ERROR Global [] - System.ArgumentException: The DataSet parameter is invalid. It cannot be null.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:42:47,953 [5480] ERROR Global [] - System.ArgumentException: The DataSet parameter is invalid. It cannot be null.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:43:03,687 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:43:03,687 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:43:17,656 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:43:58,562 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:44:00,359 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:44:01,437 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:44:02,437 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:44:03,421 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:44:19,312 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 116
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:45:14,906 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:45:14,906 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:45:30,156 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:46:30,375 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:46:44,421 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:46:47,218 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:46:49,328 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:46:51,187 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:46:54,953 [5480] ERROR Global [] - System.InvalidOperationException: Cannot add, remove, or change Nested relations from the DataSet once the DataSet is mapped to a loaded XML document.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 117
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:47:23,500 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:47:23,500 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:47:40,406 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:50:04,171 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:50:04,187 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:50:21,281 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:52:12,125 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:52:12,125 [4912] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 21:52:29,734 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 21:53:07,265 [5480] ERROR Global [] - System.ArgumentException: The XML data for the Menu control is in an invalid format.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 118
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:53:08,843 [5480] ERROR Global [] - System.ArgumentException: The XML data for the Menu control is in an invalid format.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 118
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 21:53:08,921 [5480] ERROR Global [] - System.ArgumentException: The XML data for the Menu control is in an invalid format.
+   at BaseApplication.HierarchalMenu.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\UI\Default\UserControls\HierarchalMenu.ascx.vb:line 118
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:23:42,921 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:23:42,921 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:23:59,500 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:25:16,093 [5480] DEBUG Logon [] - Logged on reganm1
+2006-11-27 22:25:23,781 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:25:29,671 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:26:50,640 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:28:45,578 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:30:00,203 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:30:05,156 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:30:29,656 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:30:29,671 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:30:29,671 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:30:29,671 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:30:29,671 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:30:49,000 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:32:34,609 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:32:34,609 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:32:34,609 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:32:34,609 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:32:54,031 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:34:38,281 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:34:38,281 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:34:58,218 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:36:10,390 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:36:10,406 [6104] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:36:27,937 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:37:47,671 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:37:47,687 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:37:47,687 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:37:47,687 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:38:09,250 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:38:53,750 [5480] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at BaseApplication.EditProfile.Page_Load(Object sender, EventArgs e) in C:\WebProjects\2003\BaseApplication\Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb:line 70
+   at System.Web.UI.Control.OnLoad(EventArgs e)
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Control.LoadRecursive()
+   at System.Web.UI.Page.ProcessRequestMain()
+2006-11-27 22:40:48,843 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:40:48,843 [5056] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:41:08,625 [5480] DEBUG Global [] - Starting Base Application version: 4.0.0.37277
+2006-11-27 22:55:55,640 [352] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:55:55,640 [352] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:55:55,640 [352] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)
+2006-11-27 22:55:55,640 [352] ERROR Global [] - System.NullReferenceException: Object reference not set to an instance of an object.
+   at Common.Cache.CacheControler.CheckCallback(String Key, Object Value, CacheItemRemovedReason reason) in C:\WebProjects\2003\BaseApplication\Projects\Common\Base\Cache\CacheControler.vb:line 65
+   at System.Web.Caching.CacheEntry.CallCacheItemRemovedCallback(CacheItemRemovedCallback callback, CacheItemRemovedReason reason)

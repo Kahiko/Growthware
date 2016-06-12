@@ -1,0 +1,2 @@
+2007-04-06 17:50:28,500 [4828] DEBUG Global [] - Starting Base Application version: 4.0.0.16953
+2007-04-06 17:50:36,765 [4828] DEBUG Logon [] - Logged on reganm1

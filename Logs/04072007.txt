@@ -1,0 +1,6 @@
+2007-04-07 03:05:15,125 [5848] DEBUG Global [] - Starting Base Application version: 4.0.0.16953
+2007-04-07 03:05:28,531 [5848] DEBUG Logon [] - Logged on reganm1
+2007-04-07 03:05:47,296 [5848] DEBUG Logon [] - Start GetModulesDataView 4/7/2007 3:05:47 AM
+2007-04-07 03:05:47,296 [5848] DEBUG Logon [] - End GetModulesDataView 4/7/2007 3:05:47 AM
+2007-04-07 03:05:50,750 [5848] DEBUG Logon [] - Start GetModulesDataView 4/7/2007 3:05:50 AM
+2007-04-07 03:05:50,765 [5848] DEBUG Logon [] - End GetModulesDataView 4/7/2007 3:05:50 AM

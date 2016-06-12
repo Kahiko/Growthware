@@ -1,0 +1,3003 @@
+<VisualStudioProject>
+    <VisualBasic
+        ProjectType = "Web"
+        ProductVersion = "7.10.3077"
+        SchemaVersion = "2.0"
+        ProjectGuid = "{582F5C5E-0FE9-492F-A6B9-34AC40646FBF}"
+    >
+        <Build>
+            <Settings
+                ApplicationIcon = ""
+                AssemblyKeyContainerName = ""
+                AssemblyName = "BaseApplication"
+                AssemblyOriginatorKeyFile = ""
+                AssemblyOriginatorKeyMode = "None"
+                DefaultClientScript = "JScript"
+                DefaultHTMLPageLayout = "Grid"
+                DefaultTargetSchema = "IE50"
+                DelaySign = "false"
+                OutputType = "Library"
+                OptionCompare = "Binary"
+                OptionExplicit = "On"
+                OptionStrict = "Off"
+                RootNamespace = "BaseApplication"
+                StartupObject = ""
+            >
+                <Config
+                    Name = "Debug"
+                    BaseAddress = "285212672"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = ""
+                    DefineDebug = "true"
+                    DefineTrace = "true"
+                    DebugSymbols = "true"
+                    IncrementalBuild = "true"
+                    Optimize = "false"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "1"
+                />
+                <Config
+                    Name = "Release"
+                    BaseAddress = "285212672"
+                    ConfigurationOverrideFile = ""
+                    DefineConstants = ""
+                    DefineDebug = "false"
+                    DefineTrace = "true"
+                    DebugSymbols = "false"
+                    IncrementalBuild = "false"
+                    Optimize = "true"
+                    OutputPath = "bin\"
+                    RegisterForComInterop = "false"
+                    RemoveIntegerChecks = "false"
+                    TreatWarningsAsErrors = "false"
+                    WarningLevel = "1"
+                />
+            </Settings>
+            <References>
+                <Reference
+                    Name = "System"
+                    AssemblyName = "System"
+                />
+                <Reference
+                    Name = "System.Data"
+                    AssemblyName = "System.Data"
+                />
+                <Reference
+                    Name = "System.Drawing"
+                    AssemblyName = "System.Drawing"
+                />
+                <Reference
+                    Name = "System.Web"
+                    AssemblyName = "System.Web"
+                />
+                <Reference
+                    Name = "System.XML"
+                    AssemblyName = "System.Xml"
+                />
+                <Reference
+                    Name = "log4net"
+                    AssemblyName = "log4net"
+                    HintPath = "bin\log4net.dll"
+                />
+                <Reference
+                    Name = "BLL"
+                    Project = "{E54CA8EB-180C-44C9-B323-1F4722CECDB1}"
+                    Package = "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}"
+                />
+                <Reference
+                    Name = "DALModel"
+                    Project = "{9825C50A-0C7C-4905-A5EA-F03841368468}"
+                    Package = "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}"
+                />
+                <Reference
+                    Name = "CrystalDecisions.CrystalReports.Engine"
+                    AssemblyName = "CrystalDecisions.CrystalReports.Engine"
+                    HintPath = "..\..\..\..\Program Files\Common Files\Business Objects\3.0\managed\CrystalDecisions.CrystalReports.Engine.dll"
+                    AssemblyFolderKey = "hklm\business objects 11 .net"
+                />
+                <Reference
+                    Name = "CrystalDecisions.ReportSource"
+                    AssemblyName = "CrystalDecisions.ReportSource"
+                    HintPath = "..\..\..\..\Program Files\Common Files\Business Objects\3.0\managed\CrystalDecisions.ReportSource.dll"
+                    AssemblyFolderKey = "hklm\business objects 11 .net"
+                />
+                <Reference
+                    Name = "CrystalDecisions.Shared"
+                    AssemblyName = "CrystalDecisions.Shared"
+                    HintPath = "..\..\..\..\Program Files\Common Files\Business Objects\3.0\managed\CrystalDecisions.Shared.dll"
+                    AssemblyFolderKey = "hklm\business objects 11 .net"
+                />
+                <Reference
+                    Name = "CrystalDecisions.Web"
+                    AssemblyName = "CrystalDecisions.Web"
+                    HintPath = "..\..\..\..\Program Files\Common Files\Business Objects\3.0\managed\CrystalDecisions.Web.dll"
+                    AssemblyFolderKey = "hklm\business objects 11 .net"
+                />
+                <Reference
+                    Name = "Common"
+                    Project = "{8AFA5561-C9C2-4A6B-93F0-89AE45422A83}"
+                    Package = "{F184B08F-C81C-45F6-A57F-5ABD9991F28F}"
+                />
+            </References>
+            <Imports>
+                <Import Namespace = "Microsoft.VisualBasic" />
+                <Import Namespace = "System" />
+                <Import Namespace = "System.Collections" />
+                <Import Namespace = "System.Configuration" />
+                <Import Namespace = "System.Data" />
+                <Import Namespace = "System.Drawing" />
+                <Import Namespace = "System.Web" />
+                <Import Namespace = "System.Web.UI" />
+                <Import Namespace = "System.Web.UI.HtmlControls" />
+                <Import Namespace = "System.Web.UI.WebControls" />
+            </Imports>
+        </Build>
+        <Files>
+            <Include>
+                <File
+                    RelPath = "AssemblyInfo.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "dataconfiguration.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Default.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Default.aspx.vb"
+                    DependentUpon = "Default.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Default.aspx.resx"
+                    DependentUpon = "Default.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Global.asax"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Global.asax.vb"
+                    DependentUpon = "Global.asax"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Global.asax.resx"
+                    DependentUpon = "Global.asax.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "TestAJAX.htm"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Classes\System\AccountUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\AppLogger.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\AppModulesUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\BaseHelper.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\BusinessUnitUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\CalendarUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoicesUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\clsIndexServer.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\DirectoryInfoUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\DropBoxUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\FileManager.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\NavControler.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\NavMenuUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\NotifyUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\OrderedHierarchy.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\StatesUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\WebImpersonate.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\WorkFlowUtility.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoices\BasePage.vb"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoices\ClientChoicesModule.vb"
+                    SubType = "Code"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoices\ClientChoicesPageModule.vb"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoices\ClientChoicesUserControlModule.vb"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Classes\System\ClientChoices\ReadMe.txt"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AdminEdit.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\administration_icon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AppImage_blue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AppImage_green.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AppImage_purple.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AppImage_red.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\AppImage_yellow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\bt_red.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\btnDelete.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\btnNewFolder.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\btnSecurity.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\bullet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\close.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\delete.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\dn.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\down.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\edit.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\File.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\flap.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\flapL.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\flapR.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Folder.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\FolderUp.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\header.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\home.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\home_ghost.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\logo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\logo_general.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\max.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\NavIcon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\OpenFolder.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\option_blue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\option_green.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\option_purple.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\option_red.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\option_yellow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Refresh.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\restore.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\sidebar_blue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\sidebar_green.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\sidebar_purple.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\sidebar_red.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\sidebar_yellow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\smiley.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\trashcan.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\umms.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\UnderConstruction.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Up.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\x.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\yellow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\arcscreen.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\cruisescreenshrunk.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\defaultscreenshrunk.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\ecoscreenschrunk.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\fridascreenshrunk.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\libraryscreen.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\professionalscreenshrunk.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\robotico.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\StarterKit.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\Theme.htm"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\Help\Thumbs.db"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Images\SOLPART\DialogHeaderCenter-Black.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\DialogHeaderCenter-Blue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_arrow.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_book.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_bookopen.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_Copy.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_Cut.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_download.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_envdoc.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_feedback.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_Find.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_msie.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_mts.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_NewVSproj.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_Paste.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_preview.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_print.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_project.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_props.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_Save.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_SaveAll.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_TaskList.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_toolbox.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_visualbasic.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_visualstudio.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\icon_wwwfolder.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuBar-Silver.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\splogoanim.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabCRed.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabCWhite.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabLRed.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabLWhite.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabRRed.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\TabRWhite.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Thumbs.db"
+                    BuildAction = "None"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\article_behaviorzone.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\article_htmledit.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\article_solpartnavbar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\article_treeview.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\DevDiaryFebruary2002.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\DevDiaryJanuary2002.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\DevDiaryMarch2002.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\DevDiarySeptember2002.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\MenuImages\techcornerlogo100x30.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\aspdotnet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\bluegradient.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\DialogHeaderCenter-Blue.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_arrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_backgammoninternet-sm.GIF"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_calc.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_calc-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_computer-xp.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_controlpanel.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_dotnet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_dotnet-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_explorer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_explorer-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_folderletter.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_folderletter-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_freecell-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_heartsinternet-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_ie2.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_ie-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_magnifyingglass.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_mediaplayer2.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_mspaint-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_network-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_notepad.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_notepad-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_pinball-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_printer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_question.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_recycle-xp.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_reversiinternet-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_search2.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_setup-xp.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_solitaire-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_spadesinternet-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_spider-sm.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_visualbasic.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_visualstudio.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\icon_world.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\MSOffice.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\spacer.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\splogo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Images\SOLPART\Win\startmenu.gif"
+                    BuildAction = "Content"
+                />
+                <Folder RelPath = "Images\Source\" />
+                <File
+                    RelPath = "Modules\TestOracle.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\TestOracle.ascx.vb"
+                    DependentUpon = "TestOracle.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\TestOracle.ascx.resx"
+                    DependentUpon = "TestOracle.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Logon\Logon.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Logon\Logon.ascx.vb"
+                    DependentUpon = "Logon.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Logon\Logon.ascx.resx"
+                    DependentUpon = "Logon.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Navigation\Navigation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Navigation\Navigation.ascx.vb"
+                    DependentUpon = "Navigation.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\LeftHand\Navigation\Navigation.ascx.resx"
+                    DependentUpon = "Navigation.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\LineCount.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\LineCount.ascx.vb"
+                    DependentUpon = "LineCount.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\LineCount.ascx.resx"
+                    DependentUpon = "LineCount.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Accounts\SelectPreferences.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Accounts\SelectPreferences.ascx.vb"
+                    DependentUpon = "SelectPreferences.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Accounts\SelectPreferences.ascx.resx"
+                    DependentUpon = "SelectPreferences.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\SetLogLevel.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\SetLogLevel.ascx.vb"
+                    DependentUpon = "SetLogLevel.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\SetLogLevel.ascx.resx"
+                    DependentUpon = "SetLogLevel.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\UpdateAnonymousClientProfileInfo.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\UpdateAnonymousClientProfileInfo.ascx.vb"
+                    DependentUpon = "UpdateAnonymousClientProfileInfo.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\UpdateAnonymousClientProfileInfo.ascx.resx"
+                    DependentUpon = "UpdateAnonymousClientProfileInfo.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountGroups.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountGroups.ascx.vb"
+                    DependentUpon = "AccountGroups.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountGroups.ascx.resx"
+                    DependentUpon = "AccountGroups.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountRoles.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountRoles.ascx.vb"
+                    DependentUpon = "AccountRoles.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountRoles.ascx.resx"
+                    DependentUpon = "AccountRoles.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsGeneral.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsGeneral.ascx.vb"
+                    DependentUpon = "AccountsGeneral.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsGeneral.ascx.resx"
+                    DependentUpon = "AccountsGeneral.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsSecurity.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsSecurity.ascx.vb"
+                    DependentUpon = "AccountsSecurity.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\AccountsSecurity.ascx.resx"
+                    DependentUpon = "AccountsSecurity.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\EditProfile.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.vb"
+                    DependentUpon = "EditProfile.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\EditProfile.ascx.resx"
+                    DependentUpon = "EditProfile.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Favorite.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Favorite.ascx.vb"
+                    DependentUpon = "Favorite.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Favorite.ascx.resx"
+                    DependentUpon = "Favorite.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Logoff.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Logoff.ascx.vb"
+                    DependentUpon = "Logoff.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\Logoff.ascx.resx"
+                    DependentUpon = "Logoff.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\SelectAccounts.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\SelectAccounts.ascx.vb"
+                    DependentUpon = "SelectAccounts.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\SelectAccounts.ascx.resx"
+                    DependentUpon = "SelectAccounts.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\UpdateSession.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\UpdateSession.ascx.vb"
+                    DependentUpon = "UpdateSession.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Accounts\UpdateSession.ascx.resx"
+                    DependentUpon = "UpdateSession.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\AddEditBusinessUnit.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\AddEditBusinessUnit.ascx.vb"
+                    DependentUpon = "AddEditBusinessUnit.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\AddEditBusinessUnit.ascx.resx"
+                    DependentUpon = "AddEditBusinessUnit.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\SelectBusinessUnits.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\SelectBusinessUnits.ascx.vb"
+                    DependentUpon = "SelectBusinessUnits.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\BusinessUnits\SelectBusinessUnits.ascx.resx"
+                    DependentUpon = "SelectBusinessUnits.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDown.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDown.ascx.vb"
+                    DependentUpon = "AddEditDropDown.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDown.ascx.resx"
+                    DependentUpon = "AddEditDropDown.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDownDetails.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDownDetails.ascx.vb"
+                    DependentUpon = "AddEditDropDownDetails.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\AddEditDropDownDetails.ascx.resx"
+                    DependentUpon = "AddEditDropDownDetails.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\DropDownGeneral.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\DropDownGeneral.ascx.vb"
+                    DependentUpon = "DropDownGeneral.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\DropDownGeneral.ascx.resx"
+                    DependentUpon = "DropDownGeneral.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\SelectDropDowns.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\SelectDropDowns.ascx.vb"
+                    DependentUpon = "SelectDropDowns.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\DropDowns\SelectDropDowns.ascx.resx"
+                    DependentUpon = "SelectDropDowns.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\AddEditGroups.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\AddEditGroups.ascx.vb"
+                    DependentUpon = "AddEditGroups.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\AddEditGroups.ascx.resx"
+                    DependentUpon = "AddEditGroups.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupRoles.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupRoles.ascx.vb"
+                    DependentUpon = "GroupRoles.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupRoles.ascx.resx"
+                    DependentUpon = "GroupRoles.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsControl.ascx.vb"
+                    DependentUpon = "GroupsControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsControl.ascx.resx"
+                    DependentUpon = "GroupsControl.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsGeneral.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsGeneral.ascx.vb"
+                    DependentUpon = "GroupsGeneral.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\GroupsGeneral.ascx.resx"
+                    DependentUpon = "GroupsGeneral.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\SelectGroups.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\SelectGroups.ascx.vb"
+                    DependentUpon = "SelectGroups.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Groups\SelectGroups.ascx.resx"
+                    DependentUpon = "SelectGroups.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\AddEditModules.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\AddEditModules.ascx.vb"
+                    DependentUpon = "AddEditModules.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\AddEditModules.ascx.resx"
+                    DependentUpon = "AddEditModules.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\ModulesGeneral.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\ModulesGeneral.ascx.vb"
+                    DependentUpon = "ModulesGeneral.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\ModulesGeneral.ascx.resx"
+                    DependentUpon = "ModulesGeneral.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\SelectModules.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\SelectModules.ascx.vb"
+                    DependentUpon = "SelectModules.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Modules\SelectModules.ascx.resx"
+                    DependentUpon = "SelectModules.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\AddEditRoles.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\AddEditRoles.ascx.vb"
+                    DependentUpon = "AddEditRoles.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\AddEditRoles.ascx.resx"
+                    DependentUpon = "AddEditRoles.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\EditRoles.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\EditRoles.ascx.vb"
+                    DependentUpon = "EditRoles.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\EditRoles.ascx.resx"
+                    DependentUpon = "EditRoles.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\RolesControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\RolesControl.ascx.vb"
+                    DependentUpon = "RolesControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\Roles\RolesControl.ascx.resx"
+                    DependentUpon = "RolesControl.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\EditStates.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\EditStates.ascx.vb"
+                    DependentUpon = "EditStates.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\EditStates.ascx.resx"
+                    DependentUpon = "EditStates.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\SelectStates.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\SelectStates.ascx.vb"
+                    DependentUpon = "SelectStates.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\SelectStates.ascx.resx"
+                    DependentUpon = "SelectStates.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesGeneral.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesGeneral.ascx.vb"
+                    DependentUpon = "StatesGeneral.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesGeneral.ascx.resx"
+                    DependentUpon = "StatesGeneral.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesYears.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesYears.ascx.vb"
+                    DependentUpon = "StatesYears.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\States\StatesYears.ascx.resx"
+                    DependentUpon = "StatesYears.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\AddEditWorkFlow.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\AddEditWorkFlow.ascx.vb"
+                    DependentUpon = "AddEditWorkFlow.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\AddEditWorkFlow.ascx.resx"
+                    DependentUpon = "AddEditWorkFlow.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlow.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlow.ascx.vb"
+                    DependentUpon = "SelectWorkFlow.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlow.ascx.resx"
+                    DependentUpon = "SelectWorkFlow.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlowItem.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlowItem.ascx.vb"
+                    DependentUpon = "SelectWorkFlowItem.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Administration\WorkFlow\SelectWorkFlowItem.ascx.resx"
+                    DependentUpon = "SelectWorkFlowItem.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\BusinessUnits\ChooseBusinessUnit.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\BusinessUnits\ChooseBusinessUnit.ascx.vb"
+                    DependentUpon = "ChooseBusinessUnit.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\BusinessUnits\ChooseBusinessUnit.ascx.resx"
+                    DependentUpon = "ChooseBusinessUnit.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Calendar\CalendarModule.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Calendar\CalendarModule.ascx.vb"
+                    DependentUpon = "CalendarModule.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Calendar\CalendarModule.ascx.resx"
+                    DependentUpon = "CalendarModule.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangeColors\ChangeColors.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangeColors\ChangeColors.ascx.vb"
+                    DependentUpon = "ChangeColors.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangeColors\ChangeColors.ascx.resx"
+                    DependentUpon = "ChangeColors.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangePassword\ChangePassword.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangePassword\ChangePassword.ascx.vb"
+                    DependentUpon = "ChangePassword.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\ChangePassword\ChangePassword.ascx.resx"
+                    DependentUpon = "ChangePassword.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Discussion\Discussion.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Discussion\Discussion.ascx.vb"
+                    DependentUpon = "Discussion.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Discussion\Discussion.ascx.resx"
+                    DependentUpon = "Discussion.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Encrypt\Encrypt.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Encrypt\Encrypt.ascx.vb"
+                    DependentUpon = "Encrypt.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Encrypt\Encrypt.ascx.resx"
+                    DependentUpon = "Encrypt.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\AccessDenied.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\AccessDenied.ascx.vb"
+                    DependentUpon = "AccessDenied.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\AccessDenied.ascx.resx"
+                    DependentUpon = "AccessDenied.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\Error.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\Error.ascx.vb"
+                    DependentUpon = "Error.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\Error.ascx.resx"
+                    DependentUpon = "Error.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\NotAvailable.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\NotAvailable.ascx.vb"
+                    DependentUpon = "NotAvailable.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\NotAvailable.ascx.resx"
+                    DependentUpon = "NotAvailable.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\UnknownRequest.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\UnknownRequest.ascx.vb"
+                    DependentUpon = "UnknownRequest.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Errors\UnknownRequest.ascx.resx"
+                    DependentUpon = "UnknownRequest.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\FileManagement\FileManagerControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\FileManagement\FileManagerControl.ascx.vb"
+                    DependentUpon = "FileManagerControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\FileManagement\FileManagerControl.ascx.resx"
+                    DependentUpon = "FileManagerControl.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\GUIDHelper.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\GUIDHelper.ascx.vb"
+                    DependentUpon = "GUIDHelper.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\GUIDHelper.ascx.resx"
+                    DependentUpon = "GUIDHelper.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\RandomNumbers.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\RandomNumbers.ascx.vb"
+                    DependentUpon = "RandomNumbers.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\GUID\RandomNumbers.ascx.resx"
+                    DependentUpon = "RandomNumbers.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\GenericHome.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\GenericHome.ascx.vb"
+                    DependentUpon = "GenericHome.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\GenericHome.ascx.resx"
+                    DependentUpon = "GenericHome.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\Home.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\Home.ascx.vb"
+                    DependentUpon = "Home.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Home\Home.ascx.resx"
+                    DependentUpon = "Home.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Messages\AddEditMessages.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Messages\AddEditMessages.ascx.vb"
+                    DependentUpon = "AddEditMessages.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\Messages\AddEditMessages.ascx.resx"
+                    DependentUpon = "AddEditMessages.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\WorkFlow\WorkFlowModule.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\WorkFlow\WorkFlowModule.ascx.vb"
+                    DependentUpon = "WorkFlowModule.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Modules\System\RightHand\WorkFlow\WorkFlowModule.ascx.resx"
+                    DependentUpon = "WorkFlowModule.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <Folder RelPath = "Pages\Common\" />
+                <File
+                    RelPath = "Pages\System\DatePicker.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Pages\System\DatePicker.aspx.vb"
+                    DependentUpon = "DatePicker.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Pages\System\DatePicker.aspx.resx"
+                    DependentUpon = "DatePicker.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Pages\System\ErrorPage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Pages\System\ErrorPage.aspx.vb"
+                    DependentUpon = "ErrorPage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Pages\System\ErrorPage.aspx.resx"
+                    DependentUpon = "ErrorPage.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Pages\System\TestPage.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Pages\System\TestPage.aspx.vb"
+                    DependentUpon = "TestPage.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Pages\System\TestPage.aspx.resx"
+                    DependentUpon = "TestPage.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Pages\System\TimeOut.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Pages\System\TimeOut.aspx.vb"
+                    DependentUpon = "TimeOut.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Pages\System\TimeOut.aspx.resx"
+                    DependentUpon = "TimeOut.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Pages\System\UnderConstruction.aspx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Pages\System\UnderConstruction.aspx.vb"
+                    DependentUpon = "UnderConstruction.aspx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "Pages\System\UnderConstruction.aspx.resx"
+                    DependentUpon = "UnderConstruction.aspx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "Pages\System\Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Scripts\JS\Common\common.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Scripts\JS\Common\floatingWindow.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Scripts\JS\Common\modalWindow.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Scripts\JS\Common\nifty.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "Scripts\JS\Common\skmMenu.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Web.config"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\Blue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\Main.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\Styles\roundedPage.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\ClientLogonInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\CopyRight.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\HierarchalMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\LeftHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\PageHeaderControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\RightHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\LeftHand\LeftHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\RightHand\RightHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\778899\UserControls\RightHand\RightHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\Blue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\Main.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\Styles\roundedPage.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\ClientLogonInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\CopyRight.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\HierarchalMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\LeftHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\PageHeaderControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\RightHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\LeftHand\LeftHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\RightHand\RightHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\8FBC8F\UserControls\RightHand\RightHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\black_lines_top.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\bullet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\menubg.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\right_curve.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\small_gray_line.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\space.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\thick_gray_line.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\top_curve.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Images\top_curveT.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Styles\Default.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\UserControls\System\LeftHand\Logon\Logon.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Arc\UserControls\System\LeftHand\Navigation\Navigation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\ascarrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\background.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\banner_rt-curve.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\banner_rt-end.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\banner-bg.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\CHCF-logobot.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\CHCF-logotop.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\downarrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\left-tab_bottom.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\left-tab_end.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\OK.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\pixel.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\rightarrow.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\search.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Images\topimage.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\Styles\style01.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CHCF\UserControls\System\LeftHand\Logon\Logon.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\blackbullet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\blank.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\footer_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\header_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\image_montage.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\logo_CWM_06.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\mainnav_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\mainnav_tab.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\Nav2_bgd.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Images\pdf_icon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\JS\udm-control.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\JS\udm-custom-root.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\JS\udm-dom.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\JS\udm-mod-keyboard.js"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Styles\styles.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\Styles\udm-style.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\UserControls\Salutations.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CMCC\UserControls\Salutations.ascx.vb"
+                    DependentUpon = "Salutations.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\CMCC\UserControls\Salutations.ascx.resx"
+                    DependentUpon = "Salutations.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\CMCC\UserControls\System\LeftHand\Logon\Logon.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\blackbullet.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\blank.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\footer_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\header_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\image_montage.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\logo_CWM_06.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\mainnav_bgd.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\mainnav_tab.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\Nav2_bgd.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Images\pdf_icon.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Styles\styles.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\Styles\udm-style.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\CommMed\UserControls\System\LeftHand\Logon\Logon.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Default.ascx.vb"
+                    DependentUpon = "Default.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\Default.ascx.resx"
+                    DependentUpon = "Default.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\Blue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\Main.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\Styles\roundedPage.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ApplicationInformation.ascx.vb"
+                    DependentUpon = "ApplicationInformation.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ApplicationInformation.ascx.resx"
+                    DependentUpon = "ApplicationInformation.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ClientLogonInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ClientLogonInformation.ascx.vb"
+                    DependentUpon = "ClientLogonInformation.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\ClientLogonInformation.ascx.resx"
+                    DependentUpon = "ClientLogonInformation.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\CopyRight.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\CopyRight.ascx.vb"
+                    DependentUpon = "CopyRight.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\CopyRight.ascx.resx"
+                    DependentUpon = "CopyRight.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\HierarchalMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\HierarchalMenu.ascx.vb"
+                    DependentUpon = "HierarchalMenu.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\HierarchalMenu.ascx.resx"
+                    DependentUpon = "HierarchalMenu.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHandModulesLoader.ascx.vb"
+                    DependentUpon = "LeftHandModulesLoader.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHandModulesLoader.ascx.resx"
+                    DependentUpon = "LeftHandModulesLoader.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LineMenu.ascx.vb"
+                    DependentUpon = "LineMenu.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LineMenu.ascx.resx"
+                    DependentUpon = "LineMenu.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\PageHeaderControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\PageHeaderControl.ascx.vb"
+                    DependentUpon = "PageHeaderControl.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\PageHeaderControl.ascx.resx"
+                    DependentUpon = "PageHeaderControl.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHandModulesLoader.ascx.vb"
+                    DependentUpon = "RightHandModulesLoader.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHandModulesLoader.ascx.resx"
+                    DependentUpon = "RightHandModulesLoader.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeader.ascx.vb"
+                    DependentUpon = "LeftHandModuleHeader.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeader.ascx.resx"
+                    DependentUpon = "LeftHandModuleHeader.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx.vb"
+                    DependentUpon = "LeftHandModuleHeaderFooter.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx.resx"
+                    DependentUpon = "LeftHandModuleHeaderFooter.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeader.ascx.vb"
+                    DependentUpon = "RightHandModuleHeader.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeader.ascx.resx"
+                    DependentUpon = "RightHandModuleHeader.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeaderFooter.ascx.vb"
+                    DependentUpon = "RightHandModuleHeaderFooter.ascx"
+                    SubType = "ASPXCodeBehind"
+                    BuildAction = "Compile"
+                />
+                <File
+                    RelPath = "UI\Default\UserControls\RightHand\RightHandModuleHeaderFooter.ascx.resx"
+                    DependentUpon = "RightHandModuleHeaderFooter.ascx.vb"
+                    BuildAction = "EmbeddedResource"
+                />
+                <File
+                    RelPath = "UI\FFA500\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\Blue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\Main.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\Styles\roundedPage.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\ClientLogonInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\CopyRight.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\HierarchalMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\LeftHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\PageHeaderControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\RightHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\LeftHand\LeftHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\RightHand\RightHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFA500\UserControls\RightHand\RightHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Images\Help\help.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\Blue.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\Main.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\niftyCorners.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\niftyPrint.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\Styles\roundedPage.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\ApplicationInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\ClientLogonInformation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\CopyRight.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\HierarchalMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\LeftHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\LineMenu.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\PageHeaderControl.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\RightHandModulesLoader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\LeftHand\LeftHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\LeftHand\LeftHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\RightHand\RightHandModuleHeader.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\FFF8DC\UserControls\RightHand\RightHandModuleHeaderFooter.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\applogo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\bottonside.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnHelp.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnHelp.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideAdmin.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideAdmin.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideChgpass.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideChgpass.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideContactMGT.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideContactMGT.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideHome.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideHome.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideLogout.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideLogout.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideReports.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchBene.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchBene.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchClaim.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchClaim.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchFI.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchFI.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchProvider.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSearchProvider.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSelectState.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSelectState.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSelectYear.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\btnSideSelectYear.mo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\contact.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\contact.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\imgCalendar.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\lefttab.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\lefttab.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\lefttabtest.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\lefttabtest.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\middlecross.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\middletab.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\middletab.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\middletabtest.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\middletabtest.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\righttab.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\righttab.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\righttabtest.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\righttabtest.on.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\topcross.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\umasslogo.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\uppermidleft.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Images\white_sm2.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\Styles\screens.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MAU\UserControls\System\LeftHand\Navigation\Navigation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Images\banner.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Images\umms.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Images\walgreenslogo1.jpg"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\Styles\styles.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\UserControls\System\LeftHand\Navigation\Navigation.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\UserControls\System\RightHand\Home\GenericHome.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\MedMetrics\UserControls\System\RightHand\Home\Home.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Default.ascx"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\black_line_left.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\black_line_right.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\blue_background_right.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\blue_section_bottom.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\blue_section_divider.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\blue_section_top.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\blue_topic_background.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\top_black_stripe.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\top_black_stripes.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\top_blue_curve.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Images\top_blue_strip.gif"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Styles\HierarchalMenu.css"
+                    BuildAction = "Content"
+                />
+                <File
+                    RelPath = "UI\Professional\Styles\Layout.css"
+                    BuildAction = "Content"
+                />
+            </Include>
+        </Files>
+    </VisualBasic>
+</VisualStudioProject>
+

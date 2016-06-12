@@ -1,0 +1,66 @@
+.Topic {background-color:#FFFFCC; border-top: thick solid #993300 3px; border-bottom: thick solid #993300 1px;border-left: thick solid #993300 1px;border-right: thick solid #993300 1px;}
+
+.DownColor1 {background-color:#FFFFCC;}
+.DownColor2 {background-color:#FFFFCC;}
+.DownBorder {border: thick solid #993300 2px;}
+
+.Down2Color1 {background-color:#;}
+.Down2Color2 {background-color:# ;}
+.Down2Border {border-top: thick solid #993300 5px; border-bottom: thick solid #993300 5px;}
+
+
+.CommentColor1 {background-color:#FFFFCC;}
+.CommentColor2 {background-color:#FFFFCC;}
+.CommentBorder {border: thick solid #993300 2px;}
+
+.Comment2Color1 {background-color:#FFFFCC;}
+.Comment2Color2 {background-color:#FFFFCC;}
+.Comment2Border {border:;}
+
+.StoryColor1 {background-color:#FFFFCC;}
+.StoryColor2 {background-color:#FFFFCC;}
+.StoryBorder {border: thick solid #993300 2px;}
+
+.Story2Color1 {background-color:#;}
+.Story2Color2 {background-color:#;}
+.Story2Border {border-top: thick solid #993300 5px; border-bottom: thick solid #993300 5px;}
+
+.BookColor1 {background-color:#FFFFCC; border: thick solid #993300 1px;}
+.BookColor2 {background-color:# ;}
+.BookBorder {border: thick solid #993300 2px;}
+
+.Book2Color1 {background-color:#FFFFCC;}
+.Book2Color2 {background-color:#FFFFCC;}
+.Book2Border {border-top: thick solid #993300 5px; border-bottom: thick solid #993300 5px;}
+
+.PhotoColor1 {background-color:#993300;}
+.PhotoColor2 {background-color:# ;}
+.PhotoBorder {border: ;}
+
+.Photo2Color1 {background-color:#;}
+.Photo2Color2 {background-color:#CCCCFF;}
+.Photo2Border {border-top: thick solid #993300 5px; border-bottom: thick solid #993300 5px;}
+
+.EventsColor1 {background-color:#FFFFCC; border: thick solid #993300 1px;}
+.EventsColor2 {background-color:# ;}
+.EventsBorder {border: thick solid #993300 2px;}
+
+.Events2Color1 {background-color:#;}
+.Events2Color2 {background-color:#;}
+.Events2Color3 {background-color:#;}
+.Events2Border {border-bottom: thick solid #993300 5px;}
+
+.LinksColor1 {background-color: ;}
+.LinksColor2 {background-color: ;}
+.LinksBorder {border-top: thick dashed #993300 1px;}
+
+.Links2Color1 {background-color:;}
+.Links2Color2 {background-color:#;}
+.Links2Color3 {background-color:#;}
+.Links2Border {border-top: thick solid #993300 5px;}
+
+.WebBoxColor  {background-color:;}
+.WebBoxBorder {border:;}
+
+.WebServiceColor1 {background-color:;}
+.WebServiceBorder {border-top: thick solid #993300 5px;}

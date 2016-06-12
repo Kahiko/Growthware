@@ -1,0 +1,36 @@
+--	run script Create DB.sql
+--	Note:
+--		ZB_CALENDAR is code populated and does not require any existing data
+--		ZB_NOTIFICATIONS is not used currently but will have a future use
+
+--	General location:
+--		C:\Base\BaseApplication\DBScripts
+
+
+-- Load the tables in the following order:
+
+--	ZB_PERMISSIONS		-- Permission types for the system
+--	ZB_RLS			-- Roles in the system
+--	ZB_GRPS			-- Groups in the system
+--	ZB_SYSTEM_STATUS	-- Status lookup
+--	ZB_STATES		-- States (currently 64)
+--	ZB_BUSINESS_UNITS	-- Business units
+
+--	ZB_NAVIGATION_TYPE	-- The types of navigation such as left hand ...
+--	ZB_MESSAGES		-- Contains any e-mail messages they system will use
+--	ZB_ZIPCODES		-- Zip code information
+--	ZB_ACCOUNTS		-- Accounts that are used by the system
+
+--	ZB_MODULES		-- Modules or pages used within the system
+--	ZB_ACCOUNT_CHOICES	-- Any choice a client may make during the use of the system
+--	ZB_DIRECTORIES		-- Information about directories that can be exposed through the app
+--	ZB_DROP_BOXES		-- Any drop down box that can be populated when some has the correct role
+--	ZB_DROP_BOX_DETAIL	-- Drop down values
+
+--	ZB_BU_SECURITY		-- Roles or groups for any given business unit
+--	ZB_ACCTS_SECURITY	-- Roles or groups for any given account
+--	ZB_MODULES_SECURITY	-- Access permissions by role or group by business unit
+--	ZB_DROP_BOX_SECURITY	-- Roles or groups that can edit the contents of a drop down
+--	ZB_WORK_FLOWS		-- Contains work flows
+	
+	

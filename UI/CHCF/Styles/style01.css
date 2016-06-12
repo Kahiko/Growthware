@@ -1,0 +1,386 @@
+/* Style Sheet for Medicaid School Based Claiming */
+
+.rowheader
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: bold}
+
+.generalcontent
+{color: #000000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal}
+
+.subleftlinks
+{color: #000000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.mainleftlinks
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: none}
+
+.currentsubleftlinks
+{color: #CC0000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.toplinks
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.currentmainleftlinks
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: none}
+
+.tinylinks
+{color: #0000FF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: normal;
+text-decoration: underline}
+
+.headerlinks
+{
+	color: #333399;
+	text-decoration: none;
+	font: bold 8pt Verdana, Arial, Helvetica, sans-serif;
+}
+
+.subleftlinks:hover
+{color: #CC0000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.mainleftlinks:hover
+{color: #FFCC66;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: none}
+
+.toplinks:hover
+{color: #EFC78C;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.tinylinks:hover
+{color: #CC0000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: normal;
+text-decoration: underline}
+
+.headerlinks:hover
+{color: #3333FF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: underline}
+
+.loginlinks
+{color: #003366 ;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+text-decoration: none}
+
+.loginlinks:hover
+{color: #094FA4;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: bold;
+text-decoration: underline}
+
+.maintitle
+{color: #330000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 16pt;
+font-weight: bold}
+
+#topzone
+{background-color: #C0C0C0}
+
+#leftzone
+{background-color: #A6A9C5}
+
+#applicationzone
+{background-color: #FFFFFF;
+background-position: top}
+
+#right
+{text-align: right}
+
+#left
+{text-align: left}
+
+#center
+{text-align: center}
+
+#top
+{vertical-align: top}
+
+#bottom
+{vertical-align: bottom}
+
+#topright
+{text-align: right;
+vertical-align: top}
+
+#bottomright
+{text-align: right;
+vertical-align: bottom}
+
+#mainleftlinkzone
+{
+	background: #00675e;
+}
+
+#expandedlinkzone
+{background-color: #EEEEEE}
+
+#band
+{background-color: #9999CC}
+
+#rowheader
+{
+	background: #00675e;
+}
+
+#greyseparator
+{background-color: #666666}
+
+#lightgreyseparator
+{background-color: #EEEEEE}
+
+#whiteseparator
+{background-color: #FFFFFF}
+
+#blackseparator
+{background-color: #000000}
+
+.smallcontent
+{font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 7.5pt;
+text-decoration: none}
+
+.rowheaderlinks
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: none}
+
+.rowheaderlinks:hover
+{color: #FFFFFF;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold;
+text-decoration: underline}
+
+.pagetitle
+{color: #000099;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: bold}
+
+#currentleftlinkzone
+{background-color: #000066}
+
+.content
+{color: #000000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 10pt}
+
+#listheader
+{
+	background: #00675e;
+}
+
+#yellowband
+{background-color: #607C9F}
+
+#listrow
+{
+	background: #f6eee8;
+}
+
+.generalcontentheading
+{color: #000000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: bold}
+
+#listsubheader
+{
+	background: #00675e;
+}
+
+#search
+{
+	background: #f6eee8;
+}
+
+#mainleftlinkzoneover
+{
+	background: #003990;
+}
+
+.confirmmessage
+{color: #990000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 9pt;
+font-weight: normal}
+
+.currenttab
+{color: #FFCC66;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8pt;
+font-weight: bold}
+
+#vmiddle
+{vertical-align: middle}
+
+.label
+{color: #000099;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal}
+
+.required
+{color: #cf0000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 9pt;
+font-weight: bold}
+
+.pageheader
+{color: #000099;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 9pt;
+font-weight: bold}
+
+.tablecontent
+{font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: 8.5pt;
+font-weight: normal;
+padding-right: 25px;
+text-indent: 3px}
+
+.error
+{color: #CC0000;
+font-family: Verdana, Arial, Helvetica, sans-serif;
+font-size: x-large;
+font-style: normal;
+font-weight: bold}
+
+.errorcode
+{font-family: Arial, Helvetica, sans-serif;
+font-size: 13pt;
+font-weight: bold}
+
+.errordescription
+{font-family: Arial, Helvetica, sans-serif;
+font-size: 12pt}
+
+.messageBG { background-color: #FFFFFF; }
+.messageText {  font-family: Verdana, Arial, Helvetica, sans-serif;
+                font-weight: bold; font-size: 8.5pt; color: #30B030; }
+.errorBG { background-color: #FFFFFF; }
+.errorText {  font-family: Verdana, Arial, Helvetica, sans-serif;
+              font-weight: bold; font-size: 8.5pt; color: #E02020; }
+
+.iepDisabledLink {color: #808080;
+                    font-family: Verdana, Arial, Helvetica, sans-serif;
+                    font-size: 8.5pt; font-weight: normal; text-decoration: underline}
+
+.formentry {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; color: #000000; text-decoration: none}
+.formtext {  font-family: Arial, Helvetica, sans-serif; font-size: 11pt; color: #094FA4; }
+.titletext {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 12pt; color: #094FA4;; font-weight: bold}
+.formtext_bold {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8.5pt; color: #094FA4; font-weight: bold}
+.formtext_crimson {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; color: #993333; }
+.formentry_color {  font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 10pt; color: #094FA4; }
+
+.sbc-title {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 12pt; font-weight: bold; color: #094FA4;
+}
+
+.sbc-subtitle {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 9pt; font-weight: bold; color: #094FA4;
+}
+
+.header-links {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 8pt; font-weight: bold; color: #333399;
+}
+
+.small-content {
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-size: 7.5pt; font-weight: normal; color: #094FA4;
+}
+
+/* From style.css - Captain's of industry */
+
+.h1 {
+	font: 20px Arial, Helvetica, sans-serif;
+	color: #006699;
+}
+.h2 {
+	font: bold 16px Arial, Helvetica, sans-serif;
+	color: #006699;
+}
+.h3 {
+	font: 14px Arial, Helvetica, sans-serif;
+	color: #006699;
+}
+.h4 {
+	font: bold 11px Arial, Helvetica, sans-serif;
+	color: #006699;
+}
+p, td, li {
+	font: 12px Arial, Helvetica, sans-serif;
+	color: #000000;
+}
+
+.small {
+	font: 9px Arial, Helvetica, sans-serif;
+}
+.beige {
+	background: #f1e5db;
+	border: none;
+
+}
+.appsidenav {
+	font: 400 12px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+.appheadnav {
+	font: 400 12px Arial, Helvetica, sans-serif;
+	color: #FFFFFF;
+}
+.appheadnavselected {
+	font: 400 12px Arial, Helvetica, sans-serif;
+	color: #FFCC33;
+}
+
+
+

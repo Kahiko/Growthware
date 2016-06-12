@@ -1,0 +1,134 @@
+<%@ Register TagPrefix="CustomWebControls" Namespace="Common.CustomWebControls" Assembly="CustomWebControls" %>
+<%@ Control Language="vb" AutoEventWireup="false" Codebehind="ViewReportOnDemand.ascx.vb" Inherits="BaseApplication.ViewReportOnDemand" TargetSchema="http://schemas.microsoft.com/intellisense/ie5" %>
+<table cellSpacing=0 cellPadding=0 width="100%" border=0>
+	<tr>
+		<td>
+			<asp:button id=btnRefresh Runat="server" Text="Refresh"></asp:button>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;&nbsp;<CUSTOMWEBCONTROLS:ALPHAPICKER id="AlphaPicker" Runat="Server"></CUSTOMWEBCONTROLS:ALPHAPICKER></CUSTOMWEBCONTROLS:ALPHAPICKER>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<table>
+				<tr>
+					<td>
+						<table>
+							<tr>
+								<td>Records Per Page:</td>
+							</tr>
+							<tr>
+								<td>
+									<asp:textbox id="txtRecordsPerPage" Runat="server" AutoPostBack="True">10</asp:textbox>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>Sort By:</td>
+							</tr>
+							<tr>
+								<td>
+									<asp:dropdownlist id="dropSortBy" Runat="Server" AutoPostBack="True">
+										<asp:ListItem Text="Title" Value="0"></asp:ListItem>
+										<asp:ListItem Text="ID" Value="1"></asp:ListItem>
+									</asp:dropdownlist>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>Order By:</td>
+							</tr>
+							<tr>
+								<td>
+									<asp:dropdownlist id="dropOrderBy" Runat="Server" AutoPostBack="True">
+										<asp:ListItem Text="Ascending" value="0" Selected="True"></asp:ListItem>
+										<asp:ListItem Text="Descending" value="1"></asp:ListItem>
+									</asp:dropdownlist>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>By Report Name:</td>
+							</tr>
+							<tr>
+								<td>
+									<asp:TextBox ID="txtReportName" Runat="server"></asp:TextBox>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td>
+						<table>
+							<tr>
+								<td>By Report ID:</td>
+							</tr>
+							<tr>
+								<td>
+									<asp:TextBox ID="txtReportID" Runat="server"></asp:TextBox>
+								</td>
+							</tr>
+						</table>
+					</td>
+					<td valign="top">
+						<asp:Button ID="btnSearch" Text="Search" Runat="server"></asp:Button>
+					</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<asp:datagrid id=dgReportResults 
+					runat="server" 
+					AutoGenerateColumns="false" 
+					EnableViewState="true" 
+					Font-Names="verdana" 
+					AllowPaging="True" 
+					Allowsorting="True"
+					Font-Name="verdana" 
+					Font-Size="8pt" 
+					BorderColor="#999999" 
+					BorderStyle="None" 
+					BorderWidth="1px" 
+					BackColor="White" 
+					CellPadding="3" 
+					GridLines="Vertical" 
+					Width="100%">
+				<SelectedItemStyle Font-Bold="True" ForeColor="White" BackColor="#008A8C"></SelectedItemStyle>
+				<AlternatingItemStyle BackColor="Gainsboro"></AlternatingItemStyle>
+				<ItemStyle ForeColor="Black" BackColor="#EEEEEE"></ItemStyle>
+				<HeaderStyle Font-Bold="True" ForeColor="White" BackColor="#000084"></HeaderStyle>
+				<FooterStyle ForeColor="Black" BackColor="#CCCCCC"></FooterStyle>
+				<Columns>
+					<asp:TemplateColumn HeaderText="Report Name">
+						<HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+						<ItemTemplate>
+							<a href='?Action=ViewReport&server=page&id=<%# DataBinder.Eval(Container.DataItem, "ID") %>' target='_blank'><%# DataBinder.Eval(Container.DataItem, "Title") %></a>
+						</ItemTemplate>
+					</asp:TemplateColumn>
+					<asp:BoundColumn DataField="Description" ReadOnly="True" HeaderText="Report Description">
+						<HeaderStyle HorizontalAlign="Center"></HeaderStyle>
+					</asp:BoundColumn>
+				</Columns>
+				<PagerStyle HorizontalAlign="Center" ForeColor="Black" BackColor="#999999" Mode="NumericPages"></PagerStyle>
+			</asp:datagrid>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<asp:PlaceHolder ID="plcReportsList" Runat="server"></asp:PlaceHolder>
+		</td>
+	</tr>
+</table>

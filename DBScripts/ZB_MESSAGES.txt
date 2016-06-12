@@ -1,0 +1,24 @@
+1,1,"ClientRequestChange","Request Change of Password","This email message has been  sent to you when a password reset was requested","Dear <FullName>,
+
+There has been a request for a password change: 
+
+    Please Use this link to logon:
+ <Server>Default.aspx?Action=Logon&Account=<Username>&Password=<Password>
+
+Please note once you have logged on using this link you will only be able to change your password.  After you have chosen a new password the above link will not longer work.
+
+Thank you"
+2,1,"NewAccount","New Account","This email message has been  sent to you for the new account you have requested","Dear <FullName>,
+
+There has been a request for a New Account: 
+
+    Please Use this link to logon:
+ <Server>Default.aspx?Action=Logon&Account=<Username>&Password=<Password>
+
+You will need to change your password once you have logged on."
+3,1,"NewAccountConfirm","New Account Created","This email message has been sent to you for a confirmation of the new account creation you have requested","Dear <FullName>,
+
+There has been a request for a New Account"
+4,1,"Notify New Account","Notification of new account creation","This email is to notify when a new account has been created","Dear <FullName>,
+
+A new account has been created for <Username>."
