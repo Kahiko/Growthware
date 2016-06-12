@@ -1,0 +1,500 @@
+<html>
+<head>
+    <public:component tagName="HtmlDesigner">
+        <public:defaults viewLinkContent />
+        <public:defaults viewInheritStyle="false" />
+        <public:defaults tabStop="true" />
+        <public:defaults viewMasterTab="false" />
+        <public:property name="html" get="get_html" put="set_html" />
+        <public:property name="HTMLDepth" put="set_allowHtml" />
+        <public:event id="htmlChangedEvent" name="onHtmlChanged" />
+        <public:attach event="onDocumentReady" onevent="OnDocumentReady()" />
+    </public:component>
+    <style>
+        #editorTable
+        {
+            background-color: threedface;
+            border: 1px outset;
+        }
+
+
+
+        #editorDiv
+        {
+            background-color: white;
+            overflow-x: auto;
+            overflow-y: scroll;
+            border: 1px inset threedface; 
+            padding: 4px;
+            font: 12pt Times;
+        }
+
+        #editorTextArea
+        {
+            border: solid 1px threedface; 
+            padding: 4px;
+            border: 1px inset threedface; 
+            font: 10pt Times;
+        }
+
+
+
+        p 
+        {
+            margin:0px;
+        }
+
+        
+
+        pre 
+        {
+            word-wrap:break-word;
+            padding:5px;
+            margin-bottom:0px;
+            margin-top:0px;
+            margin-right:0px;
+            margin-left:10px;
+            background-color: #eeeeee;
+            font: 10px normal Lucida Console;
+        }
+
+        
+
+        .toolbarButton 
+        {
+            margin:1px;border:1px outset threedface
+        }
+
+    </style>
+    <script language="JavaScript">
+
+        var _allowHtml = 'Limited';
+        var _initBackColor = null;
+        var _initForeColor = null;
+        var _emotePopup = window.createPopup();
+        var _appImagePath;
+
+        // assign default styles
+        element.style.overflow = 'visible';
+        
+
+        
+        function get_html() {
+           if (_allowHtml == 'Full' && viewHtmlCheckBox.checked == true) {
+                return editorTextArea.value;
+           } else {
+                return editorDiv.innerHTML;
+           }
+        }
+
+
+        function set_html(data) {
+           if (_allowHtml == 'Full' && viewHtmlCheckBox.checked == true) {
+                return editorTextArea.value;
+           } else {
+                editorDiv.innerHTML = data;
+           }
+        }
+
+
+
+        function set_allowHtml(data) {
+            _allowHtml = data;
+        }
+
+
+
+
+
+        function OnBlurEditorDiv(divElement) {
+            htmlChangedEvent.fire();
+        }
+
+        function OnBlurEditorTextArea(textAreaElement) {
+            htmlChangedEvent.fire();
+        }
+
+
+
+        function AddToolbars() {
+            var toolRow;
+            var toolCell;
+
+            // Create the formatting row
+            toolRow = toolbarTable.insertRow(0);
+ 
+            // Add Bold option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Bold.gif', 'DoFormat(\'Bold\')', 'bold' );
+
+            // Add Italic option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Italic.gif', 'DoFormat(\'Italic\')', 'italic' );
+
+            // Add Underline option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Underline.gif', 'DoFormat(\'Underline\')', 'underline' );
+
+
+            // Add Divider
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = dividerToolbarCell();
+
+
+            // Add BulletList option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('bulletlist.gif', 'DoFormat(\'InsertUnorderedList\')', 'bullet list' );
+
+            // Add NumberList option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('numberlist.gif', 'DoFormat(\'InsertOrderedList\')', 'number list' );
+
+
+            // Add Divider
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = dividerToolbarCell();
+
+            // Add Link option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('link.gif', 'AddLink()' );
+
+
+            // Add Forecolor option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('forecolor.gif', 'CallForeColorDlg()' );
+
+
+            // Add Backcolor option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('backcolor.gif', 'CallBackColorDlg()' );
+
+
+            // Add Divider
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = dividerToolbarCell();
+
+            // Add Indent option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Indent.gif', 'DoFormat(\'Indent\')', 'indent' );
+
+
+            // Add Outdent option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Outdent.gif', 'DoFormat(\'Outdent\')', 'outdent' );
+
+
+            // Add Divider
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = dividerToolbarCell();
+
+
+            // Left Align option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('LeftAlign.gif', 'DoFormat(\'JustifyLeft\')', 'left align' );
+
+
+            // Center Align option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('CenterAlign.gif', 'DoFormat(\'JustifyCenter\')', 'center align' );
+
+
+            // Right Align option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('RightAlign.gif', 'DoFormat(\'JustifyRight\')', 'right align' );
+
+            // Add Divider
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = dividerToolbarCell();
+
+            // Emoticons option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Smile.gif', 'CallEmoticonDlg(this)', 'add emoticon' );
+
+            // Paste code option
+            toolCell = toolRow.insertCell();
+            toolCell.innerHTML = formatToolbarCell('Code.gif', 'PasteCode()', 'paste code' );
+
+        }
+
+
+
+        function formatToolbarCell(image, clickAction, description) {
+            return '<img width="23" height="22" src="' + _appImagePath + image + '" class="toolbarButton" onmousedown="htmlToolDown()" onmouseup="htmlToolUp()" onclick="' + clickAction + '" alt="' + description + '"/>';
+        }
+
+
+        function dividerToolbarCell() {
+            return '<img width="10" height="22" src="' + _appImagePath + 'divider.gif" />';
+        }
+
+
+        function DoFormat(action) {
+            editorDiv.focus();
+            document.execCommand(action);
+
+        }
+
+
+        function AddLink() {
+            editorDiv.focus();
+            document.execCommand('CreateLink', true, '');
+        }
+
+
+        // Open the color dialog box for foreground color
+        function CallForeColorDlg(){
+            editorDiv.focus();
+
+            //if _initForeColor is null, the color dialog box has not yet been called
+            if (_initForeColor == null) 
+	           var sColor = document.dlgHelper.ChooseColorDlg();
+            else
+            //call the dialog box and initialize the color to the color previously chosen
+	           var sColor = document.dlgHelper.ChooseColorDlg(_initForeColor);
+            //change the return value from a decimal value to a hex value and make sure the value has 6
+            //digits to represent the RRGGBB schema required by the color table
+	           sColor = sColor.toString(16);
+            if (sColor.length < 6) {
+                var sTempString = "000000".substring(0,6-sColor.length);
+                sColor = sTempString.concat(sColor);
+            }
+	       document.execCommand('ForeColor', false, sColor);
+	       
+            //set the initialization color to the color chosen
+	       _initForeColor = sColor;
+        }
+
+
+        // Open the color dialog box for background color
+        function CallBackColorDlg(){
+            editorDiv.focus();
+            //if _initBackColor is null, the color dialog box has not yet been called
+            if (_initBackColor == null) 
+	           var sColor = document.dlgHelper.ChooseColorDlg();
+            else
+            //call the dialog box and initialize the color to the color previously chosen
+	           var sColor = document.dlgHelper.ChooseColorDlg(_initBackColor);
+            //change the return value from a decimal value to a hex value and make sure the value has 6
+            //digits to represent the RRGGBB schema required by the color table
+	           sColor = sColor.toString(16);
+            if (sColor.length < 6) {
+                var sTempString = "000000".substring(0,6-sColor.length);
+                sColor = sTempString.concat(sColor);
+            }
+	       document.execCommand('BackColor', false, sColor);
+	       
+            //set the initialization color to the color chosen
+	       _initBackColor = sColor;
+        }
+
+
+    
+
+
+        function OnDocumentReady() {
+
+            // set editors width and height
+            editorDiv.style.width = element.style.width;
+            editorDiv.style.height = element.style.height;
+            editorTextArea.style.width = element.style.width;
+            editorTextArea.style.height = element.style.height;
+
+            // display the checkbox when allowHTML is not full
+            if (_allowHtml == 'Full') {
+                editorTable.rows(2).style.display = '';
+            } else {
+                editorTable.deleteRow(2);
+            }
+
+            // Initialize emoticon popup
+            var emotePopBody = _emotePopup.document.body;
+        
+            // format popup
+            emotePopBody.style.backgroundColor = "lightyellow";
+            emotePopBody.style.border = "solid black 1px";
+        
+
+            // Retrieve values from parent
+            var _emoticonList = document.parentWindow.emoticonList;
+            var _appBasePath = document.parentWindow.appBasePath;
+            var _emoticonPath = _appBasePath + 'Images/Emoticons/';
+
+            // populate emoticon images
+            for(var i=0;i < _emoticonList.length;i++)
+                emotePopBody.innerHTML += '<img hspace="2" vspace="2" src="' + _emoticonPath + _emoticonList[i] + '" />'; 
+
+
+            emotePopBody.onclick = AddEmoticon;
+
+            // Add toolbar options
+            _appImagePath = _appBasePath + 'Images/HtmlTextBox/';
+            AddToolbars();
+        }
+
+
+
+        function AddEmoticon() {
+            var emoticon = _emotePopup.document.parentWindow.event.srcElement;
+            editorDiv.focus();
+            sel = editorDiv.document.selection.createRange();
+            sel.pasteHTML('<img unselectable="on" src="' + emoticon.src + '" />');            
+            _emotePopup.hide();
+        }
+
+
+        function PasteCode() {
+            editorDiv.focus();
+            document.execCommand('FormatBlock', false, 'Formatted');
+            document.execCommand('Paste');
+        }
+
+
+        // don't allow pasting html
+        function preventPaste() {
+
+            var clipData = clipboardData.getData("Text");
+            if (clipData == 'null') {
+                clipboardData.clearData();
+                return;
+            }
+            var oTextArea = document.createElement("TEXTAREA");
+            oTextArea.value = clipData;
+            var objText = oTextArea.createTextRange();
+            objText.execCommand("RemoveFormat");
+            objText.execCommand("Unlink");
+            
+            objText.execCommand("Copy");
+        }
+
+
+
+
+        function OnClickShowHtmlCheckBox(checkBoxElement) {
+            if (viewHtmlCheckBox.checked == true) {
+                editorTextArea.value = editorDiv.innerHTML;
+                toolbarTable.style.display = 'none';
+                editorDiv.style.display = 'none';
+                editorTextArea.style.display = '';
+                editorTextArea.focus();
+            } else {
+                editorDiv.innerHTML = editorTextArea.value;
+                toolbarTable.style.display = '';
+                editorTextArea.style.display = 'none';
+                editorDiv.style.display = '';
+                editorDiv.focus();
+            }
+        }
+
+
+        function CallEmoticonDlg(toolButton) {
+            _emotePopup.show(30, 30, 100, 100, toolButton);
+        }
+
+
+        // when user depresses button, show as inset
+        function htmlToolDown() {
+            window.event.srcElement.style.borderStyle = 'inset';
+        }
+        
+        // when user releases button, show as outset
+        function htmlToolUp() {
+            window.event.srcElement.style.borderStyle = 'outset';
+        }
+
+
+        function FormatBlock() {
+            editorDiv.focus();
+        	var oSource = window.event.srcElement;
+	        document.execCommand("FormatBlock", false, oSource.options[oSource.selectedIndex].value );
+        }
+
+        function FormatTypeFace() {
+           editorDiv.focus();
+	       var oSource = window.event.srcElement;
+	       document.execCommand("FontName", false, oSource.options[oSource.selectedIndex].value);
+        }
+
+        function FormatTypeSize() {
+            editorDiv.focus();
+	       var oSource = window.event.srcElement;
+	       document.execCommand("FontSize", false, oSource.options[oSource.selectedIndex].value);
+        }
+
+    </script>
+
+</head>
+<body unselectable="on">
+    <OBJECT id=dlgHelper CLASSID="clsid:3050f819-98b5-11cf-bb82-00aa00bdce0b" width="0px" height="0px"></OBJECT>
+    <table id="editorTable" height="100%" cellspacing="0" cellpadding="2" width="100%" border="0">
+    <tr>
+        <td>
+        <table id="toolbarTable" cellspacing="0" cellpadding="1">
+        <tr>
+            <td colspan="7">
+            <select name="blockFormat" onchange="FormatBlock()">
+                <option value="Normal">Normal</option>
+                <option value="Formatted">Formatted</option>
+                <option value="Bulleted List">Bulleted List</option>
+                <option value="Numbered List">Numbered List</option>
+                <option value="Heading 1">Heading 1</option>
+                <option value="Heading 2">Heading 2</option>
+                <option value="Heading 3">Heading 3</option>
+                <option value="Heading 4">Heading 4</option>
+                <option value="Heading 5">Heading 5</option>
+                <option value="Heading 6">Heading 6</option>
+                <option value="Address">Address</option>
+                <option value="Directory List">Directory List</option>
+                <option value="Menu List">Menu List</option>
+            </select>
+            </td>
+            <td colspan="7">
+            <select name="typeface" onchange="FormatTypeFace()">    
+                <option value="Times New Roman\">Times New Roman</option>
+                <option value="Arial">Arial</option>
+                <option value="Comic Sans MS">Comic Sans MS</option>
+                <option value="Courier">Courier</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Impact">Impact</option>
+                <option value="Lucida Console">Lucida Console</option>
+                <option value="Tahoma">Tahoma</option>
+                <option value="Verdana">Verdana</option>
+                <option value="Wingdings">Wingdings</option>
+            </select>    
+            </td>
+            <td>
+            <select name="typesize" onchange="FormatTypeSize()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3" selected="selected">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+            </select>
+            </td>
+        </tr>
+        </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+        <textarea id="editorTextArea" 
+            onblur="OnBlurEditorTextArea(this)"
+            style="display:none;"></textarea>
+        <div id="editorDiv" 
+            tabIndex="1"
+            onblur="OnBlurEditorDiv(this)"
+            class="htmlDesigner"
+            onpaste="preventPaste()"
+            contentEditable="true"></div>
+        </td>
+    </tr>  
+    <tr style="display:none">
+        <td align="right" width="100%">
+            <input id="viewHtmlCheckBox" onclick="OnClickShowHtmlCheckBox(this)" type="checkbox" />
+            <label unselectable="on" style="font:11px Arial">View HTML Source</label>
+        </td>
+    </tr>  
+    </table>
+</body>
+</html>

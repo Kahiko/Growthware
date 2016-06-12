@@ -1,4 +1,0 @@
-1,"SysAdmin","System Administrator",True,True
-2,"Anonymous","Anonymous",True,False
-3,"Authenticated","Authenticated accounts",True,True
-4,"Super User","Super User",True,False

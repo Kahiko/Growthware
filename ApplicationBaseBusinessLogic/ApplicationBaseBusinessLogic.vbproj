@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E16BA3D-6B66-4ABE-A927-B78A0DD82352}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ApplicationBase.BusinessLogic</RootNamespace>
+    <AssemblyName>ApplicationBaseBusinessLogic</AssemblyName>
+    <MyType>Windows</MyType>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DocumentationFile>ApplicationBaseBusinessLogic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DocumentationFile>ApplicationBaseBusinessLogic.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BAccount.vb" />
+    <Compile Include="BAppModules.vb" />
+    <Compile Include="BBusinessUnits.vb" />
+    <Compile Include="BCalendarData.vb" />
+    <Compile Include="BClientChoices.vb" />
+    <Compile Include="BDirectoryInfo.vb" />
+    <Compile Include="BDropBox.vb" />
+    <Compile Include="BGroups.vb" />
+    <Compile Include="BMessages.vb" />
+    <Compile Include="BNavMenu.vb" />
+    <Compile Include="BRoles.vb" />
+    <Compile Include="BSecurityReports.vb" />
+    <Compile Include="BStates.vb" />
+    <Compile Include="BTestOracle.vb" />
+    <Compile Include="BWorkFlows.vb" />
+    <Compile Include="ClientChoices\ClientChoicesState.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ApplicationBaseCommon\ApplicationBaseCommon.vbproj">
+      <Project>{88A0C10D-6703-4440-B281-94EA193B5877}</Project>
+      <Name>ApplicationBaseCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationBaseDALFactory\ApplicationBaseDALFactory.vbproj">
+      <Project>{529E4723-C600-42C5-9EA1-CA1D3A796763}</Project>
+      <Name>ApplicationBaseDALFactory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationBaseDALInterface\ApplicationBaseDALInterface.vbproj">
+      <Project>{ED318B2C-AF17-4BBA-A79F-884B4FF7544B}</Project>
+      <Name>ApplicationBaseDALInterface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ApplicationBaseDALModel\ApplicationBaseDALModel.vbproj">
+      <Project>{EA47D6E0-45A9-4864-9880-2363F5AB4AE8}</Project>
+      <Name>ApplicationBaseDALModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

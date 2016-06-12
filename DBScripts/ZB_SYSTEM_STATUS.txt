@@ -1,4 +1,0 @@
-0,"Active                   "
-1,"Change Password          "
-2,"Disabled                 "
-3,"Inactive                 "

@@ -1,0 +1,287 @@
+HTML {
+	WIDTH: 800px
+}
+HEAD {
+	WIDTH: 800px
+}
+BODY {
+	WIDTH: 800px
+}
+BODY {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; BACKGROUND: #fff; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 0.81em/1.2em Arial, Helvetica, Verdana, sans-serif; COLOR: #000; PADDING-TOP: 0px
+}
+A:link {
+	COLOR: blue;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:link.NavTrail {
+	COLOR: White;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:link.VerticalMenu {
+	COLOR: Black;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:visited {
+	COLOR: blue;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:visited.NavTrail {
+	COLOR: White;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:visited.VerticalMenu {
+	COLOR: Black;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:hover {
+	COLOR: blue;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:hover.NavTrail {
+	COLOR: White;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:hover.VerticalMenu {
+	COLOR: Black;
+	FONT-SIZE: 1em;
+	TEXT-DECORATION: none
+}
+
+A:active {
+	COLOR: blue
+}
+H1 {
+	MARGIN-TOP: 0px; FONT: bold 1.4em Arial, Helvetica, Verdana, sans-serif; COLOR: #1a2c81
+}
+.H1homepage {
+	MARGIN: 0px 0px 12px; FONT: bold 1.8em Times, serif; COLOR: #1a2c81
+}
+P {
+	MARGIN-TOP: 0px
+}
+FORM {
+	MARGIN: 0px
+}
+#skipnav {
+	LEFT: -600px; WIDTH: 500px; POSITION: absolute; TOP: 0px
+}
+#container {
+	
+}
+#Header {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 100; BACKGROUND: url(http://localhost/CMCCWeb/ui/commmed/Images/mainnav_bgd.gif) repeat-x 50% bottom; LEFT: 0px; PADDING-BOTTOM: 0px; WIDTH: 798px; PADDING-TOP: 0px; POSITION: absolute; TOP: 0px; HEIGHT: 96px
+}
+#logoArea {
+	Z-INDEX: 101; BACKGROUND: url(http://localhost/CMCCWeb/ui/commmed/images//header_bgd.gif) white repeat-x 50% bottom; LEFT: 0px; WIDTH: 208px; POSITION: relative; TOP: 0px; HEIGHT: 96px
+}
+#logo IMG {
+	BORDER-TOP-WIDTH: 0px; BORDER-LEFT-WIDTH: 0px; Z-INDEX: 101; BACKGROUND: url(http://localhost/CMCCWeb/ui/commmed/Images/logo_CWM_06.gif) white no-repeat left top; LEFT: 10px; BORDER-BOTTOM-WIDTH: 0px; WIDTH: 184px; POSITION: relative; TOP: 10px; HEIGHT: 65px; BORDER-RIGHT-WIDTH: 0px
+}
+#logo H1 SPAN {
+	DISPLAY: none
+}
+#logo H2 SPAN {
+	DISPLAY: none
+}
+#extraDiv1 {
+	Z-INDEX: 102; BACKGROUND: url(http://localhost/CMCCWeb/ui/commmed/Images/mainnav_tab.gif) no-repeat left top; LEFT: 208px; WIDTH: 14px; POSITION: absolute; TOP: 64px; HEIGHT: 32px
+}
+#BannerArea {
+	Z-INDEX: 103; BACKGROUND: url(http://localhost/CMCCWeb/ui/commmed/Images/image_montage.jpg) #626bb0 no-repeat right top; WIDTH: 798px; HEIGHT: 113px
+}
+#BannerArea IMG {
+	Z-INDEX: 103; WIDTH: 798px; HEIGHT: 113px
+}
+#ContentArea {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 100; LEFT: 177px; PADDING-BOTTOM: 0px; WIDTH: 621px; PADDING-TOP: 0px; POSITION: relative; TOP: 0px
+}
+#Content {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 22px; FONT: 0.93em/1.3em Arial, Helvetica, Verdana, sans-serif; WIDTH: 392px; PADDING-TOP: 22px
+}
+#NewsIframe {
+	BORDER-RIGHT: #e9c299 2px solid; BORDER-TOP: #e9c299 2px solid; FLOAT: right; BORDER-LEFT: #e9c299 2px solid; WIDTH: 210px; BORDER-BOTTOM: #e9c299 2px solid; BACKGROUND-COLOR: #f3e2d1
+}
+#Content #NewsIframe {
+	BORDER-RIGHT: #e9c299 2px solid; BORDER-TOP: #e9c299 2px solid; LEFT: 407px; BORDER-LEFT: #e9c299 2px solid; WIDTH: 210px; BORDER-BOTTOM: #e9c299 2px solid; POSITION: absolute; TOP: 0px; BACKGROUND-COLOR: #f3e2d1
+}
+#NewsIframe H3 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 10px; PADDING-BOTTOM: 8px; MARGIN: 0px; FONT: bold italic 1.5em serif; COLOR: #000; PADDING-TOP: 8px; BORDER-BOTTOM: #4b63ae 4px solid
+}
+#NewsIframeBottom {
+	FONT-SIZE: 0.6em; HEIGHT: 6px
+}
+#iframed2 {
+	BORDER-TOP-WIDTH: 0px; PADDING-RIGHT: 6px; PADDING-LEFT: 10px; BORDER-LEFT-WIDTH: 0px; BORDER-BOTTOM-WIDTH: 0px; PADDING-BOTTOM: 5px; FONT: 0.9em/1.2em Arial, Helvetica, Verdana, sans-serif; COLOR: #333; PADDING-TOP: 10px; BACKGROUND-COLOR: white; BORDER-RIGHT-WIDTH: 0px
+}
+#iframed2 P {
+	MARGIN: 0px 0px 8px
+}
+#iframed2 A:link {
+	TEXT-DECORATION: none
+}
+#iframed2 A:visited {
+	TEXT-DECORATION: none
+}
+#iframed2 A:hover {
+	TEXT-DECORATION: none
+}
+#cssOn {
+	FLOAT: right; COLOR: gray; HEIGHT: 60px; TEXT-ALIGN: right
+}
+#cssOn A.Linkoff {
+	Z-INDEX: 502; COLOR: gray
+}
+#cssOn A.Linkon {
+	Z-INDEX: 502; COLOR: gray
+}
+#linkIntranet {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 10px; FLOAT: left; PADDING-BOTTOM: 0px; PADDING-TOP: 0px; HEIGHT: 60px
+}
+#Nav2nd {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 200; BACKGROUND: url(http://localhost/CMCCWeb./ui/commmed/Images/Nav2_bgd.jpg) no-repeat left top; LEFT: 0px; PADDING-BOTTOM: 0px; WIDTH: 158px; PADDING-TOP: 70px; POSITION: absolute; TOP: 96px; HEIGHT: 500px
+}
+#Nav2nd2 H3 {
+	DISPLAY: block; PADDING-LEFT: 13px; MARGIN: 0px 0px 7px; FONT: bold 1em Arial, Helvetica, Verdana, sans-serif; OVERFLOW: auto; WIDTH: 158px; COLOR: white; HEIGHT: 45px; min-width: 158px
+}
+#Nav2ndSelect {
+	WIDTH: 158px
+}
+#Nav2ndSelect UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; WIDTH: 150px; PADDING-TOP: 0px
+}
+#NavMainSelect {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 400; MIN-HEIGHT: 32px; BACKGROUND: url(http://localhost/CMCCWeb./ui/commmed/Images/CWMmainnav_bgd.gif) repeat-x left top; LEFT: 222px; PADDING-BOTTOM: 0px; WIDTH: 575px; PADDING-TOP: 4px; POSITION: absolute; TOP: 64px; HEIGHT: 32px
+}
+#NavMainSelect UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; Z-INDEX: 401; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 0.75em Verdana, Arial, Helvetica, sans-serif; COLOR: white; PADDING-TOP: 0px; BACKGROUND-COLOR: #1c3f95
+}
+#NavMainSelect LI {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 2px; PADDING-BOTTOM: 0px; MARGIN: 2px 0px 0px; PADDING-TOP: 0px; LIST-STYLE-TYPE: none
+}
+#NavMainSelect LI.list9 {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; PADDING-TOP: 0px
+}
+#NavMainSelect LI A {
+	FONT: bold 1em/80% Arial, Helvetica, Verdana, sans-serif; COLOR: white; TEXT-DECORATION: none
+}
+#NavMainSelect LI A:link {
+	COLOR: white; TEXT-DECORATION: none
+}
+#NavMainSelect A:visited {
+	COLOR: white; TEXT-DECORATION: none
+}
+#NavMainSelect LI A:hover {
+	TEXT-DECORATION: underline
+}
+#footer {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 0px; PADDING-BOTTOM: 20px; FONT: 0.75em Verdana, sans-serif; PADDING-TOP: 25px; POSITION: relative; TOP: 3px; TEXT-ALIGN: center
+}
+#footer A:link {
+	COLOR: #3d4d9d; TEXT-DECORATION: none
+}
+#footer A:visited {
+	COLOR: #3d4d9d; TEXT-DECORATION: none
+}
+#footer A:hover {
+	COLOR: #3d4d9d; TEXT-DECORATION: underline
+}
+A:active {
+	COLOR: #3d4d9d; TEXT-DECORATION: underline
+}
+#linkInternet {
+	PADDING-TOP: 6px
+}
+#breadcrumbs {
+	DISPLAY: none; VISIBILITY: hidden
+}
+#searchArea {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; LEFT: 586px; PADDING-BOTTOM: 0px; WIDTH: 215px; PADDING-TOP: 0px; POSITION: relative; TOP: 10px
+}
+#searchBox {
+	WIDTH: 210px; HEIGHT: 19px
+}
+#inputfield {
+	FLOAT: left; WIDTH: 158px
+}
+#inputfield INPUT {
+	BORDER-RIGHT: silver 1px solid; PADDING-RIGHT: 0px; BORDER-TOP: silver 1px solid; PADDING-LEFT: 0px; FONT-SIZE: 0.8em; PADDING-BOTTOM: 0px; MARGIN: 0px; BORDER-LEFT: silver 1px solid; WIDTH: 150px; COLOR: gray; PADDING-TOP: 0px; BORDER-BOTTOM: silver 1px solid; HEIGHT: 15px
+}
+#searchButton {
+	FLOAT: right; WIDTH: 43px
+}
+#sbox {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 0.7em; FLOAT: right; PADDING-BOTTOM: 0px; WIDTH: 48px; PADDING-TOP: 0px; HEIGHT: 19px
+}
+#searchLinks {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; FONT-SIZE: 0.68em; Z-INDEX: 400; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px -2px; PADDING-TOP: 0px; TEXT-ALIGN: left
+}
+#searchLinks UL {
+	DISPLAY: none
+}
+#searchLinks LI {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 1em/1.4em Arial, Helvetica, Verdana, sans-serif; COLOR: gray; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; LETTER-SPACING: 0.1em; BACKGROUND-COLOR: transparent
+}
+#searchLinks LI A:link {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 1em/1.4em Arial, Helvetica, Verdana, sans-serif; COLOR: gray; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; LETTER-SPACING: 0.1em; BACKGROUND-COLOR: transparent
+}
+#searchLinks LI A:visited {
+	PADDING-RIGHT: 0px; DISPLAY: inline; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px; FONT: 1em/1.4em Arial, Helvetica, Verdana, sans-serif; COLOR: gray; PADDING-TOP: 0px; LIST-STYLE-TYPE: none; LETTER-SPACING: 0.1em; BACKGROUND-COLOR: transparent
+}
+SELECT.selectField {
+	
+}
+#qCheck {
+	
+}
+TABLE.rightAlign {
+	FLOAT: right; MARGIN: 0px 0px 10px 10px; BACKGROUND-COLOR: #336699
+}
+TABLE.rightAlign TD {
+	FONT: 10px/14px sans-serif; BACKGROUND-COLOR: #fff
+}
+TABLE.rightAlign TD.head {
+	PADDING-RIGHT: 3px; PADDING-LEFT: 3px; FONT-WEIGHT: bold; FONT-SIZE: 13px; PADDING-BOTTOM: 3px; COLOR: #003366; PADDING-TOP: 3px; BACKGROUND-COLOR: #99ccff; TEXT-ALIGN: center
+}
+TABLE TD P {
+	MARGIN: 0px
+}
+TABLE TD UL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 15px; PADDING-TOP: 0px
+}
+TABLE TD OL {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 15px; PADDING-TOP: 0px
+}
+UNKNOWN {
+	PADDING-RIGHT: 0px; PADDING-LEFT: 0px; PADDING-BOTTOM: 0px; MARGIN: 0px 0px 0px 12px; PADDING-TOP: 0px
+}
+.divCenterList {
+	PADDING-LEFT: 15px; FLOAT: left; WIDTH: 180px
+}
+.label-text
+{
+    FONT-WEIGHT: bold;
+    TEXT-DECORATION: underline
+}
+.label-text-red
+{
+    FONT-WEIGHT: bold;
+    COLOR: red;
+    TEXT-DECORATION: underline
+}
