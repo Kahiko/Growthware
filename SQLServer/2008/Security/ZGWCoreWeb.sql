@@ -1,0 +1,3 @@
+﻿CREATE SCHEMA [ZGWCoreWeb]
+    AUTHORIZATION [dbo];
+
