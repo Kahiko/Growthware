@@ -1,3 +1,0 @@
-﻿ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Groups]
-    ADD CONSTRAINT [UK_Groups_Security_Entities_Groups] UNIQUE NONCLUSTERED ([Groups_Security_Entities_SeqID] ASC, [Group_SeqID] ASC) WITH (ALLOW_PAGE_LOCKS = ON, ALLOW_ROW_LOCKS = ON, PAD_INDEX = OFF, IGNORE_DUP_KEY = OFF, STATISTICS_NORECOMPUTE = OFF) ON [PRIMARY];
-
