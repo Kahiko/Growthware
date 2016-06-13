@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Operations Version="1.0" xmlns="http://schemas.microsoft.com/sqlserver/dac/Serialization/2012/02">
+  <Operation Name="Rename Refactor" Key="b6f6b87f-adec-452d-aa55-488a10ad5dfe" ChangeDateTime="09/20/2014 14:21:26">
+    <Property Name="ElementName" Value="[ZGWSecurity].[Groups_Security_Entities].[Added_By]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[ZGWSecurity].[Groups_Security_Entities]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Added_By" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="50d7b9ec-34fb-4774-893c-b100be7418a1" ChangeDateTime="09/20/2014 14:21:32">
+    <Property Name="ElementName" Value="[ZGWSecurity].[Groups_Security_Entities].[ADDED_DATE]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[ZGWSecurity].[Groups_Security_Entities]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Added_Date" />
+  </Operation>
+</Operations>
