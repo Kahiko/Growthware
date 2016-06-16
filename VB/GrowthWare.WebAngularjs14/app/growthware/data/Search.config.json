@@ -1,0 +1,116 @@
+﻿[
+    {
+        "action": "Search_Accounts",
+        "apiURL": "/gw/api/Accounts/GetSearchResults?Action=Search_Accounts",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "Account_SeqID", "name": "Account_SeqID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Account", "name": "Account" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "First Name", "name": "First_Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Last Name", "name": "Last_Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Email Address", "name": "Email" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Last Login", "name": "Last_Login" }
+        ],
+        "editAction":  "EditAccount",
+        "editUrl": "/app/growthware/views/Administration/Accounts/AddEditAccount.html?AccountSeqID=",
+        "orderByColumn": "Account"
+    },
+    {
+        "action": "Search_Functions",
+        "apiURL": "/gw/api/Functions/GetSearchResults?Action=Search_Functions",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "Account_SeqID", "name": "Function_SeqID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Function", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Action", "name": "Action" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Added By", "name": "Added_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Updated By", "name": "Updated_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Updated Date", "name": "Updated_Date" }
+        ],
+        "editAction":  "EditFunctions",
+        "editUrl": "/app/growthware/views/Administration/Functions/AddEditFunction.html?FunctionSeqID=",
+        "orderByColumn": "Name"
+    },
+    {
+        "action": "Manage_Groups",
+        "apiURL": "/gw/api/Groups/GetSearchResults?Action=Manage_Groups",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "GROUP_SEQ_ID", "name": "GROUP_SEQ_ID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Name", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Added By", "name": "Added_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Updated By", "name": "Updated_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Updated Date", "name": "Updated_Date" }
+        ],
+        "editAction":  "AddEditGroups",
+        "editUrl": "/app/growthware/views/Administration/Groups/AddEditGroup.html?GroupSeqId=",
+        "orderByColumn": "Name"
+    },
+    {
+        "action": "Search_Messages",
+        "apiURL": "/gw/api/Messages/GetSearchResults?Action=Search_Messages",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "Message_SeqID", "name": "Message_SeqID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Message", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Title", "name": "Title" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Added By", "name": "Added_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Updated By", "name": "Updated_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Updated Date", "name": "Updated_Date" }
+        ],
+        "editAction":  "EditMessage",
+        "editUrl": "/app/growthware/views/Administration/Messages/AddEditMessage.html?messageSeqId=",
+        "orderByColumn": "Name"
+    },
+    {
+        "action": "Search_Name_Value_Pairs",
+        "apiURL": "/gw/api/NameValuePair/GetSearchResults?Action=Search_Name_Value_Pairs",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "NVP_SeqID", "name": "NVP_SeqID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Name", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Status", "name": "Status" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Added By", "name": "Added_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Updated By", "name": "Updated_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Updated Date", "name": "Updated_Date" }
+        ],
+        "editAction":  "AddEditNameValuePairDetails",
+        "editUrl": "/app/growthware/views/Administration/NVP/AddEditNVP.html?NVP_SEQ_ID=",
+        "orderByColumn": "Name"
+    },
+    {
+        "action": "Search_Roles",
+        "apiURL": "/gw/api/Roles/GetSearchResults?Action=Search_Roles",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "ROLE_SEQ_ID", "name": "ROLE_SEQ_ID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Name", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "System", "name": "Is_System" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "System Only", "name": "Is_System_Only" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Added By", "name": "Added_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Updated By", "name": "Updated_By" },
+            { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Updated Date", "name": "Updated_Date" }
+        ],
+        "editAction":  "AddEditRoles",
+        "editUrl": "/app/growthware/views/Administration/Roles/AddEditRole.html?RoleSeqID=",
+        "orderByColumn": "Name"
+    },
+    {
+        "action": "Search_Security_Entities",
+        "apiURL": "/gw/api/SecurityEntities/GetSearchResults?Action=Search_Security_Entities",
+        "columnInfo": [
+            { "width": 0, "type": "string", "visible": false, "isEditKey": true, "label": "Security_Entity_SeqID", "name": "Security_Entity_SeqID" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Name", "name": "Name" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Description", "name": "Description" },
+            { "width": 0, "type": "string", "visible": true, "isEditKey": false, "label": "Skin", "name": "Skin" }
+        ],
+        "editAction":  "EditASecurityEntity",
+        "editUrl": "/app/growthware/views/Administration/SecurityEntities/AddEditSecurityEntities.html?SecurityEntitySeqId=",
+        "orderByColumn": "Name"
+    }
+]
