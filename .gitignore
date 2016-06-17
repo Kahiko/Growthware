@@ -11,6 +11,7 @@ GrowthWareDlls/
 *.user
 *.userosscache
 *.sln.docstates
+*GhostDoc.user.dic
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
