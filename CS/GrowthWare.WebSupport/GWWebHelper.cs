@@ -45,7 +45,7 @@ namespace GrowthWare.WebSupport
             get
             {
                 string myVersion = string.Empty;
-                Assembly myAssembly = Assembly.Load("GrowthWare.WebApplication");
+                Assembly myAssembly = Assembly.Load(ConfigSettings.GetAppSettingValue("Assembly"));
                 if ((myAssembly != null))
                 {
                     myVersion = myAssembly.GetName().Version.ToString();
