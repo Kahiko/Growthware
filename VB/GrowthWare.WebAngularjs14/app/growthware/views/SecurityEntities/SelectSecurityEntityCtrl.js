@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
-    var secutiryEntityCtrl = function (acctSvc, seSvc, $scope) {
-        var thisCtrlr = this;
+    var securityEntityCtrl = function (acctSvc, seSvc, $scope) {
+        var thisCtrl = this;
 
         initCtrl();
 
@@ -49,10 +49,10 @@
             );
         };
 
-        return thisCtrlr;
+        return thisCtrl;
     }; 
 
-    secutiryEntityCtrl.$inject = ['AccountService', 'SecurityEntityService', '$scope'];
+    securityEntityCtrl.$inject = ['AccountService', 'SecurityEntityService', '$scope'];
 
-    angular.module('growthwareApp').controller('SecutiryEntityController', secutiryEntityCtrl);
+    angular.module('growthwareApp').controller('SecurityEntityController', securityEntityCtrl);
 })();
