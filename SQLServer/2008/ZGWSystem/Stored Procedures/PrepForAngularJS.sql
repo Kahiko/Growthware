@@ -3,13 +3,8 @@ Usage:
 	DECLARE 
 		@P_UseAngular BIT = 0
 
-	exec ZGWSystem.Set_DataBase_Information
-		@P_Database_Information_SeqID,
-		@P_Version,
-		@P_Enable_Inheritance,
-		@P_Added_Updated_By,
-		@P_Primary_Key,
-		@P_Debug
+	exec ZGWSystem.PrepForAngularJS
+		@P_UseAngular
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -23,9 +18,7 @@ AS
 	if @P_UseAngular = 1
 		BEGIN
 			UPDATE [ZGWSecurity].[Functions] SET [Controller] = 'SearchController', [Source] = 'Functions/System/Search/SearchPage.aspx'
-			WHERE [Action] like 'search%'
-			UPDATE [ZGWSecurity].[Functions] SET [Controller] = 'SearchController', [Source] = 'Functions/System/Search/SearchPage.aspx'
-			WHERE [Action] = 'Manage_Groups'
+			WHERE [Action] like 'search%' or [Action] = 'Manage_Groups'
 		END
 	ELSE
 		BEGIN
