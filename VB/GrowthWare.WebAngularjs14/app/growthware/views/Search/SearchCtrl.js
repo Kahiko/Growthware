@@ -78,24 +78,27 @@
                     //    message: $('<div></div>').load(m_EditUrl + editKeyValue),
                     //    controller: AddEditAccountController
                     //});
-                    message: $('<div></div>').load(options.url)
-                    var modalInstance = $uibModal.open({
-                        animation: $scope.animationsEnabled,
-                        templateUrl: options.url,
-                        controller: 'AddEditAccountController',
-                        size: 'lg',
-                        resolve: {
-                            items: function () {
-                                return $scope.items;
-                            }
-                        }
-                    });
 
-                    modalInstance.result.then(function (selectedItem) {
-                        $scope.selected = selectedItem;
-                    }, function () {
-                        $log.info('Modal dismissed at: ' + new Date());
-                    });
+
+                    //message: $('<div></div>').load(options.url)
+                    //var modalInstance = $uibModal.open({
+                    //    animation: $scope.animationsEnabled,
+                    //    templateUrl: options.url,
+                    //    controller: 'AddEditAccountController',
+                    //    size: 'lg',
+                    //    resolve: {
+                    //        items: function () {
+                    //            return $scope.items;
+                    //        }
+                    //    }
+                    //});
+
+                    //modalInstance.result.then(function (selectedItem) {
+                    //    $scope.selected = selectedItem;
+                    //}, function () {
+                    //    $log.info('Modal dismissed at: ' + new Date());
+                    //});
+                    $location.path('/' + viewModel.editAction);
                 },
                 /*** error ***/
                 function (result) {
@@ -106,18 +109,6 @@
 
         function initCtrl() {
             viewModel.canSelectAll = false;
-            viewModel.selectedPage = { "value": "1", "text": "1" };
-            viewModel.searchCriteria = GW.Search.Criteria;
-            //TableOrView:      -- Not used by the front end
-            //SelectedPage:     -- will be set in the paging methods
-            //PageSize:         -- set in setClientChoices()
-            //Columns:          -- comma seporated list of reutrned columkns ...should be derived in getSearchInfo at some point
-            //OrderByColumn:    -- default value set here changed in selectColumn(columnName)
-            //OrderByDirection: -- defaut set here changed in changeSort(columnName)
-            //WhereClause:      -- default value is '1 = 1'
-            viewModel.searchCriteria.SelectedPage - 1
-            viewModel.searchCriteria.OrderByDirection = 'asc';
-            viewModel.sortText = '';
             var mCurrentRoute = $route.current.$$route.originalPath;
             mCurrentRoute = mCurrentRoute.substr(1, mCurrentRoute.length);
             acctSvc.getSecurityInfo(mCurrentRoute).then(
@@ -130,18 +121,52 @@
                     console.log("Failed to getSecurityInfo, result is " + result);
                 }
             );
-            acctSvc.getPreferences().then(
-                /*** success ***/
-                function (clientChoices) {
-                    viewModel.clientChoices = clientChoices;
-                    viewModel.searchCriteria.PageSize = viewModel.clientChoices.RecordsPerPage;
-                    getSearchConfiguration();
-                },
-                /*** error ***/
-                function (result) {
-                    console.log("Failed to getPreferences, result is " + result);
-                }
-           );
+            console.log(searchSvc.lastSearchRoute)
+            if (!searchSvc.lastSearchRoute || searchSvc.lastSearchRoute.substr(1, searchSvc.lastSearchRoute.length - 1) != m_Route) {
+                viewModel.selectedPage = { "value": "1", "text": "1" };
+                viewModel.searchCriteria = GW.Search.Criteria;
+                //TableOrView:      -- Not used by the front end
+                //SelectedPage:     -- will be set in the paging methods
+                //PageSize:         -- set in setClientChoices()
+                //Columns:          -- comma separated list of returned columns ...should be derived in getSearchInfo at some point
+                //OrderByColumn:    -- default value set here changed in selectColumn(columnName)
+                //OrderByDirection: -- default set here changed in changeSort(columnName)
+                //WhereClause:      -- default value is '1 = 1'
+                viewModel.searchCriteria.SelectedPage = 1
+                viewModel.searchCriteria.OrderByDirection = 'asc';
+                viewModel.sortText = '';
+                searchSvc.lastSearchRoute = "/" + m_Route;
+                acctSvc.getPreferences().then(
+                    /*** success ***/
+                    function (clientChoices) {
+                        viewModel.clientChoices = clientChoices;
+                        viewModel.searchCriteria.PageSize = viewModel.clientChoices.RecordsPerPage;
+                        getSearchConfiguration();
+                    },
+                    /*** error ***/
+                    function (result) {
+                        console.log("Failed to getPreferences, result is " + result);
+                    }
+               );
+            } else {
+                console.log(searchSvc.lastCriteria);
+                viewModel.searchCriteria = searchSvc.lastCriteria;
+                acctSvc.getPreferences().then(
+                    /*** success ***/
+                    function (clientChoices) {
+                        viewModel.clientChoices = clientChoices;
+                    },
+                    /*** error ***/
+                    function (result) {
+                        console.log("Failed to getPreferences, result is " + result);
+                    }
+               );
+                var match = viewModel.searchCriteria.WhereClause.match(new RegExp("%(.*)%"))
+                if (viewModel.searchCriteria.WhereClause != "1 = 1") { viewModel.sortText = match[1]; }
+                viewModel.selectedPage = { "value": viewModel.searchCriteria.SelectedPage, "text": viewModel.searchCriteria.SelectedPage };
+                viewModel.searchCriteria.PageSize = viewModel.searchCriteria.PageSize;
+                getSearchConfiguration();
+            };
             $scope.vm = viewModel;
         };
 
@@ -182,6 +207,7 @@
             function (response) {
                 if (response && response.length > 0) {
                     setSelectPageDropData(response[0]['TotalRecords']);
+                    searchSvc.lastCriteria = viewModel.searchCriteria;
                 } else {
                     setSelectPageDropData(0);
                 }

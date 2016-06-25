@@ -2,22 +2,30 @@
     'use strict';
 
     var searchSvc = function ($http, $q, $resource) {
-
         var thisSvc = this;
 
         var m_SearchInfo = null;
+        var m_LastCriteria = null;
+        var m_LastSearchRoute = null;
 
-        thisSvc.getSearchResults = function (url, criteria) {
-            criteria = JSON.stringify(criteria);
-            var deferred = $q.defer();
-            $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})
-            .success(function (result) {
-                deferred.resolve(result);
-            })
-            .error(function (response) {
-                deferred.reject(response);
-            });
-            return deferred.promise;
+        thisSvc.Prototype = {
+            get lastCriteria() {
+                return this.m_LastCriteria;
+            },
+
+            set lastCriteria(value) {
+                this.m_LastCriteria = value;
+            }
+        };
+
+        thisSvc.Prototype = {
+            get lastSearchRoute() {
+                return this.m_LastSearchRoute;
+            },
+
+            set lastSearchRoute(value) {
+                this.m_LastSearchRoute = value;
+            }
         };
 
         thisSvc.getSearchConfiguration = function (route) {
@@ -35,6 +43,19 @@
                     deferred.reject(response);
                 });
             }
+            return deferred.promise;
+        };
+
+        thisSvc.getSearchResults = function (url, criteria) {
+            criteria = JSON.stringify(criteria);
+            var deferred = $q.defer();
+            $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})
+            .success(function (result) {
+                deferred.resolve(result);
+            })
+            .error(function (response) {
+                deferred.reject(response);
+            });
             return deferred.promise;
         };
 
