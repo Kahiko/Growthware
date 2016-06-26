@@ -18,7 +18,8 @@
         var m_ApiUrl = {};
         var m_EditUrl = {};
         var m_EditKey = {};
-        var m_Route = $route.current.$$route.originalPath.substr(1, $route.current.$$route.originalPath.length - 1);
+        var m_Route = $route.current.$$route.originalPath;
+        var m_Action = m_Route.substr(1, m_Route.length - 1);
         var viewModel = {};
 
         initCtrl();
@@ -109,9 +110,7 @@
 
         function initCtrl() {
             viewModel.canSelectAll = false;
-            var mCurrentRoute = $route.current.$$route.originalPath;
-            mCurrentRoute = mCurrentRoute.substr(1, mCurrentRoute.length);
-            acctSvc.getSecurityInfo(mCurrentRoute).then(
+            acctSvc.getSecurityInfo(m_Action).then(
                 /*** success ***/
                 function (securityInfo) {
                     viewModel.securityInfo = securityInfo;
@@ -121,21 +120,13 @@
                     console.log("Failed to getSecurityInfo, result is " + result);
                 }
             );
-            console.log(searchSvc.lastSearchRoute)
-            if (!searchSvc.lastSearchRoute || searchSvc.lastSearchRoute.substr(1, searchSvc.lastSearchRoute.length - 1) != m_Route) {
+            var lastSearchRoute = searchSvc.lastSearchRoute || "";
+            if (lastSearchRoute != m_Route) {
+                console.log('Route is missing or not the same');
+                searchSvc.lastSearchRoute = m_Route;
                 viewModel.selectedPage = { "value": "1", "text": "1" };
-                viewModel.searchCriteria = GW.Search.Criteria;
-                //TableOrView:      -- Not used by the front end
-                //SelectedPage:     -- will be set in the paging methods
-                //PageSize:         -- set in setClientChoices()
-                //Columns:          -- comma separated list of returned columns ...should be derived in getSearchInfo at some point
-                //OrderByColumn:    -- default value set here changed in selectColumn(columnName)
-                //OrderByDirection: -- default set here changed in changeSort(columnName)
-                //WhereClause:      -- default value is '1 = 1'
-                viewModel.searchCriteria.SelectedPage = 1
-                viewModel.searchCriteria.OrderByDirection = 'asc';
+                viewModel.searchCriteria = new GW.Model.SearchCriteria()
                 viewModel.sortText = '';
-                searchSvc.lastSearchRoute = "/" + m_Route;
                 acctSvc.getPreferences().then(
                     /*** success ***/
                     function (clientChoices) {
@@ -149,7 +140,7 @@
                     }
                );
             } else {
-                console.log(searchSvc.lastCriteria);
+                console.log('Route is same using last criteria');
                 viewModel.searchCriteria = searchSvc.lastCriteria;
                 acctSvc.getPreferences().then(
                     /*** success ***/
@@ -171,7 +162,7 @@
         };
 
         function getSearchConfiguration() {
-            searchSvc.getSearchConfiguration(m_Route).then(
+            searchSvc.getSearchConfiguration(m_Action).then(
                 /* success function */
                 function (searchInfo) {
                     viewModel.editAction = searchInfo.editAction;
@@ -207,7 +198,6 @@
             function (response) {
                 if (response && response.length > 0) {
                     setSelectPageDropData(response[0]['TotalRecords']);
-                    searchSvc.lastCriteria = viewModel.searchCriteria;
                 } else {
                     setSelectPageDropData(0);
                 }

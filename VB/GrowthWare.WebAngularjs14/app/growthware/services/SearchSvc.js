@@ -5,14 +5,11 @@
         var thisSvc = this;
 
         var m_SearchInfo = null;
-        var m_LastCriteria = null;
-        var m_LastSearchRoute = null;
 
         thisSvc.Prototype = {
             get lastCriteria() {
                 return this.m_LastCriteria;
             },
-
             set lastCriteria(value) {
                 this.m_LastCriteria = value;
             }
@@ -22,7 +19,6 @@
             get lastSearchRoute() {
                 return this.m_LastSearchRoute;
             },
-
             set lastSearchRoute(value) {
                 this.m_LastSearchRoute = value;
             }
@@ -47,6 +43,8 @@
         };
 
         thisSvc.getSearchResults = function (url, criteria) {
+            console.log(criteria);
+            this.lastCriteria = criteria;
             criteria = JSON.stringify(criteria);
             var deferred = $q.defer();
             $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})

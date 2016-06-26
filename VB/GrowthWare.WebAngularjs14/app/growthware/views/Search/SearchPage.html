@@ -34,9 +34,9 @@
                     <tr>
                         <th data-ng-repeat="column in vm.headerColumns | filter:headerColumnFilter" width="{{column.width}}">
                             <span data-ng-click="changeSort(column.name)">{{column.label}}</span> &nbsp;
-                            <span data-ng-show="searchCriteria.OrderByColumn == '{{column.name}}' && searchCriteria.OrderByDirection == 'asc'" data-ng-click="changeSort(column.name)" class='fa fa-sort-asc'></span>
-                            <span data-ng-show="searchCriteria.OrderByColumn == '{{column.name}}' && searchCriteria.OrderByDirection != 'asc'" data-ng-click="changeSort(column.name)" class='fa fa-sort-desc'></span>
-                            <span data-ng-show="searchCriteria.OrderByColumn != '{{column.name}}'" data-ng-click="changeSort(column.name)" class="fa fa-sort" />
+                            <span data-ng-show="vm.searchCriteria.OrderByColumn == '{{column.name}}' && vm.searchCriteria.OrderByDirection == 'asc'" data-ng-click="changeSort(column.name)" class='fa fa-sort-asc'></span>
+                            <span data-ng-show="vm.searchCriteria.OrderByColumn == '{{column.name}}' && vm.searchCriteria.OrderByDirection != 'asc'" data-ng-click="changeSort(column.name)" class='fa fa-sort-desc'></span>
+                            <span data-ng-show="vm.searchCriteria.OrderByColumn != '{{column.name}}'" data-ng-click="changeSort(column.name)" class="fa fa-sort" />
                         </th>
                     </tr>
                 </thead>

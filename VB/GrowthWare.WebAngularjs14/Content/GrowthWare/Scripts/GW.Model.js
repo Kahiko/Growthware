@@ -56,6 +56,19 @@ GW.Model = {
 		return defaultOptions;
 	},
 
+	SearchCriteria: function () {
+	    var mRetVal = {
+	        TableOrView: '',
+	        SelectedPage: 1,
+	        PageSize: 10,
+	        Columns: '',
+	        OrderByColumn: '',
+	        OrderByDirection: 'ASC',
+	        WhereClause: '1 = 1'
+	    }
+	    return mRetVal
+	},
+
 	NavigationObject: function () {
 	    //properties
 	    this.Action = '';
