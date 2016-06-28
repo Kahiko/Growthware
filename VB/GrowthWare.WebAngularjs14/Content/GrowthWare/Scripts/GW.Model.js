@@ -63,7 +63,7 @@ GW.Model = {
 	        PageSize: 10,
 	        Columns: '',
 	        OrderByColumn: '',
-	        OrderByDirection: 'ASC',
+	        OrderByDirection: 'asc',
 	        WhereClause: '1 = 1'
 	    }
 	    return mRetVal

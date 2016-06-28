@@ -122,7 +122,6 @@
             );
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
             if (lastSearchRoute != m_Route) {
-                console.log('Route is missing or not the same');
                 searchSvc.lastSearchRoute = m_Route;
                 viewModel.selectedPage = { "value": "1", "text": "1" };
                 viewModel.searchCriteria = new GW.Model.SearchCriteria()
@@ -140,7 +139,6 @@
                     }
                );
             } else {
-                console.log('Route is same using last criteria');
                 viewModel.searchCriteria = searchSvc.lastCriteria;
                 acctSvc.getPreferences().then(
                     /*** success ***/

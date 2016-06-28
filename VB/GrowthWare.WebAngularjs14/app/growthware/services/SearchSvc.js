@@ -43,7 +43,6 @@
         };
 
         thisSvc.getSearchResults = function (url, criteria) {
-            console.log(criteria);
             this.lastCriteria = criteria;
             criteria = JSON.stringify(criteria);
             var deferred = $q.defer();
