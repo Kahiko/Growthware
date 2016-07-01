@@ -10,6 +10,6 @@
 </asp:Content>
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 	<div id="MainContentDiv">
-        <div data-ng-view="" class="slide-pop"></div>
+        <div data-ng-view class="view-slide"></div>
 	</div>
 </asp:Content>
