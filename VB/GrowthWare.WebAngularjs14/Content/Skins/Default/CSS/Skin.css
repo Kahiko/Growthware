@@ -442,7 +442,7 @@ a:active {color: blue;}  /* selected link */
     display: table-cell;
 }
 
-/*** NG animations ***/
+/*** NG animations http://dfsq.github.io/ngView-animation-effects/app/#/page/1 ***/
 .view-slide {
     position: absolute;
     left: 0;
