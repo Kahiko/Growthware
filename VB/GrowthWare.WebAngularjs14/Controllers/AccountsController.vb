@@ -148,6 +148,33 @@ Namespace Controllers
             Return mRetVal
         End Function
 
+
+        <HttpGet>
+        Public Function GetProfile(<FromUri()> ByVal accountSeqID As Integer) As MUIAccountProfile
+            Dim mProfile As MAccountProfile = Nothing
+            Dim mRetVal As MUIAccountProfile = New MUIAccountProfile()
+            If Not accountSeqID = -1 Then
+                mProfile = AccountUtility.GetProfile(accountSeqID)
+                mRetVal.Account = mProfile.Account
+                'mRetVal.AccountGroups = mProfile.Groups
+                'mRetVal.AccountRoles = mProfile.AssignedRoles
+                mRetVal.EMail = mProfile.Email
+                mRetVal.EnableNotifications = mProfile.EnableNotifications
+                mRetVal.FirstName = mProfile.FirstName
+                mRetVal.Id = mProfile.Id
+                mRetVal.IsSystemAdmin = mProfile.IsSystemAdmin
+                mRetVal.LastName = mProfile.LastName
+                mRetVal.Location = mProfile.Location
+                mRetVal.MiddleName = mProfile.MiddleName
+                mRetVal.PreferredName = mProfile.PreferredName
+                mRetVal.Status = mProfile.Status
+                mRetVal.TimeZone = mProfile.TimeZone
+            Else
+                mRetVal.Id = -1
+            End If
+            Return mRetVal
+        End Function
+
         <HttpPost>
         Public Function Logon(ByVal jsonData As MUILogonInfo) As IHttpActionResult
             If jsonData Is Nothing Then Throw New ArgumentNullException("jsonData", "jsonData cannot be a null reference (Nothing in Visual Basic)!")

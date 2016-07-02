@@ -29,11 +29,10 @@
             var options = GW.Model.DefaultWebMethodOptions();
             options.url = editUrl;
             options.title = 'testing add edit';
-            //console.log(editUrl);
-            //console.log(viewModel.editAction);
             acctSvc.getSecurityInfo(viewModel.editAction).then(
                 /*** success ***/
                 function (securityInfo) {
+                    searchSvc.editId = editKeyValue;
                     //var btns = [];
                     //var btnSave = {
                     //    id: 'btnSave',
@@ -99,6 +98,8 @@
                     //}, function () {
                     //    $log.info('Modal dismissed at: ' + new Date());
                     //});
+
+
                     $location.path('/' + viewModel.editAction);
                 },
                 /*** error ***/

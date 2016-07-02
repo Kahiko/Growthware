@@ -80,6 +80,24 @@
             return mRetVal;
         };
 
+        thisSvc.getAccount = function (accountId, action) {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/GetProfile/?Action=" + action + "&accountSeqID=" + accountId;
+            var options = {
+                method: "GET",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' }
+            }
+            $http(options)
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
+
         thisSvc.getHorizontalHierarchicalMenuData = function (callBackFunc) {
             var menuType = 3;  //MenuType.Hierarchical = 3
             getMenuData(callBackFunc, menuType);

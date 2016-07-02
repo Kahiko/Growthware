@@ -34,7 +34,7 @@
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td>
-                                                            <input id="txtAccount" cssclass="Form_Field rounded" maxlength="128" />
+                                                            <input id="txtAccount" data-ng-model="vm.profile.Account" cssclass="Form_Field rounded" maxlength="128" />
                                                             <img id="imgWarningAccount" imageurl="~/Content/GrowthWare/Images/help.gif" alternatetext="Help Image" />
                                                             <span id="litAccountWarning"></span>
                                                         </td>
@@ -46,11 +46,7 @@
                                                 <span class="Form_LabelText">Status: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropStatus" cssclass="Form_Field rounded">
-                                                    <option value="1">Active</option>
-                                                    <option value="4">Change Password</option>
-                                                    <option value="3">Disabled</option>
-                                                </select>
+                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in validStatus track by item.id" cssclass="Form_Field rounded"></select>
                                             </td>
                                         </tr>
                                         <tr id="trSysAdmin" visible="false">
@@ -58,7 +54,7 @@
                                                 <span class="Form_LabelText">System Administrator: </span>
                                             </td>
                                             <td valign="top">
-                                                <asp:checkbox id="chkSysAdmin" />
+                                                <asp:checkbox id="chkSysAdmin" data-ng-model="vm.profile.IsSystemAdmin"  />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Failed Logon Attempts: </span>
@@ -73,14 +69,14 @@
                                                 <span class="Form_LabelText">First Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtFirstName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtFirstName" data-ng-model="vm.profile.FirstName" maxlength="35" cssclass="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Last Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtLastName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtLastName" data-ng-model="vm.profile.LastName" maxlength="35" cssclass="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -89,13 +85,13 @@
                                                 <span class="Form_LabelText">Middle Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtMiddleName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtMiddleName" data-ng-model="vm.profile.MiddleName" maxlength="35" cssclass="Form_Field rounded" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Preferred Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtPreferredName" maxlength="50" cssclass="Form_Field rounded" />
+                                                <input id="txtPreferredName" data-ng-model="vm.profile.PreferredName" maxlength="50" cssclass="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -104,7 +100,7 @@
                                                 <span class="Form_LabelText">Email: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtEmail" maxlength="128" columns="25" cssclass="Form_Field rounded" />
+                                                <input id="txtEmail" data-ng-model="vm.profile.EMail" maxlength="128" columns="25" cssclass="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
@@ -267,16 +263,16 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="bootstrap-dialog-footer-buttons">
-        <button class="btn btn-primary" id="btnSave">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
-        </button>
-        <button class="btn btn-primary disabled" id="btnDelete" disabled="">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
-        </button>
-        <button class="btn btn-primary" id="btnCancel">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
-        </button>
+        <div class="container bootstrap-dialog-footer-buttons">
+            <button class="btn btn-primary" id="btnSave">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+            </button>
+            <button class="btn btn-primary disabled" id="btnDelete" disabled="">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+            </button>
+            <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+            </button>
+        </div>
     </div>
 </form>
