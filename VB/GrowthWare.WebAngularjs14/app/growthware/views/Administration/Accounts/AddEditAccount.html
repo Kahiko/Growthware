@@ -19,7 +19,6 @@
                         <table border="1" cellpadding="3" cellspacing="0" width="950px">
                             <tr>
                                 <td>
-                                    <input id="txtAccount_seq_id" data-ng-show="false" />
                                     <table border="0" cellpadding="2" width="100%">
                                         <tr>
                                             <td align="center" colspan="4">
@@ -46,15 +45,15 @@
                                                 <span class="Form_LabelText">Status: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in validStatus track by item.id" cssclass="Form_Field rounded"></select>
+                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in vm.validStatus track by item.id" cssclass="Form_Field rounded"></select>
                                             </td>
                                         </tr>
-                                        <tr id="trSysAdmin" visible="false">
+                                        <tr id="trSysAdmin" data-ng-hide="vm.profile.IsSystemAdmin">
                                             <td valign="top">
                                                 <span class="Form_LabelText">System Administrator: </span>
                                             </td>
                                             <td valign="top">
-                                                <asp:checkbox id="chkSysAdmin" data-ng-model="vm.profile.IsSystemAdmin"  />
+                                                <asp:checkbox id="chkSysAdmin" data-ng-model="vm.profile.IsSystemAdmin" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Failed Logon Attempts: </span>
@@ -264,7 +263,7 @@
             </div>
         </div>
         <div class="container bootstrap-dialog-footer-buttons">
-            <button class="btn btn-primary" id="btnSave">
+            <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
                 <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
             </button>
             <button class="btn btn-primary disabled" id="btnDelete" disabled="">

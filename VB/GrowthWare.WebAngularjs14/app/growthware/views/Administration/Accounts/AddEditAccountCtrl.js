@@ -18,14 +18,13 @@
             if (lastSearchRoute.length == 0) {
                 $location.path('/');
             } else {
-                console.log(searchSvc.editId);
-                $scope.validStatus = m_validStatus;
+                viewModel.validStatus = m_validStatus;
                 acctSvc.getAccount(searchSvc.editId, m_Action).then(
                     /*** success ***/
                     function (profile) {
+                        console.log(profile);
                         viewModel.profile = profile;
-                        console.log(m_validStatus[profile.Status]);
-                        viewModel.selectedStatus = m_validStatus[profile.Status];
+                        setSelectedStatus();
                     },
                     /*** error ***/
                     function (result) {
@@ -36,6 +35,15 @@
             $scope.vm = viewModel;
         };
 
+        function setSelectedStatus() {
+            for (var i = 0; i < m_validStatus.length; i++) {
+                if (m_validStatus[i].id == viewModel.profile.Status) {
+                    viewModel.selectedStatus = m_validStatus[i];
+                    break;
+                };
+            };
+        };
+
         $scope.cancelEdit = function () {
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
             if (lastSearchRoute.length > 0) {
@@ -43,6 +51,10 @@
             } else {
                 $location.path('/Home');
             }
+        };
+
+        $scope.save = function () {
+            console.log($scope.vm.profile);
         };
 
         initCtrl();

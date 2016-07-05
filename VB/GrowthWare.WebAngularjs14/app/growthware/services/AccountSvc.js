@@ -170,6 +170,25 @@
             return deferred.promise;
         };
 
+        thisSvc.save = function (profile, action) {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/Save/?Action=" + action;
+            var options = {
+                method: "POST",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' },
+                data: JSON.stringify(profile)
+            }
+            $http(options)
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
+
         function getMenuData(callBackFunc, menuType) {
             var mApiUrl = "/gw/api/Accounts/GetMenuData?menuType=" + menuType;
             var mRetVal = new Array();

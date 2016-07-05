@@ -156,8 +156,12 @@ Namespace Controllers
             If Not accountSeqID = -1 Then
                 mProfile = AccountUtility.GetProfile(accountSeqID)
                 mRetVal.Account = mProfile.Account
-                'mRetVal.AccountGroups = mProfile.Groups
-                'mRetVal.AccountRoles = mProfile.AssignedRoles
+                Dim mUIGroups As MUIAccountGroups = New MUIAccountGroups
+                Dim mUIRoles As MUIAccountRoles = New MUIAccountRoles
+                mUIGroups.Groups = mProfile.GetCommaSeparatedAssignedGroups().Split(",")
+                mUIRoles.Roles = mProfile.GetCommaSeparatedAssignedRoles().Split(",")
+                mRetVal.AccountGroups = mUIGroups
+                mRetVal.AccountRoles = mUIRoles
                 mRetVal.EMail = mProfile.Email
                 mRetVal.EnableNotifications = mProfile.EnableNotifications
                 mRetVal.FirstName = mProfile.FirstName
