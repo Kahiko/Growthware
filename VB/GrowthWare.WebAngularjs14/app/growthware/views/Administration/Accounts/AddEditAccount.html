@@ -165,46 +165,7 @@
                 </div>
                 <div class="tab-pane fade" id="tabsRoles">
                     <p>
-                        <table class="pickListTable">
-                            <tr class="pickListTableHeader">
-                                <td>
-                                    Roles
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableHelp">
-                                    Assign roles
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableContents">
-                                    <table id="AddEditAccountUserControl_ctlRoles" class="listPicker">
-                                        <tbody>
-                                            <tr>
-                                                <td>All Roles</td>
-                                                <td>&nbsp;</td>
-                                                <td>Selected Roles</td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top">
-                                                    <select name="AddEditAccountUserControl_ctlRoles_SrcList" id="AddEditAccountUserControl_ctlRoles_SrcList" multiple="multiple" style="width: 200px" size="6">
-                                                        <option value="AlwaysLogon" title="AlwaysLogon">AlwaysLogon</option>
-                                                        <option value="Authenticated" title="Authenticated">Authenticated</option>
-                                                        <option value="Developer" title="Developer">Developer</option>
-                                                    </select>
-                                                </td>
-                                                <td valign="top"><input name="" value=" -> " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'True')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" ->> " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'True')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <- " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <<- " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"></td>
-                                                <td valign="top">
-                                                    <select name="AddEditAccountUserControl_ctlRoles_DstList" id="AddEditAccountUserControl_ctlRoles_DstList" multiple="multiple" style="width: 200px" size="6">
-                                                        <option value="Anonymous">Anonymous</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
+                        <gw-picklist></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsGroups">

@@ -32,6 +32,7 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.Model.js",
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.Search.js",
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.NavigationController.js",
+            "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.ListPicker.js",
             "~/" + ConfigSettings.AppName + "/Content/Scripts/date.format.js"
             )
         )
@@ -53,7 +54,8 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Search/SearchCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Administration/Accounts/AddEditAccountCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/SecurityEntities/SelectSecurityEntityCtrl.js",
-            "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js"
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/PickList/PickListDirective.js"
             )
         )
 

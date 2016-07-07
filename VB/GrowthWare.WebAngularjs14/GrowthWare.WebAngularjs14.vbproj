@@ -168,6 +168,8 @@
     <Content Include="app\growthware\controllers\HorizontalMenuCtrl.js" />
     <Content Include="app\growthware\controllers\VerticalMenuCtrl.js" />
     <Content Include="app\growthware\directives\ClientChoicesStyle.js" />
+    <Content Include="app\growthware\directives\PickList\PickListDirective.js" />
+    <Content Include="app\growthware\directives\PickList\PickListTemplate.html" />
     <Content Include="app\growthware\services\SecurityEntitySvc.js" />
     <Content Include="app\growthware\views\Accounts\ChangePassword.html" />
     <Content Include="app\growthware\views\Accounts\LogoffCtrl.js" />
@@ -178,7 +180,6 @@
     <Content Include="app\growthware\views\Errors\AccessDenied.html" />
     <Content Include="app\growthware\views\Errors\UnknownAction.html" />
     <Content Include="app\growthware\views\Search\SearchCtrl.js" />
-    <Content Include="app\growthware\directives\HorizontalMenuDirective.js" />
     <Content Include="app\growthware\directives\LoadingDirective.js" />
     <Content Include="app\growthware\GrowthwareApp.js" />
     <Content Include="app\growthware\services\AccountSvc.js" />
@@ -288,6 +289,7 @@
     <Content Include="Content\font-awesome-4.6.2\scss\_stacked.scss" />
     <Content Include="Content\font-awesome-4.6.2\scss\_variables.scss" />
     <Content Include="app\growthware\data\Search.config.json" />
+    <Content Include="Content\GrowthWare\Scripts\GW.ListPicker.js" />
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
     <Content Include="Content\Scripts\jquery-ui-1.11.2.js" />
