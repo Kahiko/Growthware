@@ -16,7 +16,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tabsGeneral">
                     <p>
-                        <table border="1" cellpadding="3" cellspacing="0" width="950px">
+                        <table border="0" cellpadding="3" cellspacing="0" width="950px">
                             <tr>
                                 <td>
                                     <table border="0" cellpadding="2" width="100%">
@@ -164,9 +164,9 @@
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsRoles">
-                    {{vm.profile.AccountRoles.Roles}}<br/>
+                    vm.profile.AccountRoles.Roles: {{vm.profile.AccountRoles.Roles}}<br/>
                     <p>
-                        <gw-picklist size="200" rows="6" id="ctlRoles" selected-items="vm.profile.AccountRoles.Roles" allitemstext="All Roles" selecteditemstext="Selected Roles" sortonchange="true" destinationsortable="false"></gw-picklist>
+                        <gw-picklist size="200" rows="6" id="ctlRoles" selected-items="vm.profile.AccountRoles.Roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Assign roles" header="Roles" sort-on-change="true" destinationsortable="false"></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsGroups">
@@ -223,17 +223,17 @@
                     </p>
                 </div>
             </div>
-        </div>
-        <div class="container bootstrap-dialog-footer-buttons">
-            <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
-                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
-            </button>
-            <button class="btn btn-primary disabled" id="btnDelete" disabled="">
-                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
-            </button>
-            <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
-                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
-            </button>
+            <div class="pull-right">
+                <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
+                    <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                </button>
+                <button class="btn btn-primary disabled" id="btnDelete" disabled="">
+                    <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+                </button>
+                <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                    <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                </button>
+            </div>
         </div>
     </div>
 </form>

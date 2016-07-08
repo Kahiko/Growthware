@@ -134,6 +134,11 @@
             scope: {
                 selectedItems: '=',
                 avalibleItems: '=',
+                allItemsText: '@',
+                selectedItemsText: '@',
+                picklistTableHelp: '@',
+                header: '@',
+                sortOnChange: '@',
                 id: '@'
             },
             link: link,

@@ -1,15 +1,15 @@
-﻿{{selectedItems}}<br />
+﻿selectedItems: {{selectedItems}}<br />
 
 <table class="pickListTable">
     <tbody>
         <tr class="pickListTableHeader">
             <td>
-                Roles
+                {{header}}
             </td>
         </tr>
         <tr>
             <td class="pickListTableHelp">
-                Assign roles
+                {{picklistTableHelp}}
             </td>
         </tr>
         <tr>
@@ -17,9 +17,9 @@
                 <table class="listPicker">
                     <tbody>
                         <tr>
-                            <td>All Roles</td>
+                            <td>{{allItemsText}}</td>
                             <td>&nbsp;</td>
-                            <td>Selected Roles</td>
+                            <td>{{selectedItemsText}}</td>
                             <td></td>
                         </tr>
                         <tr>
@@ -29,10 +29,10 @@
                                 </select>
                             </td>
                             <td valign="top">
-                                <input name="" value=" -> " data-ng-click="switchList('_SrcList', '_DstList','False')" class="listPickerArrow" style="width: 50px" type="button"><br/>
-                                <input name="" value=" ->> " data-ng-click="switchAll(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'False')" class="listPickerArrow" style="width: 50px" type="button"><br/>
-                                <input name="" value=" <- " data-ng-click="switchList(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"><br/>
-                                <input name="" value=" <<- " data-ng-click="switchAll(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button">
+                                <input name="" value=" -> " data-ng-click="switchList('_SrcList', '_DstList','{{sortOnChange}}')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" ->> " data-ng-click="switchAll('_SrcList', '_DstList','{{sortOnChange}}')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <- " data-ng-click="switchList('_DstList', '_SrcList','{{sortOnChange}}')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <<- " data-ng-click="switchAll('_DstList', '_SrcList','{{sortOnChange}}')" class="listPickerArrow" style="width: 50px" type="button">
                             </td>
                             <td valign="top">
                                 <select name="{{id}}_DstList" id="{{id}}_DstList" multiple="multiple" style="width: 200px" size="6">
@@ -40,7 +40,10 @@
                                 </select>
                             </td>
                             <td></td>
-                            <td valign="top"><input name="" value="▲" onclick="GW.ListPicker.moveUp(this.form.AddEditAccountUserControl_ctlRoles_DstList)" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value="▼" onclick="GW.ListPicker.moveDown(this.form.AddEditAccountUserControl_ctlRoles_DstList)" class="listPickerArrow" style="width: 50px" type="button"><br></td>
+                            <td valign="top">
+                                <input name="" value="▲" data-ng-click="moveUp('_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value="▼" data-ng-click="movedown('_dstlist')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
