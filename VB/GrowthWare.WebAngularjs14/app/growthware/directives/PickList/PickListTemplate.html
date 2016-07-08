@@ -1,4 +1,6 @@
-﻿<table class="pickListTable">
+﻿{{selectedItems}}<br />
+
+<table class="pickListTable">
     <tbody>
         <tr class="pickListTableHeader">
             <td>
@@ -12,7 +14,7 @@
         </tr>
         <tr>
             <td class="pickListTableContents">
-                <table id="AddEditAccountUserControl_ctlRoles" class="listPicker">
+                <table class="listPicker">
                     <tbody>
                         <tr>
                             <td>All Roles</td>
@@ -22,16 +24,19 @@
                         </tr>
                         <tr>
                             <td valign="top">
-                                <select name="AddEditAccountUserControl_ctlRoles_SrcList" id="AddEditAccountUserControl_ctlRoles_SrcList" multiple="multiple" style="width: 200px" size="6">
+                                <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" style="width: 200px" size="6">
                                     <option value="Anonymous" title="Anonymous">Anonymous</option>
                                 </select>
                             </td>
-                            <td valign="top"><input name="" value=" -> " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'False')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" ->> " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'False')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <- " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <<- " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"></td>
                             <td valign="top">
-                                <select name="AddEditAccountUserControl_ctlRoles_DstList" id="AddEditAccountUserControl_ctlRoles_DstList" multiple="multiple" style="width: 200px" size="6">
-                                    <option value="AlwaysLogon">AlwaysLogon</option>
-                                    <option value="Authenticated">Authenticated</option>
-                                    <option value="Developer">Developer</option>
+                                <input name="" value=" -> " data-ng-click="switchList('_SrcList', '_DstList','False')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" ->> " data-ng-click="switchAll(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'False')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <- " data-ng-click="switchList(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <<- " data-ng-click="switchAll(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button">
+                            </td>
+                            <td valign="top">
+                                <select name="{{id}}_DstList" id="{{id}}_DstList" multiple="multiple" style="width: 200px" size="6">
+                                    <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
                                 </select>
                             </td>
                             <td></td>

@@ -164,8 +164,9 @@
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsRoles">
+                    {{vm.profile.AccountRoles.Roles}}<br/>
                     <p>
-                        <gw-picklist id="Roles" size="200" rows="6" id="ctlRoles" allitemstext="All Roles" selecteditemstext="Selected Roles" sortonchange="true" destinationsortable="false"></gw-picklist>
+                        <gw-picklist size="200" rows="6" id="ctlRoles" selected-items="vm.profile.AccountRoles.Roles" allitemstext="All Roles" selecteditemstext="Selected Roles" sortonchange="true" destinationsortable="false"></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsGroups">

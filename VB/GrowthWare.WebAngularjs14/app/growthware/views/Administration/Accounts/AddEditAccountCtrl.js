@@ -24,6 +24,7 @@
                     function (profile) {
                         console.log(profile);
                         viewModel.profile = profile;
+                        viewModel.accountRoles = profile.AccountRoles.Roles;
                         setSelectedStatus();
                     },
                     /*** error ***/

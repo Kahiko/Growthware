@@ -51,20 +51,20 @@
             var listID = objFromBox.id.substr(0, objFromBox.id.length - 7);
             var objSrcList = document.getElementById(listID + 'SrcList');
             var objDstList = document.getElementById(listID + 'DstList');
-            var selectedState = '';
-            var selectedStateField = document.getElementById(listID + 'SelectedState');
-            var allStateField = document.getElementById(listID + 'AllState');
-            var allState = '';
+            //var selectedState = '';
+            //var selectedStateField = document.getElementById(listID + 'SelectedState');
+            //var allStateField = document.getElementById(listID + 'AllState');
+            //var allState = '';
 
-            for (i = 0; i < objSrcList.length; i++) {
-                allState += objSrcList.options[i].text + ',';
-            }
-            allStateField.value = allState.substr(0, allState.length - 1);
+            //for (i = 0; i < objSrcList.length; i++) {
+            //    allState += objSrcList.options[i].text + ',';
+            //}
+            //allStateField.value = allState.substr(0, allState.length - 1);
 
-            for (i = 0; i < objDstList.length; i++) {
-                selectedState += objDstList.options[i].text + ',';
-            }
-            selectedStateField.value = selectedState.substr(0, selectedState.length - 1);
+            //for (i = 0; i < objDstList.length; i++) {
+            //    selectedState += objDstList.options[i].text + ',';
+            //}
+            //selectedStateField.value = selectedState.substr(0, selectedState.length - 1);
 
 
         },
@@ -80,7 +80,7 @@
             var iCounter = 0;
             for (iCounter = 0; iCounter < lengthOfListBox; iCounter++) {
                 try {
-                    objListBox.options[iCounter].selected = true;
+                    //objListBox.options[iCounter].selected = true;
                 } catch (e) {
                     //alert(e); // just here for testing wouldn't suggest you have it in your code
                     return;
