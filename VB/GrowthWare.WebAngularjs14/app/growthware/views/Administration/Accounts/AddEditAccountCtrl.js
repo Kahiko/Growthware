@@ -19,6 +19,7 @@
                 $location.path('/');
             } else {
                 viewModel.validStatus = m_validStatus;
+                viewModel.roles = ["Anonymous"]
                 acctSvc.getAccount(searchSvc.editId, m_Action).then(
                     /*** success ***/
                     function (profile) {

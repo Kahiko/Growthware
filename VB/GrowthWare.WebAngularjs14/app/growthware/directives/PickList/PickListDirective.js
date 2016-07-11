@@ -6,9 +6,50 @@
 
         var link = function (scope, element, attrs) {
 
+            /************************* Reorder option elements of an HTML select */
+            scope.moveUp = function (listBox) {
+                var objListBox = document.getElementById(attrs.id + listBox);
+                var selectOptions = objListBox.getElementsByTagName('option');
+                for (var i = 1; i < selectOptions.length; i++) {
+                    var opt = selectOptions[i];
+                    if (opt.selected) {
+                        objListBox.removeChild(opt);
+                        objListBox.insertBefore(opt, selectOptions[i - 1]);
+                    }
+                }
+            };
+
+            scope.moveDown = function (listBox) {
+                var objListBox = document.getElementById(attrs.id + listBox);
+                var selectOptions = objListBox.getElementsByTagName('option');
+                for (var i = selectOptions.length - 2; i >= 0; i--) {
+                    var opt = selectOptions[i];
+                    if (opt.selected) {
+                        var nextOpt = selectOptions[i + 1];
+                        opt = objListBox.removeChild(opt);
+                        nextOpt = objListBox.replaceChild(opt, nextOpt);
+                        objListBox.insertBefore(nextOpt, opt);
+                    }
+                }
+            }
+            /************************* End Reorder option elements of an HTML select */
+
+            scope.showHelpMSG = function () {
+                var message = scope.picklistTableHelp || "";
+                if (message.length > 0) {
+                    alert(message);
+                }
+            };
+
             scope.switchAll = function (source, destination, sortOnChange) {
-                //alert('you clicked the directive!');
-                console.log(scope.selectedItems);
+                /*
+                switchAll was created to move all of the options from one list box to another.
+                Parameters:
+                objFromBox - The from list box as an object
+                objToBox - The to list box as an object
+                */
+                link.selectAllInListBox(source);
+                scope.switchList(source, destination, sortOnChange);
             };
 
             scope.switchList = function (source, destination, sortOnChange) {
@@ -21,7 +62,6 @@
                 */
                 var objFromBox = document.getElementById(attrs.id + source);
                 var objToBox = document.getElementById(attrs.id + destination);
-                console.log(objFromBox);
                 if (sortOnChange == undefined) sortOnChange = true;
                 var arrFbox = new Array();
                 var arrTbox = new Array();
@@ -84,6 +124,26 @@
                 //selectedStateField.value = selectedState.substr(0, selectedState.length - 1);
             };
 
+            link.selectAllInListBox = function (listBox) {
+                /*
+                selectAllInListBox was created to select all of the options in a listbox.
+                Need for when you want to move all of the data from one list box to the other.
+                Parameters:
+                objListBox - The list box as an object to be selected
+                */
+                var objListBox = document.getElementById(attrs.id + listBox);
+                var lengthOfListBox = objListBox.length;
+                var iCounter = 0;
+                for (iCounter = 0; iCounter < lengthOfListBox; iCounter++) {
+                    try {
+                        objListBox.options[iCounter].selected = true;
+                    } catch (e) {
+                        //alert(e); // just here for testing wouldn't suggest you have it in your code
+                        return;
+                    }
+                }
+            };
+
             /********** Natural Sorting *****************/
             /*
             * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
@@ -132,14 +192,16 @@
         return {
             restrict: 'E',
             scope: {
-                selectedItems: '=',
                 avalibleItems: '=',
+                selectedItems: '=',
                 allItemsText: '@',
-                selectedItemsText: '@',
-                picklistTableHelp: '@',
                 header: '@',
-                sortOnChange: '@',
-                id: '@'
+                id: '@',
+                picklistTableHelp: '@',
+                rows: '@',
+                selectedItemsText: '@',
+                size: '@',
+                sortOnChange: '@'
             },
             link: link,
             templateUrl: GW.Common.getBaseURL() + '/app/growthware/directives/PickList/PickListTemplate.html'
