@@ -62,7 +62,7 @@
                 */
                 var objFromBox = document.getElementById(attrs.id + source);
                 var objToBox = document.getElementById(attrs.id + destination);
-                if (sortOnChange == undefined) sortOnChange = true;
+                if (scope.sortOnChange == undefined) scope.sortOnChange = true;
                 var arrFbox = new Array();
                 var arrTbox = new Array();
                 var arrLookup = new Array();
@@ -83,9 +83,9 @@
                         fLength++;
                     }
                 }
-                if (sortOnChange.toLowerCase() == "true") {
-                    arrFbox.sort(this.naturalSort);
-                    arrTbox.sort(this.naturalSort);
+                if (scope.sortOnChange.toLowerCase() == "true") {
+                    arrFbox.sort(link.naturalSort);
+                    arrTbox.sort(link.naturalSort);
                 }
                 objFromBox.length = 0;
                 objToBox.length = 0;
@@ -102,17 +102,7 @@
                     no.text = arrTbox[c];
                     objToBox[c] = no;
                 }
-                var objSrcList = document.getElementById(attrs.id + '_SrcList');
                 var objDstList = document.getElementById(attrs.id + '_DstList');
-                //var selectedState = '';
-                //var selectedStateField = document.getElementById(listID + 'SelectedState');
-                //var allStateField = document.getElementById(listID + 'AllState');
-                //var allState = '';
-
-                //for (i = 0; i < objSrcList.length; i++) {
-                //    allState += objSrcList.options[i].text + ',';
-                //}
-                //allStateField.value = allState.substr(0, allState.length - 1);
                 var newSelectedItems = [];
                 for (var i = 0; i < objDstList.length; i++) {
                     newSelectedItems.push(objDstList.options[i].text);
@@ -121,7 +111,6 @@
                     objDstList.remove(i);
                 }
                 scope.selectedItems = newSelectedItems;
-                //selectedStateField.value = selectedState.substr(0, selectedState.length - 1);
             };
 
             link.selectAllInListBox = function (listBox) {
@@ -172,8 +161,8 @@
                 // natural sorting through split numeric strings and default strings
                 for (var cLoc = 0, numS = Math.max(xN.length, yN.length) ; cLoc < numS; cLoc++) {
                     // find floats not starting with '0', string or 0 if not defined (Clint Priest)
-                    oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
-                    oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+                    var oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+                    var oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
                     // handle numeric vs string comparison - number < string - (Kyle Adams)
                     if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1;
                         // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
