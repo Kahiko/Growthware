@@ -21,7 +21,6 @@
     <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
 
     <link href="~/Content/font-awesome-4.6.2/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/GrowthWare/Styles/GrowthWare.css" rel="stylesheet" type="text/css" />
     <link href="~/Content/SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
     <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
 
