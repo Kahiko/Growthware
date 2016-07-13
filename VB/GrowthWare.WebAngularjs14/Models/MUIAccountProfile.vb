@@ -4,6 +4,7 @@
     Public AccountRoles As MUIAccountRoles
     Public CanSaveRoles As Boolean
     Public CanSaveGroups As Boolean
+    Public DerivedRoles As List(Of String)
     Public EMail As String
     Public EnableNotifications As Boolean
     Public FirstName As String

@@ -162,6 +162,7 @@ Namespace Controllers
                 mUIRoles.Roles = mProfile.GetCommaSeparatedAssignedRoles().Split(",")
                 mRetVal.AccountGroups = mUIGroups
                 mRetVal.AccountRoles = mUIRoles
+                mRetVal.DerivedRoles = mProfile.DerivedRoles.Cast(Of String)().ToList()
                 mRetVal.EMail = mProfile.Email
                 mRetVal.EnableNotifications = mProfile.EnableNotifications
                 mRetVal.FirstName = mProfile.FirstName

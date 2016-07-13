@@ -19,13 +19,13 @@
                 $location.path('/');
             } else {
                 viewModel.validStatus = m_validStatus;
-                viewModel.roles = ["Anonymous"]
+                viewModel.roles = ["Anonymous"];
+                viewModel.groups = ["Not Everyone", "Everyone"];
                 acctSvc.getAccount(searchSvc.editId, m_Action).then(
                     /*** success ***/
                     function (profile) {
-                        console.log(profile);
+                        //console.log(profile);
                         viewModel.profile = profile;
-                        viewModel.accountRoles = profile.AccountRoles.Roles;
                         setSelectedStatus();
                     },
                     /*** error ***/

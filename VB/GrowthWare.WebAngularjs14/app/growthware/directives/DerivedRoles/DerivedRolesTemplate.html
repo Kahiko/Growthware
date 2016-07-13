@@ -1,0 +1,31 @@
+﻿<table class="pickListTable">
+    <tbody>
+        <tr class="pickListTableHeader">
+            <td>
+                {{header}}&nbsp;&nbsp;<img alt="Help" data-ng-show="picklistTableHelp.length > 0" data-ng-click="showHelpMSG()" src="/Content/GrowthWare/Images/help.gif" title="Help">
+            </td>
+        </tr>
+        <tr>
+            <td class="pickListTableContents">
+                <table class="listPicker">
+                    <tbody>
+                        <tr>
+                            <td>{{allItemsText}}</td>
+                            <td>&nbsp;</td>
+                            <td>{{selectedItemsText}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" style="width: {{size}}px" size="{{rows}}">
+                                    <option ng-repeat="item in avalibleItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+

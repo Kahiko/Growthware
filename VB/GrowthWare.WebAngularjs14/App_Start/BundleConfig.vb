@@ -54,7 +54,8 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Administration/Accounts/AddEditAccountCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/SecurityEntities/SelectSecurityEntityCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js",
-            "~/" + ConfigSettings.AppName + "/app/growthware/directives/PickList/PicklistDirective.js"
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/PickList/PicklistDirective.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/DerivedRoles/DerivedRolesDirective.js"
             )
         )
 
