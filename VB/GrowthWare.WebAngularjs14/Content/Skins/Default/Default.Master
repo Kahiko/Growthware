@@ -81,12 +81,10 @@
 		</div>
 		<div class="colmask leftmenu">
 			<div class="colleft">
-				<div class="col1" style="overflow: auto">
+				<div class="col1" style="overflow: auto; margin: 10px;">
 					<!-- Column 1 start -->
-					<p>
-						<asp:ContentPlaceHolder ID="MainContent" runat="server">
-						</asp:ContentPlaceHolder>
-					</p>
+					<asp:ContentPlaceHolder ID="MainContent" runat="server">
+					</asp:ContentPlaceHolder>
 					<!-- Column 1 end -->
 				</div>
 				<div class="col2">

@@ -467,3 +467,20 @@ a:active {color: blue;}  /* selected link */
 .view-slide.ng-leave-active {
     left: -100%;
 }
+/** Bootstrap tabs **/
+.tab-pane {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    border-radius: 0px 0px 5px 5px;
+    padding: 10px;
+}
+
+.nav-tabs {
+    margin-bottom: 0;
+}
+.container-full {
+  margin: 0 auto;
+  width: 100%;
+}
+/** Bootstrap tabs **/
