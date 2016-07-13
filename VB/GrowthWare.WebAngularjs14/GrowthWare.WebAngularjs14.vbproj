@@ -289,7 +289,6 @@
     <Content Include="Content\font-awesome-4.6.2\scss\_stacked.scss" />
     <Content Include="Content\font-awesome-4.6.2\scss\_variables.scss" />
     <Content Include="app\growthware\data\Search.config.json" />
-    <Content Include="Content\GrowthWare\Scripts\GW.ListPicker.js" />
     <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Content\Scripts\jquery-1.10.2.js" />
     <Content Include="Content\Scripts\jquery-ui-1.11.2.js" />

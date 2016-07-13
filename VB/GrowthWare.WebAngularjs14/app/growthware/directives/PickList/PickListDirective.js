@@ -5,7 +5,6 @@
     angular.module('growthwareApp').directive('gwPicklist', ['$http', function ($http) {
 
         var link = function (scope, element, attrs) {
-
             /************************* Reorder option elements of an HTML select */
             scope.moveUp = function (listBox) {
                 var objListBox = document.getElementById(attrs.id + listBox);
@@ -41,18 +40,18 @@
                 }
             };
 
-            scope.switchAll = function (source, destination, sortOnChange) {
+            scope.switchAll = function (source, destination) {
                 /*
                 switchAll was created to move all of the options from one list box to another.
                 Parameters:
                 objFromBox - The from list box as an object
                 objToBox - The to list box as an object
                 */
-                link.selectAllInListBox(source);
-                scope.switchList(source, destination, sortOnChange);
+                link.selectAllInListBox(attrs.id + source);
+                scope.switchList(source, destination);
             };
 
-            scope.switchList = function (source, destination, sortOnChange) {
+            scope.switchList = function (source, destination) {
                 /*
                 SwitchList was created to move data from one list box to another
                 keeping the sort order based on the text of the options.
@@ -120,7 +119,7 @@
                 Parameters:
                 objListBox - The list box as an object to be selected
                 */
-                var objListBox = document.getElementById(attrs.id + listBox);
+                var objListBox = document.getElementById(listBox);
                 var lengthOfListBox = objListBox.length;
                 var iCounter = 0;
                 for (iCounter = 0; iCounter < lengthOfListBox; iCounter++) {

@@ -32,7 +32,6 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.Model.js",
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.Search.js",
             "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.NavigationController.js",
-            "~/" + ConfigSettings.AppName + "/Content/GrowthWare/Scripts/GW.ListPicker.js",
             "~/" + ConfigSettings.AppName + "/Content/Scripts/date.format.js"
             )
         )
