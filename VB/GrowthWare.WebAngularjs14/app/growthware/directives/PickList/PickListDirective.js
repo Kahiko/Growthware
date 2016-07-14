@@ -204,6 +204,23 @@
                     return 0;
                 }
                 /********** End Natural Sorting *****************/
+
+                angular.element(document).ready(function () {
+                    // All avalible items will include the selected ones as well
+                    // so wee need to remove the selected items from the all itmes.
+                    setTimeout(function () {
+                        var objSrcList = document.getElementById($scope.id + '_SrcList');
+                        var objDstList = document.getElementById($scope.id + '_DstList');
+                        for (var i = objDstList.length -1; i >= 0; i--) {
+                            for (var x = objSrcList.length -1; x >= 0; x--) {
+                                if (objDstList.options[i].text == objSrcList.options[x].text) {
+                                    objSrcList.remove(x);
+                                    break;
+                                }
+                            }
+                        }
+                    }, 500);
+                });
             },
             templateUrl: GW.Common.getBaseURL() + '/app/growthware/directives/PickList/PickListTemplate.html'
         };
