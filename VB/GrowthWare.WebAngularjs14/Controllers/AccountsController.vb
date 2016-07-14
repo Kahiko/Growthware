@@ -158,7 +158,9 @@ Namespace Controllers
                 mRetVal.Account = mProfile.Account
                 Dim mUIGroups As MUIAccountGroups = New MUIAccountGroups
                 Dim mUIRoles As MUIAccountRoles = New MUIAccountRoles
-                mUIGroups.Groups = mProfile.GetCommaSeparatedAssignedGroups().Split(",")
+                If (mProfile.GetCommaSeparatedAssignedGroups().Split(",").Length > 1) Then
+                    mUIGroups.Groups = mProfile.GetCommaSeparatedAssignedGroups().Split(",")
+                End If
                 mUIRoles.Roles = mProfile.GetCommaSeparatedAssignedRoles().Split(",")
                 mRetVal.AccountGroups = mUIGroups
                 mRetVal.AccountRoles = mUIRoles

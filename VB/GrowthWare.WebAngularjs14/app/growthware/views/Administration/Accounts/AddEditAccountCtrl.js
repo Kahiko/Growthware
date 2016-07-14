@@ -20,11 +20,10 @@
             } else {
                 viewModel.validStatus = m_validStatus;
                 viewModel.roles = ["Anonymous"];
-                viewModel.groups = ["Not Everyone", "Everyone"];
+                viewModel.groups = ["Everyone"];
                 acctSvc.getAccount(searchSvc.editId, m_Action).then(
                     /*** success ***/
                     function (profile) {
-                        //console.log(profile);
                         viewModel.profile = profile;
                         setSelectedStatus();
                     },
