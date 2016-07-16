@@ -16,7 +16,7 @@
         return {
             restrict: 'E',
             scope: {
-                avalibleItems: '=',
+                availableItems: '=',
                 allItemsText: '@',
                 header: '@',
                 id: '@',

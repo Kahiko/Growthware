@@ -7,7 +7,7 @@
         return {
             restrict: 'E',
             scope: {
-                avalibleItems: '=',
+                availableItems: '=',
                 selectedItems: '=',
                 allItemsText: '@',
                 header: '@',
@@ -33,13 +33,19 @@
                 $scope.moveUp = function (listBox) {
                     var objListBox = document.getElementById($scope.id + listBox);
                     var selectOptions = objListBox.getElementsByTagName('option');
-                    for (var i = 1; i < selectOptions.length; i++) {
+                    var i = 0;
+                    for (i = 1; i < selectOptions.length; i++) {
                         var opt = selectOptions[i];
                         if (opt.selected) {
                             objListBox.removeChild(opt);
                             objListBox.insertBefore(opt, selectOptions[i - 1]);
                         }
                     }
+                    var newSelectedItems = [];
+                    for (i = 0; i < objListBox.length; i++) {
+                        newSelectedItems.push(objListBox.options[i].text);
+                    }
+                    $scope.selectedItems = newSelectedItems;
                 };
 
                 $scope.moveDown = function (listBox) {
@@ -54,6 +60,11 @@
                             objListBox.insertBefore(nextOpt, opt);
                         }
                     }
+                    var newSelectedItems = [];
+                    for (i = 0; i < objListBox.length; i++) {
+                        newSelectedItems.push(objListBox.options[i].text);
+                    }
+                    $scope.selectedItems = newSelectedItems;
                 }
                 /************************* End Reorder option elements of an HTML select */
 

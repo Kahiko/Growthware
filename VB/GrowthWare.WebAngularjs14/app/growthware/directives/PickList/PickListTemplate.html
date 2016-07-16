@@ -18,7 +18,7 @@
                         <tr>
                             <td valign="top">
                                 <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" style="width: {{size}}px" size="{{rows}}">
-                                    <option ng-repeat="item in avalibleItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
+                                    <option ng-repeat="item in availableItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
                                 </select>
                             </td>
                             <td valign="top">
@@ -33,7 +33,7 @@
                                 </select>
                             </td>
                             <td></td>
-                            <td valign="top" data-ng-show="!sortOnChange">
+                            <td valign="top" data-ng-show="!{{sortOnChange}}">
                                 <input name="" value="▲" data-ng-click="moveUp('_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br />
                                 <input name="" value="▼" data-ng-click="moveDown('_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br />
                             </td>
