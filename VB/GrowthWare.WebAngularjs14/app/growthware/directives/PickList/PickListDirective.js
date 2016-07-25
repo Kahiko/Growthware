@@ -28,6 +28,7 @@
                 $scope.selectedItemsText = $attrs.selectedItemsText;
                 $scope.size = $attrs.size;
                 $scope.sortOnChange = $attrs.sortOnChange;
+                $scope.sortOnIndex = $attrs.sortOnIndex || 0;
 
                 /************************* Reorder option elements of an HTML select */
                 $scope.moveUp = function (listBox) {
@@ -123,8 +124,8 @@
                             }
                         }
                         if ($scope.sortOnChange.toLowerCase() == "true") {
-                            arrFbox.sort(GW.Common.naturalSort());
-                            arrTbox.sort(GW.Common.naturalSort());
+                            arrFbox.sort(GW.Common.naturalSort($scope.sortOnIndex));
+                            arrTbox.sort(GW.Common.naturalSort($scope.sortOnIndex));
                         }
                         objFromBox.length = 0;
                         objToBox.length = 0;
