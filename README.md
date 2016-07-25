@@ -15,7 +15,7 @@ The framework was developed to provide a data store independent/generic code bas
                 Account creation and Registration
                 <ul>
                     <li>
-                        Using populate social media providers
+                        Using popular social media providers
                         <ul>
                             <li>Google </li>
                             <li>Facebook </li>
