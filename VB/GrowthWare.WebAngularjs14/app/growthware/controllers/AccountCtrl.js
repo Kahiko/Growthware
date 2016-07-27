@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var accountCtrl = function (acctSvc, $scope, $route) {
+    var mRetCtrl = function (acctSvc, $scope, $route) {
         // init
         var thisCtrl = this;
         thisCtrl.navigationObjects = new Array();
@@ -13,8 +13,8 @@
         return thisCtrl;
     };
 
-    accountCtrl.$inject = ['AccountService', 'SearchService', '$scope'];
+    mRetCtrl.$inject = ['AccountService', 'SearchService', '$scope'];
 
-    angular.module('growthwareApp').controller('AccountController', accountCtrl);
+    angular.module('growthwareApp').controller('AccountController', mRetCtrl);
 
 })();

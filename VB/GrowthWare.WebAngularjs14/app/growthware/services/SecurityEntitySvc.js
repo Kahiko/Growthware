@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var securityEntitySvc = function ($http, $q, $rootScope) {
+    var mRetSvc = function ($http, $q, $rootScope) {
         var thisSvc = this;
 
         thisSvc.getValidSecurityEntities = function () {
@@ -33,7 +33,7 @@
         return thisSvc;
     };
 
-    securityEntitySvc.$inject = ['$http', '$q', '$rootScope']
+    mRetSvc.$inject = ['$http', '$q', '$rootScope']
 
-    angular.module('growthwareApp').service('SecurityEntityService', securityEntitySvc);
+    angular.module('growthwareApp').service('SecurityEntityService', mRetSvc);
 })();

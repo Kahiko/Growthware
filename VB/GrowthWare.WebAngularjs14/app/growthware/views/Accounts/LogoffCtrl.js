@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('growthwareApp').controller('LogoffController', ['AccountService', '$controller', '$scope', '$location', function (acctSvc, $controller, $scope, $location) {
+    var mRetCtrl = function (acctSvc, $controller, $scope, $location) {
         // init
         var thisCtrlr = this;
 
@@ -17,5 +17,9 @@
         thisCtrlr.logoff();
 
         return thisCtrlr;
-    }]);
+    };
+
+    mRetCtrl.$inject = ['AccountService', '$controller', '$scope', '$location'];
+
+    angular.module('growthwareApp').controller('LogoffController', mRetCtrl);
 })();

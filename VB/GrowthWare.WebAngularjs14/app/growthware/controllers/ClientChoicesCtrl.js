@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var clientChoicesCtrl = function (acctSvc, $scope) {
+    var mRetCtrl = function (acctSvc, $scope) {
         // init
         var thisCtrlr = this;
         thisCtrlr.preferences = [];
@@ -35,8 +35,8 @@
         return thisCtrlr;
     };
 
-    clientChoicesCtrl.$inject = ['AccountService', '$scope'];
+    mRetCtrl.$inject = ['AccountService', '$scope'];
 
-    angular.module('growthwareApp').controller('ClientChoicesController', clientChoicesCtrl);
+    angular.module('growthwareApp').controller('ClientChoicesController', mRetCtrl);
 
 })();

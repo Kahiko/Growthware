@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var addEditAccountCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location) {
+    var mRetCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location) {
         // init
         var thisCrtl = this;
         var m_Route = $route.current.$$route.originalPath;
@@ -73,8 +73,8 @@
         return thisCrtl;
     };
 
-    addEditAccountCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location'];
+    mRetCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location'];
 
-    angular.module('growthwareApp').controller('AddEditAccountController', addEditAccountCtrl);
+    angular.module('growthwareApp').controller('AddEditAccountController', mRetCtrl);
 
 })();

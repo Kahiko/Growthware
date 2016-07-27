@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var searchSvc = function ($http, $q, $resource) {
+    var mRetSvc = function ($http, $q, $resource) {
         var thisSvc = this;
 
         var m_SearchInfo = null;
@@ -82,7 +82,7 @@
         }
     };
 
-    searchSvc.$inject = ['$http', '$q', '$resource']
+    mRetSvc.$inject = ['$http', '$q', '$resource']
 
-    angular.module('growthwareApp').service('SearchService', searchSvc);
+    angular.module('growthwareApp').service('SearchService', mRetSvc);
 })();

@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    function accountSvc($http, $q, $rootScope) {
+    function mRetSvc($http, $q, $rootScope) {
         var thisSvc = this;
         var m_ClientChoices = null;
         var m_SecurityInfo = [];
@@ -214,8 +214,8 @@
 
     };
 
-    accountSvc.$inject = ['$http', '$q', '$rootScope'];
+    mRetSvc.$inject = ['$http', '$q', '$rootScope'];
     
-    angular.module('growthwareApp').factory('AccountService', accountSvc);
+    angular.module('growthwareApp').factory('AccountService', mRetSvc);
 
 })();

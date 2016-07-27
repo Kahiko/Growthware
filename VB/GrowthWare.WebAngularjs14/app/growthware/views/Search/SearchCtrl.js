@@ -12,7 +12,7 @@
         }
     }]);
 
-    function searchCntrl(acctSvc, searchSvc, $scope, $route, $location, $uibModal) {
+    function mRetCntrl(acctSvc, searchSvc, $scope, $route, $location, $uibModal) {
         // init
         var thisCtrl = this;
         var m_ApiUrl = {};
@@ -304,8 +304,8 @@
         return thisCtrl;
     };
 
-    searchCntrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$location', '$uibModal'];
+    mRetCntrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$location', '$uibModal'];
 
-    app.controller('SearchController', searchCntrl);
+    app.controller('SearchController', mRetCntrl);
 
 })();
