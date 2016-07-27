@@ -16,6 +16,7 @@
 
         function setMenuItems(menuData) {
             GW.Common.debug('buildHorizontalHierarchicalMenu: start');
+            GW.Common.debug(menuData);
             thisCtrlr.menuItems = menuData;  // Accounts for using a named contoler ng-controller="HorizontalMenuController as myCntrlr"
             $scope.menuItems = menuData;
             GW.Common.debug('buildHorizontalHierarchicalMenu: end');

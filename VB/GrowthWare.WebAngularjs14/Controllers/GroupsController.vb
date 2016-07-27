@@ -50,6 +50,13 @@ Namespace Controllers
             Return Ok(mDataTable)
         End Function
 
+        <HttpGet>
+        Public Function GetGroups() As IHttpActionResult
+            Dim mRetVal As ArrayList = Nothing
+            mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id)
+            Return Ok(mRetVal)
+        End Function
+
         <HttpPost>
         Public Function Save(ByVal profile As MUIGroupProfile) As IHttpActionResult
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!")

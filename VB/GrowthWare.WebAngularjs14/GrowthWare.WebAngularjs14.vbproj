@@ -172,6 +172,8 @@
     <Content Include="app\growthware\directives\DerivedRoles\DerivedRolesTemplate.html" />
     <Content Include="app\growthware\directives\PickList\PicklistDirective.js" />
     <Content Include="app\growthware\directives\PickList\PicklistTemplate.html" />
+    <Content Include="app\growthware\services\GroupSvc.js" />
+    <Content Include="app\growthware\services\RoleSvc.js" />
     <Content Include="app\growthware\services\SecurityEntitySvc.js" />
     <Content Include="app\growthware\views\Accounts\ChangePassword.html" />
     <Content Include="app\growthware\views\Accounts\LogoffCtrl.js" />

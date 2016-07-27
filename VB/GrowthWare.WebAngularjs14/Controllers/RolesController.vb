@@ -37,6 +37,13 @@ Namespace Controllers
             Return Ok(mRetVal)
         End Function
 
+        <HttpGet>
+        Public Function GetRoles() As IHttpActionResult
+            Dim mRetVal As ArrayList = Nothing
+            mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id)
+            Return Ok(mRetVal)
+        End Function
+
         <HttpPost>
         Public Function GetSearchResults(<FromBody> searchCriteria As MSearchCriteria) As IHttpActionResult
             Dim mDataTable As DataTable = Nothing

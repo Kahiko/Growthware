@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var addEditAccountCtrl = function (acctSvc, searchSvc, $scope, $route, $location) {
+    var addEditAccountCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location) {
         // init
         var thisCrtl = this;
         var m_Route = $route.current.$$route.originalPath;
@@ -19,19 +19,29 @@
                 $location.path('/');
             } else {
                 viewModel.validStatus = m_validStatus;
-                viewModel.roles = ["AlwaysLogon", "Anonymous", "Authenticated", "Developer"];
-                viewModel.groups = ["Everyone"];
-                acctSvc.getAccount(searchSvc.editId, m_Action).then(
-                    /*** success ***/
-                    function (profile) {
+                // Request #1 in the chain
+                groupSvc.getGroups(m_Action)
+                    .then(function (groupsResponse) {
+                        // Response Handler #1
+                        viewModel.groups = groupsResponse;
+                        // Request #2
+                        return roleSvc.getRoles(m_Action);
+                    })
+                    .then(function (rolesResponse) {
+                        // Response Handler #2
+                        viewModel.roles = rolesResponse;
+                        // Request #3
+                        return acctSvc.getAccount(searchSvc.editId, m_Action);
+                    })
+                    .then(function (profile) {
+                        // Response Handler #3
                         viewModel.profile = profile;
                         setSelectedStatus();
-                    },
-                    /*** error ***/
-                    function (result) {
-                        console.log("Failed to getAccount, result is " + result);
-                    }
-                );
+                    })
+                    .catch(function (result) { /*** error ***/
+                        console.log("Failed to load data for account, result is:");
+                        console.log(result);
+                    });
             }
             $scope.vm = viewModel;
         };
@@ -63,7 +73,7 @@
         return thisCrtl;
     };
 
-    addEditAccountCtrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$location'];
+    addEditAccountCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location'];
 
     angular.module('growthwareApp').controller('AddEditAccountController', addEditAccountCtrl);
 
