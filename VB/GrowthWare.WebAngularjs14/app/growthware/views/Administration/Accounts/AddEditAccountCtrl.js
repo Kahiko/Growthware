@@ -65,7 +65,21 @@
         };
 
         $scope.save = function () {
-            console.log($scope.vm.profile);
+            acctSvc.save(viewModel.profile, m_Action).then(
+                /*** success ***/
+                function (result) {
+                    if (result.toLowerCase == "false") {
+                        alert('Account information was not saved!');
+                    } else {
+                        $scope.cancelEdit();
+                    }
+                },
+                /*** error ***/
+                function (result) {
+                    console.log("Failed to getPreferences, result is:");
+                    console.log(result);
+                }
+           );
         };
 
         initCtrl();
