@@ -18,8 +18,8 @@ Namespace Controllers
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)
             Else
-                If Not HttpContext.Current.Items("EditId") = Nothing Then
-                    Dim mEditId As Integer = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If Not HttpContext.Current.Session("EditId") = Nothing Then
+                    Dim mEditId As Integer = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                     If mEditId = groupSeqId Then
                         Dim mProfile As MGroupProfile = GroupUtility.GetProfile(groupSeqId)
                         GroupUtility.Delete(mProfile)
@@ -64,7 +64,7 @@ Namespace Controllers
             Dim mRetVal As String = "false"
             Dim mProfileToSave As MGroupProfile = New MGroupProfile()
             Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditGroups", True)), AccountUtility.CurrentProfile())
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
                 If profile.Id = -1 Then
                     If Not mSecurityInfo.MayAdd Then
                         Dim mError As Exception = New Exception("The account (" + AccountUtility.CurrentProfile.Account + ") being used does not have the correct permissions to add")
@@ -101,7 +101,7 @@ Namespace Controllers
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)
             End If
-            If HttpContext.Current.Items("EditId") Is Nothing Or HttpContext.Current.Items("EditId").ToString().ToLowerInvariant() <> groupAccounts.SeqId.ToString().ToLowerInvariant() Then
+            If HttpContext.Current.Session("EditId") Is Nothing Or HttpContext.Current.Session("EditId").ToString().ToLowerInvariant() <> groupAccounts.SeqId.ToString().ToLowerInvariant() Then
                 Dim mError As Exception = New Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!")
                 mLog.Error(mError)
                 Return Me.InternalServerError(mError)

@@ -65,8 +65,8 @@ Namespace Controllers
             If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
             Dim mRetVal As String = False
             Dim mLog As Logger = Logger.Instance()
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = accountSeqId Then
                     Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
@@ -179,6 +179,7 @@ Namespace Controllers
             Else
                 mRetVal.Id = -1
             End If
+            HttpContext.Current.Session("EditId") = mRetVal.Id
             Return mRetVal
         End Function
 
@@ -340,10 +341,10 @@ Namespace Controllers
                     mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email"
                 End If
             Else
-                If Not HttpContext.Current.Items("EditId") Is Nothing Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
+                If Not HttpContext.Current.Session("EditId") Is Nothing Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
                     Dim mEditId As Integer
-                    If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                        mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                    If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                        mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                     Else
                         mEditId = mCurrentAccountProfile.Id
                     End If
@@ -358,8 +359,14 @@ Namespace Controllers
                                     mAccountProfileToSave = AccountUtility.GetProfile(mEditId)
                                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                                     mAccountProfileToSave.Id = uiProfile.Id
-                                    Dim mGroups As String = String.Join(",", uiProfile.AccountGroups.Groups)
-                                    Dim mRoles As String = String.Join(",", uiProfile.AccountRoles.Roles)
+                                    Dim mGroups As String = String.Empty
+                                    If Not uiProfile.AccountGroups.Groups Is Nothing Then
+                                        mGroups = String.Join(",", uiProfile.AccountGroups.Groups)
+                                    End If
+                                    Dim mRoles As String = String.Empty
+                                    If Not uiProfile.AccountRoles.Roles Is Nothing Then
+                                        mRoles = String.Join(",", uiProfile.AccountRoles.Roles)
+                                    End If
                                     If mGroupTabSecurity.MayView And FunctionUtility.CurrentProfile().Action.ToLowerInvariant() = ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True).ToLower(CultureInfo.InvariantCulture) Then
                                         If mAccountProfileToSave.GetCommaSeparatedAssignedGroups <> mGroups Then
                                             mSaveGroups = True

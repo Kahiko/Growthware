@@ -16,8 +16,8 @@ Namespace Controllers
             Dim mRetVal As Boolean = False
             Dim mLog As Logger = Logger.Instance()
             If Not String.IsNullOrEmpty(uiProfile.Name) Then
-                If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                    Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                    Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                     If mEditId = uiProfile.Id Then
                         Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditSecurityEntity", True)), AccountUtility.CurrentProfile())
                         If Not mSecurityInfo Is Nothing Then
