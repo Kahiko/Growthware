@@ -15,7 +15,7 @@
 
         function initCtrl() {
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
-            if (lastSearchRoute.length == 0) {
+            if (lastSearchRoute.length == 0 && !(m_Action.toLowerCase() == 'editaccount' || m_Action.toLowerCase() == 'register')) {
                 $location.path('/');
             } else {
                 viewModel.validStatus = m_validStatus;
@@ -31,12 +31,24 @@
                         // Response Handler #2
                         viewModel.roles = rolesResponse;
                         // Request #3
-                        return acctSvc.getAccount(searchSvc.editId, m_Action);
+                        var editId = searchSvc.editId;
+                        if (m_Action.toLowerCase() == 'register') editId = -1;
+                        if (m_Action.toLowerCase() == 'editaccount') editId = -2;
+                        return acctSvc.getAccount(editId, m_Action);
                     })
                     .then(function (profile) {
                         // Response Handler #3
                         viewModel.profile = profile;
                         setSelectedStatus();
+                        acctSvc.getSecurityInfo(m_Action);
+                    }).then(function (securityInfo) {
+                        viewModel.securityInfo = securityInfo;
+                        return acctSvc.getSecurityInfo('View_Account_Role_Tab');
+                    }).then(function (securityInfo) {
+                        viewModel.securityInfoRoleTab = securityInfo;
+                        return acctSvc.getSecurityInfo('View_Account_Group_Tab');
+                    }).then(function (securityInfo) {
+                        viewModel.securityInfoGroupTab = securityInfo;
                     })
                     .catch(function (result) { /*** error ***/
                         console.log("Failed to load data for account, result is:");
@@ -60,7 +72,11 @@
             if (lastSearchRoute.length > 0) {
                 $location.path(lastSearchRoute);
             } else {
-                $location.path('/Home');
+                if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
+                    $location.path('/Home');
+                } else {
+                    $location.path('/Generic_Home');
+                };
             }
         };
 

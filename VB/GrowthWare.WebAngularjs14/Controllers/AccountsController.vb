@@ -148,13 +148,16 @@ Namespace Controllers
             Return mRetVal
         End Function
 
-
         <HttpGet>
         Public Function GetProfile(<FromUri()> ByVal accountSeqID As Integer) As MUIAccountProfile
             Dim mProfile As MAccountProfile = Nothing
             Dim mRetVal As MUIAccountProfile = New MUIAccountProfile()
             If Not accountSeqID = -1 Then
-                mProfile = AccountUtility.GetProfile(accountSeqID)
+                If Not accountSeqID = -2 Then
+                    mProfile = AccountUtility.GetProfile(accountSeqID)
+                Else
+                    mProfile = AccountUtility.CurrentProfile()
+                End If
                 mRetVal.Account = mProfile.Account
                 Dim mUIGroups As MUIAccountGroups = New MUIAccountGroups
                 Dim mUIRoles As MUIAccountRoles = New MUIAccountRoles

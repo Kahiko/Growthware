@@ -6,9 +6,9 @@
         <div class="container container-full" id="tabs">
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="nav active"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
-                <li role="presentation" id="rolesTab" class="nav"><a data-toggle="tab" data-target="#tabsRoles">Roles</a></li>
-                <li role="presentation" id="groupsTab" class="nav"><a data-toggle="tab" data-target="#tabsGroups">Groups</a></li>
-                <li role="presentation" id="derivedRolesTab" class="nav"><a data-toggle="tab" data-target="#tabsDerivedRoles">Derived Roles</a></li>
+                <li role="presentation" id="rolesTab" class="nav"><a data-toggle="tab" data-target="#tabsRoles" data-ng-show="vm.securityInfoRoleTab.MayView">Roles</a></li>
+                <li role="presentation" id="groupsTab" class="nav"><a data-toggle="tab" data-target="#tabsGroups" data-ng-show="vm.securityInfoGroupTab.MayView">Groups</a></li>
+                <li role="presentation" id="derivedRolesTab" class="nav"><a data-toggle="tab" data-target="#tabsDerivedRoles" data-ng-show="vm.securityInfoRoleTab.MayView">Derived Roles</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tabsGeneral">
@@ -161,13 +161,11 @@
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsRoles">
-                    vm.profile.AccountRoles.Roles: {{vm.profile.AccountRoles.Roles}}<br />
                     <p>
                         <gw-picklist size="200" rows="10" id="ctlRoles" selected-items="vm.profile.AccountRoles.Roles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Assign roles" header="Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsGroups">
-                    vm.profile.AccountGroups.Groups: {{vm.profile.AccountGroups.Groups}}
                     <p>
                         <gw-picklist size="200" rows="10" id="ctlGroups" selected-items="vm.profile.AccountGroups.Groups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Assign Groups" header="Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
                     </p>
@@ -183,7 +181,7 @@
             <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
                 <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
             </button>
-            <button class="btn btn-primary disabled" id="btnDelete" disabled="">
+            <button class="btn btn-primary disabled" id="btnDelete" data-ng-show="vm.securityInfo.MayDelete" disabled="vm.securityInfo.MayDelete">
                 <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
             </button>
             <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">

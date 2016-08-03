@@ -183,6 +183,7 @@
     <Content Include="app\growthware\views\Administration\Functions\AddEditFunction.html" />
     <Content Include="app\growthware\views\Errors\AccessDenied.html" />
     <Content Include="app\growthware\views\Errors\UnknownAction.html" />
+    <Content Include="app\growthware\views\ExternalAuth\RegisterExternalLogin.html" />
     <Content Include="app\growthware\views\Search\SearchCtrl.js" />
     <Content Include="app\growthware\directives\LoadingDirective.js" />
     <Content Include="app\growthware\GrowthwareApp.js" />

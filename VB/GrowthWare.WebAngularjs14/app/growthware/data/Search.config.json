@@ -11,7 +11,7 @@
             { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Added Date", "name": "Added_Date" },
             { "width": 0, "type": "date", "visible": true, "isEditKey": false, "label": "Last Login", "name": "Last_Login" }
         ],
-        "editAction":  "EditAccount",
+        "editAction":  "EditOtherAccount",
         "editUrl": "/app/growthware/views/Administration/Accounts/AddEditAccount.html?AccountSeqID=",
         "orderByColumn": "Account"
     },
