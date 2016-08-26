@@ -1,5 +1,7 @@
 ﻿<style>
-
+td { 
+    padding: 5px;
+}
 </style>
 <form id="frmAddeditAccounts">
     <div data-ng-controller="AddEditAccountController">
@@ -13,10 +15,10 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tabsGeneral">
                     <p>
-                        <table border="1" cellpadding="3" cellspacing="0" width="850px">
+                        <table border="0" cellpadding="3" cellspacing="0">
                             <tr>
                                 <td>
-                                    <table border="0" cellpadding="2">
+                                    <table border="0" style="border-spacing: 40px 10px;">
                                         <tr>
                                             <td align="center" colspan="4">
                                                 <span id="Label1" forecolor="Red"></span>
@@ -30,7 +32,7 @@
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td>
-                                                            <input id="txtAccount" data-ng-model="vm.profile.Account" cssclass="Form_Field rounded" maxlength="128" />
+                                                            <input id="txtAccount" data-ng-model="vm.profile.Account" class="Form_Field rounded" maxlength="128" />
                                                             <img id="imgWarningAccount" imageurl="~/Content/GrowthWare/Images/help.gif" alternatetext="Help Image" />
                                                             <span id="litAccountWarning"></span>
                                                         </td>
@@ -42,10 +44,10 @@
                                                 <span class="Form_LabelText">Status: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in vm.validStatus track by item.id" cssclass="Form_Field rounded"></select>
+                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in vm.validStatus track by item.id" class="Form_Field rounded"></select>
                                             </td>
                                         </tr>
-                                        <tr id="trSysAdmin" data-ng-hide="vm.profile.IsSystemAdmin">
+                                        <tr id="trSysAdmin" data-ng-show="vm.profile.IsSystemAdmin">
                                             <td valign="top">
                                                 <span class="Form_LabelText">System Administrator: </span>
                                             </td>
@@ -57,7 +59,7 @@
                                             </td>
                                             <td valign="top">
                                                 <span id="litFailedAttempts" />
-                                                <input id="txtFailedAttempts" cssclass="Form_Field rounded" />
+                                                <input id="txtFailedAttempts" class="Form_Field rounded" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -65,14 +67,14 @@
                                                 <span class="Form_LabelText">First Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtFirstName" data-ng-model="vm.profile.FirstName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtFirstName" data-ng-model="vm.profile.FirstName" maxlength="35" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Last Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtLastName" data-ng-model="vm.profile.LastName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtLastName" data-ng-model="vm.profile.LastName" maxlength="35" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -81,13 +83,13 @@
                                                 <span class="Form_LabelText">Middle Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtMiddleName" data-ng-model="vm.profile.MiddleName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtMiddleName" data-ng-model="vm.profile.MiddleName" maxlength="35" class="Form_Field rounded" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Preferred Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtPreferredName" data-ng-model="vm.profile.PreferredName" maxlength="50" cssclass="Form_Field rounded" />
+                                                <input id="txtPreferredName" data-ng-model="vm.profile.PreferredName" maxlength="50" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -96,14 +98,14 @@
                                                 <span class="Form_LabelText">Email: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtEmail" data-ng-model="vm.profile.EMail" maxlength="128" columns="25" cssclass="Form_Field rounded" />
+                                                <input id="txtEmail" data-ng-model="vm.profile.EMail" maxlength="128" columns="25" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Timezone: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropTimezone" cssclass="rounded">
+                                                <select id="dropTimezone" class="rounded">
                                                     <option text="Hawaii (GMT -10)" value="-10" />
                                                     <option text="Alaska (GMT -9)" value="-9" />
                                                     <option text="Pacific Time (GMT -8)" value="-8" />
@@ -136,7 +138,7 @@
                                                 <span class="Form_LabelText">Location: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtLocation" maxlength="128" cssclass="Form_Field rounded" />
+                                                <input id="txtLocation" maxlength="128" class="Form_Field rounded" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -149,7 +151,7 @@
                                                 <span class="Form_LabelText">Email Notifications: </span>
                                             </td>
                                             <td colspan="3" valign="top">
-                                                <input type="checkbox" id="chkEnableNotifications" cssclass="Form_Field rounded" checked="true" text="Receive Email Notifications" />
+                                                <input type="checkbox" id="chkEnableNotifications" class="Form_Field rounded" checked="true" text="Receive Email Notifications" />
                                                 <br />
                                                 <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
                                             </td>
