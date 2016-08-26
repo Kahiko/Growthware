@@ -5,6 +5,7 @@
         var thisSvc = this;
         var m_ClientChoices = null;
         var m_SecurityInfo = [];
+        var m_CurrentProfile = null;
 
         thisSvc.loadFunctions = function (callBackFunc) {
             var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionData";
@@ -98,6 +99,23 @@
             return deferred.promise;
         };
 
+        thisSvc.getCurrentAccount = function () {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/GetProfile/?Action=Home&accountSeqID=-2";
+            var options = {
+                method: "GET",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' }
+            }
+            $http(options)
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
+            return deferred.promise;
+        };
         thisSvc.getHorizontalHierarchicalMenuData = function (callBackFunc) {
             var menuType = 3;  //MenuType.Hierarchical = 3
             getMenuData(callBackFunc, menuType);

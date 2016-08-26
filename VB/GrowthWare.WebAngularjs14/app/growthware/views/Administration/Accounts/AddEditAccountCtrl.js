@@ -40,14 +40,24 @@
                         // Response Handler #3
                         viewModel.profile = profile;
                         setSelectedStatus();
-                        acctSvc.getSecurityInfo(m_Action);
+                        return acctSvc.getCurrentAccount();
+                    }).then(function (profile) {
+                        // Response Handler #4
+                        viewModel.currentProfile = profile;
+                        // Request #5
+                        return acctSvc.getSecurityInfo(m_Action);
                     }).then(function (securityInfo) {
+                        // Response Handler #5
                         viewModel.securityInfo = securityInfo;
+                        // Request #6
                         return acctSvc.getSecurityInfo('View_Account_Role_Tab');
                     }).then(function (securityInfo) {
+                        // Response Handler #6
                         viewModel.securityInfoRoleTab = securityInfo;
+                        // Request #7
                         return acctSvc.getSecurityInfo('View_Account_Group_Tab');
                     }).then(function (securityInfo) {
+                        // Response Handler #7
                         viewModel.securityInfoGroupTab = securityInfo;
                     })
                     .catch(function (result) { /*** error ***/

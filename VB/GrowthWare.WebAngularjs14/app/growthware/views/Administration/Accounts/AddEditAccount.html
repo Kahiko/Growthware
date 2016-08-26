@@ -18,7 +18,7 @@ td {
                         <table border="0" cellpadding="3" cellspacing="0">
                             <tr>
                                 <td>
-                                    <table border="0" style="border-spacing: 40px 10px;">
+                                    <table border="0">
                                         <tr>
                                             <td align="center" colspan="4">
                                                 <span id="Label1" forecolor="Red"></span>
@@ -47,12 +47,12 @@ td {
                                                 <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in vm.validStatus track by item.id" class="Form_Field rounded"></select>
                                             </td>
                                         </tr>
-                                        <tr id="trSysAdmin" data-ng-show="vm.profile.IsSystemAdmin">
+                                        <tr id="trSysAdmin" data-ng-show="vm.currentProfile.IsSystemAdmin">
                                             <td valign="top">
                                                 <span class="Form_LabelText">System Administrator: </span>
                                             </td>
                                             <td valign="top">
-                                                <asp:checkbox id="chkSysAdmin" data-ng-model="vm.profile.IsSystemAdmin" />
+                                                <input type="checkbox" data-ng-model="vm.profile.IsSystemAdmin" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Failed Logon Attempts: </span>
