@@ -80,7 +80,9 @@
         });
 
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-            window.document.title = current.$$route.title;
+            var mTitle = current.$$route.title || "Welcome";
+            window.document.title = mTitle;
+            $('#pageMessage').html(mTitle);
         });
 
         GW.Common.debug("End: growthwareApp.run");
