@@ -31,19 +31,20 @@
                         // Response Handler #2
                         viewModel.roles = rolesResponse;
                         // Request #3
+                        return acctSvc.getCurrentAccount();
+                    })
+                    .then(function (profile) {
+                        // Response Handler #3
+                        viewModel.currentProfile = profile;
+                        // Request #4
                         var editId = searchSvc.editId;
                         if (m_Action.toLowerCase() == 'register') editId = -1;
                         if (m_Action.toLowerCase() == 'editaccount') editId = -2;
                         return acctSvc.getAccount(editId, m_Action);
-                    })
-                    .then(function (profile) {
-                        // Response Handler #3
-                        viewModel.profile = profile;
-                        setSelectedStatus();
-                        return acctSvc.getCurrentAccount();
                     }).then(function (profile) {
                         // Response Handler #4
-                        viewModel.currentProfile = profile;
+                        viewModel.profile = profile;
+                        setSelectedStatus();
                         // Request #5
                         return acctSvc.getSecurityInfo(m_Action);
                     }).then(function (securityInfo) {
