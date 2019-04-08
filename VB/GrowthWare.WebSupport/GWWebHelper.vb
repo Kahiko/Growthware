@@ -32,7 +32,14 @@ Public Class GWWebHelper
     Public Shared ReadOnly Property CoreWebAdministrationVersion() As String
         Get
             Dim myVersion As String = String.Empty
-            Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load("GrowthWare.WebApplication")
+            Dim myAssembly As Reflection.Assembly = Nothing
+            ' TODO: Should change this to find by either appdomain path or something rather than the hard coding here.
+            Try
+                myAssembly = Reflection.Assembly.Load("GrowthWare.WebApplication")
+            Catch ex As Exception
+                myAssembly = Reflection.Assembly.Load("GrowthWare.WebAngularjs14")
+            End Try
+
             If Not myAssembly Is Nothing Then
                 myVersion = myAssembly.GetName.Version.ToString
             End If
