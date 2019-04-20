@@ -45,7 +45,7 @@
             //GW.Common.debug(mNavObjects);
             /*** register the routes ***/
             mNavObjects.forEach(function (route) {
-                $routeProvider.when('/' + route.Action, { controller: route.Controller, templateUrl: route.Location, title: route.Description });
+                $routeProvider.when('/' + route.Action, { controller: route.Controller, templateUrl: route.Location + '?Action=' + route.Action, title: route.Description });
             });
             $routeProvider.when('/', { templateUrl: '/app/growthware/views/Home/GenericHome.html' })
             //$routeProvider.otherwise({ redirectTo: '/' }); // causes redirect when using FQDN in a popup ... should be able to put back if change from pop to page nav.
@@ -67,13 +67,13 @@
                         /* success */
                         function (securityInfo) {
                             if (!securityInfo.MayView) {
-                                $location.path('/AccessDenied');
+                                $location.path('/?Action=AccessDenied');
                             }
                         },
                         /* error */
                         function (result) {
                             console.log("Failed to get securityInfo, result is " + result);
-                            $location.path('/UnknownAction');
+                            $location.path('/?Action=UnknownAction');
                         });
                 }
             }

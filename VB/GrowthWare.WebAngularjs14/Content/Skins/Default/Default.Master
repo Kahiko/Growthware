@@ -29,7 +29,7 @@
     </asp:ContentPlaceHolder>
 
     <script type="text/ng-template" id="tree-renderer.html">
-        <a href="{{menuItem.Action}}">{{menuItem.label}}</a>
+        <a href="{{menuItem.Action}}?Action={{menuItem.Action}}">{{menuItem.label}}</a>
         <ul>
             <li ng-repeat="menuItem in menuItem.items" ng-include="'tree-renderer.html'" class="has-sub"></li>
         </ul>
@@ -73,7 +73,7 @@
 			    <div class="Column" id="HorizontalDiv" data-ng-controller="HorizontalMenuController">
                     <div id="HMenu" class="HMenu">
                         <span data-ng-repeat="item in menuItems">
-                            |&nbsp;<a title='{{ item.Action }}' href='{{ item.Route }}'>{{ item.Title }}</a>
+                            |&nbsp;<a title='{{ item.Action }}' href='{{ item.Route }}?Action={{ item.Route }}'>{{ item.Title }}</a>
                         </span>
                         |&nbsp;&nbsp;
                     </div>
@@ -96,7 +96,7 @@
                         <div id="VMenu" data-ng-controller="VerticalMenuController">
                             <span id="NavigationTrail" data-ng-repeat="item in menuItems">
                                 <a></a>
-                                <a title='{{item.Description}}' href='{{ item.Route }}'>{{ item.Title }}</a><br/>
+                                <a title='{{item.Description}}' href='{{ item.Route }}?Action={{ item.Route }}'>{{ item.Title }}</a><br/>
                             </span>
                         </div>
                     </div>

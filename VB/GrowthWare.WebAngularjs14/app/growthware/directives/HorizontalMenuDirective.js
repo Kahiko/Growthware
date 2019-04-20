@@ -9,7 +9,7 @@
             },
             restrict: 'EA',
             replace: true,
-            template: "<a title='{{ item.Action }}' href='{{ item.Route }}'>item.Action</a>;"
+            template: "<a title='{{ item.Action }}' href='?Action={{ item.Route }}'>item.Action</a>;"
         };
     });
 
