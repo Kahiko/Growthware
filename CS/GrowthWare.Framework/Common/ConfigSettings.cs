@@ -734,6 +734,30 @@ namespace GrowthWare.Framework.Common
                 return ConfigurationManager.AppSettings[settingName];
             }
         }
+        /// <summary>
+        /// Return the AngularJS value from the web.config file as a boolean
+        /// </summary>
+        /// <returns>Boolean</returns>
+        /// <remarks>If there is an error reading the config file, this will return "False"</remarks>
+        public static bool IsAngularJSApplication
+        {
+            get
+            {
+                bool mRetVal = false;
+                try
+                {
+                    mRetVal = bool.Parse(GetAppSettingValue("AngularJS", false));
+                }
+                catch (Exception)
+                {
+                    // one of the few times that we will hide the error
+                    // if there is no entry then it will be assumed 
+                    // the application is not angularJS enable
+                }
+                return mRetVal;
+
+            }
+        }
 
         /// <summary>
         /// Return a value from the configuration file appsettings section

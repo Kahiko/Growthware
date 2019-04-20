@@ -190,7 +190,14 @@ namespace GrowthWare.WebSupport.Context
                         GWWebHelper.ExceptionError = mException;
                         mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
                         string mChangePasswordPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action);
+                        if (ConfigSettings.IsAngularJSApplication)
+                        {
+                            HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action);
+                        }
+                        else
+                        {
+                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action);
+                        }
                         break;
                     case (int)SystemStatus.SetAccountDetails:
                         if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1)
@@ -201,7 +208,14 @@ namespace GrowthWare.WebSupport.Context
                                 mException = new WebSupportException("Your account details need to be set.");
                                 GWWebHelper.ExceptionError = mException;
                                 string mEditAccountPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
+                                if (ConfigSettings.IsAngularJSApplication)
+                                {
+                                    HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action);
+                                }
+                                else
+                                {
+                                    HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action);
+                                }
                             }
                         }
                         break;
@@ -215,12 +229,26 @@ namespace GrowthWare.WebSupport.Context
                                 GWWebHelper.ExceptionError = mException;
                                 mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true));
                                 mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                                if (ConfigSettings.IsAngularJSApplication)
+                                {
+                                    HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action);
+                                }
+                                else
+                                {
+                                    HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                                }
                             }
                             mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true));
                             mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action);
                             mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                            if (ConfigSettings.IsAngularJSApplication)
+                            {
+                                HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action);
+                            }
+                            else
+                            {
+                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action);
+                            }
                         }
                         break;
                 }

@@ -141,7 +141,11 @@ Namespace Context
                         GWWebHelper.ExceptionError = mException
                         mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
                         Dim mChangePasswordPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                        HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
+                        If (ConfigSettings.IsAngularJSApplication) Then
+                            HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action)
+                        Else
+                            HttpContext.Current.Response.Redirect(mChangePasswordPage + "?Action=" + mFunctionProfile.Action)
+                        End If
                     Case DirectCast(SystemStatus.SetAccountDetails, Integer)
                         If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
                             mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
@@ -149,7 +153,11 @@ Namespace Context
                                 mException = New WebSupportException("Your account details need to be set.")
                                 GWWebHelper.ExceptionError = mException
                                 Dim mEditAccountPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
+                                If (ConfigSettings.IsAngularJSApplication) Then
+                                    HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action)
+                                Else
+                                    HttpContext.Current.Response.Redirect(mEditAccountPage + "?Action=" + mFunctionProfile.Action)
+                                End If
                             End If
                         End If
                     Case Else
@@ -160,12 +168,20 @@ Namespace Context
                                 GWWebHelper.ExceptionError = mException
                                 mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
                                 mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
+                                If (ConfigSettings.IsAngularJSApplication) Then
+                                    HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action)
+                                Else
+                                    HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
+                                End If
                             End If
                             mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
                             mLog.Warn("Access was denied to Account: " + mAccountProfile.Account + " for Action: " + mFunctionProfile.Action)
                             mPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                            HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
+                            If (ConfigSettings.IsAngularJSApplication) Then
+                                HttpContext.Current.Response.Redirect("?Action=" + mFunctionProfile.Action)
+                            Else
+                                HttpContext.Current.Response.Redirect(mPage + "?Action=" + mFunctionProfile.Action)
+                            End If
                         End If
                 End Select
             Else
