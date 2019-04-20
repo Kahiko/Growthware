@@ -60,23 +60,6 @@
                     $templateCache.remove(current.templateUrl);
                 }
             };
-            if (next) {
-                var mRoute = next.$$route.originalPath.substr(1, next.$$route.originalPath.length - 1);
-                if (mRoute.length > 0) {
-                    acctSvc.getSecurityInfo(mRoute).then(
-                        /* success */
-                        function (securityInfo) {
-                            if (!securityInfo.MayView) {
-                                $location.path('/?Action=AccessDenied');
-                            }
-                        },
-                        /* error */
-                        function (result) {
-                            console.log("Failed to get securityInfo, result is " + result);
-                            $location.path('/?Action=UnknownAction');
-                        });
-                }
-            }
         });
 
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
