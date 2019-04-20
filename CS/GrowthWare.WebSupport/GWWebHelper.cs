@@ -168,7 +168,7 @@ namespace GrowthWare.WebSupport
             get
             {
                 bool mRetVal = false;
-                if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) <> -1)
+                if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) != -1)
                 {
                     mRetVal = true;
                 }
