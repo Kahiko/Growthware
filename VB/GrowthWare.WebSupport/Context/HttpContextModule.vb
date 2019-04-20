@@ -139,9 +139,7 @@ Namespace Context
             ' we will also have request for the api that may or may not have a session 
             '   (though we have code to ensure api calls require session)
             If HttpContext.Current.Session Is Nothing Then
-                If Not GWWebHelper.IsWebApiRequest Then
-                    HandleRedirect(mLog, mAccountProfile, mException, mAction, mFunctionProfile, mSecurityInfo)
-                End If
+                HandleRedirect(mLog, mAccountProfile, mException, mAction, mFunctionProfile, mSecurityInfo)
                 mLog.Debug("No Session!")
                 mLog.Debug("Ended")
                 Exit Sub
@@ -166,66 +164,66 @@ Namespace Context
         ''' <param name="functionProfile"></param>
         ''' <param name="securityInfo"></param>
         Private Shared Sub HandleRedirect(log As Logger, accountProfile As MAccountProfile, ByRef webSupportException As WebSupportException, action As String, ByRef functionProfile As MFunctionProfile, securityInfo As MSecurityInfo)
-            Dim mFunctionsToIgnore As String() = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"}
-            Dim mFunctionProfile As MFunctionProfile = functionProfile ' Byref parameters can not be used in a lambda expression
+            If Not GWWebHelper.IsWebApiRequest Then
+                Dim mFunctionsToIgnore As String() = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"}
+                Dim mFunctionProfile As MFunctionProfile = functionProfile ' Byref parameters can not be used in a lambda expression
 
-            If Not mFunctionsToIgnore.Any(Function(s) mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)) Then
-                Dim mRedirectPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                Select Case accountProfile.Status
-                    Case DirectCast(SystemStatus.ChangePassword, Integer)
-                        webSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
-                        GWWebHelper.ExceptionError = webSupportException
-                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
-                        mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-
-                        If (ConfigSettings.IsAngularJSApplication) Then
-                            mRedirectPage = GetRelitiveURL(mFunctionProfile)
-                            HttpContext.Current.Server.Transfer(mRedirectPage, False)
-                        Else
-                            HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
-                        End If
-                    Case DirectCast(SystemStatus.SetAccountDetails, Integer)
-                        If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) = -1 Then
-                            If action.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
-                                webSupportException = New WebSupportException("Your account details need to be set.")
-                                GWWebHelper.ExceptionError = webSupportException
-                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
-                                mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                If (ConfigSettings.IsAngularJSApplication) Then
-                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
-                                    HttpContext.Current.Server.Transfer(mRedirectPage, False)
-                                Else
-                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
-                                End If
-                            End If
-                        End If
-                    Case Else
-                        If Not securityInfo.MayView Then
-                            If accountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
-                                webSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
-                                GWWebHelper.ExceptionError = webSupportException
-                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
-                                mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                If (ConfigSettings.IsAngularJSApplication) Then
-                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
-                                    HttpContext.Current.Server.Transfer(mRedirectPage, False)
-                                Else
-                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
-                                End If
-                            End If
-                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
-                            log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action)
+                If Not mFunctionsToIgnore.Any(Function(s) mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)) Then
+                    Dim mRedirectPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                    Select Case accountProfile.Status
+                        Case DirectCast(SystemStatus.ChangePassword, Integer)
+                            webSupportException = New WebSupportException("Your password needs to be changed before any other action can be performed.")
+                            GWWebHelper.ExceptionError = webSupportException
+                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
                             mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+
                             If (ConfigSettings.IsAngularJSApplication) Then
                                 mRedirectPage = GetRelitiveURL(mFunctionProfile)
                                 HttpContext.Current.Server.Transfer(mRedirectPage, False)
                             Else
                                 HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
                             End If
-                        End If
-                End Select
-            Else
-                log.Debug("Menu data or Logoff/Logon or ChangePassword requested")
+                        Case DirectCast(SystemStatus.SetAccountDetails, Integer)
+                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", True))
+                            If action.ToUpper(CultureInfo.InvariantCulture) <> mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture) Then
+                                webSupportException = New WebSupportException("Your account details need to be set.")
+                                GWWebHelper.ExceptionError = webSupportException
+                                mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                If (ConfigSettings.IsAngularJSApplication) Then
+                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                    HttpContext.Current.Server.Transfer(mRedirectPage, False)
+                                Else
+                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
+                                End If
+                            End If
+                        Case Else
+                            If Not securityInfo.MayView Then
+                                If accountProfile.Account.ToUpper(CultureInfo.InvariantCulture) = "ANONYMOUS" Then
+                                    webSupportException = New WebSupportException("Your session has timed out.<br/>Please sign in.")
+                                    GWWebHelper.ExceptionError = webSupportException
+                                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
+                                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                    If (ConfigSettings.IsAngularJSApplication) Then
+                                        mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                        HttpContext.Current.Server.Transfer(mRedirectPage, False)
+                                    Else
+                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
+                                    End If
+                                End If
+                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", True))
+                                log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action)
+                                mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
+                                If (ConfigSettings.IsAngularJSApplication) Then
+                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                    HttpContext.Current.Server.Transfer(mRedirectPage, False)
+                                Else
+                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
+                                End If
+                            End If
+                    End Select
+                Else
+                    log.Debug("Menu data or Logoff/Logon or ChangePassword requested")
+                End If
             End If
         End Sub
 

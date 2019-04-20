@@ -8,7 +8,7 @@
         initCtrl();
 
         function initCtrl() {
-            alert('hi');
+            // alert('hi');
         };
 
         thisCrtl.myFun = function () {

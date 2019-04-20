@@ -176,7 +176,9 @@ namespace GrowthWare.WebSupport.Context
             }
             // should the function profile be nul we'll get one based on the action
             if (mFunctionProfile == null)
+            {
                 mFunctionProfile = FunctionUtility.GetProfile(mAction);
+            }
             // now that we've pulled it from the database or cache place it into session using the function utility
             FunctionUtility.SetCurrentProfile(mFunctionProfile);
             // we should now be able to get the security information
@@ -187,8 +189,7 @@ namespace GrowthWare.WebSupport.Context
             // (though we have code to ensure api calls require session)
             if (HttpContext.Current.Session == null)
             {
-                if (!GWWebHelper.IsWebApiRequest)
-                    HandleRedirect(mLog, mAccountProfile, ref mException, mAction, ref mFunctionProfile, mSecurityInfo);
+                HandleRedirect(mLog, mAccountProfile, ref mException, mAction, ref mFunctionProfile, mSecurityInfo);
                 mLog.Debug("No Session!");
                 mLog.Debug("Ended");
                 return;
@@ -197,7 +198,9 @@ namespace GrowthWare.WebSupport.Context
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccountName);
             HttpContext.Current.Items[MClientChoices.SessionName] = mClientChoicesState;
             if (!(HttpContext.Current.Session["EditId"] == null))
+            {
                 HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
+            }
             FunctionUtility.SetCurrentProfile(mFunctionProfile);
             mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
             HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
@@ -215,90 +218,99 @@ namespace GrowthWare.WebSupport.Context
         /// <param name="securityInfo"></param>
         private static void HandleRedirect(Logger log, MAccountProfile accountProfile, ref WebSupportException webSupportException, string action, ref MFunctionProfile functionProfile, MSecurityInfo securityInfo)
         {
-            string[] mFunctionsToIgnore = new[] { "MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD" };
-            MFunctionProfile mFunctionProfile = functionProfile; // Byref parameters can not be used in a lambda expression
-
-            if (!mFunctionsToIgnore.Any(s => mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)))
+            if (!GWWebHelper.IsWebApiRequest)
             {
-                string mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                switch (accountProfile.Status)
+                string[] mFunctionsToIgnore = new[] { "MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD" };
+                MFunctionProfile mFunctionProfile = functionProfile; // Byref parameters can not be used in a lambda expression
+
+                if (!mFunctionsToIgnore.Any(s => mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)))
                 {
-                    case (int)SystemStatus.ChangePassword:
-                        {
-                            webSupportException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
-                            GWWebHelper.ExceptionError = webSupportException;
-                            mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
-                            mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-
-                            if ((ConfigSettings.IsAngularJSApplication))
+                    string mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                    switch (accountProfile.Status)
+                    {
+                        case (int)SystemStatus.ChangePassword:
                             {
-                                mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                            }
-                            else
-                                HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                            break;
-                        }
-
-                    case (int)SystemStatus.SetAccountDetails:
-                        {
-                            if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) == -1)
-                            {
-                                if (action.ToUpper(CultureInfo.InvariantCulture) != mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture))
-                                {
-                                    webSupportException = new WebSupportException("Your account details need to be set.");
-                                    GWWebHelper.ExceptionError = webSupportException;
-                                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
-                                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                    if ((ConfigSettings.IsAngularJSApplication))
-                                    {
-                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                    }
-                                    else
-                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                }
-                            }
-
-                            break;
-                        }
-
-                    default:
-                        {
-                            if (!securityInfo.MayView)
-                            {
-                                if (accountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
-                                {
-                                    webSupportException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
-                                    GWWebHelper.ExceptionError = webSupportException;
-                                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true));
-                                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                    if ((ConfigSettings.IsAngularJSApplication))
-                                    {
-                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                    }
-                                    else
-                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                }
-                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true));
-                                log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                                webSupportException = new WebSupportException("Your password needs to be changed before any other action can be performed.");
+                                GWWebHelper.ExceptionError = webSupportException;
+                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
                                 mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                if ((ConfigSettings.IsAngularJSApplication))
+
+                                if (ConfigSettings.IsAngularJSApplication)
                                 {
                                     mRedirectPage = GetRelitiveURL(mFunctionProfile);
                                     HttpContext.Current.Server.Transfer(mRedirectPage, false);
                                 }
                                 else
+                                {
                                     HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
+                                }
+                                break;
                             }
 
-                            break;
-                        }
+                        case (int)SystemStatus.SetAccountDetails:
+                            {
+                                mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditAccount", true));
+                                if (action.ToUpper(CultureInfo.InvariantCulture) != mFunctionProfile.Action.ToUpper(CultureInfo.InvariantCulture))
+                                {
+                                    webSupportException = new WebSupportException("Your account details need to be set.");
+                                    GWWebHelper.ExceptionError = webSupportException;
+                                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                                    if ((ConfigSettings.IsAngularJSApplication))
+                                    {
+                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
+                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
+                                    }
+                                    else
+                                    {
+                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
+                                    }
+                                }
+
+                                break;
+                            }
+
+                        default:
+                            {
+                                if (!securityInfo.MayView)
+                                {
+                                    if (accountProfile.Account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+                                    {
+                                        webSupportException = new WebSupportException("Your session has timed out.<br/>Please sign in.");
+                                        GWWebHelper.ExceptionError = webSupportException;
+                                        mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true));
+                                        mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                                        if ((ConfigSettings.IsAngularJSApplication))
+                                        {
+                                            mRedirectPage = GetRelitiveURL(mFunctionProfile);
+                                            HttpContext.Current.Server.Transfer(mRedirectPage, false);
+                                        }
+                                        else
+                                        {
+                                            HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
+                                        }
+                                    }
+                                    mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true));
+                                    log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action);
+                                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                                    if ((ConfigSettings.IsAngularJSApplication))
+                                    {
+                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
+                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
+                                    }
+                                    else
+                                    {
+                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
+                                    }
+                                }
+                                break;
+                            }
+                    }
+                }
+                else
+                {
+                    log.Debug("Menu data or Logoff/Logon or ChangePassword requested");
                 }
             }
-            else
-                log.Debug("Menu data or Logoff/Logon or ChangePassword requested");
         }
 
         /// <summary>
