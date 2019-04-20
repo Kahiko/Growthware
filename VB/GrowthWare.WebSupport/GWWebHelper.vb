@@ -160,6 +160,20 @@ Public Class GWWebHelper
     End Function
 
     ''' <summary>
+    ''' Determines if a call is for the API
+    ''' </summary>
+    ''' <returns>bool</returns>
+    Shared ReadOnly Property IsWebApiRequest() As Boolean
+        Get
+            Dim mRetVal As Boolean = False
+            If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) <> -1 Then
+                mRetVal = True
+            End If
+            Return mRetVal
+        End Get
+    End Property
+
+    ''' <summary>
     ''' Gets the display environment.
     ''' </summary>
     ''' <value>The display environment.</value>

@@ -160,6 +160,23 @@ namespace GrowthWare.WebSupport
         }
 
         /// <summary>
+        /// Determines if a call is for the API
+        /// </summary>
+        /// <returns>bool</returns>
+        public static bool IsWebApiRequest
+        {
+            get
+            {
+                bool mRetVal = false;
+                if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) <> -1)
+                {
+                    mRetVal = true;
+                }
+                return mRetVal;
+            }
+        }
+
+        /// <summary>
         /// Returns http(s)://FQDN(/AppName)
         /// </summary>
         /// <value>String</value>
