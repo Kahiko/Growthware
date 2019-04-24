@@ -178,7 +178,7 @@ Namespace Context
                             mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
 
                             If (ConfigSettings.IsAngularJSApplication) Then
-                                mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                mRedirectPage = GetRelativeURL(mFunctionProfile)
                                 HttpContext.Current.Server.Transfer(mRedirectPage, False)
                             Else
                                 HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
@@ -190,7 +190,7 @@ Namespace Context
                                 GWWebHelper.ExceptionError = webSupportException
                                 mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
                                 If (ConfigSettings.IsAngularJSApplication) Then
-                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                    mRedirectPage = GetRelativeURL(mFunctionProfile)
                                     HttpContext.Current.Server.Transfer(mRedirectPage, False)
                                 Else
                                     HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
@@ -204,7 +204,7 @@ Namespace Context
                                     mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", True))
                                     mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
                                     If (ConfigSettings.IsAngularJSApplication) Then
-                                        mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                        mRedirectPage = GetRelativeURL(mFunctionProfile)
                                         HttpContext.Current.Server.Transfer(mRedirectPage, False)
                                     Else
                                         HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
@@ -214,7 +214,7 @@ Namespace Context
                                 log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action)
                                 mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
                                 If (ConfigSettings.IsAngularJSApplication) Then
-                                    mRedirectPage = GetRelitiveURL(mFunctionProfile)
+                                    mRedirectPage = GetRelativeURL(mFunctionProfile)
                                     HttpContext.Current.Server.Transfer(mRedirectPage, False)
                                 Else
                                     HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
@@ -232,7 +232,7 @@ Namespace Context
         ''' </summary>
         ''' <param name="functionProfile"></param>
         ''' <returns>string</returns>
-        Private Shared Function GetRelitiveURL(functionProfile As MFunctionProfile) As String
+        Private Shared Function GetRelativeURL(functionProfile As MFunctionProfile) As String
             Dim mRedirectPage As String = functionProfile.Source
             mRedirectPage = mRedirectPage.Replace("Functions/System/", "app/growthware/views/")
             mRedirectPage = mRedirectPage.Replace(".aspx", ".html")
