@@ -1,10 +1,11 @@
 ﻿(function () {
     'use strict';
 
-    function accountSvc($http, $q, $rootScope) {
+    function mRetSvc($http, $q, $rootScope) {
         var thisSvc = this;
         var m_ClientChoices = null;
         var m_SecurityInfo = [];
+        var m_CurrentProfile = null;
 
         thisSvc.loadFunctions = function (callBackFunc) {
             var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Functions/GetFunctionData";
@@ -68,7 +69,7 @@
             }).success(function (response) {
                 GW.Common.debug('logoff: success');
                 m_SecurityInfo = [];
-                $rootScope.$broadcast('accountChanged',[]);
+                $rootScope.$broadcast('accountChanged', []);
                 mRetVal = response;
                 if (typeof (callBackFunc) == 'function') {
                     callBackFunc(mRetVal);
@@ -80,6 +81,41 @@
             return mRetVal;
         };
 
+        thisSvc.getAccount = function (accountId, action) {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/GetProfile/?Action=" + action + "&accountSeqID=" + accountId;
+            var options = {
+                method: "GET",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' }
+            }
+            $http(options)
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
+        thisSvc.getCurrentAccount = function () {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/GetProfile/?Action=Home&accountSeqID=-2";
+            var options = {
+                method: "GET",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' }
+            }
+            $http(options)
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
         thisSvc.getHorizontalHierarchicalMenuData = function (callBackFunc) {
             var menuType = 3;  //MenuType.Hierarchical = 3
             getMenuData(callBackFunc, menuType);
@@ -152,6 +188,25 @@
             return deferred.promise;
         };
 
+        thisSvc.save = function (profile, action) {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/Save/?Action=" + action;
+            var options = {
+                method: "POST",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' },
+                data: JSON.stringify(profile)
+            }
+            $http(options)
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
         function getMenuData(callBackFunc, menuType) {
             var mApiUrl = "/gw/api/Accounts/GetMenuData?menuType=" + menuType;
             var mRetVal = new Array();
@@ -177,8 +232,8 @@
 
     };
 
-    accountSvc.$inject = ['$http', '$q', '$rootScope'];
-    
-    angular.module('growthwareApp').factory('AccountService', accountSvc);
+    mRetSvc.$inject = ['$http', '$q', '$rootScope'];
+
+    angular.module('growthwareApp').factory('AccountService', mRetSvc);
 
 })();

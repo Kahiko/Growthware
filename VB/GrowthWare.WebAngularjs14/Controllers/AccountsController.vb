@@ -65,8 +65,8 @@ Namespace Controllers
             If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
             Dim mRetVal As String = False
             Dim mLog As Logger = Logger.Instance()
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = accountSeqId Then
                     Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
@@ -145,6 +145,44 @@ Namespace Controllers
                 mRetVal.Version = GWWebHelper.Version
                 mRetVal.FrameworkVersion = GWWebHelper.FrameworkVersion
             End If
+            Return mRetVal
+        End Function
+
+        <HttpGet>
+        Public Function GetProfile(<FromUri()> ByVal accountSeqID As Integer) As MUIAccountProfile
+            Dim mProfile As MAccountProfile = Nothing
+            Dim mRetVal As MUIAccountProfile = New MUIAccountProfile()
+            If Not accountSeqID = -1 Then
+                If Not accountSeqID = -2 Then
+                    mProfile = AccountUtility.GetProfile(accountSeqID)
+                Else
+                    mProfile = AccountUtility.CurrentProfile()
+                End If
+                mRetVal.Account = mProfile.Account
+                Dim mUIGroups As MUIAccountGroups = New MUIAccountGroups
+                Dim mUIRoles As MUIAccountRoles = New MUIAccountRoles
+                If (mProfile.GetCommaSeparatedAssignedGroups().Split(",").Length > 1) Then
+                    mUIGroups.Groups = mProfile.GetCommaSeparatedAssignedGroups().Split(",")
+                End If
+                mUIRoles.Roles = mProfile.GetCommaSeparatedAssignedRoles().Split(",")
+                mRetVal.AccountGroups = mUIGroups
+                mRetVal.AccountRoles = mUIRoles
+                mRetVal.DerivedRoles = mProfile.DerivedRoles.Cast(Of String)().ToList()
+                mRetVal.EMail = mProfile.Email
+                mRetVal.EnableNotifications = mProfile.EnableNotifications
+                mRetVal.FirstName = mProfile.FirstName
+                mRetVal.Id = mProfile.Id
+                mRetVal.IsSystemAdmin = mProfile.IsSystemAdmin
+                mRetVal.LastName = mProfile.LastName
+                mRetVal.Location = mProfile.Location
+                mRetVal.MiddleName = mProfile.MiddleName
+                mRetVal.PreferredName = mProfile.PreferredName
+                mRetVal.Status = mProfile.Status
+                mRetVal.TimeZone = mProfile.TimeZone
+            Else
+                mRetVal.Id = -1
+            End If
+            HttpContext.Current.Session("EditId") = mRetVal.Id
             Return mRetVal
         End Function
 
@@ -306,10 +344,10 @@ Namespace Controllers
                     mRetVal = "The account '" + uiProfile.Account + "' already exists please choose a different account/email"
                 End If
             Else
-                If Not HttpContext.Current.Items("EditId") Is Nothing Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
+                If Not HttpContext.Current.Session("EditId") Is Nothing Or mCurrentAccountProfile.Status = DirectCast(SystemStatus.SetAccountDetails, Integer) Then
                     Dim mEditId As Integer
-                    If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                        mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+                    If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                        mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                     Else
                         mEditId = mCurrentAccountProfile.Id
                     End If
@@ -324,8 +362,14 @@ Namespace Controllers
                                     mAccountProfileToSave = AccountUtility.GetProfile(mEditId)
                                     mAccountProfileToSave = populateAccountProfile(uiProfile, mAccountProfileToSave)
                                     mAccountProfileToSave.Id = uiProfile.Id
-                                    Dim mGroups As String = String.Join(",", uiProfile.AccountGroups.Groups)
-                                    Dim mRoles As String = String.Join(",", uiProfile.AccountRoles.Roles)
+                                    Dim mGroups As String = String.Empty
+                                    If Not uiProfile.AccountGroups.Groups Is Nothing Then
+                                        mGroups = String.Join(",", uiProfile.AccountGroups.Groups)
+                                    End If
+                                    Dim mRoles As String = String.Empty
+                                    If Not uiProfile.AccountRoles.Roles Is Nothing Then
+                                        mRoles = String.Join(",", uiProfile.AccountRoles.Roles)
+                                    End If
                                     If mGroupTabSecurity.MayView And FunctionUtility.CurrentProfile().Action.ToLowerInvariant() = ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", True).ToLower(CultureInfo.InvariantCulture) Then
                                         If mAccountProfileToSave.GetCommaSeparatedAssignedGroups <> mGroups Then
                                             mSaveGroups = True

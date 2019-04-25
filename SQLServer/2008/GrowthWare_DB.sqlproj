@@ -206,6 +206,7 @@
     <Build Include="Security\ZGWOptional.sql" />
     <Build Include="Security\ZGWSecurity.sql" />
     <Build Include="Security\ZGWSystem.sql" />
+    <Build Include="ZGWSystem\Stored Procedures\PrepForAngularJS.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />

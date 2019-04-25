@@ -12,13 +12,14 @@
         }
     }]);
 
-    function searchCntrl(acctSvc, searchSvc, $scope, $route, $location, $uibModal) {
+    function mRetCntrl(acctSvc, searchSvc, $scope, $route, $location, $uibModal) {
         // init
         var thisCtrl = this;
         var m_ApiUrl = {};
         var m_EditUrl = {};
         var m_EditKey = {};
-        var m_Route = $route.current.$$route.originalPath.substr(1, $route.current.$$route.originalPath.length - 1);
+        var m_Route = $route.current.$$route.originalPath;
+        var m_Action = m_Route.substr(1, m_Route.length - 1);
         var viewModel = {};
 
         initCtrl();
@@ -28,11 +29,10 @@
             var options = GW.Model.DefaultWebMethodOptions();
             options.url = editUrl;
             options.title = 'testing add edit';
-            //console.log(editUrl);
-            //console.log(viewModel.editAction);
             acctSvc.getSecurityInfo(viewModel.editAction).then(
                 /*** success ***/
                 function (securityInfo) {
+                    searchSvc.editId = editKeyValue;
                     //var btns = [];
                     //var btnSave = {
                     //    id: 'btnSave',
@@ -78,24 +78,29 @@
                     //    message: $('<div></div>').load(m_EditUrl + editKeyValue),
                     //    controller: AddEditAccountController
                     //});
-                    message: $('<div></div>').load(options.url)
-                    var modalInstance = $uibModal.open({
-                        animation: $scope.animationsEnabled,
-                        templateUrl: options.url,
-                        controller: 'AddEditAccountController',
-                        size: 'lg',
-                        resolve: {
-                            items: function () {
-                                return $scope.items;
-                            }
-                        }
-                    });
 
-                    modalInstance.result.then(function (selectedItem) {
-                        $scope.selected = selectedItem;
-                    }, function () {
-                        $log.info('Modal dismissed at: ' + new Date());
-                    });
+
+                    //message: $('<div></div>').load(options.url)
+                    //var modalInstance = $uibModal.open({
+                    //    animation: $scope.animationsEnabled,
+                    //    templateUrl: options.url,
+                    //    controller: 'AddEditAccountController',
+                    //    size: 'lg',
+                    //    resolve: {
+                    //        items: function () {
+                    //            return $scope.items;
+                    //        }
+                    //    }
+                    //});
+
+                    //modalInstance.result.then(function (selectedItem) {
+                    //    $scope.selected = selectedItem;
+                    //}, function () {
+                    //    $log.info('Modal dismissed at: ' + new Date());
+                    //});
+
+
+                    $location.path('/' + viewModel.editAction);
                 },
                 /*** error ***/
                 function (result) {
@@ -106,21 +111,7 @@
 
         function initCtrl() {
             viewModel.canSelectAll = false;
-            viewModel.selectedPage = { "value": "1", "text": "1" };
-            viewModel.searchCriteria = GW.Search.Criteria;
-            //TableOrView:      -- Not used by the front end
-            //SelectedPage:     -- will be set in the paging methods
-            //PageSize:         -- set in setClientChoices()
-            //Columns:          -- comma seporated list of reutrned columkns ...should be derived in getSearchInfo at some point
-            //OrderByColumn:    -- default value set here changed in selectColumn(columnName)
-            //OrderByDirection: -- defaut set here changed in changeSort(columnName)
-            //WhereClause:      -- default value is '1 = 1'
-            viewModel.searchCriteria.SelectedPage - 1
-            viewModel.searchCriteria.OrderByDirection = 'asc';
-            viewModel.sortText = '';
-            var mCurrentRoute = $route.current.$$route.originalPath;
-            mCurrentRoute = mCurrentRoute.substr(1, mCurrentRoute.length);
-            acctSvc.getSecurityInfo(mCurrentRoute).then(
+            acctSvc.getSecurityInfo(m_Action).then(
                 /*** success ***/
                 function (securityInfo) {
                     viewModel.securityInfo = securityInfo;
@@ -130,23 +121,47 @@
                     console.log("Failed to getSecurityInfo, result is " + result);
                 }
             );
-            acctSvc.getPreferences().then(
-                /*** success ***/
-                function (clientChoices) {
-                    viewModel.clientChoices = clientChoices;
-                    viewModel.searchCriteria.PageSize = viewModel.clientChoices.RecordsPerPage;
-                    getSearchConfiguration();
-                },
-                /*** error ***/
-                function (result) {
-                    console.log("Failed to getPreferences, result is " + result);
-                }
-           );
+            var lastSearchRoute = searchSvc.lastSearchRoute || "";
+            if (lastSearchRoute != m_Route) {
+                searchSvc.lastSearchRoute = m_Route;
+                viewModel.selectedPage = { "value": "1", "text": "1" };
+                viewModel.searchCriteria = new GW.Model.SearchCriteria()
+                viewModel.sortText = '';
+                acctSvc.getPreferences().then(
+                    /*** success ***/
+                    function (clientChoices) {
+                        viewModel.clientChoices = clientChoices;
+                        viewModel.searchCriteria.PageSize = viewModel.clientChoices.RecordsPerPage;
+                        getSearchConfiguration();
+                    },
+                    /*** error ***/
+                    function (result) {
+                        console.log("Failed to getPreferences, result is " + result);
+                    }
+                );
+            } else {
+                viewModel.searchCriteria = searchSvc.lastCriteria;
+                acctSvc.getPreferences().then(
+                    /*** success ***/
+                    function (clientChoices) {
+                        viewModel.clientChoices = clientChoices;
+                    },
+                    /*** error ***/
+                    function (result) {
+                        console.log("Failed to getPreferences, result is " + result);
+                    }
+                );
+                var match = viewModel.searchCriteria.WhereClause.match(new RegExp("%(.*)%"))
+                if (viewModel.searchCriteria.WhereClause != "1 = 1") { viewModel.sortText = match[1]; }
+                viewModel.selectedPage = { "value": viewModel.searchCriteria.SelectedPage, "text": viewModel.searchCriteria.SelectedPage };
+                viewModel.searchCriteria.PageSize = viewModel.searchCriteria.PageSize;
+                getSearchConfiguration();
+            };
             $scope.vm = viewModel;
         };
 
         function getSearchConfiguration() {
-            searchSvc.getSearchConfiguration(m_Route).then(
+            searchSvc.getSearchConfiguration(m_Action).then(
                 /* success function */
                 function (searchInfo) {
                     viewModel.editAction = searchInfo.editAction;
@@ -157,7 +172,7 @@
                 function (result) {
                     console.log("Failed to get getSearchConfiguration, result is " + result);
                 }
-           );
+            );
         };
 
         function setHeaders(results, apiURL, orderByColumn, editUrl) {
@@ -166,7 +181,7 @@
                 mColumns += results[i].name + ', ';
                 if (results[i].isEditKey === true) {
                     m_EditKey = results[i].name;
-                } 
+                }
             }
             viewModel.searchCriteria.Columns = mColumns.substr(0, mColumns.length - 2);
             viewModel.searchCriteria.OrderByColumn = orderByColumn;
@@ -177,20 +192,20 @@
 
         function getData() {
             searchSvc.getSearchResults(m_ApiUrl, viewModel.searchCriteria)
-            .then(
-            /*** Success ***/
-            function (response) {
-                if (response && response.length > 0) {
-                    setSelectPageDropData(response[0]['TotalRecords']);
-                } else {
-                    setSelectPageDropData(0);
-                }
-                viewModel.dataRows = response;
-            },
-            /*** Error ***/
-            function (result) {
-                console.log("Failed to get getSearchResults, result is " + result);
-            });
+                .then(
+                    /*** Success ***/
+                    function (response) {
+                        if (response && response.length > 0) {
+                            setSelectPageDropData(response[0]['TotalRecords']);
+                        } else {
+                            setSelectPageDropData(0);
+                        }
+                        viewModel.dataRows = response;
+                    },
+                    /*** Error ***/
+                    function (result) {
+                        console.log("Failed to get getSearchResults, result is " + result);
+                    });
         };
 
         function setSelectPageDropData(totalRecords) {
@@ -289,8 +304,8 @@
         return thisCtrl;
     };
 
-    searchCntrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$location', '$uibModal'];
+    mRetCntrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$location', '$uibModal'];
 
-    app.controller('SearchController', searchCntrl);
+    app.controller('SearchController', mRetCntrl);
 
 })();

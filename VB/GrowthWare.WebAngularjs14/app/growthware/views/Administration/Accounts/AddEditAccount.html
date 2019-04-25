@@ -1,26 +1,24 @@
 ﻿<style>
-    .add-edit-dialog .modal-dialog {
-        width: 1000px;
+    td {
+        padding: 5px;
     }
-
 </style>
 <form id="frmAddeditAccounts">
     <div data-ng-controller="AddEditAccountController">
-        <div class="container" id="tabs">
+        <div class="container container-full" id="tabs">
             <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
-                <li role="presentation" id="rolesTab"><a data-toggle="tab" data-target="#tabsRoles">Roles</a></li>
-                <li role="presentation" id="groupsTab"><a data-toggle="tab" data-target="#tabsGroups">Groups</a></li>
-                <li role="presentation" id="derivedRolesTab"><a data-toggle="tab" data-target="#tabsDerivedRoles">Derived Roles</a></li>
+                <li role="presentation" class="nav active"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                <li role="presentation" id="rolesTab" class="nav"><a data-toggle="tab" data-target="#tabsRoles" data-ng-show="vm.securityInfoRoleTab.MayView">Roles</a></li>
+                <li role="presentation" id="groupsTab" class="nav"><a data-toggle="tab" data-target="#tabsGroups" data-ng-show="vm.securityInfoGroupTab.MayView">Groups</a></li>
+                <li role="presentation" id="derivedRolesTab" class="nav"><a data-toggle="tab" data-target="#tabsDerivedRoles" data-ng-show="vm.securityInfoRoleTab.MayView">Derived Roles</a></li>
             </ul>
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="tabsGeneral">
                     <p>
-                        <table border="1" cellpadding="3" cellspacing="0" width="950px">
+                        <table border="0" cellpadding="3" cellspacing="0">
                             <tr>
                                 <td>
-                                    <input id="txtAccount_seq_id" data-ng-show="false" />
-                                    <table border="0" cellpadding="2" width="100%">
+                                    <table border="0">
                                         <tr>
                                             <td align="center" colspan="4">
                                                 <span id="Label1" forecolor="Red"></span>
@@ -34,7 +32,7 @@
                                                 <table border="0" cellpadding="0" cellspacing="0">
                                                     <tr>
                                                         <td>
-                                                            <input id="txtAccount" cssclass="Form_Field rounded" maxlength="128" />
+                                                            <input id="txtAccount" data-ng-model="vm.profile.Account" class="Form_Field rounded" maxlength="128" />
                                                             <img id="imgWarningAccount" imageurl="~/Content/GrowthWare/Images/help.gif" alternatetext="Help Image" />
                                                             <span id="litAccountWarning"></span>
                                                         </td>
@@ -46,26 +44,22 @@
                                                 <span class="Form_LabelText">Status: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropStatus" cssclass="Form_Field rounded">
-                                                    <option value="1">Active</option>
-                                                    <option value="4">Change Password</option>
-                                                    <option value="3">Disabled</option>
-                                                </select>
+                                                <select id="dropStatus" data-ng-model="vm.selectedStatus" data-ng-options="item.Name for item in vm.validStatus track by item.id" class="Form_Field rounded"></select>
                                             </td>
                                         </tr>
-                                        <tr id="trSysAdmin" visible="false">
+                                        <tr id="trSysAdmin" data-ng-show="vm.currentProfile.IsSystemAdmin">
                                             <td valign="top">
                                                 <span class="Form_LabelText">System Administrator: </span>
                                             </td>
                                             <td valign="top">
-                                                <asp:checkbox id="chkSysAdmin" />
+                                                <input type="checkbox" data-ng-model="vm.profile.IsSystemAdmin" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Failed Logon Attempts: </span>
                                             </td>
                                             <td valign="top">
                                                 <span id="litFailedAttempts" />
-                                                <input id="txtFailedAttempts" cssclass="Form_Field rounded" />
+                                                <input id="txtFailedAttempts" class="Form_Field rounded" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -73,14 +67,14 @@
                                                 <span class="Form_LabelText">First Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtFirstName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtFirstName" data-ng-model="vm.profile.FirstName" maxlength="35" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Last Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtLastName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtLastName" data-ng-model="vm.profile.LastName" maxlength="35" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -89,13 +83,13 @@
                                                 <span class="Form_LabelText">Middle Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtMiddleName" maxlength="35" cssclass="Form_Field rounded" />
+                                                <input id="txtMiddleName" data-ng-model="vm.profile.MiddleName" maxlength="35" class="Form_Field rounded" />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Preferred Name: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtPreferredName" maxlength="50" cssclass="Form_Field rounded" />
+                                                <input id="txtPreferredName" data-ng-model="vm.profile.PreferredName" maxlength="50" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                         </tr>
@@ -104,33 +98,33 @@
                                                 <span class="Form_LabelText">Email: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtEmail" maxlength="128" columns="25" cssclass="Form_Field rounded" />
+                                                <input id="txtEmail" data-ng-model="vm.profile.EMail" maxlength="128" columns="25" class="Form_Field rounded" />
                                                 <br />
                                             </td>
                                             <td valign="top">
                                                 <span class="Form_LabelText">Timezone: </span>
                                             </td>
                                             <td valign="top">
-                                                <select id="dropTimezone" cssclass="rounded">
-                                                    <option text="Hawaii (GMT -10)" value="-10" />
-                                                    <option text="Alaska (GMT -9)" value="-9" />
-                                                    <option text="Pacific Time (GMT -8)" value="-8" />
-                                                    <option text="Mountain Time (GMT -7)" value="-7" />
-                                                    <option text="Central Time (GMT -6)" value="-6" />
-                                                    <option text="Eastern Time (GMT -5)" value="-5" />
-                                                    <option text="Atlantic Time (GMT -4)" value="-4" />
-                                                    <option text="Brasilia Time (GMT -3)" value="-3" />
-                                                    <option text="Greenwich Mean Time (GMT +0)" value="0" />
-                                                    <option text="Central Europe Time (GMT +1)" value="1" />
-                                                    <option text="Eastern Europe Time (GMT +2)" value="2" />
-                                                    <option text="Middle Eastern Time (GMT +3)" value="3" />
-                                                    <option text="Abu Dhabi Time (GMT +4)" value="4" />
-                                                    <option text="Indian Time (GMT +5)" value="5" />
-                                                    <option text="Eastern China Time (GMT +8)" value="8" />
-                                                    <option text="Japan Time (GMT +9)" value="9" />
-                                                    <option text="Australian Time (GMT +10)" value="10" />
-                                                    <option text="Pacific Rim Time (GMT +11)" value="11" />
-                                                    <option text="New Zealand Time (GMT +12)" value="12" />
+                                                <select id="dropTimezone" class="rounded">
+                                                    <option value="-10">Hawaii (GMT -10)</option>
+                                                    <option value="-9">Alaska (GMT -9)</option>
+                                                    <option value="-8">Pacific Time (GMT -8)</option>
+                                                    <option value="-7">Mountain Time (GMT -7)</option>
+                                                    <option value="-6">Central Time (GMT -6)</option>
+                                                    <option value="-5">Eastern Time (GMT -5)</option>
+                                                    <option value="-4">Atlantic Time (GMT -4)</option>
+                                                    <option value="-3">Brasilia Time (GMT -3)</option>
+                                                    <option value="0">Greenwich Mean Time (GMT +0)</option>
+                                                    <option value="1">Central Europe Time (GMT +1)</option>
+                                                    <option value="2">Eastern Europe Time (GMT +2)</option>
+                                                    <option value="3">Middle Eastern Time (GMT +3)</option>
+                                                    <option value="4">Abu Dhabi Time (GMT +4)</option>
+                                                    <option value="5">Indian Time (GMT +5)</option>
+                                                    <option value="8">Eastern China Time (GMT +8)</option>
+                                                    <option value="9">Japan Time (GMT +9)</option>
+                                                    <option value="10">Australian Time (GMT +10)</option>
+                                                    <option value="11">Pacific Rim Time (GMT +11)</option>
+                                                    <option value="12">New Zealand Time (GMT +12)</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -144,7 +138,7 @@
                                                 <span class="Form_LabelText">Location: </span>
                                             </td>
                                             <td valign="top">
-                                                <input id="txtLocation" maxlength="128" cssclass="Form_Field rounded" />
+                                                <input id="txtLocation" maxlength="128" class="Form_Field rounded" />
                                             </td>
                                         </tr>
                                         <tr>
@@ -157,7 +151,7 @@
                                                 <span class="Form_LabelText">Email Notifications: </span>
                                             </td>
                                             <td colspan="3" valign="top">
-                                                <input type="checkbox" id="chkEnableNotifications" cssclass="Form_Field rounded" checked="true" text="Receive Email Notifications" />
+                                                <input type="checkbox" id="chkEnableNotifications" class="Form_Field rounded" checked="true" text="Receive Email Notifications" />
                                                 <br />
                                                 <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
                                             </td>
@@ -170,113 +164,31 @@
                 </div>
                 <div class="tab-pane fade" id="tabsRoles">
                     <p>
-                        <table class="pickListTable">
-                            <tr class="pickListTableHeader">
-                                <td>
-                                    Roles
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableHelp">
-                                    Assign roles
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableContents">
-                                    <table id="AddEditAccountUserControl_ctlRoles" class="listPicker">
-                                        <tbody>
-                                            <tr>
-                                                <td>All Roles</td>
-                                                <td>&nbsp;</td>
-                                                <td>Selected Roles</td>
-                                            </tr>
-                                            <tr>
-                                                <td valign="top">
-                                                    <select name="AddEditAccountUserControl_ctlRoles_SrcList" id="AddEditAccountUserControl_ctlRoles_SrcList" multiple="multiple" style="width: 200px" size="6">
-                                                        <option value="AlwaysLogon" title="AlwaysLogon">AlwaysLogon</option>
-                                                        <option value="Authenticated" title="Authenticated">Authenticated</option>
-                                                        <option value="Developer" title="Developer">Developer</option>
-                                                    </select>
-                                                </td>
-                                                <td valign="top"><input name="" value=" -> " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'True')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" ->> " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_SrcList, this.form.AddEditAccountUserControl_ctlRoles_DstList,'True')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <- " onclick="GW.ListPicker.switchList(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"><br><input name="" value=" <<- " onclick="GW.ListPicker.switchAll(this.form.AddEditAccountUserControl_ctlRoles_DstList, this.form.AddEditAccountUserControl_ctlRoles_SrcList,'true')" class="listPickerArrow" style="width: 50px" type="button"></td>
-                                                <td valign="top">
-                                                    <select name="AddEditAccountUserControl_ctlRoles_DstList" id="AddEditAccountUserControl_ctlRoles_DstList" multiple="multiple" style="width: 200px" size="6">
-                                                        <option value="Anonymous">Anonymous</option>
-                                                    </select>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
-                            </tr>
-                        </table>
+                        <gw-picklist size="200" rows="10" id="ctlRoles" selected-items="vm.profile.AccountRoles.Roles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Assign roles" header="Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsGroups">
                     <p>
-                        <table class="pickListTable">
-                            <tr class="pickListTableHeader">
-                                <td>
-                                    Groups
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableHelp">
-                                    Assign groups
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="pickListTableContents">
-                                    ListPicker
-                                </td>
-                            </tr>
-                        </table>
+                        <gw-picklist size="200" rows="10" id="ctlGroups" selected-items="vm.profile.AccountGroups.Groups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Assign Groups" header="Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
                     </p>
                 </div>
                 <div class="tab-pane fade" id="tabsDerivedRoles">
                     <p>
-                        <table cellspacing="0" cellpadding="3" border="0">
-                            <tr>
-                                <td align="left" style="width: 480px">
-                                    <table class="pickListTable">
-                                        <!-- Roles -->
-                                        <tr class="pickListTableHeader">
-                                            <td>
-                                                Derived Roles
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pickListTableHelp">
-                                                &nbsp;<img alt="Help" onclick="GW.Common.showHelpMSG(document.getElementById('derivedHelpRoles').innerHTML,'Help Derived Roles')" src="~/Content/GrowthWare/Images/help.gif" title=" &nbsp;Roles that may View&nbsp;" />
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td class="pickListTableContents">
-                                                <asp:listbox id="lstBoxRoles" style="width: 462px;" rows="5"></asp:listbox>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                    <!-- View Roles -->
-                                    <div id="derivedHelpRoles" style="display: none">
-                                        Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups.<br />
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
+                        <gw-derived-roles size="200" rows="10" available-items="vm.profile.DerivedRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived Roles"></gw-derived-roles>
                     </p>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="bootstrap-dialog-footer-buttons">
-        <button class="btn btn-primary" id="btnSave">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
-        </button>
-        <button class="btn btn-primary disabled" id="btnDelete" disabled="">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
-        </button>
-        <button class="btn btn-primary" id="btnCancel">
-            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
-        </button>
+        <div class="pull-right">
+            <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+            </button>
+            <button class="btn btn-primary disabled" id="btnDelete" data-ng-show="vm.securityInfo.MayDelete" disabled="vm.securityInfo.MayDelete">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+            </button>
+            <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+            </button>
+        </div>
     </div>
 </form>

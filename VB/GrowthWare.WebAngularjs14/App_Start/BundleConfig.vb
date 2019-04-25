@@ -41,6 +41,8 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/app/growthware/GrowthwareApp.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/factories/ClientChoicesSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/AccountSvc.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/services/GroupSvc.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/services/RoleSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/SearchSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/SecurityEntitySvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/AccountCtrl.js",
@@ -53,7 +55,9 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Search/SearchCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Administration/Accounts/AddEditAccountCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/SecurityEntities/SelectSecurityEntityCtrl.js",
-            "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js"
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/PickList/PicklistDirective.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/directives/DerivedRoles/DerivedRolesDirective.js"
             )
         )
 
