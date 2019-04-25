@@ -45,7 +45,7 @@
             //GW.Common.debug(mNavObjects);
             /*** register the routes ***/
             mNavObjects.forEach(function (route) {
-                $routeProvider.when('/' + route.Action, { controller: route.Controller, templateUrl: route.Location + '?Action=' + route.Action, title: route.Description });
+                $routeProvider.when('/' + route.Action, { controller: route.Controller, templateUrl: route.Location, title: route.Description });
             });
             $routeProvider.when('/', { templateUrl: '/app/growthware/views/Home/GenericHome.html' })
             //$routeProvider.otherwise({ redirectTo: '/' }); // causes redirect when using FQDN in a popup ... should be able to put back if change from pop to page nav.
@@ -60,10 +60,29 @@
                     $templateCache.remove(current.templateUrl);
                 }
             };
+            if (next) {
+                var mRoute = next.$$route.originalPath.substr(1, next.$$route.originalPath.length - 1);
+                if (mRoute.length > 0) {
+                    acctSvc.getSecurityInfo(mRoute).then(
+                        /* success */
+                        function (securityInfo) {
+                            if (!securityInfo.MayView) {
+                                $location.path('/AccessDenied');
+                            }
+                        },
+                        /* error */
+                        function (result) {
+                            console.log("Failed to get securityInfo, result is " + result);
+                            $location.path('/UnknownAction');
+                        });
+                }
+            }
         });
 
         $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-            window.document.title = current.$$route.title;
+            var mTitle = current.$$route.title || "Welcome";
+            window.document.title = mTitle;
+            $('#pageMessage').html(mTitle);
         });
 
         GW.Common.debug("End: growthwareApp.run");

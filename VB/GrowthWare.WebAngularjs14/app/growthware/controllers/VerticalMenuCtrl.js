@@ -1,6 +1,6 @@
 ﻿(function () {
     'use strict';
-    var verticalMenuCtrl = function (acctSvc, $scope) {
+    var mRetCtrl = function (acctSvc, $scope) {
         var thisCtrlr = this;
         $scope.$on('accountChanged', function (event) {
             GW.Common.debug('Loading VerticalMenu: from event');
@@ -31,7 +31,7 @@
         return thisCtrlr;
     };
 
-    verticalMenuCtrl.$inject = ['AccountService', '$scope'];
+    mRetCtrl.$inject = ['AccountService', '$scope'];
 
-    angular.module('growthwareApp').controller('VerticalMenuController', verticalMenuCtrl);
+    angular.module('growthwareApp').controller('VerticalMenuController', mRetCtrl);
 })();

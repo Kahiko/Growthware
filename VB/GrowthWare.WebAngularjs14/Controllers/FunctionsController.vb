@@ -15,8 +15,8 @@ Namespace Controllers
             If functionSeqID < 1 Then Throw New ArgumentNullException("functionSeqID", "functionSeqID must be a positive number!")
             Dim mRetVal As String = False
             Dim mLog As Logger = Logger.Instance()
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = functionSeqID Then
                     Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
@@ -131,8 +131,8 @@ Namespace Controllers
             Dim mRetVal As String = "false"
             Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditFunction", True)), AccountUtility.CurrentProfile())
 
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = uiProfile.Id Then
                     Dim accountProfile As MAccountProfile = AccountUtility.CurrentProfile()
                     Dim profile As MFunctionProfile = New MFunctionProfile()

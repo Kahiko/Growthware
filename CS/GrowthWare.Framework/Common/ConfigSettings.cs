@@ -699,6 +699,15 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
+        /// Returns Assembly from the web config and used to load the correct assembly name
+        /// </summary>
+        public static string WebAssemblyName
+        {
+            get { return GetAppSettingValue("Assembly", false); }
+        }
+
+
+        /// <summary>
         /// Truncates a given string and adds ...
         /// </summary>
         /// <param name="text">String to be truncated</param>

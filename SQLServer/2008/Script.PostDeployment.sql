@@ -750,7 +750,7 @@ print 'Adding Select A Security Entity'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
 set @V_MyAction = 'SelectASecurityEntity'
 SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
-exec ZGWSecurity.Set_Function -1,'Select A Security Entity','Select A Security Entity',@V_Function_Type_SeqID,'Functions/System/SecurityEntities/SelectSecurityEntity.aspx','', NULL,@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Vertical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to select a Security Entity.', @V_SystemID, @V_Debug
+exec ZGWSecurity.Set_Function -1,'Select A Security Entity','Select A Security Entity',@V_Function_Type_SeqID,'Functions/System/SecurityEntities/SelectSecurityEntity.aspx','SecurityEntityController', NULL,@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavTrue,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Vertical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to select a Security Entity.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Authenticated',@V_ViewPermission,@V_SystemID, @V_Debug
 ---- Web configuration

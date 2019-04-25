@@ -44,21 +44,14 @@ namespace GrowthWare.WebSupport
         {
             get
             {
-                string myVersion = string.Empty;
-                Assembly myAssembly = null;
-                try
+                string mVersion = string.Empty;
+                Assembly mAssembly = null;
+                mAssembly = Assembly.Load(ConfigSettings.WebAssemblyName);
+                if ((mAssembly != null))
                 {
-                    myAssembly = Assembly.Load("GrowthWare.WebApplication");
+                    mVersion = mAssembly.GetName().Version.ToString();
                 }
-                catch (Exception)
-                {
-                    myAssembly = Assembly.Load("GrowthWare.WebAngularjs14");
-                }
-                if ((myAssembly != null))
-                {
-                    myVersion = myAssembly.GetName().Version.ToString();
-                }
-                return myVersion;
+                return mVersion;
             }
         }
 

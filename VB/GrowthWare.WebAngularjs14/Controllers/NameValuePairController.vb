@@ -13,7 +13,7 @@ Namespace Controllers
         <HttpPost>
         Public Function SaveNameValuePair(ByVal uiProfile As MUINVPProfile) As IHttpActionResult
             Dim mRetVal As String = False
-            Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             Dim mLog As Logger = Logger.Instance()
             If mEditId <> uiProfile.NVP_SEQ_ID Then
@@ -70,7 +70,7 @@ Namespace Controllers
         <HttpPost>
         Public Function SaveNameValuePairDetail(ByVal uiProfile As MUINVPDetailProfile) As IHttpActionResult
             Dim mRetVal As String = False
-            Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             Dim mLog As Logger = Logger.Instance()
             Dim mUpdatingProfile As MAccountProfile = AccountUtility.CurrentProfile()
@@ -122,7 +122,7 @@ Namespace Controllers
         <HttpPost>
         Public Function DeleteNameValuePairDetail(ByVal uiProfile As MUINVPDetailProfile) As IHttpActionResult
             Dim mRetVal As String = False
-            Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
             Dim mAction As String = GWWebHelper.GetQueryValue(HttpContext.Current.Request, "Action")
             Dim mLog As Logger = Logger.Instance()
             Dim mUpdatingProfile As MAccountProfile = AccountUtility.CurrentProfile()

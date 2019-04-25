@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var horizontalMenuController = function (acctSvc, $scope) {
+    var mRetCtrl = function (acctSvc, $scope) {
         // init
         var thisCtrlr = this;
 
@@ -34,7 +34,7 @@
         return thisCtrlr;
     };
 
-    horizontalMenuController.$inject = ['AccountService', '$scope'];
+    mRetCtrl.$inject = ['AccountService', '$scope'];
 
-    angular.module('growthwareApp').controller('HorizontalMenuController', horizontalMenuController);
+    angular.module('growthwareApp').controller('HorizontalMenuController', mRetCtrl);
 })();

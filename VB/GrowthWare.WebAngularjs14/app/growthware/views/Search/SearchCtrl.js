@@ -138,7 +138,7 @@
                     function (result) {
                         console.log("Failed to getPreferences, result is " + result);
                     }
-                );
+               );
             } else {
                 viewModel.searchCriteria = searchSvc.lastCriteria;
                 acctSvc.getPreferences().then(
@@ -150,7 +150,7 @@
                     function (result) {
                         console.log("Failed to getPreferences, result is " + result);
                     }
-                );
+               );
                 var match = viewModel.searchCriteria.WhereClause.match(new RegExp("%(.*)%"))
                 if (viewModel.searchCriteria.WhereClause != "1 = 1") { viewModel.sortText = match[1]; }
                 viewModel.selectedPage = { "value": viewModel.searchCriteria.SelectedPage, "text": viewModel.searchCriteria.SelectedPage };
@@ -172,7 +172,7 @@
                 function (result) {
                     console.log("Failed to get getSearchConfiguration, result is " + result);
                 }
-            );
+           );
         };
 
         function setHeaders(results, apiURL, orderByColumn, editUrl) {
@@ -181,7 +181,7 @@
                 mColumns += results[i].name + ', ';
                 if (results[i].isEditKey === true) {
                     m_EditKey = results[i].name;
-                }
+                } 
             }
             viewModel.searchCriteria.Columns = mColumns.substr(0, mColumns.length - 2);
             viewModel.searchCriteria.OrderByColumn = orderByColumn;
@@ -192,20 +192,20 @@
 
         function getData() {
             searchSvc.getSearchResults(m_ApiUrl, viewModel.searchCriteria)
-                .then(
-                    /*** Success ***/
-                    function (response) {
-                        if (response && response.length > 0) {
-                            setSelectPageDropData(response[0]['TotalRecords']);
-                        } else {
-                            setSelectPageDropData(0);
-                        }
-                        viewModel.dataRows = response;
-                    },
-                    /*** Error ***/
-                    function (result) {
-                        console.log("Failed to get getSearchResults, result is " + result);
-                    });
+            .then(
+            /*** Success ***/
+            function (response) {
+                if (response && response.length > 0) {
+                    setSelectPageDropData(response[0]['TotalRecords']);
+                } else {
+                    setSelectPageDropData(0);
+                }
+                viewModel.dataRows = response;
+            },
+            /*** Error ***/
+            function (result) {
+                console.log("Failed to get getSearchResults, result is " + result);
+            });
         };
 
         function setSelectPageDropData(totalRecords) {

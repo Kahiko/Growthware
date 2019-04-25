@@ -69,7 +69,7 @@
             }).success(function (response) {
                 GW.Common.debug('logoff: success');
                 m_SecurityInfo = [];
-                $rootScope.$broadcast('accountChanged', []);
+                $rootScope.$broadcast('accountChanged',[]);
                 mRetVal = response;
                 if (typeof (callBackFunc) == 'function') {
                     callBackFunc(mRetVal);
@@ -90,12 +90,12 @@
                 headers: { 'Content-Type': 'application/json' }
             }
             $http(options)
-                .success(function (response) {
-                    deferred.resolve(response);
-                }).error(function (response) {
-                    GW.Common.debug(response);
-                    deferred.reject(response);
-                });
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
             return deferred.promise;
         };
 
@@ -108,12 +108,12 @@
                 headers: { 'Content-Type': 'application/json' }
             }
             $http(options)
-                .success(function (response) {
-                    deferred.resolve(response);
-                }).error(function (response) {
-                    GW.Common.debug(response);
-                    deferred.reject(response);
-                });
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
             return deferred.promise;
         };
         thisSvc.getHorizontalHierarchicalMenuData = function (callBackFunc) {
@@ -198,12 +198,12 @@
                 data: JSON.stringify(profile)
             }
             $http(options)
-                .success(function (response) {
-                    deferred.resolve(response);
-                }).error(function (response) {
-                    GW.Common.debug(response);
-                    deferred.reject(response);
-                });
+            .success(function (response) {
+                deferred.resolve(response);
+            }).error(function (response) {
+                GW.Common.debug(response);
+                deferred.reject(response);
+            });
             return deferred.promise;
         };
 
@@ -233,7 +233,7 @@
     };
 
     mRetSvc.$inject = ['$http', '$q', '$rootScope'];
-
+    
     angular.module('growthwareApp').factory('AccountService', mRetSvc);
 
 })();

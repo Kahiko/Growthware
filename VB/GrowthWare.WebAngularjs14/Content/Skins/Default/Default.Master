@@ -5,7 +5,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml" data-ng-app="growthwareApp">
 <head runat="server">
-    <base href="/">
+    <base href="/"/>
     <title>Growhtware Default VB</title>
     <%: Scripts.Render("~/bundles/jquery","~/bundles/bootstrap", "~/bundles/GrowthWare")%>
     <script src="../../../Content/Scripts/angular.js"></script>
@@ -21,15 +21,13 @@
     <%: Styles.Render("~/Content/Growthware/Styles/UI")%>
 
     <link href="~/Content/font-awesome-4.6.2/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="~/Content/GrowthWare/Styles/GrowthWare.css" rel="stylesheet" type="text/css" />
-    <link href="~/Content/SiteStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
-    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />
-
+    <link href="CSS/Skin.css" rel="stylesheet" type="text/css" />    
+    <link href="~/Content/FormStyles/Default.css" rel="stylesheet" type="text/css" id="formStyles" runat="server"/>
     <asp:ContentPlaceHolder ID="HeadContent" runat="server">
     </asp:ContentPlaceHolder>
 
     <script type="text/ng-template" id="tree-renderer.html">
-        <a href="{{menuItem.Action}}?Action={{menuItem.Action}}">{{menuItem.label}}</a>
+        <a href="{{menuItem.Action}}">{{menuItem.label}}</a>
         <ul>
             <li ng-repeat="menuItem in menuItem.items" ng-include="'tree-renderer.html'" class="has-sub"></li>
         </ul>
@@ -73,7 +71,7 @@
 			    <div class="Column" id="HorizontalDiv" data-ng-controller="HorizontalMenuController">
                     <div id="HMenu" class="HMenu">
                         <span data-ng-repeat="item in menuItems">
-                            |&nbsp;<a title='{{ item.Action }}' href='{{ item.Route }}?Action={{ item.Route }}'>{{ item.Title }}</a>
+                            |&nbsp;<a title='{{ item.Action }}' href='{{ item.Route }}'>{{ item.Title }}</a>
                         </span>
                         |&nbsp;&nbsp;
                     </div>
@@ -82,12 +80,10 @@
 		</div>
 		<div class="colmask leftmenu">
 			<div class="colleft">
-				<div class="col1" style="overflow: auto">
+				<div class="col1" style="overflow: auto; margin: 10px;">
 					<!-- Column 1 start -->
-					<p>
-						<asp:ContentPlaceHolder ID="MainContent" runat="server">
-						</asp:ContentPlaceHolder>
-					</p>
+					<asp:ContentPlaceHolder ID="MainContent" runat="server">
+					</asp:ContentPlaceHolder>
 					<!-- Column 1 end -->
 				</div>
 				<div class="col2">
@@ -96,7 +92,7 @@
                         <div id="VMenu" data-ng-controller="VerticalMenuController">
                             <span id="NavigationTrail" data-ng-repeat="item in menuItems">
                                 <a></a>
-                                <a title='{{item.Description}}' href='{{ item.Route }}?Action={{ item.Route }}'>{{ item.Title }}</a><br/>
+                                <a title='{{item.Description}}' href='{{ item.Route }}'>{{ item.Title }}</a><br/>
                             </span>
                         </div>
                     </div>
@@ -105,7 +101,7 @@
 			</div>
 		</div>
 		<div class="footer">
-			Powered by GrowthWare... Click <a href="https://github.com/Kahiko/Growthware2013" target="_blank">here</a> for the latest version of GrowthWare!
+			Powered by GrowthWare... Click <a href="https://github.com/Kahiko/Growthware" target="_blank">here</a> for the latest version of GrowthWare!
 		</div>
 		<div class="clear">
 		</div>

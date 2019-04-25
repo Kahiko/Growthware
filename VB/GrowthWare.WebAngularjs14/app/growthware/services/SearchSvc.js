@@ -1,25 +1,37 @@
 ﻿(function () {
     'use strict';
 
-    var searchSvc = function ($http, $q, $resource) {
-
+    var mRetSvc = function ($http, $q, $resource) {
         var thisSvc = this;
 
         var m_SearchInfo = null;
 
-        thisSvc.getSearchResults = function (url, criteria) {
-            criteria = JSON.stringify(criteria);
-            var deferred = $q.defer();
-            $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})
-            .success(function (result) {
-                deferred.resolve(result);
-            })
-            .error(function (response) {
-                deferred.reject(response);
-            });
-            return deferred.promise;
+        thisSvc.Prototype = {
+            get lastCriteria() {
+                return this.m_LastCriteria;
+            },
+            set lastCriteria(value) {
+                this.m_LastCriteria = value;
+            }
         };
 
+        thisSvc.Prototype = {
+            get lastSearchRoute() {
+                return this.m_LastSearchRoute;
+            },
+            set lastSearchRoute(value) {
+                this.m_LastSearchRoute = value;
+            }
+        };
+
+        thisSvc.Prototype = {
+            get editId() {
+                return this.m_EditId;
+            },
+            set editId(value) {
+                this.m_EditId = value;
+            }
+        };
         thisSvc.getSearchConfiguration = function (route) {
             var deferred = $q.defer();
             if (m_SearchInfo != null) {
@@ -35,6 +47,20 @@
                     deferred.reject(response);
                 });
             }
+            return deferred.promise;
+        };
+
+        thisSvc.getSearchResults = function (url, criteria) {
+            this.lastCriteria = criteria;
+            criteria = JSON.stringify(criteria);
+            var deferred = $q.defer();
+            $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})
+            .success(function (result) {
+                deferred.resolve(result);
+            })
+            .error(function (response) {
+                deferred.reject(response);
+            });
             return deferred.promise;
         };
 
@@ -56,7 +82,7 @@
         }
     };
 
-    searchSvc.$inject = ['$http', '$q', '$resource']
+    mRetSvc.$inject = ['$http', '$q', '$resource']
 
-    angular.module('growthwareApp').service('SearchService', searchSvc);
+    angular.module('growthwareApp').service('SearchService', mRetSvc);
 })();

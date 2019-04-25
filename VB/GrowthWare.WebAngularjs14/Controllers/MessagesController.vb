@@ -15,8 +15,8 @@ Namespace Controllers
             If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
             Dim mRetVal As String = False
             Dim mLog As Logger = Logger.Instance()
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = accountSeqId Then
                     Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditMessages", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then
@@ -70,8 +70,8 @@ Namespace Controllers
             Dim mCurrentAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
             Dim mLog As Logger = Logger.Instance()
             Dim mProfileToSave = populateProfile(profile, mCurrentAccountProfile)
-            If Not HttpContext.Current.Items("EditId") Is Nothing Then
-                Dim mEditId = Integer.Parse(HttpContext.Current.Items("EditId").ToString())
+            If Not HttpContext.Current.Session("EditId") Is Nothing Then
+                Dim mEditId = Integer.Parse(HttpContext.Current.Session("EditId").ToString())
                 If mEditId = profile.Id Then
                     Dim mSecurityInfo As MSecurityInfo = New MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditMessages", True)), AccountUtility.CurrentProfile())
                     If Not mSecurityInfo Is Nothing Then

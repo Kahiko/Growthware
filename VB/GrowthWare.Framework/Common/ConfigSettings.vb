@@ -734,6 +734,16 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Returns Assembly from the web config and used to load the correct assembly name
+        ''' </summary>
+        ''' <returns></returns>
+        Shared ReadOnly Property WebAssemblyName() As String
+            Get
+                Return GetAppSettingValue("Assembly", False)
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Truncates a given string and adds ...
         ''' </summary>
         ''' <param name="text">String to be truncated</param>

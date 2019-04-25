@@ -7,7 +7,7 @@
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
         var viewModel = {};
-        var m_validStatus = [
+        var m_validStatus  = [
             { "id": 1, "Name": "Active" },
             { "id": 4, "Name": "Change Password" },
             { "id": 3, "Name": "Disabled" }
@@ -106,7 +106,7 @@
                     console.log("Failed to getPreferences, result is:");
                     console.log(result);
                 }
-            );
+           );
         };
 
         initCtrl();

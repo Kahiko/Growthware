@@ -1,0 +1,46 @@
+﻿<table class="pickListTable">
+    <tbody>
+        <tr class="pickListTableHeader">
+            <td>
+                {{header}}&nbsp;&nbsp;<img alt="Help" data-ng-show="picklistTableHelp.length > 0" data-ng-click="showHelpMSG()" src="/Content/GrowthWare/Images/help.gif" title="Help">
+            </td>
+        </tr>
+        <tr>
+            <td class="pickListTableContents">
+                <table class="listPicker">
+                    <tbody>
+                        <tr>
+                            <td>{{allItemsText}}</td>
+                            <td>&nbsp;</td>
+                            <td>{{selectedItemsText}}</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td valign="top">
+                                <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" style="width: {{size}}px" size="{{rows}}">
+                                    <option ng-repeat="item in availableItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
+                                </select>
+                            </td>
+                            <td valign="top">
+                                <input name="" value=" -> " data-ng-click="switchList('_SrcList', '_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" ->> " data-ng-click="switchAll('_SrcList', '_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <- " data-ng-click="switchList('_DstList', '_SrcList')" class="listPickerArrow" style="width: 50px" type="button"><br/>
+                                <input name="" value=" <<- " data-ng-click="switchAll('_DstList', '_SrcList')" class="listPickerArrow" style="width: 50px" type="button">
+                            </td>
+                            <td valign="top">
+                                <select name="{{id}}_DstList" id="{{id}}_DstList" multiple="multiple" style="width: {{size}}px" size="{{rows}}">
+                                    <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option>
+                                </select>
+                            </td>
+                            <td></td>
+                            <td valign="top" data-ng-show="!{{sortOnChange}}">
+                                <input name="" value="▲" data-ng-click="moveUp('_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br />
+                                <input name="" value="▼" data-ng-click="moveDown('_DstList')" class="listPickerArrow" style="width: 50px" type="button"><br />
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>

@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('growthwareApp').controller('LogonController', ['AccountService', '$controller', '$scope', '$location', function (acctSvc, $controller, $scope, $location) {
+    var mRetCtrl = function (acctSvc, $controller, $scope, $location) {
         // init
         var thisCtrlr = this;
 
@@ -66,6 +66,10 @@
         }
 
         return thisCtrlr;
-    }]);
+    };
+
+    mRetCtrl.$inject = ['AccountService', '$controller', '$scope', '$location'];
+
+    angular.module('growthwareApp').controller('LogonController', mRetCtrl);
 
 })();

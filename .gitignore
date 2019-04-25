@@ -11,6 +11,7 @@ GrowthWareDlls/
 *.user
 *.userosscache
 *.sln.docstates
+*GhostDoc.user.dic
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -74,6 +75,9 @@ artifacts/
 *.pidb
 *.svclog
 *.scc
+
+# Chutzpah Test files
+_Chutzpah*
 
 # Visual C++ cache files
 ipch/
@@ -228,9 +232,6 @@ FakesAssemblies/
 
 # Node.js Tools for Visual Studio
 .ntvs_analysis.dat
-
-# SQL Server for Visual Studio
-*.jfm
 
 # Visual Studio 6 build log
 *.plg
