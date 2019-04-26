@@ -63,7 +63,7 @@ Namespace Controllers
                 If mProfile.FunctionTypeSeqId <> 2 Then
                     mFunctionInformation = New MUIFunctionInformation()
                     mFunctionInformation.Action = mProfile.Action
-                    mFunctionInformation.Location = mAppName + mProfile.Source
+                    mFunctionInformation.Location = mAppName + mProfile.Source + "?Action=" + mProfile.Action
                     mFunctionInformation.Description = mProfile.Description
                     mFunctionInformation.LinkBehavior = mProfile.LinkBehavior
                     mFunctionInformation.Controller = mProfile.Controller
