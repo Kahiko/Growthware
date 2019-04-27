@@ -134,6 +134,7 @@ Namespace Context
             FunctionUtility.SetCurrentProfile(mFunctionProfile)
             ' we should now be able to get the security information
             Dim mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
+            HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
 
             ' with the support of anjularjs it is now possible to have request's made for .html or static content
             ' we will also have request for the api that may or may not have a session 
@@ -149,8 +150,6 @@ Namespace Context
             HttpContext.Current.Items(MClientChoices.SessionName) = mClientChoicesState
             If Not HttpContext.Current.Session.Item("EditId") Is Nothing Then HttpContext.Current.Items("EditId") = HttpContext.Current.Session.Item("EditId")
             FunctionUtility.SetCurrentProfile(mFunctionProfile)
-            mSecurityInfo = New MSecurityInfo(mFunctionProfile, mAccountProfile)
-            HttpContext.Current.Items("SecurityInfo") = mSecurityInfo
             HandleRedirect(mLog, mAccountProfile, mException, mAction, mFunctionProfile, mSecurityInfo)
         End Sub
 

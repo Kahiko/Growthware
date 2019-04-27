@@ -183,6 +183,7 @@ namespace GrowthWare.WebSupport.Context
             FunctionUtility.SetCurrentProfile(mFunctionProfile);
             // we should now be able to get the security information
             var mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
+            HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
 
             // with the support of anjularjs it is now possible to have request's made for .html or static content
             // we will also have request for the api that may or may not have a session 
@@ -202,8 +203,6 @@ namespace GrowthWare.WebSupport.Context
                 HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
             }
             FunctionUtility.SetCurrentProfile(mFunctionProfile);
-            mSecurityInfo = new MSecurityInfo(mFunctionProfile, mAccountProfile);
-            HttpContext.Current.Items["SecurityInfo"] = mSecurityInfo;
             HandleRedirect(mLog, mAccountProfile, ref mException, mAction, ref mFunctionProfile, mSecurityInfo);
         }
 
