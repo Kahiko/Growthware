@@ -17,8 +17,8 @@ Namespace Controllers
         <HttpPost>
         Public Function ChangePassword(ByVal mChangePassword As MUIChangePassword) As IHttpActionResult
             If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
-            If String.IsNullOrWhiteSpace(mChangePassword.NewPassword) Then
-                Return Ok("The new password can not be blank!")
+            If String.IsNullOrWhiteSpace(mChangePassword.NewPassword) Or String.IsNullOrWhiteSpace(mChangePassword.OldPassword) Then
+                Return Ok("The old or new password can not be blank!")
             End If
             Dim mMessageProfile As New MMessageProfile
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
