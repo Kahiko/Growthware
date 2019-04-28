@@ -190,7 +190,7 @@ namespace GrowthWare.WebSupport.Context
             // (though we have code to ensure api calls require session)
             if (HttpContext.Current.Session == null)
             {
-                HandleRedirect(mLog, mAccountProfile, ref mException, mAction, ref mFunctionProfile, mSecurityInfo);
+                HandleRedirect(mLog, mAccountProfile, mException, mAction, mFunctionProfile, mSecurityInfo);
                 mLog.Debug("No Session!");
                 mLog.Debug("Ended");
                 return;
@@ -203,7 +203,7 @@ namespace GrowthWare.WebSupport.Context
                 HttpContext.Current.Items["EditId"] = HttpContext.Current.Session["EditId"];
             }
             FunctionUtility.SetCurrentProfile(mFunctionProfile);
-            HandleRedirect(mLog, mAccountProfile, ref mException, mAction, ref mFunctionProfile, mSecurityInfo);
+            HandleRedirect(mLog, mAccountProfile, mException, mAction, mFunctionProfile, mSecurityInfo);
         }
 
         /// <summary>
@@ -215,14 +215,14 @@ namespace GrowthWare.WebSupport.Context
         /// <param name="action"></param>
         /// <param name="functionProfile"></param>
         /// <param name="securityInfo"></param>
-        private static void HandleRedirect(Logger log, MAccountProfile accountProfile, ref WebSupportException webSupportException, string action, ref MFunctionProfile functionProfile, MSecurityInfo securityInfo)
+        private static void HandleRedirect(Logger log, MAccountProfile accountProfile, WebSupportException webSupportException, string action, MFunctionProfile functionProfile, MSecurityInfo securityInfo)
         {
             if (!GWWebHelper.IsWebApiRequest)
             {
                 string[] mFunctionsToIgnore = new[] { "MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD" };
                 MFunctionProfile mFunctionProfile = functionProfile; // Byref parameters can not be used in a lambda expression
 
-                if (!mFunctionsToIgnore.Any(s => mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)))
+                if (!mFunctionsToIgnore.Any(functionSource => mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(functionSource)))
                 {
                     string mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
                     switch (accountProfile.Status)
