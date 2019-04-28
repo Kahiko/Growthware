@@ -44,13 +44,13 @@ namespace GrowthWare.WebApplication.Controllers
             {
                 mCurrentPassword = mAccountProfile.Password;
             }
-            if (mChangePassword.OldPassword != mCurrentPassword)
+            if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
             {
-                mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
-            }
-            else
-            {
-                if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
+                if (mChangePassword.OldPassword != mCurrentPassword)
+                {
+                    mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
+                }
+                else
                 {
                     mAccountProfile.PasswordLastSet = System.DateTime.Now;
                     mAccountProfile.Status = (int)SystemStatus.Active;
@@ -65,21 +65,21 @@ namespace GrowthWare.WebApplication.Controllers
                         mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
                     }
                 }
-                else
+            }
+            else
+            {
+                try
                 {
-                    try
-                    {
-                        var _with2 = mAccountProfile;
-                        _with2.PasswordLastSet = System.DateTime.Now;
-                        _with2.Status = (int)SystemStatus.Active;
-                        _with2.FailedAttempts = 0;
-                        _with2.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
-                        AccountUtility.Save(mAccountProfile, false, false);
-                    }
-                    catch (Exception)
-                    {
-                        mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-                    }
+                    var _with2 = mAccountProfile;
+                    _with2.PasswordLastSet = System.DateTime.Now;
+                    _with2.Status = (int)SystemStatus.Active;
+                    _with2.FailedAttempts = 0;
+                    _with2.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntityProfile.EncryptionType);
+                    AccountUtility.Save(mAccountProfile, false, false);
+                }
+                catch (Exception)
+                {
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
                 }
             }
             AccountUtility.RemoveInMemoryInformation(true);

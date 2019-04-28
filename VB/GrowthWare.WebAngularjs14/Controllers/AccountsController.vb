@@ -20,20 +20,23 @@ Namespace Controllers
             If String.IsNullOrWhiteSpace(mChangePassword.NewPassword) Or String.IsNullOrWhiteSpace(mChangePassword.OldPassword) Then
                 Return Ok("The old or new password can not be blank!")
             End If
+            If mChangePassword.NewPassword = mChangePassword.OldPassword Then
+                Return Ok("The old or new password must match!")
+            End If
             Dim mMessageProfile As New MMessageProfile
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
             Dim mCurrentPassword = ""
             mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword")
-            If mChangePassword.OldPassword <> mCurrentPassword Then
-                mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
-            Else
-                Try
-                    mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType)
-                Catch ex As Exception
-                    mCurrentPassword = mAccountProfile.Password
-                End Try
-                If mAccountProfile.Status <> SystemStatus.ChangePassword Then
+            Try
+                mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntityProfile.EncryptionType)
+            Catch ex As Exception
+                mCurrentPassword = mAccountProfile.Password
+            End Try
+            If mAccountProfile.Status <> SystemStatus.ChangePassword Then
+                If mChangePassword.OldPassword <> mCurrentPassword Then
+                    mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched")
+                Else
                     With mAccountProfile
                         .PasswordLastSet = Date.Now
                         .Status = SystemStatus.Active
@@ -45,19 +48,19 @@ Namespace Controllers
                     Catch ex As Exception
                         mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
                     End Try
-                Else
-                    Try
-                        With mAccountProfile
-                            .PasswordLastSet = Date.Now
-                            .Status = SystemStatus.Active
-                            .FailedAttempts = 0
-                            .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
-                        End With
-                        AccountUtility.Save(mAccountProfile, False, False)
-                    Catch ex As Exception
-                        mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
-                    End Try
                 End If
+            Else
+                Try
+                    With mAccountProfile
+                        .PasswordLastSet = Date.Now
+                        .Status = SystemStatus.Active
+                        .FailedAttempts = 0
+                        .Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim, mSecurityEntityProfile.EncryptionType)
+                    End With
+                    AccountUtility.Save(mAccountProfile, False, False)
+                Catch ex As Exception
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword")
+                End Try
             End If
             AccountUtility.RemoveInMemoryInformation(True)
             Return Ok(mMessageProfile.Body)
