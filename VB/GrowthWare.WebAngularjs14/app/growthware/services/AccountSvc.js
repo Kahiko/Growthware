@@ -81,6 +81,25 @@
             return mRetVal;
         };
 
+        thisSvc.changePassword = function(profile) {
+            var deferred = $q.defer();
+            var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/ChangePassword?Action=ChangePassword";
+            var options = {
+                method: "POST",
+                url: mApiUrl,
+                headers: { 'Content-Type': 'application/json' },
+                data: JSON.stringify(profile)
+            }
+            $http(options)
+                .success(function (response) {
+                    deferred.resolve(response);
+                }).error(function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
         thisSvc.getAccount = function (accountId, action) {
             var deferred = $q.defer();
             var mApiUrl = GW.Common.getBaseURL() + "/gw/api/Accounts/GetProfile/?Action=" + action + "&accountSeqID=" + accountId;
@@ -116,6 +135,7 @@
             });
             return deferred.promise;
         };
+
         thisSvc.getHorizontalHierarchicalMenuData = function (callBackFunc) {
             var menuType = 3;  //MenuType.Hierarchical = 3
             getMenuData(callBackFunc, menuType);

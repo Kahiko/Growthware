@@ -1,10 +1,8 @@
-﻿Imports System.Net
-Imports System.Web.Http
-Imports GrowthWare.Framework.Model.Profiles
-Imports GrowthWare.WebSupport.Utilities
+﻿Imports System.Web.Http
 Imports GrowthWare.Framework.Common
-Imports System.Globalization
-Imports GrowthWare.Framework.Model.Enumerations
+Imports GrowthWare.Framework.Model.Profiles
+Imports GrowthWare.WebSupport
+Imports GrowthWare.WebSupport.Utilities
 
 Namespace Controllers
     Public Class MessagesController
@@ -48,6 +46,14 @@ Namespace Controllers
                 Return Me.InternalServerError(mError)
             End If
             Return Me.Ok(mRetVal)
+        End Function
+
+        <HttpGet> Public Function GetExceptionError() As IHttpActionResult
+            Dim mRetVal As Exception = GWWebHelper.ExceptionError
+            If Not mRetVal Is Nothing Then
+                GWWebHelper.ExceptionError = Nothing
+            End If
+            Return Ok(mRetVal)
         End Function
 
         <HttpPost>
