@@ -27,7 +27,7 @@ namespace GrowthWare.WebApplication.Controllers
             {
                 return Ok("The old or new password can not be blank!");
             }
-            if (mChangePassword.NewPassword == mChangePassword.OldPassword)
+            if (mChangePassword.NewPassword != mChangePassword.OldPassword)
             {
                 return Ok("The old and new passwords can not be the same!");
             }

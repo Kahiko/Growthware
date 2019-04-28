@@ -19,7 +19,7 @@ Namespace Controllers
             If String.IsNullOrWhiteSpace(mChangePassword.NewPassword) Or String.IsNullOrWhiteSpace(mChangePassword.OldPassword) Then
                 Return Ok("The old or new password can not be blank!")
             End If
-            If mChangePassword.NewPassword = mChangePassword.OldPassword Then
+            If mChangePassword.NewPassword <> mChangePassword.OldPassword Then
                 Return Ok("The old or new password must match!")
             End If
             Dim mMessageProfile As New MMessageProfile
