@@ -167,7 +167,7 @@ Namespace Context
                 Dim mFunctionsToIgnore As String() = {"MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD"}
                 Dim mFunctionProfile As MFunctionProfile = functionProfile ' Byref parameters can not be used in a lambda expression
 
-                If Not mFunctionsToIgnore.Any(Function(s) mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(s)) Then
+                If Not mFunctionsToIgnore.Any(Function(functionSource) mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(functionSource)) Then
                     Dim mRedirectPage As String = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
                     Select Case accountProfile.Status
                         Case DirectCast(SystemStatus.ChangePassword, Integer)
@@ -175,7 +175,6 @@ Namespace Context
                             GWWebHelper.ExceptionError = webSupportException
                             mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", True))
                             mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-
                             If (ConfigSettings.IsAngularJSApplication) Then
                                 mRedirectPage = GetRelativeURL(mFunctionProfile)
                                 HttpContext.Current.Server.Transfer(mRedirectPage, False)
@@ -188,12 +187,7 @@ Namespace Context
                                 webSupportException = New WebSupportException("Your account details need to be set.")
                                 GWWebHelper.ExceptionError = webSupportException
                                 mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source
-                                If (ConfigSettings.IsAngularJSApplication) Then
-                                    mRedirectPage = GetRelativeURL(mFunctionProfile)
-                                    HttpContext.Current.Server.Transfer(mRedirectPage, False)
-                                Else
-                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
-                                End If
+                                mRedirectPage = NewMethod(mFunctionProfile, mRedirectPage)
                             End If
                         Case Else
                             If Not securityInfo.MayView Then
@@ -225,6 +219,17 @@ Namespace Context
                 End If
             End If
         End Sub
+
+        Private Shared Function NewMethod(mFunctionProfile As MFunctionProfile, mRedirectPage As String) As String
+            If (ConfigSettings.IsAngularJSApplication) Then
+                mRedirectPage = GetRelativeURL(mFunctionProfile)
+                HttpContext.Current.Server.Transfer(mRedirectPage, False)
+            Else
+                HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action)
+            End If
+
+            Return mRedirectPage
+        End Function
 
         ''' <summary>
         ''' Provide a relitive URL for use with Server.Transfer
