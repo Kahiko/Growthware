@@ -17,12 +17,6 @@ Namespace Controllers
         <HttpPost>
         Public Function ChangePassword(ByVal mChangePassword As MUIChangePassword) As IHttpActionResult
             If mChangePassword Is Nothing Then Throw New ArgumentNullException("mChangePassword", "mChangePassword cannot be a null reference (Nothing in Visual Basic)!")
-            If String.IsNullOrWhiteSpace(mChangePassword.NewPassword) Or String.IsNullOrWhiteSpace(mChangePassword.OldPassword) Then
-                Return Ok("The old or new password can not be blank!")
-            End If
-            If mChangePassword.NewPassword <> mChangePassword.OldPassword Then
-                Return Ok("The old or new password must match!")
-            End If
             Dim mMessageProfile As New MMessageProfile
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mAccountProfile As MAccountProfile = AccountUtility.CurrentProfile()
@@ -65,7 +59,6 @@ Namespace Controllers
             AccountUtility.RemoveInMemoryInformation(True)
             Return Ok(mMessageProfile.Body)
         End Function
-
         <HttpPost>
         Public Function Delete(<FromUri()> ByVal accountSeqId As Integer) As IHttpActionResult
             If accountSeqId < 1 Then Throw New ArgumentNullException("accountSeqId", "accountSeqId must be a positive number!")
