@@ -1,4 +1,4 @@
-﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Default.master.vb" Inherits="GrowthWare.WebAngularjs14._Default1" %>
+﻿<%@ Master Language="VB" AutoEventWireup="false" CodeBehind="Default.master.vb" Inherits="GrowthWare.WebAngularJS._Default1" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <!DOCTYPE html>

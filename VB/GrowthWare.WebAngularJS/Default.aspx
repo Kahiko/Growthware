@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Content/Skins/Default/Default.Master" CodeBehind="Default.aspx.vb" Inherits="GrowthWare.WebAngularjs14._Default" %>
+﻿<%@ Page Title="" Language="vb" AutoEventWireup="false" MasterPageFile="~/Content/Skins/Default/Default.Master" CodeBehind="Default.aspx.vb" Inherits="GrowthWare.WebAngularJS._Default" %>
 <%@ Import Namespace="System.Web.Optimization" %>
 
 <asp:Content ID="HeadContent" ContentPlaceHolderID="HeadContent" runat="server">

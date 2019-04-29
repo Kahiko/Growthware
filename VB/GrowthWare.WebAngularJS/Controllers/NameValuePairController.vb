@@ -4,7 +4,7 @@ Imports GrowthWare.Framework.Model.Profiles
 Imports GrowthWare.WebSupport.Utilities
 Imports GrowthWare.Framework.Common
 Imports GrowthWare.WebSupport
-Imports GrowthWare.WebAngularjs14.Models
+Imports GrowthWare.WebAngularjs.Models
 
 Namespace Controllers
     Public Class NameValuePairController

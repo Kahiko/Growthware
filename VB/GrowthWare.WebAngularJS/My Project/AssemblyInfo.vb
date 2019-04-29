@@ -7,10 +7,10 @@ Imports System.Runtime.InteropServices
 ' associated with an assembly.
 
 ' Review the values of the assembly attributes
-<Assembly: AssemblyTitle("GrowthWare.WebAngularjs14")> 
+<Assembly: AssemblyTitle("GrowthWare.WebAngularJS")> 
 <Assembly: AssemblyDescription("")> 
 <Assembly: AssemblyCompany("")> 
-<Assembly: AssemblyProduct("GrowthWare.WebAngularjs14")> 
+<Assembly: AssemblyProduct("GrowthWare.WebAngularJS")> 
 <Assembly: AssemblyCopyright("Copyright ©  2015")> 
 <Assembly: AssemblyTrademark("")> 
 

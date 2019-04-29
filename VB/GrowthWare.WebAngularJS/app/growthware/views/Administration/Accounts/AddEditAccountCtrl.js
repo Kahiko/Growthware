@@ -14,6 +14,7 @@
         ]
 
         function initCtrl() {
+            viewModel.clientMessage = '';
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
             if (lastSearchRoute.length == 0 && !(m_Action.toLowerCase() == 'editaccount' || m_Action.toLowerCase() == 'register')) {
                 $location.path('/');
@@ -62,6 +63,7 @@
                         viewModel.securityInfoGroupTab = securityInfo;
                     })
                     .catch(function (result) { /*** error ***/
+                        viewModel.clientMessage = 'Failed to load data';
                         console.log("Failed to load data for account, result is:");
                         console.log(result);
                     });
@@ -84,7 +86,8 @@
                 $location.path(lastSearchRoute);
             } else {
                 if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
-                    $location.path('/Home');
+                    // $location.path('/Home');
+                    $route.reload();
                 } else {
                     $location.path('/Generic_Home');
                 };
@@ -92,18 +95,20 @@
         };
 
         $scope.save = function () {
+            viewModel.profile.Status = viewModel.selectedStatus.id;
             acctSvc.save(viewModel.profile, m_Action).then(
                 /*** success ***/
                 function (result) {
                     if (result.toLowerCase == "false") {
-                        alert('Account information was not saved!');
+                        viewModel.clientMessage = 'Account information was not saved!';
                     } else {
+                        viewModel.clientMessage = 'Account information has been saved';
                         $scope.cancelEdit();
                     }
                 },
                 /*** error ***/
                 function (result) {
-                    console.log("Failed to getPreferences, result is:");
+                    viewModel.clientMessage = 'Account information was not saved!';
                     console.log(result);
                 }
            );
