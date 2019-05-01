@@ -10,6 +10,27 @@ Post-Deployment Script Template
 --------------------------------------------------------------------------------------
 */
 SET NOCOUNT ON
+
+/* Handle security for the local service */
+IF SUSER_ID (N'NT AUTHORITY\LOCAL SERVICE') IS NULL
+	BEGIN
+		PRINT 'ADDING [NT AUTHORITY\LOCAL SERVICE] TO THE DB'
+		CREATE LOGIN [NT AUTHORITY\LOCAL SERVICE] FROM WINDOWS WITH DEFAULT_DATABASE = [GW2013Development];
+		CREATE USER [NT AUTHORITY\LOCAL SERVICE] FOR LOGIN [NT AUTHORITY\LOCAL SERVICE];
+		EXEC sp_addrolemember 'db_datareader', 'NT AUTHORITY\LOCAL SERVICE'
+		EXEC sp_addrolemember 'db_datawriter', 'NT AUTHORITY\LOCAL SERVICE'
+	END
+--END IF
+
+GRANT EXECUTE ON SCHEMA::ZGWCoreWeb to [NT AUTHORITY\LOCAL SERVICE]
+GO
+GRANT EXECUTE ON SCHEMA::ZGWOptional to [NT AUTHORITY\LOCAL SERVICE]
+GO
+GRANT EXECUTE ON SCHEMA::ZGWSecurity to [NT AUTHORITY\LOCAL SERVICE]
+GO
+GRANT EXECUTE ON SCHEMA::ZGWSystem to [NT AUTHORITY\LOCAL SERVICE]
+GO
+
 DECLARE @V_Now datetime,
 		@V_SystemID INT,
 		@V_Security_Entity_SeqID INT,
@@ -532,6 +553,7 @@ SET @V_ParentID = (SELECT Function_SeqID FROM ZGWSecurity.Functions WHERE [Actio
 exec ZGWSecurity.Set_Function -1,'Edit Other Account','Edit Other Account',@V_Function_Type_SeqID,'Functions/System/Administration/Accounts/AddEditAccount.aspx','', NULL,@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorInternal,@V_NO_UIFalse,@V_NAV_TYPE_Hierarchical,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to edit anothers account profile.', @V_SystemID, @V_Debug
 set @V_FunctionID = (select Function_SeqID from ZGWSecurity.Functions where action=@V_MyAction)
 exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID,@V_Debug
+exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermission,@V_SystemID,@V_Debug
 
 print 'Adding Community Calendar'
 SET @V_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module')
