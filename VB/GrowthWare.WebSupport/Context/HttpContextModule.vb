@@ -219,6 +219,11 @@ Namespace Context
             End If
         End Sub
 
+        ''' <summary>
+        ''' Performs a redirection
+        ''' </summary>
+        ''' <param name="functionProfile">MFunctionProfile</param>
+        ''' <param name="redirectPage">String</param>
         Private Shared Sub redirect(functionProfile As MFunctionProfile, redirectPage As String)
             If (ConfigSettings.IsAngularJSApplication) Then
                 redirectPage = GetRelativeURL(functionProfile)
