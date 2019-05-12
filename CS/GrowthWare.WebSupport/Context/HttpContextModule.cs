@@ -224,11 +224,15 @@ namespace GrowthWare.WebSupport.Context
                 string mRedirectPage = String.Empty;
 
                 String mSource = functionProfile.Source;
-                if(mSource.IndexOf("Functions/System/") >= 0) {
-                    mSource = mSource.Replace("Functions/System/", "app/growthware/views/");
-                    mSource = mSource.Replace(".aspx", ".html");
+                if (ConfigSettings.IsAngularJSApplication) {
+                    if (mSource.IndexOf("Functions/System/") >= 0)
+                    {
+                        mSource = mSource.Replace("Functions/System/", "app/growthware/views/");
+                        mSource = mSource.Replace(".aspx", ".html");
+                    }
                 }
                 String mFile = HttpContext.Current.Server.MapPath("~/").ToString() + mSource;
+                mFile = mFile.Replace("/", @"\") // not necessary but...
                 if (!File.Exists(mFile)) {
                     webSupportException = new WebSupportException(String.Format("Requested resource does not exist {0}", mFile));
                     log.Error(webSupportException);

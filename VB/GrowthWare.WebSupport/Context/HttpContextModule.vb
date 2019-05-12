@@ -167,11 +167,14 @@ Namespace Context
                 Dim mRedirectPage As String
                 ' Check for the existance of the requested file here and redirect if necessary
                 Dim mSource As String = functionProfile.Source
-                If (mSource.IndexOf("Functions/System/") >= 0) Then
-                    mSource = mSource.Replace("Functions/System/", "app/growthware/views/")
-                    mSource = mSource.Replace(".aspx", ".html")
+                If (ConfigSettings.IsAngularJSApplication) Then
+                    If (mSource.IndexOf("Functions/System/") >= 0) Then
+                        mSource = mSource.Replace("Functions/System/", "app/growthware/views/")
+                        mSource = mSource.Replace(".aspx", ".html")
+                    End If
                 End If
                 Dim mFile As String = HttpContext.Current.Server.MapPath("~/").ToString() + mSource
+                mFile = mFile.Replace("/", "\") ' not necessary but...
                 If Not File.Exists(mFile) Then
                     webSupportException = New WebSupportException(String.Format("Requested resource does not exist {0}", mFile))
                     log.Error(webSupportException)
