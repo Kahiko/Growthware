@@ -175,6 +175,7 @@
     <Content Include="app\growthware\directives\DerivedRoles\DerivedRolesTemplate.html" />
     <Content Include="app\growthware\directives\PickList\PicklistDirective.js" />
     <Content Include="app\growthware\directives\PickList\PicklistTemplate.html" />
+    <Content Include="app\growthware\services\FunctionSvc.js" />
     <Content Include="app\growthware\services\GroupSvc.js" />
     <Content Include="app\growthware\services\MessagesSvc.js" />
     <Content Include="app\growthware\services\RoleSvc.js" />
@@ -187,6 +188,7 @@
     <Content Include="app\growthware\views\Administration\Accounts\AddEditAccount.html" />
     <Content Include="app\growthware\views\Administration\Accounts\AddEditAccountCtrl.js" />
     <Content Include="app\growthware\views\Administration\Functions\AddEditFunction.html" />
+    <Content Include="app\growthware\views\Administration\Functions\AddEditFunctionCtrl.js" />
     <Content Include="app\growthware\views\Errors\AccessDenied.html" />
     <Content Include="app\growthware\views\Errors\UnknownAction.html" />
     <Content Include="app\growthware\views\ExternalAuth\RegisterExternalLogin.html" />

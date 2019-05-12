@@ -40,23 +40,29 @@ Public Class BundleConfig
             New ScriptBundle("~/bundles/GrowthwareApp").Include(
             "~/" + ConfigSettings.AppName + "/app/growthware/GrowthwareApp.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/factories/ClientChoicesSvc.js",
+ _
             "~/" + ConfigSettings.AppName + "/app/growthware/services/AccountSvc.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/services/FunctionSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/GroupSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/MessagesSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/RoleSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/SearchSvc.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/services/SecurityEntitySvc.js",
+ _
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/AccountCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/ClientChoicesCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/HierarchicalMenuCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/HorizontalMenuCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/VerticalMenuCtrl.js",
+ _
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Accounts/ChangePasswordCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Accounts/LogoffCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Accounts/LogonCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Search/SearchCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Administration/Accounts/AddEditAccountCtrl.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/views/Administration/Functions/AddEditFunctionCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/SecurityEntities/SelectSecurityEntityCtrl.js",
+ _
             "~/" + ConfigSettings.AppName + "/app/growthware/directives/LoadingDirective.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/directives/PickList/PicklistDirective.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/directives/DerivedRoles/DerivedRolesDirective.js"

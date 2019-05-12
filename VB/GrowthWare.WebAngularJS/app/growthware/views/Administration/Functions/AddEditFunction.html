@@ -1,10 +1,196 @@
 ﻿<style>
-    .add-edit-dialog .modal-body
-    {
-        height: 695px;
-        width: 1050px;
+    td {
+        padding: 5px;
     }
 </style>
-<form id="frmAddEditFunctions">
-    Add/Edit Functions
+<form id="frmAddEditFunctions" data-ng-controller="AddEditFunctionController">
+    <div class="container" id="tabs">
+        <ul class="nav nav-tabs" role="tablist">
+            <li role="presentation" class="nav active"><a data-toggle="tab" data-target="#tabs-General">General</a></li>
+            <li role="presentation"><a data-toggle="tab" data-target="#tabs-MenuOrder">Menu Order</a></li>
+            <li role="presentation"><a data-toggle="tab" data-target="#tabs-Roles">Roles</a></li>
+            <li role="presentation"><a data-toggle="tab" data-target="#tabs-Groups">Groups</a></li>
+            <li role="presentation"><a data-toggle="tab" data-target="#tabs-DirectoryInformation">Directory Information</a></li>
+            <li role="presentation"><a data-toggle="tab" data-target="#tabs-DerivedRoles">Derived Roles</a></li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade in active" id="tabs-General">
+                <table border="0" style="width: 100%;" cellpadding="2">
+                    <tr id="trID">
+                        <td align="right">
+                            <span class="Form_LabelText">ID:</span>
+                        </td>
+                        <td style="width: 0px;">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <div id="divFunctionSeqId">
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Name:</span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <input type="text" id="txtName" data-ng-model="vm.profile.Name" class="rounded" style="width: 322px;" />
+                            <asp:RequiredFieldValidator ID="Requiredfieldvalidator5" CssClass="failureNotification" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtName">(required)</asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Description: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <!-- todo add max length -->
+                            <input type="text" class="rounded" id="txtDescription" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator1" CssClass="failureNotification" ErrorMessage="Required" Text="(required)" Display="Dynamic" ControlToValidate="txtDescription">(required)</asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Notes: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtNotes" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,255)" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Key Words: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtKeyWords" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" CssClass="rounded" Height="40px" TextMode="MultiLine" Width="500px" Columns="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Action:</span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            <img onclick="GW.Common.showHelpMSG(document.getElementById('helpActions').innerHTML,'Action Help')" style="border: 0px;" src="<%=ResolveUrl(" ~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about actions&nbsp;" />
+                        </td>
+                        <td align="left">
+                            <div id="divAction">
+                            </div>
+                            <asp:TextBox ID="txtAction" MaxLength="255" CssClass="rounded" Height="20px" Width="500px" Columns="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Type: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            &nbsp;
+                        </td>
+                        <td align="left">
+                            <asp:DropDownList ID="dropFunctionType" CssClass="rounded">
+                            </asp:DropDownList>
+                        </td>
+                    </tr>
+                    <tr id="trSource">
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Source: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            <img onclick="GW.Common.showHelpMSG(document.getElementById('helpSource').innerHTML,'Source Help')" style="border: 0px;" src="<%=ResolveUrl(" ~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about source&nbsp;" />
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtSource" MaxLength="512" CssClass="rounded" Width="500px" Columns="100" />
+                            <asp:RequiredFieldValidator ID="RequiredFieldValidator3" CssClass="failureNotification" ErrorMessage="Required (Relitive location of the module)" Text="(required)" Display="Dynamic" ControlToValidate="txtSource">(required)</asp:RequiredFieldValidator>
+                        </td>
+                    </tr>
+                    <tr id="trController">
+                        <td align="right" valign="top">
+                            <span class="Form_LabelText">Controller: </span>
+                        </td>
+                        <td style="width: 0px;" valign="top">
+                            <img onclick="GW.Common.showHelpMSG(document.getElementById('helpController').innerHTML,'Controller Help')" style="border: 0px;" src="<%=ResolveUrl(" ~/Content/GrowthWare/Images/help.gif") %>" alt="&nbsp;Help about controller&nbsp;" />
+                        </td>
+                        <td align="left">
+                            <asp:TextBox ID="txtController" MaxLength="512" CssClass="rounded" Width="500px" Columns="100" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <table style="width: 100%">
+                                <asp:CheckBox ID="chkEnableViewState" Text="Enable ViewState" />
+                                <asp:CheckBox ID="chkEnableNotifications" Text="Enable Notifications" />
+                                <asp:CheckBox ID="chkRedirectOnTimeout" Text="Redirect on Session Timeout" />
+                                <asp:CheckBox ID="chkNoUI" Text="No UI" />
+                                <asp:CheckBox ID="chkIsNav" Text="Is Nav" />
+                            </table>
+                        </td>
+                    </tr>
+                    <tr id="trParent">
+                        <td colspan="3">
+                            <table border="0" style="width: 100%;">
+                                <span class="Form_LabelText">Nav type: </span>
+                                <asp:DropDownList ID="dropNavType" CssClass="rounded">
+                                </asp:DropDownList>
+                                &nbsp;
+                                <span class="Form_LabelText">Parent: </span>
+                                <asp:DropDownList ID="dropNavParent" CssClass="rounded">
+                                    <asp:ListItem Text="None" Value="0" />
+                                </asp:DropDownList>
+                                &nbsp;
+                                <span class="Form_LabelText">Link Behavior: </span>
+                                <asp:DropDownList ID="dropLinkBehavior" CssClass="rounded">
+                                    <asp:ListItem Text="None" Value="0" />
+                                </asp:DropDownList>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div id="helpActions" style="display: none">
+                    Note: Action should not have any special charactors.<br />
+                    Once an action has been entered it can not be changed other than by direct access to the data store.<br />
+                </div>
+                <div id="helpSource" style="display: none">
+                    Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+                </div>
+                <div id="helpController" style="display: none">
+                    Note: Used for AngularJs implementations.<br />
+                </div>
+
+            </div>
+            <div class="tab-pane fade" id="tabs-MenuOrder">
+                <p>
+                    tabs-MenuOrder
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tabs-Roles">
+                <p>
+                    <gw-picklist size="200" rows="10" id="ctlRoles" data-ng-model="vm.profile.AccountRoles.Roles" selected-items="vm.profile.AccountRoles.Roles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Assign roles" header="Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tabs-Groups">
+                <p>
+                    <gw-picklist size="200" rows="10" id="ctlGroups" data-ng-model="vm.profile.AccountGroups.Groups" selected-items="vm.profile.AccountGroups.Groups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Assign Groups" header="Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tabs-DirectoryInformation">
+                <p>
+                    tabs-DirectoryInformation
+                </p>
+            </div>
+            <div class="tab-pane fade" id="tabs-DerivedRoles">
+                <p>
+                    <gw-derived-roles size="200" rows="10" available-items="vm.profile.DerivedRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived Roles"></gw-derived-roles>
+                </p>
+            </div>
+        </div>
+    </div>
 </form>

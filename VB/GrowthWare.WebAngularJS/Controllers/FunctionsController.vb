@@ -51,6 +51,45 @@ Namespace Controllers
         End Function
 
         <HttpGet>
+        Public Function GetFunction(<FromUri()> ByVal functionSeqID As Integer) As MUIFunctionProfile
+            Dim mProfile As MFunctionProfile = Nothing
+            Dim mRetVal As MUIFunctionProfile = New MUIFunctionProfile()
+            Dim mFunctionSeqID As Integer = Integer.Parse(functionSeqID)
+            If Not functionSeqID = -1 Then
+                mProfile = FunctionUtility.GetProfile(mFunctionSeqID)
+                mRetVal.Action = mProfile.Action
+                mRetVal.Controller = mProfile.Controller
+                mRetVal.Description = mProfile.Description
+                ' mRetVal.DirectoryData = ???
+                mRetVal.EnableNotifications = mProfile.EnableNotifications
+                mRetVal.EnableViewState = mProfile.EnableViewState
+                mRetVal.FunctionTypeSeqID = mProfile.FunctionTypeSeqId
+                mRetVal.IsNav = mProfile.IsNavigable
+                mRetVal.LinkBehavior = mProfile.LinkBehavior
+                mRetVal.MetaKeyWords = mProfile.MetaKeywords
+                mRetVal.Name = mProfile.Name
+                mRetVal.NavigationTypeSeqId = mProfile.NavigationTypeSeqId
+                mRetVal.Notes = mProfile.Notes
+                mRetVal.NoUI = mProfile.NoUI
+                mRetVal.ParentID = mProfile.ParentId
+                mRetVal.RedirectOnTimeout = mProfile.RedirectOnTimeout
+
+                Dim mUIFunctionRolesGroups As MUIFunctionRolesGroups = New MUIFunctionRolesGroups
+                mRetVal.RolesAndGroups = mUIFunctionRolesGroups
+
+                mRetVal.RolesAndGroups.AddRoles = mProfile.AssignedAddRoles.ToArray()
+                mRetVal.RolesAndGroups.DeleteRoles = mProfile.AssignedDeleteRoles.ToArray()
+                mRetVal.RolesAndGroups.EditRoles = mProfile.AssignedEditRoles.ToArray()
+                mRetVal.RolesAndGroups.ViewRoles = mProfile.AssignedViewRoles.ToArray()
+
+
+                mRetVal.Source = mProfile.Source
+
+            End If
+            Return mRetVal
+        End Function
+
+        <HttpGet>
         Public Function GetFunctionData() As Collection(Of MUIFunctionInformation)
             Dim mFunctionInformation As MUIFunctionInformation = Nothing
             Dim mRetVal As Collection(Of MUIFunctionInformation) = New Collection(Of MUIFunctionInformation)
