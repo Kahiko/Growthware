@@ -221,10 +221,26 @@ namespace GrowthWare.WebSupport.Context
             {
                 string[] mFunctionsToIgnore = new[] { "MENUS", "LOGOFF", "LOGON", "CHANGEPASSWORD" };
                 MFunctionProfile mFunctionProfile = functionProfile; // Byref parameters can not be used in a lambda expression
+                string mRedirectPage = String.Empty;
+
+                String mSource = functionProfile.Source;
+                if(mSource.IndexOf("Functions/System/") >= 0) {
+                    mSource = mSource.Replace("Functions/System/", "app/growthware/views/");
+                    mSource = mSource.Replace(".aspx", ".html");
+                }
+                String mFile = HttpContext.Current.Server.MapPath("~/").ToString() + mSource;
+                if (!File.Exists(mFile)) {
+                    webSupportException = new WebSupportException(String.Format("Requested resource does not exist {0}", mFile));
+                    log.Error(webSupportException);
+                    functionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_UnknownAction", true));
+                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + functionProfile.Source;
+                    redirect(functionProfile, mRedirectPage);
+                }
+
 
                 if (!mFunctionsToIgnore.Any(functionSource => mFunctionProfile.Source.ToUpper(CultureInfo.InvariantCulture).Contains(functionSource)))
                 {
-                    string mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
+                    mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
                     switch (accountProfile.Status)
                     {
                         case (int)SystemStatus.ChangePassword:
@@ -233,16 +249,7 @@ namespace GrowthWare.WebSupport.Context
                                 GWWebHelper.ExceptionError = webSupportException;
                                 mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_ChangePassword", true));
                                 mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-
-                                if (ConfigSettings.IsAngularJSApplication)
-                                {
-                                    mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                    HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                }
-                                else
-                                {
-                                    HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                }
+                                redirect(functionProfile, mRedirectPage);
                                 break;
                             }
 
@@ -254,15 +261,7 @@ namespace GrowthWare.WebSupport.Context
                                     webSupportException = new WebSupportException("Your account details need to be set.");
                                     GWWebHelper.ExceptionError = webSupportException;
                                     mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                    if ((ConfigSettings.IsAngularJSApplication))
-                                    {
-                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                    }
-                                    else
-                                    {
-                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                    }
+                                    redirect(functionProfile, mRedirectPage);
                                 }
 
                                 break;
@@ -278,28 +277,12 @@ namespace GrowthWare.WebSupport.Context
                                         GWWebHelper.ExceptionError = webSupportException;
                                         mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_Logon", true));
                                         mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                        if ((ConfigSettings.IsAngularJSApplication))
-                                        {
-                                            mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                            HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                        }
-                                        else
-                                        {
-                                            HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                        }
+                                        redirect(functionProfile, mRedirectPage);
                                     }
                                     mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_AccessDenied", true));
                                     log.Warn("Access was denied to Account: " + accountProfile.Account + " for Action: " + mFunctionProfile.Action);
                                     mRedirectPage = GWWebHelper.RootSite + ConfigSettings.AppName + mFunctionProfile.Source;
-                                    if ((ConfigSettings.IsAngularJSApplication))
-                                    {
-                                        mRedirectPage = GetRelitiveURL(mFunctionProfile);
-                                        HttpContext.Current.Server.Transfer(mRedirectPage, false);
-                                    }
-                                    else
-                                    {
-                                        HttpContext.Current.Response.Redirect(mRedirectPage + "?Action=" + mFunctionProfile.Action);
-                                    }
+                                    redirect(functionProfile, mRedirectPage);
                                 }
                                 break;
                             }
@@ -317,7 +300,7 @@ namespace GrowthWare.WebSupport.Context
         /// </summary>
         /// <param name="functionProfile"></param>
         /// <returns>string</returns>
-        private static string GetRelitiveURL(MFunctionProfile functionProfile)
+        private static string GetRelativeURL(MFunctionProfile functionProfile)
         {
             string mRedirectPage = functionProfile.Source;
             mRedirectPage = mRedirectPage.Replace("Functions/System/", "app/growthware/views/");
@@ -433,6 +416,20 @@ namespace GrowthWare.WebSupport.Context
                 }
             }
             return mRetVal;
+        }
+
+        /// <summary>
+        /// Performs a redirection
+        /// </summary>
+        /// <param name="functionProfile">MFunctionProfile</param>
+        /// <param name="redirectPage">String</param>
+        private static void redirect(MFunctionProfile functionProfile, String redirectPage) {
+            if(ConfigSettings.IsAngularJSApplication) {
+                redirectPage = GetRelativeURL(functionProfile);
+                HttpContext.Current.Server.Transfer(redirectPage, false);
+            } else {
+                HttpContext.Current.Response.Redirect(redirectPage + "?Action=" + functionProfile.Action);
+            }
         }
 
         private string charMatch(Match match)
