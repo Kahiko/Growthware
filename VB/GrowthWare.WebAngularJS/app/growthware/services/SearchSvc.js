@@ -32,6 +32,7 @@
                 this.m_EditId = value;
             }
         };
+
         thisSvc.getSearchConfiguration = function (route) {
             var deferred = $q.defer();
             if (m_SearchInfo != null) {

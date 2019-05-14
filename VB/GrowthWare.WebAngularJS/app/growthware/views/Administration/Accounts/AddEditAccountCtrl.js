@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location) {
+    var mRetCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location, $uibModalInstance) {
         // init
         var thisCrtl = this;
         var m_Route = $route.current.$$route.originalPath;
@@ -83,10 +83,10 @@
         $scope.cancelEdit = function () {
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
             if (lastSearchRoute.length > 0) {
-                $location.path(lastSearchRoute);
+                var objectToSend = {};
+                $uibModalInstance.close(objectToSend); // use for popup edit
             } else {
                 if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
-                    // $location.path('/Home');
                     $route.reload();
                 } else {
                     $location.path('/Generic_Home');
@@ -119,7 +119,7 @@
         return thisCrtl;
     };
 
-    mRetCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location'];
+    mRetCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location', '$uibModalInstance'];
 
     angular.module('growthwareApp').controller('AddEditAccountController', mRetCtrl);
 

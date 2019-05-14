@@ -45,7 +45,12 @@
             //GW.Common.debug(mNavObjects);
             /*** register the routes ***/
             mNavObjects.forEach(function (route) {
-                $routeProvider.when('/' + route.Action, { controller: route.Controller, templateUrl: route.Location, title: route.Description });
+                var routeInfo = {};
+                routeInfo["controller"] = route.Controller;
+                routeInfo["templateUrl"] = route.Location;
+                routeInfo["title"] = route.Description;
+                routeInfo["Action"] = route.Action;
+                $routeProvider.when('/' + route.Action, routeInfo);
             });
             $routeProvider.when('/', { templateUrl: '/app/growthware/views/Home/GenericHome.html' })
             //$routeProvider.otherwise({ redirectTo: '/' }); // causes redirect when using FQDN in a popup ... should be able to put back if change from pop to page nav.

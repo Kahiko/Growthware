@@ -19,6 +19,14 @@ AS
 		BEGIN
 			UPDATE [ZGWSecurity].[Functions] SET [Controller] = 'SearchController', [Source] = 'Functions/System/Search/SearchPage.aspx'
 			WHERE [Action] like 'search%' or [Action] = 'Manage_Groups'
+
+			UPDATE [ZGWSecurity].[Functions] SET [Controller] = 'AddEditFunctionController'
+			WHERE [Action] IN('AddFunctions', 'EditFunctions');
+
+
+			UPDATE [ZGWSecurity].[Functions] SET [Controller] = 'AddEditAccountController'
+			WHERE [Action] IN('EditAccount', 'EditOtherAccount', 'AddAccount');
+
 		END
 	ELSE
 		BEGIN
