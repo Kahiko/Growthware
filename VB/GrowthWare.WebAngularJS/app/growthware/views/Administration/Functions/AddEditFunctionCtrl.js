@@ -71,6 +71,21 @@
 
         }
 
+
+        $scope.cancelEdit = function () {
+            var lastSearchRoute = searchSvc.lastSearchRoute || "";
+            if (lastSearchRoute.length > 0) {
+                var objectToSend = {};
+                $uibModalInstance.close(objectToSend); // use for popup edit
+            } else {
+                if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
+                    $route.reload();
+                } else {
+                    $location.path('/Generic_Home');
+                };
+            }
+        };
+
         // Objects to be used by HTML
         $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once
 
