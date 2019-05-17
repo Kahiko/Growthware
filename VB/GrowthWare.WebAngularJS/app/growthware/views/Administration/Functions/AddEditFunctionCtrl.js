@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $controller, $scope) {
+    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $controller, $scope, $uibModalInstance) {
         // File scope variables
         var thisCtrlr = this;
         var m_ViewModel = {};  // this will be used by all methods
@@ -27,26 +27,25 @@
                     // Response Handler #3
                     m_ViewModel.currentAccountProfile = profile;
                     var editId = searchSvc.editId;
-                    if (m_Action.toLowerCase() == 'register') editId = -1; // not needed but going to look into what is 
                     // Request #4
                     return functionSvc.getFunction(editId, m_Action);
                 }).then(function (profile) {
                     // Response Handler #4
                     m_ViewModel.profile = profile;
                     console.debug(m_ViewModel.profile);
-                    setSelectedStatus();
+                    // setSelectedStatus(); this would set the value of the dropdown
                     // Request #5
                     return acctSvc.getSecurityInfo(m_Action);
                 }).then(function (securityInfo) {
                     // Response Handler #5
                     m_ViewModel.securityInfo = securityInfo;
                     // Request #6
-                    return acctSvc.getSecurityInfo('View_Account_Role_Tab');
+                    return acctSvc.getSecurityInfo('View_Function_Role_Tab');
                 }).then(function (securityInfo) {
                     // Response Handler #6
                     m_ViewModel.securityInfoRoleTab = securityInfo;
                     // Request #7
-                    return acctSvc.getSecurityInfo('View_Account_Group_Tab');
+                    return acctSvc.getSecurityInfo('View_Function_Group_Tab');
                 }).then(function (securityInfo) {
                     // Response Handler #7
                     m_ViewModel.securityInfoGroupTab = securityInfo;
@@ -86,6 +85,10 @@
             }
         };
 
+        $scope.save = function () {
+            $scope.cancelEdit();
+        }
+
         // Objects to be used by HTML
         $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once
 
@@ -94,7 +97,7 @@
         return thisCtrlr;
     }
 
-    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route' , '$controller', '$scope'];
+    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$controller', '$scope', '$uibModalInstance'];
 
     angular.module('growthwareApp').controller('AddEditFunctionController', mRetCtrl);
 
