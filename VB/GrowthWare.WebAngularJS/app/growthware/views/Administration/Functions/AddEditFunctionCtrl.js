@@ -1,12 +1,16 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $controller, $scope, $uibModalInstance) {
+    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $scope, $uibModalInstance, modalData) {
         // File scope variables
         var thisCtrlr = this;
         var m_ViewModel = {};  // this will be used by all methods
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
+        $scope.items = modalData;
+        $scope.selected = {
+            item: $scope.items[2]
+        };
 
         function initCtrl() {
             // Request #1 in the chain
@@ -23,30 +27,33 @@
                     // Request #3
                     return acctSvc.getCurrentAccount();
                 })
-                .then(function (profile) {
+                .then(function (currentAccount) {
                     // Response Handler #3
-                    m_ViewModel.currentAccountProfile = profile;
+                    m_ViewModel.currentAccountProfile = currentAccount;
                     var editId = searchSvc.editId;
                     // Request #4
                     return functionSvc.getFunction(editId, m_Action);
-                }).then(function (profile) {
+                })
+                .then(function (functionProfile) {
                     // Response Handler #4
-                    m_ViewModel.profile = profile;
-                    console.debug(m_ViewModel.profile);
+                    m_ViewModel.profile = functionProfile;
                     // setSelectedStatus(); this would set the value of the dropdown
                     // Request #5
                     return acctSvc.getSecurityInfo(m_Action);
-                }).then(function (securityInfo) {
+                })
+                .then(function (securityInfo) {
                     // Response Handler #5
                     m_ViewModel.securityInfo = securityInfo;
                     // Request #6
                     return acctSvc.getSecurityInfo('View_Function_Role_Tab');
-                }).then(function (securityInfo) {
+                })
+                .then(function (securityInfo) {
                     // Response Handler #6
                     m_ViewModel.securityInfoRoleTab = securityInfo;
                     // Request #7
                     return acctSvc.getSecurityInfo('View_Function_Group_Tab');
-                }).then(function (securityInfo) {
+                })
+                .then(function (securityInfo) {
                     // Response Handler #7
                     m_ViewModel.securityInfoGroupTab = securityInfo;
                 })
@@ -70,12 +77,15 @@
 
         }
 
-
         $scope.cancelEdit = function () {
+            // console.log('calling dismiss');
+            $uibModalInstance.dismiss('AddEditFunctionController cancel'); // use for popup edit
+        };
+
+        $scope.save = function () {
             var lastSearchRoute = searchSvc.lastSearchRoute || "";
             if (lastSearchRoute.length > 0) {
-                var objectToSend = {};
-                $uibModalInstance.close(objectToSend); // use for popup edit
+                $uibModalInstance.close($scope.selected.item); // return objects back to calling controller
             } else {
                 if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
                     $route.reload();
@@ -83,10 +93,6 @@
                     $location.path('/Generic_Home');
                 };
             }
-        };
-
-        $scope.save = function () {
-            $scope.cancelEdit();
         }
 
         // Objects to be used by HTML
@@ -97,7 +103,7 @@
         return thisCtrlr;
     }
 
-    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$controller', '$scope', '$uibModalInstance'];
+    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$scope', '$uibModalInstance', 'modalData'];
 
     angular.module('growthwareApp').controller('AddEditFunctionController', mRetCtrl);
 

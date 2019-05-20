@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location, $uibModalInstance) {
+    var mRetCtrl = function (acctSvc, searchSvc, groupSvc, roleSvc, $scope, $route, $location, $uibModalInstance, modalData) {
         // init
         var thisCrtl = this;
         var m_Route = $route.current.$$route.originalPath;
@@ -119,7 +119,7 @@
         return thisCrtl;
     };
 
-    mRetCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location', '$uibModalInstance'];
+    mRetCtrl.$inject = ['AccountService', 'SearchService', 'GroupService', 'RoleService', '$scope', '$route', '$location', '$uibModalInstance', 'modalData'];
 
     angular.module('growthwareApp').controller('AddEditAccountController', mRetCtrl);
 

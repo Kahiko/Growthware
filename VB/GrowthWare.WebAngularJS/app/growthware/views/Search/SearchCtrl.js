@@ -32,34 +32,54 @@
             acctSvc.getSecurityInfo(m_ViewModel.editAction).then(
                 /*** success ***/
                 function (securityInfo) {
-                    var mControler = '';
+                    var mController = '';
 
                     angular.forEach($route.routes, function (theRoute, key) {
                         if (theRoute.controller) {
-                            if (theRoute.Action == m_ViewModel.editAction) {
-                                mControler = theRoute.controller;
+                            if (theRoute.Action == m_ViewModel.editAction) {mController
+                                mController = theRoute.controller;
                             }
                         }
                     });
-
                     searchSvc.editId = editKeyValue;
+
                     var modalInstance = $uibModal.open({
-                        animation: $scope.animationsEnabled,
+                        animation: true,
                         templateUrl: options.url,
-                        controller: mControler,
+                        controller: mController,
                         size: 'lg',
                         resolve: {
-                            items: function () {
-                                return $scope.items;
-                            }
+                            modalData: function () { return ['item1', 'item2', 'item3']; }
                         }
                     });
 
-                    modalInstance.result.then(function () {
-                        $route.reload();
-                    }, function () {
-                        $log.info('Modal dismissed at: ' + new Date());
+                    modalInstance.result.then(
+                        /*** close ***/
+                        function (selectedItem) {
+                            console.log('handeling close');
+                            console.log(selectedItem);
+                        },
+                        /*** dismiss ***/
+                        function (cancelData) {
+                            console.log(cancelData);
+                            console.log('Modal dismissed at: ' + new Date());
                     });
+
+                    //modalInstance.result.then(
+                    //    modalClose(selectedItem)
+                    //    , modalDismiss()
+                    //);
+
+                    function modalClose(selectedItem) {
+                        console.log(selectedItem);
+                        // $route.reload();
+                    };
+
+                    function modalDismiss() {
+                        //$log.info('Modal dismissed at: ' + new Date());
+                        console.log('Modal dismissed at: ' + new Date());
+                    };
+
 
 
                     //$location.path('/' + m_ViewModel.editAction);
@@ -271,3 +291,4 @@
     app.controller('SearchController', mRetCntrl);
 
 })();
+
