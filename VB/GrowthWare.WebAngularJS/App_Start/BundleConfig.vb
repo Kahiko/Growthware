@@ -54,6 +54,7 @@ Public Class BundleConfig
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/HierarchicalMenuCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/HorizontalMenuCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/controllers/VerticalMenuCtrl.js",
+            "~/" + ConfigSettings.AppName + "/app/growthware/controllers/ModalPopupCtrl.js",
  _
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Accounts/ChangePasswordCtrl.js",
             "~/" + ConfigSettings.AppName + "/app/growthware/views/Accounts/LogoffCtrl.js",

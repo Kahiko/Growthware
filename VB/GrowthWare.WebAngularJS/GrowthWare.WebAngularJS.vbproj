@@ -168,6 +168,7 @@
     <Content Include="app\growthware\controllers\ClientChoicesCtrl.js" />
     <Content Include="app\growthware\controllers\HierarchicalMenuCtrl.js" />
     <Content Include="app\growthware\controllers\HorizontalMenuCtrl.js" />
+    <Content Include="app\growthware\controllers\ModalPopupCtrl.js" />
     <Content Include="app\growthware\controllers\TemplateCntrl.js" />
     <Content Include="app\growthware\controllers\VerticalMenuCtrl.js" />
     <Content Include="app\growthware\directives\ClientChoicesStyle.js" />
@@ -203,6 +204,7 @@
     <Content Include="app\growthware\views\Search\SearchPage.html" />
     <Content Include="app\growthware\views\SecurityEntities\SelectSecurityEntity.html" />
     <Content Include="app\growthware\views\SecurityEntities\SelectSecurityEntityCtrl.js" />
+    <Content Include="app\growthware\views\Templates\ModalPopup.html" />
     <Content Include="app\growthware\views\TestNaturalSort.html" />
     <Content Include="Content\BootstrapDialog\bootstrap-dialog.css" />
     <Content Include="Content\Bootstrap-3.1.1\css\bootstrap-theme.css" />
@@ -419,7 +421,6 @@
     <Folder Include="app\growthware\views\Administration\NVP\" />
     <Folder Include="app\growthware\views\Administration\Roles\" />
     <Folder Include="app\growthware\views\Administration\SecurityEntities\" />
-    <Folder Include="app\growthware\views\Templates\" />
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>

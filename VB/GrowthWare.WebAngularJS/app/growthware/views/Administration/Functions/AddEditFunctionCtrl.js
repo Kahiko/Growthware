@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $scope, $uibModalInstance, modalData) {
+    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $scope, $uibModal, $uibModalInstance, modalData) {
         // File scope variables
         var thisCtrlr = this;
         var m_ViewModel = {};  // this will be used by all methods
@@ -95,6 +95,44 @@
             }
         }
 
+        $scope.showHelp = function (elementId) {
+            var mUrl = GW.Common.getBaseURL() + "/app/growthware/views/Templates/ModalPopup.html";
+
+            var modalScope = $scope.$new();
+
+            var mModalData = {
+                "": "",
+                "": "",
+                "content": "hi"
+            };
+
+            modalScope.modalData = mModalData;
+
+            var modalInstance = $uibModal.open({
+                animation: true,
+                templateUrl: mUrl,
+                controller: 'ModalPopupController',
+                scope: modalScope,
+                resolve: {
+                    popupData: function () { return ['item1', 'item2', 'item3']; }
+                },
+                size: 'sm'
+            });
+
+            modalScope.modalInstance = modalInstance;
+
+            modalInstance.result.then(
+                /*** close ***/
+                function (returnData) {
+                    console.log('handeling close');
+                },
+                /*** dismiss ***/
+                function (returnData) {
+                    console.log(returnData);
+                    console.log('Modal dismissed at: ' + new Date());
+                });
+        };
+
         // Objects to be used by HTML
         $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once
 
@@ -103,7 +141,7 @@
         return thisCtrlr;
     }
 
-    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$scope', '$uibModalInstance', 'modalData'];
+    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$scope', '$uibModal', '$uibModalInstance', 'modalData'];
 
     angular.module('growthwareApp').controller('AddEditFunctionController', mRetCtrl);
 

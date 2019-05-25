@@ -36,7 +36,7 @@
 
                     angular.forEach($route.routes, function (theRoute, key) {
                         if (theRoute.controller) {
-                            if (theRoute.Action == m_ViewModel.editAction) {mController
+                            if (theRoute.Action == m_ViewModel.editAction) {
                                 mController = theRoute.controller;
                             }
                         }
@@ -58,28 +58,13 @@
                         function (selectedItem) {
                             console.log('handeling close');
                             console.log(selectedItem);
+                            $route.reload();
                         },
                         /*** dismiss ***/
                         function (cancelData) {
                             console.log(cancelData);
                             console.log('Modal dismissed at: ' + new Date());
-                    });
-
-                    //modalInstance.result.then(
-                    //    modalClose(selectedItem)
-                    //    , modalDismiss()
-                    //);
-
-                    function modalClose(selectedItem) {
-                        console.log(selectedItem);
-                        // $route.reload();
-                    };
-
-                    function modalDismiss() {
-                        //$log.info('Modal dismissed at: ' + new Date());
-                        console.log('Modal dismissed at: ' + new Date());
-                    };
-
+                        });
 
 
                     //$location.path('/' + m_ViewModel.editAction);
