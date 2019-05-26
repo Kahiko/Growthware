@@ -7,14 +7,14 @@
 <body>
     <form id="frmModalPopup">
         <div class="modal-header">
-            <h4>Modal Dialog</h4>
+            <button type="button" id="upperRightClose" ng-click="cancel()" class="close">&times;</button>
+            <h4>{{vm.title}}</h4>
         </div>
         <div class="modal-body">
-            <p>{{modalData.content}}</p>
+            <p>{{vm.content}}</p>
         </div>
         <div class="modal-footer">
-            <button class="btn btn-success" ng-click="ok()">Okay</button>
-            <button class="btn" ng-click="cancel()">Cancel</button>
+            <button type="button" data-ng-repeat="btn in vm.btns track by $index" id="{{btn.id}}" class="{{btn.cssClass}}" ng-click="btn.onClick(vm)"> {{btn.label}} <i data-ng-if="btn.icon.length > 0" class="{{btn.icon}}"></i></button>
         </div>
     </form>
 </body>

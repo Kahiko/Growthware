@@ -1,16 +1,12 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, $route, $scope, $uibModal, $uibModalInstance, modalData) {
+    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, modalSvc, $route, $scope, $uibModal, $uibModalInstance, modalData) {
         // File scope variables
         var thisCtrlr = this;
         var m_ViewModel = {};  // this will be used by all methods
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
-        $scope.items = modalData;
-        $scope.selected = {
-            item: $scope.items[2]
-        };
 
         function initCtrl() {
             // Request #1 in the chain
@@ -96,41 +92,19 @@
         }
 
         $scope.showHelp = function (elementId) {
-            var mUrl = GW.Common.getBaseURL() + "/app/growthware/views/Templates/ModalPopup.html";
 
-            var modalScope = $scope.$new();
-
-            var mModalData = {
-                "": "",
-                "": "",
-                "content": "hi"
-            };
-
-            modalScope.modalData = mModalData;
-
-            var modalInstance = $uibModal.open({
-                animation: true,
-                templateUrl: mUrl,
-                controller: 'ModalPopupController',
-                scope: modalScope,
-                resolve: {
-                    popupData: function () { return ['item1', 'item2', 'item3']; }
-                },
-                size: 'sm'
-            });
-
-            modalScope.modalInstance = modalInstance;
-
-            modalInstance.result.then(
+            modalSvc.options.title = "Action Help";
+            modalSvc.options.content = document.getElementById(elementId).innerHTML;
+            modalSvc.showModal().then(
                 /*** close ***/
-                function (returnData) {
-                    console.log('handeling close');
+                function (result) {
+                    GW.Common.debug('close data: ' + result)
                 },
                 /*** dismiss ***/
-                function (returnData) {
-                    console.log(returnData);
-                    console.log('Modal dismissed at: ' + new Date());
-                });
+                function (reason) {
+                    GW.Common.debug('Modal dismissed, reason : ', reason);
+                }
+            );;
         };
 
         // Objects to be used by HTML
@@ -141,7 +115,7 @@
         return thisCtrlr;
     }
 
-    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', '$route', '$scope', '$uibModal', '$uibModalInstance', 'modalData'];
+    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', 'ModalService', '$route', '$scope', '$uibModal', '$uibModalInstance', 'modalData'];
 
     angular.module('growthwareApp').controller('AddEditFunctionController', mRetCtrl);
 
