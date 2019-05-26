@@ -1,16 +1,14 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function ($scope, $uibModalInstance, popupData) {
+
+    var mRetCtrl = function ($scope, $uibModalInstance, popupData, $sanitize) {
         // File scope variables
         var mThisCtrlr = this;
         var m_ViewModel = popupData;
 
         function initCtrl() {
-            //m_ViewModel.content = $sce.trustAsHtml(m_ViewModel.content);
-
-            var html = "<p> Hello world! </p>";
-            //m_ViewModel.content = $sce.trustAsHtml(html);
+            m_ViewModel.content = $sanitize(m_ViewModel.content);
         };
 
         // Objects to be used by HTML
@@ -25,7 +23,7 @@
         return mThisCtrlr;
     }
 
-    mRetCtrl.$inject = ['$scope', '$uibModalInstance', 'popupData'];
+    mRetCtrl.$inject = ['$scope', '$uibModalInstance', 'popupData', '$sanitize'];
 
     angular.module('growthwareApp').controller('ModalPopupController', mRetCtrl);
 

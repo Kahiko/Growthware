@@ -8,10 +8,10 @@
     <form id="frmModalPopup">
         <div class="modal-header">
             <button type="button" id="upperRightClose" ng-click="cancel()" class="close">&times;</button>
-            <h4>{{vm.title}}</h4>
+            <h4 ng-bind-html="vm.title"></h4>
         </div>
         <div class="modal-body">
-            <p>{{vm.content}}</p>
+            <div ng-bind-html="vm.content"></div>
         </div>
         <div class="modal-footer">
             <button type="button" data-ng-repeat="btn in vm.btns track by $index" id="{{btn.id}}" class="{{btn.cssClass}}" ng-click="btn.onClick(vm)"> {{btn.label}} <i data-ng-if="btn.icon.length > 0" class="{{btn.icon}}"></i></button>

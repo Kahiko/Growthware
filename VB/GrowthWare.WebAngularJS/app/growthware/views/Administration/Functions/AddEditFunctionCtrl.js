@@ -91,9 +91,9 @@
             }
         }
 
-        $scope.showHelp = function (elementId) {
+        $scope.showHelp = function (elementId, title) {
 
-            modalSvc.options.title = "Action Help";
+            modalSvc.options.title = title;
             modalSvc.options.content = document.getElementById(elementId).innerHTML;
             modalSvc.showModal().then(
                 /*** close ***/

@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var gwApp = angular.module('growthwareApp', ['ngRoute', 'ngAnimate', 'ngResource', 'ui.bootstrap']) // create an instance of a module
+    var gwApp = angular.module('growthwareApp', ['ngRoute', 'ngAnimate', 'ngSanitize', 'ngResource', 'ui.bootstrap']) // create an instance of a module
 
     gwApp.config(function ($provide, $routeProvider, $locationProvider) {
             GW.Common.debug("Start: growthwareApp.config");
@@ -97,5 +97,6 @@
 
         GW.Common.debug("End: growthwareApp.run");
     }]);
+
 
 })();
