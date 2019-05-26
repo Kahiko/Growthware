@@ -12,12 +12,17 @@
                 url: mApiUrl,
                 dataType: 'json',
                 headers: { 'Content-Type': 'application/json' }
-            }).success(function (response) {
-                deferred.resolve(response);
-            }).error(function (response) {
-                GW.Common.debug(response);
-                deferred.reject(response);
-            });
+            }).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                }
+            );
             return deferred.promise;
         }
 

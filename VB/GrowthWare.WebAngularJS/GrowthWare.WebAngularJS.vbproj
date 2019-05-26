@@ -247,17 +247,12 @@
     <Content Include="Content\GrowthWare\Images\sort_desc.png" />
     <Content Include="Content\GrowthWare\Images\Spacer.gif" />
     <Content Include="Content\GrowthWare\Styles\GrowthWare.css" />
-    <Content Include="Content\Scripts\angular-sanitize.js" />
     <Content Include="Content\Scripts\ui-bootstrap-tpls-1.3.3.js" />
     <Content Include="Content\Skins\Default\CSS\Skin.css" />
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="app\growthware\views\Home\GenericHome.html" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Scripts\angular-animate.js" />
-    <Content Include="Content\Scripts\angular-resource.js" />
-    <Content Include="Content\Scripts\angular-route.js" />
-    <Content Include="Content\Scripts\angular.js" />
     <Content Include="Content\BootstrapDialog\bootstrap-dialog.js" />
     <Content Include="Content\Scripts\date.format.js" />
     <Content Include="Content\GrowthWare\Scripts\GW.Common.js" />
@@ -311,6 +306,17 @@
     <Content Include="Content\Scripts\jquery-ui-1.11.2.js" />
     <Content Include="Content\Scripts\jquery-ui-1.11.2.min.js" />
     <Content Include="Content\Scripts\jquery.tmpl.js" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -408,6 +414,11 @@
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
     <Content Include="packages.config" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

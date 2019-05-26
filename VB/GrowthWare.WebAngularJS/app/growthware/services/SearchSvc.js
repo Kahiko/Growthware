@@ -40,13 +40,17 @@
             } else {
                 var mDataUrl = GW.Common.getBaseURL() + '/app/growthware/data/Search.config.json';
                 $http({ method: "GET", url: mDataUrl, dataType: 'json', headers: { 'Content-Type': 'application/json' } })
-                .success(function (result) {
-                    m_SearchInfo = result;
-                    deferred.resolve(getSearchTableInfo(route));
-                })
-                .error(function (response) {
-                    deferred.reject(response);
-                });
+                    .then(
+                        /*** success ***/
+                        function (result) {
+                            m_SearchInfo = result.data;
+                            deferred.resolve(getSearchTableInfo(route));
+                        },
+                        /*** error ***/
+                        function (response) {
+                            deferred.reject(response);
+                        }
+                    );
             }
             return deferred.promise;
         };
@@ -56,12 +60,16 @@
             criteria = JSON.stringify(criteria);
             var deferred = $q.defer();
             $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})
-            .success(function (result) {
-                deferred.resolve(result);
-            })
-            .error(function (response) {
-                deferred.reject(response);
-            });
+                .then(
+                    /*** success ***/
+                    function (result) {
+                        deferred.resolve(result.data);
+                    },
+                    /*** error ***/
+                    function (response) {
+                        deferred.reject(response);
+                    }
+                );
             return deferred.promise;
         };
 

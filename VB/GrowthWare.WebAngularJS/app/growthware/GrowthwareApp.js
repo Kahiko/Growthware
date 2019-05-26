@@ -25,39 +25,44 @@
             method: "GET",
             url: mApiUrl,
             headers: { 'Content-Type': 'application/json' }
-        }).success(function (response) {
-            var list = response;
-            for (i = 0; i < list.length; i++) {
-                var mPath = list[i].Location;
-                if (mPath.indexOf("Functions/System/") >= 0) {
-                    mPath = mPath.replace("Functions/System/", "app/growthware/views/");
-                    mPath = mPath.replace(".aspx", ".html");
+        }).then(
+            /*** success ***/
+            function (response) {
+                var list = response.data;
+                for (i = 0; i < list.length; i++) {
+                    var mPath = list[i].Location;
+                    if (mPath.indexOf("Functions/System/") >= 0) {
+                        mPath = mPath.replace("Functions/System/", "app/growthware/views/");
+                        mPath = mPath.replace(".aspx", ".html");
+                    }
+                    //mPath = GW.Common.getBaseURL() + "/" +mPath;
+                    var mNewNavObject = new GW.Model.NavigationObject();
+                    mNewNavObject.Action = list[i].Action;
+                    mNewNavObject.Controller = list[i].Controller;
+                    mNewNavObject.Description = list[i].Description;
+                    mNewNavObject.LinkBehavior = list[i].LinkBehavior;
+                    mNewNavObject.Location = mPath;
+                    mNavObjects.push(mNewNavObject);
                 }
-                //mPath = GW.Common.getBaseURL() + "/" +mPath;
-                var mNewNavObject = new GW.Model.NavigationObject();
-                mNewNavObject.Action = list[i].Action;
-                mNewNavObject.Controller = list[i].Controller;
-                mNewNavObject.Description = list[i].Description;
-                mNewNavObject.LinkBehavior = list[i].LinkBehavior;
-                mNewNavObject.Location = mPath;
-                mNavObjects.push(mNewNavObject);
+                //GW.Common.debug(mNavObjects);
+                /*** register the routes ***/
+                mNavObjects.forEach(function (route) {
+                    var routeInfo = {};
+                    routeInfo["controller"] = route.Controller;
+                    routeInfo["templateUrl"] = route.Location;
+                    routeInfo["title"] = route.Description;
+                    routeInfo["Action"] = route.Action;
+                    $routeProvider.when('/' + route.Action, routeInfo);
+                });
+                $routeProvider.when('/', { templateUrl: '/app/growthware/views/Home/GenericHome.html' })
+                //$routeProvider.otherwise({ redirectTo: '/' }); // causes redirect when using FQDN in a popup ... should be able to put back if change from pop to page nav.
+                $route.reload();
+            },
+            /*** error ***/
+            function (response) {
+                GW.Common.debug(response);
             }
-            //GW.Common.debug(mNavObjects);
-            /*** register the routes ***/
-            mNavObjects.forEach(function (route) {
-                var routeInfo = {};
-                routeInfo["controller"] = route.Controller;
-                routeInfo["templateUrl"] = route.Location;
-                routeInfo["title"] = route.Description;
-                routeInfo["Action"] = route.Action;
-                $routeProvider.when('/' + route.Action, routeInfo);
-            });
-            $routeProvider.when('/', { templateUrl: '/app/growthware/views/Home/GenericHome.html' })
-            //$routeProvider.otherwise({ redirectTo: '/' }); // causes redirect when using FQDN in a popup ... should be able to put back if change from pop to page nav.
-            $route.reload();
-        }).error(function (response) {
-            GW.Common.debug(response);
-        });
+        );
         $rootScope.$on('$routeChangeStart', function (event, next, current) {
             if (GW.Common.isDebug) {
                 if (current) {

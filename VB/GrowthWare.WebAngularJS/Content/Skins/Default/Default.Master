@@ -8,11 +8,12 @@
     <base href="/"/>
     <title>Growhtware Default VB</title>
     <%: Scripts.Render("~/bundles/jquery","~/bundles/bootstrap", "~/bundles/GrowthWare")%>
-    <script src="../../../Content/Scripts/angular.js"></script>
-    <script src="../../../Content/Scripts/angular-resource.js"></script>
-    <script src="../../../Content/Scripts/angular-route.js"></script>
-    <script src="../../../Content/Scripts/angular-animate.js"></script>
-    <%--<script src="../../../Content/Scripts/angular-sanitize.js"></script>--%>
+    <script src="/Scripts/angular.js"></script>
+    <script src="/Scripts/angular-resource.js"></script>
+    <script src="/Scripts/angular-route.js"></script>
+    <script src="/Scripts/angular-animate.js"></script>
+    <script src="/Scripts/angular-sanitize.js"></script>
+    <%--<script data-require="angular-sanitize@1.4.3" data-semver="1.4.3" src="https://code.angularjs.org/1.4.3/angular-sanitize.js"></script>--%>
 
     <script src="../../../Content/Scripts/ui-bootstrap-tpls-1.3.3.js"></script>
 

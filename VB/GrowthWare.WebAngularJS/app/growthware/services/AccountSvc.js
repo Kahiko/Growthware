@@ -14,25 +14,30 @@
                 method: "GET",
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
-            }).success(function (response) {
-                GW.Common.debug('loadFunctions: success');
-                var list = response;
-                for (i = 0; i < list.length; i++) {
-                    var mNewNavigationObject = new GW.Model.NavigationObject();
-                    mNewNavigationObject.Action = list[i].Action;
-                    mNewNavigationObject.Location = list[i].Location;
-                    mNewNavigationObject.Description = list[i].Description;
-                    mNewNavigationObject.LinkBehavior = list[i].LinkBehavior;
-                    mRetVal.push(mNewNavigationObject);
+            }).then(
+                /*** success ***/
+                function (response) {
+                    GW.Common.debug('loadFunctions: success');
+                    var list = response.data;
+                    for (i = 0; i < list.length; i++) {
+                        var mNewNavigationObject = new GW.Model.NavigationObject();
+                        mNewNavigationObject.Action = list[i].Action;
+                        mNewNavigationObject.Location = list[i].Location;
+                        mNewNavigationObject.Description = list[i].Description;
+                        mNewNavigationObject.LinkBehavior = list[i].LinkBehavior;
+                        mRetVal.push(mNewNavigationObject);
+                    }
+                    //GW.Common.debug(mRetVal);
+                    if (typeof (callBackFunc) == 'function') {
+                        callBackFunc(mRetVal);
+                    }
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    callBackFunc(response);
                 }
-                //GW.Common.debug(mRetVal);
-                if (typeof (callBackFunc) == 'function') {
-                    callBackFunc(mRetVal);
-                }
-            }).error(function (response) {
-                GW.Common.debug(response);
-                callBackFunc(response);
-            });
+            );
             return mRetVal;
         };
 
@@ -45,17 +50,22 @@
                 headers: { 'Content-Type': 'application/json' },
                 data: logonInfo
             }
-            $http(options).success(function (response) {
-                GW.Common.debug('logon: success');
-                m_SecurityInfo = [];
-                $rootScope.$broadcast('accountChanged', []);
-                if (typeof (callBackFunc) == 'function') {
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    GW.Common.debug('logon: success');
+                    m_SecurityInfo = [];
+                    $rootScope.$broadcast('accountChanged', []);
+                    if (typeof (callBackFunc) == 'function') {
+                        callBackFunc(response.data);
+                    }
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
                     callBackFunc(response);
                 }
-            }).error(function (response) {
-                GW.Common.debug(response);
-                callBackFunc(response);
-            });
+            );
             return mRetVal;
         };
 
@@ -66,18 +76,23 @@
                 method: "GET",
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
-            }).success(function (response) {
-                GW.Common.debug('logoff: success');
-                m_SecurityInfo = [];
-                $rootScope.$broadcast('accountChanged',[]);
-                mRetVal = response;
-                if (typeof (callBackFunc) == 'function') {
-                    callBackFunc(mRetVal);
+            }).then(
+                /*** success ***/
+                function (response) {
+                    GW.Common.debug('logoff: success');
+                    m_SecurityInfo = [];
+                    $rootScope.$broadcast('accountChanged',[]);
+                    mRetVal = response;
+                    if (typeof (callBackFunc) == 'function') {
+                        callBackFunc(mRetVal.data);
+                    }
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    callBackFunc(response);
                 }
-            }).error(function (response) {
-                GW.Common.debug(response);
-                callBackFunc(response);
-            });
+            );
             return mRetVal;
         };
 
@@ -90,13 +105,17 @@
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify(profile)
             }
-            $http(options)
-                .success(function (response) {
-                    deferred.resolve(response);
-                }).error(function (response) {
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
                     GW.Common.debug(response);
                     deferred.reject(response);
-                });
+                }
+            );
             return deferred.promise;
         };
 
@@ -108,13 +127,17 @@
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
             }
-            $http(options)
-            .success(function (response) {
-                deferred.resolve(response);
-            }).error(function (response) {
-                GW.Common.debug(response);
-                deferred.reject(response);
-            });
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                }
+            );
             return deferred.promise;
         };
 
@@ -126,13 +149,17 @@
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
             }
-            $http(options)
-            .success(function (response) {
-                deferred.resolve(response);
-            }).error(function (response) {
-                GW.Common.debug(response);
-                deferred.reject(response);
-            });
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                }
+            );
             return deferred.promise;
         };
 
@@ -167,13 +194,18 @@
                     url: mApiUrl,
                     dataType: 'json',
                     headers: { 'Content-Type': 'application/json' }
-                }).success(function (response) {
-                    m_ClientChoices = response;
-                    deferred.resolve(m_ClientChoices);
-                }).error(function (response) {
-                    GW.Common.debug(response);
-                    deferred.reject(response);
-                });
+                }).then(
+                    /*** success ***/
+                    function (response) {
+                        m_ClientChoices = response.data;
+                        deferred.resolve(m_ClientChoices);
+                    },
+                    /*** error ***/
+                    function (response) {
+                        GW.Common.debug(response);
+                        deferred.reject(response);
+                    }
+                );
             }
             return deferred.promise;
         };
@@ -197,13 +229,18 @@
                     url: mApiUrl,
                     dataType: 'json',
                     headers: { 'Content-Type': 'application/json' }
-                }).success(function (response) {
-                    m_SecurityInfo.push({ "action": action, "securityInfo": response });
-                    deferred.resolve(response);
-                }).error(function (response) {
-                    GW.Common.debug(response);
-                    deferred.reject(response);
-                });
+                }).then(
+                    /*** success ***/
+                    function (response) {
+                        m_SecurityInfo.push({ "action": action, "securityInfo": response });
+                        deferred.resolve(response.data);
+                    },
+                    /*** error ***/
+                    function (response) {
+                        GW.Common.debug(response);
+                        deferred.reject(response);
+                    }
+                );
             }
             return deferred.promise;
         };
@@ -217,13 +254,17 @@
                 headers: { 'Content-Type': 'application/json' },
                 data: JSON.stringify(profile)
             }
-            $http(options)
-            .success(function (response) {
-                deferred.resolve(response);
-            }).error(function (response) {
-                GW.Common.debug(response);
-                deferred.reject(response);
-            });
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                }
+            );
             return deferred.promise;
         };
 
@@ -234,17 +275,22 @@
                 method: "POST",
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
-            }).success(function (response) {
-                //GW.Common.debug('getMenuData: success: Start');
-                mRetVal = GW.Navigation.buildData(response);
-                if (typeof (callBackFunc) == 'function') {
-                    callBackFunc(mRetVal);
+            }).then(
+                /*** success ***/
+                function (response) {
+                    //GW.Common.debug('getMenuData: success: Start');
+                    mRetVal = GW.Navigation.buildData(response.data);
+                    if (typeof (callBackFunc) == 'function') {
+                        callBackFunc(mRetVal);
+                    }
+                    //GW.Common.debug('getMenuData: success: End');
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    callBackFunc(response);
                 }
-                //GW.Common.debug('getMenuData: success: End');
-            }).error(function (response) {
-                GW.Common.debug(response);
-                callBackFunc(response);
-            });
+            );
             return mRetVal;
         };
 

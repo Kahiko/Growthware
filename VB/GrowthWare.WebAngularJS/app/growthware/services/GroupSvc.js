@@ -12,13 +12,17 @@
                 url: mApiUrl,
                 headers: { 'Content-Type': 'application/json' }
             }
-            $http(options)
-            .success(function (response) {
-                deferred.resolve(response);
-            }).error(function (response) {
-                GW.Common.debug(response);
-                deferred.reject(response);
-            });
+            $http(options).then(
+                /*** success ***/
+                function (response) {
+                    deferred.resolve(response.data);
+                },
+                /*** error ***/
+                function (response) {
+                    GW.Common.debug(response);
+                    deferred.reject(response);
+                }
+            );
             return deferred.promise;
         };
 
