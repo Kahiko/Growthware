@@ -2,10 +2,10 @@
     'use strict';
 
 
-    var mRetCtrl = function ($scope, $uibModalInstance, popupData, $sanitize) {
+    var mRetCtrl = function ($scope, $uibModalInstance, modalData, $sanitize) {
         // File scope variables
-        var mThisCtrlr = this;
-        var m_ViewModel = popupData;
+        var m_ThisCtrlr = this;
+        var m_ViewModel = modalData;
 
         function initCtrl() {
             m_ViewModel.content = $sanitize(m_ViewModel.content);
@@ -20,10 +20,10 @@
 
         initCtrl();
 
-        return mThisCtrlr;
+        return m_ThisCtrlr;
     }
 
-    mRetCtrl.$inject = ['$scope', '$uibModalInstance', 'popupData', '$sanitize'];
+    mRetCtrl.$inject = ['$scope', '$uibModalInstance', 'modalData', '$sanitize'];
 
     angular.module('growthwareApp').controller('ModalPopupController', mRetCtrl);
 

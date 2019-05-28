@@ -26,11 +26,11 @@
 
         Object.defineProperty(this, "options", {
             get: function () {
-                return m_ModalOptions;
+                return JSON.parse(JSON.stringify(m_ModalOptions));
             },
-            set: function (value) {
-                m_ModalOptions = value;
-            }
+            //set: function (value) {
+            //    m_ModalOptions = value;
+            //}
         });
 
         function initSvc() {
@@ -38,6 +38,10 @@
         };
 
         thisSvc.showModal = function (modalOptions) {
+            if (!modalOptions) {
+                console.log('undefined argument passed "modalOptions" this is not the modal you are searching for!');
+                return;
+            };
             //Create method object to work with since we're in a singleton service
             var mModalOptions = $.extend({}, m_ModalOptions, modalOptions);
 
@@ -46,7 +50,7 @@
                     templateUrl: mModalOptions.url,
                     controller: mModalOptions.controller,
                     resolve: {
-                        popupData: function () { return mModalOptions; }
+                        modalData: function () { return mModalOptions; }
                     },
                     size: mModalOptions.size
                 }

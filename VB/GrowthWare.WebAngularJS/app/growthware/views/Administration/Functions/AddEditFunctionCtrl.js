@@ -92,10 +92,10 @@
         }
 
         $scope.showHelp = function (elementId, title) {
-
-            modalSvc.options.title = title;
-            modalSvc.options.content = document.getElementById(elementId).innerHTML;
-            modalSvc.showModal().then(
+            var mModalOptions = modalSvc.options;
+            mModalOptions.title = title;
+            mModalOptions.content = document.getElementById(elementId).innerHTML;
+            modalSvc.showModal(mModalOptions).then(
                 /*** close ***/
                 function (result) {
                     GW.Common.debug('close data: ' + result)

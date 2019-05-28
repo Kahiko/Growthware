@@ -12,7 +12,7 @@
         }
     }]);
 
-    function mRetCntrl(acctSvc, searchSvc, $scope, $route, $uibModal) {
+    function mRetCntrl(acctSvc, searchSvc, modalSvc, $scope, $route, $uibModal) {
         // init
         var thisCtrl = this;
         var m_ApiUrl = {};
@@ -32,42 +32,36 @@
             acctSvc.getSecurityInfo(m_ViewModel.editAction).then(
                 /*** success ***/
                 function (securityInfo) {
-                    var mController = '';
+                    console.log(securityInfo);
+                    if (securityInfo.MayView) {
+                        var mController = '';
 
-                    angular.forEach($route.routes, function (theRoute, key) {
-                        if (theRoute.controller) {
-                            if (theRoute.Action == m_ViewModel.editAction) {
-                                mController = theRoute.controller;
+                        angular.forEach($route.routes, function (theRoute, key) {
+                            if (theRoute.controller) {
+                                if (theRoute.Action == m_ViewModel.editAction) {
+                                    mController = theRoute.controller;
+                                }
                             }
-                        }
-                    });
-                    searchSvc.editId = editKeyValue;
-
-                    var modalInstance = $uibModal.open({
-                        animation: true,
-                        templateUrl: options.url,
-                        controller: mController,
-                        size: 'lg',
-                        resolve: {
-                            modalData: function () { return ['item1', 'item2', 'item3']; }
-                        }
-                    });
-
-                    modalInstance.result.then(
-                        /*** close ***/
-                        function (selectedItem) {
-                            console.log('handeling close');
-                            console.log(selectedItem);
-                            $route.reload();
-                        },
-                        /*** dismiss ***/
-                        function (cancelData) {
-                            console.log(cancelData);
-                            console.log('Modal dismissed at: ' + new Date());
                         });
+                        searchSvc.editId = editKeyValue;
 
+                        var mModalOptions = modalSvc.options;
+                        mModalOptions.controller = mController;
+                        mModalOptions.url = options.url;
+                        mModalOptions.size = 'lg';
 
-                    //$location.path('/' + m_ViewModel.editAction);
+                        modalSvc.showModal(mModalOptions).then(
+                            /*** close ***/
+                            function (result) {
+                                GW.Common.debug('close data: ' + result)
+                            },
+                            /*** dismiss ***/
+                            function (reason) {
+                                GW.Common.debug('Modal dismissed, reason : ', reason);
+                            }
+                        );
+                    } else {
+                    };
                 },
                 /*** error ***/
                 function (result) {
@@ -271,7 +265,7 @@
         return thisCtrl;
     };
 
-    mRetCntrl.$inject = ['AccountService', 'SearchService', '$scope', '$route', '$uibModal'];
+    mRetCntrl.$inject = ['AccountService', 'SearchService', 'ModalService', '$scope', '$route', '$uibModal'];
 
     app.controller('SearchController', mRetCntrl);
 
