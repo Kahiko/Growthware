@@ -232,7 +232,7 @@
                 }).then(
                     /*** success ***/
                     function (response) {
-                        m_SecurityInfo.push({ "action": action, "securityInfo": response });
+                        m_SecurityInfo.push({ "action": action, "securityInfo": response.data });
                         deferred.resolve(response.data);
                     },
                     /*** error ***/
