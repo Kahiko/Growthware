@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, modalSvc, $route, $scope, $uibModal, $uibModalInstance, modalData) {
+    var mRetCtrl = function (acctSvc, functionSvc, searchSvc, groupSvc, roleSvc, modalSvc, $route, $scope, $uibModalInstance, modalData) {
         // File scope variables
         var thisCtrlr = this;
         var m_ViewModel = {};  // this will be used by all methods
@@ -95,6 +95,7 @@
             var mModalOptions = modalSvc.options;
             mModalOptions.title = title;
             mModalOptions.content = document.getElementById(elementId).innerHTML;
+            mModalOptions.btns = [];
             modalSvc.showModal(mModalOptions).then(
                 /*** close ***/
                 function (result) {

@@ -2,7 +2,7 @@
     'use strict';
 
     var app = angular.module('growthwareApp');
-    angular.module('growthwareApp').directive('gwPicklist', ['$http', function ($http) {
+    angular.module('growthwareApp').directive('gwPicklist', ['$http', 'ModalService', function ($http, modalSvc) {
 
         return {
             restrict: 'E',
@@ -72,7 +72,20 @@
                 $scope.showHelpMSG = function () {
                     var message = $scope.picklistTableHelp || "";
                     if (message.length > 0) {
-                        alert(message);
+                        var mModalOptions = modalSvc.options;
+                        mModalOptions.title = "Help: " + $scope.header;
+                        mModalOptions.content = message;
+                        mModalOptions.btns = [];
+                        modalSvc.showModal(mModalOptions).then(
+                            /*** close ***/
+                            function (result) {
+                                GW.Common.debug('close data: ' + result)
+                            },
+                            /*** dismiss ***/
+                            function (reason) {
+                                GW.Common.debug('Modal dismissed, reason : ', reason);
+                            }
+                        );
                     }
                 };
 

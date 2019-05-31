@@ -2,13 +2,26 @@
     'use strict';
 
     var app = angular.module('growthwareApp');
-    angular.module('growthwareApp').directive('gwDerivedRoles', ['$http', function ($http) {
+    angular.module('growthwareApp').directive('gwDerivedRoles', ['$http', 'ModalService', function ($http, modalSvc) {
 
         var link = function (scope, element, attrs) {
             scope.showHelpMSG = function () {
                 var message = scope.picklistTableHelp || "";
                 if (message.length > 0) {
-                    alert(message);
+                    var mModalOptions = modalSvc.options;
+                    mModalOptions.title = "Help: " + scope.header;
+                    mModalOptions.content = message;
+                    mModalOptions.btns = [];
+                    modalSvc.showModal(mModalOptions).then(
+                        /*** close ***/
+                        function (result) {
+                            GW.Common.debug('close data: ' + result)
+                        },
+                        /*** dismiss ***/
+                        function (reason) {
+                            GW.Common.debug('Modal dismissed, reason : ', reason);
+                        }
+                    );
                 }
             };
         };
