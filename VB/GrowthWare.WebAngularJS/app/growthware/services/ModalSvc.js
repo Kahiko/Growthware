@@ -4,7 +4,6 @@
     function mRetSvc($uibModal) {
         var thisSvc = this;
         var m_Url = GW.Common.getBaseURL() + "/app/growthware/views/Templates/ModalPopup.html";
-        var m_ModalInstance = {};
         var m_ModalOptions = {
             animation: true,
             btns: [],
@@ -45,7 +44,7 @@
             //Create method object to work with since we're in a singleton service
             var mModalOptions = $.extend({}, m_ModalOptions, modalOptions);
 
-            m_ModalInstance = $uibModal.open({
+            var mModalInstance = $uibModal.open({
                     animation: mModalOptions.animation,
                     templateUrl: mModalOptions.url,
                     controller: mModalOptions.controller,
@@ -56,7 +55,7 @@
                 }
             );
 
-            return m_ModalInstance.result;
+            return mModalInstance.result;
         };
 
         initSvc();
