@@ -247,7 +247,9 @@
     <Content Include="Content\GrowthWare\Images\sort_desc.png" />
     <Content Include="Content\GrowthWare\Images\Spacer.gif" />
     <Content Include="Content\GrowthWare\Styles\GrowthWare.css" />
+    <Content Include="Content\Scripts\ie10-viewport-bug-workaround.js" />
     <Content Include="Content\Scripts\ui-bootstrap-tpls-1.3.3.js" />
+    <Content Include="Content\Skins\Dashboard\CSS\ie10-viewport-bug-workaround.css" />
     <Content Include="Content\Skins\Dashboard\CSS\Skin.css" />
     <Content Include="Content\Skins\Default\CSS\Skin.css" />
     <Content Include="Default.aspx" />
