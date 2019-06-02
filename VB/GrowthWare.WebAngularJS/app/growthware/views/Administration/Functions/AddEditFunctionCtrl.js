@@ -79,16 +79,7 @@
         };
 
         $scope.save = function () {
-            var lastSearchRoute = searchSvc.lastSearchRoute || "";
-            if (lastSearchRoute.length > 0) {
-                $uibModalInstance.close($scope.selected.item); // return objects back to calling controller
-            } else {
-                if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
-                    $route.reload();
-                } else {
-                    $location.path('/Generic_Home');
-                };
-            }
+            $uibModalInstance.close($scope.selected.item); // return objects back to calling controller
         }
 
         $scope.showHelp = function (elementId, title) {
@@ -116,7 +107,7 @@
         return thisCtrlr;
     }
 
-    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', 'ModalService', '$route', '$scope', '$uibModal', '$uibModalInstance', 'modalData'];
+    mRetCtrl.$inject = ['AccountService', 'FunctionService', 'SearchService', 'GroupService', 'RoleService', 'ModalService', '$route', '$scope', '$uibModalInstance', 'modalData'];
 
     angular.module('growthwareApp').controller('AddEditFunctionController', mRetCtrl);
 
