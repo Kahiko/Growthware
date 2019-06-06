@@ -7,7 +7,7 @@
         var m_ViewModel = {};  // this will be used by all methods
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
-        m_ViewModel.modalData = modalData
+        m_ViewModel.modalData = modalData.data;
 
         function initCtrl() {
             // Request #1 in the chain
@@ -75,7 +75,6 @@
         }
 
         $scope.cancelEdit = function () {
-            // console.log('calling dismiss');
             $uibModalInstance.dismiss('AddEditFunctionController cancel'); // use for popup edit
         };
 
@@ -87,7 +86,7 @@
             var mModalOptions = modalSvc.options;
             mModalOptions.title = title;
             mModalOptions.content = document.getElementById(elementId).innerHTML;
-            mModalOptions.btns = [];
+
             modalSvc.showModal(mModalOptions).then(
                 /*** close ***/
                 function (result) {

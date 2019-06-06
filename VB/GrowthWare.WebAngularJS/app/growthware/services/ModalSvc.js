@@ -7,22 +7,13 @@
         var m_ModalInstance = {};
         var m_ModalOptions = {
             animation: true,
-            btns: [],
+            btns: { showOk: false, showCancel: false },
             content: "content",
             controller: "ModalPopupController",
             data: {},
             size: 'sm',
             title: "title",
             url: m_Url
-        };
-        var m_BtnOkay = {
-            id: 'btnOK',
-            label: 'OKay',
-            cssClass: 'btn btn-primary',
-            icon: 'glyphicon glyphicon-thumbs-up',
-            onClick: function (returnData) {
-                m_ModalInstance.close(returnData);
-            }
         };
 
         Object.defineProperty(this, "options", {
@@ -35,7 +26,7 @@
         });
 
         function initSvc() {
-            m_ModalOptions.btns.push(m_BtnOkay);
+            // nothing for now ;)
         };
 
         thisSvc.showModal = function (modalOptions) {
@@ -51,7 +42,7 @@
                     templateUrl: mModalOptions.url,
                     controller: mModalOptions.controller,
                     resolve: {
-                        modalData: function () { return mModalOptions.data; }
+                        modalData: function () { return mModalOptions; }
                     },
                     size: mModalOptions.size
                 }

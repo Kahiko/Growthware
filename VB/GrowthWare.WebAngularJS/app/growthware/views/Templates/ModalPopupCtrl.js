@@ -9,10 +9,14 @@
 
         function initCtrl() {
             m_ViewModel.content = $sanitize(m_ViewModel.content);
+
+            // Objects to be used by HTML
+            $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once
         };
 
-        // Objects to be used by HTML
-        $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once
+        $scope.ok = function () {
+            $uibModalInstance.close(m_ViewModel);
+        };
 
         $scope.cancel = function () {
             $uibModalInstance.dismiss('dismissed by upperRightClose button');

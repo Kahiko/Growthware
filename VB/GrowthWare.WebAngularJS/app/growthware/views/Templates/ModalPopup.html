@@ -14,7 +14,12 @@
             <div ng-bind-html="vm.content"></div>
         </div>
         <div class="modal-footer">
-            <button type="button" data-ng-repeat="btn in vm.btns track by $index" id="{{btn.id}}" class="{{btn.cssClass}}" ng-click="btn.onClick(vm)"> {{btn.label}} <i data-ng-if="btn.icon.length > 0" class="{{btn.icon}}"></i></button>
+            <button type="button" id="ok" data-ng-click="ok()" data-ng-show="vm.btns.showOk" class="btn btn-primary btn-md">
+                OK <i data-ng-if="btn.icon.length > 0" class="glyphicon glyphicon-thumbs-up"></i>
+            </button>
+            <button type="button" id="cancel" data-ng-click="cancel()" data-ng-show="vm.btns.showCancel" class="btn btn-secondary btn-md">
+                Cancel <i data-ng-if="btn.icon.length > 0" class="glyphicon glyphicon-thumbs-down"></i>
+            </button>
         </div>
     </form>
 </body>

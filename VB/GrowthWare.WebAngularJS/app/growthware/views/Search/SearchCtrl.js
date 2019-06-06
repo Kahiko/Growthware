@@ -32,7 +32,6 @@
             acctSvc.getSecurityInfo(m_ViewModel.editAction).then(
                 /*** success ***/
                 function (securityInfo) {
-                    console.log(securityInfo);
                     if (securityInfo.MayView) {
                         var mController = '';
 

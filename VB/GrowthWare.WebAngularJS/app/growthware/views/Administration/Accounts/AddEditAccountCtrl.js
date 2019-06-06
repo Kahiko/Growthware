@@ -13,7 +13,7 @@
             { "id": 3, "Name": "Disabled" }
         ]
 
-        m_ViewModel.modalData = modalData;
+        m_ViewModel.modalData = modalData.data;
 
         function initCtrl() {
             m_ViewModel.clientMessage = '';
