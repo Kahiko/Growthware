@@ -11,7 +11,7 @@
 
         function logoffCallBack(response) {
             $location.path('/Generic_Home');
-            //location.reload();
+            GW.Navigation.NavigationController.Reload();
         };
 
         thisCtrlr.logoff();

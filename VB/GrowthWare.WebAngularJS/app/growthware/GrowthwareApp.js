@@ -4,16 +4,19 @@
     var gwApp = angular.module('growthwareApp', ['ngRoute', 'ngAnimate', 'ngSanitize', 'ngResource', 'ui.bootstrap']) // create an instance of a module
 
     gwApp.config(function ($provide, $routeProvider, $locationProvider) {
-            GW.Common.debug("Start: growthwareApp.config");
-            /*** Expose the $routeProvider to .run ****/
-            $provide.factory('$routeProvider', function () {
-                return $routeProvider;
-            });
-            $locationProvider.html5Mode({
-                enabled: true
-                //, requireBase: false
-            });
-            GW.Common.debug("End: growthwareApp.config");
+        GW.Common.debug("Start: growthwareApp.config");
+        // register the reload event handeler
+        GW.Navigation.createReloadUIEventHandler();
+
+        /*** Expose the $routeProvider to .run ****/
+        $provide.factory('$routeProvider', function () {
+            return $routeProvider;
+        });
+        $locationProvider.html5Mode({
+            enabled: true
+            //, requireBase: false
+        });
+        GW.Common.debug("End: growthwareApp.config");
     })
 
     gwApp.run(['$route', '$routeProvider', '$location', '$http', '$rootScope', '$templateCache', 'AccountService', function ($route, $routeProvider, $location, $http, $rootScope, $templateCache, acctSvc) {

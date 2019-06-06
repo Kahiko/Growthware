@@ -23,6 +23,21 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
             return true;
         },
 
+        createReloadUIEventHandler: function () {
+            $(document).bind('~reLoadUI', function () {
+                location.reload(true);
+            });
+        },
+
+        NavigationController: {
+
+            Reload: function () {
+                GW.Common.debug('Triggering event ~reLoadUI');
+                jQuery.event.trigger('~reLoadUI', '');
+            }
+
+        },
+
         NavigationObject: function () {
             //properties
             this.Action = '';

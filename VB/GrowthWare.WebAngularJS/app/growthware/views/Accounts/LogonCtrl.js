@@ -51,6 +51,7 @@
                 //window.location.hash = newHash;
 
                 //location.reload();
+                GW.Navigation.NavigationController.Reload();
 
 
             } else {

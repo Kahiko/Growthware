@@ -41,6 +41,7 @@
                 /*** Success ***/
                 function (result) {
                     getValid();
+                    GW.Navigation.NavigationController.Reload();
                 },
                 /*** error ***/
                 function (result) {
