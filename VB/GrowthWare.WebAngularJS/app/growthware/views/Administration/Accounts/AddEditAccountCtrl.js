@@ -6,109 +6,104 @@
         var thisCrtl = this;
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
-        var viewModel = {};
+        var m_ViewModel = {};
         var m_validStatus  = [
             { "id": 1, "Name": "Active" },
             { "id": 4, "Name": "Change Password" },
             { "id": 3, "Name": "Disabled" }
         ]
 
+        m_ViewModel.modalData = modalData;
+
         function initCtrl() {
-            viewModel.clientMessage = '';
-            var lastSearchRoute = searchSvc.lastSearchRoute || "";
-            if (lastSearchRoute.length == 0 && !(m_Action.toLowerCase() == 'editaccount' || m_Action.toLowerCase() == 'register')) {
+            m_ViewModel.clientMessage = '';
+            if ((m_Action.toLowerCase() == 'editaccount' || m_Action.toLowerCase() == 'register')) {
                 $location.path('/');
             } else {
-                viewModel.validStatus = m_validStatus;
+                m_ViewModel.validStatus = m_validStatus;
                 // Request #1 in the chain
                 groupSvc.getGroups(m_Action)
                     .then(function (groupsResponse) {
                         // Response Handler #1
-                        viewModel.groups = groupsResponse;
+                        m_ViewModel.groups = groupsResponse;
                         // Request #2
                         return roleSvc.getRoles(m_Action);
                     })
                     .then(function (rolesResponse) {
                         // Response Handler #2
-                        viewModel.roles = rolesResponse;
+                        m_ViewModel.roles = rolesResponse;
                         // Request #3
                         return acctSvc.getCurrentAccount();
                     })
                     .then(function (profile) {
                         // Response Handler #3
-                        viewModel.currentProfile = profile;
-                        // Request #4
-                        var editId = searchSvc.editId;
+                        m_ViewModel.currentProfile = profile;
+                        var editId = m_ViewModel.modalData.editId;
                         if (m_Action.toLowerCase() == 'register') editId = -1;
                         if (m_Action.toLowerCase() == 'editaccount') editId = -2;
+                        // Request #4
                         return acctSvc.getAccount(editId, m_Action);
                     }).then(function (profile) {
                         // Response Handler #4
-                        viewModel.profile = profile;
+                        m_ViewModel.profile = profile;
                         setSelectedStatus();
                         // Request #5
                         return acctSvc.getSecurityInfo(m_Action);
                     }).then(function (securityInfo) {
                         // Response Handler #5
-                        viewModel.securityInfo = securityInfo;
+                        m_ViewModel.securityInfo = securityInfo;
                         // Request #6
                         return acctSvc.getSecurityInfo('View_Account_Role_Tab');
                     }).then(function (securityInfo) {
                         // Response Handler #6
-                        viewModel.securityInfoRoleTab = securityInfo;
+                        m_ViewModel.securityInfoRoleTab = securityInfo;
                         // Request #7
                         return acctSvc.getSecurityInfo('View_Account_Group_Tab');
                     }).then(function (securityInfo) {
                         // Response Handler #7
-                        viewModel.securityInfoGroupTab = securityInfo;
+                        m_ViewModel.securityInfoGroupTab = securityInfo;
                     })
                     .catch(function (result) { /*** error ***/
-                        viewModel.clientMessage = 'Failed to load data';
+                        m_ViewModel.clientMessage = 'Failed to load data';
                         console.log("Failed to load data for account, result is:");
                         console.log(result);
                     });
             }
-            $scope.vm = viewModel;
+            $scope.vm = m_ViewModel;
         };
 
         function setSelectedStatus() {
             for (var i = 0; i < m_validStatus.length; i++) {
-                if (m_validStatus[i].id == viewModel.profile.Status) {
-                    viewModel.selectedStatus = m_validStatus[i];
+                if (m_validStatus[i].id == m_ViewModel.profile.Status) {
+                    m_ViewModel.selectedStatus = m_validStatus[i];
                     break;
                 };
             };
         };
 
         $scope.cancelEdit = function () {
-            var lastSearchRoute = searchSvc.lastSearchRoute || "";
-            if (lastSearchRoute.length > 0) {
-                var objectToSend = {};
-                $uibModalInstance.close(objectToSend); // use for popup edit
+            if ((m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
+                $route.reload();
             } else {
-                if (!(m_Action.toLowerCase() == 'addaccount' || m_Action.toLowerCase() == 'register')) {
-                    $route.reload();
-                } else {
-                    $location.path('/Generic_Home');
-                };
-            }
+                $uibModalInstance.close(m_ViewModel.modalData); // use for popup edit
+            };
         };
 
         $scope.save = function () {
-            viewModel.profile.Status = viewModel.selectedStatus.id;
-            acctSvc.save(viewModel.profile, m_Action).then(
+            m_ViewModel.profile.Status = m_ViewModel.selectedStatus.id;
+            acctSvc.save(m_ViewModel.profile, m_Action).then(
                 /*** success ***/
                 function (result) {
                     if (result.toLowerCase == "false") {
-                        viewModel.clientMessage = 'Account information was not saved!';
+                        m_ViewModel.clientMessage = 'Account information was not saved!';
                     } else {
-                        viewModel.clientMessage = 'Account information has been saved';
+                        m_ViewModel.clientMessage = 'Account information has been saved';
                         $scope.cancelEdit();
                     }
                 },
                 /*** error ***/
                 function (result) {
-                    viewModel.clientMessage = 'Account information was not saved!';
+                    m_ViewModel.clientMessage = 'Account information was not saved!';
                     console.log(result);
                 }
            );

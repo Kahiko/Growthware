@@ -10,6 +10,7 @@
             btns: [],
             content: "content",
             controller: "ModalPopupController",
+            data: {},
             size: 'sm',
             title: "title",
             url: m_Url
@@ -50,7 +51,7 @@
                     templateUrl: mModalOptions.url,
                     controller: mModalOptions.controller,
                     resolve: {
-                        modalData: function () { return mModalOptions; }
+                        modalData: function () { return mModalOptions.data; }
                     },
                     size: mModalOptions.size
                 }

@@ -1,37 +1,10 @@
 ﻿(function () {
     'use strict';
 
-    var mRetSvc = function ($http, $q, $resource) {
+    var mRetSvc = function ($http, $q) {
         var thisSvc = this;
 
         var m_SearchInfo = null;
-
-        thisSvc.Prototype = {
-            get lastCriteria() {
-                return this.m_LastCriteria;
-            },
-            set lastCriteria(value) {
-                this.m_LastCriteria = value;
-            }
-        };
-
-        thisSvc.Prototype = {
-            get lastSearchRoute() {
-                return this.m_LastSearchRoute;
-            },
-            set lastSearchRoute(value) {
-                this.m_LastSearchRoute = value;
-            }
-        };
-
-        thisSvc.Prototype = {
-            get editId() {
-                return this.m_EditId;
-            },
-            set editId(value) {
-                this.m_EditId = value;
-            }
-        };
 
         thisSvc.getSearchConfiguration = function (route) {
             var deferred = $q.defer();
@@ -56,7 +29,6 @@
         };
 
         thisSvc.getSearchResults = function (url, criteria) {
-            this.lastCriteria = criteria;
             criteria = JSON.stringify(criteria);
             var deferred = $q.defer();
             $http({method: "POST", url: url, dataType: 'json', data: criteria, headers: { 'Content-Type': 'application/json' }})

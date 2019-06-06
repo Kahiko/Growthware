@@ -7,6 +7,7 @@
         var m_ViewModel = {};  // this will be used by all methods
         var m_Route = $route.current.$$route.originalPath;
         var m_Action = m_Route.substr(1, m_Route.length - 1);
+        m_ViewModel.modalData = modalData
 
         function initCtrl() {
             // Request #1 in the chain
@@ -26,7 +27,7 @@
                 .then(function (currentAccount) {
                     // Response Handler #3
                     m_ViewModel.currentAccountProfile = currentAccount;
-                    var editId = searchSvc.editId;
+                    var editId = m_ViewModel.modalData.editId;
                     // Request #4
                     return functionSvc.getFunction(editId, m_Action);
                 })

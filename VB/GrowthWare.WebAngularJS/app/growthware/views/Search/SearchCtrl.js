@@ -43,10 +43,10 @@
                                 }
                             }
                         });
-                        searchSvc.editId = editKeyValue;
 
                         var mModalOptions = modalSvc.options;
                         mModalOptions.controller = mController;
+                        mModalOptions.data = {editId: editKeyValue};
                         mModalOptions.url = options.url;
                         mModalOptions.size = 'lg';
 
@@ -82,42 +82,21 @@
                     console.log("Failed to getSecurityInfo, result is " + result);
                 }
             );
-            var lastSearchRoute = searchSvc.lastSearchRoute || "";
-            if (lastSearchRoute != m_Route) {
-                searchSvc.lastSearchRoute = m_Route;
-                m_ViewModel.selectedPage = { "value": "1", "text": "1" };
-                m_ViewModel.searchCriteria = new GW.Model.SearchCriteria()
-                m_ViewModel.sortText = '';
-                acctSvc.getPreferences().then(
-                    /*** success ***/
-                    function (clientChoices) {
-                        m_ViewModel.clientChoices = clientChoices;
-                        m_ViewModel.searchCriteria.PageSize = m_ViewModel.clientChoices.RecordsPerPage;
-                        getSearchConfiguration();
-                    },
-                    /*** error ***/
-                    function (result) {
-                        console.log("Failed to getPreferences, result is " + result);
-                    }
-               );
-            } else {
-                m_ViewModel.searchCriteria = searchSvc.lastCriteria;
-                acctSvc.getPreferences().then(
-                    /*** success ***/
-                    function (clientChoices) {
-                        m_ViewModel.clientChoices = clientChoices;
-                    },
-                    /*** error ***/
-                    function (result) {
-                        console.log("Failed to getPreferences, result is " + result);
-                    }
-               );
-                var match = m_ViewModel.searchCriteria.WhereClause.match(new RegExp("%(.*)%"))
-                if (m_ViewModel.searchCriteria.WhereClause != "1 = 1") { m_ViewModel.sortText = match[1]; }
-                m_ViewModel.selectedPage = { "value": m_ViewModel.searchCriteria.SelectedPage, "text": m_ViewModel.searchCriteria.SelectedPage };
-                m_ViewModel.searchCriteria.PageSize = m_ViewModel.searchCriteria.PageSize;
-                getSearchConfiguration();
-            };
+            m_ViewModel.selectedPage = { "value": "1", "text": "1" };
+            m_ViewModel.searchCriteria = new GW.Model.SearchCriteria()
+            m_ViewModel.sortText = '';
+            acctSvc.getPreferences().then(
+                /*** success ***/
+                function (clientChoices) {
+                    m_ViewModel.clientChoices = clientChoices;
+                    m_ViewModel.searchCriteria.PageSize = m_ViewModel.clientChoices.RecordsPerPage;
+                    getSearchConfiguration();
+                },
+                /*** error ***/
+                function (result) {
+                    console.log("Failed to getPreferences, result is " + result);
+                }
+            );
             $scope.vm = m_ViewModel;
         };
 
