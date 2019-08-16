@@ -120,9 +120,14 @@
 
             <!--sidebar start-->
             <aside>
-                <div id="sidebar" class="nav-collapse " data-ng-controller="HHMenuController">
+                <div id="sidebar" class="nav-collapse ">
                     <!-- sidebar menu start-->
-                    <ul class="sidebar-menu">
+                    <ul class="sub" data-ng-controller="VerticalMenuController">
+                        <li data-ng-repeat="item in menuItems" class="sub-menu">
+                            <a title='{{item.Description}}' href='{{ item.Route }}'>{{ item.Title }}</a><br/>
+                        </li>
+                    </ul>
+                    <ul class="sidebar-menu" data-ng-controller="HHMenuController">
                         <li data-ng-repeat="menuItem in menuItems" data-ng-include="'tree-renderer.html'" class="sub-menu"></li>
                     </ul>
                     <!-- sidebar menu end-->
