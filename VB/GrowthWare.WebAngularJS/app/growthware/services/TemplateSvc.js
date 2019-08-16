@@ -1,6 +1,7 @@
 ﻿(function () {
     'use strict';
 
+    var mDependencyInjection = ['$http', '$q'];
     function mRetSvc($http, $q) {
         var thisSvc = this;
 
@@ -29,7 +30,7 @@
         return thisSvc;
     }
 
-    mRetSvc.$inject = ['$http', '$q'];
+    mRetSvc.$inject = mDependencyInjection;
 
-    angular.module('growthwareApp').factory('YourNamedService', mRetSvc);
+    angular.module('yourApp').factory('YourNamedService', mRetSvc);
 })();
