@@ -24,7 +24,7 @@
                 <p class="pull-right">
                     <label for="txtProcessed">Processed Text:</label>
                     <br/>
-                    <button class="btn btn-primary" id="btnHightLightDecrypted" data-ng-click="doHighlightAll('txtProcessed')">
+                    <button class="btn btn-primary" id="btnHightLightDecrypted" data-ng-click="vm.doHighlightAll('txtProcessed')">
                         <span class="bootstrap-dialog-button-icon glyphicon glyphicon-copy"></span>Highlight Text
                     </button>
                 </p>
@@ -39,10 +39,10 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="pull-right lower-right-buttons">
-                    <button class="btn btn-primary" id="btnEncrypt" data-ng-click="doProcessTextValue(true)">
+                    <button class="btn btn-primary" id="btnEncrypt" data-ng-click="vm.doProcessTextValue(true)">
                         <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Encrypt
                     </button>
-                    <button class="btn btn-primary" id="btnDecrypt" data-ng-click="doProcessTextValue(false)">
+                    <button class="btn btn-primary" id="btnDecrypt" data-ng-click="vm.doProcessTextValue(false)">
                         <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Decrypt
                     </button>
                 </div>

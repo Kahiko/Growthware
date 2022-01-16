@@ -2,9 +2,9 @@
     'use strict';
     var mApplication = 'growthwareApp';
     var mControllerName = 'EncryptDecryptController';
-    var mDependencyInjection = ['ConfigurationService', 'MessageService', '$scope', '$timeout'];
+    var mDependencyInjection = ['ConfigurationService', 'MessageService', '$timeout'];
 
-    var mRetCtrl = function (configSvc, msgSvc, $scope, $timeout) {
+    var mRetCtrl = function (configSvc, msgSvc, $timeout) {
         var thisCtrlr = this;
         var m_ViewModel = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
         m_ViewModel.textValue = '';
@@ -13,19 +13,19 @@
         // msgSvc.brodcastClientMsg('the controller is not finished');
 
         function initCtrl() {
-            $scope.vm = m_ViewModel; // Place all of the data elements on to scope at once after it is complete
+            thisCtrlr.vm = m_ViewModel; // Place all of the data elements on to scope at once after it is complete
         }
 
         // Functions that are avalible to the HTML
-        $scope.doProcessTextValue = function (encrypt) {
-            configSvc.encrypt(m_ViewModel.textValue, encrypt).then(function (response) {
-                m_ViewModel.processedText = response;
+        thisCtrlr.doProcessTextValue = function (encrypt) {
+            configSvc.encrypt(thisCtrlr.textValue, encrypt).then(function (response) {
+                thisCtrlr.processedText = response;
             }).catch(function () {
                 msgSvc.brodcastClientMsg('An error occured attempting to encrypt/decrypt the text!');
             });
         }
 
-        $scope.doHighlightAll = function (theField) {
+        thisCtrlr.doHighlightAll = function (theField) {
             var mTempval = $('#' + theField);
             mTempval.focus()
             mTempval.select()
