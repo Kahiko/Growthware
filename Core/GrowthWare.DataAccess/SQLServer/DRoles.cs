@@ -1,0 +1,157 @@
+﻿using GrowthWare.DataAccess.Interfaces;
+using GrowthWare.DataAccess.SQLServer.Base;
+using GrowthWare.Framework.Models;
+using System;
+using System.Data;
+using System.Data.SqlClient;
+
+namespace GrowthWare.DataAccess.SQLServer
+{
+    /// <summary>
+    /// Class DRoles.
+    /// </summary>
+    public class DRoles : DSearch, IRoles
+    {
+        private int m_SE_SEQ_ID;
+
+        private MRole m_Profile = new MRole();
+
+        int IRoles.SecurityEntitySeqID
+        {
+            get { return m_SE_SEQ_ID; }
+            set { m_SE_SEQ_ID = value; }
+        }
+
+        MRole IRoles.Profile
+        {
+            get { return m_Profile; }
+            set { m_Profile = value; }
+        }
+
+        void IRoles.DeleteRole()
+        {
+            SqlParameter[] mParameters = { new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID) };
+            String mStoreProc = "ZGWSecurity.Delete_Role";
+            base.ExecuteNonQuery( mStoreProc,  mParameters);
+        }
+
+        void IRoles.Save()
+        {
+            SqlParameter[] myParameters = getInsertUpdateParameters();
+            string myStoreProcedure = "ZGWSecurity.Set_Role";
+            base.ExecuteNonQuery( myStoreProcedure,  myParameters);
+        }
+
+        DataTable IRoles.Search( MSearchCriteria searchCriteria)
+        {
+            DataTable mRetVal = base.Search(searchCriteria, "[ZGWSecurity].[vwSearchRoles]");
+            return mRetVal;
+        }
+
+        DataTable IRoles.RolesBySecurityEntity()
+        {
+            SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", -1), new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID) };
+            String myStoreProc = "ZGWSecurity.Get_Role";
+            return base.GetDataTable( myStoreProc,  myParameters);
+        }
+
+        DataRow IRoles.ProfileData()
+        {
+            SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", m_Profile.Id), new SqlParameter("@P_Security_Entity_SeqID", -1) };
+            String myStoreProc = "ZGWSecurity.Get_Role";
+            return base.GetDataRow( myStoreProc,  myParameters);
+        }
+
+        DataTable IRoles.AccountsInRole()
+        {
+            SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
+            string myStoreProcedure = "ZGWSecurity.Get_Accounts_In_Role";
+            return base.GetDataTable( myStoreProcedure,  myParameters);
+        }
+
+        DataTable IRoles.AccountsNotInRole()
+        {
+            SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
+            string myStoreProcedure = "ZGWSecurity.Get_Accounts_Not_In_Role";
+            return base.GetDataTable( myStoreProcedure,  myParameters);
+        }
+
+        bool IRoles.UpdateAllAccountsForRole(int roleSeqID, int securityEntityID, string[] accounts, int accountSeqID)
+        {
+            bool mRetVal = false;
+            SqlConnection mSqlConnection = null;
+            SqlTransaction mSqlTransaction = null;
+            string mAccount = null;
+            try
+            {
+                mSqlConnection = new SqlConnection(ConnectionString);
+                mSqlConnection.Open();
+                mSqlTransaction = mSqlConnection.BeginTransaction(IsolationLevel.Serializable);
+                // delete all the accounts for this role/SecurityEntity
+                SqlCommand mSqlCommand = new SqlCommand("ZGWSecurity.Delete_Roles_Accounts", mSqlConnection);
+                mSqlCommand.Transaction = mSqlTransaction;
+
+                SqlParameter mSqlParameter = new SqlParameter("@P_ROLE_SEQ_ID", roleSeqID);
+                mSqlCommand.Parameters.Add(mSqlParameter);
+                mSqlParameter = new SqlParameter("@P_Security_Entity_SeqID", securityEntityID);
+                mSqlCommand.Parameters.Add(mSqlParameter);
+                mSqlCommand.ExecuteNonQuery();
+
+                mSqlCommand.CommandText = "ZGWSecurity.Set_Role_Accounts";
+                foreach (string account_loopVariable in accounts)
+                {
+                    mAccount = account_loopVariable;
+                    mSqlCommand.Parameters.Clear();
+                    mSqlParameter = new SqlParameter("@P_Role_SeqID", roleSeqID);
+                    mSqlCommand.Parameters.Add(mSqlParameter);
+                    mSqlParameter = new SqlParameter("@P_Security_Entity_SeqID", securityEntityID);
+                    mSqlCommand.Parameters.Add(mSqlParameter);
+                    mSqlParameter = new SqlParameter("@P_Account", mAccount);
+                    mSqlCommand.Parameters.Add(mSqlParameter);
+                    mSqlParameter = new SqlParameter("@P_Added_Updated_By", accountSeqID);
+                    mSqlCommand.Parameters.Add(mSqlParameter);
+                    mSqlCommand.ExecuteNonQuery();
+                }
+
+                mSqlTransaction.Commit();
+                mRetVal = true;
+            }
+            catch (Exception)
+            {
+                if ((mSqlTransaction != null)) mSqlTransaction.Rollback();
+                throw;
+            }
+            finally
+            {
+                if ((mSqlTransaction != null))
+                {
+                    mSqlTransaction.Dispose();
+                    mSqlTransaction = null;
+                }
+                if ((mSqlConnection != null))
+                {
+                    mSqlConnection.Dispose();
+                    mSqlConnection = null;
+                }
+            }
+            return mRetVal;
+        }
+
+        private SqlParameter[] getInsertUpdateParameters()
+        {
+            SqlParameter[] myParameters = 
+			{ 
+				new SqlParameter("@P_Role_SeqID", m_Profile.Id), 
+				new SqlParameter("@P_Name", m_Profile.Name), 
+				new SqlParameter("@P_Description", m_Profile.Description), 
+				new SqlParameter("@P_Is_System", m_Profile.IsSystem), 
+				new SqlParameter("@P_Is_System_Only", m_Profile.IsSystemOnly), 
+				new SqlParameter("@P_Security_Entity_SeqID", m_SE_SEQ_ID), 
+				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
+				GetSqlParameter("@P_Primary_Key", m_Profile.Id, ParameterDirection.Output) 
+			};
+            return myParameters;
+        }
+
+    }
+}

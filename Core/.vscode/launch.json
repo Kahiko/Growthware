@@ -1,0 +1,164 @@
+{
+    // Use IntelliSense to find out which attributes exist for C# debugging
+    // Use hover for the description of the existing attributes
+    // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+    "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "1.) .Net + Chrome",
+            "configurations": [".Net Only", "PWA Chrome"]
+        },
+        {
+            "name": "2.) .Net + Edge",
+            "configurations": [".Net Only", "PWA Edge"]
+        }       
+    ],
+    "configurations": [
+        {
+            "name": "3.) (U) .Net + Web",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Angular-Web-Build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start ${auto-detect-url}"
+                },
+                "osx": {
+                    "command": "open"
+                },
+                "linux": {
+                    "command": "xdg-open"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/Views"
+            }
+        },
+        {
+            "name": "4.) (W) .Net + Edge",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Angular-Web-Build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start \"\" \"microsoft-edge:${auto-detect-url}"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            "name": "5.) (W) .Net + FF Developer Edition",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Angular-Web-Build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": true,
+                "args": "${auto-detect-url}",
+                "windows": {
+                    "command": "cmd.exe",
+                    "args": "/C start \"\" \"C:/Program Files/Firefox Developer Edition/firefox.exe\" ${auto-detect-url}"
+                }
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        },
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": "Database Manager",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "DB_Manager_Build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/GrowthWare.DatabaseManager/bin/Debug/net6.0/GrowthWare.DatabaseManager.dll",
+            "args": [
+                "--Version",
+                "1.0.0.0"
+            ],
+            "cwd": "${workspaceFolder}/GrowthWare.DatabaseManager",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".Net Only",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "Angular-Web-Build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}/GrowthWare.Web.Angular"
+            }
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach",
+            "processId": "${command:pickProcess}"
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "PWA Chrome",
+            "url": "http://www.angular_core.com",
+            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/ClientApp/*"
+            }
+        },
+        {
+            "type": "pwa-msedge",
+            "request": "launch",
+            "name": "PWA Edge",
+            "url": "http://www.angular_core.com",
+            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/ClientApp/*"
+            }
+        }
+    ]
+}

@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj" />
+    <ProjectReference Include="..\GrowthWare.BusinessLogic\GrowthWare.BusinessLogic.csproj" />
+    <PackageReference Include="NLog" Version="4.7.13" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>
