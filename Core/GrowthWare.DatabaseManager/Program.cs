@@ -188,8 +188,6 @@ namespace GrowthWare.DatabaseManager
             Console.WriteLine("Usage:");
             Console.WriteLine(Environment.NewLine);
             Console.WriteLine(Environment.NewLine);
-            Console.WriteLine(mTab + @"--ScriptPath='C:\the\scripts\directory");
-            Console.WriteLine(Environment.NewLine);
             Console.WriteLine(mTab + "--Version=1.0.0.0  a requested Version of 0.0.0.0 will delete the database.");
         }
     }
