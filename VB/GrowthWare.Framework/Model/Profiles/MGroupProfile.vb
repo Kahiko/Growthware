@@ -21,10 +21,14 @@ Namespace Model.Profiles
         ''' </summary>
         ''' <param name="dataRow">The dr.</param>
         Protected Overloads Sub Initialize(ByVal dataRow As DataRow)
-            Me.IdColumnName = "GROUP_SEQ_ID"
-            Me.NameColumnName = "NAME"
+            SelfInitialize()
             MyBase.Initialize(dataRow)
             m_Description = MyBase.GetString(dataRow, "DESCRIPTION")
+        End Sub
+
+        Private Sub SelfInitialize()
+            Me.IdColumnName = "GROUP_SEQ_ID"
+            Me.NameColumnName = "NAME"
         End Sub
 #End Region
 
@@ -34,7 +38,7 @@ Namespace Model.Profiles
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-
+            SelfInitialize()
         End Sub
 
         ''' <summary>

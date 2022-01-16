@@ -1,0 +1,35 @@
+﻿<form id="frmTestNaturalSort" data-ng-controller="TestNaturalSortController as testNaturalSortCtrl">
+    <div id="SortContent" runat="server">
+        Direction:
+        <select id="dropSortDirection" onchange="javascript:changeSort();" Class="rounded" runat="server">
+            <option value="ASC">Ascending</option>
+            <option value="DESC">Decending</option>
+        </select>
+        &nbsp;&nbsp;&nbsp;
+        Start: <asp:Label ID="StartTime" runat="server"></asp:Label>
+        Stop:  <asp:Label ID="StopTime" runat="server"></asp:Label>
+        Total Time in Milliseconds:  <asp:Label ID="lblTotalTime" runat="server"></asp:Label>&nbsp;&nbsp;&nbsp;
+        <table border="0" cellpadding="0" cellspacing="3">
+            <tr>
+                <td>
+                    Natural Sort:<br />
+
+                </td>
+                <td>
+                    DataView using .Sort = "COL1 ASC/DESC":<br />
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Natural Sort:<br />
+                    <asp:DropDownList ID="DropDownList2" CssClass="rounded" runat="server"></asp:DropDownList>
+                </td>
+                <td>
+                    DataView using .Sort = "COL1 ASC":<br />
+                    <asp:DropDownList ID="DropDownList3" CssClass="rounded" runat="server"></asp:DropDownList>
+                </td>
+            </tr>
+        </table>
+    </div>
+</form>

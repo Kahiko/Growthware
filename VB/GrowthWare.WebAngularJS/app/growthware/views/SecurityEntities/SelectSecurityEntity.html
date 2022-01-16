@@ -1,0 +1,6 @@
+﻿<form id="SelectSecurityEntity">
+    <div data-ng-controller="SecurityEntityController">
+        <select id="dropSecurityEntities" class="rounded" data-ng-model="vm.selectedSE" data-ng-options="item.Name for item in vm.validSecurityEntities track by item.SE_SEQ_ID"></select>&nbsp;
+        <input type="button" id="btnGo" class="btn btn-primary" data-ng-click="vm.save()" value="Go" />
+    </div>
+</form>

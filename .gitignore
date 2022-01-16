@@ -219,6 +219,9 @@ UpgradeLog*.htm
 *.mdf
 *.ldf
 
+# Visual Studio SQL Server files
+*.jfm
+
 # Business Intelligence projects
 *.rdl.data
 *.bim.layout

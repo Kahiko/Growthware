@@ -1,0 +1,68 @@
+﻿<form id="frmAddEditPostalSate">
+    <div>
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit State Postal Information -  - {{vm.profile.Name}}</span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                    <span class="ui-button-text">close</span>
+                </button>
+            </div>
+            <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+            <div class="container container-full" id="tabs">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li role="presentation" class="nav active ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabsGeneral">
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">State:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <span id="lblSate" class="Form_Field">{{vm.profile.State}}</span>
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Description:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <textarea id="txtDescription" name="txtValue" rows="4" cols="50" data-ng-model="vm.profile.Description" class="rounded" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128)">Textarea</textarea>
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Status: </span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <select ID="dropFunctionType" ng-model="vm.selectedStatus_SeqID" class="rounded">
+                                    <option ng:repeat="item in vm.avalibleStatuses" value="{{item.value * 1}}">
+                                        {{item.text}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right lower-right-buttons">
+                    <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                    </button>
+                    <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

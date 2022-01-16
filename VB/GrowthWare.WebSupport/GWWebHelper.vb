@@ -31,14 +31,18 @@ Public Class GWWebHelper
     ''' <value>The core web administration version.</value>
     Public Shared ReadOnly Property CoreWebAdministrationVersion() As String
         Get
-            Dim myVersion As String = String.Empty
-            Dim myAssembly As Reflection.Assembly = Reflection.Assembly.Load(ConfigSettings.GetAppSettingValue("Assembly"))
-            If Not myAssembly Is Nothing Then
-                myVersion = myAssembly.GetName.Version.ToString
+            Dim mVersion As String = String.Empty
+            Dim mAssembly As Reflection.Assembly = Nothing
+            ' TODO: Should change this to find by either appdomain path or something rather than the hard coding here.
+            mAssembly = Reflection.Assembly.Load(ConfigSettings.WebAssemblyName)
+
+            If Not mAssembly Is Nothing Then
+                mVersion = mAssembly.GetName.Version.ToString
             End If
-            Return myVersion
+            Return mVersion
         End Get
     End Property
+
     ''' <summary>
     ''' Returns MapPath("~\Public\Skins\")
     ''' </summary>
@@ -48,6 +52,18 @@ Public Class GWWebHelper
     Public Shared ReadOnly Property SkinPath() As String
         Get
             Return HttpContext.Current.Server.MapPath("~\Content\Skins\")
+        End Get
+    End Property
+
+    ''' <summary>
+    ''' Returns MapPath("~\Content\FormStyles\")
+    ''' </summary>
+    ''' <value>String</value>
+    ''' <returns>String</returns>
+    ''' <remarks></remarks>
+    Public Shared ReadOnly Property StylePath() As String
+        Get
+            Return HttpContext.Current.Server.MapPath("~\Content\FormStyles\")
         End Get
     End Property
 
@@ -103,6 +119,31 @@ Public Class GWWebHelper
         End Get
     End Property
 
+    Public Shared Function GetLogLevel(ByVal logPriority As String) As Integer
+        Dim mRetVal As Integer = 0
+        Select Case logPriority.ToUpper(CultureInfo.InvariantCulture)
+            Case "DEBUG"
+                mRetVal = 0
+                Exit Select
+            Case "INFO"
+                mRetVal = 1
+                Exit Select
+            Case "WARN"
+                mRetVal = 2
+                Exit Select
+            Case "ERROR"
+                mRetVal = 3
+                Exit Select
+            Case "FATAL"
+                mRetVal = 4
+                Exit Select
+            Case Else
+                mRetVal = 3
+                Exit Select
+        End Select
+        Return mRetVal
+    End Function
+
     ''' <summary>
     ''' Gets the new GUID.
     ''' </summary>
@@ -151,6 +192,23 @@ Public Class GWWebHelper
         Sleep((System.DateTime.Now.Millisecond * (retVal / 100)))
         Return retVal.ToString(CultureInfo.InvariantCulture)
     End Function
+
+    ''' <summary>
+    ''' Determines if a call is for the API
+    ''' </summary>
+    ''' <returns>bool</returns>
+    Shared ReadOnly Property IsWebApiRequest() As Boolean
+        Get
+            Dim mRetVal As Boolean = False
+            If HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) <> -1 Then
+                mRetVal = True
+            End If
+            If HttpContext.Current.Request.RawUrl.ToUpper(CultureInfo.InvariantCulture).EndsWith(".UPLOAD", StringComparison.OrdinalIgnoreCase) Then
+                mRetVal = True
+            End If
+            Return mRetVal
+        End Get
+    End Property
 
     ''' <summary>
     ''' Gets the display environment.

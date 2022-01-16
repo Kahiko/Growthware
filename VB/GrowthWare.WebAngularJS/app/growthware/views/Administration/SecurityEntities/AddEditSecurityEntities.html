@@ -1,0 +1,201 @@
+﻿<style>
+    .formLayout {
+        background-color: #f3f3f3;
+        border: solid 1px #a1a1a1;
+        padding: 5px;
+        height: 670px;
+    }
+
+        .formLayout label, .formLayout input {
+            display: block;
+            width: 224px;
+            float: left;
+            margin-bottom: 10px;
+        }
+
+        .formLayout label {
+            text-align: right;
+            padding-right: 20px;
+        }
+
+    br {
+        clear: left;
+    }
+    .custom-pane {
+        height: 690px;
+        width: 1260px;
+        margin-bottom: 10px;
+    }
+    .middleColumn {
+        width: 5px;
+        margin-right: 0px;
+        padding-right: 0px;
+        margin-left: 0px;
+        padding-left: 0px;
+    }
+    .modal-lg {
+        width: 1300px;
+    }
+</style>
+<form id="frmAddEditSecurityEntity">
+    <div>
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit Security Entity</span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                    <span class="ui-button-text">close</span>
+                </button>
+            </div>
+            <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+            <div class="container container-full" id="tabs">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li role="presentation" class="ui-state-default ui-corner-top active"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane custom-pane fade in active" id="tabsGeneral">
+                        <div class="formLayout">
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">{{vm.configInfo.SecurityEntityTranslation}}:</span>
+                                </div>
+                                <div class="col-lg-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <span id="litSecurityEntity" data-ng-show="vm.modalData.editId > -1">{{vm.profile.Name}}</span>
+                                    <textarea id="txtSecurityEntity" data-ng-model="vm.profile.Name" data-ng-hide="vm.modalData.editId > -1" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" class="rounded" TextMode="MultiLine" Columns="15" Rows="2" style="Width: 100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">Description:</span>
+                                </div>
+                                <div class="col-lg-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <textarea id="txtDescription" data-ng-model="vm.profile.Description" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512,event)" class="rounded" TextMode="MultiLine" Columns="15" Rows="2" style="Width: 100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">URL:</span>
+                                </div>
+                                <div class="col-lg-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <input id="txtURL" data-ng-model="vm.profile.Url" maxlength="128" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128,event)" class="Form_Field rounded" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">Data Access Layer:</span>
+                                </div>
+                                <div class="col-lg-1 middleColumn">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <select ID="dropDAL" ng-model="vm.selectedDAL" class="rounded">
+                                        <option ng:repeat="item in vm.dalTypes" value="{{item.value}}">
+                                            {{item.text}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">Data access layer DLL Name:</span>
+                                </div>
+                                <div class="col-lg-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8" style="text-align: left;">
+                                    <textarea id="txtAssembly_Name" data-ng-model="vm.profile.DALAssemblyName" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,50,event)" Columns="15" Rows="2" class="Form_Field rounded" style="Width: 100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">Data access layer Namespace:</span>
+                                </div>
+                                <div class="col-sm-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <textarea id="txtName_Space" data-ng-model="vm.profile.DALNamespace" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" class="rounded" TextMode="MultiLine" Columns="15" Rows="2" style="Width: 100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-3" style="text-align: right;">
+                                    <span class="Form_LabelText">Connection String:</span><br />
+                                    <a href="http://www.connectionstrings.com/" target="_blank">Build</a>
+                                </div>
+                                <div class="col-sm-1 middleColumn" style="width: 10px;">
+                                    &nbsp;
+                                </div>
+                                <div class="col-lg-8">
+                                    <textarea id="txtConnectionstring" data-ng-model="vm.profile.ConnectionString" onkeypress="return GW.Common.Validation.textboxMultilineMaxNumber(this,256,event)" class="rounded" TextMode="MultiLine" Columns="15" Rows="2" style="Width: 100%;"></textarea>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="row">
+                                    <div class="col-lg-1">&nbsp;</div>
+                                    <div class="col-lg-2">
+                                        <span class="Form_LabelText">Parent:</span><br />
+                                        <select ID="dropParent" ng-model="vm.selectedParent" class="rounded">
+                                            <option ng:repeat="item in vm.avalibleParents" value="{{item._Id}}">
+                                                {{item._Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="Form_LabelText">Skin:</span><br />
+                                        <select ID="dropSkin" ng-model="vm.selectedSkin" class="rounded">
+                                            <option ng:repeat="item in vm.avalibleSkins" value="{{item}}">
+                                                {{item}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="Form_LabelText">Style:</span><br />
+                                        <select ID="dropStyle" ng-model="vm.selectedStyle" class="rounded">
+                                            <option ng:repeat="item in vm.avalibleStyles" value="{{item}}">
+                                                {{item}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="Form_LabelText">Encrypt Type:</span><br />
+                                        <select ID="dropStyle" ng-model="vm.selectedEncryptType" class="rounded">
+                                            <option ng:repeat="item in vm.avalibleEncryptTypes" value="{{item.value}}">
+                                                {{item.text}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                        <span class="Form_LabelText">Status:</span><br />
+                                        <select ID="dropStatus" ng-model="vm.selectedStatus" class="rounded">
+                                            <option ng:repeat="item in vm.avalibleStatuses" value="{{item.value}}">
+                                                {{item.text}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-1">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right lower-right-buttons">
+                    <button class="btn btn-primary" id="btnSave" data-ng-disabled="!vm.securityInfo.MayEdit" data-ng-click="doSave()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                    </button>
+                    <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -92,55 +92,55 @@ Namespace Utilities
             mailClient.Send(mailMessage)
         End Sub
 
-        ''' <summary>
-        ''' Gets the notification status.
-        ''' </summary>
-        ''' <param name="functionID">The function ID.</param>
-        ''' <param name="securitySeqID">The security seq ID.</param>
-        ''' <param name="account">The account.</param>
-        ''' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        'Public Shared Function GetNotificationStatus(ByVal functionID As Integer, ByVal securitySeqID As Integer, ByVal account As String) As Boolean
-        '    Dim retVal As Boolean = True
-        '    Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
-        '    retVal = mBll.GetNotificationStatus(functionID, securitySeqID, account)
-        '    Return retVal
-        'End Function
+        '' <summary>
+        '' Gets the notification status.
+        '' </summary>
+        '' <param name="functionID">The function ID.</param>
+        '' <param name="securitySeqID">The security seq ID.</param>
+        '' <param name="account">The account.</param>
+        '' <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
+        Public Shared Function GetNotificationStatus(ByVal functionID As Integer, ByVal securitySeqID As Integer, ByVal account As String) As Boolean
+            Dim retVal As Boolean = True
+            'Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
+            'retVal = mBll.GetNotificationStatus(functionID, securitySeqID, account)
+            Return retVal
+        End Function
 
-        ''' <summary>
-        ''' Saves the specified function ID.
-        ''' </summary>
-        ''' <param name="functionID">The function ID.</param>
-        ''' <param name="securitySeqID">The security seq ID.</param>
-        ''' <param name="acct">The acct.</param>
-        ''' <param name="status">if set to <c>true</c> [status].</param>
-        'Public Shared Sub Save(ByVal functionID As Integer, ByVal securitySeqID As Integer, ByVal acct As String, ByVal status As Boolean)
-        '    Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
-        '    mBll.Save(functionID, securitySeqID, acct, status)
-        'End Sub
+        '' <summary>
+        '' Saves the specified function ID.
+        '' </summary>
+        '' <param name="functionID">The function ID.</param>
+        '' <param name="securitySeqID">The security seq ID.</param>
+        '' <param name="acct">The acct.</param>
+        '' <param name="status">if set to <c>true</c> [status].</param>
+        Public Shared Sub Save(ByVal functionID As Integer, ByVal securitySeqID As Integer, ByVal acct As String, ByVal status As Boolean)
+            'Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
+            'mBll.Save(functionID, securitySeqID, acct, status)
+        End Sub
 
-        ''' <summary>
-        ''' Sends the notifications.
-        ''' </summary>
-        ''' <param name="messageProfile">The message profile.</param>
-        ''' <param name="securityEntityID">The security entity ID.</param>
-        ''' <param name="functionSeqID">The function seq ID.</param>
-        'Public Shared Sub SendNotifications(ByVal messageProfile As IMessageProfile, ByVal securityEntityID As Integer, ByVal functionSeqID As Integer)
-        '    Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
-        '    Dim mDataTable As New DataTable
-        '    Try
-        '        mDataTable = mBll.GetNotifications(securityEntityID, functionSeqID)
-        '    Catch ex As Exception
-        '        ' consume the exception
-        '    End Try
-        '    If mDataTable.Rows.Count > 0 Then
-        '        Dim mRecipients As String = String.Empty
-        '        Dim mDataRow As DataRow
-        '        For Each mDataRow In mDataTable.Rows
-        '            mRecipients = mRecipients & mDataRow.Item(0).ToString
-        '        Next
-        '        SendMail(messageProfile, mRecipients)
-        '    End If
-        'End Sub
+        '' <summary>
+        '' Sends the notifications.
+        '' </summary>
+        '' <param name="messageProfile">The message profile.</param>
+        '' <param name="securityEntityID">The security entity ID.</param>
+        '' <param name="functionSeqID">The function seq ID.</param>
+        Public Shared Sub SendNotifications(ByVal messageProfile As IMessageProfile, ByVal securityEntityID As Integer, ByVal functionSeqID As Integer)
+            'Dim mBll As New BNotifications(SecurityEntityUtility.GetCurrentProfile, ConfigSettings.CentralManagement)
+            'Dim mDataTable As New DataTable
+            'Try
+            '    mDataTable = mBll.GetNotifications(securityEntityID, functionSeqID)
+            'Catch ex As Exception
+            '    ' consume the exception
+            'End Try
+            'If mDataTable.Rows.Count > 0 Then
+            '    Dim mRecipients As String = String.Empty
+            '    Dim mDataRow As DataRow
+            '    For Each mDataRow In mDataTable.Rows
+            '        mRecipients = mRecipients & mDataRow.Item(0).ToString
+            '    Next
+            '    SendMail(messageProfile, mRecipients)
+            'End If
+        End Sub
 
         ''' <summary>
         ''' Gets the mail client.

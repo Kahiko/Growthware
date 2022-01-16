@@ -1,0 +1,43 @@
+﻿<form id="frmLineCount">
+    <div>
+        <div class="row top-buffer">
+            <div class="col-lg-2" style="width: 145px;">
+                Exclusion Pattern :
+            </div>
+            <div class="col-lg-9">
+                <input type="text" id="txtExclusionPattern" data-ng-model="vm.countInfo.excludePattern" style="width: 500px;" />
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-2" style="width: 145px;">
+                Files :
+            </div>
+            <div class="col-lg-9">
+                <input type="text" id="txtFiles" data-ng-model="vm.countInfo.includeFiles" style="width: 500px;" />
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-2" style="width: 145px;">
+                <span id="spDirectory" class="Form_LabelText">Directory :</span>
+            </div>
+            <div class="col-lg-9">
+                <input type="text" id="txtDirectoryName" data-ng-model="vm.countInfo.theDirectory" style="width: 500px;" />
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-2" style="width: 145px;">
+
+            </div>
+            <div class="col-lg-9">
+                <button class="btn btn-primary" id="btnCount" data-ng-click="getCount()">
+                    Count
+                </button>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-12">
+                <span id="litLineCount" data-ng-bind-html="vm.lineCount"></span>
+            </div>
+        </div>
+    </div>
+</form>

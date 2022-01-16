@@ -1,0 +1,55 @@
+﻿<form id="frmCopyFunctions" style="width: 600px;">
+    <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+    <div class="container container-full" id="tabs">
+        <div class="container">
+            <div class="row top-buffer">
+                <div class="col-lg-12">
+                    Please use with great caution.<br>
+                    Doing this will remove any current Function security information for the target Security Entity!!!
+                </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col-lg-1">
+                    <span class="Form_LabelText">Source: </span>
+                </div>
+                <div class="col-sm-1" style="width: 20px;">
+
+                </div>
+                <div class="col-lg-10">
+                    <select id="source" ng-model="vm.selectedSource" class="rounded">
+                        <option value="0">Please choose one</option>
+                        <option ng:repeat="item in vm.securityEntities" value="{{item.SE_SEQ_ID * 1}}">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="row top-buffer">
+                <div class="col-lg-1">
+                    <span class="Form_LabelText">Target: </span>
+                </div>
+                <div class="col-sm-1" style="width: 20px;">
+
+                </div>
+                <div class="col-lg-10">
+                    <select id="target" ng-model="vm.selectedTarget" class="rounded">
+                        <option value="0">Please choose one</option>
+                        <option ng:repeat="item in vm.securityEntities" value="{{item.SE_SEQ_ID * 1}}">
+                            {{item.Name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right lower-right-buttons">
+            <button class="btn btn-primary" id="btnGo" data-ng-click="go()"> Go </button>
+        </div>
+    </div>
+    <div id="helpPassword" style="display: none">
+        For security reasons passwords are not displayed but are retained.<br />
+        If you are editing the Function and do not want to change the password then<br />
+        simply leave it blank and the original will be kept.<br />
+        If this is a new Function or you wish to change the password then fill out the<br />
+        the box provided.
+    </div>
+</form>

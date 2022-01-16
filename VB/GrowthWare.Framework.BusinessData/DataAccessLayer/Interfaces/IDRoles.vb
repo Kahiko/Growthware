@@ -34,7 +34,7 @@ Namespace DataAccessLayer.Interfaces
         ''' <summary>
         ''' Saves this instance.
         ''' </summary>
-        Sub Save()
+        Function Save() As Integer
 
         ''' <summary>
         ''' Searches the specified search criteria.

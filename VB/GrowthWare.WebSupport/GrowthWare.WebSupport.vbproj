@@ -47,7 +47,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>GrowthWare.WebSupport.pfx</AssemblyOriginatorKeyFile>
@@ -115,6 +115,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <Compile Include="Utilities\AccountUtility.vb" />
+    <Compile Include="Utilities\CalendarUtility.vb" />
     <Compile Include="Utilities\ClientChoicesUtility.vb" />
     <Compile Include="Utilities\DBInformationUtility.vb" />
     <Compile Include="Utilities\DirectoryUtility.vb" />
@@ -126,6 +127,7 @@
     <Compile Include="Utilities\MessageUtility.vb" />
     <Compile Include="Utilities\NameValuePairUtility.vb" />
     <Compile Include="Utilities\NotifyUtility.vb" />
+    <Compile Include="Utilities\StatesUtility.vb" />
     <Compile Include="Utilities\RoleUtility.vb" />
     <Compile Include="Utilities\SecurityEntityUtility.vb" />
     <Compile Include="WebImpersonate.vb" />

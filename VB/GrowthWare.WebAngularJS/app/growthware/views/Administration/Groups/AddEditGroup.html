@@ -1,0 +1,70 @@
+﻿<style>
+    .custom-pane {
+        height: 275px;
+        width: 500px;
+        margin-bottom: 10px;
+    }
+</style>
+<form id="frmAddEditGroup">
+    <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable">
+        <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+            <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit Group</span>
+            <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                <span class="ui-button-text">close</span>
+            </button>
+        </div>
+        <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+        <div class="container container-full" id="tabs">
+            <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                <li role="presentation" class="nav active ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-Roles">Roles</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane custom-pane fade in active" id="tabsGeneral">
+                    <div class="row top-buffer">
+                        <div class="col-lg-2">
+                            <input id="txtGroupSeqId" style="display: none;" />
+                            <span class="Form_LabelText">Name:</span>
+                        </div>
+                        <div class="col-sm-1" style="width: 20px;">
+
+                        </div>
+                        <div class="col-lg-9">
+                            <input ID="txtGroup" TextMode="MultiLine" data-ng-model="vm.profile.Name" class="rounded" MaxLength="128" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128)" Width="190" />
+                        </div>
+                    </div>
+                    <div class="row top-buffer">
+                        <div class="col-lg-2">
+                            <span class="Form_LabelText">Description:</span>
+                        </div>
+                        <div class="col-sm-1" style="width: 20px;">
+
+                        </div>
+                        <div class="col-lg-9">
+                            <textarea ID="txtDescription" data-ng-model="vm.profile.Description" TextMode="MultiLine" MaxLength="512" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" class="rounded" style="height: 100px; width: 200px;" />
+                        </div>
+                    </div>
+                </div>
+                <div id="tabs-Roles" class="tab-pane custom-pane fade in">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <gw-picklist size="200" rows="10" id="ctlAssociatedRoles" data-ng-model="vm.profile.RolesInGroup" selected-items="vm.profile.RolesInGroup" available-items="vm.profile.RolesNotInGroup" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Represents the roles that are a part of this group." header="Associated Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right lower-right-buttons">
+            <button class="btn btn-primary" id="btnSave" ng-click="onSave()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+            </button>
+            <button class="btn btn-primary" id="btnDelete" ng-disabled="!vm.securityInfo.MayDelete" ng-click="onDelete()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+            </button>
+            <button class="btn btn-primary" id="btnCancel" ng-click="onCancel()">
+                <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+            </button>
+        </div>
+    </div>
+</form>

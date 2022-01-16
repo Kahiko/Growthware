@@ -531,12 +531,6 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                         }
                     });
                 } else {
-                    //BootstrapDialog.show({
-                    //    title: options.title,
-                    //    message: $('<div></div>').load(options.url)
-                    //});
-
-
                     if (!$('#myModal').length) {
                         $('body').append(GW.Model.BoostrapModal);
                     }
@@ -551,8 +545,9 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                         show: false,
                         keyboard: true
                     });
+
                     $mModal.on('show', function () {
-                        $('.modal-body', this).css({ width: options.width, height: options.height, 'max-height': '100%', 'max-width': '100%' });
+                        $('div.modal-dialog', this).css({ 'width': options.width, 'height': options.height, 'max-height': '100%', 'max-width': '100%' });
                     });
                     var mModalTitle = $('#myModalTitle');
                     var saveBtnFunction
@@ -562,9 +557,7 @@ if (typeof GW.Common == "undefined" || !GW.Common) {
                             saveBtnFunction = value;
                         }
                     });
-                    //$('#MainContentDiv').load(options.url);
                     $('.modal-body').load(options.url);
-                    //$mModal.find('.callback-btn').off('click.callback').on('click.callback', function () {saveBtnFunction;$mModal.modal('hide');}).end();
                     $('#mModalBtnSave').click(function () {
                         eval("var fn = " + saveBtnFunction);
                         fn();

@@ -275,6 +275,25 @@ namespace GrowthWare.WebSupport.Utilities
 
                 }
             }
+            else
+            {
+                if (HttpContext.Current != null)
+                {
+                    HttpCookie mCookie = HttpContext.Current.Request.Cookies.Get(".ASPXAUTH");
+                    if (mCookie != null)
+                    {
+                        FormsAuthenticationTicket mAuthTicket = FormsAuthentication.Decrypt(mCookie.Value);
+                        if (mAuthTicket != null)
+                        {
+                            GenericIdentity mIdentity = new GenericIdentity(mAuthTicket.Name);
+                            if (mIdentity != null)
+                            {
+                                mRetVal = mIdentity.Name;
+                            }
+                        }
+                    }
+                }
+            }
             return mRetVal;
         }
 

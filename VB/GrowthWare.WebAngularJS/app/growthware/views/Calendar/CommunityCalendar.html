@@ -1,0 +1,77 @@
+﻿<form id="frmCommunityCalendar" runat="server">
+    <div>
+        <table cellspacing="0" cellpadding="0" width="100%" border="0">
+            <tr>
+                <td>
+                    <font color="red">
+                        <asp:Literal ID="litError" runat="server" Visible="False"></asp:Literal>
+                    </font>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" valign="top">
+                    <table width="95%">
+                        <tr>
+                            <td>
+                                <asp:Calendar ID="CalendarControl" class="table table-striped table-bordered" runat="server" Height="250px" Font-Size="9pt" Font-Names="Verdana" DayHeaderStyle-Wrap="false" Width="100%" DayHeaderStyle-HorizontalAlign="NotSet" DayStyle-HorizontalAlign="Left" BorderStyle="Solid" NextPrevFormat="ShortMonth" BackColor="White" ForeColor="Black" CellSpacing="1" BorderColor="Black">
+                                    <TodayDayStyle ForeColor="White" BackColor="#999999"></TodayDayStyle>
+                                    <DayStyle BackColor="#CCCCCC"></DayStyle>
+                                    <NextPrevStyle Font-Size="8pt" Font-Bold="True" ForeColor="White"></NextPrevStyle>
+                                    <DayHeaderStyle Font-Size="8pt" Font-Bold="True" Height="8pt" ForeColor="#333333"></DayHeaderStyle>
+                                    <SelectedDayStyle ForeColor="White" BackColor="#333399"></SelectedDayStyle>
+                                    <TitleStyle Font-Size="12pt" Font-Bold="True" Height="12pt" ForeColor="White" BackColor="#333399"></TitleStyle>
+                                    <OtherMonthDayStyle ForeColor="#999999"></OtherMonthDayStyle>
+                                </asp:Calendar>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" class="table table-striped table-bordered">
+                        <tr>
+                            <td valign="top">
+                                To Enter:
+                                <ul>
+                                    <li>Select the date</li>
+                                    <li>Enter Comment</li>
+                                    <li>Click Save</li>
+                                </ul>
+                            </td>
+                            <td valign="top">
+                                To Delete:
+                                <ul>
+                                    <li>Select the date</li>
+                                    <li>Copy the desired text</li>
+                                    <li>Paste the text into the "Comments:" box</li>
+                                    <li>Click Delete</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                Comments:&nbsp;<asp:TextBox ID="txtComments" runat="server" Width="80%"></asp:TextBox>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <table width="100%" class="table table-striped table-bordered">
+                        <tr>
+                            <td align="left">
+                                <asp:Button ID="BtnSave" runat="server" BackColor="SteelBlue" Width="82px" ForeColor="White" Font-Names="Arial" Text="Save" BorderStyle="None" Font-Bold="True" Visible="False"></asp:Button>
+                            </td>
+                            <td align="right">
+                                <asp:Button ID="BtnDelete" runat="server" BackColor="SteelBlue" Width="80px" ForeColor="White" Font-Names="Arial" Text="Delete" BorderStyle="None" Font-Bold="True" Visible="False"></asp:Button>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+
+    </div>
+</form>

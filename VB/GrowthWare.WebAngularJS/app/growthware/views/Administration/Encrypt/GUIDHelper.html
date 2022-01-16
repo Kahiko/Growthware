@@ -1,0 +1,31 @@
+﻿<form id="frmGUIDHelper">
+    <div class="row">
+        <div class="col-lg-2">
+            <p class="pull-right">
+                <label for="txtProcessed">New GUID:</label>
+                <br />
+                <button class="btn btn-primary" id="btnHightLightDecrypted" data-ng-click="doHighlightAll('txtProcessed')">
+                    <span class="bootstrap-dialog-button-icon glyphicon glyphicon-copy"></span>Highlight Text
+                </button>
+            </p>
+        </div>
+        <div class="col-lg-5">
+            <p>
+                <textarea id="txtProcessed" name="txtProcessed" rows="4" cols="50" data-ng-model="vm.processedText" class="rounded"></textarea>
+            </p>
+        </div>
+        <div class="col-lg-5"></div>
+    </div>
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="pull-right lower-right-buttons">
+                <button class="btn btn-primary" id="btnEncrypt" data-ng-click="doGetGUID()">
+                    Get GUID
+                </button>
+            </div>
+        </div>
+        <div class="col-lg-8">
+
+        </div>
+    </div>
+</form>

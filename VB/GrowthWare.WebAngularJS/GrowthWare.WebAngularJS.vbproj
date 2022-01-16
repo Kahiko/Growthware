@@ -1,0 +1,583 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>
+    </SchemaVersion>
+    <ProjectGuid>{ED1E2E1E-A738-4AC3-B3F0-D4D0B078B266}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{F184B08F-C81C-45F6-A57F-5ABD9991F28F}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>GrowthWare.WebAngularJS</RootNamespace>
+    <AssemblyName>GrowthWare.WebAngularJS</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MyType>Custom</MyType>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <WebGreaseLibPath>..\packages\WebGrease.1.5.2\lib</WebGreaseLibPath>
+    <Use64BitIISExpress />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <DefineDebug>true</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>GrowthWare.WebAngularJS.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <DefineDebug>false</DefineDebug>
+    <DefineTrace>true</DefineTrace>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DocumentationFile>GrowthWare.WebAngularJS.xml</DocumentationFile>
+    <NoWarn>42016,41999,42017,42018,42019,42032,42036,42020,42021,42022</NoWarn>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Antlr3.Runtime, Version=3.4.1.9004, Culture=neutral, PublicKeyToken=eb42632606e9261f, processorArchitecture=MSIL">
+      <HintPath>..\packages\Antlr.3.4.1.9004\lib\Antlr3.Runtime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.1.0\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Owin, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.1.0\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.0\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.0\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.0\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Cookies, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Cookies.3.0.0\lib\net45\Microsoft.Owin.Security.Cookies.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Facebook, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Facebook.3.0.0\lib\net45\Microsoft.Owin.Security.Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Google, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Google.3.0.0\lib\net45\Microsoft.Owin.Security.Google.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.MicrosoftAccount, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.MicrosoftAccount.3.0.0\lib\net45\Microsoft.Owin.Security.MicrosoftAccount.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.0\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Twitter, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Twitter.3.0.0\lib\net45\Microsoft.Owin.Security.Twitter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Optimization, Version=1.1.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.2\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.2\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Linq" />
+    <Import Include="System.Xml.Linq" />
+    <Import Include="System.Diagnostics" />
+    <Import Include="System.Collections.Specialized" />
+    <Import Include="System.Configuration" />
+    <Import Include="System.Text" />
+    <Import Include="System.Text.RegularExpressions" />
+    <Import Include="System.Web" />
+    <Import Include="System.Web.Caching" />
+    <Import Include="System.Web.SessionState" />
+    <Import Include="System.Web.Security" />
+    <Import Include="System.Web.Profile" />
+    <Import Include="System.Web.UI" />
+    <Import Include="System.Web.UI.WebControls" />
+    <Import Include="System.Web.UI.WebControls.WebParts" />
+    <Import Include="System.Web.UI.HtmlControls" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="app\growthware\controllers\AccountCtrl.js" />
+    <Content Include="app\growthware\controllers\ClientChoicesCtrl.js" />
+    <Content Include="app\growthware\controllers\ConfigInfoCtrl.js" />
+    <Content Include="app\growthware\controllers\HierarchicalMenuCtrl.js" />
+    <Content Include="app\growthware\controllers\HorizontalMenuCtrl.js" />
+    <Content Include="app\growthware\directives\ClientMessage\ClientMessageDirective.js" />
+    <Content Include="app\growthware\directives\ClientMessage\ClientMessageTemplate.html" />
+    <Content Include="app\growthware\directives\HorizontalMenuDirective.js" />
+    <Content Include="app\growthware\directives\NumberOnly.js" />
+    <Content Include="app\growthware\services\ConfigurationSvc.js" />
+    <Content Include="app\growthware\services\FileSvc.js" />
+    <Content Include="app\growthware\services\ModalSvc.js" />
+    <Content Include="app\growthware\services\StatesSvc.js" />
+    <Content Include="app\growthware\views\Accounts\SelectPreferences.html" />
+    <Content Include="app\growthware\views\Accounts\SelectPreferencesCtrl.js" />
+    <Content Include="app\growthware\views\Accounts\UpdateSession.html" />
+    <Content Include="app\growthware\views\Accounts\UpdateSessionCtrl.js" />
+    <Content Include="app\growthware\views\Administration\AnonymousAccount\UpdateAnonymousCache.html" />
+    <Content Include="app\growthware\views\Administration\AnonymousAccount\UpdateAnonymousCacheCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Configuration\AddEditDBInformation.html" />
+    <Content Include="app\growthware\views\Administration\Configuration\AddEditDBInformationCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Encrypt\EncryptDecrypt.html" />
+    <Content Include="app\growthware\views\Administration\Encrypt\EncryptDecryptCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Encrypt\GUIDHelper.html" />
+    <Content Include="app\growthware\views\Administration\Encrypt\GUIDHelperCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Encrypt\RandomNumbers.html" />
+    <Content Include="app\growthware\views\Administration\Encrypt\RandomNumbersCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Functions\CopyFunctionSecurity.html" />
+    <Content Include="app\growthware\views\Administration\Functions\CopyFunctionSecurityCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Groups\AddEditGroup.html" />
+    <Content Include="app\growthware\views\Administration\Groups\AddEditGroupCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Logs\SetLogLevel.html" />
+    <Content Include="app\growthware\views\Administration\Logs\SetLogLevelCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Messages\AddEditMessage.html" />
+    <Content Include="app\growthware\views\Administration\Messages\AddEditMessageCtrl.js" />
+    <Content Include="app\growthware\views\Administration\NVP\AddEditNVPDetailCtrl.js" />
+    <Content Include="app\growthware\views\Administration\NVP\AddEditNVPDetails.html" />
+    <None Include="app\growthware\views\Administration\NVP\Readme.md" />
+    <Content Include="app\growthware\views\Administration\Roles\AddEditRole.html" />
+    <Content Include="app\growthware\views\Administration\Roles\AddEditRoleCtrl.js" />
+    <Content Include="app\growthware\views\Administration\SecurityEntities\AddEditSecurityEntities.html" />
+    <Content Include="app\growthware\views\Administration\SecurityEntities\AddEditSecurityEntityCtrl.js" />
+    <Content Include="app\growthware\views\Administration\States\AddEditStateCtrl.js" />
+    <Content Include="app\growthware\views\Administration\States\AddEditState.html" />
+    <Content Include="app\growthware\views\Administration\WorkFlow\AddEditWorkFlow.html" />
+    <Content Include="app\growthware\views\Administration\WorkFlow\AddEditWorkFlowCtrl.js" />
+    <Content Include="app\growthware\views\Calendar\CommunityCalendar.html" />
+    <Content Include="app\growthware\views\Calendar\CommunityCalendarCtrl.js" />
+    <Content Include="app\growthware\views\FileManagement\AddDirectory.html" />
+    <Content Include="app\growthware\views\FileManagement\AddDirectoryCtrl.js" />
+    <Content Include="app\growthware\views\FileManagement\FileManager.html" />
+    <Content Include="app\growthware\views\FileManagement\FileManagerCtrl.js" />
+    <Content Include="app\growthware\views\Home\GenericHomeCtrl.js" />
+    <Content Include="app\growthware\views\LineCount.html" />
+    <Content Include="app\growthware\views\LineCountCtrl.js" />
+    <Content Include="app\growthware\views\Templates\ModalPopupCtrl.js" />
+    <Content Include="app\growthware\controllers\TemplateCntrl.js" />
+    <Content Include="app\growthware\controllers\VerticalMenuCtrl.js" />
+    <Content Include="app\growthware\directives\ClientChoicesStyle.js" />
+    <Content Include="app\growthware\directives\DerivedRoles\DerivedRolesDirective.js" />
+    <Content Include="app\growthware\directives\DerivedRoles\DerivedRolesTemplate.html" />
+    <Content Include="app\growthware\directives\PickList\PicklistDirective.js" />
+    <Content Include="app\growthware\directives\PickList\PicklistTemplate.html" />
+    <Content Include="app\growthware\services\FunctionSvc.js" />
+    <Content Include="app\growthware\services\GroupSvc.js" />
+    <Content Include="app\growthware\services\MessagesSvc.js" />
+    <Content Include="app\growthware\services\RoleSvc.js" />
+    <Content Include="app\growthware\services\SecurityEntitySvc.js" />
+    <Content Include="app\growthware\services\TemplateSvc.js" />
+    <Content Include="app\growthware\views\Accounts\ChangePassword.html" />
+    <Content Include="app\growthware\views\Accounts\ChangePasswordCtrl.js" />
+    <Content Include="app\growthware\views\Accounts\LogoffCtrl.js" />
+    <Content Include="app\growthware\views\Accounts\LogonCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Accounts\AddEditAccount.html" />
+    <Content Include="app\growthware\views\Administration\Accounts\AddEditAccountCtrl.js" />
+    <Content Include="app\growthware\views\Administration\Functions\AddEditFunction.html" />
+    <Content Include="app\growthware\views\Administration\Functions\AddEditFunctionCtrl.js" />
+    <Content Include="app\growthware\views\Errors\AccessDenied.html" />
+    <Content Include="app\growthware\views\Errors\UnknownAction.html" />
+    <Content Include="app\growthware\views\ExternalAuth\RegisterExternalLogin.html" />
+    <Content Include="app\growthware\views\Search\SearchCtrl.js" />
+    <Content Include="app\growthware\directives\LoadingDirective.js" />
+    <Content Include="app\growthware\GrowthwareApp.js" />
+    <Content Include="app\growthware\services\AccountSvc.js" />
+    <Content Include="app\growthware\services\SearchSvc.js" />
+    <Content Include="app\growthware\views\Accounts\Logoff.html" />
+    <Content Include="app\growthware\views\Accounts\Logon.html" />
+    <Content Include="app\growthware\views\Home\Home.html" />
+    <Content Include="app\growthware\views\Search\SearchPage.html" />
+    <Content Include="app\growthware\views\SecurityEntities\SelectSecurityEntity.html" />
+    <Content Include="app\growthware\views\SecurityEntities\SelectSecurityEntityCtrl.js" />
+    <Content Include="app\growthware\views\Templates\ModalPopup.html" />
+    <Content Include="app\growthware\views\TestNaturalSortCtrl.js" />
+    <Content Include="app\growthware\views\TestNaturalSort.html" />
+    <Content Include="Content\BootstrapDialog\bootstrap-dialog.css" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap-theme.css" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap-theme.min.css" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap.css" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap.min.css" />
+    <Content Include="Content\Bootstrap-3.1.1\fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Content\Bootstrap-3.1.1\js\bootstrap.js" />
+    <Content Include="Content\Bootstrap-3.1.1\js\bootstrap.min.js" />
+    <Content Include="Content\font-awesome-4.6.2\css\font-awesome.css" />
+    <Content Include="Content\font-awesome-4.6.2\css\font-awesome.min.css" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\font-awesome-4.6.2\HELP-US-OUT.txt" />
+    <Content Include="Content\FormStyles\Arc.css" />
+    <Content Include="Content\FormStyles\Blue Arrow.css" />
+    <Content Include="Content\FormStyles\Default.css" />
+    <Content Include="Content\GrowthWare\Images\Add.png" />
+    <Content Include="Content\GrowthWare\Images\ajax-loader.gif" />
+    <Content Include="Content\GrowthWare\Images\ajax-loader_Green.gif" />
+    <Content Include="Content\GrowthWare\Images\delete_red.png" />
+    <Content Include="Content\GrowthWare\Images\Error.png" />
+    <Content Include="Content\GrowthWare\Images\File.gif" />
+    <Content Include="Content\GrowthWare\Images\Folder.gif" />
+    <Content Include="Content\GrowthWare\Images\help.gif" />
+    <Content Include="Content\GrowthWare\Images\help_and_support.png" />
+    <Content Include="Content\GrowthWare\Images\list-edit.png" />
+    <Content Include="Content\GrowthWare\Images\Misc\sidebar_blue.gif" />
+    <Content Include="Content\GrowthWare\Images\Misc\sidebar_green.gif" />
+    <Content Include="Content\GrowthWare\Images\Misc\sidebar_purple.gif" />
+    <Content Include="Content\GrowthWare\Images\Misc\sidebar_red.gif" />
+    <Content Include="Content\GrowthWare\Images\Misc\sidebar_yellow.gif" />
+    <Content Include="Content\GrowthWare\Images\new_folder.png" />
+    <Content Include="Content\GrowthWare\Images\Paging\first_blue.png" />
+    <Content Include="Content\GrowthWare\Images\Paging\last_blue.png" />
+    <Content Include="Content\GrowthWare\Images\Paging\next_blue.png" />
+    <Content Include="Content\GrowthWare\Images\Paging\previous_blue.png" />
+    <Content Include="Content\GrowthWare\Images\progress-bar.gif" />
+    <Content Include="Content\GrowthWare\Images\sort_asc.png" />
+    <Content Include="Content\GrowthWare\Images\sort_desc.png" />
+    <Content Include="Content\GrowthWare\Images\Spacer.gif" />
+    <Content Include="Content\GrowthWare\Scripts\GW.Enum.js" />
+    <Content Include="Content\GrowthWare\Styles\GrowthWare.css" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_flat_0_aaaaaa_40x100.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_flat_55_fbec88_40x100.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_glass_75_d0e5f5_1x400.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_glass_85_dfeffc_1x400.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_glass_95_fef1ec_1x400.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_gloss-wave_55_5c9ccc_500x100.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_f5f8f9_1x100.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-bg_inset-hard_100_fcfdfd_1x100.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_217bc0_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_2e83ff_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_469bdd_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_6da8d5_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_cd0a0a_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_d8e7f3_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\images\ui-icons_f9bd01_256x240.png" />
+    <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.css" />
+    <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.structure.css" />
+    <Content Include="Content\jQueryUIThemes\Redmond\jquery-ui.theme.css" />
+    <Content Include="Content\Scripts\ie10-viewport-bug-workaround.js" />
+    <Content Include="Content\Scripts\ui-bootstrap-tpls-1.3.3.js" />
+    <Content Include="Content\Skins\Dashboard\CSS\ie10-viewport-bug-workaround.css" />
+    <Content Include="Content\Skins\Dashboard\CSS\Skin.css" />
+    <Content Include="Content\Skins\Dashboard\CSS\style-responsive.css" />
+    <Content Include="Content\Skins\Dashboard\CSS\widgets.css" />
+    <Content Include="Content\Skins\Dashboard\js\jquery.nicescroll.js" />
+    <Content Include="Content\Skins\Dashboard\js\jquery.scrollTo.min.js" />
+    <Content Include="Content\Skins\Dashboard\js\jquery.slimscroll.min.js" />
+    <Content Include="Content\Skins\Dashboard\js\scripts.js" />
+    <Content Include="Content\Skins\Default\CSS\Skin.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="favicon.ico" />
+    <Content Include="app\growthware\views\Home\GenericHome.html" />
+    <Content Include="Global.asax" />
+    <Content Include="Content\BootstrapDialog\bootstrap-dialog.js" />
+    <Content Include="Content\Scripts\date.format.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.Common.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.FileManager.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.Model.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.NavigationController.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.NavigationHandler.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.Search.js" />
+    <Content Include="Content\GrowthWare\Scripts\GW.Upload.js" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap-theme.css.map" />
+    <Content Include="Content\Bootstrap-3.1.1\css\bootstrap.css.map" />
+    <Content Include="Content\Bootstrap-3.1.1\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\Bootstrap-3.1.1\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\Bootstrap-3.1.1\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\font-awesome-4.6.2\fonts\FontAwesome.otf" />
+    <Content Include="Content\font-awesome-4.6.2\less\animated.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\bordered-pulled.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\core.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\fixed-width.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\font-awesome.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\icons.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\larger.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\list.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\mixins.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\path.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\rotated-flipped.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\screen-reader.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\stacked.less" />
+    <Content Include="Content\font-awesome-4.6.2\less\variables.less" />
+    <Content Include="Content\font-awesome-4.6.2\scss\font-awesome.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_animated.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_bordered-pulled.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_core.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_fixed-width.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_icons.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_larger.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_list.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_mixins.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_path.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_rotated-flipped.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_screen-reader.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_stacked.scss" />
+    <Content Include="Content\font-awesome-4.6.2\scss\_variables.scss" />
+    <Content Include="app\growthware\data\Search.config.json" />
+    <None Include="Content\Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Content\Scripts\jquery-1.10.2.js" />
+    <Content Include="Content\Scripts\jquery-ui-1.11.2.js" />
+    <Content Include="Content\Scripts\jquery-ui-1.11.2.min.js" />
+    <Content Include="Content\Scripts\jquery.tmpl.js" />
+    <Content Include="Scripts\angular-animate.js" />
+    <Content Include="Scripts\angular-animate.min.js" />
+    <Content Include="Scripts\angular-mocks.js" />
+    <Content Include="Scripts\angular-resource.js" />
+    <Content Include="Scripts\angular-resource.min.js" />
+    <Content Include="Scripts\angular-route.js" />
+    <Content Include="Scripts\angular-route.min.js" />
+    <Content Include="Scripts\angular-sanitize.js" />
+    <Content Include="Scripts\angular-sanitize.min.js" />
+    <Content Include="Scripts\angular.js" />
+    <Content Include="Scripts\angular.min.js" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.vb" />
+    <Compile Include="App_Start\Startup.Auth.vb" />
+    <Compile Include="App_Start\Startup.vb" />
+    <Compile Include="App_Start\WebApiConfig.vb" />
+    <Compile Include="Content\Skins\Dashboard\Dashboard.Master.designer.vb">
+      <DependentUpon>Dashboard.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Skins\Dashboard\Dashboard.Master.vb">
+      <DependentUpon>Dashboard.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Content\Skins\Default\Default.Master.designer.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+    </Compile>
+    <Compile Include="Content\Skins\Default\Default.Master.vb">
+      <DependentUpon>Default.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Controllers\AccountsController.vb" />
+    <Compile Include="Controllers\CalendarController.vb" />
+    <Compile Include="Controllers\ConfigInfoController.vb" />
+    <Compile Include="Controllers\FileManagerController.vb" />
+    <Compile Include="Controllers\FunctionsController.vb" />
+    <Compile Include="Controllers\GroupsController.vb" />
+    <Compile Include="Controllers\MessagesController.vb" />
+    <Compile Include="Controllers\NameValuePairController.vb" />
+    <Compile Include="Controllers\RolesController.vb" />
+    <Compile Include="Controllers\SecurityEntitiesController.vb" />
+    <Compile Include="Controllers\SessionableControllerHandler .vb" />
+    <Compile Include="Controllers\SessionStateRouteHandler .vb" />
+    <Compile Include="Controllers\States.vb" />
+    <Compile Include="Default.aspx.designer.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.vb">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Global.asax.vb">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CountInfo.vb" />
+    <Compile Include="Models\MUIAccountChoices.vb" />
+    <Compile Include="Models\MUIAccountGroups.vb" />
+    <Compile Include="Models\MUIAccountProfile.vb" />
+    <Compile Include="Models\MUIAccountRoles.vb" />
+    <Compile Include="Models\MUIAccounts.vb" />
+    <Compile Include="Models\MUIChangePassword.vb" />
+    <Compile Include="Models\MUIConfigInfo.vb" />
+    <Compile Include="Models\MUIDirectoryData.vb" />
+    <Compile Include="Models\MUIDirectoryProfile.vb" />
+    <Compile Include="Models\MUIFileInfo.vb" />
+    <Compile Include="Models\MUIFunctionInformation.vb" />
+    <Compile Include="Models\MUIFunctionMenuOrder.vb" />
+    <Compile Include="Models\MUIFunctionProfile.vb" />
+    <Compile Include="Models\MUIFunctionRolesGroups.vb" />
+    <Compile Include="Models\MUIGroupProfile.vb" />
+    <Compile Include="Models\MUILogonInfo.vb" />
+    <Compile Include="Models\MUIMessageProfile.vb" />
+    <Compile Include="Models\MUINVPDetailProfile.vb" />
+    <Compile Include="Models\MUINVPProfile.vb" />
+    <Compile Include="Models\MUIPostalSateProfile.vb" />
+    <Compile Include="Models\MUIRequestDirectory.vb" />
+    <Compile Include="Models\MUIRequestDirectoryLinksInfo.vb" />
+    <Compile Include="Models\MUIRoleProfile.vb" />
+    <Compile Include="Models\MUISecurityEntityProfile.vb" />
+    <Compile Include="Models\MUISecurityInfo.vb" />
+    <Compile Include="Models\MUIState.vb" />
+    <Compile Include="Models\MUITestNaturalSort.vb" />
+    <Compile Include="My Project\AssemblyInfo.vb" />
+    <Compile Include="My Project\Application.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Application.myapp</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\MyExtensions\MyWebExtension.vb">
+      <VBMyExtensionTemplateID>Microsoft.VisualBasic.Web.MyExtension</VBMyExtensionTemplateID>
+      <VBMyExtensionTemplateVersion>1.0.0.0</VBMyExtensionTemplateVersion>
+    </Compile>
+    <Compile Include="My Project\Resources.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="My Project\Settings.Designer.vb">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="My Project\Resources.resx">
+      <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.vb</LastGenOutput>
+      <CustomToolNamespace>My.Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Content\Skins\Default\Default.Master" />
+    <Content Include="Content\Skins\Dashboard\Dashboard.Master" />
+    <None Include="My Project\Application.myapp">
+      <Generator>MyApplicationCodeGenerator</Generator>
+      <LastGenOutput>Application.Designer.vb</LastGenOutput>
+    </None>
+    <None Include="My Project\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <CustomToolNamespace>My</CustomToolNamespace>
+      <LastGenOutput>Settings.Designer.vb</LastGenOutput>
+    </None>
+    <Content Include="packages.config" />
+    <Content Include="Scripts\angular.min.js.map" />
+    <Content Include="Scripts\angular-animate.min.js.map" />
+    <Content Include="Scripts\angular-route.min.js.map" />
+    <Content Include="Scripts\angular-resource.min.js.map" />
+    <Content Include="Scripts\angular-sanitize.min.js.map" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.vbproj">
+      <Project>{147682f0-c578-4f06-9d87-5f5935086212}</Project>
+      <Name>GrowthWare.Framework</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GrowthWare.WebSupport\GrowthWare.WebSupport.vbproj">
+      <Project>{ce3e125d-0a3e-4f4d-b246-7a7931744a58}</Project>
+      <Name>GrowthWare.WebSupport</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionExplicit>On</OptionExplicit>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionCompare>Text</OptionCompare>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionStrict>Off</OptionStrict>
+  </PropertyGroup>
+  <PropertyGroup>
+    <OptionInfer>On</OptionInfer>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.VisualBasic.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>50010</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:49879/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -12,7 +12,22 @@ Public Class MSecurityEntityProfile
         ''' </summary>
         ''' <remarks></remarks>
         Public Sub New()
-
+            MyBase.IdColumnName = "SE_SEQ_ID"
+            MyBase.NameColumnName = "Name"
+            Me.Id = -1
+            Me.Name = " "
+            Description = " "
+            Url = " "
+            Skin = "Default"
+            Style = "Default"
+            ParentSeqId = 1
+            StatusSeqId = 1
+            DataAccessLayer = "SQLServer"
+            DataAccessLayerAssemblyName = "GrowthWare.Framework.BusinessData"
+            DataAccessLayerNamespace = "GrowthWare.Framework.BusinessData.DataAccessLayer.SQLServer.V2008"
+            ConnectionString = " "
+            Name = " "
+            EncryptionType = 1
         End Sub
 
         ''' <summary>

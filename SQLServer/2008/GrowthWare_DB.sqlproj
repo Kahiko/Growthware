@@ -77,6 +77,7 @@
     <Folder Include="ZGWSecurity\Stored Procedures\" />
     <Folder Include="ZGWSystem\Stored Procedures\" />
     <Folder Include="Security\" />
+    <Folder Include="ZGWOptional\Views" />
   </ItemGroup>
   <ItemGroup>
     <Build Include="ZGWCoreWeb\Tables\Notifications.sql" />
@@ -207,6 +208,7 @@
     <Build Include="Security\ZGWSecurity.sql" />
     <Build Include="Security\ZGWSystem.sql" />
     <Build Include="ZGWSystem\Stored Procedures\PrepForAngularJS.sql" />
+    <Build Include="ZGWOptional\Views\vwSearchStates.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.PostDeployment.sql" />
@@ -214,6 +216,9 @@
   <ItemGroup>
     <None Include="GrowthWare_DB.publish.xml" />
     <None Include="Changes For Previous DB Release.sql" />
+    <None Include="ZGWOptional\Stored Procedures\Set_Calendar_Data.sql" />
+    <None Include="ZGWOptional\Stored Procedures\Get_Calendar.sql" />
+    <None Include="ZGWOptional\Stored Procedures\Delete_Calendar_Data.sql" />
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="GrowthWare_DB.refactorlog" />

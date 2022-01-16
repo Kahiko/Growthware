@@ -1,0 +1,84 @@
+﻿<style>
+    td {
+        padding: 5px;
+    }
+</style>
+<form id="frmAddEditMessages">
+    <div>
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit Message - "{{vm.profile.Name}}"</span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                    <span class="ui-button-text">close</span>
+                </button>
+            </div>
+            <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+            <div class="container container-full" id="tabs">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li role="presentation" class="nav active ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabsGeneral">
+                        <div class="pageDescription">
+                            In this page, you can add or edit messages, which can be used as error or general information text in response to an action by a user. For example, 'Invalid Password' or 'Please allow 24 hours for your submission to appear.'
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-1">
+                                <span class="Form_LabelText">Name:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-10">
+                                <span id="lblName" class="Form_Field">{{vm.profile.Name}}</span>
+                                <input type="text" id="txtName" data-ng-model="vm.profile.Name" class="rounded" data-ng-show="false" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-12">
+                                <span class="Form_LabelText">Description: </span><br />
+                                <input type="text" id="txtDescription" data-ng-model="vm.profile.Description" class="rounded" style="height: 49px; width: 887px;" TextMode="MultiLine" MaxLength="128" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128)" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-6">
+                                <span class="Form_LabelText">Title: </span><br />
+                                <input type="text" id="txtMessageTitle" data-ng-model="vm.profile.Title" class="rounded" Columns="50" MaxLength="100" style="Width: 100%;" />
+                            </div>
+                            <div class="col-lg-6">
+                                <span class="Form_LabelText">Avalible Tags: </span><br />
+                                <textarea id="txtTags" data-ng-model="vm.profile.AvalibleTags" class="rounded" TextMode="MultiLine" Columns="15" Rows="5" style="Width: 100%;" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-12">
+                                <input type="checkbox" id="chkFormatAsHTML" data-ng-model="vm.profile.FormatAsHtml" />
+                                <label for="chkEnableNotifications">Enable Notifications</label>
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-1">
+                                <span class="Form_LabelText">Message Body:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea type="text" id="txtMessageBody" data-ng-model="vm.profile.Body" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 100%;" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pull-right lower-right-buttons">
+                    <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                    </button>
+                    <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

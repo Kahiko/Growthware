@@ -5,6 +5,7 @@ Imports GrowthWare.Framework.Model.Enumerations
 Imports System.Web
 Imports System.Globalization
 Imports GrowthWare.Framework.BusinessData.DataAccessLayer
+Imports System.Collections.ObjectModel
 
 Namespace Utilities
     Public Class RoleUtility
@@ -76,6 +77,17 @@ Namespace Utilities
             Return colAccounts
         End Function
 
+        Public Shared Function GetAllAccountsBySecurityEntity() As ArrayList
+            Dim mCurrentAccount As MAccountProfile = AccountUtility.CurrentProfile()
+            Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mAccountProfiles As Collection(Of MAccountProfile) = AccountUtility.GetAccounts(mCurrentAccount)
+            Dim mRetVal As ArrayList = New ArrayList()
+            For Each mAccountProfile As MAccountProfile In mAccountProfiles
+                mRetVal.Add(mAccountProfile.Account)
+            Next
+            Return mRetVal
+        End Function
+
         ''' <summary>
         ''' Gets all roles by security entity.
         ''' </summary>
@@ -117,12 +129,13 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Shared Sub Save(profile As MRoleProfile)
+        Public Shared Function Save(profile As MRoleProfile) As Integer
+            Dim mRetVal As Integer
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be blank or a null reference (Nothing in Visual Basic)")
             profile.SecurityEntityId = SecurityEntityUtility.CurrentProfile.Id
             Dim mBRoles As BRoles = New BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Try
-                mBRoles.Save(profile)
+                mRetVal = mBRoles.Save(profile)
                 RoleUtility.RemoveRoleCache(profile.SecurityEntityId)
                 FunctionUtility.RemoveCachedFunctions()
             Catch ex As DataAccessLayerException
@@ -131,7 +144,8 @@ Namespace Utilities
                 mLog.Error(ex)
                 Throw mEx
             End Try
-        End Sub
+            Return mRetVal
+        End Function
 
         ''' <summary>
         ''' Searches the specified search criteria.

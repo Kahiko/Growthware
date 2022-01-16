@@ -16,10 +16,10 @@ Namespace BusinessLogicLayer
 
         End Sub
 
-        Public Sub Save(ByVal profile As MGroupProfile)
+        Public Function Save(ByVal profile As MGroupProfile) As Integer
             m_DGroups.Profile = profile
-            m_DGroups.Save()
-        End Sub
+            Return m_DGroups.Save()
+        End Function
 
         ''' <summary>
         ''' Parameters are need to pass along to the factory for correct connection to the desired datastore.

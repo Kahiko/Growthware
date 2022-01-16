@@ -31,11 +31,15 @@ Namespace BusinessLogicLayer
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Sub Save(profile As MRoleProfile)
+        Public Function Save(profile As MRoleProfile) As Integer
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
+            Dim mRetVal As Integer
             m_BRoles.Profile = profile
-            If DatabaseIsOnline() Then m_BRoles.Save()
-        End Sub
+            If DatabaseIsOnline() Then
+                mRetVal = m_BRoles.Save()
+            End If
+            Return mRetVal
+        End Function
 
         ''' <summary>
         ''' Searches the specified search critera.

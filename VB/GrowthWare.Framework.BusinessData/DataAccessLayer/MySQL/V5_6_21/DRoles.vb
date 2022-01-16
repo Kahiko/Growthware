@@ -60,11 +60,14 @@ Namespace DataAccessLayer.MySql.V5621
 
         Public Property Profile As MRoleProfile Implements IDRoles.Profile
 
-        Public Sub Save() Implements IDRoles.Save
+        Public Function Save() As Integer Implements IDRoles.Save
+            Dim mRetVal As Integer
             Dim mStoredProcedure As String = "ZGWSecurity.Set_Role"
             Dim mParameters() As MySqlParameter = getInsertUpdateParameters()
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
-        End Sub
+            mRetVal = Integer.Parse(MyBase.GetParameterValue("@P_Primary_Key", mParameters))
+            Return mRetVal
+        End Function
 
         Public Function Search(ByVal searchCriteria As MSearchCriteria) As DataTable Implements IDRoles.Search
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!")

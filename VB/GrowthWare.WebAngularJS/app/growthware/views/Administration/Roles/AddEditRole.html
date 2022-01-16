@@ -1,0 +1,82 @@
+﻿<form id="frmAddEditRole">
+    <div>
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable" style="width: 600px; border: solid;">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit Role</span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                    <span class="ui-button-text">close</span>
+                </button>
+            </div>
+            <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+            <div class="container container-full" id="tabs">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li role="presentation" class="nav active ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabsGeneral">General</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabsMembers">Members</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabsGeneral">
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Name:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+                            </div>
+                            <div class="col-lg-9">
+                                <input id="txtRoleSeqId" data-ng-model="vm.profile.Id" style="display: none;" />
+                                <input ID="txtRole" data-ng-model="vm.profile.Name" CssClass="rounded" MaxLength="128" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,128)" Width="190" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Description:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <textarea ID="txtDescription" data-ng-model="vm.profile.Description" TextMode="MultiLine" Height="80px" CssClass="rounded" MaxLength="512" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" Width="190" Columns="40" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Is System:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="checkbox" id="chkIsSystem" data-ng-model="vm.profile.IsSystem" data-ng-disabled="vm.isSystemDisabled" />
+                            </div>
+                        </div>
+                        <div class="row top-buffer">
+                            <div class="col-lg-2">
+                                <span class="Form_LabelText">Is System Only:</span>
+                            </div>
+                            <div class="col-sm-1" style="width: 20px;">
+
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="checkbox" id="chkIsSystemOnly" data-ng-model="vm.profile.IsSystemOnly" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade in" id="tabsMembers">
+                        <gw-picklist size="200" rows="10" id="ctlAccounts" data-ng-model="vm.profile.AccountsInRole" selected-items="vm.profile.AccountsInRole" available-items="vm.profile.AccountsNotInRole" all-items-text="Avalible Accounts" selected-items-text="Selected Acounts" picklist-table-help="Determines who belongs to this role." header="Associated Accounts" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                    </div>
+                </div>
+                <div class="pull-right lower-right-buttons">
+                    <button class="btn btn-primary" id="btnSave" ng-click="onSave()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                    </button>
+                    <button class="btn btn-primary" id="btnDelete" ng-disabled="!vm.securityInfo.MayDelete" ng-click="onDelete()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+                    </button>
+                    <button class="btn btn-primary" id="btnCancel" ng-click="onCancel()">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

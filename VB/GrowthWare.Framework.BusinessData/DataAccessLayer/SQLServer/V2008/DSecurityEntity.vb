@@ -82,7 +82,6 @@ Namespace DataAccessLayer.SQLServer.V2008
             profile.Id = Integer.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture)
             Return profile.Id
         End Function
-
         Public Function Search(searchCriteria As Model.Profiles.MSearchCriteria) As System.Data.DataTable Implements Interfaces.IDSecurityEntity.Search
             If searchCriteria Is Nothing Then Throw New ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!.")
             Dim mRetVal As DataTable
@@ -99,6 +98,7 @@ Namespace DataAccessLayer.SQLServer.V2008
             mRetVal = MyBase.GetDataTable("ZGWSystem.Get_Paginated_Data", mParameters)
             Return mRetVal
         End Function
+
 
     End Class
 End Namespace

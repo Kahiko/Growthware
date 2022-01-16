@@ -49,7 +49,7 @@
     <OptionInfer>On</OptionInfer>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>GrowthWare.Framework.pfx</AssemblyOriginatorKeyFile>
@@ -115,6 +115,7 @@
     <Compile Include="Model\Profiles\MSearchCriteria.vb" />
     <Compile Include="Model\Profiles\MSecurityEntityProfile.vb" />
     <Compile Include="Model\Profiles\MSecurityInfo.vb" />
+    <Compile Include="Model\Profiles\MStateProfile.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />
     <Compile Include="My Project\Application.Designer.vb">
       <AutoGen>True</AutoGen>

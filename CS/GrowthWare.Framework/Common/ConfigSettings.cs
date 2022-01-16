@@ -699,6 +699,15 @@ namespace GrowthWare.Framework.Common
         }
 
         /// <summary>
+        /// Returns Assembly from the web config and used to load the correct assembly name
+        /// </summary>
+        public static string WebAssemblyName
+        {
+            get { return GetAppSettingValue("Assembly", false); }
+        }
+
+
+        /// <summary>
         /// Truncates a given string and adds ...
         /// </summary>
         /// <param name="text">String to be truncated</param>
@@ -732,6 +741,30 @@ namespace GrowthWare.Framework.Common
             else 
             {
                 return ConfigurationManager.AppSettings[settingName];
+            }
+        }
+        /// <summary>
+        /// Return the AngularJS value from the web.config file as a boolean
+        /// </summary>
+        /// <returns>Boolean</returns>
+        /// <remarks>If there is an error reading the config file, this will return "False"</remarks>
+        public static bool IsAngularJSApplication
+        {
+            get
+            {
+                bool mRetVal = false;
+                try
+                {
+                    mRetVal = bool.Parse(GetAppSettingValue("AngularJS", false));
+                }
+                catch (Exception)
+                {
+                    // one of the few times that we will hide the error
+                    // if there is no entry then it will be assumed 
+                    // the application is not angularJS enable
+                }
+                return mRetVal;
+
             }
         }
 

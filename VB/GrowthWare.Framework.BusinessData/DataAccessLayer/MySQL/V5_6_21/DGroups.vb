@@ -58,11 +58,14 @@ Namespace DataAccessLayer.MySql.V5621
 
         Public Property Profile As MGroupProfile Implements IDGroups.Profile
 
-        Public Sub Save() Implements IDGroups.Save
+        Public Function Save() As Integer Implements IDGroups.Save
             Dim mParameters() As MySqlParameter = GetInsertUpdateParameters()
             Dim mStoredProcedure As String = "ZGWSecurity.Set_Group"
+            Dim mRetVal As Integer
             MyBase.ExecuteNonQuery(mStoredProcedure, mParameters)
-        End Sub
+            mRetVal = Integer.Parse(MyBase.GetParameterValue("P_Group_SeqID", mParameters))
+            Return mRetVal
+        End Function
 
         Public Sub UpdateGroupRoles() Implements IDGroups.UpdateGroupRoles
             If GroupRolesProfile.GroupSeqId = -1 Then

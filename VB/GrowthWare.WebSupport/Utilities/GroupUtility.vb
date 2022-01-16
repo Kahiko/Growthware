@@ -70,8 +70,12 @@ Namespace Utilities
         ''' <param name="groupId">The group ID.</param>
         ''' <returns>MGroupProfile.</returns>
         Public Shared Function GetProfile(ByVal groupId As Integer) As MGroupProfile
-            Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
-            Return mBGroups.GetProfile(groupId)
+            Dim mRetVal As New MGroupProfile()
+            If (groupId <> -1) Then
+                Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
+                mRetVal = mBGroups.GetProfile(groupId)
+            End If
+            Return mRetVal
         End Function
 
         ''' <summary>
@@ -81,8 +85,7 @@ Namespace Utilities
         ''' <returns>System.String[][].</returns>
         Public Shared Function GetSelectedRoles(ByVal profile As MGroupRoles) As String()
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!")
-            Dim ClientRoles As New ArrayList
-            Dim mBGroups As BGroups = New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
+            Dim mBGroups As New BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement)
             Return mBGroups.GetSelectedRoles(profile)
         End Function
 
@@ -90,15 +93,17 @@ Namespace Utilities
         ''' Saves the specified profile.
         ''' </summary>
         ''' <param name="profile">The profile.</param>
-        Public Shared Sub Save(ByVal profile As MGroupProfile)
+        Public Shared Function Save(ByVal profile As MGroupProfile) As Integer
             If profile Is Nothing Then Throw New ArgumentNullException("profile", "profile can not be null (Nothing in Visual Basic) or empty!")
             Dim mSecurityEntityProfile As MSecurityEntityProfile = SecurityEntityUtility.CurrentProfile()
             Dim mBGroups As BGroups = New BGroups(mSecurityEntityProfile, ConfigSettings.CentralManagement)
+            Dim mGroupSeqId As Integer
             profile.SecurityEntityId = mSecurityEntityProfile.Id
-            mBGroups.Save(profile)
+            mGroupSeqId = mBGroups.Save(profile)
             CacheController.RemoveFromCache(SecurityEntitiesGroupsCacheName(profile.SecurityEntityId))
             CacheController.RemoveAllCache()
-        End Sub
+            Return mGroupSeqId
+        End Function
 
         ''' <summary>
         ''' Deletes the specified profile.

@@ -1,0 +1,55 @@
+﻿<style>
+    label textarea {
+        vertical-align: top;
+    }
+    .formfield * {
+        vertical-align: top;
+    }
+</style>
+<form id="frmEncryptDecrypt">
+    <div>
+        <div class="row">
+            <div class="col-lg-2">
+                <p class="pull-right">
+                    <label for="txtValue">Text: </label>
+                </p>
+            </div>
+            <div class="col-lg-5">
+                <textarea id="txtValue" name="txtValue" rows="4" cols="50" data-ng-model="vm.textValue" class="rounded">Textarea</textarea>
+            </div>
+            <div class="col-lg-5"></div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-2">
+                <p class="pull-right">
+                    <label for="txtProcessed">Processed Text:</label>
+                    <br/>
+                    <button class="btn btn-primary" id="btnHightLightDecrypted" data-ng-click="doHighlightAll('txtProcessed')">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-copy"></span>Highlight Text
+                    </button>
+                </p>
+            </div>
+            <div class="col-lg-5">
+                <p>
+                    <textarea id="txtProcessed" name="txtProcessed" rows="4" cols="50" data-ng-model="vm.processedText" class="rounded"></textarea>
+                </p>
+            </div>
+            <div class="col-lg-5"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="pull-right lower-right-buttons">
+                    <button class="btn btn-primary" id="btnEncrypt" data-ng-click="doProcessTextValue(true)">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Encrypt
+                    </button>
+                    <button class="btn btn-primary" id="btnDecrypt" data-ng-click="doProcessTextValue(false)">
+                        <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Decrypt
+                    </button>
+                </div>
+            </div>
+            <div class="col-lg-8">
+
+            </div>
+        </div>
+    </div>
+</form>

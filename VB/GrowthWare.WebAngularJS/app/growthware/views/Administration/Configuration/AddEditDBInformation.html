@@ -1,0 +1,43 @@
+﻿<form id="frmAddEditDBInformation">
+    <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+    <div>
+        <div class="row top-buffer">
+            <div class="col-lg-1">
+                <span class="Form_LabelText">Version:</span>
+            </div>
+            <div class="col-sm-1" style="width: 20px;">
+
+            </div>
+            <div class="col-lg-10">
+                <label id="lblVersion" class="Form_LabelText">{{vm.profile.version}}</label>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-1">
+                <span class="Form_LabelText">Enable Inheritance:</span>
+            </div>
+            <div class="col-sm-1" style="width: 20px;">
+
+            </div>
+            <div class="col-lg-10">
+                <select id="dropEnableInheritance" ng-model="vm.selectedEnableInheritance" Width="120px" class="rounded">
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-1">
+                <span class="Form_LabelText">Name:</span>
+            </div>
+            <div class="col-sm-1" style="width: 20px;">
+
+            </div>
+            <div class="col-lg-10">
+                <button class="btn btn-primary" id="btnSave" data-ng-click="doSave()">
+                    <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</form>

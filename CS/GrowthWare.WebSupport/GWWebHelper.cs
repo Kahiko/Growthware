@@ -44,13 +44,14 @@ namespace GrowthWare.WebSupport
         {
             get
             {
-                string myVersion = string.Empty;
-                Assembly myAssembly = Assembly.Load(ConfigSettings.GetAppSettingValue("Assembly"));
-                if ((myAssembly != null))
+                string mVersion = string.Empty;
+                Assembly mAssembly = null;
+                mAssembly = Assembly.Load(ConfigSettings.WebAssemblyName);
+                if ((mAssembly != null))
                 {
-                    myVersion = myAssembly.GetName().Version.ToString();
+                    mVersion = mAssembly.GetName().Version.ToString();
                 }
-                return myVersion;
+                return mVersion;
             }
         }
 
@@ -149,6 +150,23 @@ namespace GrowthWare.WebSupport
             retVal = s_Random.Next(startingNumber, endingNumber);
             NativeMethods.Sleep((int)(System.DateTime.Now.Millisecond * (retVal / 100)));
             return retVal.ToString(CultureInfo.InvariantCulture);
+        }
+
+        /// <summary>
+        /// Determines if a call is for the API
+        /// </summary>
+        /// <returns>bool</returns>
+        public static bool IsWebApiRequest
+        {
+            get
+            {
+                bool mRetVal = false;
+                if (HttpContext.Current.Request.Path.ToUpper(CultureInfo.InvariantCulture).IndexOf("/API/", StringComparison.OrdinalIgnoreCase) != -1)
+                {
+                    mRetVal = true;
+                }
+                return mRetVal;
+            }
         }
 
         /// <summary>

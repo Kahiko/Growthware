@@ -1,0 +1,49 @@
+﻿<form id="frmSelectPreferences">
+    <div class="col-xs-22 pull-left">
+        <div class="row">
+            <div class="col-xs-2 pull-left">
+                Choose the color scheme
+            </div>
+            <div class="col-xs-7 pull-left">
+                <div class="Row">
+                    <div ng:repeat="item in vm.colorSchemes track by $index" style="display: inline-block;">
+                        <label>
+                            <input type="radio" ng-model="vm.selectedColorScheme" ng-value="item.color_Scheme">&nbsp;{{item.color_Scheme}}&nbsp;&nbsp;
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-2 pull-left">
+                <span class="Form_LabelText">Favorite Link:</span>
+            </div>
+            <div class="col-xs-7 pull-left">
+                <select id="dropFavorite" class="rounded" ng-model="vm.selectedFavorite">
+                    <option ng:repeat="item in vm.dropFavoriteData track by $index" value="{{item.URL}}">
+                        {{item.Title}}
+                    </option>
+                </select>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-xs-2 pull-left">
+                <span class="Form_LabelText">Prefered records per page:</span>
+            </div>
+            <div class="col-xs-7 pull-left">
+                <input id="txtRecordsPerPage" name="txtRecordsPerPage" class="Form_Field rounded" style="width: 50px; height:auto;" data-ng-model="vm.clientChoices.RecordsPerPage" data-ng-change="onRecordsChanged(this)" data-ng-model-options='{ debounce: 1000 }' number-only required />
+                <span class="Form_Message" ng-show="frmSelectPreferences.txtRecordsPerPage.$touched && frmSelectPreferences.txtRecordsPerPage.$invalid">&nbsp;Records per page  is required.</span>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-lg-3"></div>
+            <div class="col-lg-3">
+                <input type="button" id="btnSave" data-ng-disabled="vm.disableSave" data-ng-click="save();" value="Save" />
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,86 @@
+﻿<style client-choices-style>
+.table-striped > tbody > tr:nth-child(odd) > td,
+    tr.found{
+        background-color:{{vm.clientChoices.RowBackColor}};
+        color: {{vm.clientChoices.HeaderForeColor}};
+    }
+.table-striped > tbody > tr:nth-child(even) > td,
+    tr.found
+    {
+	    background-color: {{vm.clientChoices.AlternatingRowBackColor}};
+        color: {{vm.clientChoices.HeaderForeColor}};
+    }
+</style>
+<form name="frmSearchPage" id="frmSearchPage" role="form">
+    <div id="popupEdit" include src="{{vm.PopupURL}}"></div>
+    <div class="searchResultsContainer Container">
+        <div class="searchResultsHeader">
+            <span style="display: inline-block; width: 33%; text-align: left;">
+                Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" onblur="vm.onRecordsChanged(this);" data-ng-model="vm.searchCriteria.PageSize" data-ng-change="vm.onRecordsChanged()" data-ng-model-options='{ debounce: 1000 }' />&nbsp;records per page&nbsp;&nbsp;
+            </span>
+            <span style="display: inline-block; width: 33%;">
+                <input id="cmdSelect" class="btn btn-primary" type="button" value="Select All" onclick="vm.selectAll();" name="cmdSelect" data-ng-show="vm.canSelectAll" />&nbsp;
+                <img alt="Delete file(s)" id="imgDeleteAll" onclick="javascript:btnDelete_Click();" src="Content/GrowthWare/Images/delete_red.png" title="Delete selection" style="height: 16px; width: 16px;" data-ng-show="vm.canSelectAll" />
+            </span>
+            <span style="display: inline-block; width: 33%; text-align: right;">
+                <input type="button" value="Add New" id="btnAddNew" class="btn btn-primary" data-ng-click="vm.onAddNew()" data-ng-show="vm.securityInfo.MayAdd" />
+                <input id="txtSearch" style="width: 164px;" placeholder="Search in selected column." class="rounded10" data-ng-change="vm.onSearchChanged()" data-ng-model="vm.sortText" data-ng-model-options='{ debounce: 1000 }' />
+            </span>
+        </div>
+        <div id="searchResults" class="searchResultsMainbody">
+
+            <table class="table table-striped table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th data-ng-repeat="column in vm.headerColumns | filter:vm.headerColumnFilter" width="{{column.width}}">
+                            <span data-ng-click="vm.onChangeSort(column.name)">{{column.label}}</span> &nbsp;
+                            <span data-ng-click="vm.onChangeSort(column.name)" data-ng-show="vm.searchCriteria.OrderByColumn == '{{column.name}}' && vm.searchCriteria.OrderByDirection == 'asc'" class='fa fa-sort-asc'></span>
+                            <span data-ng-click="vm.onChangeSort(column.name)" data-ng-show="vm.searchCriteria.OrderByColumn == '{{column.name}}' && vm.searchCriteria.OrderByDirection != 'asc'" class='fa fa-sort-desc'></span>
+                            <span data-ng-click="vm.onChangeSort(column.name)" data-ng-show="vm.searchCriteria.OrderByColumn != '{{column.name}}'" class="fa fa-sort" />
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr data-ng-repeat="row in vm.dataRows" data-ng-class-odd="'trOdd'" data-ng-class-even="'trEven'" data-ng-click="vm.onRowDoubleClick(row)" data-ng-dblclick="vm.onRowDoubleClick(row)">
+                        <td data-ng-repeat="column in vm.headerColumns" data-ng-show="column.visible" ">
+                            {{row[column.name] | formatData: column.type}}
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+
+                </tfoot>
+            </table>
+        </div>
+        <div class="searchResultsFooter">
+            <div style="float: left">
+                Page <span id="currentPage">{{vm.searchCriteria.SelectedPage}}</span> of <span id="totalPages">{{vm.totalPages.length}}</span> <span id="totalRecords">({{vm.totalRecords}} total items)</span>
+            </div>
+            <div style="float: right;" data-ng-show="vm.totalPages.length > 1">
+                <table>
+                    <tr>
+                        <td>
+                            <span data-ng-click="vm.onFirstPage()" class="fa fa-angle-double-left" />
+                        </td>
+                        <td style="vertical-align: middle;">
+                            &nbsp;<span data-ng-click="vm.onPreviousPage()" class="fa fa-angle-left" />
+                        </td>
+                        <td>
+                            &nbsp;Page&nbsp;
+                            <select id="ddSelectPage" data-ng-change="vm.onSelectPageChange()" data-ng-model="vm.selectedPage" data-ng-options="item.text for item in vm.totalPages track by item.value"></select>
+                        </td>
+                        <td>
+                            &nbsp;<span data-ng-click="vm.onNextPage()" class="fa fa-angle-right" />
+                        </td>
+                        <td>
+                            &nbsp;<span data-ng-click="vm.onLastPage()" class="fa fa-angle-double-right" />
+                        </td>
+                        <td style="width: 16px;">
+                            &nbsp;
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>

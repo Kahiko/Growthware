@@ -1,0 +1,369 @@
+﻿<style>
+    .modal-lg {
+        width: 1000px;
+    }
+</style>
+<form id="frmAddEditFunctions">
+    <div>
+        <div class="ui-dialog ui-widget ui-widget-content ui-corner-all ui-front ui-dialog-buttons ui-draggable ui-resizable">
+            <div class="ui-dialog-titlebar ui-widget-header ui-corner-all ui-helper-clearfix ui-draggable-handle">
+                <span id="ui-id-5" class="ui-dialog-title" style="width: 100%;">Add/Edit Function - {{vm.profile.Name}}</span>
+                <button type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-icon-only ui-dialog-titlebar-close" role="button" title="close" data-ng-click="cancelEdit()">
+                    <span class="ui-button-icon-primary ui-icon ui-icon-closethick"></span>
+                    <span class="ui-button-text">close</span>
+                </button>
+            </div>
+            <div class="Form_Message">&nbsp;{{vm.clientMessage}}</div>
+            <div class="container container-full" id="tabs">
+                <ul class="nav nav-tabs ui-tabs-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all" role="tablist">
+                    <li role="presentation" class="nav active ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-General">General</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-MenuOrder">Menu Order</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-Roles">Roles</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-Groups">Groups</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-DirectoryInformation">Directory Information</a></li>
+                    <li role="presentation" class="ui-corner-top ui-state-default"><a data-toggle="tab" data-target="#tabs-DerivedRoles">Derived Roles</a></li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane fade in active" id="tabs-General">
+                        <div class="container">
+                            <div class="row top-buffer" data-ng-hide="vm.modalData.editId == -1" id="trID">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">ID:</span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+                                </div>
+                                <div class="col-lg-10">
+                                    <span id="Function_SeqID">{{vm.modalData.editId}}</span>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Name:</span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" id="txtName" data-ng-model="vm.profile.Name" class="rounded" style="width: 322px;" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Description: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" class="rounded" id="txtDescription" data-ng-model="vm.profile.Description" maxlength="512" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Notes: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" ID="txtNotes" data-ng-model="vm.profile.Notes" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,255)" class="rounded" style="height: 40px; width: 500px;" TextMode="MultiLine" Columns="100" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Key Words: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" ID="txtKeyWords" data-ng-model="vm.profile.MetaKeyWords" MaxLength="255" onKeyPress="return GW.Common.Validation.textboxMultilineMaxNumber(this,512)" class="rounded" style="height: 40px; width: 500px;" TextMode="MultiLine" Columns="100" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Action:</span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+                                    <i data-ng-click="showHelp('helpActions', 'Action Help')" class="fa fa-question-circle"></i>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div id="divAction" data-ng-hide="vm.modalData.editId == -1">
+                                        {{vm.profile.Action}}
+                                    </div>
+                                    <input ID="txtAction" data-ng-model="vm.profile.Action" data-ng-hide="vm.modalData.editId != -1" MaxLength="255" class="rounded" style="height: 20px; width: 500px;" Columns="100" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Type: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-10">
+                                    <select ID="dropFunctionType" ng-model="vm.selectedFunctionType" class="rounded">
+                                        <option ng:repeat="item in vm.functionTypes" value="{{item.FUNCTION_TYPE_SEQ_ID * 1}}">
+                                            {{item.Name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Source: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+                                    <i data-ng-click="showHelp('helpSource', 'Source Help')" class="fa fa-question-circle"></i>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" ID="txtSource" data-ng-model="vm.profile.Source" MaxLength="512" class="rounded" style="width: 500px;" Columns="100" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <div class="col-lg-1">
+                                    <span class="Form_LabelText">Controller: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+                                    <i data-ng-click="showHelp('helpController', 'Controller Help')" class="fa fa-question-circle"></i>
+                                </div>
+                                <div class="col-lg-10">
+                                    <input type="text" ID="txtController" data-ng-model="vm.profile.Controller" MaxLength="512" class="rounded" style="width: 500px;" Columns="100" />
+                                </div>
+                            </div>
+                            <div class="row top-buffer">
+                                <input type="checkbox" ID="chkEnableViewState" data-ng-model="vm.profile.EnableViewState" />
+                                <label for="chkEnableViewState">Enable ViewState</label>
+
+                                <input type="checkbox" ID="chkEnableNotifications" data-ng-model="vm.profile.EnableNotifications" />
+                                <label for="chkEnableNotifications">Enable Notifications</label>
+
+                                <input type="checkbox" ID="chkRedirectOnTimeout" data-ng-model="vm.profile.RedirectOnTimeout" />
+                                <label for="chkRedirectOnTimeout">Redirect on Session Timeout</label>
+
+                                <input type="checkbox" ID="chkNoUI" data-ng-model="vm.profile.NoUI" />
+                                <label for="chkNoUI">No UI</label>
+
+                                <input type="checkbox" ID="chkIsNav" data-ng-model="vm.profile.IsNav" />
+                                <label for="chkIsNav">Is Nav</label>
+                            </div>
+                            <div class="row top-buffer">
+                                <span class="Form_LabelText">Nav type: </span>
+                                <select ID="dropNavType" ng-model="vm.selectedNavigationType" class="rounded">
+                                    <option ng:repeat="item in vm.navigationTypes" value="{{item.NVP_SEQ_DET_ID}}">
+                                        {{item.NVP_DET_TEXT}}
+                                    </option>
+                                </select>
+                                &nbsp;
+                                <span class="Form_LabelText">Parent: </span>
+                                <select ID="dropNavParent" ng-model="vm.selectedParent" class="rounded">
+                                    <option ng:repeat="item in vm.avalibleParents" value="{{item.Id}}">
+                                        {{item.Name}}
+                                    </option>
+                                </select>
+                                &nbsp;
+                                <span class="Form_LabelText">Link Behavior: </span>
+                                <select ID="dropLinkBehavior" ng-model="vm.selectedLinkBehavior" class="rounded">
+                                    <option ng:repeat="item in vm.linkBehaviors" value="{{item.NVP_SEQ_DET_ID}}">
+                                        {{item.NVP_DET_TEXT}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div id="helpActions" style="display: none">
+                            Note: Action should not have any special charactors.<br />
+                            Once an action has been entered it can not be changed other than by direct access to the data store.<br />
+                        </div>
+                        <div id="helpSource" style="display: none">
+                            Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+                        </div>
+                        <div id="helpController" style="display: none">
+                            Note: Used for AngularJs implementations.<br />
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="tabs-MenuOrder">
+                        <p>
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-2">
+                                        <input type="button" id="btnMoveUp" value="Up" data-ng-click="move('up')" />
+                                        <input type="button" id="btnMoveDown" value="Down" data-ng-click="move('down')" />
+                                    </div>
+                                    <div class="col-lg-2">
+                                        &nbsp;
+                                    </div>
+                                    <div class="col-lg-8">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                                <div class="row top-buffer">
+                                    <div class="col-lg-2">
+                                        <select ID="dropFunctions" data-ng-model="vm.selectedDropFunctions" CssClass="rounded">
+                                            <option ng:repeat="item in vm.sortedMenuOrder track by $index" value="{{item.Function_Seq_Id * 1}}">
+                                                {{item.Name}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-lg-2">
+                                    </div>
+                                    <div class="col-lg-8">
+                                        <table border="0" id="functionOrderTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Name
+                                                    </th>
+                                                    <th>
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr data-ng-repeat="item in vm.menuOrder">
+                                                    <td style=" padding: 5px;">{{item.Name}}</td>
+                                                    <td style=" padding: 5px;">{{item.Action}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-Roles">
+                        <p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlViewRoles" data-ng-model="vm.profile.RolesAndGroups.ViewRoles" selected-items="vm.profile.RolesAndGroups.ViewRoles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Determines who can view pages. For example, if the Everyone role is not selected, then anonymous accounts cannot view the page such as the logon page." header="View Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlAddRoles" data-ng-model="vm.profile.RolesAndGroups.AddRoles" selected-items="vm.profile.RolesAndGroups.AddRoles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Determines who can add information on a page. For example, if the Administrators role is selected, then members of the Administrators role can use add buttons." header="Add Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlEditRoles" data-ng-model="vm.profile.RolesAndGroups.EditRoles" selected-items="vm.profile.RolesAndGroups.EditRoles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Determines who can edit or update information on a page. For example, if the Administrators role is selected, then members of the Administrators role can use edit, update, or save buttons." header="Edit Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlDeleteRoles" data-ng-model="vm.profile.RolesAndGroups.DeleteRoles" selected-items="vm.profile.RolesAndGroups.DeleteRoles" available-items="vm.roles" all-items-text="All - Roles" selected-items-text="Selected Roles" picklist-table-help="Determines who can delete information on a page. For example, if theAdministrators role is selected, then members of the Administrators role can use delete buttons." header="Delete Roles" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-Groups">
+                        <p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlViewGroups" data-ng-model="vm.profile.RolesAndGroups.ViewGroups" selected-items="vm.profile.RolesAndGroups.ViewGroups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Determines who can view pages. For example, if the Everyone group is not selected, then anonymous accounts cannot view the page such as the logon page" header="View Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlAddGroups" data-ng-model="vm.profile.RolesAndGroups.AddGroups" selected-items="vm.profile.RolesAndGroups.AddGroups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Determines who can add information on a page. For example, if the Administrators group is selected, then members of the Administrators group can use add buttons." header="Add Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlEditGroups" data-ng-model="vm.profile.RolesAndGroups.EditGroups" selected-items="vm.profile.RolesAndGroups.EditGroups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Determines who can edit or update information on a page. For example, if the Administrators group is selected, then members of the Administrators group can use edit, update, or save buttons. " header="Edit Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-picklist size="200" rows="10" id="ctlDeleteGroups" data-ng-model="vm.profile.RolesAndGroups.DeleteGroups" selected-items="vm.profile.RolesAndGroups.DeleteGroups" available-items="vm.groups" all-items-text="All - Groups" selected-items-text="Selected Groups" picklist-table-help="Determines who can delete information on a page. For example, if theAdministrators group is selected, then members of the Administrators group can use delete buttons." header="Delete Groups" sort-on-index="0" sort-on-change="true"></gw-picklist>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-DirectoryInformation">
+                        <div class="container">
+                            <div class="row top-buffer">
+                                <div class="col-lg-2">
+                                    <span class="Form_LabelText">Directory: </span>
+                                    <input type="text" ID="txtDirectoryID" style="visibility: hidden;" CssClass="rounded" />
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" ID="txtDirectory" data-ng-model="vm.profile.DirectoryData.Directory" MaxLength="255" CssClass="rounded" style="width: 563px;" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <span class="Form_LabelText">Requries Impersonation: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="checkbox" ID="chkImpersonation" data-ng-model="vm.profile.DirectoryData.Impersonate" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <span class="Form_LabelText">Account: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" ID="txtAccount" data-ng-model="vm.profile.DirectoryData.ImpersonateAccount" MaxLength="50" CssClass="rounded" />
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <span class="Form_LabelText">Password: </span>
+                                </div>
+                                <div class="col-sm-1" style="width: 20px;">
+                                    <i data-ng-click="showHelp('helpPassword', 'Password Help')" class="fa fa-question-circle"></i>
+                                </div>
+                                <div class="col-lg-9">
+                                    <input type="text" ID="txtPassword" data-ng-model="vm.ImpersonatePassword" MaxLength="50" TextMode="Password" CssClass="rounded" />&nbsp;!Leave blank to keep the same password!
+                                    <input type="text" ID="txtHidPwd" data-ng-model="vm.profile.DirectoryData.ImpersonatePassword" data-ng-hide="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tabs-DerivedRoles">
+                        <p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-derived-roles size="400" rows="10" available-items="vm.profile.DerivedViewRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived View Roles"></gw-derived-roles>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-derived-roles size="400" rows="10" available-items="vm.profile.DerivedAddRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived Add Roles"></gw-derived-roles>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <gw-derived-roles size="400" rows="10" available-items="vm.profile.DerivedEditRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived Edit Roles"></gw-derived-roles>
+                                </div>
+                                <div class="col-sm-6">
+                                    <gw-derived-roles size="400" rows="10" available-items="vm.profile.DerivedDeleteRoles" all-items-text="" picklist-table-help="Derived roles are calculated by combining roles that are directly assigned through Roles or indirectly assigned through Groups." header="Derived Delete Roles"></gw-derived-roles>
+                                </div>
+                            </div>
+                        </p>
+                    </div>
+                    <div class="pull-right lower-right-buttons">
+                        <button class="btn btn-primary" id="btnSave" data-ng-click="save()">
+                            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-save"></span>Save
+                        </button>
+                        <button class="btn btn-primary" id="btnDelete" data-ng-disabled="!vm.securityInfo.MayDelete" data-ng-click="delete()">
+                            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-remove"></span>Delete
+                        </button>
+                        <button class="btn btn-primary" id="btnCancel" data-ng-click="cancelEdit()">
+                            <span class="bootstrap-dialog-button-icon glyphicon glyphicon-thumbs-down"></span>Cancel
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="helpPassword" style="display: none">
+            For security reasons passwords are not displayed but are retained.<br />
+            If you are editing the Function and do not want to change the password then<br />
+            simply leave it blank and the original will be kept.<br />
+            If this is a new Function or you wish to change the password then fill out the<br />
+            the box provided.
+        </div>
+    </div>
+</form>

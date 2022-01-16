@@ -1,0 +1,56 @@
+{
+  "Action": "AddEditGroups",
+  "DerivedAddRoles": [
+    "Developer"
+  ],
+  "DerivedDeleteRoles": [
+    "Developer"
+  ],
+  "DerivedEditRoles": [
+    "Developer"
+  ],
+  "DerivedViewRoles": [
+    "Developer"
+  ],
+  "Description": "Add Edit Groups",
+  "Description": "Manage Cachedependency",
+  "DirectoryData": {
+    "Directory": "D:\\DEVELOPMENT\\GROWTHWARE\\2010\\GROWTHWARE_CS\\GROWTHWARE.COREWEB\\CACHEDEPENDENCY",
+    "Impersonate": false,
+    "ImpersonateAccount": "",
+    "ImpersonatePassword": ""
+  },
+  "EnableNotifications": false,
+  "EnableViewState": false,
+  "FunctionTypeSeqID": 1,
+  "Id": 0,
+  "IsNav": false,
+  "LinkBehavior": 2,
+  "MetaKeyWords": "",
+  "Name": "Add Edit Groups",
+  "NavigationTypeSeqId": 3,
+  "NoUI": false,
+  "Notes": "Used to add or edit roles.",
+  "ParentID": 8,
+  "RedirectOnTimeout": true,
+  "RolesAndGroups": {
+    "ViewRoles": [
+      "Developer"
+    ],
+    "AddRoles": [
+      "Developer"
+    ],
+    "EditRoles": [
+      "Developer"
+    ],
+    "DeleteRoles": [
+      "Developer"
+    ],
+    "ViewGroups": null,
+    "AddGroups": null,
+    "EditGroups": null,
+    "DeleteGroups": null
+  },
+  "Source": "Functions/System/Administration/Groups/AddEditGroups.aspx",
+  "Controller": "AddEditGroupController"
+}

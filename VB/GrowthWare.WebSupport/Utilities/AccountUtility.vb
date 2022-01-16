@@ -227,6 +227,19 @@ Namespace Utilities
                         mRetVal = HttpContext.Current.User.Identity.Name.Substring(mPos, HttpContext.Current.User.Identity.Name.Length - mPos)
                     End If
                 End If
+            Else
+                If Not HttpContext.Current Is Nothing Then
+                    Dim mCookie As HttpCookie = HttpContext.Current.Request.Cookies.Get(".ASPXAUTH")
+                    If Not mCookie Is Nothing Then
+                        Dim mAuthTicket As FormsAuthenticationTicket = FormsAuthentication.Decrypt(mCookie.Value)
+                        If Not mAuthTicket Is Nothing Then
+                            Dim mIdentity As GenericIdentity = New GenericIdentity(mAuthTicket.Name)
+                            If Not mIdentity Is Nothing Then
+                                mRetVal = mIdentity.Name
+                            End If
+                        End If
+                    End If
+                End If
             End If
             Return mRetVal
         End Function

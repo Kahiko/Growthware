@@ -734,6 +734,16 @@ Namespace Common
         End Property
 
         ''' <summary>
+        ''' Returns Assembly from the web config and used to load the correct assembly name
+        ''' </summary>
+        ''' <returns></returns>
+        Shared ReadOnly Property WebAssemblyName() As String
+            Get
+                Return GetAppSettingValue("Assembly", False)
+            End Get
+        End Property
+
+        ''' <summary>
         ''' Truncates a given string and adds ...
         ''' </summary>
         ''' <param name="text">String to be truncated</param>
@@ -769,9 +779,27 @@ Namespace Common
         ''' <param name="settingName"></param>
         ''' <returns>String</returns>
         ''' <remarks>Overloaded method calls GetAppSettingValue(string settingName, Boolean fromEnvironment) passing false for fromEnvironment</remarks>
-
         Public Shared Function GetAppSettingValue(ByVal settingName As String) As String
             Return GetAppSettingValue(settingName, False)
         End Function
+
+        ''' <summary>
+        ''' Return the AngularJS value from the web.config file as a boolean
+        ''' </summary>
+        ''' <returns>Boolean</returns>
+        ''' <remarks>If there is an error reading the config file, this will return "False"</remarks>
+        Shared ReadOnly Property IsAngularJSApplication As Boolean
+            Get
+                Dim mRetVal As Boolean = False
+                Try
+                    mRetVal = Convert.ToBoolean(GetAppSettingValue("AngularJS", False))
+                Catch ex As Exception
+                    ' one of the few times that we will hide the error
+                    ' if there is no entry then it will be assumed 
+                    ' the application is not angularJS enable
+                End Try
+                Return mRetVal
+            End Get
+        End Property
     End Class
 End Namespace

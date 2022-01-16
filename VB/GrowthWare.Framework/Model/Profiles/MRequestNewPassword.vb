@@ -6,6 +6,10 @@
     Public Class MRequestNewPassword
         Inherits MMessageProfile
 
+        Public Sub New()
+
+        End Sub
+
         Public Property AccountName As String
 
         Public Property FullName As String
