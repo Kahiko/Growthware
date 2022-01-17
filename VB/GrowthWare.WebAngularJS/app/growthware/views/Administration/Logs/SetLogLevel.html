@@ -1,0 +1,23 @@
+<form id="frmSetLogLevel">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-2">
+                <label for="dropLogLevel">Select</label>
+                <select id="dropLogLevel" data-ng-model="vm.selectedLogLevel" Class="rounded">
+                    <option value="0">Debug</option>
+                    <option value="1">Information</option>
+                    <option value="2">Warning</option>
+                    <option value="3">Error</option>
+                    <option value="4">Fatal</option>
+                </select>
+            </div>
+        </div>
+        <div class="row top-buffer">
+            <div class="col-lg-2" style="margin-left: 60px;">
+                <button class="btn btn-primary" id="btnSetLogLevel" data-ng-click="vm.doSetLogLevel()">
+                    Set Level
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
