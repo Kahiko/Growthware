@@ -7,7 +7,7 @@
     var mRetCtrl = function (yourNamedSvc, msgSvc, $scope, $route, $uibModalInstance, modalData) {
         var thisCtrlr = this;
         // file level objects {} is declarative shorthand for new Object().
-        var m_Action = {}l
+        var m_Action = {};
         var m_Route = {};
         var m_ViewModel = {}; // Initialize the object, before adding data to it.
         // set intial values
