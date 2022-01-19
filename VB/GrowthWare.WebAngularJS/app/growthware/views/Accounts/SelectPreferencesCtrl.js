@@ -15,34 +15,34 @@
 	        , {color_Scheme: 'Purple'	,head_Color: '#C7C7C7'	,header_ForeColor: 'Black'	,row_BackColor: '#be9cc5'	,alternatingRow_BackColor: '#91619b'	,sub_Head_Color: '#be9cc5'	,back_Color: '#ffffff'	,left_Color: '#eeeeee'}
 	        , {color_Scheme: 'Red'	    ,head_Color: '#BA706A'	,header_ForeColor: 'White'	,row_BackColor: '#DE8587'	,alternatingRow_BackColor: '#A72A49'	,sub_Head_Color: '#df867f'	,back_Color: '#ffffff'	,left_Color: '#eeeeee'}
         ];
-        m_ViewModel.colorSchemes = m_ColorSchemes;
-        m_ViewModel.disableSave = true;
-        m_ViewModel.dropFavoriteData = [];
-        m_ViewModel.selectedFavorite = {};
-        m_ViewModel.selectedColorScheme = {};
+        thisCtrlr.colorSchemes = m_ColorSchemes;
+        thisCtrlr.disableSave = true;
+        thisCtrlr.dropFavoriteData = [];
+        thisCtrlr.selectedFavorite = {};
+        thisCtrlr.selectedColorScheme = {};
 
         function initCtrl() {
             // Request #1
             acctSvc.getPreferences(true).then(function (response) {
                 // Response Handler #1
                 // msgSvc.brodcastClientMsg(response);
-                m_ViewModel.clientChoices = response;
-                m_ViewModel.selectedColorScheme = m_ViewModel.clientChoices.ColorScheme;
+                thisCtrlr.clientChoices = response;
+                thisCtrlr.selectedColorScheme = thisCtrlr.clientChoices.ColorScheme;
                 // Request #2
-                return acctSvc.getSelectableActions(m_ViewModel.clientChoices.Account);
+                return acctSvc.getSelectableActions(thisCtrlr.clientChoices.Account);
             }).then(function (response) {
                 // Response Handler #2
-                m_ViewModel.dropFavoriteData = response;
-                for (var i = 0; i < m_ViewModel.dropFavoriteData.length; i++) {
-                    var item = m_ViewModel.dropFavoriteData[i];
-                    if (item.URL == m_ViewModel.clientChoices.Action && item.Title != 'Favorite') {
-                        m_ViewModel.selectedFavorite = m_ViewModel.dropFavoriteData[i].URL;
+                thisCtrlr.dropFavoriteData = response;
+                for (var i = 0; i < thisCtrlr.dropFavoriteData.length; i++) {
+                    var item = thisCtrlr.dropFavoriteData[i];
+                    if (item.URL == thisCtrlr.clientChoices.Action && item.Title != 'Favorite') {
+                        thisCtrlr.selectedFavorite = thisCtrlr.dropFavoriteData[i].URL;
                         break;
                     }
                 }
-                m_ViewModel.disableSave = false;
+                thisCtrlr.disableSave = false;
                 // This is the last in the chain - Place all of the data elements on to scope at once
-                $scope.vm = m_ViewModel; // Objects to be used by HTML
+                // $scope.vm = m_ViewModel; // Objects to be used by HTML
             });
         }
 
@@ -57,20 +57,20 @@
         $scope.save = function () {
             msgSvc.brodcastClientMsg('Saving');
             var mSelectedColorScheme = m_ColorSchemes.filter(function (item) {
-                return item.color_Scheme === m_ViewModel.selectedColorScheme;
+                return item.color_Scheme === thisCtrlr.selectedColorScheme;
             })[0];
-            m_ViewModel.clientChoices.AlternatingRowBackColor = mSelectedColorScheme.alternatingRow_BackColor;
-            m_ViewModel.clientChoices.BackColor = mSelectedColorScheme.back_Color;
-            m_ViewModel.clientChoices.ColorScheme = mSelectedColorScheme.color_Scheme;
-            m_ViewModel.clientChoices.HeadColor = mSelectedColorScheme.head_Color;
-            m_ViewModel.clientChoices.HeaderForeColor = mSelectedColorScheme.header_ForeColor;
-            m_ViewModel.clientChoices.LeftColor = mSelectedColorScheme.left_Color;
-            m_ViewModel.clientChoices.RowBackColor = mSelectedColorScheme.row_BackColor;
-            m_ViewModel.clientChoices.SubheadColor = mSelectedColorScheme.sub_Head_Color;
+            thisCtrlr.clientChoices.AlternatingRowBackColor = mSelectedColorScheme.alternatingRow_BackColor;
+            thisCtrlr.clientChoices.BackColor = mSelectedColorScheme.back_Color;
+            thisCtrlr.clientChoices.ColorScheme = mSelectedColorScheme.color_Scheme;
+            thisCtrlr.clientChoices.HeadColor = mSelectedColorScheme.head_Color;
+            thisCtrlr.clientChoices.HeaderForeColor = mSelectedColorScheme.header_ForeColor;
+            thisCtrlr.clientChoices.LeftColor = mSelectedColorScheme.left_Color;
+            thisCtrlr.clientChoices.RowBackColor = mSelectedColorScheme.row_BackColor;
+            thisCtrlr.clientChoices.SubheadColor = mSelectedColorScheme.sub_Head_Color;
 
-            m_ViewModel.clientChoices.Action = m_ViewModel.selectedFavorite;
+            thisCtrlr.clientChoices.Action = thisCtrlr.selectedFavorite;
 
-            acctSvc.saveClientChoices(m_ViewModel.clientChoices).then(
+            acctSvc.saveClientChoices(thisCtrlr.clientChoices).then(
                 /*** success ***/
                 function (response) {
                     $rootScope.$broadcast('accountChanged', []);

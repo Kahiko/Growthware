@@ -122,6 +122,16 @@ Namespace Controllers
             Return Ok(mDataTable)
         End Function
 
+        <HttpGet>
+        Public Function GetSelectPreferencesFavorite() As IHttpActionResult
+            Dim rowFilter As String = "FUNCTION_TYPE_SEQ_ID <> 2 AND FUNCTION_TYPE_SEQ_ID <> 3"
+            Dim mDataView As DataView = AccountUtility.GetMenu(AccountUtility.CurrentProfile().Account, MenuType.Hierarchical).DefaultView
+            mDataView.Sort = "Title asc"
+            mDataView.RowFilter = rowFilter
+            Dim mRetVal As DataTable = mDataView.ToTable("Favorites", True, "URL", "Title")
+            Return Me.Ok(mRetVal)
+        End Function
+
         <HttpPost>
         Public Function GetSecurityInfo(<FromUri> action As String) As MUISecurityInfo
             If String.IsNullOrEmpty(action) Then Throw New ArgumentNullException("action", "action cannot be a null reference (Nothing in VB) or empty!")
