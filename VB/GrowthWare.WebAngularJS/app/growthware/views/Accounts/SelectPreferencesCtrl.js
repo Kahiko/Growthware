@@ -2,10 +2,9 @@
     'use strict';
     var mApplication = 'growthwareApp';
     var mControllerName = 'SelectPreferencesController';
-    var mDependencyInjection = ['AccountService', 'MessageService', '$scope', '$rootScope'];
-    var mRetCtrl = function (acctSvc, msgSvc, $scope, $rootScope) {
+    var mDependencyInjection = ['AccountService', 'MessageService', '$rootScope'];
+    var mRetCtrl = function (acctSvc, msgSvc, $rootScope) {
         var thisCtrlr = this;
-        var m_ViewModel = {}; // Initialize the object, before adding data to it.  { } is declarative shorthand for new Object().
         // There is no set color schemes stored any where so it's completely up to the front end
         // to define them.
         var m_ColorSchemes = [
@@ -41,20 +40,10 @@
                     }
                 }
                 thisCtrlr.disableSave = false;
-                // This is the last in the chain - Place all of the data elements on to scope at once
-                // $scope.vm = m_ViewModel; // Objects to be used by HTML
             });
         }
 
-        // Functions that are avalible to the HTML
-        $scope.onRecordsChanged = function (element) {
-            console.log(element);
-            //if (common.checkSpecialKeys()) {
-            //    return;
-            //}
-        }
-
-        $scope.save = function () {
+        thisCtrlr.save = function () {
             msgSvc.brodcastClientMsg('Saving');
             var mSelectedColorScheme = m_ColorSchemes.filter(function (item) {
                 return item.color_Scheme === thisCtrlr.selectedColorScheme;

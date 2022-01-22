@@ -33,7 +33,7 @@
                 <span class="Form_LabelText">Prefered records per page:</span>
             </div>
             <div class="col-xs-7 pull-left">
-                <input id="txtRecordsPerPage" name="txtRecordsPerPage" class="Form_Field rounded" style="width: 50px; height:auto;" data-ng-model="vm.clientChoices.RecordsPerPage" data-ng-change="onRecordsChanged(this)" data-ng-model-options='{ debounce: 1000 }' number-only required />
+                <input id="txtRecordsPerPage" name="txtRecordsPerPage" class="Form_Field rounded" style="width: 50px; height:auto;" data-ng-model="vm.clientChoices.RecordsPerPage" number-only required />
                 <span class="Form_Message" ng-show="frmSelectPreferences.txtRecordsPerPage.$touched && frmSelectPreferences.txtRecordsPerPage.$invalid">&nbsp;Records per page  is required.</span>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <div class="row">
             <div class="col-lg-3"></div>
             <div class="col-lg-3">
-                <input type="button" id="btnSave" data-ng-disabled="vm.disableSave" data-ng-click="save();" value="Save" />
+                <input type="button" id="btnSave" data-ng-disabled="vm.disableSave" data-ng-click="vm.save();" value="Save" />
             </div>
 
         </div>
