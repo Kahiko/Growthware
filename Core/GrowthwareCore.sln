@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.DataAccess", "Gr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.BusinessLogic", "GrowthWare.BusinessLogic\GrowthWare.BusinessLogic.csproj", "{397DBE8D-489F-40CA-8D98-9DDCEA85C406}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Web.Angular", "GrowthWare.Web.Angular\GrowthWare.Web.Angular.csproj", "{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{397DBE8D-489F-40CA-8D98-9DDCEA85C406}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{397DBE8D-489F-40CA-8D98-9DDCEA85C406}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{397DBE8D-489F-40CA-8D98-9DDCEA85C406}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
