@@ -1,4 +1,4 @@
-namespace AngularTemplate;
+namespace GrowthWare.Web.Angular;
 
 public class WeatherForecast
 {

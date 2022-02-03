@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace AngularTemplate.Controllers;
+namespace GrowthWare.Web.Angular.Controllers;
 
 [ApiController]
 [Route("[controller]")]

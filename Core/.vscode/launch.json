@@ -117,7 +117,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/AngularTemplate.dll",
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
             "stopAtEntry": false,
