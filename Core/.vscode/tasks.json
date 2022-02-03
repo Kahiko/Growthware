@@ -33,9 +33,7 @@
                 "build",
                 "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
                 "/property:GenerateFullPaths=true",
-                "/consoleloggerparameters:NoSummary",
-                "-c",
-                "debug"
+                "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
         },

@@ -117,7 +117,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net6.0/AngularTemplate.dll",
             "args": [],
             "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
             "stopAtEntry": false,
@@ -142,7 +142,7 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "PWA Chrome",
-            "url": "http://www.angular_core.com",
+            "url": "http://localhost:5043",
             "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
@@ -153,7 +153,7 @@
             "type": "pwa-msedge",
             "request": "launch",
             "name": "PWA Edge",
-            "url": "http://www.angular_core.com",
+            "url": "http://localhost:5043",
             "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
