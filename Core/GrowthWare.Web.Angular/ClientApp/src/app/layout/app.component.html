@@ -1,0 +1,16 @@
+<body>
+  <app-nav-menu></app-nav-menu>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #leftSidenav mode="side" opened="true">
+      sidebar nav here
+    </mat-sidenav>
+    <mat-sidenav-content [@onMainContentChange]="onSideNavChange ? 'open': 'close'">
+      <div class="main_content">
+        <div style="padding: 20px">
+          <router-outlet></router-outlet>
+        </div>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  footer here
+</body>
