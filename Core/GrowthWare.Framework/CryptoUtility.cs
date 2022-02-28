@@ -176,11 +176,9 @@ namespace GrowthWare.Framework
         /// <returns>System.Byte[]</returns>
         private static byte[] MD5Encryption(string toEncrypt)
         {
-            // Create instance of the crypto provider. 
-            MD5CryptoServiceProvider mMD5CryptoServiceProvider = null;
             try
             {
-                mMD5CryptoServiceProvider = new MD5CryptoServiceProvider();
+                MD5 mMD5 = MD5.Create();
                 // Create a Byte array to store the encryption to return. 
                 byte[] mRetBytes = null;
 
@@ -188,7 +186,7 @@ namespace GrowthWare.Framework
                 UTF8Encoding mTextEncoder = new UTF8Encoding();
 
                 // let the show begin. 
-                mRetBytes = mMD5CryptoServiceProvider.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
+                mRetBytes = mMD5.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
 
                 // return the hased bytes to the calling method. 
                 return mRetBytes;
@@ -197,13 +195,6 @@ namespace GrowthWare.Framework
             catch (Exception)
             {
                 throw;
-            }
-            finally
-            {
-                if (mMD5CryptoServiceProvider != null)
-                {
-                    mMD5CryptoServiceProvider.Dispose();
-                }
             }
         }
 
@@ -216,11 +207,9 @@ namespace GrowthWare.Framework
         /// <returns>System.Byte[]</returns> 
         private static byte[] MD5SaltedHashEncryption(string toEncrypt)
         {
-            // Create instance of the crypto provider. 
-            MD5CryptoServiceProvider mMD5CryptoServiceProvider = null;
             try
             {
-                mMD5CryptoServiceProvider = new MD5CryptoServiceProvider();
+                MD5 mMD5 = MD5.Create();
                 // Create a Byte array to store the encryption to return. 
                 byte[] mRetBytes = null;
                 // Create a Byte array to store the salted hash. 
@@ -230,12 +219,12 @@ namespace GrowthWare.Framework
                 UTF8Encoding mTextEncoder = new UTF8Encoding();
 
                 // let the show begin. 
-                mRetBytes = mMD5CryptoServiceProvider.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
+                mRetBytes = mMD5.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
 
                 // Let's add the salt. 
                 toEncrypt += mTextEncoder.GetString(mRetBytes);
                 // Get the new byte array after adding the salt. 
-                mSaltedHash = mMD5CryptoServiceProvider.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
+                mSaltedHash = mMD5.ComputeHash(mTextEncoder.GetBytes(toEncrypt));
 
                 // return the hased bytes to the calling method. 
                 return mSaltedHash;
@@ -244,13 +233,6 @@ namespace GrowthWare.Framework
             catch (Exception)
             {
                 throw;
-            }
-            finally
-            {
-                if (mMD5CryptoServiceProvider != null)
-                {
-                    mMD5CryptoServiceProvider.Dispose();
-                }
             }
         }
 
@@ -265,13 +247,12 @@ namespace GrowthWare.Framework
             string mRetVal = valueToEncrypt;
             if (!string.IsNullOrEmpty(valueToEncrypt))
             {
-                DESCryptoServiceProvider mCryptoProvider = null;
                 MemoryStream mMemoryStream = null;
                 try
                 {
-                    mCryptoProvider = new DESCryptoServiceProvider();
+                    DES mDES = DES.Create();
                     mMemoryStream = new MemoryStream();
-                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mCryptoProvider.CreateEncryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Write);
+                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mDES.CreateEncryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Write);
                     StreamWriter mStreamWriter = new StreamWriter(mCryptoStream);
                     mStreamWriter.Write(valueToEncrypt);
                     mStreamWriter.Flush();
@@ -286,10 +267,6 @@ namespace GrowthWare.Framework
                 }
                 finally
                 {
-                    if (mCryptoProvider != null)
-                    {
-                        mCryptoProvider.Dispose();
-                    }
                     if (mMemoryStream != null)
                     {
                         mMemoryStream.Dispose();
@@ -311,17 +288,17 @@ namespace GrowthWare.Framework
 
             if (!string.IsNullOrEmpty(EncryptedValue))
             {
-                DESCryptoServiceProvider mCryptoProvider = null;
                 MemoryStream mMemoryStream = null;
                 try
                 {
                     if (isBase64String(EncryptedValue))
                     {
-                        mCryptoProvider = new DESCryptoServiceProvider();
+                        DES mDES = DES.Create();
+                        
                         //convert from string to byte array
                         byte[] buffer = Convert.FromBase64String(EncryptedValue);
                         mMemoryStream = new MemoryStream(buffer);
-                        CryptoStream cs = new CryptoStream(mMemoryStream, mCryptoProvider.CreateDecryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Read);
+                        CryptoStream cs = new CryptoStream(mMemoryStream, mDES.CreateDecryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Read);
                         StreamReader sr = new StreamReader(cs);
                         mRetVal = sr.ReadToEnd();
                     }
@@ -336,10 +313,6 @@ namespace GrowthWare.Framework
                 }
                 finally
                 {
-                    if (mCryptoProvider != null)
-                    {
-                        mCryptoProvider.Dispose();
-                    }
                     if (mMemoryStream != null)
                     {
                         mMemoryStream.Dispose();
@@ -360,13 +333,12 @@ namespace GrowthWare.Framework
             string retVal = valueToEncrypt;
             if (!string.IsNullOrEmpty(valueToEncrypt))
             {
-                TripleDESCryptoServiceProvider mCryptoProvider = null;
                 MemoryStream mMemoryStream = null;
                 try
                 {
-                    mCryptoProvider = new TripleDESCryptoServiceProvider();
+                    TripleDES mTripleDES = TripleDES.Create();
                     mMemoryStream = new MemoryStream();
-                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mCryptoProvider.CreateEncryptor(s_KEY_192, s_IV_192), CryptoStreamMode.Write);
+                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateEncryptor(s_KEY_192, s_IV_64), CryptoStreamMode.Write);
                     StreamWriter mStreamWriter = new StreamWriter(mCryptoStream);
                     mStreamWriter.Write(valueToEncrypt);
                     mStreamWriter.Flush();
@@ -381,10 +353,6 @@ namespace GrowthWare.Framework
                 }
                 finally
                 {
-                    if (mCryptoProvider != null)
-                    {
-                        mCryptoProvider.Dispose();
-                    }
                     if (mMemoryStream != null)
                     {
                         mMemoryStream.Dispose();
@@ -403,19 +371,18 @@ namespace GrowthWare.Framework
         private static string decryptTripleDES(string encryptedValue)
         {
             string mRetVal = string.Empty;
-            TripleDESCryptoServiceProvider mCryptoProvider = null;
             MemoryStream mMemoryStream = null;
             if (!string.IsNullOrEmpty(encryptedValue))
             {
                 try
                 {
-                    mCryptoProvider = new TripleDESCryptoServiceProvider();
+                    TripleDES mTripleDES = TripleDES.Create();
                     if (isBase64String(encryptedValue))
                     {
                         //convert from string to byte array
                         byte[] buffer = Convert.FromBase64String(encryptedValue);
                         mMemoryStream = new MemoryStream(buffer);
-                        CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mCryptoProvider.CreateDecryptor(s_KEY_192, s_IV_192), CryptoStreamMode.Read);
+                        CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateDecryptor(s_KEY_192, s_IV_64), CryptoStreamMode.Read);
                         StreamReader mStreamReader = new StreamReader(mCryptoStream);
                         mRetVal = mStreamReader.ReadToEnd();
                     }
@@ -431,10 +398,6 @@ namespace GrowthWare.Framework
                 }
                 finally
                 {
-                    if (mCryptoProvider != null)
-                    {
-                        mCryptoProvider.Dispose();
-                    }
                     if (mMemoryStream != null)
                     {
                         mMemoryStream.Dispose();
