@@ -64,7 +64,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 UPDATE [ZGWSecurity].[Security_Entities] SET 
                       [DAL] = N'{0}'
                     , [DAL_Name] = N'{1}'
-                    , [DAL_Name_Space] = 'N{2}'
+                    , [DAL_Name_Space] = N'{2}'
                     , [DAL_String] = N'{3}';";
                 mCommandText = String.Format(
                     mCommandText,
