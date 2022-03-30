@@ -7,6 +7,9 @@ import { RouterModule } from '@angular/router';
 // Thrid party UI
 import { AngularMaterialModules } from 'src/app/app.angular.material.module';   // single line to import all Angular Material modules
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+// Application Services
+import { ConfigurationService } from 'src/app/services/configuration.service';
+import { LogService } from 'src/app/services/logservice.service';
 // Application UI
 import { NavMenuComponent } from 'src/app/layout/nav-menu/nav-menu.component';
 // Application Components
@@ -14,6 +17,7 @@ import { AppComponent } from 'src/app/layout/app.component';
 import { HomeComponent } from './home/home.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
+import { AccountService } from './services/account.service';
 
 @NgModule({
   declarations: [
@@ -35,7 +39,11 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
   ],
-  providers: [],
+  providers: [
+    AccountService,
+    ConfigurationService,
+    LogService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
