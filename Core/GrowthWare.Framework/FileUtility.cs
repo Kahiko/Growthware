@@ -11,8 +11,6 @@ namespace GrowthWare.Framework
     /// </summary>
     public static class FileUtility
     {
-        static String s_Space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
-
         /// <summary>
         /// Retruns the parent full name.
         /// </summary>
