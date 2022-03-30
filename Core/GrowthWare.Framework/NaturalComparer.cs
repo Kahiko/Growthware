@@ -9,9 +9,11 @@ namespace GrowthWare.Framework
     /// <summary>
     /// Class NaturalComparer
     /// </summary>
+    /// <remarks>
+    /// Originally from https://www.codeproject.com/articles/22978/implementing-the-net-icomparer-interface-to-get-a
+    /// </remarks>
     public class NaturalComparer : IComparer<string>, IComparer
     {
-
         private StringParser m_Parser1;
         private StringParser m_Parser2;
         private NaturalComparerOption m_NaturalComparerOptions;
