@@ -23,18 +23,18 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 @NgModule({
   declarations: [
     AppComponent,
-    NavMenuComponent,
-    HomeComponent,
     CounterComponent,
-    FetchDataComponent
+    FetchDataComponent,
+    HomeComponent,
+    NavMenuComponent,
   ],
   imports: [
+    AngularMaterialModules,
     AppRoutingModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     BrowserAnimationsModule,
-    HttpClientModule,
     FormsModule,
-    AngularMaterialModules,
+    HttpClientModule,
   ],
   providers: [
     AccountService,
