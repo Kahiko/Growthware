@@ -1,0 +1,6 @@
+CREATE SCHEMA [ZGWSecurity]
+    AUTHORIZATION [dbo];
+
+
+GO
+
