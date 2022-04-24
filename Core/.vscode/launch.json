@@ -142,6 +142,8 @@
             "type": "pwa-chrome",
             "request": "launch",
             "name": "PWA Chrome",
+            // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
+            // otherwise the SPA will not launch
             "url": "http://localhost:5043",
             "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular",
             "sourceMaps": true,
