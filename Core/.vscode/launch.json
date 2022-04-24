@@ -143,10 +143,10 @@
             "request": "launch",
             "name": "PWA Chrome",
             "url": "http://localhost:5043",
-            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
+            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/ClientApp/*"
+              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/Angular/*"
             }
         },
         {
@@ -154,10 +154,10 @@
             "request": "launch",
             "name": "PWA Edge",
             "url": "http://localhost:5043",
-            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/ClientApp",
+            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/ClientApp/*"
+              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/Angular/*"
             }
         }
     ]
