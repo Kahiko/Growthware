@@ -155,6 +155,8 @@
             "type": "pwa-msedge",
             "request": "launch",
             "name": "PWA Edge",
+            // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
+            // otherwise the SPA will not launch
             "url": "http://localhost:5043",
             "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular",
             "sourceMaps": true,
