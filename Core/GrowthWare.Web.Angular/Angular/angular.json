@@ -3,33 +3,37 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "gw-front-end": {
+    "GW-FrontEnd": {
       "projectType": "application",
       "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        },
         "@schematics/angular:application": {
           "strict": true
         }
       },
-      "root": "",
+      "root": "projects/gw-front-end",
       "sourceRoot": "projects/gw-front-end/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "progress": false,
-            "outputPath": "dist",
+            "outputPath": "dist/gw-front-end",
             "index": "projects/gw-front-end/src/index.html",
             "main": "projects/gw-front-end/src/main.ts",
             "polyfills": "projects/gw-front-end/src/polyfills.ts",
             "tsConfig": "projects/gw-front-end/tsconfig.app.json",
+            "inlineStyleLanguage": "scss",
             "assets": [
+              "projects/gw-front-end/src/favicon.ico",
               "projects/gw-front-end/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "projects/gw-front-end/src/styles.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/gw-front-end/src/styles.scss"
             ],
             "scripts": []
           },
@@ -70,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gw-front-end:build:production"
+              "browserTarget": "GW-FrontEnd:build:production"
             },
             "development": {
-              "browserTarget": "gw-front-end:build:development",
+              "browserTarget": "GW-FrontEnd:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -82,7 +86,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "GrowthWare.Web.Angular:build"
+            "browserTarget": "GW-FrontEnd:build"
           }
         },
         "test": {
@@ -92,55 +96,32 @@
             "polyfills": "projects/gw-front-end/src/polyfills.ts",
             "tsConfig": "projects/gw-front-end/tsconfig.spec.json",
             "karmaConfig": "projects/gw-front-end/karma.conf.js",
+            "inlineStyleLanguage": "scss",
             "assets": [
+              "projects/gw-front-end/src/favicon.ico",
               "projects/gw-front-end/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/gw-front-end/src/styles.css"
+              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "projects/gw-front-end/src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "server": {
-          "builder": "@angular-devkit/build-angular:server",
-          "options": {
-            "outputPath": "dist-server",
-            "main": "src/main.ts",
-            "tsConfig": "tsconfig.server.json"
-          },
-          "configurations": {
-            "dev": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": true
-            },
-            "production": {
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false
-            }
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/gw-front-end/src/**/*.ts",
-              "projects/gw-front-end/src/**/*.html"
+              "projects/gw-front-end/**/*.ts",
+              "projects/gw-front-end/**/*.html"
             ]
           }
         }
       }
     }
   },
-  "defaultProject": "gw-front-end",
+  "defaultProject": "GW-FrontEnd",
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }

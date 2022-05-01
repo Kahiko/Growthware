@@ -1,0 +1,287 @@
+From a command prompt and the directory you would like to create your new project in:
+
+1.) Create a dotnet webapi project
+	dotnet new webapi -o <dotNetProjectName>
+
+	dotnet new webapi -o FromWebAPI
+2.) Add the SPA middleware
+	cd <dotNetProjectName>
+	add the SpaProxy package
+	restore the project - Optional
+	
+	cd FromWebAPI
+	dotnet add package Microsoft.AspNetCore.SpaProxy
+	dotnet restore
+3.) Create a base angular project name
+	ng new <baseAngular> --create-application=false
+	
+	ng new Angular --create-application=false
+4.) Create a new Angular application
+	cd <baseAngular>
+	ng generate application <yourProjectName>
+		answer the questions as fits your needs
+	
+	cd Angular
+	ng generate application FrontEnd
+5.) Install the dependencies packages for running a dotnet/Angular.io application
+	run-script-os - Used by dotnet in the package.json file
+		The next two are option but I perfer to use them
+	bootstrap - Optional
+	@angular/material - Optional and we can install using schematics
+	@angular-eslint/schematics - Optional but very usefull
+
+	npm install run-script-os --save
+	npm install bootstrap --save
+	ng add @angular/material
+	ng add @angular-eslint/schematics
+Files you'll need to edit the following files:
+	<dotNetProjectName>.csproj
+	Program.cs
+	.vscode\launch.json
+	Properties\launchSettings.json
+	<dotNetProjectName>\<baseAngular>
+		\angular.json
+		\package.json
+
+Important NOTE
+	The port numbers in Properties\launchSettings.json need to match your .vscode\launch.json port numbers
+		launchSettings.json		"applicationUrl": "https://localhost:7243;http://localhost:5043",
+		launch.json				"url": "http://localhost:5043",
+	The port numbers in <dotNetProjectName>.csproj need to match your package.json port numbers
+		<dotNetProjectName>.csproj	<SpaProxyServerUrl>https://localhost:44483</SpaProxyServerUrl>
+		package.json				"start:windows": "ng serve --port 44483 ...
+									"start:default": "ng serve --port 44483 ...
+
+Changes to launch.json
+Here I add two configurations and a compounds section this will allow us to debug the angular application
+with Visual Studio Code as well as the C# code. Remember the "url": in the configuration here needs
+to match the applicationUrl in the launchSettings.json file
+
+The two configurations:
+        {
+            "name": ".Net Only",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/bin/Debug/net6.0/FromWebAPI.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}",
+            "stopAtEntry": false,
+            "internalConsoleOptions": "openOnSessionStart",
+            "launchBrowser": {
+                "enabled": false
+            },
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            },
+            "sourceFileMap": {
+                "/Views": "${workspaceFolder}"
+            }
+        },
+        {
+            "type": "pwa-chrome",
+            "request": "launch",
+            "name": "PWA Chrome",
+            // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
+            // otherwise the SPA will not launch
+            "url": "http://localhost:5043",
+            "webRoot": "${workspaceFolder}/Angular/Projects/gw-front-end",
+            "sourceMaps": true,
+            "sourceMapPathOverrides": {
+              "webpack:///./*": "${workspaceRoot}/Angular/*"
+            }
+        }
+The Compound:
+    "compounds": [
+        {
+            "name": "1.) .Net + Chrome",
+            "configurations": [".Net Only", "PWA Chrome"]
+        } 
+    ]
+
+launchSettings.json:
+	"profiles":
+		"<dotNetProjectName>":
+			"environmentVariables":
+				Add the following: "ASPNETCORE_HOSTINGSTARTUPASSEMBLIES": "Microsoft.AspNetCore.SpaProxy"
+
+package.json
+	"scripts": {
+		"build": "ng build",
+		"build:ssr": "ng run GrowthWare.Web.Angular:server:dev",
+		"lint": "ng lint",
+		"ng": "ng",
+		"prestart": "node aspnetcore-https",
+		"start": "run-script-os",
+		"start:windows": "ng serve --port 44455 --ssl --ssl-cert %APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem --ssl-key %APPDATA%\\ASP.NET\\https\\%npm_package_name%.key",
+		"start:default": "ng serve --port 44455 --ssl --ssl-cert $HOME/.aspnet/https/${npm_package_name}.pem --ssl-key $HOME/.aspnet/https/${npm_package_name}.key",
+		"test": "ng test",
+		"watch": "ng build --watch --configuration development"
+	}
+
+angular.json:
+	If you added bootstrap then
+		add "./node_modules/bootstrap/dist/css/bootstrap.min.css" to the "styles": sections in
+	
+		"projects":
+			"<yourProjectName>":
+				"architect":
+					"serve":
+						"configurations":
+							"development":
+								Add the following: "proxyConfig": "proxy.conf.js"
+
+Files you'll need to create theses files:
+	<dotNetProjectName>\<baseAngular>\aspnetcore-https.js
+	<dotNetProjectName>\<baseAngular>\proxy.conf.js
+	
+********* aspnetcore-https.js EXAMPLE *********
+// This script sets up HTTPS for the application using the ASP.NET Core HTTPS certificate
+const fs = require('fs');
+const spawn = require('child_process').spawn;
+const path = require('path');
+
+const baseFolder =
+  process.env.APPDATA !== undefined && process.env.APPDATA !== ''
+    ? `${process.env.APPDATA}/ASP.NET/https`
+    : `${process.env.HOME}/.aspnet/https`;
+
+const certificateArg = process.argv.map(arg => arg.match(/--name=(?<value>.+)/i)).filter(Boolean)[0];
+const certificateName = certificateArg ? certificateArg.groups.value : process.env.npm_package_name;
+
+if (!certificateName) {
+  console.error('Invalid certificate name. Run this script in the context of an npm/yarn script or pass --name=<<app>> explicitly.')
+  process.exit(-1);
+}
+
+const certFilePath = path.join(baseFolder, `${certificateName}.pem`);
+const keyFilePath = path.join(baseFolder, `${certificateName}.key`);
+
+if (!fs.existsSync(certFilePath) || !fs.existsSync(keyFilePath)) {
+  spawn('dotnet', [
+    'dev-certs',
+    'https',
+    '--export-path',
+    certFilePath,
+    '--format',
+    'Pem',
+    '--no-password',
+  ], { stdio: 'inherit', })
+  .on('exit', (code) => process.exit(code));
+}
+
+********* proxy.conf.js EXAMPLE *********
+const { env } = require('process');
+
+const target = env.ASPNETCORE_HTTPS_PORT ? `https://localhost:${env.ASPNETCORE_HTTPS_PORT}` :
+  env.ASPNETCORE_URLS ? env.ASPNETCORE_URLS.split(';')[0] : 'http://localhost:35360';
+
+const PROXY_CONFIG = [
+  {
+    context: [
+      "/weatherforecast",
+   ],
+    target: target,
+    secure: false,
+    headers: {
+      Connection: 'Keep-Alive'
+    }
+  }
+]
+
+module.exports = PROXY_CONFIG;
+
+********* <dotNetProjectName>.csproj EXAMPLE *********
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <IsPackable>false</IsPackable>
+    <SpaRoot>Angular\</SpaRoot>
+    <SpaProxyServerUrl>https://localhost:44455</SpaProxyServerUrl>
+    <SpaProxyLaunchCommand>npm start</SpaProxyLaunchCommand>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.SpaProxy" Version="6.0.4" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Content Remove="$(SpaRoot)**" />
+    <None Remove="$(SpaRoot)**" />
+    <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
+  </ItemGroup>
+
+    <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Restoring dependencies using 'npm'. This may take several minutes..." />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+  </Target>
+  
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+
+</Project>
+
+********* Programs.cs EXAMPLE *********
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+// builder.Services.AddControllers();               // Commented out
+builder.Services.AddControllersWithViews();         // Added
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+if (!app.Environment.IsDevelopment())               // Added
+{
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();                               // Added
+app.UseRouting();                                   // Added
+
+app.UseAuthorization();
+
+// app.MapControllers();                            // Commented out
+app.MapControllerRoute(                             // Added
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");                // Added
+
+app.Run();
