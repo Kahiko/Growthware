@@ -19,9 +19,17 @@ export class FetchDataComponent {
   constructor(http: HttpClient) {
     const mURL = this.getBaseURL() + '/weatherforecast';
     console.log(mURL);
-    http.get<WeatherForecast[]>(mURL).subscribe(result => {
-      this.forecasts = result;
-    }, error => console.error(error));
+    http.get<WeatherForecast[]>(mURL).subscribe({
+      next: (result) => {
+        this.forecasts = result;
+      },
+      error: (e) => {
+        console.error(e)
+      },
+      complete: () => {
+        console.info('complete')
+      }
+    });
   }
 
   getBaseURL() {
