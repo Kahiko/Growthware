@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 interface WeatherForecast {
   date: string;
@@ -13,13 +13,19 @@ interface WeatherForecast {
   templateUrl: './fetch-data.component.html',
   styleUrls: ['./fetch-data.component.scss']
 })
-export class FetchDataComponent {
+export class FetchDataComponent implements OnInit {
   public forecasts: WeatherForecast[] = [];
 
-  constructor(http: HttpClient) {
+  private _httpClient: HttpClient
+
+  constructor(httpClient: HttpClient) {
+    this._httpClient = httpClient;
+  }
+
+  ngOnInit(): void {
     const mURL = this.getBaseURL() + '/weatherforecast';
     console.log(mURL);
-    http.get<WeatherForecast[]>(mURL).subscribe({
+    this._httpClient.get<WeatherForecast[]>(mURL).subscribe({
       next: (result) => {
         this.forecasts = result;
       },
