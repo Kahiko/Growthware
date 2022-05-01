@@ -2,7 +2,9 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-builder.Services.AddControllers();
+// builder.Services.AddControllers();               // Commented out
+builder.Services.AddControllersWithViews();         // Added
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -15,11 +17,23 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+if (!app.Environment.IsDevelopment())               // Added
+{
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();                               // Added
+app.UseRouting();                                   // Added
 
 app.UseAuthorization();
 
-app.MapControllers();
+// app.MapControllers();                            // Commented out
+app.MapControllerRoute(                             // Added
+    name: "default",
+    pattern: "{controller}/{action=Index}/{id?}");
+
+app.MapFallbackToFile("index.html");                // Added
 
 app.Run();
