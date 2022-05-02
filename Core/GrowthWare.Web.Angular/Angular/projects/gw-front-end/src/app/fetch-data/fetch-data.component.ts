@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { Common } from 'projects/gw-lib/src/public-api'
 
 interface WeatherForecast {
   date: string;
@@ -23,7 +24,7 @@ export class FetchDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mURL = this.getBaseURL() + '/weatherforecast';
+    const mURL = Common.baseURL + 'weatherforecast';
     console.log(mURL);
     this._httpClient.get<WeatherForecast[]>(mURL).subscribe({
       next: (result) => {
@@ -36,23 +37,5 @@ export class FetchDataComponent implements OnInit {
         console.info('complete')
       }
     });
-  }
-
-  getBaseURL() {
-    let mCurrentLocation = window.location;
-    let mPort = mCurrentLocation.port;
-    const mCurrentPath = window.location.pathname
-    if (mPort === "80" || mPort.length === 0) {
-        mPort = "";
-    } else {
-        mPort = ":" + mPort;
-    }
-    let mURL = mCurrentLocation.protocol + "//" + mCurrentLocation.hostname + mPort;
-    const n = mCurrentPath.lastIndexOf("/");
-    if (n !== 0) {
-        mURL = mURL + '/' + mCurrentPath;
-    }
-    return mURL;
-    // return window.location.origin;
   }
 }
