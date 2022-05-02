@@ -1,4 +1,4 @@
-import { DynamicTableConfig } from './dynamic-table-config.model';
+import { DynamicTableConfig } from './dynamic-table-configuration.model';
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { Common } from '../../common';
