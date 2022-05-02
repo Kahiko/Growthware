@@ -8,7 +8,7 @@ export class DynamicTableService {
 
   public getTableConfiguration(name: string): IDynamicTableConfiguration {
     const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
-    if(Common.isNullOrUndefined(mRetVal)) {
+    if(!Common.isNullOrUndefined(mRetVal)) {
 
     }
     return mRetVal;
