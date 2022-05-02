@@ -1,11 +1,28 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams, HttpErrorResponse } from '@angular/common/http';
-import {HttpHeaders} from '@angular/common/http'
+import { DynamicTableConfig } from './dynamic-table-config.model';
+import * as DefaultData from './dynamic-table.config.json';
+import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
+import { Common } from '../../common';
 
 export class DynamicTableService {
-  private _HttpClient: HttpClient;
+  private _TableConfigurations: IDynamicTableConfiguration[] = [];
 
-  constructor(httpClient: HttpClient) {
-    this._HttpClient = httpClient;
+  public getTableConfiguration(name: string): IDynamicTableConfiguration {
+    const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
+    if(Common.isNullOrUndefined(mRetVal)) {
+
+    }
+    return mRetVal;
+  }
+
+  public set TableConfigurations(config: IDynamicTableConfiguration[]) {
+    if(config != null && config.length > 0) {
+      this._TableConfigurations = config;
+    }
+  }
+
+  constructor() {
+    console.log(DefaultData);
+    this._TableConfigurations = JSON.parse(JSON.stringify(DefaultData));
+    console.log(this._TableConfigurations);
   }
 }
