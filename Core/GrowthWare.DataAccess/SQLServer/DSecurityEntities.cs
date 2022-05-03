@@ -32,7 +32,7 @@ namespace GrowthWare.DataAccess.SQLServer
 			{
 			new SqlParameter("@P_ACCT", account),
 			new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-			new SqlParameter("@P_SE_SEQ_ID", securityEntityId),
+			new SqlParameter("@P_securityEntityID", securityEntityId),
 			GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);

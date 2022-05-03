@@ -25,7 +25,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting client choices for ' + CONVERT(VARCHAR(25),@P_Account)
 			SELECT
 				Account AS ACCT
-				, SE_SEQ_ID
+				, securityEntityID
 				, SE_NAME
 				, Back_Color
 				, Left_Color
@@ -46,7 +46,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting client choices for the Anonymous account'
 			SELECT
 				Account AS ACCT
-				, SE_SEQ_ID
+				, securityEntityID
 				, SE_NAME
 				, Back_Color
 				, Left_Color
