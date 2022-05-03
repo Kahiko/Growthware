@@ -63,7 +63,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting single message'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as securityEntityID
+				, Security_Entity_SeqID as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -83,7 +83,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting all messages'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as securityEntityID
+				, Security_Entity_SeqID as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]

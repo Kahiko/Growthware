@@ -70,7 +70,7 @@ AS
 				IF @P_Is_Se_Admin = 0 -- FALSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS securityEntityID,
+							Security_Entity_SeqID AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
@@ -84,7 +84,7 @@ AS
 				ELSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS securityEntityID,
+							Security_Entity_SeqID AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
@@ -100,7 +100,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT
-				Security_Entity_SeqID AS securityEntityID,
+				Security_Entity_SeqID AS SecurityEntityID,
 				[Name],
 				[Description]
 			FROM

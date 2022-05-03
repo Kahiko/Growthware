@@ -9,7 +9,7 @@ namespace GrowthWare.Framework.Models
     public class MGroupRoles : MBaseModel
     {
         private int m_AddedUpdatedBy;
-        private int m_SecurityEntityId = -1;
+        private int m_SecurityEntityID = -1;
         private int m_GroupSeqId = -1;
 
         private string m_Roles;
@@ -28,10 +28,10 @@ namespace GrowthWare.Framework.Models
         /// Gets or sets the Security Entity Id.
         /// </summary>
         /// <value>The Security Entity Id.</value>
-        public int SecurityEntityId
+        public int SecurityEntityID
         {
-            get { return m_SecurityEntityId; }
-            set { m_SecurityEntityId = value; }
+            get { return m_SecurityEntityID; }
+            set { m_SecurityEntityID = value; }
         }
 
         /// <summary>

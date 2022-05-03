@@ -96,12 +96,12 @@ namespace GrowthWare.BusinessLogic
         /// <summary>
         /// Gets the groups by security entity.
         /// </summary>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetGroupsBySecurityEntity(int securityEntityId)
+        public DataTable GetGroupsBySecurityEntity(int SecurityEntityID)
         {
             MGroupProfile myProfile = new MGroupProfile();
-            myProfile.SecurityEntityId = securityEntityId;
+            myProfile.SecurityEntityID = SecurityEntityID;
             m_DGroups.Profile = myProfile;
             return m_DGroups.GroupsBySecurityEntity();
         }

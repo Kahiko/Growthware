@@ -17,11 +17,11 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Retrieves security entities for a given account.
         /// </summary>
         /// <param name="account">String</param>
-        /// <param name="securityEntityID">int or Integer</param>
+        /// <param name="SecurityEntityID">int or Integer</param>
         /// <param name="isSecurityEntityAdministrator">Boolean or bool</param>
         /// <returns>Datatable</returns>
         /// <remarks></remarks>
-        DataTable GetSecurityEntities(string account, int securityEntityID, bool isSecurityEntityAdministrator);
+        DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
 
 
         DataTable Search(MSearchCriteria searchCriteria);
@@ -37,9 +37,9 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Gets the valid security entities.
         /// </summary>
         /// <param name="account">The account.</param>
-        /// <param name="securityEntityId">The security entity id.</param>
+        /// <param name="SecurityEntityID">The security entity id.</param>
         /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
         /// <returns>DataTable.</returns>
-        DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin);
+        DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin);
     }
 }

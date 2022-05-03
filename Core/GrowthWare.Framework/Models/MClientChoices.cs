@@ -53,9 +53,9 @@ namespace GrowthWare.Framework.Models
         /// Gets the security entity ID.
         /// </summary>
         /// <value>The security entity ID.</value>
-        public static string SecurityEntityId
+        public static string SecurityEntityID
         {
-            get { return "securityEntityID"; }
+            get { return "SecurityEntityID"; }
         }
 
         /// <summary>

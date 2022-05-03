@@ -146,11 +146,11 @@ namespace GrowthWare.BusinessLogic
         /// <summary>
         /// Gets the roles by BU.
         /// </summary>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetRolesBySecurityEntity(int securityEntityId)
+        public DataTable GetRolesBySecurityEntity(int SecurityEntityID)
         {
-            m_DRoles.SecurityEntitySeqID = securityEntityId;
+            m_DRoles.SecurityEntitySeqID = SecurityEntityID;
             return m_DRoles.RolesBySecurityEntity();
         }
 
@@ -186,15 +186,15 @@ namespace GrowthWare.BusinessLogic
         /// Updates all accounts for role.
         /// </summary>
         /// <param name="roleSeqId">The role seq ID.</param>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="accounts">The accounts.</param>
         /// <param name="accountSeqId">The account seq ID.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-        public bool UpdateAllAccountsForRole(int roleSeqId, int securityEntityId, string[] accounts, int accountSeqId)
+        public bool UpdateAllAccountsForRole(int roleSeqId, int SecurityEntityID, string[] accounts, int accountSeqId)
         {
             if (accounts == null) throw new ArgumentNullException("accounts", "accounts cannot be a null reference (Nothing in Visual Basic)!!");
             bool mRetVal = false;
-            if (DatabaseIsOnline()) mRetVal = m_DRoles.UpdateAllAccountsForRole(roleSeqId, securityEntityId, accounts, accountSeqId);
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.UpdateAllAccountsForRole(roleSeqId, SecurityEntityID, accounts, accountSeqId);
             return mRetVal;
         }
     }

@@ -31,7 +31,7 @@ namespace GrowthWare.Framework.Models
             base.NameColumnName = "Name";
             base.IdColumnName = "MESSAGE_SEQ_ID";
             base.Initialize(dataRow);
-            m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "securityEntityID");
+            m_SecurityEntity_Seq_Id = base.GetInt(dataRow, "SecurityEntityID");
             m_Title = base.GetString(dataRow, "TITLE");
             m_Description = base.GetString(dataRow, "DESCRIPTION");
             m_FormatAsHTML = base.GetBool(dataRow, "FORMAT_AS_HTML");

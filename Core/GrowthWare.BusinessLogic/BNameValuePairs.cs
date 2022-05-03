@@ -66,7 +66,7 @@ namespace GrowthWare.BusinessLogic
         public DataTable GetAllNameValuePair()
         {
             DataTable mRetVal = null;
-            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
+            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
             // for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePairs.AccountId = -1;
             m_DNameValuePairs.NameValuePairProfile.Id = -1;
@@ -83,7 +83,7 @@ namespace GrowthWare.BusinessLogic
         public DataTable GetAllNameValuePair(int accountId)
         {
             DataTable mRetVal = null;
-            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
+            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
             // for future use ... the DB is capable of dividing the NVPs by BU
             m_DNameValuePairs.AccountId = accountId;
             m_DNameValuePairs.NameValuePairProfile.Id = -1;
@@ -148,7 +148,7 @@ namespace GrowthWare.BusinessLogic
         public DataTable GetNameValuePairRoles(int nameValuePairSeqId)
         {
             DataTable mRetVal = null;
-            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
+            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
             if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetRoles(nameValuePairSeqId);
             return mRetVal;
         }
@@ -161,7 +161,7 @@ namespace GrowthWare.BusinessLogic
         public DataTable GetNameValuePairGroups(int nameValuePairSeqId)
         {
             DataTable mRetVal = null;
-            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityId;
+            m_DNameValuePairs.SecurityEntitySeqId = ConfigSettings.DefaultSecurityEntityID;
             if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.GetGroups(nameValuePairSeqId);
             return mRetVal;
         }
@@ -206,24 +206,24 @@ namespace GrowthWare.BusinessLogic
         /// Updates the groups.
         /// </summary>
         /// <param name="nameValuePairId">The NV p_ ID.</param>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedGroups">The comma separated groups.</param>
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
-        public void UpdateGroups(int nameValuePairId, int securityEntityId, string commaSeparatedGroups, MNameValuePair nameValuePairProfile)
+        public void UpdateGroups(int nameValuePairId, int SecurityEntityID, string commaSeparatedGroups, MNameValuePair nameValuePairProfile)
         {
-            if (DatabaseIsOnline()) m_DNameValuePairs.UpdateGroups(nameValuePairId, securityEntityId, commaSeparatedGroups, nameValuePairProfile);
+            if (DatabaseIsOnline()) m_DNameValuePairs.UpdateGroups(nameValuePairId, SecurityEntityID, commaSeparatedGroups, nameValuePairProfile);
         }
 
         /// <summary>
         /// Updates the roles.
         /// </summary>
         /// <param name="nameValuePairId">The NV p_ ID.</param>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedRoles">The comma separated roles.</param>
         /// <param name="nameValuePairProfile">MNameValuePair.</param>
-        public void UpdateRoles(int nameValuePairId, int securityEntityId, string commaSeparatedRoles, MNameValuePair nameValuePairProfile)
+        public void UpdateRoles(int nameValuePairId, int SecurityEntityID, string commaSeparatedRoles, MNameValuePair nameValuePairProfile)
         {
-            if (DatabaseIsOnline()) m_DNameValuePairs.UpdateRoles(nameValuePairId, securityEntityId, commaSeparatedRoles, nameValuePairProfile);
+            if (DatabaseIsOnline()) m_DNameValuePairs.UpdateRoles(nameValuePairId, SecurityEntityID, commaSeparatedRoles, nameValuePairProfile);
         }
     }
 }

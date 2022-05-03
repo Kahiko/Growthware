@@ -65,7 +65,7 @@
     "Development_RegistrationGroups": "",
     "Development_RegistrationPassword": "Welcome",
     "Development_RegistrationRoles": "",
-    "Development_RegistrationSecurityEntityId": "3",
+    "Development_RegistrationSecurityEntityID": "3",
     "Development_RegistrationStatusId": "5",
     "Development_SMTP_Account": "me@domain.com",
     "Development_SMTP_From": "me@domain.com",

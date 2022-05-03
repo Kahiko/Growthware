@@ -23,32 +23,32 @@ namespace GrowthWare.DataAccess.SQLServer
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
-        DataTable ISecurityEntities.GetSecurityEntities(String account, int securityEntityId, bool isSecurityEntityAdministrator)
+        DataTable ISecurityEntities.GetSecurityEntities(String account, int SecurityEntityID, bool isSecurityEntityAdministrator)
         {
             if (String.IsNullOrEmpty(account)) { throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!"); };
-            if (securityEntityId == -1) { throw new ArgumentNullException("securityEntityId", "securityEntityId cannot be a null reference (Nothing in Visual Basic)!"); };
+            if (SecurityEntityID == -1) { throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
             string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] mParameters =
 			{
 			new SqlParameter("@P_ACCT", account),
 			new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-			new SqlParameter("@P_securityEntityID", securityEntityId),
+			new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
 			GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
-        DataTable ISecurityEntities.GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
+        DataTable ISecurityEntities.GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
         {
             if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in Visual Basic)!");
-            if (securityEntityId == -1) throw new ArgumentNullException("securityEntityId", "securityEntityId must be greater than -1");
+            if (SecurityEntityID == -1) throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID must be greater than -1");
 
             string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] myParameters = 
             { 
                 new SqlParameter("@P_Account", account), 
                 new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin), 
-                new SqlParameter("@P_Security_Entity_SeqID", securityEntityId)
+                new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID)
             };
             return base.GetDataTable(mStoreProcedure, myParameters);
         }

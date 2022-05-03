@@ -28,7 +28,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
 			SELECT
-				Security_Entity_SeqID as securityEntityID
+				Security_Entity_SeqID as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -40,7 +40,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_securityEntityID
+				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -54,7 +54,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting 1 row from Security_Enties'
 			SELECT
-				Security_Entity_SeqID as securityEntityID
+				Security_Entity_SeqID as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -66,7 +66,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_securityEntityID
+				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By

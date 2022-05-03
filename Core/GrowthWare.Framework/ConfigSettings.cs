@@ -210,7 +210,7 @@ namespace GrowthWare.Framework
         /// <value>String</value>
         /// <returns>String</returns>
         /// <remarks></remarks>
-        public static int DefaultSecurityEntityId
+        public static int DefaultSecurityEntityID
         {
             get { return int.Parse(GetAppSettingValue("Default_Security_Entity_ID", true), CultureInfo.InvariantCulture); }
         }
@@ -413,12 +413,12 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Gets the RegistrationSecurityEntityId.
+        /// Gets the RegistrationSecurityEntityID.
         /// </summary>
-        /// <value>The RegistrationSecurityEntityId.</value>
-        public static int RegistrationSecurityEntityId
+        /// <value>The RegistrationSecurityEntityID.</value>
+        public static int RegistrationSecurityEntityID
         {
-            get { return int.Parse(GetAppSettingValue("RegistrationSecurityEntityId", true), CultureInfo.InvariantCulture); }
+            get { return int.Parse(GetAppSettingValue("RegistrationSecurityEntityID", true), CultureInfo.InvariantCulture); }
         }
         /// <summary>
         /// Retrun AppDisplayedName and Remember_Me from the CONFIG file

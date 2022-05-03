@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models
     {
    #region "Member Properties"
         private string m_Description = string.Empty;
-        private int m_SecurityEntityId = 1;
+        private int m_SecurityEntityID = 1;
     #endregion
 
    #region "Protected Methods"
@@ -52,10 +52,10 @@ namespace GrowthWare.Framework.Models
         /// Gets or sets the security entity ID.
         /// </summary>
         /// <value>The security entity ID.</value>
-        public int SecurityEntityId
+        public int SecurityEntityID
         {
-            get { return m_SecurityEntityId; }
-            set { m_SecurityEntityId = value; }
+            get { return m_SecurityEntityID; }
+            set { m_SecurityEntityID = value; }
         }
 
         /// <summary>

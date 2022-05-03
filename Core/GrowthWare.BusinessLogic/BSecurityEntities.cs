@@ -151,15 +151,15 @@ namespace GrowthWare.BusinessLogic
         /// Gets the valid security entities.
         /// </summary>
         /// <param name="account">The account.</param>
-        /// <param name="securityEntityId">The security entity id.</param>
+        /// <param name="SecurityEntityID">The security entity id.</param>
         /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
         /// <returns>DataTable.</returns>
-        public DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
+        public DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
         {
             DataTable mRetVal = null;
             if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
             { 
-                mRetVal = m_DSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
+                mRetVal = m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
             }
             return mRetVal;
         }

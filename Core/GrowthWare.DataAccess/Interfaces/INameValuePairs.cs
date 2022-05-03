@@ -94,19 +94,19 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Updates the groups.
         /// </summary>
         /// <param name="NVP_ID">The NV p_ ID.</param>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedGroups">The comma separated groups.</param>
         /// <param name="nameValuePairProfile">MNameValuePair</param>
-        void UpdateGroups(int NVP_ID, int securityEntityId, string commaSeparatedGroups, MNameValuePair nameValuePairProfile);
+        void UpdateGroups(int NVP_ID, int SecurityEntityID, string commaSeparatedGroups, MNameValuePair nameValuePairProfile);
 
         /// <summary>
         /// Updates the roles.
         /// </summary>
         /// <param name="nameValuePairId">The NV p_ ID.</param>
-        /// <param name="securityEntityId">The security entity ID.</param>
+        /// <param name="SecurityEntityID">The security entity ID.</param>
         /// <param name="commaSeparatedRoles">The comma separated roles.</param>
         /// <param name="nameValuePairProfile">MNameValuePair</param>
-        void UpdateRoles(int nameValuePairId, int securityEntityId, string commaSeparatedRoles, MNameValuePair nameValuePairProfile);
+        void UpdateRoles(int nameValuePairId, int SecurityEntityID, string commaSeparatedRoles, MNameValuePair nameValuePairProfile);
 
         /// <summary>
         /// Gets all NVP.

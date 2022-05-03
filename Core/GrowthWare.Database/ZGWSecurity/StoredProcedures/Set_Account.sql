@@ -198,7 +198,7 @@ AS
 							BEGIN -- Populate values from Account_Choices from the Anonymous account
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
-									@V_Security_Entity_SeqID = securityEntityID,
+									@V_Security_Entity_SeqID = SecurityEntityID,
 									@V_SE_NAME = SE_NAME,
 									@V_Back_Color = Back_Color,
 									@V_Left_Color = Left_Color,

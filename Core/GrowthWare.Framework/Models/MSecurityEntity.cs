@@ -19,13 +19,13 @@ namespace GrowthWare.Framework.Models
         protected new void Initialize(DataRow dataRow)
         {
             base.NameColumnName = "Name";
-            base.IdColumnName = "securityEntityID";
+            base.IdColumnName = "SecurityEntityID";
             base.Initialize(dataRow);
             this.Description = base.GetString(dataRow, "Description");
             this.Url = base.GetString(dataRow, "URL");
             this.Skin = base.GetString(dataRow, "Skin");
             this.Style = base.GetString(dataRow, "Style");
-            this.ParentSeqId = base.GetInt(dataRow, "PARENT_securityEntityID");
+            this.ParentSeqId = base.GetInt(dataRow, "PARENT_SecurityEntityID");
             this.StatusSeqId = base.GetInt(dataRow, "STATUS_SEQ_ID");
             this.DataAccessLayer = base.GetString(dataRow, "DAL");
             this.DataAccessLayerAssemblyName = base.GetString(dataRow, "DAL_NAME");

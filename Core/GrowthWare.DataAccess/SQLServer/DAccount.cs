@@ -194,7 +194,7 @@ namespace GrowthWare.DataAccess.SQLServer
             }
             if (m_SecurityEntitySeqID == -2)
             {
-                throw new DataAccessLayerException("The securityEntityID property must set before using any methods from this class.");
+                throw new DataAccessLayerException("The SecurityEntityID property must set before using any methods from this class.");
             }
         }
 

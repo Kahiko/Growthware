@@ -653,7 +653,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreW
 BEGIN
 CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[Account] [varchar](128) NOT NULL,
-	[securityEntityID] [int] NULL,
+	[SecurityEntityID] [int] NULL,
 	[SE_NAME] [varchar](256) NULL,
 	[Back_Color] [varchar](15) NULL,
 	[Left_Color] [varchar](15) NULL,
@@ -1769,7 +1769,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting client choices for ' + CONVERT(VARCHAR(25),@P_Account)
 			SELECT
 				Account AS ACCT
-				, securityEntityID
+				, SecurityEntityID
 				, SE_NAME
 				, Back_Color
 				, Left_Color
@@ -1790,7 +1790,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting client choices for the Anonymous account'
 			SELECT
 				Account AS ACCT
-				, securityEntityID
+				, SecurityEntityID
 				, SE_NAME
 				, Back_Color
 				, Left_Color
@@ -1883,7 +1883,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting single message'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as securityEntityID
+				, Security_Entity_SeqID as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -1903,7 +1903,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting all messages'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as securityEntityID
+				, Security_Entity_SeqID as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -2055,7 +2055,7 @@ GO
 Usage:
 	EXEC ZGWCoreWeb.Set_Account_Choices
 		@P_ACCT = N'Anonymous',
-		@P_securityEntityID = 1,
+		@P_SecurityEntityID = 1,
 		@P_SE_NAME = 'System',
 		@P_Back_Color = '#ffffff',
 		@P_Left_Color = '#eeeeee',
@@ -2075,7 +2075,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_ACCT VARCHAR(128),
-	@P_securityEntityID int,
+	@P_SecurityEntityID int,
 	@P_SE_NAME VARCHAR(256),
 	@P_Back_Color VARCHAR(15),
 	@P_Left_Color VARCHAR(15),
@@ -2094,7 +2094,7 @@ AS
 			INSERT ZGWCoreWeb.Account_Choices
 			(
 				Account,
-				securityEntityID,
+				SecurityEntityID,
 				SE_NAME,
 				Back_Color,
 				Left_Color,
@@ -2110,7 +2110,7 @@ AS
 			VALUES
 			(
 				@P_ACCT,
-				@P_securityEntityID,
+				@P_SecurityEntityID,
 				@P_SE_NAME,
 				@P_Back_Color,
 				@P_Left_Color,
@@ -2128,7 +2128,7 @@ AS
 		BEGIN
 			UPDATE ZGWCoreWeb.Account_Choices
 			SET
-				securityEntityID = @P_securityEntityID,
+				SecurityEntityID = @P_SecurityEntityID,
 				SE_NAME = @P_SE_NAME,
 				Back_Color =@P_Back_Color ,
 				Left_Color=@P_Left_Color,
@@ -5126,7 +5126,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
 			SELECT
-				Security_Entity_SeqID as securityEntityID
+				Security_Entity_SeqID as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -5138,7 +5138,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_securityEntityID
+				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -5152,7 +5152,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting 1 row from Security_Enties'
 			SELECT
-				Security_Entity_SeqID as securityEntityID
+				Security_Entity_SeqID as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -5164,7 +5164,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_securityEntityID
+				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -5259,7 +5259,7 @@ AS
 				IF @P_Is_Se_Admin = 0 -- FALSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS securityEntityID,
+							Security_Entity_SeqID AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
@@ -5273,7 +5273,7 @@ AS
 				ELSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS securityEntityID,
+							Security_Entity_SeqID AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
@@ -5289,7 +5289,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT
-				Security_Entity_SeqID AS securityEntityID,
+				Security_Entity_SeqID AS SecurityEntityID,
 				[Name],
 				[Description]
 			FROM
@@ -5510,7 +5510,7 @@ AS
 							BEGIN -- Populate values from Account_Choices from the Anonymous account
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
-									@V_Security_Entity_SeqID = securityEntityID,
+									@V_Security_Entity_SeqID = SecurityEntityID,
 									@V_SE_NAME = SE_NAME,
 									@V_Back_Color = Back_Color,
 									@V_Left_Color = Left_Color,
