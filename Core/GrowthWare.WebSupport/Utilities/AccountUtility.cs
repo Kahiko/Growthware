@@ -1,8 +1,7 @@
 ﻿using System;
 
-namespace GrowthWare.WebSupport.Utilities
+namespace GrowthWare.WebSupport.Utilities;
+public class AccountUtility
 {
-    public class AccountUtility
-    {
-    }
+
 }
