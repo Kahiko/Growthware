@@ -4,7 +4,7 @@ Usage:
 	EXEC ZGWCoreWeb.Set_Account_Choices
 		@P_ACCT = N'Anonymous',
 		@P_SecurityEntityID = 1,
-		@P_SE_NAME = 'System',
+		@P_securityEntityName = 'System',
 		@P_Back_Color = '#ffffff',
 		@P_Left_Color = '#eeeeee',
 		@P_Head_Color = '#C7C7C7',
@@ -24,7 +24,7 @@ Usage:
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_ACCT VARCHAR(128),
 	@P_SecurityEntityID int,
-	@P_SE_NAME VARCHAR(256),
+	@P_securityEntityName VARCHAR(256),
 	@P_Back_Color VARCHAR(15),
 	@P_Left_Color VARCHAR(15),
 	@P_Head_Color VARCHAR(15),
@@ -43,7 +43,7 @@ AS
 			(
 				Account,
 				SecurityEntityID,
-				SE_NAME,
+				securityEntityName,
 				Back_Color,
 				Left_Color,
 				Head_Color,
@@ -59,7 +59,7 @@ AS
 			(
 				@P_ACCT,
 				@P_SecurityEntityID,
-				@P_SE_NAME,
+				@P_securityEntityName,
 				@P_Back_Color,
 				@P_Left_Color,
 				@P_Head_Color,
@@ -77,7 +77,7 @@ AS
 			UPDATE ZGWCoreWeb.Account_Choices
 			SET
 				SecurityEntityID = @P_SecurityEntityID,
-				SE_NAME = @P_SE_NAME,
+				securityEntityName = @P_securityEntityName,
 				Back_Color =@P_Back_Color ,
 				Left_Color=@P_Left_Color,
 				Head_Color=@P_Head_Color,

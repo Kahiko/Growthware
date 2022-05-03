@@ -64,7 +64,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The name of the security entity.</value>
         public static string SecurityEntityName
         {
-            get { return "SE_NAME"; }
+            get { return "securityEntityName"; }
         }
 
         /// <summary>
