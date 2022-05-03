@@ -91,7 +91,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Account]
 AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
 	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
-		@V_securityEntityName VARCHAR(50),
+		@V_SecurityEntityName VARCHAR(50),
 		@V_Back_Color VARCHAR(15),
 		@V_Left_Color VARCHAR(15),
 		@V_Head_Color VARCHAR(15),
@@ -199,7 +199,7 @@ AS
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
 									@V_Security_Entity_SeqID = SecurityEntityID,
-									@V_securityEntityName = securityEntityName,
+									@V_SecurityEntityName = SecurityEntityName,
 									@V_Back_Color = Back_Color,
 									@V_Left_Color = Left_Color,
 									@V_Head_Color = Head_Color,
@@ -219,16 +219,16 @@ AS
 							BEGIN
 								IF @P_Debug = 1 PRINT 'Populating default values minimum values'
 								SET @V_Security_Entity_SeqID = (SELECT MIN(Security_Entity_SeqID) FROM ZGWSecurity.Security_Entities)
-								SET @V_securityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
+								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
 								IF @V_Security_Entity_SeqID = NULL SET @V_Security_Entity_SeqID = 1
-								IF @V_securityEntityName = NULL SET @V_securityEntityName = 'System'
+								IF @V_SecurityEntityName = NULL SET @V_SecurityEntityName = 'System'
 							END
 						--END IF
 						IF @P_Debug = 1 PRINT 'Executing ZGWCoreWeb.Set_Account_Choices'
 						EXEC ZGWCoreWeb.Set_Account_Choices
 							@P_Account,
 							@V_Security_Entity_SeqID,
-							@V_securityEntityName,
+							@V_SecurityEntityName,
 							@V_Back_Color,
 							@V_Left_Color,
 							@V_Head_Color,

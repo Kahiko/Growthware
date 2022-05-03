@@ -654,7 +654,7 @@ BEGIN
 CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[Account] [varchar](128) NOT NULL,
 	[SecurityEntityID] [int] NULL,
-	[securityEntityName] [varchar](256) NULL,
+	[SecurityEntityName] [varchar](256) NULL,
 	[Back_Color] [varchar](15) NULL,
 	[Left_Color] [varchar](15) NULL,
 	[Head_Color] [varchar](15) NULL,
@@ -1770,7 +1770,7 @@ AS
 			SELECT
 				Account AS ACCT
 				, SecurityEntityID
-				, securityEntityName
+				, SecurityEntityName
 				, Back_Color
 				, Left_Color
 				, Head_Color
@@ -1791,7 +1791,7 @@ AS
 			SELECT
 				Account AS ACCT
 				, SecurityEntityID
-				, securityEntityName
+				, SecurityEntityName
 				, Back_Color
 				, Left_Color
 				, Head_Color
@@ -2056,7 +2056,7 @@ Usage:
 	EXEC ZGWCoreWeb.Set_Account_Choices
 		@P_ACCT = N'Anonymous',
 		@P_SecurityEntityID = 1,
-		@P_securityEntityName = 'System',
+		@P_SecurityEntityName = 'System',
 		@P_Back_Color = '#ffffff',
 		@P_Left_Color = '#eeeeee',
 		@P_Head_Color = '#C7C7C7',
@@ -2076,7 +2076,7 @@ Usage:
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_ACCT VARCHAR(128),
 	@P_SecurityEntityID int,
-	@P_securityEntityName VARCHAR(256),
+	@P_SecurityEntityName VARCHAR(256),
 	@P_Back_Color VARCHAR(15),
 	@P_Left_Color VARCHAR(15),
 	@P_Head_Color VARCHAR(15),
@@ -2095,7 +2095,7 @@ AS
 			(
 				Account,
 				SecurityEntityID,
-				securityEntityName,
+				SecurityEntityName,
 				Back_Color,
 				Left_Color,
 				Head_Color,
@@ -2111,7 +2111,7 @@ AS
 			(
 				@P_ACCT,
 				@P_SecurityEntityID,
-				@P_securityEntityName,
+				@P_SecurityEntityName,
 				@P_Back_Color,
 				@P_Left_Color,
 				@P_Head_Color,
@@ -2129,7 +2129,7 @@ AS
 			UPDATE ZGWCoreWeb.Account_Choices
 			SET
 				SecurityEntityID = @P_SecurityEntityID,
-				securityEntityName = @P_securityEntityName,
+				SecurityEntityName = @P_SecurityEntityName,
 				Back_Color =@P_Back_Color ,
 				Left_Color=@P_Left_Color,
 				Head_Color=@P_Head_Color,
@@ -5403,7 +5403,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Account]
 AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
 	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
-		@V_securityEntityName VARCHAR(50),
+		@V_SecurityEntityName VARCHAR(50),
 		@V_Back_Color VARCHAR(15),
 		@V_Left_Color VARCHAR(15),
 		@V_Head_Color VARCHAR(15),
@@ -5511,7 +5511,7 @@ AS
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
 									@V_Security_Entity_SeqID = SecurityEntityID,
-									@V_securityEntityName = securityEntityName,
+									@V_SecurityEntityName = SecurityEntityName,
 									@V_Back_Color = Back_Color,
 									@V_Left_Color = Left_Color,
 									@V_Head_Color = Head_Color,
@@ -5531,16 +5531,16 @@ AS
 							BEGIN
 								IF @P_Debug = 1 PRINT 'Populating default values minimum values'
 								SET @V_Security_Entity_SeqID = (SELECT MIN(Security_Entity_SeqID) FROM ZGWSecurity.Security_Entities)
-								SET @V_securityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
+								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
 								IF @V_Security_Entity_SeqID = NULL SET @V_Security_Entity_SeqID = 1
-								IF @V_securityEntityName = NULL SET @V_securityEntityName = 'System'
+								IF @V_SecurityEntityName = NULL SET @V_SecurityEntityName = 'System'
 							END
 						--END IF
 						IF @P_Debug = 1 PRINT 'Executing ZGWCoreWeb.Set_Account_Choices'
 						EXEC ZGWCoreWeb.Set_Account_Choices
 							@P_Account,
 							@V_Security_Entity_SeqID,
-							@V_securityEntityName,
+							@V_SecurityEntityName,
 							@V_Back_Color,
 							@V_Left_Color,
 							@V_Head_Color,

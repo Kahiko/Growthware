@@ -1,7 +1,7 @@
 CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [Account]                  VARCHAR (128)  NOT NULL,
     [SecurityEntityID]                INT            NULL,
-    [securityEntityName]                  VARCHAR (256)  NULL,
+    [SecurityEntityName]                  VARCHAR (256)  NULL,
     [Back_Color]               VARCHAR (15)   NULL,
     [Left_Color]               VARCHAR (15)   NULL,
     [Head_Color]               VARCHAR (15)   NULL,

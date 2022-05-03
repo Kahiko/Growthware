@@ -26,7 +26,7 @@ AS
 			SELECT
 				Account AS ACCT
 				, SecurityEntityID
-				, securityEntityName
+				, SecurityEntityName
 				, Back_Color
 				, Left_Color
 				, Head_Color
@@ -47,7 +47,7 @@ AS
 			SELECT
 				Account AS ACCT
 				, SecurityEntityID
-				, securityEntityName
+				, SecurityEntityName
 				, Back_Color
 				, Left_Color
 				, Head_Color
