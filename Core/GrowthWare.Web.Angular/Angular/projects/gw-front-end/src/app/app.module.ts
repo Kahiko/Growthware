@@ -10,6 +10,10 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { FooterComponent } from './skins/default/footer/footer.component';
+import { HeaderComponent } from './skins/default/header/header.component';
+import { SidebarComponent } from './skins/default/sidebar/sidebar.component';
+import { ClientChoicesComponent } from './client-choices/client-choices.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +21,11 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     CounterComponent,
     FetchDataComponent,
     HomeComponent,
-    NavMenuComponent
+    NavMenuComponent,
+    FooterComponent,
+    HeaderComponent,
+    SidebarComponent,
+    ClientChoicesComponent
   ],
   imports: [
     AppRoutingModule,
