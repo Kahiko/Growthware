@@ -658,7 +658,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[BackColor] [varchar](15) NULL,
 	[LeftColor] [varchar](15) NULL,
 	[HeadColor] [varchar](15) NULL,
-	[Sub_HeadColor] [varchar](15) NULL,
+	[SubHeadColor] [varchar](15) NULL,
 	[Color_Scheme] [varchar](15) NULL,
 	[Favorite_Action] [varchar](50) NULL,
 	[Records_Per_Page] [int] NULL,
@@ -1775,7 +1775,7 @@ AS
 				, LeftColor
 				, HeadColor
 				, Header_ForeColor
-				, Sub_HeadColor
+				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, Color_Scheme
@@ -1796,7 +1796,7 @@ AS
 				, LeftColor
 				, HeadColor
 				, Header_ForeColor
-				, Sub_HeadColor
+				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME
@@ -2061,7 +2061,7 @@ Usage:
 		@P_LeftColor = '#eeeeee',
 		@P_HeadColor = '#C7C7C7',
 		@P_Header_ForeColor = 'Black',
-		@P_Sub_HeadColor = '#b6cbeb',
+		@P_SubHeadColor = '#b6cbeb',
 		@P_Row_BackColor = '#b6cbeb',
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_Color_Scheme = 'Blue',
@@ -2081,7 +2081,7 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_LeftColor VARCHAR(15),
 	@P_HeadColor VARCHAR(15),
 	@P_Header_ForeColor VARCHAR(15),
-	@P_Sub_HeadColor VARCHAR(15),
+	@P_SubHeadColor VARCHAR(15),
 	@P_Row_BackColor VARCHAR(15),
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_Color_Scheme VARCHAR(15),
@@ -2100,7 +2100,7 @@ AS
 				LeftColor,
 				HeadColor,
 				Header_ForeColor,
-				Sub_HeadColor,
+				SubHeadColor,
 				Row_BackColor,
 				AlternatingRow_BackColor,
 				Color_Scheme,
@@ -2116,7 +2116,7 @@ AS
 				@P_LeftColor,
 				@P_HeadColor,
 				@P_Header_ForeColor,
-				@P_Sub_HeadColor,
+				@P_SubHeadColor,
 				@P_Row_BackColor,
 				@P_AlternatingRow_BackColor,
 				@P_Color_Scheme,
@@ -2134,7 +2134,7 @@ AS
 				LeftColor=@P_LeftColor,
 				HeadColor=@P_HeadColor,
 				Header_ForeColor=@P_Header_ForeColor,
-				Sub_HeadColor=@P_Sub_HeadColor,
+				SubHeadColor=@P_SubHeadColor,
 				Row_BackColor=@P_Row_BackColor,
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				Color_Scheme=@P_Color_Scheme,
@@ -5408,7 +5408,7 @@ AS
 		@V_LeftColor VARCHAR(15),
 		@V_HeadColor VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
-		@V_Sub_HeadColor VARCHAR(15),
+		@V_SubHeadColor VARCHAR(15),
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
 		@V_Color_Scheme VARCHAR(15),
@@ -5516,7 +5516,7 @@ AS
 									@V_LeftColor = LeftColor,
 									@V_HeadColor = HeadColor,
 									@V_Header_ForeColor = Header_ForeColor,
-									@V_Sub_HeadColor = Sub_HeadColor,
+									@V_SubHeadColor = SubHeadColor,
 									@V_Row_BackColor = Row_BackColor,
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
 									@V_Color_Scheme = Color_Scheme,
@@ -5545,7 +5545,7 @@ AS
 							@V_LeftColor,
 							@V_HeadColor,
 							@V_Header_ForeColor,
-							@V_Sub_HeadColor,
+							@V_SubHeadColor,
 							@V_Row_BackColor,
 							@V_AlternatingRow_BackColor,
 							@V_Color_Scheme ,

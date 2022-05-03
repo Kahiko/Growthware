@@ -5,7 +5,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [BackColor]               VARCHAR (15)   NULL,
     [LeftColor]               VARCHAR (15)   NULL,
     [HeadColor]               VARCHAR (15)   NULL,
-    [Sub_HeadColor]           VARCHAR (15)   NULL,
+    [SubHeadColor]           VARCHAR (15)   NULL,
     [Color_Scheme]             VARCHAR (15)   NULL,
     [Favorite_Action]          VARCHAR (50)   NULL,
     [Records_Per_Page]         INT            NULL,
