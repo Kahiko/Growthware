@@ -19,11 +19,12 @@ Information regarding the dynamic-table.config.json file and it's contents
     text    - string - used to as the innerHTML of the HTML element, 
     visible - bool   - used to show/hide the button (when false the element will be given a style of "visibility: none")
 
-    id      - default - componentId + button position + "Btn" ... searchAccountTopLeftBtn (index 0 or the "add" button is searchAccountAddBtn), 
-    name    - default - componentId + button position + "Btn" ... searchAccountTtopLeftBtn (index 0 or the "add" button is searchAccountAddBtn), 
-    class   - default - "btn btn-primary", 
-    text    - default - Add, 
-    visible - default - false
+The 5 button default values:
+    id      - configurationName + button position + "Btn" ... searchAccountTopLeftBtn (index 0 or the "add" button is searchAccountAddBtn), 
+    name    - configurationName + button position + "Btn" ... searchAccountTtopLeftBtn (index 0 or the "add" button is searchAccountAddBtn), 
+    class   - "btn btn-primary", 
+    text    - "button position" or "Add" in the case of the add button, 
+    visible - false
 
   The index of the configuration is as follows:
     0 - The "Add" button
