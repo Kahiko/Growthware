@@ -657,8 +657,8 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[SecurityEntityName] [varchar](256) NULL,
 	[BackColor] [varchar](15) NULL,
 	[LeftColor] [varchar](15) NULL,
-	[Head_Color] [varchar](15) NULL,
-	[Sub_Head_Color] [varchar](15) NULL,
+	[HeadColor] [varchar](15) NULL,
+	[Sub_HeadColor] [varchar](15) NULL,
 	[Color_Scheme] [varchar](15) NULL,
 	[Favorite_Action] [varchar](50) NULL,
 	[Records_Per_Page] [int] NULL,
@@ -1773,9 +1773,9 @@ AS
 				, SecurityEntityName
 				, BackColor
 				, LeftColor
-				, Head_Color
+				, HeadColor
 				, Header_ForeColor
-				, Sub_Head_Color
+				, Sub_HeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, Color_Scheme
@@ -1794,9 +1794,9 @@ AS
 				, SecurityEntityName
 				, BackColor
 				, LeftColor
-				, Head_Color
+				, HeadColor
 				, Header_ForeColor
-				, Sub_Head_Color
+				, Sub_HeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME
@@ -2059,9 +2059,9 @@ Usage:
 		@P_SecurityEntityName = 'System',
 		@P_BackColor = '#ffffff',
 		@P_LeftColor = '#eeeeee',
-		@P_Head_Color = '#C7C7C7',
+		@P_HeadColor = '#C7C7C7',
 		@P_Header_ForeColor = 'Black',
-		@P_Sub_Head_Color = '#b6cbeb',
+		@P_Sub_HeadColor = '#b6cbeb',
 		@P_Row_BackColor = '#b6cbeb',
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_Color_Scheme = 'Blue',
@@ -2079,9 +2079,9 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_SecurityEntityName VARCHAR(256),
 	@P_BackColor VARCHAR(15),
 	@P_LeftColor VARCHAR(15),
-	@P_Head_Color VARCHAR(15),
+	@P_HeadColor VARCHAR(15),
 	@P_Header_ForeColor VARCHAR(15),
-	@P_Sub_Head_Color VARCHAR(15),
+	@P_Sub_HeadColor VARCHAR(15),
 	@P_Row_BackColor VARCHAR(15),
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_Color_Scheme VARCHAR(15),
@@ -2098,9 +2098,9 @@ AS
 				SecurityEntityName,
 				BackColor,
 				LeftColor,
-				Head_Color,
+				HeadColor,
 				Header_ForeColor,
-				Sub_Head_Color,
+				Sub_HeadColor,
 				Row_BackColor,
 				AlternatingRow_BackColor,
 				Color_Scheme,
@@ -2114,9 +2114,9 @@ AS
 				@P_SecurityEntityName,
 				@P_BackColor,
 				@P_LeftColor,
-				@P_Head_Color,
+				@P_HeadColor,
 				@P_Header_ForeColor,
-				@P_Sub_Head_Color,
+				@P_Sub_HeadColor,
 				@P_Row_BackColor,
 				@P_AlternatingRow_BackColor,
 				@P_Color_Scheme,
@@ -2132,9 +2132,9 @@ AS
 				SecurityEntityName = @P_SecurityEntityName,
 				BackColor =@P_BackColor ,
 				LeftColor=@P_LeftColor,
-				Head_Color=@P_Head_Color,
+				HeadColor=@P_HeadColor,
 				Header_ForeColor=@P_Header_ForeColor,
-				Sub_Head_Color=@P_Sub_Head_Color,
+				Sub_HeadColor=@P_Sub_HeadColor,
 				Row_BackColor=@P_Row_BackColor,
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				Color_Scheme=@P_Color_Scheme,
@@ -5406,9 +5406,9 @@ AS
 		@V_SecurityEntityName VARCHAR(50),
 		@V_BackColor VARCHAR(15),
 		@V_LeftColor VARCHAR(15),
-		@V_Head_Color VARCHAR(15),
+		@V_HeadColor VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
-		@V_Sub_Head_Color VARCHAR(15),
+		@V_Sub_HeadColor VARCHAR(15),
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
 		@V_Color_Scheme VARCHAR(15),
@@ -5514,9 +5514,9 @@ AS
 									@V_SecurityEntityName = SecurityEntityName,
 									@V_BackColor = BackColor,
 									@V_LeftColor = LeftColor,
-									@V_Head_Color = Head_Color,
+									@V_HeadColor = HeadColor,
 									@V_Header_ForeColor = Header_ForeColor,
-									@V_Sub_Head_Color = Sub_Head_Color,
+									@V_Sub_HeadColor = Sub_HeadColor,
 									@V_Row_BackColor = Row_BackColor,
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
 									@V_Color_Scheme = Color_Scheme,
@@ -5543,9 +5543,9 @@ AS
 							@V_SecurityEntityName,
 							@V_BackColor,
 							@V_LeftColor,
-							@V_Head_Color,
+							@V_HeadColor,
 							@V_Header_ForeColor,
-							@V_Sub_Head_Color,
+							@V_Sub_HeadColor,
 							@V_Row_BackColor,
 							@V_AlternatingRow_BackColor,
 							@V_Color_Scheme ,

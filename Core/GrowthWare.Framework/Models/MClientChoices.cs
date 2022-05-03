@@ -91,7 +91,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the head.</value>
         public static string HeadColor
         {
-            get { return "HEAD_COLOR"; }
+            get { return "HeadColor"; }
         }
 
         /// <summary>
@@ -109,7 +109,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the subhead.</value>
         public static string SubheadColor
         {
-            get { return "SUB_HEAD_COLOR"; }
+            get { return "SUB_HeadColor"; }
         }
 
         /// <summary>

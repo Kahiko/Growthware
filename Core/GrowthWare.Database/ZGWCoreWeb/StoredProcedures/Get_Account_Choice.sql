@@ -29,9 +29,9 @@ AS
 				, SecurityEntityName
 				, BackColor
 				, LeftColor
-				, Head_Color
+				, HeadColor
 				, Header_ForeColor
-				, Sub_Head_Color
+				, Sub_HeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, Color_Scheme
@@ -50,9 +50,9 @@ AS
 				, SecurityEntityName
 				, BackColor
 				, LeftColor
-				, Head_Color
+				, HeadColor
 				, Header_ForeColor
-				, Sub_Head_Color
+				, Sub_HeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME

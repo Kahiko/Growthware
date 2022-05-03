@@ -85,7 +85,7 @@ Print 'Adding Accounts'
 exec ZGWSecurity.Set_Account -1,1,'Anonymous','Anonymous','Anonymous','','Anonymous-Account','me@me.com','none',@V_Now,0,1,@V_Now,-5,'none',0,0, @V_Debug
 -- BEFORE ADDING ANY MORE ACCOUNTS SETUP ZF_ACCT_CHOICES
 EXEC ZGWCoreWeb.Set_Account_Choices @P_ACCT = N'Anonymous',	@P_SecurityEntityID = 1, @P_SecurityEntityName = N'System',@P_BackColor = N'#ffffff'
-	,@P_LeftColor = N'#eeeeee',@P_Head_Color = N'#C7C7C7',@P_Header_ForeColor = N'Black',@P_Sub_Head_Color = N'#b6cbeb'
+	,@P_LeftColor = N'#eeeeee',@P_HeadColor = N'#C7C7C7',@P_Header_ForeColor = N'Black',@P_Sub_HeadColor = N'#b6cbeb'
 	,@P_Row_BackColor = N'#b6cbeb',@P_AlternatingRow_BackColor = N'#6699cc',@P_Color_Scheme = N'Blue',@P_Favorite_Action = N'Home'
 	,@P_Records_Per_Page = 10
 -- Add the system administrator account
