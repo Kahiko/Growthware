@@ -36,8 +36,6 @@ AS
 				, AlternatingRow_BackColor
 				, Color_Scheme
 				, Favorite_Action
-				, Thin_Actions
-				, Wide_Actions
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -59,8 +57,6 @@ AS
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME
 				, Favorite_Action
-				, Thin_Actions
-				, Wide_Actions
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
