@@ -656,7 +656,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[SecurityEntityID] [int] NULL,
 	[SecurityEntityName] [varchar](256) NULL,
 	[BackColor] [varchar](15) NULL,
-	[Left_Color] [varchar](15) NULL,
+	[LeftColor] [varchar](15) NULL,
 	[Head_Color] [varchar](15) NULL,
 	[Sub_Head_Color] [varchar](15) NULL,
 	[Color_Scheme] [varchar](15) NULL,
@@ -1772,7 +1772,7 @@ AS
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
-				, Left_Color
+				, LeftColor
 				, Head_Color
 				, Header_ForeColor
 				, Sub_Head_Color
@@ -1793,7 +1793,7 @@ AS
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
-				, Left_Color
+				, LeftColor
 				, Head_Color
 				, Header_ForeColor
 				, Sub_Head_Color
@@ -2058,7 +2058,7 @@ Usage:
 		@P_SecurityEntityID = 1,
 		@P_SecurityEntityName = 'System',
 		@P_BackColor = '#ffffff',
-		@P_Left_Color = '#eeeeee',
+		@P_LeftColor = '#eeeeee',
 		@P_Head_Color = '#C7C7C7',
 		@P_Header_ForeColor = 'Black',
 		@P_Sub_Head_Color = '#b6cbeb',
@@ -2078,7 +2078,7 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_SecurityEntityID int,
 	@P_SecurityEntityName VARCHAR(256),
 	@P_BackColor VARCHAR(15),
-	@P_Left_Color VARCHAR(15),
+	@P_LeftColor VARCHAR(15),
 	@P_Head_Color VARCHAR(15),
 	@P_Header_ForeColor VARCHAR(15),
 	@P_Sub_Head_Color VARCHAR(15),
@@ -2097,7 +2097,7 @@ AS
 				SecurityEntityID,
 				SecurityEntityName,
 				BackColor,
-				Left_Color,
+				LeftColor,
 				Head_Color,
 				Header_ForeColor,
 				Sub_Head_Color,
@@ -2113,7 +2113,7 @@ AS
 				@P_SecurityEntityID,
 				@P_SecurityEntityName,
 				@P_BackColor,
-				@P_Left_Color,
+				@P_LeftColor,
 				@P_Head_Color,
 				@P_Header_ForeColor,
 				@P_Sub_Head_Color,
@@ -2131,7 +2131,7 @@ AS
 				SecurityEntityID = @P_SecurityEntityID,
 				SecurityEntityName = @P_SecurityEntityName,
 				BackColor =@P_BackColor ,
-				Left_Color=@P_Left_Color,
+				LeftColor=@P_LeftColor,
 				Head_Color=@P_Head_Color,
 				Header_ForeColor=@P_Header_ForeColor,
 				Sub_Head_Color=@P_Sub_Head_Color,
@@ -5405,7 +5405,7 @@ AS
 	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
 		@V_SecurityEntityName VARCHAR(50),
 		@V_BackColor VARCHAR(15),
-		@V_Left_Color VARCHAR(15),
+		@V_LeftColor VARCHAR(15),
 		@V_Head_Color VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
 		@V_Sub_Head_Color VARCHAR(15),
@@ -5513,7 +5513,7 @@ AS
 									@V_Security_Entity_SeqID = SecurityEntityID,
 									@V_SecurityEntityName = SecurityEntityName,
 									@V_BackColor = BackColor,
-									@V_Left_Color = Left_Color,
+									@V_LeftColor = LeftColor,
 									@V_Head_Color = Head_Color,
 									@V_Header_ForeColor = Header_ForeColor,
 									@V_Sub_Head_Color = Sub_Head_Color,
@@ -5542,7 +5542,7 @@ AS
 							@V_Security_Entity_SeqID,
 							@V_SecurityEntityName,
 							@V_BackColor,
-							@V_Left_Color,
+							@V_LeftColor,
 							@V_Head_Color,
 							@V_Header_ForeColor,
 							@V_Sub_Head_Color,

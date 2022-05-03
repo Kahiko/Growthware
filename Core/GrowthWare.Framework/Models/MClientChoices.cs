@@ -82,7 +82,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the left.</value>
         public static string LeftColor
         {
-            get { return "LEFT_COLOR"; }
+            get { return "LeftColor"; }
         }
 
         /// <summary>

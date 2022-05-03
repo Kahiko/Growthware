@@ -28,7 +28,7 @@ AS
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
-				, Left_Color
+				, LeftColor
 				, Head_Color
 				, Header_ForeColor
 				, Sub_Head_Color
@@ -49,7 +49,7 @@ AS
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
-				, Left_Color
+				, LeftColor
 				, Head_Color
 				, Header_ForeColor
 				, Sub_Head_Color

@@ -3,7 +3,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [SecurityEntityID]                INT            NULL,
     [SecurityEntityName]                  VARCHAR (256)  NULL,
     [BackColor]               VARCHAR (15)   NULL,
-    [Left_Color]               VARCHAR (15)   NULL,
+    [LeftColor]               VARCHAR (15)   NULL,
     [Head_Color]               VARCHAR (15)   NULL,
     [Sub_Head_Color]           VARCHAR (15)   NULL,
     [Color_Scheme]             VARCHAR (15)   NULL,
