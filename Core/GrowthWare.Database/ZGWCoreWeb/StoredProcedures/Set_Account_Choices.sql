@@ -14,7 +14,7 @@ Usage:
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_ColorScheme = 'Blue',
 		@P_FavoriteAction = 'Home',
-		@P_Records_Per_Page = 5
+		@P_recordsPerPage = 5
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -34,7 +34,7 @@ CREATE PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_ColorScheme VARCHAR(15),
 	@P_FavoriteAction VARCHAR(50),
-	@P_Records_Per_Page int
+	@P_recordsPerPage int
 AS
 -- INSERT a new row in the table.
 	IF(SELECT COUNT(*) FROM ZGWCoreWeb.Account_Choices WHERE Account = @P_ACCT) <= 0
@@ -53,7 +53,7 @@ AS
 				AlternatingRow_BackColor,
 				ColorScheme,
 				FavoriteAction,
-				Records_Per_Page
+				recordsPerPage
 			)
 			VALUES
 			(
@@ -69,7 +69,7 @@ AS
 				@P_AlternatingRow_BackColor,
 				@P_ColorScheme,
 				@P_FavoriteAction,
-				@P_Records_Per_Page
+				@P_recordsPerPage
 			)
 		END
 	ELSE
@@ -87,7 +87,7 @@ AS
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				ColorScheme=@P_ColorScheme,
 				FavoriteAction=@P_FavoriteAction,
-				Records_Per_Page=@P_Records_Per_Page
+				recordsPerPage=@P_recordsPerPage
 			WHERE
 				Account=@P_ACCT
 		END

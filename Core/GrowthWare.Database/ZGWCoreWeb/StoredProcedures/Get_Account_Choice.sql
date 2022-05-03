@@ -36,7 +36,7 @@ AS
 				, AlternatingRow_BackColor
 				, ColorScheme
 				, FavoriteAction
-				, Records_Per_Page
+				, recordsPerPage
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				Account = @P_Account
@@ -57,7 +57,7 @@ AS
 				, AlternatingRow_BackColor
 				, ColorScheme
 				, FavoriteAction
-				, Records_Per_Page
+				, recordsPerPage
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				[Account] = 'Anonymous'

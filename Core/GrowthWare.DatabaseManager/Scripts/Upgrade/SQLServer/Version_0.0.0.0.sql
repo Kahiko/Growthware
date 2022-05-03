@@ -661,7 +661,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[SubHeadColor] [varchar](15) NULL,
 	[ColorScheme] [varchar](15) NULL,
 	[FavoriteAction] [varchar](50) NULL,
-	[Records_Per_Page] [int] NULL,
+	[recordsPerPage] [int] NULL,
 	[Row_BackColor] [varchar](15) NULL,
 	[AlternatingRow_BackColor] [varchar](15) NULL,
 	[Header_ForeColor] [varchar](15) NULL,
@@ -1780,7 +1780,7 @@ AS
 				, AlternatingRow_BackColor
 				, ColorScheme
 				, FavoriteAction
-				, Records_Per_Page
+				, recordsPerPage
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				Account = @P_Account
@@ -1801,7 +1801,7 @@ AS
 				, AlternatingRow_BackColor
 				, ColorScheme
 				, FavoriteAction
-				, Records_Per_Page
+				, recordsPerPage
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
 				[Account] = 'Anonymous'
@@ -2066,7 +2066,7 @@ Usage:
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_ColorScheme = 'Blue',
 		@P_FavoriteAction = 'Home',
-		@P_Records_Per_Page = 5
+		@P_recordsPerPage = 5
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -2086,7 +2086,7 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_ColorScheme VARCHAR(15),
 	@P_FavoriteAction VARCHAR(50),
-	@P_Records_Per_Page int
+	@P_recordsPerPage int
 AS
 -- INSERT a new row in the table.
 	IF(SELECT COUNT(*) FROM ZGWCoreWeb.Account_Choices WHERE Account = @P_ACCT) <= 0
@@ -2105,7 +2105,7 @@ AS
 				AlternatingRow_BackColor,
 				ColorScheme,
 				FavoriteAction,
-				Records_Per_Page
+				recordsPerPage
 			)
 			VALUES
 			(
@@ -2121,7 +2121,7 @@ AS
 				@P_AlternatingRow_BackColor,
 				@P_ColorScheme,
 				@P_FavoriteAction,
-				@P_Records_Per_Page
+				@P_recordsPerPage
 			)
 		END
 	ELSE
@@ -2139,7 +2139,7 @@ AS
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				ColorScheme=@P_ColorScheme,
 				FavoriteAction=@P_FavoriteAction,
-				Records_Per_Page=@P_Records_Per_Page
+				recordsPerPage=@P_recordsPerPage
 			WHERE
 				Account=@P_ACCT
 		END
@@ -5413,7 +5413,7 @@ AS
 		@V_AlternatingRow_BackColor VARCHAR(15),
 		@V_ColorScheme VARCHAR(15),
 		@V_FavoriteAction VARCHAR(25),
-		@V_Records_Per_Page VARCHAR(1000),
+		@V_recordsPerPage VARCHAR(1000),
 		@V_Default_Account VARCHAR(50),
 		@V_Now DATETIME = GETDATE()
 	
@@ -5521,7 +5521,7 @@ AS
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
 									@V_ColorScheme = ColorScheme,
 									@V_FavoriteAction = FavoriteAction,
-									@V_Records_Per_Page = Records_Per_Page
+									@V_recordsPerPage = recordsPerPage
 								FROM
 									[ZGWCoreWeb].Account_Choices
 								WHERE 
@@ -5550,7 +5550,7 @@ AS
 							@V_AlternatingRow_BackColor,
 							@V_ColorScheme ,
 							@V_FavoriteAction,
-							@V_Records_Per_Page	
+							@V_recordsPerPage	
 					END
 				--END IF
 			END

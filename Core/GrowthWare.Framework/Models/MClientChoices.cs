@@ -19,7 +19,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The records per page.</value>
         public static string RecordsPerPage
         {
-            get { return "RECORDS_PER_PAGE"; }
+            get { return "recordsPerPage"; }
         }
 
         /// <summary>

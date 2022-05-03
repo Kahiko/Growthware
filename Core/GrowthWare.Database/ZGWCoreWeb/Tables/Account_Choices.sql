@@ -8,7 +8,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [SubHeadColor]           VARCHAR (15)   NULL,
     [ColorScheme]             VARCHAR (15)   NULL,
     [FavoriteAction]          VARCHAR (50)   NULL,
-    [Records_Per_Page]         INT            NULL,
+    [recordsPerPage]         INT            NULL,
     [Row_BackColor]            VARCHAR (15)   NULL,
     [AlternatingRow_BackColor] VARCHAR (15)   NULL,
     [Header_ForeColor]         VARCHAR (15)   NULL,
