@@ -99,8 +99,8 @@ AS
 		@V_SubHeadColor VARCHAR(15),
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
-		@V_Color_Scheme VARCHAR(15),
-		@V_Favorite_Action VARCHAR(25),
+		@V_ColorScheme VARCHAR(15),
+		@V_FavoriteAction VARCHAR(25),
 		@V_Records_Per_Page VARCHAR(1000),
 		@V_Default_Account VARCHAR(50),
 		@V_Now DATETIME = GETDATE()
@@ -207,8 +207,8 @@ AS
 									@V_SubHeadColor = SubHeadColor,
 									@V_Row_BackColor = Row_BackColor,
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
-									@V_Color_Scheme = Color_Scheme,
-									@V_Favorite_Action = Favorite_Action,
+									@V_ColorScheme = ColorScheme,
+									@V_FavoriteAction = FavoriteAction,
 									@V_Records_Per_Page = Records_Per_Page
 								FROM
 									[ZGWCoreWeb].Account_Choices
@@ -236,8 +236,8 @@ AS
 							@V_SubHeadColor,
 							@V_Row_BackColor,
 							@V_AlternatingRow_BackColor,
-							@V_Color_Scheme ,
-							@V_Favorite_Action,
+							@V_ColorScheme ,
+							@V_FavoriteAction,
 							@V_Records_Per_Page	
 					END
 				--END IF

@@ -12,8 +12,8 @@ Usage:
 		@P_SubHeadColor = '#b6cbeb',
 		@P_Row_BackColor = '#b6cbeb',
 		@P_AlternatingRow_BackColor = '#6699cc',
-		@P_Color_Scheme = 'Blue',
-		@P_Favorite_Action = 'Home',
+		@P_ColorScheme = 'Blue',
+		@P_FavoriteAction = 'Home',
 		@P_Records_Per_Page = 5
 */
 -- =============================================
@@ -32,8 +32,8 @@ CREATE PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_SubHeadColor VARCHAR(15),
 	@P_Row_BackColor VARCHAR(15),
 	@P_AlternatingRow_BackColor VARCHAR(15),
-	@P_Color_Scheme VARCHAR(15),
-	@P_Favorite_Action VARCHAR(50),
+	@P_ColorScheme VARCHAR(15),
+	@P_FavoriteAction VARCHAR(50),
 	@P_Records_Per_Page int
 AS
 -- INSERT a new row in the table.
@@ -51,8 +51,8 @@ AS
 				SubHeadColor,
 				Row_BackColor,
 				AlternatingRow_BackColor,
-				Color_Scheme,
-				Favorite_Action,
+				ColorScheme,
+				FavoriteAction,
 				Records_Per_Page
 			)
 			VALUES
@@ -67,8 +67,8 @@ AS
 				@P_SubHeadColor,
 				@P_Row_BackColor,
 				@P_AlternatingRow_BackColor,
-				@P_Color_Scheme,
-				@P_Favorite_Action,
+				@P_ColorScheme,
+				@P_FavoriteAction,
 				@P_Records_Per_Page
 			)
 		END
@@ -85,8 +85,8 @@ AS
 				SubHeadColor=@P_SubHeadColor,
 				Row_BackColor=@P_Row_BackColor,
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
-				Color_Scheme=@P_Color_Scheme,
-				Favorite_Action=@P_Favorite_Action,
+				ColorScheme=@P_ColorScheme,
+				FavoriteAction=@P_FavoriteAction,
 				Records_Per_Page=@P_Records_Per_Page
 			WHERE
 				Account=@P_ACCT

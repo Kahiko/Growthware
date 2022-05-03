@@ -34,8 +34,8 @@ AS
 				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
-				, Color_Scheme
-				, Favorite_Action
+				, ColorScheme
+				, FavoriteAction
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -55,8 +55,8 @@ AS
 				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
-				, COLOR_SCHEME
-				, Favorite_Action
+				, ColorScheme
+				, FavoriteAction
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE

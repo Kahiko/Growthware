@@ -136,7 +136,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color scheme.</value>
         public static string ColorScheme
         {
-            get { return "COLOR_SCHEME"; }
+            get { return "ColorScheme"; }
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The action.</value>
         public static string Action
         {
-            get { return "Favorite_Action"; }
+            get { return "FavoriteAction"; }
         }
     }
 

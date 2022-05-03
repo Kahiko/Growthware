@@ -659,8 +659,8 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[LeftColor] [varchar](15) NULL,
 	[HeadColor] [varchar](15) NULL,
 	[SubHeadColor] [varchar](15) NULL,
-	[Color_Scheme] [varchar](15) NULL,
-	[Favorite_Action] [varchar](50) NULL,
+	[ColorScheme] [varchar](15) NULL,
+	[FavoriteAction] [varchar](50) NULL,
 	[Records_Per_Page] [int] NULL,
 	[Row_BackColor] [varchar](15) NULL,
 	[AlternatingRow_BackColor] [varchar](15) NULL,
@@ -1778,8 +1778,8 @@ AS
 				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
-				, Color_Scheme
-				, Favorite_Action
+				, ColorScheme
+				, FavoriteAction
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -1799,8 +1799,8 @@ AS
 				, SubHeadColor
 				, Row_BackColor
 				, AlternatingRow_BackColor
-				, COLOR_SCHEME
-				, Favorite_Action
+				, ColorScheme
+				, FavoriteAction
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -2064,8 +2064,8 @@ Usage:
 		@P_SubHeadColor = '#b6cbeb',
 		@P_Row_BackColor = '#b6cbeb',
 		@P_AlternatingRow_BackColor = '#6699cc',
-		@P_Color_Scheme = 'Blue',
-		@P_Favorite_Action = 'Home',
+		@P_ColorScheme = 'Blue',
+		@P_FavoriteAction = 'Home',
 		@P_Records_Per_Page = 5
 */
 -- =============================================
@@ -2084,8 +2084,8 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_SubHeadColor VARCHAR(15),
 	@P_Row_BackColor VARCHAR(15),
 	@P_AlternatingRow_BackColor VARCHAR(15),
-	@P_Color_Scheme VARCHAR(15),
-	@P_Favorite_Action VARCHAR(50),
+	@P_ColorScheme VARCHAR(15),
+	@P_FavoriteAction VARCHAR(50),
 	@P_Records_Per_Page int
 AS
 -- INSERT a new row in the table.
@@ -2103,8 +2103,8 @@ AS
 				SubHeadColor,
 				Row_BackColor,
 				AlternatingRow_BackColor,
-				Color_Scheme,
-				Favorite_Action,
+				ColorScheme,
+				FavoriteAction,
 				Records_Per_Page
 			)
 			VALUES
@@ -2119,8 +2119,8 @@ AS
 				@P_SubHeadColor,
 				@P_Row_BackColor,
 				@P_AlternatingRow_BackColor,
-				@P_Color_Scheme,
-				@P_Favorite_Action,
+				@P_ColorScheme,
+				@P_FavoriteAction,
 				@P_Records_Per_Page
 			)
 		END
@@ -2137,8 +2137,8 @@ AS
 				SubHeadColor=@P_SubHeadColor,
 				Row_BackColor=@P_Row_BackColor,
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
-				Color_Scheme=@P_Color_Scheme,
-				Favorite_Action=@P_Favorite_Action,
+				ColorScheme=@P_ColorScheme,
+				FavoriteAction=@P_FavoriteAction,
 				Records_Per_Page=@P_Records_Per_Page
 			WHERE
 				Account=@P_ACCT
@@ -4841,7 +4841,7 @@ AS
 	IF EXISTS (SELECT TOP(1) 1 FROM @V_DistinctItems WHERE [TITLE] = 'Favorite')
 		BEGIN
 			DECLARE @V_FavoriteAction VARCHAR(256)
-			SET @V_FavoriteAction = (SELECT [Favorite_Action] FROM [ZGWCoreWeb].[Account_Choices] WHERE [Account] = @P_Account);
+			SET @V_FavoriteAction = (SELECT [FavoriteAction] FROM [ZGWCoreWeb].[Account_Choices] WHERE [Account] = @P_Account);
 			IF @V_FavoriteAction IS NOT NULL
 				BEGIN
 					UPDATE @V_DistinctItems SET [URL] = @V_FavoriteAction WHERE [TITLE] = 'Favorite';
@@ -5411,8 +5411,8 @@ AS
 		@V_SubHeadColor VARCHAR(15),
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
-		@V_Color_Scheme VARCHAR(15),
-		@V_Favorite_Action VARCHAR(25),
+		@V_ColorScheme VARCHAR(15),
+		@V_FavoriteAction VARCHAR(25),
 		@V_Records_Per_Page VARCHAR(1000),
 		@V_Default_Account VARCHAR(50),
 		@V_Now DATETIME = GETDATE()
@@ -5519,8 +5519,8 @@ AS
 									@V_SubHeadColor = SubHeadColor,
 									@V_Row_BackColor = Row_BackColor,
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
-									@V_Color_Scheme = Color_Scheme,
-									@V_Favorite_Action = Favorite_Action,
+									@V_ColorScheme = ColorScheme,
+									@V_FavoriteAction = FavoriteAction,
 									@V_Records_Per_Page = Records_Per_Page
 								FROM
 									[ZGWCoreWeb].Account_Choices
@@ -5548,8 +5548,8 @@ AS
 							@V_SubHeadColor,
 							@V_Row_BackColor,
 							@V_AlternatingRow_BackColor,
-							@V_Color_Scheme ,
-							@V_Favorite_Action,
+							@V_ColorScheme ,
+							@V_FavoriteAction,
 							@V_Records_Per_Page	
 					END
 				--END IF

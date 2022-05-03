@@ -129,7 +129,7 @@ AS
 	IF EXISTS (SELECT TOP(1) 1 FROM @V_DistinctItems WHERE [TITLE] = 'Favorite')
 		BEGIN
 			DECLARE @V_FavoriteAction VARCHAR(256)
-			SET @V_FavoriteAction = (SELECT [Favorite_Action] FROM [ZGWCoreWeb].[Account_Choices] WHERE [Account] = @P_Account);
+			SET @V_FavoriteAction = (SELECT [FavoriteAction] FROM [ZGWCoreWeb].[Account_Choices] WHERE [Account] = @P_Account);
 			IF @V_FavoriteAction IS NOT NULL
 				BEGIN
 					UPDATE @V_DistinctItems SET [URL] = @V_FavoriteAction WHERE [TITLE] = 'Favorite';
