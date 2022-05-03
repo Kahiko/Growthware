@@ -92,7 +92,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
 	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
 		@V_SecurityEntityName VARCHAR(50),
-		@V_Back_Color VARCHAR(15),
+		@V_BackColor VARCHAR(15),
 		@V_Left_Color VARCHAR(15),
 		@V_Head_Color VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
@@ -200,7 +200,7 @@ AS
 								SELECT -- FILL THE DEFAULT VALUES
 									@V_Security_Entity_SeqID = SecurityEntityID,
 									@V_SecurityEntityName = SecurityEntityName,
-									@V_Back_Color = Back_Color,
+									@V_BackColor = BackColor,
 									@V_Left_Color = Left_Color,
 									@V_Head_Color = Head_Color,
 									@V_Header_ForeColor = Header_ForeColor,
@@ -229,7 +229,7 @@ AS
 							@P_Account,
 							@V_Security_Entity_SeqID,
 							@V_SecurityEntityName,
-							@V_Back_Color,
+							@V_BackColor,
 							@V_Left_Color,
 							@V_Head_Color,
 							@V_Header_ForeColor,

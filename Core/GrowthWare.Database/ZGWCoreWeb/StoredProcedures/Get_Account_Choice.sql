@@ -27,7 +27,7 @@ AS
 				Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
-				, Back_Color
+				, BackColor
 				, Left_Color
 				, Head_Color
 				, Header_ForeColor
@@ -48,7 +48,7 @@ AS
 				Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
-				, Back_Color
+				, BackColor
 				, Left_Color
 				, Head_Color
 				, Header_ForeColor

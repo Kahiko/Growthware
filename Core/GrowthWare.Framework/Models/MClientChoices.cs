@@ -73,7 +73,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the back.</value>
         public static string BackColor
         {
-            get { return "BACK_COLOR"; }
+            get { return "BackColor"; }
         }
 
         /// <summary>

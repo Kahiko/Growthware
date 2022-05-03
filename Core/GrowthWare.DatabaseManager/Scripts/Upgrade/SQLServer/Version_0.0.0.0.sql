@@ -655,7 +655,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[Account] [varchar](128) NOT NULL,
 	[SecurityEntityID] [int] NULL,
 	[SecurityEntityName] [varchar](256) NULL,
-	[Back_Color] [varchar](15) NULL,
+	[BackColor] [varchar](15) NULL,
 	[Left_Color] [varchar](15) NULL,
 	[Head_Color] [varchar](15) NULL,
 	[Sub_Head_Color] [varchar](15) NULL,
@@ -1771,7 +1771,7 @@ AS
 				Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
-				, Back_Color
+				, BackColor
 				, Left_Color
 				, Head_Color
 				, Header_ForeColor
@@ -1792,7 +1792,7 @@ AS
 				Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
-				, Back_Color
+				, BackColor
 				, Left_Color
 				, Head_Color
 				, Header_ForeColor
@@ -2057,7 +2057,7 @@ Usage:
 		@P_ACCT = N'Anonymous',
 		@P_SecurityEntityID = 1,
 		@P_SecurityEntityName = 'System',
-		@P_Back_Color = '#ffffff',
+		@P_BackColor = '#ffffff',
 		@P_Left_Color = '#eeeeee',
 		@P_Head_Color = '#C7C7C7',
 		@P_Header_ForeColor = 'Black',
@@ -2077,7 +2077,7 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_ACCT VARCHAR(128),
 	@P_SecurityEntityID int,
 	@P_SecurityEntityName VARCHAR(256),
-	@P_Back_Color VARCHAR(15),
+	@P_BackColor VARCHAR(15),
 	@P_Left_Color VARCHAR(15),
 	@P_Head_Color VARCHAR(15),
 	@P_Header_ForeColor VARCHAR(15),
@@ -2096,7 +2096,7 @@ AS
 				Account,
 				SecurityEntityID,
 				SecurityEntityName,
-				Back_Color,
+				BackColor,
 				Left_Color,
 				Head_Color,
 				Header_ForeColor,
@@ -2112,7 +2112,7 @@ AS
 				@P_ACCT,
 				@P_SecurityEntityID,
 				@P_SecurityEntityName,
-				@P_Back_Color,
+				@P_BackColor,
 				@P_Left_Color,
 				@P_Head_Color,
 				@P_Header_ForeColor,
@@ -2130,7 +2130,7 @@ AS
 			SET
 				SecurityEntityID = @P_SecurityEntityID,
 				SecurityEntityName = @P_SecurityEntityName,
-				Back_Color =@P_Back_Color ,
+				BackColor =@P_BackColor ,
 				Left_Color=@P_Left_Color,
 				Head_Color=@P_Head_Color,
 				Header_ForeColor=@P_Header_ForeColor,
@@ -5404,7 +5404,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
 	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
 		@V_SecurityEntityName VARCHAR(50),
-		@V_Back_Color VARCHAR(15),
+		@V_BackColor VARCHAR(15),
 		@V_Left_Color VARCHAR(15),
 		@V_Head_Color VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
@@ -5512,7 +5512,7 @@ AS
 								SELECT -- FILL THE DEFAULT VALUES
 									@V_Security_Entity_SeqID = SecurityEntityID,
 									@V_SecurityEntityName = SecurityEntityName,
-									@V_Back_Color = Back_Color,
+									@V_BackColor = BackColor,
 									@V_Left_Color = Left_Color,
 									@V_Head_Color = Head_Color,
 									@V_Header_ForeColor = Header_ForeColor,
@@ -5541,7 +5541,7 @@ AS
 							@P_Account,
 							@V_Security_Entity_SeqID,
 							@V_SecurityEntityName,
-							@V_Back_Color,
+							@V_BackColor,
 							@V_Left_Color,
 							@V_Head_Color,
 							@V_Header_ForeColor,
