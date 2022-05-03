@@ -8,8 +8,6 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [Sub_Head_Color]           VARCHAR (15)   NULL,
     [Color_Scheme]             VARCHAR (15)   NULL,
     [Favorite_Action]          VARCHAR (50)   NULL,
-    [Thin_Actions]             VARCHAR (4000) NULL,
-    [Wide_Actions]             VARCHAR (4000) NULL,
     [Records_Per_Page]         INT            NULL,
     [Row_BackColor]            VARCHAR (15)   NULL,
     [AlternatingRow_BackColor] VARCHAR (15)   NULL,

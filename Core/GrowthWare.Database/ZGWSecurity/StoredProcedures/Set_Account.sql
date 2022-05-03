@@ -100,8 +100,6 @@ AS
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
 		@V_Color_Scheme VARCHAR(15),
-		@V_Thin_Actions VARCHAR(256),
-		@V_Wide_Actions VARCHAR(256),
 		@V_Favorite_Action VARCHAR(25),
 		@V_Records_Per_Page VARCHAR(1000),
 		@V_Default_Account VARCHAR(50),
@@ -211,8 +209,6 @@ AS
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
 									@V_Color_Scheme = Color_Scheme,
 									@V_Favorite_Action = Favorite_Action,
-									@V_Thin_Actions = Thin_Actions,
-									@V_Wide_Actions = Wide_Actions,
 									@V_Records_Per_Page = Records_Per_Page
 								FROM
 									[ZGWCoreWeb].Account_Choices
@@ -242,8 +238,6 @@ AS
 							@V_AlternatingRow_BackColor,
 							@V_Color_Scheme ,
 							@V_Favorite_Action,
-							@V_Thin_Actions,
-							@V_Wide_Actions,
 							@V_Records_Per_Page	
 					END
 				--END IF

@@ -14,8 +14,6 @@ Usage:
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_Color_Scheme = 'Blue',
 		@P_Favorite_Action = 'Home',
-		@P_Thin_Actions = 'ThinActions',
-		@P_Wide_Actions = 'WideActions',
 		@P_Records_Per_Page = 5
 */
 -- =============================================
@@ -36,8 +34,6 @@ CREATE PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_Color_Scheme VARCHAR(15),
 	@P_Favorite_Action VARCHAR(50),
-	@P_Thin_Actions VARCHAR(4000),
-	@P_Wide_Actions VARCHAR(4000),
 	@P_Records_Per_Page int
 AS
 -- INSERT a new row in the table.
@@ -57,8 +53,6 @@ AS
 				AlternatingRow_BackColor,
 				Color_Scheme,
 				Favorite_Action,
-				Thin_Actions,
-				Wide_Actions,
 				Records_Per_Page
 			)
 			VALUES
@@ -75,8 +69,6 @@ AS
 				@P_AlternatingRow_BackColor,
 				@P_Color_Scheme,
 				@P_Favorite_Action,
-				@P_Thin_Actions,
-				@P_Wide_Actions,
 				@P_Records_Per_Page
 			)
 		END
@@ -95,8 +87,6 @@ AS
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				Color_Scheme=@P_Color_Scheme,
 				Favorite_Action=@P_Favorite_Action,
-				Thin_Actions=@P_Thin_Actions,
-				Wide_Actions = @P_Wide_Actions,
 				Records_Per_Page=@P_Records_Per_Page
 			WHERE
 				Account=@P_ACCT

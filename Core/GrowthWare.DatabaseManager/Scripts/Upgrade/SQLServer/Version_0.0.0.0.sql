@@ -661,8 +661,6 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[Sub_Head_Color] [varchar](15) NULL,
 	[Color_Scheme] [varchar](15) NULL,
 	[Favorite_Action] [varchar](50) NULL,
-	[Thin_Actions] [varchar](4000) NULL,
-	[Wide_Actions] [varchar](4000) NULL,
 	[Records_Per_Page] [int] NULL,
 	[Row_BackColor] [varchar](15) NULL,
 	[AlternatingRow_BackColor] [varchar](15) NULL,
@@ -1782,8 +1780,6 @@ AS
 				, AlternatingRow_BackColor
 				, Color_Scheme
 				, Favorite_Action
-				, Thin_Actions
-				, Wide_Actions
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -1805,8 +1801,6 @@ AS
 				, AlternatingRow_BackColor
 				, COLOR_SCHEME
 				, Favorite_Action
-				, Thin_Actions
-				, Wide_Actions
 				, Records_Per_Page
 			FROM ZGWCoreWeb.Account_Choices
 			WHERE
@@ -2072,8 +2066,6 @@ Usage:
 		@P_AlternatingRow_BackColor = '#6699cc',
 		@P_Color_Scheme = 'Blue',
 		@P_Favorite_Action = 'Home',
-		@P_Thin_Actions = 'ThinActions',
-		@P_Wide_Actions = 'WideActions',
 		@P_Records_Per_Page = 5
 */
 -- =============================================
@@ -2094,8 +2086,6 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_AlternatingRow_BackColor VARCHAR(15),
 	@P_Color_Scheme VARCHAR(15),
 	@P_Favorite_Action VARCHAR(50),
-	@P_Thin_Actions VARCHAR(4000),
-	@P_Wide_Actions VARCHAR(4000),
 	@P_Records_Per_Page int
 AS
 -- INSERT a new row in the table.
@@ -2115,8 +2105,6 @@ AS
 				AlternatingRow_BackColor,
 				Color_Scheme,
 				Favorite_Action,
-				Thin_Actions,
-				Wide_Actions,
 				Records_Per_Page
 			)
 			VALUES
@@ -2133,8 +2121,6 @@ AS
 				@P_AlternatingRow_BackColor,
 				@P_Color_Scheme,
 				@P_Favorite_Action,
-				@P_Thin_Actions,
-				@P_Wide_Actions,
 				@P_Records_Per_Page
 			)
 		END
@@ -2153,8 +2139,6 @@ AS
 				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
 				Color_Scheme=@P_Color_Scheme,
 				Favorite_Action=@P_Favorite_Action,
-				Thin_Actions=@P_Thin_Actions,
-				Wide_Actions = @P_Wide_Actions,
 				Records_Per_Page=@P_Records_Per_Page
 			WHERE
 				Account=@P_ACCT
@@ -5428,8 +5412,6 @@ AS
 		@V_Row_BackColor VARCHAR(15),
 		@V_AlternatingRow_BackColor VARCHAR(15),
 		@V_Color_Scheme VARCHAR(15),
-		@V_Thin_Actions VARCHAR(256),
-		@V_Wide_Actions VARCHAR(256),
 		@V_Favorite_Action VARCHAR(25),
 		@V_Records_Per_Page VARCHAR(1000),
 		@V_Default_Account VARCHAR(50),
@@ -5539,8 +5521,6 @@ AS
 									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
 									@V_Color_Scheme = Color_Scheme,
 									@V_Favorite_Action = Favorite_Action,
-									@V_Thin_Actions = Thin_Actions,
-									@V_Wide_Actions = Wide_Actions,
 									@V_Records_Per_Page = Records_Per_Page
 								FROM
 									[ZGWCoreWeb].Account_Choices
@@ -5570,8 +5550,6 @@ AS
 							@V_AlternatingRow_BackColor,
 							@V_Color_Scheme ,
 							@V_Favorite_Action,
-							@V_Thin_Actions,
-							@V_Wide_Actions,
 							@V_Records_Per_Page	
 					END
 				--END IF
