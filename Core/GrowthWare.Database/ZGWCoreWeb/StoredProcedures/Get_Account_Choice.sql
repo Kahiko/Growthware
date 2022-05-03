@@ -30,7 +30,7 @@ AS
 				, BackColor
 				, LeftColor
 				, HeadColor
-				, Header_ForeColor
+				, HeaderForeColor
 				, SubHeadColor
 				, RowBackColor
 				, AlternatingRowBackColor
@@ -51,7 +51,7 @@ AS
 				, BackColor
 				, LeftColor
 				, HeadColor
-				, Header_ForeColor
+				, HeaderForeColor
 				, SubHeadColor
 				, RowBackColor
 				, AlternatingRowBackColor

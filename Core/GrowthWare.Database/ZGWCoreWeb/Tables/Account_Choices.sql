@@ -11,7 +11,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices] (
     [recordsPerPage]         INT            NULL,
     [RowBackColor]            VARCHAR (15)   NULL,
     [AlternatingRowBackColor] VARCHAR (15)   NULL,
-    [Header_ForeColor]         VARCHAR (15)   NULL,
+    [HeaderForeColor]         VARCHAR (15)   NULL,
     CONSTRAINT [FK_ZGWCore_Account_Choices_ZGWSecurity_Security_Accounts] FOREIGN KEY ([Account]) REFERENCES [ZGWSecurity].[Accounts] ([Account]) ON DELETE CASCADE ON UPDATE CASCADE,
     CONSTRAINT [UK_ZGWCore_Account_Choices] UNIQUE NONCLUSTERED ([Account] ASC)
 );

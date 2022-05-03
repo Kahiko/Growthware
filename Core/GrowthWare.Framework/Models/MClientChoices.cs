@@ -100,7 +100,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the header fore.</value>
         public static string HeaderForeColor
         {
-            get { return "Header_ForeColor"; }
+            get { return "HeaderForeColor"; }
         }
 
         /// <summary>
