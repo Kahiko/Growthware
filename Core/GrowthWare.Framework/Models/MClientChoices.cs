@@ -118,7 +118,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the row back.</value>
         public static string RowBackColor
         {
-            get { return "Row_BackColor"; }
+            get { return "RowBackColor"; }
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace GrowthWare.Framework.Models
         /// <value>The color of the alternating row back.</value>
         public static string AlternatingRowBackColor
         {
-            get { return "AlternatingRow_BackColor"; }
+            get { return "AlternatingRowBackColor"; }
         }
 
         /// <summary>

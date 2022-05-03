@@ -662,8 +662,8 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 	[ColorScheme] [varchar](15) NULL,
 	[FavoriteAction] [varchar](50) NULL,
 	[recordsPerPage] [int] NULL,
-	[Row_BackColor] [varchar](15) NULL,
-	[AlternatingRow_BackColor] [varchar](15) NULL,
+	[RowBackColor] [varchar](15) NULL,
+	[AlternatingRowBackColor] [varchar](15) NULL,
 	[Header_ForeColor] [varchar](15) NULL,
  CONSTRAINT [UK_ZGWCore_Account_Choices] UNIQUE NONCLUSTERED 
 (
@@ -1776,8 +1776,8 @@ AS
 				, HeadColor
 				, Header_ForeColor
 				, SubHeadColor
-				, Row_BackColor
-				, AlternatingRow_BackColor
+				, RowBackColor
+				, AlternatingRowBackColor
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
@@ -1797,8 +1797,8 @@ AS
 				, HeadColor
 				, Header_ForeColor
 				, SubHeadColor
-				, Row_BackColor
-				, AlternatingRow_BackColor
+				, RowBackColor
+				, AlternatingRowBackColor
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
@@ -2062,8 +2062,8 @@ Usage:
 		@P_HeadColor = '#C7C7C7',
 		@P_Header_ForeColor = 'Black',
 		@P_SubHeadColor = '#b6cbeb',
-		@P_Row_BackColor = '#b6cbeb',
-		@P_AlternatingRow_BackColor = '#6699cc',
+		@P_RowBackColor = '#b6cbeb',
+		@P_AlternatingRowBackColor = '#6699cc',
 		@P_ColorScheme = 'Blue',
 		@P_FavoriteAction = 'Home',
 		@P_recordsPerPage = 5
@@ -2082,8 +2082,8 @@ ALTER PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_HeadColor VARCHAR(15),
 	@P_Header_ForeColor VARCHAR(15),
 	@P_SubHeadColor VARCHAR(15),
-	@P_Row_BackColor VARCHAR(15),
-	@P_AlternatingRow_BackColor VARCHAR(15),
+	@P_RowBackColor VARCHAR(15),
+	@P_AlternatingRowBackColor VARCHAR(15),
 	@P_ColorScheme VARCHAR(15),
 	@P_FavoriteAction VARCHAR(50),
 	@P_recordsPerPage int
@@ -2101,8 +2101,8 @@ AS
 				HeadColor,
 				Header_ForeColor,
 				SubHeadColor,
-				Row_BackColor,
-				AlternatingRow_BackColor,
+				RowBackColor,
+				AlternatingRowBackColor,
 				ColorScheme,
 				FavoriteAction,
 				recordsPerPage
@@ -2117,8 +2117,8 @@ AS
 				@P_HeadColor,
 				@P_Header_ForeColor,
 				@P_SubHeadColor,
-				@P_Row_BackColor,
-				@P_AlternatingRow_BackColor,
+				@P_RowBackColor,
+				@P_AlternatingRowBackColor,
 				@P_ColorScheme,
 				@P_FavoriteAction,
 				@P_recordsPerPage
@@ -2135,8 +2135,8 @@ AS
 				HeadColor=@P_HeadColor,
 				Header_ForeColor=@P_Header_ForeColor,
 				SubHeadColor=@P_SubHeadColor,
-				Row_BackColor=@P_Row_BackColor,
-				AlternatingRow_BackColor=@P_AlternatingRow_BackColor,
+				RowBackColor=@P_RowBackColor,
+				AlternatingRowBackColor=@P_AlternatingRowBackColor,
 				ColorScheme=@P_ColorScheme,
 				FavoriteAction=@P_FavoriteAction,
 				recordsPerPage=@P_recordsPerPage
@@ -5409,8 +5409,8 @@ AS
 		@V_HeadColor VARCHAR(15),
 		@V_Header_ForeColor VARCHAR(15),
 		@V_SubHeadColor VARCHAR(15),
-		@V_Row_BackColor VARCHAR(15),
-		@V_AlternatingRow_BackColor VARCHAR(15),
+		@V_RowBackColor VARCHAR(15),
+		@V_AlternatingRowBackColor VARCHAR(15),
 		@V_ColorScheme VARCHAR(15),
 		@V_FavoriteAction VARCHAR(25),
 		@V_recordsPerPage VARCHAR(1000),
@@ -5517,8 +5517,8 @@ AS
 									@V_HeadColor = HeadColor,
 									@V_Header_ForeColor = Header_ForeColor,
 									@V_SubHeadColor = SubHeadColor,
-									@V_Row_BackColor = Row_BackColor,
-									@V_AlternatingRow_BackColor = AlternatingRow_BackColor,
+									@V_RowBackColor = RowBackColor,
+									@V_AlternatingRowBackColor = AlternatingRowBackColor,
 									@V_ColorScheme = ColorScheme,
 									@V_FavoriteAction = FavoriteAction,
 									@V_recordsPerPage = recordsPerPage
@@ -5546,8 +5546,8 @@ AS
 							@V_HeadColor,
 							@V_Header_ForeColor,
 							@V_SubHeadColor,
-							@V_Row_BackColor,
-							@V_AlternatingRow_BackColor,
+							@V_RowBackColor,
+							@V_AlternatingRowBackColor,
 							@V_ColorScheme ,
 							@V_FavoriteAction,
 							@V_recordsPerPage	

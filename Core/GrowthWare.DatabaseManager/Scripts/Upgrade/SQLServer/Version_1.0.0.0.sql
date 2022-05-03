@@ -86,7 +86,7 @@ exec ZGWSecurity.Set_Account -1,1,'Anonymous','Anonymous','Anonymous','','Anonym
 -- BEFORE ADDING ANY MORE ACCOUNTS SETUP ZF_ACCT_CHOICES
 EXEC ZGWCoreWeb.Set_Account_Choices @P_ACCT = N'Anonymous',	@P_SecurityEntityID = 1, @P_SecurityEntityName = N'System',@P_BackColor = N'#ffffff'
 	,@P_LeftColor = N'#eeeeee',@P_HeadColor = N'#C7C7C7',@P_Header_ForeColor = N'Black',@P_SubHeadColor = N'#b6cbeb'
-	,@P_Row_BackColor = N'#b6cbeb',@P_AlternatingRow_BackColor = N'#6699cc',@P_ColorScheme = N'Blue',@P_FavoriteAction = N'Home'
+	,@P_RowBackColor = N'#b6cbeb',@P_AlternatingRowBackColor = N'#6699cc',@P_ColorScheme = N'Blue',@P_FavoriteAction = N'Home'
 	,@P_recordsPerPage = 10
 -- Add the system administrator account
 exec ZGWSecurity.Set_Account -1,@V_CHANGE_PASSWORD,'System','System','System','','System','michael.regan@verizon.net','none',@V_Now,0,1,@V_Now,-5,'none',0,1, @V_Debug

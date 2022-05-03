@@ -32,8 +32,8 @@ AS
 				, HeadColor
 				, Header_ForeColor
 				, SubHeadColor
-				, Row_BackColor
-				, AlternatingRow_BackColor
+				, RowBackColor
+				, AlternatingRowBackColor
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
@@ -53,8 +53,8 @@ AS
 				, HeadColor
 				, Header_ForeColor
 				, SubHeadColor
-				, Row_BackColor
-				, AlternatingRow_BackColor
+				, RowBackColor
+				, AlternatingRowBackColor
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
