@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { DynamicTableComponent } from 'GW-Lib';
 
 
 @Component({

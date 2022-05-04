@@ -1,11 +1,4 @@
 {
-  "author": {
-    "email": "anonymous@outlook.com",
-    "name": "Kahiko",
-    "url": "https://github.com/Kahiko/Growthware"
-  },
-  "description": "The GrowthWare angular",
-  "license": "MIT",
   "name": "gw-lib",
   "version": "0.0.1",
   "peerDependencies": {
