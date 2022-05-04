@@ -5,8 +5,10 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
-    "strict": true,
+    "strict": false,
     "noImplicitOverride": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
     "paths": {
       "gw-lib": [
         "dist/gw-lib/gw-lib",
@@ -33,6 +35,6 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": false
   }
 }
