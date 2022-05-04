@@ -20,7 +20,14 @@ From a command prompt and the directory you would like to create your new projec
 	cd <baseAngular>
 	ng generate application <yourApplicationName>
 		answer the questions as fits your needs
-	ng generate library <yourLibraryName>
+	ng generate library <yourLibraryName> - Optional
+		Note: to use the components from your libray you will need to:
+			1.) Import the class from your <yourLibraryName>.modules.ts
+					into the app.module.ts of <yourApplicationName>
+			2.) Add the imported name to the imports: array
+			import { <yourLibraryName>Module } from 'projects/gw-lib/src/public-api';
+			
+			imports: [<yourLibraryName>Module]
 	
 	cd Angular
 	ng generate application my-frontend
