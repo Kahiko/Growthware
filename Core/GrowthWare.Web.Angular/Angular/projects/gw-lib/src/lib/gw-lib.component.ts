@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'gw-lib',
+  selector: 'gw-lib-component',
   template: `
     <p>
       gw-lib works!

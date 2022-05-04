@@ -2,17 +2,16 @@ import { NgModule } from '@angular/core';
 import { GwLibComponent } from './gw-lib.component';
 import { DynamicTableComponent } from './features/dynamic-table/dynamic-table.component';
 
-
-
 @NgModule({
   declarations: [
     GwLibComponent,
-    DynamicTableComponent
+    DynamicTableComponent,
   ],
   imports: [
   ],
   exports: [
-    GwLibComponent
+    GwLibComponent,
+    DynamicTableComponent,
   ]
 })
 export class GwLibModule { }
