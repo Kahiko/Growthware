@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "GW-FrontEnd": {
+    "gw-frontend": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -13,27 +13,27 @@
           "strict": true
         }
       },
-      "root": "projects/gw-front-end",
-      "sourceRoot": "projects/gw-front-end/src",
+      "root": "projects/gw-frontend",
+      "sourceRoot": "projects/gw-frontend/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/gw-front-end",
-            "index": "projects/gw-front-end/src/index.html",
-            "main": "projects/gw-front-end/src/main.ts",
-            "polyfills": "projects/gw-front-end/src/polyfills.ts",
-            "tsConfig": "projects/gw-front-end/tsconfig.app.json",
+            "outputPath": "dist/gw-frontend",
+            "index": "projects/gw-frontend/src/index.html",
+            "main": "projects/gw-frontend/src/main.ts",
+            "polyfills": "projects/gw-frontend/src/polyfills.ts",
+            "tsConfig": "projects/gw-frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/gw-front-end/src/favicon.ico",
-              "projects/gw-front-end/src/assets"
+              "projects/gw-frontend/src/favicon.ico",
+              "projects/gw-frontend/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "projects/gw-front-end/src/styles.scss"
+              "projects/gw-frontend/src/styles.scss"
             ],
             "scripts": []
           },
@@ -53,8 +53,8 @@
               ],
               "fileReplacements": [
                 {
-                  "replace": "projects/gw-front-end/src/environments/environment.ts",
-                  "with": "projects/gw-front-end/src/environments/environment.prod.ts"
+                  "replace": "projects/gw-frontend/src/environments/environment.ts",
+                  "with": "projects/gw-frontend/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -74,10 +74,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "GW-FrontEnd:build:production"
+              "browserTarget": "gw-frontend:build:production"
             },
             "development": {
-              "browserTarget": "GW-FrontEnd:build:development",
+              "browserTarget": "gw-frontend:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -86,36 +86,27 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "GW-FrontEnd:build"
+            "browserTarget": "gw-frontend:build"
           }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/gw-front-end/src/test.ts",
-            "polyfills": "projects/gw-front-end/src/polyfills.ts",
-            "tsConfig": "projects/gw-front-end/tsconfig.spec.json",
-            "karmaConfig": "projects/gw-front-end/karma.conf.js",
+            "main": "projects/gw-frontend/src/test.ts",
+            "polyfills": "projects/gw-frontend/src/polyfills.ts",
+            "tsConfig": "projects/gw-frontend/tsconfig.spec.json",
+            "karmaConfig": "projects/gw-frontend/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "projects/gw-front-end/src/favicon.ico",
-              "projects/gw-front-end/src/assets"
+              "projects/gw-frontend/src/favicon.ico",
+              "projects/gw-frontend/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "projects/gw-front-end/src/styles.scss"
+              "projects/gw-frontend/src/styles.scss"
             ],
             "scripts": []
-          }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/gw-front-end/**/*.ts",
-              "projects/gw-front-end/**/*.html"
-            ]
           }
         }
       }
@@ -124,7 +115,7 @@
       "projectType": "library",
       "root": "projects/gw-lib",
       "sourceRoot": "projects/gw-lib/src",
-      "prefix": "gw-lib",
+      "prefix": "lib",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -148,21 +139,9 @@
             "tsConfig": "projects/gw-lib/tsconfig.spec.json",
             "karmaConfig": "projects/gw-lib/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-eslint/builder:lint",
-          "options": {
-            "lintFilePatterns": [
-              "projects/gw-lib/**/*.ts",
-              "projects/gw-lib/**/*.html"
-            ]
-          }
         }
       }
     }
   },
-  "defaultProject": "GW-FrontEnd",
-  "cli": {
-    "defaultCollection": "@angular-eslint/schematics"
-  }
+  "defaultProject": "gw-frontend"
 }

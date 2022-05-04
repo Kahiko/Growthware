@@ -2,22 +2,20 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "paths": {
-      "GW-Lib": [
-        "dist/gw-lib/gw-lib",
-        "dist/gw-lib"
-      ]
-    },
-    "esModuleInterop": true,
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
+    "paths": {
+      "gw-lib": [
+        "dist/gw-lib/gw-lib",
+        "dist/gw-lib"
+      ]
+    },
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
-    "resolveJsonModule": true,
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
