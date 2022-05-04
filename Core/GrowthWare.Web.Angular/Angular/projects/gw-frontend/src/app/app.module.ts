@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { GwLibModule } from 'projects/gw-lib/src/public-api';
 
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
@@ -21,9 +22,10 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     NavMenuComponent,
   ],
   imports: [
-    BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    BrowserModule,
+    GwLibModule,
     HttpClientModule
   ],
   providers: [],
