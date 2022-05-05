@@ -26,7 +26,7 @@ export interface IDynamicTableButton {
 export interface IDynamicTableConfiguration {
   "buttons": IDynamicTableButton[],
   "columns": IDynamicTableColumn[],
-  "heading": string,
+  "headingText": string,
   "maxHeadHeight": number,
   "maxTableRowHeight": number,
   "name": string,
@@ -35,6 +35,7 @@ export interface IDynamicTableConfiguration {
   "showFirstRow": boolean,
   "showSecondRow": boolean,
   "showThirdRow": boolean,
+  "showHeading": boolean,
   "showHelp": boolean,
   "showSearch": boolean
 }

@@ -19,15 +19,18 @@ export class DynamicTableService {
     return mRetVal;
   }
 
-  public set TableConfigurations(config: IDynamicTableConfiguration[]) {
-    if(config != null && config.length > 0) {
-      this._TableConfigurations = config;
+  public set TableConfigurations(configURL: string) {
+    if(!Common.isNullorEmpty(configURL)){
+      // Reload this._TableConfigurations using the URL
+    } else {
+      throw('configURL can not be null or empty!');
     }
   }
 
   constructor() {
-    console.log(DefaultData);
+    // Load the default data for the growthware application
     this._TableConfigurations = JSON.parse(JSON.stringify(DefaultData));
+    console.log('Default TableConfigurations:');
     console.log(this._TableConfigurations);
   }
 }

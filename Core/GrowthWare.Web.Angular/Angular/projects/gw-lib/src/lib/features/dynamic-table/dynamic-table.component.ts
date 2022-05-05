@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { DynamicTableService } from './dynamic-table.service';
 
 @Component({
@@ -8,6 +8,8 @@ import { DynamicTableService } from './dynamic-table.service';
 })
 export class DynamicTableComponent implements OnInit {
   private _DynamicTableSvc: DynamicTableService;
+
+  @Input() ConfigurationName: string;
 
   constructor(dynamicTableSvc: DynamicTableService) {
     this._DynamicTableSvc = dynamicTableSvc;

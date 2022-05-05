@@ -7,6 +7,7 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "gw-lib": [
         "dist/gw-lib/gw-lib",

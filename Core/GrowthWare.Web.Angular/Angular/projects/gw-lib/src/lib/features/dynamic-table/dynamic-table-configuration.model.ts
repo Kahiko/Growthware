@@ -13,7 +13,7 @@ import { Common } from '../../common';
 export class DynamicTableConfig {
   public buttons: IDynamicTableButton[] = [];
   public columns: IDynamicTableColumn[];
-  public heading: string;
+  public headingText: string;
   public maxHeadHeight: number;
   public maxTableRowHeight: number;
   public name: string;
@@ -22,13 +22,14 @@ export class DynamicTableConfig {
   public showFirstRow: boolean;
   public showSecondRow: boolean;
   public showThirdRow: boolean;
+  public showHeading: boolean;
   public showHelp: boolean;
   public showSearch: boolean;
 
   constructor(
     buttons: IDynamicTableButton[] = [],
     columns: IDynamicTableColumn[],
-    heading: string = '',
+    headingText: string = '',
     maxHeadHeight: number = 32,
     maxTableRowHeight: number = 400,
     name: string,
@@ -37,12 +38,13 @@ export class DynamicTableConfig {
     showFirstRow: boolean = false,
     showSecondRow: boolean = false,
     showThirdRow: boolean = false,
+    showHeading: boolean = false,
     showHelp: boolean = false,
     showSearch: boolean = false
   ) {
     // this.buttons = buttons;
     // this.columns = columns;
-    this.heading = heading;
+    this.headingText = headingText;
     this.maxHeadHeight = maxHeadHeight;
     this.maxTableRowHeight = maxTableRowHeight;
     this.name = name;
@@ -51,6 +53,7 @@ export class DynamicTableConfig {
     this.showFirstRow = showFirstRow;
     this.showSecondRow = showSecondRow;
     this.showThirdRow = showThirdRow;
+    this.showHeading = showHeading;
     this.showHelp = showHelp;
     this.showSearch = showSearch;
 
