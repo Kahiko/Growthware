@@ -4,7 +4,7 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Email]                VARCHAR (128) NULL,
     [Enable_Notifications] INT           NULL,
     [Is_System_Admin]      INT           CONSTRAINT [DF_Accounts_IS_SYSTEM_ADMIN] DEFAULT ((0)) NOT NULL,
-    [Status_SeqID]         INT           NOT NULL,
+    [StatusSeqId]         INT           NOT NULL,
     [Password_Last_Set]    DATETIME      CONSTRAINT [DF_Accounts_PASSWORD_LAST_SET] DEFAULT (getdate()) NOT NULL,
     [Password]             VARCHAR (256) NOT NULL,
     [Failed_Attempts]      INT           NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Updated_By]           INT           NULL,
     [Updated_Date]         DATETIME      NULL,
     CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([AccountSeqId] ASC),
-    CONSTRAINT [FK_Accounts_Statuses] FOREIGN KEY ([Status_SeqID]) REFERENCES [ZGWSystem].[Statuses] ([Status_SeqID]),
+    CONSTRAINT [FK_Accounts_Statuses] FOREIGN KEY ([StatusSeqId]) REFERENCES [ZGWSystem].[Statuses] ([StatusSeqId]),
     CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC)
 );
 

@@ -4,7 +4,7 @@ CREATE VIEW [ZGWOptional].[vwSearchStates]
 SELECT
 	[State]
 	, [Description]
-	, [Status] = (SELECT TOP(1) [Name] FROM [ZGWSystem].[Statuses] WHERE [Status_SeqID] = States.[Status_SeqID])
+	, [Status] = (SELECT TOP(1) [Name] FROM [ZGWSystem].[Statuses] WHERE [StatusSeqId] = States.[StatusSeqId])
 	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = States.Added_By) AS Added_By
 	, Added_Date
 	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = States.Updated_By) AS Updated_By

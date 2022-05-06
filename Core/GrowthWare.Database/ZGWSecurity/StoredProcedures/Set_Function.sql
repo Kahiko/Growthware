@@ -17,7 +17,7 @@ Usage:
 		@P_NAV_TYPE_ID int = 1,
 		@P_Action VARCHAR(256) = 'testing',
 		@P_Meta_Key_Words VARCHAR(512) = '',
-		@P_Parent_SeqID int = 1,
+		@P_ParentSeqId int = 1,
 		@P_Notes VARCHAR(512) = '',
 		@P_Added_Updated_By INT = 1
 		@P_Debug INT = 0
@@ -38,7 +38,7 @@ Usage:
 		@P_NAV_TYPE_ID,
 		@P_Action,
 		@P_Meta_Key_Words,
-		@P_Parent_SeqID,
+		@P_ParentSeqId,
 		@P_Notes,
 		@P_Added_Updated_By
 		@P_Debug
@@ -67,7 +67,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Function]
 	@P_NAV_TYPE_ID int,
 	@P_Action VARCHAR(256),
 	@P_Meta_Key_Words VARCHAR(512),
-	@P_Parent_SeqID int,
+	@P_ParentSeqId int,
 	@P_Notes VARCHAR(512),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -90,9 +90,9 @@ AS
 				Is_Nav = @P_Is_Nav,
 				Link_Behavior = @P_Link_Behavior,
 				No_UI = @P_NO_UI,
-				Navigation_Types_NVP_Detail_SeqID = @P_NAV_TYPE_ID,
+				Navigation_Types_NVP_DetailSeqId = @P_NAV_TYPE_ID,
 				Meta_Key_Words = @P_Meta_Key_Words,
-				Parent_SeqID = @P_Parent_SeqID,
+				ParentSeqId = @P_ParentSeqId,
 				Notes = @P_Notes,
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
@@ -124,10 +124,10 @@ AS
 				Is_Nav,
 				Link_Behavior,
 				NO_UI,
-				Navigation_Types_NVP_Detail_SeqID,
+				Navigation_Types_NVP_DetailSeqId,
 				Meta_Key_Words,
 				[Action],
-				Parent_SeqID,
+				ParentSeqId,
 				Notes,
 				Sort_Order,
 				Added_By,
@@ -150,7 +150,7 @@ AS
 				@P_NAV_TYPE_ID,
 				@P_Meta_Key_Words,
 				@P_Action,
-				@P_Parent_SeqID,
+				@P_ParentSeqId,
 				@P_Notes,
 				0,
 				@P_Added_Updated_By,
@@ -158,7 +158,7 @@ AS
 			)
 			SELECT @P_FunctionSeqId=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 			DECLARE @V_Sort_Order INT
-			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
+			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE ParentSeqId = @P_ParentSeqId) + 1
 			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE FunctionSeqId = @P_FunctionSeqId
 
 		END

@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE
-		@P_NVP_SeqID int = 1,
+		@P_NVPSeqId int = 1,
 		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Roles
-		@P_NVP_SeqID,
+		@P_NVPSeqId,
 		@PSecurityEntitySeqId,
 		@P_Debug
 */
@@ -18,7 +18,7 @@ Usage:
 --	Name Value Pairs 
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles]
-		@P_NVP_SeqID int = 1,
+		@P_NVPSeqId int = 1,
 		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
@@ -31,8 +31,8 @@ AS
 		ZGWSecurity.Roles_Security_Entities,
 		ZGWSecurity.Roles
 	WHERE
-		ZGWSecurity.Roles_Security_Entities_Permissions.NVP_SeqID = @P_NVP_SeqID
-		AND ZGWSecurity.Roles_Security_Entities_Permissions.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
+		ZGWSecurity.Roles_Security_Entities_Permissions.NVPSeqId = @P_NVPSeqId
+		AND ZGWSecurity.Roles_Security_Entities_Permissions.Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY

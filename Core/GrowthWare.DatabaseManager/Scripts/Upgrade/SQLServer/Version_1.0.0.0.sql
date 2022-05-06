@@ -43,7 +43,7 @@ DECLARE @V_Now datetime,
 		@V_FunctionTypeSeqId INT,
 		@V_ENCRYPTION_TYPE INT,
 		@V_ENABLE_INHERITANCE INT,
-		@V_NVP_SeqID INT,
+		@V_NVPSeqId INT,
 		@V_Sort_Order INT,
 		@V_Redirect_On_Timeout INT,
 		@V_Added_Updated_By INT,
@@ -77,9 +77,9 @@ exec [ZGWSystem].[Set_System_Status] -1,'ChangePassword','ChangePassword Status 
 exec [ZGWSystem].[Set_System_Status] -1,'SetAccountDetails','Please enter your account details',@V_Added_Updated_By,@V_PRIMARY_KEY,@V_ErrorCode
 --************************
 
-SET @V_CHANGE_PASSWORD = (select Status_SeqID from ZGWSystem.Statuses where [Name] = 'ChangePassword')
-SET @V_INACTIVE = (select Status_SeqID from ZGWSystem.Statuses where [Name] = 'Inactive')
-SET @V_ACTIVE = (select Status_SeqID from ZGWSystem.Statuses where [Name] = 'Active')
+SET @V_CHANGE_PASSWORD = (select StatusSeqId from ZGWSystem.Statuses where [Name] = 'ChangePassword')
+SET @V_INACTIVE = (select StatusSeqId from ZGWSystem.Statuses where [Name] = 'Inactive')
+SET @V_ACTIVE = (select StatusSeqId from ZGWSystem.Statuses where [Name] = 'Active')
 Print 'Adding Accounts'
 -- Add the anonymous account
 exec ZGWSecurity.Set_Account -1,1,'Anonymous','Anonymous','Anonymous','','Anonymous-Account','me@me.com','none',@V_Now,0,1,@V_Now,-5,'none',0,0, @V_Debug
@@ -115,38 +115,38 @@ exec ZGWSecurity.Set_Function_Types -1,'File Manager','Used for managing files a
 
 Print 'Adding navigation types'
 -- Setup Navagation types
-SET @V_NVP_SeqID = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Navigation_Types')
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Horizontal','Horizontal',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Vertical','Vertical',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Hierarchical','Hierarchical',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+SET @V_NVPSeqId = (SELECT NVPSeqId FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Navigation_Types')
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Horizontal','Horizontal',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Vertical','Vertical',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Hierarchical','Hierarchical',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
 
-SET @V_NAV_TYPE_Hierarchical = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Hierarchical')
-SET @V_NAV_TYPE_Vertical = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Vertical')
-SET @V_NAV_TYPE_Horizontal = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Horizontal')
+SET @V_NAV_TYPE_Hierarchical = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Hierarchical')
+SET @V_NAV_TYPE_Vertical = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Vertical')
+SET @V_NAV_TYPE_Horizontal = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Navigation_Types WHERE NVP_Detail_Value = 'Horizontal')
 
 Print 'Adding permissions'
-SET @V_NVP_SeqID = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Permissions')
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'View','View',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Edit','Edit',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Add','Add',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Delete','Delete',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+SET @V_NVPSeqId = (SELECT NVPSeqId FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Permissions')
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'View','View',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Edit','Edit',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Add','Add',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Delete','Delete',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
 
-SET @V_ViewPermission = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View')
-SET @V_AddPermission = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Add')
-SET @V_EditPermission = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Edit')
-SET @V_DeletePermission = (SELECT NVP_Detail_SeqID FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Delete')
+SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View')
+SET @V_AddPermission = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Add')
+SET @V_EditPermission = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Edit')
+SET @V_DeletePermission = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Delete')
 
 Print 'Adding Link Behaviors'
-SET @V_NVP_SeqID = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Link_Behaviors')
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Internal','Internal',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Popup','Popup',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'External','External',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'NewPage','NewPage',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+SET @V_NVPSeqId = (SELECT NVPSeqId FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Link_Behaviors')
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Internal','Internal',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Popup','Popup',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'External','External',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'NewPage','NewPage',@V_ACTIVE, @V_Sort_Order,@V_SystemID,@V_Primary_Key,@V_ErrorCode
 
-SET @V_LinkBehaviorInternal = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'Internal')
-SET @V_LinkBehaviorPopup = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'Popup')
-SET @V_LinkBehaviorExternal = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'External')
-SET @V_LinkBehaviorNewPage = (SELECT NVP_Detail_SeqID FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'NewPage')
+SET @V_LinkBehaviorInternal = (SELECT NVP_DetailSeqId FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'Internal')
+SET @V_LinkBehaviorPopup = (SELECT NVP_DetailSeqId FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'Popup')
+SET @V_LinkBehaviorExternal = (SELECT NVP_DetailSeqId FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'External')
+SET @V_LinkBehaviorNewPage = (SELECT NVP_DetailSeqId FROM ZGWCoreWeb.Link_Behaviors WHERE NVP_Detail_Value = 'NewPage')
 
 Print 'Adding Security Entity'
 exec ZGWSecurity.Set_Security_Entity -1,'System','The default Security Entity, needed by the system.','no url',1,'SQLServer','YourDatabaseName.Framework.BusinessData','YourDatabaseName.Framework.BusinessData.DataAccessLayer.SQLServer.V2008','server=(local);Integrated Security=SSPI;database=GW2013Development;connection reset=false;connection lifetime=5;enlist=true;min pool size=1;max pool size=50','Default','Default',@V_Encryption_Type,-1,@V_SystemID, @V_PRIMARY_KEY, @V_Debug
@@ -181,10 +181,10 @@ exec ZGWSecurity.Set_Account_Roles 'Developer',@VSecurityEntitySeqId,'Developer,
 exec ZGWSecurity.Set_Account_Roles 'mike',@VSecurityEntitySeqId,'Authenticated', @V_SystemID, @V_Debug
 
 Print 'Adding NVP Roles'
-SET @V_NVP_SeqID = (select NVP_SeqID FROM ZGWSystem.Name_Value_Pairs where Static_Name = 'Navigation_Types')
-exec ZGWSecurity.Set_Name_Value_Pair_Roles @V_NVP_SeqID, @VSecurityEntitySeqId, 'Developer', @V_ViewPermission, @V_SystemID, @V_Debug
-SET @V_NVP_SeqID = (select NVP_SeqID FROM ZGWSystem.Name_Value_Pairs where Static_Name = 'Permissions')
-exec ZGWSecurity.Set_Name_Value_Pair_Roles @V_NVP_SeqID, @VSecurityEntitySeqId, 'Developer', @V_ViewPermission, @V_SystemID, @V_Debug
+SET @V_NVPSeqId = (select NVPSeqId FROM ZGWSystem.Name_Value_Pairs where Static_Name = 'Navigation_Types')
+exec ZGWSecurity.Set_Name_Value_Pair_Roles @V_NVPSeqId, @VSecurityEntitySeqId, 'Developer', @V_ViewPermission, @V_SystemID, @V_Debug
+SET @V_NVPSeqId = (select NVPSeqId FROM ZGWSystem.Name_Value_Pairs where Static_Name = 'Permissions')
+exec ZGWSecurity.Set_Name_Value_Pair_Roles @V_NVPSeqId, @VSecurityEntitySeqId, 'Developer', @V_ViewPermission, @V_SystemID, @V_Debug
 
 Print 'Adding functions'
 -- Add functions
@@ -919,15 +919,15 @@ exec ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermissio
 
 --Print 'Adding work flow details'
 ---- Setup Navigation_Types
-SET @V_NVP_SeqID = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Work_Flows')
+SET @V_NVPSeqId = (SELECT NVPSeqId FROM ZGWSystem.Name_Value_Pairs WHERE Static_Name = 'Work_Flows')
 SET @V_MyAction = 'Change_Password'
 set @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction)
 SET @V_Sort_Order = 1
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Change Password',@V_FunctionID,@V_ACTIVE, @V_Sort_Order,@V_SystemID, @V_PRIMARY_KEY, NULL, @v_Debug
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Change Password',@V_FunctionID,@V_ACTIVE, @V_Sort_Order,@V_SystemID, @V_PRIMARY_KEY, NULL, @v_Debug
 SET @V_MyAction = 'Home'
 set @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction)
 SET @V_Sort_Order = 2
-exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVP_SeqID,'Change Password',@V_FunctionID,@V_ACTIVE, @V_Sort_Order,@V_SystemID, @V_PRIMARY_KEY, NULL, @v_Debug
+exec ZGWSystem.Set_Name_Value_Pair_Detail -1,@V_NVPSeqId,'Change Password',@V_FunctionID,@V_ACTIVE, @V_Sort_Order,@V_SystemID, @V_PRIMARY_KEY, NULL, @v_Debug
 SET @V_Sort_Order = 0
 
 PRINT 'Adding messages'
@@ -969,66 +969,66 @@ exec ZGWCoreWeb.Set_Message -1,1,'SameAccountChangeAccount','Same Account Change
 
 ---- Insert States
 Print 'Adding States'
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AA',2,2,'Armed Forces Americas',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AE',2,2,'Armed Forces Africa',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AK',2,2,'Alaska',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AL',2,2,'Alabama',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AP',2,2,'Armed Forces Pacific',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AR',2,2,'Arkansas',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AS',2,2,'American Samoa',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('AZ',2,2,'Arizona',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('CA',2,2,'California',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('CO',2,2,'Colorado',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('CT',2,2,'Connecticut',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('DC',2,2,'District Of Columbia',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('DE',2,2,'Delaware',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('FL',2,2,'Florida',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('FM',2,2,'Federated States of Micronesia',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('GA',2,2,'Georgia',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('GU',2,2,'Gaum',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('HI',2,2,'Hawaii',@V_ACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('IA',2,2,'Iowa',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('ID',2,2,'Idaho',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('IL',2,2,'Illinois',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('IN',2,2,'Indiana',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('KS',2,2,'Kansas',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('KY',2,2,'Kentucky',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('LA',2,2,'Louisiana',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MA',2,2,'Massachusetts',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MD',2,2,'Maryland',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('ME',2,2,'Maine',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MH',2,2,'Marshall Islands',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MI',2,2,'Michigan',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MN',2,2,'Minnesota',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MO',2,2,'Missouri',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MP',2,2,'Northern Mariana Islands',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MS',2,2,'Mississippi',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('MT',2,2,'Montana',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NC',2,2,'North Carolina',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('ND',2,2,'North Dakota',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NE',2,2,'Nebraska',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NH',2,2,'New Hampshire',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NJ',2,2,'New Jersey',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NM',2,2,'New Mexico',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NV',2,2,'Nevada',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('NY',2,2,'New York',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('OH',2,2,'Ohio',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('OK',2,2,'Oklahoma',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('OR',2,2,'Oregon',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('PA',2,2,'Pennsylvania',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('PR',2,2,'Puerto Rico',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('PW',2,2,'Palau',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('RI',2,2,'Rhode Island',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('SC',2,2,'South Carolina',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('SD',2,2,'South Dakota',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('TN',2,2,'Tennessee',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('TX',2,2,'Texas',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('UT',2,2,'Utah',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('VA',2,2,'Virginia',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('VI',2,2,'Virgin Islands',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('VT',2,2,'Vermont',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('WA',2,2,'Washington',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('WI',2,2,'Wisconsin',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('WV',2,2,'West Virginia',@V_INACTIVE)
-insert ZGWOptional.States([State],Added_By,Updated_By,[Description],Status_SeqID) values('WY',2,2,'Wyoming',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AA',2,2,'Armed Forces Americas',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AE',2,2,'Armed Forces Africa',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AK',2,2,'Alaska',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AL',2,2,'Alabama',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AP',2,2,'Armed Forces Pacific',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AR',2,2,'Arkansas',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AS',2,2,'American Samoa',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('AZ',2,2,'Arizona',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('CA',2,2,'California',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('CO',2,2,'Colorado',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('CT',2,2,'Connecticut',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('DC',2,2,'District Of Columbia',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('DE',2,2,'Delaware',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('FL',2,2,'Florida',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('FM',2,2,'Federated States of Micronesia',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('GA',2,2,'Georgia',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('GU',2,2,'Gaum',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('HI',2,2,'Hawaii',@V_ACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('IA',2,2,'Iowa',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('ID',2,2,'Idaho',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('IL',2,2,'Illinois',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('IN',2,2,'Indiana',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('KS',2,2,'Kansas',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('KY',2,2,'Kentucky',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('LA',2,2,'Louisiana',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MA',2,2,'Massachusetts',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MD',2,2,'Maryland',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('ME',2,2,'Maine',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MH',2,2,'Marshall Islands',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MI',2,2,'Michigan',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MN',2,2,'Minnesota',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MO',2,2,'Missouri',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MP',2,2,'Northern Mariana Islands',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MS',2,2,'Mississippi',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('MT',2,2,'Montana',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NC',2,2,'North Carolina',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('ND',2,2,'North Dakota',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NE',2,2,'Nebraska',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NH',2,2,'New Hampshire',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NJ',2,2,'New Jersey',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NM',2,2,'New Mexico',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NV',2,2,'Nevada',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('NY',2,2,'New York',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('OH',2,2,'Ohio',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('OK',2,2,'Oklahoma',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('OR',2,2,'Oregon',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('PA',2,2,'Pennsylvania',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('PR',2,2,'Puerto Rico',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('PW',2,2,'Palau',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('RI',2,2,'Rhode Island',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('SC',2,2,'South Carolina',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('SD',2,2,'South Dakota',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('TN',2,2,'Tennessee',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('TX',2,2,'Texas',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('UT',2,2,'Utah',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('VA',2,2,'Virginia',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('VI',2,2,'Virgin Islands',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('VT',2,2,'Vermont',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('WA',2,2,'Washington',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('WI',2,2,'Wisconsin',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('WV',2,2,'West Virginia',@V_INACTIVE)
+insert ZGWOptional.States([State],Added_By,Updated_By,[Description],StatusSeqId) values('WY',2,2,'Wyoming',@V_INACTIVE)
 update statistics ZGWOptional.States

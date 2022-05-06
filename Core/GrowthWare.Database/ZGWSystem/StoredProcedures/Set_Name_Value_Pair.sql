@@ -2,24 +2,24 @@
 /*
 Usage:
 	DECLARE 
-		@P_NVP_SeqID int = -1,
+		@P_NVPSeqId int = -1,
 		@P_Schema_Name VARCHAR(30) = 'dbo',
 		@P_Static_Name VARCHAR(30) = 'Testing',
 		@P_Display VARCHAR(128) = 'TestingNVP',
 		@P_Description VARCHAR(256) = 'Just Testing the Name value Pair',
-		@P_Status_SeqID INT = 1,
+		@P_StatusSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key INT = null,
 		@P_ErrorCode int = null,
 		@P_Debug bit = 1
 
 	exec ZGWSystem.Set_Name_Value_Pair
-		@P_NVP_SeqID,
+		@P_NVPSeqId,
 		@P_Schema_Name,
 		@P_Static_Name,
 		@P_Display,
 		@P_Description,
-		@P_Status_SeqID,
+		@P_StatusSeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
 		@P_ErrorCode,
@@ -31,12 +31,12 @@ Usage:
 -- Description:	Inserts/Updates ZGWCoreWeb.Account_Choices based on @P_Account
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair]
-	@P_NVP_SeqID int,
+	@P_NVPSeqId int,
 	@P_Schema_Name VARCHAR(30),
 	@P_Static_Name VARCHAR(30),
 	@P_Display VARCHAR(128),
 	@P_Description VARCHAR(256),
-	@P_Status_SeqID INT,
+	@P_StatusSeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key INT OUTPUT,
 	@P_ErrorCode int OUTPUT,
@@ -44,19 +44,19 @@ CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair]
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSystem].[Set_Name_Value_Pair]'
 	DECLARE @V_Now DATETIME = GETDATE()
-	IF @P_NVP_SeqID > -1
+	IF @P_NVPSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			UPDATE ZGWSystem.Name_Value_Pairs
 			SET 
 				[Display] = @P_Display,
 				[Description] = @P_Description,
-				Status_SeqID = @P_Status_SeqID,
+				StatusSeqId = @P_StatusSeqId,
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				NVP_SeqID = @P_NVP_SeqID
+				NVPSeqId = @P_NVPSeqId
 
-			SELECT @P_Primary_Key = @P_NVP_SeqID
+			SELECT @P_Primary_Key = @P_NVPSeqId
 		END
 	ELSE
 	BEGIN -- INSERT a new row in the table.
@@ -73,11 +73,11 @@ AS
 				DECLARE @V_Statement nvarchar(4000)
 
 				set @V_Statement = 'CREATE TABLE [' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + '](
-					[NVP_Detail_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-					[NVP_SeqID] [int] NOT NULL,
+					[NVP_DetailSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+					[NVPSeqId] [int] NOT NULL,
 					[NVP_Detail_Name] [varchar](50) NOT NULL,
 					[NVP_Detail_Value] [varchar](300) NOT NULL,
-					[Status_SeqID] [int] NOT NULL,
+					[StatusSeqId] [int] NOT NULL,
 					[Sort_Order] [int] NOT NULL,
 					[Added_By] [int] NOT NULL,
 					[Added_DATE] [datetime] NOT NULL,
@@ -85,7 +85,7 @@ AS
 					[Updated_Date] [datetime] NULL,
 					 CONSTRAINT [PK_' + CONVERT(VARCHAR,@P_Static_Name) + '] PRIMARY KEY CLUSTERED 
 					(
-						[NVP_Detail_SeqID] ASC
+						[NVP_DetailSeqId] ASC
 					)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY],
 					 CONSTRAINT [UK_' + CONVERT(VARCHAR,@P_Static_Name) + '] UNIQUE NONCLUSTERED 
 					(
@@ -93,13 +93,13 @@ AS
 						[NVP_Detail_Value] ASC
 					)WITH (PAD_INDEX  = OFF, STATISTICS_NORECOMPUTE  = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS  = ON, ALLOW_PAGE_LOCKS  = ON) ON [PRIMARY]
 					) ON [PRIMARY]
-					ALTER TABLE [' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + '] WITH CHECK ADD CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Statuses] FOREIGN KEY([Status_SeqID])
-					REFERENCES [ZGWSystem].[Statuses] ([Status_SeqID])
+					ALTER TABLE [' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + '] WITH CHECK ADD CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Statuses] FOREIGN KEY([StatusSeqId])
+					REFERENCES [ZGWSystem].[Statuses] ([StatusSeqId])
 					ON UPDATE CASCADE
 					ON DELETE CASCADE
 					ALTER TABLE [' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + '] CHECK CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Statuses]
-					ALTER TABLE[' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + ']  WITH CHECK ADD  CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Name_Value_Pairs] FOREIGN KEY([NVP_SeqID])
-					REFERENCES [ZGWSystem].[Name_Value_Pairs] ([NVP_SeqID])
+					ALTER TABLE[' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + ']  WITH CHECK ADD  CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Name_Value_Pairs] FOREIGN KEY([NVPSeqId])
+					REFERENCES [ZGWSystem].[Name_Value_Pairs] ([NVPSeqId])
 					ON UPDATE CASCADE
 					ON DELETE CASCADE
 					ALTER TABLE [' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR,@P_Static_Name) + '] CHECK CONSTRAINT [FK_' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '_' + CONVERT(VARCHAR,@P_Static_Name) + '_ZGWSystem_Name_Value_Pairs]
@@ -114,7 +114,7 @@ AS
 				Static_Name,
 				[Display],
 				[Description],
-				Status_SeqID,
+				StatusSeqId,
 				Added_By,
 				Added_Date
 			)
@@ -124,7 +124,7 @@ AS
 				@P_Static_Name,
 				@P_Display,
 				@P_Description,
-				@P_Status_SeqID,
+				@P_StatusSeqId,
 				@P_Added_Updated_By,
 				@V_Now
 			)

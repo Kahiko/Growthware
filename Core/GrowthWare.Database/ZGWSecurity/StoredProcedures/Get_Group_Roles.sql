@@ -36,14 +36,14 @@ AS
 			FROM 
 				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK) 
 			WHERE 
-				Roles_Security_Entities_SeqID IN 
+				Roles_Security_EntitiesSeqId IN 
 				(SELECT 
-					Roles_Security_Entities_SeqID 
+					Roles_Security_EntitiesSeqId 
 				FROM 
 					ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH(NOLOCK) 
-				WHERE Groups_Security_Entities_SeqID IN 
+				WHERE Groups_Security_EntitiesSeqId IN 
 					(SELECT 
-						Groups_Security_Entities_SeqID 
+						Groups_Security_EntitiesSeqId 
 					FROM 
 						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK) 
 					WHERE 

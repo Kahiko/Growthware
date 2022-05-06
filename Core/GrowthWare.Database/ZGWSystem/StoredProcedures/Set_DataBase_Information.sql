@@ -2,7 +2,7 @@
 /*
 Usage:
 	DECLARE 
-		@P_Database_Information_SeqID INT = 1,
+		@P_Database_InformationSeqId INT = 1,
 		@P_Version VARCHAR(15) = '3',
 		@P_Enable_Inheritance INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -10,7 +10,7 @@ Usage:
 		@P_Debug INT = 1
 
 	exec ZGWSystem.Set_DataBase_Information
-		@P_Database_Information_SeqID,
+		@P_Database_InformationSeqId,
 		@P_Version,
 		@P_Enable_Inheritance,
 		@P_Added_Updated_By,
@@ -21,10 +21,10 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Inserts or updates a record from [ZGWSystem].[Set_DataBase_Information]
---	given the Database_Information_SeqID
+--	given the Database_InformationSeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Set_DataBase_Information]
-	@P_Database_Information_SeqID INT,
+	@P_Database_InformationSeqId INT,
 	@P_Version VARCHAR(15),
 	@P_Enable_Inheritance INT,
 	@P_Added_Updated_By INT,
@@ -61,9 +61,9 @@ BEGIN
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Database_Information_SeqID = @P_Database_Information_SeqID
+				Database_InformationSeqId = @P_Database_InformationSeqId
 
-			SET @P_Primary_Key = @P_Database_Information_SeqID
+			SET @P_Primary_Key = @P_Database_InformationSeqId
 
 		END
 	-- END IF

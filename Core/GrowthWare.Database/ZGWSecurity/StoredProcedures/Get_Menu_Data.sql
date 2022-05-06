@@ -3,13 +3,13 @@
 Usage:
 	DECLARE 
 		@PSecurityEntitySeqId AS INT = 1,
-		@P_Navigation_Types_NVP_Detail_SeqID AS INT = 3,
+		@P_Navigation_Types_NVP_DetailSeqId AS INT = 3,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Menu_Data
 		@PSecurityEntitySeqId,
-		@P_Navigation_Types_NVP_Detail_SeqID,
+		@P_Navigation_Types_NVP_DetailSeqId,
 		@P_Account,
 		@P_Debug
 */
@@ -21,13 +21,13 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data]
 	@PSecurityEntitySeqId INT,
-	@P_Navigation_Types_NVP_Detail_SeqID INT,
+	@P_Navigation_Types_NVP_DetailSeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
 	DECLARE @V_Permission_Id INT
-	SET @V_Permission_Id = ZGWSecurity.Get_View_Permission_SeqID()
+	SET @V_Permission_Id = ZGWSecurity.Get_View_PermissionSeqId()
 	DECLARE @V_AvalibleItems TABLE ([ID] INT, 
 									Title VARCHAR(30), 
 									[Description] VARCHAR(256), 
@@ -42,7 +42,7 @@ AS
 			[FUNCTIONS].[Name] AS Title,
 			[FUNCTIONS].[Description],
 			[FUNCTIONS].[Action] AS URL,
-			[FUNCTIONS].Parent_SeqID AS Parent,
+			[FUNCTIONS].ParentSeqId AS Parent,
 			[FUNCTIONS].Sort_Order AS Sort_Order,
 			ROLES.[Name] AS ROLE,
 			[FUNCTIONS].FunctionTypeSeqId
@@ -54,11 +54,11 @@ AS
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
 			SE_ROLES.RoleSeqId = ROLES.RoleSeqId
-			AND [SECURITY].Roles_Security_Entities_SeqID = SE_ROLES.Roles_Security_Entities_SeqID
+			AND [SECURITY].Roles_Security_EntitiesSeqId = SE_ROLES.Roles_Security_EntitiesSeqId
 			AND [SECURITY].FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND [Permissions].NVP_Detail_SeqID = SECURITY.Permissions_NVP_Detail_SeqID
-			AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
-			AND [FUNCTIONS].Navigation_Types_NVP_Detail_SeqID = @P_Navigation_Types_NVP_Detail_SeqID
+			AND [Permissions].NVP_DetailSeqId = SECURITY.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
+			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
 			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION ALL
@@ -67,7 +67,7 @@ AS
 			[FUNCTIONS].[Name] AS Title,
 			[FUNCTIONS].[Description],
 			[FUNCTIONS].[Action] AS URL,
-			[FUNCTIONS].Parent_SeqID AS Parent,
+			[FUNCTIONS].ParentSeqId AS Parent,
 			[FUNCTIONS].Sort_Order AS Sort_Order,
 			ROLES.[Name] AS ROLE,
 			[FUNCTIONS].FunctionTypeSeqId
@@ -81,13 +81,13 @@ AS
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
 			ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_Entities_SeqID
-			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
-			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
+			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_EntitiesSeqId
+			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
+			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId
 			AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-			AND [Permissions].NVP_Detail_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_Detail_SeqID
-			AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
-			AND [FUNCTIONS].Navigation_Types_NVP_Detail_SeqID = @P_Navigation_Types_NVP_Detail_SeqID
+			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
+			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
 			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 

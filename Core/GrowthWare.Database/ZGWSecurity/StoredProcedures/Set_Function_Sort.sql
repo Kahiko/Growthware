@@ -29,10 +29,10 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Function_Sort]
 AS
 	DECLARE @V_Current_Sort_Order int
 			,@V_Sort_Order_Move int
-			,@V_Parent_SeqID INT
+			,@V_ParentSeqId INT
 			,@V_Updated_Date DATETIME = GETDATE()
 	-- Get the parent ID so only the menu items here can be effected
-	SET @V_Parent_SeqID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_ParentSeqId = (SELECT ParentSeqId FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	-- Get Current Sort Order
 	SELECT 
 		@V_Current_Sort_Order = Sort_Order

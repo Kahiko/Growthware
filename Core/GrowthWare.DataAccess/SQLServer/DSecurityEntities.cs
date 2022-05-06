@@ -71,7 +71,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_NAME", profile.Name),
                 new SqlParameter("@P_DESCRIPTION", profile.Description),
                 new SqlParameter("@P_URL", profile.Url),
-                new SqlParameter("@P_Status_SeqID", profile.StatusSeqId),
+                new SqlParameter("@P_StatusSeqId", profile.StatusSeqId),
                 new SqlParameter("@P_DAL", profile.DataAccessLayer),
                 new SqlParameter("@P_DAL_Name", profile.DataAccessLayerAssemblyName),
                 new SqlParameter("@P_DAL_NAME_SPACE", profile.DataAccessLayerNamespace),

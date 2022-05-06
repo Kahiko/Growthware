@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWSystem].[Data_Errors] (
-    [Error_SeqID]    INT                  IDENTITY (1, 1) NOT NULL,
+    [ErrorSeqId]    INT                  IDENTITY (1, 1) NOT NULL,
     [ErrorNumber]    INT                  NULL,
     [ErrorSeverity]  INT                  NULL,
     [ErrorState]     INT                  NULL,

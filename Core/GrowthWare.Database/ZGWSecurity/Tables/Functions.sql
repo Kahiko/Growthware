@@ -12,10 +12,10 @@ CREATE TABLE [ZGWSecurity].[Functions] (
     [Link_Behavior]                     INT                  NOT NULL,
     [Meta_Key_Words]                    VARCHAR (512) SPARSE NULL,
     [Name]                              VARCHAR (30)         NOT NULL,
-    [Navigation_Types_NVP_Detail_SeqID] INT                  NOT NULL,
+    [Navigation_Types_NVP_DetailSeqId] INT                  NOT NULL,
     [Notes]                             VARCHAR (512) SPARSE NULL,
     [No_UI]                             INT                  CONSTRAINT [DF_ZGWSecurity_Functions_NO_UI] DEFAULT ((0)) NOT NULL,
-    [Parent_SeqID]                      INT                  NULL,
+    [ParentSeqId]                      INT                  NULL,
     [Redirect_On_Timeout]               INT                  CONSTRAINT [DF_ZGWSecurity_Functions_REDIRECT_ON_TIMEOUT] DEFAULT ((1)) NOT NULL,
     [Resolve]                           VARCHAR (MAX) SPARSE NULL,
     [Sort_Order]                        INT                  CONSTRAINT [DF_ZGWSecurity_Functions_Sort_Order] DEFAULT ((0)) NOT NULL,
@@ -24,8 +24,8 @@ CREATE TABLE [ZGWSecurity].[Functions] (
     [Updated_Date]                      DATETIME             NULL,
     CONSTRAINT [PK_Functions] PRIMARY KEY CLUSTERED ([FunctionSeqId] ASC),
     CONSTRAINT [FK_Functions_Function_Types] FOREIGN KEY ([FunctionTypeSeqId]) REFERENCES [ZGWSecurity].[Function_Types] ([FunctionTypeSeqId]),
-    CONSTRAINT [FK_Functions_Functions] FOREIGN KEY ([Parent_SeqID]) REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId]),
-    CONSTRAINT [FK_Functions_Navigation_Types] FOREIGN KEY ([Navigation_Types_NVP_Detail_SeqID]) REFERENCES [ZGWSecurity].[Navigation_Types] ([NVP_Detail_SeqID]),
+    CONSTRAINT [FK_Functions_Functions] FOREIGN KEY ([ParentSeqId]) REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId]),
+    CONSTRAINT [FK_Functions_Navigation_Types] FOREIGN KEY ([Navigation_Types_NVP_DetailSeqId]) REFERENCES [ZGWSecurity].[Navigation_Types] ([NVP_DetailSeqId]),
     CONSTRAINT [UK_ZGWSecurity_Functions] UNIQUE NONCLUSTERED ([Action] ASC)
 );
 

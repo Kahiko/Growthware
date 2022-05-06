@@ -180,7 +180,7 @@
     <Build Include="ZGWSecurity\StoredProcedures\Delete_Account_Roles.sql" />
     <Build Include="ZGWSecurity\StoredProcedures\Delete_Account_Groups.sql" />
     <Build Include="ZGWSecurity\StoredProcedures\Delete_Account.sql" />
-    <Build Include="ZGWSecurity\Functions\Get_View_Permission_SeqID.sql" />
+    <Build Include="ZGWSecurity\Functions\Get_View_PermissionSeqId.sql" />
     <Build Include="ZGWSecurity\Functions\Get_Entity_Parents.sql" />
     <Build Include="ZGWSecurity\Functions\Get_Default_Entity_ID.sql" />
     <Build Include="ZGWOptional\Views\vwSearchStates.sql" />

@@ -24,7 +24,7 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             string mStoredProcedure = "ZGWSystem.Set_DataBase_Information";
             SqlParameter[] mParameters = { 
-                new SqlParameter("@P_Database_Information_SeqID", m_Profile.InformationSeqId),
+                new SqlParameter("@P_Database_InformationSeqId", m_Profile.InformationSeqId),
                 new SqlParameter("@P_Version", m_Profile.Version),
                 new SqlParameter("@P_Enable_Inheritance", m_Profile.EnableInheritance),
                 new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),

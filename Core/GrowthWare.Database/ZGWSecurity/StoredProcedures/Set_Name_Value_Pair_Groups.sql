@@ -2,18 +2,18 @@
 /*
 Usage:
 	DECLARE 
-		@P_NVP_SeqID int = 1,
+		@P_NVPSeqId int = 1,
 		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
-		@P_Permissions_NVP_Detail_SeqID INT = 1,
+		@P_Permissions_NVP_DetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Debug int = 1
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Groups
-		@P_NVP_SeqID,
+		@P_NVPSeqId,
 		@PSecurityEntitySeqId,
 		@P_Groups,
-		@P_Permissions_NVP_Detail_SeqID,
+		@P_Permissions_NVP_DetailSeqId,
 		@P_Added_Updated_By,
 		@P_Debug
 */
@@ -23,10 +23,10 @@ Usage:
 -- Description:	Delete and inserts into ZGWSecurity.Groups_Security_Entities_Functions
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Groups]
-	@P_NVP_SeqID INT,
+	@P_NVPSeqId INT,
 	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(1000),
-	@P_Permissions_NVP_Detail_SeqID INT,
+	@P_Permissions_NVP_DetailSeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
 AS
@@ -34,13 +34,13 @@ AS
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Groups')
 BEGIN TRAN
 	DECLARE @V_GroupSeqId INT
-			,@V_Groups_Security_Entities_SeqID INT
+			,@V_Groups_Security_EntitiesSeqId INT
 			,@V_GROUP_NAME VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Groups associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVP_SeqID,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID, @P_Debug
+	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVPSeqId,@PSecurityEntitySeqId,@P_Permissions_NVP_DetailSeqId, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -63,35 +63,35 @@ BEGIN TRAN
 				WHERE [Name]=@V_GROUP_NAME
 
  				SELECT
-					@V_Groups_Security_Entities_SeqID=Groups_Security_Entities_SeqID
+					@V_Groups_Security_EntitiesSeqId=Groups_Security_EntitiesSeqId
 				FROM
 					ZGWSecurity.Groups_Security_Entities
 				WHERE
 					GroupSeqId = @V_GroupSeqId AND
 					SecurityEntitySeqId = @PSecurityEntitySeqId
-					IF @P_Debug = 1 PRINT('@V_Groups_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Groups_Security_Entities_SeqID))
+					IF @P_Debug = 1 PRINT('@V_Groups_Security_EntitiesSeqId = ' + CONVERT(VARCHAR,@V_Groups_Security_EntitiesSeqId))
 				IF NOT EXISTS(
 						SELECT 
-							Groups_Security_Entities_SeqID 
+							Groups_Security_EntitiesSeqId 
 						FROM 
 							ZGWSecurity.Groups_Security_Entities_Permissions 
 						WHERE 
-						NVP_SeqID = @P_NVP_SeqID 
-						AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
-						AND Groups_Security_Entities_SeqID = @V_Groups_Security_Entities_SeqID
+						NVPSeqId = @P_NVPSeqId 
+						AND Permissions_NVP_DetailSeqId = @P_Permissions_NVP_DetailSeqId
+						AND Groups_Security_EntitiesSeqId = @V_Groups_Security_EntitiesSeqId
 				)
 				BEGIN TRY
 					IF @P_Debug = 1 PRINT('Inserting record')
 					INSERT ZGWSecurity.Groups_Security_Entities_Permissions (
-						NVP_SeqID,
-						Groups_Security_Entities_SeqID,
-						Permissions_NVP_Detail_SeqID,
+						NVPSeqId,
+						Groups_Security_EntitiesSeqId,
+						Permissions_NVP_DetailSeqId,
 						Added_By
 					)
 					VALUES (
-						@P_NVP_SeqID,
-						@V_Groups_Security_Entities_SeqID,
-						@P_Permissions_NVP_Detail_SeqID,
+						@P_NVPSeqId,
+						@V_Groups_Security_EntitiesSeqId,
+						@P_Permissions_NVP_DetailSeqId,
 						@P_Added_Updated_By
 					)
 				END TRY

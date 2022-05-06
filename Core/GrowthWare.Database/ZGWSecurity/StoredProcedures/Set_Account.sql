@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_AccountSeqId int = -1,
-		@P_Status_SeqID int = 1,
+		@P_StatusSeqId int = 1,
 		@P_Account VARCHAR(128) = 'test',
 		@P_First_Name VARCHAR(15) = 'test',
 		@P_Last_Name VARCHAR(15) = 'test',
@@ -23,7 +23,7 @@ Usage:
 --Insert new
 	exec ZGWSecurity.Set_Account 
 		@P_AccountSeqId,
-		@P_Status_SeqID,
+		@P_StatusSeqId,
 		@P_Account,
 		@P_First_Name,
 		@P_Last_Name,
@@ -44,7 +44,7 @@ Usage:
 	SET @P_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'test')
 	exec ZGWSecurity.Set_Account
 		@P_AccountSeqId,
-		@P_Status_SeqID,
+		@P_StatusSeqId,
 		@P_Account,
 		@P_First_Name,
 		@P_Last_Name,
@@ -66,12 +66,12 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/26/2011
 -- Description:	Inserts/Updates [ZGWSystem].[Account]
---	@P_Status_SeqID's value determines insert/update
+--	@P_StatusSeqId's value determines insert/update
 --	a value of -1 is insert > -1 performs update
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account]
 	@P_AccountSeqId int output,
-	@P_Status_SeqID int,
+	@P_StatusSeqId int,
 	@P_Account VARCHAR(128),
 	@P_First_Name VARCHAR(35),
 	@P_Last_Name VARCHAR(35),
@@ -111,7 +111,7 @@ AS
 			IF @P_Debug = 1 PRINT 'UPDATE [ZGWSecurity].[Accounts]'
 			UPDATE [ZGWSecurity].[Accounts]
 			SET 
-				Status_SeqID = @P_Status_SeqID,
+				StatusSeqId = @P_StatusSeqId,
 				Account = @P_Account,
 				First_Name = @P_First_Name,
 				Last_Name = @P_Last_Name,
@@ -138,7 +138,7 @@ AS
 			IF @P_Debug = 1 PRINT 'INSERT [ZGWSecurity].[Accounts]'
 			INSERT [ZGWSecurity].[Accounts]
 			(
-				Status_SeqID,
+				StatusSeqId,
 				Account,
 				First_Name,
 				Last_Name,
@@ -158,7 +158,7 @@ AS
 			)
 			VALUES
 			(
-				@P_Status_SeqID,
+				@P_StatusSeqId,
 				@P_Account,
 				@P_First_Name,
 				@P_Last_Name,
@@ -252,7 +252,7 @@ AS
 		, Email
 		, Enable_Notifications
 		, Is_System_Admin
-		, Status_SeqID
+		, StatusSeqId
 		, Password_Last_Set
 		, Password
 		, Failed_Attempts

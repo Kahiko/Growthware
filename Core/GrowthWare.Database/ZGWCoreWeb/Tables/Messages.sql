@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWCoreWeb].[Messages] (
-    [Message_SeqID]         INT                  IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [MessageSeqId]         INT                  IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [SecurityEntitySeqId] INT                  NOT NULL,
     [Name]                  VARCHAR (50)         NOT NULL,
     [Title]                 VARCHAR (100)        NOT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE [ZGWCoreWeb].[Messages] (
     [Added_Date]            DATETIME             DEFAULT (getdate()) NOT NULL,
     [Updated_By]            INT                  NULL,
     [Updated_Date]          DATETIME             NULL,
-    CONSTRAINT [PK_ZFO_Messages] PRIMARY KEY CLUSTERED ([Message_SeqID] ASC),
+    CONSTRAINT [PK_ZFO_Messages] PRIMARY KEY CLUSTERED ([MessageSeqId] ASC),
     CONSTRAINT [FK_Messages_Entities] FOREIGN KEY ([SecurityEntitySeqId]) REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId]) ON DELETE CASCADE ON UPDATE CASCADE
 );
 

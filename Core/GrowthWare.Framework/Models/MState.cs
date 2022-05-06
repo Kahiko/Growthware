@@ -21,7 +21,7 @@ namespace GrowthWare.Framework.Models
             base.IdColumnName = "State";
             this.Description = this.GetString(detailRow, "Description");
             this.State = this.GetString(detailRow, "State");
-            this.StatusId = this.GetInt(detailRow, "Status_SeqID");
+            this.StatusId = this.GetInt(detailRow, "StatusSeqId");
             base.Initialize(detailRow);
         }
 #endregion

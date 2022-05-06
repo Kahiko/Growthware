@@ -30,14 +30,14 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Role_Accounts]
 AS
 IF @P_Debug = 1	PRINT 'Starting ZGWSecurity.Set_Role_Accounts'
 DECLARE @V_AccountSeqId AS INT
-		,@V_Roles_Security_Entities_SeqID AS INT
+		,@V_Roles_Security_EntitiesSeqId AS INT
 		,@V_ErrorMsg VARCHAR(MAX)
 BEGIN TRAN
 	SET NOCOUNT OFF;
 	SET @V_AccountSeqId = (SELECT ZGWSecurity.Accounts.AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
-	SET @V_Roles_Security_Entities_SeqID = (
+	SET @V_Roles_Security_EntitiesSeqId = (
 			SELECT
-				Roles_Security_Entities_SeqID
+				Roles_Security_EntitiesSeqId
 			FROM
 				ZGWSecurity.Roles_Security_Entities
 			WHERE
@@ -46,9 +46,9 @@ BEGIN TRAN
 		)
 	BEGIN TRY
 		INSERT INTO
-			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_Entities_SeqID,AccountSeqId,Added_By)
+			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_EntitiesSeqId,AccountSeqId,Added_By)
 		VALUES(
-			@V_Roles_Security_Entities_SeqID,
+			@V_Roles_Security_EntitiesSeqId,
 			@V_AccountSeqId,
 			@P_Added_Updated_By
 		)

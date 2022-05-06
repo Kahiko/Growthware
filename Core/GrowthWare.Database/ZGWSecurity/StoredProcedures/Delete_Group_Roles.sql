@@ -26,7 +26,7 @@ AS
 	DELETE
 		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 	WHERE
-		Groups_Security_Entities_SeqID IN (SELECT Groups_Security_Entities_SeqID 
+		Groups_Security_EntitiesSeqId IN (SELECT Groups_Security_EntitiesSeqId 
 					FROM ZGWSecurity.Groups_Security_Entities 
 					WHERE SecurityEntitySeqId=@PSecurityEntitySeqId
 					AND GroupSeqId = @P_GroupSeqId)

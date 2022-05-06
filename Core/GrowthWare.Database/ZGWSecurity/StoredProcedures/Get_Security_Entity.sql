@@ -32,7 +32,7 @@ AS
 				, Name
 				, [Description]
 				, URL
-				, Status_SeqID as STATUS_SEQ_ID
+				, StatusSeqId as STATUS_SEQ_ID
 				, DAL
 				, DAL_Name
 				, DAL_Name_Space
@@ -58,7 +58,7 @@ AS
 				, Name
 				, [Description]
 				, URL
-				, Status_SeqID as STATUS_SEQ_ID
+				, StatusSeqId as STATUS_SEQ_ID
 				, DAL
 				, DAL_Name
 				, DAL_Name_Space

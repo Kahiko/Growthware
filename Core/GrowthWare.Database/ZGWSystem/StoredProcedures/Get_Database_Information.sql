@@ -13,7 +13,7 @@ CREATE PROCEDURE [ZGWSystem].[Get_Database_Information]
 AS
 	SET NOCOUNT ON
 	SELECT TOP 1
-		Database_Information_SeqID as Information_SEQ_ID
+		Database_InformationSeqId as Information_SEQ_ID
 		, [Version]
 		, Enable_Inheritance
 		, Added_By

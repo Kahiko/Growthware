@@ -2,11 +2,11 @@
 /*
 Usage:
 	DECLARE 
-		@V_NVP_Detail_SeqID INT = -1,
-		@V_NVP_SeqID int = (SELECT NVP_SeqID FROM ZGWSystem.Name_Value_Pairs WHERE STATIC_NAME = 'Navigation_Types') ,
+		@V_NVP_DetailSeqId INT = -1,
+		@V_NVPSeqId int = (SELECT NVPSeqId FROM ZGWSystem.Name_Value_Pairs WHERE STATIC_NAME = 'Navigation_Types') ,
 		@V_NVP_Detail_Name VARCHAR(50) = 'Test',
 		@V_NVP_Detail_Value VARCHAR(300) = 'Test value',
-		@V_Status_SeqID INT = 1,
+		@V_StatusSeqId INT = 1,
 		@V_Sort_Order INT = 1,
 		@V_Added_Updated_BY INT = 1,
 		@V_Primary_Key INT = null,
@@ -14,11 +14,11 @@ Usage:
 		@V_Debug bit = 1
 
 	exec ZGWSystem.Set_Name_Value_Pair_Detail
-		@V_NVP_Detail_SeqID,
-		@V_NVP_SeqID,
+		@V_NVP_DetailSeqId,
+		@V_NVPSeqId,
 		@V_NVP_Detail_Name,
 		@V_NVP_Detail_Value,
-		@V_Status_SeqID,
+		@V_StatusSeqId,
 		@V_Sort_Order,
 		@V_Added_Updated_BY,
 		@V_Primary_Key,
@@ -31,11 +31,11 @@ Usage:
 -- Description:	Inserts/Updates ZGWCoreWeb.Account_Choices based on @P_Account
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair_Detail]
-	@P_NVP_Detail_SeqID INT,
-	@P_NVP_SeqID int,
+	@P_NVP_DetailSeqId INT,
+	@P_NVPSeqId int,
 	@P_NVP_Detail_Name VARCHAR(50),
 	@P_NVP_Detail_Value VARCHAR(300),
-	@P_Status_SeqID INT,
+	@P_StatusSeqId INT,
 	@P_Sort_Order INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key INT OUTPUT,
@@ -44,26 +44,26 @@ CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair_Detail]
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSystem].[Set_Name_Value_Pair_Detail]'
 	DECLARE 
-		@V_Static_Name VARCHAR(30) = (SELECT Static_Name FROM ZGWSystem.Name_Value_Pairs WHERE NVP_SeqID = @P_NVP_SeqID)
-		,@V_Schema_Name VARCHAR(30) = (SELECT [Schema_Name] FROM ZGWSystem.Name_Value_Pairs WHERE NVP_SeqID = @P_NVP_SeqID)
+		@V_Static_Name VARCHAR(30) = (SELECT Static_Name FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
+		,@V_Schema_Name VARCHAR(30) = (SELECT [Schema_Name] FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
 		,@V_Statement NVARCHAR(4000)
 		,@V_Now DATETIME = GETDATE()
 
-	IF @P_NVP_Detail_SeqID > -1
+	IF @P_NVP_DetailSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			SET @V_Statement = 'UPDATE ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '
 			SET 
 				NVP_Detail_Name = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Name) + ''',
 				NVP_Detail_Value = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Value) + ''',
-				Status_SeqID = ' + CONVERT(VARCHAR,@P_Status_SeqID) + ',
+				StatusSeqId = ' + CONVERT(VARCHAR,@P_StatusSeqId) + ',
 				Sort_Order = ' + CONVERT(VARCHAR,@P_Sort_Order) + ',
 				Updated_By = ' + CONVERT(VARCHAR,@P_Added_Updated_By) + ',
 				UPDATED_DATE = ''' + CONVERT(VARCHAR,@V_Now) + '''
 			WHERE
-				NVP_Detail_SeqID = ' + CONVERT(VARCHAR,@P_NVP_Detail_SeqID)
+				NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId)
 			IF @P_Debug = 1 PRINT @V_Statement
 			EXECUTE dbo.sp_executesql @statement = @V_Statement
-			SELECT @P_Primary_Key = @P_NVP_SeqID
+			SELECT @P_Primary_Key = @P_NVPSeqId
 		END
 	ELSE
 		BEGIN -- INSERT a new row in the table.
@@ -80,20 +80,20 @@ AS
 					RETURN
 				END
 			SET @V_Statement = 'INSERT INTO ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '(
-					NVP_SeqID,
+					NVPSeqId,
 					NVP_Detail_Name,
 					NVP_Detail_Value,
-					Status_SeqID,
+					StatusSeqId,
 					Sort_Order,
 					Added_By,
 					ADDED_DATE
 				)
 				VALUES
 				(
-					' + CONVERT(VARCHAR,@P_NVP_SeqID) + ',
+					' + CONVERT(VARCHAR,@P_NVPSeqId) + ',
 					''' + CONVERT(VARCHAR,@P_NVP_Detail_Name) + ''',
 					''' + CONVERT(VARCHAR,@P_NVP_Detail_Value) + ''',
-					' + CONVERT(VARCHAR,@P_Status_SeqID) + ',
+					' + CONVERT(VARCHAR,@P_StatusSeqId) + ',
 					' + CONVERT(VARCHAR,@P_Sort_Order) + ',
 					' + CONVERT(VARCHAR,@P_Added_Updated_By) + ',
 					''' + CONVERT(VARCHAR,@V_Now) + '''

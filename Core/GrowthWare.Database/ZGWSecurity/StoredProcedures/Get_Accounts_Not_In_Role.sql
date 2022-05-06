@@ -41,9 +41,9 @@ AS
 						ZGWSecurity.Roles Roles WITH(NOLOCK)
 					WHERE
 						Accounts.AccountSeqId = AcctSecurity.AccountSeqId
-						AND AcctSecurity.Roles_Security_Entities_SeqID = Security.Roles_Security_Entities_SeqID
+						AND AcctSecurity.Roles_Security_EntitiesSeqId = Security.Roles_Security_EntitiesSeqId
 						AND [Security].RoleSeqId = Roles.RoleSeqId
-						AND Accounts.Status_SeqID <> 2
+						AND Accounts.StatusSeqId <> 2
 						AND Roles.RoleSeqId = @P_RoleSeqId
 						AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 					)

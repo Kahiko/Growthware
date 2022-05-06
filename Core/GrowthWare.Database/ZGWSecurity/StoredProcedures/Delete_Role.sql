@@ -28,9 +28,9 @@ AS
 		THIS MIGHT THROW AN ERROR
 		**** 
 	*/
-	DECLARE @V_Roles_SeqID INT
+	DECLARE @V_RolesSeqId INT
 			
-	SET @V_Roles_SeqID = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+	SET @V_RolesSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 
 	BEGIN TRANSACTION
 		BEGIN -- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities
@@ -43,13 +43,13 @@ AS
 			*/
 			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities'
 			DELETE ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
-			WHERE (Roles_Security_Entities_SeqID = 
+			WHERE (Roles_Security_EntitiesSeqId = 
 						(SELECT 
-							Roles_Security_Entities_SeqID 
+							Roles_Security_EntitiesSeqId 
 						FROM 
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 
-							RoleSeqId = @V_Roles_SeqID
+							RoleSeqId = @V_RolesSeqId
 							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
@@ -59,7 +59,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Roles_Security_Entities'
 			DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
-				RoleSeqId= @V_Roles_SeqID AND
+				RoleSeqId= @V_RolesSeqId AND
 				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END 
@@ -70,11 +70,11 @@ AS
 				ZGWSecurity.Roles_Security_Entities RoleEntities
 				WHERE
 				Roles.RoleSeqId = RoleEntities.RoleSeqId
-				AND Roles.RoleSeqId = @V_Roles_SeqID) = 0
+				AND Roles.RoleSeqId = @V_RolesSeqId) = 0
 			BEGIN
 				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
 				DELETE ZGWSecurity.Roles
-				WHERE (RoleSeqId = @V_Roles_SeqID)
+				WHERE (RoleSeqId = @V_RolesSeqId)
 			END
 		END
 	IF @@ERROR <> 0

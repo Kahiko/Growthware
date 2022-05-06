@@ -33,7 +33,7 @@ AS
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
-		AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
+		AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
 		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 	UNION
@@ -49,10 +49,10 @@ AS
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account AND
 		ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId AND
-		ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Accounts.Groups_Security_Entities_SeqID AND
+		ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.Groups_Security_EntitiesSeqId AND
 		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)) AND
-		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID AND
-		ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID AND
+		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId AND
+		ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId AND
 		ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 	ORDER BY
 		Roles

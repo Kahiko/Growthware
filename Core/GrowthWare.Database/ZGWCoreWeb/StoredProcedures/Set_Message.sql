@@ -2,7 +2,7 @@
 /*
 Usage:
 	DECLARE 
-		@P_Message_SeqID INT = 1,
+		@P_MessageSeqId INT = 1,
 		@PSecurityEntitySeqId INT = 2,
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
@@ -14,7 +14,7 @@ Usage:
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Set_Message
-		@P_Message_SeqID,
+		@P_MessageSeqId,
 		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Title,
@@ -33,7 +33,7 @@ Usage:
 -- Description:	Inserts or updates ZGWCoreWeb.[Messages]
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Message]
-	@P_Message_SeqID INT,
+	@P_MessageSeqId INT,
 	@PSecurityEntitySeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
@@ -47,7 +47,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Message'
 	DECLARE @V_Now DATETIME = GETDATE()
 
-	IF @P_Message_SeqID > -1
+	IF @P_MessageSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			-- CHECK FOR DUPLICATE Name BEFORE INSERTING
 			IF EXISTS( SELECT [Name]
@@ -67,10 +67,10 @@ AS
 						Updated_By = @P_Added_Updated_By,
 						Updated_Date = GETDATE()
 					WHERE
-						Message_SeqID = @P_Message_SeqID
+						MessageSeqId = @P_MessageSeqId
 						AND SecurityEntitySeqId = @PSecurityEntitySeqId
 
-					SELECT @P_Primary_Key = @P_Message_SeqID -- set the output id just in case.
+					SELECT @P_Primary_Key = @P_MessageSeqId -- set the output id just in case.
 				END
 			ELSE
 				BEGIN

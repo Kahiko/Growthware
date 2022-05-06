@@ -30,7 +30,7 @@ AS
 			SELECT
 				[State]
 				, [Description]
-				, Status_SeqID
+				, StatusSeqId
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -45,7 +45,7 @@ AS
 			SELECT
 				[State]
 				, [Description]
-				, Status_SeqID
+				, StatusSeqId
 				, Added_By
 				, Added_Date
 				, Updated_By

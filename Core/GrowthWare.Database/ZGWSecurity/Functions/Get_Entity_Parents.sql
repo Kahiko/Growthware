@@ -7,7 +7,7 @@ Usage:
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/18/2011
--- Description: Returns all "Parent" Secutriy_Entity_SeqID's
+-- Description: Returns all "Parent" Secutriy_EntitySeqId's
 --	Given the SecurityEntitySeqId 
 -- Note:
 --	Works through recursion of MAXRECURSION 32767

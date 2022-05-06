@@ -39,10 +39,10 @@ AS
 				, Is_Nav
 				, Link_Behavior
 				, No_UI
-				, Navigation_Types_NVP_Detail_SeqID AS NAVIGATION_NVP_SEQ_DET_ID
+				, Navigation_Types_NVP_DetailSeqId AS NAVIGATION_NVP_SEQ_DET_ID
 				, Meta_Key_Words
 				, [Action]
-				, Parent_SeqID AS PARENT_FUNCTION_SEQ_ID
+				, ParentSeqId AS PARENT_FUNCTION_SEQ_ID
 				, Notes
 				, Sort_Order
 				, Added_By
@@ -73,10 +73,10 @@ AS
 				, Is_Nav
 				, Link_Behavior
 				, No_UI
-				, Navigation_Types_NVP_Detail_SeqID AS NAVIGATION_NVP_SEQ_DET_ID
+				, Navigation_Types_NVP_DetailSeqId AS NAVIGATION_NVP_SEQ_DET_ID
 				, Meta_Key_Words
 				, [Action]
-				, Parent_SeqID AS PARENT_FUNCTION_SEQ_ID
+				, ParentSeqId AS PARENT_FUNCTION_SEQ_ID
 				, Notes
 				, Sort_Order
 				, Added_By

@@ -2,10 +2,10 @@
 CREATE VIEW [ZGWSystem].[vwSearchNVP]
 	AS 
 SELECT
-	NVP_SeqID
+	NVPSeqId
 	, Schema_Name + '.' + Static_Name AS Name
 	, Description
-	, Status = (SELECT TOP(1) Name FROM ZGWSystem.Statuses WHERE Status_SeqID = Status_SeqID)
+	, Status = (SELECT TOP(1) Name FROM ZGWSystem.Statuses WHERE StatusSeqId = StatusSeqId)
 	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = NVP.Added_By) AS Added_By
 	, Added_Date
 	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = NVP.Updated_By) AS Updated_By

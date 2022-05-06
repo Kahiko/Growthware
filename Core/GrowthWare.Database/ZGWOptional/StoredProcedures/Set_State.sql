@@ -4,7 +4,7 @@ Usage:
 	DECLARE 
 		@P_State VARCHAR(2) = 'MA',
 		@P_Description VARCHAR(128) = 'Changed',
-		@P_Status_SeqID INT = 1,
+		@P_StatusSeqId INT = 1,
 		@P_Updated_By INT = 1,
 		@P_Primary_Key VARCHAR(2),
 		@P_Debug INT = 0
@@ -12,7 +12,7 @@ Usage:
 	exec ZGWOptional.Set_State
 		@P_State,
 		@P_Description,
-		@P_Status_SeqID,
+		@P_StatusSeqId,
 		@P_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -26,7 +26,7 @@ Usage:
 CREATE PROCEDURE [ZGWOptional].[Set_State]
 	@P_State CHAR(2),
 	@P_Description VARCHAR(128),
-	@P_Status_SeqID INT,
+	@P_StatusSeqId INT,
 	@P_Updated_By INT,
 	@P_Primary_Key CHAR(2) OUTPUT,
 	@P_Debug INT = 0
@@ -38,7 +38,7 @@ BEGIN
 	SET 
 		[State] = @P_State,
 		[Description] = @P_Description,
-		Status_SeqID = @P_Status_SeqID,
+		StatusSeqId = @P_StatusSeqId,
 		Updated_By = @P_Updated_By,
 		Updated_Date = @V_Now
 	WHERE

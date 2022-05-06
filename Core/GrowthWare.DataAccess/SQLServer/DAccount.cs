@@ -90,7 +90,7 @@ namespace GrowthWare.DataAccess.SQLServer
             SqlParameter[] mParameters =
 			{
 			 new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqID),
-			 new SqlParameter("@P_Navigation_Types_NVP_Detail_SeqID", (int)menuType),
+			 new SqlParameter("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
 			 new SqlParameter("@P_Account", account)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
@@ -130,7 +130,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWSecurity.Set_Account";
             SqlParameter[] mParameters = { 
 				GetSqlParameter("@P_AccountSeqId", m_Profile.Id, ParameterDirection.InputOutput),
-				new SqlParameter("@P_Status_SeqID", m_Profile.Status),
+				new SqlParameter("@P_StatusSeqId", m_Profile.Status),
 				new SqlParameter("@P_Account", m_Profile.Account),
 				new SqlParameter("@P_First_Name", m_Profile.FirstName),
 				new SqlParameter("@P_Last_Name", m_Profile.LastName),

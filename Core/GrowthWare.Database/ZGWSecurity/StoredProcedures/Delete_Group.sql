@@ -35,9 +35,9 @@ BEGIN
 		BEGIN -- DELETE GROUP FROM ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 			IF @P_Debug = 1 PRINT 'Deleting rows from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities'
 			DELETE ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
-			WHERE (Groups_Security_Entities_SeqID = 
+			WHERE (Groups_Security_EntitiesSeqId = 
 						(SELECT 
-							Groups_Security_Entities_SeqID 
+							Groups_Security_EntitiesSeqId 
 						FROM 
 							ZGWSecurity.Groups_Security_Entities 
 						WHERE 

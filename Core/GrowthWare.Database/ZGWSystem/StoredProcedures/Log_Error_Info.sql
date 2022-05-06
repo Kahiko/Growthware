@@ -2,7 +2,7 @@
 CREATE PROCEDURE [ZGWSystem].[Log_Error_Info]
 	@P_Return_Row bit = 0
 AS
-	DECLARE @V_Error_SeqID INT
+	DECLARE @V_ErrorSeqId INT
 	INSERT ZGWSystem.Data_Errors (
 		[ErrorNumber],
 		[ErrorSeverity],
@@ -23,7 +23,7 @@ AS
 	)
 	IF @P_Return_Row = 1
 		BEGIN
-			SELECT @V_Error_SeqID = SCOPE_IDENTITY()
+			SELECT @V_ErrorSeqId = SCOPE_IDENTITY()
 	
 			SELECT 
 				[ErrorNumber],
@@ -36,7 +36,7 @@ AS
 			FROM
 				ZGWSystem.Data_Errors
 			WHERE
-				Error_SeqID = @V_Error_SeqID
+				ErrorSeqId = @V_ErrorSeqId
 		END
 	-- END IF
 RETURN 0

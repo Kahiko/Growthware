@@ -160,7 +160,7 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_NAV_TYPE_ID", m_Profile.NavigationTypeSeqId), 
 				new SqlParameter("@P_Action", m_Profile.Action), 
 				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords), 
-				new SqlParameter("@P_Parent_SeqID", m_Profile.ParentId), 
+				new SqlParameter("@P_ParentSeqId", m_Profile.ParentId), 
 				new SqlParameter("@P_Notes", m_Profile.Notes), 
 				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			};
@@ -178,7 +178,7 @@ namespace GrowthWare.DataAccess.SQLServer
 											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
 											  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId), 
 											  new SqlParameter("@P_Groups", mCommaSeporatedString), 
-											  new SqlParameter("@P_Permissions_NVP_Detail_SeqID", permission), 
+											  new SqlParameter("@P_Permissions_NVP_DetailSeqId", permission), 
 											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 										  };
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
@@ -193,7 +193,7 @@ namespace GrowthWare.DataAccess.SQLServer
 											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
 											  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId), 
 											  new SqlParameter("@P_Roles", mCommaSeporatedString), 
-											  new SqlParameter("@P_Permissions_NVP_Detail_SeqID", permission), 
+											  new SqlParameter("@P_Permissions_NVP_DetailSeqId", permission), 
 											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 										  };
             base.ExecuteNonQuery(mStoreProcedure, mParameters);

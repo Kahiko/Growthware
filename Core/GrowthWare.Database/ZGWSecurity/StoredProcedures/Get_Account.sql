@@ -38,7 +38,7 @@ AS
 						, Email
 						, Enable_Notifications
 						, Is_System_Admin
-						, Status_SeqID AS STATUS_SEQ_ID
+						, StatusSeqId AS STATUS_SEQ_ID
 						, Password_Last_Set
 						, [Password] AS PWD
 						, Failed_Attempts
@@ -67,7 +67,7 @@ AS
 						, Email VARCHAR(100)
 						, Enable_Notifications BIT
 						, Is_System_Admin INT
-						, Status_SeqID INT
+						, StatusSeqId INT
 						, Password_Last_Set DATETIME
 						, [Password] VARCHAR(256)
 						, Failed_Attempts INT
@@ -89,7 +89,7 @@ AS
 						, Accounts.Email
 						, Accounts.Enable_Notifications
 						, Accounts.Is_System_Admin
-						, Accounts.Status_SeqID
+						, Accounts.StatusSeqId
 						, Accounts.Password_Last_Set
 						, Accounts.[Password]
 						, Accounts.Failed_Attempts
@@ -111,7 +111,7 @@ AS
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
 						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
-						AND Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = Roles_Security_Entities.Roles_Security_Entities_SeqID
+						AND Roles_Security_Entities_Accounts.Roles_Security_EntitiesSeqId = Roles_Security_Entities.Roles_Security_EntitiesSeqId
 						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
@@ -121,7 +121,7 @@ AS
 						, Accounts.Email
 						, Accounts.Enable_Notifications
 						, Accounts.Is_System_Admin
-						, Accounts.Status_SeqID
+						, Accounts.StatusSeqId
 						, Accounts.Password_Last_Set
 						, Accounts.[Password]
 						, Accounts.Failed_Attempts
@@ -146,8 +146,8 @@ AS
 					WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
 						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
-						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
-						AND Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
+						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId
+						AND Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				
 					SELECT DISTINCT
@@ -156,7 +156,7 @@ AS
 						, Email
 						, Enable_Notifications
 						, Is_System_Admin
-						, Status_SeqID AS STATUS_SEQ_ID
+						, StatusSeqId AS STATUS_SEQ_ID
 						, Password_Last_Set
 						, [Password] AS PWD
 						, Failed_Attempts
@@ -189,7 +189,7 @@ AS
 				, Email
 				, Enable_Notifications
 				, Is_System_Admin
-				, Status_SeqID AS STATUS_SEQ_ID
+				, StatusSeqId AS STATUS_SEQ_ID
 				, Password_Last_Set
 				, [Password] AS PWD
 				, Failed_Attempts

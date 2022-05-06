@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE 	
-		@P_Message_SeqID INT, 
+		@P_MessageSeqId INT, 
 		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Messages
-		@P_Message_SeqID,
+		@P_MessageSeqId,
 		@PSecurityEntitySeqId,
 		@P_Debug
 */
@@ -15,11 +15,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/19/2011
 -- Description:	Returns messages from ZGWCoreWeb.Messages
---	given the Message_SeqID.  If Message_SeqID = -1
+--	given the MessageSeqId.  If MessageSeqId = -1
 --	all messages are returned.
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Messages]
-	@P_Message_SeqID INT,
+	@P_MessageSeqId INT,
 	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
@@ -58,11 +58,11 @@ AS
 		END
 	--END IF
 
-	IF @P_Message_SeqID <> -1
+	IF @P_MessageSeqId <> -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting single message'
 			SELECT
-				Message_SeqID as MESSAGE_SEQ_ID
+				MessageSeqId as MESSAGE_SEQ_ID
 				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
@@ -76,13 +76,13 @@ AS
 			FROM
 				ZGWCoreWeb.[Messages]
 			WHERE
-				Message_SeqID = @P_Message_SeqID
+				MessageSeqId = @P_MessageSeqId
 		END
 	ELSE
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all messages'
 			SELECT
-				Message_SeqID as MESSAGE_SEQ_ID
+				MessageSeqId as MESSAGE_SEQ_ID
 				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE

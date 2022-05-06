@@ -30,11 +30,11 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Group_Roles]
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Group_Roles'
-	DECLARE @V_Roles_Security_Entities_SeqID INT
+	DECLARE @V_Roles_Security_EntitiesSeqId INT
 			,@V_Role_Name VARCHAR(50)
 			,@V_Is_System INT
 			,@V_POS INT
-			,@V_Groups_Security_Entities_SeqID INT
+			,@V_Groups_Security_EntitiesSeqId INT
 			,@V_Now DATETIME = GETDATE()
 		--NEED TO DELETE EXISTING Roles ASSOCITAED BEFORE 
 		-- INSERTING NEW ONES. EXECUTION OF THIS STORED PROC
@@ -54,38 +54,38 @@ AS
 					--SELECT THE RoleSeqId FROM THE Roles
 					--TABLE FOR ALL THE Roles PASSED
 					SELECT  
-						@V_Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
+						@V_Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
 					FROM
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
 						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
 						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
-					IF @P_Debug = 1 PRINT @V_Roles_Security_Entities_SeqID
+					IF @P_Debug = 1 PRINT @V_Roles_Security_EntitiesSeqId
 
 					SELECT
-						@V_Groups_Security_Entities_SeqID = Groups_Security_Entities_SeqID
+						@V_Groups_Security_EntitiesSeqId = Groups_Security_EntitiesSeqId
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
 						SecurityEntitySeqId = @PSecurityEntitySeqId
 						AND GroupSeqId = @P_GroupSeqId
 					
-					IF @P_Debug = 1 PRINT @V_Groups_Security_Entities_SeqID -- DEBUG
+					IF @P_Debug = 1 PRINT @V_Groups_Security_EntitiesSeqId -- DEBUG
 					/*
 					INSERT THE ZGWSecurity.Groups_Security_Entities_Roles_Entities
 					WITH Roles INFORMATION
 					*/	
-					IF @V_Roles_Security_Entities_SeqID IS NOT NULL
+					IF @V_Roles_Security_EntitiesSeqId IS NOT NULL
 					BEGIN
 									
 						INSERT ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities (
-							Groups_Security_Entities_SeqID,
-							Roles_Security_Entities_SeqID,
+							Groups_Security_EntitiesSeqId,
+							Roles_Security_EntitiesSeqId,
 							Added_By,
 							Added_Date
 						)VALUES(
-							@V_Groups_Security_Entities_SeqID,
-							@V_Roles_Security_Entities_SeqID,
+							@V_Groups_Security_EntitiesSeqId,
+							@V_Roles_Security_EntitiesSeqId,
 							@P_Added_Updated_By,
 							@V_Now
 						)

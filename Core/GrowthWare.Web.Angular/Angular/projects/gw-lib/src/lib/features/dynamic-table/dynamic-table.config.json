@@ -8,7 +8,7 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "", "text": "bottomRight", "visible": false}
     ],
     "columns": [
-      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Delete", "name": "Account_SeqID", "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Delete", "name": "AccountSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
       { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Name"  , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
     "headingText": "Accounts",

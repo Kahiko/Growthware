@@ -12,11 +12,11 @@ CREATE PROCEDURE [ZGWSecurity].[Get_Navigation_Types]
 AS
 	SET NOCOUNT ON
 	SELECT
-		NVP_Detail_SeqID AS NVP_SEQ_DET_ID
-		, NVP_SeqID AS NVP_SEQ_ID
+		NVP_DetailSeqId AS NVP_SEQ_DET_ID
+		, NVPSeqId AS NVP_SEQ_ID
 		, NVP_Detail_Name AS NVP_DET_VALUE
 		, NVP_Detail_Value AS NVP_DET_TEXT
-		, Status_SeqID AS STATUS_SEQ_ID
+		, StatusSeqId AS STATUS_SEQ_ID
 		, Sort_Order
 		, Added_By
 		, Added_Date

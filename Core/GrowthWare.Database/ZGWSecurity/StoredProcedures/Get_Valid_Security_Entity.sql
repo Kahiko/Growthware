@@ -33,7 +33,7 @@ AS
 	DECLARE @V_Active_Status VARCHAR(50)
 	DECLARE @T_Valic_Se TABLE (SecurityEntitySeqId INT)
 	DECLARE @V_Is_Sys_Admin INT
-	SET @V_Active_Status = (SELECT [Status_SeqID] FROM ZGWSystem.Statuses WHERE UPPER([Name]) = 'ACTIVE')
+	SET @V_Active_Status = (SELECT [StatusSeqId] FROM ZGWSystem.Statuses WHERE UPPER([Name]) = 'ACTIVE')
 	SET @V_Is_Sys_Admin = (SELECT Is_System_Admin FROM ZGWSecurity.Accounts WHERE UPPER(Account) = UPPER(@P_Account))
 	IF @V_Is_Sys_Admin = 0
 		BEGIN
@@ -48,7 +48,7 @@ AS
 				WHERE
 					ZGWSecurity.Accounts.Account = @P_Account
 					AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
-					AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
+					AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
 					AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					AND ZGWSecurity.Roles.Is_System_Only = 0
 				UNION
@@ -64,8 +64,8 @@ AS
 				WHERE
 					ZGWSecurity.Accounts.Account = @P_Account
 					AND ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
-					AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
-					AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
+					AND ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId
+					AND ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId
 					AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				IF @P_Is_Se_Admin = 0 -- FALSE
 					BEGIN
@@ -77,7 +77,7 @@ AS
 							ZGWSecurity.Security_Entities
 						WHERE
 							ZGWSecurity.Security_Entities.SecurityEntitySeqId IN (SELECT * FROM @T_Valic_Se)
-							AND ZGWSecurity.Security_Entities.Status_SeqID = @V_Active_Status
+							AND ZGWSecurity.Security_Entities.StatusSeqId = @V_Active_Status
 						ORDER BY
 							[Name]
 					END

@@ -13,7 +13,7 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/15/2011
 -- Description:	Returns sorted function information
---	for related functions given the funtion_seqid
+--	for related functions given the funtionSeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Function_Sort]
 	@P_FunctionSeqId INT,
@@ -22,8 +22,8 @@ AS
 	SET NOCOUNT ON
 	DECLARE @V_Parent_ID INT
 	DECLARE @V_NAV_TYPE_ID INT
-	SET @V_Parent_ID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
-	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_Detail_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_Parent_ID = (SELECT ParentSeqId FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_DetailSeqId FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	SELECT
 		FunctionSeqId as FUNCTION_SEQ_ID,
 		[Name],
@@ -32,10 +32,10 @@ AS
 	FROM
 		ZGWSecurity.Functions WITH(NOLOCK)
 	WHERE
-		Parent_SeqID = @V_PARENT_ID
+		ParentSeqId = @V_PARENT_ID
 		AND Is_Nav = 1
-		AND Navigation_Types_NVP_Detail_SeqID = @V_NAV_TYPE_ID
-		AND Parent_SeqID <> 1
+		AND Navigation_Types_NVP_DetailSeqId = @V_NAV_TYPE_ID
+		AND ParentSeqId <> 1
 	ORDER BY
 		Sort_Order ASC
 
