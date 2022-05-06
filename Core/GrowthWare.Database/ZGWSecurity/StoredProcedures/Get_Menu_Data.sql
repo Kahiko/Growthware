@@ -54,9 +54,9 @@ AS
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
 			SE_ROLES.RoleSeqId = ROLES.RoleSeqId
-			AND [SECURITY].Roles_Security_EntitiesSeqId = SE_ROLES.Roles_Security_EntitiesSeqId
+			AND [SECURITY].RolesSecurityEntitiesSeqId = SE_ROLES.RolesSecurityEntitiesSeqId
 			AND [SECURITY].FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND [Permissions].NVP_DetailSeqId = SECURITY.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
@@ -81,11 +81,11 @@ AS
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
 			ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_EntitiesSeqId
-			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
-			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId
+			AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId
+			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+			AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1

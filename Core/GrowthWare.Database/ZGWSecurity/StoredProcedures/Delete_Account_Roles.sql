@@ -28,7 +28,7 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Accounts 
 	WHERE 
-		Roles_Security_EntitiesSeqId IN(SELECT Roles_Security_EntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND AccountSeqId = @P_AccountSeqId
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Account_Roles]'

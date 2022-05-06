@@ -65,7 +65,7 @@ AS
 					WHERE [Name]=@V_ROLE_NAME
 
  					SELECT
-						@V_SE_RLS_SECURITY_ID=Roles_Security_EntitiesSeqId
+						@V_SE_RLS_SECURITY_ID=RolesSecurityEntitiesSeqId
 					FROM
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
@@ -74,18 +74,18 @@ AS
 						IF @P_Debug = 1 PRINT ('@V_SE_RLS_SECURITY_ID = ' + CONVERT(VARCHAR,@V_SE_RLS_SECURITY_ID))
 					IF NOT EXISTS(
 							SELECT 
-								Roles_Security_EntitiesSeqId 
+								RolesSecurityEntitiesSeqId 
 							FROM 
 								ZGWSecurity.Roles_Security_Entities_Accounts 
 							WHERE 
 							AccountSeqId = @AccountSeqId 
-							AND Roles_Security_EntitiesSeqId = @V_SE_RLS_SECURITY_ID
+							AND RolesSecurityEntitiesSeqId = @V_SE_RLS_SECURITY_ID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
 						INSERT ZGWSecurity.Roles_Security_Entities_Accounts (
 							AccountSeqId,
-							Roles_Security_EntitiesSeqId,
+							RolesSecurityEntitiesSeqId,
 							Added_By
 						)
 						VALUES (

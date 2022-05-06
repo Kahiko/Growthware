@@ -4,14 +4,14 @@ Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 4,
 		@PSecurityEntitySeqId	INT = 1,
-		@P_Permissions_NVP_DetailSeqId INT = 1,
+		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Delete_Function_Groups
 		@P_FunctionSeqId,
 		@PSecurityEntitySeqId,
-		@P_Permissions_NVP_DetailSeqId,
+		@P_PermissionsNVPDetailSeqId,
 		@P_ErrorCode OUT,
 		@P_Debug BIT
 */
@@ -24,7 +24,7 @@ Usage:
 CREATE PROCEDURE [ZGWSecurity].[Delete_Function_Roles]
 	@P_FunctionSeqId INT,
 	@PSecurityEntitySeqId INT,
-	@P_Permissions_NVP_DetailSeqId INT,
+	@P_PermissionsNVPDetailSeqId INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
  AS
@@ -32,9 +32,9 @@ BEGIN
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Function_Roles'
 	DELETE FROM ZGWSecurity.Roles_Security_Entities_Functions
 	WHERE 
-		Roles_Security_EntitiesSeqId IN(SELECT Roles_Security_EntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND FunctionSeqId = @P_FunctionSeqId
-		AND Permissions_NVP_DetailSeqId = @P_Permissions_NVP_DetailSeqId
+		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Function_Groups'
 END

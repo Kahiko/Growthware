@@ -43,9 +43,9 @@ AS
 			*/
 			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities'
 			DELETE ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
-			WHERE (Roles_Security_EntitiesSeqId = 
+			WHERE (RolesSecurityEntitiesSeqId = 
 						(SELECT 
-							Roles_Security_EntitiesSeqId 
+							RolesSecurityEntitiesSeqId 
 						FROM 
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 

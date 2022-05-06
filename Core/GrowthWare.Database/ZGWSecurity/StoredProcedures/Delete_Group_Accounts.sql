@@ -24,9 +24,9 @@ AS
 	DELETE
 		ZGWSecurity.Groups_Security_Entities_Accounts
 	WHERE
-		Groups_Security_EntitiesSeqId IN (
+		GroupsSecurityEntitiesSeqId IN (
 			SELECT 
-				Groups_Security_EntitiesSeqId 
+				GroupsSecurityEntitiesSeqId 
 			FROM 
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 

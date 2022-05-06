@@ -39,8 +39,8 @@ AS
 			WHERE
 				ZGWSecurity.Functions.FunctionSeqId = @P_FunctionSeqId
 				AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Roles_Security_Entities_Functions.Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
-				AND ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_DetailSeqId = @P_PermissionsSeqId
+				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
+				AND ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
@@ -50,7 +50,7 @@ AS
 		BEGIN
 			SELECT
 				ZGWSecurity.Functions.FunctionSeqId AS 'Function_Seq_ID'
-				,ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_DetailSeqId AS 'PERMISSIONS_SEQ_ID'
+				,ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId AS 'PERMISSIONS_SEQ_ID'
 				,ZGWSecurity.Roles.[Name] AS Role
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK),
@@ -59,12 +59,12 @@ AS
 				ZGWSecurity.Roles WITH(NOLOCK)
 			WHERE
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Roles_Security_Entities_Functions.Roles_Security_EntitiesSeqId = ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId
+				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Functions.FunctionSeqId
-				,ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_DetailSeqId
+				,ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId
 		END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Roles'

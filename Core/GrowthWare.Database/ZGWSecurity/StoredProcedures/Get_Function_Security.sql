@@ -14,7 +14,7 @@ Usage:
 -- Create date: 08/18/2011
 -- Description:	Returns all Roles for all functions
 --	given the SecurityEntitySeqId and NVP_DetailSeqId from
---	ZGWSecurity.Permissions or Permissions_NVP_DetailSeqId
+--	ZGWSecurity.Permissions or PermissionsNVPDetailSeqId
 --	from ZGWSecurity.Groups_Security_Entities_Functions and 
 --	ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
@@ -38,9 +38,9 @@ AS
 			ZGWSecurity.[Permissions] WITH(NOLOCK)
 		WHERE
 			Roles_Security_Entities.RoleSeqId = Roles.RoleSeqId
-			AND [Security].Roles_Security_EntitiesSeqId = Roles_Security_Entities.Roles_Security_EntitiesSeqId
+			AND [Security].RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND [Security].FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND [Permissions].NVP_DetailSeqId = SECURITY.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
 			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION
 		SELECT DISTINCT -- Roles assigned via groups
@@ -57,11 +57,11 @@ AS
 			ZGWSecurity.[Permissions] WITH(NOLOCK)
 		WHERE
 			ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
-			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_EntitiesSeqId
-			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
-			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_EntitiesSeqId
+			AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId
+			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+			AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_DetailSeqId
+			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
 			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 	IF (SELECT COUNT(*) FROM @V_AvalibleItems) > 0

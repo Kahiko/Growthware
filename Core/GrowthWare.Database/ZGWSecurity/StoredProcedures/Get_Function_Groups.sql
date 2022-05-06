@@ -39,8 +39,8 @@ AS
 			WHERE
 				ZGWSecurity.Functions.FunctionSeqId = @P_FunctionSeqId
 				AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_DetailSeqId = @P_PermissionsSeqId
+				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+				AND ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
 				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
 				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
@@ -50,7 +50,7 @@ AS
 		BEGIN
 			SELECT
 				ZGWSecurity.Functions.FunctionSeqId AS 'FUNCTION_SEQ_ID'
-				,ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_DetailSeqId AS 'PERMISSIONS_SEQ_ID'
+				,ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId AS 'PERMISSIONS_SEQ_ID'
 				,ZGWSecurity.Groups.[Name] AS [Group]
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK),
@@ -59,7 +59,7 @@ AS
 				ZGWSecurity.Groups WITH(NOLOCK)
 			WHERE
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
+				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
 				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY

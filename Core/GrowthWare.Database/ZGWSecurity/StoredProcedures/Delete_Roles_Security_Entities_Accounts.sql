@@ -13,7 +13,7 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/04/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles_Security_Entities_Accounts
---	given the Groups_Security_EntitiesSeqId and SecurityEntitySeqId
+--	given the GroupsSecurityEntitiesSeqId and SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]
 	@P_RoleSeqId AS INT,
@@ -24,9 +24,9 @@ AS
 	DELETE
 		ZGWSecurity.Roles_Security_Entities_Accounts
 	WHERE
-		Roles_Security_EntitiesSeqId IN (
+		RolesSecurityEntitiesSeqId IN (
 			SELECT 
-				Roles_Security_EntitiesSeqId 
+				RolesSecurityEntitiesSeqId 
 			FROM 
 				ZGWSecurity.Roles_Security_Entities 
 			WHERE 

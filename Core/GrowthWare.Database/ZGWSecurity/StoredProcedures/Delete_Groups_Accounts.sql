@@ -2,21 +2,21 @@
 /*
 Usage:
 	DECLARE 
-		@P_Groups_Security_EntitiesSeqId AS INT = 2,
+		@P_GroupsSecurityEntitiesSeqId AS INT = 2,
 		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Groups_Accounts]
-		@P_Groups_Security_EntitiesSeqId
+		@P_GroupsSecurityEntitiesSeqId
 		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Accounts
---	given the Groups_Security_EntitiesSeqId and SecurityEntitySeqId
+--	given the GroupsSecurityEntitiesSeqId and SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Groups_Accounts]
-	@P_Groups_Security_EntitiesSeqId AS INT,
+	@P_GroupsSecurityEntitiesSeqId AS INT,
 	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
@@ -24,13 +24,13 @@ AS
 	DELETE
 		ZGWSecurity.Groups_Security_Entities_Accounts
 	WHERE
-		Groups_Security_EntitiesSeqId IN (
+		GroupsSecurityEntitiesSeqId IN (
 			SELECT 
-				Groups_Security_EntitiesSeqId 
+				GroupsSecurityEntitiesSeqId 
 			FROM 
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
-				Groups_Security_EntitiesSeqId = @P_Groups_Security_EntitiesSeqId 
+				GroupsSecurityEntitiesSeqId = @P_GroupsSecurityEntitiesSeqId 
 				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'

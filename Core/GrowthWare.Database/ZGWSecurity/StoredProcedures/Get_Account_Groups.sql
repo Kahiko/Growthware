@@ -32,7 +32,7 @@ AS
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
 		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId
-		AND ZGWSecurity.Groups_Security_Entities_Accounts.Groups_Security_EntitiesSeqId = ZGWSecurity.Groups_Security_Entities.Groups_Security_EntitiesSeqId
+		AND ZGWSecurity.Groups_Security_Entities_Accounts.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
 		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY

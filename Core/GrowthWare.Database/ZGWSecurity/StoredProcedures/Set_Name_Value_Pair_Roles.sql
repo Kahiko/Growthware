@@ -5,7 +5,7 @@ Usage:
 		@P_NVPSeqId int = 1,
 		@PSecurityEntitySeqId INT = 1,
 		@P_Role VARCHAR(MAX) = 'EveryOne',
-		@P_Permissions_NVP_DetailSeqId INT = 1,
+		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Debug int = 1
 
@@ -13,7 +13,7 @@ Usage:
 		@P_NVPSeqId,
 		@PSecurityEntitySeqId,
 		@P_Role,
-		@P_Permissions_NVP_DetailSeqId,
+		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
 		@P_Debug
 */
@@ -26,7 +26,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Roles]
 	@P_NVPSeqId INT,
 	@PSecurityEntitySeqId INT,
 	@P_Role VARCHAR(1000),
-	@P_Permissions_NVP_DetailSeqId INT,
+	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
 AS
@@ -34,14 +34,14 @@ AS
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Role')
 BEGIN TRAN
 	DECLARE @V_RoleSeqId INT
-			,@V_Roles_Security_EntitiesSeqId INT
+			,@V_RolesSecurityEntitiesSeqId INT
 			,@V_Group_Name VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 			,@V_Now DATETIME = GETDATE()
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Role associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVPSeqId,@PSecurityEntitySeqId,@P_Permissions_NVP_DetailSeqId, @P_Debug
+	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVPSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -61,36 +61,36 @@ BEGIN TRAN
 				WHERE [Name]=@V_Group_Name
 
  				SELECT
-					@V_Roles_Security_EntitiesSeqId=Roles_Security_EntitiesSeqId
+					@V_RolesSecurityEntitiesSeqId=RolesSecurityEntitiesSeqId
 				FROM
 					ZGWSecurity.Roles_Security_Entities
 				WHERE
 					RoleSeqId = @V_RoleSeqId AND
 					SecurityEntitySeqId = @PSecurityEntitySeqId
-					IF @P_Debug = 1 PRINT('@V_Roles_Security_EntitiesSeqId = ' + CONVERT(VARCHAR,@V_Roles_Security_EntitiesSeqId))
+					IF @P_Debug = 1 PRINT('@V_RolesSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_RolesSecurityEntitiesSeqId))
 				IF NOT EXISTS(
 						SELECT 
-							Roles_Security_EntitiesSeqId 
+							RolesSecurityEntitiesSeqId 
 						FROM 
 							ZGWSecurity.Roles_Security_Entities_Permissions 
 						WHERE 
 						NVPSeqId = @P_NVPSeqId 
-						AND Permissions_NVP_DetailSeqId = @P_Permissions_NVP_DetailSeqId
-						AND Roles_Security_EntitiesSeqId = @V_Roles_Security_EntitiesSeqId
+						AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
+						AND RolesSecurityEntitiesSeqId = @V_RolesSecurityEntitiesSeqId
 				)
 				BEGIN TRY
 					IF @P_Debug = 1 PRINT('Inserting record')
 					INSERT ZGWSecurity.Roles_Security_Entities_Permissions (
 						NVPSeqId,
-						Roles_Security_EntitiesSeqId,
-						Permissions_NVP_DetailSeqId,
+						RolesSecurityEntitiesSeqId,
+						PermissionsNVPDetailSeqId,
 						Added_By,
 						Added_Date
 					)
 					VALUES (
 						@P_NVPSeqId,
-						@V_Roles_Security_EntitiesSeqId,
-						@P_Permissions_NVP_DetailSeqId,
+						@V_RolesSecurityEntitiesSeqId,
+						@P_PermissionsNVPDetailSeqId,
 						@P_Added_Updated_By,
 						@V_Now
 					)
