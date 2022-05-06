@@ -2,16 +2,16 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_FunctionSeqId int = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Function_Roles
-		@P_Function_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_FunctionSeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -23,8 +23,8 @@ Usage:
 -- Description:	Delete and inserts into ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Function_Roles]
-	@P_Function_SeqID int,
-	@P_Security_Entity_SeqID INT,
+	@P_FunctionSeqId int,
+	@PSecurityEntitySeqId INT,
 	@P_Roles VARCHAR(MAX),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -36,12 +36,12 @@ BEGIN TRANSACTION
 	-- INSERTING NEW ONES.
 	
 	DECLARE @V_ErrorCodde INT
-			,@V_Role_SeqID AS INT
+			,@V_RoleSeqId AS INT
 			,@V_Roles_Security_Entities_SeqID AS INT
 			,@V_Role_Name AS VARCHAR(50)
 			,@V_Pos AS INT
 			,@V_ErrorMsg VARCHAR(MAX)
-	EXEC ZGWSecurity.Delete_Function_Roles @P_Function_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -58,7 +58,7 @@ BEGIN TRANSACTION
 				BEGIN
 					--select the role seq id first
 					SELECT 
-						@V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
+						@V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
 					FROM 
 						ZGWSecurity.Roles 
 					WHERE 
@@ -70,8 +70,8 @@ BEGIN TRANSACTION
 					FROM
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
-						Role_SeqID = @V_Role_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						RoleSeqId = @V_RoleSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_Roles_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Roles_Security_Entities_SeqID))
 					IF NOT EXISTS(
@@ -80,19 +80,19 @@ BEGIN TRANSACTION
 							FROM 
 								ZGWSecurity.Roles_Security_Entities_Functions 
 							WHERE 
-							Function_SeqID = @P_Function_SeqID 
+							FunctionSeqId = @P_FunctionSeqId 
 							AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 							AND Roles_Security_Entities_SeqID = @V_Roles_Security_Entities_SeqID)
 						BEGIN TRY
 							IF @P_Debug = 1 PRINT 'Insert new record'
 							INSERT ZGWSecurity.Roles_Security_Entities_Functions (
-								Function_SeqID,
+								FunctionSeqId,
 								Roles_Security_Entities_SeqID,
 								Permissions_NVP_Detail_SeqID,
 								Added_By
 							)
 							VALUES (
-								@P_Function_SeqID,
+								@P_FunctionSeqId,
 								@V_Roles_Security_Entities_SeqID,
 								@P_Permissions_NVP_Detail_SeqID,
 								@P_Added_Updated_By

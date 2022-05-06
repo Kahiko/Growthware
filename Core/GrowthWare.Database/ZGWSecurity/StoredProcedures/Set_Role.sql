@@ -2,23 +2,23 @@
 /*
 Usage:
 	DECLARE 
-		@P_Role_SeqID INT = -1,
+		@P_RoleSeqId INT = -1,
 		@P_Name VARCHAR(50) = 'Test',
 		@P_Description VARCHAR(128) = 'Testing',
 		@P_Is_System INT = 0,
 		@P_Is_System_Only INT = 0,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Role
-		@P_Role_SeqID,
+		@P_RoleSeqId,
 		@P_Name,
 		@P_Description,
 		@P_Is_System,
 		@P_Is_System_Only,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -31,15 +31,15 @@ Usage:
 -- Create date: 09/08/2011
 -- Description:	Inserts or updates ZGWSecurity.Roles and
 --	ZGWSecurity.Roles_Security_Entities
--- Note: @P_Role_SeqID value of -1 inserts a new record
+-- Note: @P_RoleSeqId value of -1 inserts a new record
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Role]
-	@P_Role_SeqID INT,
+	@P_RoleSeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Description VARCHAR(128),
 	@P_Is_System INT,
 	@P_Is_System_Only INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -58,7 +58,7 @@ BEGIN TRAN
 		RETURN
 	END
 
-	IF @P_Role_SeqID > -1
+	IF @P_RoleSeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Updating role in ZGWSecurity.Roles'
 			UPDATE ZGWSecurity.Roles
@@ -70,9 +70,9 @@ BEGIN TRAN
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Role_SeqID = @P_Role_SeqID
+				RoleSeqId = @P_RoleSeqId
 
-			SELECT @P_Primary_Key = @P_Role_SeqID
+			SELECT @P_Primary_Key = @P_RoleSeqId
 		END
 	ELSE
 		BEGIN TRY -- INSERT a new row in the table.
@@ -103,24 +103,24 @@ BEGIN TRAN
 					SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 				END
 			ELSE
-				SET @P_Primary_Key = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+				SET @P_Primary_Key = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 			-- END IF
 		END TRY
 		BEGIN CATCH
 			GOTO ABEND		
 		END CATCH
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID AND Role_SeqID = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
 	BEGIN TRY  -- ADD ROLE REFERENCE TO SE_SECURITY
 			IF @P_Debug = 1 PRINT 'Add role reference to ZGWSecurity.Roles_Security_Entities'
 			INSERT ZGWSecurity.Roles_Security_Entities (
-				Security_Entity_SeqID
-				, Role_SeqID
+				SecurityEntitySeqId
+				, RoleSeqId
 				, Added_By
 				, Added_Date
 			)
 			VALUES (
-				@P_Security_Entity_SeqID,
+				@PSecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Now

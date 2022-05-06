@@ -2,34 +2,34 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1
+		@P_FunctionSeqId INT = 1
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function
-		@P_Function_SeqID
+		@P_FunctionSeqId
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/12/2011
 -- Description:	Selects function given
---	the Function_SeqID. When Function_SeqID = -1
+--	the FunctionSeqId. When FunctionSeqId = -1
 --	all rows in the table are retruned.
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Function]
-	@P_Function_SeqID int,
+	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function'
-	IF @P_Function_SeqID <> -1
+	IF @P_FunctionSeqId <> -1
 		BEGIN -- SELECT an existing row from the table.
 			IF @P_Debug = 1 PRINT 'Selecting single record'
 			SELECT
-				Function_SeqID AS FUNCTION_SEQ_ID
+				FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
-				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
+				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
 				, [Resolve]
@@ -52,7 +52,7 @@ AS
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK)
 			WHERE
-				Function_SeqID = @P_Function_SeqID
+				FunctionSeqId = @P_FunctionSeqId
 			ORDER BY 
 				[Name] ASC
 		END
@@ -60,10 +60,10 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Selecting all records'
 			SELECT
-				Function_SeqID AS FUNCTION_SEQ_ID
+				FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
-				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
+				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
 				, [Resolve]

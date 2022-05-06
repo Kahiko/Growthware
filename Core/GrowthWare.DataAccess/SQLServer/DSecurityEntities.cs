@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "ZGWSecurity.Get_Security_Entity";
             SqlParameter[] mParameters =
 			{
-			  new SqlParameter("@P_Security_Entity_SeqID", -1)
+			  new SqlParameter("@PSecurityEntitySeqId", -1)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -48,7 +48,7 @@ namespace GrowthWare.DataAccess.SQLServer
             { 
                 new SqlParameter("@P_Account", account), 
                 new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin), 
-                new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID)
+                new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID)
             };
             return base.GetDataTable(mStoreProcedure, myParameters);
         }
@@ -67,7 +67,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";
             SqlParameter[] mParameters =
 			 {
-                new SqlParameter("@P_Security_Entity_SeqID", profile.Id),
+                new SqlParameter("@PSecurityEntitySeqId", profile.Id),
                 new SqlParameter("@P_NAME", profile.Name),
                 new SqlParameter("@P_DESCRIPTION", profile.Description),
                 new SqlParameter("@P_URL", profile.Url),
@@ -79,7 +79,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_SKIN", profile.Skin),
                 new SqlParameter("@P_STYLE", profile.Style),
                 new SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
-                new SqlParameter("@P_Parent_Security_Entity_SeqID", profile.ParentSeqId),
+                new SqlParameter("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
                 new SqlParameter("@P_Added_Updated_By",  GetAddedUpdatedBy(profile)),
                 mPrimaryKey
 			 };

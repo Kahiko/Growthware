@@ -2,7 +2,7 @@
 /*
 Usage:
 	DECLARE 
-		@P_Account_SeqID int = -1,
+		@P_AccountSeqId int = -1,
 		@P_Status_SeqID int = 1,
 		@P_Account VARCHAR(128) = 'test',
 		@P_First_Name VARCHAR(15) = 'test',
@@ -22,7 +22,7 @@ Usage:
 		@P_Debug INT = 1
 --Insert new
 	exec ZGWSecurity.Set_Account 
-		@P_Account_SeqID,
+		@P_AccountSeqId,
 		@P_Status_SeqID,
 		@P_Account,
 		@P_First_Name,
@@ -41,9 +41,9 @@ Usage:
 		@P_Is_System_Admin,
 		@P_Debug
 --Update
-	SET @P_Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = 'test')
+	SET @P_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'test')
 	exec ZGWSecurity.Set_Account
-		@P_Account_SeqID,
+		@P_AccountSeqId,
 		@P_Status_SeqID,
 		@P_Account,
 		@P_First_Name,
@@ -70,7 +70,7 @@ Usage:
 --	a value of -1 is insert > -1 performs update
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account]
-	@P_Account_SeqID int output,
+	@P_AccountSeqId int output,
 	@P_Status_SeqID int,
 	@P_Account VARCHAR(128),
 	@P_First_Name VARCHAR(35),
@@ -90,7 +90,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Account]
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
-	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
+	DECLARE @VSecurityEntitySeqId VARCHAR(1),
 		@V_SecurityEntityName VARCHAR(50),
 		@V_BackColor VARCHAR(15),
 		@V_LeftColor VARCHAR(15),
@@ -106,7 +106,7 @@ AS
 		@V_Now DATETIME = GETDATE()
 	
 	
-	IF @P_Account_SeqID > -1
+	IF @P_AccountSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			IF @P_Debug = 1 PRINT 'UPDATE [ZGWSecurity].[Accounts]'
 			UPDATE [ZGWSecurity].[Accounts]
@@ -129,7 +129,7 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Account_SeqID = @P_Account_SeqID
+				AccountSeqId = @P_AccountSeqId
 
 		END
 	ELSE
@@ -176,8 +176,8 @@ AS
 				@P_Location,
 				@P_Enable_Notifications
 			)
-			SET @P_Account_SeqID = SCOPE_IDENTITY()
-			IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Accounts] WHERE Account_SeqID = @P_Account_SeqID)
+			SET @P_AccountSeqId = SCOPE_IDENTITY()
+			IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Accounts] WHERE AccountSeqId = @P_AccountSeqId)
 
 			exec ZGWSecurity.Set_Account_Roles
 				@P_Account,
@@ -190,7 +190,7 @@ AS
 				/*add an entry to account choice table*/
 				IF  EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Account_Choices' AND TABLE_SCHEMA = 'ZGWCoreWeb')		
 					BEGIN
-						SELECT @V_Default_Account=Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = @P_Added_Updated_By
+						SELECT @V_Default_Account=Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = @P_Added_Updated_By
 						
 						IF @V_Default_Account = NULL SET @V_Default_Account = 'ANONYMOUS'
 						
@@ -198,7 +198,7 @@ AS
 							BEGIN -- Populate values from Account_Choices from the Anonymous account
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
-									@V_Security_Entity_SeqID = SecurityEntityID,
+									@VSecurityEntitySeqId = SecurityEntityID,
 									@V_SecurityEntityName = SecurityEntityName,
 									@V_BackColor = BackColor,
 									@V_LeftColor = LeftColor,
@@ -218,16 +218,16 @@ AS
 						ELSE
 							BEGIN
 								IF @P_Debug = 1 PRINT 'Populating default values minimum values'
-								SET @V_Security_Entity_SeqID = (SELECT MIN(Security_Entity_SeqID) FROM ZGWSecurity.Security_Entities)
-								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
-								IF @V_Security_Entity_SeqID = NULL SET @V_Security_Entity_SeqID = 1
+								SET @VSecurityEntitySeqId = (SELECT MIN(SecurityEntitySeqId) FROM ZGWSecurity.Security_Entities)
+								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE SecurityEntitySeqId = @VSecurityEntitySeqId)
+								IF @VSecurityEntitySeqId = NULL SET @VSecurityEntitySeqId = 1
 								IF @V_SecurityEntityName = NULL SET @V_SecurityEntityName = 'System'
 							END
 						--END IF
 						IF @P_Debug = 1 PRINT 'Executing ZGWCoreWeb.Set_Account_Choices'
 						EXEC ZGWCoreWeb.Set_Account_Choices
 							@P_Account,
-							@V_Security_Entity_SeqID,
+							@VSecurityEntitySeqId,
 							@V_SecurityEntityName,
 							@V_BackColor,
 							@V_LeftColor,
@@ -243,11 +243,11 @@ AS
 				--END IF
 			END
 		END-- Get the Error Code for the statement just executed.
-	IF @P_Debug = 1 PRINT '@P_Account_SeqID = '
-	IF @P_Debug = 1 PRINT @P_Account_SeqID
+	IF @P_Debug = 1 PRINT '@P_AccountSeqId = '
+	IF @P_Debug = 1 PRINT @P_AccountSeqId
 /* -- GOING BACK TO USING AN OUTPUT PARAMETER.
 	SELECT
-		Account_SeqID
+		AccountSeqId
 		, Account
 		, Email
 		, Enable_Notifications
@@ -270,7 +270,7 @@ AS
 	FROM 
 		[ZGWSecurity].[Accounts] 
 	WHERE 
-		Account_SeqID = @P_Account_SeqID
+		AccountSeqId = @P_AccountSeqId
 */
 	IF @P_Debug = 1 PRINT 'End Set_Account'
 

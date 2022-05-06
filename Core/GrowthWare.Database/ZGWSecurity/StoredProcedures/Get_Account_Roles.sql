@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Roles
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -18,7 +18,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Account_Roles]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -31,10 +31,10 @@ AS
 		ZGWSecurity.Roles WITH(NOLOCK)
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
-		AND ZGWSecurity.Accounts.Account_SeqID = ZGWSecurity.Roles_Security_Entities_Accounts.Account_SeqID
+		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		ROLES
 

@@ -4,13 +4,13 @@ Usage:
 	DECLARE 
 		@P_Is_System_Admin bit = 1,
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec  ZGWSecurity.Get_Account
 		@P_Is_System_Admin,
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -22,7 +22,7 @@ Usage:
 CREATE PROCEDURE [ZGWSecurity].[Get_Account]
 	@P_Is_System_Admin Bit,
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -33,7 +33,7 @@ AS
 				BEGIN
 					IF @P_Debug = 1 PRINT 'Selecting all accounts'
 					SELECT
-						Account_SeqID AS ACCT_SEQ_ID
+						AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -60,9 +60,9 @@ AS
 				END
 			ELSE
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_Security_Entity_SeqID)
+					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@PSecurityEntitySeqId)
 					DECLARE @V_Accounts TABLE (
-						Account_SeqID INT
+						AccountSeqId INT
 						, Account VARCHAR(100)
 						, Email VARCHAR(100)
 						, Enable_Notifications BIT
@@ -84,7 +84,7 @@ AS
 						, Updated_Date DATETIME)
 					INSERT INTO @V_Accounts
 					SELECT -- Roles via roles
-						Accounts.Account_SeqID
+						Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -110,13 +110,13 @@ AS
 						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
-						Roles_Security_Entities_Accounts.Account_SeqID = Accounts.Account_SeqID
+						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
 						AND Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND Roles_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
-						AND Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
-						Accounts.Account_SeqID
+						Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -144,14 +144,14 @@ AS
 						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
-						ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID = Accounts.Account_SeqID
-						AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
 						AND Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				
 					SELECT DISTINCT
-						Account_SeqID AS ACCT_SEQ_ID
+						AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -184,7 +184,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting single account'
 			-- SELECT an existing row from the table.
 			SELECT
-				Account_SeqID AS ACCT_SEQ_ID
+				AccountSeqId AS ACCT_SEQ_ID
 				, Account AS ACCT
 				, Email
 				, Enable_Notifications

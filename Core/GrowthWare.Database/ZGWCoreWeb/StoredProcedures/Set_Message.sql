@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_Message_SeqID INT = 1,
-		@P_Security_Entity_SeqID INT = 2,
+		@PSecurityEntitySeqId INT = 2,
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
@@ -15,7 +15,7 @@ Usage:
 
 	exec ZGWCoreWeb.Set_Message
 		@P_Message_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Title,
 		@P_Description,
@@ -34,7 +34,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Message]
 	@P_Message_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
 	@P_Description VARCHAR(512),
@@ -53,12 +53,12 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 				BEGIN
 					UPDATE ZGWCoreWeb.[Messages]
 					SET
-						Security_Entity_SeqID = @P_Security_Entity_SeqID,
+						SecurityEntitySeqId = @PSecurityEntitySeqId,
 						[Name] = @P_Name,
 						Title = @P_Title,
 						[Description] = @P_Description,
@@ -68,7 +68,7 @@ AS
 						Updated_Date = GETDATE()
 					WHERE
 						Message_SeqID = @P_Message_SeqID
-						AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+						AND SecurityEntitySeqId = @PSecurityEntitySeqId
 
 					SELECT @P_Primary_Key = @P_Message_SeqID -- set the output id just in case.
 				END
@@ -76,7 +76,7 @@ AS
 				BEGIN
 					INSERT ZGWCoreWeb.[Messages]
 					(
-						Security_Entity_SeqID,
+						SecurityEntitySeqId,
 						[Name],
 						Title,
 						[Description],
@@ -87,7 +87,7 @@ AS
 					)
 					VALUES
 					(
-						@P_Security_Entity_SeqID,
+						@PSecurityEntitySeqId,
 						@P_Name,
 						@P_Title,
 						@P_Description,
@@ -106,7 +106,7 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 			BEGIN
 				RAISERROR ('The message you entered already exists in the database.',16,1)
@@ -115,7 +115,7 @@ AS
 
 			INSERT ZGWCoreWeb.[Messages]
 			(
-				Security_Entity_SeqID,
+				SecurityEntitySeqId,
 				[Name],
 				Title,
 				[Description],
@@ -126,7 +126,7 @@ AS
 			)
 			VALUES
 			(
-				@P_Security_Entity_SeqID,
+				@PSecurityEntitySeqId,
 				@P_Name,
 				@P_Title,
 				@P_Description,

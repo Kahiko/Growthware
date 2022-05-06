@@ -2,10 +2,10 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = -1,
+		@P_FunctionSeqId int = -1,
 		@P_Name VARCHAR(30) = 'Testing',
 		@P_Description VARCHAR(512) = 'Testing',
-		@P_Function_Type_SeqID INT = 1,
+		@P_FunctionTypeSeqId INT = 1,
 		@P_Source VARCHAR(512) = '',
 		@P_Controller VARCHAR(512) = '',
 		@P_Enable_View_State int = 0,
@@ -23,10 +23,10 @@ Usage:
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Set_Function
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Name,
 		@P_Description,
-		@P_Function_Type_SeqID,
+		@P_FunctionTypeSeqId,
 		@P_Source,
 		@P_Controller,
 		@P_Enable_View_State,
@@ -43,7 +43,7 @@ Usage:
 		@P_Added_Updated_By
 		@P_Debug
 		
-	PRINT 'Primary_Key = ' + CONVERT(VARCHAR(MAX),@P_Function_SeqID)
+	PRINT 'Primary_Key = ' + CONVERT(VARCHAR(MAX),@P_FunctionSeqId)
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -51,10 +51,10 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Functions
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Function]
-	@P_Function_SeqID int OUTPUT,
+	@P_FunctionSeqId int OUTPUT,
 	@P_Name VARCHAR(30),
 	@P_Description VARCHAR(512),
-	@P_Function_Type_SeqID INT,
+	@P_FunctionTypeSeqId INT,
 	@P_Source VARCHAR(512),
 	@P_Controller VARCHAR(512) = NULL,
 	@P_Resolve VARCHAR(MAX) = NULL,
@@ -74,13 +74,13 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Function]
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Function'
 	DECLARE @V_Now DATETIME = GETDATE()
-	IF @P_Function_SeqID > -1
+	IF @P_FunctionSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			UPDATE ZGWSecurity.Functions
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
-				Function_Type_SeqID = @P_Function_Type_SeqID,
+				FunctionTypeSeqId = @P_FunctionTypeSeqId,
 				[Source] = @P_Source,
 				[Controller] = @P_Controller,
 				[Resolve] = @P_Resolve,
@@ -97,7 +97,7 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Function_SeqID = @P_Function_SeqID
+				FunctionSeqId = @P_FunctionSeqId
 		END
 	ELSE
 		BEGIN
@@ -114,7 +114,7 @@ AS
 			(
 				[Name],
 				[Description],
-				Function_Type_SeqID,
+				FunctionTypeSeqId,
 				[Source],
 				[Controller],
 				[Resolve],
@@ -137,7 +137,7 @@ AS
 			(
 				@P_Name,
 				@P_Description,
-				@P_Function_Type_SeqID,
+				@P_FunctionTypeSeqId,
 				@P_Source,
 				@P_Controller,
 				@P_Resolve,
@@ -156,10 +156,10 @@ AS
 				@P_Added_Updated_By,
 				@V_Now
 			)
-			SELECT @P_Function_SeqID=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+			SELECT @P_FunctionSeqId=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 			DECLARE @V_Sort_Order INT
 			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
-			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE Function_SeqID = @P_Function_SeqID
+			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE FunctionSeqId = @P_FunctionSeqId
 
 		END
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'

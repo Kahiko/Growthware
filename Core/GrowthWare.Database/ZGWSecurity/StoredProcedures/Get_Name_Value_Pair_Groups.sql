@@ -3,12 +3,12 @@
 Usage:
 	DECLARE
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Groups
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Groups]
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -33,8 +33,8 @@ AS
 	WHERE
 		ZGWSecurity.Groups_Security_Entities_Permissions.NVP_SeqID = @P_NVP_SeqID
 		AND ZGWSecurity.Groups_Security_Entities_Permissions.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Group_SeqID = ZGWSecurity.Groups.Group_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		GROUPS
 	IF @P_Debug = 1 PRINT 'End Get_Name_Value_Pair_Groups'

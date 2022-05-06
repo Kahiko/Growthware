@@ -15,11 +15,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/04/2011
 -- Description:	Deletes a records from ZGWSecurity.Roles_Security_Entities_Permissions
---	given the NVP_SeqID, Security_Entity_SeqID, and Permissions_NVP_Detail_SeqID
+--	given the NVP_SeqID, SecurityEntitySeqId, and Permissions_NVP_Detail_SeqID
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Delete_Roles_Security_Entities_Permissions]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Debug INT = 0
 AS
@@ -27,7 +27,7 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Permissions
 	WHERE 
-		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
+		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND NVP_SeqID = @P_NVP_SeqID
 		AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 	IF @P_Debug = 1 PRINT 'Ending ZGWSystem.Delete_Roles_Security_Entities_Permissions'

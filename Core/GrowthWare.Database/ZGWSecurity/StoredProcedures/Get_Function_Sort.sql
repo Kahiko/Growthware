@@ -2,11 +2,11 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Sort
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -16,16 +16,16 @@ Usage:
 --	for related functions given the funtion_seqid
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Function_Sort]
-	@P_Function_SeqID INT,
+	@P_FunctionSeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	DECLARE @V_Parent_ID INT
 	DECLARE @V_NAV_TYPE_ID INT
-	SET @V_Parent_ID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
-	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_Detail_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
+	SET @V_Parent_ID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_Detail_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	SELECT
-		Function_SeqID as FUNCTION_SEQ_ID,
+		FunctionSeqId as FUNCTION_SEQ_ID,
 		[Name],
 		[Action],
 		Sort_Order

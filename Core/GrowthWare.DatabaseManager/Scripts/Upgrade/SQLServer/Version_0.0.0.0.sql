@@ -109,7 +109,7 @@ execute dbo.sp_executesql @statement = N'CREATE FUNCTION [ZGWSecurity].[Get_Defa
 RETURNS INT
 AS
 BEGIN
-	DECLARE @V_Retval INT = (SELECT TOP 1 Security_Entity_SeqID FROM ZGWSecurity.Security_Entities ORDER BY Security_Entity_SeqID ASC)
+	DECLARE @V_Retval INT = (SELECT TOP 1 SecurityEntitySeqId FROM ZGWSecurity.Security_Entities ORDER BY SecurityEntitySeqId ASC)
 	RETURN @V_Retval
 END' 
 END
@@ -123,57 +123,57 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 execute dbo.sp_executesql @statement = N'/*
 Usage:
-	DECLARE @P_Security_Entity_SeqID INT = 1
-	SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(0,@P_Security_Entity_SeqID)
-	SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID)
+	DECLARE @PSecurityEntitySeqId INT = 1
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(0,@PSecurityEntitySeqId)
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/18/2011
 -- Description: Returns all "Parent" Secutriy_Entity_SeqID''s
---	Given the Security_Entity_SeqID 
+--	Given the SecurityEntitySeqId 
 -- Note:
 --	Works through recursion of MAXRECURSION 32767
 -- =============================================
 CREATE FUNCTION [ZGWSecurity].[Get_Entity_Parents]
 (
 	@P_IncludeParent bit, 
-	@P_Security_Entity_SeqID int
+	@PSecurityEntitySeqId int
 )
 RETURNS @retParents TABLE 
 (
-	Security_Entity_SeqID int, 
-	PARENT_Security_Entity_SeqID int
+	SecurityEntitySeqId int, 
+	PARENTSecurityEntitySeqId int
 )
 AS
 BEGIN
 	IF (ZGWSystem.Inheritance_Enabled()=1)
 		BEGIN
-			;WITH tblParent(Security_Entity_SeqID, Parent_Security_Entity_SeqID) AS
+			;WITH tblParent(SecurityEntitySeqId, ParentSecurityEntitySeqId) AS
 			(
-				SELECT Security_Entity_SeqID, Parent_Security_Entity_SeqID
-					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID
+				SELECT SecurityEntitySeqId, ParentSecurityEntitySeqId
+					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE SecurityEntitySeqId = @PSecurityEntitySeqId
 				UNION ALL
 				SELECT 
-					SE.Security_Entity_SeqID, SE.Parent_Security_Entity_SeqID
+					SE.SecurityEntitySeqId, SE.ParentSecurityEntitySeqId
 				FROM 
 					ZGWSecurity.Security_Entities SE WITH(NOLOCK) 
 					INNER JOIN tblParent
-						ON SE.Security_Entity_SeqID = tblParent.Parent_Security_Entity_SeqID
+						ON SE.SecurityEntitySeqId = tblParent.ParentSecurityEntitySeqId
 			)
-			INSERT INTO @retParents(Security_Entity_SeqID)
+			INSERT INTO @retParents(SecurityEntitySeqId)
 			SELECT 
-				tblParent.Security_Entity_SeqID
+				tblParent.SecurityEntitySeqId
 			FROM  
 				tblParent
-			WHERE Security_Entity_SeqID <> @P_Security_Entity_SeqID
+			WHERE SecurityEntitySeqId <> @PSecurityEntitySeqId
 			OPTION(MAXRECURSION 32767)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents(Security_Entity_SeqID)VALUES(@P_Security_Entity_SeqID);
+			IF (@P_IncludeParent=1) INSERT INTO @retParents(SecurityEntitySeqId)VALUES(@PSecurityEntitySeqId);
 		END
 	ELSE
 		BEGIN
 			INSERT INTO @retParents VALUES(ZGWSecurity.Get_Default_Entity_ID(),1)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@P_Security_Entity_SeqID,1)
+			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@PSecurityEntitySeqId,1)
 		END
 	-- END IF
 	RETURN
@@ -240,7 +240,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreW
 BEGIN
 CREATE TABLE [ZGWCoreWeb].[Messages](
 	[Message_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[Security_Entity_SeqID] [int] NOT NULL,
+	[SecurityEntitySeqId] [int] NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Title] [varchar](100) NOT NULL,
 	[Description] [varchar](512) SPARSE  NULL,
@@ -265,7 +265,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Accounts]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Accounts](
-	[Account_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[AccountSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Account] [varchar](128) NOT NULL,
 	[Email] [varchar](128) NULL,
 	[Enable_Notifications] [int] NULL,
@@ -287,7 +287,7 @@ CREATE TABLE [ZGWSecurity].[Accounts](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED 
 (
-	[Account_SeqID] ASC
+	[AccountSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED 
 (
@@ -304,7 +304,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[vwSearchMessages]'))
 EXEC dbo.sp_executesql @statement = N'/*
 Usage:
-	SELECT * FROM ZGWCoreWeb.vwSearchMessages WHERE Security_Entity_SeqID = 1
+	SELECT * FROM ZGWCoreWeb.vwSearchMessages WHERE SecurityEntitySeqId = 1
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -316,15 +316,15 @@ Usage:
 CREATE VIEW [ZGWCoreWeb].[vwSearchMessages] AS 
 	SELECT 
 		[Message_SeqID]
-		,[Security_Entity_SeqID]
+		,[SecurityEntitySeqId]
 		,[Name]
 		,[Title]
 		,[Description]
 		,[Format_As_HTML]
 		,[Body]
-		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Added_By) AS [Added_By]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = msg.Added_By) AS [Added_By]
 		,[Added_Date]
-		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Updated_By) AS [Updated_By]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = msg.Updated_By) AS [Updated_By]
 		,[Updated_Date] 
 	FROM 
 		[ZGWCoreWeb].[Messages] msg WITH(NOLOCK)' 
@@ -386,9 +386,9 @@ SELECT
 	[State]
 	, [Description]
 	, [Status] = (SELECT TOP(1) [Name] FROM [ZGWSystem].[Statuses] WHERE [Status_SeqID] = States.[Status_SeqID])
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = States.Added_By) AS Added_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = States.Added_By) AS Added_By
 	, Added_Date
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = States.Updated_By) AS Updated_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = States.Updated_By) AS Updated_By
 	, Updated_Date
 FROM 
 	[ZGWOptional].[States] States WITH(NOLOCK)' 
@@ -402,8 +402,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Roles_Security_Entities](
 	[Roles_Security_Entities_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[Security_Entity_SeqID] [int] NOT NULL,
-	[Role_SeqID] [int] NOT NULL,
+	[SecurityEntitySeqId] [int] NOT NULL,
+	[RoleSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
  CONSTRAINT [PK_Roles_Security_Entities] PRIMARY KEY CLUSTERED 
@@ -421,7 +421,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Roles]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Roles](
-	[Role_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[RoleSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Description] [varchar](128) NOT NULL,
 	[Is_System] [int] NOT NULL,
@@ -432,7 +432,7 @@ CREATE TABLE [ZGWSecurity].[Roles](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Roles] PRIMARY KEY CLUSTERED 
 (
-	[Role_SeqID] ASC
+	[RoleSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_ZGWSecurity_Roles] UNIQUE NONCLUSTERED 
 (
@@ -449,20 +449,20 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[vwSearchRoles]'))
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [ZGWSecurity].[vwSearchRoles] AS 
 	SELECT
-		R.[Role_SeqID] AS ROLE_SEQ_ID,
+		R.[RoleSeqId] AS ROLE_SEQ_ID,
 		R.[Name],
 		R.[Description],
 		R.[Is_System],
 		R.[Is_System_Only],
-		Added_By = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = R.Added_By),
+		Added_By = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = R.Added_By),
 		R.Added_Date,
-		[Updated_By] = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = R.Updated_By),
+		[Updated_By] = (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = R.Updated_By),
 		R.[Updated_Date],
-		RSE.Security_Entity_SeqID
+		RSE.SecurityEntitySeqId
 	FROM
 		ZGWSecurity.Roles R WITH(NOLOCK)
 		INNER JOIN ZGWSecurity.Roles_Security_Entities RSE WITH(NOLOCK)
-			ON R.Role_SeqID = RSE.Role_SeqID' 
+			ON R.RoleSeqId = RSE.RoleSeqId' 
 GO
 /****** Object:  Table [ZGWSecurity].[Groups_Security_Entities]    Script Date: 1/8/2022 3:29:21 AM ******/
 SET ANSI_NULLS ON
@@ -473,8 +473,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Groups_Security_Entities](
 	[Groups_Security_Entities_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[Security_Entity_SeqID] [int] NOT NULL,
-	[Group_SeqID] [int] NOT NULL,
+	[SecurityEntitySeqId] [int] NOT NULL,
+	[GroupSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
  CONSTRAINT [PK_ZFC_GRPS_SE] PRIMARY KEY CLUSTERED 
@@ -483,8 +483,8 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_ZFC_GRPS_SE] UNIQUE NONCLUSTERED 
 (
-	[Security_Entity_SeqID] ASC,
-	[Group_SeqID] ASC
+	[SecurityEntitySeqId] ASC,
+	[GroupSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -497,7 +497,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Groups]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Groups](
-	[Group_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[GroupSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](128) NOT NULL,
 	[Description] [varchar](512) NOT NULL,
 	[Added_By] [int] NOT NULL,
@@ -506,7 +506,7 @@ CREATE TABLE [ZGWSecurity].[Groups](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Groups] PRIMARY KEY CLUSTERED 
 (
-	[Group_SeqID] ASC
+	[GroupSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_ZGWSecurity_Groups] UNIQUE NONCLUSTERED 
 (
@@ -523,18 +523,18 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[vwSearchGroups]'))
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [ZGWSecurity].[vwSearchGroups] AS
 	SELECT
-		G.[Group_SeqID] AS Group_SEQ_ID,
+		G.[GroupSeqId] AS Group_SEQ_ID,
 		G.[Name],
 		G.[Description],
-		Added_By = (SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = G.Added_By),
-		Added_Date = (SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = G.Added_Date),
+		Added_By = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_By),
+		Added_Date = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_Date),
 		G.[Updated_By],
 		G.[Updated_Date],
-		RSE.Security_Entity_SeqID
+		RSE.SecurityEntitySeqId
 	FROM
 		ZGWSecurity.Groups G WITH(NOLOCK)
 		INNER JOIN ZGWSecurity.Groups_Security_Entities RSE WITH(NOLOCK)
-			ON G.Group_SeqID = RSE.Group_SeqID' 
+			ON G.GroupSeqId = RSE.GroupSeqId' 
 GO
 /****** Object:  Table [ZGWSystem].[Name_Value_Pairs]    Script Date: 1/8/2022 3:29:21 AM ******/
 SET ANSI_NULLS ON
@@ -575,9 +575,9 @@ SELECT
 	, Schema_Name + ''.'' + Static_Name AS Name
 	, Description
 	, Status = (SELECT TOP(1) Name FROM ZGWSystem.Statuses WHERE Status_SeqID = Status_SeqID)
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = NVP.Added_By) AS Added_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = NVP.Added_By) AS Added_By
 	, Added_Date
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = NVP.Updated_By) AS Updated_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = NVP.Updated_By) AS Updated_By
 	, Updated_Date
 FROM 
 	ZGWSystem.Name_Value_Pairs  NVP WITH(NOLOCK)' 
@@ -590,7 +590,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Functions]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Functions](
-	[Function_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[FunctionSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Action] [varchar](256) NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
@@ -598,7 +598,7 @@ CREATE TABLE [ZGWSecurity].[Functions](
 	[Description] [varchar](512) NOT NULL,
 	[Enable_Notifications] [int] NOT NULL,
 	[Enable_View_State] [int] NOT NULL,
-	[Function_Type_SeqID] [int] NULL,
+	[FunctionTypeSeqId] [int] NULL,
 	[Is_Nav] [int] NOT NULL,
 	[Link_Behavior] [int] NOT NULL,
 	[Meta_Key_Words] [varchar](512) SPARSE  NULL,
@@ -615,7 +615,7 @@ CREATE TABLE [ZGWSecurity].[Functions](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Functions] PRIMARY KEY CLUSTERED 
 (
-	[Function_SeqID] ASC
+	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_ZGWSecurity_Functions] UNIQUE NONCLUSTERED 
 (
@@ -633,13 +633,13 @@ IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[ZGWSystem]
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [ZGWSystem].[vwSearchFunctions]
 	AS 
 SELECT
-	Function_SeqID
+	FunctionSeqId
 	, Name
 	, Description
 	, Action
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = FUN.Added_By) AS Added_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = FUN.Added_By) AS Added_By
 	, Added_Date
-	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = FUN.Updated_By) AS Updated_By
+	, (SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = FUN.Updated_By) AS Updated_By
 	, Updated_Date
 FROM 
 	ZGWSecurity.Functions FUN WITH(NOLOCK)' 
@@ -711,8 +711,8 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreW
 BEGIN
 CREATE TABLE [ZGWCoreWeb].[Notifications](
 	[Notification_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
-	[Security_Entity_SeqID] [int] NOT NULL,
-	[Function_SeqID] [int] NOT NULL,
+	[SecurityEntitySeqId] [int] NOT NULL,
+	[FunctionSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
  CONSTRAINT [PK_ZGWCoreWeb_NOTIFICATIONS] PRIMARY KEY CLUSTERED 
@@ -760,7 +760,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[Calendars]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWOptional].[Calendars](
-	[Security_Entity_SeqID] [int] NOT NULL,
+	[SecurityEntitySeqId] [int] NOT NULL,
 	[Calendar_Name] [varchar](50) NOT NULL,
 	[Entry_Date] [smalldatetime] NOT NULL,
 	[Comment] [varchar](100) NOT NULL,
@@ -780,7 +780,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[Directories]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWOptional].[Directories](
-	[Function_SeqID] [int] NOT NULL,
+	[FunctionSeqId] [int] NOT NULL,
 	[Directory] [varchar](255) NOT NULL,
 	[Impersonate] [int] NOT NULL,
 	[Impersonating_Account] [varchar](50) NULL,
@@ -791,7 +791,7 @@ CREATE TABLE [ZGWOptional].[Directories](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Directories] PRIMARY KEY CLUSTERED 
 (
-	[Function_SeqID] ASC
+	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -826,7 +826,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Function_Types]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Function_Types](
-	[Function_Type_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[FunctionTypeSeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](50) NOT NULL,
 	[Description] [varchar](512) NOT NULL,
 	[Template] [varchar](512) SPARSE  NULL,
@@ -837,7 +837,7 @@ CREATE TABLE [ZGWSecurity].[Function_Types](
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_ZGWCoreWeb_Function_Types] PRIMARY KEY CLUSTERED 
 (
-	[Function_Type_SeqID] ASC
+	[FunctionTypeSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
  CONSTRAINT [UK_ZGWCoreWeb_Function_Types] UNIQUE NONCLUSTERED 
 (
@@ -855,7 +855,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Accounts](
 	[Groups_Security_Entities_SeqID] [int] NOT NULL,
-	[Account_SeqID] [int] NOT NULL,
+	[AccountSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL
 ) ON [PRIMARY]
@@ -870,7 +870,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Functions](
 	[Groups_Security_Entities_SeqID] [int] NOT NULL,
-	[Function_SeqID] [int] NOT NULL,
+	[FunctionSeqId] [int] NOT NULL,
 	[Permissions_NVP_Detail_SeqID] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
@@ -878,7 +878,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Functions](
 (
 	[Permissions_NVP_Detail_SeqID] ASC,
 	[Groups_Security_Entities_SeqID] ASC,
-	[Function_SeqID] ASC
+	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -892,13 +892,13 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Groups](
 	[Groups_Security_Entities_SeqID] [int] NOT NULL,
-	[Group_SeqID] [int] NOT NULL,
+	[GroupSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
  CONSTRAINT [UK_Groups_Security_Entities_Groups] UNIQUE NONCLUSTERED 
 (
 	[Groups_Security_Entities_SeqID] ASC,
-	[Group_SeqID] ASC
+	[GroupSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -1003,7 +1003,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Accounts](
 	[Roles_Security_Entities_SeqID] [int] NOT NULL,
-	[Account_SeqID] [int] NOT NULL,
+	[AccountSeqId] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL
 ) ON [PRIMARY]
@@ -1018,7 +1018,7 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Functions](
 	[Roles_Security_Entities_SeqID] [int] NOT NULL,
-	[Function_SeqID] [int] NOT NULL,
+	[FunctionSeqId] [int] NOT NULL,
 	[Permissions_NVP_Detail_SeqID] [int] NOT NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
@@ -1026,7 +1026,7 @@ CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Functions](
 (
 	[Permissions_NVP_Detail_SeqID] ASC,
 	[Roles_Security_Entities_SeqID] ASC,
-	[Function_SeqID] ASC
+	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -1064,7 +1064,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Security_Entities]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSecurity].[Security_Entities](
-	[Security_Entity_SeqID] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
+	[SecurityEntitySeqId] [int] IDENTITY(1,1) NOT FOR REPLICATION NOT NULL,
 	[Name] [varchar](256) NOT NULL,
 	[Description] [varchar](512) NULL,
 	[URL] [varchar](128) NULL,
@@ -1076,14 +1076,14 @@ CREATE TABLE [ZGWSecurity].[Security_Entities](
 	[Skin] [nchar](25) NOT NULL,
 	[Style] [varchar](25) NOT NULL,
 	[Encryption_Type] [int] NOT NULL,
-	[Parent_Security_Entity_SeqID] [int] NULL,
+	[ParentSecurityEntitySeqId] [int] NULL,
 	[Added_By] [int] NOT NULL,
 	[Added_Date] [datetime] NOT NULL,
 	[Updated_By] [int] NULL,
 	[Updated_Date] [datetime] NULL,
  CONSTRAINT [PK_Entities] PRIMARY KEY CLUSTERED 
 (
-	[Security_Entity_SeqID] ASC
+	[SecurityEntitySeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
@@ -1130,11 +1130,11 @@ CREATE TABLE [ZGWSystem].[Database_Information](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Index [FK_IX_Security_Entity_SeqID]    Script Date: 1/8/2022 3:29:21 AM ******/
-IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[Messages]') AND name = N'FK_IX_Security_Entity_SeqID')
-CREATE NONCLUSTERED INDEX [FK_IX_Security_Entity_SeqID] ON [ZGWCoreWeb].[Messages]
+/****** Object:  Index [FK_IXSecurityEntitySeqId]    Script Date: 1/8/2022 3:29:21 AM ******/
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[Messages]') AND name = N'FK_IXSecurityEntitySeqId')
+CREATE NONCLUSTERED INDEX [FK_IXSecurityEntitySeqId] ON [ZGWCoreWeb].[Messages]
 (
-	[Security_Entity_SeqID] ASC
+	[SecurityEntitySeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 /****** Object:  Index [FK_IX_Notification_Entity_Function]    Script Date: 1/8/2022 3:29:21 AM ******/
@@ -1142,8 +1142,8 @@ IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreW
 CREATE NONCLUSTERED INDEX [FK_IX_Notification_Entity_Function] ON [ZGWCoreWeb].[Notifications]
 (
 	[Notification_SeqID] ASC,
-	[Security_Entity_SeqID] ASC,
-	[Function_SeqID] ASC
+	[SecurityEntitySeqId] ASC,
+	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
 /****** Object:  Index [FX_IX_Work_Flows]    Script Date: 1/8/2022 3:29:21 AM ******/
@@ -1377,8 +1377,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCor
 ALTER TABLE [ZGWCoreWeb].[Link_Behaviors] CHECK CONSTRAINT [FK_ZGWCoreWeb_Link_Behaviors_ZGWSystem_Statuses]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[FK_Messages_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWCoreWeb].[Messages]'))
-ALTER TABLE [ZGWCoreWeb].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Entities] FOREIGN KEY([Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWCoreWeb].[Messages]  WITH CHECK ADD  CONSTRAINT [FK_Messages_Entities] FOREIGN KEY([SecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1386,8 +1386,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCor
 ALTER TABLE [ZGWCoreWeb].[Messages] CHECK CONSTRAINT [FK_Messages_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[FK_Notifications_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWCoreWeb].[Notifications]'))
-ALTER TABLE [ZGWCoreWeb].[Notifications]  WITH CHECK ADD  CONSTRAINT [FK_Notifications_Entities] FOREIGN KEY([Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWCoreWeb].[Notifications]  WITH CHECK ADD  CONSTRAINT [FK_Notifications_Entities] FOREIGN KEY([SecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1395,8 +1395,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCor
 ALTER TABLE [ZGWCoreWeb].[Notifications] CHECK CONSTRAINT [FK_Notifications_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[FK_Notifications_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWCoreWeb].[Notifications]'))
-ALTER TABLE [ZGWCoreWeb].[Notifications]  WITH CHECK ADD  CONSTRAINT [FK_Notifications_Functions] FOREIGN KEY([Function_SeqID])
-REFERENCES [ZGWSecurity].[Functions] ([Function_SeqID])
+ALTER TABLE [ZGWCoreWeb].[Notifications]  WITH CHECK ADD  CONSTRAINT [FK_Notifications_Functions] FOREIGN KEY([FunctionSeqId])
+REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1422,8 +1422,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWCor
 ALTER TABLE [ZGWCoreWeb].[Work_Flows] CHECK CONSTRAINT [FK_ZGWCoreWeb_Work_Flows_ZGWSystem_Statuses]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_ZGWOptional_Calendar_ZGWSecurity_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Calendars]'))
-ALTER TABLE [ZGWOptional].[Calendars]  WITH CHECK ADD  CONSTRAINT [FK_ZGWOptional_Calendar_ZGWSecurity_Entities] FOREIGN KEY([Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWOptional].[Calendars]  WITH CHECK ADD  CONSTRAINT [FK_ZGWOptional_Calendar_ZGWSecurity_Entities] FOREIGN KEY([SecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1431,8 +1431,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOpt
 ALTER TABLE [ZGWOptional].[Calendars] CHECK CONSTRAINT [FK_ZGWOptional_Calendar_ZGWSecurity_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWOptional].[FK_Directories_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWOptional].[Directories]'))
-ALTER TABLE [ZGWOptional].[Directories]  WITH CHECK ADD  CONSTRAINT [FK_Directories_Functions] FOREIGN KEY([Function_SeqID])
-REFERENCES [ZGWSecurity].[Functions] ([Function_SeqID])
+ALTER TABLE [ZGWOptional].[Directories]  WITH CHECK ADD  CONSTRAINT [FK_Directories_Functions] FOREIGN KEY([FunctionSeqId])
+REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1461,15 +1461,15 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Accounts] CHECK CONSTRAINT [FK_Accounts_Statuses]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Functions_Function_Types]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Functions]'))
-ALTER TABLE [ZGWSecurity].[Functions]  WITH CHECK ADD  CONSTRAINT [FK_Functions_Function_Types] FOREIGN KEY([Function_Type_SeqID])
-REFERENCES [ZGWSecurity].[Function_Types] ([Function_Type_SeqID])
+ALTER TABLE [ZGWSecurity].[Functions]  WITH CHECK ADD  CONSTRAINT [FK_Functions_Function_Types] FOREIGN KEY([FunctionTypeSeqId])
+REFERENCES [ZGWSecurity].[Function_Types] ([FunctionTypeSeqId])
 GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Functions_Function_Types]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Functions]'))
 ALTER TABLE [ZGWSecurity].[Functions] CHECK CONSTRAINT [FK_Functions_Function_Types]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Functions_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Functions]'))
 ALTER TABLE [ZGWSecurity].[Functions]  WITH CHECK ADD  CONSTRAINT [FK_Functions_Functions] FOREIGN KEY([Parent_SeqID])
-REFERENCES [ZGWSecurity].[Functions] ([Function_SeqID])
+REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
 GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Functions_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Functions]'))
 ALTER TABLE [ZGWSecurity].[Functions] CHECK CONSTRAINT [FK_Functions_Functions]
@@ -1482,8 +1482,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Functions] CHECK CONSTRAINT [FK_Functions_Navigation_Types]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Groups_Security_Entities_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities]'))
-ALTER TABLE [ZGWSecurity].[Groups_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Entities] FOREIGN KEY([Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWSecurity].[Groups_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Entities] FOREIGN KEY([SecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1491,8 +1491,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities] CHECK CONSTRAINT [FK_Groups_Security_Entities_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_ZGWSecurity_Groups_Security_Entities_ZGWSecurity_Groups]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities]'))
-ALTER TABLE [ZGWSecurity].[Groups_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_ZGWSecurity_Groups_Security_Entities_ZGWSecurity_Groups] FOREIGN KEY([Group_SeqID])
-REFERENCES [ZGWSecurity].[Groups] ([Group_SeqID])
+ALTER TABLE [ZGWSecurity].[Groups_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_ZGWSecurity_Groups_Security_Entities_ZGWSecurity_Groups] FOREIGN KEY([GroupSeqId])
+REFERENCES [ZGWSecurity].[Groups] ([GroupSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1500,8 +1500,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities] CHECK CONSTRAINT [FK_ZGWSecurity_Groups_Security_Entities_ZGWSecurity_Groups]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Groups_Security_Entities_Accounts_Accounts]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities_Accounts]'))
-ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Accounts]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Accounts_Accounts] FOREIGN KEY([Account_SeqID])
-REFERENCES [ZGWSecurity].[Accounts] ([Account_SeqID])
+ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Accounts]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Accounts_Accounts] FOREIGN KEY([AccountSeqId])
+REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1518,8 +1518,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Accounts] CHECK CONSTRAINT [FK_Groups_Security_Entities_Accounts_Groups_Security_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Groups_Security_Entities_Functions_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities_Functions]'))
-ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Functions]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Functions_Functions] FOREIGN KEY([Function_SeqID])
-REFERENCES [ZGWSecurity].[Functions] ([Function_SeqID])
+ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Functions]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Functions_Functions] FOREIGN KEY([FunctionSeqId])
+REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1545,8 +1545,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Functions] CHECK CONSTRAINT [FK_Groups_Security_Entities_Functions_Permissions]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Groups_Security_Entities_Groups_Groups]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities_Groups]'))
-ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Groups]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Groups_Groups] FOREIGN KEY([Group_SeqID])
-REFERENCES [ZGWSecurity].[Groups] ([Group_SeqID])
+ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Groups]  WITH CHECK ADD  CONSTRAINT [FK_Groups_Security_Entities_Groups_Groups] FOREIGN KEY([GroupSeqId])
+REFERENCES [ZGWSecurity].[Groups] ([GroupSeqId])
 GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Groups_Security_Entities_Groups_Groups]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Groups_Security_Entities_Groups]'))
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Groups] CHECK CONSTRAINT [FK_Groups_Security_Entities_Groups_Groups]
@@ -1632,8 +1632,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Permissions] CHECK CONSTRAINT [FK_ZGWSecurity_Permissions_ZGWSystem_Statuses]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Roles_Security_Entities_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Roles_Security_Entities]'))
-ALTER TABLE [ZGWSecurity].[Roles_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Entities] FOREIGN KEY([Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWSecurity].[Roles_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Entities] FOREIGN KEY([SecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1641,8 +1641,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Roles_Security_Entities] CHECK CONSTRAINT [FK_Roles_Security_Entities_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Roles_Security_Entities_Roles]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Roles_Security_Entities]'))
-ALTER TABLE [ZGWSecurity].[Roles_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Roles] FOREIGN KEY([Role_SeqID])
-REFERENCES [ZGWSecurity].[Roles] ([Role_SeqID])
+ALTER TABLE [ZGWSecurity].[Roles_Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Roles] FOREIGN KEY([RoleSeqId])
+REFERENCES [ZGWSecurity].[Roles] ([RoleSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1650,8 +1650,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Roles_Security_Entities] CHECK CONSTRAINT [FK_Roles_Security_Entities_Roles]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Roles_Security_Entities_Accounts_Accounts]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Roles_Security_Entities_Accounts]'))
-ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Accounts]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Accounts_Accounts] FOREIGN KEY([Account_SeqID])
-REFERENCES [ZGWSecurity].[Accounts] ([Account_SeqID])
+ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Accounts]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Accounts_Accounts] FOREIGN KEY([AccountSeqId])
+REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1668,8 +1668,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Accounts] CHECK CONSTRAINT [FK_Roles_Security_Entities_Accounts_Roles_Security_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Roles_Security_Entities_Functions_Functions]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Roles_Security_Entities_Functions]'))
-ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Functions]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Functions_Functions] FOREIGN KEY([Function_SeqID])
-REFERENCES [ZGWSecurity].[Functions] ([Function_SeqID])
+ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Functions]  WITH CHECK ADD  CONSTRAINT [FK_Roles_Security_Entities_Functions_Functions] FOREIGN KEY([FunctionSeqId])
+REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
 ON UPDATE CASCADE
 ON DELETE CASCADE
 GO
@@ -1713,8 +1713,8 @@ IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSec
 ALTER TABLE [ZGWSecurity].[Roles_Security_Entities_Permissions] CHECK CONSTRAINT [FK_Roles_Security_Entities_Permissions_Roles_Security_Entities]
 GO
 IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Entities_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Security_Entities]'))
-ALTER TABLE [ZGWSecurity].[Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Entities_Entities] FOREIGN KEY([Parent_Security_Entity_SeqID])
-REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID])
+ALTER TABLE [ZGWSecurity].[Security_Entities]  WITH CHECK ADD  CONSTRAINT [FK_Entities_Entities] FOREIGN KEY([ParentSecurityEntitySeqId])
+REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
 GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[FK_Entities_Entities]') AND parent_object_id = OBJECT_ID(N'[ZGWSecurity].[Security_Entities]'))
 ALTER TABLE [ZGWSecurity].[Security_Entities] CHECK CONSTRAINT [FK_Entities_Entities]
@@ -1823,12 +1823,12 @@ GO
 Usage:
 	DECLARE 	
 		@P_Message_SeqID INT, 
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Messages
 		@P_Message_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -1840,24 +1840,24 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Messages]
 	@P_Message_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWCoreWeb.Get_Messages'
-	DECLARE @V_Default_Security_Entity_SeqID INT = ZGWSecurity.Get_Default_Entity_ID()
+	DECLARE @V_DefaultSecurityEntitySeqId INT = ZGWSecurity.Get_Default_Entity_ID()
 	/*
 		Don't like this ... need to think of a better way
 		something along the lines of core defaul security entity message
 		+ other security entity messages ...
 	*/
-	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID) = 0
+	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @PSecurityEntitySeqId) = 0
 		BEGIN
-			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @V_Default_Security_Entity_SeqID) > 0
+			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
 				BEGIN
 					INSERT INTO ZGWCoreWeb.[Messages]
 						SELECT
-							@P_Security_Entity_SeqID
+							@PSecurityEntitySeqId
 							, Name
 							, Title
 							, [Description]
@@ -1868,7 +1868,7 @@ AS
 							, Updated_By
 							, Updated_Date
 						FROM
-							ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @V_Default_Security_Entity_SeqID
+							ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT 'Needed to add entries for all message for the requested Security_Entity'
 				END
 			ELSE
@@ -1883,7 +1883,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting single message'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as SecurityEntityID
+				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -1903,7 +1903,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting all messages'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as SecurityEntityID
+				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -1934,15 +1934,15 @@ GO
 /*
 Usage:
 	DECLARE
-		@P_Security_Entity_SeqID int = 1,
-		@P_Function_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
+		@P_FunctionSeqId int = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Primary_Key INT = null,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notification_Status
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Account,
 		@P_Primary_Key,
 		@P_Debug
@@ -1953,17 +1953,17 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Notification_Status]
-	@P_Security_Entity_SeqID int,
-	@P_Function_SeqID int,
+	@PSecurityEntitySeqId int,
+	@P_FunctionSeqId int,
 	@P_Account VARCHAR(128),
 	@P_Primary_Key INT OUTPUT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Notification_Status'
-	-- GET Account_SeqID
-	DECLARE @V_Account_SeqID Int
-	SET @V_Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+	-- GET AccountSeqId
+	DECLARE @V_AccountSeqId Int
+	SET @V_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 
 	IF EXISTS
 		(SELECT 
@@ -1971,9 +1971,9 @@ AS
 		FROM 
 			ZGWCoreWeb.Notifications WITH(NOLOCK)
 		WHERE 
-			Security_Entity_SeqID = @P_Security_Entity_SeqID
-			AND Function_SeqID = @P_Function_SeqID
-			AND Added_By = @V_Account_SeqID)
+			SecurityEntitySeqId = @PSecurityEntitySeqId
+			AND FunctionSeqId = @P_FunctionSeqId
+			AND Added_By = @V_AccountSeqId)
 		BEGIN
 			SELECT @P_Primary_Key = 1
 		END
@@ -1999,13 +1999,13 @@ GO
 /*
 Usage:
 	DECLARE
-		@P_Security_Entity_SeqID int,
-		@P_Function_SeqID int,
+		@PSecurityEntitySeqId int,
+		@P_FunctionSeqId int,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notifications
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -2014,8 +2014,8 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Notifications]
-	@P_Security_Entity_SeqID int,
-	@P_Function_SeqID int,
+	@PSecurityEntitySeqId int,
+	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -2028,11 +2028,11 @@ AS
 	FROM
 		ZGWSecurity.Accounts Accounts WITH(NOLOCK)
 			INNER JOIN ZGWCoreWeb.Notifications Notifications WITH(NOLOCK)
-				ON Accounts.Account_SeqID = Notifications.Added_By
+				ON Accounts.AccountSeqId = Notifications.Added_By
 	WHERE
 		Accounts.Enable_Notifications = @V_Enable_Notifications
-		AND Notifications.Function_SeqID = @P_Function_SeqID
-		AND Notifications.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND Notifications.FunctionSeqId = @P_FunctionSeqId
+		AND Notifications.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Email
 
@@ -2161,7 +2161,7 @@ GO
 Usage:
 	DECLARE 
 		@P_Message_SeqID INT = 1,
-		@P_Security_Entity_SeqID INT = 2,
+		@PSecurityEntitySeqId INT = 2,
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
@@ -2173,7 +2173,7 @@ Usage:
 
 	exec ZGWCoreWeb.Set_Message
 		@P_Message_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Title,
 		@P_Description,
@@ -2192,7 +2192,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Message]
 	@P_Message_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
 	@P_Description VARCHAR(512),
@@ -2211,12 +2211,12 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 				BEGIN
 					UPDATE ZGWCoreWeb.[Messages]
 					SET
-						Security_Entity_SeqID = @P_Security_Entity_SeqID,
+						SecurityEntitySeqId = @PSecurityEntitySeqId,
 						[Name] = @P_Name,
 						Title = @P_Title,
 						[Description] = @P_Description,
@@ -2226,7 +2226,7 @@ AS
 						Updated_Date = GETDATE()
 					WHERE
 						Message_SeqID = @P_Message_SeqID
-						AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+						AND SecurityEntitySeqId = @PSecurityEntitySeqId
 
 					SELECT @P_Primary_Key = @P_Message_SeqID -- set the output id just in case.
 				END
@@ -2234,7 +2234,7 @@ AS
 				BEGIN
 					INSERT ZGWCoreWeb.[Messages]
 					(
-						Security_Entity_SeqID,
+						SecurityEntitySeqId,
 						[Name],
 						Title,
 						[Description],
@@ -2245,7 +2245,7 @@ AS
 					)
 					VALUES
 					(
-						@P_Security_Entity_SeqID,
+						@PSecurityEntitySeqId,
 						@P_Name,
 						@P_Title,
 						@P_Description,
@@ -2264,7 +2264,7 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 			BEGIN
 				RAISERROR ('The message you entered already exists in the database.',16,1)
@@ -2273,7 +2273,7 @@ AS
 
 			INSERT ZGWCoreWeb.[Messages]
 			(
-				Security_Entity_SeqID,
+				SecurityEntitySeqId,
 				[Name],
 				Title,
 				[Description],
@@ -2284,7 +2284,7 @@ AS
 			)
 			VALUES
 			(
-				@P_Security_Entity_SeqID,
+				@PSecurityEntitySeqId,
 				@P_Name,
 				@P_Title,
 				@P_Description,
@@ -2312,15 +2312,15 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID int = 2,
-		@P_Function_SeqID int = 1,
+		@PSecurityEntitySeqId int = 2,
+		@P_FunctionSeqId int = 1,
 		@P_Account Varchar(128) = 'Developer',
 		@P_Status int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Set_Notification
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Account,
 		@P_Status,
 		@P_Debug
@@ -2332,15 +2332,15 @@ Usage:
 --	Status value 1 = insert, 0 = delete
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Notification]
-	@P_Security_Entity_SeqID int,
-	@P_Function_SeqID int,
+	@PSecurityEntitySeqId int,
+	@P_FunctionSeqId int,
 	@P_Account Varchar(128),
 	@P_Status int,
 	@P_Debug INT = 0
 AS
 
 IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Notification'
-DECLARE @V_Account_SeqID int = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+DECLARE @V_AccountSeqId int = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 
 IF @P_Status = 1
 	BEGIN
@@ -2351,23 +2351,23 @@ IF @P_Status = 1
 			FROM 
 				ZGWCoreWeb.Notifications 
 			WHERE 
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
-				AND Function_SeqID = @P_Function_SeqID
-				AND Added_By = @V_Account_SeqID
+				SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND FunctionSeqId = @P_FunctionSeqId
+				AND Added_By = @V_AccountSeqId
 		)
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Insert'
 			INSERT ZGWCoreWeb.Notifications
 			(
-			Security_Entity_SeqID,
-			Function_SeqID,
+			SecurityEntitySeqId,
+			FunctionSeqId,
 			Added_By
 			)
 			VALUES
 			(
-			@P_Security_Entity_SeqID,
-			@P_Function_SeqID,
-			@V_Account_SeqID
+			@PSecurityEntitySeqId,
+			@P_FunctionSeqId,
+			@V_AccountSeqId
 			)
 		END
 	END
@@ -2376,9 +2376,9 @@ ELSE
 	DELETE 
 		ZGWCoreWeb.Notifications
 	WHERE 
-		Security_Entity_SeqID = @P_Security_Entity_SeqID
-		AND Function_SeqID = @P_Function_SeqID
-		AND Added_By = @V_Account_SeqID
+		SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND FunctionSeqId = @P_FunctionSeqId
+		AND Added_By = @V_AccountSeqId
 --END IF
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Notification'
 RETURN 0
@@ -2396,30 +2396,30 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWOptional.Get_Directory
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/11/2011
 -- Description:	Selects directory infomation given
---	the Function_SeqID. When Function_SeqID = -1
+--	the FunctionSeqId. When FunctionSeqId = -1
 --	all rows in the table are retruned.
 -- =============================================
 ALTER PROCEDURE [ZGWOptional].[Get_Directory]
-		@P_Function_SeqID INT,
+		@P_FunctionSeqId INT,
 		@P_Debug INT = 0
 AS
 IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Get_Directory'
-IF @P_Function_SeqID = -1
+IF @P_FunctionSeqId = -1
 	BEGIN
 		IF @P_Debug = 1 PRINT 'Getting all'
 		SELECT
-			Function_SeqID as FUNCTION_SEQ_ID
+			FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -2437,7 +2437,7 @@ ELSE
 	BEGIN
 		IF @P_Debug = 1 PRINT 'Getting 1'
 		SELECT
-			Function_SeqID as FUNCTION_SEQ_ID
+			FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -2449,7 +2449,7 @@ ELSE
 		FROM
 			ZGWOptional.Directories
 		WHERE
-			Function_SeqID = @P_Function_SeqID
+			FunctionSeqId = @P_FunctionSeqId
 	END
 -- end if
 IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_Directory'
@@ -2539,7 +2539,7 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Directory VARCHAR(255) = '',
 		@P_Impersonate INT = 0,
 		@P_Impersonating_Account VARCHAR(50) = '',
@@ -2549,7 +2549,7 @@ Usage:
 		@P_Debug INT = 0
 
 	exec ZGWOptional.Set_Directory
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Directory,
 		@P_Impersonate,
 		@P_Impersonating_Account,
@@ -2564,7 +2564,7 @@ Usage:
 -- Description:	Inserts or updates ZGWOptional.Directories
 -- =============================================
 ALTER PROCEDURE [ZGWOptional].[Set_Directory]
-	@P_Function_SeqID INT,
+	@P_FunctionSeqId INT,
 	@P_Directory VARCHAR(255),
 	@P_Impersonate INT,
 	@P_Impersonating_Account VARCHAR(50),
@@ -2575,12 +2575,12 @@ ALTER PROCEDURE [ZGWOptional].[Set_Directory]
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Set_Directory'
 	DECLARE @V_Now DATETIME = GETDATE()
-	IF (SELECT COUNT(*) FROM ZGWOptional.Directories WHERE Function_SeqID = @P_Function_SeqID) = 0
+	IF (SELECT COUNT(*) FROM ZGWOptional.Directories WHERE FunctionSeqId = @P_FunctionSeqId) = 0
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Insert Row'
 			INSERT ZGWOptional.Directories
 			(
-				Function_SeqID,
+				FunctionSeqId,
 				Directory,
 				Impersonate,
 				Impersonating_Account,
@@ -2590,7 +2590,7 @@ AS
 			)
 			VALUES
 			(
-				@P_Function_SeqID,
+				@P_FunctionSeqId,
 				@P_Directory,
 				@P_Impersonate,
 				@P_Impersonating_Account,
@@ -2599,14 +2599,14 @@ AS
 				@V_Now
 			)
 
-			SELECT @P_Primary_Key = @P_Function_SeqID
+			SELECT @P_Primary_Key = @P_FunctionSeqId
 		END
 	ELSE
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Update Row'
 			UPDATE ZGWOptional.Directories
 			SET 
-				Function_SeqID = @P_Function_SeqID,
+				FunctionSeqId = @P_FunctionSeqId,
 				Directory = @P_Directory,
 				Impersonate = @P_Impersonate,
 				Impersonating_Account = @P_Impersonating_Account,
@@ -2614,9 +2614,9 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Function_SeqID = @P_Function_SeqID
+				FunctionSeqId = @P_FunctionSeqId
 
-			SELECT @P_Primary_Key = @P_Function_SeqID
+			SELECT @P_Primary_Key = @P_FunctionSeqId
 		END
 	--end if
 	IF @P_Debug = 1 PRINT 'Ending Optional.Set_Directory'
@@ -2695,21 +2695,21 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Account_SeqID int = 4,
+		@P_AccountSeqId int = 4,
 		@P_Debug INT = 0
 
 	exec  ZGWSecurity.Delete_Account
-		@P_Account_SeqID ,
+		@P_AccountSeqId ,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from [ZGWSecurity].[Accounts]
---	given the Account_SeqID
+--	given the AccountSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Account]
-	@P_Account_SeqID int,
+	@P_AccountSeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -2717,7 +2717,7 @@ AS
 	-- DELETE an existing row from the table.
 	DELETE FROM ZGWSecurity.Accounts
 	WHERE
-		Account_SeqID = @P_Account_SeqID
+		AccountSeqId = @P_AccountSeqId
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account]'
 RETURN 0
 GO
@@ -2734,24 +2734,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Account_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_AccountSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec  ZGWSecurity.Delete_Account_Groups
-		@P_Account_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_AccountSeqId,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Accounts 
---	given the Account_SeqID and Security_Entity_SeqID
+--	given the AccountSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Account_Groups]
-	@P_Account_SeqID INT,
-	@P_Security_Entity_SeqID	INT,
+	@P_AccountSeqId INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -2759,8 +2759,8 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Accounts 
 	WHERE 
-		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
-		AND Account_SeqID = @P_Account_SeqID
+		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		AND AccountSeqId = @P_AccountSeqId
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account_Groups]'
 END
 RETURN 0
@@ -2778,24 +2778,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Account_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_AccountSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec ZGWSecurity.Delete_Account_Roles
-		@P_Account_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_AccountSeqId,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles_Security_Entities_Accounts
---	given the Account_SeqID and Security_Entity_SeqID
+--	given the AccountSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Account_Roles]
-	@P_Account_SeqID INT,
-	@P_Security_Entity_SeqID	INT,
+	@P_AccountSeqId INT,
+	@PSecurityEntitySeqId	INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
  AS
@@ -2804,8 +2804,8 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Accounts 
 	WHERE 
-		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
-		AND Account_SeqID = @P_Account_SeqID
+		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		AND AccountSeqId = @P_AccountSeqId
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Account_Roles]'
 END
@@ -2824,27 +2824,27 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID int = 4,
+		@PSecurityEntitySeqId int = 4,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Function
-		@P_Security_Entity_SeqID ,
+		@PSecurityEntitySeqId ,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/08/2011
 -- Description:	Deletes a record from ZGWSecurity.Security_Entities
---	given the Security_Entity_SeqID
+--	given the SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Entity]
-	@P_Security_Entity_SeqID int,
+	@PSecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Start [ZGWSecurity].[Delete_Entity]'
 	DELETE FROM ZGWSecurity.Security_Entities
 	WHERE
-		Security_Entity_SeqID = @P_Security_Entity_SeqID
+		SecurityEntitySeqId = @PSecurityEntitySeqId
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Entity]'
 RETURN 0
 GO
@@ -2861,28 +2861,28 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 4,
+		@P_FunctionSeqId int = 4,
 		@P_ErrorCode int
 
 	exec ZGWSecurity.Delete_Function
-		@P_Function_SeqID ,
+		@P_FunctionSeqId ,
 		@P_ErrorCode
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Functions
---	given the Function_SeqID
+--	given the FunctionSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Function]
-	@P_Function_SeqID int,
+	@P_FunctionSeqId int,
 	@P_ErrorCode int OUTPUT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Function'
 	-- DELETE an existing row from the table.
-	DELETE FROM ZGWSecurity.Functions WHERE	Function_SeqID = @P_Function_SeqID
+	DELETE FROM ZGWSecurity.Functions WHERE	FunctionSeqId = @P_FunctionSeqId
 	-- Get the Error Code for the statement just executed.
 	SELECT @P_ErrorCode=@@ERROR
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Function'
@@ -2901,15 +2901,15 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_FunctionSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Delete_Function_Groups
-		@P_Function_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_FunctionSeqId,
+		@PSecurityEntitySeqId,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_ErrorCode OUT,
 		@P_Debug BIT
@@ -2918,11 +2918,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Functions 
---	given the Function_SeqID and Security_Entity_SeqID
+--	given the FunctionSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Function_Groups]
-	@P_Function_SeqID INT,
-	@P_Security_Entity_SeqID	INT,
+	@P_FunctionSeqId INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
@@ -2932,8 +2932,8 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Functions
 	WHERE 
-		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
-		AND Function_SeqID = @P_Function_SeqID
+		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		AND FunctionSeqId = @P_FunctionSeqId
 		AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Function_Groups'
@@ -2953,15 +2953,15 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_FunctionSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Delete_Function_Groups
-		@P_Function_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_FunctionSeqId,
+		@PSecurityEntitySeqId,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_ErrorCode OUT,
 		@P_Debug BIT
@@ -2970,11 +2970,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles_Security_Entities_Functions
---	given the Function_SeqID and Security_Entity_SeqID
+--	given the FunctionSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Function_Roles]
-	@P_Function_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_FunctionSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
@@ -2983,8 +2983,8 @@ BEGIN
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Function_Roles'
 	DELETE FROM ZGWSecurity.Roles_Security_Entities_Functions
 	WHERE 
-		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
-		AND Function_SeqID = @P_Function_SeqID
+		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		AND FunctionSeqId = @P_FunctionSeqId
 		AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Function_Groups'
@@ -3004,24 +3004,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_GroupSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Group
-		@P_Group_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_GroupSeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups
---	given the Group_SeqID and Security_Entity_SeqID
+--	given the GroupSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group]
-	@P_Group_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_GroupSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -3043,8 +3043,8 @@ BEGIN
 						FROM 
 							ZGWSecurity.Groups_Security_Entities 
 						WHERE 
-							Group_SeqID=@P_Group_SeqID 
-							AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+							GroupSeqId=@P_GroupSeqId 
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -3053,8 +3053,8 @@ BEGIN
 			IF @P_Debug = 1 PRINT 'Deleting rows from ZGWSecurity.Groups_Security_Entities'
 			DELETE ZGWSecurity.Groups_Security_Entities
 			WHERE (
-				Group_SeqID = @P_Group_SeqID AND
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				GroupSeqId = @P_GroupSeqId AND
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END
 		
@@ -3063,14 +3063,14 @@ BEGIN
 						ZGWSecurity.Groups,
 						ZGWSecurity.Groups_Security_Entities
 						WHERE
-						ZGWSecurity.Groups.Group_SeqID = ZGWSecurity.Groups_Security_Entities.Group_SeqID
-						AND ZGWSecurity.Groups.Group_SeqID = @P_Group_SeqID)
+						ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
+						AND ZGWSecurity.Groups.GroupSeqId = @P_GroupSeqId)
 			-- PRINT @GROUP_COUNT -- for debug
 			IF @GROUP_COUNT = 0
 				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
 				BEGIN
 					DELETE ZGWSecurity.Groups
-					WHERE (Group_SeqID = @P_Group_SeqID)
+					WHERE (GroupSeqId = @P_GroupSeqId)
 				END
 			-- END IF
 		END --  DELETE GROUP FROM ZGWSecurity.Groups
@@ -3101,22 +3101,22 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID AS INT = 2,
-		@P_Security_Entity_SeqID AS INT = 1
+		@P_GroupSeqId AS INT = 2,
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Group_Accounts]
-		@P_Group_SeqID
-		@P_Security_Entity_SeqID
+		@P_GroupSeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Accounts
---	given theGroup_SeqID and Security_Entity_SeqID
+--	given theGroupSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group_Accounts]
-	@P_Group_SeqID AS INT,
-	@P_Security_Entity_SeqID AS INT,
+	@P_GroupSeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Group_Accounts]'
@@ -3129,8 +3129,8 @@ AS
 			FROM 
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
-				Group_SeqID = @P_Group_SeqID 
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				GroupSeqId = @P_GroupSeqId 
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Accounts]'
 RETURN 0
@@ -3148,24 +3148,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_GroupSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Function_Groups
-		@P_Group_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_GroupSeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/29/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
---	given the Group_SeqID and Security_Entity_SeqID
+--	given the GroupSeqId and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group_Roles]
-	@P_Group_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_GroupSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Group_Roles]'
@@ -3174,8 +3174,8 @@ AS
 	WHERE
 		Groups_Security_Entities_SeqID IN (SELECT Groups_Security_Entities_SeqID 
 					FROM ZGWSecurity.Groups_Security_Entities 
-					WHERE Security_Entity_SeqID=@P_Security_Entity_SeqID
-					AND Group_SeqID = @P_Group_SeqID)
+					WHERE SecurityEntitySeqId=@PSecurityEntitySeqId
+					AND GroupSeqId = @P_GroupSeqId)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Roles]'
 RETURN 0
 GO
@@ -3193,21 +3193,21 @@ GO
 Usage:
 	DECLARE 
 		@P_Groups_Security_Entities_SeqID AS INT = 2,
-		@P_Security_Entity_SeqID AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Groups_Accounts]
 		@P_Groups_Security_Entities_SeqID
-		@P_Security_Entity_SeqID
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Accounts
---	given the Groups_Security_Entities_SeqID and Security_Entity_SeqID
+--	given the Groups_Security_Entities_SeqID and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Groups_Accounts]
 	@P_Groups_Security_Entities_SeqID AS INT,
-	@P_Security_Entity_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
@@ -3221,7 +3221,7 @@ AS
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
 				Groups_Security_Entities_SeqID = @P_Groups_Security_Entities_SeqID 
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
 RETURN 0
@@ -3240,22 +3240,22 @@ GO
 Usage:
 	DECLARE 
 		@P_Name AS VARCHAR(50) = 'MyRole',
-		@P_Security_Entity_SeqID AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec ZGWSecurity.Delete_Role
 		@P_Name
-		@P_Security_Entity_SeqID
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles,
 --	0 to x records from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities and ZGWSecurity.Roles_Security_Entities
---	given the roles name and the Security_Entity_SeqID
+--	given the roles name and the SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Role]
 	@P_Name VARCHAR (50),
-	@P_Security_Entity_SeqID	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Role'
@@ -3267,7 +3267,7 @@ AS
 	*/
 	DECLARE @V_Roles_SeqID INT
 			
-	SET @V_Roles_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+	SET @V_Roles_SeqID = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 
 	BEGIN TRANSACTION
 		BEGIN -- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities
@@ -3286,8 +3286,8 @@ AS
 						FROM 
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 
-							Role_SeqID = @V_Roles_SeqID
-							AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+							RoleSeqId = @V_Roles_SeqID
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -3296,8 +3296,8 @@ AS
 			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Roles_Security_Entities'
 			DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
-				Role_SeqID= @V_Roles_SeqID AND
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				RoleSeqId= @V_Roles_SeqID AND
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END 
 		BEGIN -- Delete the role from ZGWSecurity.Roles if no other entites are using the role
@@ -3306,12 +3306,12 @@ AS
 				ZGWSecurity.Roles Roles,
 				ZGWSecurity.Roles_Security_Entities RoleEntities
 				WHERE
-				Roles.Role_SeqID = RoleEntities.Role_SeqID
-				AND Roles.Role_SeqID = @V_Roles_SeqID) = 0
+				Roles.RoleSeqId = RoleEntities.RoleSeqId
+				AND Roles.RoleSeqId = @V_Roles_SeqID) = 0
 			BEGIN
 				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
 				DELETE ZGWSecurity.Roles
-				WHERE (Role_SeqID = @V_Roles_SeqID)
+				WHERE (RoleSeqId = @V_Roles_SeqID)
 			END
 		END
 	IF @@ERROR <> 0
@@ -3340,25 +3340,25 @@ GO
 Usage:
 	DECLARE 
 		@P_Roles_Security_Entities_SeqID AS INT = 2,
-		@P_Security_Entity_SeqID AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Roles_Accounts]
 		@P_Roles_Security_Entities_SeqID
-		@P_Security_Entity_SeqID
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles_Security_Entities_Accounts
---	given the Roles_Security_Entities_SeqID and Security_Entity_SeqID
+--	given the Roles_Security_Entities_SeqID and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Roles_Accounts]
 	@P_ROLE_SEQ_ID AS INT,
-	@P_Security_Entity_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
-	DECLARE @V_Roles_Security_Entities_SeqID AS INT = (SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE Role_SeqID = @P_ROLE_SEQ_ID)
+	DECLARE @V_Roles_Security_Entities_SeqID AS INT = (SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE RoleSeqId = @P_ROLE_SEQ_ID)
 	DELETE
 		ZGWSecurity.Roles_Security_Entities_Accounts
 	WHERE
@@ -3369,7 +3369,7 @@ AS
 				ZGWSecurity.Roles_Security_Entities 
 			WHERE 
 				Roles_Security_Entities_SeqID = @V_Roles_Security_Entities_SeqID
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
 RETURN 0
@@ -3387,22 +3387,22 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Role_SeqID AS INT = 2,
-		@P_Security_Entity_SeqID AS INT = 1
+		@P_RoleSeqId AS INT = 2,
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]
-		@P_Role_SeqID
-		@P_Security_Entity_SeqID
+		@P_RoleSeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/04/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles_Security_Entities_Accounts
---	given the Groups_Security_Entities_SeqID and Security_Entity_SeqID
+--	given the Groups_Security_Entities_SeqID and SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]
-	@P_Role_SeqID AS INT,
-	@P_Security_Entity_SeqID AS INT,
+	@P_RoleSeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]'
@@ -3415,8 +3415,8 @@ AS
 			FROM 
 				ZGWSecurity.Roles_Security_Entities 
 			WHERE 
-				Role_SeqID = @P_Role_SeqID 
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				RoleSeqId = @P_RoleSeqId 
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]'
 RETURN 0
@@ -3436,13 +3436,13 @@ Usage:
 	DECLARE 
 		@P_Is_System_Admin bit = 1,
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec  ZGWSecurity.Get_Account
 		@P_Is_System_Admin,
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3454,7 +3454,7 @@ Usage:
 ALTER PROCEDURE [ZGWSecurity].[Get_Account]
 	@P_Is_System_Admin Bit,
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3465,7 +3465,7 @@ AS
 				BEGIN
 					IF @P_Debug = 1 PRINT 'Selecting all accounts'
 					SELECT
-						Account_SeqID AS ACCT_SEQ_ID
+						AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -3492,9 +3492,9 @@ AS
 				END
 			ELSE
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_Security_Entity_SeqID)
+					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@PSecurityEntitySeqId)
 					DECLARE @V_Accounts TABLE (
-						Account_SeqID INT
+						AccountSeqId INT
 						, Account VARCHAR(100)
 						, Email VARCHAR(100)
 						, Enable_Notifications BIT
@@ -3516,7 +3516,7 @@ AS
 						, Updated_Date DATETIME)
 					INSERT INTO @V_Accounts
 					SELECT -- Roles via roles
-						Accounts.Account_SeqID
+						Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -3542,13 +3542,13 @@ AS
 						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
-						Roles_Security_Entities_Accounts.Account_SeqID = Accounts.Account_SeqID
+						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
 						AND Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND Roles_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
-						AND Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
-						Accounts.Account_SeqID
+						Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -3576,14 +3576,14 @@ AS
 						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
-						ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID = Accounts.Account_SeqID
-						AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
 						AND Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				
 					SELECT DISTINCT
-						Account_SeqID AS ACCT_SEQ_ID
+						AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -3616,7 +3616,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Selecting single account'
 			-- SELECT an existing row from the table.
 			SELECT
-				Account_SeqID AS ACCT_SEQ_ID
+				AccountSeqId AS ACCT_SEQ_ID
 				, Account AS ACCT
 				, Email
 				, Enable_Notifications
@@ -3657,12 +3657,12 @@ GO
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Groups
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3672,7 +3672,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Groups]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3685,10 +3685,10 @@ AS
 		ZGWSecurity.Groups WITH(NOLOCK)
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
-		AND ZGWSecurity.Accounts.Account_SeqID = ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID
+		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId
 		AND ZGWSecurity.Groups_Security_Entities_Accounts.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Group_SeqID = ZGWSecurity.Groups.Group_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		GROUPS
 
@@ -3708,12 +3708,12 @@ GO
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Roles
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3723,7 +3723,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Roles]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3736,10 +3736,10 @@ AS
 		ZGWSecurity.Roles WITH(NOLOCK)
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
-		AND ZGWSecurity.Accounts.Account_SeqID = ZGWSecurity.Roles_Security_Entities_Accounts.Account_SeqID
+		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		ROLES
 
@@ -3759,12 +3759,12 @@ GO
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Security
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3775,7 +3775,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Security]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3788,10 +3788,10 @@ AS
 		ZGWSecurity.Roles WITH(NOLOCK)
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
-		AND ZGWSecurity.Roles_Security_Entities_Accounts.Account_SeqID = ZGWSecurity.Accounts.Account_SeqID
+		AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
-		AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 	UNION
 	SELECT
 		ZGWSecurity.Roles.[Name] AS Roles
@@ -3804,12 +3804,12 @@ AS
 		ZGWSecurity.Roles WITH(NOLOCK)
 	WHERE
 		ZGWSecurity.Accounts.Account = @P_Account AND
-		ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID = ZGWSecurity.Accounts.Account_SeqID AND
+		ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId AND
 		ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Accounts.Groups_Security_Entities_SeqID AND
-		ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID)) AND
+		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)) AND
 		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID AND
 		ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID AND
-		ZGWSecurity.Roles.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
+		ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 	ORDER BY
 		Roles
 
@@ -3828,24 +3828,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Group_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_GroupSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Group
-		@P_Security_Entity_SeqID,
-		@P_Group_SeqID,
+		@PSecurityEntitySeqId,
+		@P_GroupSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/10/2011
 -- Description:	Selects all accounts in a group
---	given the Security_Entity_SeqID and Group_SeqID
+--	given the SecurityEntitySeqId and GroupSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_In_Group]
-	@P_Security_Entity_SeqID INT,
-	@P_Group_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_GroupSeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3859,12 +3859,12 @@ AS
 		ZGWSecurity.Groups_Security_Entities Security WITH(NOLOCK),
 		ZGWSecurity.Groups Groups WITH(NOLOCK)
 	WHERE
-		Accounts.Account_SeqID = AcctSecurity.Account_SeqID
+		Accounts.AccountSeqId = AcctSecurity.AccountSeqId
 		AND AcctSecurity.Groups_Security_Entities_SeqID = Security.Groups_Security_Entities_SeqID
-		AND Security.Group_SeqID = Groups.Group_SeqID
+		AND Security.GroupSeqId = Groups.GroupSeqId
 		AND Accounts.Status_SeqID <> 2
-		AND Groups.Group_SeqID = @P_Group_SeqID
-		AND Security.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND Groups.GroupSeqId = @P_GroupSeqId
+		AND Security.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Group'
@@ -3884,24 +3884,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Role_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_RoleSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Role
-		@P_Security_Entity_SeqID,
-		@P_Role_SeqID,
+		@PSecurityEntitySeqId,
+		@P_RoleSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/09/2011
 -- Description:	Selects all accounts in a role
---	given the Security_Entity_SeqID and Role_SeqID
+--	given the SecurityEntitySeqId and RoleSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_In_Role]
-	@P_Security_Entity_SeqID INT,
-	@P_Role_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_RoleSeqId INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Accounts_In_Role'
@@ -3914,12 +3914,12 @@ AS
 		ZGWSecurity.Roles_Security_Entities [Security] WITH(NOLOCK),
 		ZGWSecurity.Roles Roles WITH(NOLOCK)
 	WHERE
-		Accounts.Account_SeqID = AcctSecurity.Account_SeqID
+		Accounts.AccountSeqId = AcctSecurity.AccountSeqId
 		AND AcctSecurity.Roles_Security_Entities_SeqID = Security.Roles_Security_Entities_SeqID
-		AND [Security].Role_SeqID = Roles.Role_SeqID
+		AND [Security].RoleSeqId = Roles.RoleSeqId
 		AND Accounts.Status_SeqID <> 2
-		AND Roles.Role_SeqID = @P_Role_SeqID
-		AND [Security].Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND Roles.RoleSeqId = @P_RoleSeqId
+		AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Role'
@@ -3939,26 +3939,26 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Group_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_GroupSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Accounts_Not_In_Group
-		@P_Security_Entity_SeqID,
-		@P_Group_SeqID,
+		@PSecurityEntitySeqId,
+		@P_GroupSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/09/2011
 -- Description:	Selects all accounts not in a group
---	given the Security_Entity_SeqID and Group_SeqID
+--	given the SecurityEntitySeqId and GroupSeqId
 -- Note: This should not be needed by the CoreWebApplication anymore
 --	and was left for others that may need it.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Group]
-	@P_Security_Entity_SeqID INT,
-	@P_Group_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_GroupSeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3976,12 +3976,12 @@ AS
 						ZGWSecurity.Groups_Security_Entities [Security] WITH(NOLOCK),
 						ZGWSecurity.Groups Groups WITH(NOLOCK)
 					WHERE
-						Accounts.Account_SeqID = AcctSecurity.Account_SeqID
+						Accounts.AccountSeqId = AcctSecurity.AccountSeqId
 						AND AcctSecurity.Groups_Security_Entities_SeqID = Security.Groups_Security_Entities_SeqID
-						AND Security.Group_SeqID = Groups.Group_SeqID
+						AND Security.GroupSeqId = Groups.GroupSeqId
 						AND Accounts.Status_SeqID <> 2
-						AND Groups.Group_SeqID = @P_Group_SeqID
-						AND [Security].Security_Entity_SeqID = @P_Security_Entity_SeqID
+						AND Groups.GroupSeqId = @P_GroupSeqId
+						AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 					)
 	ORDER BY
 		Accounts.Account
@@ -4002,26 +4002,26 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Role_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_RoleSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_Not_In_Role
-		@P_Security_Entity_SeqID,
-		@P_Role_SeqID,
+		@PSecurityEntitySeqId,
+		@P_RoleSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/11/2011
 -- Description:	Selects all accounts not in a role
---	given the Security_Entity_SeqID and Role_SeqID
+--	given the SecurityEntitySeqId and RoleSeqId
 -- Note: This should not be needed by the CoreWebApplication anymore
 --	and was left for others that may need it.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Role]
-	@P_Security_Entity_SeqID INT,
-	@P_Role_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_RoleSeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -4040,12 +4040,12 @@ AS
 						ZGWSecurity.Roles_Security_Entities [Security] WITH(NOLOCK),
 						ZGWSecurity.Roles Roles WITH(NOLOCK)
 					WHERE
-						Accounts.Account_SeqID = AcctSecurity.Account_SeqID
+						Accounts.AccountSeqId = AcctSecurity.AccountSeqId
 						AND AcctSecurity.Roles_Security_Entities_SeqID = Security.Roles_Security_Entities_SeqID
-						AND [Security].Role_SeqID = Roles.Role_SeqID
+						AND [Security].RoleSeqId = Roles.RoleSeqId
 						AND Accounts.Status_SeqID <> 2
-						AND Roles.Role_SeqID = @P_Role_SeqID
-						AND [Security].Security_Entity_SeqID = @P_Security_Entity_SeqID
+						AND Roles.RoleSeqId = @P_RoleSeqId
+						AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 					)
 	ORDER BY
 		Accounts.Account
@@ -4066,34 +4066,34 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1
+		@P_FunctionSeqId INT = 1
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function
-		@P_Function_SeqID
+		@P_FunctionSeqId
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/12/2011
 -- Description:	Selects function given
---	the Function_SeqID. When Function_SeqID = -1
+--	the FunctionSeqId. When FunctionSeqId = -1
 --	all rows in the table are retruned.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function]
-	@P_Function_SeqID int,
+	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function'
-	IF @P_Function_SeqID <> -1
+	IF @P_FunctionSeqId <> -1
 		BEGIN -- SELECT an existing row from the table.
 			IF @P_Debug = 1 PRINT 'Selecting single record'
 			SELECT
-				Function_SeqID AS FUNCTION_SEQ_ID
+				FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
-				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
+				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
 				, [Resolve]
@@ -4116,7 +4116,7 @@ AS
 			FROM
 				ZGWSecurity.Functions WITH(NOLOCK)
 			WHERE
-				Function_SeqID = @P_Function_SeqID
+				FunctionSeqId = @P_FunctionSeqId
 			ORDER BY 
 				[Name] ASC
 		END
@@ -4124,10 +4124,10 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Selecting all records'
 			SELECT
-				Function_SeqID AS FUNCTION_SEQ_ID
+				FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
-				, Function_Type_SeqID AS FUNCTION_TYPE_SEQ_ID
+				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
 				, [Source]
 				, [Controller]
 				, [Resolve]
@@ -4170,14 +4170,14 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Function_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Permissions_SeqID INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Groups
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Permissions_SeqID,
 		@P_Debug
 */
@@ -4188,14 +4188,14 @@ Usage:
 --	function and permission.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Groups]
-	@P_Security_Entity_SeqID INT,
-	@P_Function_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_FunctionSeqId INT,
 	@P_Permissions_SeqID INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Groups'
-	IF @P_Function_SeqID > 0
+	IF @P_FunctionSeqId > 0
 		BEGIN
 			SELECT
 				ZGWSecurity.Groups.[Name] AS Groups
@@ -4205,19 +4205,19 @@ AS
 				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
 				ZGWSecurity.Groups WITH(NOLOCK)
 			WHERE
-				ZGWSecurity.Functions.Function_SeqID = @P_Function_SeqID
-				AND ZGWSecurity.Functions.Function_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Function_SeqID
+				ZGWSecurity.Functions.FunctionSeqId = @P_FunctionSeqId
+				AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
 				AND ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_Detail_SeqID = @P_Permissions_SeqID
-				AND ZGWSecurity.Groups_Security_Entities.Group_SeqID = ZGWSecurity.Groups.Group_SeqID
-				AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				Groups
 		END
 	ELSE
 		BEGIN
 			SELECT
-				ZGWSecurity.Functions.Function_SeqID AS 'FUNCTION_SEQ_ID'
+				ZGWSecurity.Functions.FunctionSeqId AS 'FUNCTION_SEQ_ID'
 				,ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_Detail_SeqID AS 'PERMISSIONS_SEQ_ID'
 				,ZGWSecurity.Groups.[Name] AS [Group]
 			FROM
@@ -4226,10 +4226,10 @@ AS
 				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
 				ZGWSecurity.Groups WITH(NOLOCK)
 			WHERE
-				ZGWSecurity.Functions.Function_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Function_SeqID
+				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
-				AND ZGWSecurity.Groups_Security_Entities.Group_SeqID = ZGWSecurity.Groups.Group_SeqID
-				AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				FUNCTION_SEQ_ID
 				, PERMISSIONS_SEQ_ID
@@ -4253,14 +4253,14 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
-		@P_Function_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Permissions_SeqID INT = 1
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Function_Roles
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Permissions_SeqID,
 		@P_Debug
 */
@@ -4271,14 +4271,14 @@ Usage:
 --	function and permission.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Roles]
-	@P_Security_Entity_SeqID INT,
-	@P_Function_SeqID INT,
+	@PSecurityEntitySeqId INT,
+	@P_FunctionSeqId INT,
 	@P_Permissions_SeqID INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Roles'
-	IF @P_Function_SeqID > 0
+	IF @P_FunctionSeqId > 0
 		BEGIN
 			SELECT
 				ZGWSecurity.Roles.[Name] AS Roles
@@ -4288,19 +4288,19 @@ AS
 				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 				ZGWSecurity.Roles WITH(NOLOCK)
 			WHERE
-				ZGWSecurity.Functions.Function_SeqID = @P_Function_SeqID
-				AND ZGWSecurity.Functions.Function_SeqID = ZGWSecurity.Roles_Security_Entities_Functions.Function_SeqID
+				ZGWSecurity.Functions.FunctionSeqId = @P_FunctionSeqId
+				AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
 				AND ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_Detail_SeqID = @P_Permissions_SeqID
-				AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
-				AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				Roles
 		END
 	ELSE
 		BEGIN
 			SELECT
-				ZGWSecurity.Functions.Function_SeqID AS 'Function_Seq_ID'
+				ZGWSecurity.Functions.FunctionSeqId AS 'Function_Seq_ID'
 				,ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_Detail_SeqID AS 'PERMISSIONS_SEQ_ID'
 				,ZGWSecurity.Roles.[Name] AS Role
 			FROM
@@ -4309,12 +4309,12 @@ AS
 				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
 				ZGWSecurity.Roles WITH(NOLOCK)
 			WHERE
-				ZGWSecurity.Functions.Function_SeqID = ZGWSecurity.Roles_Security_Entities_Functions.Function_SeqID
+				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-				AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
-				AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
-				ZGWSecurity.Functions.Function_SeqID
+				ZGWSecurity.Functions.FunctionSeqId
 				,ZGWSecurity.Roles_Security_Entities_Functions.Permissions_NVP_Detail_SeqID
 		END
 	--END IF
@@ -4335,24 +4335,24 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Security
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/18/2011
 -- Description:	Returns all Roles for all functions
---	given the Security_Entity_SeqID and NVP_Detail_SeqID from
+--	given the SecurityEntitySeqId and NVP_Detail_SeqID from
 --	ZGWSecurity.Permissions or Permissions_NVP_Detail_SeqID
 --	from ZGWSecurity.Groups_Security_Entities_Functions and 
 --	ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Security]
-	@P_Security_Entity_SeqID int = -1,
+	@PSecurityEntitySeqId int = -1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -4360,7 +4360,7 @@ AS
 	DECLARE @V_AvalibleItems TABLE (FUNCTION_SEQ_ID INT, PERMISSIONS_SEQ_ID INT, ROLE VARCHAR(50))
 	INSERT INTO @V_AvalibleItems
 		SELECT DISTINCT -- Directly assigned Roles
-			Functions.Function_SeqID,
+			Functions.FunctionSeqId,
 			[Permissions].NVP_Detail_SeqID,
 			Roles.[Name] AS [ROLE]
 		FROM
@@ -4370,14 +4370,14 @@ AS
 			ZGWSecurity.Functions WITH(NOLOCK),
 			ZGWSecurity.[Permissions] WITH(NOLOCK)
 		WHERE
-			Roles_Security_Entities.Role_SeqID = Roles.Role_SeqID
+			Roles_Security_Entities.RoleSeqId = Roles.RoleSeqId
 			AND [Security].Roles_Security_Entities_SeqID = Roles_Security_Entities.Roles_Security_Entities_SeqID
-			AND [Security].Function_SeqID = [FUNCTIONS].Function_SeqID
+			AND [Security].FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND [Permissions].NVP_Detail_SeqID = SECURITY.Permissions_NVP_Detail_SeqID
-			AND Roles_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION
 		SELECT DISTINCT -- Roles assigned via groups
-			Functions.Function_SeqID,
+			Functions.FunctionSeqId,
 			[Permissions].NVP_Detail_SeqID,
 			Roles.[Name] AS [ROLE]
 		FROM
@@ -4389,13 +4389,13 @@ AS
 			ZGWSecurity.Functions WITH(NOLOCK),
 			ZGWSecurity.[Permissions] WITH(NOLOCK)
 		WHERE
-			ZGWSecurity.Groups_Security_Entities_Functions.Function_SeqID = [FUNCTIONS].Function_SeqID
+			ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_Entities_SeqID
 			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
 			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-			AND Roles.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
+			AND Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 			AND [Permissions].NVP_Detail_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_Detail_SeqID
-			AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 	IF (SELECT COUNT(*) FROM @V_AvalibleItems) > 0
 		BEGIN
@@ -4407,9 +4407,9 @@ AS
 				FUNCTION_SEQ_ID
 				,[ROLE]
 
-			EXEC ZGWSecurity.Get_Function_Roles @P_Security_Entity_SeqID, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Roles @PSecurityEntitySeqId, -1, -1, @P_Debug
 
-			EXEC ZGWSecurity.Get_Function_Groups @P_Security_Entity_SeqID, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Groups @PSecurityEntitySeqId, -1, -1, @P_Debug
 
 		END
 	ELSE
@@ -4417,17 +4417,17 @@ AS
 			IF @P_Debug = 1 
 				BEGIN
 					PRINT 'No Security Information was not found '
-					PRINT 'Now settings the Parent_Security_Entity_SeqID '
+					PRINT 'Now settings the ParentSecurityEntitySeqId '
 					PRINT 'the defaul Security_Entity and executing '
 					PRINT 'ZGWSecurity.Get_Function_Security'
 				END
 			--END IF
 			UPDATE ZGWSecurity.Security_Entities
 				SET 
-					Parent_Security_Entity_SeqID = ZGWSecurity.Get_Default_Entity_ID()
+					ParentSecurityEntitySeqId = ZGWSecurity.Get_Default_Entity_ID()
 				WHERE
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
-			EXEC ZGWSecurity.Get_Function_Security @P_Security_Entity_SeqID, NULL
+					SecurityEntitySeqId = @PSecurityEntitySeqId
+			EXEC ZGWSecurity.Get_Function_Security @PSecurityEntitySeqId, NULL
 		END
 	-- END IF
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Security'
@@ -4446,11 +4446,11 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Sort
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4460,16 +4460,16 @@ Usage:
 --	for related functions given the funtion_seqid
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Sort]
-	@P_Function_SeqID INT,
+	@P_FunctionSeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	DECLARE @V_Parent_ID INT
 	DECLARE @V_NAV_TYPE_ID INT
-	SET @V_Parent_ID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
-	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_Detail_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
+	SET @V_Parent_ID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_NAV_TYPE_ID = (SELECT Navigation_Types_NVP_Detail_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	SELECT
-		Function_SeqID as FUNCTION_SEQ_ID,
+		FunctionSeqId as FUNCTION_SEQ_ID,
 		[Name],
 		[Action],
 		Sort_Order
@@ -4498,11 +4498,11 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Types
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4511,16 +4511,16 @@ Usage:
 -- Description:	Returns all function types
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Types]
-	@P_Function_Type_SeqID int = -1,
+	@P_FunctionTypeSeqId int = -1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Types'
-	IF @P_Function_Type_SeqID = -1
+	IF @P_FunctionTypeSeqId = -1
 		BEGIN
 			IF @P_Debug = -1 PRINT 'Seleting all Function_Types'
 			SELECT
-				Function_Type_SeqID as FUNCTION_TYPE_SEQ_ID
+				FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
 				, Name
 				, [Description]
 				, Template
@@ -4538,7 +4538,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Seleting single Function_Type'
 			SELECT
-				Function_Type_SeqID as FUNCTION_TYPE_SEQ_ID
+				FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
 				, Name
 				, [Description]
 				, Template
@@ -4550,7 +4550,7 @@ AS
 			FROM
 				ZGWSecurity.Function_Types WITH(NOLOCK)
 			WHERE
-				Function_Type_SeqID = @P_Function_Type_SeqID
+				FunctionTypeSeqId = @P_FunctionTypeSeqId
 		END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Types'
@@ -4569,36 +4569,36 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT,
-		@P_Group_SeqID AS INT,
+		@PSecurityEntitySeqId AS INT,
+		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group
-		@P_Security_Entity_SeqID,
-		@P_Group_SeqID,
+		@PSecurityEntitySeqId,
+		@P_GroupSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/18/2011
 -- Description:	Retrieves one or more groups given the 
---	Security_Entity_SeqID and Group_SeqID.
+--	SecurityEntitySeqId and GroupSeqId.
 -- Note:
---	If Group_SeqID is -1 all groups will be returned.
+--	If GroupSeqId is -1 all groups will be returned.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Group]
-	@P_Security_Entity_SeqID AS INT,
-	@P_Group_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
+	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Group'
 	
-	IF @P_Group_SeqID > -1
+	IF @P_GroupSeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'SELECT an existing row from the table.'
 			SELECT
-				ZGWSecurity.Groups.Group_SeqID as GROUP_SEQ_ID
+				ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
 				, ZGWSecurity.Groups.Name
 				, ZGWSecurity.Groups.[Description]
 				, ZGWSecurity.Groups.Added_By
@@ -4608,14 +4608,14 @@ AS
 			FROM
 				ZGWSecurity.Groups WITH(NOLOCK)
 			WHERE
-				Group_SeqID = @P_Group_SeqID
+				GroupSeqId = @P_GroupSeqId
 
 		END
 	ELSE --
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all groups for a given Security Entity'
 			SELECT
-				ZGWSecurity.Groups.Group_SeqID as GROUP_SEQ_ID
+				ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
 				, ZGWSecurity.Groups.Name
 				, ZGWSecurity.Groups.[Description]
 				, ZGWSecurity.Groups.Added_By
@@ -4626,8 +4626,8 @@ AS
 				ZGWSecurity.Groups WITH(NOLOCK),
 				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
 			WHERE
-				ZGWSecurity.Groups.Group_SeqID = ZGWSecurity.Groups_Security_Entities.Group_SeqID
-				AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+				ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Groups.Name
 		END
@@ -4649,13 +4649,13 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT,
-		@P_Group_SeqID AS INT,
+		@PSecurityEntitySeqId AS INT,
+		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group_Roles
-		@P_Security_Entity_SeqID,
-		@P_Group_SeqID,
+		@PSecurityEntitySeqId,
+		@P_GroupSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4665,8 +4665,8 @@ Usage:
 --	group id and secruity entity id
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Group_Roles]
-	@P_Security_Entity_SeqID AS INT,
-	@P_Group_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
+	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -4677,9 +4677,9 @@ AS
 	FROM 
 		ZGWSecurity.Roles WITH(NOLOCK) 
 	WHERE 
-		Role_SeqID IN 
+		RoleSeqId IN 
 			(SELECT 
-				Role_SeqID 
+				RoleSeqId 
 			FROM 
 				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK) 
 			WHERE 
@@ -4694,7 +4694,7 @@ AS
 					FROM 
 						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK) 
 					WHERE 
-						Security_Entity_SeqID = @P_Security_Entity_SeqID AND Group_SeqID = @P_Group_SeqID)))
+						SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_GroupSeqId)))
 	ORDER BY
 		[Role]
 
@@ -4714,13 +4714,13 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Navigation_Types_NVP_Detail_SeqID AS INT = 3,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Menu_Data
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Navigation_Types_NVP_Detail_SeqID,
 		@P_Account,
 		@P_Debug
@@ -4732,7 +4732,7 @@ Usage:
 --	Account, Security Entity ID and the Navigation type.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Menu_Data]
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Navigation_Types_NVP_Detail_SeqID INT,
 	@P_Account VARCHAR(128),
 	@P_Debug INT = 1
@@ -4747,17 +4747,17 @@ AS
 									Parent INT, 
 									Sort_Order INT, 
 									[Role] VARCHAR(50),
-									Function_Type_SeqID INT)
+									FunctionTypeSeqId INT)
 	INSERT INTO @V_AvalibleItems
 		SELECT -- Menu items via roles
-			[FUNCTIONS].Function_SeqID AS [ID],
+			[FUNCTIONS].FunctionSeqId AS [ID],
 			[FUNCTIONS].[Name] AS Title,
 			[FUNCTIONS].[Description],
 			[FUNCTIONS].[Action] AS URL,
 			[FUNCTIONS].Parent_SeqID AS Parent,
 			[FUNCTIONS].Sort_Order AS Sort_Order,
 			ROLES.[Name] AS ROLE,
-			[FUNCTIONS].Function_Type_SeqID
+			[FUNCTIONS].FunctionTypeSeqId
 		FROM
 			ZGWSecurity.Roles_Security_Entities SE_ROLES WITH(NOLOCK),
 			ZGWSecurity.Roles ROLES WITH(NOLOCK),
@@ -4765,24 +4765,24 @@ AS
 			ZGWSecurity.Functions [FUNCTIONS] WITH(NOLOCK),
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
-			SE_ROLES.Role_SeqID = ROLES.Role_SeqID
+			SE_ROLES.RoleSeqId = ROLES.RoleSeqId
 			AND [SECURITY].Roles_Security_Entities_SeqID = SE_ROLES.Roles_Security_Entities_SeqID
-			AND [SECURITY].Function_SeqID = [FUNCTIONS].Function_SeqID
+			AND [SECURITY].FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND [Permissions].NVP_Detail_SeqID = SECURITY.Permissions_NVP_Detail_SeqID
 			AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_Detail_SeqID = @P_Navigation_Types_NVP_Detail_SeqID
 			AND [FUNCTIONS].Is_Nav = 1
-			AND SE_ROLES.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION ALL
 		SELECT -- Menu items via groups
-			[FUNCTIONS].Function_SeqID AS [ID],
+			[FUNCTIONS].FunctionSeqId AS [ID],
 			[FUNCTIONS].[Name] AS Title,
 			[FUNCTIONS].[Description],
 			[FUNCTIONS].[Action] AS URL,
 			[FUNCTIONS].Parent_SeqID AS Parent,
 			[FUNCTIONS].Sort_Order AS Sort_Order,
 			ROLES.[Name] AS ROLE,
-			[FUNCTIONS].Function_Type_SeqID
+			[FUNCTIONS].FunctionTypeSeqId
 		FROM
 			ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
 			ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
@@ -4792,25 +4792,25 @@ AS
 			ZGWSecurity.Functions [FUNCTIONS] WITH(NOLOCK),
 			ZGWSecurity.[Permissions] [Permissions] WITH(NOLOCK)
 		WHERE
-			ZGWSecurity.Groups_Security_Entities_Functions.Function_SeqID = [FUNCTIONS].Function_SeqID
+			ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Groups_Security_Entities_SeqID
 			AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
 			AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-			AND ROLES.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
+			AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 			AND [Permissions].NVP_Detail_SeqID = ZGWSecurity.Groups_Security_Entities_Functions.Permissions_NVP_Detail_SeqID
 			AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_Detail_SeqID = @P_Navigation_Types_NVP_Detail_SeqID
 			AND [FUNCTIONS].Is_Nav = 1
-			AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 	--SELECT * FROM @V_AvalibleMenuItems -- DEBUG
 
 	DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 	INSERT INTO @V_AccountRoles
-		EXEC ZGWSecurity.Get_Account_Security @P_Account, @P_Security_Entity_SeqID, @P_Debug
+		EXEC ZGWSecurity.Get_Account_Security @P_Account, @PSecurityEntitySeqId, @P_Debug
 
 	--SELECT * FROM @V_AccountRoles -- DEBUG
-	DECLARE @V_AllMenuItems TABLE ([ID] INT, Title VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, ROLE VARCHAR(50),Function_Type_SeqID INT)
+	DECLARE @V_AllMenuItems TABLE ([ID] INT, Title VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, ROLE VARCHAR(50),FunctionTypeSeqId INT)
 	INSERT INTO @V_AllMenuItems
 		SELECT -- Last but not least get the menu items when there are matching account roles.
 			[ID],
@@ -4820,13 +4820,13 @@ AS
 			Parent,
 			Sort_Order,
 			[Role],
-			Function_Type_SeqID
+			FunctionTypeSeqId
 		FROM 
 			@V_AvalibleItems
 		WHERE
 			ROLE IN (SELECT DISTINCT Roles FROM @V_AccountRoles)
 
-	DECLARE @V_DistinctItems TABLE ([ID] INT, TITLE VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, Function_Type_SeqID INT)
+	DECLARE @V_DistinctItems TABLE ([ID] INT, TITLE VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, FunctionTypeSeqId INT)
 	INSERT INTO @V_DistinctItems
 		SELECT DISTINCT
 			[ID],
@@ -4835,7 +4835,7 @@ AS
 			URL,
 			Parent,
 			Sort_Order,
-			Function_Type_SeqID
+			FunctionTypeSeqId
 		FROM
 			@V_AllMenuItems
 	IF EXISTS (SELECT TOP(1) 1 FROM @V_DistinctItems WHERE [TITLE] = 'Favorite')
@@ -4857,7 +4857,7 @@ AS
 		URL,                                                                                                                                                                                                                                                              
 		Parent as ParentID,
 		Sort_Order,
-		Function_Type_SeqID as Function_Type_Seq_ID
+		FunctionTypeSeqId as Function_Type_Seq_ID
 	FROM
 		@V_DistinctItems
 	ORDER BY
@@ -4883,12 +4883,12 @@ GO
 Usage:
 	DECLARE
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Groups
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4899,7 +4899,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Groups]
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -4913,8 +4913,8 @@ AS
 	WHERE
 		ZGWSecurity.Groups_Security_Entities_Permissions.NVP_SeqID = @P_NVP_SeqID
 		AND ZGWSecurity.Groups_Security_Entities_Permissions.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Group_SeqID = ZGWSecurity.Groups.Group_SeqID
-		AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		GROUPS
 	IF @P_Debug = 1 PRINT 'End Get_Name_Value_Pair_Groups'
@@ -4934,12 +4934,12 @@ GO
 Usage:
 	DECLARE
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Roles
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4950,7 +4950,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles]
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -4964,8 +4964,8 @@ AS
 	WHERE
 		ZGWSecurity.Roles_Security_Entities_Permissions.NVP_SeqID = @P_NVP_SeqID
 		AND ZGWSecurity.Roles_Security_Entities_Permissions.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
-		AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		ROLES
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'
@@ -5024,33 +5024,33 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Role_SeqID AS INT = -1,
-		@P_Security_Entity_SeqID AS INT = 1,
+		@P_RoleSeqId AS INT = -1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Role
-		@P_Role_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_RoleSeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/18/2011
 -- Description:	Retrieves roles given the
---	the Role_SeqID and Security_Entity_SeqID
+--	the RoleSeqId and SecurityEntitySeqId
 -- Note:
---	Role_SeqID of -1 returns all roles.
+--	RoleSeqId of -1 returns all roles.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Role]
-	@P_Role_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_RoleSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Start ZGWSecurity.Get_Role and SELECT an existing row from the table.'
-	IF @P_Role_SeqID > -1 -- SELECT an existing row from the table.
+	IF @P_RoleSeqId > -1 -- SELECT an existing row from the table.
 		SELECT
-			ZGWSecurity.Roles.[Role_SeqID] AS ROLE_SEQ_ID,
+			ZGWSecurity.Roles.[RoleSeqId] AS ROLE_SEQ_ID,
 			ZGWSecurity.Roles.[Name],
 			ZGWSecurity.Roles.[Description],
 			ZGWSecurity.Roles.[Is_System],
@@ -5062,11 +5062,11 @@ AS
 		FROM
 			ZGWSecurity.Roles
 		WHERE
-			Role_SeqID = @P_Role_SeqID
+			RoleSeqId = @P_RoleSeqId
 	ELSE -- GET ALL ROLES FOR A GIVEN Security Entity
 		IF @P_Debug = 1 PRINT 'GET ALL ROLES FOR A GIVEN Security Entity.'
 		SELECT
-			ZGWSecurity.Roles.[Role_SeqID] AS ROLE_SEQ_ID,
+			ZGWSecurity.Roles.[RoleSeqId] AS ROLE_SEQ_ID,
 			ZGWSecurity.Roles.[Name],
 			ZGWSecurity.Roles.[Description],
 			ZGWSecurity.Roles.[Is_System],
@@ -5079,8 +5079,8 @@ AS
 			ZGWSecurity.Roles,
 			ZGWSecurity.Roles_Security_Entities
 		WHERE
-			ZGWSecurity.Roles.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
-			AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+			ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
+			AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 		ORDER BY
 			ZGWSecurity.Roles.[Name]
 	-- END IF		
@@ -5100,33 +5100,33 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Security_Entity
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/23/2011
 -- Description:	Retrieves security entity details
---	given the Security_Entity_SeqID
+--	given the SecurityEntitySeqId
 -- Note:
 --	SeqID value of -1 will return all
 --	security enties.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Security_Entity]
-	@P_Security_Entity_SeqID AS INT = 1,
+	@PSecurityEntitySeqId AS INT = 1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Security_Entity'
-	IF @P_Security_Entity_SeqID = -1
+	IF @PSecurityEntitySeqId = -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
 			SELECT
-				Security_Entity_SeqID as SecurityEntityID
+				SecurityEntitySeqId as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -5138,7 +5138,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
+				, ParentSecurityEntitySeqId as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -5152,7 +5152,7 @@ AS
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting 1 row from Security_Enties'
 			SELECT
-				Security_Entity_SeqID as SecurityEntityID
+				SecurityEntitySeqId as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -5164,7 +5164,7 @@ AS
 				, Skin
 				, Style
 				, Encryption_Type
-				, Parent_Security_Entity_SeqID as PARENT_SecurityEntityID
+				, ParentSecurityEntitySeqId as PARENT_SecurityEntityID
 				, Added_By
 				, Added_Date
 				, Updated_By
@@ -5172,7 +5172,7 @@ AS
 			FROM 
 				ZGWSecurity.Security_Entities
 			WHERE
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 		END
 	--End IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Security_Entity'
@@ -5193,13 +5193,13 @@ Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'developer',
 		@P_Is_Se_Admin INT = 1,
-		@P_Security_Entity_SeqID AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Valid_Security_Entity
 		@P_Account,
 		@P_Is_Se_Admin,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -5214,13 +5214,13 @@ Usage:
 ALTER PROCEDURE [ZGWSecurity].[Get_Valid_Security_Entity]
 	@P_Account VARCHAR(128),
 	@P_Is_Se_Admin INT,
-	@P_Security_Entity_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Valid_Security_Entity'
 	DECLARE @V_Active_Status VARCHAR(50)
-	DECLARE @T_Valic_Se TABLE (Security_Entity_SeqID INT)
+	DECLARE @T_Valic_Se TABLE (SecurityEntitySeqId INT)
 	DECLARE @V_Is_Sys_Admin INT
 	SET @V_Active_Status = (SELECT [Status_SeqID] FROM ZGWSystem.Statuses WHERE UPPER([Name]) = 'ACTIVE')
 	SET @V_Is_Sys_Admin = (SELECT Is_System_Admin FROM ZGWSecurity.Accounts WHERE UPPER(Account) = UPPER(@P_Account))
@@ -5228,7 +5228,7 @@ AS
 		BEGIN
 			INSERT INTO @T_Valic_Se
 				SELECT -- Security Entitys via roles
-					ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID
+					ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId
 				FROM
 					ZGWSecurity.Accounts,
 					ZGWSecurity.Roles_Security_Entities_Accounts,
@@ -5236,13 +5236,13 @@ AS
 					ZGWSecurity.Roles
 				WHERE
 					ZGWSecurity.Accounts.Account = @P_Account
-					AND ZGWSecurity.Roles_Security_Entities_Accounts.Account_SeqID = ZGWSecurity.Accounts.Account_SeqID
+					AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
 					AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-					AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+					AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					AND ZGWSecurity.Roles.Is_System_Only = 0
 				UNION
 				SELECT -- Security Entitys via groups
-					ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID
+					ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId
 				FROM
 					ZGWSecurity.Accounts,
 					ZGWSecurity.Groups_Security_Entities_Accounts,
@@ -5252,20 +5252,20 @@ AS
 					ZGWSecurity.Roles
 				WHERE
 					ZGWSecurity.Accounts.Account = @P_Account
-					AND ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID = ZGWSecurity.Accounts.Account_SeqID
+					AND ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
 					AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
 					AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-					AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+					AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 				IF @P_Is_Se_Admin = 0 -- FALSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS SecurityEntityID,
+							SecurityEntitySeqId AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
 							ZGWSecurity.Security_Entities
 						WHERE
-							ZGWSecurity.Security_Entities.Security_Entity_SeqID IN (SELECT * FROM @T_Valic_Se)
+							ZGWSecurity.Security_Entities.SecurityEntitySeqId IN (SELECT * FROM @T_Valic_Se)
 							AND ZGWSecurity.Security_Entities.Status_SeqID = @V_Active_Status
 						ORDER BY
 							[Name]
@@ -5273,14 +5273,14 @@ AS
 				ELSE
 					BEGIN
 						SELECT
-							Security_Entity_SeqID AS SecurityEntityID,
+							SecurityEntitySeqId AS SecurityEntityID,
 							[Name],
 							[Description]
 						FROM
 							ZGWSecurity.Security_Entities
 						WHERE
-							ZGWSecurity.Security_Entities.Security_Entity_SeqID IN (SELECT * FROM @T_Valic_Se)
-							OR ZGWSecurity.Security_Entities.Parent_Security_Entity_SeqID = @P_Security_Entity_SeqID
+							ZGWSecurity.Security_Entities.SecurityEntitySeqId IN (SELECT * FROM @T_Valic_Se)
+							OR ZGWSecurity.Security_Entities.ParentSecurityEntitySeqId = @PSecurityEntitySeqId
 						ORDER BY
 							[Name]
 					END
@@ -5289,7 +5289,7 @@ AS
 	ELSE
 		BEGIN
 			SELECT
-				Security_Entity_SeqID AS SecurityEntityID,
+				SecurityEntitySeqId AS SecurityEntityID,
 				[Name],
 				[Description]
 			FROM
@@ -5314,7 +5314,7 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Account_SeqID int = -1,
+		@P_AccountSeqId int = -1,
 		@P_Status_SeqID int = 1,
 		@P_Account VARCHAR(128) = 'test',
 		@P_First_Name VARCHAR(15) = 'test',
@@ -5334,7 +5334,7 @@ Usage:
 		@P_Debug INT = 1
 --Insert new
 	exec ZGWSecurity.Set_Account 
-		@P_Account_SeqID,
+		@P_AccountSeqId,
 		@P_Status_SeqID,
 		@P_Account,
 		@P_First_Name,
@@ -5353,9 +5353,9 @@ Usage:
 		@P_Is_System_Admin,
 		@P_Debug
 --Update
-	SET @P_Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = 'test')
+	SET @P_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'test')
 	exec ZGWSecurity.Set_Account
-		@P_Account_SeqID,
+		@P_AccountSeqId,
 		@P_Status_SeqID,
 		@P_Account,
 		@P_First_Name,
@@ -5382,7 +5382,7 @@ Usage:
 --	a value of -1 is insert > -1 performs update
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account]
-	@P_Account_SeqID int output,
+	@P_AccountSeqId int output,
 	@P_Status_SeqID int,
 	@P_Account VARCHAR(128),
 	@P_First_Name VARCHAR(35),
@@ -5402,7 +5402,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Account]
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Start Set_Account'
-	DECLARE @V_Security_Entity_SeqID VARCHAR(1),
+	DECLARE @VSecurityEntitySeqId VARCHAR(1),
 		@V_SecurityEntityName VARCHAR(50),
 		@V_BackColor VARCHAR(15),
 		@V_LeftColor VARCHAR(15),
@@ -5418,7 +5418,7 @@ AS
 		@V_Now DATETIME = GETDATE()
 	
 	
-	IF @P_Account_SeqID > -1
+	IF @P_AccountSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			IF @P_Debug = 1 PRINT 'UPDATE [ZGWSecurity].[Accounts]'
 			UPDATE [ZGWSecurity].[Accounts]
@@ -5441,7 +5441,7 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Account_SeqID = @P_Account_SeqID
+				AccountSeqId = @P_AccountSeqId
 
 		END
 	ELSE
@@ -5488,8 +5488,8 @@ AS
 				@P_Location,
 				@P_Enable_Notifications
 			)
-			SET @P_Account_SeqID = SCOPE_IDENTITY()
-			IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Accounts] WHERE Account_SeqID = @P_Account_SeqID)
+			SET @P_AccountSeqId = SCOPE_IDENTITY()
+			IF EXISTS (SELECT 1 FROM [ZGWSecurity].[Accounts] WHERE AccountSeqId = @P_AccountSeqId)
 
 			exec ZGWSecurity.Set_Account_Roles
 				@P_Account,
@@ -5502,7 +5502,7 @@ AS
 				/*add an entry to account choice table*/
 				IF  EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Account_Choices' AND TABLE_SCHEMA = 'ZGWCoreWeb')		
 					BEGIN
-						SELECT @V_Default_Account=Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = @P_Added_Updated_By
+						SELECT @V_Default_Account=Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = @P_Added_Updated_By
 						
 						IF @V_Default_Account = NULL SET @V_Default_Account = 'ANONYMOUS'
 						
@@ -5510,7 +5510,7 @@ AS
 							BEGIN -- Populate values from Account_Choices from the Anonymous account
 								IF @P_Debug = 1 PRINT 'Populating default values from the database for account ' + CONVERT(VARCHAR(MAX),@V_Default_Account)
 								SELECT -- FILL THE DEFAULT VALUES
-									@V_Security_Entity_SeqID = SecurityEntityID,
+									@VSecurityEntitySeqId = SecurityEntityID,
 									@V_SecurityEntityName = SecurityEntityName,
 									@V_BackColor = BackColor,
 									@V_LeftColor = LeftColor,
@@ -5530,16 +5530,16 @@ AS
 						ELSE
 							BEGIN
 								IF @P_Debug = 1 PRINT 'Populating default values minimum values'
-								SET @V_Security_Entity_SeqID = (SELECT MIN(Security_Entity_SeqID) FROM ZGWSecurity.Security_Entities)
-								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE Security_Entity_SeqID = @V_Security_Entity_SeqID)
-								IF @V_Security_Entity_SeqID = NULL SET @V_Security_Entity_SeqID = 1
+								SET @VSecurityEntitySeqId = (SELECT MIN(SecurityEntitySeqId) FROM ZGWSecurity.Security_Entities)
+								SET @V_SecurityEntityName = (SELECT [Name] FROM ZGWSecurity.Security_Entities WHERE SecurityEntitySeqId = @VSecurityEntitySeqId)
+								IF @VSecurityEntitySeqId = NULL SET @VSecurityEntitySeqId = 1
 								IF @V_SecurityEntityName = NULL SET @V_SecurityEntityName = 'System'
 							END
 						--END IF
 						IF @P_Debug = 1 PRINT 'Executing ZGWCoreWeb.Set_Account_Choices'
 						EXEC ZGWCoreWeb.Set_Account_Choices
 							@P_Account,
-							@V_Security_Entity_SeqID,
+							@VSecurityEntitySeqId,
 							@V_SecurityEntityName,
 							@V_BackColor,
 							@V_LeftColor,
@@ -5555,11 +5555,11 @@ AS
 				--END IF
 			END
 		END-- Get the Error Code for the statement just executed.
-	IF @P_Debug = 1 PRINT '@P_Account_SeqID = '
-	IF @P_Debug = 1 PRINT @P_Account_SeqID
+	IF @P_Debug = 1 PRINT '@P_AccountSeqId = '
+	IF @P_Debug = 1 PRINT @P_AccountSeqId
 /* -- GOING BACK TO USING AN OUTPUT PARAMETER.
 	SELECT
-		Account_SeqID
+		AccountSeqId
 		, Account
 		, Email
 		, Enable_Notifications
@@ -5582,7 +5582,7 @@ AS
 	FROM 
 		[ZGWSecurity].[Accounts] 
 	WHERE 
-		Account_SeqID = @P_Account_SeqID
+		AccountSeqId = @P_AccountSeqId
 */
 	IF @P_Debug = 1 PRINT 'End Set_Account'
 GO
@@ -5600,14 +5600,14 @@ GO
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(max) = 'Everyone',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Groups
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -5620,7 +5620,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account_Groups]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -5631,11 +5631,11 @@ AS
 	DECLARE @V_ErrorMsg VARCHAR(MAX)
 
 	BEGIN TRAN
-		DECLARE @Account_SeqID INT
-		SET @Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+		DECLARE @AccountSeqId INT
+		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Groups'
-		EXEC ZGWSecurity.Delete_Account_Groups @Account_SeqID, @P_Security_Entity_SeqID, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @PSecurityEntitySeqId, @P_Debug
 		IF @@ERROR <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -5644,7 +5644,7 @@ AS
 				GOTO ABEND
 			END
 		--END IF
-		DECLARE @V_Group_SeqID AS 	INT
+		DECLARE @V_GroupSeqId AS 	INT
 		DECLARE @V_SecurityEntity_GroupSeqID AS 	INT
 		DECLARE @V_Group_Name AS	VARCHAR(50)
 		DECLARE @V_Pos AS	INT
@@ -5657,7 +5657,7 @@ AS
 				IF @V_Group_Name <> ''
 				BEGIN
 					--select the role seq id first
-					SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
+					SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
 					FROM ZGWSecurity.Groups 
 					WHERE [Name]=@V_Group_Name
 
@@ -5666,8 +5666,8 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						Group_SeqID = @V_Group_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						GroupSeqId = @V_GroupSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
 					IF NOT EXISTS(
 							SELECT 
@@ -5675,18 +5675,18 @@ AS
 							FROM 
 								ZGWSecurity.Groups_Security_Entities_Accounts 
 							WHERE 
-							Account_SeqID = @Account_SeqID 
+							AccountSeqId = @AccountSeqId 
 							AND Groups_Security_Entities_SeqID = @V_SecurityEntity_GroupSeqID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
 						INSERT ZGWSecurity.Groups_Security_Entities_Accounts (
-							Account_SeqID,
+							AccountSeqId,
 							Groups_Security_Entities_SeqID,
 							Added_By
 						)
 						VALUES (
-							@Account_SeqID,
+							@AccountSeqId,
 							@V_SecurityEntity_GroupSeqID,
 							@P_Added_Updated_By
 						)
@@ -5727,14 +5727,14 @@ GO
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(max) = 'Developer',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Roles
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -5747,7 +5747,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account_Roles]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Roles VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -5758,11 +5758,11 @@ AS
 	DECLARE @V_ErrorMsg VARCHAR(MAX)
 
 	BEGIN TRAN
-		DECLARE @Account_SeqID INT
-		SET @Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+		DECLARE @AccountSeqId INT
+		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Roles'
-		EXEC ZGWSecurity.Delete_Account_Roles @Account_SeqID, @P_Security_Entity_SeqID, @V_ErrorCode, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Roles @AccountSeqId, @PSecurityEntitySeqId, @V_ErrorCode, @P_Debug
 		IF @V_ErrorCode <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -5771,7 +5771,7 @@ AS
 				RETURN @@ERROR
 			END
 		--END IF
-		DECLARE @V_Role_SeqID AS 	INT
+		DECLARE @V_RoleSeqId AS 	INT
 		DECLARE @V_SE_RLS_SECURITY_ID AS 	INT
 		DECLARE @V_Role_Name AS	VARCHAR(50)
 		DECLARE @V_Pos AS	INT
@@ -5784,7 +5784,7 @@ AS
 				IF @V_Role_Name <> ''
 				BEGIN
 					--select the role seq id first
-					SELECT @V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
+					SELECT @V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
 					FROM ZGWSecurity.Roles 
 					WHERE [Name]=@V_ROLE_NAME
 
@@ -5793,8 +5793,8 @@ AS
 					FROM
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
-						Role_SeqID = @V_Role_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						RoleSeqId = @V_RoleSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SE_RLS_SECURITY_ID = ' + CONVERT(VARCHAR,@V_SE_RLS_SECURITY_ID))
 					IF NOT EXISTS(
 							SELECT 
@@ -5802,18 +5802,18 @@ AS
 							FROM 
 								ZGWSecurity.Roles_Security_Entities_Accounts 
 							WHERE 
-							Account_SeqID = @Account_SeqID 
+							AccountSeqId = @AccountSeqId 
 							AND Roles_Security_Entities_SeqID = @V_SE_RLS_SECURITY_ID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
 						INSERT ZGWSecurity.Roles_Security_Entities_Accounts (
-							Account_SeqID,
+							AccountSeqId,
 							Roles_Security_Entities_SeqID,
 							Added_By
 						)
 						VALUES (
-							@Account_SeqID,
+							@AccountSeqId,
 							@V_SE_RLS_SECURITY_ID,
 							@P_Added_Updated_By
 						)
@@ -5853,10 +5853,10 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = -1,
+		@P_FunctionSeqId int = -1,
 		@P_Name VARCHAR(30) = 'Testing',
 		@P_Description VARCHAR(512) = 'Testing',
-		@P_Function_Type_SeqID INT = 1,
+		@P_FunctionTypeSeqId INT = 1,
 		@P_Source VARCHAR(512) = '',
 		@P_Controller VARCHAR(512) = '',
 		@P_Enable_View_State int = 0,
@@ -5874,10 +5874,10 @@ Usage:
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Set_Function
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Name,
 		@P_Description,
-		@P_Function_Type_SeqID,
+		@P_FunctionTypeSeqId,
 		@P_Source,
 		@P_Controller,
 		@P_Enable_View_State,
@@ -5894,7 +5894,7 @@ Usage:
 		@P_Added_Updated_By
 		@P_Debug
 		
-	PRINT 'Primary_Key = ' + CONVERT(VARCHAR(MAX),@P_Function_SeqID)
+	PRINT 'Primary_Key = ' + CONVERT(VARCHAR(MAX),@P_FunctionSeqId)
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -5902,10 +5902,10 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Functions
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function]
-	@P_Function_SeqID int OUTPUT,
+	@P_FunctionSeqId int OUTPUT,
 	@P_Name VARCHAR(30),
 	@P_Description VARCHAR(512),
-	@P_Function_Type_SeqID INT,
+	@P_FunctionTypeSeqId INT,
 	@P_Source VARCHAR(512),
 	@P_Controller VARCHAR(512) = NULL,
 	@P_Resolve VARCHAR(MAX) = NULL,
@@ -5925,13 +5925,13 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Function]
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Function'
 	DECLARE @V_Now DATETIME = GETDATE()
-	IF @P_Function_SeqID > -1
+	IF @P_FunctionSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			UPDATE ZGWSecurity.Functions
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
-				Function_Type_SeqID = @P_Function_Type_SeqID,
+				FunctionTypeSeqId = @P_FunctionTypeSeqId,
 				[Source] = @P_Source,
 				[Controller] = @P_Controller,
 				[Resolve] = @P_Resolve,
@@ -5948,7 +5948,7 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Function_SeqID = @P_Function_SeqID
+				FunctionSeqId = @P_FunctionSeqId
 		END
 	ELSE
 		BEGIN
@@ -5965,7 +5965,7 @@ AS
 			(
 				[Name],
 				[Description],
-				Function_Type_SeqID,
+				FunctionTypeSeqId,
 				[Source],
 				[Controller],
 				[Resolve],
@@ -5988,7 +5988,7 @@ AS
 			(
 				@P_Name,
 				@P_Description,
-				@P_Function_Type_SeqID,
+				@P_FunctionTypeSeqId,
 				@P_Source,
 				@P_Controller,
 				@P_Resolve,
@@ -6007,10 +6007,10 @@ AS
 				@P_Added_Updated_By,
 				@V_Now
 			)
-			SELECT @P_Function_SeqID=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
+			SELECT @P_FunctionSeqId=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 			DECLARE @V_Sort_Order INT
 			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE Parent_SeqID = @P_Parent_SeqID) + 1
-			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE Function_SeqID = @P_Function_SeqID
+			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE FunctionSeqId = @P_FunctionSeqId
 
 		END
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'
@@ -6029,16 +6029,16 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_FunctionSeqId int = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Function_Groups
-		@P_Function_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_FunctionSeqId,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -6050,8 +6050,8 @@ Usage:
 -- Description:	Delete and inserts into ZGWSecurity.Groups_Security_Entities_Functions
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Groups]
-	@P_Function_SeqID int,
-	@P_Security_Entity_SeqID INT,
+	@P_FunctionSeqId int,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(MAX),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -6063,14 +6063,14 @@ BEGIN TRANSACTION
 	-- INSERTING NEW ONES.
 	
 	DECLARE @V_ErrorCodde INT
-			,@V_Group_SeqID INT
+			,@V_GroupSeqId INT
 			,@V_Groups_Security_Entities_SeqID AS INT
 			,@V_Group_Name VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 			,@V_Now DATETIME = GETDATE()
 
-	EXEC ZGWSecurity.Delete_Function_Groups @P_Function_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Groups @P_FunctionSeqId,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 	BEGIN
 		EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -6088,7 +6088,7 @@ BEGIN TRANSACTION
 				BEGIN
 					--select the Group seq id first
 					SELECT 
-						@V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
+						@V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
 					FROM 
 						ZGWSecurity.Groups 
 					WHERE 
@@ -6100,8 +6100,8 @@ BEGIN TRANSACTION
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						Group_SeqID = @V_Group_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						GroupSeqId = @V_GroupSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_Groups_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Groups_Security_Entities_SeqID))
 					IF NOT EXISTS(
@@ -6110,19 +6110,19 @@ BEGIN TRANSACTION
 							FROM 
 								ZGWSecurity.Groups_Security_Entities_Functions 
 							WHERE 
-							Function_SeqID = @P_Function_SeqID 
+							FunctionSeqId = @P_FunctionSeqId 
 							AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 							AND Groups_Security_Entities_SeqID = @V_Groups_Security_Entities_SeqID)
 						BEGIN TRY-- INSERT RECORD
 							INSERT ZGWSecurity.Groups_Security_Entities_Functions (
-								Function_SeqID,
+								FunctionSeqId,
 								Groups_Security_Entities_SeqID,
 								Permissions_NVP_Detail_SeqID,
 								Added_By,
 								Added_Date
 							)
 							VALUES (
-								@P_Function_SeqID,
+								@P_FunctionSeqId,
 								@V_Groups_Security_Entities_SeqID,
 								@P_Permissions_NVP_Detail_SeqID,
 								@P_Added_Updated_By,
@@ -6166,16 +6166,16 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_FunctionSeqId int = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Function_Roles
-		@P_Function_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_FunctionSeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -6187,8 +6187,8 @@ Usage:
 -- Description:	Delete and inserts into ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Roles]
-	@P_Function_SeqID int,
-	@P_Security_Entity_SeqID INT,
+	@P_FunctionSeqId int,
+	@PSecurityEntitySeqId INT,
 	@P_Roles VARCHAR(MAX),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -6200,12 +6200,12 @@ BEGIN TRANSACTION
 	-- INSERTING NEW ONES.
 	
 	DECLARE @V_ErrorCodde INT
-			,@V_Role_SeqID AS INT
+			,@V_RoleSeqId AS INT
 			,@V_Roles_Security_Entities_SeqID AS INT
 			,@V_Role_Name AS VARCHAR(50)
 			,@V_Pos AS INT
 			,@V_ErrorMsg VARCHAR(MAX)
-	EXEC ZGWSecurity.Delete_Function_Roles @P_Function_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -6222,7 +6222,7 @@ BEGIN TRANSACTION
 				BEGIN
 					--select the role seq id first
 					SELECT 
-						@V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
+						@V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
 					FROM 
 						ZGWSecurity.Roles 
 					WHERE 
@@ -6234,8 +6234,8 @@ BEGIN TRANSACTION
 					FROM
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
-						Role_SeqID = @V_Role_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						RoleSeqId = @V_RoleSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_Roles_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Roles_Security_Entities_SeqID))
 					IF NOT EXISTS(
@@ -6244,19 +6244,19 @@ BEGIN TRANSACTION
 							FROM 
 								ZGWSecurity.Roles_Security_Entities_Functions 
 							WHERE 
-							Function_SeqID = @P_Function_SeqID 
+							FunctionSeqId = @P_FunctionSeqId 
 							AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 							AND Roles_Security_Entities_SeqID = @V_Roles_Security_Entities_SeqID)
 						BEGIN TRY
 							IF @P_Debug = 1 PRINT 'Insert new record'
 							INSERT ZGWSecurity.Roles_Security_Entities_Functions (
-								Function_SeqID,
+								FunctionSeqId,
 								Roles_Security_Entities_SeqID,
 								Permissions_NVP_Detail_SeqID,
 								Added_By
 							)
 							VALUES (
-								@P_Function_SeqID,
+								@P_FunctionSeqId,
 								@V_Roles_Security_Entities_SeqID,
 								@P_Permissions_NVP_Detail_SeqID,
 								@P_Added_Updated_By
@@ -6295,14 +6295,14 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Direction INT = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Function_Sort
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Direction,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
@@ -6314,7 +6314,7 @@ Usage:
 -- Description:	Updates ZGWSecurity.Functions Sort_Order column
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Sort]
-	@P_Function_SeqID INT,
+	@P_FunctionSeqId INT,
 	@P_Direction INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key INT OUTPUT,
@@ -6325,12 +6325,12 @@ AS
 			,@V_Parent_SeqID INT
 			,@V_Updated_Date DATETIME = GETDATE()
 	-- Get the parent ID so only the menu items here can be effected
-	SET @V_Parent_SeqID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
+	SET @V_Parent_SeqID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	-- Get Current Sort Order
 	SELECT 
 		@V_Current_Sort_Order = Sort_Order
 	FROM ZGWSecurity.Functions
-	WHERE Function_SeqID = @P_Function_SeqID
+	WHERE FunctionSeqId = @P_FunctionSeqId
 	
 	-- Get Sort Order for Section Above
 	IF @P_Direction = 0 -- Down
@@ -6359,7 +6359,7 @@ AS
 	  Sort_Order = @V_Sort_Order_Move,
 	  Updated_By = @P_Added_Updated_By,
 	  Updated_Date = @V_Updated_Date
-	  WHERE Function_SeqID = @P_Function_SeqID
+	  WHERE FunctionSeqId = @P_FunctionSeqId
 
 RETURN 0
 GO
@@ -6376,7 +6376,7 @@ GO
 /*
 Usage:
 	DECLARE 
-			@P_Function_Type_SeqID INT = -1,
+			@P_FunctionTypeSeqId INT = -1,
 			@P_Name VARCHAR(50) = 'Name',
 			@P_Description VARCHAR(512) = 'Description',
 			@P_Template VARCHAR(512) = null,
@@ -6386,7 +6386,7 @@ Usage:
 			@P_ErrorCode INT = NULL
 --Insert new
 	exec [ZGWSecurity].[Set_Function_Types]
-			@P_Function_Type_SeqID,
+			@P_FunctionTypeSeqId,
 			@P_Name,
 			@P_Description,
 			@P_Template,
@@ -6395,9 +6395,9 @@ Usage:
 			@P_Primary_Key,
 			@P_ErrorCode
 --Update
-	SET @P_Function_Type_SeqID = (SELECT Function_Type_SeqID FROM [ZGWSecurity].[Function_Types] WHERE [Name] = @P_Name)
+	SET @P_FunctionTypeSeqId = (SELECT FunctionTypeSeqId FROM [ZGWSecurity].[Function_Types] WHERE [Name] = @P_Name)
 	exec [ZGWSecurity].[Set_Function_Types]
-			@P_Function_Type_SeqID,
+			@P_FunctionTypeSeqId,
 			@P_Name,
 			@P_Description,
 			@P_Template,
@@ -6410,11 +6410,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/26/2011
 -- Description:	Inserts/Updates [ZGWSecurity].[Function_Types]
---	Given the Function_Type_SeqID
+--	Given the FunctionTypeSeqId
 --	a value of -1 is insert > -1 performs update
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Types]
-	@P_Function_Type_SeqID INT,
+	@P_FunctionTypeSeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Description VARCHAR(512),
 	@P_Template VARCHAR(512),
@@ -6426,7 +6426,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Function_Types]
 AS
 	IF @P_Debug = 1 PRINT 'Start [Set_Function_Types]'
 	DECLARE @V_Now DATETIME = GETDATE()
-	IF @P_Function_Type_SeqID > -1
+	IF @P_FunctionTypeSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			IF @P_Debug = 1 PRINT 'Updating ZGWSecurity.Function_Types'
 			UPDATE ZGWSecurity.Function_Types
@@ -6438,9 +6438,9 @@ AS
 				Updated_By = @P_Added_Updated_BY,
 				Updated_Date =@V_Now
 			WHERE
-				Function_Type_SeqID = @P_Function_Type_SeqID
+				FunctionTypeSeqId = @P_FunctionTypeSeqId
 
-			SELECT @P_Primary_Key = @P_Function_Type_SeqID
+			SELECT @P_Primary_Key = @P_FunctionTypeSeqId
 		END
 	ELSE
 	BEGIN -- INSERT a new row in the table.
@@ -6493,19 +6493,19 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID INT = 1,
+		@P_GroupSeqId INT = 1,
 		@P_Name VARCHAR(128) = 'Test',
 		@P_Description VARCHAR(512) = ' ',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group
-		@P_Group_SeqID,
+		@P_GroupSeqId,
 		@P_Name,
 		@P_Description,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
 		@P_Debug
@@ -6517,10 +6517,10 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Groups
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Group]
-	@P_Group_SeqID INT,
+	@P_GroupSeqId INT,
 	@P_Name VARCHAR(128),
 	@P_Description VARCHAR(512),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -6528,7 +6528,7 @@ AS
 	DECLARE @RLS_SEQ_ID INT
 			,@V_Added_Updated_Date DATETIME = GETDATE()
 
-	IF @P_Group_SeqID > -1
+	IF @P_GroupSeqId > -1
 		BEGIN -- UPDATE PROFILE
 			UPDATE ZGWSecurity.Groups
 			SET 
@@ -6537,9 +6537,9 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Added_Updated_Date
 			WHERE
-				Group_SeqID = @P_Group_SeqID
+				GroupSeqId = @P_GroupSeqId
 
-			SELECT @P_Primary_Key = @P_Group_SeqID
+			SELECT @P_Primary_Key = @P_GroupSeqId
 		END
 	ELSE
 		BEGIN -- INSERT a new row in the table.
@@ -6566,20 +6566,20 @@ AS
 				END
 			ELSE
 				--PRINT 'ENTERING SECURITY INFORMATION FOR THE GROUP'
-				SET @P_Primary_Key = (SELECT Group_SeqID FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
+				SET @P_Primary_Key = (SELECT GroupSeqId FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
 			-- END IF
 		END
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID AND Group_SeqID = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
 	BEGIN  -- ADD GROUP REFERENCE TO SE_SECURITY
 			INSERT ZGWSecurity.Groups_Security_Entities (
-				Security_Entity_SeqID,
-				Group_SeqID,
+				SecurityEntitySeqId,
+				GroupSeqId,
 				Added_By,
 				Added_Date
 			)
 			VALUES (
-				@P_Security_Entity_SeqID,
+				@PSecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Added_Updated_Date
@@ -6600,15 +6600,15 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID INT = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_GroupSeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'Anonymous, Authenticated',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group_Roles
-		@P_Group_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_GroupSeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -6620,8 +6620,8 @@ Usage:
 -- Description:	Deletes and inserts ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Group_Roles]
-		@P_Group_SeqID INT,
-		@P_Security_Entity_SeqID INT,
+		@P_GroupSeqId INT,
+		@PSecurityEntitySeqId INT,
 		@P_Roles VARCHAR(MAX),
 		@P_Added_Updated_By INT,
 		@P_Debug INT = 0
@@ -6637,7 +6637,7 @@ AS
 		--NEED TO DELETE EXISTING Roles ASSOCITAED BEFORE 
 		-- INSERTING NEW ONES. EXECUTION OF THIS STORED PROC
 		-- IS MOVED FROM CODE			
-		EXEC ZGWSecurity.Delete_Group_Roles @P_Group_SeqID,@P_Security_Entity_SeqID, @P_Debug	
+		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@PSecurityEntitySeqId, @P_Debug	
 		SET @P_Roles = LTRIM(RTRIM(@P_Roles))+ ','
 		SET @V_POS = CHARINDEX(',', @P_Roles, 1)
 	
@@ -6649,15 +6649,15 @@ AS
 				IF @V_Role_Name <> ''
 				IF @P_Debug = 1 PRINT @V_Role_Name -- DEBUG
 				BEGIN
-					--SELECT THE Role_SeqID FROM THE Roles
+					--SELECT THE RoleSeqId FROM THE Roles
 					--TABLE FOR ALL THE Roles PASSED
 					SELECT  
 						@V_Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
 					FROM
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
-						ZGWSecurity.Roles_Security_Entities.Role_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
-						AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT @V_Roles_Security_Entities_SeqID
 
 					SELECT
@@ -6665,8 +6665,8 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
-						AND Group_SeqID = @P_Group_SeqID
+						SecurityEntitySeqId = @PSecurityEntitySeqId
+						AND GroupSeqId = @P_GroupSeqId
 					
 					IF @P_Debug = 1 PRINT @V_Groups_Security_Entities_SeqID -- DEBUG
 					/*
@@ -6714,7 +6714,7 @@ GO
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6722,7 +6722,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Groups
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -6735,7 +6735,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Groups]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(1000),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -6744,14 +6744,14 @@ AS
 
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Groups')
 BEGIN TRAN
-	DECLARE @V_Group_SeqID INT
+	DECLARE @V_GroupSeqId INT
 			,@V_Groups_Security_Entities_SeqID INT
 			,@V_GROUP_NAME VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Groups associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVP_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID, @P_Debug
+	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVP_SeqID,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -6769,7 +6769,7 @@ BEGIN TRAN
 			IF @V_GROUP_NAME <> ''
 			BEGIN
 				IF @P_Debug = 1 PRINT 'select the GROUP seq id first'
-				SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
+				SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
 				FROM ZGWSecurity.Groups 
 				WHERE [Name]=@V_GROUP_NAME
 
@@ -6778,8 +6778,8 @@ BEGIN TRAN
 				FROM
 					ZGWSecurity.Groups_Security_Entities
 				WHERE
-					Group_SeqID = @V_Group_SeqID AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					GroupSeqId = @V_GroupSeqId AND
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_Groups_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Groups_Security_Entities_SeqID))
 				IF NOT EXISTS(
 						SELECT 
@@ -6844,7 +6844,7 @@ GO
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Role VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6852,7 +6852,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Roles
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Role,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -6865,7 +6865,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Roles]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Role VARCHAR(1000),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -6874,7 +6874,7 @@ AS
 
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Role')
 BEGIN TRAN
-	DECLARE @V_Role_SeqID INT
+	DECLARE @V_RoleSeqId INT
 			,@V_Roles_Security_Entities_SeqID INT
 			,@V_Group_Name VARCHAR(50)
 			,@V_Pos INT
@@ -6882,7 +6882,7 @@ BEGIN TRAN
 			,@V_Now DATETIME = GETDATE()
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Role associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVP_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID, @P_Debug
+	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVP_SeqID,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -6896,8 +6896,8 @@ BEGIN TRAN
 			SET @V_Group_Name = LTRIM(RTRIM(LEFT(@P_Role, @V_Pos - 1)))
 			IF @V_Group_Name <> ''
 			BEGIN
-				IF @P_Debug = 1 PRINT 'select the Role_SeqID first'
-				SELECT @V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
+				IF @P_Debug = 1 PRINT 'select the RoleSeqId first'
+				SELECT @V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
 				FROM ZGWSecurity.Roles 
 				WHERE [Name]=@V_Group_Name
 
@@ -6906,8 +6906,8 @@ BEGIN TRAN
 				FROM
 					ZGWSecurity.Roles_Security_Entities
 				WHERE
-					Role_SeqID = @V_Role_SeqID AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					RoleSeqId = @V_RoleSeqId AND
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_Roles_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Roles_Security_Entities_SeqID))
 				IF NOT EXISTS(
 						SELECT 
@@ -6973,23 +6973,23 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Role_SeqID INT = -1,
+		@P_RoleSeqId INT = -1,
 		@P_Name VARCHAR(50) = 'Test',
 		@P_Description VARCHAR(128) = 'Testing',
 		@P_Is_System INT = 0,
 		@P_Is_System_Only INT = 0,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Role
-		@P_Role_SeqID,
+		@P_RoleSeqId,
 		@P_Name,
 		@P_Description,
 		@P_Is_System,
 		@P_Is_System_Only,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -7002,15 +7002,15 @@ Usage:
 -- Create date: 09/08/2011
 -- Description:	Inserts or updates ZGWSecurity.Roles and
 --	ZGWSecurity.Roles_Security_Entities
--- Note: @P_Role_SeqID value of -1 inserts a new record
+-- Note: @P_RoleSeqId value of -1 inserts a new record
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Role]
-	@P_Role_SeqID INT,
+	@P_RoleSeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Description VARCHAR(128),
 	@P_Is_System INT,
 	@P_Is_System_Only INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -7029,7 +7029,7 @@ BEGIN TRAN
 		RETURN
 	END
 
-	IF @P_Role_SeqID > -1
+	IF @P_RoleSeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Updating role in ZGWSecurity.Roles'
 			UPDATE ZGWSecurity.Roles
@@ -7041,9 +7041,9 @@ BEGIN TRAN
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Role_SeqID = @P_Role_SeqID
+				RoleSeqId = @P_RoleSeqId
 
-			SELECT @P_Primary_Key = @P_Role_SeqID
+			SELECT @P_Primary_Key = @P_RoleSeqId
 		END
 	ELSE
 		BEGIN TRY -- INSERT a new row in the table.
@@ -7074,24 +7074,24 @@ BEGIN TRAN
 					SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
 				END
 			ELSE
-				SET @P_Primary_Key = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+				SET @P_Primary_Key = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 			-- END IF
 		END TRY
 		BEGIN CATCH
 			GOTO ABEND		
 		END CATCH
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID AND Role_SeqID = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
 	BEGIN TRY  -- ADD ROLE REFERENCE TO SE_SECURITY
 			IF @P_Debug = 1 PRINT 'Add role reference to ZGWSecurity.Roles_Security_Entities'
 			INSERT ZGWSecurity.Roles_Security_Entities (
-				Security_Entity_SeqID
-				, Role_SeqID
+				SecurityEntitySeqId
+				, RoleSeqId
 				, Added_By
 				, Added_Date
 			)
 			VALUES (
-				@P_Security_Entity_SeqID,
+				@PSecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Now
@@ -7126,15 +7126,15 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Role_SeqID INT = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_RoleSeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Role_Accounts
-		@P_Role_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_RoleSeqId,
+		@PSecurityEntitySeqId,
 		@P_Account,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -7146,34 +7146,34 @@ Usage:
 -- Description:	Inserts into ZGWSecurity.Roles_Security_Entities_Accounts
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Role_Accounts]
-	@P_Role_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_RoleSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 1
 AS
 IF @P_Debug = 1	PRINT 'Starting ZGWSecurity.Set_Role_Accounts'
-DECLARE @V_Account_SeqID AS INT
+DECLARE @V_AccountSeqId AS INT
 		,@V_Roles_Security_Entities_SeqID AS INT
 		,@V_ErrorMsg VARCHAR(MAX)
 BEGIN TRAN
 	SET NOCOUNT OFF;
-	SET @V_Account_SeqID = (SELECT ZGWSecurity.Accounts.Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+	SET @V_AccountSeqId = (SELECT ZGWSecurity.Accounts.AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 	SET @V_Roles_Security_Entities_SeqID = (
 			SELECT
 				Roles_Security_Entities_SeqID
 			FROM
 				ZGWSecurity.Roles_Security_Entities
 			WHERE
-				Role_SeqID = @P_Role_SeqID
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				RoleSeqId = @P_RoleSeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	BEGIN TRY
 		INSERT INTO
-			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_Entities_SeqID,Account_SeqID,Added_By)
+			ZGWSecurity.Roles_Security_Entities_Accounts(Roles_Security_Entities_SeqID,AccountSeqId,Added_By)
 		VALUES(
 			@V_Roles_Security_Entities_SeqID,
-			@V_Account_SeqID,
+			@V_AccountSeqId,
 			@P_Added_Updated_By
 		)
 	END TRY
@@ -7205,7 +7205,7 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID int = -1,
+		@PSecurityEntitySeqId int = -1,
 		@P_Name VARCHAR(256) = 'System',
 		@P_Description VARCHAR(512) = 'System',
 		@P_URL VARCHAR(128) = '',
@@ -7217,13 +7217,13 @@ Usage:
 		@P_Skin char(25) = '',
 		@P_Style VARCHAR(25) = '',
 		@P_Encryption_Type INT = 1,
-		@P_Parent_Security_Entity_SeqID int = 1,
+		@P_ParentSecurityEntitySeqId int = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Security_Entity
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Description,
 		@P_URL,
@@ -7235,7 +7235,7 @@ Usage:
 		@P_Skin,
 		@P_Style,
 		@P_Encryption_Type,
-		@P_Parent_Security_Entity_SeqID,
+		@P_ParentSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -7248,7 +7248,7 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Security_Entities
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Security_Entity]
-	@P_Security_Entity_SeqID int,
+	@PSecurityEntitySeqId int,
 	@P_Name VARCHAR(256),
 	@P_Description VARCHAR(512),
 	@P_URL VARCHAR(128),
@@ -7260,7 +7260,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Security_Entity]
 	@P_Skin char(25),
 	@P_Style VARCHAR(25),
 	@P_Encryption_Type INT,
-	@P_Parent_Security_Entity_SeqID int,
+	@P_ParentSecurityEntitySeqId int,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -7268,8 +7268,8 @@ AS
 	DECLARE @V_Now DATETIME = GETDATE()
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Security_Entity'
-	IF @P_Parent_Security_Entity_SeqID = @P_Security_Entity_SeqID or @P_Parent_Security_Entity_SeqID = -1 SET @P_Parent_Security_Entity_SeqID = NULL
-	IF @P_Security_Entity_SeqID > -1
+	IF @P_ParentSecurityEntitySeqId = @PSecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
+	IF @PSecurityEntitySeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Update'
 			UPDATE ZGWSecurity.Security_Entities
@@ -7285,13 +7285,13 @@ AS
 				Skin = @P_Skin,
 				Style = @P_Style,
 				Encryption_Type = @P_Encryption_Type,
-				Parent_Security_Entity_SeqID = @P_Parent_Security_Entity_SeqID,
+				ParentSecurityEntitySeqId = @P_ParentSecurityEntitySeqId,
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 
-			SELECT @P_Primary_Key = @P_Security_Entity_SeqID
+			SELECT @P_Primary_Key = @PSecurityEntitySeqId
 		END
 	ELSE
 		BEGIN
@@ -7310,7 +7310,7 @@ AS
 				Skin,
 				Style,
 				Encryption_Type,
-				Parent_Security_Entity_SeqID,
+				ParentSecurityEntitySeqId,
 				Added_By,
 				Added_Date
 			)
@@ -7327,7 +7327,7 @@ AS
 				@P_Skin,
 				@P_Style,
 				@P_Encryption_Type,
-				@P_Parent_Security_Entity_SeqID,
+				@P_ParentSecurityEntitySeqId,
 				@P_Added_Updated_By,
 				@V_Now
 			)	
@@ -7364,11 +7364,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/04/2011
 -- Description:	Deletes a records from ZGWSecurity.Groups_Security_Entities_Permissions
---	given the NVP_SeqID, Security_Entity_SeqID, and Permissions_NVP_Detail_SeqID
+--	given the NVP_SeqID, SecurityEntitySeqId, and Permissions_NVP_Detail_SeqID
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Debug INT = 0
 AS
@@ -7376,7 +7376,7 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Permissions
 	WHERE 
-		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
+		Groups_Security_Entities_SeqID IN(SELECT Groups_Security_Entities_SeqID FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND NVP_SeqID = @P_NVP_SeqID
 		AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 	IF @P_Debug = 1 PRINT 'End [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]'
@@ -7396,12 +7396,12 @@ GO
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 3,
-		@P_Security_Entity_SeqID	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec ZGWSystem.Delete_Name_Value_Pair
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -7412,7 +7412,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -7496,11 +7496,11 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 08/04/2011
 -- Description:	Deletes a records from ZGWSecurity.Roles_Security_Entities_Permissions
---	given the NVP_SeqID, Security_Entity_SeqID, and Permissions_NVP_Detail_SeqID
+--	given the NVP_SeqID, SecurityEntitySeqId, and Permissions_NVP_Detail_SeqID
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Roles_Security_Entities_Permissions]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Debug INT = 0
 AS
@@ -7508,7 +7508,7 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Permissions
 	WHERE 
-		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID)
+		Roles_Security_Entities_SeqID IN(SELECT Roles_Security_Entities_SeqID FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND NVP_SeqID = @P_NVP_SeqID
 		AND Permissions_NVP_Detail_SeqID = @P_Permissions_NVP_Detail_SeqID
 	IF @P_Debug = 1 PRINT 'Ending ZGWSystem.Delete_Roles_Security_Entities_Permissions'
@@ -8121,14 +8121,14 @@ GO
 Usage:
 	DECLARE
 		@P_NVP_SeqID int = 1,
-		@P_Account_SeqID int = 2,
-		@P_Security_Entity_SeqID int = 1,
+		@P_AccountSeqId int = 2,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSystem.Get_Name_Value_Pair
 		@P_NVP_SeqID,
-		@P_Account_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_AccountSeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -8138,8 +8138,8 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Get_Name_Value_Pair]
 	@P_NVP_SeqID int,
-	@P_Account_SeqID int,
-	@P_Security_Entity_SeqID int,
+	@P_AccountSeqId int,
+	@PSecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -8165,7 +8165,7 @@ AS
 		END
 	ELSE
 		BEGIN
-			IF @P_Account_SeqID > -1
+			IF @P_AccountSeqId > -1
 				BEGIN -- get only valid NVP for the given account
 					IF @P_Debug = 1 PRINT 'get only valid NVP for the given account'
 					DECLARE @V_Permission_Id INT
@@ -8202,12 +8202,12 @@ AS
 						ZGWSystem.Name_Value_Pairs,
 						ZGWSecurity.[Permissions] [Permissions]
 					WHERE
-						SE_ROLES.Role_SeqID = ROLES.Role_SeqID
+						SE_ROLES.RoleSeqId = ROLES.RoleSeqId
 						AND SECURITY.Roles_Security_Entities_SeqID = SE_ROLES.Roles_Security_Entities_SeqID
 						AND SECURITY.NVP_SeqID = ZGWSystem.Name_Value_Pairs.NVP_SeqID
 						AND [Permissions].NVP_Detail_SeqID = SECURITY.Permissions_NVP_Detail_SeqID
 						AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
-						AND SE_ROLES.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+						AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 					IF @P_Debug = 1 PRINT 'Getting items via groups'
 					INSERT INTO @V_AvalibleItems
 					SELECT -- Items via groups
@@ -8235,10 +8235,10 @@ AS
 						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Permissions.Groups_Security_Entities_SeqID
 						AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID
 						AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND ROLES.Role_SeqID = ZGWSecurity.Roles_Security_Entities.Role_SeqID
+						AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 						AND [Permissions].NVP_Detail_SeqID = ZGWSecurity.Groups_Security_Entities_Permissions.Permissions_NVP_Detail_SeqID
 						AND [Permissions].NVP_Detail_SeqID = @V_Permission_Id
-						AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 					DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 					IF @P_Debug = 1 PRINT 'Getting roles for account and roles via groups'
@@ -8251,10 +8251,10 @@ AS
 						ZGWSecurity.Roles_Security_Entities,
 						ZGWSecurity.Roles
 					WHERE
-						ZGWSecurity.Roles_Security_Entities_Accounts.Account_SeqID = @P_Account_SeqID
+						ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
 						AND ZGWSecurity.Roles_Security_Entities_Accounts.Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
-						AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
 						ZGWSecurity.Roles.[Name] AS Roles
@@ -8266,11 +8266,11 @@ AS
 						ZGWSecurity.Roles_Security_Entities,
 						ZGWSecurity.Roles
 					WHERE
-						ZGWSecurity.Groups_Security_Entities_Accounts.Account_SeqID = @P_Account_SeqID
-						AND ZGWSecurity.Groups_Security_Entities.Security_Entity_SeqID IN (SELECT Security_Entity_SeqID FROM ZGWSecurity.Get_Entity_Parents(1,@P_Security_Entity_SeqID))
+						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.Groups_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Groups_Security_Entities_SeqID
 						AND ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.Roles_Security_Entities_SeqID
-						AND ZGWSecurity.Roles_Security_Entities.Role_SeqID = ZGWSecurity.Roles.Role_SeqID
+						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 
 					DECLARE @V_AllItems TABLE ([NVP_SeqID] int, 
 												[Schema_Name] varchar(30),
@@ -8493,9 +8493,9 @@ AS
 			#NVP_DETAILS.NVP_Detail_Value as NVP_DET_TEXT, 
 			#NVP_DETAILS.Status_SeqID as STATUS_SEQ_ID, 
 			#NVP_DETAILS.Sort_Order, 
-			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Added_By) AS Added_By,  
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = #NVP_DETAILS.Added_By) AS Added_By,  
 			#NVP_DETAILS.Added_Date, 
-			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Updated_By) AS Updated_By,  
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = #NVP_DETAILS.Updated_By) AS Updated_By,  
 			#NVP_DETAILS.Updated_Date 
 		FROM 
 			#NVP_DETAILS,
@@ -8514,9 +8514,9 @@ AS
 			#NVP_DETAILS.NVP_Detail_Value as NVP_DET_TEXT, 
 			#NVP_DETAILS.Status_SeqID as STATUS_SEQ_ID, 
 			#NVP_DETAILS.Sort_Order, 
-			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Added_By) AS Added_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = #NVP_DETAILS.Added_By) AS Added_By, 
 			#NVP_DETAILS.Added_Date, 
-			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = #NVP_DETAILS.Updated_By) AS Updated_By, 
+			(SELECT TOP(1) Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = #NVP_DETAILS.Updated_By) AS Updated_By, 
 			#NVP_DETAILS.Updated_Date 
 		FROM 
 			#NVP_DETAILS,
@@ -8548,7 +8548,7 @@ Usage:
 		@P_TableOrView nvarchar(50) = 'ZGWSecurity.Functions',              
 		@P_SelectedPage int = 1,
 		@P_PageSize int = 10,
-		@P_Columns nvarchar(500) = 'Function_SeqID, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
+		@P_Columns nvarchar(500) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
 		@P_OrderByColumn nvarchar(100) = 'Action',
 		@P_OrderByDirection nvarchar(4) = 'ASC',
 		@P_WhereClause nvarchar(500)

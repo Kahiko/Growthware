@@ -41,7 +41,7 @@ namespace GrowthWare.DataAccess.SQLServer
         /// <returns>bool</returns>
         public bool DeleteGroup()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityID), new SqlParameter("@P_Group_SeqID", Profile.Id) };
+            SqlParameter[] mParameters = { new SqlParameter("@PSecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_GroupSeqId", Profile.Id) };
             String mStoreProc = "ZGWSecurity.Delete_Group";
             base.ExecuteNonQuery( mStoreProc, mParameters);
             return true;
@@ -63,7 +63,7 @@ namespace GrowthWare.DataAccess.SQLServer
         /// <returns>DataTable</returns>
         public DataTable GroupsBySecurityEntity()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityID), new SqlParameter("@P_Group_SeqID", -1) };
+            SqlParameter[] mParameters = { new SqlParameter("@PSecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_GroupSeqId", -1) };
             String mStoreProc = "ZGWSecurity.Get_Group";
             return base.GetDataTable( mStoreProc, mParameters);
         }
@@ -74,7 +74,7 @@ namespace GrowthWare.DataAccess.SQLServer
         /// <returns>DataRow</returns>
         public DataRow ProfileData()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityID), new SqlParameter("@P_Group_SeqID", Profile.Id) };
+            SqlParameter[] mParameters = { new SqlParameter("@PSecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_GroupSeqId", Profile.Id) };
             String mStoreProc = "ZGWSecurity.Get_Group";
             return base.GetDataRow( mStoreProc, mParameters);
         }
@@ -102,7 +102,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 throw new ArgumentException("The GroupRoles Profile must be set.");
             }
             string mymStoreProcedure = "ZGWSecurity.Get_Group_Roles";
-            SqlParameter[] mParameters = { new SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityID), new SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId) };
+            SqlParameter[] mParameters = { new SqlParameter("@PSecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId) };
             return base.GetDataTable(mymStoreProcedure, mParameters);
         }
 
@@ -118,14 +118,14 @@ namespace GrowthWare.DataAccess.SQLServer
                 throw new ArgumentException("The GroupRoles Profile must be set.");
             }
             string mymStoreProcedure = "ZGWSecurity.Set_Group_Roles";
-            SqlParameter[] mParameters = { new SqlParameter("@P_Group_SeqID", GroupRolesProfile.GroupSeqId), new SqlParameter("@P_Security_Entity_SeqID", GroupRolesProfile.SecurityEntityID), new SqlParameter("@P_Roles", GroupRolesProfile.Roles), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile)) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_GroupSeqId", GroupRolesProfile.GroupSeqId), new SqlParameter("@PSecurityEntitySeqId", GroupRolesProfile.SecurityEntityID), new SqlParameter("@P_Roles", GroupRolesProfile.Roles), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(GroupRolesProfile)) };
             base.ExecuteNonQuery(mymStoreProcedure, mParameters);
             return true;
         }
 
         private SqlParameter[] GetInsertUpdateParameters()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_Group_SeqID", Profile.Id), new SqlParameter("@P_Name", Profile.Name), new SqlParameter("@P_Description", Profile.Description), new SqlParameter("@P_Security_Entity_SeqID", Profile.SecurityEntityID), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)), GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_GroupSeqId", Profile.Id), new SqlParameter("@P_Name", Profile.Name), new SqlParameter("@P_Description", Profile.Description), new SqlParameter("@PSecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)), GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) };
             return mParameters;
         }
     }

@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Role VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -11,7 +11,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Roles
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Role,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -24,7 +24,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Roles]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Role VARCHAR(1000),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -33,7 +33,7 @@ AS
 
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Role')
 BEGIN TRAN
-	DECLARE @V_Role_SeqID INT
+	DECLARE @V_RoleSeqId INT
 			,@V_Roles_Security_Entities_SeqID INT
 			,@V_Group_Name VARCHAR(50)
 			,@V_Pos INT
@@ -41,7 +41,7 @@ BEGIN TRAN
 			,@V_Now DATETIME = GETDATE()
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Role associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVP_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID, @P_Debug
+	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVP_SeqID,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -55,8 +55,8 @@ BEGIN TRAN
 			SET @V_Group_Name = LTRIM(RTRIM(LEFT(@P_Role, @V_Pos - 1)))
 			IF @V_Group_Name <> ''
 			BEGIN
-				IF @P_Debug = 1 PRINT 'select the Role_SeqID first'
-				SELECT @V_Role_SeqID = ZGWSecurity.Roles.Role_SeqID 
+				IF @P_Debug = 1 PRINT 'select the RoleSeqId first'
+				SELECT @V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
 				FROM ZGWSecurity.Roles 
 				WHERE [Name]=@V_Group_Name
 
@@ -65,8 +65,8 @@ BEGIN TRAN
 				FROM
 					ZGWSecurity.Roles_Security_Entities
 				WHERE
-					Role_SeqID = @V_Role_SeqID AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					RoleSeqId = @V_RoleSeqId AND
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_Roles_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Roles_Security_Entities_SeqID))
 				IF NOT EXISTS(
 						SELECT 

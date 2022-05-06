@@ -16,7 +16,7 @@ namespace GrowthWare.DataAccess.SQLServer
         private SqlParameter[] GetInsertUpdateParameters()
         {
             SqlParameter[] myParameters = { 
-				new SqlParameter("@P_Message_SeqID", m_Profile.Id), new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId), 
+				new SqlParameter("@P_Message_SeqID", m_Profile.Id), new SqlParameter("@PSecurityEntitySeqId", m_Profile.SecurityEntitySeqId), 
 				new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_Title", m_Profile.Title), 
 				new SqlParameter("@P_Description", m_Profile.Description), new SqlParameter("@P_BODY", m_Profile.Body), 
 				new SqlParameter("@P_Format_As_HTML", m_Profile.FormatAsHtml), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
@@ -51,7 +51,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String storeProc = "ZGWCoreWeb.Get_Messages";
             SqlParameter[] mParamaters = { 
 				new SqlParameter("@P_Message_SeqID", -1), 
-				new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId)
+				new SqlParameter("@PSecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
 			};
             return GetDataTable(storeProc, mParamaters);
         }
@@ -61,7 +61,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String storeProc = "ZGWCoreWeb.Get_Messages";
             SqlParameter[] mParamaters = { 
 				new SqlParameter("@P_Message_SeqID", messageSeqId), 
-				new SqlParameter("@P_Security_Entity_SeqID", m_Profile.SecurityEntitySeqId)
+				new SqlParameter("@PSecurityEntitySeqId", m_Profile.SecurityEntitySeqId)
 			};
             return GetDataRow(storeProc, mParamaters);
         }

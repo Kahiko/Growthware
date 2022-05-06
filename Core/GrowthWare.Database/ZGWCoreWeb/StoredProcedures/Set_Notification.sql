@@ -2,15 +2,15 @@
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID int = 2,
-		@P_Function_SeqID int = 1,
+		@PSecurityEntitySeqId int = 2,
+		@P_FunctionSeqId int = 1,
 		@P_Account Varchar(128) = 'Developer',
 		@P_Status int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Set_Notification
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Account,
 		@P_Status,
 		@P_Debug
@@ -22,15 +22,15 @@ Usage:
 --	Status value 1 = insert, 0 = delete
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Notification]
-	@P_Security_Entity_SeqID int,
-	@P_Function_SeqID int,
+	@PSecurityEntitySeqId int,
+	@P_FunctionSeqId int,
 	@P_Account Varchar(128),
 	@P_Status int,
 	@P_Debug INT = 0
 AS
 
 IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Notification'
-DECLARE @V_Account_SeqID int = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+DECLARE @V_AccountSeqId int = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 
 IF @P_Status = 1
 	BEGIN
@@ -41,23 +41,23 @@ IF @P_Status = 1
 			FROM 
 				ZGWCoreWeb.Notifications 
 			WHERE 
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
-				AND Function_SeqID = @P_Function_SeqID
-				AND Added_By = @V_Account_SeqID
+				SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND FunctionSeqId = @P_FunctionSeqId
+				AND Added_By = @V_AccountSeqId
 		)
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Insert'
 			INSERT ZGWCoreWeb.Notifications
 			(
-			Security_Entity_SeqID,
-			Function_SeqID,
+			SecurityEntitySeqId,
+			FunctionSeqId,
 			Added_By
 			)
 			VALUES
 			(
-			@P_Security_Entity_SeqID,
-			@P_Function_SeqID,
-			@V_Account_SeqID
+			@PSecurityEntitySeqId,
+			@P_FunctionSeqId,
+			@V_AccountSeqId
 			)
 		END
 	END
@@ -66,9 +66,9 @@ ELSE
 	DELETE 
 		ZGWCoreWeb.Notifications
 	WHERE 
-		Security_Entity_SeqID = @P_Security_Entity_SeqID
-		AND Function_SeqID = @P_Function_SeqID
-		AND Added_By = @V_Account_SeqID
+		SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND FunctionSeqId = @P_FunctionSeqId
+		AND Added_By = @V_AccountSeqId
 --END IF
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Notification'
 RETURN 0

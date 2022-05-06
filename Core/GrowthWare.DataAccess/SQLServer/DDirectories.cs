@@ -17,7 +17,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWOptional.Get_Directory";
             SqlParameter[] mParameters =
 			{
-			 new SqlParameter("@P_Function_SeqID", -1)
+			 new SqlParameter("@P_FunctionSeqId", -1)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -28,7 +28,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWOptional.Set_Directory";
             SqlParameter[] mParameters =
 			{
-			  new SqlParameter("@P_Function_SeqID", profile.FunctionSeqId),
+			  new SqlParameter("@P_FunctionSeqId", profile.FunctionSeqId),
 			  new SqlParameter("@P_Directory", profile.Directory),
 			  new SqlParameter("@P_Impersonate", profile.Impersonate),
 			  new SqlParameter("@P_Impersonating_Account", profile.ImpersonateAccount),

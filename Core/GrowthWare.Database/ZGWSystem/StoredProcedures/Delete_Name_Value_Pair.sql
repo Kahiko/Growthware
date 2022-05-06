@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 3,
-		@P_Security_Entity_SeqID	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec ZGWSystem.Delete_Name_Value_Pair
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN

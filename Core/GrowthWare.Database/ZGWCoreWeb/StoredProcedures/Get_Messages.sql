@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 	
 		@P_Message_SeqID INT, 
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Messages
 		@P_Message_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -20,24 +20,24 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Messages]
 	@P_Message_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWCoreWeb.Get_Messages'
-	DECLARE @V_Default_Security_Entity_SeqID INT = ZGWSecurity.Get_Default_Entity_ID()
+	DECLARE @V_DefaultSecurityEntitySeqId INT = ZGWSecurity.Get_Default_Entity_ID()
 	/*
 		Don't like this ... need to think of a better way
 		something along the lines of core defaul security entity message
 		+ other security entity messages ...
 	*/
-	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @P_Security_Entity_SeqID) = 0
+	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @PSecurityEntitySeqId) = 0
 		BEGIN
-			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @V_Default_Security_Entity_SeqID) > 0
+			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
 				BEGIN
 					INSERT INTO ZGWCoreWeb.[Messages]
 						SELECT
-							@P_Security_Entity_SeqID
+							@PSecurityEntitySeqId
 							, Name
 							, Title
 							, [Description]
@@ -48,7 +48,7 @@ AS
 							, Updated_By
 							, Updated_Date
 						FROM
-							ZGWCoreWeb.[Messages] WHERE Security_Entity_SeqID = @V_Default_Security_Entity_SeqID
+							ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT 'Needed to add entries for all message for the requested Security_Entity'
 				END
 			ELSE
@@ -63,7 +63,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting single message'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as SecurityEntityID
+				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]
@@ -83,7 +83,7 @@ AS
 			IF @P_Debug = 1 PRINT 'Getting all messages'
 			SELECT
 				Message_SeqID as MESSAGE_SEQ_ID
-				, Security_Entity_SeqID as SecurityEntityID
+				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
 				, [Description]

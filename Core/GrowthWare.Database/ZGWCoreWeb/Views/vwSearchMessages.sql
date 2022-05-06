@@ -1,6 +1,6 @@
 /*
 Usage:
-	SELECT * FROM ZGWCoreWeb.vwSearchMessages WHERE Security_Entity_SeqID = 1
+	SELECT * FROM ZGWCoreWeb.vwSearchMessages WHERE SecurityEntitySeqId = 1
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -12,15 +12,15 @@ Usage:
 CREATE VIEW [ZGWCoreWeb].[vwSearchMessages] AS 
 	SELECT 
 		[Message_SeqID]
-		,[Security_Entity_SeqID]
+		,[SecurityEntitySeqId]
 		,[Name]
 		,[Title]
 		,[Description]
 		,[Format_As_HTML]
 		,[Body]
-		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Added_By) AS [Added_By]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = msg.Added_By) AS [Added_By]
 		,[Added_Date]
-		,(SELECT Account FROM ZGWSecurity.Accounts WHERE Account_SeqID = msg.Updated_By) AS [Updated_By]
+		,(SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = msg.Updated_By) AS [Updated_By]
 		,[Updated_Date] 
 	FROM 
 		[ZGWCoreWeb].[Messages] msg WITH(NOLOCK)

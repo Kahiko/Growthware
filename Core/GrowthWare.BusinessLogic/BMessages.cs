@@ -178,11 +178,11 @@ namespace GrowthWare.BusinessLogic
             DataTable mRetVal = null;
             if (string.IsNullOrEmpty(searchCriteria.WhereClause))
             {
-                searchCriteria.WhereClause = " Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+                searchCriteria.WhereClause = " SecurityEntitySeqId = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             }
             else
             {
-                searchCriteria.WhereClause += " AND Security_Entity_SeqID = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
+                searchCriteria.WhereClause += " AND SecurityEntitySeqId = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
             }
             if (DatabaseIsOnline()) mRetVal = m_DMessages.Search(searchCriteria);
             return mRetVal;

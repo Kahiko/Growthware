@@ -2,24 +2,24 @@
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID int = 4,
-		@P_Security_Entity_SeqID	INT = 1,
+		@P_GroupSeqId int = 4,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Group
-		@P_Group_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_GroupSeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 07/28/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups
---	given the Group_SeqID and Security_Entity_SeqID
+--	given the GroupSeqId and SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Group]
-	@P_Group_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@P_GroupSeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -41,8 +41,8 @@ BEGIN
 						FROM 
 							ZGWSecurity.Groups_Security_Entities 
 						WHERE 
-							Group_SeqID=@P_Group_SeqID 
-							AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+							GroupSeqId=@P_GroupSeqId 
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -51,8 +51,8 @@ BEGIN
 			IF @P_Debug = 1 PRINT 'Deleting rows from ZGWSecurity.Groups_Security_Entities'
 			DELETE ZGWSecurity.Groups_Security_Entities
 			WHERE (
-				Group_SeqID = @P_Group_SeqID AND
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				GroupSeqId = @P_GroupSeqId AND
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END
 		
@@ -61,14 +61,14 @@ BEGIN
 						ZGWSecurity.Groups,
 						ZGWSecurity.Groups_Security_Entities
 						WHERE
-						ZGWSecurity.Groups.Group_SeqID = ZGWSecurity.Groups_Security_Entities.Group_SeqID
-						AND ZGWSecurity.Groups.Group_SeqID = @P_Group_SeqID)
+						ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
+						AND ZGWSecurity.Groups.GroupSeqId = @P_GroupSeqId)
 			-- PRINT @GROUP_COUNT -- for debug
 			IF @GROUP_COUNT = 0
 				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
 				BEGIN
 					DELETE ZGWSecurity.Groups
-					WHERE (Group_SeqID = @P_Group_SeqID)
+					WHERE (GroupSeqId = @P_GroupSeqId)
 				END
 			-- END IF
 		END --  DELETE GROUP FROM ZGWSecurity.Groups

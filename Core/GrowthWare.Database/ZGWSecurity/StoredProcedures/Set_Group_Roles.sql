@@ -2,15 +2,15 @@
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID INT = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@P_GroupSeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'Anonymous, Authenticated',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group_Roles
-		@P_Group_SeqID,
-		@P_Security_Entity_SeqID,
+		@P_GroupSeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -22,8 +22,8 @@ Usage:
 -- Description:	Deletes and inserts ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Group_Roles]
-		@P_Group_SeqID INT,
-		@P_Security_Entity_SeqID INT,
+		@P_GroupSeqId INT,
+		@PSecurityEntitySeqId INT,
 		@P_Roles VARCHAR(MAX),
 		@P_Added_Updated_By INT,
 		@P_Debug INT = 0
@@ -39,7 +39,7 @@ AS
 		--NEED TO DELETE EXISTING Roles ASSOCITAED BEFORE 
 		-- INSERTING NEW ONES. EXECUTION OF THIS STORED PROC
 		-- IS MOVED FROM CODE			
-		EXEC ZGWSecurity.Delete_Group_Roles @P_Group_SeqID,@P_Security_Entity_SeqID, @P_Debug	
+		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@PSecurityEntitySeqId, @P_Debug	
 		SET @P_Roles = LTRIM(RTRIM(@P_Roles))+ ','
 		SET @V_POS = CHARINDEX(',', @P_Roles, 1)
 	
@@ -51,15 +51,15 @@ AS
 				IF @V_Role_Name <> ''
 				IF @P_Debug = 1 PRINT @V_Role_Name -- DEBUG
 				BEGIN
-					--SELECT THE Role_SeqID FROM THE Roles
+					--SELECT THE RoleSeqId FROM THE Roles
 					--TABLE FOR ALL THE Roles PASSED
 					SELECT  
 						@V_Roles_Security_Entities_SeqID = ZGWSecurity.Roles_Security_Entities.Roles_Security_Entities_SeqID
 					FROM
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
-						ZGWSecurity.Roles_Security_Entities.Role_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
-						AND ZGWSecurity.Roles_Security_Entities.Security_Entity_SeqID = @P_Security_Entity_SeqID
+						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT @V_Roles_Security_Entities_SeqID
 
 					SELECT
@@ -67,8 +67,8 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
-						AND Group_SeqID = @P_Group_SeqID
+						SecurityEntitySeqId = @PSecurityEntitySeqId
+						AND GroupSeqId = @P_GroupSeqId
 					
 					IF @P_Debug = 1 PRINT @V_Groups_Security_Entities_SeqID -- DEBUG
 					/*

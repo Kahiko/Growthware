@@ -2,13 +2,13 @@
 /*
 Usage:
 	DECLARE
-		@P_Security_Entity_SeqID int,
-		@P_Function_SeqID int,
+		@PSecurityEntitySeqId int,
+		@P_FunctionSeqId int,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notifications
-		@P_Security_Entity_SeqID,
-		@P_Function_SeqID,
+		@PSecurityEntitySeqId,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -17,8 +17,8 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Notifications]
-	@P_Security_Entity_SeqID int,
-	@P_Function_SeqID int,
+	@PSecurityEntitySeqId int,
+	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -31,11 +31,11 @@ AS
 	FROM
 		ZGWSecurity.Accounts Accounts WITH(NOLOCK)
 			INNER JOIN ZGWCoreWeb.Notifications Notifications WITH(NOLOCK)
-				ON Accounts.Account_SeqID = Notifications.Added_By
+				ON Accounts.AccountSeqId = Notifications.Added_By
 	WHERE
 		Accounts.Enable_Notifications = @V_Enable_Notifications
-		AND Notifications.Function_SeqID = @P_Function_SeqID
-		AND Notifications.Security_Entity_SeqID = @P_Security_Entity_SeqID
+		AND Notifications.FunctionSeqId = @P_FunctionSeqId
+		AND Notifications.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Email
 

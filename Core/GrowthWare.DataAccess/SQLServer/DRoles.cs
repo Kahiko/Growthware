@@ -30,7 +30,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         void IRoles.DeleteRole()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntityID) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntityID) };
             String mStoreProc = "ZGWSecurity.Delete_Role";
             base.ExecuteNonQuery( mStoreProc,  mParameters);
         }
@@ -50,28 +50,28 @@ namespace GrowthWare.DataAccess.SQLServer
 
         DataTable IRoles.RolesBySecurityEntity()
         {
-            SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", -1), new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntityID) };
+            SqlParameter[] myParameters = { new SqlParameter("@P_RoleSeqId", -1), new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntityID) };
             String myStoreProc = "ZGWSecurity.Get_Role";
             return base.GetDataTable( myStoreProc,  myParameters);
         }
 
         DataRow IRoles.ProfileData()
         {
-            SqlParameter[] myParameters = { new SqlParameter("@P_Role_SeqID", m_Profile.Id), new SqlParameter("@P_Security_Entity_SeqID", -1) };
+            SqlParameter[] myParameters = { new SqlParameter("@P_RoleSeqId", m_Profile.Id), new SqlParameter("@PSecurityEntitySeqId", -1) };
             String myStoreProc = "ZGWSecurity.Get_Role";
             return base.GetDataRow( myStoreProc,  myParameters);
         }
 
         DataTable IRoles.AccountsInRole()
         {
-            SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntityID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
+            SqlParameter[] myParameters = { new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntityID), new SqlParameter("@P_RoleSeqId", m_Profile.Id) };
             string myStoreProcedure = "ZGWSecurity.Get_Accounts_In_Role";
             return base.GetDataTable( myStoreProcedure,  myParameters);
         }
 
         DataTable IRoles.AccountsNotInRole()
         {
-            SqlParameter[] myParameters = { new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntityID), new SqlParameter("@P_Role_SeqID", m_Profile.Id) };
+            SqlParameter[] myParameters = { new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntityID), new SqlParameter("@P_RoleSeqId", m_Profile.Id) };
             string myStoreProcedure = "ZGWSecurity.Get_Accounts_Not_In_Role";
             return base.GetDataTable( myStoreProcedure,  myParameters);
         }
@@ -93,7 +93,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
                 SqlParameter mSqlParameter = new SqlParameter("@P_ROLE_SEQ_ID", roleSeqID);
                 mSqlCommand.Parameters.Add(mSqlParameter);
-                mSqlParameter = new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID);
+                mSqlParameter = new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID);
                 mSqlCommand.Parameters.Add(mSqlParameter);
                 mSqlCommand.ExecuteNonQuery();
 
@@ -102,9 +102,9 @@ namespace GrowthWare.DataAccess.SQLServer
                 {
                     mAccount = account_loopVariable;
                     mSqlCommand.Parameters.Clear();
-                    mSqlParameter = new SqlParameter("@P_Role_SeqID", roleSeqID);
+                    mSqlParameter = new SqlParameter("@P_RoleSeqId", roleSeqID);
                     mSqlCommand.Parameters.Add(mSqlParameter);
-                    mSqlParameter = new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID);
+                    mSqlParameter = new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID);
                     mSqlCommand.Parameters.Add(mSqlParameter);
                     mSqlParameter = new SqlParameter("@P_Account", mAccount);
                     mSqlCommand.Parameters.Add(mSqlParameter);
@@ -141,12 +141,12 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             SqlParameter[] myParameters = 
 			{ 
-				new SqlParameter("@P_Role_SeqID", m_Profile.Id), 
+				new SqlParameter("@P_RoleSeqId", m_Profile.Id), 
 				new SqlParameter("@P_Name", m_Profile.Name), 
 				new SqlParameter("@P_Description", m_Profile.Description), 
 				new SqlParameter("@P_Is_System", m_Profile.IsSystem), 
 				new SqlParameter("@P_Is_System_Only", m_Profile.IsSystemOnly), 
-				new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntityID), 
+				new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntityID), 
 				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
 				GetSqlParameter("@P_Primary_Key", m_Profile.Id, ParameterDirection.Output) 
 			};

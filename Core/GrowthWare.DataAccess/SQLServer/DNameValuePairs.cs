@@ -76,14 +76,14 @@ namespace GrowthWare.DataAccess.SQLServer
 
         DataTable INameValuePairs.GetRoles(int NameValuePairSeqID)
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NameValuePairSeqID), new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NameValuePairSeqID), new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId) };
             string myStoreProcedure = "ZGWSecurity.Get_Name_Value_Pair_Roles";
             return base.GetDataTable(myStoreProcedure, mParameters);
         }
 
         DataTable INameValuePairs.GetGroups(int NameValuePairSeqID)
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NameValuePairSeqID), new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NameValuePairSeqID), new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId) };
             string myStoreProcedure = "ZGWSecurity.Get_Name_Value_Pair_Groups";
             return base.GetDataTable(myStoreProcedure, mParameters);
         }
@@ -91,14 +91,14 @@ namespace GrowthWare.DataAccess.SQLServer
         void INameValuePairs.UpdateGroups(int NVP_ID, int SecurityEntityID, string CommaSeparatedGroups, MNameValuePair nvpProfile)
         {
             string myStoreProcedure = "ZGWSecurity.Set_Name_Value_Pair_Groups";
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NVP_ID), new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID), new SqlParameter("@P_Groups", CommaSeparatedGroups), new SqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NVP_ID), new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID), new SqlParameter("@P_Groups", CommaSeparatedGroups), new SqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
         }
 
         void INameValuePairs.UpdateRoles(int NVP_ID, int SecurityEntityID, string CommaSeparatedRoles, MNameValuePair nvpProfile)
         {
             string myStoreProcdure = "ZGWSecurity.Set_Name_Value_Pair_Roles";
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NVP_ID), new SqlParameter("@P_Security_Entity_SeqID", SecurityEntityID), new SqlParameter("@P_Role", CommaSeparatedRoles), new SqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", NVP_ID), new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID), new SqlParameter("@P_Role", CommaSeparatedRoles), new SqlParameter("@P_Permissions_NVP_Detail_SeqID", m_PermissionSeqId), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(nvpProfile)) };
             base.ExecuteNonQuery(myStoreProcdure, mParameters);
         }
 
@@ -182,7 +182,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         private SqlParameter[] GetSelectParameters()
         {
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", m_Profile.Id), new SqlParameter("@P_Account_SeqID", m_AccountId), new SqlParameter("@P_Security_Entity_SeqID", m_SecurityEntitySeqId) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_SeqID", m_Profile.Id), new SqlParameter("@P_AccountSeqId", m_AccountId), new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId) };
             return mParameters;
         }
     }

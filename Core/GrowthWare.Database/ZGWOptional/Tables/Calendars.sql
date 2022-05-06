@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWOptional].[Calendars] (
-    [Security_Entity_SeqID] INT           NOT NULL,
+    [SecurityEntitySeqId] INT           NOT NULL,
     [Calendar_Name]         VARCHAR (50)  NOT NULL,
     [Entry_Date]            SMALLDATETIME NOT NULL,
     [Comment]               VARCHAR (100) NOT NULL,
@@ -8,7 +8,7 @@ CREATE TABLE [ZGWOptional].[Calendars] (
     [Added_Date]            DATETIME      CONSTRAINT [DF_ZGWOptional_Calendar_Added_Date] DEFAULT (getdate()) NOT NULL,
     [Updated_By]            INT           NULL,
     [Updated_Date]          DATETIME      NULL,
-    CONSTRAINT [FK_ZGWOptional_Calendar_ZGWSecurity_Entities] FOREIGN KEY ([Security_Entity_SeqID]) REFERENCES [ZGWSecurity].[Security_Entities] ([Security_Entity_SeqID]) ON DELETE CASCADE ON UPDATE CASCADE
+    CONSTRAINT [FK_ZGWOptional_Calendar_ZGWSecurity_Entities] FOREIGN KEY ([SecurityEntitySeqId]) REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId]) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 

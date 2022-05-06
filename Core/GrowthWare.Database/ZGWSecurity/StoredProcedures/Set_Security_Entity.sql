@@ -2,7 +2,7 @@
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID int = -1,
+		@PSecurityEntitySeqId int = -1,
 		@P_Name VARCHAR(256) = 'System',
 		@P_Description VARCHAR(512) = 'System',
 		@P_URL VARCHAR(128) = '',
@@ -14,13 +14,13 @@ Usage:
 		@P_Skin char(25) = '',
 		@P_Style VARCHAR(25) = '',
 		@P_Encryption_Type INT = 1,
-		@P_Parent_Security_Entity_SeqID int = 1,
+		@P_ParentSecurityEntitySeqId int = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Security_Entity
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Description,
 		@P_URL,
@@ -32,7 +32,7 @@ Usage:
 		@P_Skin,
 		@P_Style,
 		@P_Encryption_Type,
-		@P_Parent_Security_Entity_SeqID,
+		@P_ParentSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -45,7 +45,7 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Security_Entities
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Security_Entity]
-	@P_Security_Entity_SeqID int,
+	@PSecurityEntitySeqId int,
 	@P_Name VARCHAR(256),
 	@P_Description VARCHAR(512),
 	@P_URL VARCHAR(128),
@@ -57,7 +57,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Security_Entity]
 	@P_Skin char(25),
 	@P_Style VARCHAR(25),
 	@P_Encryption_Type INT,
-	@P_Parent_Security_Entity_SeqID int,
+	@P_ParentSecurityEntitySeqId int,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -65,8 +65,8 @@ AS
 	DECLARE @V_Now DATETIME = GETDATE()
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Security_Entity'
-	IF @P_Parent_Security_Entity_SeqID = @P_Security_Entity_SeqID or @P_Parent_Security_Entity_SeqID = -1 SET @P_Parent_Security_Entity_SeqID = NULL
-	IF @P_Security_Entity_SeqID > -1
+	IF @P_ParentSecurityEntitySeqId = @PSecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
+	IF @PSecurityEntitySeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Update'
 			UPDATE ZGWSecurity.Security_Entities
@@ -82,13 +82,13 @@ AS
 				Skin = @P_Skin,
 				Style = @P_Style,
 				Encryption_Type = @P_Encryption_Type,
-				Parent_Security_Entity_SeqID = @P_Parent_Security_Entity_SeqID,
+				ParentSecurityEntitySeqId = @P_ParentSecurityEntitySeqId,
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 
-			SELECT @P_Primary_Key = @P_Security_Entity_SeqID
+			SELECT @P_Primary_Key = @PSecurityEntitySeqId
 		END
 	ELSE
 		BEGIN
@@ -107,7 +107,7 @@ AS
 				Skin,
 				Style,
 				Encryption_Type,
-				Parent_Security_Entity_SeqID,
+				ParentSecurityEntitySeqId,
 				Added_By,
 				Added_Date
 			)
@@ -124,7 +124,7 @@ AS
 				@P_Skin,
 				@P_Style,
 				@P_Encryption_Type,
-				@P_Parent_Security_Entity_SeqID,
+				@P_ParentSecurityEntitySeqId,
 				@P_Added_Updated_By,
 				@V_Now
 			)	

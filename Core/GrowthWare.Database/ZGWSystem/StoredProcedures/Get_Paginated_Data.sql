@@ -5,7 +5,7 @@ Usage:
 		@P_TableOrView nvarchar(50) = 'ZGWSecurity.Functions',              
 		@P_SelectedPage int = 1,
 		@P_PageSize int = 10,
-		@P_Columns nvarchar(500) = 'Function_SeqID, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
+		@P_Columns nvarchar(500) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
 		@P_OrderByColumn nvarchar(100) = 'Action',
 		@P_OrderByDirection nvarchar(4) = 'ASC',
 		@P_WhereClause nvarchar(500)

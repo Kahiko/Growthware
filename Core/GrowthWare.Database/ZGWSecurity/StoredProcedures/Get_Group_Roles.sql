@@ -2,13 +2,13 @@
 /*
 Usage:
 	DECLARE 
-		@P_Security_Entity_SeqID AS INT,
-		@P_Group_SeqID AS INT,
+		@PSecurityEntitySeqId AS INT,
+		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group_Roles
-		@P_Security_Entity_SeqID,
-		@P_Group_SeqID,
+		@PSecurityEntitySeqId,
+		@P_GroupSeqId,
 		@P_Debug
 */
 -- =============================================
@@ -18,8 +18,8 @@ Usage:
 --	group id and secruity entity id
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Group_Roles]
-	@P_Security_Entity_SeqID AS INT,
-	@P_Group_SeqID AS INT,
+	@PSecurityEntitySeqId AS INT,
+	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -30,9 +30,9 @@ AS
 	FROM 
 		ZGWSecurity.Roles WITH(NOLOCK) 
 	WHERE 
-		Role_SeqID IN 
+		RoleSeqId IN 
 			(SELECT 
-				Role_SeqID 
+				RoleSeqId 
 			FROM 
 				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK) 
 			WHERE 
@@ -47,7 +47,7 @@ AS
 					FROM 
 						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK) 
 					WHERE 
-						Security_Entity_SeqID = @P_Security_Entity_SeqID AND Group_SeqID = @P_Group_SeqID)))
+						SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_GroupSeqId)))
 	ORDER BY
 		[Role]
 

@@ -2,30 +2,30 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWOptional.Get_Directory
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Debug
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/11/2011
 -- Description:	Selects directory infomation given
---	the Function_SeqID. When Function_SeqID = -1
+--	the FunctionSeqId. When FunctionSeqId = -1
 --	all rows in the table are retruned.
 -- =============================================
 CREATE PROCEDURE [ZGWOptional].[Get_Directory]
-		@P_Function_SeqID INT,
+		@P_FunctionSeqId INT,
 		@P_Debug INT = 0
 AS
 IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Get_Directory'
-IF @P_Function_SeqID = -1
+IF @P_FunctionSeqId = -1
 	BEGIN
 		IF @P_Debug = 1 PRINT 'Getting all'
 		SELECT
-			Function_SeqID as FUNCTION_SEQ_ID
+			FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -43,7 +43,7 @@ ELSE
 	BEGIN
 		IF @P_Debug = 1 PRINT 'Getting 1'
 		SELECT
-			Function_SeqID as FUNCTION_SEQ_ID
+			FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -55,7 +55,7 @@ ELSE
 		FROM
 			ZGWOptional.Directories
 		WHERE
-			Function_SeqID = @P_Function_SeqID
+			FunctionSeqId = @P_FunctionSeqId
 	END
 -- end if
 IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_Directory'

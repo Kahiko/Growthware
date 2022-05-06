@@ -2,22 +2,22 @@
 /*
 Usage:
 	DECLARE 
-		@P_Group_SeqID AS INT = 2,
-		@P_Security_Entity_SeqID AS INT = 1
+		@P_GroupSeqId AS INT = 2,
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Group_Accounts]
-		@P_Group_SeqID
-		@P_Security_Entity_SeqID
+		@P_GroupSeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Groups_Security_Entities_Accounts
---	given theGroup_SeqID and Security_Entity_SeqID
+--	given theGroupSeqId and SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Group_Accounts]
-	@P_Group_SeqID AS INT,
-	@P_Security_Entity_SeqID AS INT,
+	@P_GroupSeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Group_Accounts]'
@@ -30,8 +30,8 @@ AS
 			FROM 
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
-				Group_SeqID = @P_Group_SeqID 
-				AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+				GroupSeqId = @P_GroupSeqId 
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Accounts]'
 RETURN 0

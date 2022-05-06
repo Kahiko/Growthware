@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWSecurity].[Accounts] (
-    [Account_SeqID]        INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [AccountSeqId]        INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Account]              VARCHAR (128) NOT NULL,
     [Email]                VARCHAR (128) NULL,
     [Enable_Notifications] INT           NULL,
@@ -19,7 +19,7 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Added_Date]           DATETIME      CONSTRAINT [DF_Accounts_ADDED_DATE] DEFAULT (getdate()) NOT NULL,
     [Updated_By]           INT           NULL,
     [Updated_Date]         DATETIME      NULL,
-    CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([Account_SeqID] ASC),
+    CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([AccountSeqId] ASC),
     CONSTRAINT [FK_Accounts_Statuses] FOREIGN KEY ([Status_SeqID]) REFERENCES [ZGWSystem].[Statuses] ([Status_SeqID]),
     CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC)
 );

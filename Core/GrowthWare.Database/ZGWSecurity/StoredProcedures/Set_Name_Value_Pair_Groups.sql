@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_NVP_SeqID int = 1,
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
 		@P_Permissions_NVP_Detail_SeqID INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -11,7 +11,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Groups
 		@P_NVP_SeqID,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Permissions_NVP_Detail_SeqID,
 		@P_Added_Updated_By,
@@ -24,7 +24,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Groups]
 	@P_NVP_SeqID INT,
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(1000),
 	@P_Permissions_NVP_Detail_SeqID INT,
 	@P_Added_Updated_By INT,
@@ -33,14 +33,14 @@ AS
 
 IF @P_Debug = 1 PRINT('Starting ZGWSecurity.Set_Name_Value_Pair_Groups')
 BEGIN TRAN
-	DECLARE @V_Group_SeqID INT
+	DECLARE @V_GroupSeqId INT
 			,@V_Groups_Security_Entities_SeqID INT
 			,@V_GROUP_NAME VARCHAR(50)
 			,@V_Pos INT
 			,@V_ErrorMsg VARCHAR(MAX)
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Groups associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVP_SeqID,@P_Security_Entity_SeqID,@P_Permissions_NVP_Detail_SeqID, @P_Debug
+	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVP_SeqID,@PSecurityEntitySeqId,@P_Permissions_NVP_Detail_SeqID, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -58,7 +58,7 @@ BEGIN TRAN
 			IF @V_GROUP_NAME <> ''
 			BEGIN
 				IF @P_Debug = 1 PRINT 'select the GROUP seq id first'
-				SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
+				SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
 				FROM ZGWSecurity.Groups 
 				WHERE [Name]=@V_GROUP_NAME
 
@@ -67,8 +67,8 @@ BEGIN TRAN
 				FROM
 					ZGWSecurity.Groups_Security_Entities
 				WHERE
-					Group_SeqID = @V_Group_SeqID AND
-					Security_Entity_SeqID = @P_Security_Entity_SeqID
+					GroupSeqId = @V_GroupSeqId AND
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_Groups_Security_Entities_SeqID = ' + CONVERT(VARCHAR,@V_Groups_Security_Entities_SeqID))
 				IF NOT EXISTS(
 						SELECT 

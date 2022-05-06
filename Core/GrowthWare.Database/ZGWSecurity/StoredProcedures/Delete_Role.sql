@@ -3,22 +3,22 @@
 Usage:
 	DECLARE 
 		@P_Name AS VARCHAR(50) = 'MyRole',
-		@P_Security_Entity_SeqID AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec ZGWSecurity.Delete_Role
 		@P_Name
-		@P_Security_Entity_SeqID
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 08/03/2011
 -- Description:	Deletes a record from ZGWSecurity.Roles,
 --	0 to x records from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities and ZGWSecurity.Roles_Security_Entities
---	given the roles name and the Security_Entity_SeqID
+--	given the roles name and the SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Role]
 	@P_Name VARCHAR (50),
-	@P_Security_Entity_SeqID	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Role'
@@ -30,7 +30,7 @@ AS
 	*/
 	DECLARE @V_Roles_SeqID INT
 			
-	SET @V_Roles_SeqID = (SELECT Role_SeqID FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+	SET @V_Roles_SeqID = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
 
 	BEGIN TRANSACTION
 		BEGIN -- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities
@@ -49,8 +49,8 @@ AS
 						FROM 
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 
-							Role_SeqID = @V_Roles_SeqID
-							AND Security_Entity_SeqID = @P_Security_Entity_SeqID
+							RoleSeqId = @V_Roles_SeqID
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -59,8 +59,8 @@ AS
 			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Roles_Security_Entities'
 			DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
-				Role_SeqID= @V_Roles_SeqID AND
-				Security_Entity_SeqID = @P_Security_Entity_SeqID
+				RoleSeqId= @V_Roles_SeqID AND
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END 
 		BEGIN -- Delete the role from ZGWSecurity.Roles if no other entites are using the role
@@ -69,12 +69,12 @@ AS
 				ZGWSecurity.Roles Roles,
 				ZGWSecurity.Roles_Security_Entities RoleEntities
 				WHERE
-				Roles.Role_SeqID = RoleEntities.Role_SeqID
-				AND Roles.Role_SeqID = @V_Roles_SeqID) = 0
+				Roles.RoleSeqId = RoleEntities.RoleSeqId
+				AND Roles.RoleSeqId = @V_Roles_SeqID) = 0
 			BEGIN
 				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
 				DELETE ZGWSecurity.Roles
-				WHERE (Role_SeqID = @V_Roles_SeqID)
+				WHERE (RoleSeqId = @V_Roles_SeqID)
 			END
 		END
 	IF @@ERROR <> 0

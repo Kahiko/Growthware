@@ -3,14 +3,14 @@
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_Security_Entity_SeqID INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(max) = 'Everyone',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Groups
 		@P_Account,
-		@P_Security_Entity_SeqID,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -23,7 +23,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account_Groups]
 	@P_Account VARCHAR(128),
-	@P_Security_Entity_SeqID INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -34,11 +34,11 @@ AS
 	DECLARE @V_ErrorMsg VARCHAR(MAX)
 
 	BEGIN TRAN
-		DECLARE @Account_SeqID INT
-		SET @Account_SeqID = (SELECT Account_SeqID FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+		DECLARE @AccountSeqId INT
+		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Groups'
-		EXEC ZGWSecurity.Delete_Account_Groups @Account_SeqID, @P_Security_Entity_SeqID, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @PSecurityEntitySeqId, @P_Debug
 		IF @@ERROR <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -47,7 +47,7 @@ AS
 				GOTO ABEND
 			END
 		--END IF
-		DECLARE @V_Group_SeqID AS 	INT
+		DECLARE @V_GroupSeqId AS 	INT
 		DECLARE @V_SecurityEntity_GroupSeqID AS 	INT
 		DECLARE @V_Group_Name AS	VARCHAR(50)
 		DECLARE @V_Pos AS	INT
@@ -60,7 +60,7 @@ AS
 				IF @V_Group_Name <> ''
 				BEGIN
 					--select the role seq id first
-					SELECT @V_Group_SeqID = ZGWSecurity.Groups.Group_SeqID 
+					SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
 					FROM ZGWSecurity.Groups 
 					WHERE [Name]=@V_Group_Name
 
@@ -69,8 +69,8 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						Group_SeqID = @V_Group_SeqID AND
-						Security_Entity_SeqID = @P_Security_Entity_SeqID
+						GroupSeqId = @V_GroupSeqId AND
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
 					IF NOT EXISTS(
 							SELECT 
@@ -78,18 +78,18 @@ AS
 							FROM 
 								ZGWSecurity.Groups_Security_Entities_Accounts 
 							WHERE 
-							Account_SeqID = @Account_SeqID 
+							AccountSeqId = @AccountSeqId 
 							AND Groups_Security_Entities_SeqID = @V_SecurityEntity_GroupSeqID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
 						INSERT ZGWSecurity.Groups_Security_Entities_Accounts (
-							Account_SeqID,
+							AccountSeqId,
 							Groups_Security_Entities_SeqID,
 							Added_By
 						)
 						VALUES (
-							@Account_SeqID,
+							@AccountSeqId,
 							@V_SecurityEntity_GroupSeqID,
 							@P_Added_Updated_By
 						)

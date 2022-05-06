@@ -2,14 +2,14 @@
 /*
 Usage:
 	DECLARE 
-		@P_Function_SeqID INT = 1,
+		@P_FunctionSeqId INT = 1,
 		@P_Direction INT = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Function_Sort
-		@P_Function_SeqID,
+		@P_FunctionSeqId,
 		@P_Direction,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
@@ -21,7 +21,7 @@ Usage:
 -- Description:	Updates ZGWSecurity.Functions Sort_Order column
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Function_Sort]
-	@P_Function_SeqID INT,
+	@P_FunctionSeqId INT,
 	@P_Direction INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key INT OUTPUT,
@@ -32,12 +32,12 @@ AS
 			,@V_Parent_SeqID INT
 			,@V_Updated_Date DATETIME = GETDATE()
 	-- Get the parent ID so only the menu items here can be effected
-	SET @V_Parent_SeqID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE Function_SeqID = @P_Function_SeqID)
+	SET @V_Parent_SeqID = (SELECT Parent_SeqID FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
 	-- Get Current Sort Order
 	SELECT 
 		@V_Current_Sort_Order = Sort_Order
 	FROM ZGWSecurity.Functions
-	WHERE Function_SeqID = @P_Function_SeqID
+	WHERE FunctionSeqId = @P_FunctionSeqId
 	
 	-- Get Sort Order for Section Above
 	IF @P_Direction = 0 -- Down
@@ -66,7 +66,7 @@ AS
 	  Sort_Order = @V_Sort_Order_Move,
 	  Updated_By = @P_Added_Updated_By,
 	  Updated_Date = @V_Updated_Date
-	  WHERE Function_SeqID = @P_Function_SeqID
+	  WHERE FunctionSeqId = @P_FunctionSeqId
 
 RETURN 0
 
