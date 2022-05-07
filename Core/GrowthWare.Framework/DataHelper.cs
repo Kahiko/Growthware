@@ -91,7 +91,9 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Gets the page of data.
+        /// Gets the page of data.  Was created for instances when the data source
+        /// does not paginate the data and it becomes necessary to do the pagination
+        /// separately.
         /// </summary>
         /// <param name="dataTable">The data table.</param>
         /// <param name="sort">DataView.Sort</param>
