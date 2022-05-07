@@ -31,21 +31,23 @@ namespace GrowthWare.BusinessLogic;
 
         private BSearch(){}
 
-        public BSearch(MSecurityEntity securityEntityProfile, bool centralManagement){
+        private string m_DB_ClassName = "DSearch";
+
+        public BSearch(MSecurityEntity securityEntityProfile){
             if (securityEntityProfile == null)
             {
                 throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
             }
-            if (centralManagement)
+            if (!ConfigSettings.CentralManagement)
             {
                 if (m_DSearch == null)
                 {
-                    m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSearch");
+                    m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
                 }
             }
             else
             {
-                m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSearch");
+                m_DSearch = (ISearch)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, m_DB_ClassName);
             }
 
             m_DSearch.ConnectionString = securityEntityProfile.ConnectionString;

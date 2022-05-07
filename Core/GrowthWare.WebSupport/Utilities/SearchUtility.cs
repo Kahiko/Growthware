@@ -12,7 +12,7 @@ public static class SearchUtility
     public static string GetSearchResults(MSearchCriteria searchCriteria) {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
-        m_BSearch = new BSearch(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        m_BSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
         mDataTable = m_BSearch.GetSearchResults(searchCriteria);
             var mStringBuilder = new StringBuilder();
             if (mDataTable.Rows.Count > 0)
