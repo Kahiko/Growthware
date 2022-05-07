@@ -8,9 +8,9 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     /// <summary>
     /// Performs all data store interaction to SQL Server.
     /// </summary>
-    public abstract class ASearch : ADBInteraction
+    public class DSearch : ADBInteraction
     {
-        protected virtual DataTable Search(MSearchCriteria searchCriteria, string tableOrView)
+        protected DataTable Search(MSearchCriteria searchCriteria, string tableOrView)
         {
             if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
