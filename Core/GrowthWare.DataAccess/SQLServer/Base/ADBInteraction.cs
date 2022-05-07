@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     /// <summary>
     /// Performs all data store interaction to SQL Server.
     /// </summary>
-    public abstract class DDBInteraction : IDBInteraction, IDisposable
+    public abstract class ADBInteraction : IDBInteraction, IDisposable
     {
 #region Private Fields
         private bool m_DisposedValue;

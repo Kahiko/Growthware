@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DDatabaseManager : DDBInteraction, IDatabaseManager
+    public class DDatabaseManager : ADBInteraction, IDatabaseManager
     {
         private string m_DatabaseName = string.Empty;
         private string m_ScriptPath = string.Empty;

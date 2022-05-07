@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DCalendarData : DDBInteraction, ICalendarData
+    public class DCalendarData : ADBInteraction, ICalendarData
     {
         private string m_CalendarName = string.Empty;
         private int m_SecurityEntitySeqID = -2;

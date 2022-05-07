@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DRoles.
     /// </summary>
-    public class DRoles : DSearch, IRoles
+    public class DRoles : ASearch, IRoles
     {
         private int m_SecurityEntityID;
 

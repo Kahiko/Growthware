@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.SQLServer
     ///		Properties where chosen instead of parameters because all
     ///		methods will need one or both to perform their work.
     ///	</remarks>    
-    public class DAccount: DSearch, IAccount
+    public class DAccount: ASearch, IAccount
     {
 #region Private Field
 

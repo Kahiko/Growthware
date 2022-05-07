@@ -8,7 +8,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     /// <summary>
     /// Performs all data store interaction to SQL Server.
     /// </summary>
-    public abstract class DSearch : DDBInteraction
+    public abstract class ASearch : ADBInteraction
     {
         protected virtual DataTable Search(MSearchCriteria searchCriteria, string tableOrView)
         {

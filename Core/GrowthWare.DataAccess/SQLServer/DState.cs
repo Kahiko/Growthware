@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DState : DSearch, IState
+    public class DState : ASearch, IState
     {
         private MState m_Profile = null;
         private int m_SecurityEntitySeqID = -2;

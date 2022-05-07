@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DDirectories.
     /// </summary>
-    public class DDirectories : DDBInteraction, IDirectories
+    public class DDirectories : ADBInteraction, IDirectories
     {
         DataTable IDirectories.Directories()
         {
