@@ -11,6 +11,8 @@ namespace GrowthWare.Framework
         private static readonly IConfiguration m_Configuration;
         private static readonly string m_Connectionstring = string.Empty;
         private static readonly string m_SettingsDirectory = string.Empty;
+        private static string s_CentralManagement = string.Empty;
+        private static bool m_CentralManagement;
 
         static ConfigSettings()
         {
@@ -122,7 +124,13 @@ namespace GrowthWare.Framework
         /// <remarks></remarks>
         public static bool CentralManagement
         {
-            get { return bool.Parse(GetAppSettingValue("Central_Management")); }
+            get { 
+                if(String.IsNullOrEmpty(s_CentralManagement)) {
+                    s_CentralManagement = GetAppSettingValue("Central_Management");
+                    m_CentralManagement = bool.Parse(s_CentralManagement);
+                }
+                return m_CentralManagement;
+            }
         }
 
         /// <summary>

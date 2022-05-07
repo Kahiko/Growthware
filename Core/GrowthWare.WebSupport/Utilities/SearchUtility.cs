@@ -1,4 +1,5 @@
 using GrowthWare.BusinessLogic;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System.Data;
 using System.Text;
@@ -6,13 +7,13 @@ using System.Text;
 namespace GrowthWare.WebSupport.Utilities;
 public static class SearchUtility
 {
-    private static BSearch m_BSearch;
+    private static BSearch m_BSearch = null;
 
     public static string GetSearchResults(MSearchCriteria searchCriteria) {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
-        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile(), false);
-        mDataTable = mBSearch.GetSearchResults(searchCriteria);
+        m_BSearch = new BSearch(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mDataTable = m_BSearch.GetSearchResults(searchCriteria);
             var mStringBuilder = new StringBuilder();
             if (mDataTable.Rows.Count > 0)
             {
