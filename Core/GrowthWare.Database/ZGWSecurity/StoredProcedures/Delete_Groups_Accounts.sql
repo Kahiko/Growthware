@@ -3,11 +3,11 @@
 Usage:
 	DECLARE 
 		@P_GroupsSecurityEntitiesSeqId AS INT = 2,
-		@PSecurityEntitySeqId AS INT = 1
+		@P_SecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Groups_Accounts]
 		@P_GroupsSecurityEntitiesSeqId
-		@PSecurityEntitySeqId
+		@P_SecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -17,7 +17,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Groups_Accounts]
 	@P_GroupsSecurityEntitiesSeqId AS INT,
-	@PSecurityEntitySeqId AS INT,
+	@P_SecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
@@ -31,7 +31,7 @@ AS
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
 				GroupsSecurityEntitiesSeqId = @P_GroupsSecurityEntitiesSeqId 
-				AND SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
 RETURN 0

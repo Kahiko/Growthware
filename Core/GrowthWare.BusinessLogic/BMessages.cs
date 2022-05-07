@@ -166,26 +166,5 @@ namespace GrowthWare.BusinessLogic
                 m_DMessages.Save();
             }
         }
-
-        /// <summary>
-        /// Searches the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
-            DataTable mRetVal = null;
-            if (string.IsNullOrEmpty(searchCriteria.WhereClause))
-            {
-                searchCriteria.WhereClause = " SecurityEntitySeqId = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                searchCriteria.WhereClause += " AND SecurityEntitySeqId = " + m_SecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture);
-            }
-            if (DatabaseIsOnline()) mRetVal = m_DMessages.Search(searchCriteria);
-            return mRetVal;
-        }
     }
 }

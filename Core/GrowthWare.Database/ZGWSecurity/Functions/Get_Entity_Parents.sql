@@ -1,8 +1,8 @@
 /*
 Usage:
-	DECLARE @PSecurityEntitySeqId INT = 1
-	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(0,@PSecurityEntitySeqId)
-	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)
+	DECLARE @P_SecurityEntitySeqId INT = 1
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(0,@P_SecurityEntitySeqId)
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId)
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -15,7 +15,7 @@ Usage:
 CREATE FUNCTION [ZGWSecurity].[Get_Entity_Parents]
 (
 	@P_IncludeParent bit, 
-	@PSecurityEntitySeqId int
+	@P_SecurityEntitySeqId int
 )
 RETURNS @retParents TABLE 
 (
@@ -29,7 +29,7 @@ BEGIN
 			;WITH tblParent(SecurityEntitySeqId, ParentSecurityEntitySeqId) AS
 			(
 				SELECT SecurityEntitySeqId, ParentSecurityEntitySeqId
-					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE SecurityEntitySeqId = @PSecurityEntitySeqId
+					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId
 				UNION ALL
 				SELECT 
 					SE.SecurityEntitySeqId, SE.ParentSecurityEntitySeqId
@@ -43,14 +43,14 @@ BEGIN
 				tblParent.SecurityEntitySeqId
 			FROM  
 				tblParent
-			WHERE SecurityEntitySeqId <> @PSecurityEntitySeqId
+			WHERE SecurityEntitySeqId <> @P_SecurityEntitySeqId
 			OPTION(MAXRECURSION 32767)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents(SecurityEntitySeqId)VALUES(@PSecurityEntitySeqId);
+			IF (@P_IncludeParent=1) INSERT INTO @retParents(SecurityEntitySeqId)VALUES(@P_SecurityEntitySeqId);
 		END
 	ELSE
 		BEGIN
 			INSERT INTO @retParents VALUES(ZGWSecurity.Get_Default_Entity_ID(),1)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@PSecurityEntitySeqId,1)
+			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@P_SecurityEntitySeqId,1)
 		END
 	-- END IF
 	RETURN

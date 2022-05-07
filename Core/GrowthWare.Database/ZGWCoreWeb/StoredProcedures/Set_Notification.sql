@@ -2,14 +2,14 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId int = 2,
+		@P_SecurityEntitySeqId int = 2,
 		@P_FunctionSeqId int = 1,
 		@P_Account Varchar(128) = 'Developer',
 		@P_Status int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Set_Notification
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Account,
 		@P_Status,
@@ -22,7 +22,7 @@ Usage:
 --	Status value 1 = insert, 0 = delete
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Notification]
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Account Varchar(128),
 	@P_Status int,
@@ -41,7 +41,7 @@ IF @P_Status = 1
 			FROM 
 				ZGWCoreWeb.Notifications 
 			WHERE 
-				SecurityEntitySeqId = @PSecurityEntitySeqId
+				SecurityEntitySeqId = @P_SecurityEntitySeqId
 				AND FunctionSeqId = @P_FunctionSeqId
 				AND Added_By = @V_AccountSeqId
 		)
@@ -55,7 +55,7 @@ IF @P_Status = 1
 			)
 			VALUES
 			(
-			@PSecurityEntitySeqId,
+			@P_SecurityEntitySeqId,
 			@P_FunctionSeqId,
 			@V_AccountSeqId
 			)
@@ -66,7 +66,7 @@ ELSE
 	DELETE 
 		ZGWCoreWeb.Notifications
 	WHERE 
-		SecurityEntitySeqId = @PSecurityEntitySeqId
+		SecurityEntitySeqId = @P_SecurityEntitySeqId
 		AND FunctionSeqId = @P_FunctionSeqId
 		AND Added_By = @V_AccountSeqId
 --END IF

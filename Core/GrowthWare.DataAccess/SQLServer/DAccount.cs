@@ -47,7 +47,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 String mStoredProcedure = "ZGWSecurity.Get_Account";
                 SqlParameter[] mParameters = { 
                     GetSqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin, ParameterDirection.Input),
-                    GetSqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
+                    GetSqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID, ParameterDirection.Input),
                     GetSqlParameter("@P_Account", m_Profile.Account, ParameterDirection.Input)
                 };
                 return base.GetDataRow(mStoredProcedure, mParameters);
@@ -57,6 +57,18 @@ namespace GrowthWare.DataAccess.SQLServer
 #endregion
 
 #region Public Methods
+
+        DataTable IAccount.GetMenu(string account, MenuType menuType) {
+            string mStoredProcedure = "ZGWSecurity.Get_Menu_Data";
+            SqlParameter[] mParameters =
+			{
+			 new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+			 new SqlParameter("@P_NavigationTypesNVPDetailSeqID", (int)menuType),
+			 new SqlParameter("@P_Account", account)
+			};
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
+
         int IAccount.Save()
         {
             checkValid();
@@ -90,7 +102,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWSecurity.Set_Account_Groups";
             SqlParameter[] mParameters = {
 			  new SqlParameter("@P_Account", m_Profile.Account),
-			  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqID),
+			  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
 			  new SqlParameter("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
 			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			 };
@@ -102,7 +114,7 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWSecurity.Set_Account_Roles";
             SqlParameter[] mParameters = {
 			  new SqlParameter("@P_Account", m_Profile.Account),
-			  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqID),
+			  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
 			  new SqlParameter("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
 			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			 };

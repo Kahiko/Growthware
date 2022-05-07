@@ -2,7 +2,7 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId int = -1,
+		@P_SecurityEntitySeqId int = -1,
 		@P_Name VARCHAR(256) = 'System',
 		@P_Description VARCHAR(512) = 'System',
 		@P_URL VARCHAR(128) = '',
@@ -20,7 +20,7 @@ Usage:
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Security_Entity
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Name,
 		@P_Description,
 		@P_URL,
@@ -45,7 +45,7 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Security_Entities
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Security_Entity]
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_Name VARCHAR(256),
 	@P_Description VARCHAR(512),
 	@P_URL VARCHAR(128),
@@ -65,8 +65,8 @@ AS
 	DECLARE @V_Now DATETIME = GETDATE()
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Security_Entity'
-	IF @P_ParentSecurityEntitySeqId = @PSecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
-	IF @PSecurityEntitySeqId > -1
+	IF @P_ParentSecurityEntitySeqId = @P_SecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
+	IF @P_SecurityEntitySeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Update'
 			UPDATE ZGWSecurity.Security_Entities
@@ -86,9 +86,9 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				SecurityEntitySeqId = @PSecurityEntitySeqId
+				SecurityEntitySeqId = @P_SecurityEntitySeqId
 
-			SELECT @P_Primary_Key = @PSecurityEntitySeqId
+			SELECT @P_Primary_Key = @P_SecurityEntitySeqId
 		END
 	ELSE
 		BEGIN

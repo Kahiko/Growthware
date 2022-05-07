@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 1,
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'EveryOne',
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -11,7 +11,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Function_Roles
 		@P_FunctionSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Roles,
 		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
@@ -24,7 +24,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Function_Roles]
 	@P_FunctionSeqId int,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Roles VARCHAR(MAX),
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
@@ -41,7 +41,7 @@ BEGIN TRANSACTION
 			,@V_Role_Name AS VARCHAR(50)
 			,@V_Pos AS INT
 			,@V_ErrorMsg VARCHAR(MAX)
-	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@P_SecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -71,7 +71,7 @@ BEGIN TRANSACTION
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
 						RoleSeqId = @V_RoleSeqId AND
-						SecurityEntitySeqId = @PSecurityEntitySeqId
+						SecurityEntitySeqId = @P_SecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_RolesSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_RolesSecurityEntitiesSeqId))
 					IF NOT EXISTS(

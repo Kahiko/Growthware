@@ -2,11 +2,11 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId int = 4,
+		@P_SecurityEntitySeqId int = 4,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Function
-		@PSecurityEntitySeqId ,
+		@P_SecurityEntitySeqId ,
 		@P_Debug
 */
 -- =============================================
@@ -16,13 +16,13 @@ Usage:
 --	given the SecurityEntitySeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Entity]
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Start [ZGWSecurity].[Delete_Entity]'
 	DELETE FROM ZGWSecurity.Security_Entities
 	WHERE
-		SecurityEntitySeqId = @PSecurityEntitySeqId
+		SecurityEntitySeqId = @P_SecurityEntitySeqId
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Entity]'
 RETURN 0
 

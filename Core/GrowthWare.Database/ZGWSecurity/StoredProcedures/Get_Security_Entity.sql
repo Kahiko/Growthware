@@ -2,11 +2,11 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId AS INT = 1,
+		@P_SecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Security_Entity
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -19,12 +19,12 @@ Usage:
 --	security enties.
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Security_Entity]
-	@PSecurityEntitySeqId AS INT = 1,
+	@P_SecurityEntitySeqId AS INT = 1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Security_Entity'
-	IF @PSecurityEntitySeqId = -1
+	IF @P_SecurityEntitySeqId = -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
 			SELECT
@@ -74,7 +74,7 @@ AS
 			FROM 
 				ZGWSecurity.Security_Entities
 			WHERE
-				SecurityEntitySeqId = @PSecurityEntitySeqId
+				SecurityEntitySeqId = @P_SecurityEntitySeqId
 		END
 	--End IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Security_Entity'

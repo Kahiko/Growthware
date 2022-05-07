@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 
 		@P_RoleSeqId AS INT = -1,
-		@PSecurityEntitySeqId AS INT = 1,
+		@P_SecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Role
 		@P_RoleSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -21,7 +21,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Role]
 	@P_RoleSeqId INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -58,7 +58,7 @@ AS
 			ZGWSecurity.Roles_Security_Entities
 		WHERE
 			ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-			AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+			AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 		ORDER BY
 			ZGWSecurity.Roles.[Name]
 	-- END IF		

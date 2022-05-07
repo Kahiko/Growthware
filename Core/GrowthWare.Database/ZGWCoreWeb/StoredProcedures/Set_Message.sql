@@ -3,7 +3,7 @@
 Usage:
 	DECLARE 
 		@P_MessageSeqId INT = 1,
-		@PSecurityEntitySeqId INT = 2,
+		@P_SecurityEntitySeqId INT = 2,
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
@@ -15,7 +15,7 @@ Usage:
 
 	exec ZGWCoreWeb.Set_Message
 		@P_MessageSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Name,
 		@P_Title,
 		@P_Description,
@@ -34,7 +34,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Message]
 	@P_MessageSeqId INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
 	@P_Description VARCHAR(512),
@@ -53,12 +53,12 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					SecurityEntitySeqId = @PSecurityEntitySeqId
+					SecurityEntitySeqId = @P_SecurityEntitySeqId
 			)
 				BEGIN
 					UPDATE ZGWCoreWeb.[Messages]
 					SET
-						SecurityEntitySeqId = @PSecurityEntitySeqId,
+						SecurityEntitySeqId = @P_SecurityEntitySeqId,
 						[Name] = @P_Name,
 						Title = @P_Title,
 						[Description] = @P_Description,
@@ -68,7 +68,7 @@ AS
 						Updated_Date = GETDATE()
 					WHERE
 						MessageSeqId = @P_MessageSeqId
-						AND SecurityEntitySeqId = @PSecurityEntitySeqId
+						AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 
 					SELECT @P_Primary_Key = @P_MessageSeqId -- set the output id just in case.
 				END
@@ -87,7 +87,7 @@ AS
 					)
 					VALUES
 					(
-						@PSecurityEntitySeqId,
+						@P_SecurityEntitySeqId,
 						@P_Name,
 						@P_Title,
 						@P_Description,
@@ -106,7 +106,7 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					SecurityEntitySeqId = @PSecurityEntitySeqId
+					SecurityEntitySeqId = @P_SecurityEntitySeqId
 			)
 			BEGIN
 				RAISERROR ('The message you entered already exists in the database.',16,1)
@@ -126,7 +126,7 @@ AS
 			)
 			VALUES
 			(
-				@PSecurityEntitySeqId,
+				@P_SecurityEntitySeqId,
 				@P_Name,
 				@P_Title,
 				@P_Description,

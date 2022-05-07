@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 
 		@P_AccountSeqId int = 4,
-		@PSecurityEntitySeqId	INT = 1,
+		@P_SecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec  ZGWSecurity.Delete_Account_Groups
 		@P_AccountSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Account_Groups]
 	@P_AccountSeqId INT,
-	@PSecurityEntitySeqId	INT,
+	@P_SecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -27,7 +27,7 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Accounts 
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
 		AND AccountSeqId = @P_AccountSeqId
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account_Groups]'
 END

@@ -3,14 +3,14 @@
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(max) = 'Everyone',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Groups
 		@P_Account,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Groups,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -23,7 +23,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account_Groups]
 	@P_Account VARCHAR(128),
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Groups VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -38,7 +38,7 @@ AS
 		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Groups'
-		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @PSecurityEntitySeqId, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @P_SecurityEntitySeqId, @P_Debug
 		IF @@ERROR <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -70,7 +70,7 @@ AS
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
 						GroupSeqId = @V_GroupSeqId AND
-						SecurityEntitySeqId = @PSecurityEntitySeqId
+						SecurityEntitySeqId = @P_SecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
 					IF NOT EXISTS(
 							SELECT 

@@ -4,13 +4,13 @@ Usage:
 	DECLARE 
 		@P_Is_System_Admin bit = 1,
 		@P_Account VARCHAR(128) = 'Developer',
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec  ZGWSecurity.Get_Account
 		@P_Is_System_Admin,
 		@P_Account,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -22,7 +22,7 @@ Usage:
 CREATE PROCEDURE [ZGWSecurity].[Get_Account]
 	@P_Is_System_Admin Bit,
 	@P_Account VARCHAR(128),
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -60,7 +60,7 @@ AS
 				END
 			ELSE
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@PSecurityEntitySeqId)
+					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_SecurityEntitySeqId)
 					DECLARE @V_Accounts TABLE (
 						AccountSeqId INT
 						, Account VARCHAR(100)
@@ -112,7 +112,7 @@ AS
 					WHERE
 						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
 						AND Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
@@ -145,7 +145,7 @@ AS
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
 						AND Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId

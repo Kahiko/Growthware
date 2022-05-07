@@ -35,12 +35,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// </summary>
         void Save();
 
-        /// <summary>
-        /// Searches the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        DataTable Search(MSearchCriteria searchCriteria);
     }
 
 }

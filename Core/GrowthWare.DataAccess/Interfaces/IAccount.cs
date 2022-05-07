@@ -29,13 +29,6 @@ namespace GrowthWare.DataAccess.Interfaces
 		DataRow GetAccount { get; }
 
 		/// <summary>
-		/// Returns all accounts associated with a given SecurityEntitySeqID.
-		/// </summary>
-		/// <returns>DataTable</returns>
-		/// <remarks>Does not caculate security for accounts.</remarks>
-		DataTable GetAccounts { get; }
-
-		/// <summary>
 		/// Returns all roles associated with a given SecurityEntitySeqID.
 		/// </summary>
 		/// <returns>DataTable</returns>
@@ -78,12 +71,5 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// Save roles by passing a string or comma seporated rolse to the database.
 		/// </summary>
 		void SaveRoles();
-
-        /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
     }
 }

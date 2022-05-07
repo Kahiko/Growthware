@@ -52,12 +52,6 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             throw new NotImplementedException();
         }
-
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = base.Search(searchCriteria, "[ZGWOptional].[vwSearchStates]");
-            return mRetVal;
-        }
     }
 }
 

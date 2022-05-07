@@ -3,14 +3,14 @@
 Usage:
 	DECLARE 
 		@P_GroupSeqId INT = 1,
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'Anonymous, Authenticated',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group_Roles
 		@P_GroupSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -23,7 +23,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Group_Roles]
 		@P_GroupSeqId INT,
-		@PSecurityEntitySeqId INT,
+		@P_SecurityEntitySeqId INT,
 		@P_Roles VARCHAR(MAX),
 		@P_Added_Updated_By INT,
 		@P_Debug INT = 0
@@ -39,7 +39,7 @@ AS
 		--NEED TO DELETE EXISTING Roles ASSOCITAED BEFORE 
 		-- INSERTING NEW ONES. EXECUTION OF THIS STORED PROC
 		-- IS MOVED FROM CODE			
-		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@PSecurityEntitySeqId, @P_Debug	
+		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@P_SecurityEntitySeqId, @P_Debug	
 		SET @P_Roles = LTRIM(RTRIM(@P_Roles))+ ','
 		SET @V_POS = CHARINDEX(',', @P_Roles, 1)
 	
@@ -59,7 +59,7 @@ AS
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
 						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
-						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 					IF @P_Debug = 1 PRINT @V_RolesSecurityEntitiesSeqId
 
 					SELECT
@@ -67,7 +67,7 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						SecurityEntitySeqId = @PSecurityEntitySeqId
+						SecurityEntitySeqId = @P_SecurityEntitySeqId
 						AND GroupSeqId = @P_GroupSeqId
 					
 					IF @P_Debug = 1 PRINT @V_GroupsSecurityEntitiesSeqId -- DEBUG

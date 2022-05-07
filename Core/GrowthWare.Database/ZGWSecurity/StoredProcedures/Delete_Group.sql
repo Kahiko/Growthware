@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 
 		@P_GroupSeqId int = 4,
-		@PSecurityEntitySeqId	INT = 1,
+		@P_SecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Group
 		@P_GroupSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Group]
 	@P_GroupSeqId INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -42,7 +42,7 @@ BEGIN
 							ZGWSecurity.Groups_Security_Entities 
 						WHERE 
 							GroupSeqId=@P_GroupSeqId 
-							AND SecurityEntitySeqId = @PSecurityEntitySeqId
+							AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 						)
 					)
 		END 
@@ -52,7 +52,7 @@ BEGIN
 			DELETE ZGWSecurity.Groups_Security_Entities
 			WHERE (
 				GroupSeqId = @P_GroupSeqId AND
-				SecurityEntitySeqId = @PSecurityEntitySeqId
+				SecurityEntitySeqId = @P_SecurityEntitySeqId
 				   )
 		END
 		

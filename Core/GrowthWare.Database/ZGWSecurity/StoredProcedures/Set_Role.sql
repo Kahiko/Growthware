@@ -7,7 +7,7 @@ Usage:
 		@P_Description VARCHAR(128) = 'Testing',
 		@P_Is_System INT = 0,
 		@P_Is_System_Only INT = 0,
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
@@ -18,7 +18,7 @@ Usage:
 		@P_Description,
 		@P_Is_System,
 		@P_Is_System_Only,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -39,7 +39,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Role]
 	@P_Description VARCHAR(128),
 	@P_Is_System INT,
 	@P_Is_System_Only INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -110,7 +110,7 @@ BEGIN TRAN
 			GOTO ABEND		
 		END CATCH
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
 	BEGIN TRY  -- ADD ROLE REFERENCE TO SE_SECURITY
 			IF @P_Debug = 1 PRINT 'Add role reference to ZGWSecurity.Roles_Security_Entities'
 			INSERT ZGWSecurity.Roles_Security_Entities (
@@ -120,7 +120,7 @@ BEGIN TRAN
 				, Added_Date
 			)
 			VALUES (
-				@PSecurityEntitySeqId,
+				@P_SecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Now

@@ -1,3 +1,4 @@
+using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework.Models;
 using System;
 using System.Data;
@@ -8,9 +9,17 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     /// <summary>
     /// Performs all data store interaction to SQL Server.
     /// </summary>
-    public class DSearch : ADBInteraction
+    public class DSearch : ADBInteraction, ISearch
     {
-        protected DataTable Search(MSearchCriteria searchCriteria, string tableOrView)
+        private int m_SecurityEntityID;
+
+        int ISearch.SecurityEntitySeqID
+        {
+            get { return m_SecurityEntityID; }
+            set { m_SecurityEntityID = value; }
+        }
+
+        DataTable ISearch.GetSearchResults(MSearchCriteria searchCriteria)
         {
             if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
@@ -22,7 +31,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
               new SqlParameter("@P_OrderByDirection", searchCriteria.OrderByDirection),
               new SqlParameter("@P_PageSize", searchCriteria.PageSize),
               new SqlParameter("@P_SelectedPage", searchCriteria.SelectedPage),
-              new SqlParameter("@P_TableOrView", tableOrView),
+              new SqlParameter("@P_TableOrView", searchCriteria.TableOrView),
               new SqlParameter("@P_WhereClause", searchCriteria.WhereClause)
              };
             mRetVal = base.GetDataTable(mStoredProcedure, mParameters);

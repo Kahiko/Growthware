@@ -3,12 +3,12 @@
 Usage:
 	DECLARE 	
 		@P_MessageSeqId INT, 
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Messages
 		@P_MessageSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -20,7 +20,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Messages]
 	@P_MessageSeqId INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -31,13 +31,13 @@ AS
 		something along the lines of core defaul security entity message
 		+ other security entity messages ...
 	*/
-	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @PSecurityEntitySeqId) = 0
+	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId) = 0
 		BEGIN
 			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
 				BEGIN
 					INSERT INTO ZGWCoreWeb.[Messages]
 						SELECT
-							@PSecurityEntitySeqId
+							@P_SecurityEntitySeqId
 							, Name
 							, Title
 							, [Description]

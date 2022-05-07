@@ -4,13 +4,13 @@ Usage:
 	DECLARE
 		@P_NVPSeqId int = 1,
 		@P_AccountSeqId int = 2,
-		@PSecurityEntitySeqId int = 1,
+		@P_SecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSystem.Get_Name_Value_Pair
 		@P_NVPSeqId,
 		@P_AccountSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -21,7 +21,7 @@ Usage:
 CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair]
 	@P_NVPSeqId int,
 	@P_AccountSeqId int,
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -89,7 +89,7 @@ AS
 						AND SECURITY.NVPSeqId = ZGWSystem.Name_Value_Pairs.NVPSeqId
 						AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
 						AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-						AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 					IF @P_Debug = 1 PRINT 'Getting items via groups'
 					INSERT INTO @V_AvalibleItems
 					SELECT -- Items via groups
@@ -120,7 +120,7 @@ AS
 						AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 						AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Permissions.PermissionsNVPDetailSeqId
 						AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 
 					DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 					IF @P_Debug = 1 PRINT 'Getting roles for account and roles via groups'
@@ -135,7 +135,7 @@ AS
 					WHERE
 						ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
 						AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
@@ -149,7 +149,7 @@ AS
 						ZGWSecurity.Roles
 					WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
 						AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId

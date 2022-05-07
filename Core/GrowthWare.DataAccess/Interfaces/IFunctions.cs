@@ -57,13 +57,6 @@ namespace GrowthWare.DataAccess.Interfaces
         void SaveRoles(PermissionType permission);
 
         /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
-
-        /// <summary>
         /// Updates the menu order.
         /// </summary>
         /// <param name="profile">The profile.</param>

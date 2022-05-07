@@ -3,11 +3,11 @@
 Usage:
 	DECLARE 
 		@P_Name AS VARCHAR(50) = 'MyRole',
-		@PSecurityEntitySeqId AS INT = 1
+		@P_SecurityEntitySeqId AS INT = 1
 
 	exec ZGWSecurity.Delete_Role
 		@P_Name
-		@PSecurityEntitySeqId
+		@P_SecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -18,7 +18,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Delete_Role]
 	@P_Name VARCHAR (50),
-	@PSecurityEntitySeqId	INT,
+	@P_SecurityEntitySeqId	INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Role'
@@ -50,7 +50,7 @@ AS
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 
 							RoleSeqId = @V_RolesSeqId
-							AND SecurityEntitySeqId = @PSecurityEntitySeqId
+							AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 						)
 					)
 		END 
@@ -60,7 +60,7 @@ AS
 			DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
 				RoleSeqId= @V_RolesSeqId AND
-				SecurityEntitySeqId = @PSecurityEntitySeqId
+				SecurityEntitySeqId = @P_SecurityEntitySeqId
 				   )
 		END 
 		BEGIN -- Delete the role from ZGWSecurity.Roles if no other entites are using the role

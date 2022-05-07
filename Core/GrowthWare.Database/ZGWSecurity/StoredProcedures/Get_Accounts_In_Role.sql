@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_RoleSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Role
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_RoleSeqId,
 		@P_Debug
 */
@@ -18,7 +18,7 @@ Usage:
 --	given the SecurityEntitySeqId and RoleSeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_In_Role]
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_RoleSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -37,7 +37,7 @@ AS
 		AND [Security].RoleSeqId = Roles.RoleSeqId
 		AND Accounts.StatusSeqId <> 2
 		AND Roles.RoleSeqId = @P_RoleSeqId
-		AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND [Security].SecurityEntitySeqId = @P_SecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Role'

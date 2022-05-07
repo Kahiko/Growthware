@@ -10,12 +10,6 @@ namespace GrowthWare.DataAccess.Interfaces
     /// </summary>
     public interface IMessages : IDBInteraction
     {
-        /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
 
         /// <summary>
         /// Gets or sets the profile.

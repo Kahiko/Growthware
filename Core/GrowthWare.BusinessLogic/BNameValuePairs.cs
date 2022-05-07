@@ -191,18 +191,6 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Searches the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.Search(searchCriteria);
-            return mRetVal;
-        }
-
-        /// <summary>
         /// Updates the groups.
         /// </summary>
         /// <param name="nameValuePairId">The NV p_ ID.</param>

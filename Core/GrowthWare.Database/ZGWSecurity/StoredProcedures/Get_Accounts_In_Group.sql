@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_GroupSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Group
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -18,7 +18,7 @@ Usage:
 --	given the SecurityEntitySeqId and GroupSeqId
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_In_Group]
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_GroupSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -38,7 +38,7 @@ AS
 		AND Security.GroupSeqId = Groups.GroupSeqId
 		AND Accounts.StatusSeqId <> 2
 		AND Groups.GroupSeqId = @P_GroupSeqId
-		AND Security.SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND Security.SecurityEntitySeqId = @P_SecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Group'

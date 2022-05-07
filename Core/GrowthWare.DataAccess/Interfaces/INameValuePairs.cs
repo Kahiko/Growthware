@@ -126,11 +126,5 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <returns>System.Int32.</returns>
         int Save();
 
-        /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
     }
 }

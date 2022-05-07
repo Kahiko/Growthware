@@ -1,6 +1,7 @@
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework.Models;
+using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.Web.Angular.Controllers;
 
@@ -21,7 +22,7 @@ public class GrowthWareController : ControllerBase
 
     [HttpGet(Name = "GetSearchResults")]
     public string GetSearchResults(MSearchCriteria searchCriteria) {
-        String mRetVal = string.Empty;
+        String mRetVal = SearchUtility.GetSearchResults(searchCriteria);
         return mRetVal;
     }
     

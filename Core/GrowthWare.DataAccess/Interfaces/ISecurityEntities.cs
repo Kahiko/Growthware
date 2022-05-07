@@ -23,9 +23,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <remarks></remarks>
         DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
 
-
-        DataTable Search(MSearchCriteria searchCriteria);
-
         /// <summary>
         /// Saves security entity information to the datastore.
         /// </summary>

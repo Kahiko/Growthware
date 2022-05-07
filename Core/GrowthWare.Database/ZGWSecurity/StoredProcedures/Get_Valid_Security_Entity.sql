@@ -4,13 +4,13 @@ Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'developer',
 		@P_Is_Se_Admin INT = 1,
-		@PSecurityEntitySeqId AS INT = 1,
+		@P_SecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Valid_Security_Entity
 		@P_Account,
 		@P_Is_Se_Admin,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -25,7 +25,7 @@ Usage:
 CREATE PROCEDURE [ZGWSecurity].[Get_Valid_Security_Entity]
 	@P_Account VARCHAR(128),
 	@P_Is_Se_Admin INT,
-	@PSecurityEntitySeqId AS INT,
+	@P_SecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -91,7 +91,7 @@ AS
 							ZGWSecurity.Security_Entities
 						WHERE
 							ZGWSecurity.Security_Entities.SecurityEntitySeqId IN (SELECT * FROM @T_Valic_Se)
-							OR ZGWSecurity.Security_Entities.ParentSecurityEntitySeqId = @PSecurityEntitySeqId
+							OR ZGWSecurity.Security_Entities.ParentSecurityEntitySeqId = @P_SecurityEntitySeqId
 						ORDER BY
 							[Name]
 					END

@@ -1,11 +1,48 @@
-using GrowthWare.DataAccess.Interfaces;
+using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
+using System.Data;
+using System.Text;
 
 namespace GrowthWare.WebSupport.Utilities;
 public static class SearchUtility
 {
+    private static BSearch m_BSearch;
+
     public static string GetSearchResults(MSearchCriteria searchCriteria) {
         string mRetVal = string.Empty;
+        DataTable mDataTable = null;
+        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile(), false);
+        mDataTable = mBSearch.GetSearchResults(searchCriteria);
+            var mStringBuilder = new StringBuilder();
+            if (mDataTable.Rows.Count > 0)
+            {
+                mStringBuilder.Append("[");
+                for (int i = 0; i < mDataTable.Rows.Count; i++)
+                {
+                    mStringBuilder.Append("{");
+                    for (int j = 0; j < mDataTable.Columns.Count; j++)
+                    {
+                        if (j < mDataTable.Columns.Count - 1)
+                        {
+                            mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\",");
+                        }
+                        else if (j == mDataTable.Columns.Count - 1)
+                        {
+                            mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\"");
+                        }
+                    }
+                    if (i == mDataTable.Rows.Count - 1)
+                    {
+                        mStringBuilder.Append("}");
+                    }
+                    else
+                    {
+                        mStringBuilder.Append("},");
+                    }
+                }
+                mStringBuilder.Append("]");
+            }
+
         return mRetVal;
     }
 }

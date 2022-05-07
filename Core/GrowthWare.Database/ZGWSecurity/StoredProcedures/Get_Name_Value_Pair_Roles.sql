@@ -3,12 +3,12 @@
 Usage:
 	DECLARE
 		@P_NVPSeqId int = 1,
-		@PSecurityEntitySeqId int = 1,
+		@P_SecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Roles
 		@P_NVPSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles]
 		@P_NVPSeqId int = 1,
-		@PSecurityEntitySeqId int = 1,
+		@P_SecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -34,7 +34,7 @@ AS
 		ZGWSecurity.Roles_Security_Entities_Permissions.NVPSeqId = @P_NVPSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Permissions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 	ORDER BY
 		ROLES
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'

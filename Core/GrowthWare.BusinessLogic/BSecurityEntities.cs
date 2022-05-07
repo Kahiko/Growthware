@@ -165,21 +165,6 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Searches security enties using the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = null;
-            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") 
-            {
-                mRetVal = m_DSecurityEntities.Search(searchCriteria);
-            }
-            return mRetVal;
-        }
-
-        /// <summary>
         /// Save Function information to the database
         /// </summary>
         /// <param name="profile">MSecurityEntity</param>

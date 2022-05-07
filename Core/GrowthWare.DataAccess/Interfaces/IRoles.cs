@@ -46,13 +46,6 @@ namespace GrowthWare.DataAccess.Interfaces
         void Save();
 
         /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
-
-        /// <summary>
         /// Deletes the role.
         /// </summary>
         void DeleteRole();

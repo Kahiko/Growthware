@@ -106,19 +106,6 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Searches the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!");
-            DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DRoles.Search(searchCriteria);
-            return mRetVal;
-        }
-
-        /// <summary>
         /// Deletes the role.
         /// </summary>
         /// <param name="profile">The profile.</param>

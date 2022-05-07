@@ -6,12 +6,6 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IGroups : IDBInteraction
     {
-        /// <summary>
-        /// Gets a subset of information from the database 
-        /// </summary>
-        /// <param name="searchCriteria"></param>
-        /// <returns></returns>
-        DataTable Search(MSearchCriteria searchCriteria);
 
         /// <summary>
         /// Sets or gets the SecurityEntitySeqID

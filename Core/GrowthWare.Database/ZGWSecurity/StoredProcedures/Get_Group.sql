@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId AS INT,
+		@P_SecurityEntitySeqId AS INT,
 		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -20,7 +20,7 @@ Usage:
 --	If GroupSeqId is -1 all groups will be returned.
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Group]
-	@PSecurityEntitySeqId AS INT,
+	@P_SecurityEntitySeqId AS INT,
 	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
@@ -60,7 +60,7 @@ AS
 				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
 			WHERE
 				ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Groups.Name
 		END

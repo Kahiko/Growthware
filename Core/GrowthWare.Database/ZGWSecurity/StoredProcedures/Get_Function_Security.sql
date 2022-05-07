@@ -2,11 +2,11 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Security
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -19,7 +19,7 @@ Usage:
 --	ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Function_Security]
-	@PSecurityEntitySeqId int = -1,
+	@P_SecurityEntitySeqId int = -1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -41,7 +41,7 @@ AS
 			AND [Security].RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND [Security].FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
-			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 		UNION
 		SELECT DISTINCT -- Roles assigned via groups
 			Functions.FunctionSeqId,
@@ -62,7 +62,7 @@ AS
 			AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
-			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 
 	IF (SELECT COUNT(*) FROM @V_AvalibleItems) > 0
 		BEGIN
@@ -74,9 +74,9 @@ AS
 				FUNCTION_SEQ_ID
 				,[ROLE]
 
-			EXEC ZGWSecurity.Get_Function_Roles @PSecurityEntitySeqId, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Roles @P_SecurityEntitySeqId, -1, -1, @P_Debug
 
-			EXEC ZGWSecurity.Get_Function_Groups @PSecurityEntitySeqId, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Groups @P_SecurityEntitySeqId, -1, -1, @P_Debug
 
 		END
 	ELSE
@@ -93,8 +93,8 @@ AS
 				SET 
 					ParentSecurityEntitySeqId = ZGWSecurity.Get_Default_Entity_ID()
 				WHERE
-					SecurityEntitySeqId = @PSecurityEntitySeqId
-			EXEC ZGWSecurity.Get_Function_Security @PSecurityEntitySeqId, NULL
+					SecurityEntitySeqId = @P_SecurityEntitySeqId
+			EXEC ZGWSecurity.Get_Function_Security @P_SecurityEntitySeqId, NULL
 		END
 	-- END IF
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Security'

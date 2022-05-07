@@ -190,19 +190,6 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Searches groups using the specified search criteria.
-        /// </summary>
-        /// <param name="searchCriteria">The search criteria.</param>
-        /// <returns>DataTable.</returns>
-        public DataTable Search( MSearchCriteria searchCriteria)
-        {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!!");
-            DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DGroups.Search(searchCriteria);
-            return mRetVal;
-        }
-
-        /// <summary>
         /// Updates the group roles.
         /// </summary>
         /// <param name="profile">The profile.</param>

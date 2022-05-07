@@ -2,13 +2,13 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_FunctionSeqId INT = 1,
 		@P_PermissionsSeqId INT = 1
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Function_Roles
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_PermissionsSeqId,
 		@P_Debug
@@ -20,7 +20,7 @@ Usage:
 --	function and permission.
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Function_Roles]
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_FunctionSeqId INT,
 	@P_PermissionsSeqId INT,
 	@P_Debug INT = 0
@@ -42,7 +42,7 @@ AS
 				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 			ORDER BY
 				Roles
 		END
@@ -61,7 +61,7 @@ AS
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Functions.FunctionSeqId
 				,ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId

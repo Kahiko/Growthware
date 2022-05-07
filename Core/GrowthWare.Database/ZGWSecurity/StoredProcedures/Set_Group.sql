@@ -5,7 +5,7 @@ Usage:
 		@P_GroupSeqId INT = 1,
 		@P_Name VARCHAR(128) = 'Test',
 		@P_Description VARCHAR(512) = ' ',
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
@@ -14,7 +14,7 @@ Usage:
 		@P_GroupSeqId,
 		@P_Name,
 		@P_Description,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
 		@P_Debug
@@ -29,7 +29,7 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Group]
 	@P_GroupSeqId INT,
 	@P_Name VARCHAR(128),
 	@P_Description VARCHAR(512),
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -79,7 +79,7 @@ AS
 			-- END IF
 		END
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
 	BEGIN  -- ADD GROUP REFERENCE TO SE_SECURITY
 			INSERT ZGWSecurity.Groups_Security_Entities (
 				SecurityEntitySeqId,
@@ -88,7 +88,7 @@ AS
 				Added_Date
 			)
 			VALUES (
-				@PSecurityEntitySeqId,
+				@P_SecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Added_Updated_Date

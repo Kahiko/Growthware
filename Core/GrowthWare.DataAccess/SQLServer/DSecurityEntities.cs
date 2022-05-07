@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "ZGWSecurity.Get_Security_Entity";
             SqlParameter[] mParameters =
 			{
-			  new SqlParameter("@PSecurityEntitySeqId", -1)
+			  new SqlParameter("@P_SecurityEntitySeqId", -1)
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -48,16 +48,11 @@ namespace GrowthWare.DataAccess.SQLServer
             { 
                 new SqlParameter("@P_Account", account), 
                 new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin), 
-                new SqlParameter("@PSecurityEntitySeqId", SecurityEntityID)
+                new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID)
             };
             return base.GetDataTable(mStoreProcedure, myParameters);
         }
 
-        DataTable ISecurityEntities.Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = base.Search(searchCriteria, "[ZGWSecurity].[Security_Entities]");
-            return mRetVal;
-        }
 
         int ISecurityEntities.Save(MSecurityEntity profile)
         {
@@ -67,7 +62,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";
             SqlParameter[] mParameters =
 			 {
-                new SqlParameter("@PSecurityEntitySeqId", profile.Id),
+                new SqlParameter("@P_SecurityEntitySeqId", profile.Id),
                 new SqlParameter("@P_NAME", profile.Name),
                 new SqlParameter("@P_DESCRIPTION", profile.Description),
                 new SqlParameter("@P_URL", profile.Url),

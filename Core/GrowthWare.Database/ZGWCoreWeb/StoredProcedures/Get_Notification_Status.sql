@@ -2,14 +2,14 @@
 /*
 Usage:
 	DECLARE
-		@PSecurityEntitySeqId int = 1,
+		@P_SecurityEntitySeqId int = 1,
 		@P_FunctionSeqId int = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Primary_Key INT = null,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notification_Status
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Account,
 		@P_Primary_Key,
@@ -21,7 +21,7 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Notification_Status]
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Account VARCHAR(128),
 	@P_Primary_Key INT OUTPUT,
@@ -39,7 +39,7 @@ AS
 		FROM 
 			ZGWCoreWeb.Notifications WITH(NOLOCK)
 		WHERE 
-			SecurityEntitySeqId = @PSecurityEntitySeqId
+			SecurityEntitySeqId = @P_SecurityEntitySeqId
 			AND FunctionSeqId = @P_FunctionSeqId
 			AND Added_By = @V_AccountSeqId)
 		BEGIN

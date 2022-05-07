@@ -3,14 +3,14 @@
 Usage:
 	DECLARE 
 		@P_RoleSeqId INT = 1,
-		@PSecurityEntitySeqId INT = 1,
+		@P_SecurityEntitySeqId INT = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Role_Accounts
 		@P_RoleSeqId,
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Account,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -23,7 +23,7 @@ Usage:
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Role_Accounts]
 	@P_RoleSeqId INT,
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 1
@@ -42,7 +42,7 @@ BEGIN TRAN
 				ZGWSecurity.Roles_Security_Entities
 			WHERE
 				RoleSeqId = @P_RoleSeqId
-				AND SecurityEntitySeqId = @PSecurityEntitySeqId
+				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	BEGIN TRY
 		INSERT INTO

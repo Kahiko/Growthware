@@ -176,7 +176,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoreProcedure = "ZGWSecurity.Set_Function_Groups";
             SqlParameter[] mParameters = { 
 											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-											  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId), 
+											  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
 											  new SqlParameter("@P_Groups", mCommaSeporatedString), 
 											  new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
 											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
@@ -191,18 +191,12 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoreProcedure = "ZGWSecurity.Set_Function_Roles";
             SqlParameter[] mParameters = { 
 											  new SqlParameter("@P_FunctionSeqId", m_Profile.Id), 
-											  new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId), 
+											  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId), 
 											  new SqlParameter("@P_Roles", mCommaSeporatedString), 
 											  new SqlParameter("@P_PermissionsNVPDetailSeqId", permission), 
 											  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 										  };
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
-        }
-
-        DataTable IFunction.Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = base.Search(searchCriteria, "[ZGWSystem].[vwSearchFunctions]");
-            return mRetVal;
         }
 
         void IFunction.UpdateMenuOrder(MFunctionProfile profile, DirectionType direction)
@@ -236,7 +230,7 @@ namespace GrowthWare.DataAccess.SQLServer
         private DataSet GetSecurity()
         {
             string mStoreProcedure = "ZGWSecurity.Get_Function_Security";
-            SqlParameter[] mParameters = { new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqId) };
+            SqlParameter[] mParameters = { new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
             return base.GetDataSet(mStoreProcedure, mParameters);
         }
         #endregion

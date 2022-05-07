@@ -259,19 +259,5 @@ namespace GrowthWare.BusinessLogic
                 profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
             }
         }
-
-        /// <summary>
-        /// Reruns search results from ZFC_ACCTS or ZGWSecurity.Accounts
-        /// </summary>
-        /// <param name="searchCriteria">MSearchCriteria</param>
-        /// <returns></returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
-            DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DAccounts.Search(searchCriteria);
-            return mRetVal;
-        }
-
     }
 }

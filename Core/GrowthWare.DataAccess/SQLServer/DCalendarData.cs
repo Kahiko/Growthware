@@ -20,7 +20,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@PSecurityEntitySeqId", m_SecurityEntitySeqID),
+                    new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
                     new SqlParameter("@P_Calendar_Name", m_CalendarName),
                     new SqlParameter("@P_Comment", comment),
                     new SqlParameter("@P_EntryDate", entryDate),
@@ -43,7 +43,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@PSecurityEntitySeqId", this.m_SecurityEntitySeqID),
+                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqID),
                     new SqlParameter("@P_Calendar_Name", this.m_CalendarName)
 			 };
              try
@@ -63,7 +63,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@PSecurityEntitySeqId", this.m_SecurityEntitySeqID),
+                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqID),
                     new SqlParameter("@P_Calendar_Name", this.m_CalendarName),
                     new SqlParameter("@P_Comment", comment),
                     new SqlParameter("@P_EntryDate", entryDate),

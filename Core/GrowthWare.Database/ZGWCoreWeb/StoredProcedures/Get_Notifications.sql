@@ -2,12 +2,12 @@
 /*
 Usage:
 	DECLARE
-		@PSecurityEntitySeqId int,
+		@P_SecurityEntitySeqId int,
 		@P_FunctionSeqId int,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notifications
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Debug
 */
@@ -17,7 +17,7 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Get_Notifications]
-	@PSecurityEntitySeqId int,
+	@P_SecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
@@ -35,7 +35,7 @@ AS
 	WHERE
 		Accounts.Enable_Notifications = @V_Enable_Notifications
 		AND Notifications.FunctionSeqId = @P_FunctionSeqId
-		AND Notifications.SecurityEntitySeqId = @PSecurityEntitySeqId
+		AND Notifications.SecurityEntitySeqId = @P_SecurityEntitySeqId
 	ORDER BY
 		Email
 

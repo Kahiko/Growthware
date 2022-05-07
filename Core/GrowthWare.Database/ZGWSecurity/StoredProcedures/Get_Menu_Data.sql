@@ -2,13 +2,13 @@
 /*
 Usage:
 	DECLARE 
-		@PSecurityEntitySeqId AS INT = 1,
+		@P_SecurityEntitySeqId AS INT = 1,
 		@P_Navigation_Types_NVP_DetailSeqId AS INT = 3,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Menu_Data
-		@PSecurityEntitySeqId,
+		@P_SecurityEntitySeqId,
 		@P_Navigation_Types_NVP_DetailSeqId,
 		@P_Account,
 		@P_Debug
@@ -20,7 +20,7 @@ Usage:
 --	Account, Security Entity ID and the Navigation type.
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data]
-	@PSecurityEntitySeqId INT,
+	@P_SecurityEntitySeqId INT,
 	@P_Navigation_Types_NVP_DetailSeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Debug INT = 1
@@ -60,7 +60,7 @@ AS
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
-			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 		UNION ALL
 		SELECT -- Menu items via groups
 			[FUNCTIONS].FunctionSeqId AS [ID],
@@ -89,13 +89,13 @@ AS
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
-			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 
 	--SELECT * FROM @V_AvalibleMenuItems -- DEBUG
 
 	DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 	INSERT INTO @V_AccountRoles
-		EXEC ZGWSecurity.Get_Account_Security @P_Account, @PSecurityEntitySeqId, @P_Debug
+		EXEC ZGWSecurity.Get_Account_Security @P_Account, @P_SecurityEntitySeqId, @P_Debug
 
 	--SELECT * FROM @V_AccountRoles -- DEBUG
 	DECLARE @V_AllMenuItems TABLE ([ID] INT, Title VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, ROLE VARCHAR(50),FunctionTypeSeqId INT)

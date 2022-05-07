@@ -205,18 +205,6 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Retruns search results from ZFC_FUNCTIONS or ZGWSecurity.Functions
-        /// </summary>
-        /// <param name="searchCriteria">MSearchCriteria</param>
-        /// <returns></returns>
-        public DataTable Search(MSearchCriteria searchCriteria)
-        {
-            DataTable mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DFunctions.Search(searchCriteria);
-            return mRetVal;
-        }
-
-        /// <summary>
         /// Moves the menu order.
         /// </summary>
         /// <param name="profile">The profile.</param>
