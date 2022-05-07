@@ -28,6 +28,8 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <returns>DataRow</returns>
 		DataRow GetAccount { get; }
 
+		DataTable GetAccounts { get; }
+
 		/// <summary>
 		/// Returns all roles associated with a given SecurityEntitySeqID.
 		/// </summary>

@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.SQLServer
     ///		Properties where chosen instead of parameters because all
     ///		methods will need one or both to perform their work.
     ///	</remarks>    
-    public class DAccount: ADBInteraction, IAccount
+    public class DAccount: DSearch, IAccount
     {
 #region Private Field
 
@@ -54,17 +54,65 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
+        DataTable IAccount.GetAccounts
+        {
+            get
+            {
+                checkValid();
+                String mStoredProcedure = "ZGWSecurity.Get_Account";
+                SqlParameter[] mParameters =
+				{
+					new SqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+					new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+					new SqlParameter("@P_Account", "")
+				};
+                return base.GetDataTable(mStoredProcedure, mParameters);
+            }
+        }
+
 #endregion
 
 #region Public Methods
+        DataTable IAccount.Roles()
+        {
+            checkValid();
+            String mStoredProcedure = "ZGWSecurity.Get_Account_Roles";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_Account", m_Profile.Account), 
+				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
+			};
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
 
-        DataTable IAccount.GetMenu(string account, MenuType menuType) {
-            string mStoredProcedure = "ZGWSecurity.Get_Menu_Data";
+        DataTable IAccount.GetMenu(string account, MenuType menuType)
+        {
+            String mStoredProcedure = "ZGWSecurity.Get_Menu_Data";
             SqlParameter[] mParameters =
 			{
 			 new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-			 new SqlParameter("@P_NavigationTypesNVPDetailSeqID", (int)menuType),
+			 new SqlParameter("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
 			 new SqlParameter("@P_Account", account)
+			};
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
+
+        DataTable IAccount.Groups()
+        {
+            checkValid();
+            String mStoredProcedure = "ZGWSecurity.Get_Account_Groups";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_Account", m_Profile.Account), 
+				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
+			};
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
+
+        DataTable IAccount.Security()
+        {
+            String mStoredProcedure = "ZGWSecurity.Get_Account_Security";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_Account", m_Profile.Account), 
+				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
