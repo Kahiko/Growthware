@@ -11,7 +11,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Provides data access to SQL Server 2008
     /// </summary>
-    public class DSecurityEntities : ASearch, ISecurityEntities
+    public class DSecurityEntities : ADBInteraction, ISecurityEntities
     {
         DataTable ISecurityEntities.GetSecurityEntities()
         {

@@ -11,7 +11,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DNameValuePairs
     /// </summary>
-    public class DNameValuePairs : ASearch, INameValuePairs
+    public class DNameValuePairs : ADBInteraction, INameValuePairs
     {
         private MNameValuePair m_Profile = new MNameValuePair();
         private int m_SecurityEntitySeqId;

@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DGroups
     /// </summary>
-    public class DGroups : ASearch, IGroups
+    public class DGroups : ADBInteraction, IGroups
     {
         /// <summary>
         /// GroupProfile

@@ -18,7 +18,7 @@ namespace GrowthWare.DataAccess.SQLServer
 	///		Properties where chosen instead of parameters because all
 	///		methods will need one or both to perform their work.
 	///	</remarks>
-    public class DFunctions : ASearch, IFunction
+    public class DFunctions : ADBInteraction, IFunction
     {
         #region Member Objects
         private MFunctionProfile m_Profile = null;
