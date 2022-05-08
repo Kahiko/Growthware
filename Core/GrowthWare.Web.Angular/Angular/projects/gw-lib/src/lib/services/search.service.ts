@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Common } from '../../common';
+import { Common } from '../common';
 
 export class SearchCriteria {
   constructor(
