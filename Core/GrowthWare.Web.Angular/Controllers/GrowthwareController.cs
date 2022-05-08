@@ -8,7 +8,7 @@ namespace GrowthWare.Web.Angular.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GrowthWareController : ControllerBase
+public class GrowthWareAPIController : ControllerBase
 {
     [HttpGet(Name = "GetAccount")]
     public MAccountProfile GetAccount(string accountName) {
