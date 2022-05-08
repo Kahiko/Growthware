@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { GWLibSearchService } from 'projects/gw-lib/src/lib/services/search.service';
-import { GWLibDynamicTableService } from 'projects/gw-lib/src/lib/features/dynamic-table/dynamic-table.service';
+import { GWLibSearchService } from 'projects/gw-lib/src/public-api';
+import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
 
 @Component({
   selector: 'app-accounts',
