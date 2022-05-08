@@ -1,16 +1,17 @@
 import { NgModule } from '@angular/core';
-import { DynamicTableComponent } from './features/dynamic-table/dynamic-table.component';
-import { SearchComponent } from './features/search/search.component';
+import { GWLibDynamicTableComponent } from './features/dynamic-table/dynamic-table.component';
+import { GWLibSearchComponent } from './features/search/search.component';
 
 @NgModule({
   declarations: [
-    DynamicTableComponent,
-    SearchComponent,
+    GWLibDynamicTableComponent,
+    GWLibSearchComponent,
   ],
   imports: [
   ],
   exports: [
-    DynamicTableComponent,
+    GWLibDynamicTableComponent,
+    GWLibSearchComponent,
   ]
 })
 export class GwLibModule { }

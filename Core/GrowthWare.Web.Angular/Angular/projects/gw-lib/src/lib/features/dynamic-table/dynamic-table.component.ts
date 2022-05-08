@@ -7,7 +7,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss']
 })
-export class DynamicTableComponent implements OnInit, OnDestroy {
+export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
   private _DynamicTableSvc: DynamicTableService;
   private _TableDataSub: Subscription;
 
