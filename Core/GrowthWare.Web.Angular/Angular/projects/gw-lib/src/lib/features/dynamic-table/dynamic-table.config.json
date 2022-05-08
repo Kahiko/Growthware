@@ -1,11 +1,11 @@
 [
   {
     "buttons": [
-      { "id": "addBtn"      , "name": "addBtn"      , "class": "", "text": "Add"        , "visible": true },
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "", "text": "topLeft"    , "visible": false},
-      { "id": "topRight"    , "name": "topRight"    , "class": "", "text": "topRight"   , "visible": false},
-      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "", "text": "bottomLeft" , "visible": false},
-      { "id": "bottomRight" , "name": "bottomRight" , "class": "", "text": "bottomRight", "visible": false}
+      { "id": "addBtn"      , "name": "addBtn"      , "class": "btn btn-primary", "text": "Add"        , "visible": true },
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary", "text": "topLeft"    , "visible": false},
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn btn-primary", "text": "topRight"   , "visible": false},
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "btn btn-primary", "text": "bottomLeft" , "visible": false},
+      { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary", "text": "bottomRight", "visible": false}
     ],
     "columns": [
       { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Delete", "name": "AccountSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
