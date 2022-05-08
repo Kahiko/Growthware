@@ -32,7 +32,7 @@ export class GWLibSearchService {
    * @private
    * @param {HttpErrorResponse} errorResponse
    * @param {string} methodName
-   * @memberof SearchService
+   * @memberof GWLibSearchService
    */
   private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
     let errorMessage = '';
@@ -43,7 +43,7 @@ export class GWLibSearchService {
         // Get server-side error
         errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
     }
-    console.log('SearchService.' + methodName + ': ');
+    console.log('GWLibSearchService.' + methodName + ': ');
     console.log(errorMessage);
   }
 
@@ -52,7 +52,7 @@ export class GWLibSearchService {
    *
    * @param {SearchCriteria} criteria
    * @return {*}  {Promise<any>}
-   * @memberof SearchService
+   * @memberof GWLibSearchService
    */
   public async getResults(criteria: SearchCriteria): Promise<any> {
     const mHttpOptions = {

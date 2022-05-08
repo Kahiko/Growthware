@@ -11,6 +11,7 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { AccountsComponent } from './features/accounts/accounts.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
     FetchDataComponent,
     HomeComponent,
     NavMenuComponent,
+    AccountsComponent,
   ],
   imports: [
     AppRoutingModule,
