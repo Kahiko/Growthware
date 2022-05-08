@@ -15,7 +15,7 @@ export interface IResults {
 @Injectable({
   providedIn: 'root'
 })
-export class DynamicTableService {
+export class GWLibDynamicTableService {
   private _HttpClient: HttpClient;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: any[] = [];

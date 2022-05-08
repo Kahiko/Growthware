@@ -18,7 +18,7 @@ export class SearchCriteria {
 @Injectable({
   providedIn: 'root',
 })
-export class SearchService {
+export class GWLibSearchService {
   private _HttpClient: HttpClient;
   private _SearchUrl: string = Common.baseURL + 'GrowthwareAPI/Search';
 
