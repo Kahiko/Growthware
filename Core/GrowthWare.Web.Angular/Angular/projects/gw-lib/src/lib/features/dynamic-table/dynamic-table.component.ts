@@ -1,5 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { DynamicTableService } from './dynamic-table.service';
+import { GWLibDynamicTableService } from './dynamic-table.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -8,12 +8,12 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
-  private _DynamicTableSvc: DynamicTableService;
+  private _DynamicTableSvc: GWLibDynamicTableService;
   private _TableDataSub: Subscription;
 
   @Input() ConfigurationName: string;
 
-  constructor(tableSvc: DynamicTableService) {
+  constructor(tableSvc: GWLibDynamicTableService) {
     this._DynamicTableSvc = tableSvc;
   }
 
