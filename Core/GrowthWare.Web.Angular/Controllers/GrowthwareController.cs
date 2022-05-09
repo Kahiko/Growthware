@@ -21,8 +21,8 @@ public class GrowthWareAPIController : ControllerBase
 
     }
 
-    [HttpGet(Name = "GetSearchResults")]
-    public string GetSearchResults(MSearchCriteria searchCriteria) {
+    [HttpPost(Name = "Search")]
+    public string Search(MSearchCriteria searchCriteria) {
         String mRetVal = SearchUtility.GetSearchResults(searchCriteria);
         return mRetVal;
     }

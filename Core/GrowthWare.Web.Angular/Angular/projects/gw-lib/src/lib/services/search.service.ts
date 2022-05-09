@@ -21,7 +21,7 @@ export class SearchCriteria {
 })
 export class GWLibSearchService {
   private _HttpClient: HttpClient;
-  private _SearchUrl: string = Common.baseURL + 'GrowthwareAPI/Search';
+  private _SearchUrl: string = Common.baseURL + 'GrowthWareAPI/Search';
 
   constructor(httpClient: HttpClient) {
     this._HttpClient = httpClient;
