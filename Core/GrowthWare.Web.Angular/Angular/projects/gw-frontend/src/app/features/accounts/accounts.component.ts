@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GWLibSearchService } from 'projects/gw-lib/src/public-api';
+import { GWLibSearchService, SearchCriteria } from 'projects/gw-lib/src/public-api';
 import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
 
 @Component({
@@ -9,10 +9,10 @@ import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
 })
 export class AccountsComponent implements OnInit {
 
-
-  constructor(private _SearchSvc: GWLibSearchService, private _DynamicTableSvc: GWLibDynamicTableService) { }
+  constructor() { }
 
   ngOnInit(): void {
+
   }
 
 }

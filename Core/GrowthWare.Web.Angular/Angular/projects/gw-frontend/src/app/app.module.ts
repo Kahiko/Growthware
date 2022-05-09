@@ -12,6 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { AccountsComponent } from './features/accounts/accounts.component';
+import { SearchAccountsComponent } from './features/accounts/search-accounts/search-accounts.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { AccountsComponent } from './features/accounts/accounts.component';
     HomeComponent,
     NavMenuComponent,
     AccountsComponent,
+    SearchAccountsComponent,
   ],
   imports: [
     AppRoutingModule,

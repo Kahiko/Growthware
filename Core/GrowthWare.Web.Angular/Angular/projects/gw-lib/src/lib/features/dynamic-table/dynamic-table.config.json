@@ -8,8 +8,13 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary", "text": "bottomRight", "visible": false}
     ],
     "columns": [
-      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Delete", "name": "AccountSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": "", "label": "Name"  , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 80 }
+      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": true , "label": "Delete"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Name"        , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
     "headingText": "Accounts",
     "maxHeadHeight":75,

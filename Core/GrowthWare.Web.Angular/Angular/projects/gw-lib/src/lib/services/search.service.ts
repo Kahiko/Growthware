@@ -4,13 +4,14 @@ import { Injectable } from '@angular/core';
 import { Common } from '../common';
 
 export class SearchCriteria {
+  public tableOrView: string
+
   constructor(
     public columns: string,
     public orderByColumn: string,
     public orderByDirection: string,
     public pageSize: number,
     public selectedPage: number,
-    public tableOrView: string,
     public whereClause: string
   ) {}
 }
