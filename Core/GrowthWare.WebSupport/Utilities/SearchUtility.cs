@@ -42,6 +42,7 @@ public static class SearchUtility
                     }
                 }
                 mStringBuilder.Append("]");
+                mRetVal = mStringBuilder.ToString();
             }
 
         return mRetVal;

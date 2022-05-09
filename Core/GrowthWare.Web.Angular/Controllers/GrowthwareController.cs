@@ -1,5 +1,3 @@
-using System.Data;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Utilities;
@@ -8,23 +6,27 @@ namespace GrowthWare.Web.Angular.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GrowthWareAPIController : ControllerBase
+public class GrowthwareAPIController : ControllerBase
 {
+    private readonly ILogger<GrowthwareAPIController> _logger;
+
+    public GrowthwareAPIController(ILogger<GrowthwareAPIController> logger)
+    {
+        _logger = logger;
+    }
+
+
     [HttpGet(Name = "GetAccount")]
-    public MAccountProfile GetAccount(string accountName) {
-        MAccountProfile mRetVal = new MAccountProfile();
+    public String GetAccount(int AccountSeqId)
+    {
+        String mRetVal = string.Empty;
         return mRetVal;
     }
 
-    [HttpGet(Name = "GetClientChoices")]
-    public void GetClientChoices(string accountName) {
-
-    }
-
-    [HttpPost(Name = "Search")]
-    public string Search(MSearchCriteria searchCriteria) {
+    [HttpPost("Search")]
+    public String Search(MSearchCriteria searchCriteria)
+    {
         String mRetVal = SearchUtility.GetSearchResults(searchCriteria);
         return mRetVal;
     }
-    
 }

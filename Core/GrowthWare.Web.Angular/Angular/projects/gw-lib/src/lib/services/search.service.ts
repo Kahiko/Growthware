@@ -1,4 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 import { Common } from '../common';
@@ -51,11 +52,11 @@ export class GWLibSearchService {
   /**
    * Calls GrowthWareAPI.Search
    *
-   * @param {SearchCriteria} criteria
+   * @param {SearchCriteria} searchCriteria
    * @return {*}  {Promise<any>}
    * @memberof GWLibSearchService
    */
-  public async getResults(criteria: SearchCriteria): Promise<any> {
+  public async getResults(searchCriteria: SearchCriteria): Promise<any> {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -64,9 +65,11 @@ export class GWLibSearchService {
 
     return new Promise<any>((resolve, reject) => {
       this._HttpClient
-        .post<any>(this._SearchUrl, criteria, mHttpOptions)
+        .post<any>(this._SearchUrl, searchCriteria, mHttpOptions)
         .subscribe({
-          next: (response) => resolve(response),
+          next: (response) => {
+            resolve(response)
+          },
           error: (errorResponse) => {
             this.errorHandler(errorResponse, 'getResults');
             reject(errorResponse);

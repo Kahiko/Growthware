@@ -5,17 +5,17 @@
     "version": "0.2.0",
     "compounds": [
         {
-            "name": "1.) .Net + Chrome",
-            "configurations": [".Net Only", "PWA Chrome"]
+            "name": "1.) API + Chrome",
+            "configurations": ["API", "PWA Chrome"]
         },
         {
-            "name": "2.) .Net + Edge",
-            "configurations": [".Net Only", "PWA Edge"]
+            "name": "2.) API + Edge",
+            "configurations": ["API", "PWA Edge"]
         }       
     ],
     "configurations": [
         {
-            "name": "3.) (U) .Net + Web",
+            "name": "3.) (U) API + Web",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
@@ -47,7 +47,7 @@
             }
         },
         {
-            "name": "4.) (W) .Net + Edge",
+            "name": "4.) (W) API + Edge",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
@@ -70,7 +70,7 @@
             }
         },
         {
-            "name": "5.) (W) .Net + FF Developer Edition",
+            "name": "5.) (W) API + FF Developer Edition",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
@@ -112,7 +112,7 @@
             "stopAtEntry": false
         },
         {
-            "name": ".Net Only",
+            "name": "API",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",

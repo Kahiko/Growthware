@@ -1,10 +1,11 @@
 using GrowthWare.DataAccess.Interfaces;
+using GrowthWare.DataAccess.SQLServer.Base;
 using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
 
-namespace GrowthWare.DataAccess.SQLServer.Base
+namespace GrowthWare.DataAccess.SQLServer
 {
     /// <summary>
     /// Performs all data store interaction to SQL Server.
