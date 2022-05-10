@@ -12,13 +12,14 @@ export class SearchAccountsComponent implements OnInit {
   private _Columns: string = "[AccountSeqId], [Account], [First_Name], [Last_Name], [Email], [Added_Date], [Last_Login]";
   private _SearchCriteria: SearchCriteria;
 
-  public configurationName = "Accounts";
+  public configurationName = 'Accounts';
   public results: any;
 
   constructor(private _SearchSvc: GWLibSearchService, private _DynamicTableSvc: GWLibDynamicTableService) { }
 
   ngOnInit(): void {
     this._SearchCriteria = new SearchCriteria(this._Columns, "[Account]", "asc", 10, 1, "1=1");
+    this._SearchCriteria.tableOrView = '[ZGWSecurity].[Accounts]';
     this._SearchSvc.getResults(this._SearchCriteria).then((results) => {
       this._DynamicTableSvc.setData(this.configurationName, results);
     }).catch((error) => {

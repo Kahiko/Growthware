@@ -10,7 +10,17 @@
     <div class="col-sm-4">right</div>
   </div>
   <div class="row">
-    <div class="col-sm-12">maintable area</div>
+    <div class="col-sm-12">
+      <table>
+        <thead>
+          <tr>
+            <th *ngFor="let column of tableConfiguration.columns; let index=index">
+              {{column.label}}
+            </th>
+          </tr>
+        </thead>
+      </table>
+    </div>
   </div>
   <div class="row">
     <div class="col-sm-4">left</div>

@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 import { GWLibDynamicTableComponent } from './features/dynamic-table/dynamic-table.component';
 
 @NgModule({
@@ -6,6 +7,7 @@ import { GWLibDynamicTableComponent } from './features/dynamic-table/dynamic-tab
     GWLibDynamicTableComponent,
   ],
   imports: [
+    BrowserModule
   ],
   exports: [
     GWLibDynamicTableComponent,

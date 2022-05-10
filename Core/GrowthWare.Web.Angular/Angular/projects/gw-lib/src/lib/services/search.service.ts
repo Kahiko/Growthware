@@ -45,7 +45,7 @@ export class GWLibSearchService {
         // Get server-side error
         errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
     }
-    console.log('GWLibSearchService.' + methodName + ': ');
+    console.log(`GWLibSearchService.${methodName}:`);
     console.log(errorMessage);
   }
 

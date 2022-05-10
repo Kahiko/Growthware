@@ -18,16 +18,18 @@ export interface IResults {
 export class GWLibDynamicTableService {
   private _HttpClient: HttpClient;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
-  private _TableData: any[] = [];
+  private _TableData: Map<string, any>;
 
   public dataChanged = new Subject<string>();
 
   constructor(httpClient: HttpClient) {
     this._HttpClient = httpClient;
+    this._TableData = new Map<string, any>();
     // Load the default data for the growthware application
-    this._TableConfigurations = JSON.parse(JSON.stringify(DefaultData));
-    console.log('Default TableConfigurations:');
-    console.log(this._TableConfigurations);
+    const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
+    for (let index = 0; index < mDefaultData.length; index++) {
+      this._TableConfigurations.push(mDefaultData[index]);
+    }
   }
 
   /**
@@ -37,8 +39,8 @@ export class GWLibDynamicTableService {
    * @param {string} url
    * @memberof DynamicTableService
    */
-  public getData(name: string, url: string): void {
-
+  public getData(name: string): any[] {
+    return this._TableData.get(name.toLowerCase());
   }
 
   /**
@@ -50,8 +52,8 @@ export class GWLibDynamicTableService {
    */
   public getTableConfiguration(name: string): IDynamicTableConfiguration {
     const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
-    if(!Common.isNullOrUndefined(mRetVal)) {
-
+    if(Common.isNullOrUndefined(mRetVal)) {
+      throw new Error(`Could not find the "${name}" configuration!`);
     }
     return mRetVal;
   }
@@ -78,9 +80,9 @@ export class GWLibDynamicTableService {
    * @param {IResults} results
    * @memberof DynamicTableService
    */
-  public setData(name: string, results: IResults) {
-    if(!Common.isNullOrUndefined(results.data) && !Common.isNullorEmpty(name)) {
-      Common.addOrUpdateArray(this._TableData, results);
+  public setData(name: string, results: any[]) {
+    if(!Common.isNullorEmpty(name) && !Common.isNullOrUndefined(results)) {
+      this._TableData.set(name.toLowerCase(), results);
       this.dataChanged.next(name);
     } else {
       throw('The name and or the data can not be null or undefined');

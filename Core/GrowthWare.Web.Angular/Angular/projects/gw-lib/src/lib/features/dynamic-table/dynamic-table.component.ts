@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { GWLibDynamicTableService } from './dynamic-table.service';
 import { Subscription } from 'rxjs';
+import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -13,6 +14,9 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
 
   @Input() ConfigurationName: string;
 
+  public tableConfiguration: IDynamicTableConfiguration;
+  public tableData: any[];
+
   constructor(tableSvc: GWLibDynamicTableService) {
     this._DynamicTableSvc = tableSvc;
   }
@@ -22,12 +26,17 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('DynamicTableComponent.ngOnInit');
+    // console.log('DynamicTableComponent.ngOnInit');
     this._TableDataSub = this._DynamicTableSvc.dataChanged.subscribe({
-      next: (v) => console.log(v),
+      next: (name) => {
+        if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
+          this.tableData = this._DynamicTableSvc.getData(this.ConfigurationName);
+        }
+      },
       error: (e) => console.error(e),
       complete: () => console.info('complete')
-  });
+    });
+    this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.ConfigurationName);
   }
 
 }
