@@ -7,7 +7,7 @@
   <div class="row">
     <div class="col-sm-12">
       <table>
-        <caption>{{tableConfiguration.headingText}}</caption>
+        <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
         <thead>
           <tr>
             <th *ngFor="let column of tableConfiguration.columns">

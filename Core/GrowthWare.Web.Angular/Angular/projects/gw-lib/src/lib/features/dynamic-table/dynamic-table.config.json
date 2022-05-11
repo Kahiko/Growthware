@@ -16,7 +16,7 @@
       { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "columnName": "[Added_Date]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
       { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Last Login"  , "columnName": "[Last_Login]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
-    "headingText": "Accounts",
+    "captionText": "",
     "maxHeadHeight":75,
     "maxTableRowHeight": 10,
     "name": "Accounts",
@@ -25,7 +25,6 @@
     "showFirstRow": false,
     "showSecondRow": false,
     "showThirdRow": true,
-    "showHeading": false,
     "showHelp": false,
     "showSearch": false
   },
@@ -47,7 +46,7 @@
       { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_By"  , "columnName": "[Updated_By]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
       { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_Date", "columnName": "[Updated_Date]" , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
-    "headingText": "Functions",
+    "captionText": "Functions",
     "maxHeadHeight":75,
     "maxTableRowHeight": 10,
     "name": "Functions",
@@ -56,7 +55,6 @@
     "showFirstRow": false,
     "showSecondRow": false,
     "showThirdRow": true,
-    "showHeading": true,
     "showHelp": false,
     "showSearch": false
   }
