@@ -28,5 +28,36 @@
     "showHeading": false,
     "showHelp": false,
     "showSearch": false
+  },
+  {
+    "buttons": [
+      { "id": "addBtn"      , "name": "addBtn"      , "class": "btn btn-primary", "text": "Add"        , "visible": true },
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary", "text": "topLeft"    , "visible": false},
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn btn-primary", "text": "topRight"   , "visible": false},
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "btn btn-primary", "text": "bottomLeft" , "visible": false},
+      { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary", "text": "bottomRight", "visible": false}
+    ],
+    "columns": [
+      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": true , "label": "Delete"      , "columnName": "[FunctionSeqId]", "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Name"        , "columnName": "[Name]"         , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Description" , "columnName": "[Description]"  , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Action"      , "columnName": "[Action]"       , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added By"    , "columnName": "[Added_By]"     , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "columnName": "[Added_Date]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_By"  , "columnName": "[Updated_By]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_Date", "columnName": "[Updated_Date]" , "showData": true ,	"type": "string", "visible": true, "width": 80 }
+    ],
+    "headingText": "Functions",
+    "maxHeadHeight":75,
+    "maxTableRowHeight": 10,
+    "name": "Functions",
+    "numberOfRows": 4,
+    "orderByColumn": "Name",
+    "showFirstRow": false,
+    "showSecondRow": false,
+    "showThirdRow": true,
+    "showHeading": false,
+    "showHelp": false,
+    "showSearch": false
   }
 ]
