@@ -56,7 +56,7 @@
     "showFirstRow": false,
     "showSecondRow": false,
     "showThirdRow": true,
-    "showHeading": false,
+    "showHeading": true,
     "showHelp": false,
     "showSearch": false
   }

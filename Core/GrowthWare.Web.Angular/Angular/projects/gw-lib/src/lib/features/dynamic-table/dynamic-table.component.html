@@ -1,10 +1,5 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-12">
-      Heading
-    </div>
-  </div>
-  <div class="row">
     <div class="col-sm-4">left</div>
     <div class="col-sm-4">center</div>
     <div class="col-sm-4">right</div>
@@ -12,13 +7,17 @@
   <div class="row">
     <div class="col-sm-12">
       <table>
+        <caption>{{tableConfiguration.headingText}}</caption>
         <thead>
           <tr>
-            <th *ngFor="let column of tableConfiguration.columns; let index=index">
+            <th *ngFor="let column of tableConfiguration.columns">
               {{column.label}}
             </th>
           </tr>
         </thead>
+        <tbody>
+
+        </tbody>
       </table>
     </div>
   </div>
