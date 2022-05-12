@@ -1,3 +1,4 @@
+
 [
   {
     "buttons": [
@@ -8,13 +9,13 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary", "text": "bottomRight", "visible": false}
     ],
     "columns": [
-      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": true , "label": "Delete"      , "columnName": "[AccountSeqId]" , "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Account"     , "columnName": "[Account]"      , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "First Name"  , "columnName": "[First_Name]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Last Name"   , "columnName": "[Last_Name]"    , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Email"       , "columnName": "[Email]"        , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "columnName": "[Added_Date]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Last Login"  , "columnName": "[Last_Login]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
+      { "allowSort": false, "canEdit": false, "editText": "", "isButton": true , "isCheckbox": false, "isEdit": false, "isEditKey": true , "label": "Delete"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Account"     , "name": "Account"      , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
     "captionText": "",
     "maxHeadHeight":75,
@@ -37,14 +38,14 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary", "text": "bottomRight", "visible": false}
     ],
     "columns": [
-      { "allowSort": false, "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": true , "isEdit": false, "isEditKey": true , "label": "Delete"      , "columnName": "[FunctionSeqId]", "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Name"        , "columnName": "[Name]"         , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Description" , "columnName": "[Description]"  , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Action"      , "columnName": "[Action]"       , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added By"    , "columnName": "[Added_By]"     , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "columnName": "[Added_Date]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_By"  , "columnName": "[Updated_By]"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isCheckbox": false, "isDeleteBtn": false, "isEdit": false, "isEditKey": false, "label": "Updated_Date", "columnName": "[Updated_Date]" , "showData": true ,	"type": "string", "visible": true, "width": 80 }
+      { "allowSort": false, "canEdit": false, "editText": "", "isButton": true , "isCheckbox": false, "isEdit": false, "isEditKey": true , "label": "Delete"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Name"        , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Description" , "name": "Description"  , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Action"      , "name": "Action"       , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Added By"    , "name": "Added_By"     , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Updated_By"  , "name": "Updated_By"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isEditKey": false, "label": "Updated_Date", "name": "Updated_Date" , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],
     "captionText": "Functions",
     "maxHeadHeight":75,

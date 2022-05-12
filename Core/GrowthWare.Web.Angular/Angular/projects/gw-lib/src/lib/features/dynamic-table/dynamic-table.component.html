@@ -8,15 +8,19 @@
     <div class="col-sm-12">
       <table>
         <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
-        <thead>
-          <tr>
+        <thead style="width: 100%; border: solid 1px;">
+          <tr style="width: 100%; border: solid 1px; position: sticky;">
             <th *ngFor="let column of tableConfiguration.columns">
               {{column.label}}
             </th>
           </tr>
         </thead>
-        <tbody>
-
+        <tbody style="overflow-y: scroll; height: 60px;">
+          <tr *ngFor="let row of tableData; let rowIndex=index;">
+            <td *ngFor="let column of tableConfiguration.columns">
+              {{row[column.name]}}
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>
