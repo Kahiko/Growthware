@@ -1,6 +1,6 @@
+import { DatePipe } from '@angular/common';
 export class Common {
-
-  static addOrUpdateArray(yourArray: any[], objectWithId: any): void{
+  static addOrUpdateArray(yourArray: any[], objectWithId: any): void {
     var mExistingIds = yourArray.map((obj) => obj.id);
 
     if (!mExistingIds.includes(objectWithId.id)) {
@@ -9,9 +9,9 @@ export class Common {
       yourArray.forEach((element, index) => {
         if (element.id === objectWithId.id) {
           yourArray[index] = objectWithId;
-        };
+        }
       });
-    };
+    }
   }
 
   static get baseURL(): string {
@@ -23,14 +23,45 @@ export class Common {
     } else {
       mPort = ':' + mPort;
     }
-    let mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort;
+    let mURL =
+      mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort;
     const mLastSlashPos = mCurrentPath.lastIndexOf('/');
     if (mLastSlashPos !== 0) {
       mURL = mURL + '/' + mCurrentPath;
     } else {
-      mURL = mURL + '/'
+      mURL = mURL + '/';
     }
     return mURL;
+  }
+
+  /**
+   * Formats data
+   *
+   * @param {*} data
+   * @param {string} format
+   * @returns
+   * @memberof DynamicTableComponent
+   */
+  static formatData(data: any, format: string): any {
+    if (this.isNullOrUndefined(data)) {
+      return '&nbsp;';
+    }
+    switch (format.toLowerCase()) {
+      case 'date':
+        return this.formatDate(data);
+      default:
+        const mMsg = "'" + format + "' is an unknown format";
+        throw(mMsg);
+        break;
+    }
+  }
+
+  static formatDate(sqlDate: any) {
+    const mDateTime = new Date(sqlDate);
+    const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
+    const mDatepipe: DatePipe = new DatePipe('en-US');
+    const mFormattedDate = mDatepipe.transform(mDateTime, mMask);
+    return mFormattedDate;
   }
 
   static isFunction(obj: any): boolean {
@@ -49,5 +80,5 @@ export class Common {
       return true;
     }
     return false;
-}
+  }
 }
