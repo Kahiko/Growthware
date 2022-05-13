@@ -39,11 +39,9 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       next: (name) => {
         if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
           this.tableData = this._DynamicTableSvc.getData(this.ConfigurationName);
-          console.log(this.tableData);
         }
       },
-      error: (e) => console.error(e),
-      complete: () => console.info('complete')
+      error: (e) => console.error(e)
     });
     this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.ConfigurationName);
   }

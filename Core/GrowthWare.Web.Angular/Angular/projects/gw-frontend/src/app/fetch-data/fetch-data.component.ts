@@ -25,7 +25,6 @@ export class FetchDataComponent implements OnInit {
 
   ngOnInit(): void {
     const mURL = Common.baseURL + 'weatherforecast';
-    console.log(mURL);
     this._httpClient.get<WeatherForecast[]>(mURL).subscribe({
       next: (result) => {
         this.forecasts = result;
@@ -34,7 +33,7 @@ export class FetchDataComponent implements OnInit {
         console.error(e)
       },
       complete: () => {
-        console.info('complete')
+        // console.info('complete')
       }
     });
   }

@@ -74,7 +74,7 @@ export class GWLibSearchService {
             this.errorHandler(errorResponse, 'getResults');
             reject(errorResponse);
           },
-          complete: () => console.info('complete')
+          // complete: () => console.info('complete')
         });
     });
   }
