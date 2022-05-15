@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 import { GWCommon } from '../common';
 
@@ -22,9 +23,13 @@ export class SearchCriteria {
 })
 export class GWLibSearchService {
   private _HttpClient: HttpClient;
+  private _Criteria: Map<string, SearchCriteria>;
   private _SearchUrl: string = GWCommon.baseURL + 'GrowthWareAPI/Search';
 
+  public searchCriteriaChanged = new Subject<string>();
+
   constructor(httpClient: HttpClient) {
+    this._Criteria = new Map<string, SearchCriteria>();
     this._HttpClient = httpClient;
   }
 
@@ -77,5 +82,32 @@ export class GWLibSearchService {
           // complete: () => console.info('complete')
         });
     });
+  }
+
+  /**
+   * Returns a SearchCriteria object given the name or new SearchCriteria('','','',1,1,'')
+   *
+   * @param {string} name
+   * @return {*}  {SearchCriteria}
+   * @memberof GWLibDynamicTableService
+   */
+   public getSearchCriteria(name: string): SearchCriteria {
+    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'');
+  }
+
+  /**
+   * Returns a SearchCriteria given the name
+   *
+   * @param {string} name
+   * @param {SearchCriteria} searchCriteria
+   * @memberof GWLibSearchService
+   */
+  public setSearchCriteria(name: string, searchCriteria: SearchCriteria): void {
+    if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(searchCriteria)) {
+      this._Criteria.set(name, searchCriteria);
+      this.searchCriteriaChanged.next(name);
+    } else {
+      throw('name and/or searchCriteria can not be null, undefined or empty');
+    }
   }
 }

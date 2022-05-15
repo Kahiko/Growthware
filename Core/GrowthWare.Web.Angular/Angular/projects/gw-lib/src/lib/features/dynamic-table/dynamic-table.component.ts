@@ -100,6 +100,19 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       })
     );
 
+    this._Subscriptions.add(
+      // needed to support when the searchCriteria has changed by an outside process
+      // Example: GWLibPagerComponent
+      this._SearchSvc.searchCriteriaChanged.subscribe({
+        next: (name) => {
+          if(name.trim().toLowerCase() === this.ConfigurationName.trim().toLowerCase()) {
+            this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
+            this.getData();
+          }
+        }
+      })
+    );
+
     this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.ConfigurationName);
 
     if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {

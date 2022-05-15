@@ -4,7 +4,6 @@ import { Subject } from 'rxjs';
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { GWCommon } from 'projects/gw-lib/src/lib/common';
-import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service';
 
 export interface IResults {
   id: string,
@@ -14,7 +13,7 @@ export interface IResults {
   providedIn: 'root'
 })
 export class GWLibDynamicTableService {
-  private _Criteria: Map<string, SearchCriteria>;
+  // private _Criteria: Map<string, SearchCriteria>;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
 
@@ -23,7 +22,6 @@ export class GWLibDynamicTableService {
 
   constructor() {
     this._TableData = new Map<string, any>();
-    this._Criteria = new Map<string, SearchCriteria>();
     // Load the default data for the growthware application
     const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
     for (let index = 0; index < mDefaultData.length; index++) {
@@ -40,17 +38,6 @@ export class GWLibDynamicTableService {
    */
   public getData(name: string): any[] {
     return this._TableData.get(name.toLowerCase());
-  }
-
-  /**
-   * Returns a SearchCriteria object given the name or new SearchCriteria('','','',1,1,'')
-   *
-   * @param {string} name
-   * @return {*}  {SearchCriteria}
-   * @memberof GWLibDynamicTableService
-   */
-  public getSearchCriteria(name: string): SearchCriteria {
-    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'');
   }
 
   /**
