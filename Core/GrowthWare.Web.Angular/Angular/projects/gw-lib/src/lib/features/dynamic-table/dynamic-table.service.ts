@@ -2,10 +2,10 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { DynamicTableConfig } from './dynamic-table-configuration.model';
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
-import { Common } from '../../common';
+import { GWCommon } from 'projects/gw-lib/src/lib/common';
+import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service';
 
 
 export interface IResults {
@@ -17,14 +17,18 @@ export interface IResults {
 })
 export class GWLibDynamicTableService {
   private _HttpClient: HttpClient;
+  private _Criteria: Map<string, SearchCriteria>;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
 
   public dataChanged = new Subject<string>();
+  public dataRequested = new Subject<string>();
+  public searchCriteriaChanged = new Subject<string>();
 
   constructor(httpClient: HttpClient) {
     this._HttpClient = httpClient;
     this._TableData = new Map<string, any>();
+    this._Criteria = new Map<string, SearchCriteria>();
     // Load the default data for the growthware application
     const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
     for (let index = 0; index < mDefaultData.length; index++) {
@@ -44,6 +48,17 @@ export class GWLibDynamicTableService {
   }
 
   /**
+   * Returns a SearchCriteria object given the name or new SearchCriteria('','','',1,1,'')
+   *
+   * @param {string} name
+   * @return {*}  {SearchCriteria}
+   * @memberof GWLibDynamicTableService
+   */
+  public getSearchCriteria(name: string): SearchCriteria {
+    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'');
+  }
+
+  /**
    * @description Returns an IDynamicTableConfiguration given the configuration name
    *
    * @param {string} name
@@ -52,7 +67,7 @@ export class GWLibDynamicTableService {
    */
   public getTableConfiguration(name: string): IDynamicTableConfiguration {
     const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
-    if(Common.isNullOrUndefined(mRetVal)) {
+    if(GWCommon.isNullOrUndefined(mRetVal)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     return mRetVal;
@@ -64,11 +79,15 @@ export class GWLibDynamicTableService {
    * @memberof DynamicTableService
    */
   public set tableConfigurations(configURL: string) {
-    if(!Common.isNullorEmpty(configURL)){
+    if(!GWCommon.isNullorEmpty(configURL)){
       // Reload this._TableConfigurations using the URL
     } else {
       throw('configURL can not be null or empty!');
     }
+  }
+
+  public requestData(componentName: string): void {
+    this.dataRequested.next(componentName);
   }
 
   /**
@@ -81,11 +100,20 @@ export class GWLibDynamicTableService {
    * @memberof DynamicTableService
    */
   public setData(name: string, results: any[]) {
-    if(!Common.isNullorEmpty(name) && !Common.isNullOrUndefined(results)) {
+    if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(results)) {
       this._TableData.set(name.toLowerCase(), results);
       this.dataChanged.next(name);
     } else {
       throw('The name and or the data can not be null or undefined');
+    }
+  }
+
+  public setSearchCriteria(name: string, criteria: SearchCriteria): void {
+    if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(criteria)) {
+      this._Criteria.set(name.toLowerCase(), criteria);
+      this.searchCriteriaChanged.next(name);
+    } else {
+      throw('The name and or the criteria can not be null or undefined');
     }
   }
 }

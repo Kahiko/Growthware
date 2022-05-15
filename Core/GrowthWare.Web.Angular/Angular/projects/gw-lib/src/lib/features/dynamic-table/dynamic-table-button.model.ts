@@ -1,4 +1,4 @@
-import { Common } from "../../common";
+import { GWCommon } from "../../common";
 
 export class DynamicTableButton {
   public id: string;

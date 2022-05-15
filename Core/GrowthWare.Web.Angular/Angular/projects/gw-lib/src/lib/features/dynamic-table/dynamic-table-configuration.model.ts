@@ -2,7 +2,7 @@ import { throwError } from 'rxjs';
 
 import { IDynamicTableButton, IDynamicTableColumn } from './dynamic-table.interfaces';
 import { DynamicTableButton } from './dynamic-table-button.model';
-import { Common } from '../../common';
+import { GWCommon } from '../../common';
 
 /**
  * Represents the implementation of IDynamicTableConfig
@@ -57,7 +57,7 @@ export class DynamicTableConfig {
     this.showHelp = showHelp;
     this.showSearch = showSearch;
 
-    if(Common.isNullOrUndefined(buttons) || buttons.length === 0) {
+    if(GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       let mDefaultNameId = name + '_AddBtn';
       let mButton:IDynamicTableButton = new DynamicTableButton(mDefaultNameId, mDefaultNameId);
       this.buttons.push(mButton);
@@ -70,9 +70,9 @@ export class DynamicTableConfig {
       }
     }
 
-    if(!Common.isNullOrUndefined(columns) && columns.length > 0) {
+    if(!GWCommon.isNullOrUndefined(columns) && columns.length > 0) {
       let result = columns.filter(o => o.visible === true);
-      if(Common.isNullOrUndefined(result) || result.length === 0) {
+      if(GWCommon.isNullOrUndefined(result) || result.length === 0) {
         throw new Error("At least 1 column in the columns must be visible");
       } else {
         this.columns = columns;

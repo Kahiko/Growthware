@@ -32,9 +32,11 @@ export interface IDynamicTableConfiguration {
   "name": string,
   "numberOfRows": number,
   "orderByColumn": string,
+  "overridingGetData": boolean,
   "showFirstRow": boolean,
   "showSecondRow": boolean,
   "showThirdRow": boolean,
   "showHelp": boolean,
-  "showSearch": boolean
+  "showSearch": boolean,
+  "tableOrView": string
 }

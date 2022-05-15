@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
-import { Common } from '../common';
+import { GWCommon } from '../common';
 
 export class SearchCriteria {
   public tableOrView: string
@@ -22,7 +22,7 @@ export class SearchCriteria {
 })
 export class GWLibSearchService {
   private _HttpClient: HttpClient;
-  private _SearchUrl: string = Common.baseURL + 'GrowthWareAPI/Search';
+  private _SearchUrl: string = GWCommon.baseURL + 'GrowthWareAPI/Search';
 
   constructor(httpClient: HttpClient) {
     this._HttpClient = httpClient;

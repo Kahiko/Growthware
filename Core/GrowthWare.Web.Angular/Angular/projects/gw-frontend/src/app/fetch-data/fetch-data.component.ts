@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Common } from 'projects/gw-lib/src/public-api'
+import { GWCommon } from 'projects/gw-lib/src/public-api'
 
 interface WeatherForecast {
   date: string;
@@ -24,7 +24,7 @@ export class FetchDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mURL = Common.baseURL + 'weatherforecast';
+    const mURL = GWCommon.baseURL + 'weatherforecast';
     this._httpClient.get<WeatherForecast[]>(mURL).subscribe({
       next: (result) => {
         this.forecasts = result;

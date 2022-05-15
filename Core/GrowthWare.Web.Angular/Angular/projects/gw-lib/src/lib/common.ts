@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-export class Common {
+export class GWCommon {
   static addOrUpdateArray(yourArray: any[], objectWithId: any): void {
     var mExistingIds = yourArray.map((obj) => obj.id);
 
@@ -56,7 +56,15 @@ export class Common {
     }
   }
 
-  static formatDate(sqlDate: any) {
+  /**
+   * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
+   *
+   * @static
+   * @param {*} sqlDate
+   * @return {*}  {*}
+   * @memberof GWCommon
+   */
+  static formatDate(sqlDate: any): any {
     const mDateTime = new Date(sqlDate);
     const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
     const mDatepipe: DatePipe = new DatePipe('en-US');
@@ -64,18 +72,42 @@ export class Common {
     return mFormattedDate;
   }
 
+  /**
+   * Determines if the obj is a function
+   *
+   * @static
+   * @param {*} obj
+   * @return {*}  {boolean}
+   * @memberof GWCommon
+   */
   static isFunction(obj: any): boolean {
     return typeof obj === 'function';
   }
 
-  static isNullorEmpty(str: string) {
+  /**
+   * Determins if the str is null or empty (ie length === 0)
+   *
+   * @static
+   * @param {string} str
+   * @return {*}
+   * @memberof GWCommon
+   */
+  static isNullorEmpty(str: string): boolean {
     if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
       return true;
     }
     return false;
   }
 
-  static isNullOrUndefined(obj: any) {
+  /**
+   * Determines if the obj is null or undefined
+   *
+   * @static
+   * @param {*} obj
+   * @return {*}
+   * @memberof GWCommon
+   */
+  static isNullOrUndefined(obj: any): boolean {
     if (obj == null || obj === null || typeof obj === 'undefined') {
       return true;
     }

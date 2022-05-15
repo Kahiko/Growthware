@@ -1,5 +1,6 @@
-import { typeWithParameters } from '@angular/compiler/src/render3/util';
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit  } from '@angular/core';
+import { ViewChild  } from '@angular/core';
+import { GWLibDynamicTableComponent } from 'projects/gw-lib/src/public-api';
 import { GWLibSearchService, SearchCriteria } from 'projects/gw-lib/src/public-api';
 import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
 
@@ -8,8 +9,9 @@ import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
   templateUrl: './search-accounts.component.html',
   styleUrls: ['./search-accounts.component.scss']
 })
-export class SearchAccountsComponent implements OnInit {
-  private _Columns: string = "[AccountSeqId], [Account], [First_Name], [Last_Name], [Email], [Added_Date], [Last_Login]";
+export class SearchAccountsComponent implements AfterViewInit, OnInit {
+  @ViewChild('searchFunctions', {static: false}) searchFunctionsComponent: GWLibDynamicTableComponent;
+
   private _SearchCriteria: SearchCriteria;
 
   public configurationName = 'Accounts';
@@ -17,14 +19,24 @@ export class SearchAccountsComponent implements OnInit {
 
   constructor(private _SearchSvc: GWLibSearchService, private _DynamicTableSvc: GWLibDynamicTableService) { }
 
-  ngOnInit(): void {
-    this._SearchCriteria = new SearchCriteria(this._Columns, "[Account]", "asc", 10, 1, "1=1");
-    this._SearchCriteria.tableOrView = '[ZGWSecurity].[Accounts]';
-    this._SearchSvc.getResults(this._SearchCriteria).then((results) => {
-      this._DynamicTableSvc.setData(this.configurationName, results);
-    }).catch((error) => {
-      console.log(error);
-    });
+  ngAfterViewInit(): void {
+    // Testing having multiple dynamic table components and overrideing the
+    // dynamic table components getData method
+    this.searchFunctionsComponent.getData = () => {
+      const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
+      const mSearchCriteria: SearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
+      mSearchCriteria.tableOrView = '[ZGWSecurity].[Functions]';
+      this._SearchSvc.getResults(mSearchCriteria).then((results) => {
+        this._DynamicTableSvc.setData('Functions', results);
+      }).catch((error) => {
+        console.log(error);
+      });
+    }
+    this._DynamicTableSvc.requestData('Functions');
+    this._DynamicTableSvc.requestData(this.configurationName);
   }
 
+  ngOnInit(): void {
+    // do nothing ATM
+  }
 }

@@ -22,12 +22,14 @@
     "maxTableRowHeight": 10,
     "name": "Accounts",
     "numberOfRows": 4,
-    "orderByColumn": "Name",
+    "orderByColumn": "Account",
+    "overridingGetData": false,
     "showFirstRow": false,
     "showSecondRow": false,
     "showThirdRow": true,
     "showHelp": false,
-    "showSearch": false
+    "showSearch": false,
+    "tableOrView": "[ZGWSecurity].[Accounts]"
   },
   {
     "buttons": [
@@ -53,10 +55,12 @@
     "name": "Functions",
     "numberOfRows": 4,
     "orderByColumn": "Name",
+    "overridingGetData": true,
     "showFirstRow": false,
     "showSecondRow": false,
     "showThirdRow": true,
     "showHelp": false,
-    "showSearch": false
+    "showSearch": false,
+    "tableOrView": "[ZGWSecurity].[Functions]"
   }
 ]
