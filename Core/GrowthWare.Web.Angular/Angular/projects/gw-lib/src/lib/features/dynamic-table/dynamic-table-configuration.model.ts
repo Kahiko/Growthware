@@ -19,12 +19,14 @@ export class DynamicTableConfig {
   public name: string;
   public numberOfRows: number;
   public orderByColumn: string;
+  public overridingGetData: boolean;
   public showFirstRow: boolean;
   public showSecondRow: boolean;
   public showThirdRow: boolean;
   public showHeading: boolean;
   public showHelp: boolean;
   public showSearch: boolean;
+  public tableOrView: string;
 
   constructor(
     buttons: IDynamicTableButton[] = [],
@@ -35,27 +37,27 @@ export class DynamicTableConfig {
     name: string,
     numberOfRows: number = 4,
     orderByColumn: string,
+    tableOrView: string,
+    overridingGetData: boolean = false,
     showFirstRow: boolean = false,
-    showSecondRow: boolean = false,
     showThirdRow: boolean = false,
     showHeading: boolean = false,
     showHelp: boolean = false,
     showSearch: boolean = false
   ) {
-    // this.buttons = buttons;
-    // this.columns = columns;
     this.headingText = headingText;
     this.maxHeadHeight = maxHeadHeight;
     this.maxTableRowHeight = maxTableRowHeight;
     this.name = name;
     this.numberOfRows = numberOfRows;
     this.orderByColumn = orderByColumn;
+    this.overridingGetData = overridingGetData;
     this.showFirstRow = showFirstRow;
-    this.showSecondRow = showSecondRow;
     this.showThirdRow = showThirdRow;
     this.showHeading = showHeading;
     this.showHelp = showHelp;
     this.showSearch = showSearch;
+    this.tableOrView = tableOrView;
 
     if(GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       let mDefaultNameId = name + '_AddBtn';
