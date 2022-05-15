@@ -37,3 +37,6 @@ The 5 button default values:
   therefore not be in the component.  More than 5 elements in the array will be ignored. 
 
 
+
+Possible solutions for fixed header:
+  https://www.codeproject.com/Articles/5320138/HTML-Table-Freeze-Row-and-Column-with-CSS

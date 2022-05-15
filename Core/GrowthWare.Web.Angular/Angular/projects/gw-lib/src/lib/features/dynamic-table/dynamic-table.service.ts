@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
@@ -16,7 +15,6 @@ export interface IResults {
   providedIn: 'root'
 })
 export class GWLibDynamicTableService {
-  private _HttpClient: HttpClient;
   private _Criteria: Map<string, SearchCriteria>;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
@@ -25,8 +23,7 @@ export class GWLibDynamicTableService {
   public dataRequested = new Subject<string>();
   public searchCriteriaChanged = new Subject<string>();
 
-  constructor(httpClient: HttpClient) {
-    this._HttpClient = httpClient;
+  constructor() {
     this._TableData = new Map<string, any>();
     this._Criteria = new Map<string, SearchCriteria>();
     // Load the default data for the growthware application
@@ -37,7 +34,7 @@ export class GWLibDynamicTableService {
   }
 
   /**
-   * @description Will call and API, put the data in the store and
+   * @description Will return the from the _TableData Map
    *
    * @param {string} name
    * @param {string} url
@@ -74,24 +71,34 @@ export class GWLibDynamicTableService {
   }
 
   /**
-   * @description Allows outside processes to change the table configurations
+   * @description Allows an outside process to change the default table configurations
    *
    * @memberof DynamicTableService
    */
-  public set tableConfigurations(configURL: string) {
-    if(!GWCommon.isNullorEmpty(configURL)){
-      // Reload this._TableConfigurations using the URL
+  public set tableConfigurations(tableConfigurations: IDynamicTableConfiguration[]) {
+    if(!GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0){
+      this._TableConfigurations = tableConfigurations;
     } else {
-      throw('configURL can not be null or empty!');
+      throw('tableConfigurations can not be null, undefined or empty!');
     }
   }
 
+  /**
+   * @description Calls "next" on the dataRequested Subject passing the component name
+   *
+   * @summary requestData faciliates when the GWLibDynamicTableComponent.getData
+   * methods is beining overriden.  When any internal methods to the component are
+   * being used (pagination controls and what not) the overriden getData
+   * methods needs to be fired.
+   * @param {string} componentName
+   * @memberof GWLibDynamicTableService
+   */
   public requestData(componentName: string): void {
     this.dataRequested.next(componentName);
   }
 
   /**
-   * @description Allows outside processes to set data.  This can be useful
+   * @description Allows an outside process to set data.  This can be useful
    * in such cases where the data source do not come from an API or require
    * manipulation before being "sent" to the dynamic table.
    *
@@ -108,6 +115,13 @@ export class GWLibDynamicTableService {
     }
   }
 
+  /**
+   * @description Adds or updates the SearchCriteria for the given name
+   *
+   * @param {string} name
+   * @param {SearchCriteria} criteria
+   * @memberof GWLibDynamicTableService
+   */
   public setSearchCriteria(name: string, criteria: SearchCriteria): void {
     if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(criteria)) {
       this._Criteria.set(name.toLowerCase(), criteria);

@@ -49,6 +49,29 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
     return GWCommon.formatData(data, type);
   }
 
+  /**
+   * @description getData retrieves data from the GWLibSearchService
+   *
+   * @see GWLibSearchService.getResults
+   * @memberof GWLibDynamicTableComponent
+   * @summary The method is exposed as public and is indended to be overriden when
+   * your data needs are not met by using the search service.  In this case your
+   * component will need to:
+   * 1.) Implement AfterViewInit and ViewChild from @angular/core
+   * In your component.html:
+   * 2.) Add a #<yourNameofChoice> on the gw-lib-dynamic-table tag
+   *      Example: <gw-lib-dynamic-table ConfigurationName="Functions" #searchFunctions></gw-lib-dynamic-table>
+   * In your component.ts:
+   * 3.) Import the GWLibDynamicTableComponent
+   * 4.) Get an instance of the xx
+   *      Example: @ViewChild('searchFunctions', {static: false}) searchFunctionsComponent: GWLibDynamicTableComponent;
+   * 5.) Override the getData method in your ngAfterViewInit
+   *      Example:  this.searchFunctionsComponent.getData = () => { // your code here }
+   * 6.) Call the GWLibDynamicTableService.requestData method
+   * 7.) Setup a subscription to GWLibDynamicTableService.dataRequested
+   *      1.) Get your data
+   *      2.) Call the GWLibDynamicTableService.setData method
+   */
   public getData(): void {
     if(this._SearchCriteria.orderByColumn.indexOf('none') > 0 && GWCommon.isNullorEmpty(this._SearchCriteria.orderByColumn)) {
       throw('The _SearchCriteria.orderByColumn has not been set for "' + this.ConfigurationName + '"');
