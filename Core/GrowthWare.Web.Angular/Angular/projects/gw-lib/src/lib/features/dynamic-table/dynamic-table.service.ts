@@ -6,7 +6,6 @@ import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { GWCommon } from 'projects/gw-lib/src/lib/common';
 import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service';
 
-
 export interface IResults {
   id: string,
   data: any
@@ -21,7 +20,6 @@ export class GWLibDynamicTableService {
 
   public dataChanged = new Subject<string>();
   public dataRequested = new Subject<string>();
-  public searchCriteriaChanged = new Subject<string>();
 
   constructor() {
     this._TableData = new Map<string, any>();
@@ -112,22 +110,6 @@ export class GWLibDynamicTableService {
       this.dataChanged.next(name);
     } else {
       throw('The name and or the data can not be null or undefined');
-    }
-  }
-
-  /**
-   * @description Adds or updates the SearchCriteria for the given name
-   *
-   * @param {string} name
-   * @param {SearchCriteria} criteria
-   * @memberof GWLibDynamicTableService
-   */
-  public setSearchCriteria(name: string, criteria: SearchCriteria): void {
-    if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(criteria)) {
-      this._Criteria.set(name.toLowerCase(), criteria);
-      this.searchCriteriaChanged.next(name);
-    } else {
-      throw('The name and or the criteria can not be null or undefined');
     }
   }
 }

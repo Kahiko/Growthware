@@ -14,36 +14,17 @@ import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service'
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
-  private _DynamicTableSvc: GWLibDynamicTableService;
-  private _SearchCriteria: SearchCriteria;
-  private _SearchSvc: GWLibSearchService;
-
-  private _RequestDataSub: Subscription;
-  private _subscriptions: Subscription;
-  private _searchCriteriaSub: Subscription;
-  private _TableDataSub: Subscription;
+  private _SearchCriteria = new SearchCriteria("none, set", "[none]", "asc", 10, 1, "1=1");
+  private _Subscriptions: Subscription;
 
   @Input() ConfigurationName: string;
-
-  public set tableOrView(value: string) {
-    if(!GWCommon.isNullorEmpty(value)) {
-      this._SearchCriteria.tableOrView = value;
-    }
-  }
-
-  public getDataMethod: (arg?: any) => void;
-
-  public get searchCriteria(): SearchCriteria {
-    return this._SearchCriteria;
-  }
 
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[];
 
-  constructor(searchSvc: GWLibSearchService, tableSvc: GWLibDynamicTableService) {
-    this._SearchSvc = searchSvc;
-    this._DynamicTableSvc = tableSvc;
-  }
+  constructor(
+    private _SearchSvc: GWLibSearchService,
+    private _DynamicTableSvc: GWLibDynamicTableService) { }
 
   formatData(data: any, type: string) {
     return GWCommon.formatData(data, type);
@@ -83,21 +64,21 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       throw('this._SearchCriteria.tableOrView must have a value!');
     }
     this._SearchSvc.getResults(this._SearchCriteria).then((results) => {
-      this._DynamicTableSvc.setData(this.ConfigurationName, results);
+      this.tableData = results;
     }).catch((error) => {
       console.log(error);
     });
   }
 
   ngOnDestroy(): void {
-    this._subscriptions.unsubscribe();
+    this._Subscriptions.unsubscribe();
   }
 
   ngOnInit(): void {
-    this._SearchCriteria = new SearchCriteria("none, set", "[none]", "asc", 10, 1, "1=1");
-    this._subscriptions = new Subscription();
-    this._subscriptions.add(
-      this._TableDataSub = this._DynamicTableSvc.dataChanged.subscribe({
+    this._Subscriptions = new Subscription();
+    this._Subscriptions.add(
+      // needed to suport when this.getData has been overridden
+      this._DynamicTableSvc.dataChanged.subscribe({
         next: (name) => {
           if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
             this.tableData = this._DynamicTableSvc.getData(this.ConfigurationName);
@@ -106,8 +87,10 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
         error: (e) => {console.error(e)}
       })
     );
-    this._subscriptions.add(
-      this._RequestDataSub = this._DynamicTableSvc.dataRequested.subscribe({
+    this._Subscriptions.add(
+      // needed to suport when this.getData has been overridden will be called by
+      // the overriding component after it has overriden getData
+      this._DynamicTableSvc.dataRequested.subscribe({
         next: (name) => {
           if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
             this.getData();
@@ -116,18 +99,9 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
         error: (e) => {console.error(e)}
       })
     );
-    this._subscriptions.add(
-      this._searchCriteriaSub = this._DynamicTableSvc.searchCriteriaChanged.subscribe({
-        next: (name: string) => {
-          if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
-            this._SearchCriteria = this._DynamicTableSvc.getSearchCriteria(name);
-          }
-        },
-        error: (e) => {console.error(e);}
-      })
-    );
 
     this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.ConfigurationName);
+
     if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
       let mColumns = '';
       this.tableConfiguration.columns.forEach(column => {
@@ -137,9 +111,47 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       this._SearchCriteria.columns = mColumns;
       this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
       this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
+      if(!this.tableConfiguration.overridingGetData) {
+        this.getData();
+      }
     }
-    if(!this.tableConfiguration.overridingGetData) {
-      this.getData();
+  }
+
+  /**
+   * Handels when there is a page change even
+   *
+   * @param {string} direction Valid values, First, Last, Next, Previous, or # (as a string so '1')
+   * @memberof GWLibDynamicTableComponent
+   */
+  onPageChange(direction: string): void {
+    const value = direction.trim().toLowerCase();
+    switch (value) {
+      case "fist":
+        this._SearchCriteria.selectedPage = 1;
+        this.getData();
+        break;
+      case "last":
+        // TODO: will need to grab the "" column from the data
+        break;
+      case "next":
+        // TODO: need to add check if selectedPage is the at the last page already
+        this._SearchCriteria.selectedPage++;
+        this.getData();
+        break;
+      case "previous":
+        if(this._SearchCriteria.selectedPage > 1) {
+          this._SearchCriteria.selectedPage--;
+          this.getData();
+        }
+        break;
+      default:
+        if(Number(value)) {
+          this._SearchCriteria.selectedPage = +value;
+          this.getData();
+        } else {
+          throw('"' + value + '" is not supported');
+        }
+        break;
     }
   }
 }
