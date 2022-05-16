@@ -16,6 +16,7 @@ export class GWLibDynamicTableService {
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
 
+  // Suports when GWLibDynamicTableComponent.getData has been overridden and used by GWLibDynamicTableComponent
   public dataChanged = new Subject<string>();
 
   constructor() {
@@ -66,13 +67,12 @@ export class GWLibDynamicTableService {
   }
 
   /**
-   * @description Allows an outside process to set data.  This can be useful
-   * in such cases where the data source do not come from an API or require
-   * manipulation before being "sent" to the dynamic table.
+   * @description Stores the results by name.
    *
    * @param {string} name
    * @param {IResults} results
    * @memberof DynamicTableService
+   * @summary Supports when GWLibDynamicTableComponent.getData has been overritten
    */
   public setData(name: string, results: any[]) {
     if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(results)) {

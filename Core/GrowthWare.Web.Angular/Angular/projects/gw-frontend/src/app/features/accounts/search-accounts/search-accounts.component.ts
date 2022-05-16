@@ -35,9 +35,8 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
         console.log(error);
       });
     }
-    // setting the search criteria will cause the getData to fire
-    const mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions')
-    this._SearchSvc.setSearchCriteria('Functions', mSearchCriteria);
+    // Call the function we just overwrote
+    this.searchFunctionsComponent.getData();
   }
 
   ngOnInit(): void {

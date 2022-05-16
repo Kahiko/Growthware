@@ -60,7 +60,7 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this._Subscriptions = new Subscription();
     this._Subscriptions.add(
-      // needed to suport when this.getData has been overridden
+      // Suports when this.getData has been overridden
       this._DynamicTableSvc.dataChanged.subscribe({
         next: (name) => {
           if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
@@ -72,7 +72,7 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
     );
 
     this._Subscriptions.add(
-      // needed to support when the searchCriteria has changed by an outside process
+      // Supports when the searchCriteria has changed by an outside process
       // Example: GWLibPagerComponent
       this._SearchSvc.searchCriteriaChanged.subscribe({
         next: (name) => {
