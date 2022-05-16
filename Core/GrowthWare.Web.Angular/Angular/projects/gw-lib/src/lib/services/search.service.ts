@@ -92,7 +92,7 @@ export class GWLibSearchService {
    * @memberof GWLibDynamicTableService
    */
    public getSearchCriteria(name: string): SearchCriteria {
-    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'');
+    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
   }
 
   /**

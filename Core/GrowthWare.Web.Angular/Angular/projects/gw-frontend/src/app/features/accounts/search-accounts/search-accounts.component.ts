@@ -1,8 +1,8 @@
 import { AfterViewInit, Component, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
 import { GWLibDynamicTableComponent } from 'projects/gw-lib/src/public-api';
-import { GWLibSearchService, SearchCriteria } from 'projects/gw-lib/src/public-api';
-import { GWLibDynamicTableService } from 'projects/gw-lib/src/public-api';
+import { GWLibDynamicTableService, GWLibSearchService } from 'projects/gw-lib/src/public-api';
+import { GWCommon, SearchCriteria } from 'projects/gw-lib/src/public-api';
 
 @Component({
   selector: 'app-search-accounts',
@@ -23,9 +23,12 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
     // Testing having multiple dynamic table components and overrideing the
     // dynamic table components getData method
     this.searchFunctionsComponent.getData = () => {
-      const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
-      const mSearchCriteria: SearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
-      mSearchCriteria.tableOrView = '[ZGWSecurity].[Functions]';
+      let mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions')
+      if(GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
+        const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
+        mSearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
+        mSearchCriteria.tableOrView = '[ZGWSecurity].[Functions]';
+      }
       this._SearchSvc.getResults(mSearchCriteria).then((results) => {
         this._DynamicTableSvc.setData('Functions', results);
       }).catch((error) => {

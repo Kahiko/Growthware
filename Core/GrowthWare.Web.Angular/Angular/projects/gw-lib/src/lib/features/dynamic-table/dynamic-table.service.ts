@@ -31,7 +31,6 @@ export class GWLibDynamicTableService {
    * @description Will return the from the _TableData Map
    *
    * @param {string} name
-   * @param {string} url
    * @memberof DynamicTableService
    */
   public getData(name: string): any[] {
