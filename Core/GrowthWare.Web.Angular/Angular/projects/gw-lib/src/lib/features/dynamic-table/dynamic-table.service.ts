@@ -13,12 +13,10 @@ export interface IResults {
   providedIn: 'root'
 })
 export class GWLibDynamicTableService {
-  // private _Criteria: Map<string, SearchCriteria>;
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
 
   public dataChanged = new Subject<string>();
-  public dataRequested = new Subject<string>();
 
   constructor() {
     this._TableData = new Map<string, any>();
@@ -66,20 +64,6 @@ export class GWLibDynamicTableService {
     } else {
       throw('tableConfigurations can not be null, undefined or empty!');
     }
-  }
-
-  /**
-   * @description Calls "next" on the dataRequested Subject passing the component name
-   *
-   * @summary requestData faciliates when the GWLibDynamicTableComponent.getData
-   * methods is beining overriden.  When any internal methods to the component are
-   * being used (pagination controls and what not) the overriden getData
-   * methods needs to be fired.
-   * @param {string} componentName
-   * @memberof GWLibDynamicTableService
-   */
-  public requestData(componentName: string): void {
-    this.dataRequested.next(componentName);
   }
 
   /**

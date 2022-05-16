@@ -32,8 +32,9 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
         console.log(error);
       });
     }
-    this._DynamicTableSvc.requestData('Functions');
-    this._DynamicTableSvc.requestData(this.configurationName);
+    // setting the search criteria will cause the getData to fire
+    const mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions')
+    this._SearchSvc.setSearchCriteria('Functions', mSearchCriteria);
   }
 
   ngOnInit(): void {
