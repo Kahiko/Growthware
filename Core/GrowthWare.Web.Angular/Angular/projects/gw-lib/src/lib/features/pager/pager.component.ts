@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { SearchCriteria, GWLibSearchService } from '../../services/search.service';
 import { GWLibDynamicTableService } from '../dynamic-table/dynamic-table.service';
+import { GWLibPagerService } from './pager.service';
 
 @Component({
   selector: 'gw-lib-pager',
@@ -17,14 +18,16 @@ export class GWLibPagerComponent implements OnInit {
   @Input() name: string;
   @Input() totalPages: number;
 
-  constructor(private _DynamicTableSvc: GWLibDynamicTableService, private _SearchSvc: GWLibSearchService) { }
+  constructor(private _DynamicTableSvc: GWLibDynamicTableService, private _SearchSvc: GWLibSearchService, private _pagerSvc: GWLibPagerService) { }
 
   ngOnInit(): void {
-    this._TotalPagesSub = this._DynamicTableSvc.totalPagesChanged.subscribe({
+    this._TotalPagesSub = this._pagerSvc.totalPagesChanged.subscribe({
       next: (name) => {
-        this.totalPages = this._DynamicTableSvc.getTotalPages(name);
-        for (let index = 1; index < this.totalPages + 1; index++) {
-          this.pages.push(index);
+        if(name.trim().toLowerCase() === this.name.trim().toLowerCase()) {
+          this.totalPages = this._pagerSvc.getTotalPages(name);
+          for (let index = 1; index < this.totalPages + 1; index++) {
+            this.pages.push(index);
+          }
         }
       },
       error: (e) => {console.error(e)}

@@ -6,6 +6,7 @@ import { GWLibPagerComponent } from 'projects/gw-lib/src/lib/features/pager/page
 import { GWCommon } from 'projects/gw-lib/src/lib/common'
 import { GWLibDynamicTableService } from './dynamic-table.service';
 import { GWLibSearchService } from 'projects/gw-lib/src/lib/services/search.service';
+import { GWLibPagerService } from '../pager/pager.service';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service';
 
@@ -26,7 +27,8 @@ export class GWLibDynamicTableComponent implements AfterViewInit, OnInit, OnDest
 
   constructor(
     private _SearchSvc: GWLibSearchService,
-    private _DynamicTableSvc: GWLibDynamicTableService) { }
+    private _DynamicTableSvc: GWLibDynamicTableService,
+    private _pagerSvc: GWLibPagerService) { }
 
   formatData(data: any, type: string) {
     return GWCommon.formatData(data, type);
@@ -49,7 +51,11 @@ export class GWLibDynamicTableComponent implements AfterViewInit, OnInit, OnDest
       throw('this._SearchCriteria.tableOrView must have a value!');
     }
     this._SearchSvc.getResults(this._SearchCriteria).then((results) => {
-      this.tableData = results;
+      if(!GWCommon.isNullOrUndefined(results) && results.length > 0) {
+        this.tableData = results;
+        const mFirstRow = results[0];
+        this._pagerSvc.setTotalNumberOfPages(this.ConfigurationName, parseInt(mFirstRow['TotalRecords']), this._SearchCriteria.pageSize);
+      }
     }).catch((error) => {
       console.log(error);
     });
