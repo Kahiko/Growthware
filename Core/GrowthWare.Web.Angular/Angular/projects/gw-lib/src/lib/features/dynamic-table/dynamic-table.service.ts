@@ -4,6 +4,7 @@ import { Subject } from 'rxjs';
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { GWCommon } from 'projects/gw-lib/src/lib/common';
+import { GWLibSearchService } from '../../services/search.service';
 
 export interface IResults {
   id: string,
@@ -15,12 +16,16 @@ export interface IResults {
 export class GWLibDynamicTableService {
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
   private _TableData: Map<string, any>;
+  private _TotalPages: Map<string, number>;
 
   // Suports when GWLibDynamicTableComponent.getData has been overridden and used by GWLibDynamicTableComponent
   public dataChanged = new Subject<string>();
+  // Supports the GWLibPagerComponent
+  public totalPagesChanged = new Subject<string>();
 
-  constructor() {
+  constructor(private _SearchSvc: GWLibSearchService) {
     this._TableData = new Map<string, any>();
+    this._TotalPages = new Map<string, number>();
     // Load the default data for the growthware application
     const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
     for (let index = 0; index < mDefaultData.length; index++) {
@@ -35,7 +40,7 @@ export class GWLibDynamicTableService {
    * @memberof DynamicTableService
    */
   public getData(name: string): any[] {
-    return this._TableData.get(name.toLowerCase());
+    return this._TableData.get(name.trim().toLowerCase());
   }
 
   /**
@@ -51,6 +56,17 @@ export class GWLibDynamicTableService {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     return mRetVal;
+  }
+
+  /**
+   * Return the total number of pages for the given compentent name
+   *
+   * @param {string} name
+   * @return {*}  {number}
+   * @memberof GWLibDynamicTableService
+   */
+  public getTotalPages(name: string): number {
+    return this._TotalPages.get(name.trim().toLowerCase()) || -1;
   }
 
   /**
@@ -76,8 +92,16 @@ export class GWLibDynamicTableService {
    */
   public setData(name: string, results: any[]) {
     if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(results)) {
-      this._TableData.set(name.toLowerCase(), results);
-      this.dataChanged.next(name);
+      if(results.length > 0) {
+        const mFirstRow = results[0];
+        const mSearchCriteria = this._SearchSvc.getSearchCriteria(name);
+        const mTotalNumberofPages: number = Math.floor(parseInt(mFirstRow['TotalRecords']) / mSearchCriteria.pageSize);
+        this._TotalPages.set(name.trim().toLowerCase(), mTotalNumberofPages);
+        this._TableData.set(name.toLowerCase(), results);
+        this.dataChanged.next(name);
+      } else {
+        console.log('results has no rows.')
+      }
     } else {
       throw('The name and or the data can not be null or undefined');
     }

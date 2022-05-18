@@ -92,7 +92,7 @@ export class GWLibSearchService {
    * @memberof GWLibDynamicTableService
    */
    public getSearchCriteria(name: string): SearchCriteria {
-    return this._Criteria.get(name.toLocaleLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
+    return this._Criteria.get(name.trim().toLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
   }
 
   /**
@@ -104,7 +104,7 @@ export class GWLibSearchService {
    */
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria): void {
     if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(searchCriteria)) {
-      this._Criteria.set(name, searchCriteria);
+      this._Criteria.set(name.trim().toLowerCase(), searchCriteria);
       this.searchCriteriaChanged.next(name);
     } else {
       throw('name and/or searchCriteria can not be null, undefined or empty');

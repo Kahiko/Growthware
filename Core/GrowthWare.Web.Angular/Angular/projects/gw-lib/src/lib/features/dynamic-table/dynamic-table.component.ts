@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy } from '@angular/core';
-import { OnInit } from '@angular/core';
+import { AfterViewInit, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { GWLibPagerComponent } from 'projects/gw-lib/src/lib/features/pager/pager.component';
 import { GWCommon } from 'projects/gw-lib/src/lib/common'
 import { GWLibDynamicTableService } from './dynamic-table.service';
 import { GWLibSearchService } from 'projects/gw-lib/src/lib/services/search.service';
@@ -13,11 +14,12 @@ import { SearchCriteria } from 'projects/gw-lib/src/lib/services/search.service'
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss']
 })
-export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
+export class GWLibDynamicTableComponent implements AfterViewInit, OnInit, OnDestroy {
   private _SearchCriteria = new SearchCriteria("none, set", "[none]", "asc", 10, 1, "1=1");
   private _Subscriptions: Subscription;
 
   @Input() ConfigurationName: string;
+  @ViewChild('pager', {static: false}) pagerComponent: GWLibPagerComponent;
 
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[];
@@ -53,17 +55,22 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
     });
   }
 
+  ngAfterViewInit(): void {
+    this.pagerComponent.name = this.ConfigurationName;
+  }
+
   ngOnDestroy(): void {
     this._Subscriptions.unsubscribe();
   }
 
   ngOnInit(): void {
+    this.ConfigurationName = this.ConfigurationName.trim();
     this._Subscriptions = new Subscription();
     this._Subscriptions.add(
       // Suports when this.getData has been overridden
       this._DynamicTableSvc.dataChanged.subscribe({
         next: (name) => {
-          if(this.ConfigurationName.toLowerCase() === name.toLowerCase()) {
+          if(this.ConfigurationName.toLowerCase() === name.trim().toLowerCase()) {
             this.tableData = this._DynamicTableSvc.getData(this.ConfigurationName);
           }
         },
@@ -76,7 +83,7 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       // Example: GWLibPagerComponent
       this._SearchSvc.searchCriteriaChanged.subscribe({
         next: (name) => {
-          if(name.trim().toLowerCase() === this.ConfigurationName.trim().toLowerCase()) {
+          if(name.trim().toLowerCase() === this.ConfigurationName.toLowerCase()) {
             this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
             this.getData();
           }
@@ -85,7 +92,6 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
     );
 
     this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.ConfigurationName);
-
     if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
       let mColumns = '';
       this.tableConfiguration.columns.forEach(column => {
@@ -95,9 +101,7 @@ export class GWLibDynamicTableComponent implements OnInit, OnDestroy {
       this._SearchCriteria.columns = mColumns;
       this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
       this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
-      if(!this.tableConfiguration.overridingGetData) {
-        this.getData();
-      }
+      this._SearchSvc.setSearchCriteria(this.tableConfiguration.name, this._SearchCriteria);
     }
   }
 

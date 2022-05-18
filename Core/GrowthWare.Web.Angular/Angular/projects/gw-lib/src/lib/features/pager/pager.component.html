@@ -1,19 +1,21 @@
-<div class="container">
+<div class="container" style="width: 200px; margin: 5px;">
   <div class="row">
-    <div class="col-sm-2">
-      <a href="#"><<</a>
+    <div class="col-sm-1">
+      <button id="moveFirst" (click)="onPageChange('first')"><<</button>
     </div>
-    <div class="col-sm-2">
-      <a href="#"><</a>
+    <div class="col-sm-1">
+      <button id="movePrevious" (click)="onPageChange('previous')"><</button>
     </div>
-    <div class="col-sm-4">
-      drop down
+    <div class="col-sm-8">
+      <select>
+        <option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
+      </select>&nbsp;of&nbsp;{{totalPages}}
     </div>
-    <div class="col-sm-2">
-      <a href="#">></a>
+    <div class="col-sm-1">
+      <button id="moveNext" (click)="onPageChange('next')">></button>
     </div>
-    <div class="col-sm-2">
-      <a href="#">>></a>
+    <div class="col-sm-1">
+      <button id="moveLast" (click)="onPageChange('last')">>></button>
     </div>
   </div>
 </div>
