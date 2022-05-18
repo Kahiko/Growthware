@@ -1,5 +1,5 @@
 <div class="container" style="width: 200px; margin: 5px;">
-  <div class="row">
+  <div *ngIf="totalPages > 0" class="row">
     <div class="col-sm-1">
       <button id="moveFirst" (click)="onPageChange('first')"><<</button>
     </div>

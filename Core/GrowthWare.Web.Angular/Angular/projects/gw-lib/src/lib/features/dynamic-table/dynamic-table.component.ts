@@ -53,8 +53,10 @@ export class GWLibDynamicTableComponent implements AfterViewInit, OnInit, OnDest
     this._SearchSvc.getResults(this._SearchCriteria).then((results) => {
       if(!GWCommon.isNullOrUndefined(results) && results.length > 0) {
         this.tableData = results;
-        const mFirstRow = results[0];
-        this._pagerSvc.setTotalNumberOfPages(this.ConfigurationName, parseInt(mFirstRow['TotalRecords']), this._SearchCriteria.pageSize);
+        if(results.length > 0) {
+          const mFirstRow = results[0];
+          this._pagerSvc.setTotalNumberOfPages(this.ConfigurationName, parseInt(mFirstRow['TotalRecords']), this._SearchCriteria.pageSize);
+        }
       }
     }).catch((error) => {
       console.log(error);

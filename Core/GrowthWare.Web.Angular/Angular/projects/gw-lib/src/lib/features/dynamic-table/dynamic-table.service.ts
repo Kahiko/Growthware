@@ -22,6 +22,7 @@ export class GWLibDynamicTableService {
   public dataChanged = new Subject<string>();
 
   constructor(private _SearchSvc: GWLibSearchService, private _pagerSvc: GWLibPagerService) {
+    this._TableData = new Map<string, any>();
     // Load the default data for the growthware application
     const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
     for (let index = 0; index < mDefaultData.length; index++) {
@@ -30,7 +31,8 @@ export class GWLibDynamicTableService {
   }
 
   /**
-   * @description Will return the from the _TableData Map
+   * @description Will return the from the _TableData Map, suports when
+   * GWLibDynamicTableComponent.getData is overwritten
    *
    * @param {string} name
    * @memberof DynamicTableService
@@ -81,7 +83,7 @@ export class GWLibDynamicTableService {
         const mFirstRow = results[0];
         const mSearchCriteria = this._SearchSvc.getSearchCriteria(name);
         this._pagerSvc.setTotalNumberOfPages(name, parseInt(mFirstRow['TotalRecords']), mSearchCriteria.pageSize);
-        this._TableData.set(name, results);
+        this._TableData.set(name.trim().toLowerCase(), results);
         this.dataChanged.next(name);
       } else {
         console.log('results has no rows.')

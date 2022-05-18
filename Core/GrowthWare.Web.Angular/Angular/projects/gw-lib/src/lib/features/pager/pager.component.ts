@@ -18,7 +18,9 @@ export class GWLibPagerComponent implements OnInit {
   @Input() name: string;
   @Input() totalPages: number;
 
-  constructor(private _DynamicTableSvc: GWLibDynamicTableService, private _SearchSvc: GWLibSearchService, private _pagerSvc: GWLibPagerService) { }
+  constructor(
+    private _SearchSvc: GWLibSearchService,
+    private _pagerSvc: GWLibPagerService) { }
 
   ngOnInit(): void {
     this._TotalPagesSub = this._pagerSvc.totalPagesChanged.subscribe({

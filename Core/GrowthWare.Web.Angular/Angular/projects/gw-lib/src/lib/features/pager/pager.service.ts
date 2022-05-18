@@ -19,10 +19,11 @@ export class GWLibPagerService {
    *
    * @param {string} name
    * @return {*}  {number}
-   * @memberof GWLibDynamicTableService
+   * @memberof GWLibPagerService
    */
-   public getTotalPages(name: string): number {
-    return this._TotalPages.get(name.trim().toLowerCase()) || -1;
+  public getTotalPages(name: string): number {
+    const mName = name.trim().toLowerCase();
+    return this._TotalPages.get(mName) || -1;
   }
 
   /**
@@ -34,12 +35,11 @@ export class GWLibPagerService {
    * @memberof GWLibPagerService
    */
   public setTotalNumberOfPages(name: string, totalRecords: number, pageSize: number): void {
-    const mTotalPages = this.getTotalPages(name);
-    const mTotalNumberofPages: number = Math.floor(totalRecords / pageSize);
-    if(mTotalNumberofPages !== mTotalPages) {
-      this._TotalPages.set(name, mTotalNumberofPages);
-      this.totalPagesChanged.next(name.trim().toLowerCase());
+    const mCurrentPages = this.getTotalPages(name);
+    const mCalculatedPages: number = Math.floor(totalRecords / pageSize);
+    if(mCurrentPages !== mCalculatedPages) {
+      this._TotalPages.set(name.trim().toLowerCase(), mCalculatedPages);
+      this.totalPagesChanged.next(name);
     }
-
   }
 }
