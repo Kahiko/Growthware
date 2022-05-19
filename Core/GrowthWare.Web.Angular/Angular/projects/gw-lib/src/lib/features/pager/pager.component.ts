@@ -38,6 +38,17 @@ export class GWLibPagerComponent implements OnInit {
   }
 
   /**
+   * Handels when the selectPage_{{name}} click event
+   *
+   * @memberof GWLibPagerComponent
+   */
+  onGoToPageClick(): void {
+    const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
+    mSearchCriteria.selectedPage = parseInt(this.selectedPage);
+    this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+  }
+
+  /**
    * Handels when there is a page change event
    *
    * @param {string} direction Valid values, First, Last, Next, Previous, or # (as a string so '1')
