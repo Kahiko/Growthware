@@ -14,6 +14,7 @@ export class GWLibPagerComponent implements OnInit {
   private _TotalPagesSub: Subscription;
 
   public pages: number[] = [];
+  public selectedPage: string = "1";
 
   @Input() name: string;
   @Input() totalPages: number;
@@ -78,5 +79,6 @@ export class GWLibPagerComponent implements OnInit {
         }
         break;
     }
+    this.selectedPage = mSearchCriteria.selectedPage.toString();
   }
 }

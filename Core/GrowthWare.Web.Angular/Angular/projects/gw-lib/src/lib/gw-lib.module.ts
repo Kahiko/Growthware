@@ -1,5 +1,6 @@
-import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
+import { NgModule } from '@angular/core';
 import { GWLibDynamicTableComponent } from './features/dynamic-table/dynamic-table.component';
 import { GWLibPagerComponent } from './features/pager/pager.component';
 
@@ -9,7 +10,8 @@ import { GWLibPagerComponent } from './features/pager/pager.component';
     GWLibPagerComponent,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    FormsModule
   ],
   exports: [
     GWLibDynamicTableComponent,

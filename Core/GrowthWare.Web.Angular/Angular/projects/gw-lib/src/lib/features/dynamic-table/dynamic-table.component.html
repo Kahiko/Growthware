@@ -1,8 +1,10 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-4">left</div>
-    <div class="col-sm-4">center</div>
-    <div class="col-sm-4">right</div>
+    <div style="display: flex;">
+      <div>left</div>
+      <div style="flex-grow: 1; text-align: center;">center</div>
+      <div>right</div>
+      </div>
   </div>
   <div class="row">
     <div class="col-sm-12">
@@ -26,8 +28,11 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-4">left</div>
-    <div class="col-sm-4">center</div>
-    <div class="col-sm-4"><gw-lib-pager #pager></gw-lib-pager></div>
+    <div style="display: flex;">
+      <div>button3</div>
+      <div style="flex-grow: 1; text-align: center;">center</div>
+      <div><gw-lib-pager #pager></gw-lib-pager></div>
+      <div>button4</div>
+    </div>
   </div>
 </div>

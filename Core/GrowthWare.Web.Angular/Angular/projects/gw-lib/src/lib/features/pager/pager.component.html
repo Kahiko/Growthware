@@ -1,21 +1,15 @@
-<div class="container" style="width: 200px; margin: 5px;">
-  <div *ngIf="totalPages > 0" class="row">
-    <div class="col-sm-1">
-      <button id="moveFirst" (click)="onPageChange('first')"><<</button>
-    </div>
-    <div class="col-sm-1">
-      <button id="movePrevious" (click)="onPageChange('previous')"><</button>
-    </div>
-    <div class="col-sm-8">
-      <select>
-        <option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
-      </select>&nbsp;of&nbsp;{{totalPages}}
-    </div>
-    <div class="col-sm-1">
-      <button id="moveNext" (click)="onPageChange('next')">></button>
-    </div>
-    <div class="col-sm-1">
-      <button id="moveLast" (click)="onPageChange('last')">>></button>
-    </div>
+<div *ngIf="totalPages > 0" style="display: flex; flex-grow: 0 1 0; margin: 5px;">
+  <div>
+    <button id="moveFirst" (click)="onPageChange('first')" style="margin: 5px;"><<</button>
+    <button id="movePrevious" (click)="onPageChange('previous')" style="margin: 5px;"><</button>
+  </div>
+  <div style="margin: 5px;">
+    <select id="selectPage_{{name}}" [(ngModel)]="selectedPage">
+      <option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
+    </select>&nbsp;of&nbsp;{{totalPages}}
+  </div>
+  <div>
+    <button id="moveNext" (click)="onPageChange('next')" style="margin: 5px;">></button>
+    <button id="moveLast" (click)="onPageChange('last')" style="margin: 5px;">>></button>
   </div>
 </div>
