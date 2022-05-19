@@ -1,15 +1,15 @@
 <div *ngIf="totalPages > 0" style="display: flex; flex-grow: 0 1 0; margin: 5px;">
   <div>
-    <button id="moveFirst_{{name}}" (click)="onPageChange('first')" style="margin: 5px;"><<</button>
-    <button id="movePrevious_{{name}}" (click)="onPageChange('previous')" style="margin: 5px;"><</button>
+    <button id="moveFirst_{{name}}" name="moveFirst_{{name}}" (click)="onPageChange('first')" title="First" style="margin: 5px;"><<</button>
+    <button id="movePrevious_{{name}}" name="movePrevious_{{name}}" (click)="onPageChange('previous')" title="Previous" style="margin: 5px;"><</button>
   </div>
   <div style="margin: 5px;">
-    <select id="selectPage_{{name}}" (click)="onGoToPageClick()" [(ngModel)]="selectedPage">
+    <select id="selectPage_{{name}}" name="selectPage_{{name}}" (click)="onGoToPageClick()" [(ngModel)]="selectedPage">
       <option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
     </select>&nbsp;of&nbsp;{{totalPages}}
   </div>
   <div>
-    <button id="moveNext_{{name}}" (click)="onPageChange('next')" style="margin: 5px;">></button>
-    <button id="moveLast_{{name}}" (click)="onPageChange('last')" style="margin: 5px;">>></button>
+    <button id="moveNext_{{name}}" name="moveNext_{{name}}" (click)="onPageChange('next')" title="Next" style="margin: 5px;">></button>
+    <button id="moveLast_{{name}}" name="moveLast_{{name}}" (click)="onPageChange('last')" title="Last" style="margin: 5px;">>></button>
   </div>
 </div>
