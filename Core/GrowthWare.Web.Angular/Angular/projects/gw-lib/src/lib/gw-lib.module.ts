@@ -18,4 +18,4 @@ import { GWLibPagerComponent } from './features/pager/pager.component';
     GWLibPagerComponent,
   ]
 })
-export class GwLibModule { }
+export class GWLibModule { }

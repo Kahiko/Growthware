@@ -5,7 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { GwLibModule } from 'projects/gw-lib/src/public-api';
+import { GWLibModule } from 'projects/gw-lib/src/public-api';
 
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
@@ -29,7 +29,7 @@ import { SearchAccountsComponent } from './features/accounts/search-accounts/sea
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    GwLibModule,
+    GWLibModule,
     HttpClientModule
   ],
   providers: [],
