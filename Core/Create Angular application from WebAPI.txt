@@ -22,6 +22,7 @@ From a command prompt and the directory you would like to create your new projec
 		answer the questions as fits your needs
 	ng generate library <yourLibraryName> - Optional
 		Note: to use the components from your libray you will need to:
+		https://www.willtaylor.blog/complete-guide-to-angular-libraries/
 			1.) build your library
 					ng build <yourLibraryName>
 					cd <baseAngular>\dist\<yourLibraryName>
