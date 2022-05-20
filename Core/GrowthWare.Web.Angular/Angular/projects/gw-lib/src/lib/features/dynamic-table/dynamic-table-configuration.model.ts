@@ -1,5 +1,3 @@
-import { throwError } from 'rxjs';
-
 import { IDynamicTableButton, IDynamicTableColumn } from './dynamic-table.interfaces';
 import { DynamicTableButton } from './dynamic-table-button.model';
 import { GWCommon } from '../../common';
@@ -8,9 +6,9 @@ import { GWCommon } from '../../common';
  * Represents the implementation of IDynamicTableConfig
  *
  * @export
- * @class DynamicTableConfig
+ * @class GWLibDynamicTableConfigModel
  */
-export class DynamicTableConfig {
+export class GWLibDynamicTableConfigModel {
   public buttons: IDynamicTableButton[] = [];
   public columns: IDynamicTableColumn[];
   public headingText: string;
