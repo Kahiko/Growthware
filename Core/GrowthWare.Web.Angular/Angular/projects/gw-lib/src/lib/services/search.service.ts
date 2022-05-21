@@ -1,6 +1,5 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { GWCommon } from '../common';
