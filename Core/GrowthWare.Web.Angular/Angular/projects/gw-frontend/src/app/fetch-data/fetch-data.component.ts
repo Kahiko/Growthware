@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { GWCommon } from 'gw-lib'
+import { GWCommon } from 'projects/gw-lib/src/public-api'
 
 interface WeatherForecast {
   date: string;
