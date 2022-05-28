@@ -9,3 +9,7 @@ button {
   // text-decoration: underline;
   cursor: pointer;
 }
+button[disabled] {
+  opacity: 0.6;
+  cursor: default;
+}
