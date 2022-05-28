@@ -5,7 +5,7 @@ import { Subject } from 'rxjs';
 import { GWCommon } from '../common';
 
 export class SearchCriteria {
-  public tableOrView: string
+  public tableOrView: string = '';
 
   constructor(
     public columns: string,
@@ -18,19 +18,15 @@ export class SearchCriteria {
 }
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: 'root'
 })
-export class GWLibSearchService {
-  private _HttpClient: HttpClient;
-  private _Criteria: Map<string, SearchCriteria>;
+export class SearchService {
+  private _Criteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
   private _SearchUrl: string = GWCommon.baseURL + 'GrowthWareAPI/Search';
 
   public searchCriteriaChanged = new Subject<string>();
 
-  constructor(httpClient: HttpClient) {
-    this._Criteria = new Map<string, SearchCriteria>();
-    this._HttpClient = httpClient;
-  }
+  constructor(private _HttpClient: HttpClient) { }
 
   /**
    * Handles an HttpClient error
@@ -88,9 +84,9 @@ export class GWLibSearchService {
    *
    * @param {string} name
    * @return {*}  {SearchCriteria}
-   * @memberof GWLibDynamicTableService
+   * @memberof DynamicTableService
    */
-   public getSearchCriteria(name: string): SearchCriteria {
+  public getSearchCriteria(name: string): SearchCriteria {
     return this._Criteria.get(name.trim().toLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
   }
 
@@ -99,7 +95,7 @@ export class GWLibSearchService {
    *
    * @param {string} name
    * @param {SearchCriteria} searchCriteria
-   * @memberof GWLibSearchService
+   * @memberof SearchService
    */
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria): void {
     if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(searchCriteria)) {

@@ -1,39 +1,52 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { SearchCriteria, GWLibSearchService } from '../../services/search.service';
-import { GWLibDynamicTableService } from '../dynamic-table/dynamic-table.service';
-import { GWLibPagerService } from './pager.service';
+import { SearchCriteria, SearchService } from '../../services/search.service';
+import { DynamicTableService, IResults } from '../dynamic-table/dynamic-table.service';
+
+import { GWCommon } from '../../common';
 
 @Component({
   selector: 'gw-lib-pager',
   templateUrl: './pager.component.html',
   styleUrls: ['./pager.component.scss']
 })
-export class GWLibPagerComponent implements OnInit {
-  private _TotalPagesSub: Subscription;
+export class PagerComponent implements OnDestroy, OnInit {
+  private _DataChangedSub: Subscription = new Subscription();
+
+  @Input() name: string = '';
 
   public pages: number[] = [];
   public selectedPage: string = "1";
-
-  @Input() name: string;
-  @Input() totalPages: number;
+  public totalPages: number = 0;
 
   constructor(
-    private _SearchSvc: GWLibSearchService,
-    private _pagerSvc: GWLibPagerService) { }
+    private _DynamicTableSvc: DynamicTableService,
+    private _SearchSvc: SearchService) { }
+
+  ngOnDestroy(): void {
+    this._DataChangedSub.unsubscribe();
+  }
 
   ngOnInit(): void {
-    this._TotalPagesSub = this._pagerSvc.totalPagesChanged.subscribe({
-      next: (name) => {
-        if(name.trim().toLowerCase() === this.name.trim().toLowerCase()) {
-          this.totalPages = this._pagerSvc.getTotalPages(name);
-          for (let index = 1; index < this.totalPages + 1; index++) {
-            this.pages.push(index);
+    this._DataChangedSub = this._DynamicTableSvc.dataChanged.subscribe((results: IResults) => {
+      const mFirstRow = results.data[0];
+      if(results.name.trim().toLowerCase() == this.name.trim().toLowerCase()) {
+        if(!GWCommon.isNullOrUndefined(mFirstRow)) {
+          const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
+          if(!GWCommon.isNullOrUndefined(mSearchCriteria)) {
+            const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
+            const mCalculatedPages: number = Math.floor(mTotalRecords / mSearchCriteria.pageSize);
+            if(this.pages.length !== mCalculatedPages) {
+              this.pages.splice(this.pages.length-1, 1);
+              for (let mIndex = 1; mIndex < (mCalculatedPages + 1); mIndex++) {
+                this.pages.push(mIndex);
+              }
+              this.totalPages = mCalculatedPages;
+            }
           }
         }
-      },
-      error: (e) => {console.error(e)}
+      }
     });
   }
 
@@ -52,9 +65,9 @@ export class GWLibPagerComponent implements OnInit {
    * Handels when there is a page change event
    *
    * @param {string} direction Valid values, First, Last, Next, Previous, or # (as a string so '1')
-   * @memberof GWLibDynamicTableComponent
+   * @memberof DynamicTableComponent
    */
-   onPageChange(direction: string): void {
+  onPageChange(direction: string): void {
     const value = direction.trim().toLowerCase();
     const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
     switch (value) {
@@ -92,4 +105,5 @@ export class GWLibPagerComponent implements OnInit {
     }
     this.selectedPage = mSearchCriteria.selectedPage.toString();
   }
+
 }

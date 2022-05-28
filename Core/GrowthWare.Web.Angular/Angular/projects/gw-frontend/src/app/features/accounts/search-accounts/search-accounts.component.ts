@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
-import { GWLibDynamicTableComponent } from 'projects/gw-lib/src/public-api';
-import { GWLibDynamicTableService, GWLibSearchService } from 'projects/gw-lib/src/public-api';
+import { DynamicTableComponent } from 'projects/gw-lib/src/public-api';
+import { DynamicTableService, SearchService } from 'projects/gw-lib/src/public-api';
 import { GWCommon, SearchCriteria } from 'projects/gw-lib/src/public-api';
 
 @Component({
@@ -10,14 +10,14 @@ import { GWCommon, SearchCriteria } from 'projects/gw-lib/src/public-api';
   styleUrls: ['./search-accounts.component.scss']
 })
 export class SearchAccountsComponent implements AfterViewInit, OnInit {
-  @ViewChild('searchFunctions', {static: false}) searchFunctionsComponent: GWLibDynamicTableComponent;
+  @ViewChild('searchFunctions', {static: false}) searchFunctionsComponent: DynamicTableComponent;
 
   private _SearchCriteria: SearchCriteria;
 
   public configurationName = 'Accounts';
   public results: any;
 
-  constructor(private _SearchSvc: GWLibSearchService, private _DynamicTableSvc: GWLibDynamicTableService) { }
+  constructor(private _SearchSvc: SearchService, private _DynamicTableSvc: DynamicTableService) { }
 
   ngAfterViewInit(): void {
     // Testing having multiple dynamic table components and overrideing the

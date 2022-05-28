@@ -10,7 +10,6 @@
     "strictPropertyInitialization": false,
     "paths": {
       "gw-lib": [
-        "dist/gw-lib/gw-lib",
         "dist/gw-lib"
       ]
     },
