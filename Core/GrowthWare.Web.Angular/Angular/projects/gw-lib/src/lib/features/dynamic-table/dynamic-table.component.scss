@@ -1,6 +1,42 @@
-table {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: red solid
+.fixTableHead {
+  overflow-y: auto;
+  display:inline-block;
+  width: max-content
+}
+.fixTableHead thead th {
+  position: sticky;
+  top: 0;
+}
+.fixTableHead table {
+  border-collapse: collapse;
+  margin: 0px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+.fixTableHead tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+.fixTableHead tbody tr:nth-of-type(even) {
+  background-color: #f3f3f3;
+}
+.fixTableHead th, td {
+  padding: 12px 15px;
+}
+
+.green thead > tr {
+  background-color: #009879;
+  color: #ffffff;
+  text-align: left;
+}
+.green tbody tr:last-of-type {
+  border-bottom: 2px solid #009879;
+}
+.green th {
+  background-color: #009879;
+}
+.green tbody tr.active-row {
+  font-weight: bold;
+  color: #009879;
 }

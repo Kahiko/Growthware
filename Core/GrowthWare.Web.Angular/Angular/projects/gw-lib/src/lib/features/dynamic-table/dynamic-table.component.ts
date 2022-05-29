@@ -26,6 +26,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[] = [];
 
+  public tableWidth: number = 200;
+  public tableHeight: number = 206;
+
   constructor(
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService) { }
@@ -69,10 +72,15 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
         if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
           let mColumns = '';
+          let mWidth: number = 0;
           this.tableConfiguration.columns.forEach(column => {
             mColumns += '[' + column.name + '], ';
+            mWidth+= +column.width;
           });
           mColumns = mColumns.substring(0, mColumns.length -2);
+          this.tableWidth = mWidth;
+          this.tableHeight = this.tableConfiguration.tableHeight;
+          console.log(mWidth); // 6
           this._SearchCriteria.columns = mColumns;
           this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
           this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;

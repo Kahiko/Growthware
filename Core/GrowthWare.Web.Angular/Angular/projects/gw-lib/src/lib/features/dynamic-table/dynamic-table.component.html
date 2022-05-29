@@ -7,17 +7,17 @@
       </div>
   </div>
   <div class="row">
-    <div class="col-sm-12">
+    <div class="col-sm-12 fixTableHead green"  [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'max-width.px': tableWidth +15}">
       <table>
         <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
-        <thead style="width: 100%; border: solid 1px;">
-          <tr style="width: 100%; border: solid 1px; position: sticky;">
-            <td *ngFor="let column of tableConfiguration.columns">
+        <thead>
+          <tr>
+            <th *ngFor="let column of tableConfiguration.columns">
               {{column.label}}
-            </td>
+            </th>
           </tr>
         </thead>
-        <tbody style="overflow-y: scroll; height: 60px;">
+        <tbody>
           <tr *ngFor="let row of tableData; let rowIndex=index;">
             <td *ngFor="let column of tableConfiguration.columns">
               {{row[column.name]}}

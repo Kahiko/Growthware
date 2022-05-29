@@ -37,5 +37,6 @@ export interface IDynamicTableConfiguration {
   "showThirdRow": boolean,
   "showHelp": boolean,
   "showSearch": boolean,
+  "tableHeight": number,
   "tableOrView": string
 }
