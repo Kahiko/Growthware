@@ -2,29 +2,29 @@
 					
 Application:
 	From Angular/projects/gw-frontend/src/app
-		ng generate component skins/default/footer --module app --skip-tests
-		ng generate component skins/default/header --module app --skip-tests
-		ng generate component skins/default/sidebar --module app --skip-tests
+		ng generate component skins/default/footer --module app --project gw-front-end --skip-tests
+		ng generate component skins/default/header --module app --project gw-front-end --skip-tests
+		ng generate component skins/default/sidebar --module app --project gw-front-end --skip-tests
 		
-		ng generate component skins/system/footer --module app --skip-tests
-		ng generate component skins/system/header --module app --skip-tests
-		ng generate component skins/system/sidebar --module app --skip-tests
+		ng generate component skins/system/footer --module app --project gw-front-end --skip-tests
+		ng generate component skins/system/header --module app --project gw-front-end --skip-tests
+		ng generate component skins/system/sidebar --module app --project gw-front-end --skip-tests
 		
-		ng generate component features/accounts --module app --skip-tests
-		ng generate component features/accounts/searchAccounts --module app --skip-tests
+		ng generate component features/accounts --module app --project gw-front-end --skip-tests
+		ng generate component features/accounts/searchAccounts --module app --project gw-front-end --skip-tests
 
 Library:
 	From Angular/projects/gw-lib/src/lib
-		ng generate service services/search --skip-tests --project gw-lib
+		ng generate service services/search --skip-tests --project @Growthware/Lib
 
-		ng generate module features/dynamic-table --module gw-lib
-		ng generate component features/dynamic-table --module dynamic-table --style scss --skip-tests
-		ng generate service features/dynamic-table/dynamic-table --skip-tests --project gw-lib
+		ng generate module features/dynamic-table --project @Growthware/Lib
+		ng generate component features/dynamic-table --module dynamic-table --project @Growthware/Lib --style scss --skip-tests
+		ng generate service features/dynamic-table/dynamic-table --project @Growthware/Lib --skip-tests --project gw-lib
 
-		ng generate module features/pager --module gw-lib
-		ng generate component features/pager --module pager --style scss --skip-tests
-		ng generate service features/pager/pager --skip-tests --project gw-lib
+		ng generate module features/pager --project @Growthware/Lib
+		ng generate component features/pager --module pager --style scss --project @Growthware/Lib --skip-tests
+		ng generate service features/pager/pager --skip-tests --project @Growthware/Lib
 
-		ng generate module features/modal --module gw-lib
-		ng generate component features/modal --module modal --style scss --skip-tests
-		ng generate service features/modal/modal --skip-tests --project gw-lib
+		ng generate module features/modal --project @Growthware/Lib
+		ng generate component features/modal --module modal --style scss --project @Growthware/Lib --skip-tests
+		ng generate service features/modal/modal --skip-tests --project @Growthware/Lib
