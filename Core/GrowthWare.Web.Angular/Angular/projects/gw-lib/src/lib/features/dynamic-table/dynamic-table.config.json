@@ -10,10 +10,10 @@
     ],
     "columns": [
       { "allowSort": false, "canEdit": false, "editText": "", "isButton": true , "isCheckbox": false, "isEdit": false, "isPrimaryKey": true , "label": "Delete"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "showData": true ,	"type": "string", "visible": true, "width": 180 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 180 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 180 },
-      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 280 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 200 },
       { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
       { "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
     ],

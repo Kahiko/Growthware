@@ -7,7 +7,7 @@
       </div>
   </div>
   <div class="row">
-    <div class="col-sm-12 fixTableHead green"  [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'max-width.px': tableWidth +15}">
+    <div class="col-sm-12 fixTableHead green"  [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +15, 'max-width.px': tableWidth +15}">
       <table>
         <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
         <thead>
