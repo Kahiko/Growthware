@@ -60,7 +60,7 @@
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 406,
+    "tableHeight": 306,
     "tableOrView": "[ZGWSecurity].[Functions]"
   }
 ]
