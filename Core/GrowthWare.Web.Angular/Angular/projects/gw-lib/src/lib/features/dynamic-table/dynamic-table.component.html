@@ -13,6 +13,7 @@
         <thead>
           <tr>
             <th *ngFor="let column of tableConfiguration.columns">
+              <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
               {{column.label}}
             </th>
           </tr>

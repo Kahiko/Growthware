@@ -1,5 +1,6 @@
 
 export interface IDynamicTableColumn {
+  "allowSearch": boolean,
   "allowSort": boolean,
   "canEdit": boolean,
   "editText": string,
