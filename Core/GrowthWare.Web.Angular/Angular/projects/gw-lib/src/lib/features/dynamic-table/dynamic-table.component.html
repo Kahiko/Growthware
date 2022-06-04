@@ -1,50 +1,46 @@
-<div class="dynamicTableContainer container">
-  <div class="row">
-    <div style="display: flex;">
-      <div>
-        <button *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible" [ngClass]="tableConfiguration.buttons[1].class">{{tableConfiguration.buttons[1].text}}</button>
+<form name="frmSearchPage" id="frmSearchPage" role="form">
+  <div class="dynamicTableContainer Container">
+      <div class="dynamicTableHeader">
+          <span style="display: inline-block; width: 33%; text-align: left;">
+              Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
+          </span>
+          <span style="display: inline-block; width: 33%;">
+            Select All
+          </span>
+          <span style="display: inline-block; width: 33%; text-align: right;">
+            new and search
+          </span>
       </div>
-      <div style="flex-grow: 1; margin-left: 5px; margin-right: 5px; border: solid 1px;">
-        <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
-        <button *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible" [ngClass]="tableConfiguration.buttons[0].class" style="float: right; padding-left: 5px;">{{tableConfiguration.buttons[0].text}}</button>
+      <div id="dynamicTable" class="dynamicTableMainbody">
+
+          <table class="table table-striped table-condensed table-hover">
+              <thead>
+                  <tr>
+                    <th *ngFor="let column of tableConfiguration.columns">
+                      <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
+                      {{column.label}}
+                    </th>
+                  </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let row of tableData; let rowIndex=index;">
+                  <td *ngFor="let column of tableConfiguration.columns">
+                    {{row[column.name]}}
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+
+              </tfoot>
+          </table>
       </div>
-      <div>
-        <button *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible" [ngClass]="tableConfiguration.buttons[2].class">{{tableConfiguration.buttons[2].text}}</button>
+      <div class="dynamicTableFooter">
+          <div style="float: left">
+              Page <span id="currentPage">x</span> of <span id="totalPages">x</span> <span id="totalRecords">(x total items)</span>
+          </div>
+          <div style="float: right;" data-ng-show="vm.totalPages.length > 1">
+            <gw-lib-pager #pager></gw-lib-pager>
+          </div>
       </div>
-    </div>
   </div>
-  <div class="row">
-    <div class="col-sm-12 fixTableHead green"  [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +15, 'max-width.px': tableWidth +15}">
-      <table>
-        <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
-        <thead>
-          <tr>
-            <th *ngFor="let column of tableConfiguration.columns">
-              <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
-              {{column.label}}
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let row of tableData; let rowIndex=index;">
-            <td *ngFor="let column of tableConfiguration.columns">
-              {{row[column.name]}}
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-  <div class="row">
-    <div style="display: flex;">
-      <div>
-        <button *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible" [ngClass]="tableConfiguration.buttons[3].class">{{tableConfiguration.buttons[3].text}}</button>
-      </div>
-      <div style="flex-grow: 1; text-align: center;">center</div>
-      <div><gw-lib-pager #pager></gw-lib-pager></div>
-      <div>
-        <button *ngIf="tableConfiguration.buttons.length > 4 && tableConfiguration.buttons[4].visible" [ngClass]="tableConfiguration.buttons[4].class">{{tableConfiguration.buttons[4].text}}</button>
-      </div>
-    </div>
-  </div>
-</div>
+</form>
