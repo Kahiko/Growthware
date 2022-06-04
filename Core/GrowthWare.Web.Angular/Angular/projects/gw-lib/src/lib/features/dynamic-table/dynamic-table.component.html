@@ -3,24 +3,23 @@
       <div class="dynamicTableHeader">
           <span style="display: inline-block; width: 33%; text-align: left;">
               Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
-              <button
-                *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
-                [ngClass]="tableConfiguration.buttons[1].class"
-                id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
-                name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
-                >{{tableConfiguration.buttons[1].text}}
-              </button>
             </span>
           <span style="display: inline-block; width: 33%;">
-            Select All
-          </span>
-          <span style="display: inline-block; width: 33%; text-align: right;">
             <button
               *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
               [ngClass]="tableConfiguration.buttons[0].class"
               id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
               >{{tableConfiguration.buttons[0].text}}
+            </button>
+          </span>
+          <span style="display: inline-block; width: 33%; text-align: right;">
+            <button
+              *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
+              [ngClass]="tableConfiguration.buttons[1].class"
+              id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
+              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              >{{tableConfiguration.buttons[1].text}}
             </button>&nbsp;
             <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
           </span>
@@ -30,7 +29,7 @@
             <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
             <thead>
                 <tr>
-                  <th *ngFor="let column of tableConfiguration.columns">
+                  <th *ngFor="let column of tableConfiguration.columns" [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
                     <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
                     {{column.label}}
                   </th>
