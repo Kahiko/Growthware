@@ -1,5 +1,5 @@
 <form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
-  <div class="dynamicTableContainer Container">
+  <div class="dynamicTableContainer Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +20}">
       <div class="dynamicTableHeader">
           <span style="display: inline-block; width: 33%; text-align: left;">
               Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
@@ -25,15 +25,16 @@
             <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
           </span>
       </div>
-      <div id="dynamicTable" class="dynamicTableMainbody">
-          <table class="table table-striped table-condensed table-hover">
-              <thead>
-                  <tr>
-                    <th *ngFor="let column of tableConfiguration.columns">
-                      <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
-                      {{column.label}}
-                    </th>
-                  </tr>
+      <div id="dynamicTable" class="dynamicTableMainbody green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +10, 'max-width.px': tableWidth +10}">
+          <table class="table table-striped table-condensed table-hover" [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth}">
+            <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
+            <thead>
+                <tr>
+                  <th *ngFor="let column of tableConfiguration.columns">
+                    <input *ngIf="column.allowSearch || column.allowSort" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">
+                    {{column.label}}
+                  </th>
+                </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let row of tableData; let rowIndex=index;">
