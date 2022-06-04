@@ -59,6 +59,6 @@
     "showHelp": false,
     "showSearch": false,
     "tableHeight": 306,
-    "tableOrView": "[ZGWSecurity].[Functions]"
+    "tableOrView": "[ZGWSystem].[vwSearchFunctions]"
   }
 ]
