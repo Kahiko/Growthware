@@ -33,7 +33,6 @@ export interface IDynamicTableConfiguration {
   "name": string,
   "numberOfRows": number,
   "orderByColumn": string,
-  "overridingGetData": boolean,
   "showFirstRow": boolean,
   "showThirdRow": boolean,
   "showHelp": boolean,

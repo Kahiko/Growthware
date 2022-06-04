@@ -34,7 +34,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _SearchSvc: SearchService) { }
 
     ngAfterViewInit(): void {
-      this.pagerComponent.name = this.configurationName;
+      if(this.pagerComponent) {
+        this.pagerComponent.name = this.configurationName;
+      }
     }
 
     ngOnDestroy(): void {

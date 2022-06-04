@@ -17,7 +17,6 @@ export class GWLibDynamicTableConfigModel {
   public name: string;
   public numberOfRows: number;
   public orderByColumn: string;
-  public overridingGetData: boolean;
   public showFirstRow: boolean;
   public showSecondRow: boolean;
   public showThirdRow: boolean;
@@ -36,7 +35,6 @@ export class GWLibDynamicTableConfigModel {
     numberOfRows: number = 4,
     orderByColumn: string,
     tableOrView: string,
-    overridingGetData: boolean = false,
     showFirstRow: boolean = false,
     showThirdRow: boolean = false,
     showHeading: boolean = false,
@@ -49,7 +47,6 @@ export class GWLibDynamicTableConfigModel {
     this.name = name;
     this.numberOfRows = numberOfRows;
     this.orderByColumn = orderByColumn;
-    this.overridingGetData = overridingGetData;
     this.showFirstRow = showFirstRow;
     this.showThirdRow = showThirdRow;
     this.showHeading = showHeading;

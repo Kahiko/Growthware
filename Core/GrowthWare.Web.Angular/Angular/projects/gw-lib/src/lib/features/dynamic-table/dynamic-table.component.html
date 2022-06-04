@@ -1,6 +1,6 @@
 <form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
   <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +20}">
-      <div class="dynamicTableHeaderDiv">
+      <div *ngIf="tableConfiguration.showFirstRow" class="dynamicTableHeaderDiv">
           <span style="display: inline-block; width: 33%; text-align: left;">
             Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
           </span>
@@ -45,7 +45,7 @@
               <tfoot></tfoot>
           </table>
       </div>
-      <div class="dynamicTableFooterDiv">
+      <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv">
           <div style="float: left">
               Page <span id="currentPage">x</span> of <span id="totalPages">x</span> <span id="totalRecords">(x total items)</span>
           </div>

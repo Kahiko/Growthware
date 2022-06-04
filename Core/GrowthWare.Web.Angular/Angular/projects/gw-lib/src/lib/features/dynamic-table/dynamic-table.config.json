@@ -22,12 +22,11 @@
     "name": "Accounts",
     "numberOfRows": 4,
     "orderByColumn": "Account",
-    "overridingGetData": false,
-    "showFirstRow": false,
+    "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 206,
+    "tableHeight": 133,
     "tableOrView": "[ZGWSecurity].[Accounts]"
   },
   {
@@ -53,12 +52,11 @@
     "name": "Functions",
     "numberOfRows": 4,
     "orderByColumn": "Name",
-    "overridingGetData": true,
-    "showFirstRow": false,
+    "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 306,
+    "tableHeight": 250,
     "tableOrView": "[ZGWSystem].[vwSearchFunctions]"
   }
 ]
