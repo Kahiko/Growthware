@@ -21,7 +21,7 @@
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
               >{{tableConfiguration.buttons[1].text}}
             </button>&nbsp;
-            <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
+            <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="font-size: 0.9em; width: 164px; float: right;" placeholder="Search">
           </span>
       </div>
       <div id="dynamicTable" class="dynamicTableMainbody green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +10, 'max-width.px': tableWidth +10}">
