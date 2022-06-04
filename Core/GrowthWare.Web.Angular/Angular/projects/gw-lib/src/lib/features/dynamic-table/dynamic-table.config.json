@@ -34,7 +34,7 @@
   {
     "buttons": [
       { "id": "addBtn"      , "name": "addBtn"      , "class": "btn btn-primary btn-xs" , "text": "Add"        , "visible": true },
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary"        , "text": "topLeft"    , "visible": false},
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary"        , "text": "Select All" , "visible": true },
       { "id": "topRight"    , "name": "topRight"    , "class": "btn btn-primary"        , "text": "topRight"   , "visible": false},
       { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "btn btn-primary"        , "text": "bottomLeft" , "visible": false},
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight", "visible": false}

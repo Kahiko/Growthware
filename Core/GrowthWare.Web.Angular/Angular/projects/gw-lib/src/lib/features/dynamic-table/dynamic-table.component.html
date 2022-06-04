@@ -1,18 +1,31 @@
-<form name="frmSearchPage" id="frmSearchPage" role="form">
+<form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
   <div class="dynamicTableContainer Container">
       <div class="dynamicTableHeader">
           <span style="display: inline-block; width: 33%; text-align: left;">
               Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
-          </span>
+              <button
+                *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
+                [ngClass]="tableConfiguration.buttons[1].class"
+                id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
+                name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+                >{{tableConfiguration.buttons[1].text}}
+              </button>
+            </span>
           <span style="display: inline-block; width: 33%;">
             Select All
           </span>
           <span style="display: inline-block; width: 33%; text-align: right;">
-            new and search
+            <button
+              *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
+              [ngClass]="tableConfiguration.buttons[0].class"
+              id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
+              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              >{{tableConfiguration.buttons[0].text}}
+            </button>&nbsp;
+            <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
           </span>
       </div>
       <div id="dynamicTable" class="dynamicTableMainbody">
-
           <table class="table table-striped table-condensed table-hover">
               <thead>
                   <tr>
@@ -29,9 +42,7 @@
                   </td>
                 </tr>
               </tbody>
-              <tfoot>
-
-              </tfoot>
+              <tfoot></tfoot>
           </table>
       </div>
       <div class="dynamicTableFooter">
