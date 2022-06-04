@@ -1,9 +1,9 @@
 <form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
-  <div class="dynamicTableContainer Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +20}">
-      <div class="dynamicTableHeader">
+  <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +20}">
+      <div class="dynamicTableHeaderDiv">
           <span style="display: inline-block; width: 33%; text-align: left;">
-              Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
-            </span>
+            Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
+          </span>
           <span style="display: inline-block; width: 33%;">
             <button
               *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
@@ -24,9 +24,9 @@
             <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="font-size: 0.9em; width: 164px; float: right;" placeholder="Search">
           </span>
       </div>
-      <div id="dynamicTable" class="dynamicTableMainbody green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +10, 'max-width.px': tableWidth +10}">
+      <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +10, 'max-width.px': tableWidth +10}">
           <table class="table table-striped table-condensed table-hover" [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth}">
-            <caption *ngIf="tableConfiguration.captionText.length > 0">{{tableConfiguration.captionText}}</caption>
+            <caption *ngIf="tableConfiguration.captionText.length > 0" id="caption_{{tableConfiguration.name}}">{{tableConfiguration.captionText}}</caption>
             <thead>
                 <tr>
                   <th *ngFor="let column of tableConfiguration.columns" [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
@@ -45,7 +45,7 @@
               <tfoot></tfoot>
           </table>
       </div>
-      <div class="dynamicTableFooter">
+      <div class="dynamicTableFooterDiv">
           <div style="float: left">
               Page <span id="currentPage">x</span> of <span id="totalPages">x</span> <span id="totalRecords">(x total items)</span>
           </div>

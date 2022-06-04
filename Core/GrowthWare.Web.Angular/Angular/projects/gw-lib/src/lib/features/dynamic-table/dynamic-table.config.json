@@ -13,8 +13,8 @@
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 120 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 120 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 200 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 80 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 80 }
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
     "captionText": "",
     "maxHeadHeight":75,
@@ -43,9 +43,9 @@
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "showData": true ,	"type": "string", "visible": true, "width": 180 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Action"      , "name": "Action"       , "showData": true ,	"type": "string", "visible": true, "width": 80 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "showData": true ,	"type": "string", "visible": true, "width": 110 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "showData": true ,	"type": "string", "visible": true, "width": 120 }
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
     "captionText": "Functions",
     "maxHeadHeight":75,

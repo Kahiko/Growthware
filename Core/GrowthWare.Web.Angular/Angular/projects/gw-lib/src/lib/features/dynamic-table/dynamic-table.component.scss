@@ -34,7 +34,7 @@ input.rounded10
   margin-right: 5px;
 }
 
-.dynamicTableContainer {
+.dynamicTableContainerDiv {
   margin: 10px;
   border: 1px solid #fff;
   background-color: #ffffff;
@@ -51,18 +51,19 @@ input.rounded10
   background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
   background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
 }
-.dynamicTableMainbody,
-.dynamicTableHeader,
-.dynamicTableFooter {
-  padding: 5px;
+.dynamicTableMainbodyDiv
+.dynamicTableHeaderDiv,
+.dynamicTableFooterDiv {
+  padding-bottom: 5px;
 }
-.dynamicTableMainbody {
+.dynamicTableMainbodyDiv {
   margin-top: 0;
   overflow: auto;
   font-size: 0.9em;
   font-family: sans-serif;
+  top: 0px;
 }
-.dynamicTableHeader {
+.dynamicTableHeaderDiv {
   white-space: nowrap;
   vertical-align:bottom;
   height: 45px;
@@ -81,7 +82,7 @@ input.rounded10
   background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
   background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
 }
-.dynamicTableFooter {
+.dynamicTableFooterDiv {
   height: 40px;
   background-color: whiteSmoke;
   border-top: 1px solid #DDD;
@@ -107,12 +108,6 @@ input.rounded10
   padding: 5px;
 }
 
-.fixTableHead {
-  overflow-y: auto;
-  overflow-x: hidden;
-  display:inline-block;
-  width: max-content
-}
 table {
   background-color: white;
   border-collapse: collapse;
