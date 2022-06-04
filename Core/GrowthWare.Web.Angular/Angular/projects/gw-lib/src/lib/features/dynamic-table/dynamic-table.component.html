@@ -36,7 +36,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let row of tableData; let rowIndex=index;">
+                <tr *ngFor="let row of tableData; let rowIndex=index;" (click)="onRowClick(rowIndex)" [class.active-row]="rowIndex == activeRow">
                   <td *ngFor="let column of tableConfiguration.columns">
                     {{row[column.name]}}
                   </td>

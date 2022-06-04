@@ -37,7 +37,7 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight", "visible": false}
     ],
     "columns": [
-      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "isButton": true , "isCheckbox": false, "isEdit": false, "isPrimaryKey": true , "label": "Delete"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "isButton": true , "isCheckbox": false, "isEdit": false, "isPrimaryKey": true , "label": "Delete"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 60 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 120 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "showData": true ,	"type": "string", "visible": true, "width": 180 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "isButton": false, "isCheckbox": false, "isEdit": false, "isPrimaryKey": false, "label": "Action"      , "name": "Action"       , "showData": true ,	"type": "string", "visible": true, "width": 80 },

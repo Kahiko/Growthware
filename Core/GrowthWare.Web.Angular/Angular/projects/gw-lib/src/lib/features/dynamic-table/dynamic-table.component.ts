@@ -23,6 +23,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() configurationName: string = '';
   @ViewChild('pager', {static: false}) pagerComponent: PagerComponent;
 
+  public activeRow: number = 0;
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[] = [];
 
@@ -33,65 +34,73 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService) { }
 
-    ngAfterViewInit(): void {
-      if(this.pagerComponent) {
-        this.pagerComponent.name = this.configurationName;
-      }
+  ngAfterViewInit(): void {
+    if(this.pagerComponent) {
+      this.pagerComponent.name = this.configurationName;
     }
+  }
 
-    ngOnDestroy(): void {
-      this._Subscriptions.unsubscribe();
-    }
+  ngOnDestroy(): void {
+    this._Subscriptions.unsubscribe();
+  }
 
-    ngOnInit(): void {
-      this.configurationName = this.configurationName.trim();
-      if(!GWCommon.isNullOrUndefined(this.configurationName) && !GWCommon.isNullorEmpty(this.configurationName)) {
-        this._Subscriptions.add(
-          // Suports when this.getData has been overridden
-          this._DynamicTableSvc.dataChanged.subscribe({
-            next: (results) => {
-              if(this.configurationName.toLowerCase() === results.name.trim().toLowerCase()) {
-                this.tableData = results.data;
-              }
-            },
-            error: (e) => {console.error(e)}
-          })
-        );
-
-        this._Subscriptions.add(
-          // Supports when the searchCriteria has changed by an outside process
-          // Example: PagerComponent
-          this._SearchSvc.searchCriteriaChanged.subscribe({
-            next: (name) => {
-              if(name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-                this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
-                this.getData();
-              }
+  ngOnInit(): void {
+    this.configurationName = this.configurationName.trim();
+    if(!GWCommon.isNullOrUndefined(this.configurationName) && !GWCommon.isNullorEmpty(this.configurationName)) {
+      this._Subscriptions.add(
+        // Suports when this.getData has been overridden
+        this._DynamicTableSvc.dataChanged.subscribe({
+          next: (results) => {
+            if(this.configurationName.toLowerCase() === results.name.trim().toLowerCase()) {
+              this.tableData = results.data;
             }
-          })
-        );
+          },
+          error: (e) => {console.error(e)}
+        })
+      );
 
-        this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
-        if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
-          let mColumns = '';
-          let mWidth: number = 0;
-          this.tableConfiguration.columns.forEach(column => {
-            mColumns += '[' + column.name + '], ';
-            mWidth+= +column.width;
-          });
-          mColumns = mColumns.substring(0, mColumns.length -2);
-          this.tableWidth = mWidth;
-          this.tableHeight = this.tableConfiguration.tableHeight;
-          // console.log(mWidth); // 6
-          this._SearchCriteria.columns = mColumns;
-          this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
-          this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
-          this._SearchSvc.setSearchCriteria(this.tableConfiguration.name, this._SearchCriteria);
-        }
-      } else {
-        console.error("DynamicTableComponent.ngOnInit: configurationName is blank");
+      this._Subscriptions.add(
+        // Supports when the searchCriteria has changed by an outside process
+        // Example: PagerComponent
+        this._SearchSvc.searchCriteriaChanged.subscribe({
+          next: (name) => {
+            if(name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
+              this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
+              this.getData();
+            }
+          }
+        })
+      );
+
+      this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
+      if(!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        let mColumns = '';
+        let mWidth: number = 0;
+        this.tableConfiguration.columns.forEach(column => {
+          mColumns += '[' + column.name + '], ';
+          mWidth+= +column.width;
+        });
+        mColumns = mColumns.substring(0, mColumns.length -2);
+        this.tableWidth = mWidth;
+        this.tableHeight = this.tableConfiguration.tableHeight;
+        // console.log(mWidth); // 6
+        this._SearchCriteria.columns = mColumns;
+        this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
+        this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
+        this._SearchSvc.setSearchCriteria(this.tableConfiguration.name, this._SearchCriteria);
       }
+    } else {
+      console.error("DynamicTableComponent.ngOnInit: configurationName is blank");
     }
+  }
+
+  public onRowClick(rowNumber: number) {
+    if (this.activeRow !== rowNumber) {
+      this.activeRow = rowNumber;
+    } else {
+      this.activeRow = -1;
+    }
+  }
 
   /**
    * Formats the data
