@@ -1,10 +1,17 @@
 <div class="dynamicTableContainer container">
   <div class="row">
     <div style="display: flex;">
-      <div>left</div>
-      <div style="flex-grow: 1; text-align: center;">center</div>
-      <div>right</div>
+      <div>
+        <button *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible" [ngClass]="tableConfiguration.buttons[1].class">{{tableConfiguration.buttons[1].text}}</button>
       </div>
+      <div style="flex-grow: 1; margin-left: 5px; margin-right: 5px; border: solid 1px;">
+        <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="width: 164px; float: right;" placeholder="Search in selected column.">
+        <button *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible" [ngClass]="tableConfiguration.buttons[0].class" style="float: right; padding-left: 5px;">{{tableConfiguration.buttons[0].text}}</button>
+      </div>
+      <div>
+        <button *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible" [ngClass]="tableConfiguration.buttons[2].class">{{tableConfiguration.buttons[2].text}}</button>
+      </div>
+    </div>
   </div>
   <div class="row">
     <div class="col-sm-12 fixTableHead green"  [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +15, 'max-width.px': tableWidth +15}">
@@ -30,10 +37,14 @@
   </div>
   <div class="row">
     <div style="display: flex;">
-      <div>button3</div>
+      <div>
+        <button *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible" [ngClass]="tableConfiguration.buttons[3].class">{{tableConfiguration.buttons[3].text}}</button>
+      </div>
       <div style="flex-grow: 1; text-align: center;">center</div>
       <div><gw-lib-pager #pager></gw-lib-pager></div>
-      <div>button4</div>
+      <div>
+        <button *ngIf="tableConfiguration.buttons.length > 4 && tableConfiguration.buttons[4].visible" [ngClass]="tableConfiguration.buttons[4].class">{{tableConfiguration.buttons[4].text}}</button>
+      </div>
     </div>
   </div>
 </div>

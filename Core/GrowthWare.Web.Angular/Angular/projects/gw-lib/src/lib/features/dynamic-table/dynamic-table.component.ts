@@ -80,7 +80,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
           mColumns = mColumns.substring(0, mColumns.length -2);
           this.tableWidth = mWidth;
           this.tableHeight = this.tableConfiguration.tableHeight;
-          console.log(mWidth); // 6
+          // console.log(mWidth); // 6
           this._SearchCriteria.columns = mColumns;
           this._SearchCriteria.orderByColumn = this.tableConfiguration.orderByColumn;
           this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
