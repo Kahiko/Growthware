@@ -38,7 +38,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
     if(this._GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
       const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
       mSearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
-      mSearchCriteria.tableOrView = '[ZGWSecurity].[Functions]';
+      mSearchCriteria.tableOrView = '[ZGWSystem].[vwSearchFunctions]';
     }
     // setSearchCriteria will call next on this._SearchSvc.searchCriteriaChanged
     this._SearchSvc.setSearchCriteria('Functions', mSearchCriteria);
