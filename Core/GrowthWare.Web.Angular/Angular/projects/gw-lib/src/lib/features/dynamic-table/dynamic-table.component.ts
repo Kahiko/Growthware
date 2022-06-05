@@ -54,10 +54,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         // Suports when this.getData has been overridden
         this._DynamicTableSvc.dataChanged.subscribe({
           next: (results) => {
-            if (
-              this.configurationName.toLowerCase() ===
-              results.name.trim().toLowerCase()
-            ) {
+            if (this.configurationName.toLowerCase() === results.name.trim().toLowerCase()) {
+              this.activeRow = -1;
               this.tableData = results.data;
             }
           },
@@ -72,10 +70,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         // Example: PagerComponent
         this._SearchSvc.searchCriteriaChanged.subscribe({
           next: (name) => {
-            if (
-              name.trim().toLowerCase() ===
-              this.configurationName.trim().toLowerCase()
-            ) {
+            if (name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
               this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
               this.getData();
             }
