@@ -3,7 +3,7 @@
  */
 
 export * from './lib/common-code';
-export * from './lib/components/dynamic-table';
-export * from './lib/components/pager';
+export * from './lib/features/dynamic-table';
+export * from './lib/features/pager';
 export * from './lib/models';
 export * from './lib/services';

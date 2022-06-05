@@ -2,7 +2,7 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { PagerComponent } from '@Growthware/Lib/src/lib/components/pager';
+import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
 import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';

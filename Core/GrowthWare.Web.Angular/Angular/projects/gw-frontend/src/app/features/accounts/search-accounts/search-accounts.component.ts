@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
-import { DynamicTableComponent } from '@Growthware/Lib/src/lib/components/dynamic-table';
+import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { DynamicTableService } from '@Growthware/Lib/src/lib/services';
 import { SearchService } from '@Growthware/Lib/src/lib/services';
