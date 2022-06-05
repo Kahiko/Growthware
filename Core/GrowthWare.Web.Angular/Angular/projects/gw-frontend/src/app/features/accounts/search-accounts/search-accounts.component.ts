@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
 import { DynamicTableComponent } from 'projects/gw-lib/src/public-api';
 import { DynamicTableService, SearchService } from 'projects/gw-lib/src/public-api';
-import { GWCommon, SearchCriteria } from 'projects/gw-lib/src/public-api';
+import { GWCommon, SearchCriteria } from '@Growthware/Lib';
 
 @Component({
   selector: 'app-search-accounts',
