@@ -1,6 +1,11 @@
 import { DatePipe } from '@angular/common';
+import { Injectable } from '@angular/core';
+
+@Injectable({
+  providedIn: 'root'
+})
 export class GWCommon {
-  static addOrUpdateArray(yourArray: any[], objectWithId: any): void {
+  public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
     var mExistingIds = yourArray.map((obj) => obj.id);
 
     if (!mExistingIds.includes(objectWithId.id)) {
@@ -14,7 +19,7 @@ export class GWCommon {
     }
   }
 
-  static get baseURL(): string {
+  public get baseURL(): string {
     let mCurrentLocation = window.location;
     let mPort = mCurrentLocation.port;
     const mCurrentPath = window.location.pathname;
@@ -42,7 +47,7 @@ export class GWCommon {
    * @returns
    * @memberof DynamicTableComponent
    */
-  static formatData(data: any, format: string): any {
+  public formatData(data: any, format: string): any {
     if (this.isNullOrUndefined(data)) {
       return '&nbsp;';
     }
@@ -64,7 +69,7 @@ export class GWCommon {
    * @return {*}  {*}
    * @memberof GWCommon
    */
-  static formatDate(sqlDate: any): any {
+  public formatDate(sqlDate: any): any {
     const mDateTime = new Date(sqlDate);
     const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
     const mDatepipe: DatePipe = new DatePipe('en-US');
@@ -80,7 +85,7 @@ export class GWCommon {
    * @return {*}  {boolean}
    * @memberof GWCommon
    */
-  static isFunction(obj: any): boolean {
+  public isFunction(obj: any): boolean {
     return typeof obj === 'function';
   }
 
@@ -92,7 +97,7 @@ export class GWCommon {
    * @return {*}
    * @memberof GWCommon
    */
-  static isNullorEmpty(str: string): boolean {
+  public isNullorEmpty(str: string): boolean {
     if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
       return true;
     }
@@ -107,7 +112,7 @@ export class GWCommon {
    * @return {*}
    * @memberof GWCommon
    */
-  static isNullOrUndefined(obj: any): boolean {
+  public isNullOrUndefined(obj: any): boolean {
     if (obj == null || obj === null || typeof obj === 'undefined') {
       return true;
     }

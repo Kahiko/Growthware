@@ -21,6 +21,7 @@ export class PagerComponent implements OnDestroy, OnInit {
   public totalPages: number = 0;
 
   constructor(
+    private _GWCommon: GWCommon,
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService) { }
 
@@ -32,9 +33,9 @@ export class PagerComponent implements OnDestroy, OnInit {
     this._DataChangedSub = this._DynamicTableSvc.dataChanged.subscribe((results: IResults) => {
       const mFirstRow = results.data[0];
       if(results.name.trim().toLowerCase() == this.name.trim().toLowerCase()) {
-        if(!GWCommon.isNullOrUndefined(mFirstRow)) {
+        if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
           const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
-          if(!GWCommon.isNullOrUndefined(mSearchCriteria)) {
+          if(!this._GWCommon.isNullOrUndefined(mSearchCriteria)) {
             const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
             const mCalculatedPages: number = Math.floor(mTotalRecords / mSearchCriteria.pageSize);
             if(this.pages.length !== mCalculatedPages) {

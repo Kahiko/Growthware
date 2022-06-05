@@ -17,7 +17,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
   public configurationName = 'Accounts';
   public results: any;
 
-  constructor(private _SearchSvc: SearchService, private _DynamicTableSvc: DynamicTableService) { }
+  constructor(private _GWCommon: GWCommon, private _SearchSvc: SearchService, private _DynamicTableSvc: DynamicTableService) { }
 
   ngAfterViewInit(): void {
     // Testing having multiple dynamic table components and overrideing the
@@ -26,7 +26,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
       // b/c we are using the search service and only overriding as an example
       // we only need to attempt getting data if "our" search criteria exists
       let mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions');
-      if(!GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
+      if(!this._GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
         this._SearchSvc.getResults(mSearchCriteria).then((results) => {
           this._DynamicTableSvc.setData('Functions', results);
         }).catch((error) => {
@@ -35,7 +35,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnInit {
       }
     }
     let mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions');
-    if(GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
+    if(this._GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
       const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
       mSearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
       mSearchCriteria.tableOrView = '[ZGWSecurity].[Functions]';

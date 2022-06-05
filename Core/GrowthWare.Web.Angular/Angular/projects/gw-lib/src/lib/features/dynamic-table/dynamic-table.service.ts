@@ -19,7 +19,7 @@ export class DynamicTableService {
   // Suports when when a component has new or updated data
   public dataChanged = new Subject<IResults>();
 
-  constructor() {
+  constructor(private _GWCommon: GWCommon) {
     // Load the default data for the growthware application
     const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
     for (let index = 0; index < mDefaultData.length; index++) {
@@ -36,7 +36,7 @@ export class DynamicTableService {
    */
    public getTableConfiguration(name: string): IDynamicTableConfiguration {
     const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
-    if(GWCommon.isNullOrUndefined(mRetVal)) {
+    if(this._GWCommon.isNullOrUndefined(mRetVal)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     return mRetVal;
@@ -53,7 +53,7 @@ export class DynamicTableService {
    * @memberof DynamicTableService
    */
    public set tableConfigurations(tableConfigurations: IDynamicTableConfiguration[]) {
-    if(!GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0){
+    if(!this._GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0){
       this._TableConfigurations = tableConfigurations;
     } else {
       throw('tableConfigurations can not be null, undefined or empty!');

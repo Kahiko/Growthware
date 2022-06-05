@@ -22,11 +22,11 @@ export class SearchCriteria {
 })
 export class SearchService {
   private _Criteria: Map<string, SearchCriteria> = new Map<string, SearchCriteria>();
-  private _SearchUrl: string = GWCommon.baseURL + 'GrowthWareAPI/Search';
+  private _SearchUrl: string = this._GWCommon.baseURL + 'GrowthWareAPI/Search';
 
   public searchCriteriaChanged = new Subject<string>();
 
-  constructor(private _HttpClient: HttpClient) { }
+  constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient) { }
 
   /**
    * Handles an HttpClient error
@@ -98,7 +98,7 @@ export class SearchService {
    * @memberof SearchService
    */
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria): void {
-    if(!GWCommon.isNullorEmpty(name) && !GWCommon.isNullOrUndefined(searchCriteria)) {
+    if(!this._GWCommon.isNullorEmpty(name) && !this._GWCommon.isNullOrUndefined(searchCriteria)) {
       this._Criteria.set(name.trim().toLowerCase(), searchCriteria);
       this.searchCriteriaChanged.next(name);
     } else {

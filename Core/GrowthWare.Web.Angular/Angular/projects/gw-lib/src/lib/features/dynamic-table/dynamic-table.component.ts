@@ -31,6 +31,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public tableHeight: number = 206;
 
   constructor(
+    private _GWCommon: GWCommon,
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService
   ) {}
@@ -48,8 +49,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     this.configurationName = this.configurationName.trim();
     if (
-      !GWCommon.isNullOrUndefined(this.configurationName) &&
-      !GWCommon.isNullorEmpty(this.configurationName)
+      !this._GWCommon.isNullOrUndefined(this.configurationName) &&
+      !this._GWCommon.isNullorEmpty(this.configurationName)
     ) {
       this._Subscriptions.add(
         // Suports when this.getData has been overridden
@@ -87,7 +88,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(
         this.configurationName
       );
-      if (!GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+      if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
         let mColumns = '';
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column) => {
@@ -132,14 +133,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   /**
    * Formats the data
    *
-   * @see GWCommon.formatData
+   * @see this._GWCommon.formatData
    * @param {*} data
    * @param {string} type
    * @return {*}
    * @memberof DynamicTableComponent
    */
   formatData(data: any, type: string): void {
-    return GWCommon.formatData(data, type);
+    return this._GWCommon.formatData(data, type);
   }
 
   /**
@@ -149,19 +150,19 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public getData(): void {
-    if (this._SearchCriteria.orderByColumn.indexOf('none') > 0 && GWCommon.isNullorEmpty(this._SearchCriteria.orderByColumn)) {
+    if (this._SearchCriteria.orderByColumn.indexOf('none') > 0 && this._GWCommon.isNullorEmpty(this._SearchCriteria.orderByColumn)) {
       throw ('The _SearchCriteria.orderByColumn has not been set for "' + this.configurationName + '"');
     }
     if (this._SearchCriteria.columns.length < 1) {
       throw 'this._SearchCriteria.columns must have at least 1 column defined!';
     }
-    if (GWCommon.isNullorEmpty(this._SearchCriteria.tableOrView)) {
+    if (this._GWCommon.isNullorEmpty(this._SearchCriteria.tableOrView)) {
       throw 'this._SearchCriteria.tableOrView must have a value!';
     }
     this._SearchSvc
       .getResults(this._SearchCriteria)
       .then((results) => {
-        if (!GWCommon.isNullOrUndefined(results) && results.length > 0) {
+        if (!this._GWCommon.isNullOrUndefined(results) && results.length > 0) {
           this.tableData = results;
           if (results.length > 0) {
             this._DynamicTableSvc.setData(this.configurationName, results);

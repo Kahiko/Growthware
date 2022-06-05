@@ -19,12 +19,12 @@ export class FetchDataComponent implements OnInit {
 
   private _httpClient: HttpClient
 
-  constructor(httpClient: HttpClient) {
+  constructor(private _GWCommon: GWCommon, httpClient: HttpClient) {
     this._httpClient = httpClient;
   }
 
   ngOnInit(): void {
-    const mURL = GWCommon.baseURL + 'weatherforecast';
+    const mURL = this._GWCommon.baseURL + 'weatherforecast';
     this._httpClient.get<WeatherForecast[]>(mURL).subscribe({
       next: (result) => {
         this.forecasts = result;
