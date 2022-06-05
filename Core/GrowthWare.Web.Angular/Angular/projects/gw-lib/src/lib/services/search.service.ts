@@ -87,7 +87,8 @@ export class SearchService {
    * @memberof DynamicTableService
    */
   public getSearchCriteria(name: string): SearchCriteria {
-    return this._Criteria.get(name.trim().toLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
+    const mRetVal: SearchCriteria = this._Criteria.get(name.trim().toLowerCase()) || new SearchCriteria('','','',1,1,'1=1');
+    return mRetVal;
   }
 
   /**

@@ -7,9 +7,7 @@ import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
 import { PagerComponent } from '../pager/pager.component';
 
 import { DynamicTableService, IResults } from './dynamic-table.service';
-import { SearchCriteria, SearchService } from '../../services/search.service';
-
-import { GWCommon } from '../../services/common';
+import { GWCommon, SearchCriteria, SearchService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
