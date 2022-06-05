@@ -1,5 +1,5 @@
 <form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
-  <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +20}">
+  <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +25}">
       <div *ngIf="tableConfiguration.showFirstRow" class="dynamicTableHeaderDiv">
           <span style="display: inline-block; width: 33%; text-align: left;">
             Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
@@ -25,7 +25,7 @@
           </span>
       </div>
       <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +18, 'max-width.px': tableWidth +18}">
-          <table class="table table-striped table-condensed table-hover" [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth}">
+          <table class="table table-striped table-condensed table-hover" [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth, 'margin-left.px': 5 }">
             <caption *ngIf="tableConfiguration.captionText.length > 0" id="caption_{{tableConfiguration.name}}">{{tableConfiguration.captionText}}</caption>
             <thead>
                 <tr>
@@ -45,11 +45,29 @@
               <tfoot></tfoot>
           </table>
       </div>
-      <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv">
+      <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv" style="display: flex;">
           <div style="float: left">
               Page <span id="currentPage">x</span> of <span id="totalPages">x</span> <span id="totalRecords">(x total items)</span>
           </div>
-          <div style="float: right;" data-ng-show="vm.totalPages.length > 1">
+          <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: left;">
+            <button
+              *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible"
+              [ngClass]="tableConfiguration.buttons[2].class"
+              id="btn_{{tableConfiguration.buttons[2].id}}_{{tableConfiguration.name}}"
+              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              >{{tableConfiguration.buttons[2].text}}
+            </button>
+          </div>
+          <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: right;">
+            <button
+              *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible"
+              [ngClass]="tableConfiguration.buttons[3].class"
+              id="btn_{{tableConfiguration.buttons[3].id}}_{{tableConfiguration.name}}"
+              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              >{{tableConfiguration.buttons[3].text}}
+            </button>
+          </div>
+          <div style="float: right;">
             <gw-lib-pager #pager></gw-lib-pager>
           </div>
       </div>
