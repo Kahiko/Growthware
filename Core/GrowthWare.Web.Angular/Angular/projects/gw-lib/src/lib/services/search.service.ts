@@ -2,7 +2,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { GWCommon } from '../common';
+import { GWCommon } from './common';
 
 export class SearchCriteria {
   public tableOrView: string = '';

@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { SearchCriteria, SearchService } from '../../services/search.service';
 import { DynamicTableService, IResults } from '../dynamic-table/dynamic-table.service';
 
-import { GWCommon } from '../../common';
+import { GWCommon } from '../../services/common';
 
 @Component({
   selector: 'gw-lib-pager',

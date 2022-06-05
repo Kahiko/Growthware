@@ -3,7 +3,7 @@ import { Subject } from 'rxjs';
 
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
-import { GWCommon } from '../../common';
+import { GWCommon } from '../../services/common';
 
 export interface IResults {
   name: string,

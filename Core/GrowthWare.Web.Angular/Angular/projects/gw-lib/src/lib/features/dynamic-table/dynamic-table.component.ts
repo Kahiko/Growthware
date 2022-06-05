@@ -9,7 +9,7 @@ import { PagerComponent } from '../pager/pager.component';
 import { DynamicTableService, IResults } from './dynamic-table.service';
 import { SearchCriteria, SearchService } from '../../services/search.service';
 
-import { GWCommon } from '../../common';
+import { GWCommon } from '../../services/common';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
