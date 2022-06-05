@@ -25,12 +25,12 @@ Library:
 		ng generate service services/search --skip-tests --project gw-lib
 		ng generate service services/dynamic-table --project gw-lib --skip-tests --project gw-lib
 		
-		ng generate module components/dynamic-table --project gw-lib
-		ng generate component components/dynamic-table --module dynamic-table --project gw-lib --style scss --skip-tests
+		ng generate module features/dynamic-table --project gw-lib
+		ng generate component features/dynamic-table --module dynamic-table --project gw-lib --style scss --skip-tests
 
-		ng generate module components/pager --project gw-lib
-		ng generate component components/pager --module pager --style scss --project gw-lib --skip-tests
+		ng generate module features/pager --project gw-lib
+		ng generate component features/pager --module pager --style scss --project gw-lib --skip-tests
 
-		ng generate module components/modal --project gw-lib
-		ng generate component components/modal --module modal --style scss --project gw-lib --skip-tests
+		ng generate module features/modal --project gw-lib
+		ng generate component features/modal --module modal --style scss --project gw-lib --skip-tests
 		ng generate service services/modal --skip-tests --project gw-lib
