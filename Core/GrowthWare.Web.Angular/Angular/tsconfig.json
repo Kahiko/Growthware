@@ -10,12 +10,12 @@
     "strictPropertyInitialization": false,
     "paths": {
       "@Growthware/Lib/*": [
-        "projects/some-lib/*",
-        "projects/some-lib"
+        "projects/gw-lib/*",
+        "projects/gw-lib"
       ],
       "@Growthware/Lib": [
-        "dist/some-lib/*",
-        "dist/some-lib"
+        "dist/gw-lib/*",
+        "dist/gw-lib"
       ]
     },
     "noPropertyAccessFromIndexSignature": true,
