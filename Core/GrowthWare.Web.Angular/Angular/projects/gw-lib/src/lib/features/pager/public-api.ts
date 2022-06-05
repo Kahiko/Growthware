@@ -1,2 +1,2 @@
-export * from './pager.component';
+export * from './c/pager.component';
 export * from './pager.module';
