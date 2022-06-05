@@ -9,8 +9,13 @@
     "noImplicitOverride": true,
     "strictPropertyInitialization": false,
     "paths": {
-      "gw-lib": [
-        "dist/gw-lib"
+      "@Growthware/Lib/*": [
+        "projects/some-lib/*",
+        "projects/some-lib"
+      ],
+      "@Growthware/Lib": [
+        "dist/some-lib/*",
+        "dist/some-lib"
       ]
     },
     "noPropertyAccessFromIndexSignature": true,
