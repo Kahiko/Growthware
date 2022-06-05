@@ -4,7 +4,7 @@
     <button [disabled]="selectedPage === '1'" id="movePrevious_{{name}}" name="movePrevious_{{name}}" (click)="onPageChange('previous')" title="Previous" style="margin: 5px;"><</button>
   </div>
   <div style="margin: 5px;">
-    <select id="selectPage_{{name}}" name="selectPage_{{name}}" (click)="onGoToPageClick()" [(ngModel)]="selectedPage">
+    <select id="selectPage_{{name}}" name="selectPage_{{name}}" (change)="onGoToPageClick()" [(ngModel)]="selectedPage">
       <option *ngFor="let item of pages" value="{{item}}">{{item}}</option>
     </select>&nbsp;of&nbsp;{{totalPages}}
   </div>
