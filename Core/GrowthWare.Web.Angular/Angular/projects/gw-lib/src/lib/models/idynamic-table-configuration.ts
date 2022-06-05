@@ -1,6 +1,24 @@
-import { IDynamicTableButton, IDynamicTableColumn } from './dynamic-table.interfaces';
-import { DynamicTableButton } from './dynamic-table-button.model';
-import { GWCommon } from '../../common';
+import { IDynamicTableButton, DynamicTableButton } from './idynamic-table-button';
+import { IDynamicTableColumn } from './idynamic-table-column';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+
+export interface IDynamicTableConfiguration {
+  "buttons": IDynamicTableButton[],
+  "columns": IDynamicTableColumn[],
+  "captionText": string,
+  "maxHeadHeight": number,
+  "maxTableRowHeight": number,
+  "name": string,
+  "numberOfRows": number,
+  "orderByColumn": string,
+  "showFirstRow": boolean,
+  "showThirdRow": boolean,
+  "showHelp": boolean,
+  "showSearch": boolean,
+  "tableHeight": number,
+  "tableOrView": string
+}
+
 
 /**
  * Represents the implementation of IDynamicTableConfig
@@ -8,7 +26,7 @@ import { GWCommon } from '../../common';
  * @export
  * @class GWLibDynamicTableConfigModel
  */
-export class GWLibDynamicTableConfigModel {
+ export class GWLibDynamicTableConfigModel {
   public buttons: IDynamicTableButton[] = [];
   public columns: IDynamicTableColumn[];
   public headingText: string;
@@ -39,7 +57,8 @@ export class GWLibDynamicTableConfigModel {
     showThirdRow: boolean = false,
     showHeading: boolean = false,
     showHelp: boolean = false,
-    showSearch: boolean = false
+    showSearch: boolean = false,
+    private _GWCommon: GWCommon,
   ) {
     this.headingText = headingText;
     this.maxHeadHeight = maxHeadHeight;
@@ -54,7 +73,7 @@ export class GWLibDynamicTableConfigModel {
     this.showSearch = showSearch;
     this.tableOrView = tableOrView;
 
-    if(GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
+    if(this._GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       let mDefaultNameId = name + '_AddBtn';
       let mButton:IDynamicTableButton = new DynamicTableButton(mDefaultNameId, mDefaultNameId);
       this.buttons.push(mButton);
@@ -67,9 +86,9 @@ export class GWLibDynamicTableConfigModel {
       }
     }
 
-    if(!GWCommon.isNullOrUndefined(columns) && columns.length > 0) {
+    if(!this._GWCommon.isNullOrUndefined(columns) && columns.length > 0) {
       let result = columns.filter(o => o.visible === true);
-      if(GWCommon.isNullOrUndefined(result) || result.length === 0) {
+      if(this._GWCommon.isNullOrUndefined(result) || result.length === 0) {
         throw new Error("At least 1 column in the columns must be visible");
       } else {
         this.columns = columns;

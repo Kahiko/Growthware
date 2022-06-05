@@ -1,8 +1,10 @@
 import { AfterViewInit, Component, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
-import { DynamicTableComponent } from 'projects/gw-lib/src/public-api';
-import { DynamicTableService } from 'projects/gw-lib/src/public-api';
-import { GWCommon, SearchCriteria, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DynamicTableComponent } from '@Growthware/Lib/src/lib/components/dynamic-table';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { DynamicTableService } from '@Growthware/Lib/src/lib/services';
+import { SearchService } from '@Growthware/Lib/src/lib/services';
+import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'app-search-accounts',

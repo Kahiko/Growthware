@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import * as DefaultData from './dynamic-table.config.json';
-import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
-import { GWCommon } from '@Growthware/Lib/src/lib/services';
+import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 export interface IResults {
   name: string,

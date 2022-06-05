@@ -1,8 +1,9 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { GWCommon, SearchCriteria, SearchService } from '@Growthware/Lib/src/lib/services';
-import { DynamicTableService, IResults } from '../dynamic-table/dynamic-table.service';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableService, IResults, SearchService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-pager',

@@ -1,4 +1,10 @@
-import { GWCommon } from "../../common";
+export interface IDynamicTableButton {
+  "id": string,
+  "name": string,
+  "class": string,
+  "text": string,
+  "visible": boolean
+}
 
 export class DynamicTableButton {
   public id: string;

@@ -1,18 +1,17 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
-import { Subscription, throwError } from 'rxjs';
+import { Subscription } from 'rxjs';
 
-import { IDynamicTableConfiguration } from './dynamic-table.interfaces';
-
-import { PagerComponent } from '../pager/pager.component';
-
-import { DynamicTableService, IResults } from './dynamic-table.service';
-import { GWCommon, SearchCriteria, SearchService } from '@Growthware/Lib/src/lib/services';
+import { PagerComponent } from '@Growthware/Lib/src/lib/components/pager';
+import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
   templateUrl: './dynamic-table.component.html',
-  styleUrls: ['./dynamic-table.component.scss'],
+  styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   private _SearchCriteria = new SearchCriteria('none, set', '[none]', 'asc', 10, 1, '1=1');
@@ -32,7 +31,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _GWCommon: GWCommon,
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService
-  ) {}
+  ) { }
 
   ngAfterViewInit(): void {
     if (this.pagerComponent) {

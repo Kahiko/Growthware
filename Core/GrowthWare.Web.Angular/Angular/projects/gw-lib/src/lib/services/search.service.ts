@@ -2,20 +2,8 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
-import { GWCommon } from './common';
-
-export class SearchCriteria {
-  public tableOrView: string = '';
-
-  constructor(
-    public columns: string,
-    public orderByColumn: string,
-    public orderByDirection: string,
-    public pageSize: number,
-    public selectedPage: number,
-    public whereClause: string
-  ) {}
-}
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
 
 @Injectable({
   providedIn: 'root'

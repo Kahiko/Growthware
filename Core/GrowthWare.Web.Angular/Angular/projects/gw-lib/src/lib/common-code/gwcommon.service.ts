@@ -119,3 +119,4 @@ export class GWCommon {
     return false;
   }
 }
+
