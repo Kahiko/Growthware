@@ -1,9 +1,12 @@
+type CallbackMethod = (arg: any) => void;
+
 export interface IDynamicTableButton {
   "id": string,
   "name": string,
   "class": string,
   "text": string,
-  "visible": boolean
+  "visible": boolean,
+  "callbackMethod"?: CallbackMethod,
 }
 
 export class DynamicTableButton {
@@ -12,6 +15,7 @@ export class DynamicTableButton {
   public class: string;
   public text: string;
   public visible: boolean;
+  public callbackMethod?: CallbackMethod;
 
   constructor(id: string, name: string, className: string = 'btn btn-primary', text: string = 'Add', visible: boolean = false) {
     this.id = id;
