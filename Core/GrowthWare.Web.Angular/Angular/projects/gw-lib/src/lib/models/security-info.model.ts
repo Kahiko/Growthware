@@ -1,8 +1,8 @@
 export interface ISecurityInfo {
-  mayAdd: Boolean
-  mayEdit: Boolean
-  mayDelete: Boolean
-  mayView: Boolean
+  "mayAdd": Boolean
+  "mayEdit": Boolean
+  "mayDelete": Boolean
+  "mayView": Boolean
 }
 
 export class SecurityInfo implements ISecurityInfo {
