@@ -1,5 +1,5 @@
-import { IDynamicTableButton, DynamicTableButton } from './idynamic-table-button';
-import { IDynamicTableColumn } from './idynamic-table-column';
+import { IDynamicTableButton, DynamicTableButton } from './dynamic-table-button.model';
+import { IDynamicTableColumn } from './dynamic-table-column.model';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 export interface IDynamicTableConfiguration {
