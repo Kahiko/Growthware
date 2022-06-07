@@ -17,7 +17,7 @@ Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --skip-tests --project gw-lib
 
-		ng generate interface models/CallbackButton --type model --project gw-lib
+		ng generate interface models/DynamicTableButton --type model --project gw-lib
 		ng generate interface models/DynamicTableColumn --type model --project gw-lib
 		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
@@ -34,4 +34,10 @@ Library:
 
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/modal --module modal --style scss --project gw-lib --skip-tests
-		ng generate service services/modal --skip-tests --project gw-lib
+
+		ng generate service features/modal/modal --skip-tests --project gw-lib
+
+		ng generate enum features/modal/ModalSize --type enum --project gw-lib
+		ng generate interface features/modal/ModalOptions --type model --project gw-lib
+		ng generate interface features/modal/ContentObject --type model --project gw-lib
+		ng generate interface features/modal/WindowSize --type model --project gw-lib
