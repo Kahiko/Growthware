@@ -1,5 +1,6 @@
 import { ICallbackButton } from "@Growthware/Lib/src/lib/models";
 import { IWindowSize } from "./window-size.model";
+
 export interface IModalOptions {
   "modalId": string;
   "headerText": string;
@@ -16,5 +17,5 @@ export class ModalOptions implements IModalOptions {
     public headerText: string,
     public contentPayLoad: any,
     public windowSize: number | IWindowSize = 0,
-  ) {}
+  ) { }
 }
