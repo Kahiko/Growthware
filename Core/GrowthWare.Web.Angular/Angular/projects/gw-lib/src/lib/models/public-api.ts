@@ -1,4 +1,4 @@
-export * from './dynamic-table-button.model';
+export * from './callback-button.model';
 export * from './dynamic-table-column.model';
 export * from './dynamic-table-configuration.model';
 export * from './modal-options.model';

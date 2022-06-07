@@ -1,9 +1,9 @@
-import { IDynamicTableButton, DynamicTableButton } from './dynamic-table-button.model';
+import { ICallbackButton, CallbackButton } from './callback-button.model';
 import { IDynamicTableColumn } from './dynamic-table-column.model';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 export interface IDynamicTableConfiguration {
-  "buttons": IDynamicTableButton[],
+  "buttons": ICallbackButton[],
   "columns": IDynamicTableColumn[],
   "captionText": string,
   "maxHeadHeight": number,
@@ -27,7 +27,7 @@ export interface IDynamicTableConfiguration {
  * @class GWLibDynamicTableConfigModel
  */
  export class GWLibDynamicTableConfigModel {
-  public buttons: IDynamicTableButton[] = [];
+  public buttons: ICallbackButton[] = [];
   public columns: IDynamicTableColumn[];
   public headingText: string;
   public maxHeadHeight: number;
@@ -44,7 +44,7 @@ export interface IDynamicTableConfiguration {
   public tableOrView: string;
 
   constructor(
-    buttons: IDynamicTableButton[] = [],
+    buttons: ICallbackButton[] = [],
     columns: IDynamicTableColumn[],
     headingText: string = '',
     maxHeadHeight: number = 32,
@@ -75,7 +75,7 @@ export interface IDynamicTableConfiguration {
 
     if(this._GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       let mDefaultNameId = name + '_AddBtn';
-      let mButton:IDynamicTableButton = new DynamicTableButton(mDefaultNameId, mDefaultNameId);
+      let mButton:ICallbackButton = new CallbackButton(mDefaultNameId, mDefaultNameId);
       this.buttons.push(mButton);
     } else {
       // ensure number of buttons not greater than 5

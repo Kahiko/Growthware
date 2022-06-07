@@ -1,6 +1,7 @@
-type CallbackMethod = (arg: any) => void;
+type CallbackMethod = (args: any | any[]) => void;
 
 export interface IModalOptions {
+
 }
 
 export class ModalOptions implements IModalOptions {

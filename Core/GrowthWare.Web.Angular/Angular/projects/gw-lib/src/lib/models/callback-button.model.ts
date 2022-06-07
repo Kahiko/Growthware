@@ -1,5 +1,6 @@
-type CallbackMethod = (arg: any) => void;
-export interface IDynamicTableButton {
+type CallbackMethod = (arg: any | any[]) => void;
+
+export interface ICallbackButton {
   "id": string,
   "name": string,
   "class": string,
@@ -8,7 +9,7 @@ export interface IDynamicTableButton {
   "callbackMethod"?: CallbackMethod,
 }
 
-export class DynamicTableButton {
+export class CallbackButton implements ICallbackButton {
   public id: string;
   public name: string;
   public class: string;

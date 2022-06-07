@@ -17,7 +17,7 @@ Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --skip-tests --project gw-lib
 
-		ng generate interface models/DynamicTableButton --type model --project gw-lib
+		ng generate interface models/CallbackButton --type model --project gw-lib
 		ng generate interface models/DynamicTableColumn --type model --project gw-lib
 		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
