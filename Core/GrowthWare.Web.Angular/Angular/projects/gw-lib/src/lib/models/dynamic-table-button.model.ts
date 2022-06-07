@@ -1,5 +1,4 @@
 type CallbackMethod = (arg: any) => void;
-
 export interface IDynamicTableButton {
   "id": string,
   "name": string,
