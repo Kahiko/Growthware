@@ -78,27 +78,27 @@ ALTER DATABASE [YourDatabaseName] SET QUERY_STORE = OFF
 GO
 USE [YourDatabaseName]
 GO
-/****** Object:  Schema [ZGWCoreWeb]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Schema [ZGWCoreWeb]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWCoreWeb')
 EXEC sys.sp_executesql N'CREATE SCHEMA [ZGWCoreWeb]'
 GO
-/****** Object:  Schema [ZGWCoreWebApplication]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Schema [ZGWCoreWebApplication]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWCoreWebApplication')
 EXEC sys.sp_executesql N'CREATE SCHEMA [ZGWCoreWebApplication]'
 GO
-/****** Object:  Schema [ZGWOptional]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Schema [ZGWOptional]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWOptional')
 EXEC sys.sp_executesql N'CREATE SCHEMA [ZGWOptional]'
 GO
-/****** Object:  Schema [ZGWSecurity]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Schema [ZGWSecurity]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWSecurity')
 EXEC sys.sp_executesql N'CREATE SCHEMA [ZGWSecurity]'
 GO
-/****** Object:  Schema [ZGWSystem]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Schema [ZGWSystem]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.schemas WHERE name = N'ZGWSystem')
 EXEC sys.sp_executesql N'CREATE SCHEMA [ZGWSystem]'
 GO
-/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_Default_Entity_ID]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_Default_Entity_ID]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -114,7 +114,7 @@ BEGIN
 END' 
 END
 GO
-/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_Entity_Parents]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_Entity_Parents]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -123,9 +123,9 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 execute dbo.sp_executesql @statement = N'/*
 Usage:
-	DECLARE @P_SecurityEntitySeqId INT = 1
-	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(0,@P_SecurityEntitySeqId)
-	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId)
+	DECLARE @PSecurityEntitySeqId INT = 1
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(0,@PSecurityEntitySeqId)
+	SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -138,7 +138,7 @@ Usage:
 CREATE FUNCTION [ZGWSecurity].[Get_Entity_Parents]
 (
 	@P_IncludeParent bit, 
-	@P_SecurityEntitySeqId int
+	@PSecurityEntitySeqId int
 )
 RETURNS @retParents TABLE 
 (
@@ -152,7 +152,7 @@ BEGIN
 			;WITH tblParent(SecurityEntitySeqId, ParentSecurityEntitySeqId) AS
 			(
 				SELECT SecurityEntitySeqId, ParentSecurityEntitySeqId
-					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId
+					FROM ZGWSecurity.Security_Entities WITH(NOLOCK) WHERE SecurityEntitySeqId = @PSecurityEntitySeqId
 				UNION ALL
 				SELECT 
 					SE.SecurityEntitySeqId, SE.ParentSecurityEntitySeqId
@@ -166,14 +166,14 @@ BEGIN
 				tblParent.SecurityEntitySeqId
 			FROM  
 				tblParent
-			WHERE SecurityEntitySeqId <> @P_SecurityEntitySeqId
+			WHERE SecurityEntitySeqId <> @PSecurityEntitySeqId
 			OPTION(MAXRECURSION 32767)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents(SecurityEntitySeqId)VALUES(@P_SecurityEntitySeqId);
+			IF (@P_IncludeParent=1) INSERT INTO @retParents(SecurityEntitySeqId)VALUES(@PSecurityEntitySeqId);
 		END
 	ELSE
 		BEGIN
 			INSERT INTO @retParents VALUES(ZGWSecurity.Get_Default_Entity_ID(),1)
-			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@P_SecurityEntitySeqId,1)
+			IF (@P_IncludeParent=1) INSERT INTO @retParents VALUES(@PSecurityEntitySeqId,1)
 		END
 	-- END IF
 	RETURN
@@ -181,7 +181,7 @@ BEGIN
 END' 
 END
 GO
-/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_View_PermissionSeqId]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  UserDefinedFunction [ZGWSecurity].[Get_View_PermissionSeqId]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +214,7 @@ BEGIN
 END' 
 END
 GO
-/****** Object:  UserDefinedFunction [ZGWSystem].[Inheritance_Enabled]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  UserDefinedFunction [ZGWSystem].[Inheritance_Enabled]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -231,7 +231,7 @@ BEGIN
 END' 
 END
 GO
-/****** Object:  Table [ZGWCoreWeb].[Messages]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWCoreWeb].[Messages]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -257,7 +257,7 @@ CREATE TABLE [ZGWCoreWeb].[Messages](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -296,7 +296,7 @@ CREATE TABLE [ZGWSecurity].[Accounts](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWCoreWeb].[vwSearchMessages]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWCoreWeb].[vwSearchMessages]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -329,7 +329,7 @@ CREATE VIEW [ZGWCoreWeb].[vwSearchMessages] AS
 	FROM 
 		[ZGWCoreWeb].[Messages] msg WITH(NOLOCK)' 
 GO
-/****** Object:  Table [ZGWOptional].[States]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWOptional].[States]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -351,7 +351,7 @@ CREATE TABLE [ZGWOptional].[States](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSystem].[Statuses]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSystem].[Statuses]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -373,7 +373,7 @@ CREATE TABLE [ZGWSystem].[Statuses](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWOptional].[vwSearchStates]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWOptional].[vwSearchStates]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -393,7 +393,7 @@ SELECT
 FROM 
 	[ZGWOptional].[States] States WITH(NOLOCK)' 
 GO
-/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -413,7 +413,7 @@ CREATE TABLE [ZGWSecurity].[Roles_Security_Entities](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -441,7 +441,7 @@ CREATE TABLE [ZGWSecurity].[Roles](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWSecurity].[vwSearchRoles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWSecurity].[vwSearchRoles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -464,7 +464,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE VIEW [ZGWSecurity].[vwSearchRoles] 
 		INNER JOIN ZGWSecurity.Roles_Security_Entities RSE WITH(NOLOCK)
 			ON R.RoleSeqId = RSE.RoleSeqId' 
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -489,7 +489,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -515,7 +515,7 @@ CREATE TABLE [ZGWSecurity].[Groups](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWSecurity].[vwSearchGroups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWSecurity].[vwSearchGroups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -536,7 +536,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE VIEW [ZGWSecurity].[vwSearchGroups]
 		INNER JOIN ZGWSecurity.Groups_Security_Entities RSE WITH(NOLOCK)
 			ON G.GroupSeqId = RSE.GroupSeqId' 
 GO
-/****** Object:  Table [ZGWSystem].[Name_Value_Pairs]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSystem].[Name_Value_Pairs]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -561,7 +561,7 @@ CREATE TABLE [ZGWSystem].[Name_Value_Pairs](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWSystem].[vwSearchNVP]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWSystem].[vwSearchNVP]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -582,7 +582,7 @@ SELECT
 FROM 
 	ZGWSystem.Name_Value_Pairs  NVP WITH(NOLOCK)' 
 GO
-/****** Object:  Table [ZGWSecurity].[Functions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Functions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -624,7 +624,7 @@ CREATE TABLE [ZGWSecurity].[Functions](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  View [ZGWSystem].[vwSearchFunctions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  View [ZGWSystem].[vwSearchFunctions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -644,7 +644,7 @@ SELECT
 FROM 
 	ZGWSecurity.Functions FUN WITH(NOLOCK)' 
 GO
-/****** Object:  Table [ZGWCoreWeb].[Account_Choices]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWCoreWeb].[Account_Choices]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -672,7 +672,7 @@ CREATE TABLE [ZGWCoreWeb].[Account_Choices](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWCoreWeb].[Link_Behaviors]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWCoreWeb].[Link_Behaviors]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -702,7 +702,7 @@ CREATE TABLE [ZGWCoreWeb].[Link_Behaviors](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWCoreWeb].[Notifications]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWCoreWeb].[Notifications]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -722,7 +722,7 @@ CREATE TABLE [ZGWCoreWeb].[Notifications](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWCoreWeb].[Work_Flows]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWCoreWeb].[Work_Flows]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -752,7 +752,7 @@ CREATE TABLE [ZGWCoreWeb].[Work_Flows](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWOptional].[Calendars]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWOptional].[Calendars]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -772,7 +772,7 @@ CREATE TABLE [ZGWOptional].[Calendars](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWOptional].[Directories]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWOptional].[Directories]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -796,7 +796,7 @@ CREATE TABLE [ZGWOptional].[Directories](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWOptional].[Zip_Codes]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWOptional].[Zip_Codes]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -818,7 +818,7 @@ CREATE TABLE [ZGWOptional].[Zip_Codes](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Function_Types]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Function_Types]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -846,7 +846,7 @@ CREATE TABLE [ZGWSecurity].[Function_Types](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -861,7 +861,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Accounts](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Functions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Functions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -883,7 +883,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Functions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -903,7 +903,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Groups](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Permissions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Permissions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -919,7 +919,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Permissions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -934,7 +934,7 @@ CREATE TABLE [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Navigation_Types]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Navigation_Types]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -964,7 +964,7 @@ CREATE TABLE [ZGWSecurity].[Navigation_Types](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Permissions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Permissions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -994,7 +994,7 @@ CREATE TABLE [ZGWSecurity].[Permissions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1009,7 +1009,7 @@ CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Accounts](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Functions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Functions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1031,7 +1031,7 @@ CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Functions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Permissions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Roles_Security_Entities_Permissions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1047,7 +1047,7 @@ CREATE TABLE [ZGWSecurity].[Roles_Security_Entities_Permissions](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Index [UIX_Roles_EntitesSeqId_PermissionsNVPDetailSeqId]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Index [UIX_Roles_EntitesSeqId_PermissionsNVPDetailSeqId]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Roles_Security_Entities_Permissions]') AND name = N'UIX_Roles_EntitesSeqId_PermissionsNVPDetailSeqId')
 CREATE UNIQUE CLUSTERED INDEX [UIX_Roles_EntitesSeqId_PermissionsNVPDetailSeqId] ON [ZGWSecurity].[Roles_Security_Entities_Permissions]
 (
@@ -1056,7 +1056,7 @@ CREATE UNIQUE CLUSTERED INDEX [UIX_Roles_EntitesSeqId_PermissionsNVPDetailSeqId]
 	[PermissionsNVPDetailSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Table [ZGWSecurity].[Security_Entities]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSecurity].[Security_Entities]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1088,7 +1088,7 @@ CREATE TABLE [ZGWSecurity].[Security_Entities](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSystem].[Data_Errors]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSystem].[Data_Errors]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1108,7 +1108,7 @@ CREATE TABLE [ZGWSystem].[Data_Errors](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-/****** Object:  Table [ZGWSystem].[Database_Information]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSystem].[Database_Information]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1130,14 +1130,36 @@ CREATE TABLE [ZGWSystem].[Database_Information](
 ) ON [PRIMARY]
 END
 GO
-/****** Object:  Index [FK_IXSecurityEntitySeqId]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Table [ZGWSystem].[Logging]    Script Date: 6/8/2022 8:04:44 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND type in (N'U'))
+BEGIN
+CREATE TABLE [ZGWSystem].[Logging](
+	[LogDate] [datetime] NULL,
+	[Level] [varchar](5) NOT NULL,
+	[Account] [varchar](128) NOT NULL,
+	[Component] [varchar](50) NOT NULL,
+	[ClassName] [varchar](50) NOT NULL,
+	[MethodName] [varchar](50) NOT NULL,
+	[Msg] [varchar](50) NOT NULL,
+ CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED 
+(
+	[LogDate] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+/****** Object:  Index [FK_IXSecurityEntitySeqId]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[Messages]') AND name = N'FK_IXSecurityEntitySeqId')
 CREATE NONCLUSTERED INDEX [FK_IXSecurityEntitySeqId] ON [ZGWCoreWeb].[Messages]
 (
 	[SecurityEntitySeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Index [FK_IX_Notification_Entity_Function]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Index [FK_IX_Notification_Entity_Function]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[Notifications]') AND name = N'FK_IX_Notification_Entity_Function')
 CREATE NONCLUSTERED INDEX [FK_IX_Notification_Entity_Function] ON [ZGWCoreWeb].[Notifications]
 (
@@ -1146,7 +1168,7 @@ CREATE NONCLUSTERED INDEX [FK_IX_Notification_Entity_Function] ON [ZGWCoreWeb].[
 	[FunctionSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
-/****** Object:  Index [FX_IX_Work_Flows]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  Index [FX_IX_Work_Flows]    Script Date: 6/8/2022 8:04:44 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[Work_Flows]') AND name = N'FX_IX_Work_Flows')
 CREATE NONCLUSTERED INDEX [FX_IX_Work_Flows] ON [ZGWCoreWeb].[Work_Flows]
 (
@@ -1154,12 +1176,22 @@ CREATE NONCLUSTERED INDEX [FX_IX_Work_Flows] ON [ZGWCoreWeb].[Work_Flows]
 	[StatusSeqId] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [NC_ZGWSystem_Logging_LogDate_Level]    Script Date: 6/8/2022 8:04:44 AM ******/
+IF NOT EXISTS (SELECT * FROM sys.indexes WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND name = N'NC_ZGWSystem_Logging_LogDate_Level')
+CREATE NONCLUSTERED INDEX [NC_ZGWSystem_Logging_LogDate_Level] ON [ZGWSystem].[Logging]
+(
+	[LogDate] ASC,
+	[Level] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[DF_ZGWCoreWeb_Messages_Format_As_HTML]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWCoreWeb].[Messages] ADD  CONSTRAINT [DF_ZGWCoreWeb_Messages_Format_As_HTML]  DEFAULT ((0)) FOR [Format_As_HTML]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[DF__Messages__Added___75A278F5]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[DF__Messages__Added___7E37BEF6]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWCoreWeb].[Messages] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
@@ -1179,7 +1211,7 @@ BEGIN
 ALTER TABLE [ZGWOptional].[Calendars] ADD  CONSTRAINT [DF_ZGWOptional_Calendar_Added_Date]  DEFAULT (getdate()) FOR [Added_Date]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[DF__Directori__Added__7A672E12]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWOptional].[DF__Directori__Added__02084FDA]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWOptional].[Directories] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
@@ -1259,12 +1291,12 @@ BEGIN
 ALTER TABLE [ZGWSecurity].[Functions] ADD  CONSTRAINT [DF_ZGWSecurity_Functions_Sort_Order]  DEFAULT ((0)) FOR [Sort_Order]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups__Added_Da__08B54D69]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups__Added_Da__114A936A]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSecurity].[Groups] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups_Se__Added__07C12930]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups_Se__Added__123EB7A3]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
@@ -1289,7 +1321,7 @@ BEGIN
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Permissions] ADD  CONSTRAINT [DF_ZGWSecurity_Groups_Security_Entities_Permissions_Added_Date]  DEFAULT (getdate()) FOR [Added_Date]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups_Se__Added__02FC7413]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[DF__Groups_Se__Added__17036CC0]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
@@ -1329,17 +1361,22 @@ BEGIN
 ALTER TABLE [ZGWSystem].[Data_Errors] ADD  CONSTRAINT [DF_ZGWSystem.Data_Errors_ErrorDate]  DEFAULT (getdate()) FOR [ErrorDate]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Database___Added__160F4887]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Database___Added__1EA48E88]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSystem].[Database_Information] ADD  DEFAULT ((1)) FOR [Added_By]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Database___Added__17036CC0]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Database___Added__1F98B2C1]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSystem].[Database_Information] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
 GO
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Name_Valu__Added__151B244E]') AND type = 'D')
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF_ZGWSystem.Logging_LogDate]') AND type = 'D')
+BEGIN
+ALTER TABLE [ZGWSystem].[Logging] ADD  CONSTRAINT [DF_ZGWSystem.Logging_LogDate]  DEFAULT (getdate()) FOR [LogDate]
+END
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF__Name_Valu__Added__208CD6FA]') AND type = 'D')
 BEGIN
 ALTER TABLE [ZGWSystem].[Name_Value_Pairs] ADD  DEFAULT (getdate()) FOR [Added_Date]
 END
@@ -1733,7 +1770,7 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[ZGWSystem].[FK_Name_Value_Pairs_Statuses]') AND parent_object_id = OBJECT_ID(N'[ZGWSystem].[Name_Value_Pairs]'))
 ALTER TABLE [ZGWSystem].[Name_Value_Pairs] CHECK CONSTRAINT [FK_Name_Value_Pairs_Statuses]
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Account_Choice]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Account_Choice]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1743,6 +1780,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Get_Account_Choice] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -1809,7 +1847,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Messages]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Messages]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1819,16 +1857,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Get_Messages] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 	
 		@P_MessageSeqId INT, 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Messages
 		@P_MessageSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -1840,7 +1879,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Messages]
 	@P_MessageSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -1851,13 +1890,13 @@ AS
 		something along the lines of core defaul security entity message
 		+ other security entity messages ...
 	*/
-	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId) = 0
+	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @PSecurityEntitySeqId) = 0
 		BEGIN
 			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
 				BEGIN
 					INSERT INTO ZGWCoreWeb.[Messages]
 						SELECT
-							@P_SecurityEntitySeqId
+							@PSecurityEntitySeqId
 							, Name
 							, Title
 							, [Description]
@@ -1921,7 +1960,7 @@ AS
 	--END IF
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Notification_Status]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Notification_Status]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1931,17 +1970,18 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Get_Notification_Status] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_FunctionSeqId int = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Primary_Key INT = null,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notification_Status
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Account,
 		@P_Primary_Key,
@@ -1953,7 +1993,7 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Notification_Status]
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Account VARCHAR(128),
 	@P_Primary_Key INT OUTPUT,
@@ -1971,7 +2011,7 @@ AS
 		FROM 
 			ZGWCoreWeb.Notifications WITH(NOLOCK)
 		WHERE 
-			SecurityEntitySeqId = @P_SecurityEntitySeqId
+			SecurityEntitySeqId = @PSecurityEntitySeqId
 			AND FunctionSeqId = @P_FunctionSeqId
 			AND Added_By = @V_AccountSeqId)
 		BEGIN
@@ -1986,7 +2026,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Notifications]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Get_Notifications]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -1996,15 +2036,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Get_Notifications] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
-		@P_SecurityEntitySeqId int,
+		@PSecurityEntitySeqId int,
 		@P_FunctionSeqId int,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Get_Notifications
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Debug
 */
@@ -2014,7 +2055,7 @@ Usage:
 -- Description:	Returns single value of 0 or 1
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Get_Notifications]
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Debug INT = 0
 AS
@@ -2032,7 +2073,7 @@ AS
 	WHERE
 		Accounts.Enable_Notifications = @V_Enable_Notifications
 		AND Notifications.FunctionSeqId = @P_FunctionSeqId
-		AND Notifications.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND Notifications.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Email
 
@@ -2040,7 +2081,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Account_Choices]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Account_Choices]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2147,7 +2188,7 @@ AS
 -- Get the Error Code for the statement just executed.
 --SELECT @P_ErrorCode=@@ERROR
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Message]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Message]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2157,11 +2198,12 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Set_Message] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_MessageSeqId INT = 1,
-		@P_SecurityEntitySeqId INT = 2,
+		@PSecurityEntitySeqId INT = 2,
 		@P_Name VARCHAR(50) 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
@@ -2173,7 +2215,7 @@ Usage:
 
 	exec ZGWCoreWeb.Set_Message
 		@P_MessageSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Title,
 		@P_Description,
@@ -2192,7 +2234,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Message]
 	@P_MessageSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Name VARCHAR(50),
 	@P_Title VARCHAR(100),
 	@P_Description VARCHAR(512),
@@ -2211,12 +2253,12 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					SecurityEntitySeqId = @P_SecurityEntitySeqId
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 				BEGIN
 					UPDATE ZGWCoreWeb.[Messages]
 					SET
-						SecurityEntitySeqId = @P_SecurityEntitySeqId,
+						SecurityEntitySeqId = @PSecurityEntitySeqId,
 						[Name] = @P_Name,
 						Title = @P_Title,
 						[Description] = @P_Description,
@@ -2226,7 +2268,7 @@ AS
 						Updated_Date = GETDATE()
 					WHERE
 						MessageSeqId = @P_MessageSeqId
-						AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+						AND SecurityEntitySeqId = @PSecurityEntitySeqId
 
 					SELECT @P_Primary_Key = @P_MessageSeqId -- set the output id just in case.
 				END
@@ -2245,7 +2287,7 @@ AS
 					)
 					VALUES
 					(
-						@P_SecurityEntitySeqId,
+						@PSecurityEntitySeqId,
 						@P_Name,
 						@P_Title,
 						@P_Description,
@@ -2264,7 +2306,7 @@ AS
 			IF EXISTS( SELECT [Name]
 				   FROM ZGWCoreWeb.[Messages]
 				   WHERE [Name] = @P_Name AND
-					SecurityEntitySeqId = @P_SecurityEntitySeqId
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 			)
 			BEGIN
 				RAISERROR ('The message you entered already exists in the database.',16,1)
@@ -2284,7 +2326,7 @@ AS
 			)
 			VALUES
 			(
-				@P_SecurityEntitySeqId,
+				@PSecurityEntitySeqId,
 				@P_Name,
 				@P_Title,
 				@P_Description,
@@ -2299,7 +2341,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Message'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Notification]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Notification]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2309,17 +2351,18 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWCoreWeb].[Set_Notification] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId int = 2,
+		@PSecurityEntitySeqId int = 2,
 		@P_FunctionSeqId int = 1,
 		@P_Account Varchar(128) = 'Developer',
 		@P_Status int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWCoreWeb.Set_Notification
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_Account,
 		@P_Status,
@@ -2332,7 +2375,7 @@ Usage:
 --	Status value 1 = insert, 0 = delete
 -- =============================================
 ALTER PROCEDURE [ZGWCoreWeb].[Set_Notification]
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_FunctionSeqId int,
 	@P_Account Varchar(128),
 	@P_Status int,
@@ -2351,7 +2394,7 @@ IF @P_Status = 1
 			FROM 
 				ZGWCoreWeb.Notifications 
 			WHERE 
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				AND FunctionSeqId = @P_FunctionSeqId
 				AND Added_By = @V_AccountSeqId
 		)
@@ -2365,7 +2408,7 @@ IF @P_Status = 1
 			)
 			VALUES
 			(
-			@P_SecurityEntitySeqId,
+			@PSecurityEntitySeqId,
 			@P_FunctionSeqId,
 			@V_AccountSeqId
 			)
@@ -2376,14 +2419,14 @@ ELSE
 	DELETE 
 		ZGWCoreWeb.Notifications
 	WHERE 
-		SecurityEntitySeqId = @P_SecurityEntitySeqId
+		SecurityEntitySeqId = @PSecurityEntitySeqId
 		AND FunctionSeqId = @P_FunctionSeqId
 		AND Added_By = @V_AccountSeqId
 --END IF
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Notification'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWOptional].[Get_Directory]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWOptional].[Get_Directory]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2393,6 +2436,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_Directory] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2456,7 +2500,7 @@ IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_Directory'
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWOptional].[Get_State]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWOptional].[Get_State]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2466,6 +2510,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_State] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2526,7 +2571,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_State'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWOptional].[Set_Directory]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWOptional].[Set_Directory]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2536,6 +2581,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Set_Directory] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2622,7 +2668,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending Optional.Set_Directory'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWOptional].[Set_State]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWOptional].[Set_State]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2632,6 +2678,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Set_State] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2682,7 +2729,7 @@ END
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2692,6 +2739,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Account] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2721,7 +2769,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2731,16 +2779,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Account_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_AccountSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec  ZGWSecurity.Delete_Account_Groups
 		@P_AccountSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -2751,7 +2800,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Account_Groups]
 	@P_AccountSeqId INT,
-	@P_SecurityEntitySeqId	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -2759,13 +2808,13 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Accounts 
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND AccountSeqId = @P_AccountSeqId
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account_Groups]'
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Account_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2775,16 +2824,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Account_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_AccountSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec ZGWSecurity.Delete_Account_Roles
 		@P_AccountSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -2795,7 +2845,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Account_Roles]
 	@P_AccountSeqId INT,
-	@P_SecurityEntitySeqId	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
  AS
@@ -2804,14 +2854,14 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Accounts 
 	WHERE 
-		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND AccountSeqId = @P_AccountSeqId
 	SELECT @P_ErrorCode = @@error
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Account_Roles]'
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Entity]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Entity]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2821,14 +2871,15 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Entity] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId int = 4,
+		@PSecurityEntitySeqId int = 4,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Function
-		@P_SecurityEntitySeqId ,
+		@PSecurityEntitySeqId ,
 		@P_Debug
 */
 -- =============================================
@@ -2838,17 +2889,17 @@ Usage:
 --	given the SecurityEntitySeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Entity]
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Start [ZGWSecurity].[Delete_Entity]'
 	DELETE FROM ZGWSecurity.Security_Entities
 	WHERE
-		SecurityEntitySeqId = @P_SecurityEntitySeqId
+		SecurityEntitySeqId = @PSecurityEntitySeqId
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Entity]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2858,6 +2909,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Function] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -2888,7 +2940,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Function'
 	RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2898,18 +2950,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Function_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Delete_Function_Groups
 		@P_FunctionSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_PermissionsNVPDetailSeqId,
 		@P_ErrorCode OUT,
 		@P_Debug BIT
@@ -2922,7 +2975,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Function_Groups]
 	@P_FunctionSeqId INT,
-	@P_SecurityEntitySeqId	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
@@ -2932,7 +2985,7 @@ BEGIN
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Functions
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND FunctionSeqId = @P_FunctionSeqId
 		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	SELECT @P_ErrorCode = @@error
@@ -2940,7 +2993,7 @@ BEGIN
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Function_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -2950,18 +3003,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Function_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Delete_Function_Groups
 		@P_FunctionSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_PermissionsNVPDetailSeqId,
 		@P_ErrorCode OUT,
 		@P_Debug BIT
@@ -2974,7 +3028,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Function_Roles]
 	@P_FunctionSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
@@ -2983,7 +3037,7 @@ BEGIN
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Function_Roles'
 	DELETE FROM ZGWSecurity.Roles_Security_Entities_Functions
 	WHERE 
-		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND FunctionSeqId = @P_FunctionSeqId
 		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	SELECT @P_ErrorCode = @@error
@@ -2991,7 +3045,7 @@ BEGIN
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3001,16 +3055,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Group] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Group
 		@P_GroupSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3021,7 +3076,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group]
 	@P_GroupSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -3044,7 +3099,7 @@ BEGIN
 							ZGWSecurity.Groups_Security_Entities 
 						WHERE 
 							GroupSeqId=@P_GroupSeqId 
-							AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -3054,7 +3109,7 @@ BEGIN
 			DELETE ZGWSecurity.Groups_Security_Entities
 			WHERE (
 				GroupSeqId = @P_GroupSeqId AND
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END
 		
@@ -3088,7 +3143,7 @@ BEGIN
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3098,15 +3153,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Group_Accounts] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupSeqId AS INT = 2,
-		@P_SecurityEntitySeqId AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Group_Accounts]
 		@P_GroupSeqId
-		@P_SecurityEntitySeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -3116,7 +3172,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group_Accounts]
 	@P_GroupSeqId AS INT,
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Group_Accounts]'
@@ -3130,12 +3186,12 @@ AS
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
 				GroupSeqId = @P_GroupSeqId 
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Accounts]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Group_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3145,16 +3201,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Group_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupSeqId int = 4,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Delete_Function_Groups
 		@P_GroupSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3165,7 +3222,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Group_Roles]
 	@P_GroupSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Group_Roles]'
@@ -3174,12 +3231,12 @@ AS
 	WHERE
 		GroupsSecurityEntitiesSeqId IN (SELECT GroupsSecurityEntitiesSeqId 
 					FROM ZGWSecurity.Groups_Security_Entities 
-					WHERE SecurityEntitySeqId=@P_SecurityEntitySeqId
+					WHERE SecurityEntitySeqId=@PSecurityEntitySeqId
 					AND GroupSeqId = @P_GroupSeqId)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Roles]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Groups_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Groups_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3189,15 +3246,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Groups_Accounts] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupsSecurityEntitiesSeqId AS INT = 2,
-		@P_SecurityEntitySeqId AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Groups_Accounts]
 		@P_GroupsSecurityEntitiesSeqId
-		@P_SecurityEntitySeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -3207,7 +3265,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Groups_Accounts]
 	@P_GroupsSecurityEntitiesSeqId AS INT,
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
@@ -3221,12 +3279,12 @@ AS
 				ZGWSecurity.Groups_Security_Entities 
 			WHERE 
 				GroupsSecurityEntitiesSeqId = @P_GroupsSecurityEntitiesSeqId 
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Groups_Accounts]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Role]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Role]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3236,15 +3294,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Role] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Name AS VARCHAR(50) = 'MyRole',
-		@P_SecurityEntitySeqId AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec ZGWSecurity.Delete_Role
 		@P_Name
-		@P_SecurityEntitySeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -3255,7 +3314,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Role]
 	@P_Name VARCHAR (50),
-	@P_SecurityEntitySeqId	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Role'
@@ -3287,7 +3346,7 @@ AS
 							ZGWSecurity.Roles_Security_Entities 
 						WHERE 
 							RoleSeqId = @V_RolesSeqId
-							AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+							AND SecurityEntitySeqId = @PSecurityEntitySeqId
 						)
 					)
 		END 
@@ -3297,7 +3356,7 @@ AS
 			DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
 				RoleSeqId= @V_RolesSeqId AND
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 				   )
 		END 
 		BEGIN -- Delete the role from ZGWSecurity.Roles if no other entites are using the role
@@ -3326,7 +3385,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Role'
 	RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Roles_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Roles_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3336,15 +3395,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Roles_Accounts] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_RolesSecurityEntitiesSeqId AS INT = 2,
-		@P_SecurityEntitySeqId AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Roles_Accounts]
 		@P_RolesSecurityEntitiesSeqId
-		@P_SecurityEntitySeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -3354,7 +3414,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Roles_Accounts]
 	@P_ROLE_SEQ_ID AS INT,
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
@@ -3369,12 +3429,12 @@ AS
 				ZGWSecurity.Roles_Security_Entities 
 			WHERE 
 				RolesSecurityEntitiesSeqId = @V_RolesSecurityEntitiesSeqId
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3384,15 +3444,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_RoleSeqId AS INT = 2,
-		@P_SecurityEntitySeqId AS INT = 1
+		@PSecurityEntitySeqId AS INT = 1
 
 	exec  [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]
 		@P_RoleSeqId
-		@P_SecurityEntitySeqId
+		@PSecurityEntitySeqId
 */
 -- =============================================
 -- Author:		Michael Regan
@@ -3402,7 +3463,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]
 	@P_RoleSeqId AS INT,
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]'
@@ -3416,12 +3477,12 @@ AS
 				ZGWSecurity.Roles_Security_Entities 
 			WHERE 
 				RoleSeqId = @P_RoleSeqId 
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3431,18 +3492,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Is_System_Admin bit = 1,
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec  ZGWSecurity.Get_Account
 		@P_Is_System_Admin,
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3454,7 +3516,7 @@ Usage:
 ALTER PROCEDURE [ZGWSecurity].[Get_Account]
 	@P_Is_System_Admin Bit,
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3492,7 +3554,7 @@ AS
 				END
 			ELSE
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_SecurityEntitySeqId)
+					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@PSecurityEntitySeqId)
 					DECLARE @V_Accounts TABLE (
 						AccountSeqId INT
 						, Account VARCHAR(100)
@@ -3544,7 +3606,7 @@ AS
 					WHERE
 						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
 						AND Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
@@ -3577,7 +3639,7 @@ AS
 						ZGWSecurity.Roles WITH(NOLOCK)
 					WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
 						AND Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
@@ -3643,7 +3705,7 @@ AS
 	-- END IF
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3653,16 +3715,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Groups
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3672,7 +3735,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Groups]
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3688,13 +3751,13 @@ AS
 		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId
 		AND ZGWSecurity.Groups_Security_Entities_Accounts.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		GROUPS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3704,16 +3767,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Roles
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3723,7 +3787,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Roles]
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3739,13 +3803,13 @@ AS
 		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		ROLES
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Security]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Account_Security]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3755,16 +3819,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_Security] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Account_Security
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -3775,7 +3840,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Account_Security]
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -3790,7 +3855,7 @@ AS
 		ZGWSecurity.Accounts.Account = @P_Account
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 	UNION
 	SELECT
@@ -3806,7 +3871,7 @@ AS
 		ZGWSecurity.Accounts.Account = @P_Account AND
 		ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId AND
 		ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.GroupsSecurityEntitiesSeqId AND
-		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId)) AND
+		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId)) AND
 		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId AND
 		ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId AND
 		ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
@@ -3815,7 +3880,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_In_Group]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_In_Group]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3825,15 +3890,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_In_Group] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_GroupSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Group
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -3844,7 +3910,7 @@ Usage:
 --	given the SecurityEntitySeqId and GroupSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_In_Group]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_GroupSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -3864,14 +3930,14 @@ AS
 		AND Security.GroupSeqId = Groups.GroupSeqId
 		AND Accounts.StatusSeqId <> 2
 		AND Groups.GroupSeqId = @P_GroupSeqId
-		AND Security.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND Security.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Group'
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_In_Role]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_In_Role]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3881,15 +3947,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_In_Role] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_RoleSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_In_Role
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_RoleSeqId,
 		@P_Debug
 */
@@ -3900,7 +3967,7 @@ Usage:
 --	given the SecurityEntitySeqId and RoleSeqId
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_In_Role]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_RoleSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -3919,14 +3986,14 @@ AS
 		AND [Security].RoleSeqId = Roles.RoleSeqId
 		AND Accounts.StatusSeqId <> 2
 		AND Roles.RoleSeqId = @P_RoleSeqId
-		AND [Security].SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		Accounts.Account
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Accounts_In_Role'
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_Not_In_Group]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_Not_In_Group]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3936,15 +4003,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Group] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_GroupSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Accounts_Not_In_Group
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -3957,7 +4025,7 @@ Usage:
 --	and was left for others that may need it.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Group]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_GroupSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -3981,7 +4049,7 @@ AS
 						AND Security.GroupSeqId = Groups.GroupSeqId
 						AND Accounts.StatusSeqId <> 2
 						AND Groups.GroupSeqId = @P_GroupSeqId
-						AND [Security].SecurityEntitySeqId = @P_SecurityEntitySeqId
+						AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 					)
 	ORDER BY
 		Accounts.Account
@@ -3989,7 +4057,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_Not_In_Role]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Accounts_Not_In_Role]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -3999,15 +4067,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Role] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_RoleSeqId INT = 1,
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Accounts_Not_In_Role
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_RoleSeqId,
 		@P_Debug
 */
@@ -4020,7 +4089,7 @@ Usage:
 --	and was left for others that may need it.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Accounts_Not_In_Role]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_RoleSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -4045,7 +4114,7 @@ AS
 						AND [Security].RoleSeqId = Roles.RoleSeqId
 						AND Accounts.StatusSeqId <> 2
 						AND Roles.RoleSeqId = @P_RoleSeqId
-						AND [Security].SecurityEntitySeqId = @P_SecurityEntitySeqId
+						AND [Security].SecurityEntitySeqId = @PSecurityEntitySeqId
 					)
 	ORDER BY
 		Accounts.Account
@@ -4053,7 +4122,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4063,6 +4132,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -4157,7 +4227,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4167,16 +4237,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_FunctionSeqId INT = 1,
 		@P_PermissionsSeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Groups
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_PermissionsSeqId,
 		@P_Debug
@@ -4188,7 +4259,7 @@ Usage:
 --	function and permission.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Groups]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_FunctionSeqId INT,
 	@P_PermissionsSeqId INT,
 	@P_Debug INT = 0
@@ -4210,7 +4281,7 @@ AS
 				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 				AND ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
 				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				Groups
 		END
@@ -4229,7 +4300,7 @@ AS
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				FUNCTION_SEQ_ID
 				, PERMISSIONS_SEQ_ID
@@ -4240,7 +4311,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4250,16 +4321,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_FunctionSeqId INT = 1,
 		@P_PermissionsSeqId INT = 1
 		@P_Debug INT = 0
 
 	exec ZGWSecurity.Get_Function_Roles
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_FunctionSeqId,
 		@P_PermissionsSeqId,
 		@P_Debug
@@ -4271,7 +4343,7 @@ Usage:
 --	function and permission.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Roles]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_FunctionSeqId INT,
 	@P_PermissionsSeqId INT,
 	@P_Debug INT = 0
@@ -4293,7 +4365,7 @@ AS
 				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				Roles
 		END
@@ -4312,7 +4384,7 @@ AS
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Roles_Security_Entities_Functions.FunctionSeqId
 				AND ZGWSecurity.Roles_Security_Entities_Functions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 				AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Functions.FunctionSeqId
 				,ZGWSecurity.Roles_Security_Entities_Functions.PermissionsNVPDetailSeqId
@@ -4322,7 +4394,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Security]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Security]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4332,14 +4404,15 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Security] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Function_Security
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4352,7 +4425,7 @@ Usage:
 --	ZGWSecurity.Roles_Security_Entities_Functions
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Function_Security]
-	@P_SecurityEntitySeqId int = -1,
+	@PSecurityEntitySeqId int = -1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -4374,7 +4447,7 @@ AS
 			AND [Security].RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND [Security].FunctionSeqId = [FUNCTIONS].FunctionSeqId
 			AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
-			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+			AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION
 		SELECT DISTINCT -- Roles assigned via groups
 			Functions.FunctionSeqId,
@@ -4395,7 +4468,7 @@ AS
 			AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 			AND Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 			AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
-			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 	IF (SELECT COUNT(*) FROM @V_AvalibleItems) > 0
 		BEGIN
@@ -4407,9 +4480,9 @@ AS
 				FUNCTION_SEQ_ID
 				,[ROLE]
 
-			EXEC ZGWSecurity.Get_Function_Roles @P_SecurityEntitySeqId, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Roles @PSecurityEntitySeqId, -1, -1, @P_Debug
 
-			EXEC ZGWSecurity.Get_Function_Groups @P_SecurityEntitySeqId, -1, -1, @P_Debug
+			EXEC ZGWSecurity.Get_Function_Groups @PSecurityEntitySeqId, -1, -1, @P_Debug
 
 		END
 	ELSE
@@ -4426,14 +4499,14 @@ AS
 				SET 
 					ParentSecurityEntitySeqId = ZGWSecurity.Get_Default_Entity_ID()
 				WHERE
-					SecurityEntitySeqId = @P_SecurityEntitySeqId
-			EXEC ZGWSecurity.Get_Function_Security @P_SecurityEntitySeqId, NULL
+					SecurityEntitySeqId = @PSecurityEntitySeqId
+			EXEC ZGWSecurity.Get_Function_Security @PSecurityEntitySeqId, NULL
 		END
 	-- END IF
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Security'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Sort]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Sort]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4443,6 +4516,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Sort] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -4485,7 +4559,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Types]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Function_Types]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4495,6 +4569,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Types] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -4556,7 +4631,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Types'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Group]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Group]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4566,15 +4641,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Group] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId AS INT,
+		@PSecurityEntitySeqId AS INT,
 		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -4587,7 +4663,7 @@ Usage:
 --	If GroupSeqId is -1 all groups will be returned.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Group]
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
@@ -4627,7 +4703,7 @@ AS
 				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
 			WHERE
 				ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 			ORDER BY
 				ZGWSecurity.Groups.Name
 		END
@@ -4636,7 +4712,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Group'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Group_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Group_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4646,15 +4722,16 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Group_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId AS INT,
+		@PSecurityEntitySeqId AS INT,
 		@P_GroupSeqId AS INT,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Group_Roles
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_GroupSeqId,
 		@P_Debug
 */
@@ -4665,7 +4742,7 @@ Usage:
 --	group id and secruity entity id
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Group_Roles]
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_GroupSeqId AS INT,
 	@P_Debug INT = 0
 AS
@@ -4694,14 +4771,14 @@ AS
 					FROM 
 						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK) 
 					WHERE 
-						SecurityEntitySeqId = @P_SecurityEntitySeqId AND GroupSeqId = @P_GroupSeqId)))
+						SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_GroupSeqId)))
 	ORDER BY
 		[Role]
 
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Group_Roles'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Menu_Data]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Menu_Data]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4711,16 +4788,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Navigation_Types_NVP_DetailSeqId AS INT = 3,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Menu_Data
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Navigation_Types_NVP_DetailSeqId,
 		@P_Account,
 		@P_Debug
@@ -4732,7 +4810,7 @@ Usage:
 --	Account, Security Entity ID and the Navigation type.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Menu_Data]
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Navigation_Types_NVP_DetailSeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Debug INT = 1
@@ -4772,7 +4850,7 @@ AS
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
-			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+			AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 		UNION ALL
 		SELECT -- Menu items via groups
 			[FUNCTIONS].FunctionSeqId AS [ID],
@@ -4801,13 +4879,13 @@ AS
 			AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
 			AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
 			AND [FUNCTIONS].Is_Nav = 1
-			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+			AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 	--SELECT * FROM @V_AvalibleMenuItems -- DEBUG
 
 	DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 	INSERT INTO @V_AccountRoles
-		EXEC ZGWSecurity.Get_Account_Security @P_Account, @P_SecurityEntitySeqId, @P_Debug
+		EXEC ZGWSecurity.Get_Account_Security @P_Account, @PSecurityEntitySeqId, @P_Debug
 
 	--SELECT * FROM @V_AccountRoles -- DEBUG
 	DECLARE @V_AllMenuItems TABLE ([ID] INT, Title VARCHAR(30), [Description] VARCHAR(256), URL VARCHAR(256), Parent INT, Sort_Order INT, ROLE VARCHAR(50),FunctionTypeSeqId INT)
@@ -4869,7 +4947,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Name_Value_Pair_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Name_Value_Pair_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4879,16 +4957,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Groups
 		@P_NVPSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4899,7 +4978,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Groups]
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -4914,13 +4993,13 @@ AS
 		ZGWSecurity.Groups_Security_Entities_Permissions.NVPSeqId = @P_NVPSeqId
 		AND ZGWSecurity.Groups_Security_Entities_Permissions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
 		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		GROUPS
 	IF @P_Debug = 1 PRINT 'End Get_Name_Value_Pair_Groups'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Name_Value_Pair_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Name_Value_Pair_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4930,16 +5009,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Name_Value_Pair_Roles
 		@P_NVPSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -4950,7 +5030,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles]
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
@@ -4965,13 +5045,13 @@ AS
 		ZGWSecurity.Roles_Security_Entities_Permissions.NVPSeqId = @P_NVPSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Permissions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 	ORDER BY
 		ROLES
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Navigation_Types]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Navigation_Types]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -4981,6 +5061,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Navigation_Types] AS' 
 END
 GO
+
 /*
 Usage:
 	exec ZGWSecurity.Get_Navigation_Types
@@ -5011,7 +5092,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Role]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Role]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5021,16 +5102,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Role] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_RoleSeqId AS INT = -1,
-		@P_SecurityEntitySeqId AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Role
 		@P_RoleSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -5043,7 +5125,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Role]
 	@P_RoleSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -5080,14 +5162,14 @@ AS
 			ZGWSecurity.Roles_Security_Entities
 		WHERE
 			ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-			AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+			AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 		ORDER BY
 			ZGWSecurity.Roles.[Name]
 	-- END IF		
 	IF @P_Debug = 1 PRINT 'End ZGWSecurity.Get_Role'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Security_Entity]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Security_Entity]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5097,14 +5179,15 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Security_Entity] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Security_Entity
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -5117,12 +5200,12 @@ Usage:
 --	security enties.
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Get_Security_Entity]
-	@P_SecurityEntitySeqId AS INT = 1,
+	@PSecurityEntitySeqId AS INT = 1,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Security_Entity'
-	IF @P_SecurityEntitySeqId = -1
+	IF @PSecurityEntitySeqId = -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
 			SELECT
@@ -5172,13 +5255,13 @@ AS
 			FROM 
 				ZGWSecurity.Security_Entities
 			WHERE
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 		END
 	--End IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Security_Entity'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Get_Valid_Security_Entity]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Get_Valid_Security_Entity]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5188,18 +5271,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Valid_Security_Entity] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'developer',
 		@P_Is_Se_Admin INT = 1,
-		@P_SecurityEntitySeqId AS INT = 1,
+		@PSecurityEntitySeqId AS INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Get_Valid_Security_Entity
 		@P_Account,
 		@P_Is_Se_Admin,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -5214,7 +5298,7 @@ Usage:
 ALTER PROCEDURE [ZGWSecurity].[Get_Valid_Security_Entity]
 	@P_Account VARCHAR(128),
 	@P_Is_Se_Admin INT,
-	@P_SecurityEntitySeqId AS INT,
+	@PSecurityEntitySeqId AS INT,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -5280,7 +5364,7 @@ AS
 							ZGWSecurity.Security_Entities
 						WHERE
 							ZGWSecurity.Security_Entities.SecurityEntitySeqId IN (SELECT * FROM @T_Valic_Se)
-							OR ZGWSecurity.Security_Entities.ParentSecurityEntitySeqId = @P_SecurityEntitySeqId
+							OR ZGWSecurity.Security_Entities.ParentSecurityEntitySeqId = @PSecurityEntitySeqId
 						ORDER BY
 							[Name]
 					END
@@ -5301,7 +5385,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS OFF
 GO
 SET QUOTED_IDENTIFIER OFF
@@ -5311,6 +5395,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Account] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -5586,7 +5671,7 @@ AS
 */
 	IF @P_Debug = 1 PRINT 'End Set_Account'
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5596,18 +5681,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Account_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(max) = 'Everyone',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Groups
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -5620,7 +5706,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account_Groups]
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -5635,7 +5721,7 @@ AS
 		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Groups'
-		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @P_SecurityEntitySeqId, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @PSecurityEntitySeqId, @P_Debug
 		IF @@ERROR <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -5667,7 +5753,7 @@ AS
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
 						GroupSeqId = @V_GroupSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
 					IF NOT EXISTS(
 							SELECT 
@@ -5713,7 +5799,7 @@ ABEND:
 DONE:
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Account_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5723,18 +5809,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Account_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_Account VARCHAR(128) = 'Developer',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(max) = 'Developer',
 		@P_Added_Updated_By INT = 2,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Account_Roles
 		@P_Account,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -5747,7 +5834,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account_Roles]
 	@P_Account VARCHAR(128),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Roles VARCHAR(max),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 0
@@ -5762,7 +5849,7 @@ AS
 		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Roles'
-		EXEC ZGWSecurity.Delete_Account_Roles @AccountSeqId, @P_SecurityEntitySeqId, @V_ErrorCode, @P_Debug
+		EXEC ZGWSecurity.Delete_Account_Roles @AccountSeqId, @PSecurityEntitySeqId, @V_ErrorCode, @P_Debug
 		IF @V_ErrorCode <> 0
 			BEGIN
 				EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -5794,7 +5881,7 @@ AS
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
 						RoleSeqId = @V_RoleSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						IF @P_Debug = 1 PRINT ('@V_SE_RLS_SECURITY_ID = ' + CONVERT(VARCHAR,@V_SE_RLS_SECURITY_ID))
 					IF NOT EXISTS(
 							SELECT 
@@ -5840,7 +5927,7 @@ ABEND:
 		END
 	--END IF
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -5850,6 +5937,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Function] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -6016,7 +6104,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6026,11 +6114,12 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Function_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6038,7 +6127,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Function_Groups
 		@P_FunctionSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
@@ -6051,7 +6140,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Groups]
 	@P_FunctionSeqId int,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(MAX),
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
@@ -6070,7 +6159,7 @@ BEGIN TRANSACTION
 			,@V_ErrorMsg VARCHAR(MAX)
 			,@V_Now DATETIME = GETDATE()
 
-	EXEC ZGWSecurity.Delete_Function_Groups @P_FunctionSeqId,@P_SecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Groups @P_FunctionSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 	BEGIN
 		EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -6101,7 +6190,7 @@ BEGIN TRANSACTION
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
 						GroupSeqId = @V_GroupSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_GroupsSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_GroupsSecurityEntitiesSeqId))
 					IF NOT EXISTS(
@@ -6153,7 +6242,7 @@ ABEND:
 		END
 	--END IF
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6163,11 +6252,12 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Function_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'EveryOne',
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6175,7 +6265,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Function_Roles
 		@P_FunctionSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
@@ -6188,7 +6278,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Function_Roles]
 	@P_FunctionSeqId int,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Roles VARCHAR(MAX),
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
@@ -6205,7 +6295,7 @@ BEGIN TRANSACTION
 			,@V_Role_Name AS VARCHAR(50)
 			,@V_Pos AS INT
 			,@V_ErrorMsg VARCHAR(MAX)
-	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@P_SecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
+	EXEC ZGWSecurity.Delete_Function_Roles @P_FunctionSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId,@P_Added_Updated_By,@V_ErrorCodde
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -6235,7 +6325,7 @@ BEGIN TRANSACTION
 						ZGWSecurity.Roles_Security_Entities
 					WHERE
 						RoleSeqId = @V_RoleSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						
 					IF @P_Debug = 1 PRINT('@V_RolesSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_RolesSecurityEntitiesSeqId))
 					IF NOT EXISTS(
@@ -6282,7 +6372,7 @@ ABEND:
 	RAISERROR(@V_ErrorMsg,16,1)
 	RETURN @@ERROR
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Sort]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Sort]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6292,6 +6382,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Function_Sort] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -6363,7 +6454,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Types]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Function_Types]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6373,6 +6464,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Function_Types] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -6480,7 +6572,7 @@ AS
 	IF @P_Debug = 1 PRINT 'End [Set_Function_Types]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Group]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Group]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6490,13 +6582,14 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Group] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupSeqId INT = 1,
 		@P_Name VARCHAR(128) = 'Test',
 		@P_Description VARCHAR(512) = ' ',
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 2,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
@@ -6505,7 +6598,7 @@ Usage:
 		@P_GroupSeqId,
 		@P_Name,
 		@P_Description,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key,
 		@P_Debug
@@ -6520,7 +6613,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Group]
 	@P_GroupSeqId INT,
 	@P_Name VARCHAR(128),
 	@P_Description VARCHAR(512),
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -6570,7 +6663,7 @@ AS
 			-- END IF
 		END
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
 	BEGIN  -- ADD GROUP REFERENCE TO SE_SECURITY
 			INSERT ZGWSecurity.Groups_Security_Entities (
 				SecurityEntitySeqId,
@@ -6579,7 +6672,7 @@ AS
 				Added_Date
 			)
 			VALUES (
-				@P_SecurityEntitySeqId,
+				@PSecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Added_Updated_Date
@@ -6587,7 +6680,7 @@ AS
 	END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Group_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Group_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6597,18 +6690,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Group_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_GroupSeqId INT = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Roles VARCHAR(MAX) = 'Anonymous, Authenticated',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Group_Roles
 		@P_GroupSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Roles,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -6621,7 +6715,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Group_Roles]
 		@P_GroupSeqId INT,
-		@P_SecurityEntitySeqId INT,
+		@PSecurityEntitySeqId INT,
 		@P_Roles VARCHAR(MAX),
 		@P_Added_Updated_By INT,
 		@P_Debug INT = 0
@@ -6637,7 +6731,7 @@ AS
 		--NEED TO DELETE EXISTING Roles ASSOCITAED BEFORE 
 		-- INSERTING NEW ONES. EXECUTION OF THIS STORED PROC
 		-- IS MOVED FROM CODE			
-		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@P_SecurityEntitySeqId, @P_Debug	
+		EXEC ZGWSecurity.Delete_Group_Roles @P_GroupSeqId,@PSecurityEntitySeqId, @P_Debug	
 		SET @P_Roles = LTRIM(RTRIM(@P_Roles))+ ','
 		SET @V_POS = CHARINDEX(',', @P_Roles, 1)
 	
@@ -6657,7 +6751,7 @@ AS
 					 	ZGWSecurity.Roles_Security_Entities
 					WHERE 
 						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
-						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT @V_RolesSecurityEntitiesSeqId
 
 					SELECT
@@ -6665,7 +6759,7 @@ AS
 					FROM
 						ZGWSecurity.Groups_Security_Entities
 					WHERE
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
+						SecurityEntitySeqId = @PSecurityEntitySeqId
 						AND GroupSeqId = @P_GroupSeqId
 					
 					IF @P_Debug = 1 PRINT @V_GroupsSecurityEntitiesSeqId -- DEBUG
@@ -6700,7 +6794,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Group_Roles'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Name_Value_Pair_Groups]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Name_Value_Pair_Groups]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6710,11 +6804,12 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Groups] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Groups VARCHAR(MAX) = 'EveryOne',
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6722,7 +6817,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Groups
 		@P_NVPSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Groups,
 		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
@@ -6735,7 +6830,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Groups]
 	@P_NVPSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Groups VARCHAR(1000),
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
@@ -6751,7 +6846,7 @@ BEGIN TRAN
 			,@V_ErrorMsg VARCHAR(MAX)
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Groups associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVPSeqId,@P_SecurityEntitySeqId,@P_PermissionsNVPDetailSeqId, @P_Debug
+	EXEC ZGWSystem.Delete_Groups_Security_Entities_Permissions @P_NVPSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			EXEC ZGWSystem.Log_Error_Info @P_Debug
@@ -6779,7 +6874,7 @@ BEGIN TRAN
 					ZGWSecurity.Groups_Security_Entities
 				WHERE
 					GroupSeqId = @V_GroupSeqId AND
-					SecurityEntitySeqId = @P_SecurityEntitySeqId
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_GroupsSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_GroupsSecurityEntitiesSeqId))
 				IF NOT EXISTS(
 						SELECT 
@@ -6830,7 +6925,7 @@ BEGIN
 	RETURN @@ERROR
 END
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Name_Value_Pair_Roles]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Name_Value_Pair_Roles]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6840,11 +6935,12 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Roles] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Role VARCHAR(MAX) = 'EveryOne',
 		@P_PermissionsNVPDetailSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
@@ -6852,7 +6948,7 @@ Usage:
 
 	exec ZGWSecurity.Set_Name_Value_Pair_Roles
 		@P_NVPSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Role,
 		@P_PermissionsNVPDetailSeqId,
 		@P_Added_Updated_By,
@@ -6865,7 +6961,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Name_Value_Pair_Roles]
 	@P_NVPSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Role VARCHAR(1000),
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Added_Updated_By INT,
@@ -6882,7 +6978,7 @@ BEGIN TRAN
 			,@V_Now DATETIME = GETDATE()
 	
 	IF @P_Debug = 1 PRINT 'Deleting existing Role associated with the name value pair before inseting new ones.'
-	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVPSeqId,@P_SecurityEntitySeqId,@P_PermissionsNVPDetailSeqId, @P_Debug
+	EXEC ZGWSystem.Delete_Roles_Security_Entities_Permissions @P_NVPSeqId,@PSecurityEntitySeqId,@P_PermissionsNVPDetailSeqId, @P_Debug
 	IF @@ERROR <> 0
 		BEGIN
 			GOTO ABEND
@@ -6907,7 +7003,7 @@ BEGIN TRAN
 					ZGWSecurity.Roles_Security_Entities
 				WHERE
 					RoleSeqId = @V_RoleSeqId AND
-					SecurityEntitySeqId = @P_SecurityEntitySeqId
+					SecurityEntitySeqId = @PSecurityEntitySeqId
 					IF @P_Debug = 1 PRINT('@V_RolesSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_RolesSecurityEntitiesSeqId))
 				IF NOT EXISTS(
 						SELECT 
@@ -6960,7 +7056,7 @@ BEGIN
 	RETURN @@ERROR
 END
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Role]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Role]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -6970,6 +7066,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Role] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -6978,7 +7075,7 @@ Usage:
 		@P_Description VARCHAR(128) = 'Testing',
 		@P_Is_System INT = 0,
 		@P_Is_System_Only INT = 0,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
 		@P_Primary_Key int,
 		@P_Debug INT = 1
@@ -6989,7 +7086,7 @@ Usage:
 		@P_Description,
 		@P_Is_System,
 		@P_Is_System_Only,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Added_Updated_By,
 		@P_Primary_Key OUT,
 		@P_Debug
@@ -7010,7 +7107,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Role]
 	@P_Description VARCHAR(128),
 	@P_Is_System INT,
 	@P_Is_System_Only INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Added_Updated_By INT,
 	@P_Primary_Key int OUTPUT,
 	@P_Debug INT = 0
@@ -7081,7 +7178,7 @@ BEGIN TRAN
 			GOTO ABEND		
 		END CATCH
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
 	BEGIN TRY  -- ADD ROLE REFERENCE TO SE_SECURITY
 			IF @P_Debug = 1 PRINT 'Add role reference to ZGWSecurity.Roles_Security_Entities'
 			INSERT ZGWSecurity.Roles_Security_Entities (
@@ -7091,7 +7188,7 @@ BEGIN TRAN
 				, Added_Date
 			)
 			VALUES (
-				@P_SecurityEntitySeqId,
+				@PSecurityEntitySeqId,
 				@P_Primary_Key,
 				@P_Added_Updated_By,
 				@V_Now
@@ -7113,7 +7210,7 @@ ABEND:
 	RETURN @@ERROR	
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Roles'
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Role_Accounts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Role_Accounts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7123,18 +7220,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Role_Accounts] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_RoleSeqId INT = 1,
-		@P_SecurityEntitySeqId INT = 1,
+		@PSecurityEntitySeqId INT = 1,
 		@P_Account VARCHAR(128) = 'Developer',
 		@P_Added_Updated_By INT = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Role_Accounts
 		@P_RoleSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Account,
 		@P_Added_Updated_By,
 		@P_Debug
@@ -7147,7 +7245,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Role_Accounts]
 	@P_RoleSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_Account VARCHAR(128),
 	@P_Added_Updated_By INT,
 	@P_Debug INT = 1
@@ -7166,7 +7264,7 @@ BEGIN TRAN
 				ZGWSecurity.Roles_Security_Entities
 			WHERE
 				RoleSeqId = @P_RoleSeqId
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+				AND SecurityEntitySeqId = @PSecurityEntitySeqId
 		)
 	BEGIN TRY
 		INSERT INTO
@@ -7192,7 +7290,7 @@ ABEND:
 	RETURN @@ERROR	
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Roles'
 GO
-/****** Object:  StoredProcedure [ZGWSecurity].[Set_Security_Entity]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSecurity].[Set_Security_Entity]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7202,10 +7300,11 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Set_Security_Entity] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
-		@P_SecurityEntitySeqId int = -1,
+		@PSecurityEntitySeqId int = -1,
 		@P_Name VARCHAR(256) = 'System',
 		@P_Description VARCHAR(512) = 'System',
 		@P_URL VARCHAR(128) = '',
@@ -7223,7 +7322,7 @@ Usage:
 		@P_Debug INT = 1
 
 	exec ZGWSecurity.Set_Security_Entity
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Name,
 		@P_Description,
 		@P_URL,
@@ -7248,7 +7347,7 @@ Usage:
 -- Description:	Inserts or updates ZGWSecurity.Security_Entities
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Security_Entity]
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_Name VARCHAR(256),
 	@P_Description VARCHAR(512),
 	@P_URL VARCHAR(128),
@@ -7268,8 +7367,8 @@ AS
 	DECLARE @V_Now DATETIME = GETDATE()
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Security_Entity'
-	IF @P_ParentSecurityEntitySeqId = @P_SecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
-	IF @P_SecurityEntitySeqId > -1
+	IF @P_ParentSecurityEntitySeqId = @PSecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
+	IF @PSecurityEntitySeqId > -1
 		BEGIN
 			IF @P_Debug = 1 PRINT 'Update'
 			UPDATE ZGWSecurity.Security_Entities
@@ -7289,9 +7388,9 @@ AS
 				Updated_By = @P_Added_Updated_By,
 				Updated_Date = @V_Now
 			WHERE
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+				SecurityEntitySeqId = @PSecurityEntitySeqId
 
-			SELECT @P_Primary_Key = @P_SecurityEntitySeqId
+			SELECT @P_Primary_Key = @PSecurityEntitySeqId
 		END
 	ELSE
 		BEGIN
@@ -7338,7 +7437,7 @@ AS
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Security_Entity'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7348,6 +7447,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Delete_Groups_Security_Entities_Permissions] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -7368,7 +7468,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]
 	@P_NVPSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -7376,13 +7476,13 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Permissions
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND NVPSeqId = @P_NVPSeqId
 		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	IF @P_Debug = 1 PRINT 'End [ZGWSystem].[Delete_Groups_Security_Entities_Permissions]'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Delete_Name_Value_Pair]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Delete_Name_Value_Pair]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7392,16 +7492,17 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
 		@P_NVPSeqId int = 3,
-		@P_SecurityEntitySeqId	INT = 1,
+		@PSecurityEntitySeqId	INT = 1,
 		@P_ErrorCode int
 
 	exec ZGWSystem.Delete_Name_Value_Pair
 		@P_NVPSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_ErrorCode
 */
 -- =============================================
@@ -7412,7 +7513,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair]
 	@P_NVPSeqId INT,
-	@P_SecurityEntitySeqId	INT,
+	@PSecurityEntitySeqId	INT,
 	@P_Debug INT = 0
  AS
 BEGIN
@@ -7424,7 +7525,7 @@ BEGIN
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Delete_Name_Value_Pair_Detail]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Delete_Name_Value_Pair_Detail]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7434,6 +7535,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair_Detail] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -7470,7 +7572,7 @@ AS
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Name_Value_Pair'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Delete_Roles_Security_Entities_Permissions]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Delete_Roles_Security_Entities_Permissions]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7480,6 +7582,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Delete_Roles_Security_Entities_Permissions] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -7500,7 +7603,7 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Delete_Roles_Security_Entities_Permissions]
 	@P_NVPSeqId INT,
-	@P_SecurityEntitySeqId INT,
+	@PSecurityEntitySeqId INT,
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_Debug INT = 0
 AS
@@ -7508,13 +7611,13 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Permissions
 	WHERE 
-		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @PSecurityEntitySeqId)
 		AND NVPSeqId = @P_NVPSeqId
 		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	IF @P_Debug = 1 PRINT 'Ending ZGWSystem.Delete_Roles_Security_Entities_Permissions'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[GenerateInserts]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[GenerateInserts]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7524,6 +7627,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[GenerateInserts] AS' 
 END
 GO
+
 /***********************************************************************************************************
 Procedure:	ZGWSystem.GenerateInserts  (Build 22) 
 		(Copyright � 2002 Narayana Vyas Kondreddi. All rights reserved.)
@@ -7969,7 +8073,7 @@ BEGIN
 	RETURN 0 --Success. We are done!
 END
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_Database_Information]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_Database_Information]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -7979,6 +8083,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Database_Information] AS' 
 END
 GO
+
 /*
 Usage:
 	exec ZGWSystem.Get_Database_Information
@@ -8006,7 +8111,7 @@ AS
 		Updated_Date DESC
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_JSON]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_JSON]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8016,6 +8121,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_JSON] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
@@ -8107,7 +8213,7 @@ BEGIN
 
 END
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8117,18 +8223,19 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
 		@P_NVPSeqId int = 1,
 		@P_AccountSeqId int = 2,
-		@P_SecurityEntitySeqId int = 1,
+		@PSecurityEntitySeqId int = 1,
 		@P_Debug INT = 1
 
 	exec ZGWSystem.Get_Name_Value_Pair
 		@P_NVPSeqId,
 		@P_AccountSeqId,
-		@P_SecurityEntitySeqId,
+		@PSecurityEntitySeqId,
 		@P_Debug
 */
 -- =============================================
@@ -8139,7 +8246,7 @@ Usage:
 ALTER PROCEDURE [ZGWSystem].[Get_Name_Value_Pair]
 	@P_NVPSeqId int,
 	@P_AccountSeqId int,
-	@P_SecurityEntitySeqId int,
+	@PSecurityEntitySeqId int,
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -8207,7 +8314,7 @@ AS
 						AND SECURITY.NVPSeqId = ZGWSystem.Name_Value_Pairs.NVPSeqId
 						AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
 						AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-						AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND SE_ROLES.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 					IF @P_Debug = 1 PRINT 'Getting items via groups'
 					INSERT INTO @V_AvalibleItems
 					SELECT -- Items via groups
@@ -8238,7 +8345,7 @@ AS
 						AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
 						AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Permissions.PermissionsNVPDetailSeqId
 						AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 
 					DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
 					IF @P_Debug = 1 PRINT 'Getting roles for account and roles via groups'
@@ -8253,7 +8360,7 @@ AS
 					WHERE
 						ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
 						AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
 					UNION
 					SELECT -- Roles via groups
@@ -8267,7 +8374,7 @@ AS
 						ZGWSecurity.Roles
 					WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = @P_AccountSeqId
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@PSecurityEntitySeqId))
 						AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
 						AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
 						AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
@@ -8360,7 +8467,7 @@ AS
 		IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Roles'
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair_Detail]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair_Detail]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8370,6 +8477,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair_Detail] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
@@ -8407,7 +8515,7 @@ AS
 	EXECUTE dbo.sp_executesql @statement = @V_Statement
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair_Details]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_Name_Value_Pair_Details]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8417,6 +8525,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair_Details] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE
@@ -8532,7 +8641,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Get_Paginated_Data]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Get_Paginated_Data]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8542,6 +8651,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Paginated_Data] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -8675,7 +8785,7 @@ AS
 
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Log_Error_Info]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Log_Error_Info]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8685,6 +8795,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Log_Error_Info] AS' 
 END
 GO
+
 ALTER PROCEDURE [ZGWSystem].[Log_Error_Info]
 	@P_Return_Row bit = 0
 AS
@@ -8727,7 +8838,7 @@ AS
 	-- END IF
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[PrepForAngularJS]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[PrepForAngularJS]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8737,6 +8848,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[PrepForAngularJS] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -8781,7 +8893,7 @@ AS
 	--END IF
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Set_DataBase_Information]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Set_DataBase_Information]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8791,6 +8903,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_DataBase_Information] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -8862,7 +8975,7 @@ BEGIN
 END
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Set_Name_Value_Pair]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Set_Name_Value_Pair]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -8872,6 +8985,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -9007,7 +9121,7 @@ AS
 SELECT @P_ErrorCode=@@ERROR
 IF @P_Debug = 1 PRINT 'End [ZGWSystem].[Set_Name_Value_Pair]'
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Set_Name_Value_Pair_Detail]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Set_Name_Value_Pair_Detail]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9017,6 +9131,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair_Detail] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE 
@@ -9126,7 +9241,7 @@ AS
 SELECT @P_ErrorCode=@@ERROR
 RETURN 0
 GO
-/****** Object:  StoredProcedure [ZGWSystem].[Set_System_Status]    Script Date: 1/8/2022 3:29:21 AM ******/
+/****** Object:  StoredProcedure [ZGWSystem].[Set_System_Status]    Script Date: 6/8/2022 8:04:44 AM ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -9136,6 +9251,7 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_System_Status] AS' 
 END
 GO
+
 /*
 Usage:
 	DECLARE @V_StatusSeqId INT,
