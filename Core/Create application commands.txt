@@ -26,9 +26,9 @@ Library:
 		ng generate service services/search --skip-tests --project gw-lib
 		ng generate service services/dynamic-table --project gw-lib --skip-tests --project gw-lib
 
-		ng generate service services/logging --project gw-lib --skip-tests --project gw-lib
-		ng generate enum models/LogLevel --type enum --project gw-lib
-		ng generate interface models/LogOptions --type model --project gw-lib
+		ng generate service features/logging --project gw-lib --skip-tests --project gw-lib
+		ng generate enum features/logging/LogLevel --type enum --project gw-lib
+		ng generate interface features/logging/LogOptions --type model --project gw-lib
 		
 		ng generate module features/dynamic-table --project gw-lib
 		ng generate component features/dynamic-table/c/dynamic-table --module dynamic-table --project gw-lib --style scss --skip-tests
