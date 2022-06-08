@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+// Interfaces / Common Code
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+
 @Component({
   selector: 'gw-lib-modal',
   templateUrl: './modal.component.html',
@@ -7,7 +10,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ModalComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private _GWCommon: GWCommon,
+  ) { }
 
   ngOnInit(): void {
   }
