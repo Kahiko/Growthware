@@ -47,6 +47,11 @@ From a command prompt and the directory you would like to create your new projec
 	ng generate library gw-lib --prefix gw-lib --skip-install
 	npm install
 5.) Install the dependencies packages for running a dotnet/Angular.io application
+	You can also install the redux devtools extention for chrome/firefox
+		1.) Navigate to: https://github.com/reduxjs/redux-devtools
+		2.) use the link for the browser you intend on using (Chrome, Edge and Firefox)
+		if you don't plan on using this then you don't need to install
+		@ngrx/store-devtools		 
 	run-script-os - Used by dotnet in the package.json file
 		The next two are option but I perfer to use them
 	bootstrap - Optional
@@ -55,7 +60,13 @@ From a command prompt and the directory you would like to create your new projec
 
 	npm install run-script-os --save
 	npm install bootstrap --save
+	npm install @ngrx/store --save
+	npm install @ngrx/effects --save
+	npm install @ngrx/router-store --save
+
 	npm install ng-samurai --save-dev
+	npm install @ngrx/store-devtools --save-dev
+
 	ng add @angular/material
 	ng add @angular-eslint/schematics
 Files you'll need to edit the following files:
