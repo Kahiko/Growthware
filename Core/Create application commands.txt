@@ -11,11 +11,14 @@ Application:
 		ng generate component skins/system/sidebar --module app --project gw-frontend --skip-tests
 		
 		ng generate component features/accounts --module app --project gw-frontend --skip-tests
+		ng generate component features/accounts/auth/login --module app --project gw-frontend --skip-tests
+
 		ng generate interface features/accounts/accountProfile --type model --project gw-frontend
+		ng generate interface features/accounts/clientChoices --type model --project gw-frontend
 
 		ng generate service features/accounts/auth/auth --skip-tests --project gw-frontend
-
-		ng generate component features/accounts/searchAccounts --module app --project gw-frontend --skip-tests
+		
+		ng generate component features/accounts/searchAccounts --module accounts --project gw-frontend --skip-tests
 
 Library:
 	From Angular/projects/gw-lib/src/lib
