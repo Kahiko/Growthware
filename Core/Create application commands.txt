@@ -11,6 +11,10 @@ Application:
 		ng generate component skins/system/sidebar --module app --project gw-frontend --skip-tests
 		
 		ng generate component features/accounts --module app --project gw-frontend --skip-tests
+		ng generate interface features/accounts/accountProfile --type model --project gw-frontend
+
+		ng generate service features/accounts/auth/auth --skip-tests --project gw-frontend
+
 		ng generate component features/accounts/searchAccounts --module app --project gw-frontend --skip-tests
 
 Library:
@@ -35,6 +39,7 @@ Library:
 
 		ng generate module features/pager --project gw-lib
 		ng generate component features/pager/c/pager --module pager --style scss --project gw-lib --skip-tests
+		
 
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/modal --module modal --style scss --project gw-lib --skip-tests
