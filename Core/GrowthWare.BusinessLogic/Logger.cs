@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace GrowthWare.BussinessLogic
+namespace GrowthWare.BusinessLogic
 {
     public class Logger
     {
