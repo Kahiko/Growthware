@@ -2,7 +2,7 @@
   <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +20, 'max-width.px': tableWidth +25}">
       <div *ngIf="tableConfiguration.showFirstRow" class="dynamicTableHeaderDiv">
           <span style="display: inline-block; width: 33%; text-align: left;">
-            Show <input id="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
+            Show <input id="{{tableConfiguration.name}}_txtRecordsPerPage" name="{{tableConfiguration.name}}_txtRecordsPerPage" [(ngModel)]="txtRecordsPerPage" class="rounded10" style="width: 34px; height:auto;" />&nbsp;records per page&nbsp;&nbsp;
           </span>
           <span style="display: inline-block; width: 33%;">
             <button
@@ -47,7 +47,7 @@
       </div>
       <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv" style="display: flex;">
           <div style="float: left">
-              Page <span id="currentPage">x</span> of <span id="totalPages">x</span> <span id="totalRecords">(x total items)</span>
+              <span id="totalRecords">{{totalRecords}} total items</span>
           </div>
           <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: left;">
             <button

@@ -24,6 +24,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   public tableWidth: number = 200;
   public tableHeight: number = 206;
+  public totalRecords: number = -1;
+  public txtRecordsPerPage: number = 0;
 
   constructor(
     private _GWCommon: GWCommon,
@@ -49,6 +51,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     ) {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mColumns = '';
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
@@ -63,6 +66,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this._DynamicTableSvcDataChangedSub = this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
         if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
           this.tableData = results.payLoad.data;
+          const mFirstRow = this.tableData[0];
+          if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+            this.totalRecords = parseInt(mFirstRow['TotalRecords']);
+          }
           this.activeRow = -1;
         }
       });
