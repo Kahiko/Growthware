@@ -1,23 +1,14 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
 
 import * as DefaultData from './dynamic-table.config.json';
 import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-
-export interface IResults {
-  name: string,
-  data: any
-}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DynamicTableService {
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
-
-  // Suports when when a component has new or updated data
-  public dataChanged = new Subject<IResults>();
 
   constructor(private _GWCommon: GWCommon) {
     // Load the default data for the growthware application
@@ -40,11 +31,6 @@ export class DynamicTableService {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     return mRetVal;
-  }
-
-  public setData(name: string, data: any): void {
-    const mResutls: IResults = { name: name, data: data };
-    this.dataChanged.next(mResutls);
   }
 
   /**

@@ -2,8 +2,8 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
-import { DynamicTableService, IResults, SearchService } from '@Growthware/Lib/src/lib/services';
+import { SearchCriteria, ISearchResultsNVP, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-pager',
@@ -12,6 +12,7 @@ import { DynamicTableService, IResults, SearchService } from '@Growthware/Lib/sr
 })
 export class PagerComponent implements OnDestroy, OnInit {
   private _DataChangedSub: Subscription = new Subscription();
+  private _SearchCriteria: SearchCriteria;
 
   @Input() name: string = '';
 
@@ -21,28 +22,30 @@ export class PagerComponent implements OnDestroy, OnInit {
 
   constructor(
     private _GWCommon: GWCommon,
-    private _DynamicTableSvc: DynamicTableService,
-    private _SearchSvc: SearchService) { }
+    private _DataSvc: DataService,
+    private _SearchSvc: SearchService
+  ) { }
 
   ngOnDestroy(): void {
     this._DataChangedSub.unsubscribe();
   }
 
   ngOnInit(): void {
-    this._DataChangedSub = this._DynamicTableSvc.dataChanged.subscribe((results: IResults) => {
-      const mFirstRow = results.data[0];
-      if(results.name.trim().toLowerCase() == this.name.trim().toLowerCase()) {
+    this._DataChangedSub = this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
+      if(this.name.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+        this._SearchCriteria = results.payLoad.searchCriteria;
+        const mFirstRow = results.payLoad.data[0];
         if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-          const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
-          if(!this._GWCommon.isNullOrUndefined(mSearchCriteria)) {
-            const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
-            const mCalculatedPages: number = Math.floor(mTotalRecords / mSearchCriteria.pageSize);
-            if(this.pages.length !== mCalculatedPages) {
+          const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
+          if(mTotalRecords > results.payLoad.searchCriteria.pageSize) {
+            const mPageSize: number = results.payLoad.searchCriteria.pageSize;
+            const mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
+            if(this.totalPages !== mCalculatedPages) {
               this.pages.splice(this.pages.length-1, 1);
-              for (let mIndex = 1; mIndex < (mCalculatedPages + 1); mIndex++) {
-                this.pages.push(mIndex);
+              for (let index = 1; index < mCalculatedPages + 1; index++) {
+                this.pages.push(index);
               }
-              this.totalPages = mCalculatedPages;
+              this.totalPages = mCalculatedPages
             }
           }
         }
@@ -56,9 +59,9 @@ export class PagerComponent implements OnDestroy, OnInit {
    * @memberof GWLibPagerComponent
    */
   onGoToPageClick(): void {
-    const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
-    mSearchCriteria.selectedPage = parseInt(this.selectedPage);
-    this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+    this._SearchCriteria.selectedPage = parseInt(this.selectedPage);
+    const mChangedCriteria = new SearchCriteriaNVP(this.name, this._SearchCriteria);
+    this._SearchSvc.setSearchCriteria(mChangedCriteria);
   }
 
   /**
@@ -69,30 +72,35 @@ export class PagerComponent implements OnDestroy, OnInit {
    */
   onPageChange(direction: string): void {
     const value = direction.trim().toLowerCase();
-    const mSearchCriteria: SearchCriteria = this._SearchSvc.getSearchCriteria(this.name);
+    const mSearchCriteria: SearchCriteria = this._SearchCriteria;
+    const mChangedCriteria = new SearchCriteriaNVP(this.name, mSearchCriteria);
     switch (value) {
       case "first":
         if(mSearchCriteria.selectedPage > 1) {
           mSearchCriteria.selectedPage = 1;
-          this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+          mChangedCriteria.payLoad = mSearchCriteria;
+          this._SearchSvc.setSearchCriteria(mChangedCriteria);
         }
         break;
       case "last":
         if(mSearchCriteria.selectedPage < this.totalPages) {
           mSearchCriteria.selectedPage = this.totalPages;
-          this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+          mChangedCriteria.payLoad = mSearchCriteria;
+          this._SearchSvc.setSearchCriteria(mChangedCriteria);
         }
         break;
       case "next":
         if(mSearchCriteria.selectedPage < this.totalPages) {
           mSearchCriteria.selectedPage++;
-          this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+          mChangedCriteria.payLoad = mSearchCriteria;
+          this._SearchSvc.setSearchCriteria(mChangedCriteria);
         }
         break;
       case "previous":
         if(mSearchCriteria.selectedPage > 1) {
           mSearchCriteria.selectedPage--;
-          this._SearchSvc.setSearchCriteria(this.name, mSearchCriteria);
+          mChangedCriteria.payLoad = mSearchCriteria;
+          this._SearchSvc.setSearchCriteria(mChangedCriteria);
         }
         break;
       default:

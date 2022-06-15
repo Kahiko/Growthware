@@ -3,10 +3,9 @@ import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
-import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
-import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DataService, DynamicTableService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -14,8 +13,7 @@ import { DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/serv
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
-  private _SearchCriteria = new SearchCriteria('none, set', '[none]', 'asc', 10, 1, '1=1');
-  private _Subscriptions: Subscription = new Subscription();
+  private _DynamicTableSvcDataChangedSub: Subscription = new Subscription();
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent: PagerComponent;
@@ -29,8 +27,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   constructor(
     private _GWCommon: GWCommon,
+    private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
-    private _SearchSvc: SearchService
   ) { }
 
   ngAfterViewInit(): void {
@@ -40,7 +38,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this._Subscriptions.unsubscribe();
+    this._DynamicTableSvcDataChangedSub.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -49,57 +47,24 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       !this._GWCommon.isNullOrUndefined(this.configurationName) &&
       !this._GWCommon.isNullorEmpty(this.configurationName)
     ) {
-      this._Subscriptions.add(
-        // Suports when this.getData has been overridden
-        this._DynamicTableSvc.dataChanged.subscribe({
-          next: (results) => {
-            if (this.configurationName.toLowerCase() === results.name.trim().toLowerCase()) {
-              this.activeRow = -1;
-              this.tableData = results.data;
-            }
-          },
-          error: (e) => {
-            console.error(e);
-          },
-        })
-      );
-
-      this._Subscriptions.add(
-        // Supports when the searchCriteria has changed by an outside process
-        // Example: PagerComponent
-        this._SearchSvc.searchCriteriaChanged.subscribe({
-          next: (name) => {
-            if (name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-              this._SearchCriteria = this._SearchSvc.getSearchCriteria(name);
-              this.getData();
-            }
-          },
-        })
-      );
-
-      this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(
-        this.configurationName
-      );
+      this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
         let mColumns = '';
         let mWidth: number = 0;
-        this.tableConfiguration.columns.forEach((column) => {
+        this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
           mColumns += '[' + column.name + '], ';
           mWidth += +column.width;
         });
         mColumns = mColumns.substring(0, mColumns.length - 2);
         this.tableWidth = mWidth;
         this.tableHeight = this.tableConfiguration.tableHeight;
-        // console.log(mWidth); // 6
-        this._SearchCriteria.columns = mColumns;
-        this._SearchCriteria.orderByColumn =
-          this.tableConfiguration.orderByColumn;
-        this._SearchCriteria.tableOrView = this.tableConfiguration.tableOrView;
-        this._SearchSvc.setSearchCriteria(
-          this.tableConfiguration.name,
-          this._SearchCriteria
-        );
       }
+
+      this._DynamicTableSvcDataChangedSub = this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
+        if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+          this.tableData = results.payLoad.data;
+        }
+      });
     } else {
       console.error(
         'DynamicTableComponent.ngOnInit: configurationName is blank'
@@ -133,36 +98,5 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    */
   formatData(data: any, type: string): void {
     return this._GWCommon.formatData(data, type);
-  }
-
-  /**
-   * @description getData retrieves data from the GWLibSearchService
-   *
-   * @see GWLibSearchService.getResults
-   * @memberof DynamicTableComponent
-   */
-  public getData(): void {
-    if (this._SearchCriteria.orderByColumn.indexOf('none') > 0 && this._GWCommon.isNullorEmpty(this._SearchCriteria.orderByColumn)) {
-      throw ('The _SearchCriteria.orderByColumn has not been set for "' + this.configurationName + '"');
-    }
-    if (this._SearchCriteria.columns.length < 1) {
-      throw 'this._SearchCriteria.columns must have at least 1 column defined!';
-    }
-    if (this._GWCommon.isNullorEmpty(this._SearchCriteria.tableOrView)) {
-      throw 'this._SearchCriteria.tableOrView must have a value!';
-    }
-    this._SearchSvc
-      .getResults(this._SearchCriteria)
-      .then((results) => {
-        if (!this._GWCommon.isNullOrUndefined(results) && results.length > 0) {
-          this.tableData = results;
-          if (results.length > 0) {
-            this._DynamicTableSvc.setData(this.configurationName, results);
-          }
-        }
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   }
 }

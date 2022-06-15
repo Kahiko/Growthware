@@ -33,6 +33,7 @@ Library:
 
 		ng generate service services/search --skip-tests --project gw-lib
 		ng generate service services/dynamic-table --project gw-lib --skip-tests --project gw-lib
+		ng generate service services/data --project gw-lib --skip-tests --project gw-lib
 
 		ng generate service features/logging --project gw-lib --skip-tests --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib

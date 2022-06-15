@@ -1,52 +1,69 @@
-import { AfterViewInit, Component, OnInit  } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
+import { Subscription } from 'rxjs';
+
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
-import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { DynamicTableService } from '@Growthware/Lib/src/lib/services';
+import { DataService, DynamicTableService } from '@Growthware/Lib/src/lib/services';
 import { SearchService } from '@Growthware/Lib/src/lib/services';
-import { SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'app-search-accounts',
   templateUrl: './search-accounts.component.html',
   styleUrls: ['./search-accounts.component.scss']
 })
-export class SearchAccountsComponent implements AfterViewInit, OnInit {
+export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('searchFunctions', {static: false}) searchFunctionsComponent: DynamicTableComponent;
 
-  private _SearchCriteria: SearchCriteria;
+  private _SearchCriteriaChangedSub: Subscription = new Subscription();
 
   public configurationName = 'Accounts';
   public results: any;
 
-  constructor(private _GWCommon: GWCommon, private _SearchSvc: SearchService, private _DynamicTableSvc: DynamicTableService) { }
+  constructor(
+    private _SearchSvc: SearchService,
+    private _DataSvc: DataService,
+    private _DynamicTableSvc: DynamicTableService,
+  ) { }
 
   ngAfterViewInit(): void {
-    // Testing having multiple dynamic table components and overrideing the
-    // dynamic table components getData method
-    this.searchFunctionsComponent.getData = () => {
-      // b/c we are using the search service and only overriding as an example
-      // we only need to attempt getting data if "our" search criteria exists
-      let mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions');
-      if(!this._GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
-        this._SearchSvc.getResults(mSearchCriteria).then((results) => {
-          this._DynamicTableSvc.setData('Functions', results);
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
-    }
-    let mSearchCriteria = this._SearchSvc.getSearchCriteria('Functions');
-    if(this._GWCommon.isNullorEmpty(mSearchCriteria.columns)) {
-      const mFunctionColumns = '[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]';
-      mSearchCriteria = new SearchCriteria(mFunctionColumns, "[Action]", "asc", 10, 1, "1=1");
-      mSearchCriteria.tableOrView = '[ZGWSystem].[vwSearchFunctions]';
-    }
-    // setSearchCriteria will call next on this._SearchSvc.searchCriteriaChanged
-    this._SearchSvc.setSearchCriteria('Functions', mSearchCriteria);
+  }
+
+  ngOnDestroy(): void {
+      this._SearchCriteriaChangedSub.unsubscribe();
   }
 
   ngOnInit(): void {
     // do nothing ATM
+    this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePare) => {
+      // this is unnecessary b/c both cases do exactly the same thing but
+      // this is to illistrate how you can have multiple 'gw-lib-dynamic-table'
+      // and how you would handle loading the data for each of them
+      switch (criteria.name.trim().toLowerCase()) {
+        case 'accounts':
+          this._SearchSvc.getResults(criteria).then((results) => {
+            const mResutls: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
+            this._DataSvc.setData(mResutls);
+          }).catch((error) => {
+            console.log(error);
+          });
+          break;
+        case 'functions':
+          this._SearchSvc.getResults(criteria).then((results) => {
+            const mResutls: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
+            this._DataSvc.setData(mResutls);
+          }).catch((error) => {
+            console.log(error);
+          });
+          break;
+        default:
+          break;
+      }
+    });
+    // initiate getting the data for both of the controlls
+    let mResutls: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts');
+    this._SearchSvc.setSearchCriteria(mResutls);
+    mResutls = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
+    this._SearchSvc.setSearchCriteria(mResutls);
   }
 }
