@@ -18,7 +18,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent: PagerComponent;
 
-  public activeRow: number = 0;
+  public activeRow: number = -1;
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[] = [];
 
@@ -63,6 +63,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this._DynamicTableSvcDataChangedSub = this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
         if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
           this.tableData = results.payLoad.data;
+          this.activeRow = -1;
         }
       });
     } else {
