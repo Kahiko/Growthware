@@ -20,3 +20,7 @@ export class SearchTotalRecordsNVP implements INameValuePare {
   constructor(public name: string, public payLoad: number) {}
 }
 
+export class SearchResultsNVP implements INameValuePare {
+
+  constructor(public name: string, public payLoad: {searchCriteria: ISearchCriteria, data: any}) {}
+}
