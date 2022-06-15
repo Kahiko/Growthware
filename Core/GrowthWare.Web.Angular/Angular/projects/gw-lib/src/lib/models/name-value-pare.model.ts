@@ -30,5 +30,5 @@ export class SearchTotalRecordsNVP implements INameValuePare {
 
 export class SearchResultsNVP implements ISearchResultsNVP {
 
-  constructor(public name: string, public payLoad: {searchCriteria?: ISearchCriteria, data: Array<any>}) {}
+  constructor(public name: string, public payLoad: {searchCriteria: ISearchCriteria, data: Array<any>}) {}
 }
