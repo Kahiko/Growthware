@@ -9,7 +9,7 @@ export interface ISearchResultsNVP extends INameValuePare {
   name: string,
   payLoad: {
     data: Array<any>
-    searchCriteria?: ISearchCriteria,
+    searchCriteria: ISearchCriteria,
   }
 }
 
