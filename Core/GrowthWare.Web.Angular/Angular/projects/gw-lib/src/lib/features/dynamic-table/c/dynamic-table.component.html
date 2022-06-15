@@ -24,7 +24,7 @@
             <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="font-size: 0.9em; width: 164px; float: right;" placeholder="Search">
           </span>
       </div>
-      <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +18, 'max-width.px': tableWidth +18}">
+      <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +23, 'max-width.px': tableWidth +23}">
           <table class="table table-striped table-condensed table-hover" [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth, 'margin-left.px': 5 }">
             <caption *ngIf="tableConfiguration.captionText.length > 0" id="caption_{{tableConfiguration.name}}">{{tableConfiguration.captionText}}</caption>
             <thead>
