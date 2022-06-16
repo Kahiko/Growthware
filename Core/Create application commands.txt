@@ -30,6 +30,7 @@ Library:
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
 		ng generate interface models/NameValuePare --type model --project gw-lib
+		ng generate interface models/DynamicTableMethods --type model --project gw-lib
 
 		ng generate service services/search --skip-tests --project gw-lib
 		ng generate service services/dynamic-table --project gw-lib --skip-tests --project gw-lib

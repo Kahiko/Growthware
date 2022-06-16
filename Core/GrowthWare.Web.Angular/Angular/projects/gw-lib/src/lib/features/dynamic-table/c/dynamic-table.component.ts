@@ -7,7 +7,7 @@ import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
-import { SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -37,6 +37,19 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _DynamicTableSvc: DynamicTableService,
     private _SearchSvc: SearchService,
   ) { }
+
+  /**
+   * Formats the data
+   *
+   * @see this._GWCommon.formatData
+   * @param {*} data
+   * @param {string} type
+   * @return {*}
+   * @memberof DynamicTableComponent
+   */
+   formatData(data: any, type: string): void {
+    return this._GWCommon.formatData(data, type);
+  }
 
   ngAfterViewInit(): void {
     if (this.pagerComponent) {
@@ -117,16 +130,23 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  /**
-   * Formats the data
-   *
-   * @see this._GWCommon.formatData
-   * @param {*} data
-   * @param {string} type
-   * @return {*}
-   * @memberof DynamicTableComponent
-   */
-  formatData(data: any, type: string): void {
-    return this._GWCommon.formatData(data, type);
+  setButtonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
+    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
+      this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
+    }
+
+  }
+
+  public onTopLeft(): void {      // 0
+    alert('onTopLeft');
+  }
+  public onTopRight(): void {     // 1
+    alert('onTopRight');
+  }
+  public onBottomLeft(): void {   // 2
+    alert('onBottomLeft');
+  }
+  public onBottomRight(): void {  // 3
+    alert('onBottomRight');
   }
 }

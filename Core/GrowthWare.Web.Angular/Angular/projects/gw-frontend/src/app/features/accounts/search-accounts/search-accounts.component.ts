@@ -3,9 +3,9 @@ import { ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
-import { DataService, DynamicTableService } from '@Growthware/Lib/src/lib/services';
+import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService } from '@Growthware/Lib/src/lib/services';
-import { INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'app-search-accounts',
@@ -23,10 +23,14 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   constructor(
     private _SearchSvc: SearchService,
     private _DataSvc: DataService,
-    private _DynamicTableSvc: DynamicTableService,
   ) { }
 
   ngAfterViewInit(): void {
+    const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
+    mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => {
+      this.onBtnTopRight();
+    }
+    this.searchFunctionsComponent.setButtonMethods(mDynamicTableBtnMethods);
   }
 
   ngOnDestroy(): void {
@@ -65,5 +69,9 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     this._SearchSvc.setSearchCriteria(mResutls);
     mResutls = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
     this._SearchSvc.setSearchCriteria(mResutls);
+  }
+
+  private onBtnTopRight () {
+    alert('hi from onBtnTopLeft')
   }
 }

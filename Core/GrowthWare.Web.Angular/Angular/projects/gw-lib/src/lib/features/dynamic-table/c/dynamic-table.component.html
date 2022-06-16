@@ -13,6 +13,7 @@
               [ngClass]="tableConfiguration.buttons[0].class"
               id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              (click) = "onTopLeft()"
               >{{tableConfiguration.buttons[0].text}}
             </button>
           </span>
@@ -22,6 +23,7 @@
               [ngClass]="tableConfiguration.buttons[1].class"
               id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              (click) = "onTopRight()"
               >{{tableConfiguration.buttons[1].text}}
             </button>&nbsp;
             <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="font-size: 0.9em; width: 164px; float: right;" placeholder="Search">
@@ -58,6 +60,7 @@
               [ngClass]="tableConfiguration.buttons[2].class"
               id="btn_{{tableConfiguration.buttons[2].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              (click) = "onBottomLeft()"
               >{{tableConfiguration.buttons[2].text}}
             </button>
           </div>
@@ -67,6 +70,7 @@
               [ngClass]="tableConfiguration.buttons[3].class"
               id="btn_{{tableConfiguration.buttons[3].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+              (click) = "onBottomRight()"
               >{{tableConfiguration.buttons[3].text}}
             </button>
           </div>
