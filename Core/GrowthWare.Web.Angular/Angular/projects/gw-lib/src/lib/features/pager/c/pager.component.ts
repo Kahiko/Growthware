@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { SearchCriteria, ISearchResultsNVP, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
-import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
   selector: 'gw-lib-pager',
