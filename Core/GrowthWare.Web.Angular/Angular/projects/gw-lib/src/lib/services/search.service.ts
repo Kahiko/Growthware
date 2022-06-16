@@ -74,7 +74,7 @@ export class SearchService {
   public getSearchCriteriaFromConfig(name: string): SearchCriteriaNVP {
     const mSearchCriteria: SearchCriteria = new SearchCriteria('','','',1,1,'1=1');
     const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
-    const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria)
+    const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria);
     if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }

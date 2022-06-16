@@ -118,5 +118,16 @@ export class GWCommon {
     }
     return false;
   }
+
+  public isNumber(value: string | number): boolean
+  {
+    let mRetVal: boolean = false;
+    if(!this.isNullOrUndefined(value) &&
+      !this.isNullOrEmpty(value.toString()) &&
+      !isNaN(Number(value.toString()))) {
+        mRetVal = true;
+    }
+    return mRetVal;
+  }
 }
 

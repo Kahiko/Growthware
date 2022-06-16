@@ -6,7 +6,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { DataService, DynamicTableService } from '@Growthware/Lib/src/lib/services';
+import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -21,9 +22,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
+  public recordsPerPageMsg: string = '';
+  public searchCriteria: SearchCriteria;
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[] = [];
-
   public tableWidth: number = 200;
   public tableHeight: number = 206;
   public totalRecords: number = -1;
@@ -33,6 +35,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _GWCommon: GWCommon,
     private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
+    private _SearchSvc: SearchService,
   ) { }
 
   ngAfterViewInit(): void {
@@ -67,6 +70,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this._Subscriptions.add(
         this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
           if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+            this.searchCriteria = results.payLoad.searchCriteria;
             this.tableData = results.payLoad.data;
             const mFirstRow = this.tableData[0];
             if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
@@ -76,7 +80,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
           }
         })
       );
-
     } else {
       console.error(
         'DynamicTableComponent.ngOnInit: configurationName is blank'
@@ -86,9 +89,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.recordsPerPageSubject
       .pipe(debounceTime(800), distinctUntilChanged())
       .subscribe((newText) => {
-        if (!this._GWCommon.isNullOrUndefined(newText) && !this._GWCommon.isNullOrEmpty(newText.toString())) {
-
-          console.log(newText);
+        if (this._GWCommon.isNumber(newText) && +newText > 0) {
+          this.recordsPerPageMsg = '';
+          this.searchCriteria.pageSize = +newText;
+          this.searchCriteria.selectedPage = 1;
+          const mNewCriteria: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this.searchCriteria);
+          this._SearchSvc.setSearchCriteria(mNewCriteria);
+        } else {
+          this.recordsPerPageMsg = 'Value must be numeric and greater than zero!';
         }
       })
     )

@@ -41,7 +41,8 @@ export class PagerComponent implements OnDestroy, OnInit {
             const mPageSize: number = results.payLoad.searchCriteria.pageSize;
             const mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
             if(this.totalPages !== mCalculatedPages) {
-              this.pages.splice(this.pages.length-1, 1);
+              this.pages.splice(0, this.pages.length);
+              this.selectedPage = '1';
               for (let index = 1; index < mCalculatedPages + 1; index++) {
                 this.pages.push(index);
               }
