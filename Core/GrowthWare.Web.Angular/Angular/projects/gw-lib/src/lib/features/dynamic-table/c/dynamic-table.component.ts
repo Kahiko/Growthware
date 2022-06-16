@@ -49,7 +49,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     this.configurationName = this.configurationName.trim();
     if (
       !this._GWCommon.isNullOrUndefined(this.configurationName) &&
-      !this._GWCommon.isNullorEmpty(this.configurationName)
+      !this._GWCommon.isNullOrEmpty(this.configurationName)
     ) {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
@@ -86,7 +86,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.recordsPerPageSubject
       .pipe(debounceTime(800), distinctUntilChanged())
       .subscribe((newText) => {
-        if (!this._GWCommon.isNullOrUndefined(newText) && !this._GWCommon.isNullorEmpty(newText.toString())) {
+        if (!this._GWCommon.isNullOrUndefined(newText) && !this._GWCommon.isNullOrEmpty(newText.toString())) {
+
           console.log(newText);
         }
       })

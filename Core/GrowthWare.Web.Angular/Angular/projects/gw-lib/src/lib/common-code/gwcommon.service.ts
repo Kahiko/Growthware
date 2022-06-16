@@ -97,7 +97,7 @@ export class GWCommon {
    * @return {*}
    * @memberof GWCommon
    */
-  public isNullorEmpty(str: string): boolean {
+  public isNullOrEmpty(str: string): boolean {
     if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
       return true;
     }
