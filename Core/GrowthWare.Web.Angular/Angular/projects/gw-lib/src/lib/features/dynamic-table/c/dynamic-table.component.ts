@@ -1,6 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
@@ -13,12 +14,13 @@ import { DataService, DynamicTableService } from '@Growthware/Lib/src/lib/servic
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
-  private _DynamicTableSvcDataChangedSub: Subscription = new Subscription();
+  private _Subscriptions: Subscription = new Subscription();;
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent: PagerComponent;
 
   public activeRow: number = -1;
+  public recordsPerPageSubject: Subject<number> = new Subject<number>();
   public tableConfiguration: IDynamicTableConfiguration;
   public tableData: any[] = [];
 
@@ -40,7 +42,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this._DynamicTableSvcDataChangedSub.unsubscribe();
+    this._Subscriptions.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -62,22 +64,33 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.tableWidth = mWidth;
         this.tableHeight = this.tableConfiguration.tableHeight;
       }
-
-      this._DynamicTableSvcDataChangedSub = this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
-        if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
-          this.tableData = results.payLoad.data;
-          const mFirstRow = this.tableData[0];
-          if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-            this.totalRecords = parseInt(mFirstRow['TotalRecords']);
+      this._Subscriptions.add(
+        this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
+          if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+            this.tableData = results.payLoad.data;
+            const mFirstRow = this.tableData[0];
+            if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+              this.totalRecords = parseInt(mFirstRow['TotalRecords']);
+            }
+            this.activeRow = -1;
           }
-          this.activeRow = -1;
-        }
-      });
+        })
+      );
+
     } else {
       console.error(
         'DynamicTableComponent.ngOnInit: configurationName is blank'
       );
     }
+    this._Subscriptions.add(
+      this.recordsPerPageSubject
+      .pipe(debounceTime(800), distinctUntilChanged())
+      .subscribe((newText) => {
+        if (!this._GWCommon.isNullOrUndefined(newText)) {
+          console.log(newText);
+        }
+      })
+    )
   }
 
   /**
