@@ -86,7 +86,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.recordsPerPageSubject
       .pipe(debounceTime(800), distinctUntilChanged())
       .subscribe((newText) => {
-        if (!this._GWCommon.isNullOrUndefined(newText)) {
+        if (!this._GWCommon.isNullOrUndefined(newText) && !this._GWCommon.isNullorEmpty(newText.toString())) {
           console.log(newText);
         }
       })
