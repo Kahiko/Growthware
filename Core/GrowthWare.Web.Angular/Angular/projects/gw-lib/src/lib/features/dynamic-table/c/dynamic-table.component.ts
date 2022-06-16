@@ -87,7 +87,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     this._Subscriptions.add(
       this.recordsPerPageSubject
-      .pipe(debounceTime(800), distinctUntilChanged())
+      .pipe(debounceTime(500), distinctUntilChanged())
       .subscribe((newText) => {
         if (this._GWCommon.isNumber(newText) && +newText > 0) {
           this.recordsPerPageMsg = '';
