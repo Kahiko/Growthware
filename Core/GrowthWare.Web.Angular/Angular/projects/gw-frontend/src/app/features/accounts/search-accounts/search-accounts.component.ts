@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { ICallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'app-search-accounts',
