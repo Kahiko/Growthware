@@ -167,7 +167,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onTopLeft(): void {      // 0
-    alert('You have not set the btnTopLeftCallBackMethod option');
+    alert('You have not set the onTopLeft call back method using the setButtonMethods');
   }
 
   /**
@@ -178,7 +178,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onTopRight(): void {     // 1
-    alert('You have not set the btnTopRightCallBackMethod option');
+    alert('You have not set the onTopRight call back method using the setButtonMethods');
   }
 
   /**
@@ -189,7 +189,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onBottomLeft(): void {   // 2
-    alert('You have not set the btnBottomLeftCallBackMethod option');
+    alert('You have not set the onBottomLeft call back method using the setButtonMethods');
   }
 
   /**
@@ -200,6 +200,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onBottomRight(): void {  // 3
-    alert('You have not set the btnBottomRightCallBackMethod option');
+    alert('You have not set the onBottomRight call back method using the setButtonMethods');
   }
 }
