@@ -3,9 +3,7 @@ export interface IDynamicTableColumn {
   "allowSort": boolean,
   "canEdit": boolean,
   "editText": string,
-  "isButton": boolean ,
-  "isCheckbox": boolean,
-  "isEdit": boolean,
+  "outputType": string, // button, checkbox, text
   "isPrimaryKey": string,
   "label": string,
   "name": string,
