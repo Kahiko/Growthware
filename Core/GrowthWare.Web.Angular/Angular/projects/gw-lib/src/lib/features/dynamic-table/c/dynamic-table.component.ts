@@ -82,6 +82,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.tableWidth = mWidth;
         this.tableHeight = this.tableConfiguration.tableHeight;
       }
+      // subscribe to the data change event and update the local data
       this._Subscriptions.add(
         this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
           if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
@@ -100,6 +101,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         'DynamicTableComponent.ngOnInit: configurationName is blank'
       );
     }
+    // subscribe to the recordsPerPage change event and update the search criteria
     this._Subscriptions.add(
       this.recordsPerPageSubject
       .pipe(debounceTime(500), distinctUntilChanged())
