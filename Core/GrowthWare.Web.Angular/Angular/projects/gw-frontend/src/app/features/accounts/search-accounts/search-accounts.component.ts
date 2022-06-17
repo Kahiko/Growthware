@@ -3,9 +3,9 @@ import { ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
-import { DataService } from '@Growthware/Lib/src/lib/services';
-import { SearchService } from '@Growthware/Lib/src/lib/services';
-import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { ICallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'app-search-accounts',
@@ -21,15 +21,18 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   public results: any;
 
   constructor(
-    private _SearchSvc: SearchService,
     private _DataSvc: DataService,
+    private _DynamicTableSvc: DynamicTableService,
+    private _GWCommon: GWCommon,
+    private _SearchSvc: SearchService,
   ) { }
 
   ngAfterViewInit(): void {
     const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
-    mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => {
-      this.onBtnTopRight();
-    }
+    mDynamicTableBtnMethods.btnTopLeftCallBackMethod = () => { this.onBtnTopLeft(); }
+    mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => { this.onBtnTopRight(); }
+    mDynamicTableBtnMethods.btnBottomLeftCallBackMethod = () => { this.onBtnBottomLeft(); }
+    mDynamicTableBtnMethods.btnBottomRightCallBackMethod = () => { this.onBtnBottomRight(); }
     this.searchFunctionsComponent.setButtonMethods(mDynamicTableBtnMethods);
   }
 
@@ -38,7 +41,6 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   ngOnInit(): void {
-    // do nothing ATM
     this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePare) => {
       // this is unnecessary b/c both cases do exactly the same thing but
       // this is to illistrate how you can have multiple 'gw-lib-dynamic-table'
@@ -64,14 +66,27 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
           break;
       }
     });
-    // initiate getting the data for both of the controlls
+    // initiate getting the data for both of the controlls by
+    // calling SearchService.getSearchCriteriaFromConfig
     let mResutls: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts');
     this._SearchSvc.setSearchCriteria(mResutls);
     mResutls = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
     this._SearchSvc.setSearchCriteria(mResutls);
   }
 
+  private onBtnTopLeft () {
+    alert('hi from SearchAccountsComponent.onBtnTopLeft')
+  }
+
   private onBtnTopRight () {
-    alert('hi from onBtnTopLeft')
+    alert('hi from SearchAccountsComponent.onBtnTopRight')
+  }
+
+  private onBtnBottomLeft () {
+    alert('hi from SearchAccountsComponent.onBtnBottomLeft')
+  }
+
+  private onBtnBottomRight () {
+    alert('hi from SearchAccountsComponent.onBtnBottomRight')
   }
 }

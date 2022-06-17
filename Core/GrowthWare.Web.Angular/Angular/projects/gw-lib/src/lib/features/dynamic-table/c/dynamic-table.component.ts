@@ -31,6 +31,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public totalRecords: number = -1;
   public txtRecordsPerPage: number = 0;
 
+  public closeCallBackMethod: (arg?: any) => void;
+
   constructor(
     private _GWCommon: GWCommon,
     private _DataSvc: DataService,
@@ -130,23 +132,72 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
+  /**
+   * Sets the onTopLeft, onTopRight, onBottomLeft and onBottomRight methods with
+   * the methods supplied.
+   *
+   * If the methods does not get set the default method behavior is to
+   * alert indicating the method has not been set.
+   *
+   * @param {DynamicTableBtnMethods} dynamicTableBtnMethods
+   * @memberof DynamicTableComponent
+   */
   setButtonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
     if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
       this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
     }
-
+    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopRightCallBackMethod)) {
+      this.onTopRight = dynamicTableBtnMethods.btnTopRightCallBackMethod;
+    }
+    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomLeftCallBackMethod)) {
+      this.onBottomLeft = dynamicTableBtnMethods.btnBottomLeftCallBackMethod;
+    }
+    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
+      this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
+    }
   }
 
+  /**
+   * Handles the top left button click.
+   * This method should be overritten, it's up to the parent
+   * component to implement any logic
+   *
+   * @memberof DynamicTableComponent
+   */
   public onTopLeft(): void {      // 0
-    alert('onTopLeft');
+    alert('You have not set the btnTopLeftCallBackMethod option');
   }
+
+  /**
+   * Handles the top right button click
+   * This method should be overritten, it's up to the parent
+   * component to implement any logic
+   *
+   * @memberof DynamicTableComponent
+   */
   public onTopRight(): void {     // 1
-    alert('onTopRight');
+    alert('You have not set the btnTopRightCallBackMethod option');
   }
+
+  /**
+   * Handles the botton left button click
+   * This method should be overritten, it's up to the parent
+   * component to implement any logic
+   *
+   * @memberof DynamicTableComponent
+   */
   public onBottomLeft(): void {   // 2
-    alert('onBottomLeft');
+    alert('You have not set the btnBottomLeftCallBackMethod option');
   }
+
+  /**
+   * Handles the botton right button click
+   * This method should be overritten, it's up to the parent
+   * component to implement any logic
+   *
+   * @memberof DynamicTableComponent
+   */
   public onBottomRight(): void {  // 3
-    alert('onBottomRight');
+    alert('You have not set the btnBottomRightCallBackMethod option');
   }
 }

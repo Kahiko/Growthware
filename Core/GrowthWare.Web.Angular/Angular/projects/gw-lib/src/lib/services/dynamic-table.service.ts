@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import * as DefaultData from './dynamic-table.config.json';
-import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { ICallbackButton, IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 @Injectable({
@@ -16,6 +16,26 @@ export class DynamicTableService {
     for (let index = 0; index < mDefaultData.length; index++) {
       this._TableConfigurations.push(mDefaultData[index]);
     }
+  }
+
+  /**
+   * Returs an array of objects that adhear to ICallbackButton interface
+   *
+   * @param {string} name
+   * @return {*}  {ICallbackButton[]}
+   * @memberof DynamicTableService
+   */
+  public getButtons(name: string): ICallbackButton[] {
+    const mRetVal: ICallbackButton[] = new Array<ICallbackButton>();
+    const mTableConfiguration: IDynamicTableConfiguration = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
+    if(!this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
+      mTableConfiguration.buttons.forEach((element: ICallbackButton) => {
+        mRetVal.push(element);
+      });
+    } else {
+      console.log(`Could not find the "${name}" configuration!`);
+    }
+    return mRetVal;
   }
 
   /**
@@ -38,8 +58,8 @@ export class DynamicTableService {
    *
    * @memberof DynamicTableService
    */
-   public set tableConfigurations(tableConfigurations: IDynamicTableConfiguration[]) {
-    if(!this._GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0){
+  public set tableConfigurations(tableConfigurations: IDynamicTableConfiguration[]) {
+    if(!this._GWCommon.isNullOrUndefined(tableConfigurations) && tableConfigurations.length > 0) {
       this._TableConfigurations = tableConfigurations;
     } else {
       throw('tableConfigurations can not be null, undefined or empty!');
