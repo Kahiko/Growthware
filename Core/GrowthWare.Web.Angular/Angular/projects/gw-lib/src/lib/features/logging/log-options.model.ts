@@ -1,31 +1,27 @@
-import { LogLevel } from "./log-level.enum";
+import { LogDestinition } from './log-destinition.enum';
+import { LogLevel } from './log-level.enum';
 
 export interface ILogOptions {
   "account"       : string;
-  "className"     : string;
   "componentName" : string;
+  "className"     : string;
+  "destination"   : LogDestinition[];
   "level"         : LogLevel;
-  "logConsole"    : boolean;
-  "logDB"         : boolean;
-  "logToast"      : boolean;
-  "logUI"         : boolean;
   "methodName"    : string;
   "msg"           : string;
+  "title"         : string;
 }
 
 export class LogOptions implements ILogOptions {
 
   constructor(
-    public className: string,
-    public componentName: string,
-    public methodName: string,
     public msg: string,
-    public title: string,
-    public account: string = 'System',
     public level: LogLevel = LogLevel.Debug,
-    public logConsole: boolean = true,
-    public logDB: boolean = false,
-    public logToast: boolean = false,
-    public logUI: boolean = false,
+    public destination: LogDestinition[] = [LogDestinition.Console],
+    public componentName: string = '',
+    public className: string = '',
+    public methodName: string = '',
+    public account: string = 'System',
+    public title: string = ''
   ) {}
 }

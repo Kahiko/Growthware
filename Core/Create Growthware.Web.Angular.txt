@@ -63,6 +63,7 @@ From a command prompt and the directory you would like to create your new projec
 	npm install @ngrx/store --save
 	npm install @ngrx/effects --save
 	npm install @ngrx/router-store --save
+	npm install ngx-toastr --save
 
 	npm install ng-samurai --save-dev
 	npm install @ngrx/store-devtools --save-dev

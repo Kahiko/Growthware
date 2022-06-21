@@ -37,6 +37,7 @@ Library:
 		ng generate service services/data --project gw-lib --skip-tests --project gw-lib
 
 		ng generate service features/logging --project gw-lib --skip-tests --project gw-lib
+		ng generate enum features/logging/LogDestinition --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
 		ng generate interface features/logging/LogOptions --type model --project gw-lib
 		

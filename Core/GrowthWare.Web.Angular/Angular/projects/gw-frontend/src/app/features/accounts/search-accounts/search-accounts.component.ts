@@ -3,9 +3,9 @@ import { ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
-import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
-import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { LogDestinition, LoggingService, LogLevel, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 
 @Component({
   selector: 'app-search-accounts',
@@ -22,8 +22,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
 
   constructor(
     private _DataSvc: DataService,
-    private _DynamicTableSvc: DynamicTableService,
-    private _GWCommon: GWCommon,
+    private _LogingSvc: LoggingService,
     private _SearchSvc: SearchService,
   ) { }
 
@@ -34,6 +33,17 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     mDynamicTableBtnMethods.btnBottomLeftCallBackMethod = () => { this.onBtnBottomLeft(); }
     mDynamicTableBtnMethods.btnBottomRightCallBackMethod = () => { this.onBtnBottomRight(); }
     this.searchFunctionsComponent.setButtonMethods(mDynamicTableBtnMethods);
+    const mLogOptions: LogOptions = new LogOptions('Testing using options');
+    mLogOptions.componentName = "Search Account"
+    mLogOptions.className = 'SearchAccountsComponent';
+    mLogOptions.methodName = 'ngAfterViewInit';
+    mLogOptions.level = LogLevel.Error;
+    this._LogingSvc.log(mLogOptions);
+    this._LogingSvc.console('Testing using console method', LogLevel.Info);
+    mLogOptions.level = LogLevel.Warn;
+    mLogOptions.msg = mLogOptions.msg + ' with level Warn'
+    this._LogingSvc.log(mLogOptions);
+
   }
 
   ngOnDestroy(): void {
