@@ -76,7 +76,6 @@ export class LoggingService {
   }
 
   private logConsole(options: ILogOptions): void {
-
     const mMsg = this.getStackTrace().replace(new RegExp(' => ' + '$'), ':') + '\n  ' + options.msg;
     switch (LogLevel[options.level]) {
       case 'Debug':
