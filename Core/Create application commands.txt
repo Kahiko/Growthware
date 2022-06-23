@@ -50,10 +50,13 @@ Library:
 
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/modal --module modal --style scss --project gw-lib --skip-tests
-
 		ng generate service features/modal/modal --skip-tests --project gw-lib
-
 		ng generate enum features/modal/ModalSize --type enum --project gw-lib
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib
 		ng generate interface features/modal/ContentObject --type model --project gw-lib
 		ng generate interface features/modal/WindowSize --type model --project gw-lib
+		
+		ng generate module features/toast --project gw-lib
+		ng generate component features/toast/c/toast --module modal --style scss --project gw-lib
+		ng generate service features/toast/toast --project gw-lib
+		ng generate interface features/toast/message --type model --project gw-lib
