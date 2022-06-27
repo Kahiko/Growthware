@@ -57,6 +57,8 @@ Library:
 		ng generate interface features/modal/WindowSize --type model --project gw-lib
 		
 		ng generate module features/toast --project gw-lib
-		ng generate component features/toast/c/toast --module modal --style scss --project gw-lib
+		ng generate component features/toast/c/toast --module toast --style scss --project gw-lib
+		ng generate component features/toast/c/toaster --module toast --style scss --project gw-lib
 		ng generate service features/toast/toast --project gw-lib
-		ng generate interface features/toast/message --type model --project gw-lib
+		ng generate interface features/toast/ToastMessage --type model --project gw-lib
+		ng generate enum features/toast/EventType --type enum --project gw-lib

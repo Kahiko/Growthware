@@ -63,13 +63,18 @@ From a command prompt and the directory you would like to create your new projec
 	npm install @ngrx/store --save
 	npm install @ngrx/effects --save
 	npm install @ngrx/router-store --save
-	npm install ngx-toastr --save
+	rem npm install ngx-toastr --save -- attempting self atm
+	npm install @types/bootstrap --save -- may not need
 
 	npm install ng-samurai --save-dev
 	npm install @ngrx/store-devtools --save-dev
 
 	ng add @angular/material
 	ng add @angular-eslint/schematics
+		NOTE:
+	Remember to add to the peerDependencies of package.json in the library for any package
+	you are installing for the library to use!
+
 Files you'll need to edit the following files:
 	<dotNetProjectName>.csproj
 	Program.cs
