@@ -2,12 +2,12 @@
 					
 Application:
 	From Angular/projects/gw-frontend/src/app
-		ng generate component skins/default/footer --module app --project gw-front-end
-		ng generate component skins/default/header --module app --project gw-front-end
-		ng generate component skins/default/sidebar --module app --project gw-front-end
+		ng generate component skins/default/footer --module app --project gw-frontend
+		ng generate component skins/default/header --module app --project gw-frontend
+		ng generate component skins/default/sidebar --module app --project gw-frontend
 		
-		ng generate component skins/system/footer --module app --project gw-front-end
-		ng generate component skins/system/header --module app --project gw-front-end
+		ng generate component skins/system/footer --module app --project gw-frontend
+		ng generate component skins/system/header --module app --project gw-frontend
 		ng generate component skins/system/sidebar --module app --project gw-frontend
 		
 		ng generate component features/accounts --module app --project gw-frontend
