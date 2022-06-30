@@ -4,13 +4,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
-import { SearchAccountsComponent } from './features/accounts/search-accounts/search-accounts.component';
+// import { SearchAccountsComponent } from './features/accounts/search-accounts/search-accounts.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
-  { path: 'search-accounts', component: SearchAccountsComponent },
+  // { path: 'search-accounts', component: SearchAccountsComponent },
 ];
 
 @NgModule({

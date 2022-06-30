@@ -20,3 +20,4 @@ export class SearchCriteria implements ISearchCriteria {
     public whereClause: string
   ) {}
 }
+

@@ -10,7 +10,7 @@ export interface IModalOptions {
 }
 
 export class ModalOptions implements IModalOptions {
-  public buttons: ICallbackButton[];
+  public buttons?: ICallbackButton[];
 
   constructor(
     public modalId: string,

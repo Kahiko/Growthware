@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import { ILogOptions, LogOptions } from './log-options.model';
-import { LogDestinition } from './log-destinition.enum';
+import { LogDestination } from './log-destination.enum';
 import { LogLevel } from './log-level.enum';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { EventType, ToastService, ToastMessage } from '@Growthware/Lib/src/lib/features/toast';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoggingService {
   // https://adrianhall.github.io/cloud/2019/06/30/building-an-efficient-logger-in-typescript/
-  constructor(private _GWCommon: GWCommon) { }
+  constructor(private _GWCommon: GWCommon, private _ToastSvc: ToastService) { }
 
   private getStackTrace(): string {
     const mStackLines = (new Error("")).stack?.split('\n') ?? [];
@@ -50,7 +51,7 @@ export class LoggingService {
 
   public log(options: ILogOptions): void {
     options.destination.forEach(element => {
-      switch (LogDestinition[element]) {
+      switch (LogDestination[element]) {
         case 'Console':
           this.logConsole(options);
           break;
@@ -91,7 +92,6 @@ export class LoggingService {
       case 'Warn':
         console.warn(mMsg);
         break;
-        break;
       case 'Trace':
         console.trace(mMsg);
         break;
@@ -100,18 +100,45 @@ export class LoggingService {
         console.log(mMsg)
         break;
     }
-
   }
 
   private logDB(options: ILogOptions): void {
 
   }
 
-  private logToast(options: ILogOptions): void {
+  public toast(msg: string, title: string, level: LogLevel): void {
+    const mLogOptions: LogOptions = new LogOptions(msg, level);
+    mLogOptions.title = title;
+    this.logToast(mLogOptions);
+  }
 
+  private logToast(options: ILogOptions): void {
+    // https://betterprogramming.pub/how-to-create-a-toast-service-using-angular-13-and-bootstrap-5-494e5c66627
+    const mToastMessage = new ToastMessage(options.msg, options.title, EventType.Info);
+    switch (LogLevel[options.level]) {
+      case 'Error':
+      case 'Fatal':
+        mToastMessage.eventType = EventType.Error;
+        break;
+      case 'Debug':
+      case 'Info':
+      case 'Trace':
+        mToastMessage.eventType = EventType.Info;
+        break;
+      case 'Warn':
+        mToastMessage.eventType = EventType.Warning;
+        break;
+      case 'Success':
+        mToastMessage.eventType = EventType.Success;
+        break;
+      default:
+        mToastMessage.eventType = EventType.Info;
+        break;
+    }
+    this._ToastSvc.showToast(mToastMessage);
   }
 
   private logUI(options: ILogOptions): void {
-
+    // not sure I want this ... really toast covers it
   }
 }

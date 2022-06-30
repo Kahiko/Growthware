@@ -8,14 +8,11 @@
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
-        },
-        "@schematics/angular:application": {
-          "strict": true
         }
       },
       "root": "projects/gw-frontend",
       "sourceRoot": "projects/gw-frontend/src",
-      "prefix": "app",
+      "prefix": "gw-frontend",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",

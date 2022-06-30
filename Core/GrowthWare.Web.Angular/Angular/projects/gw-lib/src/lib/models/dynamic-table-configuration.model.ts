@@ -36,7 +36,6 @@ export interface IDynamicTableConfiguration {
   public numberOfRows: number;
   public orderByColumn: string;
   public showFirstRow: boolean;
-  public showSecondRow: boolean;
   public showThirdRow: boolean;
   public showHeading: boolean;
   public showHelp: boolean;

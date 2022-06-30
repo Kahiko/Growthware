@@ -58,11 +58,11 @@ export class SearchService {
       this._HttpClient
       .post<any>(this._SearchUrl, criteria.payLoad, mHttpOptions)
       .subscribe({
-        next: (response) => {
+        next: (response: any) => {
           const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(criteria.name, { searchCriteria: criteria.payLoad, data: response });
           resolve(mSearchResultsNVP);
         },
-        error: (errorResponse) => {
+        error: (errorResponse: any) => {
           this.errorHandler(errorResponse, 'getResults');
           reject(errorResponse);
         },

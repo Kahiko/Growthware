@@ -7,7 +7,6 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noImplicitOverride": true,
-    "strictPropertyInitialization": false,
     "paths": {
       "@Growthware/Lib/*": [
         "projects/gw-lib/*",

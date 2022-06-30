@@ -16,7 +16,7 @@ type Content<T> = string | TemplateRef<T> | Type<T>;
   providedIn: 'root'
 })
 export class ModalService {
-  private _IsComponent: boolean;
+  private _IsComponent?: boolean;
   // private _ComponentRef: any;
   private _ActiveModals: IContentObject[] = [];
 

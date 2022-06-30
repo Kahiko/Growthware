@@ -18,20 +18,20 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   private _Subscriptions: Subscription = new Subscription();;
 
   @Input() configurationName: string = '';
-  @ViewChild('pager', { static: false }) pagerComponent: PagerComponent;
+  @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
 
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
   public recordsPerPageMsg: string = '';
-  public searchCriteria: SearchCriteria;
-  public tableConfiguration: IDynamicTableConfiguration;
+  public searchCriteria!: SearchCriteria;
+  public tableConfiguration!: IDynamicTableConfiguration;
   public tableData: any[] = [];
   public tableWidth: number = 200;
   public tableHeight: number = 206;
   public totalRecords: number = -1;
   public txtRecordsPerPage: number = 0;
 
-  public closeCallBackMethod: (arg?: any) => void;
+  public closeCallBackMethod!: (arg?: any) => void;
 
   constructor(
     private _GWCommon: GWCommon,

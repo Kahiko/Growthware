@@ -63,7 +63,6 @@ namespace GrowthWare.DatabaseManager
             Stopwatch mWatch = new Stopwatch();
             mWatch.Start();
 
-
             for (int i = 0; i < mConnectionStringParts.Length; i++)
             {
                 mParameterParts = mConnectionStringParts[i].Split("=");

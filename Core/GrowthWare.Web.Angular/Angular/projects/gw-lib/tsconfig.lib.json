@@ -6,13 +6,8 @@
     "declaration": true,
     "declarationMap": true,
     "inlineSources": true,
-    "strict": false,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
     "types": []
-  },
-  "angularCompilerOptions": {
-    "strictTemplates": false
   },
   "exclude": [
     "src/test.ts",

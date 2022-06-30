@@ -1,4 +1,4 @@
-export enum LogDestinition {
+export enum LogDestination {
   Console = 1,
   DB = 2,
   Toast = 3,
