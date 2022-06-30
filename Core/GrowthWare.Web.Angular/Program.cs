@@ -11,7 +11,7 @@ builder.Services.AddControllersWithViews();         // Added
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Making the Pizzas you love", Version = "v1" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies", Version = "v1" });
 });
 
 var app = builder.Build();
@@ -22,7 +22,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "PizzaStore API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
     });
 }
 if (!app.Environment.IsDevelopment())               // Added
