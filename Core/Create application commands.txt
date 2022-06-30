@@ -14,7 +14,6 @@ Application:
 		ng generate component features/accounts/auth/login --module app --project gw-frontend
 
 		ng generate interface features/accounts/accountProfile --type model --project gw-frontend
-		ng generate interface features/accounts/clientChoices --type model --project gw-frontend
 
 		ng generate service features/accounts/auth/auth --project gw-frontend
 		
@@ -25,6 +24,7 @@ Library:
 		ng generate service common-code/gwcommon --project gw-lib
 
 		ng generate interface models/CallbackButton --type model --project gw-lib
+		ng generate interface models/ClientChoices --type model --project gw-lib
 		ng generate interface models/DynamicTableBtnMethods --type model --project gw-lib
 		ng generate interface models/DynamicTableColumn --type model --project gw-lib
 		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
