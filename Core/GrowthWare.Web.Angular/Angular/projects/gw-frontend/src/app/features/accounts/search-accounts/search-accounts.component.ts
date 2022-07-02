@@ -82,6 +82,11 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     this._SearchSvc.setSearchCriteria(mResutls);
     mResutls = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
     this._SearchSvc.setSearchCriteria(mResutls);
+    // msg: string, title: string, level: LogLevel
+    this._LoggingSvc.toast('Info: hi toast', 'message from search accounts', LogLevel.Info);
+    this._LoggingSvc.toast('Warn: hi toast', 'message from search accounts', LogLevel.Warn);
+    this._LoggingSvc.toast('Success: hi toast', 'message from search accounts', LogLevel.Success);
+    this._LoggingSvc.toast('Error: hi toast', 'message from search accounts', LogLevel.Error);
   }
 
   private onBtnTopLeft () {

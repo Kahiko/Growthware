@@ -23,25 +23,35 @@ export class ToastComponent implements OnInit {
   @Input()
   message!: string;
 
-  convertType: string = '';
+  public typeClass: string = '';
 
   toast!: Toast;
 
   ngOnInit() {
+    switch (EventType[this.type]) {
+      case 'Info':
+        this.typeClass = 'bg-info text-dark';
+        break;
+      case 'Warning':
+        this.typeClass = 'bg-warning text-dark';
+        break;
+      case 'Success':
+        this.typeClass = 'bg-success text-white';
+        break;
+      case 'Error':
+        this.typeClass = 'bg-danger text-white';
+        break;
+      default:
+        this.typeClass = 'bg-primary text-white';
+        break;
+    }
     this.show();
-    this.convertType = EventType[this.type];
   }
 
-  show() {
+  private show() {
     this.toast = new Toast(
       this.toastEl.nativeElement,
-      this.type === EventType.Error
-        ? {
-            autohide: false,
-          }
-        : {
-            delay: 3000,
-          }
+      this.type === EventType.Error ? { autohide: false, } : { delay: 3000, }
     );
 
     fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')

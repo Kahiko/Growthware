@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DynamicTableModule } from '@Growthware/Lib';
+import { ToastModule } from '@Growthware/Lib';
 
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
@@ -29,9 +30,10 @@ import { SearchAccountsComponent } from './features/accounts/search-accounts/sea
     BrowserAnimationsModule,
     BrowserModule,
     DynamicTableModule,
-    HttpClientModule
+    HttpClientModule,
+    ToastModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

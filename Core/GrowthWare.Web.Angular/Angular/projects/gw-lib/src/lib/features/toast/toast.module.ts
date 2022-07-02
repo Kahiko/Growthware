@@ -14,6 +14,9 @@ import { ToasterComponent } from './c/toaster/toaster.component';
     CommonModule,
     FormsModule
   ],
-  exports: []
+  exports: [
+    ToastComponent,
+    ToasterComponent
+  ]
 })
 export class ToastModule { }

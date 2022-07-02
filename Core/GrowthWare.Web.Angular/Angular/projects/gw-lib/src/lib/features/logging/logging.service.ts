@@ -113,7 +113,6 @@ export class LoggingService {
   }
 
   private logToast(options: ILogOptions): void {
-    // https://betterprogramming.pub/how-to-create-a-toast-service-using-angular-13-and-bootstrap-5-494e5c66627
     const mToastMessage = new ToastMessage(options.msg, options.title, EventType.Info);
     switch (LogLevel[options.level]) {
       case 'Error':

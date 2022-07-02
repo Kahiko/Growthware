@@ -4,11 +4,15 @@ import { EventType } from './event-type.enum';
 import { ToastMessage } from './toast-message.model';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ToastService {
-  toastEvents: Observable<ToastMessage>;
+  // https://betterprogramming.pub/how-to-create-a-toast-service-using-angular-13-and-bootstrap-5-494e5c66627
+  // https://www.tutorialrepublic.com/codelab.php?topic=bootstrap&file=toast-with-different-color-schemes
+
   private _toastMessages = new Subject<ToastMessage>();
+
+  public toastEvents: Observable<ToastMessage>;
 
   constructor() {
     this.toastEvents = this._toastMessages.asObservable();
@@ -29,7 +33,7 @@ export class ToastService {
    * @param message Toast message
    */
   showSuccessToast(title: string, message: string) {
-    this.showToast({message,title,eventType: EventType.Success});
+    this.showToast({ message, title, eventType: EventType.Success });
   }
 
   /**
@@ -38,7 +42,7 @@ export class ToastService {
    * @param message Toast message
    */
   showInfoToast(title: string, message: string) {
-    this.showToast({message,title,eventType: EventType.Info});
+    this.showToast({ message, title, eventType: EventType.Info });
   }
 
   /**
@@ -47,7 +51,7 @@ export class ToastService {
    * @param message Toast message
    */
   showWarningToast(title: string, message: string) {
-    this.showToast({message,title,eventType: EventType.Warning});
+    this.showToast({ message, title, eventType: EventType.Warning });
   }
 
   /**
@@ -56,6 +60,6 @@ export class ToastService {
    * @param message Toast message
    */
   showErrorToast(title: string, message: string) {
-    this.showToast({message,title,eventType: EventType.Error});
+    this.showToast({ message, title, eventType: EventType.Error });
   }
 }
