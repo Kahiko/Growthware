@@ -5,7 +5,7 @@ CREATE TABLE [ZGWSystem].[Logging] (
     [Component]     VARCHAR (50)    NOT NULL,
     [ClassName]     VARCHAR (50)    NOT NULL,
     [MethodName]    VARCHAR (50)    NOT NULL,
-    [Msg]           VARCHAR (50)    NOT NULL,
+    [Msg]           VARCHAR (MAX)   NOT NULL,
     CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED ([LogDate] ASC)
 );
 

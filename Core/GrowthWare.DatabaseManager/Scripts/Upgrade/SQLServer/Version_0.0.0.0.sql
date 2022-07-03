@@ -1138,13 +1138,13 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND type in (N'U'))
 BEGIN
 CREATE TABLE [ZGWSystem].[Logging](
-	[LogDate] [datetime] NULL,
-	[Level] [varchar](5) NOT NULL,
-	[Account] [varchar](128) NOT NULL,
-	[Component] [varchar](50) NOT NULL,
-	[ClassName] [varchar](50) NOT NULL,
-	[MethodName] [varchar](50) NOT NULL,
-	[Msg] [varchar](50) NOT NULL,
+    [LogDate]       DATETIME		NOT NULL,
+    [Level]         VARCHAR (5)     NOT NULL,
+    [Account]       VARCHAR (128)   NOT NULL,
+    [Component]     VARCHAR (50)    NOT NULL,
+    [ClassName]     VARCHAR (50)    NOT NULL,
+    [MethodName]    VARCHAR (50)    NOT NULL,
+    [Msg]           VARCHAR (MAX)   NOT NULL,
  CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED 
 (
 	[LogDate] ASC
