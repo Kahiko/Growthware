@@ -206,7 +206,7 @@ export class LoggingService {
    * @private
    * @param {HttpErrorResponse} errorResponse
    * @param {string} methodName
-   * @memberof GWLibSearchService
+   * @memberof LoggingService
    */
   private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
     let errorMessage = '';
