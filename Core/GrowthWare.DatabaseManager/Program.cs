@@ -51,8 +51,8 @@ namespace GrowthWare.DatabaseManager
                 m_DesiredVersion = new Version(GetArgument(args, "--Version"));
             }
             string mAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
-            DataTable mAvalibleFiles = null;
-            List<Version> mAvalibleVersions = new List<Version>();
+            DataTable mAvailbleFiles = null;
+            List<Version> mAvailbleVersions = new List<Version>();
             string mConnectionString = ConfigSettings.ConnectionString;
             string[] mConnectionStringParts = mConnectionString.Split(";");
             string mDataBaseName = string.Empty;
@@ -125,23 +125,23 @@ namespace GrowthWare.DatabaseManager
                 if (mUpOrDown == "Upgrade")
                 {
                     Console.WriteLine("Attempting to Upgrade the database.");
-                    mAvalibleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "ASC");
+                    mAvailbleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "ASC");
                 }
                 else
                 {
                     Console.WriteLine("Attempting to Downgrade the database.");
-                    mAvalibleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "DESC");
+                    mAvailbleFiles = FileUtility.GetDirectory(mScriptPath, true, "Name", "DESC");
                 }
                 string mVersionString = string.Empty;
-                foreach (DataRow mDataRow in mAvalibleFiles.Rows)
+                foreach (DataRow mDataRow in mAvailbleFiles.Rows)
                 {
                     mVersionString = mDataRow["Name"].ToString().Split("_")[1].Replace(".sql", "").ToString();
                     Version mVersion = new Version(mVersionString);
-                    mAvalibleVersions.Add(mVersion);
+                    mAvailbleVersions.Add(mVersion);
                 }
                 if (mUpOrDown == "Upgrade")
                 {
-                    var mVersions = mAvalibleVersions.Where(version => version > mCurrentVersion && version <= m_DesiredVersion);
+                    var mVersions = mAvailbleVersions.Where(version => version > mCurrentVersion && version <= m_DesiredVersion);
                     if (mVersions == null || mVersions.Count() == 0)
                     {
                         string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";
@@ -159,7 +159,7 @@ namespace GrowthWare.DatabaseManager
                 }
                 else
                 {
-                    var mVersions = mAvalibleVersions.Where(version => version <= mCurrentVersion && version > m_DesiredVersion && version != new Version("1.0.0.0"));
+                    var mVersions = mAvailbleVersions.Where(version => version <= mCurrentVersion && version > m_DesiredVersion && version != new Version("1.0.0.0"));
                     if (mVersions == null || mVersions.Count() == 0)
                     {
                         string mMsg = "There are no '{0}' files to execute that match the version. Requested: '{1}', Current: '{2}'";

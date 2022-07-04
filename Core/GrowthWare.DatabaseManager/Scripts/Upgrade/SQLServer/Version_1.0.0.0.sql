@@ -1,6 +1,8 @@
 USE [YourDatabaseName];
 GO
-SET NOCOUNT ON
+SET NOCOUNT ON;
+
+EXEC [ZGWSystem].[Add_Data_Files] @P_DB_Name = 'YourDatabaseName'
 
 DECLARE @V_Now datetime,
 		@V_SystemID INT,

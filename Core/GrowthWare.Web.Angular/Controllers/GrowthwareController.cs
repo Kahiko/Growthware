@@ -32,6 +32,12 @@ public class GrowthwareAPIController : ControllerBase
         return mRetVal;
     }
 
+    [HttpPost("Log")]
+    public void Log(MLoggingProfile profile)
+    {
+        LoggingUtility.Save(profile);
+    }
+
     [HttpPost("Search")]
     public String Search(MSearchCriteria searchCriteria)
     {
