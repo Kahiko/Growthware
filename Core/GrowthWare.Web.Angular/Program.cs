@@ -40,7 +40,8 @@ app.UseAuthorization();
 // app.MapControllers();                            // Commented out
 app.MapControllerRoute(                             // Added
     name: "default",
-    pattern: "{controller}/{action=Index}/{id?}");
+    pattern: "{controller}/{action=Index}/{id?}"
+);
 
 app.MapFallbackToFile("index.html");                // Added
 
