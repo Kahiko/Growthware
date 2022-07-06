@@ -20,7 +20,7 @@ export class LoggingService {
     private _GWCommon: GWCommon,
     private _ToastSvc: ToastService
   ) {
-    this._LoggingURL = _GWCommon.baseURL + 'Log';
+    this._LoggingURL = _GWCommon.baseURL + 'GrowthWareAPI/Log';
   }
 
   private getStackTrace(): string {
@@ -146,15 +146,26 @@ export class LoggingService {
   }
 
   private logDB(options: ILogOptions): void {
+    this.console(this._LoggingURL, LogLevel.Info);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
     };
+    const mOptions: any = {
+      account: options.account,
+      className: options.className,
+      component: options.componentName,
+      level: LogLevel[options.level],
+      logDate: '',
+      logSeqId: 0,
+      methodName: options.methodName,
+      msg: options.msg,
+    };
+    const mData = {"profile": mOptions};
     this._HttpClient
-      .post<any>(this._LoggingURL, options, mHttpOptions)
+      .post<any>(this._LoggingURL, mData, mHttpOptions)
       .subscribe({
-        next: (response: any) => {},
         error: (errorResponse: any) => {
           this.errorHandler(errorResponse, 'logDB');
         },
