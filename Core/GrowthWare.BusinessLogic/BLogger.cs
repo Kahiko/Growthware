@@ -10,9 +10,10 @@ namespace GrowthWare.BusinessLogic
 
         private ILogging m_Logging;
 
-        public BLogger(string dataAccessLayerAssemblyName, string dataAccessLayerNamespace)
+        public BLogger(string dataAccessLayerAssemblyName, string dataAccessLayerNamespace, string connectionString)
         {
             this.m_Logging = (ILogging)ObjectFactory.Create(dataAccessLayerAssemblyName, dataAccessLayerNamespace, "DLogging");
+            this.m_Logging.ConnectionString = connectionString;
         }
 
         public MLoggingProfile GetLoggingProfile(int logSeqId)
