@@ -39,6 +39,7 @@ public class DLogging : ADBInteraction, ILogging
             new SqlParameter("@P_Level", profile.Level),
             new SqlParameter("@P_MethodName", profile.MethodName),
             new SqlParameter("@P_Msg", profile.Msg),
+            base.GetSqlParameter("@P_Primary_Key", 0, ParameterDirection.Output)
         };
         base.ExecuteNonQuery(mStoredProcedure, mParameters);
     }
