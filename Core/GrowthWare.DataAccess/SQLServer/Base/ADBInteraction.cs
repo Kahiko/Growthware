@@ -261,7 +261,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <param name="parameterValue">Object</param>
         /// <param name="direction">ParameterDirection</param>
         /// <returns>SqlParameter</returns>
-        protected static SqlParameter GetSqlParameter(String parameterName, Object parameterValue, ParameterDirection direction)
+        protected virtual SqlParameter GetSqlParameter(String parameterName, Object parameterValue, ParameterDirection direction)
         {
             SqlParameter mRetVal = new SqlParameter(parameterName, parameterValue);
             switch (direction)
