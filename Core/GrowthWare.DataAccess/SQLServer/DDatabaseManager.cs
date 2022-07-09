@@ -39,8 +39,8 @@ namespace GrowthWare.DataAccess.SQLServer
                 Boolean mSuccess = this.Replace_N_Run(mCreationFile, mSqlConnection);
                 if (!mSuccess)
                 {
-                    string mError = "Was not able to create the '{0}' database.";
-                    mError = String.Format(mError, mCreationFile);
+                    string mError = "Was not able to create the '{0}' database file name {1}.";
+                    mError = String.Format(mError, this.DatabaseName, mCreationFile);
                     throw new Exception(mError);
                 }
                 mSuccess = this.Replace_N_Run(mInsertFile, mSqlConnection);
