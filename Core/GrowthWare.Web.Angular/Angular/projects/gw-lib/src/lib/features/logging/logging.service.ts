@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 
 import { ILogOptions, LogOptions } from './log-options.model';
 import { LogDestination } from './log-destination.enum';
+import { ILoggingProfile, LoggingProfile } from './logging-profile.model';
 import { LogLevel } from './log-level.enum';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { EventType, ToastService, ToastMessage } from '@Growthware/Lib/src/lib/features/toast';
@@ -152,20 +153,21 @@ export class LoggingService {
         'Content-Type': 'application/json',
       }),
     };
-    const mOptions: any = {
-      account: options.account,
-      className: options.className,
-      component: options.componentName,
-      level: LogLevel[options.level],
-      logDate: '',
-      logSeqId: 0,
-      methodName: options.methodName,
-      msg: options.msg,
-    };
-    const mData = {"profile": mOptions};
+    const mData: ILoggingProfile = new LoggingProfile(
+      options.account,
+      options.className,
+      options.componentName,
+      LogLevel[options.level],
+      options.methodName,
+      options.msg,
+    );
+    mData.logDate = new Date().toISOString();
     this._HttpClient
       .post<any>(this._LoggingURL, mData, mHttpOptions)
       .subscribe({
+        next: (response: any) => {
+          this.logConsole(response);
+        },
         error: (errorResponse: any) => {
           this.errorHandler(errorResponse, 'logDB');
         },

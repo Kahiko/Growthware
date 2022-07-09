@@ -47,6 +47,7 @@ Library:
 		ng generate enum features/logging/LogDestinition --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
 		ng generate interface features/logging/LogOptions --type model --project gw-lib
+		ng generate interface features/logging/LoggingProfile --type model --project gw-lib
 
 		ng generate module features/pager --project gw-lib
 		ng generate component features/pager/c/pager --module pager --style scss --project gw-lib

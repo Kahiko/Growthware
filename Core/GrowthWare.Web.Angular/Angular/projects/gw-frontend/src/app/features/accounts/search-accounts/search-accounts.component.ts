@@ -76,17 +76,17 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
           break;
       }
     });
-    // initiate getting the data for both of the controlls by
+    // initiate getting the data for both of the controls by
     // calling SearchService.getSearchCriteriaFromConfig
     let mResults: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts');
     this._SearchSvc.setSearchCriteria(mResults);
     mResults = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
     this._SearchSvc.setSearchCriteria(mResults);
     // msg: string, title: string, level: LogLevel
-    this._LoggingSvc.toast('Info: hi toast', 'message from search accounts', LogLevel.Info);
-    this._LoggingSvc.toast('Warn: hi toast', 'message from search accounts', LogLevel.Warn);
-    this._LoggingSvc.toast('Success: hi toast', 'message from search accounts', LogLevel.Success);
-    this._LoggingSvc.toast('Error: hi toast', 'message from search accounts', LogLevel.Error);
+    // this._LoggingSvc.toast('Info: hi toast', 'message from search accounts', LogLevel.Info);
+    // this._LoggingSvc.toast('Warn: hi toast', 'message from search accounts', LogLevel.Warn);
+    // this._LoggingSvc.toast('Success: hi toast', 'message from search accounts', LogLevel.Success);
+    // this._LoggingSvc.toast('Error: hi toast', 'message from search accounts', LogLevel.Error);
     this._LoggingSvc.dataBase('Testing from UI', LogLevel.Debug, 'SearchAccountsComponent', 'SearchAccountsComponent', 'ngOnInit', 'System')
   }
 

@@ -33,9 +33,11 @@ public class GrowthwareAPIController : ControllerBase
     }
 
     [HttpPost("Log")]
-    public void Log(MLoggingProfile profile)
+    public bool Log(MLoggingProfile profile)
     {
+        // MLoggingProfile mProfile = new MLoggingProfile(profile);
         LoggingUtility.Save(profile);
+        return true;
     }
 
     [HttpPost("Search")]
