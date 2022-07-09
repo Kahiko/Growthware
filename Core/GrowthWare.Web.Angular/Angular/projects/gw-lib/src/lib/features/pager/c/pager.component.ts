@@ -42,15 +42,13 @@ export class PagerComponent implements OnDestroy, OnInit {
             const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
             if (mTotalRecords > results.payLoad.searchCriteria.pageSize) {
               const mPageSize: number = results.payLoad.searchCriteria.pageSize;
-              let mCalculatedPages: number = Math.floor(
-                mTotalRecords / mPageSize
-              );
+              let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
+              if(mTotalRecords%mCalculatedPages != 0) {
+                mCalculatedPages += 1;
+              }
               if (this.totalPages !== mCalculatedPages) {
                 this.pages.splice(0, this.pages.length);
                 this.selectedPage = '1';
-                if(mTotalRecords%mCalculatedPages != 0) {
-                  mCalculatedPages += 1;
-                }
                 for (let index = 1; index < mCalculatedPages + 1; index++) {
                   this.pages.push(index);
                 }
