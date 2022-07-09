@@ -26,8 +26,7 @@
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 133,
-    "tableOrView": "[ZGWSecurity].[Accounts]"
+    "tableHeight": 133
   },
   {
     "buttons": [
@@ -56,7 +55,6 @@
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 250,
-    "tableOrView": "[ZGWSystem].[vwSearchFunctions]"
+    "tableHeight": 250
   }
 ]

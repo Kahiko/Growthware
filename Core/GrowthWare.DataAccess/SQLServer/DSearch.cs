@@ -28,8 +28,7 @@ namespace GrowthWare.DataAccess.SQLServer
             SqlParameter[] mParameters =
              {
               new SqlParameter("@P_Columns", searchCriteria.Columns),
-              new SqlParameter("@P_OrderByColumn", searchCriteria.OrderByColumn),
-              new SqlParameter("@P_OrderByDirection", searchCriteria.OrderByDirection),
+              new SqlParameter("@P_OrderByClause", searchCriteria.OrderByClause),
               new SqlParameter("@P_PageSize", searchCriteria.PageSize),
               new SqlParameter("@P_SelectedPage", searchCriteria.SelectedPage),
               new SqlParameter("@P_TableOrView", searchCriteria.TableOrView),

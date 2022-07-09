@@ -15,8 +15,7 @@ export interface IDynamicTableConfiguration {
   "showThirdRow": boolean,
   "showHelp": boolean,
   "showSearch": boolean,
-  "tableHeight": number,
-  "tableOrView": string
+  "tableHeight": number
 }
 
 
@@ -40,7 +39,6 @@ export interface IDynamicTableConfiguration {
   public showHeading: boolean;
   public showHelp: boolean;
   public showSearch: boolean;
-  public tableOrView: string;
 
   constructor(
     buttons: ICallbackButton[] = [],
@@ -51,7 +49,6 @@ export interface IDynamicTableConfiguration {
     name: string,
     numberOfRows: number = 4,
     orderByColumn: string,
-    tableOrView: string,
     showFirstRow: boolean = false,
     showThirdRow: boolean = false,
     showHeading: boolean = false,
@@ -70,7 +67,6 @@ export interface IDynamicTableConfiguration {
     this.showHeading = showHeading;
     this.showHelp = showHelp;
     this.showSearch = showSearch;
-    this.tableOrView = tableOrView;
 
     if(this._GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       let mDefaultNameId = name + '_AddBtn';

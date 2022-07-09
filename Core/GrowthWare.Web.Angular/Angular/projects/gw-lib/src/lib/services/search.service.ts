@@ -1,9 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { multicast, Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { IDynamicTableColumn, SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { DynamicTableService } from './dynamic-table.service';
 
 @Injectable({
@@ -48,7 +48,7 @@ export class SearchService {
    * @return {*}  {Promise<any>}
    * @memberof GWLibSearchService
    */
-  public async getResults(criteria: SearchCriteriaNVP): Promise<any> {
+  private async getResults(url: string, criteria: SearchCriteriaNVP): Promise<any> {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export class SearchService {
     };
     return new Promise<SearchResultsNVP>((resolve, reject) => {
       this._HttpClient
-      .post<any>(this._SearchUrl, criteria.payLoad, mHttpOptions)
+      .post<any>(url, criteria.payLoad, mHttpOptions)
       .subscribe({
         next: (response: any) => {
           const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(criteria.name, { searchCriteria: criteria.payLoad, data: response });
@@ -71,26 +71,51 @@ export class SearchService {
     });
   }
 
+  /**
+   * Intended to get an initial SearchCriteria Name Value Pare object
+   * using the DynamicTableService.
+   *
+   * @param {string} name
+   * @return {*}  {SearchCriteriaNVP}
+   * @memberof SearchService
+   */
   public getSearchCriteriaFromConfig(name: string): SearchCriteriaNVP {
-    const mSearchCriteria: SearchCriteria = new SearchCriteria('','','',1,1,'1=1');
+    const mSearchCriteria: SearchCriteria = new SearchCriteria([''],1,'',1);
     const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
     const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria);
     if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
-    let mColumns: string = '';
-    mTableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-      mColumns += column.name + ', ';
-    });
-    mColumns = mColumns.substring(0, mColumns.length -2);
-    mSearchCriteria.columns = mColumns;
-    mSearchCriteria.orderByColumn = mTableConfiguration.orderByColumn;
-    mSearchCriteria.orderByDirection = 'asc'
+    mSearchCriteria.columnInfo = [mTableConfiguration.orderByColumn + "=asc"];
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
+    mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;
-    mSearchCriteria.tableOrView = mTableConfiguration.tableOrView;
     mRetVal.payLoad = mSearchCriteria;
     return mRetVal;
+  }
+
+  /**
+   * Calls GrowthWareAPI.SearchAccounts
+   *
+   * @param {SearchCriteriaNVP} criteria
+   * @return {*}  {Promise<any>}
+   * @memberof SearchService
+   */
+  public async searchAccounts(criteria: SearchCriteriaNVP): Promise<any> {
+    const mUrl = this._GWCommon.baseURL + 'GrowthWareAPI/SearchAccounts';
+    return this.getResults(mUrl, criteria);
+  }
+
+  /**
+   * Calls GrowthWareAPI.SearchFunctions
+   *
+   * @param {SearchCriteriaNVP} criteria
+   * @return {*}  {Promise<any>}
+   * @memberof SearchService
+   */
+   public async searchFunctions(criteria: SearchCriteriaNVP): Promise<any> {
+    const mUrl = this._GWCommon.baseURL + 'GrowthWareAPI/SearchFunctions';
+    return this.getResults(mUrl, criteria);
   }
 
   public setSearchCriteria(newCriteria: SearchCriteriaNVP) {

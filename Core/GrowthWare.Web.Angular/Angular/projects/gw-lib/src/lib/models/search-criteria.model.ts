@@ -1,23 +1,16 @@
 export interface ISearchCriteria {
-  columns: string,
-  orderByColumn: string,
-  orderByDirection: string,
+  columnInfo: Array<string>,
   pageSize: number,
-  selectedPage: number,
-  tableOrView: string,
-  whereClause: string
+  searchText: string,
+  selectedPage: number
 }
 
 export class SearchCriteria implements ISearchCriteria {
-  public tableOrView: string = '';
-
   constructor(
-    public columns: string,
-    public orderByColumn: string,
-    public orderByDirection: string,
+    public columnInfo: Array<string>,
     public pageSize: number,
+    public searchText: string,
     public selectedPage: number,
-    public whereClause: string
   ) {}
 }
 

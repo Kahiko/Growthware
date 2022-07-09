@@ -108,7 +108,7 @@ namespace GrowthWare.Framework
             // apply any sorting using the searchCriteria
             if (sort == null)
             {
-                mSortingDataView.Sort = searchCriteria.OrderByColumn + " " + searchCriteria.OrderByDirection;
+                mSortingDataView.Sort = searchCriteria.OrderByClause;
             }
             else
             {

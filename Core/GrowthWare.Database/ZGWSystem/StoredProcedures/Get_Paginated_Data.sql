@@ -5,18 +5,16 @@ Usage:
 		@P_TableOrView nvarchar(50) = 'ZGWSecurity.Functions',              
 		@P_SelectedPage int = 1,
 		@P_PageSize int = 10,
-		@P_Columns nvarchar(500) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
-		@P_OrderByColumn nvarchar(100) = 'Action',
-		@P_OrderByDirection nvarchar(4) = 'ASC',
-		@P_WhereClause nvarchar(500)
+		@P_Columns nvarchar(512) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
+		@P_OrderByClause nvarchar(1024) = 'Action ASC',
+		@P_WhereClause nvarchar(1024)
 
 	exec ZGWSystem.Get_Paginated_Data
 		@P_TableOrView,              
 		@P_SelectedPage,
 		@P_PageSize,
 		@P_Columns,
-		@P_OrderByColumn,
-		@P_OrderByDirection,
+		@P_OrderByClause,
 		@P_WhereClause
 */
 -- =============================================
@@ -28,16 +26,14 @@ CREATE PROCEDURE [ZGWSystem].[Get_Paginated_Data]
 	@P_TableOrView nvarchar (50),              
 	@P_SelectedPage int,
 	@P_PageSize int,
-	@P_Columns nvarchar(500),
-	@P_OrderByColumn nvarchar(100),
-	@P_OrderByDirection nvarchar(4),
-	@P_WhereClause nvarchar(500),
+	@P_Columns nvarchar(512),
+	@P_OrderByClause nvarchar(1024),
+	@P_WhereClause nvarchar(1024),
 	@P_Debug bit = 0
 AS
 	DECLARE @ReturnedRecords int, 
 			@ParmDefinition NVARCHAR(500),
-			@SqlQuery nvarchar(4000), 
-			@P_ConOrderByDirection nvarchar(4),
+			@SqlQuery nvarchar(4000),
 			@ReturnCount INT, 
 			@TotalPages int, 
 			@TotalRecords int,
@@ -45,14 +41,6 @@ AS
 
 	SET @P_WhereClause = ISNULL(@P_WhereClause,'1 = 1')
 	IF @P_SelectedPage = 0 SET @P_SelectedPage = 1
-	IF Upper(@P_OrderByDirection) = 'ASC'
-	  BEGIN 
-		SET @P_ConOrderByDirection = 'DESC'
-	  END
-	ELSE
-	  BEGIN
-		SET @P_ConOrderByDirection = 'ASC'
-	  END
  
 	IF @P_WhereClause <> ''
 	  BEGIN
@@ -97,9 +85,9 @@ AS
 			(SELECT TOP ' + CAST(@P_PageSize as varchar(10)) + ' *  FROM
 			  (SELECT TOP ' + CAST(@ReturnedRecords as varchar(10)) + ' ' + @P_Columns +
 				' FROM ' + @P_TableOrView + @P_WhereClause + '
-				ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection + ') AS T1
-			  ORDER BY ' + @P_OrderByColumn + ' ' + @P_ConOrderByDirection + ') AS T2
-			ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection 			
+				ORDER BY ' + @P_OrderByClause + ') AS T1
+			  ORDER BY ' + @P_OrderByClause + ') AS T2
+			ORDER BY ' + @P_OrderByClause
 		END
 	ELSE
 		BEGIN -- Current page is last page
@@ -116,9 +104,9 @@ AS
 			SET @SqlQuery = N'SELECT @ReturnCount as TotalRecords, * FROM (SELECT TOP (' + CAST((@LastPageReturn) as varchar(10)) + ')'
 				+ ' *  FROM (SELECT TOP ' + CAST(@ReturnedRecords as varchar(10)) + ' ' + @P_Columns
 				+ ' FROM ' + @P_TableOrView + @P_WhereClause 
-				+ ' ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection 
-				+ ') AS T1 ORDER BY ' + @P_OrderByColumn + ' ' + @P_ConOrderByDirection
-				+ ') AS T2 ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection
+				+ ' ORDER BY ' + @P_OrderByClause
+				+ ') AS T1 ORDER BY ' + @P_OrderByClause
+				+ ') AS T2 ORDER BY ' + @P_OrderByClause
 		END
 	--END IF
 	 

@@ -11,7 +11,7 @@ export class DataService {
   constructor() { }
 
   public setData(results: SearchResultsNVP): void {
-    const mResutls: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-    this.dataChanged.next(mResutls);
+    const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
+    this.dataChanged.next(mResults);
   }
 }

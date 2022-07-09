@@ -1,82 +1,82 @@
 USE [master]
 GO
-IF DB_ID ( N'YourDatabaseName' ) IS NOT NULL
+IF DB_ID ( N'Growthware' ) IS NOT NULL
 BEGIN
-	ALTER DATABASE [YourDatabaseName] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-	DROP DATABASE [YourDatabaseName];
+	ALTER DATABASE [Growthware] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE [Growthware];
 END
-CREATE DATABASE [YourDatabaseName]
+CREATE DATABASE [Growthware]
 GO
-ALTER DATABASE [YourDatabaseName] SET COMPATIBILITY_LEVEL = 140
+ALTER DATABASE [Growthware] SET COMPATIBILITY_LEVEL = 140
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
-EXEC [YourDatabaseName].[dbo].[sp_fulltext_database] @action = 'enable'
+EXEC [Growthware].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
-ALTER DATABASE [YourDatabaseName] SET ANSI_NULL_DEFAULT ON 
+ALTER DATABASE [Growthware] SET ANSI_NULL_DEFAULT ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET ANSI_NULLS ON 
+ALTER DATABASE [Growthware] SET ANSI_NULLS ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET ANSI_PADDING ON 
+ALTER DATABASE [Growthware] SET ANSI_PADDING ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET ANSI_WARNINGS ON 
+ALTER DATABASE [Growthware] SET ANSI_WARNINGS ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET ARITHABORT ON 
+ALTER DATABASE [Growthware] SET ARITHABORT ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET AUTO_CLOSE OFF 
+ALTER DATABASE [Growthware] SET AUTO_CLOSE OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET AUTO_SHRINK OFF 
+ALTER DATABASE [Growthware] SET AUTO_SHRINK OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [Growthware] SET AUTO_UPDATE_STATISTICS ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [Growthware] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET CURSOR_DEFAULT  LOCAL 
+ALTER DATABASE [Growthware] SET CURSOR_DEFAULT  LOCAL 
 GO
-ALTER DATABASE [YourDatabaseName] SET CONCAT_NULL_YIELDS_NULL ON 
+ALTER DATABASE [Growthware] SET CONCAT_NULL_YIELDS_NULL ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [Growthware] SET NUMERIC_ROUNDABORT OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET QUOTED_IDENTIFIER ON 
+ALTER DATABASE [Growthware] SET QUOTED_IDENTIFIER ON 
 GO
-ALTER DATABASE [YourDatabaseName] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [Growthware] SET RECURSIVE_TRIGGERS OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET  DISABLE_BROKER 
+ALTER DATABASE [Growthware] SET  DISABLE_BROKER 
 GO
-ALTER DATABASE [YourDatabaseName] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [Growthware] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [Growthware] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET TRUSTWORTHY OFF 
+ALTER DATABASE [Growthware] SET TRUSTWORTHY OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [Growthware] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [Growthware] SET PARAMETERIZATION SIMPLE 
 GO
-ALTER DATABASE [YourDatabaseName] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [Growthware] SET READ_COMMITTED_SNAPSHOT OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [Growthware] SET HONOR_BROKER_PRIORITY OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET RECOVERY FULL 
+ALTER DATABASE [Growthware] SET RECOVERY FULL 
 GO
-ALTER DATABASE [YourDatabaseName] SET  MULTI_USER 
+ALTER DATABASE [Growthware] SET  MULTI_USER 
 GO
-ALTER DATABASE [YourDatabaseName] SET PAGE_VERIFY NONE  
+ALTER DATABASE [Growthware] SET PAGE_VERIFY NONE  
 GO
-ALTER DATABASE [YourDatabaseName] SET DB_CHAINING OFF 
+ALTER DATABASE [Growthware] SET DB_CHAINING OFF 
 GO
-ALTER DATABASE [YourDatabaseName] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [Growthware] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
 GO
-ALTER DATABASE [YourDatabaseName] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+ALTER DATABASE [Growthware] SET TARGET_RECOVERY_TIME = 0 SECONDS 
 GO
-ALTER DATABASE [YourDatabaseName] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [Growthware] SET DELAYED_DURABILITY = DISABLED 
 GO
-EXEC sys.sp_db_vardecimal_storage_format N'YourDatabaseName', N'ON'
+EXEC sys.sp_db_vardecimal_storage_format N'Growthware', N'ON'
 GO
-ALTER DATABASE [YourDatabaseName] SET QUERY_STORE = OFF
+ALTER DATABASE [Growthware] SET QUERY_STORE = OFF
 GO
-USE [YourDatabaseName]
+USE [Growthware]
 GO
 /****** Object:  Schema [ZGWCoreWeb]    Script Date: 7/4/2022 10:50:33 AM ******/
 IF NOT EXISTS (SELECT *
@@ -9783,18 +9783,16 @@ Usage:
 		@P_TableOrView nvarchar(50) = 'ZGWSecurity.Functions',              
 		@P_SelectedPage int = 1,
 		@P_PageSize int = 10,
-		@P_Columns nvarchar(500) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
-		@P_OrderByColumn nvarchar(100) = 'Action',
-		@P_OrderByDirection nvarchar(4) = 'ASC',
-		@P_WhereClause nvarchar(500)
+		@P_Columns nvarchar(512) = 'FunctionSeqId, Name, Description, Action, Added_By, Added_Date, Updated_By, Updated_Date',
+		@P_OrderByClause nvarchar(1024) = 'Action ASC',
+		@P_WhereClause nvarchar(1024)
 
 	exec ZGWSystem.Get_Paginated_Data
 		@P_TableOrView,              
 		@P_SelectedPage,
 		@P_PageSize,
 		@P_Columns,
-		@P_OrderByColumn,
-		@P_OrderByDirection,
+		@P_OrderByClause,
 		@P_WhereClause
 */
 -- =============================================
@@ -9803,19 +9801,17 @@ Usage:
 -- Description:	Gets paginated data
 -- =============================================
 ALTER PROCEDURE [ZGWSystem].[Get_Paginated_Data]
-	@P_TableOrView nvarchar (50),
+	@P_TableOrView nvarchar (50),              
 	@P_SelectedPage int,
 	@P_PageSize int,
-	@P_Columns nvarchar(500),
-	@P_OrderByColumn nvarchar(100),
-	@P_OrderByDirection nvarchar(4),
-	@P_WhereClause nvarchar(500),
+	@P_Columns nvarchar(512),
+	@P_OrderByClause nvarchar(1024),
+	@P_WhereClause nvarchar(1024),
 	@P_Debug bit = 0
 AS
 	DECLARE @ReturnedRecords int, 
 			@ParmDefinition NVARCHAR(500),
-			@SqlQuery nvarchar(4000), 
-			@P_ConOrderByDirection nvarchar(4),
+			@SqlQuery nvarchar(4000),
 			@ReturnCount INT, 
 			@TotalPages int, 
 			@TotalRecords int,
@@ -9823,19 +9819,11 @@ AS
 
 	SET @P_WhereClause = ISNULL(@P_WhereClause,'1 = 1')
 	IF @P_SelectedPage = 0 SET @P_SelectedPage = 1
-	IF Upper(@P_OrderByDirection) = 'ASC'
-	  BEGIN
-	SET @P_ConOrderByDirection = 'DESC'
-END
-	ELSE
-	  BEGIN
-	SET @P_ConOrderByDirection = 'ASC'
-END
  
 	IF @P_WhereClause <> ''
 	  BEGIN
-	SET @P_WhereClause = ' WHERE ' + @P_WhereClause
-END
+		SET @P_WhereClause = ' WHERE ' + @P_WhereClause
+	  END
 
 	SET @ReturnedRecords = (@P_PageSize * @P_SelectedPage)
 	-- Get the total number of rows that can be returned
@@ -9858,8 +9846,8 @@ END
 	SET @TotalPages = @ReturnCount / @P_PageSize
 	IF @TotalRecords % @P_PageSize > 0
 	  BEGIN
-	SET @TotalPages = @TotalPages + 1
-END
+		SET @TotalPages = @TotalPages + 1
+	  END
 	PRINT '@TotalPages: ' + CONVERT(VARCHAR(20),@TotalPages)
 	--SELECT @ReturnCount as TotalRecords
 	
@@ -9869,37 +9857,35 @@ END
 
 	-- Checks if current page is last page
 	IF @P_SelectedPage != @TotalPages
-		BEGIN
-	-- Current page is not last page
-	IF @P_Debug = 1 PRINT 'Current page is not last page'
-	SET @SqlQuery = N'SELECT @ReturnCount as TotalRecords, * FROM
+		BEGIN -- Current page is not last page
+			IF @P_Debug = 1 PRINT 'Current page is not last page'
+			SET @SqlQuery = N'SELECT @ReturnCount as TotalRecords, * FROM
 			(SELECT TOP ' + CAST(@P_PageSize as varchar(10)) + ' *  FROM
 			  (SELECT TOP ' + CAST(@ReturnedRecords as varchar(10)) + ' ' + @P_Columns +
 				' FROM ' + @P_TableOrView + @P_WhereClause + '
-				ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection + ') AS T1
-			  ORDER BY ' + @P_OrderByColumn + ' ' + @P_ConOrderByDirection + ') AS T2
-			ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection
-END
+				ORDER BY ' + @P_OrderByClause + ') AS T1
+			  ORDER BY ' + @P_OrderByClause + ') AS T2
+			ORDER BY ' + @P_OrderByClause
+		END
 	ELSE
-		BEGIN
-	-- Current page is last page
-	IF @P_Debug = 1 PRINT 'Current page is last page'
-	IF (@ReturnCount % @P_PageSize) = 0 
+		BEGIN -- Current page is last page
+			IF @P_Debug = 1 PRINT 'Current page is last page'
+			IF (@ReturnCount % @P_PageSize) = 0 
 				BEGIN
-		SET @LastPageReturn = @P_PageSize
-	END
+					SET @LastPageReturn = @P_PageSize
+				END
 			ELSE
 				BEGIN
-		SET @LastPageReturn = @ReturnCount % @P_PageSize
-	END
-	--END IF
-	SET @SqlQuery = N'SELECT @ReturnCount as TotalRecords, * FROM (SELECT TOP (' + CAST((@LastPageReturn) as varchar(10)) + ')'
+					SET @LastPageReturn = @ReturnCount % @P_PageSize
+				END
+			--END IF
+			SET @SqlQuery = N'SELECT @ReturnCount as TotalRecords, * FROM (SELECT TOP (' + CAST((@LastPageReturn) as varchar(10)) + ')'
 				+ ' *  FROM (SELECT TOP ' + CAST(@ReturnedRecords as varchar(10)) + ' ' + @P_Columns
 				+ ' FROM ' + @P_TableOrView + @P_WhereClause 
-				+ ' ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection 
-				+ ') AS T1 ORDER BY ' + @P_OrderByColumn + ' ' + @P_ConOrderByDirection
-				+ ') AS T2 ORDER BY ' + @P_OrderByColumn + ' ' + @P_OrderByDirection
-END
+				+ ' ORDER BY ' + @P_OrderByClause
+				+ ') AS T1 ORDER BY ' + @P_OrderByClause
+				+ ') AS T2 ORDER BY ' + @P_OrderByClause
+		END
 	--END IF
 	 
 	IF @P_Debug = 1 PRINT @SqlQuery
@@ -10569,16 +10555,16 @@ FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'ZGWSecurity', N
 GO
 USE [master]
 GO
-ALTER DATABASE [YourDatabaseName] SET  READ_WRITE 
+ALTER DATABASE [Growthware] SET  READ_WRITE 
 GO
-USE [YourDatabaseName]
+USE [Growthware]
 GO
 
 -- Handle security for the local service
 IF SUSER_ID (N'NT AUTHORITY\LOCAL SERVICE') IS NULL
 	BEGIN
 		PRINT 'ADDING [NT AUTHORITY\LOCAL SERVICE] TO THE DB'
-		CREATE LOGIN [NT AUTHORITY\LOCAL SERVICE] FROM WINDOWS WITH DEFAULT_DATABASE = [YourDatabaseName];
+		CREATE LOGIN [NT AUTHORITY\LOCAL SERVICE] FROM WINDOWS WITH DEFAULT_DATABASE = [Growthware];
 	END
 --END IF
 IF NOT EXISTS(select * FROM SYS.DATABASE_PRINCIPALS WHERE NAME = 'NT AUTHORITY\LOCAL SERVICE')

@@ -12,16 +12,10 @@
         public string Columns { get; set; }
 
         /// <summary>
-        /// Gets or sets the order by column.
+        /// Gets or sets the order by colums and the direction - [column1] ASC, [column2] DESC.
         /// </summary>
-        /// <value>The order by column.</value>
-        public string OrderByColumn { get; set; }
-
-        /// <summary>
-        /// Gets or sets the order by direction.
-        /// </summary>
-        /// <value>The order by direction.</value>
-        public string OrderByDirection { get; set; }
+        /// <value>The order by clause.</value>
+        public string OrderByClause { get; set; }
 
         /// <summary>
         /// Gets or sets the size of the page.

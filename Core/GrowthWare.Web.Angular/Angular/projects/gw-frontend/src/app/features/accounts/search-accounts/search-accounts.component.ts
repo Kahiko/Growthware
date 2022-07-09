@@ -53,21 +53,21 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   ngOnInit(): void {
     this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePare) => {
       // this is unnecessary b/c both cases do exactly the same thing but
-      // this is to illistrate how you can have multiple 'gw-lib-dynamic-table'
+      // this is to illustrate how you can have multiple 'gw-lib-dynamic-table'
       // and how you would handle loading the data for each of them
       switch (criteria.name.trim().toLowerCase()) {
         case 'accounts':
-          this._SearchSvc.getResults(criteria).then((results) => {
-            const mResutls: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-            this._DataSvc.setData(mResutls);
+          this._SearchSvc.searchAccounts(criteria).then((results) => {
+            const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
+            this._DataSvc.setData(mResults);
           }).catch((error) => {
             console.log(error);
           });
           break;
         case 'functions':
-          this._SearchSvc.getResults(criteria).then((results) => {
-            const mResutls: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-            this._DataSvc.setData(mResutls);
+          this._SearchSvc.searchFunctions(criteria).then((results) => {
+            const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
+            this._DataSvc.setData(mResults);
           }).catch((error) => {
             console.log(error);
           });
@@ -76,18 +76,13 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
           break;
       }
     });
-    // initiate getting the data for both of the controls by
-    // calling SearchService.getSearchCriteriaFromConfig
+    // Get the initial SearchCriteriaNVP from the service
     let mResults: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts');
+    // Set the search criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mResults);
+    // repeating for the functions again just to illustrate how this works for multiple <gw-lib-dynamic-table> components
     mResults = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
     this._SearchSvc.setSearchCriteria(mResults);
-    // msg: string, title: string, level: LogLevel
-    // this._LoggingSvc.toast('Info: hi toast', 'message from search accounts', LogLevel.Info);
-    // this._LoggingSvc.toast('Warn: hi toast', 'message from search accounts', LogLevel.Warn);
-    // this._LoggingSvc.toast('Success: hi toast', 'message from search accounts', LogLevel.Success);
-    // this._LoggingSvc.toast('Error: hi toast', 'message from search accounts', LogLevel.Error);
-    // this._LoggingSvc.dataBase('Testing from UI', LogLevel.Debug, 'SearchAccountsComponent', 'SearchAccountsComponent', 'ngOnInit', 'System')
   }
 
   private onBtnTopLeft () {

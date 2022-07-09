@@ -12,7 +12,7 @@ import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
 })
 export class PagerComponent implements OnDestroy, OnInit {
   private _DataChangedSub: Subscription = new Subscription();
-  private _SearchCriteria: SearchCriteria = new SearchCriteria('','','',1,1,'1=1');
+  private _SearchCriteria: SearchCriteria = new SearchCriteria([''],1,'',1);
 
   @Input() name: string = '';
 
