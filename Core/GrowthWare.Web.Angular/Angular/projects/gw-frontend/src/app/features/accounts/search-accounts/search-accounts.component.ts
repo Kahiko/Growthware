@@ -87,7 +87,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     // this._LoggingSvc.toast('Warn: hi toast', 'message from search accounts', LogLevel.Warn);
     // this._LoggingSvc.toast('Success: hi toast', 'message from search accounts', LogLevel.Success);
     // this._LoggingSvc.toast('Error: hi toast', 'message from search accounts', LogLevel.Error);
-    this._LoggingSvc.dataBase('Testing from UI', LogLevel.Debug, 'SearchAccountsComponent', 'SearchAccountsComponent', 'ngOnInit', 'System')
+    // this._LoggingSvc.dataBase('Testing from UI', LogLevel.Debug, 'SearchAccountsComponent', 'SearchAccountsComponent', 'ngOnInit', 'System')
   }
 
   private onBtnTopLeft () {
