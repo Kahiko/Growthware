@@ -16,9 +16,9 @@ public static class SearchUtility
         foreach (var item in columnInfo)
         {
             string[] mColumnParts = item.Split("=");
-            if(mColumnParts != null && mColumnParts.Length == 2)
+            if (mColumnParts != null && mColumnParts.Length == 2)
             {
-                if(columns.Contains(mColumnParts[0], StringComparison.OrdinalIgnoreCase))
+                if (columns.Contains(mColumnParts[0], StringComparison.OrdinalIgnoreCase))
                 {
                     // [Account] LIKE '%abc%' OR
                     mWhereClause += "OR " + mColumnParts[0] + " LIKE '%" + searchText + "%'" + Environment.NewLine;
@@ -27,47 +27,48 @@ public static class SearchUtility
                 }
             }
         }
-        mWhereClause = mWhereClause.Substring(3, mWhereClause.Length -3);
-        mOrderByClause = mOrderByClause.Substring(2, mOrderByClause.Length -2);
+        mWhereClause = mWhereClause.Substring(3, mWhereClause.Length - 3);
+        mOrderByClause = mOrderByClause.Substring(2, mOrderByClause.Length - 2);
         return new Tuple<string, string>(mOrderByClause, mWhereClause);
     }
 
-    public static string GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1") {
+    public static string GetSearchResults(MSearchCriteria searchCriteria, string constantWhere = "1=1")
+    {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
         m_BSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
-        searchCriteria.WhereClause = constantWhere + " AND " +searchCriteria.WhereClause;
+        searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
         mDataTable = m_BSearch.GetSearchResults(searchCriteria);
-            var mStringBuilder = new StringBuilder();
-            if (mDataTable.Rows.Count > 0)
+        var mStringBuilder = new StringBuilder();
+        if (mDataTable.Rows.Count > 0)
+        {
+            mStringBuilder.Append("[");
+            for (int i = 0; i < mDataTable.Rows.Count; i++)
             {
-                mStringBuilder.Append("[");
-                for (int i = 0; i < mDataTable.Rows.Count; i++)
+                mStringBuilder.Append("{");
+                for (int j = 0; j < mDataTable.Columns.Count; j++)
                 {
-                    mStringBuilder.Append("{");
-                    for (int j = 0; j < mDataTable.Columns.Count; j++)
+                    if (j < mDataTable.Columns.Count - 1)
                     {
-                        if (j < mDataTable.Columns.Count - 1)
-                        {
-                            mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\",");
-                        }
-                        else if (j == mDataTable.Columns.Count - 1)
-                        {
-                            mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\"");
-                        }
+                        mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\",");
                     }
-                    if (i == mDataTable.Rows.Count - 1)
+                    else if (j == mDataTable.Columns.Count - 1)
                     {
-                        mStringBuilder.Append("}");
-                    }
-                    else
-                    {
-                        mStringBuilder.Append("},");
+                        mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\"");
                     }
                 }
-                mStringBuilder.Append("]");
-                mRetVal = mStringBuilder.ToString();
+                if (i == mDataTable.Rows.Count - 1)
+                {
+                    mStringBuilder.Append("}");
+                }
+                else
+                {
+                    mStringBuilder.Append("},");
+                }
             }
+            mStringBuilder.Append("]");
+            mRetVal = mStringBuilder.ToString();
+        }
 
         return mRetVal;
     }
