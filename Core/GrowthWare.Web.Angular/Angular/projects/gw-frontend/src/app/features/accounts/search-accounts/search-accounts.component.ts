@@ -5,7 +5,8 @@ import { Subscription } from 'rxjs';
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
-import { LoggingService, LogLevel, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
+import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalService, IModalOptions, ModalOptions, WindowSize, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
 @Component({
   selector: 'app-search-accounts',
@@ -23,6 +24,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   constructor(
     private _DataSvc: DataService,
     private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
     private _SearchSvc: SearchService,
   ) { }
 
@@ -33,7 +35,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     mDynamicTableBtnMethods.btnBottomLeftCallBackMethod = () => { this.onBtnBottomLeft(); }
     mDynamicTableBtnMethods.btnBottomRightCallBackMethod = () => { this.onBtnBottomRight(); }
     this.searchFunctionsComponent.setButtonMethods(mDynamicTableBtnMethods);
-    const mLogOptions: LogOptions = new LogOptions('Testing using options');
+    const mLogOptions: ILogOptions = new LogOptions('Testing using options');
     mLogOptions.componentName = "Search Account"
     mLogOptions.className = 'SearchAccountsComponent';
     mLogOptions.methodName = 'ngAfterViewInit';
@@ -43,6 +45,9 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     mLogOptions.level = LogLevel.Warn;
     mLogOptions.msg = mLogOptions.msg + ' with level Warn'
     this._LoggingSvc.log(mLogOptions);
+
+    const mModalOptions: IModalOptions = new ModalOptions('1', 'header text', 'hello there', ModalSize.Small);
+    this._ModalSvc.open(mModalOptions);
 
   }
 
