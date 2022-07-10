@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.RegularExpressions;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
@@ -24,18 +25,21 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             if (searchCriteria == null) throw new ArgumentNullException("searchCriteria", "searchCriteria cannot be a null reference (Nothing in Visual Basic)!");
             string mStoredProcedure = "ZGWSystem.Get_Paginated_Data";
+            string mOrderByClause = Regex.Replace(searchCriteria.OrderByClause, @"<[^>]+>|&nbsp;", "").Trim();
+            string mWhereClause = Regex.Replace(searchCriteria.WhereClause, @"<[^>]+>|&nbsp;", "").Trim();
             DataTable mRetVal;
             SqlParameter[] mParameters =
              {
               new SqlParameter("@P_Columns", searchCriteria.Columns),
-              new SqlParameter("@P_OrderByClause", searchCriteria.OrderByClause),
+              new SqlParameter("@P_OrderByClause", mOrderByClause),
               new SqlParameter("@P_PageSize", searchCriteria.PageSize),
               new SqlParameter("@P_SelectedPage", searchCriteria.SelectedPage),
               new SqlParameter("@P_TableOrView", searchCriteria.TableOrView),
-              new SqlParameter("@P_WhereClause", searchCriteria.WhereClause)
+              new SqlParameter("@P_WhereClause", mWhereClause)
              };
             mRetVal = base.GetDataTable(mStoredProcedure, mParameters);
             return mRetVal;
         }
     }
 }
+

@@ -85,7 +85,6 @@ public class GrowthwareAPIController : ControllerBase
                 TableOrView = "[ZGWSystem].[vwSearchFunctions]",
                 WhereClause = mWhereClause
             };
-
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
         }
         return mRetVal;        
