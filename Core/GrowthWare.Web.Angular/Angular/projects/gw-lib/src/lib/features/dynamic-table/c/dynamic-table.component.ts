@@ -8,6 +8,7 @@ import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } fr
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -37,6 +38,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _GWCommon: GWCommon,
     private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
+    private _LoggingSvc: LoggingService,
     private _SearchSvc: SearchService,
   ) { }
 
@@ -161,45 +163,45 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   /**
    * Handles the top left button click.
-   * This method should be overritten, it's up to the parent
+   * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
    * @memberof DynamicTableComponent
    */
   public onTopLeft(): void {      // 0
-    alert('You have not set the onTopLeft call back method using the setButtonMethods');
+    this._LoggingSvc.toast('You have not set the onTopLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
   /**
    * Handles the top right button click
-   * This method should be overritten, it's up to the parent
+   * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
    * @memberof DynamicTableComponent
    */
   public onTopRight(): void {     // 1
-    alert('You have not set the onTopRight call back method using the setButtonMethods');
+    this._LoggingSvc.toast('You have not set the onTopRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
   /**
-   * Handles the botton left button click
-   * This method should be overritten, it's up to the parent
+   * Handles the button left button click
+   * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
    * @memberof DynamicTableComponent
    */
   public onBottomLeft(): void {   // 2
-    alert('You have not set the onBottomLeft call back method using the setButtonMethods');
+    this._LoggingSvc.toast('You have not set the onBottomLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
   /**
-   * Handles the botton right button click
-   * This method should be overritten, it's up to the parent
+   * Handles the bottom right button click
+   * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
    * @memberof DynamicTableComponent
    */
   public onBottomRight(): void {  // 3
-    alert('You have not set the onBottomRight call back method using the setButtonMethods');
+    this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 }
