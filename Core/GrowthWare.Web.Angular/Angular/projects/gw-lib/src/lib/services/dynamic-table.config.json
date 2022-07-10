@@ -8,13 +8,13 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight", "visible": false }
     ],
     "columns": [
-      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": true , "label": "Delete"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 200 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text", "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 160 }
+      { "allowSearch": false , "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "showData": true ,	"type": "string", "visible": true, "width": 200 },
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
     "captionText": "",
     "maxHeadHeight":75,
@@ -24,7 +24,7 @@
     "orderByColumn": "Account",
     "showFirstRow": true,
     "showThirdRow": true,
-    "showHelp": false,
+    "showHelp": true,
     "showSearch": false,
     "tableHeight": 133
   },
@@ -36,13 +36,13 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight", "visible": true  }
     ],
     "columns": [
-      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Delete"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
       { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Action"      , "name": "Action"       , "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "showData": true ,	"type": "string", "visible": true, "width": 110 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Action"      , "name": "Action"       , "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "showData": true ,	"type": "string", "visible": true, "width": 160 },
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "showData": true ,	"type": "string", "visible": true, "width": 110 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "showData": true ,	"type": "string", "visible": true, "width": 160 },
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
     "captionText": "Functions",
