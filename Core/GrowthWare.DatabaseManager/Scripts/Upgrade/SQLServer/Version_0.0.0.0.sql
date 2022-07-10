@@ -9973,7 +9973,7 @@ AS
 				+ ' *  FROM (SELECT TOP ' + CAST(@ReturnedRecords as varchar(10)) + ' ' + @P_Columns
 				+ ' FROM ' + @P_TableOrView + @P_WhereClause 
 				+ ' ORDER BY ' + @P_OrderByClause
-				+ ') AS T1 ORDER BY ' + @P_OrderByClause
+				+ ') AS T1 ORDER BY ' + @Con_OrderByClause
 				+ ') AS T2 ORDER BY ' + @P_OrderByClause
 		END
 	--END IF
