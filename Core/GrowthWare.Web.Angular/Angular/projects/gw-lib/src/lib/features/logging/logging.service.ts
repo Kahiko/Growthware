@@ -182,7 +182,7 @@ export class LoggingService {
 
   private logToast(options: ILogOptions): void {
     const mToastMessage = new ToastMessage(
-      options.msg,
+      new Date().toLocaleString() + ' - ' + options.msg,
       options.title,
       EventType.Info
     );
