@@ -4,9 +4,9 @@ import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
-import { DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { CallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
-import { ModalService, IModalOptions, ModalOptions, WindowSize, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
+import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
 @Component({
   selector: 'app-search-accounts',
@@ -45,10 +45,6 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     mLogOptions.level = LogLevel.Warn;
     mLogOptions.msg = mLogOptions.msg + ' with level Warn'
     this._LoggingSvc.log(mLogOptions);
-
-    const mModalOptions: IModalOptions = new ModalOptions('1', 'header text', 'hello there', ModalSize.Small);
-    this._ModalSvc.open(mModalOptions);
-
   }
 
   ngOnDestroy(): void {
@@ -91,18 +87,33 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   private onBtnTopLeft () {
-    alert('hi from SearchAccountsComponent.onBtnTopLeft')
+    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnTopLeft', 'onBtnTopLeft', LogLevel.Info);
   }
 
   private onBtnTopRight () {
-    alert('hi from SearchAccountsComponent.onBtnTopRight')
+    // this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnTopRight', 'onBtnTopRight', LogLevel.Info);
+    const mModalOptions: IModalOptions = new ModalOptions('testModal', 'header text', 'hello there', ModalSize.ExtraLarge);
+    const mCallbackButton = new CallbackButton('cancel_testModal', "cancel");
+    mCallbackButton.callbackMethod = () => {
+      this._ModalSvc.close(mModalOptions.modalId);
+    };
+    mModalOptions.buttons.closeButton = JSON.parse(JSON.stringify(mCallbackButton));
+    mCallbackButton.id = 'ok_testModal',
+    mCallbackButton.text = "OK"
+    mModalOptions.buttons.okButton = JSON.parse(JSON.stringify(mCallbackButton));
+
+    this._ModalSvc.open(mModalOptions);
+  }
+
+  private onClose(): void {
+    this._ModalSvc.close('1');
   }
 
   private onBtnBottomLeft () {
-    alert('hi from SearchAccountsComponent.onBtnBottomLeft')
+    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomLeft', 'onBtnBottomLeft', LogLevel.Info);
   }
 
   private onBtnBottomRight () {
-    alert('hi from SearchAccountsComponent.onBtnBottomRight')
+    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomRight', 'onBtnBottomRight', LogLevel.Info);
   }
 }

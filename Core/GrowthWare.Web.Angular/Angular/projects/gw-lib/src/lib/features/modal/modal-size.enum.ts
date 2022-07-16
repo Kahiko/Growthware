@@ -3,4 +3,5 @@ export enum ModalSize {
   Large = 2,
   Normal = 0,
   Small = 1,
+  Custom = -1,
 }
