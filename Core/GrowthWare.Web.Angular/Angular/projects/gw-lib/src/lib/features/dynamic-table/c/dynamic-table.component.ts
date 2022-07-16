@@ -10,13 +10,18 @@ import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib
 import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 
+interface ISortInfo {
+  "columnName": string, "direction": string
+}
+
 @Component({
   selector: 'gw-lib-dynamic-table',
   templateUrl: './dynamic-table.component.html',
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
-  private _Subscriptions: Subscription = new Subscription();;
+  private _SortColumns: ISortInfo[] = []
+  private _Subscriptions: Subscription = new Subscription();
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
@@ -41,6 +46,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _LoggingSvc: LoggingService,
     private _SearchSvc: SearchService,
   ) { }
+
+  public changeSort(columnName: string): void {
+    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
+    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
+      mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
+      this._GWCommon.addOrUpdateArray(this._SortColumns, mSortColumn);
+    }
+  }
 
   /**
    * Formats the data
@@ -74,13 +87,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
-        let mColumns = '';
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-          mColumns += '[' + column.name + '], ';
+          if(!this._GWCommon.isNullOrEmpty(this.tableConfiguration.orderByColumn) && this.tableConfiguration.orderByColumn.toLocaleLowerCase() === column.name.toLocaleLowerCase()) {
+            const mSortColum: ISortInfo = { columnName: this.tableConfiguration.orderByColumn.trim() , direction: 'asc' };
+            this._SortColumns.push(mSortColum);
+          }
           mWidth += +column.width;
         });
-        mColumns = mColumns.substring(0, mColumns.length - 2);
         this.tableWidth = mWidth;
         this.tableHeight = this.tableConfiguration.tableHeight;
       }
@@ -159,6 +173,17 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
       this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
     }
+  }
+
+  public showSort(columnName: string, direction: 'asc' | 'desc'): boolean {
+    let mRetVal: boolean = false;
+    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
+    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
+      if(mSortColumn.direction.toLocaleLowerCase() === direction.toLocaleLowerCase()) {
+        mRetVal = true;
+      }
+    }
+    return mRetVal;
   }
 
   /**
