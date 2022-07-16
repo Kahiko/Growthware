@@ -47,14 +47,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _SearchSvc: SearchService,
   ) { }
 
-  public changeSort(columnName: string): void {
-    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
-    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
-      mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
-      this._GWCommon.addOrUpdateArray(this._SortColumns, mSortColumn);
-    }
-  }
-
   /**
    * Formats the data
    *
@@ -147,6 +139,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.activeRow = rowNumber;
     } else {
       this.activeRow = -1;
+    }
+  }
+
+  public onSortChange(columnName: string): void {
+    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
+    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
+      mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
+      this._GWCommon.addOrUpdateArray(this._SortColumns, mSortColumn);
     }
   }
 
