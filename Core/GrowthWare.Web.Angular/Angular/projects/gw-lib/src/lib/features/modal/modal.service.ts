@@ -1,6 +1,6 @@
 import { ApplicationRef, Injectable, Injector } from '@angular/core';
-import { ViewContainerRef, ComponentFactoryResolver } from '@angular/core';
 import { Inject, TemplateRef, Type } from '@angular/core';
+import { ComponentFactoryResolver } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 
 // Components
@@ -13,7 +13,6 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 // Interfaces / Common Code
 import { IModalOptions } from './modal-options.model';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { IWindowSize, WindowSize } from './window-size.model';
 
 type Content<T> = string | TemplateRef<T> | Type<T>;
 
@@ -26,10 +25,9 @@ export class ModalService {
   private _ComponentRef: any;
   private _ActiveModals: IContentObject[] = [];
 
-  private returnData: any;
-  private cancelCallBackMethod!: (arg?: any) => void;
-  private closeCallBackMethod!: (arg?: any) => void;
-  private oKCallBackMethod!: (arg?: any) => void;
+  private _CancelCallBackMethod!: (arg?: any) => void;
+  private _CloseCallBackMethod!: (arg?: any) => void;
+  private _OKCallBackMethod!: (arg?: any) => void;
 
   constructor(
     private _ApplicationRef: ApplicationRef,
@@ -48,8 +46,8 @@ export class ModalService {
   }
 
   public cancel(key: string) {
-    if (this._GWCommon.isFunction(this.cancelCallBackMethod)) {
-      this.cancelCallBackMethod(this.returnData);
+    if (this._GWCommon.isFunction(this._CancelCallBackMethod)) {
+      this._CancelCallBackMethod();
     } else {
       this.close(key);
     }
@@ -66,7 +64,13 @@ export class ModalService {
           mContentObj.componentRef.destroy();
         }
       } catch (error) {
-        console.log(error);
+        let mMsg
+        if (error instanceof Error) {
+          mMsg = error.message
+        } else {
+          mMsg = String(error)
+        }
+        this._LoggingSvc.console(mMsg, LogLevel.Error);
       }
     }
   }
@@ -83,7 +87,7 @@ export class ModalService {
 
     const mComponentRef = this.getModalComponentRef(options);
     const mModalComponent = (mComponentRef.instance as ModalComponent);
-    // setup the callback methods
+    // setup the callback methods here
     if (this._GWCommon.isFunction(options.buttons.cancelButton.callbackMethod)) {
       mModalComponent.cancelCallBackMethod = options.buttons.cancelButton.callbackMethod;
     } else {
@@ -101,9 +105,10 @@ export class ModalService {
     } else {
       this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
     }
+    // send the options to finish setting up the modal component's properties
     mModalComponent.setUp(options);
 
-    mComponentRef.hostView.detectChanges();
+    mComponentRef.hostView.detectChanges(); // let the modal component work with any changes made to it
     const { nativeElement } = mComponentRef.location;
     const mContentObject = new ContentObject(this._ComponentRef, this._IsComponent, options.modalId, nativeElement)
     this._ActiveModals.push(mContentObject);
@@ -113,32 +118,21 @@ export class ModalService {
   private resolveNgContent<T>(content: Content<T>) {
     this._IsComponent = false;
     let mRetVal: any;
-    // this._ComponentRef = '';
-    /** String */
-    if (typeof content === 'string') {
+    if (typeof content === 'string') {            /** String */
       const element = this._Document.createTextNode(content);
       mRetVal = [[element]];
-    }
-
-    /** ngTemplate */
-    if (content instanceof TemplateRef) {
+    } else if (content instanceof TemplateRef) {  /** ngTemplate */
       const mTemplateRef = Object.create(content) as T;
       const mViewRef = content.createEmbeddedView(mTemplateRef);
       this._ApplicationRef.attachView(mViewRef);
       mRetVal = [mViewRef.rootNodes];
-    } else if (content instanceof Type) {
-      /** Otherwise it's a component */
+    } else if (content instanceof Type) {         /** Otherwise it's a component */
       this._IsComponent = true;
       const mFactory = this._Resolver.resolveComponentFactory(content);
       const mComponentRef = mFactory.create(this._Injector);
       this._ComponentRef = mComponentRef;
       this._ApplicationRef.attachView(mComponentRef.hostView);
       mRetVal = [[mComponentRef.location.nativeElement]];
-
-      //      The new way to do this?!?
-      // const mComponent = this._ViewContainerRef.createComponent(content);
-      // this._ApplicationRef.attachView(mComponent.hostView);
-      // mRetVal = [[mComponent.location.nativeElement]];
     }
     return mRetVal;
   }

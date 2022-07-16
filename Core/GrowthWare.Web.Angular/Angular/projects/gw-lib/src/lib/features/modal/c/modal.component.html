@@ -1,1 +1,20 @@
-<p>modal works!</p>
+<div class="modal-backdrop"></div>
+<div class="modal-container" id="yabadabado" [ngStyle]="{ 'height.px': height, 'width.px': width }" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal title</h5>
+        <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ng-content></ng-content>
+      </div>
+      <div class="modal-footer">
+        <button type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
+        <button type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
+      </div>
+    </div>
+  </div>
+</div>

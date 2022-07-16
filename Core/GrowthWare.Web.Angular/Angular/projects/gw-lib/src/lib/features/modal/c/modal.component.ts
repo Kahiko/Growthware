@@ -69,6 +69,7 @@ export class ModalComponent implements OnInit {
     const mWindowSize: IWindowSize = this.getWindowSize(options);
     this.height = mWindowSize.pxHeight;
     this.width = mWindowSize.pxWidth;
+    this.modalId = options.modalId;
 
     // set the buttons so we can use the id, name, class, text and visible properties in the modal component
     this.cancelBtn = options.buttons.cancelButton;
