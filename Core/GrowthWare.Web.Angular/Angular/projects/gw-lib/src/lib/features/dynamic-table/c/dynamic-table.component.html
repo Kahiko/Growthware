@@ -10,7 +10,8 @@
           <span style="display: inline-block; width: 33%;">
             <button
               *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
-              [ngClass]="tableConfiguration.buttons[0].class"
+              mat-raised-button
+              [color]="tableConfiguration.buttons[0].color"
               id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
               (click) = "onTopLeft()"
@@ -20,6 +21,8 @@
           <span style="display: inline-block; width: 33%; text-align: right;">
             <button
               *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
+              mat-raised-button
+              [color]="tableConfiguration.buttons[1].color"
               [ngClass]="tableConfiguration.buttons[1].class"
               id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
@@ -70,6 +73,8 @@
           <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: left;">
             <button
               *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible"
+              mat-raised-button
+              [color]="tableConfiguration.buttons[2].color"
               [ngClass]="tableConfiguration.buttons[2].class"
               id="btn_{{tableConfiguration.buttons[2].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
@@ -80,6 +85,8 @@
           <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: right;">
             <button
               *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible"
+              mat-raised-button
+              [color]="tableConfiguration.buttons[3].color"
               [ngClass]="tableConfiguration.buttons[3].class"
               id="btn_{{tableConfiguration.buttons[3].id}}_{{tableConfiguration.name}}"
               name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"

@@ -69,8 +69,8 @@ export interface IDynamicTableConfiguration {
     this.showSearch = showSearch;
 
     if(this._GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
-      let mDefaultNameId = name + '_AddBtn';
-      let mButton:ICallbackButton = new CallbackButton(mDefaultNameId, mDefaultNameId);
+      const mDefaultNameId = name + '_AddBtn';
+      let mButton:ICallbackButton = new CallbackButton('Add', mDefaultNameId, mDefaultNameId)
       this.buttons.push(mButton);
     } else {
       // ensure number of buttons not greater than 5

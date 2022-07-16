@@ -2,10 +2,10 @@
 [
   {
     "buttons": [
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary btn-xs" , "text": "Select All"  , "visible": true  },
-      { "id": "topRight"    , "name": "topRight"    , "class": "btn btn-primary btn-xs" , "text": "Add"         , "visible": true  },
-      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "btn btn-primary"        , "text": "bottomLeft"  , "visible": false },
-      { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight" , "visible": false }
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary" , "text": "Select All"  , "visible": true  },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary" , "text": "Add"         , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary" , "text": "bottomLeft"  , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary" , "text": "bottomRight" , "visible": false }
     ],
     "columns": [
       { "allowSearch": false , "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "AccountSeqId" , "showData": false,	"type": "string", "visible": true, "width": 80 },
@@ -30,10 +30,10 @@
   },
   {
     "buttons": [
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn btn-primary btn-xs" , "text": "Select All" , "visible": true  },
-      { "id": "topRight"    , "name": "topRight"    , "class": "btn btn-primary btn-xs" , "text": "Add"        , "visible": true  },
-      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": "btn btn-primary"        , "text": "bottomLeft" , "visible": true  },
-      { "id": "bottomRight" , "name": "bottomRight" , "class": "btn btn-primary"        , "text": "bottomRight", "visible": true  }
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": true  },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": true  },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": true  }
     ],
     "columns": [
       { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "FunctionSeqId", "showData": false,	"type": "string", "visible": true, "width": 80 },
