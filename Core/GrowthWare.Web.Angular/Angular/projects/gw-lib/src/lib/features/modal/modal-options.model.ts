@@ -14,10 +14,11 @@ export interface IModalOptions {
 }
 
 export class ModalOptions implements IModalOptions {
-  public buttons =
-    { cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn'),
+  public buttons = {
+    cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn'),
     closeButton: new CallbackButton('Close', 'closeBtn', 'closeBtn'),
-    okButton: new CallbackButton('OK', 'okBtn', 'okBtn') };
+    okButton: new CallbackButton('OK', 'okBtn', 'okBtn')
+  };
 
   constructor(
     public modalId: string,
