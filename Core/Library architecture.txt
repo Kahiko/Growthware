@@ -1,3 +1,6 @@
 Google: angular.io library export model
 	https://tomastrajan.medium.com/the-best-way-to-architect-your-angular-libraries-87959301d3d3
 		https://www.youtube.com/watch?v=2vHJ3_Om_gU
+
+npm i -g madge
+madge projects/gw-lib/src/public-api.ts --ts-config tsconfig.json --image graph.png
