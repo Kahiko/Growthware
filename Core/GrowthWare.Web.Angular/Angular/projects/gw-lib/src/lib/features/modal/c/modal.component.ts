@@ -29,7 +29,7 @@ export class ModalComponent implements OnInit {
   // 'text', 'id', 'name', 'visible', className: string = 'btn btn-primary', color: string = 'primary'
   public cancelBtn: ICallbackButton = new CallbackButton('Cancel', this.modalId + '_CancelBtn', this.modalId + '_CancelBtn');
   public closeBtn: ICallbackButton = new CallbackButton('Close', this.modalId + '_CloseBtn', this.modalId + '_CloseBtn', true);
-  public okBtn: ICallbackButton = new CallbackButton('OK', this.modalId + '_OkBtn', this.modalId + '_OkBtn', true);;
+  public okBtn: ICallbackButton = new CallbackButton('OK', this.modalId + '_OkBtn', this.modalId + '_OkBtn', true);
 
   public cancelCallBackMethod?: (arg?: any) => void;
   public closeCallBackMethod?: (arg?: any) => void;
