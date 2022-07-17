@@ -20,6 +20,7 @@ interface ISortInfo {
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
+  private _SearchCriteria!: SearchCriteria;
   private _Subscriptions: Subscription = new Subscription();
 
   @Input() configurationName: string = '';
@@ -28,7 +29,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
   public recordsPerPageMsg: string = '';
-  public searchCriteria!: SearchCriteria;
   public tableConfiguration!: IDynamicTableConfiguration;
   public tableData: any[] = [];
   public tableWidth: number = 200;
@@ -76,6 +76,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.configurationName = this.configurationName.trim();
+    this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName).payLoad;
     if (
       !this._GWCommon.isNullOrUndefined(this.configurationName) &&
       !this._GWCommon.isNullOrEmpty(this.configurationName)
@@ -85,17 +86,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-          // !!!!!added the data to the json and altered the models!!!!
-          // if(!this._GWCommon.isNullOrEmpty(this.tableConfiguration.orderByColumn) && this.tableConfiguration.orderByColumn.toLocaleLowerCase() === column.name.toLocaleLowerCase()) {
-          //   // TODO: We need to add two properties to the table configuration
-          //   // then we can use that to manipulate the HTML by binding
-          //   // the check for both sort and search checkboxes.
-          //   // Then we can go with most of what we have except instead
-          //   // of changing our two local arrays we store the table configuration that is
-          //   // bound to the HTML (or something close to this line of though)
-          //   const mSortColum: ISortInfo = { columnName: this.tableConfiguration.orderByColumn.trim() , direction: 'asc' };
-          //   this._SortColumns.push(mSortColum);
-          // }
           mWidth += +column.width;
         });
         this.tableWidth = mWidth;
@@ -105,7 +95,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this._Subscriptions.add(
         this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
           if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
-            this.searchCriteria = results.payLoad.searchCriteria;
+            this._SearchCriteria = results.payLoad.searchCriteria;
             this.tableData = results.payLoad.data;
             const mFirstRow = this.tableData[0];
             if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
@@ -127,9 +117,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       .subscribe((newText) => {
         if (this._GWCommon.isNumber(newText) && +newText > 0) {
           this.recordsPerPageMsg = '';
-          this.searchCriteria.pageSize = +newText;
-          this.searchCriteria.selectedPage = 1;
-          const mNewCriteria: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this.searchCriteria);
+          this._SearchCriteria.pageSize = +newText;
+          this._SearchCriteria.selectedPage = 1;
+          const mNewCriteria: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this._SearchCriteria);
           this._SearchSvc.setSearchCriteria(mNewCriteria);
         } else {
           this.recordsPerPageMsg = 'Value must be numeric and greater than zero!';
@@ -153,8 +143,14 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
+  /**
+   * Handles the when the {{tableConfiguration.name}}_{{column.name}}_sortAscImg or
+   * {{tableConfiguration.name}}_{{column.name}}_sortDescImg images have been clicked.
+   *
+   * @param {string} columnName
+   * @memberof DynamicTableComponent
+   */
   public onSortChange(columnName: string): void {
-    console.log(columnName);
     const mSortColumn = this.tableConfiguration.columns.filter(x => x.name.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
     if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
       mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
@@ -164,14 +160,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       });
     }
+    this.setCriteriaColumnInfo();
   }
 
-  /**
-   * Handles when the check_Sort_{{tableConfiguration.name}}_{{column.name}} check box is clicked
-   *
-   * @param {string} columnName
-   * @memberof DynamicTableComponent
-   */
   public onSortClick(columnName: string): void {
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name === columnName) {
@@ -182,6 +173,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       }
     });
+    this.setCriteriaColumnInfo();
   }
 
   /**
@@ -206,6 +198,29 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
     if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
       this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
+    }
+  }
+
+  /**
+   * Handles when the sort column information has changed either
+   * by clicking on the sort checkbox or the sort direction icons
+   *
+   * @private
+   * @memberof DynamicTableComponent
+   */
+  private setCriteriaColumnInfo(): void {
+    const mColumns: Array<string> =[];
+    const mDynamicTableColumns: IDynamicTableColumn[] = this.tableConfiguration.columns.filter(x => x.sortSelected === true);
+    if(!this._GWCommon.isNullOrUndefined(mDynamicTableColumns)) {
+      mDynamicTableColumns.forEach((item) => {
+        if(item.sortSelected) {
+          const mColumnInfo: any = item.name + '=' + item.direction;
+          mColumns.push(mColumnInfo);
+        }
+      });
+      this._SearchCriteria.columnInfo = mColumns;
+      const mSearchCriteriaNVP: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this._SearchCriteria);
+      this._SearchSvc.setSearchCriteria(mSearchCriteriaNVP);
     }
   }
 

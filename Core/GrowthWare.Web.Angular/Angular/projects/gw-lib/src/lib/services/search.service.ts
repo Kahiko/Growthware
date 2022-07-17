@@ -86,7 +86,6 @@ export class SearchService {
     if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
-    // mSearchCriteria.columnInfo = [mTableConfiguration.orderByColumn + "=asc"];
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;
