@@ -10,7 +10,6 @@ export interface IDynamicTableConfiguration {
   "maxTableRowHeight": number,
   "name": string,
   "numberOfRows": number,
-  "orderByColumn": string,
   "showFirstRow": boolean,
   "showThirdRow": boolean,
   "showHelp": boolean,
@@ -33,7 +32,6 @@ export interface IDynamicTableConfiguration {
   public maxTableRowHeight: number;
   public name: string;
   public numberOfRows: number;
-  public orderByColumn: string;
   public showFirstRow: boolean;
   public showThirdRow: boolean;
   public showHeading: boolean;
@@ -48,7 +46,6 @@ export interface IDynamicTableConfiguration {
     maxTableRowHeight: number = 400,
     name: string,
     numberOfRows: number = 4,
-    orderByColumn: string,
     showFirstRow: boolean = false,
     showThirdRow: boolean = false,
     showHeading: boolean = false,
@@ -61,7 +58,6 @@ export interface IDynamicTableConfiguration {
     this.maxTableRowHeight = maxTableRowHeight;
     this.name = name;
     this.numberOfRows = numberOfRows;
-    this.orderByColumn = orderByColumn;
     this.showFirstRow = showFirstRow;
     this.showThirdRow = showThirdRow;
     this.showHeading = showHeading;

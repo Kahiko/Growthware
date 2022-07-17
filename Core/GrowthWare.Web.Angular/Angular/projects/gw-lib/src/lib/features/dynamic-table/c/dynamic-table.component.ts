@@ -20,7 +20,6 @@ interface ISortInfo {
   styleUrls: ['./dynamic-table.component.scss']
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
-  private _SortColumns: ISortInfo[] = []
   private _Subscriptions: Subscription = new Subscription();
 
   @Input() configurationName: string = '';
@@ -60,6 +59,11 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     return this._GWCommon.formatData(data, type);
   }
 
+  public isSortSelected(columnName: string): boolean {
+    console.log('isSortSelected: ' + columnName)
+    return false;
+  }
+
   ngAfterViewInit(): void {
     if (this.pagerComponent) {
       this.pagerComponent.name = this.configurationName;
@@ -81,10 +85,17 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-          if(!this._GWCommon.isNullOrEmpty(this.tableConfiguration.orderByColumn) && this.tableConfiguration.orderByColumn.toLocaleLowerCase() === column.name.toLocaleLowerCase()) {
-            const mSortColum: ISortInfo = { columnName: this.tableConfiguration.orderByColumn.trim() , direction: 'asc' };
-            this._SortColumns.push(mSortColum);
-          }
+          // !!!!!added the data to the json and altered the models!!!!
+          // if(!this._GWCommon.isNullOrEmpty(this.tableConfiguration.orderByColumn) && this.tableConfiguration.orderByColumn.toLocaleLowerCase() === column.name.toLocaleLowerCase()) {
+          //   // TODO: We need to add two properties to the table configuration
+          //   // then we can use that to manipulate the HTML by binding
+          //   // the check for both sort and search checkboxes.
+          //   // Then we can go with most of what we have except instead
+          //   // of changing our two local arrays we store the table configuration that is
+          //   // bound to the HTML (or something close to this line of though)
+          //   const mSortColum: ISortInfo = { columnName: this.tableConfiguration.orderByColumn.trim() , direction: 'asc' };
+          //   this._SortColumns.push(mSortColum);
+          // }
           mWidth += +column.width;
         });
         this.tableWidth = mWidth;
@@ -143,11 +154,35 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   public onSortChange(columnName: string): void {
-    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
+    console.log(columnName);
+    const mSortColumn = this.tableConfiguration.columns.filter(x => x.name.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
     if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
       mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
-      this._GWCommon.addOrUpdateArray(this._SortColumns, mSortColumn);
+      this.tableConfiguration.columns.forEach((element, index) => {
+        if (element.name === mSortColumn.name) {
+          this.tableConfiguration.columns[index] = mSortColumn;
+        }
+      });
     }
+  }
+
+  public onSortClick(columnName: string, $event: Event): void {
+    // $event.preventDefault();
+    // $event.stopPropagation();
+    this.tableConfiguration.columns.forEach((element, index) => {
+      if (element.name === columnName) {
+        const mNewValue = ((this.tableConfiguration.columns[index].sortSelected === true) ? false : true);
+        this.tableConfiguration.columns[index].sortSelected = mNewValue;
+        if(mNewValue === true) {
+          this.tableConfiguration.columns[index].allowSort = true;
+        }
+      }
+    });
+
+    const mTarget = $event.target as HTMLInputElement;
+    console.log(columnName);
+    console.log(mTarget.value);
+    // return false;
   }
 
   /**
@@ -173,17 +208,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
       this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
     }
-  }
-
-  public showSort(columnName: string, direction: 'asc' | 'desc'): boolean {
-    let mRetVal: boolean = false;
-    const mSortColumn = this._SortColumns.filter(x => x.columnName.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
-    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
-      if(mSortColumn.direction.toLocaleLowerCase() === direction.toLocaleLowerCase()) {
-        mRetVal = true;
-      }
-    }
-    return mRetVal;
   }
 
   /**
