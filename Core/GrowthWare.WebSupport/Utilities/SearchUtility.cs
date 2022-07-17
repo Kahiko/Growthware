@@ -27,8 +27,22 @@ public static class SearchUtility
                 }
             }
         }
-        mWhereClause = mWhereClause.Substring(3, mWhereClause.Length - 3);
-        mOrderByClause = mOrderByClause.Substring(2, mOrderByClause.Length - 2);
+        if(mWhereClause.Length > 0)
+        {
+            mWhereClause = mWhereClause.Substring(3, mWhereClause.Length - 3);
+        } 
+        else 
+        {
+            mWhereClause = "1=1";
+        }
+        if(mOrderByClause.Length > 0)
+        {
+            mOrderByClause = mOrderByClause.Substring(2, mOrderByClause.Length - 2);
+        }
+        else
+        {
+            mOrderByClause = "2 asc";
+        }
         return new Tuple<string, string>(mOrderByClause, mWhereClause);
     }
 
