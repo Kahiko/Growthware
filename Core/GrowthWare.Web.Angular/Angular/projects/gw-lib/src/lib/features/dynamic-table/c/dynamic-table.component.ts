@@ -166,6 +166,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
+  /**
+   * Handles when the check_Sort_{{tableConfiguration.name}}_{{column.name}} check box is clicked
+   *
+   * @param {string} columnName
+   * @memberof DynamicTableComponent
+   */
   public onSortClick(columnName: string): void {
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name === columnName) {
