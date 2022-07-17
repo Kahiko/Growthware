@@ -166,9 +166,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  public onSortClick(columnName: string, $event: Event): void {
-    // $event.preventDefault();
-    // $event.stopPropagation();
+  public onSortClick(columnName: string): void {
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name === columnName) {
         const mNewValue = ((this.tableConfiguration.columns[index].sortSelected === true) ? false : true);
@@ -178,11 +176,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       }
     });
-
-    const mTarget = $event.target as HTMLInputElement;
-    console.log(columnName);
-    console.log(mTarget.value);
-    // return false;
   }
 
   /**

@@ -53,7 +53,7 @@
                       id="check_Sort_{{tableConfiguration.name}}_{{column.name}}"
                       name="check_Sort_{{tableConfiguration.name}}_{{column.name}}"
                       [(ngModel)]="column.sortSelected"
-                      (click)="onSortClick(column.name, $event)"
+                      (click)="onSortClick(column.name)"
                       title="Include in sort">
                     &nbsp;
                     <div *ngIf="column.allowSort" class="display: inline;">
