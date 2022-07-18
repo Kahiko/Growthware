@@ -62,7 +62,7 @@ export class PagerComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Handels when the selectPage_{{name}} click event
+   * Handles when the selectPage_{{name}} click event
    *
    * @memberof GWLibPagerComponent
    */
