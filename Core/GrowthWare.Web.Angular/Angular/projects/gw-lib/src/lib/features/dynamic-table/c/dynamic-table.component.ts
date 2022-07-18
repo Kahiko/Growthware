@@ -219,8 +219,11 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         }
       });
       this._SearchCriteria.columnInfo = mColumns;
-      const mSearchCriteriaNVP: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this._SearchCriteria);
-      this._SearchSvc.setSearchCriteria(mSearchCriteriaNVP);
+      const mChangedCriteria = new SearchCriteriaNVP(
+        this.configurationName,
+        this._SearchCriteria
+      );
+      this._SearchSvc.setSearchCriteria(mChangedCriteria);
     }
   }
 
