@@ -29,6 +29,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
   public recordsPerPageMsg: string = '';
+  public showHelp: boolean = true;
   public tableConfiguration!: IDynamicTableConfiguration;
   public tableData: any[] = [];
   public tableWidth: number = 200;
@@ -144,33 +145,18 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   /**
-   * Handles the when the {{tableConfiguration.name}}_{{column.name}}_sortAscImg or
-   * {{tableConfiguration.name}}_{{column.name}}_sortDescImg images have been clicked.
+   * Handles sort change event.  Happens when clicking the column and or the sort direction "icon"
    *
    * @param {string} columnName
    * @memberof DynamicTableComponent
    */
   public onSortChange(columnName: string): void {
-    const mSortColumn = this.tableConfiguration.columns.filter(x => x.name.toLocaleLowerCase() == columnName.toLocaleLowerCase())[0];
-    if(!this._GWCommon.isNullOrUndefined(mSortColumn)) {
-      mSortColumn.direction = ((mSortColumn.direction === 'asc') ? 'desc' : 'asc');
-      this.tableConfiguration.columns.forEach((element, index) => {
-        if (element.name === mSortColumn.name) {
-          this.tableConfiguration.columns[index] = mSortColumn;
-        }
-      });
-    }
-    this.setCriteriaColumnInfo();
-  }
-
-  public onSortClick(columnName: string): void {
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name === columnName) {
-        const mNewValue = ((this.tableConfiguration.columns[index].sortSelected === true) ? false : true);
-        this.tableConfiguration.columns[index].sortSelected = mNewValue;
-        if(mNewValue === true) {
-          this.tableConfiguration.columns[index].allowSort = true;
-        }
+        this.tableConfiguration.columns[index].sortSelected = true;
+        this.tableConfiguration.columns[index].direction = ((this.tableConfiguration.columns[index].direction === 'asc') ? 'desc' : 'asc');
+      } else {
+        this.tableConfiguration.columns[index].sortSelected = false;
       }
     });
     this.setCriteriaColumnInfo();
@@ -269,5 +255,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    */
   public onBottomRight(): void {  // 3
     this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
+  }
+
+  public onHelp() {
+
   }
 }

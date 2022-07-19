@@ -6,6 +6,7 @@
             <label class = "control-label text-danger" for = "{{tableConfiguration.name}}_txtRecordsPerPage">
               {{recordsPerPageMsg}}
             </label>
+            <span *ngIf="showHelp" class="fa fa-2x fa-question-circle" (click)="onHelp()" style="position:relative;">help</span>
           </span>
           <span style="display: inline-block; width: 33%;">
             <button
@@ -29,7 +30,12 @@
               (click) = "onTopRight()"
               >{{tableConfiguration.buttons[1].text}}
             </button>&nbsp;
-            <input type="text" id="search_{{tableConfiguration.name}}" class="form-control rounded10" style="font-size: 0.9em; width: 164px; float: right;" placeholder="Search">
+            <input
+              type="text"
+              id="search_{{tableConfiguration.name}}"
+              class="form-control rounded10"
+              style="font-size: 0.9em; width: 164px; float: right;"
+              placeholder="Search">
           </span>
       </div>
       <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +23, 'max-width.px': tableWidth +23}">
@@ -46,15 +52,9 @@
                       name="check_Search_{{tableConfiguration.name}}_{{column.name}}"
                       [(ngModel)]="column.searchSelected"
                       title="Include in search">
-                    &nbsp;{{column.label}}&nbsp;
-                    <input
-                      *ngIf="column.allowSearch"
-                      type="checkBox"
-                      id="check_Sort_{{tableConfiguration.name}}_{{column.name}}"
-                      name="check_Sort_{{tableConfiguration.name}}_{{column.name}}"
-                      [(ngModel)]="column.sortSelected"
-                      (click)="onSortClick(column.name)"
-                      title="Include in sort">
+                    &nbsp;
+                    <span *ngIf="column.allowSort" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" (click)="onSortChange(column.name)">{{column.label}}</span>
+                    <span *ngIf="!column.allowSort" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}">{{column.label}}</span>
                     &nbsp;
                     <div *ngIf="column.allowSort" class="display: inline;">
                       <div *ngIf="column.sortSelected && column.direction === 'asc'" (click)="onSortChange(column.name)" title="Sort descending">
