@@ -3,21 +3,27 @@ import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
-import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
-import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+// Library Imports
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+// Interfaces/Models
+import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchCriteria } from '@Growthware/Lib/src/lib/models';
 import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+// Features (Components/Interfaces/Models/Services)
+import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
+import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 
 interface ISortInfo {
-  "columnName": string, "direction": string
+  columnName: string;
+  direction: string;
 }
 
 @Component({
   selector: 'gw-lib-dynamic-table',
   templateUrl: './dynamic-table.component.html',
-  styleUrls: ['./dynamic-table.component.scss']
+  styleUrls: ['./dynamic-table.component.scss'],
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   private _SearchCriteria!: SearchCriteria;
@@ -29,6 +35,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
   public recordsPerPageMsg: string = '';
+  public searchTextSubject: Subject<string> = new Subject<string>();
+  public searchText: string = '';
   public showHelp: boolean = true;
   public tableConfiguration!: IDynamicTableConfiguration;
   public tableData: any[] = [];
@@ -44,8 +52,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
     private _LoggingSvc: LoggingService,
-    private _SearchSvc: SearchService,
-  ) { }
+    private _SearchSvc: SearchService
+  ) {}
 
   /**
    * Formats the data
@@ -56,13 +64,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @return {*}
    * @memberof DynamicTableComponent
    */
-   formatData(data: any, type: string): void {
+  formatData(data: any, type: string): void {
     return this._GWCommon.formatData(data, type);
-  }
-
-  public isSortSelected(columnName: string): boolean {
-    console.log('isSortSelected: ' + columnName)
-    return false;
   }
 
   ngAfterViewInit(): void {
@@ -77,56 +80,80 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.configurationName = this.configurationName.trim();
-    this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName).payLoad;
-    if (
-      !this._GWCommon.isNullOrUndefined(this.configurationName) &&
-      !this._GWCommon.isNullOrEmpty(this.configurationName)
-    ) {
+    if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
+      this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName).payLoad;
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-          mWidth += +column.width;
-        });
+            mWidth += +column.width;
+          }
+        );
         this.tableWidth = mWidth;
         this.tableHeight = this.tableConfiguration.tableHeight;
       }
       // subscribe to the data change event and update the local data
       this._Subscriptions.add(
         this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
-          if(this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+          if (this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
+            // update the local search criteria with the one used to perform the search
             this._SearchCriteria = results.payLoad.searchCriteria;
+            // update the local data
             this.tableData = results.payLoad.data;
+            // get the "TotalRecords" column from the first row and update the local totalRecords
             const mFirstRow = this.tableData[0];
-            if(!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+            if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
               this.totalRecords = parseInt(mFirstRow['TotalRecords']);
             }
+            // set the activeRow to -1 b/c if there was one selected it's no longer valid
             this.activeRow = -1;
           }
         })
       );
     } else {
-      console.error(
-        'DynamicTableComponent.ngOnInit: configurationName is blank'
-      );
+      const mLogDestinations: Array<LogDestination> = [];
+      mLogDestinations.push(LogDestination.Console);
+      mLogDestinations.push(LogDestination.Toast);
+      const mLogOptions: ILogOptions = new LogOptions(
+        'DynamicTableComponent.ngOnInit: configurationName is blank',
+        LogLevel.Error,
+        mLogDestinations,
+        'DynamicTableComponent',
+        'DynamicTableComponent',
+        'ngOnInit',
+        'system',
+        'DynamicTableComponent'
+      )
+      this._LoggingSvc.log(mLogOptions);
     }
     // subscribe to the recordsPerPage change event and update the search criteria
     this._Subscriptions.add(
       this.recordsPerPageSubject
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe((newText) => {
-        if (this._GWCommon.isNumber(newText) && +newText > 0) {
-          this.recordsPerPageMsg = '';
-          this._SearchCriteria.pageSize = +newText;
-          this._SearchCriteria.selectedPage = 1;
-          const mNewCriteria: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, this._SearchCriteria);
-          this._SearchSvc.setSearchCriteria(mNewCriteria);
-        } else {
-          this.recordsPerPageMsg = 'Value must be numeric and greater than zero!';
-        }
-      })
-    )
+        .pipe(debounceTime(500), distinctUntilChanged())
+        .subscribe((newText) => {
+          if (this._GWCommon.isNumber(newText) && +newText > 0) {
+            this.recordsPerPageMsg = '';
+            const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
+            mSearchCriteria.pageSize = +newText;
+            mSearchCriteria.selectedPage = 1;
+            this.setSearchCriteria(mSearchCriteria);
+          } else {
+            this.recordsPerPageMsg =
+              'Value must be numeric and greater than zero!';
+          }
+        })
+    );
+    this._Subscriptions.add(
+      this.searchTextSubject
+        .pipe(debounceTime(500), distinctUntilChanged())
+        .subscribe((newText) => {
+          const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
+          mSearchCriteria.searchText = newText;
+          mSearchCriteria.selectedPage = 1;
+          this.setSearchCriteria(mSearchCriteria)
+        })
+    );
   }
 
   /**
@@ -151,15 +178,20 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onSortChange(columnName: string): void {
+    const mSearchColumnInfo: Array<string> = []
     this.tableConfiguration.columns.forEach((element, index) => {
-      if (element.name === columnName) {
-        this.tableConfiguration.columns[index].sortSelected = true;
-        this.tableConfiguration.columns[index].direction = ((this.tableConfiguration.columns[index].direction === 'asc') ? 'desc' : 'asc');
-      } else {
+      if (element.name !== columnName) {
         this.tableConfiguration.columns[index].sortSelected = false;
+      } else {
+        this.tableConfiguration.columns[index].sortSelected = true;
+        this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
+        const mColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
+        mSearchColumnInfo.push(mColumnInfo);
       }
     });
-    this.setCriteriaColumnInfo();
+    const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
+    mSearchCriteria.columnInfo = mSearchColumnInfo;
+    this.setSearchCriteria(mSearchCriteria);
   }
 
   /**
@@ -173,44 +205,32 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   setButtonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
-    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
       this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
     }
-    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopRightCallBackMethod)) {
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopRightCallBackMethod)) {
       this.onTopRight = dynamicTableBtnMethods.btnTopRightCallBackMethod;
     }
-    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomLeftCallBackMethod)) {
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomLeftCallBackMethod)) {
       this.onBottomLeft = dynamicTableBtnMethods.btnBottomLeftCallBackMethod;
     }
-    if(this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
       this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
     }
   }
 
   /**
-   * Handles when the sort column information has changed either
-   * by clicking on the sort checkbox or the sort direction icons
+   * Creates a new SearchCriteriaNVP and calls this._SearchSvc.setSearchCriteria
    *
    * @private
    * @memberof DynamicTableComponent
    */
-  private setCriteriaColumnInfo(): void {
-    const mColumns: Array<string> =[];
-    const mDynamicTableColumns: IDynamicTableColumn[] = this.tableConfiguration.columns.filter(x => x.sortSelected === true);
-    if(!this._GWCommon.isNullOrUndefined(mDynamicTableColumns)) {
-      mDynamicTableColumns.forEach((item) => {
-        if(item.sortSelected) {
-          const mColumnInfo: any = item.name + '=' + item.direction;
-          mColumns.push(mColumnInfo);
-        }
-      });
-      this._SearchCriteria.columnInfo = mColumns;
-      const mChangedCriteria = new SearchCriteriaNVP(
-        this.configurationName,
-        this._SearchCriteria
-      );
-      this._SearchSvc.setSearchCriteria(mChangedCriteria);
-    }
+  private setSearchCriteria(searchCriteria: ISearchCriteria): void {
+    const mChangedCriteria = new SearchCriteriaNVP(
+      this.configurationName,
+      searchCriteria
+    );
+    this._SearchSvc.setSearchCriteria(mChangedCriteria);
   }
 
   /**
@@ -218,9 +238,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
+   * First item in the button array
    * @memberof DynamicTableComponent
    */
-  public onTopLeft(): void {      // 0
+  public onTopLeft(): void {
     this._LoggingSvc.toast('You have not set the onTopLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -229,9 +250,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
+   * Second item in the button array
    * @memberof DynamicTableComponent
    */
-  public onTopRight(): void {     // 1
+  public onTopRight(): void {
     this._LoggingSvc.toast('You have not set the onTopRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -240,9 +262,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
+   * Third item in the button array
    * @memberof DynamicTableComponent
    */
-  public onBottomLeft(): void {   // 2
+  public onBottomLeft(): void {
     this._LoggingSvc.toast('You have not set the onBottomLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -251,13 +274,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * This method should be overwritten, it's up to the parent
    * component to implement any logic
    *
+   * Fourth item in the button array
    * @memberof DynamicTableComponent
    */
-  public onBottomRight(): void {  // 3
+  public onBottomRight(): void {
     this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
-  public onHelp() {
-
-  }
+  public onHelp() {}
 }

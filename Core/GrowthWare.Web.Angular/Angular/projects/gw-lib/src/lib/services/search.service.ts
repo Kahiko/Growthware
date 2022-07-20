@@ -86,6 +86,14 @@ export class SearchService {
     if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
+    const mColumnInfoArray: Array<string> = [];
+    mTableConfiguration.columns.forEach((item) => {
+      if (item.sortSelected) {
+        const mColumnInfo: any = item.name + '=' + item.direction;
+        mColumnInfoArray.push(mColumnInfo);
+      }
+    });
+    mSearchCriteria.columnInfo = mColumnInfoArray;
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;

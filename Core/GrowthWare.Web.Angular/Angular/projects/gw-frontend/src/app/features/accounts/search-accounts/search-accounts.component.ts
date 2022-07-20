@@ -93,7 +93,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   private onBtnTopRight () {
     // this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnTopRight', 'onBtnTopRight', LogLevel.Info);
     const mModalOptions: IModalOptions = new ModalOptions('testModal', 'header text', 'hello there', ModalSize.ExtraLarge);
-    const mCallbackButton = new CallbackButton('cancel_testModal', "cancel");
+    const mCallbackButton = new CallbackButton('cancel', 'cancel_testModal', 'cancel_testModal', true);
     mCallbackButton.callbackMethod = () => {
       this._ModalSvc.close(mModalOptions.modalId);
     };
