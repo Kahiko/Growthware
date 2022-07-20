@@ -24,6 +24,7 @@ export class ToastComponent implements OnInit {
   message!: string;
 
   public typeClass: string = '';
+  public dateTime: string = new Date().toLocaleString()
 
   toast!: Toast;
 

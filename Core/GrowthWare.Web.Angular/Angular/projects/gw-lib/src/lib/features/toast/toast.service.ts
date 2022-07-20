@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { distinct, Observable, Subject } from 'rxjs';
 import { EventType } from './event-type.enum';
 import { ToastMessage } from './toast-message.model';
 
@@ -24,6 +24,11 @@ export class ToastService {
    * @memberof ToastService
    */
   showToast(toastMessage: ToastMessage): void {
+    this._toastMessages
+      .pipe(distinct(({ message }) => message))
+      .subscribe((toastMessage: ToastMessage) => {
+        console.log(toastMessage.message);
+      });
     this._toastMessages.next(toastMessage);
   }
 

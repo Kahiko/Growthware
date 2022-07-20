@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { OnDestroy, OnInit } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { distinct, Subscription } from 'rxjs';
 import { IToastMessage, ToastMessage } from '../../toast-message.model';
 import { ToastService } from '../../toast.service';
+
 @Component({
   selector: 'gw-lib-toaster',
   templateUrl: './toaster.component.html',
@@ -22,17 +23,13 @@ export class ToasterComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._ToastSub = this._ToastSvc.toastEvents.subscribe(
-      (toasts: ToastMessage) => {
-        const currentToast: ToastMessage = {
-          eventType: toasts.eventType,
-          title: toasts.title,
-          message: toasts.message,
-        };
-        this.currentToasts.push(currentToast);
-        this._ChangeDetectorRef.detectChanges();
-      }
-    );
+    this._ToastSub = this._ToastSvc.toastEvents
+    // .pipe(distinct(({ message }) => message))
+    .subscribe((toasts: ToastMessage) => {
+      const mCurrentToast: IToastMessage = new ToastMessage(toasts.message, toasts.title, toasts.eventType);
+      this.currentToasts.push(mCurrentToast);
+      this._ChangeDetectorRef.detectChanges();
+    });
   }
 
   dispose(index: number) {
