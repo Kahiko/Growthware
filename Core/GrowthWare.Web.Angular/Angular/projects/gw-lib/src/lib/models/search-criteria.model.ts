@@ -1,5 +1,6 @@
 export interface ISearchCriteria {
-  columnInfo: Array<string>,
+  searchColumns: Array<string>,
+  sortColumnInfo: Array<string>,
   pageSize: number,
   searchText: string,
   selectedPage: number
@@ -7,7 +8,8 @@ export interface ISearchCriteria {
 
 export class SearchCriteria implements ISearchCriteria {
   constructor(
-    public columnInfo: Array<string>,
+    public searchColumns: Array<string>,
+    public sortColumnInfo: Array<string>,
     public pageSize: number,
     public searchText: string,
     public selectedPage: number,

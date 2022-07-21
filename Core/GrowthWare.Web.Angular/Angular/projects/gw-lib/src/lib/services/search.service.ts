@@ -80,20 +80,20 @@ export class SearchService {
    * @memberof SearchService
    */
   public getSearchCriteriaFromConfig(name: string): SearchCriteriaNVP {
-    const mSearchCriteria: SearchCriteria = new SearchCriteria([''],1,'',1);
+    const mSearchCriteria: SearchCriteria = new SearchCriteria([''],[''],1,'',1);
     const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
     const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria);
     if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
-    const mColumnInfoArray: Array<string> = [];
+    const mSortColumnInfoArray: Array<string> = [];
     mTableConfiguration.columns.forEach((item) => {
       if (item.sortSelected) {
-        const mColumnInfo: any = item.name + '=' + item.direction;
-        mColumnInfoArray.push(mColumnInfo);
+        const mSortColumnInfo: any = item.name + '=' + item.direction;
+        mSortColumnInfoArray.push(mSortColumnInfo);
       }
     });
-    mSearchCriteria.columnInfo = mColumnInfoArray;
+    mSearchCriteria.sortColumnInfo = mSortColumnInfoArray;
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;

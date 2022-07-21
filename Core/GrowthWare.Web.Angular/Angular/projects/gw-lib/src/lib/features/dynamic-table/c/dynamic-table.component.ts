@@ -178,19 +178,19 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onSortChange(columnName: string): void {
-    const mSearchColumnInfo: Array<string> = []
+    const mSearchsortColumnInfo: Array<string> = []
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name !== columnName) {
         this.tableConfiguration.columns[index].sortSelected = false;
       } else {
         this.tableConfiguration.columns[index].sortSelected = true;
         this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
-        const mColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
-        mSearchColumnInfo.push(mColumnInfo);
+        const msortColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
+        mSearchsortColumnInfo.push(msortColumnInfo);
       }
     });
     const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
-    mSearchCriteria.columnInfo = mSearchColumnInfo;
+    mSearchCriteria.sortColumnInfo = mSearchsortColumnInfo;
     this.setSearchCriteria(mSearchCriteria);
   }
 

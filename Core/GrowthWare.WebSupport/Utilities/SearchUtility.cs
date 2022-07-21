@@ -9,11 +9,11 @@ public static class SearchUtility
 {
     private static BSearch m_BSearch = null;
 
-    public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] columnInfo, string searchText)
+    public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] sortColumnInfo, string searchText)
     {
         string mWhereClause = "";
         String mOrderByClause = "";
-        foreach (var item in columnInfo)
+        foreach (var item in sortColumnInfo)
         {
             string[] mColumnParts = item.Split("=");
             if (mColumnParts != null && mColumnParts.Length == 2)
