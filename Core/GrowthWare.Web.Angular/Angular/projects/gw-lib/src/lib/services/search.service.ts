@@ -93,7 +93,7 @@ export class SearchService {
         mSortColumnInfoArray.push(mSortColumnInfo);
       }
     });
-    mSearchCriteria.sortColumnInfo = mSortColumnInfoArray;
+    mSearchCriteria.sortColumns = mSortColumnInfoArray;
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;
