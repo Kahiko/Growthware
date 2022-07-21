@@ -68,18 +68,31 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     return this._GWCommon.formatData(data, type);
   }
 
+  /**
+   * Returns an Array<string> where the string is either all of the column
+   * name that have searchSelected or the colum name=direction:
+   * 'name' or 'name=asc'.
+   * this.tableConfiguration.columns properties are also changed.
+   *
+   * @private
+   * @param {string} columnName
+   * @param {('sort' | 'search')} columnType
+   * @return {*}  {Array<string>}
+   * @memberof DynamicTableComponent
+   */
   private getColumnArray(columnName: string, columnType: 'sort' | 'search'): Array<string> {
     const mRetVal: Array<string> = [];
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name !== columnName) {
         this.tableConfiguration.columns[index].sortSelected = false;
       } else {
-        this.tableConfiguration.columns[index].sortSelected = true;
-        this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
         let mSortColumnInfo = '';
         if(columnType === 'sort') {
+          this.tableConfiguration.columns[index].sortSelected = true;
+          this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
           mSortColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
         } else {
+          this.tableConfiguration.columns[index].searchSelected = true;
           mSortColumnInfo = columnName;
         }
         mRetVal.push(mSortColumnInfo);
