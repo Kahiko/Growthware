@@ -68,6 +68,26 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     return this._GWCommon.formatData(data, type);
   }
 
+  private getColumnArray(columnName: string, columnType: 'sort' | 'search'): Array<string> {
+    const mRetVal: Array<string> = [];
+    this.tableConfiguration.columns.forEach((element, index) => {
+      if (element.name !== columnName) {
+        this.tableConfiguration.columns[index].sortSelected = false;
+      } else {
+        this.tableConfiguration.columns[index].sortSelected = true;
+        this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
+        let mSortColumnInfo = '';
+        if(columnType === 'sort') {
+          mSortColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
+        } else {
+          mSortColumnInfo = columnName;
+        }
+        mRetVal.push(mSortColumnInfo);
+      }
+    });
+    return mRetVal;
+  }
+
   ngAfterViewInit(): void {
     if (this.pagerComponent) {
       this.pagerComponent.name = this.configurationName;
@@ -178,19 +198,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onSortChange(columnName: string): void {
-    const mSortColumnInfos: Array<string> = []
-    this.tableConfiguration.columns.forEach((element, index) => {
-      if (element.name !== columnName) {
-        this.tableConfiguration.columns[index].sortSelected = false;
-      } else {
-        this.tableConfiguration.columns[index].sortSelected = true;
-        this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
-        const mSortColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
-        mSortColumnInfos.push(mSortColumnInfo);
-      }
-    });
     const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
-    mSearchCriteria.sortColumns = mSortColumnInfos;
+    mSearchCriteria.sortColumns = this.getColumnArray(columnName, 'sort');
     this.setSearchCriteria(mSearchCriteria);
   }
 
