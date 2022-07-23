@@ -8,6 +8,7 @@ import { SearchAccountsComponent } from './features/accounts/search-accounts/sea
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'home', component: HomeComponent },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
   { path: 'search-accounts', component: SearchAccountsComponent },
