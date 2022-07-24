@@ -103,6 +103,7 @@
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.min.css",
               "./node_modules/material-icons/iconfont/material-icons.css",
+              "projects/gw-frontend/src/theme.scss",
               "projects/gw-frontend/src/styles.scss"
             ],
             "scripts": [
