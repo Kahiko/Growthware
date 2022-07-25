@@ -9,6 +9,7 @@ import {
 
 interface ISideNavLink {
   icon: string;
+  isRoute: boolean;
   liClass: string;
   linkText: string;
   routerLinkActive: string;
@@ -67,6 +68,7 @@ export class AppComponent {
   constructor() {
     let mm = {
       icon: 'home',
+      isRoute: true,
       routerLinkActive: 'link-active',
       routerLink: '/',
       liClass: 'fa fa-gears',
@@ -75,6 +77,7 @@ export class AppComponent {
     this.sideNavLinks.push(mm);
     mm = {
       icon: 'dialpad',
+      isRoute: true,
       routerLinkActive: 'link-active',
       routerLink: 'counter',
       liClass: 'fa fa-gears',
@@ -83,6 +86,7 @@ export class AppComponent {
     this.sideNavLinks.push(mm);
     mm = {
       icon: 'thermostat',
+      isRoute: true,
       routerLinkActive: 'link-active',
       routerLink: 'fetch-data',
       liClass: 'fa fa-gears',
@@ -91,6 +95,7 @@ export class AppComponent {
     this.sideNavLinks.push(mm);
     mm = {
       icon: 'api',
+      isRoute: false,
       routerLinkActive: 'link-active',
       routerLink: 'swagger',
       liClass: 'fa fa-gears',
@@ -99,6 +104,7 @@ export class AppComponent {
     this.sideNavLinks.push(mm);
     mm = {
       icon: 'manage_accounts',
+      isRoute: true,
       routerLinkActive: 'link-active',
       routerLink: 'search-accounts',
       liClass: 'fa fa-gears',
