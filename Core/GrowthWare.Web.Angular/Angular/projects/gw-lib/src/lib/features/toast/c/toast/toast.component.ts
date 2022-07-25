@@ -18,13 +18,16 @@ export class ToastComponent implements OnInit {
   type!: EventType;
 
   @Input()
+  dateTime: string = new Date().toLocaleString()
+
+  @Input()
   title!: string;
 
   @Input()
   message!: string;
 
   public typeClass: string = '';
-  public dateTime: string = new Date().toLocaleString()
+  // public dateTime: string = new Date().toLocaleString()
 
   toast!: Toast;
 

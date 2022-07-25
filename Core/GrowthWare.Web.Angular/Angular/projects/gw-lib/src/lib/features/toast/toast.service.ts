@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Toast } from 'bootstrap';
 import { distinct, Observable, Subject } from 'rxjs';
 import { EventType } from './event-type.enum';
 import { ToastMessage } from './toast-message.model';
@@ -38,7 +39,7 @@ export class ToastService {
    * @param message Toast message
    */
   showSuccessToast(title: string, message: string) {
-    this.showToast({ message, title, eventType: EventType.Success });
+    this.showToast(new ToastMessage(message, title, EventType.Success));
   }
 
   /**
@@ -47,7 +48,7 @@ export class ToastService {
    * @param message Toast message
    */
   showInfoToast(title: string, message: string) {
-    this.showToast({ message, title, eventType: EventType.Info });
+    this.showToast(new ToastMessage(message, title, EventType.Info));
   }
 
   /**
@@ -56,7 +57,7 @@ export class ToastService {
    * @param message Toast message
    */
   showWarningToast(title: string, message: string) {
-    this.showToast({ message, title, eventType: EventType.Warning });
+    this.showToast(new ToastMessage(message, title, EventType.Warning));
   }
 
   /**
@@ -65,6 +66,6 @@ export class ToastService {
    * @param message Toast message
    */
   showErrorToast(title: string, message: string) {
-    this.showToast({ message, title, eventType: EventType.Error });
+    this.showToast(new ToastMessage(message, title, EventType.Error));
   }
 }
