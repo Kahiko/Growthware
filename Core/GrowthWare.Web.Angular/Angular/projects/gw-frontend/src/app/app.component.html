@@ -15,10 +15,16 @@
       </button>
       <mat-divider></mat-divider>
       <mat-nav-list>
-        <a mat-list-item *ngFor="let item of sideNavLinks; let i = index" target="item.isRoute ? '': '_blank'" [routerLink]="['/', item.routerLink]">
-          <i style="padding-right: 3px;" class="material-icons">{{ item.icon }}</i>
-          <span *ngIf="showFiller" [@animateText]="showFiller ? 'show' : 'hide'">{{ item.linkText }}</span>
-        </a>
+        <div mat-list-item *ngFor="let item of sideNavLinks; let i = index">
+          <a *ngIf="item.isRouterLink" [routerLink]="['/', item.routerLink]">
+            <i style="padding-right: 3px;" class="material-icons">{{ item.icon }}</i>
+            <span *ngIf="showFiller" [@animateText]="showFiller ? 'show' : 'hide'">{{ item.linkText }}</span>
+          </a>
+          <a *ngIf="!item.isRouterLink" href="{{item.routerLink}}" target="_blank">
+            <i style="padding-right: 3px;" class="material-icons">{{ item.icon }}</i>
+            <span *ngIf="showFiller" [@animateText]="showFiller ? 'show' : 'hide'">{{ item.linkText }}</span>
+          </a>
+        </div>
       </mat-nav-list>
     </mat-drawer>
     <div style="margin-left: 10px;">
