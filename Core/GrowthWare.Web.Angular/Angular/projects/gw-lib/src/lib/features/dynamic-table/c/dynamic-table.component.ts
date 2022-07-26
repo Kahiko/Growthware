@@ -15,11 +15,6 @@ import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 
-interface ISortInfo {
-  columnName: string;
-  direction: string;
-}
-
 @Component({
   selector: 'gw-lib-dynamic-table',
   templateUrl: './dynamic-table.component.html',
