@@ -15,7 +15,6 @@ import { ToasterComponent } from './c/toaster/toaster.component';
     FormsModule
   ],
   exports: [
-    ToastComponent,
     ToasterComponent
   ]
 })
