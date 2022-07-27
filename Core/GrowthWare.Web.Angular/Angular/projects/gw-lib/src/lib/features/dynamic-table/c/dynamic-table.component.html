@@ -63,6 +63,7 @@
                       id="check_Search_{{tableConfiguration.name}}_{{column.name}}"
                       name="check_Search_{{tableConfiguration.name}}_{{column.name}}"
                       [(ngModel)]="column.searchSelected"
+                      (click)="onSearchClick(column.name, $event);"
                       title="Include in search">
                     &nbsp;
                     <span *ngIf="column.allowSort" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" (click)="onSortChange(column.name)">{{column.label}}</span>

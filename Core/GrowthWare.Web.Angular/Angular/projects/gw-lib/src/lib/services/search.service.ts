@@ -87,12 +87,20 @@ export class SearchService {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     const mSortColumnInfoArray: Array<string> = [];
+    const mSearchColumnArray: Array<string> = [];
     mTableConfiguration.columns.forEach((item) => {
       if (item.sortSelected) {
         const mSortColumnInfo: any = item.name + '=' + item.direction;
         mSortColumnInfoArray.push(mSortColumnInfo);
       }
     });
+    mTableConfiguration.columns.forEach((item) => {
+      if (item.searchSelected) {
+        const mSearchColumn: any = item.name;
+        mSearchColumnArray.push(mSearchColumn);
+      }
+    });
+    mSearchCriteria.searchColumns = mSearchColumnArray;
     mSearchCriteria.sortColumns = mSortColumnInfoArray;
     mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';

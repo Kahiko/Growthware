@@ -9,7 +9,7 @@ public static class SearchUtility
 {
     private static BSearch m_BSearch = null;
 
-    public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] sortColumnInfo, string searchText)
+    public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] searchColumns, string[] sortColumnInfo, string searchText)
     {
         string mWhereClause = "";
         String mOrderByClause = "";
@@ -20,16 +20,22 @@ public static class SearchUtility
             {
                 if (columns.Contains(mColumnParts[0], StringComparison.OrdinalIgnoreCase))
                 {
-                    // [Account] LIKE '%abc%' OR
-                    mWhereClause += "OR " + mColumnParts[0] + " LIKE '%" + searchText + "%'" + Environment.NewLine;
                     // [Account] ASC,
                     mOrderByClause += ", " + mColumnParts[0] + " " + mColumnParts[1] + Environment.NewLine;
                 }
             }
         }
+        foreach (var item in searchColumns)
+        {
+            if(item.Length > 0)
+            {
+                // [Account] LIKE '%abc%' OR
+                mWhereClause += "AND " + item + " LIKE '%" + searchText + "%'" + Environment.NewLine;
+            }
+        }
         if(mWhereClause.Length > 0)
         {
-            mWhereClause = mWhereClause.Substring(3, mWhereClause.Length - 3);
+            mWhereClause = mWhereClause.Substring(4, mWhereClause.Length - 4);
         } 
         else 
         {

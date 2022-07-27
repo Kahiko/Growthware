@@ -77,20 +77,24 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    */
   private getColumnArray(columnName: string, columnType: 'sort' | 'search'): Array<string> {
     const mRetVal: Array<string> = [];
+    let mColumnInfo = '';
     this.tableConfiguration.columns.forEach((element, index) => {
       if (element.name !== columnName) {
         this.tableConfiguration.columns[index].sortSelected = false;
+        if(this.tableConfiguration.columns[index].searchSelected) {
+          mColumnInfo = this.tableConfiguration.columns[index].name;
+          mRetVal.push(mColumnInfo);
+        }
       } else {
-        let mSortColumnInfo = '';
         if(columnType === 'sort') {
           this.tableConfiguration.columns[index].sortSelected = true;
           this.tableConfiguration.columns[index].direction = this.tableConfiguration.columns[index].direction === 'asc' ? 'desc':'asc';
-          mSortColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
+          mColumnInfo = columnName + '=' + this.tableConfiguration.columns[index].direction;
         } else {
           this.tableConfiguration.columns[index].searchSelected = true;
-          mSortColumnInfo = columnName;
+          mColumnInfo = columnName;
         }
-        mRetVal.push(mSortColumnInfo);
+        mRetVal.push(mColumnInfo);
       }
     });
     return mRetVal;
@@ -197,6 +201,18 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     } else {
       this.activeRow = -1;
     }
+  }
+
+  public onSearchClick(columnName: string, event: any):void {
+    // event.preventDefault();
+    // event.stopPropagation();
+    const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
+    let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
+    if(event.target && !event.target.checked) {
+      mColumns = mColumns.filter(obj => { return obj !== columnName; });
+    }
+    mSearchCriteria.searchColumns = mColumns;
+    this.setSearchCriteria(mSearchCriteria);
   }
 
   /**
