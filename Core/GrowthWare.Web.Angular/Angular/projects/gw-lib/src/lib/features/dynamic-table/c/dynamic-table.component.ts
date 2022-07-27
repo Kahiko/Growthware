@@ -116,6 +116,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName).payLoad;
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        this.showHelp = this.tableConfiguration.showHelp;
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
