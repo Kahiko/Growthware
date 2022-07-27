@@ -315,5 +315,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
-  public onHelp() {}
+  public onHelp() {
+    alert('show show some help here');
+  }
 }
