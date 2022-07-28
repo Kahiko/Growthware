@@ -1,20 +1,6 @@
 import { Component } from '@angular/core';
-import {
-  trigger,
-  state,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
-
-interface ISideNavLink {
-  icon: string;
-  isRouterLink: boolean;
-  liClass: string;
-  linkText: string;
-  routerLinkActive: string;
-  routerLink: string;
-}
+import { trigger, state, style, transition, animate } from '@angular/animations';
+import { ISideNavLink, SideNavLink } from '@Growthware/Lib/src/lib/models';
 
 export const animateText = trigger('animateText', [
   state(
@@ -47,50 +33,15 @@ export class AppComponent {
   sideNavLinks: Array<ISideNavLink> = [];
 
   constructor() {
-    let mm = {
-      icon: 'home',
-      isRouterLink: true,
-      routerLinkActive: 'link-active',
-      routerLink: '/',
-      liClass: 'fa fa-gears',
-      linkText: 'Home',
-    };
-    this.sideNavLinks.push(mm);
-    mm = {
-      icon: 'dialpad',
-      isRouterLink: true,
-      routerLinkActive: 'link-active',
-      routerLink: 'counter',
-      liClass: 'fa fa-gears',
-      linkText: 'Counter',
-    };
-    this.sideNavLinks.push(mm);
-    mm = {
-      icon: 'thermostat',
-      isRouterLink: true,
-      routerLinkActive: 'link-active',
-      routerLink: 'fetch-data',
-      liClass: 'fa fa-gears',
-      linkText: 'Fetch Data',
-    };
-    this.sideNavLinks.push(mm);
-    mm = {
-      icon: 'api',
-      isRouterLink: false,
-      routerLinkActive: 'link-active',
-      routerLink: 'swagger',
-      liClass: 'fa fa-gears',
-      linkText: 'API',
-    };
-    this.sideNavLinks.push(mm);
-    mm = {
-      icon: 'manage_accounts',
-      isRouterLink: true,
-      routerLinkActive: 'link-active',
-      routerLink: 'search-accounts',
-      liClass: 'fa fa-gears',
-      linkText: 'Search',
-    };
-    this.sideNavLinks.push(mm);
+    let mSideNavLink = new SideNavLink('home', '', 'Home');
+    this.sideNavLinks.push(mSideNavLink);
+    mSideNavLink = new SideNavLink('dialpad', 'counter', 'Counter');
+    this.sideNavLinks.push(mSideNavLink);
+    mSideNavLink = new SideNavLink('thermostat', 'fetch-data', 'Fetch Data');
+    this.sideNavLinks.push(mSideNavLink);
+    mSideNavLink = new SideNavLink('api', 'swagger', 'API');
+    this.sideNavLinks.push(mSideNavLink);
+    mSideNavLink = new SideNavLink('manage_accounts', 'search-accounts', 'Search');
+    this.sideNavLinks.push(mSideNavLink);
   }
 }

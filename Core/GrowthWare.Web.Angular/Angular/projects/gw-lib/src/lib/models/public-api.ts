@@ -6,3 +6,4 @@ export * from './dynamic-table-configuration.model';
 export * from './name-value-pare.model';
 export * from './search-criteria.model';
 export * from './security-info.model';
+export * from './side-nav-link.model';
