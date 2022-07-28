@@ -135,9 +135,11 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
             // update the local data
             this.tableData = results.payLoad.data;
             // get the "TotalRecords" column from the first row and update the local totalRecords
-            const mFirstRow = this.tableData[0];
-            if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-              this.totalRecords = parseInt(mFirstRow['TotalRecords']);
+            if(this.tableData[0]) {
+              const mFirstRow = this.tableData[0];
+              if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+                this.totalRecords = parseInt(mFirstRow['TotalRecords']);
+              }
             }
             // set the activeRow to -1 b/c if there was one selected it's no longer valid
             this.activeRow = -1;
