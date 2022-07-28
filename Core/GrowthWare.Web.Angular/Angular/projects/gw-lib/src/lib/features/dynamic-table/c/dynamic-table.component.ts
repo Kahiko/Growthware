@@ -323,7 +323,6 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   public onHelp() {
     const mModalOptions: ModalOptions = new ModalOptions('DynamicTableComponent.onHelp', 'Help', this.helpTemplate, new WindowSize(400, 600));
-    mModalOptions.buttons
     this._ModalSvc.open(mModalOptions);
   }
 }
