@@ -66,6 +66,11 @@ input.rounded10
   top: 0px;
 }
 .dynamicTableHeaderDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
   white-space: nowrap;
   vertical-align:bottom;
   height: 45px;
@@ -85,9 +90,16 @@ input.rounded10
   background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
 }
 .dynamicTableFooterDiv {
-  height: 40px;
-  background-color: whiteSmoke;
-  border-top: 1px solid #DDD;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  vertical-align:bottom;
+  height: 55px;
+  border-bottom: 1px solid #EEE;
+  background-color: #ffffff;
   -webkit-border-bottom-left-radius: 5px;
   -webkit-border-bottom-right-radius: 5px;
   -moz-border-radius-bottomleft: 5px;

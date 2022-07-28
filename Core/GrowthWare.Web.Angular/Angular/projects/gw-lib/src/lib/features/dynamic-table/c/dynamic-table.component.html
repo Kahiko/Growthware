@@ -1,54 +1,57 @@
 <form name="frm_{{tableConfiguration.name}}_Table" id="frm_{{tableConfiguration.name}}_Table" role="form">
   <div class="dynamicTableContainerDiv Container" [ngStyle]="{ 'min-width.px': tableWidth +35, 'max-width.px': tableWidth +35}">
       <div *ngIf="tableConfiguration.showFirstRow" class="dynamicTableHeaderDiv">
-          <span style="display: inline-block; width: 33%; text-align: left;">
-            Show
-            <input
-              id="{{tableConfiguration.name}}_txtRecordsPerPage"
-              name="{{tableConfiguration.name}}_txtRecordsPerPage"
-              type="number"
-              [(ngModel)]="txtRecordsPerPage"
-              (ngModelChange)='recordsPerPageSubject.next($event)'
-              class="rounded10"
-              style="width: 60px; height:auto;"
-              required />&nbsp;records per page&nbsp;&nbsp;
-            <label class = "control-label text-danger" for = "{{tableConfiguration.name}}_txtRecordsPerPage">
-              {{recordsPerPageMsg}}
-            </label>
-            <span *ngIf="showHelp" class="material-icons" (click)="onHelp()" style="position:relative;">help</span>
-          </span>
-          <span style="display: inline-block; width: 33%;">
-            <button
-              *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
-              mat-raised-button
-              [color]="tableConfiguration.buttons[0].color"
-              id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
-              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
-              (click) = "onTopLeft()"
-              >{{tableConfiguration.buttons[0].text}}
-            </button>
-          </span>
-          <span style="display: inline-block; width: 33%; text-align: right;">
-            <button
-              *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
-              mat-raised-button
-              [color]="tableConfiguration.buttons[1].color"
-              [ngClass]="tableConfiguration.buttons[1].class"
-              id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
-              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
-              (click) = "onTopRight()"
-              >{{tableConfiguration.buttons[1].text}}
-            </button>&nbsp;
-            <input
-              type="text"
-              id="{{tableConfiguration.name}}_searchText"
-              name="{{tableConfiguration.name}}_searchText"
-              [(ngModel)]="searchText"
-              (ngModelChange)='searchTextSubject.next($event)'
-              class="form-control rounded10"
-              style="font-size: 0.9em; width: 164px; float: right;"
-              placeholder="Search">
-          </span>
+        <span style="margin: 5px;">
+          Show
+          <input
+            id="{{tableConfiguration.name}}_txtRecordsPerPage"
+            name="{{tableConfiguration.name}}_txtRecordsPerPage"
+            type="number"
+            [(ngModel)]="txtRecordsPerPage"
+            (ngModelChange)='recordsPerPageSubject.next($event)'
+            class="rounded10"
+            style="width: 60px; height:auto;"
+            required />&nbsp;records per page&nbsp;&nbsp;
+          <label class = "control-label text-danger" for = "{{tableConfiguration.name}}_txtRecordsPerPage">
+            {{recordsPerPageMsg}}
+          </label>
+        </span>
+        <span *ngIf="showHelp" class="material-icons" (click)="onHelp()" style="position:relative; margin: 5px;">help</span>
+        <span style="margin: 5px;">
+          <button
+            *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
+            mat-raised-button
+            [color]="tableConfiguration.buttons[0].color"
+            id="btn_{{tableConfiguration.buttons[0].id}}_{{tableConfiguration.name}}"
+            name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+            (click) = "onTopLeft()"
+            >{{tableConfiguration.buttons[0].text}}
+          </button>
+        </span>
+        <span style="flex-grow: 1;">&nbsp;</span>
+        <span style="margin: 5px;">
+          <button
+            *ngIf="tableConfiguration.buttons.length > 1 && tableConfiguration.buttons[1].visible"
+            mat-raised-button
+            [color]="tableConfiguration.buttons[1].color"
+            [ngClass]="tableConfiguration.buttons[1].class"
+            id="btn_{{tableConfiguration.buttons[1].id}}_{{tableConfiguration.name}}"
+            name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+            (click) = "onTopRight()"
+            >{{tableConfiguration.buttons[1].text}}
+          </button>
+        </span>
+        <span style="margin: 5px;">
+          <input
+            type="text"
+            id="{{tableConfiguration.name}}_searchText"
+            name="{{tableConfiguration.name}}_searchText"
+            [(ngModel)]="searchText"
+            (ngModelChange)='searchTextSubject.next($event)'
+            class="form-control rounded10"
+            style="font-size: 0.9em; width: 164px; float: right;"
+            placeholder="Search">
+        </span>
       </div>
       <div id="dynamicTable_{{tableConfiguration.name}}" class="dynamicTableMainbodyDiv green" [ngStyle]="{ 'max-height.px': tableHeight, 'min-height.px': tableHeight, 'min-width.px': tableWidth +23, 'max-width.px': tableWidth +23}">
           <table [ngStyle]="{ 'min-width.px': tableWidth, 'max-width.px': tableWidth, 'margin-left.px': 5 }">
@@ -99,36 +102,35 @@
           </table>
       </div>
       <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv" style="display: flex;">
-          <div style="float: left">
-              <span id="totalRecords">{{totalRecords}} total items</span>
-          </div>
-          <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: left;">
-            <button
-              *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible"
-              mat-raised-button
-              [color]="tableConfiguration.buttons[2].color"
-              [ngClass]="tableConfiguration.buttons[2].class"
-              id="btn_{{tableConfiguration.buttons[2].id}}_{{tableConfiguration.name}}"
-              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
-              (click) = "onBottomLeft()"
-              >{{tableConfiguration.buttons[2].text}}
-            </button>
-          </div>
-          <div style="flex-grow: 4; margin-right: 10px; margin-left: 10px; text-align: right;">
-            <button
-              *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible"
-              mat-raised-button
-              [color]="tableConfiguration.buttons[3].color"
-              [ngClass]="tableConfiguration.buttons[3].class"
-              id="btn_{{tableConfiguration.buttons[3].id}}_{{tableConfiguration.name}}"
-              name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
-              (click) = "onBottomRight()"
-              >{{tableConfiguration.buttons[3].text}}
-            </button>
-          </div>
-          <div style="float: right;">
-            <gw-lib-pager #pager></gw-lib-pager>
-          </div>
+        <span style="margin: 5px;" id="totalRecords">{{totalRecords}} total items</span>
+        <span style="margin: 5px;">
+          <button
+            *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible"
+            mat-raised-button
+            [color]="tableConfiguration.buttons[2].color"
+            [ngClass]="tableConfiguration.buttons[2].class"
+            id="btn_{{tableConfiguration.buttons[2].id}}_{{tableConfiguration.name}}"
+            name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+            (click) = "onBottomLeft()"
+            >{{tableConfiguration.buttons[2].text}}
+          </button>
+        </span>
+        <span style="flex-grow: 1;">&nbsp;</span>
+        <span style="margin: 5px;">
+          <button
+            *ngIf="tableConfiguration.buttons.length > 3 && tableConfiguration.buttons[3].visible"
+            mat-raised-button
+            [color]="tableConfiguration.buttons[3].color"
+            [ngClass]="tableConfiguration.buttons[3].class"
+            id="btn_{{tableConfiguration.buttons[3].id}}_{{tableConfiguration.name}}"
+            name="btn_{{tableConfiguration.buttons[1].name}}_{{tableConfiguration.name}}"
+            (click) = "onBottomRight()"
+            >{{tableConfiguration.buttons[3].text}}
+          </button>
+        </span>
+        <span style="margin: 5px;">
+          <gw-lib-pager #pager></gw-lib-pager>
+        </span>
       </div>
   </div>
   <ng-template #helpTemplate>
