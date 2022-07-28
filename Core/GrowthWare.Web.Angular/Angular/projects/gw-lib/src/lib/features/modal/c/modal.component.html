@@ -3,7 +3,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Modal title</h5>
+        <h5 class="modal-title">{{header}}</h5>
         <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -12,8 +12,8 @@
         <ng-content></ng-content>
       </div>
       <div class="modal-footer">
-        <button type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
-        <button type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
+        <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
+        <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
       </div>
     </div>
   </div>

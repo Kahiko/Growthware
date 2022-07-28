@@ -67,6 +67,7 @@ export class ModalComponent implements OnInit {
 
   public setUp(options: IModalOptions): void {
     const mWindowSize: IWindowSize = this.getWindowSize(options);
+    this.header = options.headerText;
     this.height = mWindowSize.pxHeight;
     this.width = mWindowSize.pxWidth;
     this.modalId = options.modalId;

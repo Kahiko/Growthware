@@ -15,9 +15,9 @@ export interface IModalOptions {
 
 export class ModalOptions implements IModalOptions {
   public buttons = {
-    cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn'),
-    closeButton: new CallbackButton('Close', 'closeBtn', 'closeBtn'),
-    okButton: new CallbackButton('OK', 'okBtn', 'okBtn')
+    cancelButton: new CallbackButton('Cancel', 'cancelBtn', 'cancelBtn', false),
+    closeButton: new CallbackButton('Close', 'closeBtn', 'closeBtn', false),
+    okButton: new CallbackButton('OK', 'okBtn', 'okBtn', false)
   };
 
   constructor(

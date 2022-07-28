@@ -1,5 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { TemplateRef } from '@angular/core';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
@@ -14,6 +15,7 @@ import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 
 @Component({
   selector: 'gw-lib-dynamic-table',
@@ -26,6 +28,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
+  @ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<any>;
 
   public activeRow: number = -1;
   public recordsPerPageSubject: Subject<number> = new Subject<number>();
@@ -47,6 +50,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
     private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
     private _SearchSvc: SearchService
   ) {}
 
@@ -318,6 +322,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   public onHelp() {
-    alert('show show some help here');
+    const mModalOptions: ModalOptions = new ModalOptions('DynamicTableComponent.onHelp', 'Help', this.helpTemplate, new WindowSize(400, 300));
+    mModalOptions.buttons
+    this._ModalSvc.open(mModalOptions);
   }
 }

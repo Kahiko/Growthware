@@ -98,12 +98,16 @@ export class ModalService {
     if (this._GWCommon.isFunction(options.buttons.closeButton.callbackMethod)) {
       mModalComponent.closeCallBackMethod = options.buttons.closeButton.callbackMethod;
     } else {
-      this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error)
+      if(options.buttons.closeButton.visible) {
+        this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error)
+      }
     }
     if (this._GWCommon.isFunction(options.buttons.okButton.callbackMethod)) {
       mModalComponent.oKCallBackMethod = options.buttons.okButton.callbackMethod;
     } else {
-      this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
+      if(options.buttons.okButton.visible) {
+        this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
+      }
     }
     // send the options to finish setting up the modal component's properties
     mModalComponent.setUp(options);

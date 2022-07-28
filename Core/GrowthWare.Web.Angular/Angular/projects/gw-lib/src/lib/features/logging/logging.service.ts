@@ -73,33 +73,44 @@ export class LoggingService {
     return mRetVal;
   }
 
+  /**
+   * Practical when multi-destinations are desired.
+   *
+   * @param {ILogOptions} options
+   * @memberof LoggingService
+   */
   public log(options: ILogOptions): void {
     options.destination.forEach((element) => {
       switch (LogDestination[element]) {
         case 'Console':
-          this.logConsole(options);
+          this._LogConsole(options);
           break;
         case 'DB':
-          this.logDB(options);
+          this._LogDB(options);
           break;
         case 'Toast':
-          this.logToast(options);
-          break;
-        case 'UI':
-          this.logUI(options);
+          this._LogToast(options);
           break;
         default:
+          this.toast(`Unsupported LogDestination: "$LogDestination[element]"`, 'Logging Error', LogLevel.Error);
           break;
       }
     });
   }
 
+  /**
+   * Use to log a message to the console.
+   *
+   * @param {string} msg
+   * @param {LogLevel} level
+   * @memberof LoggingService
+   */
   public console(msg: string, level: LogLevel): void {
     const mLogOptions: LogOptions = new LogOptions(msg, level);
-    this.logConsole(mLogOptions);
+    this._LogConsole(mLogOptions);
   }
 
-  private logConsole(options: ILogOptions): void {
+  private _LogConsole(options: ILogOptions): void {
     const mMsg =
       this.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
       '\n  ' +
@@ -128,6 +139,17 @@ export class LoggingService {
     }
   }
 
+  /**
+   * Use to log a message to the Database.
+   *
+   * @param {string} msg
+   * @param {LogLevel} [level=LogLevel.Debug]
+   * @param {string} componentName
+   * @param {string} className
+   * @param {string} methodName
+   * @param {string} [account='System']
+   * @memberof LoggingService
+   */
   public dataBase(
     msg: string,
     level: LogLevel = LogLevel.Debug,
@@ -143,10 +165,10 @@ export class LoggingService {
     mLogOptions.level = level;
     mLogOptions.methodName = methodName;
     mLogOptions.msg = msg;
-    this.logDB(mLogOptions);
+    this._LogDB(mLogOptions);
   }
 
-  private logDB(options: ILogOptions): void {
+  private _LogDB(options: ILogOptions): void {
     this.console(this._LoggingURL, LogLevel.Info);
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -166,7 +188,7 @@ export class LoggingService {
       .post<any>(this._LoggingURL, mData, mHttpOptions)
       .subscribe({
         next: (response: any) => {
-          this.logConsole(response);
+          this._LogConsole(response);
         },
         error: (errorResponse: any) => {
           this.errorHandler(errorResponse, 'logDB');
@@ -174,13 +196,21 @@ export class LoggingService {
       });
   }
 
+  /**
+   * Use to log a 'toast' message.
+   *
+   * @param {string} msg
+   * @param {string} title
+   * @param {LogLevel} level
+   * @memberof LoggingService
+   */
   public toast(msg: string, title: string, level: LogLevel): void {
     const mLogOptions: LogOptions = new LogOptions(msg, level);
     mLogOptions.title = title;
-    this.logToast(mLogOptions);
+    this._LogToast(mLogOptions);
   }
 
-  private logToast(options: ILogOptions): void {
+  private _LogToast(options: ILogOptions): void {
     const mToastMessage = new ToastMessage(
       options.msg,
       options.title,
@@ -207,10 +237,6 @@ export class LoggingService {
         break;
     }
     this._ToastSvc.showToast(mToastMessage);
-  }
-
-  private logUI(options: ILogOptions): void {
-    // not sure I want this ... really toast covers it
   }
 
   /**
