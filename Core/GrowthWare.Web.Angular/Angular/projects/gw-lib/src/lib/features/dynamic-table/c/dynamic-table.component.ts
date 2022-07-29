@@ -206,7 +206,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public onRowClick(rowNumber: number) {
       this._RowClickCount++;
       setTimeout(() => {
-        if (this._RowClickCount === 1) {
+          if (this._RowClickCount === 1) {
             // single
             if (this.activeRow !== rowNumber) {
             this.activeRow = rowNumber;
