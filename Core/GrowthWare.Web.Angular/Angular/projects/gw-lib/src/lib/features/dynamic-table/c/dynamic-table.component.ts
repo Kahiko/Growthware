@@ -23,6 +23,7 @@ import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/
   styleUrls: ['./dynamic-table.component.scss'],
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
+  private _RowClickCount = 0;
   private _SearchCriteria!: SearchCriteria;
   private _Subscriptions: Subscription = new Subscription();
 
@@ -203,13 +204,27 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   public onRowClick(rowNumber: number) {
-    if (this.activeRow !== rowNumber) {
-      this.activeRow = rowNumber;
-    } else {
-      this.activeRow = -1;
-    }
+      this._RowClickCount++;
+      setTimeout(() => {
+        if (this._RowClickCount === 1) {
+            // single
+            if (this.activeRow !== rowNumber) {
+            this.activeRow = rowNumber;
+          } else {
+            this.activeRow = -1;
+          }
+        } else if (this._RowClickCount === 2) {
+          // double
+          if (this.activeRow !== rowNumber) {
+            this.activeRow = rowNumber;
+          } else {
+            this.activeRow = -1;
+          }
+          console.log('row double click');
+        }
+        this._RowClickCount = 0;
+      }, 250)
   }
-
   public onSearchClick(columnName: string, event: any):void {
     // event.preventDefault();
     // event.stopPropagation();
