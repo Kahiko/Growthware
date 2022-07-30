@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 // Library Imports
-import { SearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { SearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 @Injectable({

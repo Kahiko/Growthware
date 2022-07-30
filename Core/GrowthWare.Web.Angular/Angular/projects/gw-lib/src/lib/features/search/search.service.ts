@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { IDynamicTableConfiguration, SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from './search-criteria.model';
 
 @Injectable({
   providedIn: 'root'

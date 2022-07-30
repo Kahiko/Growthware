@@ -7,13 +7,14 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Library Imports
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 // Interfaces/Models
-import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchCriteria } from '@Growthware/Lib/src/lib/models';
-import { DynamicTableBtnMethods, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
-import { ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { IDynamicTableColumn, IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods } from '@Growthware/Lib/src/lib/models';
+
 // Features (Components/Interfaces/Models/Services)
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { DataService } from '@Growthware/Lib/src/lib/services';
-import { SearchService } from '@Growthware/Lib/src/lib/features/search';
+import { SearchService, ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
+import { SearchCriteriaNVP, ISearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableService } from '../dynamic-table.service';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';

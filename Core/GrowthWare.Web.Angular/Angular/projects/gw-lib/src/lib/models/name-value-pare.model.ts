@@ -1,17 +1,6 @@
-import { ISearchCriteria } from "./search-criteria.model";
-
 export interface INameValuePare {
   name: string,
   payLoad: any
-}
-
-export interface ISearchResultsNVP extends INameValuePare {
-  name: string,
-  payLoad: {
-    data: Array<any>
-    totalRecords: number,
-    searchCriteria: ISearchCriteria,
-  }
 }
 
 export class DataNVP implements INameValuePare {
@@ -19,23 +8,8 @@ export class DataNVP implements INameValuePare {
   constructor(public name: string, public payLoad: Array<any>) {}
 }
 
-export class SearchCriteriaNVP implements INameValuePare {
-
-  constructor(public name: string, public payLoad: ISearchCriteria) {}
-}
-
 export class SearchTotalRecordsNVP implements INameValuePare {
 
   constructor(public name: string, public payLoad: number) {}
 }
 
-export class SearchResultsNVP implements ISearchResultsNVP {
-
-  constructor(
-    public name: string,
-    public payLoad: {
-      data: Array<any>,
-      totalRecords: number,
-      searchCriteria: ISearchCriteria,
-    }) {}
-}

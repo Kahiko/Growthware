@@ -2,7 +2,7 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { SearchCriteria, SearchCriteriaNVP, ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { SearchCriteria, SearchCriteriaNVP, ISearchResultsNVP } from '@Growthware/Lib/src/lib/features/search';
 import { SearchService } from '@Growthware/Lib/src/lib/features/search';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 

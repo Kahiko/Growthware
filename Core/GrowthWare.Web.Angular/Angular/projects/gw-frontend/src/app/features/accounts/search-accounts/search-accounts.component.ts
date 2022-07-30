@@ -4,8 +4,8 @@ import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService } from '@Growthware/Lib/src/lib/services';
-import { SearchService } from '@Growthware/Lib/src/lib/features/search';
-import { CallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { SearchService, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/features/search';
+import { CallbackButton, DynamicTableBtnMethods, INameValuePare } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
