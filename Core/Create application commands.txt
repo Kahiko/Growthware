@@ -35,7 +35,8 @@ Library:
 
 		ng generate service services/data --project gw-lib
 		ng generate service services/dynamic-table --project gw-lib
-		ng generate service services/search --project gw-lib
+
+		ng generate service features/search --project gw-lib
 		
 		ng generate module features/toast --project gw-lib
 		ng generate component features/toast/c/toast --module toast --style scss --project gw-lib
