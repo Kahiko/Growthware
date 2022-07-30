@@ -12,7 +12,8 @@ import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Grow
 import { ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 // Features (Components/Interfaces/Models/Services)
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
-import { DataService, DynamicTableService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DynamicTableService } from '../dynamic-table.service';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
@@ -118,9 +119,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   ngOnInit(): void {
     this.configurationName = this.configurationName.trim();
     if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
-      this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName).payLoad;
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName, this.tableConfiguration).payLoad;
         this.showHelp = this.tableConfiguration.showHelp;
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
@@ -217,9 +218,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
           // double
           if (this.activeRow !== rowNumber) {
             this.activeRow = rowNumber;
-          } else {
-            this.activeRow = -1;
           }
+          console.log(this.tableData[rowNumber])
           console.log('row double click');
         }
         this._RowClickCount = 0;

@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnDestroy, OnInit  } from '@angular/core';
 import { ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { DynamicTableComponent } from '@Growthware/Lib/src/lib/features/dynamic-table';
+import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
 import { CallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
@@ -23,6 +23,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
 
   constructor(
     private _DataSvc: DataService,
+    private _DynamicTableSvc: DynamicTableService,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _SearchSvc: SearchService,
@@ -78,11 +79,13 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
       }
     });
     // Get the initial SearchCriteriaNVP from the service
-    let mResults: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts');
+    const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration('Accounts');
+    let mResults: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts', mAccountTableConfig);
     // Set the search criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mResults);
     // repeating for the functions again just to illustrate how this works for multiple <gw-lib-dynamic-table> components
-    mResults = this._SearchSvc.getSearchCriteriaFromConfig('Functions');
+    const mFunctionTableConfig = this._DynamicTableSvc.getTableConfiguration('Functions');
+    mResults = this._SearchSvc.getSearchCriteriaFromConfig('Functions', mFunctionTableConfig);
     this._SearchSvc.setSearchCriteria(mResults);
   }
 

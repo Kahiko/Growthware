@@ -3,8 +3,8 @@ import { Injectable } from '@angular/core';
 import { multicast, Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
-import { DynamicTableService } from './dynamic-table.service';
+import { IDynamicTableConfiguration, SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+// import { DynamicTableService } from '../features/dynamic-table/dynamic-table.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class SearchService {
   public searchCriteriaChanged = new Subject<SearchCriteriaNVP>();
 
   constructor(
-    private _DynamicTableSvc: DynamicTableService,
+    // private _DynamicTableSvc: DynamicTableService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient
   ) { }
@@ -79,22 +79,22 @@ export class SearchService {
    * @return {*}  {SearchCriteriaNVP}
    * @memberof SearchService
    */
-  public getSearchCriteriaFromConfig(name: string): SearchCriteriaNVP {
+  public getSearchCriteriaFromConfig(name: string, tableConfiguration: IDynamicTableConfiguration): SearchCriteriaNVP {
     const mSearchCriteria: SearchCriteria = new SearchCriteria([''],[''],1,'',1);
-    const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
+    // const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
     const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria);
-    if(this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
+    if(this._GWCommon.isNullOrUndefined(tableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);
     }
     const mSortColumnInfoArray: Array<string> = [];
     const mSearchColumnArray: Array<string> = [];
-    mTableConfiguration.columns.forEach((item) => {
+    tableConfiguration.columns.forEach((item) => {
       if (item.sortSelected) {
         const mSortColumnInfo: any = item.name + '=' + item.direction;
         mSortColumnInfoArray.push(mSortColumnInfo);
       }
     });
-    mTableConfiguration.columns.forEach((item) => {
+    tableConfiguration.columns.forEach((item) => {
       if (item.searchSelected) {
         const mSearchColumn: any = item.name;
         mSearchColumnArray.push(mSearchColumn);
@@ -102,7 +102,7 @@ export class SearchService {
     });
     mSearchCriteria.searchColumns = mSearchColumnArray;
     mSearchCriteria.sortColumns = mSortColumnInfoArray;
-    mSearchCriteria.pageSize = mTableConfiguration.numberOfRows;
+    mSearchCriteria.pageSize = tableConfiguration.numberOfRows;
     mSearchCriteria.searchText = '';
     mSearchCriteria.selectedPage = 1;
     mRetVal.payLoad = mSearchCriteria;
