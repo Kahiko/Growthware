@@ -3,8 +3,9 @@ import { ViewChild  } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/lib/features/dynamic-table';
-import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
-import { CallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { DataService } from '@Growthware/Lib/src/lib/services';
+import { SearchService } from '@Growthware/Lib/src/lib/features/search';
+import { CallbackButton, DynamicTableBtnMethods, INameValuePare, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
@@ -60,16 +61,14 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
       switch (criteria.name.trim().toLowerCase()) {
         case 'accounts':
           this._SearchSvc.searchAccounts(criteria).then((results) => {
-            const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-            this._DataSvc.setData(mResults);
+            this._DataSvc.notifyDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
           }).catch((error) => {
             console.log(error);
           });
           break;
         case 'functions':
           this._SearchSvc.searchFunctions(criteria).then((results) => {
-            const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-            this._DataSvc.setData(mResults);
+            this._DataSvc.notifyDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
           }).catch((error) => {
             console.log(error);
           });

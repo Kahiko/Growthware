@@ -77,6 +77,20 @@ export class GWCommon {
     return mFormattedDate;
   }
 
+  public getTotalRecords(data: Array<any>): number {
+    let mRetVal = -1;
+    if(data && data.length > 0) {
+      const mFirstRow = data[0];
+      if(mFirstRow) {
+        const mTotalRecords = mFirstRow['TotalRecords'];
+        if(mTotalRecords) {
+          mRetVal = mTotalRecords;
+        }
+      }
+    }
+    return mRetVal
+  }
+
   /**
    * Determines if the obj is a function
    *

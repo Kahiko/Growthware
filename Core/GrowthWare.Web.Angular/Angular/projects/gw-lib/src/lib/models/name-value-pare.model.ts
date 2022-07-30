@@ -9,6 +9,7 @@ export interface ISearchResultsNVP extends INameValuePare {
   name: string,
   payLoad: {
     data: Array<any>
+    totalRecords: number,
     searchCriteria: ISearchCriteria,
   }
 }
@@ -30,5 +31,11 @@ export class SearchTotalRecordsNVP implements INameValuePare {
 
 export class SearchResultsNVP implements ISearchResultsNVP {
 
-  constructor(public name: string, public payLoad: {searchCriteria: ISearchCriteria, data: Array<any>}) {}
+  constructor(
+    public name: string,
+    public payLoad: {
+      data: Array<any>,
+      totalRecords: number,
+      searchCriteria: ISearchCriteria,
+    }) {}
 }

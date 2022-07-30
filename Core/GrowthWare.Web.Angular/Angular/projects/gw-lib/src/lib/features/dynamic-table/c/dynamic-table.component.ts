@@ -8,11 +8,12 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 // Interfaces/Models
 import { IDynamicTableColumn, IDynamicTableConfiguration, ISearchCriteria } from '@Growthware/Lib/src/lib/models';
-import { DynamicTableBtnMethods, SearchCriteria, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
-import { ISearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/models';
+import { ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/models';
 // Features (Components/Interfaces/Models/Services)
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
-import { DataService, SearchService } from '@Growthware/Lib/src/lib/services';
+import { DataService } from '@Growthware/Lib/src/lib/services';
+import { SearchService } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableService } from '../dynamic-table.service';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -141,12 +142,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
             // update the local data
             this.tableData = results.payLoad.data;
             // get the "TotalRecords" column from the first row and update the local totalRecords
-            if(this.tableData[0]) {
-              const mFirstRow = this.tableData[0];
-              if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-                this.totalRecords = parseInt(mFirstRow['TotalRecords']);
-              }
-            }
+            this.totalRecords = results.payLoad.totalRecords;
             // set the activeRow to -1 b/c if there was one selected it's no longer valid
             this.activeRow = -1;
           }

@@ -1,5 +1,4 @@
-import { ICallbackButton, CallbackButton } from './callback-button.model';
-import { IDynamicTableColumn } from './dynamic-table-column.model';
+import { ICallbackButton, CallbackButton, IDynamicTableColumn } from './public-api';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 export interface IDynamicTableConfiguration {

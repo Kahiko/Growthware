@@ -1,10 +1,9 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { multicast, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { IDynamicTableConfiguration, SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
-// import { DynamicTableService } from '../features/dynamic-table/dynamic-table.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +14,6 @@ export class SearchService {
   public searchCriteriaChanged = new Subject<SearchCriteriaNVP>();
 
   constructor(
-    // private _DynamicTableSvc: DynamicTableService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient
   ) { }
@@ -59,7 +57,8 @@ export class SearchService {
       .post<any>(url, criteria.payLoad, mHttpOptions)
       .subscribe({
         next: (response: any) => {
-          const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(criteria.name, { searchCriteria: criteria.payLoad, data: response });
+          const mTotalRecords = this._GWCommon.getTotalRecords(response);
+          const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(criteria.name, { data: response, totalRecords: mTotalRecords, searchCriteria: criteria.payLoad });
           resolve(mSearchResultsNVP);
         },
         error: (errorResponse: any) => {
@@ -81,7 +80,6 @@ export class SearchService {
    */
   public getSearchCriteriaFromConfig(name: string, tableConfiguration: IDynamicTableConfiguration): SearchCriteriaNVP {
     const mSearchCriteria: SearchCriteria = new SearchCriteria([''],[''],1,'',1);
-    // const mTableConfiguration = this._DynamicTableSvc.getTableConfiguration(name);
     const mRetVal: SearchCriteriaNVP = new SearchCriteriaNVP(name, mSearchCriteria);
     if(this._GWCommon.isNullOrUndefined(tableConfiguration)) {
       throw new Error(`Could not find the "${name}" configuration!`);

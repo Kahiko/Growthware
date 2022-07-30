@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-import { SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
+// Library Imports
+import { SearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/models';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 @Injectable({
   providedIn: 'root'
@@ -8,10 +10,11 @@ import { SearchResultsNVP } from '@Growthware/Lib/src/lib/models';
 export class DataService {
   public dataChanged = new Subject<SearchResultsNVP>();
 
-  constructor() { }
+  constructor(private _GWCommon: GWCommon) { }
 
-  public setData(results: SearchResultsNVP): void {
-    const mResults: SearchResultsNVP = new SearchResultsNVP(results.name, { searchCriteria: results.payLoad.searchCriteria, data: results.payLoad.data });
-    this.dataChanged.next(mResults);
+  public notifyDataChanged(name: string, data: Array<any>, searchCriteria: SearchCriteria): void {
+    const mTotalRecords = this._GWCommon.getTotalRecords(data);
+    const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(name, { data: data, totalRecords: mTotalRecords, searchCriteria: searchCriteria })
+    this.dataChanged.next(mSearchResultsNVP);
   }
 }
