@@ -225,6 +225,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this._RowClickCount = 0;
       }, 250)
   }
+
   public onSearchClick(columnName: string, event: any):void {
     // event.preventDefault();
     // event.stopPropagation();
