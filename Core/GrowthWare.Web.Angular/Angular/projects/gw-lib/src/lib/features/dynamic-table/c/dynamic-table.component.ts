@@ -60,6 +60,31 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   ) {}
 
   /**
+   * Sets the onTopLeft, onTopRight, onBottomLeft and onBottomRight methods with
+   * the methods supplied.
+   *
+   * If the methods does not get set the default method behavior is to
+   * alert indicating the method has not been set.
+   *
+   * @param {DynamicTableBtnMethods} dynamicTableBtnMethods
+   * @memberof DynamicTableComponent
+   */
+   public set buttonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
+      this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
+    }
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopRightCallBackMethod)) {
+      this.onTopRight = dynamicTableBtnMethods.btnTopRightCallBackMethod;
+    }
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomLeftCallBackMethod)) {
+      this.onBottomLeft = dynamicTableBtnMethods.btnBottomLeftCallBackMethod;
+    }
+    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
+      this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
+    }
+  }
+
+  /**
    * Formats the data
    *
    * @see this._GWCommon.formatData
@@ -202,7 +227,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param {number} rowNumber
    * @memberof DynamicTableComponent
    */
-  public onRowClick(rowNumber: number) {
+  onRowClick(rowNumber: number) {
       this._RowClickCount++;
       setTimeout(() => {
         if (this._RowClickCount === 1) {
@@ -230,7 +255,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param {number} rowNumber
    * @memberof DynamicTableComponent
    */
-  public onRowDoubleClick(rowNumber: number) {
+  onRowDoubleClick(rowNumber: number) {
     if (this.activeRow !== rowNumber) {
       this.activeRow = rowNumber;
     }
@@ -244,7 +269,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param { string } columnName
    * @param { any } event The $event of the HTML object
    */
-  public onSearchClick(columnName: string, event: any):void {
+  onSearchClick(columnName: string, event: any):void {
     const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
     let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
     if(event.target && !event.target.checked) {
@@ -260,35 +285,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param {string} columnName
    * @memberof DynamicTableComponent
    */
-  public onSortChange(columnName: string): void {
+  onSortChange(columnName: string): void {
     const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
     mSearchCriteria.sortColumns = this.getColumnArray(columnName, 'sort');
     this.setSearchCriteria(mSearchCriteria);
-  }
-
-  /**
-   * Sets the onTopLeft, onTopRight, onBottomLeft and onBottomRight methods with
-   * the methods supplied.
-   *
-   * If the methods does not get set the default method behavior is to
-   * alert indicating the method has not been set.
-   *
-   * @param {DynamicTableBtnMethods} dynamicTableBtnMethods
-   * @memberof DynamicTableComponent
-   */
-  setButtonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
-    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
-      this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
-    }
-    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopRightCallBackMethod)) {
-      this.onTopRight = dynamicTableBtnMethods.btnTopRightCallBackMethod;
-    }
-    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomLeftCallBackMethod)) {
-      this.onBottomLeft = dynamicTableBtnMethods.btnBottomLeftCallBackMethod;
-    }
-    if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
-      this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
-    }
   }
 
   public setRowClickMethod(): void {
@@ -317,7 +317,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * First item in the button array
    * @memberof DynamicTableComponent
    */
-  public onTopLeft(): void {
+  onTopLeft(): void {
     this._LoggingSvc.toast('You have not set the onTopLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -329,7 +329,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * Second item in the button array
    * @memberof DynamicTableComponent
    */
-  public onTopRight(): void {
+  onTopRight(): void {
     this._LoggingSvc.toast('You have not set the onTopRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -341,7 +341,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * Third item in the button array
    * @memberof DynamicTableComponent
    */
-  public onBottomLeft(): void {
+  onBottomLeft(): void {
     this._LoggingSvc.toast('You have not set the onBottomLeft call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
@@ -353,11 +353,11 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * Fourth item in the button array
    * @memberof DynamicTableComponent
    */
-  public onBottomRight(): void {
+  onBottomRight(): void {
     this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
-  public onHelp() {
+  onHelp() {
     const mModalOptions: ModalOptions = new ModalOptions('DynamicTableComponent.onHelp', 'Help', this.helpTemplate, new WindowSize(450, 600));
     this._ModalSvc.open(mModalOptions);
   }
