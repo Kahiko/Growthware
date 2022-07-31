@@ -1,7 +1,7 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
 import { TemplateRef } from '@angular/core';
-import { Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, Subject, Subscription } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 // Library Imports
@@ -31,23 +31,29 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
   private _SearchCriteria!: SearchCriteria;
   private _Subscriptions: Subscription = new Subscription();
+  private _TableDataSubject = new BehaviorSubject<any[]>([]);
+  private _TableData: any[] = [];
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
   @ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<any>;
 
-  public activeRow: number = -1;
-  public recordsPerPageSubject: Subject<number> = new Subject<number>();
-  public recordsPerPageMsg: string = '';
-  public searchTextSubject: Subject<string> = new Subject<string>();
-  public searchText: string = '';
-  public showHelp: boolean = true;
-  public tableConfiguration!: IDynamicTableConfiguration;
-  public tableData: any[] = [];
-  public tableWidth: number = 200;
-  public tableHeight: number = 206;
-  public totalRecords: number = -1;
-  public txtRecordsPerPage: number = 0;
+  activeRow: number = -1;
+  recordsPerPageSubject: Subject<number> = new Subject<number>();
+  recordsPerPageMsg: string = '';
+  searchTextSubject: Subject<string> = new Subject<string>();
+  searchText: string = '';
+  showHelp: boolean = true;
+  tableConfiguration!: IDynamicTableConfiguration;
+  readonly tableData = this._TableDataSubject.asObservable();
+  tableWidth: number = 200;
+  tableHeight: number = 206;
+  totalRecords: number = -1;
+  txtRecordsPerPage: number = 0;
+
+  public getRowData(rowNumber: number) {
+    return this._TableData[rowNumber];
+  }
 
   /**
    * Use to set your method for the table row click event.
@@ -188,7 +194,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
             // update the local search criteria with the one used to perform the search
             this._SearchCriteria = results.payLoad.searchCriteria;
             // update the local data
-            this.tableData = results.payLoad.data;
+            this._TableData = results.payLoad.data;
+            this._TableDataSubject.next(results.payLoad.data);
             // get the "TotalRecords" column from the first row and update the local totalRecords
             this.totalRecords = results.payLoad.totalRecords;
             // set the activeRow to -1 b/c if there was one selected it's no longer valid
