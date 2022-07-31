@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class GWCommon {
+
   public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
     var mExistingIds = yourArray.map((obj) => obj.id);
 
