@@ -213,19 +213,33 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
           }
         } else if (this._RowClickCount === 2) {
           // double
-          if (this.activeRow !== rowNumber) {
-            this.activeRow = rowNumber;
-          }
-          console.log(this.tableData[rowNumber])
-          console.log('row double click');
+          this.onRowDoubleClick(rowNumber);
         }
         this._RowClickCount = 0;
       }, 250)
   }
 
+  /**
+   * Handles the table > tbody > tr click event
+   * Sets the active row
+   *
+   * @param {number} rowNumber
+   * @memberof DynamicTableComponent
+   */
+  public onRowDoubleClick(rowNumber: number) {
+    if (this.activeRow !== rowNumber) {
+      this.activeRow = rowNumber;
+    }
+    console.log(this.tableData[rowNumber])
+    console.log('row double click');
+  }
+
+  /**
+   * Handles a columns checkbox click event.
+   * @param { string } columnName
+   * @param { any } event The $event of the HTML object
+   */
   public onSearchClick(columnName: string, event: any):void {
-    // event.preventDefault();
-    // event.stopPropagation();
     const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
     let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
     if(event.target && !event.target.checked) {
