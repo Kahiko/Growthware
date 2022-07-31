@@ -7,8 +7,8 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 // Library Imports
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 // Interfaces/Models
-import { IDynamicTableColumn, IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
-import { DynamicTableBtnMethods } from '@Growthware/Lib/src/lib/models';
+import { IDynamicTableColumn, IDynamicTableConfiguration, DynamicTableBtnMethods } from '@Growthware/Lib/src/lib/models';
+import { CallbackMethod } from '@Growthware/Lib/src/lib/models';
 
 // Features (Components/Interfaces/Models/Services)
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
@@ -47,7 +47,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public totalRecords: number = -1;
   public txtRecordsPerPage: number = 0;
 
-  public closeCallBackMethod!: (arg?: any) => void;
+  public rowClickBackMethod!: CallbackMethod;
+  public rowDoubleClickBackMethod!: CallbackMethod;
 
   constructor(
     private _GWCommon: GWCommon,
@@ -204,9 +205,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public onRowClick(rowNumber: number) {
       this._RowClickCount++;
       setTimeout(() => {
-          if (this._RowClickCount === 1) {
-            // single
-            if (this.activeRow !== rowNumber) {
+        if (this._RowClickCount === 1) {
+          // single
+          if(this._GWCommon.isFunction(this.rowClickBackMethod)) {
+            this.rowClickBackMethod(rowNumber);
+          }
+          if (this.activeRow !== rowNumber) {
             this.activeRow = rowNumber;
           } else {
             this.activeRow = -1;
@@ -230,8 +234,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.activeRow !== rowNumber) {
       this.activeRow = rowNumber;
     }
-    console.log(this.tableData[rowNumber])
-    console.log('row double click');
+    if(this._GWCommon.isFunction(this.rowDoubleClickBackMethod)) {
+      this.rowDoubleClickBackMethod(rowNumber);
+    }
   }
 
   /**
@@ -284,6 +289,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnBottomRightCallBackMethod)) {
       this.onBottomRight = dynamicTableBtnMethods.btnBottomRightCallBackMethod;
     }
+  }
+
+  public setRowClickMethod(): void {
+
   }
 
   /**
