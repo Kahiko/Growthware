@@ -107,10 +107,6 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     this._ModalSvc.open(mModalOptions);
   }
 
-  private onClose(): void {
-    this._ModalSvc.close('1');
-  }
-
   private onBtnBottomLeft () {
     this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomLeft', 'onBtnBottomLeft', LogLevel.Info);
   }
