@@ -21,9 +21,9 @@ export interface IDynamicTableConfiguration {
  * Represents the implementation of IDynamicTableConfig
  *
  * @export
- * @class GWLibDynamicTableConfigModel
+ * @class DynamicTableConfiguration
  */
- export class GWLibDynamicTableConfigModel {
+ export class DynamicTableConfiguration {
   public buttons: ICallbackButton[] = [];
   public columns: IDynamicTableColumn[];
   public headingText: string;
