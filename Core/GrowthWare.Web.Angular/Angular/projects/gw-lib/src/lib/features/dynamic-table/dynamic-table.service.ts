@@ -19,7 +19,7 @@ export class DynamicTableService {
   }
 
   /**
-   * Returs an array of objects that adhear to ICallbackButton interface
+   * Returns an array of objects that adhere to ICallbackButton interface
    *
    * @param {string} name
    * @return {*}  {ICallbackButton[]}
