@@ -226,10 +226,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         .subscribe((newText) => {
           if (this._GWCommon.isNumber(newText) && +newText > 0) {
             this.recordsPerPageMsg = '';
-            const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
-            mSearchCriteria.pageSize = +newText;
-            mSearchCriteria.selectedPage = 1;
-            this.setSearchCriteria(mSearchCriteria);
+            const mSearchCriteria: ISearchCriteria = {
+              ...this._SearchCriteria
+              , pageSize: +newText
+              , selectedPage: 1
+              };
+            this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
           } else {
             this.recordsPerPageMsg =
               'Value must be numeric and greater than zero!';
@@ -240,10 +242,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       this.searchTextSubject
         .pipe(debounceTime(500), distinctUntilChanged())
         .subscribe((newText) => {
-          const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
-          mSearchCriteria.searchText = newText;
-          mSearchCriteria.selectedPage = 1;
-          this.setSearchCriteria(mSearchCriteria)
+          const mSearchCriteria: ISearchCriteria = {
+            ...this._SearchCriteria
+            , searchText: newText
+            , selectedPage: 1
+          };
+          this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
         })
     );
   }
@@ -300,13 +304,15 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param { any } event The $event of the HTML object
    */
   onSearchClick(columnName: string, event: any):void {
-    const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
     let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
     if(event.target && !event.target.checked) {
       mColumns = mColumns.filter(obj => { return obj !== columnName; });
     }
-    mSearchCriteria.searchColumns = mColumns;
-    this.setSearchCriteria(mSearchCriteria);
+    const mSearchCriteria: ISearchCriteria = {
+      ...this._SearchCriteria
+      , searchColumns: mColumns
+    };
+    this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
   }
 
   /**
@@ -316,27 +322,15 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @memberof DynamicTableComponent
    */
   onSortChange(columnName: string): void {
-    const mSearchCriteria: ISearchCriteria = {...this._SearchCriteria};
-    mSearchCriteria.sortColumns = this.getColumnArray(columnName, 'sort');
-    this.setSearchCriteria(mSearchCriteria);
+    const mSearchCriteria: ISearchCriteria = {
+      ...this._SearchCriteria
+      , sortColumns: this.getColumnArray(columnName, 'sort')
+    };
+    this._SearchSvc.setSearchCriteria(this.configurationName, mSearchCriteria);
   }
 
   public setRowClickMethod(): void {
 
-  }
-
-  /**
-   * Creates a new SearchCriteriaNVP and calls this._SearchSvc.setSearchCriteria
-   *
-   * @private
-   * @memberof DynamicTableComponent
-   */
-  private setSearchCriteria(searchCriteria: ISearchCriteria): void {
-    const mChangedCriteria = new SearchCriteriaNVP(
-      this.configurationName,
-      searchCriteria
-    );
-    this._SearchSvc.setSearchCriteria(mChangedCriteria);
   }
 
   /**

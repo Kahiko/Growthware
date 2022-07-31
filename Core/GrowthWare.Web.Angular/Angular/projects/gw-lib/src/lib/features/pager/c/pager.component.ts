@@ -69,11 +69,7 @@ export class PagerComponent implements OnDestroy, OnInit {
    */
   onGoToPageClick(): void {
     this._SearchCriteria.selectedPage = parseInt(this.selectedPage);
-    const mChangedCriteria = new SearchCriteriaNVP(
-      this.name,
-      this._SearchCriteria
-    );
-    this._SearchSvc.setSearchCriteria(mChangedCriteria);
+    this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
   }
 
   /**
@@ -84,35 +80,29 @@ export class PagerComponent implements OnDestroy, OnInit {
    */
   onPageChange(direction: string): void {
     const value = direction.trim().toLowerCase();
-    const mSearchCriteria: SearchCriteria = this._SearchCriteria;
-    const mChangedCriteria = new SearchCriteriaNVP(this.name, mSearchCriteria);
     switch (value) {
       case 'first':
-        if (mSearchCriteria.selectedPage > 1) {
-          mSearchCriteria.selectedPage = 1;
-          mChangedCriteria.payLoad = mSearchCriteria;
-          this._SearchSvc.setSearchCriteria(mChangedCriteria);
+        if (this._SearchCriteria.selectedPage > 1) {
+          this._SearchCriteria.selectedPage = 1;
+          this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
         }
         break;
       case 'last':
-        if (mSearchCriteria.selectedPage < this.totalPages) {
-          mSearchCriteria.selectedPage = this.totalPages;
-          mChangedCriteria.payLoad = mSearchCriteria;
-          this._SearchSvc.setSearchCriteria(mChangedCriteria);
+        if (this._SearchCriteria.selectedPage < this.totalPages) {
+          this._SearchCriteria.selectedPage = this.totalPages;
+          this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
         }
         break;
       case 'next':
-        if (mSearchCriteria.selectedPage < this.totalPages) {
-          mSearchCriteria.selectedPage++;
-          mChangedCriteria.payLoad = mSearchCriteria;
-          this._SearchSvc.setSearchCriteria(mChangedCriteria);
+        if (this._SearchCriteria.selectedPage < this.totalPages) {
+          this._SearchCriteria.selectedPage++;
+          this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
         }
         break;
       case 'previous':
-        if (mSearchCriteria.selectedPage > 1) {
-          mSearchCriteria.selectedPage--;
-          mChangedCriteria.payLoad = mSearchCriteria;
-          this._SearchSvc.setSearchCriteria(mChangedCriteria);
+        if (this._SearchCriteria.selectedPage > 1) {
+          this._SearchCriteria.selectedPage--;
+          this._SearchSvc.setSearchCriteria(this.name, this._SearchCriteria);
         }
         break;
       default:
@@ -123,6 +113,6 @@ export class PagerComponent implements OnDestroy, OnInit {
         }
         break;
     }
-    this.selectedPage = mSearchCriteria.selectedPage.toString();
+    this.selectedPage = this._SearchCriteria.selectedPage.toString();
   }
 }

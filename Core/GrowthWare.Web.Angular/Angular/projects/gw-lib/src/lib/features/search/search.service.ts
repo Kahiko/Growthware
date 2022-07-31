@@ -132,7 +132,8 @@ export class SearchService {
     return this.getResults(mUrl, criteria);
   }
 
-  public setSearchCriteria(newCriteria: SearchCriteriaNVP) {
-    this.searchCriteriaChanged.next(newCriteria);
+  public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
+    const mChangedCriteria = new SearchCriteriaNVP( name, searchCriteria );
+    this.searchCriteriaChanged.next(mChangedCriteria);
   }
 }

@@ -83,11 +83,11 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration('Accounts');
     let mResults: SearchCriteriaNVP = this._SearchSvc.getSearchCriteriaFromConfig('Accounts', mAccountTableConfig);
     // Set the search criteria to initiate search criteria changed subject
-    this._SearchSvc.setSearchCriteria(mResults);
+    this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
     // repeating for the functions again just to illustrate how this works for multiple <gw-lib-dynamic-table> components
     const mFunctionTableConfig = this._DynamicTableSvc.getTableConfiguration('Functions');
     mResults = this._SearchSvc.getSearchCriteriaFromConfig('Functions', mFunctionTableConfig);
-    this._SearchSvc.setSearchCriteria(mResults);
+    this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
   }
 
   private onBtnTopLeft () {
