@@ -37,6 +37,8 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
     mDynamicTableBtnMethods.btnBottomLeftCallBackMethod = () => { this.onBtnBottomLeft(); }
     mDynamicTableBtnMethods.btnBottomRightCallBackMethod = () => { this.onBtnBottomRight(); }
     this.searchFunctionsComponent.setButtonMethods(mDynamicTableBtnMethods);
+    this.searchFunctionsComponent.rowClickBackMethod = (rowNumber: number) => { this.onRowClick(rowNumber); };
+    this.searchFunctionsComponent.rowDoubleClickBackMethod = (rowNumber: number) => { this.onRowDoubleClick(rowNumber); };
     const mLogOptions: ILogOptions = new LogOptions('Testing using options');
     mLogOptions.componentName = "Search Account"
     mLogOptions.className = 'SearchAccountsComponent';
@@ -113,5 +115,15 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
 
   private onBtnBottomRight () {
     this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomRight', 'onBtnBottomRight', LogLevel.Info);
+  }
+
+  private onRowClick (rowNumber: number): void {
+    const mMessage = 'hi from SearchAccountsComponent.onRowClick row "' + rowNumber + '" was clicked';
+    this._LoggingSvc.toast(mMessage, 'onRowClick', LogLevel.Info);
+  }
+
+  private onRowDoubleClick (rowNumber: number): void {
+    const mMessage = 'hi from SearchAccountsComponent.onRowDoubleClick row "' + rowNumber + '" was clicked';
+    this._LoggingSvc.toast(mMessage, 'onRowDoubleClick', LogLevel.Info);
   }
 }
