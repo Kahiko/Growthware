@@ -14,7 +14,7 @@ import { CallbackMethod } from '@Growthware/Lib/src/lib/models';
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService, ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
-import { SearchCriteriaNVP, ISearchCriteria } from '@Growthware/Lib/src/lib/features/search';
+import { ISearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableService } from '../dynamic-table.service';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
