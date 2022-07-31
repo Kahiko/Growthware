@@ -16,7 +16,6 @@ export interface IDynamicTableConfiguration {
   "tableHeight": number
 }
 
-
 /**
  * Represents the implementation of IDynamicTableConfig
  *
