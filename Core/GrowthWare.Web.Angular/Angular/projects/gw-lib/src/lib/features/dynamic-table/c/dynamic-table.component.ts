@@ -27,6 +27,8 @@ import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/
 })
 export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   private _RowClickCount = 0;
+  private _OnRowClickCallBackMethod?: CallbackMethod;
+  private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
   private _SearchCriteria!: SearchCriteria;
   private _Subscriptions: Subscription = new Subscription();
 
@@ -47,8 +49,27 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   public totalRecords: number = -1;
   public txtRecordsPerPage: number = 0;
 
-  public rowClickBackMethod!: CallbackMethod;
-  public rowDoubleClickBackMethod!: CallbackMethod;
+  /**
+   * Use to set your method for the table row click event.
+   *
+   * @memberof DynamicTableComponent
+   */
+  public set rowClickBackMethod(callbackMethod: CallbackMethod) {
+    if(callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
+      this._OnRowClickCallBackMethod = callbackMethod;
+    }
+  }
+
+  /**
+   * Use to set your method for the table row double click event.
+   *
+   * @memberof DynamicTableComponent
+   */
+  public set rowDoubleClickBackMethod(callbackMethod: CallbackMethod) {
+    if(callbackMethod && this._GWCommon.isFunction(callbackMethod)) {
+      this._OnRowDoubleClickCallbackMethod = callbackMethod;
+    }
+  }
 
   constructor(
     private _GWCommon: GWCommon,
@@ -69,7 +90,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param {DynamicTableBtnMethods} dynamicTableBtnMethods
    * @memberof DynamicTableComponent
    */
-   public set buttonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
+   public setButtonMethods(dynamicTableBtnMethods: DynamicTableBtnMethods) {
     if (this._GWCommon.isFunction(dynamicTableBtnMethods.btnTopLeftCallBackMethod)) {
       this.onTopLeft = dynamicTableBtnMethods.btnTopLeftCallBackMethod;
     }
@@ -222,8 +243,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   /**
    * Handles the table > tbody > tr click event
-   * Sets the active row
+   * Sets the active row and calls this._OnRowClickCallBackMethod
    *
+   * Use the set rowClickBackMethod property to use a desired callback method
    * @param {number} rowNumber
    * @memberof DynamicTableComponent
    */
@@ -232,8 +254,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       setTimeout(() => {
         if (this._RowClickCount === 1) {
           // single
-          if(this._GWCommon.isFunction(this.rowClickBackMethod)) {
-            this.rowClickBackMethod(rowNumber);
+          if(this._OnRowClickCallBackMethod && this._GWCommon.isFunction(this._OnRowClickCallBackMethod)) {
+            this._OnRowClickCallBackMethod(rowNumber);
           }
           if (this.activeRow !== rowNumber) {
             this.activeRow = rowNumber;
@@ -249,9 +271,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   /**
-   * Handles the table > tbody > tr click event
-   * Sets the active row
+   * Handles the table > tbody > tr dblclick event
+   * Sets the active row and calls this._OnRowDoubleClickCallbackMethod
    *
+   * Use the set rowDoubleClickBackMethod property to use a desired callback method
    * @param {number} rowNumber
    * @memberof DynamicTableComponent
    */
@@ -259,8 +282,8 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if (this.activeRow !== rowNumber) {
       this.activeRow = rowNumber;
     }
-    if(this._GWCommon.isFunction(this.rowDoubleClickBackMethod)) {
-      this.rowDoubleClickBackMethod(rowNumber);
+    if(this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
+      this._OnRowDoubleClickCallbackMethod(rowNumber);
     }
   }
 
