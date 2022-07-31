@@ -1,4 +1,4 @@
-type CallbackMethod = (arg: any | any[]) => void;
+import { CallbackMethod } from './shared.types';
 
 export interface ICallbackButton {
   "id": string,
