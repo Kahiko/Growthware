@@ -123,6 +123,7 @@ export class SearchAccountsComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   private onRowDoubleClick (rowNumber: number): void {
+    console.log(this.searchFunctionsComponent.getRowData(rowNumber));
     const mMessage = 'hi from SearchAccountsComponent.onRowDoubleClick row "' + rowNumber + '" was clicked';
     this._LoggingSvc.toast(mMessage, 'onRowDoubleClick', LogLevel.Info);
   }
