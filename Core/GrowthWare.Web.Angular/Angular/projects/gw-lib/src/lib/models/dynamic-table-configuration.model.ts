@@ -36,6 +36,8 @@ export interface IDynamicTableConfiguration {
   public showHeading: boolean;
   public showHelp: boolean;
   public showSearch: boolean;
+  public rowClick?: (arg: any | any[]) => void;
+  public rowDoubleClick?: (arg: any | any[]) => void;
 
   constructor(
     buttons: ICallbackButton[] = [],
