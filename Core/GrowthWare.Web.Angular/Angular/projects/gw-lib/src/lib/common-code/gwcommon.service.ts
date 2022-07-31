@@ -6,6 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class GWCommon {
 
+  /**
+   * Adds or updates an element in an array so long as the elements in the array
+   * have an 'id' property.
+   *
+   * @param {any[]} yourArray
+   * @param {*} objectWithId
+   * @memberof GWCommon
+   */
   public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
     var mExistingIds = yourArray.map((obj) => obj.id);
 
