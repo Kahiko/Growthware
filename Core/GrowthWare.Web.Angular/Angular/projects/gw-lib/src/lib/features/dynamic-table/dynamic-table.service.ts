@@ -54,28 +54,6 @@ export class DynamicTableService {
   }
 
   /**
-   * Adds or updates the _TableConfigurations array with the tableConfiguration
-   * Indented to change a tableConfiguration most likely use case is when the
-   * rowClick or rowDoubleClick methods need to be overridden b/c functions
-   * are not in the JSON data.
-   * @memberof DynamicTableService
-   */
-  public set tableConfiguration(tableConfiguration: IDynamicTableConfiguration) {
-    if(!this._GWCommon.isNullOrUndefined(tableConfiguration)) {
-      var mExistingIds = this._TableConfigurations.map((obj) => obj.name);
-      if (!mExistingIds.includes(tableConfiguration.name)) {
-        this._TableConfigurations.push(tableConfiguration);
-      } else {
-        this._TableConfigurations.forEach((element, index) => {
-          if (element.name === tableConfiguration.name) {
-            this._TableConfigurations[index] = tableConfiguration;
-          }
-        });
-      }
-    }
-  }
-
-  /**
    * @description Allows an outside process to change the default table configurations
    *
    * @memberof DynamicTableService
