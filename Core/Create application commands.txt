@@ -17,11 +17,8 @@ Application:
 		ng generate component features/accounts/accountProfile --module accounts --project gw-frontend
 		ng generate module features/accounts/searchAccounts --route searchAccounts --module accounts.module --project gw-frontend
 		
-		ng generate component features/accounts --module app --project gw-frontend
 		ng generate component features/accounts/auth/login --module app --project gw-frontend
-		ng generate interface features/accounts/accountProfile --type model --project gw-frontend
 		ng generate service features/accounts/auth/auth --project gw-frontend
-		ng generate component features/accounts/searchAccounts --module accounts --project gw-frontend
 
 Library:
 	From Angular/projects/gw-lib/src/lib
