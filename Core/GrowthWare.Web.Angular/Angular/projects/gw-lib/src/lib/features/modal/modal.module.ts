@@ -11,7 +11,7 @@ import { ModalComponent } from './c/modal.component';
     ModalComponent
   ],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     CommonModule,
     FormsModule
   ],

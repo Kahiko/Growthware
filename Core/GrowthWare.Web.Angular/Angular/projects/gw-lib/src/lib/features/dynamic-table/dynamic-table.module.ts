@@ -15,7 +15,7 @@ import { PagerModule } from '@Growthware/Lib/src/lib/features/pager';
     DynamicTableComponent
   ],
   imports: [
-    BrowserModule,
+    // BrowserModule,
     CommonModule,
     FormsModule,
     MatButtonModule,

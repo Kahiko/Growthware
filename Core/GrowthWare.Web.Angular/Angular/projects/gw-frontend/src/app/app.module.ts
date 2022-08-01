@@ -6,17 +6,17 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModules } from './material.module';
 // Library Modules
-import { DynamicTableModule } from '@Growthware/Lib';
 import { ToastModule } from '@Growthware/Lib';
 // Application Modules/Components
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { AccountsComponent } from './features/accounts/accounts.component';
 import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { HomeComponent } from './home/home.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { SearchAccountsComponent } from './features/accounts/search-accounts/search-accounts.component';
+
+import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
+import { AccountsModule } from './features/accounts/accounts.module';
 
 @NgModule({
   declarations: [
@@ -25,14 +25,13 @@ import { SearchAccountsComponent } from './features/accounts/search-accounts/sea
     FetchDataComponent,
     HomeComponent,
     NavMenuComponent,
-    AccountsComponent,
-    SearchAccountsComponent,
   ],
   imports: [
     AppRoutingModule,
+    AccountsModule,
+    AccountsRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    DynamicTableModule,
     FlexLayoutModule,
     HttpClientModule,
     MaterialModules,
