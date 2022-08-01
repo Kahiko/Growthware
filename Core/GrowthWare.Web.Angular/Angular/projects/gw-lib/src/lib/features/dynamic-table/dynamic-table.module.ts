@@ -1,5 +1,4 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // Third Party
@@ -15,7 +14,6 @@ import { PagerModule } from '@Growthware/Lib/src/lib/features/pager';
     DynamicTableComponent
   ],
   imports: [
-    // BrowserModule,
     CommonModule,
     FormsModule,
     MatButtonModule,
