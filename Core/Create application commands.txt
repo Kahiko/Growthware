@@ -1,5 +1,6 @@
 					To track angular cli commands used
-					
+ng build --named-chunks --output-hashing=none --project gw-frontend
+
 Application:
 	From Angular/projects/gw-frontend/src/app
 		ng generate component skins/default/footer --module app --project gw-frontend
