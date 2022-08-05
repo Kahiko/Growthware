@@ -9,7 +9,7 @@ namespace GrowthWare.Framework
     public class ConfigSettings
     {
         private static readonly IConfiguration m_Configuration;
-        private static readonly string m_Connectionstring = string.Empty;
+        private static readonly string m_ConnectionString = string.Empty;
         private static readonly string m_SettingsDirectory = string.Empty;
         private static string s_CentralManagement = string.Empty;
         private static bool m_CentralManagement;
@@ -31,12 +31,12 @@ namespace GrowthWare.Framework
                 //.AddCommandLine(args)
                 .Build();
             String mDal = DataAccessLayer;
-            if(m_Connectionstring == null || (string.IsNullOrEmpty(m_Connectionstring) || string.IsNullOrWhiteSpace(m_Connectionstring)))
+            if(m_ConnectionString == null || (string.IsNullOrEmpty(m_ConnectionString) || string.IsNullOrWhiteSpace(m_ConnectionString)))
             {
-                m_Connectionstring = GetAppSettingValue("DAL_" + mDal + "_Connectionstring", true);
+                m_ConnectionString = GetAppSettingValue("DAL_" + mDal + "_Connectionstring", true);
                 try
                 {
-                    CryptoUtility.Decrypt(m_Connectionstring, EncryptionType);
+                    CryptoUtility.Decrypt(m_ConnectionString, EncryptionType);
                 }
                 catch (CryptoUtilityException)
                 {
@@ -141,7 +141,7 @@ namespace GrowthWare.Framework
         /// <remarks>The web.conf value can be encrypted or clear text</remarks>
         public static string ConnectionString
         {
-            get { return m_Connectionstring; }
+            get { return m_ConnectionString; }
         }
 
         /// <summary>
