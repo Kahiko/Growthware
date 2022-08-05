@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Utilities;
@@ -10,6 +11,10 @@ namespace GrowthWare.Web.Angular.Controllers;
 public class GrowthwareAPIController : ControllerBase
 {
     private readonly ILogger<GrowthwareAPIController> _logger;
+    private string m_ApplicationName = string.Empty;
+    private string m_Version = string.Empty;
+    private string m_LogPriority = string.Empty;
+
 
     public GrowthwareAPIController(ILogger<GrowthwareAPIController> logger)
     {
@@ -30,6 +35,27 @@ public class GrowthwareAPIController : ControllerBase
     {
         MAccountProfile mRetVal = new MAccountProfile();
         mRetVal.Password = string.Empty;
+        return mRetVal;
+    }
+
+    public UIAppSettings GetAppSettings()
+    {
+        UIAppSettings mRetVal = new UIAppSettings();
+        if(this.m_LogPriority == string.Empty)
+        {
+            this.m_LogPriority = ConfigSettings.LogPriority;
+        }
+        if(this.m_ApplicationName == string.Empty)
+        {
+            this.m_ApplicationName = ConfigSettings.AppDisplayedName;
+        }
+        if(this.m_Version == string.Empty)
+        {
+            this.m_Version = ConfigSettings.Version;
+        }
+        mRetVal.LogPriority = this.m_LogPriority;
+        mRetVal.Name = this.m_ApplicationName;
+        mRetVal.Version = this.m_Version;
         return mRetVal;
     }
 
