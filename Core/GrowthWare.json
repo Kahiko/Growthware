@@ -15,6 +15,7 @@
     "Server_Side_View_State": "True",
     "Server_Side_View_State_Pages": "16",
     "Strip_Domain_From_Http_Context_UserName": "False",
+    "Version": "0.0.0.1",
 
     "Development_Actions_AccessDenied": "AccessDenied",
     "Development_Actions_ChangePassword": "ChangePassword",

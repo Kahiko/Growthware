@@ -684,6 +684,11 @@ namespace GrowthWare.Framework
             get { return bool.Parse(GetAppSettingValue("Under_Construction")); }
         }
 
+        public static string Version
+        {
+            get { return GetAppSettingValue("Version"); }
+        }
+
         /// <summary>
         /// Returns Assembly from the web config and used to load the correct assembly name
         /// </summary>
