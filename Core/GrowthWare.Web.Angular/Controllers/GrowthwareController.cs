@@ -38,6 +38,7 @@ public class GrowthwareAPIController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetAppSettings")]
     public UIAppSettings GetAppSettings()
     {
         UIAppSettings mRetVal = new UIAppSettings();
