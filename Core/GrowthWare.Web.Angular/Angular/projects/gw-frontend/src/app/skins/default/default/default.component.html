@@ -1,0 +1,26 @@
+<gw-frontend-default-header></gw-frontend-default-header>
+<mat-drawer-container class="drawer-container" color="primary" autosize>
+  <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+    <button style="outline: none;" color="primary" mat-icon-button (click)="showSideNavLinkText = !showSideNavLinkText;">
+      <span *ngIf="showSideNavLinkText" class="material-icons">arrow_left</span>
+      <span *ngIf="!showSideNavLinkText" class="material-icons">arrow_right</span>
+    </button>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <div mat-list-item *ngFor="let item of sideNavLinks; let i = index">
+        <a *ngIf="item.isRouterLink" [routerLink]="['/', item.link]">
+          <i style="padding-right: 3px;" class="material-icons">{{ item.icon }}</i>
+          <span *ngIf="showSideNavLinkText" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
+        </a>
+        <a *ngIf="!item.isRouterLink" href="{{item.link}}" target="_blank">
+          <i style="padding-right: 3px;" class="material-icons">{{ item.icon }}</i>
+          <span *ngIf="showSideNavLinkText" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
+        </a>
+      </div>
+    </mat-nav-list>
+  </mat-drawer>
+  <div style="margin-left: 10px;">
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
+<gw-frontend-default-footer></gw-frontend-default-footer>

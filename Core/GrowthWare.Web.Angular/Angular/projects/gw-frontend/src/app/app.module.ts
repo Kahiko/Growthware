@@ -17,11 +17,13 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AccountsModule } from './features/accounts/accounts.module';
+import { DefaultModule } from './skins/default/default.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     CounterComponent,
+    // DefaultComponent,
     FetchDataComponent,
     HomeComponent,
     NavMenuComponent,
@@ -32,6 +34,7 @@ import { AccountsModule } from './features/accounts/accounts.module';
     AccountsRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    DefaultModule,
     FlexLayoutModule,
     HttpClientModule,
     MaterialModules,
