@@ -34,7 +34,7 @@ import { MatMenuModule } from '@angular/material/menu';
 // import { MatRadioModule } from '@angular/material/radio';
 // import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatSliderModule } from '@angular/material/slider';
+// import { MatSliderModule } from '@angular/material/slider';
 // import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 // import { MatSnackBarModule } from '@angular/material/snack-bar';
 // import { MatSortModule } from '@angular/material/sort';
@@ -79,7 +79,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   // MatRadioModule,
   // MatSelectModule,
   MatSidenavModule,
-  MatSliderModule,
+  // MatSliderModule,
   // MatSlideToggleModule,
   // MatSnackBarModule,
   // MatSortModule,
