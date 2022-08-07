@@ -17,13 +17,18 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AccountsModule } from './features/accounts/accounts.module';
-import { DefaultModule } from './skins/default/default.module';
+// import { DefaultModule } from './skins/default/default.module';
+import { DefaultComponent } from './skins/default/default/default.component';
+import { DefaultHeaderComponent } from './skins/default/layout/default-header/default-header.component';
+import { DefaultFooterComponent } from './skins/default/layout/default-footer/default-footer.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     CounterComponent,
-    // DefaultComponent,
+    DefaultComponent,
+    DefaultHeaderComponent,
+    DefaultFooterComponent,
     FetchDataComponent,
     HomeComponent,
     NavMenuComponent,
@@ -34,7 +39,7 @@ import { DefaultModule } from './skins/default/default.module';
     AccountsRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    DefaultModule,
+    // DefaultModule,
     FlexLayoutModule,
     HttpClientModule,
     MaterialModules,
