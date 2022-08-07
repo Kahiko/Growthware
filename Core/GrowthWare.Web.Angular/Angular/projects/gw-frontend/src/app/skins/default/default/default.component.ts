@@ -1,11 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 // Library
 import { ISideNavLink, SideNavLink } from '@Growthware/Lib/src/lib/models';
+import { animateText } from './animations/side-nav';
 
 @Component({
   selector: 'gw-frontend-default',
   templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss']
+  styleUrls: ['./default.component.scss'],
+  animations: [animateText],
 })
 export class DefaultComponent implements OnInit {
 

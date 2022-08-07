@@ -1,4 +1,4 @@
-<gw-frontend-default-header></gw-frontend-default-header>
+<gw-frontend-default-header [sidenav]="drawer"></gw-frontend-default-header>
 <mat-drawer-container class="drawer-container" color="primary" autosize>
   <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
     <button style="outline: none;" color="primary" mat-icon-button (click)="showSideNavLinkText = !showSideNavLinkText;">

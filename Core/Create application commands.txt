@@ -1,18 +1,39 @@
 					To track angular cli commands used
-ng build --named-chunks --output-hashing=none --project gw-frontend
-https://helperscript.com/create-a-module-with-routing-in-angular-and-make-it-as-the-main-module/
-https://www.freecodecamp.org/news/lazy-loading-in-angular-intro-to-ngmodules/
+Build with info (just gives longer name to the js file)
+	ng build --named-chunks --output-hashing=none --project gw-frontend
+
+Lazy Loading
+	https://helperscript.com/create-a-module-with-routing-in-angular-and-make-it-as-the-main-module/
+	https://www.freecodecamp.org/news/lazy-loading-in-angular-intro-to-ngmodules/
+
+How to create/update routes programmatically
+	https://rmannibucau.metawerx.net/angular-ng-10-create-update-route-at-runtime.html
+	https://mokkapps.de/blog/manually-lazy-load-modules-and-components-in-angular/
+	https://stackoverflow.com/questions/59236582/angular-load-routing-from-rest-service-before-initialization/61694578#61694578
+		https://long2know.com/2017/11/angular-dynamic-routes-and-application-initialization/
+		https://medium.com/codegg/pre-loading-user-specific-routes-in-angular-ce829430e1cb
+		https://www.tektutorialshub.com/angular/angular-how-to-use-app-initializer/#where-to-use-app-initializer
 
 Application:
-	From Angular/projects/gw-frontend/src/app
-		ng generate component skins/default/footer --module app --project gw-frontend
-		ng generate component skins/default/header --module app --project gw-frontend
-		ng generate component skins/default/sidebar --module app --project gw-frontend
+	From Angular
+	
+		ng generate service RouteLoader --project gw-frontend
+		create ensureRoutesExist.initializer by hand
 		
-		ng generate component skins/system/footer --module app --project gw-frontend
-		ng generate component skins/system/header --module app --project gw-frontend
-		ng generate component skins/system/sidebar --module app --project gw-frontend
+		ng generate module skins/default --routing --project gw-frontend
+		ng generate component skins/defaultComponent --module default --project gw-frontend
+		ng generate component skins/default/DefaultFooter --module default --project gw-frontend
+		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
+		ng generate component skins/default/DefaultSidebar --module default --project gw-frontend
 		
+		ng generate component skins/system/SystemFooter --module app --project gw-frontend
+		ng generate component skins/system/SystemHeader --module app --project gw-frontend
+		ng generate component skins/system/SystemSidebar --module app --project gw-frontend
+		
+		ng generate service services/BaseService --project gw-frontend
+		ng generate service services/configuration/configuration --project gw-frontend
+		ng generate interface services/configuration/AppSettings --type model --project gw-frontend
+
 		ng generate module features/accounts --routing --project gw-frontend
 		ng generate component features/accounts/accountProfile --module accounts --project gw-frontend
 		ng generate module features/accounts/searchAccounts --route searchAccounts --module accounts.module --project gw-frontend
@@ -65,4 +86,3 @@ Library:
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib
 		ng generate interface features/modal/ContentObject --type model --project gw-lib
 		ng generate interface features/modal/WindowSize --type model --project gw-lib
-
