@@ -1,7 +1,7 @@
 
 import { trigger, state, style, transition, animate } from '@angular/animations';
 
-export const animateText = trigger('animateText', [
+export const sideNavTextAnimation = trigger('animateText', [
   state(
     'hide',
     style({
