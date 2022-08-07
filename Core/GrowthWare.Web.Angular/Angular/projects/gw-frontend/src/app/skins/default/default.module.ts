@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FlexLayoutModule } from '@angular/flex-layout';
+
 import { MatDividerModule } from '@angular/material/divider';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
@@ -23,6 +25,7 @@ import { DefaultSidebarComponent } from './layout/default-sidebar/default-sideba
   imports: [
     CommonModule,
     DefaultRoutingModule,
+    FlexLayoutModule,
     MatDividerModule,
     MatIconModule,
     MatListModule,
