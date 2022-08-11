@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'counter', component: CounterComponent },
   { path: 'fetch-data', component: FetchDataComponent },
+  { path: 'search-accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule) },
 ];
 
 @NgModule({

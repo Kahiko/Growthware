@@ -2,6 +2,9 @@
 Build with info (just gives longer name to the js file)
 	ng build --named-chunks --output-hashing=none --project gw-frontend
 
+Building a Skinnable, Multi-Tenant Angular Application
+	https://itnext.io/building-a-skinnable-multi-tenant-angular-application-7bc6f558fc0c
+
 Lazy Loading
 	https://helperscript.com/create-a-module-with-routing-in-angular-and-make-it-as-the-main-module/
 	https://www.freecodecamp.org/news/lazy-loading-in-angular-intro-to-ngmodules/
