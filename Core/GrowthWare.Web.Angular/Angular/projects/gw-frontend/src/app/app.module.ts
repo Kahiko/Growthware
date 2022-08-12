@@ -1,5 +1,5 @@
-import { NgModule } from '@angular/core';
 // Third party Modules
+import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
@@ -7,16 +7,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModules } from './material.module';
 // Library Modules
 import { ToastModule } from '@Growthware/Lib';
-// Application Modules/Components
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { CounterComponent } from './counter/counter.component';
-import { FetchDataComponent } from './fetch-data/fetch-data.component';
-import { HomeComponent } from './home/home.component';
-import { NavMenuComponent } from './nav-menu/nav-menu.component';
-
+// Application Modules
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
-// import { DefaultModule } from './skins/default/default.module';
+import { AppRoutingModule } from './app-routing.module';
+import { MSDemoRoutingModule } from './ms-demo/ms-demo.routing.module';
+// Application Components
+import { AppComponent } from './app.component';
+import { HomeComponent } from './home/home.component';
 import { DefaultComponent } from './skins/default/default/default.component';
 import { DefaultHeaderComponent } from './skins/default/layout/default-header/default-header.component';
 import { DefaultFooterComponent } from './skins/default/layout/default-footer/default-footer.component';
@@ -24,23 +21,20 @@ import { DefaultFooterComponent } from './skins/default/layout/default-footer/de
 @NgModule({
   declarations: [
     AppComponent,
-    CounterComponent,
     DefaultComponent,
     DefaultHeaderComponent,
     DefaultFooterComponent,
-    FetchDataComponent,
     HomeComponent,
-    NavMenuComponent,
   ],
   imports: [
     AppRoutingModule,
     AccountsRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    // DefaultModule,
     FlexLayoutModule,
     HttpClientModule,
     MaterialModules,
+    MSDemoRoutingModule,
     ToastModule,
   ],
   providers: [],
