@@ -34,10 +34,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   ngAfterViewInit(): void {
     // Setup the dynamic table button methods
     const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
-    mDynamicTableBtnMethods.btnTopLeftCallBackMethod = () => { this.onBtnTopLeft(); }
     mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => { this.onBtnTopRight(); }
-    mDynamicTableBtnMethods.btnBottomLeftCallBackMethod = () => { this.onBtnBottomLeft(); }
-    mDynamicTableBtnMethods.btnBottomRightCallBackMethod = () => { this.onBtnBottomRight(); }
     this.dynamicTable.setButtonMethods(mDynamicTableBtnMethods);
     // setup the dynamic table "single" and "double" row clicks
     this.dynamicTable.rowClickBackMethod = (rowNumber: number) => { this.onRowClick(rowNumber); };
@@ -76,43 +73,19 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
     this._SearchCriteriaChangedSub.unsubscribe();
   }
 
-  private onBtnTopLeft () {
-    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnTopLeft', 'onBtnTopLeft', LogLevel.Info);
-  }
-
   private onBtnTopRight () {
-    // this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnTopRight', 'onBtnTopRight', LogLevel.Info);
-    const mModalOptions: IModalOptions = new ModalOptions('testModal', 'header text', 'hello there', ModalSize.ExtraLarge);
-    const mCallbackButton = new CallbackButton('cancel', 'cancel_testModal', 'cancel_testModal', true);
-    mCallbackButton.callbackMethod = () => {
-      this._ModalSvc.close(mModalOptions.modalId);
-    };
-    // mModalOptions.buttons.closeButton = JSON.parse(JSON.stringify(mCallbackButton));
-    mModalOptions.buttons.closeButton = {...mCallbackButton};
-    mCallbackButton.id = 'ok_testModal',
-    mCallbackButton.text = "OK"
-    // mModalOptions.buttons.okButton = JSON.parse(JSON.stringify(mCallbackButton));
-    mModalOptions.buttons.okButton = {...mCallbackButton};
-
+    const mModalOptions: IModalOptions = new ModalOptions('addAccount', 'Add Account', AccountDetailsComponent, ModalSize.ExtraLarge);
     this._ModalSvc.open(mModalOptions);
   }
 
-  private onBtnBottomLeft () {
-    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomLeft', 'onBtnBottomLeft', LogLevel.Info);
-  }
-
-  private onBtnBottomRight () {
-    this._LoggingSvc.toast('hi from SearchAccountsComponent.onBtnBottomRight', 'onBtnBottomRight', LogLevel.Info);
-  }
-
   private onRowClick (rowNumber: number): void {
-    const mMessage = 'hi from SearchAccountsComponent.onRowClick row "' + rowNumber + '" was clicked';
-    this._LoggingSvc.toast(mMessage, 'onRowClick', LogLevel.Info);
+    // Do nothing ATM just leaving as an example
+    // const mMessage = 'hi from SearchAccountsComponent.onRowClick row "' + rowNumber + '" was clicked';
+    // this._LoggingSvc.toast(mMessage, 'onRowClick', LogLevel.Info);
   }
 
   private onRowDoubleClick (rowNumber: number): void {
-    console.log(this.dynamicTable.getRowData(rowNumber));
-    const mMessage = 'hi from SearchAccountsComponent.onRowDoubleClick row "' + rowNumber + '" was clicked';
-    this._LoggingSvc.toast(mMessage, 'onRowDoubleClick', LogLevel.Info);
+    const mModalOptions: IModalOptions = new ModalOptions('editAccount', 'Edit Account', AccountDetailsComponent, ModalSize.ExtraLarge);
+    this._ModalSvc.open(mModalOptions);
   }
 }
