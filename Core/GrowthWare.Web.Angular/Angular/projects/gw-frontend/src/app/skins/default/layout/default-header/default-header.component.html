@@ -22,12 +22,14 @@
               <mat-icon>person_outline</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
+              <a mat-menu-item [routerLink]="['/edit-my-account']">
+                <mat-icon>settings</mat-icon><span>Edit Profile</span>
+              </a>
               <button mat-menu-item>
                 <mat-icon>exit_to_app</mat-icon>
                 Sign out
               </button>
             </mat-menu>
-
           </li>
         </ul>
       </div>
