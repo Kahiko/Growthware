@@ -27,9 +27,9 @@ export class ToastService {
   showToast(toastMessage: ToastMessage): void {
     this._toastMessages
       .pipe(distinct(({ message }) => message))
-      .subscribe((toastMessage: ToastMessage) => {
-        console.log(toastMessage.message);
-      });
+      // .subscribe((toastMessage: ToastMessage) => {
+      //   console.log(toastMessage.message);
+      // });
     this._toastMessages.next(toastMessage);
   }
 
