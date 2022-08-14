@@ -10,7 +10,7 @@ import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from './search-cr
   providedIn: 'root'
 })
 export class SearchService {
-  private _SearchUrl: string = this._GWCommon.baseURL + 'GrowthWareAPI/Search';
+  private _SearchUrl: string = this._GWCommon.baseURL + 'GrowthwareAPI/Search';
 
   public searchCriteriaChanged = new Subject<SearchCriteriaNVP>();
 
@@ -41,7 +41,7 @@ export class SearchService {
   }
 
   /**
-   * Calls GrowthWareAPI.Search
+   * Calls GrowthwareAPI.Search
    *
    * @param {SearchCriteria} criteria
    * @return {*}  {Promise<any>}
@@ -109,26 +109,26 @@ export class SearchService {
   }
 
   /**
-   * Calls GrowthWareAPI.SearchAccounts
+   * Calls GrowthwareAPI.SearchAccounts
    *
    * @param {SearchCriteriaNVP} criteria
    * @return {*}  {Promise<any>}
    * @memberof SearchService
    */
   public async searchAccounts(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthWareAPI/SearchAccounts';
+    const mUrl = this._GWCommon.baseURL + 'GrowthwareAPI/SearchAccounts';
     return this.getResults(mUrl, criteria);
   }
 
   /**
-   * Calls GrowthWareAPI.SearchFunctions
+   * Calls GrowthwareAPI.SearchFunctions
    *
    * @param {SearchCriteriaNVP} criteria
    * @return {*}  {Promise<any>}
    * @memberof SearchService
    */
    public async searchFunctions(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthWareAPI/SearchFunctions';
+    const mUrl = this._GWCommon.baseURL + 'GrowthwareAPI/SearchFunctions';
     return this.getResults(mUrl, criteria);
   }
 

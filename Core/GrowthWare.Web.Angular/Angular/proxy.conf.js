@@ -6,7 +6,7 @@ const PROXY_CONFIG = [
   {
     context: [
       "/weatherforecast",
-      "/GrowthWareAPI",
+      "/GrowthwareAPI",
       "/swagger"
    ],
     target: target,

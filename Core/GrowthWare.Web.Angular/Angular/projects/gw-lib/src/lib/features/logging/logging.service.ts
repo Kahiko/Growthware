@@ -21,7 +21,7 @@ export class LoggingService {
     private _GWCommon: GWCommon,
     private _ToastSvc: ToastService
   ) {
-    this._LoggingURL = _GWCommon.baseURL + 'GrowthWareAPI/Log';
+    this._LoggingURL = _GWCommon.baseURL + 'GrowthwareAPI/Log';
   }
 
   private getStackTrace(): string {
