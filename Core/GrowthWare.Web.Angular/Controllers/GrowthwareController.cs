@@ -22,18 +22,10 @@ public class GrowthwareAPIController : ControllerBase
     }
 
 
-    [HttpGet("GetAccountByAccount")]
+    [HttpGet("GetAccount")]
     public MAccountProfile GetAccount(string account)
     {
         MAccountProfile mRetVal = AccountUtility.GetAccount(account);
-        mRetVal.Password = string.Empty;
-        return mRetVal;
-    }
-
-    [HttpGet("GetAccountById")]
-    public MAccountProfile GetAccount(int accountSeqId)
-    {
-        MAccountProfile mRetVal = new MAccountProfile();
         mRetVal.Password = string.Empty;
         return mRetVal;
     }
