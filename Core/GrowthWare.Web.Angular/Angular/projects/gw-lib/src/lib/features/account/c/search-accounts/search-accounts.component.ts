@@ -41,17 +41,6 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
     // setup the dynamic table "single" and "double" row clicks
     this.dynamicTable.rowClickBackMethod = (rowNumber: number) => { this.onRowClick(rowNumber); };
     this.dynamicTable.rowDoubleClickBackMethod = (rowNumber: number) => { this.onRowDoubleClick(rowNumber); };
-
-    const mLogOptions: ILogOptions = new LogOptions('Testing using options');
-    mLogOptions.componentName = "Search Account"
-    mLogOptions.className = 'SearchAccountsComponent';
-    mLogOptions.methodName = 'ngAfterViewInit';
-    mLogOptions.level = LogLevel.Error;
-    this._LoggingSvc.log(mLogOptions);
-    this._LoggingSvc.console('Testing using console method', LogLevel.Info);
-    mLogOptions.level = LogLevel.Warn;
-    mLogOptions.msg = mLogOptions.msg + ' with level Warn'
-    this._LoggingSvc.log(mLogOptions);
   }
 
   ngOnInit(): void {
