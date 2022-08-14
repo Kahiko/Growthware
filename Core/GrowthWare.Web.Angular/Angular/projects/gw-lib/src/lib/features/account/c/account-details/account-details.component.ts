@@ -19,7 +19,6 @@ export class AccountDetailsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    console.log(this._AccountSvc.accountId);
     this._AccountSvc.getAccountById(this._AccountSvc.accountId).then((accountProfile: IAccountProfile) => {
       console.log(accountProfile);
     }).catch((reason) => {
