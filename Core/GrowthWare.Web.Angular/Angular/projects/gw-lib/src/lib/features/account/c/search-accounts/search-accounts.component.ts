@@ -4,11 +4,12 @@ import { Subscription } from 'rxjs';
 import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/features/search';
-import { CallbackButton, DynamicTableBtnMethods, INameValuePare } from '@Growthware/Lib/src/lib/models';
+import { DynamicTableBtnMethods, INameValuePare } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
 import { AccountDetailsComponent } from '../account-details/account-details.component';
+import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'gw-lib-search-accounts',
@@ -24,6 +25,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   public results: any;
 
   constructor(
+    private _AccountSvc: AccountService,
     private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
     private _LoggingSvc: LoggingService,
@@ -85,6 +87,8 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   }
 
   private onRowDoubleClick (rowNumber: number): void {
+    const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
+    this._AccountSvc.accountId = mDataRow.AccountSeqId;
     const mModalOptions: IModalOptions = new ModalOptions('editAccount', 'Edit Account', AccountDetailsComponent, ModalSize.ExtraLarge);
     this._ModalSvc.open(mModalOptions);
   }

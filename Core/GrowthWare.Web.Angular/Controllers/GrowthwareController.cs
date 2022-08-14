@@ -30,7 +30,7 @@ public class GrowthwareAPIController : ControllerBase
         return mRetVal;
     }
 
-    [HttpGet("GetAccountById")]
+    [HttpPost("GetAccountById")]
     public MAccountProfile GetAccount(int accountSeqId)
     {
         MAccountProfile mRetVal = new MAccountProfile();
