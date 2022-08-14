@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -32,13 +32,15 @@ export class AccountService {
     }
 
   public async getAccountById(accountSeqId: number): Promise<IAccountProfile> {
+    const mQueryParameter: HttpParams = new HttpParams().append('accountSeqId', accountSeqId);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
+      parameters: mQueryParameter,
     };
     return new Promise<IAccountProfile>((resolve, reject) => {
-      this._HttpClient.post<IAccountProfile>(this._Api_GetAccountById, accountSeqId, mHttpOptions).subscribe({
+      this._HttpClient.get<IAccountProfile>(this._Api_GetAccountById, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
