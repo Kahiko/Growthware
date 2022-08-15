@@ -13,6 +13,7 @@ public static class SecurityEntityUtility {
         mRetVal.DataAccessLayer = ConfigSettings.DataAccessLayer;
         mRetVal.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
         mRetVal.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace;
+        mRetVal.Id = 1;
         return mRetVal;
     }
 }
