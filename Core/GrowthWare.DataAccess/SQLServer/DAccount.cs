@@ -1,5 +1,4 @@
 using GrowthWare.DataAccess.Interfaces;
-using GrowthWare.DataAccess.SQLServer.Base;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using System;
@@ -18,7 +17,7 @@ namespace GrowthWare.DataAccess.SQLServer
     ///		Properties where chosen instead of parameters because all
     ///		methods will need one or both to perform their work.
     ///	</remarks>    
-    public class DAccount: DSearch, IAccount
+    public class DAccounts: DSearch, IAccount
     {
 #region Private Field
 
