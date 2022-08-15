@@ -75,7 +75,7 @@ namespace GrowthWare.BusinessLogic
         public BAccounts(MSecurityEntity securityEntityProfile, bool centralManagement)
         {
             if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-            if (centralManagement)
+            if (!centralManagement)
             {
                 if (m_DAccounts == null)
                 {
