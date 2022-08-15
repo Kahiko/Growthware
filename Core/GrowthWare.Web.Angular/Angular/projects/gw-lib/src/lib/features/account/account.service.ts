@@ -11,16 +11,16 @@ import { IAccountProfile } from './account-profile.model';
 })
 export class AccountService {
 
-  private _AccountId: number = -1;
+  private _Account: string = '';
   private _ApiName: string = 'GrowthwareAPI/';
-  private _Api_GetAccountById: string = '';
+  private _Api_GetAccount: string = '';
 
-  public get accountId(): number {
-    return this._AccountId;
+  public get account(): string {
+    return this._Account;
   }
 
-  public set accountId(value: number) {
-    this._AccountId = value;
+  public set account(value: string) {
+    this._Account = value;
   }
 
   constructor(
@@ -28,24 +28,25 @@ export class AccountService {
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService
     ) {
-      this._Api_GetAccountById = this._GWCommon.baseURL + this._ApiName + 'GetAccountById';
+      this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
     }
 
-  public async getAccountById(accountSeqId: number): Promise<IAccountProfile> {
-    const mQueryParameter: HttpParams = new HttpParams().append('accountSeqId', accountSeqId);
+  public async getAccount(account: string): Promise<IAccountProfile> {
+    const mQueryParameter: HttpParams = new HttpParams().append('account', account);
+    console.log(mQueryParameter);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
-      parameters: mQueryParameter,
+      params: mQueryParameter,
     };
     return new Promise<IAccountProfile>((resolve, reject) => {
-      this._HttpClient.get<IAccountProfile>(this._Api_GetAccountById, mHttpOptions).subscribe({
+      this._HttpClient.get<IAccountProfile>(this._Api_GetAccount, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
         error: (error: any) => {
-          this.errorHandler(error, 'getAccountById');
+          this.errorHandler(error, 'getAccount');
           reject('Failed to call the API');
         },
         // complete: () => {}

@@ -19,7 +19,7 @@ export class AccountDetailsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this._AccountSvc.getAccountById(this._AccountSvc.accountId).then((accountProfile: IAccountProfile) => {
+    this._AccountSvc.getAccount(this._AccountSvc.account).then((accountProfile: IAccountProfile) => {
       console.log(accountProfile);
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
