@@ -33,7 +33,6 @@ export class AccountService {
 
   public async getAccount(account: string): Promise<IAccountProfile> {
     const mQueryParameter: HttpParams = new HttpParams().append('account', account);
-    console.log(mQueryParameter);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
