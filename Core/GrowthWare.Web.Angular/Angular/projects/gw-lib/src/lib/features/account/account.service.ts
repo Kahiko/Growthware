@@ -32,7 +32,11 @@ export class AccountService {
     }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
-    const mQueryParameter: HttpParams = new HttpParams().append('account', account);
+    let mAccount: string = account;
+    if(this._GWCommon.isNullOrEmpty(mAccount)) {
+      mAccount = '_';
+    }
+    const mQueryParameter: HttpParams = new HttpParams().append('account', mAccount);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
