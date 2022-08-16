@@ -32,9 +32,14 @@
 }
 
 .blue {
+  height: 32px;
   color: #fff;
   background-color: #337ab7;
   border-color: #337ab7;
+}
+
+.blue>h3 {
+  padding-top: 15px;
 }
 
 @keyframes open {
