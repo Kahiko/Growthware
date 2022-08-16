@@ -7,7 +7,7 @@
           <h5 class="modal-title">{{header}}</h5>
           <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="btn-close btn-close-white" (click)="onCancel()" aria-label="Close"></button>
         </div>
-        <div class="modal-body">
+        <div class="modal-body" [ngStyle]="{ 'height.px': height-70 }">
           <p><ng-content></ng-content></p>
         </div>
         <div class="modal-footer">
