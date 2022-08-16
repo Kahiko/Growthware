@@ -1,19 +1,19 @@
 <div class="modal-backdrop"></div>
-<div class="modal-container" id="yabadabado" [ngStyle]="{ 'height.px': height, 'width.px': width }" tabindex="-1" role="dialog">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">{{header}}</h5>
-        <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="close" data-dismiss="modal" aria-label="Close" (click)="onCancel()">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <ng-content></ng-content>
-      </div>
-      <div class="modal-footer">
-        <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
-        <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
+<div class="div-container">
+  <div class="custom-modal" [ngStyle]="{ 'height.px': height, 'width.px': width }">
+    <div class="custom-dialog">
+      <div class="modal-content">
+        <div class="modal-header blue">
+          <h5 class="modal-title">{{header}}</h5>
+          <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="btn-close btn-close-white" (click)="onCancel()" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p><ng-content></ng-content></p>
+        </div>
+        <div class="modal-footer">
+          <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
+          <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
+        </div>
       </div>
     </div>
   </div>

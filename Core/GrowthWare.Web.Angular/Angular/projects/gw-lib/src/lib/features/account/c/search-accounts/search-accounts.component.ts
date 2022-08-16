@@ -77,6 +77,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
     const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
     this._AccountSvc.account = mDataRow.Account;
     const mModalOptions: IModalOptions = new ModalOptions('editAccount', 'Edit Account', AccountDetailsComponent, ModalSize.ExtraLarge);
+    console.log('onRowDoubleClick window.innerWidth: ' + window.innerWidth);
     this._ModalSvc.open(mModalOptions);
   }
 }

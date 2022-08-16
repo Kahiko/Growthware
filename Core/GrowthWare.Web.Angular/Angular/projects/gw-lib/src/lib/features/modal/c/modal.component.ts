@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Services
-import {
-  LoggingService,
-  LogLevel,
-} from '@Growthware/Lib/src/lib/features/logging';
+import { LoggingService, LogLevel, } from '@Growthware/Lib/src/lib/features/logging';
 
 // Interfaces / Common Code
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
@@ -38,23 +35,35 @@ export class ModalComponent implements OnInit {
   constructor(private _LoggingSvc: LoggingService, private _GWCommon: GWCommon) { }
 
   private getWindowSize(options: IModalOptions): IWindowSize {
+/**
+  3 - ExtraLarge = 95,
+  2 - Large = 60,
+  0 - Normal = 40,
+  1 - Small = 20,
+  Custom = -1,
+ */
+
+    let mPercentage = .40;
     const mRetVal = new WindowSize(0, 0);
     switch (options.windowSize) {
       case 0:
-        mRetVal.pxHeight = 300;
-        mRetVal.pxWidth = 400;
+        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 1:
-        mRetVal.pxHeight = 100;
-        mRetVal.pxWidth = 200;
+        mPercentage = .20;
+        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 2:
-        mRetVal.pxHeight = 400;
-        mRetVal.pxWidth = 500;
+        mPercentage = .60;
+        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       case 3:
-        mRetVal.pxHeight = 500;
-        mRetVal.pxWidth = 600;
+        mPercentage = .95;
+        mRetVal.pxHeight = window.innerHeight * (mPercentage -.05);
+        mRetVal.pxWidth = window.innerWidth * mPercentage;
         break;
       default:
         const mWindowSize = options.windowSize as IWindowSize;

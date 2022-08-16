@@ -76,6 +76,7 @@ export class ModalService {
   }
 
   public open<T>(options: IModalOptions): void {
+    console.log('window.innerWidth: ' + window.innerWidth);
     if(this._GWCommon.isNullOrEmpty(options.modalId)) {
       this._LoggingSvc.toast('options.modalId can not be null or blank', 'Modal Service', LogLevel.Error);
       return;

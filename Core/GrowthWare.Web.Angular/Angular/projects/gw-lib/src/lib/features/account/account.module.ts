@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+// Angular Material
+import { MatTabsModule } from '@angular/material/tabs';
+// Library
+import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
+// Feature Components
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
-
-import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
 
 @NgModule({
   declarations: [
@@ -13,6 +16,7 @@ import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-tab
   imports: [
     CommonModule,
     DynamicTableModule,
+    MatTabsModule,
   ],
   exports: [
     AccountDetailsComponent,
