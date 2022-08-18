@@ -22,11 +22,15 @@
               <mat-icon>person_outline</mat-icon>
             </button>
             <mat-menu #menu="matMenu">
-              <a mat-menu-item [routerLink]="['/edit-my-account']">
+              <button *ngIf="!isAuthenticated" (click)="onLogin()" mat-menu-item>
+                <mat-icon>login</mat-icon>
+                Sign in
+              </button>
+              <a *ngIf="isAuthenticated" mat-menu-item [routerLink]="['/edit-my-account']">
                 <mat-icon>settings</mat-icon><span>Edit Profile</span>
               </a>
-              <button mat-menu-item>
-                <mat-icon>exit_to_app</mat-icon>
+              <button *ngIf="isAuthenticated" (click)="onLogout()" mat-menu-item>
+                <mat-icon>logout</mat-icon>
                 Sign out
               </button>
             </mat-menu>
