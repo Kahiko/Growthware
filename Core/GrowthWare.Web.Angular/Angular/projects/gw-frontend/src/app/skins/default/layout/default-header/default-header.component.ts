@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { LoginComponent, ModalService, ModalOptions, ModalSize } from '@Growthware/Lib';
+import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login/login.component';
+import { ModalService, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
 
 @Component({
   selector: 'gw-frontend-default-header',
