@@ -1,20 +1,18 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Library Modules
-import { DynamicTableModule } from '@Growthware/Lib';
 import { AccountModule } from '@Growthware/Lib';
 
 // Feature
 import { AccountsRoutingModule } from './accounts-routing.module';
-import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
+import { ListAccountsComponent } from './list-accounts/list-accounts.component';
 
 @NgModule({
   declarations: [
-    SearchAccountsComponent
+    ListAccountsComponent,
   ],
   imports: [
     CommonModule,
-    DynamicTableModule,
     AccountModule,
     AccountsRoutingModule,
   ]

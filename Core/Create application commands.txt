@@ -38,11 +38,7 @@ Application:
 		ng generate interface services/configuration/AppSettings --type model --project gw-frontend
 
 		ng generate module features/accounts --routing --project gw-frontend
-		ng generate component features/accounts/accountProfile --module accounts --project gw-frontend
-		ng generate module features/accounts/searchAccounts --route searchAccounts --module accounts.module --project gw-frontend
-		
-		ng generate component features/accounts/auth/login --module app --project gw-frontend
-		ng generate service features/accounts/auth/auth --project gw-frontend
+		ng generate component features/accounts/ListAccounts --module accounts.module --project gw-frontend
 
 Library:
 	From Angular/projects/gw-lib/src/lib
@@ -95,3 +91,7 @@ Library:
 		ng generate service features/account/account --project gw-lib
 		ng generate component features/account/c/accountDetails --module accounts --style scss --project gw-lib
 		ng generate component features/account/c/SearchAccounts --module accounts --style scss --project gw-lib
+		
+		ng generate component features/accounts/login --module accounts.module --project gw-lib
+		ng generate service features/accounts/auth/auth --project gw-lib
+

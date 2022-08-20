@@ -2,11 +2,14 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 import { AccountDetailsComponent } from '@Growthware/Lib';
-import { SearchAccountsComponent } from './search-accounts/search-accounts.component';
+import { ListAccountsComponent } from './list-accounts/list-accounts.component';
+import { LoginComponent } from '@Growthware/Lib';
 
 const routes: Routes = [
-  { path: '', component: SearchAccountsComponent },
+  { path: '', component: ListAccountsComponent},
+  { path: 'edit-account', component: AccountDetailsComponent },
   { path: 'edit-my-account', component: AccountDetailsComponent },
+  { path: 'login', component: LoginComponent}
 ];
 
 @NgModule({

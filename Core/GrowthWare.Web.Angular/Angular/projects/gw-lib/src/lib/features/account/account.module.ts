@@ -7,11 +7,13 @@ import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-tab
 // Feature Components
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
+import { LoginComponent } from './c/login/login.component';
 
 @NgModule({
   declarations: [
     AccountDetailsComponent,
-    SearchAccountsComponent
+    SearchAccountsComponent,
+    LoginComponent
   ],
   imports: [
     CommonModule,

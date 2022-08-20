@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalService, ModalOptions, ModalSize } from '@Growthware/Lib';
+import { LoginComponent, ModalService, ModalOptions, ModalSize } from '@Growthware/Lib';
 
 @Component({
   selector: 'gw-frontend-default-header',
@@ -19,7 +19,7 @@ export class DefaultHeaderComponent implements OnInit {
   }
 
   onLogin(): void {
-    const mModalOptions: ModalOptions = new ModalOptions(this.mLoginId, 'Login', 'account/password and buttons', ModalSize.Normal);
+    const mModalOptions: ModalOptions = new ModalOptions(this.mLoginId, 'Login', LoginComponent, ModalSize.Normal);
     this._ModalSvc.open(mModalOptions);
     this.isAuthenticated = true;
   }
