@@ -88,10 +88,8 @@ Library:
 		
 		ng generate module features/account --project gw-lib
 		ng generate interface features/account/accountProfile --type model --project gw-lib
-		ng generate service features/account/account --project gw-lib
 		ng generate component features/account/c/accountDetails --module accounts --style scss --project gw-lib
 		ng generate component features/account/c/SearchAccounts --module accounts --style scss --project gw-lib
-		
-		ng generate component features/accounts/login --module accounts.module --project gw-lib
-		ng generate service features/accounts/auth/auth --project gw-lib
+		ng generate component features/account/c/login --module account.module --project gw-lib
+		ng generate service features/account/account --project gw-lib
 
