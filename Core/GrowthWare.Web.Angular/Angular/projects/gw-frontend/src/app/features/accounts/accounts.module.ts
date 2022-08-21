@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
 
 // Feature
 import { AccountsRoutingModule } from './accounts-routing.module';
@@ -9,8 +10,9 @@ import { AccountsRoutingModule } from './accounts-routing.module';
     // SearchAccountsComponent,
   ],
   imports: [
-    CommonModule,
     AccountsRoutingModule,
+    CommonModule,
+    MatButtonModule,
   ]
 })
 export class AccountsModule { }

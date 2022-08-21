@@ -93,3 +93,6 @@ Library:
 		ng generate component features/account/c/login --module account.module --project gw-lib
 		ng generate service features/account/account --project gw-lib
 
+		ng generate module features/PickList --project gw-lib
+		ng generate component features/PickList/c/PickList --module PickList --style scss --project gw-lib
+		

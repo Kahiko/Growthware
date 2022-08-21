@@ -1,7 +1,42 @@
-<mat-tab-group>
+<mat-tab-group class="mat-tab-group"  mat-align-tabs="center">
   <mat-tab label="General"> General </mat-tab>
-  <mat-tab label="Roles"> Roles </mat-tab>
-  <mat-tab label="Groups"> Groups </mat-tab>
-  <mat-tab label="Derived Roles"> Derived Roles </mat-tab>
+  <mat-tab label="Roles">
+    <gw-lib-pick-list
+    id="roles"
+    name="roles"
+    allItemsText="Available Roles"
+    header="Assign roles"
+    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+    selectedItemsText="Selected Roles"
+    size=8
+    width=120></gw-lib-pick-list>
+  </mat-tab>
+  <mat-tab label="Groups">
+    <gw-lib-pick-list
+    id="groups"
+    name="groups"
+    allItemsText="Available Groups"
+    header="Assign Groups"
+    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
+    selectedItemsText="Selected Groups"
+    size=8
+    width=120></gw-lib-pick-list>  </mat-tab>
+  <mat-tab label="Derived Roles">
+    <div class="mat-tab__content">
+      Derived Roles
+    </div>
+  </mat-tab>
 </mat-tab-group>
-
+<div class="row buttonRow">
+  <div class="column">
+    <button mat-button color="primary">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
+    </button>
+    <button mat-button color="warn">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
+    </button>
+    <button mat-button color="accent">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
+    </button>
+  </div>
+</div>
