@@ -11,6 +11,15 @@
   color: white;
 }
 
+.drawer-nav-list {
+  width: 40px;
+  height: calc(85vh);
+}
+
+.drawer-nav-list__list-item {
+  padding-left: 12px;
+}
+
 .drawer-container {
   width: 100%;
   height: calc(85vh);
