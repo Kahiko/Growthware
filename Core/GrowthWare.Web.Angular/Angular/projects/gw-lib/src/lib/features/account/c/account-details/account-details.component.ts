@@ -32,7 +32,7 @@ export class AccountDetailsComponent implements OnInit {
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
-    console.log(this._Router.url);
+    // console.log(this._Router.url);
     if(this._Router.url === '/search-accounts') {
       this.canCancel = true;
     }
