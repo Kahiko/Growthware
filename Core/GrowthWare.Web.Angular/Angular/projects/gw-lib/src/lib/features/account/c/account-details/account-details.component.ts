@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 
 import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';
@@ -13,9 +15,13 @@ import { AccountService } from '../../account.service';
 export class AccountDetailsComponent implements OnInit {
   private _AccountProfile!: IAccountProfile;
 
+  canCancel: boolean = false;
+
   constructor(
     private _AccountSvc: AccountService,
-    private _LoggingSvc: LoggingService
+    private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
+    private _Router: Router
     ) { }
 
   ngOnInit(): void {
@@ -24,5 +30,14 @@ export class AccountDetailsComponent implements OnInit {
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
+    const mUrl = this._Router.url.substring(1,this._Router.url.length -1);
+    if(mUrl === 'search-account') {
+      this.canCancel = true;
+    }
+  }
+
+  onCancel() {
+    this._ModalSvc.close(this._AccountSvc.addModalId);
+    this._ModalSvc.close(this._AccountSvc.editModalId);
   }
 }

@@ -35,7 +35,7 @@
     <button mat-button color="warn">
       <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
     </button>
-    <button mat-button color="accent">
+    <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
       <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
     </button>
   </div>

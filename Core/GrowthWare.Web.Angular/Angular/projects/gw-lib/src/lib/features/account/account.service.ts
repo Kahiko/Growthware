@@ -24,6 +24,13 @@ export class AccountService {
     this._Account = value;
   }
 
+  public get addModalId(): string {
+    return 'addAccount'
+  }
+  public get editModalId(): string {
+    return 'editAccount'
+  }
+
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
