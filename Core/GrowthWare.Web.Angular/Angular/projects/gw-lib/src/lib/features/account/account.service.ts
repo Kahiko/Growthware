@@ -14,6 +14,7 @@ export class AccountService {
   private _Account: string = '';
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_GetAccount: string = '';
+  private _DefaultAccount: string = 'Anonymous'
 
   public get account(): string {
     return this._Account;
