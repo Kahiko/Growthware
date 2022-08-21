@@ -30,14 +30,30 @@ export class AccountDetailsComponent implements OnInit {
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
-    const mUrl = this._Router.url.substring(1,this._Router.url.length -1);
-    if(mUrl === 'search-account') {
+    if(this._Router.url === '/search-account') {
       this.canCancel = true;
     }
   }
 
-  onCancel() {
-    this._ModalSvc.close(this._AccountSvc.addModalId);
-    this._ModalSvc.close(this._AccountSvc.editModalId);
+  closeModal(): void {
+    if(this._Router.url === '/search-account') {
+      this._ModalSvc.close(this._AccountSvc.addModalId);
+      this._ModalSvc.close(this._AccountSvc.editModalId);
+    }
+
+  }
+
+  onCancel(): void {
+    this.closeModal();
+  }
+
+  onDelete(): void {
+    this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
+    this.closeModal();
+  }
+
+  onSave(): void {
+    this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+    this.closeModal();
   }
 }
