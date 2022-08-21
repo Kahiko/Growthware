@@ -16,6 +16,8 @@ export class AccountDetailsComponent implements OnInit {
   private _AccountProfile!: IAccountProfile;
 
   canCancel: boolean = false;
+  canDelete: boolean = false;
+  canSave: boolean = false;
 
   constructor(
     private _AccountSvc: AccountService,
@@ -30,13 +32,21 @@ export class AccountDetailsComponent implements OnInit {
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
-    if(this._Router.url === '/search-account') {
+    console.log(this._Router.url);
+    if(this._Router.url === '/search-accounts') {
       this.canCancel = true;
     }
+
+    if(this._Router.url === '/edit-my-account') {
+      this.canDelete = false;
+    } else {
+      // TODO: add more logic to check authorization
+    }
+    // TODO: add more logic to check authorization and show/hide Save button
   }
 
   closeModal(): void {
-    if(this._Router.url === '/search-account') {
+    if(this._Router.url === '/search-accounts') {
       this._ModalSvc.close(this._AccountSvc.addModalId);
       this._ModalSvc.close(this._AccountSvc.editModalId);
     }

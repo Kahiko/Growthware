@@ -32,7 +32,7 @@
     <button (click)="onSave()" mat-button color="primary">
       <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
     </button>
-    <button (click)="onDelete()" mat-button color="warn">
+    <button *ngIf="canDelete" (click)="onDelete()" mat-button color="warn">
       <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
     </button>
     <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
