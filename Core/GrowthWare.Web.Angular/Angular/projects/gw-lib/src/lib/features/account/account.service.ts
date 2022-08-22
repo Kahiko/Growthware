@@ -15,11 +15,11 @@ export class AccountService {
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_GetAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
+  private _Reason: string = '';
 
   public get account(): string {
     return this._Account;
   }
-
   public set account(value: string) {
     this._Account = value;
   }
@@ -27,8 +27,16 @@ export class AccountService {
   public get addModalId(): string {
     return 'addAccount'
   }
+
   public get editModalId(): string {
     return 'editAccount'
+  }
+
+  public get reason(): string {
+    return this._Reason;
+  }
+  public set reason(value: string) {
+    this._Reason = value;
   }
 
   constructor(

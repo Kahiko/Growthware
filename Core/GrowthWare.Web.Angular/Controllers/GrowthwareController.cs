@@ -28,7 +28,7 @@ public class GrowthwareAPIController : ControllerBase
         MAccountProfile mRetVal = new MAccountProfile();
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
         {
-            AccountUtility.GetAccount(account);
+            mRetVal = AccountUtility.GetAccount(account);
         }
         mRetVal.Password = string.Empty;
         return mRetVal;

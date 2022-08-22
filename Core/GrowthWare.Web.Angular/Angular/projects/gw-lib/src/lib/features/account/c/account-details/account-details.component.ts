@@ -47,10 +47,14 @@ export class AccountDetailsComponent implements OnInit {
 
   closeModal(): void {
     if(this._Router.url === '/search-accounts') {
-      this._ModalSvc.close(this._AccountSvc.addModalId);
-      this._ModalSvc.close(this._AccountSvc.editModalId);
+      if(this._AccountSvc.reason === 'add') {
+        this._ModalSvc.close(this._AccountSvc.addModalId);
+      }
+      if(this._AccountSvc.reason === 'edit') {
+        this._ModalSvc.close(this._AccountSvc.editModalId);
+      }
     }
-
+    this._AccountSvc.reason = '';
   }
 
   onCancel(): void {
