@@ -42,7 +42,7 @@ export class AccountService {
   public async getAccount(account: string): Promise<IAccountProfile> {
     let mAccount: string = account;
     if(this._GWCommon.isNullOrEmpty(mAccount)) {
-      mAccount = '_';
+      mAccount = this._DefaultAccount;
     }
     const mQueryParameter: HttpParams = new HttpParams().append('account', mAccount);
     const mHttpOptions = {
