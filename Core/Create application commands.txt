@@ -94,5 +94,5 @@ Library:
 		ng generate service features/account/account --project gw-lib
 
 		ng generate module features/PickList --project gw-lib
-		ng generate component features/PickList/c/PickList --module PickList --style scss --project gw-lib
+		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
 		
