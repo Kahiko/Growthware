@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpClientModule } from '@angular/common/http';
 import { MaterialModules } from './material.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Library Modules
 import { ToastModule } from '@Growthware/Lib';
 // Application Modules
@@ -32,9 +33,11 @@ import { DefaultFooterComponent } from './skins/default/layout/default-footer/de
     BrowserAnimationsModule,
     BrowserModule,
     FlexLayoutModule,
+    FormsModule,
     HttpClientModule,
     MaterialModules,
     MSDemoRoutingModule,
+    ReactiveFormsModule,
     ToastModule,
   ],
   providers: [],

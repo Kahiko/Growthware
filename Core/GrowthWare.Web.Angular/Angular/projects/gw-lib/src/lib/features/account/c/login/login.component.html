@@ -1,1 +1,10 @@
 <p>login works!</p>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+  <mat-form-field color="accent" appearance="fill">
+    <mat-label>Enter your email</mat-label>
+    <input matInput placeholder="pat@example.com" formControlName="email" required>
+    <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
+    <mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage()}}</mat-error>
+  </mat-form-field>
+  <button mat-raised-button color="accent" type="submit">Submit</button>
+</form>

@@ -1,8 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
-import { MatTabsModule } from '@angular/material/tabs';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { PickListModule } from '@Growthware/Lib/src/lib/features/pick-list';
@@ -20,9 +23,13 @@ import { LoginComponent } from './c/login/login.component';
   imports: [
     CommonModule,
     DynamicTableModule,
+    FormsModule,
     MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
     MatTabsModule,
     PickListModule,
+    ReactiveFormsModule,
   ],
   exports: [
     AccountDetailsComponent,
