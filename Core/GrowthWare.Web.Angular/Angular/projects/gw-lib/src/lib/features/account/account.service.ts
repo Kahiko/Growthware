@@ -73,7 +73,6 @@ export class AccountService {
     });
   }
 
-
   /**
    * Handles an HttpClient error
    *

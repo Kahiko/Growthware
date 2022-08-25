@@ -17,18 +17,30 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.loginForm = this._FormBuilder.group({
-      account: ['', [Validators.required, Validators.minLength(4)]],
-      email: ['', [Validators.required, Validators.email]],
-      phone: ['', [Validators.required]],
-      message: ['', [Validators.required]]
+      account: ['', [Validators.required]],
+      password: ['', [Validators.required, Validators.minLength(4)]]
     })
   }
 
-  getErrorMessage() {
-    if (this.loginForm.controls['email'].hasError('required')) {
-      return 'You must enter a value';
+  getErrorMessage(fieldName: string) {
+    switch (fieldName) {
+      case 'account':
+        if (this.loginForm.controls['account'].hasError('required')) {
+          return 'You must enter a value';
+        }
+        break;
+      case 'password':
+        if (this.loginForm.controls['password'].hasError('required')) {
+          return 'You must enter a value';
+        }
+        if (this.loginForm.controls['password'].hasError('minlength')) {
+          return 'Value must be at least 4 character';
+        }
+        break;
+      default:
+        break;
     }
-    return this.loginForm.controls['email'] ? 'Not a valid email' : '';
+    return undefined;
   }
 
   onSubmit(){

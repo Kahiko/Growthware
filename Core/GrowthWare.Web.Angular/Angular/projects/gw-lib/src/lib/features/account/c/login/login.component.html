@@ -1,10 +1,20 @@
 <p>login works!</p>
-<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-  <mat-form-field color="accent" appearance="fill">
-    <mat-label>Enter your email</mat-label>
-    <input matInput placeholder="pat@example.com" formControlName="email" required>
-    <!-- <mat-error *ngIf="email.invalid">{{getErrorMessage()}}</mat-error> -->
-    <mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage()}}</mat-error>
-  </mat-form-field>
-  <button mat-raised-button color="accent" type="submit">Submit</button>
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm" novalidate>
+  <div>
+    <mat-form-field class="loginForm__mat-form-field" appearance="fill">
+      <mat-label>Account</mat-label>
+      <input matInput type="text" formControlName="account">
+      <mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="loginForm__mat-form-field" appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="text" formControlName="password">
+      <mat-error *ngIf="getControls['password'].invalid">{{getErrorMessage('password')}}</mat-error>
+    </mat-form-field>
+  </div>
+  <div class="modal-footer">
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </div>
 </form>
