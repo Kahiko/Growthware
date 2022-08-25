@@ -20,7 +20,7 @@ export class DefaultHeaderComponent implements OnInit {
   }
 
   onLogin(): void {
-    const mWindowSize: WindowSize = new WindowSize(350, 500);
+    const mWindowSize: WindowSize = new WindowSize(325, 450);
     const mModalOptions: ModalOptions = new ModalOptions(this.mLoginId, 'Login', LoginComponent, mWindowSize);
     // mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
