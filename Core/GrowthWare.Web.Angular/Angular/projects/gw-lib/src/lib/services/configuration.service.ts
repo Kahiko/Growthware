@@ -1,24 +1,22 @@
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 // Library
-import { GWCommon, LogLevel } from '@Growthware/Lib';
-import { LoggingService } from '@Growthware/Lib';
-import { IAppSettings } from './app-settings.model';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { IAppSettings } from '@Growthware/Lib/src/lib/models';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConfigurationService implements OnInit {
-  private _ApiName: string = 'Growthware/';
+export class ConfigurationService {
+  private _ApiName: string = 'GrowthwareAPI/';
   private _ApiURL: string = '';
 
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService
-  ) { }
-
-  ngOnInit(): void {
+  ) {
     this._ApiURL = this._GWCommon.baseURL + this._ApiName;
   }
 

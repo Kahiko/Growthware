@@ -1,7 +1,8 @@
 export interface IAppSettings {
+  name: string;
 }
 
 export class AppSettings implements IAppSettings {
 
-  constructor() {}
+  constructor(public name: string) {}
 }

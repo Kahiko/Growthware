@@ -34,8 +34,6 @@ Application:
 		ng generate component skins/system/SystemSidebar --module app --project gw-frontend
 		
 		ng generate service services/BaseService --project gw-frontend
-		ng generate service services/configuration/configuration --project gw-frontend
-		ng generate interface services/configuration/AppSettings --type model --project gw-frontend
 
 		ng generate module features/accounts --routing --project gw-frontend
 		ng generate component features/accounts/ListAccounts --module accounts.module --project gw-frontend
@@ -46,16 +44,14 @@ Library:
 
 		ng generate interface models/CallbackButton --type model --project gw-lib
 		ng generate interface models/ClientChoices --type model --project gw-lib
-		ng generate interface models/DynamicTableBtnMethods --type model --project gw-lib
-		ng generate interface models/DynamicTableColumn --type model --project gw-lib
-		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
 		ng generate interface models/NameValuePare --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
 		ng generate interface models/SideNavLink --type model --project gw-lib
 
 		ng generate service services/data --project gw-lib
-		ng generate service services/dynamic-table --project gw-lib
+		ng generate service services/configuration/configuration --project gw-lib
+		ng generate interface models/AppSettings --type model --project gw-lib
 
 		ng generate service features/search --project gw-lib
 		
@@ -77,6 +73,10 @@ Library:
 		
 		ng generate module features/dynamic-table --project gw-lib
 		ng generate component features/dynamic-table/c/dynamic-table --module dynamic-table --project gw-lib --style scss
+		ng generate service features/dynamic-table --project gw-lib
+		ng generate interface models/DynamicTableBtnMethods --type model --project gw-lib
+		ng generate interface models/DynamicTableColumn --type model --project gw-lib
+		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
 
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/modal --module modal --style scss --project gw-lib
