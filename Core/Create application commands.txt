@@ -36,7 +36,8 @@ Application:
 		ng generate service services/BaseService --project gw-frontend
 
 		ng generate module features/accounts --routing --project gw-frontend
-		ng generate component features/accounts/ListAccounts --module accounts.module --project gw-frontend
+
+		ng generate module features/functions --routing --project gw-frontend
 
 Library:
 	From Angular/projects/gw-lib/src/lib
@@ -95,4 +96,9 @@ Library:
 
 		ng generate module features/PickList --project gw-lib
 		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
-		
+
+		ng generate module features/function --project gw-lib
+		ng generate interface features/function/functionProfile --type model --project gw-lib
+		ng generate component features/function/c/functionDetails --module function --style scss --project gw-lib
+		ng generate component features/function/c/Searchfunctions --module function --style scss --project gw-lib
+		ng generate service features/function/function --project gw-lib

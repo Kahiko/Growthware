@@ -5,6 +5,7 @@
 export * from '@Growthware/Lib/src/lib/common-code';
 export * from '@Growthware/Lib/src/lib/features/account';
 export * from '@Growthware/Lib/src/lib/features/dynamic-table';
+export * from '@Growthware/Lib/src/lib/features/function';
 export * from '@Growthware/Lib/src/lib/features/logging';
 export * from '@Growthware/Lib/src/lib/features/modal';
 export * from '@Growthware/Lib/src/lib/features/pager';

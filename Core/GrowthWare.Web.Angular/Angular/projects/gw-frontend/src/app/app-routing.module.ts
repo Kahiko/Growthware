@@ -8,6 +8,7 @@ const rootRoutes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'counter', loadChildren: () => import('./ms-demo/ms-demo.module').then(m => m.MSDemoModule) },
   { path: 'search-accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule) },
+  { path: 'search-functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule) },
 ];
 
 @NgModule({
