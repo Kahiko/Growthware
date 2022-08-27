@@ -25,7 +25,7 @@ export class DefaultComponent implements OnInit {
     this.sideNavLinks.push(mSideNavLink);
     mSideNavLink = new SideNavLink('api', 'swagger', 'API', false);
     this.sideNavLinks.push(mSideNavLink);
-    mSideNavLink = new SideNavLink('manage_accounts', 'search-accounts', 'Search');
+    mSideNavLink = new SideNavLink('manage_accounts', 'search-accounts', 'Manage Accounts');
     this.sideNavLinks.push(mSideNavLink);
     mSideNavLink = new SideNavLink('functions', 'search-functions', 'Manage Functions');
     this.sideNavLinks.push(mSideNavLink);
