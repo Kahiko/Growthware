@@ -29,10 +29,10 @@
   },
   {
     "buttons": [
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": true  },
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
       { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
-      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": true  },
-      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": true  }
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
     ],
     "columns": [
       { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "FunctionSeqId", "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width": 80 },
@@ -44,7 +44,7 @@
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 },
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
-    "captionText": "Functions",
+    "captionText": "",
     "maxHeadHeight":75,
     "maxTableRowHeight": 10,
     "name": "Functions",
