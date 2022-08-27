@@ -25,7 +25,6 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._ConfigurationSvc.loadAppSettings();
     this._Subscription.add(
       this._ConfigurationSvc.applicationName.subscribe((val) => { this.applicationName = val; })
     );

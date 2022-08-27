@@ -27,6 +27,7 @@ export class ConfigurationService {
     private _LoggingSvc: LoggingService
   ) {
     this._ApiURL = this._GWCommon.baseURL + this._ApiName;
+    this.loadAppSettings();
   }
 
   public loadAppSettings(): void {
