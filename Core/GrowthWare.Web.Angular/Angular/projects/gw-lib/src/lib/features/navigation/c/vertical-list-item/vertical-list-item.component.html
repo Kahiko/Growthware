@@ -3,7 +3,9 @@
   class="drawer-nav-list__list-item"
   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
   (click)="onItemSelected(item)"
-  [ngClass]="{'active': item.link ? router.isActive(item.link, true): false, 'expanded': expanded}">
+  [ngClass]="{'expanded': expanded}"
+  routerLink="{{item.link}}"
+  >
   <mat-icon class="routeIcon">{{item?.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
@@ -19,7 +21,8 @@
   class="drawer-nav-list__list-item"
   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
   href="{{item.link}}"
-  target="_blank">
+  target="_blank"
+  routerLink="{{item.link}}">
   <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
