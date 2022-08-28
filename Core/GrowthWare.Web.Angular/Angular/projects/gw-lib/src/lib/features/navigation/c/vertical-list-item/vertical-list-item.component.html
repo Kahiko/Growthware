@@ -20,7 +20,7 @@
   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
   href="{{item.link}}"
   target="_blank">
-  <mat-icon class="routeIcon">{{item?.icon}}</mat-icon>
+  <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
     <span fxFlex></span>
