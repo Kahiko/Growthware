@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { ModalService } from '@Growthware/Lib';
+import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'gw-lib-login',
@@ -13,7 +15,11 @@ export class LoginComponent implements OnInit {
     return this.loginForm.controls;
   }
 
-  constructor(private _FormBuilder: FormBuilder) { }
+  constructor(
+    private _AccountSvc: AccountService,
+    private _FormBuilder: FormBuilder,
+    private _ModalSvc: ModalService,
+  ) { }
 
   ngOnInit(): void {
     this.loginForm = this._FormBuilder.group({
@@ -45,6 +51,7 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     console.log(this.loginForm);
+    this._ModalSvc.close(this._AccountSvc.loginModalId);
   }
 
 }

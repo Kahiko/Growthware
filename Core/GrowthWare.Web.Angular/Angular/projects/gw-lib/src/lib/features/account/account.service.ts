@@ -32,6 +32,10 @@ export class AccountService {
     return 'editAccount'
   }
 
+  public get loginModalId(): string {
+    return 'login';
+  }
+
   public get reason(): string {
     return this._Reason;
   }
