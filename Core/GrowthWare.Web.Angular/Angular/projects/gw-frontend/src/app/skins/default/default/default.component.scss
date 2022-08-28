@@ -1,12 +1,3 @@
-.drawer-nav-list {
-  width: 40px;
-  height: calc(85vh);
-}
-
-.drawer-nav-list__list-item {
-  padding-left: 12px;
-}
-
 .drawer-container {
   width: 100%;
   height: calc(85vh);
@@ -15,12 +6,6 @@
 
 .drawer-sidenav {
   padding: 10px;
-}
-
-.inline-icon {
-  vertical-align: bottom;
-  font-size: 1.2rem;
-  padding-right: 3px;
 }
 
 .router-outlet__div {

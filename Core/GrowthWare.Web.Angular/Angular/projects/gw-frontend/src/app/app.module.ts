@@ -8,6 +8,7 @@ import { MaterialModules } from './material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Library Modules
 import { ToastModule } from '@Growthware/Lib';
+import { NavigationModule } from '@Growthware/Lib';
 // Application Modules
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
@@ -37,6 +38,7 @@ import { DefaultFooterComponent } from './skins/default/layout/default-footer/de
     HttpClientModule,
     MaterialModules,
     MSDemoRoutingModule,
+    NavigationModule,
     ReactiveFormsModule,
     ToastModule,
   ],

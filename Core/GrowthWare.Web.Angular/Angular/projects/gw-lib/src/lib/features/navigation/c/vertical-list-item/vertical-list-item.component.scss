@@ -1,0 +1,32 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  width: 100%;
+
+  .mat-list-item.active {
+    background-color: mat-color(primary, 50);
+  }
+  &:hover,
+  &:focus {
+    >.mat-list-item:not(.expanded) {
+      background-color: mat-color(primary, 100) !important;
+    }
+  }
+}
+
+
+.drawer-nav-list {
+  width: 40px;
+  height: calc(85vh);
+}
+
+.drawer-nav-list__list-item {
+  padding-left: 12px;
+}
+
+.inline-icon {
+  vertical-align: bottom;
+  font-size: 1.2rem;
+  padding-right: 3px;
+}
