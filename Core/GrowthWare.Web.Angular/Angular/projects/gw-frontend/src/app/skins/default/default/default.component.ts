@@ -26,7 +26,7 @@ export class DefaultComponent implements OnInit {
     this.verticalNavLinks.push(mNavLink);
     mNavLink = new NavLink('api', 'swagger', 'API', false);
     this.verticalNavLinks.push(mNavLink);
-
+    // Nested Administration link
     mNavLink = new NavLink('admin_panel_settings', '', 'Administration', false);
     let mAdminChild = new NavLink('manage_accounts', 'search-accounts', 'Manage Accounts');
     mNavLink.children.push(mAdminChild)
