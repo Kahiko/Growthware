@@ -13,7 +13,7 @@
     <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
       expand_more
     </mat-icon>
-    <span *ngIf="showSideNavLinkText===true && item.children.length===0" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
+    <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.linkText }}</span>
   </span>
 </a>
 <a *ngIf="!item.isRouterLink && item.children.length === 0"
@@ -24,7 +24,7 @@
   target="_blank"
   routerLink="{{item.link}}">
   <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
-  <span *ngIf="showSideNavLinkText" [@animateText]="showSideNavLinkText ? 'show' : 'hide'">{{ item.linkText }}</span>
+  <span *ngIf="showSideNavLinkText">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
     <span fxFlex></span>
     <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
