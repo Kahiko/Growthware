@@ -16,16 +16,6 @@ import { MenuListService } from '../../menu-list.service';
       transition('expanded <=> collapsed',
         animate('225ms cubic-bezier(0.4,0.0,0.2,1)')
       )
-    ]),
-    trigger('animateText', [
-      state('hide', style({ width: 0, opacity: 0, })),
-      state('show', style({ width: 150, opacity: 1, })),
-      transition('hide => show',  // not working
-        animate('3500ms ease-in')
-      ),
-      transition('show => hide',  // not working
-        animate('200ms ease-out')
-      ),
     ])
   ]
 })
