@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ModalService } from '@Growthware/Lib';
+import { LoggingService, LogLevel, ModalService } from '@Growthware/Lib';
 import { AccountService } from '../../account.service';
 
 @Component({
@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
+    private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
   ) { }
 
@@ -51,7 +52,13 @@ export class LoginComponent implements OnInit {
 
   onSubmit(){
     console.log(this.loginForm);
-    this._ModalSvc.close(this._AccountSvc.loginModalId);
+    this._AccountSvc.authenticate(this.loginForm.value['account'], this.loginForm.value['password']).then((response: boolean | string) => {
+      if(response === true) {
+        this._ModalSvc.close(this._AccountSvc.loginModalId);
+      } else {
+        this._LoggingSvc.toast('Account or Password are incorrect', 'Login Error', LogLevel.Error);
+      }
+    });
   }
 
 }

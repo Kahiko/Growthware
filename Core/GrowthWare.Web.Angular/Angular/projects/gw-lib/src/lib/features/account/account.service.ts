@@ -47,9 +47,30 @@ export class AccountService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService
-    ) {
-      this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
-    }
+  ) {
+    this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
+  }
+
+  public async authenticate(account: string, password: string): Promise<boolean | string> {
+    return new Promise<boolean>((resolve, reject) => {
+      if(this._GWCommon.isNullOrEmpty(account)) {
+        throw new Error("account can not be blank!");
+      }
+      if(this._GWCommon.isNullOrEmpty(password)) {
+        throw new Error("password can not be blank!");
+      }
+      let mQueryParameter: HttpParams = new HttpParams().append('account', account);
+      mQueryParameter = new HttpParams().append('account', account)
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+
+      resolve(true);
+    });
+  }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
     let mAccount: string = account;
