@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // Library
+import { MenuListService } from '@Growthware/Lib';
 import { INavLink, NavLink } from '@Growthware/Lib';
 import { sideNavTextAnimation } from './animations/side-nav';
 
@@ -14,7 +15,7 @@ export class DefaultComponent implements OnInit {
   showSideNavLinkText = false;
   verticalNavLinks: Array<INavLink> = [];
 
-  constructor() { }
+  constructor(private _MenuListSvc: MenuListService) { }
 
   ngOnInit(): void {
     let mNavLink = new NavLink('home', 'home', 'Home');
@@ -35,4 +36,8 @@ export class DefaultComponent implements OnInit {
 
   }
 
+  onShowSideNavLinkText(): void {
+    this.showSideNavLinkText = !this.showSideNavLinkText;
+    this._MenuListSvc.setShowNavText(this.showSideNavLinkText);
+  }
 }

@@ -1,5 +1,6 @@
-import { Component, HostBinding, Input, OnInit } from '@angular/core';
+import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Subscription } from 'rxjs';
 import { INavLink } from '../../nav-link.model';
 import { Router } from '@angular/router';
 import { MenuListService } from '../../menu-list.service';
@@ -28,22 +29,31 @@ import { MenuListService } from '../../menu-list.service';
     ])
   ]
 })
-export class VerticalListItemComponent implements OnInit {
+export class VerticalListItemComponent implements OnDestroy, OnInit {
   expanded!: boolean;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() depth!: number;
   @Input() item!: INavLink;
   @Input() showSideNavLinkText: boolean = true;
 
+  private _Subscription: Subscription = new Subscription();
+
   constructor(
     private _MenuListSvc: MenuListService,
     public router: Router
   ) { }
 
+  ngOnDestroy(): void {
+    this._Subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
     if (this.depth === undefined) {
       this.depth = 0;
     }
+    this._Subscription.add(
+      this._MenuListSvc.showNavText.subscribe((value) => { this.showSideNavLinkText = value; })
+    );
   }
 
   onItemSelected(item: INavLink) {

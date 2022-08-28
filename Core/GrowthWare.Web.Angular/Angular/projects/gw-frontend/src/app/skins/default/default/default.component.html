@@ -1,7 +1,7 @@
 <gw-frontend-default-header [sidenav]="drawer"></gw-frontend-default-header>
 <mat-drawer-container class="drawer-container" color="primary" autosize>
   <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
-    <button style="outline: none;" color="primary" mat-icon-button (click)="showSideNavLinkText = !showSideNavLinkText;">
+    <button style="outline: none;" color="primary" mat-icon-button (click)="onShowSideNavLinkText();">
       <span *ngIf="showSideNavLinkText" class="material-icons">arrow_left</span>
       <span *ngIf="!showSideNavLinkText" class="material-icons">arrow_right</span>
     </button>
