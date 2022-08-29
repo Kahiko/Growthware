@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { LoggingService, LogLevel, ModalService } from '@Growthware/Lib';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { AccountService } from '../../account.service';
 
 @Component({
@@ -14,6 +15,8 @@ export class LoginComponent implements OnInit {
   get getControls() {
     return this.loginForm.controls;
   }
+
+  submitted: boolean = false;
 
   constructor(
     private _AccountSvc: AccountService,
@@ -51,6 +54,12 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit(){
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.loginForm.invalid) {
+        return;
+    }
     console.log(this.loginForm);
     this._AccountSvc.authenticate(this.loginForm.value['account'], this.loginForm.value['password']).then((response: boolean | string) => {
       if(response === true) {
