@@ -1,3 +1,8 @@
+/**
+ * Note this matches C# object GrowthWare.Framework.Models.MNavLink
+ * any changes needed here will also need to be made there
+ */
+
 export interface INavLink {
   "disabled": boolean
   "icon": string;
