@@ -56,7 +56,8 @@ From a command prompt and the directory you would like to create your new projec
 	npm install bootstrap --save
 	npm install @angular/flex-layout --save
 	npm install material-icons --save
-	npm i roboto-fontface --save
+	npm install roboto-fontface --save
+	npm install @auth0/angular-jwt --save
 	ng add @angular/material --project gw-frontend
 	ng add @angular-eslint/schematics
 Files you'll need to edit the following files:
