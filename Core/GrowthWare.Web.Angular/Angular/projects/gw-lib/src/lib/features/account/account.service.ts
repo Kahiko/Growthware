@@ -3,6 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
 import { IAccountProfile } from './account-profile.model';
 
@@ -14,6 +15,7 @@ export class AccountService {
   private _Account: string = '';
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_GetAccount: string = '';
+  private _Api_GetLinks: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _Reason: string = '';
 
@@ -49,6 +51,7 @@ export class AccountService {
     private _LoggingSvc: LoggingService
   ) {
     this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
+    this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
   }
 
   public async authenticate(account: string, password: string): Promise<boolean | string> {
@@ -95,6 +98,36 @@ export class AccountService {
         },
         // complete: () => {}
       });
+    });
+  }
+
+  /**
+   * Gets an array if NavLinks from the API
+   *
+   * @return {*}  {Promise<INavLink[]>}
+   * @memberof AccountService
+   * TODO: this really should be used to populate an observable property
+   * so that the links can change when say the account changes.
+   */
+  public async getNavLinks(): Promise<INavLink[]> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<INavLink[]>((resolve, reject) => {
+      this._HttpClient.get<INavLink[]>(this._Api_GetLinks, mHttpOptions).subscribe({
+        next: (response) => {
+          resolve(response);
+        },
+        error: (error) => {
+          this.errorHandler(error, 'getNavLinks');
+          reject('Was not able to retrieve the navigation links');
+        },
+        complete: () => {
+          // here as example
+        }
+      })
     });
   }
 

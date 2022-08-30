@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 
 /// Note this matches typescript object 
@@ -6,8 +7,31 @@ using System.Collections.Generic;
 
 namespace GrowthWare.Framework.Models;
 
-class MNavLink
+[Serializable(), CLSCompliant(true)]
+public class MNavLink
 {
+
+    public MNavLink()
+    {
+        this.Children = new List<MNavLink>();
+    }
+
+    public MNavLink(
+        string icon, 
+        string link, 
+        string linkText,
+        bool isRouterLink = true,
+        string styleClass = "",
+        string routerLinkActive = ""
+    ){
+        this.Children = new List<MNavLink>();
+        this.Icon = icon;
+        this.IsRouterLink = isRouterLink;
+        this.Link = link;
+        this.LinkText = linkText;
+        this.RouterLinkActive = routerLinkActive;
+    }
+
     public bool Disabled { get; set; }
     public string Icon { get; set; }
     public string Link { get; set; }

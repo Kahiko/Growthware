@@ -3,6 +3,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Web.Angular.Controllers;
 
@@ -31,6 +32,28 @@ public class GrowthwareAPIController : BaseController
             mRetVal = AccountUtility.GetAccount(account);
         }
         mRetVal.Password = string.Empty;
+        return mRetVal;
+    }
+
+    [HttpGet("GetLinks")]
+    public List<MNavLink> GetLinks()
+    {
+        List<MNavLink> mRetVal = new List<MNavLink>();
+        MNavLink mNavLink = new MNavLink("home", "home", "Home");
+        mRetVal.Add(mNavLink);
+        mNavLink = new MNavLink("dialpad", "counter", "Counter");
+        mRetVal.Add(mNavLink);
+        mNavLink = new MNavLink("thermostat", "fetch-data", "Fetch Data");
+        mRetVal.Add(mNavLink);
+        mNavLink = new MNavLink("api", "swagger", "API", false);
+        mRetVal.Add(mNavLink);
+        // Nested Administration link
+        MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
+        MNavLink mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
+        mAdminNavLink.Children.Add(mAdminChild);
+        mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
+        mAdminNavLink.Children.Add(mAdminChild);
+        mRetVal.Add(mAdminNavLink);
         return mRetVal;
     }
 

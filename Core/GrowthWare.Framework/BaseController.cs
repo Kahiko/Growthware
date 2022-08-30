@@ -1,8 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System;
+using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework.Models;
 
 namespace GrowthWare.Framework;
+
 [Controller]
+[CLSCompliant(false)]
 public abstract class BaseController : ControllerBase
 {
     // returns the current authenticated account (null if not logged in)
