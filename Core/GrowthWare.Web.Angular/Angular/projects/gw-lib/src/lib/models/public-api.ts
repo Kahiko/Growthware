@@ -7,4 +7,3 @@ export * from './dynamic-table-configuration.model';
 export * from './name-value-pare.model';
 export * from './security-info.model';
 export * from './shared.types';
-export * from './side-nav-link.model';
