@@ -51,7 +51,6 @@ Library:
 		ng generate interface models/NameValuePare --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
-		ng generate interface models/SideNavLink --type model --project gw-lib
 
 		ng generate service services/data --project gw-lib
 		ng generate service services/configuration/configuration --project gw-lib
