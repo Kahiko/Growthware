@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -18,6 +19,7 @@ export class AccountService {
   private _Api_GetLinks: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _Reason: string = '';
+  private _SideNavSubject = new Subject<INavLink[]>();
 
   public get account(): string {
     return this._Account;
@@ -45,6 +47,8 @@ export class AccountService {
     this._Reason = value;
   }
 
+  readonly sideNavSubject = this._SideNavSubject.asObservable();
+
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
@@ -70,9 +74,15 @@ export class AccountService {
         }),
         params: mQueryParameter,
       };
-
+      this.getNavLinks();
       resolve(true);
     });
+  }
+
+  public logout(): void {
+    this.account = this._DefaultAccount;
+    const mNavLink: INavLink[] = [];
+    this._SideNavSubject.next(mNavLink);
   }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
@@ -109,26 +119,23 @@ export class AccountService {
    * TODO: this really should be used to populate an observable property
    * so that the links can change when say the account changes.
    */
-  public async getNavLinks(): Promise<INavLink[]> {
+  private getNavLinks(): void {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       })
     };
-    return new Promise<INavLink[]>((resolve, reject) => {
-      this._HttpClient.get<INavLink[]>(this._Api_GetLinks, mHttpOptions).subscribe({
-        next: (response) => {
-          resolve(response);
-        },
-        error: (error) => {
-          this.errorHandler(error, 'getNavLinks');
-          reject('Was not able to retrieve the navigation links');
-        },
-        complete: () => {
-          // here as example
-        }
-      })
-    });
+    this._HttpClient.get<INavLink[]>(this._Api_GetLinks, mHttpOptions).subscribe({
+      next: (response) => {
+        this._SideNavSubject.next(response);
+      },
+      error: (error) => {
+        this.errorHandler(error, 'getNavLinks');
+      },
+      complete: () => {
+        // here as example
+      }
+    })
   }
 
   /**

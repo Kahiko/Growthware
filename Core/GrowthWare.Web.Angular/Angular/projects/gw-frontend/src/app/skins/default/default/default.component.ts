@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 // Library
 import { AccountService, MenuListService } from '@Growthware/Lib';
 import { INavLink, NavLink } from '@Growthware/Lib';
+import { Subscription } from 'rxjs';
 import { sideNavTextAnimation } from './animations/side-nav';
 
 @Component({
@@ -10,7 +11,8 @@ import { sideNavTextAnimation } from './animations/side-nav';
   styleUrls: ['./default.component.scss'],
   animations: [sideNavTextAnimation],
 })
-export class DefaultComponent implements OnInit {
+export class DefaultComponent implements OnDestroy, OnInit {
+  private _Subscriptions: Subscription = new Subscription();
 
   showSideNavLinkText = false;
   verticalNavLinks: Array<INavLink> = [];
@@ -20,13 +22,16 @@ export class DefaultComponent implements OnInit {
     private _MenuListSvc: MenuListService
   ) { }
 
-  ngOnInit(): void {
-    this._AccountSvc.getNavLinks().then(
-      (response) => {
-        this.verticalNavLinks = response;
-      }
-    );
+  ngOnDestroy(): void {
+    this._Subscriptions.unsubscribe();
+  }
 
+  ngOnInit(): void {
+    this._Subscriptions.add(
+      this._AccountSvc.sideNavSubject.subscribe((navLinks)=>{
+        this.verticalNavLinks = navLinks;
+      })
+    );
   }
 
   onShowSideNavLinkText(): void {

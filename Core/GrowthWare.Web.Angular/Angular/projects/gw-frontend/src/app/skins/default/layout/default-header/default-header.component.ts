@@ -50,6 +50,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 
   onLogout(): void {
     this.isAuthenticated = false;
+    this._AccountSvc.logout();
   }
 
 }
