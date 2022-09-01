@@ -1,29 +1,46 @@
 <mat-tab-group class="mat-tab-group"  mat-align-tabs="center">
-  <mat-tab label="General"> General </mat-tab>
+  <mat-tab label="General">
+    <div class="mat-tab__container">
+      <div class="mat-tab__content">
+        General
+      </div>
+    </div>
+  </mat-tab>
   <mat-tab label="Roles">
-    <gw-lib-pick-list
-    id="roles"
-    name="roles"
-    allItemsText="Available Roles"
-    header="Assign roles"
-    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-    selectedItemsText="Selected Roles"
-    size=8
-    width=120></gw-lib-pick-list>
+    <div class="mat-tab__container">
+      <div class="mat-tab__content">
+          <gw-lib-pick-list
+            id="roles"
+            name="roles"
+            allItemsText="Available Roles"
+            header="Assign roles"
+            pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+            selectedItemsText="Selected Roles"
+            size=8
+            width=120></gw-lib-pick-list>
+        </div>
+    </div>
   </mat-tab>
   <mat-tab label="Groups">
-    <gw-lib-pick-list
-    id="groups"
-    name="groups"
-    allItemsText="Available Groups"
-    header="Assign Groups"
-    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
-    selectedItemsText="Selected Groups"
-    size=8
-    width=120></gw-lib-pick-list>  </mat-tab>
+    <div class="mat-tab__container">
+      <div class="mat-tab__content">
+        <gw-lib-pick-list
+          id="groups"
+          name="groups"
+          allItemsText="Available Groups"
+          header="Assign Groups"
+          pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
+          selectedItemsText="Selected Groups"
+          size=8
+          width=120></gw-lib-pick-list>
+      </div>
+    </div>
+  </mat-tab>
   <mat-tab label="Derived Roles">
-    <div class="mat-tab__content">
-      Derived Roles
+    <div class="mat-tab__container">
+      <div class="mat-tab__content">
+        Derived Roles
+      </div>
     </div>
   </mat-tab>
 </mat-tab-group>
