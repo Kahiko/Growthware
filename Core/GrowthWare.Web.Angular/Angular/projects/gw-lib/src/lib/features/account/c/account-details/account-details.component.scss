@@ -2,6 +2,7 @@
   height: calc(68vh);
   min-height: 100%;
 }
+
 .mat-tab__container {
   position: relative;
   // height: calc(67vh);
@@ -12,7 +13,6 @@
 }
 
 .mat-tab__content {
-  display: flex;
   display: inline-block;
   margin-top: 10px;
 }
