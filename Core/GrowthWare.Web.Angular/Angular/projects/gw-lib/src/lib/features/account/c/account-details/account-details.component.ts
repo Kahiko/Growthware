@@ -15,6 +15,12 @@ import { AccountService } from '../../account.service';
 export class AccountDetailsComponent implements OnInit {
   private _AccountProfile!: IAccountProfile;
 
+  private _ValidStatus  = [
+    { "id": 1, "Name": "Active" },
+    { "id": 4, "Name": "Change Password" },
+    { "id": 3, "Name": "Disabled" }
+]
+
   canCancel: boolean = false;
   canDelete: boolean = false;
   canSave: boolean = false;
