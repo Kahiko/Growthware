@@ -17,6 +17,9 @@ How to create/update routes programmatically
 		https://medium.com/codegg/pre-loading-user-specific-routes-in-angular-ce829430e1cb
 		https://www.tektutorialshub.com/angular/angular-how-to-use-app-initializer/#where-to-use-app-initializer
 
+Popup/Modal using route:
+	https://medium.com/ngconf/routing-to-angular-material-dialogs-c3fb7231c177
+
 JWT:
 	https://code-maze.com/authentication-aspnetcore-jwt-1/
 
