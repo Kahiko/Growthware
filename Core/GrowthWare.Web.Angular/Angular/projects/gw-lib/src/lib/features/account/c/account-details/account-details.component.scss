@@ -1,19 +1,26 @@
 .mat-tab-group {
   height: calc(68vh);
   min-height: 100%;
+  font-size: .8rem;
 }
 
 .mat-tab__container {
   position: relative;
   // height: calc(67vh);
-  height: 100%;
   min-width: 98%;
   vertical-align: middle;
   text-align: center;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
 }
 
 .mat-tab__content {
   display: inline-block;
+  margin-top: 10px;
+}
+
+.mat-tab__container__grid-list {
   margin-top: 10px;
 }
 

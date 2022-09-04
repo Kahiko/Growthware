@@ -1,59 +1,97 @@
-<mat-tab-group class="mat-tab-group"  mat-align-tabs="center">
-  <mat-tab label="General">
-    <div class="mat-tab__container">
-      <div class="mat-tab__content">
-        General
+<form [formGroup]="frmAccount" (ngSubmit)="onSubmit(frmAccount)" novalidate>
+  <mat-tab-group class="mat-tab-group"  mat-align-tabs="center">
+    <mat-tab label="Account Information">
+      <div class="mat-tab__container">
+        <mat-grid-list class="mat-tab__container__grid-list" cols="4" rowHeight="4:1">
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Account</mat-label>
+              <input matInput type="text" formControlName="account">
+              <mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Status</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of validStatus" [value]="item.id">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-checkbox formControlName="isSystemAdmin">System Administrator</mat-checkbox>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Failed Logon Attempts</mat-label>
+              <input matInput type="number" formControlName="failedAttempts">
+              <mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>2</mat-grid-tile>
+          <mat-grid-tile>3</mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+        </mat-grid-list>
       </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="Roles">
-    <div class="mat-tab__container">
-      <div class="mat-tab__content">
+    </mat-tab>
+    <mat-tab *ngIf="showGroups" label="Roles">
+      <div class="mat-tab__container">
+        <div class="mat-tab__content">
+            <gw-lib-pick-list
+              id="roles"
+              name="roles"
+              allItemsText="Available Roles"
+              header="Assign roles"
+              pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+              selectedItemsText="Selected Roles"
+              size=8
+              width=120></gw-lib-pick-list>
+          </div>
+      </div>
+    </mat-tab>
+    <mat-tab *ngIf="showGroups" label="Groups">
+      <div class="mat-tab__container">
+        <div class="mat-tab__content">
           <gw-lib-pick-list
-            id="roles"
-            name="roles"
-            allItemsText="Available Roles"
-            header="Assign roles"
-            pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-            selectedItemsText="Selected Roles"
+            id="groups"
+            name="groups"
+            allItemsText="Available Groups"
+            header="Assign Groups"
+            pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
+            selectedItemsText="Selected Groups"
             size=8
             width=120></gw-lib-pick-list>
         </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="Groups">
-    <div class="mat-tab__container">
-      <div class="mat-tab__content">
-        <gw-lib-pick-list
-          id="groups"
-          name="groups"
-          allItemsText="Available Groups"
-          header="Assign Groups"
-          pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
-          selectedItemsText="Selected Groups"
-          size=8
-          width=120></gw-lib-pick-list>
       </div>
-    </div>
-  </mat-tab>
-  <mat-tab label="Derived Roles">
-    <div class="mat-tab__container">
-      <div class="mat-tab__content">
-        Derived Roles
+    </mat-tab>
+    <mat-tab *ngIf="showDerived" label="Derived Roles">
+      <div class="mat-tab__container">
+        <div class="mat-tab__content">
+          Derived Roles
+        </div>
       </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="row buttonRow">
+    <div class="column">
+      <button type="submit" [disabled]="frmAccount.invalid" mat-button color="primary">
+        <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
+      </button>
+      <button *ngIf="canDelete" (click)="onDelete()" mat-button color="warn">
+        <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
+      </button>
+      <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
+        <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
+      </button>
     </div>
-  </mat-tab>
-</mat-tab-group>
-<div class="row buttonRow">
-  <div class="column">
-    <button (click)="onSave()" mat-button color="primary">
-      <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
-    </button>
-    <button *ngIf="canDelete" (click)="onDelete()" mat-button color="warn">
-      <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
-    </button>
-    <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
-      <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
-    </button>
   </div>
-</div>
+</form>
