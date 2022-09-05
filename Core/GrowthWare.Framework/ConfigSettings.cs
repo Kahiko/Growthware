@@ -105,6 +105,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Base_Page"); }
         }
 
+        public static string Secret
+        {
+            get { return GetAppSettingValue("Secret", true); }
+        }
+
         /// <summary>
         /// Returns Security_Entity_Translation from the CONFIG file
         /// </summary>

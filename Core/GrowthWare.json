@@ -68,6 +68,7 @@
     "Development_RegistrationRoles": "",
     "Development_RegistrationSecurityEntityID": "3",
     "Development_RegistrationStatusId": "5",
+    "Development_Secret": "THIS IS USED TO SIGN AND VERIFY JWT TOKENS, REPLACE IT WITH YOUR OWN SECRET, IT CAN BE ANY STRING",
     "Development_SMTP_Account": "me@domain.com",
     "Development_SMTP_From": "me@domain.com",
     "Development_SMTP_Password": "somepassword",
