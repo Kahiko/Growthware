@@ -14,6 +14,14 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies", Version = "v1" });
 });
 
+builder.Services.AddSession(options =>
+{
+    options.Cookie.Name = ".Growthware.Session";
+    options.IdleTimeout = TimeSpan.FromSeconds(600);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -34,6 +42,8 @@ if (!app.Environment.IsDevelopment())               // Added
 app.UseHttpsRedirection();
 app.UseStaticFiles();                               // Added
 app.UseRouting();                                   // Added
+
+app.UseSession();
 
 app.UseAuthorization();
 
