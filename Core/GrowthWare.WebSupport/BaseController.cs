@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework.Models;
 
-namespace GrowthWare.Framework;
+namespace GrowthWare.WebSupport;
 
 [Controller]
 [CLSCompliant(false)]
