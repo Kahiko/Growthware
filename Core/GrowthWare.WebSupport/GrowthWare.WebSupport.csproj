@@ -4,7 +4,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj" />
     <ProjectReference Include="..\GrowthWare.BusinessLogic\GrowthWare.BusinessLogic.csproj" />
-    <PackageReference Include="NLog" Version="4.7.13" />
   </ItemGroup>
 
   <PropertyGroup>
