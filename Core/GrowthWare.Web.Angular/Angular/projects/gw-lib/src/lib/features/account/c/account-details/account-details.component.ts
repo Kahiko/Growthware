@@ -4,6 +4,7 @@ import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms'
 
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';
@@ -37,6 +38,7 @@ export class AccountDetailsComponent implements OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
+    private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _Router: Router
@@ -44,7 +46,8 @@ export class AccountDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     this._AccountSvc.getAccount(this._AccountSvc.account).then((accountProfile: IAccountProfile) => {
-      console.log(accountProfile);
+      this._AccountProfile = accountProfile;
+      this.populateForm();
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
@@ -59,12 +62,7 @@ export class AccountDetailsComponent implements OnInit {
       // TODO: add more logic to check authorization
     }
     // TODO: add more logic to check authorization and show/hide Save button
-    this.frmAccount = this._FormBuilder.group({
-      account: ['', [Validators.required]],
-      failedAttempts: [0],
-      statusSeqId: [''],
-      isSystemAdmin: [false],
-    });
+    this.populateForm();
   }
 
   closeModal(): void {
@@ -110,5 +108,23 @@ export class AccountDetailsComponent implements OnInit {
     console.log('Accounts', form.value.account);
     this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
     this.closeModal();
+  }
+
+  private populateForm(): void {
+    if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
+      this.frmAccount = this._FormBuilder.group({
+        account: [this._AccountProfile.account, [Validators.required]],
+        failedAttempts: [0],
+        statusSeqId: [''],
+        isSystemAdmin: [false],
+      });
+    } else {
+      this.frmAccount = this._FormBuilder.group({
+        account: ['', [Validators.required]],
+        failedAttempts: [0],
+        statusSeqId: [''],
+        isSystemAdmin: [false],
+      });
+    }
   }
 }
