@@ -41,6 +41,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   activeRow: number = -1;
   recordsPerPageSubject: Subject<number> = new Subject<number>();
   recordsPerPageMsg: string = '';
+  rowHeight: number = 10;
   searchTextSubject: Subject<string> = new Subject<string>();
   searchText: string = '';
   showHelp: boolean = true;
@@ -176,6 +177,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        this.rowHeight = this.tableConfiguration.maxTableRowHeight;
         this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName, this.tableConfiguration).payLoad;
         this.showHelp = this.tableConfiguration.showHelp;
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;

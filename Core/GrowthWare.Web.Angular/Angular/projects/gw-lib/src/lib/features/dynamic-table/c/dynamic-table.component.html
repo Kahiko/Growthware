@@ -89,7 +89,7 @@
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let row of tableData | async; let rowIndex=index;" (click)="onRowClick(rowIndex)" [class.active-row]="rowIndex == activeRow">
+              <tr *ngFor="let row of tableData | async; let rowIndex=index;" (click)="onRowClick(rowIndex)" [ngStyle]="{ 'height.px': rowHeight }" [class.active-row]="rowIndex == activeRow">
                 <td *ngFor="let column of tableConfiguration.columns">
                   <div [ngSwitch]="column.outputType">
                     <input *ngSwitchCase="'checkBox'" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}">

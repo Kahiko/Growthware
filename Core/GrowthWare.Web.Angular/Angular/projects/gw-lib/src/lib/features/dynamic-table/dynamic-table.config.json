@@ -8,24 +8,24 @@
       { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary" , "text": "bottomRight" , "visible": false }
     ],
     "columns": [
-      { "allowSearch": false , "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "AccountSeqId" , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width": 80 },
-      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "searchSelected": true ,  "sortSelected": true  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 },
-      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 },
-      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 },
+      { "allowSearch": false , "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Select"      , "name": "AccountSeqId" , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width": 60  },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "searchSelected": true ,  "sortSelected": true  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
       { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 200 },
-      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 },
-      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 }
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 164 },
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 164 }
     ],
     "captionText": "",
     "maxHeadHeight":75,
-    "maxTableRowHeight": 10,
+    "maxTableRowHeight": 32,
     "name": "Accounts",
     "numberOfRows": 4,
     "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": true,
     "showSearch": false,
-    "tableHeight": 133
+    "tableHeight": 176
   },
   {
     "buttons": [
@@ -46,9 +46,9 @@
     ],
     "captionText": "",
     "maxHeadHeight":75,
-    "maxTableRowHeight": 10,
+    "maxTableRowHeight": 16,
     "name": "Functions",
-    "numberOfRows": 4,
+    "numberOfRows": 8,
     "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": false,

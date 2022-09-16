@@ -151,13 +151,17 @@ table caption {
 }
 thead th {
   position: sticky;
+  padding: 12px 15px;
   top: 0;
 }
 tbody tr {
   border-bottom: 1px solid #dddddd;
 }
+tbody tr td {
+  padding-left: 1rem;
+  vertical-align: top;
+}
 th, td {
-  padding: 12px 15px;
   text-align: left;
 }
 caption {
