@@ -64,10 +64,10 @@ export class LoginComponent implements OnInit {
       if(response === true) {
         this._ModalSvc.close(this._AccountSvc.loginModalId);
       } else {
-        this._LoggingSvc.toast('The Account or Password are incorrect', 'Login Error', LogLevel.Error);
+        this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
       }
     }).catch((response) => {
-      this._LoggingSvc.toast('The Account or Password are incorrect', 'Login Error', LogLevel.Error);
+      this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
     });
   }
 
