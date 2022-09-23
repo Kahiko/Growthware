@@ -81,8 +81,8 @@ export class GWCommon {
   public formatDate(sqlDate: any): any {
     const mDateTime = new Date(sqlDate);
     const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
-    const mDatepipe: DatePipe = new DatePipe('en-US');
-    const mFormattedDate = mDatepipe.transform(mDateTime, mMask);
+    const mDatePipe: DatePipe = new DatePipe('en-US');
+    const mFormattedDate = mDatePipe.transform(mDateTime, mMask);
     return mFormattedDate;
   }
 
