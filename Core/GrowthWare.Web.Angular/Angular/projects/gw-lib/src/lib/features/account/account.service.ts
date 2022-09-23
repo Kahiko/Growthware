@@ -15,9 +15,11 @@ export class AccountService {
 
   private _Account: string = '';
   private _ApiName: string = 'GrowthwareAPI/';
+  private _Api_Authenticate = '';
   private _Api_GetAccount: string = '';
   private _Api_GetLinks: string = '';
   private _DefaultAccount: string = 'Anonymous'
+  private _IsAuthenticated = new Subject<boolean>();
   private _Reason: string = '';
   private _SideNavSubject = new Subject<INavLink[]>();
 
@@ -47,6 +49,7 @@ export class AccountService {
     this._Reason = value;
   }
 
+  readonly isAuthenticated = this._IsAuthenticated.asObservable();
   readonly sideNavSubject = this._SideNavSubject.asObservable();
 
   constructor(
@@ -56,6 +59,7 @@ export class AccountService {
   ) {
     this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
     this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
+    this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
   }
 
   public async authenticate(account: string, password: string): Promise<boolean | string> {
@@ -67,20 +71,35 @@ export class AccountService {
         throw new Error("password can not be blank!");
       }
       let mQueryParameter: HttpParams = new HttpParams().append('account', account);
-      mQueryParameter = new HttpParams().append('account', account)
+      mQueryParameter=mQueryParameter.append('password', password);
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),
         params: mQueryParameter,
       };
-      this.getNavLinks();
-      resolve(true);
+      this._HttpClient.post<IAccountProfile>(this._Api_Authenticate, null, mHttpOptions).subscribe({
+        next: (response: any) => {
+          this.getNavLinks();
+          this._IsAuthenticated.next(true);
+          resolve(response);
+        },
+        error: (error: any) => {
+          if(error.status && error.status === 403) {
+            reject(error.error);
+          } else {
+            this.errorHandler(error, 'authenticate');
+            reject('Failed to call the API');
+          }
+        },
+        // complete: () => {}
+      });
     });
   }
 
   public logout(): void {
     this.account = this._DefaultAccount;
+    this._IsAuthenticated.next(false);
     const mNavLink: INavLink[] = [];
     this._SideNavSubject.next(mNavLink);
   }

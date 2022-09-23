@@ -31,6 +31,9 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
     this._Subscription.add(
       this._ConfigurationSvc.version.subscribe((val) => { this.version = val; })
     );
+    this._Subscription.add(
+      this._AccountSvc.isAuthenticated.subscribe((val) => { this.isAuthenticated = val; })
+    );
   }
 
   onLogin(): void {
@@ -41,7 +44,6 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
       this.onModalOk
     }
     this._ModalSvc.open(mModalOptions);
-    this.isAuthenticated = true;
   }
 
   onModalOk() {
@@ -49,7 +51,6 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   }
 
   onLogout(): void {
-    this.isAuthenticated = false;
     this._AccountSvc.logout();
   }
 

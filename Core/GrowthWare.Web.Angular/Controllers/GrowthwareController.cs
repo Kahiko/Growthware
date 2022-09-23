@@ -22,7 +22,6 @@ public class GrowthwareAPIController : BaseController
         _logger = logger;
     }
 
-
     [HttpGet("GetAccount")]
     public MAccountProfile GetAccount(string account)
     {
@@ -30,6 +29,11 @@ public class GrowthwareAPIController : BaseController
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
         {
             mRetVal = AccountUtility.GetAccount(account);
+        }
+        if(mRetVal == null)
+        {
+            // mRetVal = AccountUtility.GetAccount("Anonymous");
+            mRetVal = new MAccountProfile();
         }
         mRetVal.Password = string.Empty;
         return mRetVal;
