@@ -25,6 +25,7 @@ Popup/Modal using route:
 
 JWT:
 	https://code-maze.com/authentication-aspnetcore-jwt-1/
+	https://code-maze.com/authentication-aspnetcore-jwt-2/
 
 Application:
 	From Angular
