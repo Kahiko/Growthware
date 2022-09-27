@@ -54,7 +54,8 @@ public abstract class BaseController : ControllerBase
                 if (password == mProfilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
                 {
                     mAuthenticated = true;
-                    mAccountProfile.FailedAttempts = 0; 
+                    mAccountProfile.FailedAttempts = 0;
+                    mAccountProfile.LastLogOn = DateTime.Now;
                 }
                 if (!mAuthenticated) 
                 { 
