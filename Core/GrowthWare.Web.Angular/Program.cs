@@ -1,7 +1,36 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddAuthentication(opt =>
+{
+    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = "https://localhost:5001",
+            ValidAudience = "https://localhost:5001",
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+        };
+    });
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("EnableCORS", builder => 
+    { 
+        builder.AllowAnyOrigin()
+        .AllowAnyHeader()
+        .AllowAnyMethod(); 
+    });
+});
 // Add services to the container.
 
 // builder.Services.AddControllers();               // Commented out
@@ -44,6 +73,9 @@ app.UseStaticFiles();                               // Added
 app.UseRouting();                                   // Added
 
 app.UseSession();
+
+app.UseCors("EnableCORS");
+app.UseAuthentication();
 
 app.UseAuthorization();
 

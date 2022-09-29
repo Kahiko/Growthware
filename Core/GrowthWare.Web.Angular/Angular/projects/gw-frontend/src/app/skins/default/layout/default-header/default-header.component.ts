@@ -39,7 +39,6 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   onLogin(): void {
     const mWindowSize: WindowSize = new WindowSize(325, 450);
     const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.loginModalId, this._AccountSvc.loginModalId, LoginComponent, mWindowSize);
-    // mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
       this.onModalOk
     }

@@ -270,6 +270,11 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     public int TimeZone { get; set; }
 
     /// <summary>
+    /// Used to pass the JWT token to the front-end
+    /// </summary>
+    public string Token { get; set; }
+
+    /// <summary>
     /// The location of the account
     /// </summary>
     public string Location { get; set; }

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc" Version="2.2.0" />
     <ProjectReference Include="..\GrowthWare.Framework\GrowthWare.Framework.csproj" />
     <ProjectReference Include="..\GrowthWare.BusinessLogic\GrowthWare.BusinessLogic.csproj" />

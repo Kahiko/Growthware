@@ -7,6 +7,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
 import { IAccountProfile } from './account-profile.model';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,8 @@ export class AccountService {
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService
+    private _LoggingSvc: LoggingService,
+    private _Router: Router
   ) {
     this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
     this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
@@ -78,14 +80,17 @@ export class AccountService {
         }),
         params: mQueryParameter,
       };
-      this._HttpClient.post<IAccountProfile>(this._Api_Authenticate, null, mHttpOptions).subscribe({
+      this._HttpClient.post<String>(this._Api_Authenticate, null, mHttpOptions).subscribe({
         next: (response: any) => {
+          localStorage.setItem("jwt", response.token);
+          this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
           this._IsAuthenticated.next(true);
-          resolve(response);
+          resolve(true);
         },
         error: (error: any) => {
           if(error.status && error.status === 403) {
+            this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
             reject(error.error);
           } else {
             this.errorHandler(error, 'authenticate');
@@ -98,10 +103,13 @@ export class AccountService {
   }
 
   public logout(): void {
+    localStorage.removeItem("jwt")
     this.account = this._DefaultAccount;
     this._IsAuthenticated.next(false);
     const mNavLink: INavLink[] = [];
     this._SideNavSubject.next(mNavLink);
+    this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+    this._Router.navigate(["home"]);
   }
 
   public async getAccount(account: string): Promise<IAccountProfile> {

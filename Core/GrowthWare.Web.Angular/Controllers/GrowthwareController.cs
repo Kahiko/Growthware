@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -91,6 +92,7 @@ public class GrowthwareAPIController : BaseController
         return true;
     }
 
+    [Authorize]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)
     {
@@ -116,6 +118,7 @@ public class GrowthwareAPIController : BaseController
         return mRetVal;
     }
 
+    [Authorize]
     [HttpPost("SearchFunctions")]
     public String SearchFunctions(UISearchCriteria searchCriteria)
     {

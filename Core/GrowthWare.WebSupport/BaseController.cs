@@ -1,10 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Globalization;
-using System.Threading.Tasks;
+using System.Text;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
+using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport;
@@ -56,6 +61,23 @@ public abstract class BaseController : ControllerBase
                     mAuthenticated = true;
                     mAccountProfile.FailedAttempts = 0;
                     mAccountProfile.LastLogOn = DateTime.Now;
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+                    var claims = new List<Claim> 
+                    { 
+                        new Claim(ClaimTypes.Name, mAccountProfile.Account), 
+                        // new Claim(ClaimTypes.Role, "Manager") 
+                    };
+
+                    var tokeOptions = new JwtSecurityToken(
+                        issuer: "https://localhost:5001",
+                        audience: "https://localhost:5001",
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(5),
+                        signingCredentials: signingCredentials
+                    );
+                    mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
                 }
                 if (!mAuthenticated) 
                 { 
@@ -71,11 +93,9 @@ public abstract class BaseController : ControllerBase
             }
         } else 
         {
-            // return Forbid("Incorrect account or password");
             return StatusCode(403, "Incorrect account or password");
         }
-        // return Ok(mAccountProfile);
-        return Ok(true);
+        return Ok(mAccountProfile);
     }
 
 }

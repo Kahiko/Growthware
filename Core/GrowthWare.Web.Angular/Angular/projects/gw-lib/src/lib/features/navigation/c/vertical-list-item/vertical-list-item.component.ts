@@ -30,7 +30,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
 
   constructor(
     private _MenuListSvc: MenuListService,
-    public router: Router
+    public _Router: Router
   ) { }
 
   ngOnDestroy(): void {
@@ -48,7 +48,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
 
   onItemSelected(item: INavLink) {
     if (!item.children || !item.children.length) {
-      this.router.navigate([item.link]);
+      this._Router.navigate([item.link]);
       // this.navService.closeNav();
     }
     if (item.children && item.children.length) {
