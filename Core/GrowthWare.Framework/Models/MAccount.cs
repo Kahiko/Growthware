@@ -53,7 +53,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
         }
     }
 
-    private static string getCommaSeportatedString(Collection<string> CollectionOfStrings)
+    private static string getCommaSeparatedString(Collection<string> CollectionOfStrings)
     {
         String mRetValue = String.Empty;
         if (CollectionOfStrings != null)
@@ -285,7 +285,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// <returns>String</returns>
     public String GetCommaSeparatedAssignedRoles
     {
-        get { return getCommaSeportatedString(m_AssignedRoles); }
+        get { return getCommaSeparatedString(m_AssignedRoles); }
     }
 
     /// <summary>
@@ -294,7 +294,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// <returns>String</returns>
     public String GetCommaSeparatedAssignedGroups
     {
-        get { return getCommaSeportatedString(m_AssignedGroups); }
+        get { return getCommaSeparatedString(m_AssignedGroups); }
     }
 
     /// <summary>
@@ -303,7 +303,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// <returns>String</returns>
     public String GetCommaSeparatedDerivedRoles
     {
-        get { return getCommaSeportatedString(m_DerivedRoles); }
+        get { return getCommaSeparatedString(m_DerivedRoles); }
     }
     #endregion
 
