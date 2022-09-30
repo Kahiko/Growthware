@@ -26,9 +26,9 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Security_Entity'
 	IF @P_SecurityEntitySeqId = -1
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
-			SELECT
-				SecurityEntitySeqId as SecurityEntityID
+	IF @P_Debug = 1 PRINT 'Getting all Security_Enties'
+	SELECT
+		SecurityEntitySeqId as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -45,16 +45,16 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWSecurity.Security_Entities
-			ORDER BY 
+	FROM
+		ZGWSecurity.Security_Entities
+	ORDER BY 
 				NAME ASC
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting 1 row from Security_Enties'
-			SELECT
-				SecurityEntitySeqId as SecurityEntityID
+	IF @P_Debug = 1 PRINT 'Getting 1 row from Security_Enties'
+	SELECT
+		SecurityEntitySeqId as SecurityEntityID
 				, Name
 				, [Description]
 				, URL
@@ -71,11 +71,11 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM 
-				ZGWSecurity.Security_Entities
-			WHERE
+	FROM
+		ZGWSecurity.Security_Entities
+	WHERE
 				SecurityEntitySeqId = @P_SecurityEntitySeqId
-		END
+END
 	--End IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Security_Entity'
 RETURN 0

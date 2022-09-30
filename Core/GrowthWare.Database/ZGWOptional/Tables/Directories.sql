@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWOptional].[Directories] (
-    [FunctionSeqId]         INT           NOT NULL,
+    [FunctionSeqId]          INT           NOT NULL,
     [Directory]              VARCHAR (255) NOT NULL,
     [Impersonate]            INT           NOT NULL,
     [Impersonating_Account]  VARCHAR (50)  NULL,

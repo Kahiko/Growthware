@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWSystem].[Statuses] (
-    [StatusSeqId] INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [StatusSeqId]  INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Name]         CHAR (25)     NOT NULL,
     [Description]  VARCHAR (512) NULL,
     [Added_By]     INT           NULL,

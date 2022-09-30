@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWSecurity].[Roles] (
-    [RoleSeqId]     INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [RoleSeqId]      INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Name]           VARCHAR (50)  NOT NULL,
     [Description]    VARCHAR (128) NOT NULL,
     [Is_System]      INT           NOT NULL,

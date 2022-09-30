@@ -1,3 +1,4 @@
+
 /*
 Usage:
     DECLARE
@@ -26,25 +27,25 @@ Usage:
 --	ZGWSystem.Get_Log
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Set_Log]
-      @P_Account       VARCHAR (128)
-    , @P_Component     VARCHAR (50)
-    , @P_ClassName     VARCHAR (50)
-    , @P_Level         VARCHAR (5)
-    , @P_MethodName    VARCHAR (50)
-    , @P_Msg           VARCHAR (MAX)
-    , @P_Primary_Key int OUTPUT
+	@P_Account       VARCHAR (128),
+	@P_Component     VARCHAR (50),
+	@P_ClassName     VARCHAR (50),
+	@P_Level         VARCHAR (5),
+	@P_MethodName    VARCHAR (50),
+	@P_Msg           VARCHAR (MAX),
+	@P_Primary_Key int OUTPUT
 AS
     SET NOCOUNT ON;
-    INSERT [ZGWSystem].[Logging] (
-          [Account]
-        , [Component]
-        , [ClassName]
-        , [Level]
-        , [LogDate]
-        , [MethodName]
-        , [Msg]
-    ) VALUES(
-          @P_Account
+    INSERT [ZGWSystem].[Logging](
+		[Account]
+		, [Component]
+		, [ClassName]
+		, [Level]
+		, [LogDate]
+		, [MethodName]
+		, [Msg]
+	)VALUES(
+		@P_Account
         , @P_Component
         , @P_ClassName
         , @P_Level
@@ -56,3 +57,4 @@ AS
     RETURN 0;
 
 GO
+

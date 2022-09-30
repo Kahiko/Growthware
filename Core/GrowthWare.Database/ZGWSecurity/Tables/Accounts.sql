@@ -1,10 +1,10 @@
 CREATE TABLE [ZGWSecurity].[Accounts] (
-    [AccountSeqId]        INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [AccountSeqId]         INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Account]              VARCHAR (128) NOT NULL,
     [Email]                VARCHAR (128) NULL,
     [Enable_Notifications] INT           NULL,
     [Is_System_Admin]      INT           CONSTRAINT [DF_Accounts_IS_SYSTEM_ADMIN] DEFAULT ((0)) NOT NULL,
-    [StatusSeqId]         INT           NOT NULL,
+    [StatusSeqId]          INT           NOT NULL,
     [Password_Last_Set]    DATETIME      CONSTRAINT [DF_Accounts_PASSWORD_LAST_SET] DEFAULT (getdate()) NOT NULL,
     [Password]             VARCHAR (256) NOT NULL,
     [Failed_Attempts]      INT           NOT NULL,

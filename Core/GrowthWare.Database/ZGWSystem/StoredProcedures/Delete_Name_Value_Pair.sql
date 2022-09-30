@@ -21,7 +21,7 @@ CREATE PROCEDURE [ZGWSystem].[Delete_Name_Value_Pair]
 	@P_NVPSeqId INT,
 	@P_SecurityEntitySeqId	INT,
 	@P_Debug INT = 0
- AS
+AS
 BEGIN
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Name_Value_Pair'
 	DELETE FROM ZGWSystem.Name_Value_Pairs

@@ -23,10 +23,11 @@ AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function'
 	IF @P_FunctionSeqId <> -1
-		BEGIN -- SELECT an existing row from the table.
-			IF @P_Debug = 1 PRINT 'Selecting single record'
-			SELECT
-				FunctionSeqId AS FUNCTION_SEQ_ID
+		BEGIN
+	-- SELECT an existing row from the table.
+	IF @P_Debug = 1 PRINT 'Selecting single record'
+	SELECT
+		FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
 				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
@@ -49,18 +50,18 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWSecurity.Functions WITH(NOLOCK)
-			WHERE
+	FROM
+		ZGWSecurity.Functions WITH(NOLOCK)
+	WHERE
 				FunctionSeqId = @P_FunctionSeqId
-			ORDER BY 
+	ORDER BY 
 				[Name] ASC
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Selecting all records'
-			SELECT
-				FunctionSeqId AS FUNCTION_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Selecting all records'
+	SELECT
+		FunctionSeqId AS FUNCTION_SEQ_ID
 				, [Name]
 				, [Description]
 				, FunctionTypeSeqId AS FUNCTION_TYPE_SEQ_ID
@@ -83,11 +84,11 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWSecurity.Functions WITH(NOLOCK)
-			ORDER BY 
+	FROM
+		ZGWSecurity.Functions WITH(NOLOCK)
+	ORDER BY 
 				[Name] ASC
-		END
+END
 	-- END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function'
 

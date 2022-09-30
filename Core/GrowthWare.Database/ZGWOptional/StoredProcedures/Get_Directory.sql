@@ -17,15 +17,15 @@ Usage:
 --	all rows in the table are retruned.
 -- =============================================
 CREATE PROCEDURE [ZGWOptional].[Get_Directory]
-		@P_FunctionSeqId INT,
-		@P_Debug INT = 0
+	@P_FunctionSeqId INT,
+	@P_Debug INT = 0
 AS
 IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Get_Directory'
 IF @P_FunctionSeqId = -1
 	BEGIN
-		IF @P_Debug = 1 PRINT 'Getting all'
-		SELECT
-			FunctionSeqId as FUNCTION_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Getting all'
+	SELECT
+		FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -34,16 +34,16 @@ IF @P_FunctionSeqId = -1
 			, Added_Date
 			, Updated_By
 			, Updated_Date
-		FROM
-			ZGWOptional.Directories WITH(NOLOCK)
-		ORDER BY
+	FROM
+		ZGWOptional.Directories WITH(NOLOCK)
+	ORDER BY
 			Directory
-	END
+END
 ELSE
 	BEGIN
-		IF @P_Debug = 1 PRINT 'Getting 1'
-		SELECT
-			FunctionSeqId as FUNCTION_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Getting 1'
+	SELECT
+		FunctionSeqId as FUNCTION_SEQ_ID
 			, Directory
 			, Impersonate
 			, Impersonating_Account as IMPERSONATE_ACCOUNT
@@ -52,11 +52,11 @@ ELSE
 			, Added_Date
 			, Updated_By
 			, Updated_Date
-		FROM
-			ZGWOptional.Directories
-		WHERE
+	FROM
+		ZGWOptional.Directories
+	WHERE
 			FunctionSeqId = @P_FunctionSeqId
-	END
+END
 -- end if
 IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_Directory'
 

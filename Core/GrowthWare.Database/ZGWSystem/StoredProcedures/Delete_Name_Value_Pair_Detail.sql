@@ -26,7 +26,9 @@ AS
 	DECLARE @V_Statement NVARCHAR(4000),
 			@V_Static_Name VARCHAR(30)
 
-	SET @V_Static_Name = (SELECT Static_Name FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
+	SET @V_Static_Name = (SELECT Static_Name
+FROM ZGWSystem.Name_Value_Pairs
+WHERE NVPSeqId = @P_NVPSeqId)
 
 	SET @V_Statement= 'DELETE 
 		   FROM ' + CONVERT(VARCHAR,@V_Static_Name) + '

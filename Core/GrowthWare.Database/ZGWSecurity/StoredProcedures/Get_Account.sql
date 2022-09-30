@@ -29,11 +29,11 @@ AS
 	-- SELECT all rows from the table.
 	IF LEN(RTRIM(LTRIM(@P_Account))) = 0
 		BEGIN
-			IF @P_Is_System_Admin = 1
+	IF @P_Is_System_Admin = 1
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts'
-					SELECT
-						AccountSeqId AS ACCT_SEQ_ID
+		IF @P_Debug = 1 PRINT 'Selecting all accounts'
+		SELECT
+			AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -53,38 +53,57 @@ AS
 						, Added_Date
 						, Updated_By
 						, Updated_Date
-					FROM
-						[ZGWSecurity].[Accounts] WITH(NOLOCK)
-					ORDER BY 
+		FROM
+			[ZGWSecurity].[Accounts] WITH(NOLOCK)
+		ORDER BY 
 						[Account] ASC
-				END
+	END
 			ELSE
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_SecurityEntitySeqId)
-					DECLARE @V_Accounts TABLE (
-						AccountSeqId INT
-						, Account VARCHAR(100)
-						, Email VARCHAR(100)
-						, Enable_Notifications BIT
-						, Is_System_Admin INT
-						, StatusSeqId INT
-						, Password_Last_Set DATETIME
-						, [Password] VARCHAR(256)
-						, Failed_Attempts INT
-						, First_Name VARCHAR(30)
-						, Last_Login DATETIME
-						, Last_Name VARCHAR(30)
-						, Location VARCHAR(100)
-						, Middle_Name VARCHAR(30)
-						, Preferred_Name VARCHAR(100)
-						, Time_Zone INT
-						, Added_By INT
-						, Added_Date DATETIME
-						, Updated_By INT
-						, Updated_Date DATETIME)
-					INSERT INTO @V_Accounts
+		IF @P_Debug = 1 PRINT 'Selecting all accounts for Entity ' + CONVERT(VARCHAR(MAX),@P_SecurityEntitySeqId)
+		DECLARE @V_Accounts TABLE (
+			AccountSeqId INT
+						,
+			Account VARCHAR(100)
+						,
+			Email VARCHAR(100)
+						,
+			Enable_Notifications BIT
+						,
+			Is_System_Admin INT
+						,
+			StatusSeqId INT
+						,
+			Password_Last_Set DATETIME
+						,
+			[Password] VARCHAR(256)
+						,
+			Failed_Attempts INT
+						,
+			First_Name VARCHAR(30)
+						,
+			Last_Login DATETIME
+						,
+			Last_Name VARCHAR(30)
+						,
+			Location VARCHAR(100)
+						,
+			Middle_Name VARCHAR(30)
+						,
+			Preferred_Name VARCHAR(100)
+						,
+			Time_Zone INT
+						,
+			Added_By INT
+						,
+			Added_Date DATETIME
+						,
+			Updated_By INT
+						,
+			Updated_Date DATETIME)
+		INSERT INTO @V_Accounts
 					SELECT -- Roles via roles
-						Accounts.AccountSeqId
+				Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -104,19 +123,20 @@ AS
 						, Accounts.Added_Date
 						, Accounts.Updated_By
 						, Accounts.Updated_Date
-					FROM
-						ZGWSecurity.Accounts AS Accounts WITH(NOLOCK),
-						ZGWSecurity.Roles_Security_Entities_Accounts WITH(NOLOCK),
-						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
-						ZGWSecurity.Roles WITH(NOLOCK)
-					WHERE
+			FROM
+				ZGWSecurity.Accounts AS Accounts WITH(NOLOCK),
+				ZGWSecurity.Roles_Security_Entities_Accounts WITH(NOLOCK),
+				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
+				ZGWSecurity.Roles WITH(NOLOCK)
+			WHERE
 						Roles_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
-						AND Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
-						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-					UNION
-					SELECT -- Roles via groups
-						Accounts.AccountSeqId
+				AND Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = Roles_Security_Entities.RolesSecurityEntitiesSeqId
+				AND Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId
+				FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+				AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+		UNION
+			SELECT -- Roles via groups
+				Accounts.AccountSeqId
 						, Accounts.Account
 						, Accounts.Email
 						, Accounts.Enable_Notifications
@@ -136,22 +156,23 @@ AS
 						, Accounts.Added_Date
 						, Accounts.Updated_By
 						, Accounts.Updated_Date
-					FROM
-						ZGWSecurity.Accounts AS Accounts WITH(NOLOCK),
-						ZGWSecurity.Groups_Security_Entities_Accounts WITH(NOLOCK),
-						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
-						ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH(NOLOCK),
-						ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
-						ZGWSecurity.Roles WITH(NOLOCK)
-					WHERE
+			FROM
+				ZGWSecurity.Accounts AS Accounts WITH(NOLOCK),
+				ZGWSecurity.Groups_Security_Entities_Accounts WITH(NOLOCK),
+				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
+				ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH(NOLOCK),
+				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
+				ZGWSecurity.Roles WITH(NOLOCK)
+			WHERE
 						ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = Accounts.AccountSeqId
-						AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
-						AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
-						AND Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
-						AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-				
-					SELECT DISTINCT
-						AccountSeqId AS ACCT_SEQ_ID
+				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId
+				FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+				AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId
+				AND Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
+				AND Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+
+		SELECT DISTINCT
+			AccountSeqId AS ACCT_SEQ_ID
 						, Account AS ACCT
 						, Email
 						, Enable_Notifications
@@ -170,21 +191,21 @@ AS
 						, Added_By
 						, Added_Date
 						, Updated_By
-						, Updated_Date					
-					FROM 
-						@V_Accounts
-					ORDER BY
+						, Updated_Date
+		FROM
+			@V_Accounts
+		ORDER BY
 						Account
-				END
-			-- END IF
-		END
+	END
+-- END IF
+END
 	ELSE
 		BEGIN
-			SET NOCOUNT ON
-			IF @P_Debug = 1 PRINT 'Selecting single account'
-			-- SELECT an existing row from the table.
-			SELECT
-				AccountSeqId AS ACCT_SEQ_ID
+	SET NOCOUNT ON
+	IF @P_Debug = 1 PRINT 'Selecting single account'
+	-- SELECT an existing row from the table.
+	SELECT
+		AccountSeqId AS ACCT_SEQ_ID
 				, Account AS ACCT
 				, Email
 				, Enable_Notifications
@@ -204,10 +225,10 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM ZGWSecurity.Accounts WITH(NOLOCK)
-			WHERE
+	FROM ZGWSecurity.Accounts WITH(NOLOCK)
+	WHERE
 				[Account] = @P_Account
-		END
+END
 	-- END IF
 RETURN 0
 

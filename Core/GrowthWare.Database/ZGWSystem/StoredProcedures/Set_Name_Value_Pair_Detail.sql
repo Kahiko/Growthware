@@ -44,14 +44,19 @@ CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair_Detail]
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSystem].[Set_Name_Value_Pair_Detail]'
 	DECLARE 
-		@V_Static_Name VARCHAR(30) = (SELECT Static_Name FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
-		,@V_Schema_Name VARCHAR(30) = (SELECT [Schema_Name] FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
+		@V_Static_Name VARCHAR(30) = (SELECT Static_Name
+FROM ZGWSystem.Name_Value_Pairs
+WHERE NVPSeqId = @P_NVPSeqId)
+		,@V_Schema_Name VARCHAR(30) = (SELECT [Schema_Name]
+FROM ZGWSystem.Name_Value_Pairs
+WHERE NVPSeqId = @P_NVPSeqId)
 		,@V_Statement NVARCHAR(4000)
 		,@V_Now DATETIME = GETDATE()
 
 	IF @P_NVP_DetailSeqId > -1
-		BEGIN -- UPDATE PROFILE
-			SET @V_Statement = 'UPDATE ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '
+		BEGIN
+	-- UPDATE PROFILE
+	SET @V_Statement = 'UPDATE ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '
 			SET 
 				NVP_Detail_Name = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Name) + ''',
 				NVP_Detail_Value = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Value) + ''',
@@ -61,25 +66,26 @@ AS
 				UPDATED_DATE = ''' + CONVERT(VARCHAR,@V_Now) + '''
 			WHERE
 				NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId)
-			IF @P_Debug = 1 PRINT @V_Statement
-			EXECUTE dbo.sp_executesql @statement = @V_Statement
-			SELECT @P_Primary_Key = @P_NVPSeqId
-		END
+	IF @P_Debug = 1 PRINT @V_Statement
+	EXECUTE dbo.sp_executesql @statement = @V_Statement
+	SELECT @P_Primary_Key = @P_NVPSeqId
+END
 	ELSE
-		BEGIN -- INSERT a new row in the table.
-			-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
-			DECLARE @V_COUNT INT
-			SET @V_Statement= 'SET @V_COUNT = (SELECT COUNT(*)
+		BEGIN
+	-- INSERT a new row in the table.
+	-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
+	DECLARE @V_COUNT INT
+	SET @V_Statement= 'SET @V_COUNT = (SELECT COUNT(*)
 				   FROM ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '
 				   WHERE NVP_Detail_Value = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Value) + ''' AND NVP_Detail_Name = ''' + CONVERT(VARCHAR,@P_NVP_Detail_Name) + ''')'
-			IF @P_Debug = 1 PRINT @V_Statement
-			EXECUTE sp_executesql @V_Statement,N'@V_COUNT int output',@V_COUNT output
-			IF @V_COUNT > 0
+	IF @P_Debug = 1 PRINT @V_Statement
+	EXECUTE sp_executesql @V_Statement,N'@V_COUNT int output',@V_COUNT output
+	IF @V_COUNT > 0
 				BEGIN
-					RAISERROR ('The entry already exists in the database.',16,1)
-					RETURN
-				END
-			SET @V_Statement = 'INSERT INTO ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '(
+		RAISERROR ('The entry already exists in the database.',16,1)
+		RETURN
+	END
+	SET @V_Statement = 'INSERT INTO ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Static_Name) + '(
 					NVPSeqId,
 					NVP_Detail_Name,
 					NVP_Detail_Value,
@@ -98,11 +104,12 @@ AS
 					' + CONVERT(VARCHAR,@P_Added_Updated_By) + ',
 					''' + CONVERT(VARCHAR,@V_Now) + '''
 				)'
-			IF @P_Debug = 1 PRINT @V_Statement
-			EXECUTE dbo.sp_executesql @statement = @V_Statement
-			SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
-			--PRINT 'DONE ADDING'
-		END
+	IF @P_Debug = 1 PRINT @V_Statement
+	EXECUTE dbo.sp_executesql @statement = @V_Statement
+	SELECT @P_Primary_Key=SCOPE_IDENTITY()
+-- Get the IDENTITY value for the row just inserted.
+--PRINT 'DONE ADDING'
+END
 -- Get the Error Code for the statement just executed.
 --PRINT 'SETTING ERROR CODE'
 SELECT @P_ErrorCode=@@ERROR

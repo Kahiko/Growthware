@@ -21,18 +21,20 @@ CREATE PROCEDURE [ZGWSecurity].[Delete_Roles_Accounts]
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
-	DECLARE @V_RolesSecurityEntitiesSeqId AS INT = (SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE RoleSeqId = @P_ROLE_SEQ_ID)
+	DECLARE @V_RolesSecurityEntitiesSeqId AS INT = (SELECT RolesSecurityEntitiesSeqId
+FROM ZGWSecurity.Roles_Security_Entities
+WHERE RoleSeqId = @P_ROLE_SEQ_ID)
 	DELETE
 		ZGWSecurity.Roles_Security_Entities_Accounts
 	WHERE
 		RolesSecurityEntitiesSeqId IN (
-			SELECT 
-				RolesSecurityEntitiesSeqId 
-			FROM 
-				ZGWSecurity.Roles_Security_Entities 
-			WHERE 
+			SELECT
+	RolesSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Roles_Security_Entities
+WHERE 
 				RolesSecurityEntitiesSeqId = @V_RolesSecurityEntitiesSeqId
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+	AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Begin [ZGWSecurity].[Delete_Roles_Accounts]'
 RETURN 0

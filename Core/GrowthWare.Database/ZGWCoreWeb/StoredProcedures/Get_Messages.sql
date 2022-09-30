@@ -31,13 +31,17 @@ AS
 		something along the lines of core defaul security entity message
 		+ other security entity messages ...
 	*/
-	IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId) = 0
+	IF (SELECT COUNT(*)
+FROM ZGWCoreWeb.[Messages]
+WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId) = 0
 		BEGIN
-			IF (SELECT COUNT(*) FROM ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
+	IF (SELECT COUNT(*)
+	FROM ZGWCoreWeb.[Messages]
+	WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId) > 0
 				BEGIN
-					INSERT INTO ZGWCoreWeb.[Messages]
-						SELECT
-							@P_SecurityEntitySeqId
+		INSERT INTO ZGWCoreWeb.[Messages]
+		SELECT
+			@P_SecurityEntitySeqId
 							, Name
 							, Title
 							, [Description]
@@ -47,22 +51,23 @@ AS
 							, Added_Date
 							, Updated_By
 							, Updated_Date
-						FROM
-							ZGWCoreWeb.[Messages] WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId
-					IF @P_Debug = 1 PRINT 'Needed to add entries for all message for the requested Security_Entity'
-				END
+		FROM
+			ZGWCoreWeb.[Messages]
+		WHERE SecurityEntitySeqId = @V_DefaultSecurityEntitySeqId
+		IF @P_Debug = 1 PRINT 'Needed to add entries for all message for the requested Security_Entity'
+	END
 			ELSE
 				IF @P_Debug = 1 PRINT 'There are no message as of yet stop trying to get them!'
-				RETURN
-			--END IF
-		END
+	RETURN
+--END IF
+END
 	--END IF
 
 	IF @P_MessageSeqId <> -1
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting single message'
-			SELECT
-				MessageSeqId as MESSAGE_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Getting single message'
+	SELECT
+		MessageSeqId as MESSAGE_SEQ_ID
 				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
@@ -73,16 +78,16 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWCoreWeb.[Messages]
-			WHERE
+	FROM
+		ZGWCoreWeb.[Messages]
+	WHERE
 				MessageSeqId = @P_MessageSeqId
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting all messages'
-			SELECT
-				MessageSeqId as MESSAGE_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Getting all messages'
+	SELECT
+		MessageSeqId as MESSAGE_SEQ_ID
 				, SecurityEntitySeqId as SecurityEntityID
 				, NAME
 				, TITLE
@@ -93,11 +98,11 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWCoreWeb.[Messages]
-			ORDER BY
+	FROM
+		ZGWCoreWeb.[Messages]
+	ORDER BY
 				[Name]
-		END
+END
 	--END IF
 RETURN 0
 

@@ -23,7 +23,7 @@ CREATE PROCEDURE [ZGWSecurity].[Get_Account_Security]
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
-	SELECT
+		SELECT
 		ZGWSecurity.Roles.[Name] AS Roles
 	FROM
 		ZGWSecurity.Accounts WITH(NOLOCK),
@@ -34,9 +34,10 @@ AS
 		ZGWSecurity.Accounts.Account = @P_Account
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId
 		AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
+		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId
+		FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId))
 		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-	UNION
+UNION
 	SELECT
 		ZGWSecurity.Roles.[Name] AS Roles
 	FROM
@@ -50,11 +51,12 @@ AS
 		ZGWSecurity.Accounts.Account = @P_Account AND
 		ZGWSecurity.Groups_Security_Entities_Accounts.AccountSeqId = ZGWSecurity.Accounts.AccountSeqId AND
 		ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Accounts.GroupsSecurityEntitiesSeqId AND
-		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId)) AND
+		ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (SELECT SecurityEntitySeqId
+		FROM ZGWSecurity.Get_Entity_Parents(1,@P_SecurityEntitySeqId)) AND
 		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId AND
 		ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId AND
 		ZGWSecurity.Roles.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-	ORDER BY
+ORDER BY
 		Roles
 
 RETURN 0

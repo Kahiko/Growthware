@@ -44,10 +44,14 @@ BEGIN
 	DECLARE @KEY VARCHAR(MAX)
 	DECLARE @Value VARCHAR(MAX)
 
-	DECLARE @StartRoot VARCHAR(100); SET @StartRoot = '<row>'
-	DECLARE @EndRoot VARCHAR(100); SET @EndRoot = '</row>'
-	DECLARE @StartField VARCHAR(100); SET @StartField = '<'
-	DECLARE @EndField VARCHAR(100); SET @EndField = '>'
+	DECLARE @StartRoot VARCHAR(100);
+	SET @StartRoot = '<row>'
+	DECLARE @EndRoot VARCHAR(100);
+	SET @EndRoot = '</row>'
+	DECLARE @StartField VARCHAR(100);
+	SET @StartField = '<'
+	DECLARE @EndField VARCHAR(100);
+	SET @EndField = '>'
 
 	SET @RowStart = CharIndex(@StartRoot, @XMLString, 0)
 	SET @JSON = ''
@@ -77,7 +81,7 @@ BEGIN
 			SET @FieldStart = @FieldStart+Len(@StartField)
 			SET @FieldEnd = CharIndex(@EndField, @Row, @FieldStart)
 			SET @FieldStart = CharIndex(@StartField, @Row, @FieldEnd)
-		END	
+		END
 		IF LEN(@JSON)>0 SET @JSON = SubString(@JSON, 0, LEN(@JSON))
 		SET @JSON = @JSON+'},'
 		--/ for each row

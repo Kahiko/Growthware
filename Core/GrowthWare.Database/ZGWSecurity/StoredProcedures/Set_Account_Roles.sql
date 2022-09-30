@@ -35,17 +35,19 @@ AS
 
 	BEGIN TRAN
 		DECLARE @AccountSeqId INT
-		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+		SET @AccountSeqId = (SELECT AccountSeqId
+FROM ZGWSecurity.Accounts
+WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Roles'
 		EXEC ZGWSecurity.Delete_Account_Roles @AccountSeqId, @P_SecurityEntitySeqId, @V_ErrorCode, @P_Debug
 		IF @V_ErrorCode <> 0
 			BEGIN
-				EXEC ZGWSystem.Log_Error_Info @P_Debug
-				SET @V_ErrorMsg = 'Error executing ZGWSecurity.Delete_Account_Roles' + CHAR(10)
-				RAISERROR(@V_ErrorMsg,16,1)
-				RETURN @@ERROR
-			END
+	EXEC ZGWSystem.Log_Error_Info @P_Debug
+	SET @V_ErrorMsg = 'Error executing ZGWSecurity.Delete_Account_Roles' + CHAR(10)
+	RAISERROR(@V_ErrorMsg,16,1)
+	RETURN @@ERROR
+END
 		--END IF
 		DECLARE @V_RoleSeqId AS 	INT
 		DECLARE @V_SE_RLS_SECURITY_ID AS 	INT
@@ -56,64 +58,66 @@ AS
 		IF REPLACE(@P_Roles, ',', '') <> ''
 			WHILE @V_Pos > 0
 			BEGIN
-				SET @V_Role_Name = LTRIM(RTRIM(LEFT(@P_Roles, @V_Pos - 1)))
-				IF @V_Role_Name <> ''
+	SET @V_Role_Name = LTRIM(RTRIM(LEFT(@P_Roles, @V_Pos - 1)))
+	IF @V_Role_Name <> ''
 				BEGIN
-					--select the role seq id first
-					SELECT @V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId 
-					FROM ZGWSecurity.Roles 
-					WHERE [Name]=@V_ROLE_NAME
+		--select the role seq id first
+		SELECT @V_RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+		FROM ZGWSecurity.Roles
+		WHERE [Name]=@V_ROLE_NAME
 
- 					SELECT
-						@V_SE_RLS_SECURITY_ID=RolesSecurityEntitiesSeqId
-					FROM
-						ZGWSecurity.Roles_Security_Entities
-					WHERE
+		SELECT
+			@V_SE_RLS_SECURITY_ID=RolesSecurityEntitiesSeqId
+		FROM
+			ZGWSecurity.Roles_Security_Entities
+		WHERE
 						RoleSeqId = @V_RoleSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
-						IF @P_Debug = 1 PRINT ('@V_SE_RLS_SECURITY_ID = ' + CONVERT(VARCHAR,@V_SE_RLS_SECURITY_ID))
-					IF NOT EXISTS(
-							SELECT 
-								RolesSecurityEntitiesSeqId 
-							FROM 
-								ZGWSecurity.Roles_Security_Entities_Accounts 
-							WHERE 
-							AccountSeqId = @AccountSeqId 
-							AND RolesSecurityEntitiesSeqId = @V_SE_RLS_SECURITY_ID
+			SecurityEntitySeqId = @P_SecurityEntitySeqId
+		IF @P_Debug = 1 PRINT ('@V_SE_RLS_SECURITY_ID = ' + CONVERT(VARCHAR,@V_SE_RLS_SECURITY_ID))
+		IF NOT EXISTS(
+							SELECT
+			RolesSecurityEntitiesSeqId
+		FROM
+			ZGWSecurity.Roles_Security_Entities_Accounts
+		WHERE 
+							AccountSeqId = @AccountSeqId
+			AND RolesSecurityEntitiesSeqId = @V_SE_RLS_SECURITY_ID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
-						INSERT ZGWSecurity.Roles_Security_Entities_Accounts (
-							AccountSeqId,
-							RolesSecurityEntitiesSeqId,
-							Added_By
-						)
-						VALUES (
-							@AccountSeqId,
-							@V_SE_RLS_SECURITY_ID,
-							@P_Added_Updated_By
+						INSERT ZGWSecurity.Roles_Security_Entities_Accounts
+			(
+			AccountSeqId,
+			RolesSecurityEntitiesSeqId,
+			Added_By
+			)
+		VALUES
+			(
+				@AccountSeqId,
+				@V_SE_RLS_SECURITY_ID,
+				@P_Added_Updated_By
 						)
 					END TRY
 					BEGIN CATCH
 						GOTO ABEND
 					END CATCH
-				END
-					SET @P_Roles = RIGHT(@P_Roles, LEN(@P_Roles) - @V_Pos)
-					SET @V_Pos = CHARINDEX(',', @P_Roles, 1)
-			END
+	END
+	SET @P_Roles = RIGHT(@P_Roles, LEN(@P_Roles) - @V_Pos)
+	SET @V_Pos = CHARINDEX(',', @P_Roles, 1)
+END
 		IF @@ERROR <> 0 GOTO ABEND
 	COMMIT TRAN
 	RETURN 0
 ABEND:
 	IF @@ERROR <> 0
 		BEGIN
-			ROLLBACK TRAN
-			EXEC ZGWSystem.Log_Error_Info @P_Debug
-			SET @V_ErrorMsg = 'Error executing ZGWSecurity.Set_Account_Roles' + CHAR(10)
-			IF @P_Debug = 1 PRINT @V_ErrorMsg
-			--RAISERROR(@V_ErrorMsg,16,1)
-			RETURN @@ERROR
-		END
+	ROLLBACK TRAN
+	EXEC ZGWSystem.Log_Error_Info @P_Debug
+	SET @V_ErrorMsg = 'Error executing ZGWSecurity.Set_Account_Roles' + CHAR(10)
+	IF @P_Debug = 1 PRINT @V_ErrorMsg
+	--RAISERROR(@V_ErrorMsg,16,1)
+	RETURN @@ERROR
+END
 	--END IF
 
 GO

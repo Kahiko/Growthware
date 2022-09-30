@@ -23,19 +23,19 @@ CREATE PROCEDURE [ZGWSecurity].[Get_Account_Roles]
 AS
 	SET NOCOUNT ON
 	SELECT
-		ZGWSecurity.Roles.[Name] AS Roles
-	FROM
-		ZGWSecurity.Accounts WITH(NOLOCK),
-		ZGWSecurity.Roles_Security_Entities_Accounts WITH(NOLOCK),
-		ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
-		ZGWSecurity.Roles WITH(NOLOCK)
-	WHERE
+	ZGWSecurity.Roles.[Name] AS Roles
+FROM
+	ZGWSecurity.Accounts WITH(NOLOCK),
+	ZGWSecurity.Roles_Security_Entities_Accounts WITH(NOLOCK),
+	ZGWSecurity.Roles_Security_Entities WITH(NOLOCK),
+	ZGWSecurity.Roles WITH(NOLOCK)
+WHERE
 		ZGWSecurity.Accounts.Account = @P_Account
-		AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId
-		AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-	ORDER BY
+	AND ZGWSecurity.Accounts.AccountSeqId = ZGWSecurity.Roles_Security_Entities_Accounts.AccountSeqId
+	AND ZGWSecurity.Roles_Security_Entities_Accounts.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
+	AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+	AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+ORDER BY
 		ROLES
 
 RETURN 0

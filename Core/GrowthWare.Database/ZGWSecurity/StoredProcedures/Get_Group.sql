@@ -29,41 +29,41 @@ AS
 	
 	IF @P_GroupSeqId > -1
 		BEGIN
-			IF @P_Debug = 1 PRINT 'SELECT an existing row from the table.'
-			SELECT
-				ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
+	IF @P_Debug = 1 PRINT 'SELECT an existing row from the table.'
+	SELECT
+		ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
 				, ZGWSecurity.Groups.Name
 				, ZGWSecurity.Groups.[Description]
 				, ZGWSecurity.Groups.Added_By
 				, ZGWSecurity.Groups.Added_Date
 				, ZGWSecurity.Groups.Updated_By
 				, ZGWSecurity.Groups.Updated_Date
-			FROM
-				ZGWSecurity.Groups WITH(NOLOCK)
-			WHERE
+	FROM
+		ZGWSecurity.Groups WITH(NOLOCK)
+	WHERE
 				GroupSeqId = @P_GroupSeqId
 
-		END
+END
 	ELSE --
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting all groups for a given Security Entity'
-			SELECT
-				ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Getting all groups for a given Security Entity'
+	SELECT
+		ZGWSecurity.Groups.GroupSeqId as GROUP_SEQ_ID
 				, ZGWSecurity.Groups.Name
 				, ZGWSecurity.Groups.[Description]
 				, ZGWSecurity.Groups.Added_By
 				, ZGWSecurity.Groups.Added_Date
 				, ZGWSecurity.Groups.Updated_By
 				, ZGWSecurity.Groups.Updated_Date
-			FROM
-				ZGWSecurity.Groups WITH(NOLOCK),
-				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
-			WHERE
+	FROM
+		ZGWSecurity.Groups WITH(NOLOCK),
+		ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
+	WHERE
 				ZGWSecurity.Groups.GroupSeqId = ZGWSecurity.Groups_Security_Entities.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-			ORDER BY
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+	ORDER BY
 				ZGWSecurity.Groups.Name
-		END
+END
 	-- END IF		
 	
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Group'

@@ -32,8 +32,9 @@ CREATE PROCEDURE [ZGWSystem].[Set_System_Status]
 	@P_Debug INT = 0
 AS
 	IF @P_StatusSeqId > -1
-		BEGIN -- UPDATE PROFILE
-			UPDATE [ZGWSystem].[Statuses]
+		BEGIN
+	-- UPDATE PROFILE
+	UPDATE [ZGWSystem].[Statuses]
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
@@ -42,34 +43,38 @@ AS
 			WHERE
 				StatusSeqId = @P_StatusSeqId
 
-			SELECT @P_Primary_Key = @P_StatusSeqId
-		END
+	SELECT @P_Primary_Key = @P_StatusSeqId
+END
 	ELSE
-	BEGIN -- INSERT a new row in the table.
+	BEGIN
+	-- INSERT a new row in the table.
 
-			-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
-			IF EXISTS( SELECT 1 FROM [ZGWSystem].[Statuses] WHERE [Name] = @P_Name)
+	-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
+	IF EXISTS( SELECT 1
+	FROM [ZGWSystem].[Statuses]
+	WHERE [Name] = @P_Name)
 				BEGIN
-					RAISERROR ('THE STATUS YOU ENTERED ALREADY EXISTS IN THE DATABASE.',16,1)
-					RETURN
-				END
-			-- END IF
-			INSERT [ZGWSystem].[Statuses]
-			(
-				[Name],
-				[Description],
-				Added_By ,
-				Added_Date 
+		RAISERROR ('THE STATUS YOU ENTERED ALREADY EXISTS IN THE DATABASE.',16,1)
+		RETURN
+	END
+	-- END IF
+	INSERT [ZGWSystem].[Statuses]
+		(
+		[Name],
+		[Description],
+		Added_By ,
+		Added_Date
+		)
+	VALUES
+		(
+			@P_Name,
+			@P_Description,
+			@P_Added_Updated_By ,
+			GETDATE() 
 			)
-			VALUES
-			(
-				@P_Name,
-				@P_Description,
-				@P_Added_Updated_By ,
-				GETDATE() 
-			)
-			SELECT @P_StatusSeqId = SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
-		END
+	SELECT @P_StatusSeqId = SCOPE_IDENTITY()
+-- Get the IDENTITY value for the row just inserted.
+END
 -- Get the Error Code for the statement just executed.
 SELECT @P_ErrorCode=@@ERROR
 

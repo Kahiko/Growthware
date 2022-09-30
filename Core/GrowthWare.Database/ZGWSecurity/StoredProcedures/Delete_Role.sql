@@ -30,61 +30,67 @@ AS
 	*/
 	DECLARE @V_RolesSeqId INT
 			
-	SET @V_RolesSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+	SET @V_RolesSeqId = (SELECT RoleSeqId
+FROM ZGWSecurity.Roles
+WHERE [Name] = @P_Name)
 
 	BEGIN TRANSACTION
-		BEGIN -- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities
-			/*
+		BEGIN
+	-- DELETE ROLE FROM Groups_Security_Entities_Roles_Security_Entities
+	/*
 				Note:  This should not be necessary ... cascade delete and triggers should
 				handle this and deleting the record from ZGWSecurity.Roles should be sufficient
 				... this would be "overkill" and or for other datastores that
 				don't support cascade delete or triggers.
 				... no i don't know of one off hand and yes i know this is for sql server :)
 			*/
-			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities'
-			DELETE ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
+	IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities'
+	DELETE ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 			WHERE (RolesSecurityEntitiesSeqId = 
-						(SELECT 
-							RolesSecurityEntitiesSeqId 
-						FROM 
-							ZGWSecurity.Roles_Security_Entities 
-						WHERE 
+						(SELECT
+		RolesSecurityEntitiesSeqId
+	FROM
+		ZGWSecurity.Roles_Security_Entities
+	WHERE 
 							RoleSeqId = @V_RolesSeqId
-							AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+		AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 						)
 					)
-		END 
+END 
 
-		BEGIN -- DELETE ROLE FROM ZGWSecurity.Roles_Security_Entities
-			IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Roles_Security_Entities'
-			DELETE ZGWSecurity.Roles_Security_Entities
+		BEGIN
+	-- DELETE ROLE FROM ZGWSecurity.Roles_Security_Entities
+	IF @P_Debug = 1 PRINT 'Deleting roles from ZGWSecurity.Roles_Security_Entities'
+	DELETE ZGWSecurity.Roles_Security_Entities
 			WHERE (
 				RoleSeqId= @V_RolesSeqId AND
-				SecurityEntitySeqId = @P_SecurityEntitySeqId
+		SecurityEntitySeqId = @P_SecurityEntitySeqId
 				   )
-		END 
-		BEGIN -- Delete the role from ZGWSecurity.Roles if no other entites are using the role
-			IF @P_Debug = 1 PRINT 'Deleting role from ZGWSecurity.Roles'
-			IF (SELECT COUNT(*) FROM
-				ZGWSecurity.Roles Roles,
-				ZGWSecurity.Roles_Security_Entities RoleEntities
-				WHERE
+END 
+		BEGIN
+	-- Delete the role from ZGWSecurity.Roles if no other entites are using the role
+	IF @P_Debug = 1 PRINT 'Deleting role from ZGWSecurity.Roles'
+	IF (SELECT COUNT(*)
+	FROM
+		ZGWSecurity.Roles Roles,
+		ZGWSecurity.Roles_Security_Entities RoleEntities
+	WHERE
 				Roles.RoleSeqId = RoleEntities.RoleSeqId
-				AND Roles.RoleSeqId = @V_RolesSeqId) = 0
+		AND Roles.RoleSeqId = @V_RolesSeqId) = 0
 			BEGIN
-				IF @P_Debug = 1 PRINT 'Role is not used by other entites'
-				DELETE ZGWSecurity.Roles
+		IF @P_Debug = 1 PRINT 'Role is not used by other entites'
+		DELETE ZGWSecurity.Roles
 				WHERE (RoleSeqId = @V_RolesSeqId)
-			END
-		END
+	END
+END
 	IF @@ERROR <> 0
 	 BEGIN
-		-- Rollback the transaction
-		ROLLBACK
-		-- Raise an error and return
-		RAISERROR ('Error in deleting role in ZGWSecurity.Roles.', 16, 1)
-		RETURN 1
-	 END
+	-- Rollback the transaction
+	ROLLBACK
+	-- Raise an error and return
+	RAISERROR ('Error in deleting role in ZGWSecurity.Roles.', 16, 1)
+	RETURN 1
+END
 	COMMIT
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Delete_Role'
 	RETURN 0

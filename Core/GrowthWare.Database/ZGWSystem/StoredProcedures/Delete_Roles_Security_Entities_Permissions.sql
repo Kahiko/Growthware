@@ -27,9 +27,11 @@ AS
 	DELETE FROM 
 		ZGWSecurity.Roles_Security_Entities_Permissions
 	WHERE 
-		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
-		AND NVPSeqId = @P_NVPSeqId
-		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
+		RolesSecurityEntitiesSeqId IN(SELECT RolesSecurityEntitiesSeqId
+	FROM ZGWSecurity.Roles_Security_Entities
+	WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+	AND NVPSeqId = @P_NVPSeqId
+	AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	IF @P_Debug = 1 PRINT 'Ending ZGWSystem.Delete_Roles_Security_Entities_Permissions'
 RETURN 0
 

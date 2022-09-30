@@ -31,24 +31,26 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Notification_Status'
 	-- GET AccountSeqId
 	DECLARE @V_AccountSeqId Int
-	SET @V_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+	SET @V_AccountSeqId = (SELECT AccountSeqId
+FROM ZGWSecurity.Accounts
+WHERE Account = @P_Account)
 
 	IF EXISTS
-		(SELECT 
-			Added_By
-		FROM 
-			ZGWCoreWeb.Notifications WITH(NOLOCK)
-		WHERE 
+		(SELECT
+	Added_By
+FROM
+	ZGWCoreWeb.Notifications WITH(NOLOCK)
+WHERE 
 			SecurityEntitySeqId = @P_SecurityEntitySeqId
-			AND FunctionSeqId = @P_FunctionSeqId
-			AND Added_By = @V_AccountSeqId)
+	AND FunctionSeqId = @P_FunctionSeqId
+	AND Added_By = @V_AccountSeqId)
 		BEGIN
-			SELECT @P_Primary_Key = 1
-		END
+	SELECT @P_Primary_Key = 1
+END
 	ELSE
 		BEGIN
-			SELECT @P_Primary_Key = 0
-		END
+	SELECT @P_Primary_Key = 0
+END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Notification_Status'
 

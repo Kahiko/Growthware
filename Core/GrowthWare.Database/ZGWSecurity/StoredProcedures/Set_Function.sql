@@ -75,8 +75,9 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Function'
 	DECLARE @V_Now DATETIME = GETDATE()
 	IF @P_FunctionSeqId > -1
-		BEGIN -- UPDATE PROFILE
-			UPDATE ZGWSecurity.Functions
+		BEGIN
+	-- UPDATE PROFILE
+	UPDATE ZGWSecurity.Functions
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
@@ -98,70 +99,73 @@ AS
 				Updated_Date = @V_Now
 			WHERE
 				FunctionSeqId = @P_FunctionSeqId
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Inserting new row'
-			IF EXISTS( SELECT [Action]
-				   FROM ZGWSecurity.Functions
-				   WHERE [Action] = @P_Action
+	IF @P_Debug = 1 PRINT 'Inserting new row'
+	IF EXISTS( SELECT [Action]
+	FROM ZGWSecurity.Functions
+	WHERE [Action] = @P_Action
 			)
 			BEGIN
-				RAISERROR ('THE FUNCTION YOU ENTERED ALREADY EXISTS IN THE DATABASE.',16,1)
-				RETURN
-			END
-			INSERT ZGWSecurity.Functions
-			(
-				[Name],
-				[Description],
-				FunctionTypeSeqId,
-				[Source],
-				[Controller],
-				[Resolve],
-				Enable_View_State,
-				Enable_Notifications,
-				Redirect_On_Timeout,
-				Is_Nav,
-				Link_Behavior,
-				NO_UI,
-				Navigation_Types_NVP_DetailSeqId,
-				Meta_Key_Words,
-				[Action],
-				ParentSeqId,
-				Notes,
-				Sort_Order,
-				Added_By,
-				Added_Date
+		RAISERROR ('THE FUNCTION YOU ENTERED ALREADY EXISTS IN THE DATABASE.',16,1)
+		RETURN
+	END
+	INSERT ZGWSecurity.Functions
+		(
+		[Name],
+		[Description],
+		FunctionTypeSeqId,
+		[Source],
+		[Controller],
+		[Resolve],
+		Enable_View_State,
+		Enable_Notifications,
+		Redirect_On_Timeout,
+		Is_Nav,
+		Link_Behavior,
+		NO_UI,
+		Navigation_Types_NVP_DetailSeqId,
+		Meta_Key_Words,
+		[Action],
+		ParentSeqId,
+		Notes,
+		Sort_Order,
+		Added_By,
+		Added_Date
+		)
+	VALUES
+		(
+			@P_Name,
+			@P_Description,
+			@P_FunctionTypeSeqId,
+			@P_Source,
+			@P_Controller,
+			@P_Resolve,
+			@P_Enable_View_State,
+			@P_Enable_Notifications,
+			@P_Redirect_On_Timeout,
+			@P_Is_Nav,
+			@P_Link_Behavior,
+			@P_NO_UI,
+			@P_NAV_TYPE_ID,
+			@P_Meta_Key_Words,
+			@P_Action,
+			@P_ParentSeqId,
+			@P_Notes,
+			0,
+			@P_Added_Updated_By,
+			@V_Now
 			)
-			VALUES
-			(
-				@P_Name,
-				@P_Description,
-				@P_FunctionTypeSeqId,
-				@P_Source,
-				@P_Controller,
-				@P_Resolve,
-				@P_Enable_View_State,
-				@P_Enable_Notifications,
-				@P_Redirect_On_Timeout,
-				@P_Is_Nav,
-				@P_Link_Behavior,
-				@P_NO_UI,
-				@P_NAV_TYPE_ID,
-				@P_Meta_Key_Words,
-				@P_Action,
-				@P_ParentSeqId,
-				@P_Notes,
-				0,
-				@P_Added_Updated_By,
-				@V_Now
-			)
-			SELECT @P_FunctionSeqId=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
-			DECLARE @V_Sort_Order INT
-			SET @V_Sort_Order = (SELECT MAX(Sort_Order) FROM ZGWSecurity.Functions WHERE ParentSeqId = @P_ParentSeqId) + 1
-			UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE FunctionSeqId = @P_FunctionSeqId
+	SELECT @P_FunctionSeqId=SCOPE_IDENTITY()
+	-- Get the IDENTITY value for the row just inserted.
+	DECLARE @V_Sort_Order INT
+	SET @V_Sort_Order = (SELECT MAX(Sort_Order)
+	FROM ZGWSecurity.Functions
+	WHERE ParentSeqId = @P_ParentSeqId) + 1
+	UPDATE ZGWSecurity.Functions SET Sort_Order = ISNULL(@V_Sort_Order,0) WHERE FunctionSeqId = @P_FunctionSeqId
 
-		END
+END
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Function'
 RETURN 0
 

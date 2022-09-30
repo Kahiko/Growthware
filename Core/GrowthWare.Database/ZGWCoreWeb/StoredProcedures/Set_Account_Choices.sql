@@ -37,44 +37,46 @@ CREATE PROCEDURE [ZGWCoreWeb].[Set_Account_Choices]
 	@P_recordsPerPage int
 AS
 -- INSERT a new row in the table.
-	IF(SELECT COUNT(*) FROM ZGWCoreWeb.Account_Choices WHERE Account = @P_ACCT) <= 0
-		BEGIN	
-			INSERT ZGWCoreWeb.Account_Choices
-			(
-				Account,
-				SecurityEntityID,
-				SecurityEntityName,
-				BackColor,
-				LeftColor,
-				HeadColor,
-				HeaderForeColor,
-				SubHeadColor,
-				RowBackColor,
-				AlternatingRowBackColor,
-				ColorScheme,
-				FavoriteAction,
-				recordsPerPage
+	IF(SELECT COUNT(*)
+FROM ZGWCoreWeb.Account_Choices
+WHERE Account = @P_ACCT) <= 0
+		BEGIN
+	INSERT ZGWCoreWeb.Account_Choices
+		(
+		Account,
+		SecurityEntityID,
+		SecurityEntityName,
+		BackColor,
+		LeftColor,
+		HeadColor,
+		HeaderForeColor,
+		SubHeadColor,
+		RowBackColor,
+		AlternatingRowBackColor,
+		ColorScheme,
+		FavoriteAction,
+		recordsPerPage
+		)
+	VALUES
+		(
+			@P_ACCT,
+			@P_SecurityEntityID,
+			@P_SecurityEntityName,
+			@P_BackColor,
+			@P_LeftColor,
+			@P_HeadColor,
+			@P_HeaderForeColor,
+			@P_SubHeadColor,
+			@P_RowBackColor,
+			@P_AlternatingRowBackColor,
+			@P_ColorScheme,
+			@P_FavoriteAction,
+			@P_recordsPerPage
 			)
-			VALUES
-			(
-				@P_ACCT,
-				@P_SecurityEntityID,
-				@P_SecurityEntityName,
-				@P_BackColor,
-				@P_LeftColor,
-				@P_HeadColor,
-				@P_HeaderForeColor,
-				@P_SubHeadColor,
-				@P_RowBackColor,
-				@P_AlternatingRowBackColor,
-				@P_ColorScheme,
-				@P_FavoriteAction,
-				@P_recordsPerPage
-			)
-		END
+END
 	ELSE
 		BEGIN
-			UPDATE ZGWCoreWeb.Account_Choices
+	UPDATE ZGWCoreWeb.Account_Choices
 			SET
 				SecurityEntityID = @P_SecurityEntityID,
 				SecurityEntityName = @P_SecurityEntityName,
@@ -90,7 +92,7 @@ AS
 				recordsPerPage=@P_recordsPerPage
 			WHERE
 				Account=@P_ACCT
-		END
+END
 	-- END IF
 -- Get the Error Code for the statement just executed.
 --SELECT @P_ErrorCode=@@ERROR

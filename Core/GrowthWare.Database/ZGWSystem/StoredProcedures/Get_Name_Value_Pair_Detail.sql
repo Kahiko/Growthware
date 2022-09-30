@@ -28,7 +28,9 @@ CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair_Detail]
 AS
 	DECLARE @V_TableName VARCHAR(30)
 	DECLARE @V_Statement nvarchar(4000)
-	SET @V_TableName = (SELECT [Schema_Name] + '.' + Static_Name FROM ZGWSystem.Name_Value_Pairs WHERE NVPSeqId = @P_NVPSeqId)
+	SET @V_TableName = (SELECT [Schema_Name] + '.' + Static_Name
+FROM ZGWSystem.Name_Value_Pairs
+WHERE NVPSeqId = @P_NVPSeqId)
 	SET @V_Statement = 'SELECT NVPSeqId as NVP_SEQ_ID, [Schema_Name], Static_Name, Display, Description, StatusSeqId as STATUS_SEQ_ID, Added_By, Added_Date, Updated_By, Updated_Date FROM ' + CONVERT(VARCHAR,@V_TableName) + '
 	WHERE
 		NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId) + ' ORDER BY Static_Name'

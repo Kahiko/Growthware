@@ -22,11 +22,11 @@ Usage:
 -- Description:	Deletes and inserts ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Group_Roles]
-		@P_GroupSeqId INT,
-		@P_SecurityEntitySeqId INT,
-		@P_Roles VARCHAR(MAX),
-		@P_Added_Updated_By INT,
-		@P_Debug INT = 0
+	@P_GroupSeqId INT,
+	@P_SecurityEntitySeqId INT,
+	@P_Roles VARCHAR(MAX),
+	@P_Added_Updated_By INT,
+	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Group_Roles'
@@ -45,60 +45,66 @@ AS
 	
 		IF REPLACE(@P_Roles, ',', '') <> ''
 		BEGIN
-			WHILE @V_POS > 0
+	WHILE @V_POS > 0
 			BEGIN
-				SET @V_Role_Name = LTRIM(RTRIM(LEFT(@P_Roles, @V_POS - 1)))
-				IF @V_Role_Name <> ''
-				IF @P_Debug = 1 PRINT @V_Role_Name -- DEBUG
-				BEGIN
-					--SELECT THE RoleSeqId FROM THE Roles
-					--TABLE FOR ALL THE Roles PASSED
-					SELECT  
-						@V_RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-					FROM
-					 	ZGWSecurity.Roles_Security_Entities
-					WHERE 
-						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
-						AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-					IF @P_Debug = 1 PRINT @V_RolesSecurityEntitiesSeqId
+		SET @V_Role_Name = LTRIM(RTRIM(LEFT(@P_Roles, @V_POS - 1)))
+		IF @V_Role_Name <> ''
+				IF @P_Debug = 1 PRINT @V_Role_Name
+		-- DEBUG
+		BEGIN
+			--SELECT THE RoleSeqId FROM THE Roles
+			--TABLE FOR ALL THE Roles PASSED
+			SELECT
+				@V_RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
+			FROM
+				ZGWSecurity.Roles_Security_Entities
+			WHERE 
+						ZGWSecurity.Roles_Security_Entities.RoleSeqId = (SELECT RoleSeqId
+				FROM ZGWSecurity.Roles
+				WHERE ZGWSecurity.Roles.[Name] = @V_Role_Name)
+				AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+			IF @P_Debug = 1 PRINT @V_RolesSecurityEntitiesSeqId
 
-					SELECT
-						@V_GroupsSecurityEntitiesSeqId = GroupsSecurityEntitiesSeqId
-					FROM
-						ZGWSecurity.Groups_Security_Entities
-					WHERE
+			SELECT
+				@V_GroupsSecurityEntitiesSeqId = GroupsSecurityEntitiesSeqId
+			FROM
+				ZGWSecurity.Groups_Security_Entities
+			WHERE
 						SecurityEntitySeqId = @P_SecurityEntitySeqId
-						AND GroupSeqId = @P_GroupSeqId
-					
-					IF @P_Debug = 1 PRINT @V_GroupsSecurityEntitiesSeqId -- DEBUG
-					/*
+				AND GroupSeqId = @P_GroupSeqId
+
+			IF @P_Debug = 1 PRINT @V_GroupsSecurityEntitiesSeqId
+			-- DEBUG
+			/*
 					INSERT THE ZGWSecurity.Groups_Security_Entities_Roles_Entities
 					WITH Roles INFORMATION
-					*/	
-					IF @V_RolesSecurityEntitiesSeqId IS NOT NULL
+					*/
+			IF @V_RolesSecurityEntitiesSeqId IS NOT NULL
 					BEGIN
-									
-						INSERT ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities (
-							GroupsSecurityEntitiesSeqId,
-							RolesSecurityEntitiesSeqId,
-							Added_By,
-							Added_Date
-						)VALUES(
-							@V_GroupsSecurityEntitiesSeqId,
-							@V_RolesSecurityEntitiesSeqId,
-							@P_Added_Updated_By,
-							@V_Now
+
+				INSERT ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
+					(
+					GroupsSecurityEntitiesSeqId,
+					RolesSecurityEntitiesSeqId,
+					Added_By,
+					Added_Date
+					)
+				VALUES(
+						@V_GroupsSecurityEntitiesSeqId,
+						@V_RolesSecurityEntitiesSeqId,
+						@P_Added_Updated_By,
+						@V_Now
 						)
-				
-						IF @P_Debug = 1 PRINT 'Inserted into ZGWSecurity.Groups_Security_Entities_Roles_Entities'
-					END
-	
-				END
-				SET @P_Roles = RIGHT(@P_Roles, LEN(@P_Roles) - @V_POS)
-				SET @V_POS = CHARINDEX(',', @P_Roles, 1)
-	
+
+				IF @P_Debug = 1 PRINT 'Inserted into ZGWSecurity.Groups_Security_Entities_Roles_Entities'
 			END
-		END	
+
+		END
+		SET @P_Roles = RIGHT(@P_Roles, LEN(@P_Roles) - @V_POS)
+		SET @V_POS = CHARINDEX(',', @P_Roles, 1)
+
+	END
+END	
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Group_Roles'
 RETURN 0
 

@@ -32,26 +32,28 @@ AS
 			,@V_ParentSeqId INT
 			,@V_Updated_Date DATETIME = GETDATE()
 	-- Get the parent ID so only the menu items here can be effected
-	SET @V_ParentSeqId = (SELECT ParentSeqId FROM ZGWSecurity.Functions WHERE FunctionSeqId = @P_FunctionSeqId)
+	SET @V_ParentSeqId = (SELECT ParentSeqId
+FROM ZGWSecurity.Functions
+WHERE FunctionSeqId = @P_FunctionSeqId)
 	-- Get Current Sort Order
-	SELECT 
-		@V_Current_Sort_Order = Sort_Order
-	FROM ZGWSecurity.Functions
-	WHERE FunctionSeqId = @P_FunctionSeqId
+	SELECT
+	@V_Current_Sort_Order = Sort_Order
+FROM ZGWSecurity.Functions
+WHERE FunctionSeqId = @P_FunctionSeqId
 	
 	-- Get Sort Order for Section Above
 	IF @P_Direction = 0 -- Down
 		BEGIN
-			SELECT @V_Sort_Order_Move = MIN( Sort_Order )
-			FROM ZGWSecurity.Functions
-			WHERE Sort_Order > @V_Current_Sort_Order
-		END
+	SELECT @V_Sort_Order_Move = MIN( Sort_Order )
+	FROM ZGWSecurity.Functions
+	WHERE Sort_Order > @V_Current_Sort_Order
+END
 	ELSE -- up
 		BEGIN
-			SELECT @V_Sort_Order_Move = MAX( Sort_Order )
-			FROM ZGWSecurity.Functions
-			WHERE Sort_Order < @V_Current_Sort_Order
-		END
+	SELECT @V_Sort_Order_Move = MAX( Sort_Order )
+	FROM ZGWSecurity.Functions
+	WHERE Sort_Order < @V_Current_Sort_Order
+END
 	-- END IF
 	-- If no row to move, exit
 	IF @V_Sort_Order_Move IS NULL

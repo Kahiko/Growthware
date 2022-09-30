@@ -25,30 +25,30 @@ AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Group_Roles'
 
-	SELECT 
-		[Name] AS [Role] 
-	FROM 
-		ZGWSecurity.Roles WITH(NOLOCK) 
-	WHERE 
+	SELECT
+	[Name] AS [Role]
+FROM
+	ZGWSecurity.Roles WITH(NOLOCK)
+WHERE 
 		RoleSeqId IN 
-			(SELECT 
-				RoleSeqId 
-			FROM 
-				ZGWSecurity.Roles_Security_Entities WITH(NOLOCK) 
-			WHERE 
+			(SELECT
+	RoleSeqId
+FROM
+	ZGWSecurity.Roles_Security_Entities WITH(NOLOCK)
+WHERE 
 				RolesSecurityEntitiesSeqId IN 
-				(SELECT 
-					RolesSecurityEntitiesSeqId 
-				FROM 
-					ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH(NOLOCK) 
-				WHERE GroupsSecurityEntitiesSeqId IN 
-					(SELECT 
-						GroupsSecurityEntitiesSeqId 
-					FROM 
-						ZGWSecurity.Groups_Security_Entities WITH(NOLOCK) 
-					WHERE 
+				(SELECT
+	RolesSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH(NOLOCK)
+WHERE GroupsSecurityEntitiesSeqId IN 
+					(SELECT
+	GroupsSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Groups_Security_Entities WITH(NOLOCK)
+WHERE 
 						SecurityEntitySeqId = @P_SecurityEntitySeqId AND GroupSeqId = @P_GroupSeqId)))
-	ORDER BY
+ORDER BY
 		[Role]
 
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Group_Roles'

@@ -21,13 +21,15 @@ CREATE PROCEDURE [ZGWSecurity].[Delete_Account_Groups]
 	@P_AccountSeqId INT,
 	@P_SecurityEntitySeqId	INT,
 	@P_Debug INT = 0
- AS
+AS
 BEGIN
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSecurity].[Delete_Account_Groups]'
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Accounts 
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId
+		FROM ZGWSecurity.Groups_Security_Entities
+		WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
 		AND AccountSeqId = @P_AccountSeqId
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Account_Groups]'
 END

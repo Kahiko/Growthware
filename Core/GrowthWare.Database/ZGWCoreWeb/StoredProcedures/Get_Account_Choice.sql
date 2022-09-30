@@ -20,11 +20,13 @@ CREATE PROCEDURE [ZGWCoreWeb].[Get_Account_Choice]
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
-	IF EXISTS(SELECT Account FROM ZGWCoreWeb.Account_Choices WHERE Account = @P_Account)
+	IF EXISTS(SELECT Account
+FROM ZGWCoreWeb.Account_Choices
+WHERE Account = @P_Account)
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Selecting client choices for ' + CONVERT(VARCHAR(25),@P_Account)
-			SELECT
-				Account AS ACCT
+	IF @P_Debug = 1 PRINT 'Selecting client choices for ' + CONVERT(VARCHAR(25),@P_Account)
+	SELECT
+		Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
@@ -37,15 +39,15 @@ AS
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
-			FROM ZGWCoreWeb.Account_Choices
-			WHERE
+	FROM ZGWCoreWeb.Account_Choices
+	WHERE
 				Account = @P_Account
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Selecting client choices for the Anonymous account'
-			SELECT
-				Account AS ACCT
+	IF @P_Debug = 1 PRINT 'Selecting client choices for the Anonymous account'
+	SELECT
+		Account AS ACCT
 				, SecurityEntityID
 				, SecurityEntityName
 				, BackColor
@@ -58,10 +60,10 @@ AS
 				, ColorScheme
 				, FavoriteAction
 				, recordsPerPage
-			FROM ZGWCoreWeb.Account_Choices
-			WHERE
+	FROM ZGWCoreWeb.Account_Choices
+	WHERE
 				[Account] = 'Anonymous'
-		END
+END
 
 RETURN 0
 

@@ -68,8 +68,8 @@ AS
 	IF @P_ParentSecurityEntitySeqId = @P_SecurityEntitySeqId or @P_ParentSecurityEntitySeqId = -1 SET @P_ParentSecurityEntitySeqId = NULL
 	IF @P_SecurityEntitySeqId > -1
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Update'
-			UPDATE ZGWSecurity.Security_Entities
+	IF @P_Debug = 1 PRINT 'Update'
+	UPDATE ZGWSecurity.Security_Entities
 			SET 
 				Name = @P_Name,
 				[Description] = @P_Description,
@@ -88,49 +88,49 @@ AS
 			WHERE
 				SecurityEntitySeqId = @P_SecurityEntitySeqId
 
-			SELECT @P_Primary_Key = @P_SecurityEntitySeqId
-		END
+	SELECT @P_Primary_Key = @P_SecurityEntitySeqId
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Insert'
-			-- INSERT a new row in the table.
-			INSERT ZGWSecurity.Security_Entities
-			(
-				[Name],
-				[Description],
-				[URL],
-				StatusSeqId,
-				DAL,
-				DAL_Name,
-				DAL_Name_SPACE,
-				DAL_STRING,
-				Skin,
-				Style,
-				Encryption_Type,
-				ParentSecurityEntitySeqId,
-				Added_By,
-				Added_Date
+	IF @P_Debug = 1 PRINT 'Insert'
+	-- INSERT a new row in the table.
+	INSERT ZGWSecurity.Security_Entities
+		(
+		[Name],
+		[Description],
+		[URL],
+		StatusSeqId,
+		DAL,
+		DAL_Name,
+		DAL_Name_SPACE,
+		DAL_STRING,
+		Skin,
+		Style,
+		Encryption_Type,
+		ParentSecurityEntitySeqId,
+		Added_By,
+		Added_Date
+		)
+	VALUES
+		(
+			@P_Name,
+			@P_Description,
+			@P_URL,
+			@P_StatusSeqId,
+			@P_DAL,
+			@P_DAL_Name,
+			@P_DAL_Name_SPACE,
+			@P_DAL_String,
+			@P_Skin,
+			@P_Style,
+			@P_Encryption_Type,
+			@P_ParentSecurityEntitySeqId,
+			@P_Added_Updated_By,
+			@V_Now
 			)
-			VALUES
-			(
-				@P_Name,
-				@P_Description,
-				@P_URL,
-				@P_StatusSeqId,
-				@P_DAL,
-				@P_DAL_Name,
-				@P_DAL_Name_SPACE,
-				@P_DAL_String,
-				@P_Skin,
-				@P_Style,
-				@P_Encryption_Type,
-				@P_ParentSecurityEntitySeqId,
-				@P_Added_Updated_By,
-				@V_Now
-			)	
-			-- Get the IDENTITY value for the row just inserted.
-			SELECT @P_Primary_Key=SCOPE_IDENTITY()
-		END
+	-- Get the IDENTITY value for the row just inserted.
+	SELECT @P_Primary_Key=SCOPE_IDENTITY()
+END
 -- End if
 IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Security_Entity'
 RETURN 0

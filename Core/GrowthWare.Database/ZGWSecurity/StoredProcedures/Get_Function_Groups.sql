@@ -29,44 +29,44 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Groups'
 	IF @P_FunctionSeqId > 0
 		BEGIN
-			SELECT
-				ZGWSecurity.Groups.[Name] AS Groups
-			FROM
-				ZGWSecurity.Functions WITH(NOLOCK),
-				ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
-				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
-				ZGWSecurity.Groups WITH(NOLOCK)
-			WHERE
+	SELECT
+		ZGWSecurity.Groups.[Name] AS Groups
+	FROM
+		ZGWSecurity.Functions WITH(NOLOCK),
+		ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
+		ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
+		ZGWSecurity.Groups WITH(NOLOCK)
+	WHERE
 				ZGWSecurity.Functions.FunctionSeqId = @P_FunctionSeqId
-				AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
-				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-			ORDER BY
+		AND ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
+		AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+		AND ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId = @P_PermissionsSeqId
+		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+	ORDER BY
 				Groups
-		END
+END
 	ELSE
 		BEGIN
-			SELECT
-				ZGWSecurity.Functions.FunctionSeqId AS 'FUNCTION_SEQ_ID'
-				,ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId AS 'PERMISSIONS_SEQ_ID'
-				,ZGWSecurity.Groups.[Name] AS [Group]
-			FROM
-				ZGWSecurity.Functions WITH(NOLOCK),
-				ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
-				ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
-				ZGWSecurity.Groups WITH(NOLOCK)
-			WHERE
+	SELECT
+		ZGWSecurity.Functions.FunctionSeqId AS 'FUNCTION_SEQ_ID'
+				, ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId AS 'PERMISSIONS_SEQ_ID'
+				, ZGWSecurity.Groups.[Name] AS [Group]
+	FROM
+		ZGWSecurity.Functions WITH(NOLOCK),
+		ZGWSecurity.Groups_Security_Entities_Functions WITH(NOLOCK),
+		ZGWSecurity.Groups_Security_Entities WITH(NOLOCK),
+		ZGWSecurity.Groups WITH(NOLOCK)
+	WHERE
 				ZGWSecurity.Functions.FunctionSeqId = ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId
-				AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
-				AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
-				AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-			ORDER BY
+		AND ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+		AND ZGWSecurity.Groups_Security_Entities.GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+	ORDER BY
 				FUNCTION_SEQ_ID
 				, PERMISSIONS_SEQ_ID
 				, [Group]
-		END
+END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Groups'
 

@@ -18,24 +18,24 @@ Usage:
 --	Name Value Pairs 
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Name_Value_Pair_Roles]
-		@P_NVPSeqId int = 1,
-		@P_SecurityEntitySeqId int = 1,
-		@P_Debug INT = 1
+	@P_NVPSeqId int = 1,
+	@P_SecurityEntitySeqId int = 1,
+	@P_Debug INT = 1
 AS
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'
 	SELECT
-		ZGWSecurity.Roles.[Name] AS ROLES
-	FROM
-		ZGWSecurity.Roles_Security_Entities_Permissions,
-		ZGWSecurity.Roles_Security_Entities,
-		ZGWSecurity.Roles
-	WHERE
+	ZGWSecurity.Roles.[Name] AS ROLES
+FROM
+	ZGWSecurity.Roles_Security_Entities_Permissions,
+	ZGWSecurity.Roles_Security_Entities,
+	ZGWSecurity.Roles
+WHERE
 		ZGWSecurity.Roles_Security_Entities_Permissions.NVPSeqId = @P_NVPSeqId
-		AND ZGWSecurity.Roles_Security_Entities_Permissions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
-		AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
-		AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
-	ORDER BY
+	AND ZGWSecurity.Roles_Security_Entities_Permissions.RolesSecurityEntitiesSeqId = ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId
+	AND ZGWSecurity.Roles_Security_Entities.RoleSeqId = ZGWSecurity.Roles.RoleSeqId
+	AND ZGWSecurity.Roles_Security_Entities.SecurityEntitySeqId = @P_SecurityEntitySeqId
+ORDER BY
 		ROLES
 	IF @P_Debug = 1 PRINT 'Start Get_Name_Value_Pair_Roles'
 RETURN 0

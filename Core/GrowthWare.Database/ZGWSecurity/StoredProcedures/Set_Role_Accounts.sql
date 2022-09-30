@@ -34,23 +34,26 @@ DECLARE @V_AccountSeqId AS INT
 		,@V_ErrorMsg VARCHAR(MAX)
 BEGIN TRAN
 	SET NOCOUNT OFF;
-	SET @V_AccountSeqId = (SELECT ZGWSecurity.Accounts.AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+	SET @V_AccountSeqId = (SELECT ZGWSecurity.Accounts.AccountSeqId
+FROM ZGWSecurity.Accounts
+WHERE Account = @P_Account)
 	SET @V_RolesSecurityEntitiesSeqId = (
 			SELECT
-				RolesSecurityEntitiesSeqId
-			FROM
-				ZGWSecurity.Roles_Security_Entities
-			WHERE
+	RolesSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Roles_Security_Entities
+WHERE
 				RoleSeqId = @P_RoleSeqId
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+	AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	BEGIN TRY
 		INSERT INTO
-			ZGWSecurity.Roles_Security_Entities_Accounts(RolesSecurityEntitiesSeqId,AccountSeqId,Added_By)
-		VALUES(
-			@V_RolesSecurityEntitiesSeqId,
-			@V_AccountSeqId,
-			@P_Added_Updated_By
+			ZGWSecurity.Roles_Security_Entities_Accounts
+	(RolesSecurityEntitiesSeqId,AccountSeqId,Added_By)
+VALUES(
+		@V_RolesSecurityEntitiesSeqId,
+		@V_AccountSeqId,
+		@P_Added_Updated_By
 		)
 	END TRY
 	BEGIN CATCH

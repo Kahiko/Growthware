@@ -26,10 +26,10 @@ AS
 	DELETE
 		ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities
 	WHERE
-		GroupsSecurityEntitiesSeqId IN (SELECT GroupsSecurityEntitiesSeqId 
-					FROM ZGWSecurity.Groups_Security_Entities 
-					WHERE SecurityEntitySeqId=@P_SecurityEntitySeqId
-					AND GroupSeqId = @P_GroupSeqId)
+		GroupsSecurityEntitiesSeqId IN (SELECT GroupsSecurityEntitiesSeqId
+FROM ZGWSecurity.Groups_Security_Entities
+WHERE SecurityEntitySeqId=@P_SecurityEntitySeqId
+	AND GroupSeqId = @P_GroupSeqId)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Roles]'
 RETURN 0
 

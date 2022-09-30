@@ -35,17 +35,19 @@ AS
 
 	BEGIN TRAN
 		DECLARE @AccountSeqId INT
-		SET @AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = @P_Account)
+		SET @AccountSeqId = (SELECT AccountSeqId
+FROM ZGWSecurity.Accounts
+WHERE Account = @P_Account)
 		-- Deleting old records before inseting any new ones.
 		IF @P_Debug = 1 PRINT 'Calling ZGWSecurity.Delete_Account_Groups'
 		EXEC ZGWSecurity.Delete_Account_Groups @AccountSeqId, @P_SecurityEntitySeqId, @P_Debug
 		IF @@ERROR <> 0
 			BEGIN
-				EXEC ZGWSystem.Log_Error_Info @P_Debug
-				SET @V_ErrorMsg = 'Error executing ZGWSecurity.Delete_Account_Groups' + CHAR(10)
-				RAISERROR(@V_ErrorMsg,16,1)
-				GOTO ABEND
-			END
+	EXEC ZGWSystem.Log_Error_Info @P_Debug
+	SET @V_ErrorMsg = 'Error executing ZGWSecurity.Delete_Account_Groups' + CHAR(10)
+	RAISERROR(@V_ErrorMsg,16,1)
+	GOTO ABEND
+END
 		--END IF
 		DECLARE @V_GroupSeqId AS 	INT
 		DECLARE @V_SecurityEntity_GroupSeqID AS 	INT
@@ -56,63 +58,65 @@ AS
 		IF REPLACE(@P_Groups, ',', '') <> ''
 			WHILE @V_Pos > 0
 			BEGIN
-				SET @V_Group_Name = LTRIM(RTRIM(LEFT(@P_Groups, @V_Pos - 1)))
-				IF @V_Group_Name <> ''
+	SET @V_Group_Name = LTRIM(RTRIM(LEFT(@P_Groups, @V_Pos - 1)))
+	IF @V_Group_Name <> ''
 				BEGIN
-					--select the role seq id first
-					SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId 
-					FROM ZGWSecurity.Groups 
-					WHERE [Name]=@V_Group_Name
+		--select the role seq id first
+		SELECT @V_GroupSeqId = ZGWSecurity.Groups.GroupSeqId
+		FROM ZGWSecurity.Groups
+		WHERE [Name]=@V_Group_Name
 
- 					SELECT
-						@V_SecurityEntity_GroupSeqID=GroupsSecurityEntitiesSeqId
-					FROM
-						ZGWSecurity.Groups_Security_Entities
-					WHERE
+		SELECT
+			@V_SecurityEntity_GroupSeqID=GroupsSecurityEntitiesSeqId
+		FROM
+			ZGWSecurity.Groups_Security_Entities
+		WHERE
 						GroupSeqId = @V_GroupSeqId AND
-						SecurityEntitySeqId = @P_SecurityEntitySeqId
-						IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
-					IF NOT EXISTS(
-							SELECT 
-								GroupsSecurityEntitiesSeqId 
-							FROM 
-								ZGWSecurity.Groups_Security_Entities_Accounts 
-							WHERE 
-							AccountSeqId = @AccountSeqId 
-							AND GroupsSecurityEntitiesSeqId = @V_SecurityEntity_GroupSeqID
+			SecurityEntitySeqId = @P_SecurityEntitySeqId
+		IF @P_Debug = 1 PRINT ('@V_SecurityEntity_GroupSeqID = ' + CONVERT(VARCHAR,@V_SecurityEntity_GroupSeqID))
+		IF NOT EXISTS(
+							SELECT
+			GroupsSecurityEntitiesSeqId
+		FROM
+			ZGWSecurity.Groups_Security_Entities_Accounts
+		WHERE 
+							AccountSeqId = @AccountSeqId
+			AND GroupsSecurityEntitiesSeqId = @V_SecurityEntity_GroupSeqID
 					)
 					BEGIN TRY
 						IF @P_Debug = 1 PRINT 'Inserting records'
-						INSERT ZGWSecurity.Groups_Security_Entities_Accounts (
-							AccountSeqId,
-							GroupsSecurityEntitiesSeqId,
-							Added_By
-						)
-						VALUES (
-							@AccountSeqId,
-							@V_SecurityEntity_GroupSeqID,
-							@P_Added_Updated_By
+						INSERT ZGWSecurity.Groups_Security_Entities_Accounts
+			(
+			AccountSeqId,
+			GroupsSecurityEntitiesSeqId,
+			Added_By
+			)
+		VALUES
+			(
+				@AccountSeqId,
+				@V_SecurityEntity_GroupSeqID,
+				@P_Added_Updated_By
 						)
 					END TRY
 					BEGIN CATCH
 						GOTO ABEND
 					END CATCH
-				END
-					SET @P_Groups = RIGHT(@P_Groups, LEN(@P_Groups) - @V_Pos)
-					SET @V_Pos = CHARINDEX(',', @P_Groups, 1)
-			END
+	END
+	SET @P_Groups = RIGHT(@P_Groups, LEN(@P_Groups) - @V_Pos)
+	SET @V_Pos = CHARINDEX(',', @P_Groups, 1)
+END
 		IF @@ERROR <> 0 GOTO ABEND
 	COMMIT TRAN
 	GOTO DONE
 ABEND:
 	BEGIN
-		ROLLBACK TRAN
-		EXEC ZGWSystem.Log_Error_Info @P_Debug
-		SET @V_ErrorMsg = 'Error executing ZGWSecurity.Set_Account_Groups' + CHAR(10)
-		SET @V_ErrorMsg = @V_ErrorMsg + ERROR_MESSAGE()
-		RAISERROR(@V_ErrorMsg,16,1)
-		RETURN @@ERROR
-	END
+	ROLLBACK TRAN
+	EXEC ZGWSystem.Log_Error_Info @P_Debug
+	SET @V_ErrorMsg = 'Error executing ZGWSecurity.Set_Account_Groups' + CHAR(10)
+	SET @V_ErrorMsg = @V_ErrorMsg + ERROR_MESSAGE()
+	RAISERROR(@V_ErrorMsg,16,1)
+	RETURN @@ERROR
+END
 DONE:
 RETURN 0
 

@@ -1,5 +1,5 @@
 CREATE TABLE [ZGWSecurity].[Groups] (
-    [GroupSeqId]  INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [GroupSeqId]   INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [Name]         VARCHAR (128) NOT NULL,
     [Description]  VARCHAR (512) NOT NULL,
     [Added_By]     INT           NOT NULL,

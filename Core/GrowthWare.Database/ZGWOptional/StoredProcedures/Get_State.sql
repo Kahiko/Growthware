@@ -26,35 +26,35 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWOptional.Get_State'
 	IF @P_State <> '-1'
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting a single record'
-			SELECT
-				[State]
+	IF @P_Debug = 1 PRINT 'Getting a single record'
+	SELECT
+		[State]
 				, [Description]
 				, StatusSeqId
 				, Added_By
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWOptional.States
-			WHERE [State] = @P_State
-		END
+	FROM
+		ZGWOptional.States
+	WHERE [State] = @P_State
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Getting all single records'
-			SELECT
-				[State]
+	IF @P_Debug = 1 PRINT 'Getting all single records'
+	SELECT
+		[State]
 				, [Description]
 				, StatusSeqId
 				, Added_By
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWOptional.States
-			ORDER BY
+	FROM
+		ZGWOptional.States
+	ORDER BY
 				[State]
-		END
+END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWOptional.Get_State'
 RETURN 0

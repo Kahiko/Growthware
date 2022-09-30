@@ -25,13 +25,13 @@ AS
 		ZGWSecurity.Roles_Security_Entities_Accounts
 	WHERE
 		RolesSecurityEntitiesSeqId IN (
-			SELECT 
-				RolesSecurityEntitiesSeqId 
-			FROM 
-				ZGWSecurity.Roles_Security_Entities 
-			WHERE 
-				RoleSeqId = @P_RoleSeqId 
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+			SELECT
+	RolesSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Roles_Security_Entities
+WHERE 
+				RoleSeqId = @P_RoleSeqId
+	AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'Ending [ZGWSecurity].[Delete_Roles_Security_Entities_Accounts]'
 RETURN 0

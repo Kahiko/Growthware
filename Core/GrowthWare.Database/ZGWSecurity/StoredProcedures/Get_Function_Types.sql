@@ -22,9 +22,9 @@ AS
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Get_Function_Types'
 	IF @P_FunctionTypeSeqId = -1
 		BEGIN
-			IF @P_Debug = -1 PRINT 'Seleting all Function_Types'
-			SELECT
-				FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
+	IF @P_Debug = -1 PRINT 'Seleting all Function_Types'
+	SELECT
+		FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
 				, Name
 				, [Description]
 				, Template
@@ -33,16 +33,16 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWSecurity.Function_Types WITH(NOLOCK)
-			ORDER BY
+	FROM
+		ZGWSecurity.Function_Types WITH(NOLOCK)
+	ORDER BY
 				[Name]
-		END
+END
 	ELSE
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Seleting single Function_Type'
-			SELECT
-				FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
+	IF @P_Debug = 1 PRINT 'Seleting single Function_Type'
+	SELECT
+		FunctionTypeSeqId as FUNCTION_TYPE_SEQ_ID
 				, Name
 				, [Description]
 				, Template
@@ -51,11 +51,11 @@ AS
 				, Added_Date
 				, Updated_By
 				, Updated_Date
-			FROM
-				ZGWSecurity.Function_Types WITH(NOLOCK)
-			WHERE
+	FROM
+		ZGWSecurity.Function_Types WITH(NOLOCK)
+	WHERE
 				FunctionTypeSeqId = @P_FunctionTypeSeqId
-		END
+END
 	--END IF
 	IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Get_Function_Types'
 RETURN 0

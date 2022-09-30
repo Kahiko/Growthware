@@ -51,17 +51,19 @@ BEGIN TRAN
 			,@V_Now DATETIME = GETDATE()
 			,@V_ErrorMsg VARCHAR(MAX)
 
-	IF (SELECT COUNT(*) FROM ZGWSecurity.Roles WHERE Is_System_Only = 1 AND [Name] = @P_Name) > 0
+	IF (SELECT COUNT(*)
+FROM ZGWSecurity.Roles
+WHERE Is_System_Only = 1 AND [Name] = @P_Name) > 0
 	BEGIN
-		SET @V_Message = 'The role you entered ' + @P_Name + ' is for system use only.'
-		RAISERROR (@V_Message,16,1)
-		RETURN
-	END
+	SET @V_Message = 'The role you entered ' + @P_Name + ' is for system use only.'
+	RAISERROR (@V_Message,16,1)
+	RETURN
+END
 
 	IF @P_RoleSeqId > -1
 		BEGIN
-			IF @P_Debug = 1 PRINT 'Updating role in ZGWSecurity.Roles'
-			UPDATE ZGWSecurity.Roles
+	IF @P_Debug = 1 PRINT 'Updating role in ZGWSecurity.Roles'
+	UPDATE ZGWSecurity.Roles
 			SET 
 				[Name] = @P_Name,
 				[Description] = @P_Description,
@@ -72,58 +74,65 @@ BEGIN TRAN
 			WHERE
 				RoleSeqId = @P_RoleSeqId
 
-			SELECT @P_Primary_Key = @P_RoleSeqId
-		END
+	SELECT @P_Primary_Key = @P_RoleSeqId
+END
 	ELSE
 		BEGIN TRY -- INSERT a new row in the table.
 			-- CHECK FOR DUPLICATE Name BEFORE INSERTING
-			IF NOT EXISTS( SELECT [Name] 
-				   FROM ZGWSecurity.Roles
-				   WHERE [Name] = @P_Name)
+			IF NOT EXISTS( SELECT [Name]
+FROM ZGWSecurity.Roles
+WHERE [Name] = @P_Name)
 				BEGIN
-					IF @P_Debug = 1 PRINT 'Add role to ZGWSecurity.Roles'
-					INSERT ZGWSecurity.Roles
-					(
-						[Name],
-						[Description],
-						Is_System,
-						Is_System_Only,
-						Added_By,
-						Added_Date
+	IF @P_Debug = 1 PRINT 'Add role to ZGWSecurity.Roles'
+	INSERT ZGWSecurity.Roles
+		(
+		[Name],
+		[Description],
+		Is_System,
+		Is_System_Only,
+		Added_By,
+		Added_Date
+		)
+	VALUES
+		(
+			@P_Name,
+			@P_Description,
+			@P_Is_System,
+			@P_Is_System_Only,
+			@P_Added_Updated_By,
+			@V_Now
 					)
-					VALUES
-					(
-						@P_Name,
-						@P_Description,
-						@P_Is_System,
-						@P_Is_System_Only,
-						@P_Added_Updated_By,
-						@V_Now
-					)
-					SELECT @P_Primary_Key=SCOPE_IDENTITY() -- Get the IDENTITY value for the row just inserted.
-				END
+	SELECT @P_Primary_Key=SCOPE_IDENTITY()
+-- Get the IDENTITY value for the row just inserted.
+END
 			ELSE
-				SET @P_Primary_Key = (SELECT RoleSeqId FROM ZGWSecurity.Roles WHERE [Name] = @P_Name)
+				SET @P_Primary_Key = (SELECT RoleSeqId
+FROM ZGWSecurity.Roles
+WHERE [Name] = @P_Name)
 			-- END IF
 		END TRY
 		BEGIN CATCH
 			GOTO ABEND		
 		END CATCH
 	-- END IF
-	IF(SELECT COUNT(*) FROM ZGWSecurity.Roles_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
+	IF(SELECT COUNT(*)
+FROM ZGWSecurity.Roles_Security_Entities
+WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND RoleSeqId = @P_Primary_Key) = 0 
 	BEGIN TRY  -- ADD ROLE REFERENCE TO SE_SECURITY
 			IF @P_Debug = 1 PRINT 'Add role reference to ZGWSecurity.Roles_Security_Entities'
-			INSERT ZGWSecurity.Roles_Security_Entities (
-				SecurityEntitySeqId
-				, RoleSeqId
-				, Added_By
-				, Added_Date
-			)
-			VALUES (
-				@P_SecurityEntitySeqId,
-				@P_Primary_Key,
-				@P_Added_Updated_By,
-				@V_Now
+			INSERT ZGWSecurity.Roles_Security_Entities
+	(
+	SecurityEntitySeqId
+	, RoleSeqId
+	, Added_By
+	, Added_Date
+	)
+VALUES
+	(
+		@P_SecurityEntitySeqId,
+		@P_Primary_Key,
+		@P_Added_Updated_By,
+		@V_Now
 			)
 	END TRY
 	BEGIN CATCH

@@ -25,13 +25,13 @@ AS
 		ZGWSecurity.Groups_Security_Entities_Accounts
 	WHERE
 		GroupsSecurityEntitiesSeqId IN (
-			SELECT 
-				GroupsSecurityEntitiesSeqId 
-			FROM 
-				ZGWSecurity.Groups_Security_Entities 
-			WHERE 
-				GroupSeqId = @P_GroupSeqId 
-				AND SecurityEntitySeqId = @P_SecurityEntitySeqId
+			SELECT
+	GroupsSecurityEntitiesSeqId
+FROM
+	ZGWSecurity.Groups_Security_Entities
+WHERE 
+				GroupSeqId = @P_GroupSeqId
+	AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		)
 	IF @P_Debug = 1 PRINT 'End [ZGWSecurity].[Delete_Group_Accounts]'
 RETURN 0

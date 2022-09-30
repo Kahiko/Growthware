@@ -27,13 +27,15 @@ CREATE PROCEDURE [ZGWSecurity].[Delete_Function_Groups]
 	@P_PermissionsNVPDetailSeqId INT,
 	@P_ErrorCode INT OUTPUT,
 	@P_Debug INT = 0
- AS
+AS
 BEGIN
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Delete_Function_Groups'
 	DELETE FROM 
 		ZGWSecurity.Groups_Security_Entities_Functions
 	WHERE 
-		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId FROM ZGWSecurity.Groups_Security_Entities WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+		GroupsSecurityEntitiesSeqId IN(SELECT GroupsSecurityEntitiesSeqId
+		FROM ZGWSecurity.Groups_Security_Entities
+		WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
 		AND FunctionSeqId = @P_FunctionSeqId
 		AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
 	SELECT @P_ErrorCode = @@error
