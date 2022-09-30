@@ -218,7 +218,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// </summary>
         /// <param name="commandText">String</param>
         /// <returns>DataRow</returns>
-        /// <remarks>Containts no logic</remarks>
+        /// <remarks>Contains no logic</remarks>
         protected virtual DataRow GetDataRow(String commandText)
         {
             return this.GetDataRow(commandText, null);
