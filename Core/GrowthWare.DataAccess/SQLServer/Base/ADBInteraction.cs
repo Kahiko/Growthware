@@ -170,7 +170,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// </summary>
         /// <param name="commandText">String</param>
         /// <returns>DataSet</returns>
-        /// <remarks>Containts no logic</remarks>
+        /// <remarks>Contains no logic</remarks>
         protected virtual DataSet GetDataSet(String commandText)
         {
             return this.GetDataSet(commandText, null);
