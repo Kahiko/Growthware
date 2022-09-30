@@ -194,7 +194,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// </summary>
         /// <param name="commandText">String</param>
         /// <returns>DataTable</returns>
-        /// <remarks>Containts no logic</remarks>
+        /// <remarks>Contains no logic</remarks>
         protected virtual DataTable GetDataTable(String commandText)
         {
             return this.GetDataTable(commandText, null);
