@@ -344,6 +344,8 @@ BEGIN
 		[StatusSeqId] [int] NOT NULL,
 		[Password_Last_Set] [datetime] NOT NULL,
 		[Password] [varchar](256) NOT NULL,
+		[ResetToken] VARCHAR (MAX) NULL,
+		[ResetTokenExpires] DATETIME NULL,		
 		[Failed_Attempts] [int] NOT NULL,
 		[First_Name] [varchar](35) NOT NULL,
 		[Last_Login] [datetime] NULL,
@@ -356,17 +358,38 @@ BEGIN
 		[Added_Date] [datetime] NOT NULL,
 		[Updated_By] [int] NULL,
 		[Updated_Date] [datetime] NULL,
-		CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED 
-(
-	[AccountSeqId] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
-		CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED 
-(
-	[Account] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+		CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([AccountSeqId] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+		CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY],
+		CONSTRAINT [UK_Accounts_ResetToken] UNIQUE NONCLUSTERED ([ResetToken] ASC) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 	) ON [PRIMARY]
 END
 GO
+
+/****** Object:  View [ZGWSecurity].[RefreshTokens]    Script Date: 9/30/2022 06:07:33 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[RefreshTokens]') AND type in (N'U'))
+CREATE TABLE [ZGWSecurity].[RefreshTokens] (
+    [RefreshTokenId]  INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
+    [AccountSeqId]    INT           NOT NULL,
+    [Token]           VARCHAR (MAX) NULL,
+    [Expires]         DATETIME      NOT NULL,
+    [Created]         DATETIME      NOT NULL,
+    [CreatedByIp]     VARCHAR (25)  NULL,
+    [Revoked]         TEXT          NULL,
+    [RevokedByIp]     VARCHAR (25)  NULL,
+    [ReplacedByToken] VARCHAR (MAX) NULL,
+    [ReasonRevoked]   VARCHAR (512) NULL,
+    CONSTRAINT [PK_RefreshTokens] PRIMARY KEY CLUSTERED ([RefreshTokenId] ASC),
+    CONSTRAINT [FK_RefreshTokens_Accounts] FOREIGN KEY ([AccountSeqId]) REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId]) ON DELETE CASCADE ON UPDATE CASCADE
+);
+GO
+
+
 /****** Object:  View [ZGWCoreWeb].[vwSearchMessages]    Script Date: 7/4/2022 10:50:33 AM ******/
 SET ANSI_NULLS ON
 GO

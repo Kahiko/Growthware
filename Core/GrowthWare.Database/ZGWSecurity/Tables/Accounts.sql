@@ -7,6 +7,8 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [StatusSeqId]          INT           NOT NULL,
     [Password_Last_Set]    DATETIME      CONSTRAINT [DF_Accounts_PASSWORD_LAST_SET] DEFAULT (getdate()) NOT NULL,
     [Password]             VARCHAR (256) NOT NULL,
+    [ResetToken]           VARCHAR (MAX) NULL,
+    [ResetTokenExpires]    DATETIME      NULL,
     [Failed_Attempts]      INT           NOT NULL,
     [First_Name]           VARCHAR (35)  NOT NULL,
     [Last_Login]           DATETIME      CONSTRAINT [DF_Accounts_LAST_LOGIN] DEFAULT (getdate()) NULL,
@@ -21,7 +23,8 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Updated_Date]         DATETIME      NULL,
     CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([AccountSeqId] ASC),
     CONSTRAINT [FK_Accounts_Statuses] FOREIGN KEY ([StatusSeqId]) REFERENCES [ZGWSystem].[Statuses] ([StatusSeqId]),
-    CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC)
+    CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC),
+    CONSTRAINT [UK_Accounts_ResetToken] UNIQUE NONCLUSTERED ([ResetToken] ASC)
 );
 
 
