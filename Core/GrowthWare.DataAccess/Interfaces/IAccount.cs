@@ -8,12 +8,19 @@ namespace GrowthWare.DataAccess.Interfaces
     public interface IAccount : IDBInteraction
     {
 		/// <summary>
-		/// Used by all methds and must be set to send parameters to the datastore
+		/// Used by all methods and must be set to send parameters to the datastore
 		/// </summary>
 		MAccountProfile Profile {get; set;}
 
 		/// <summary>
-		/// Used by all methds and must be set to send parameters to the datastore
+		/// Check the DB to see if the refreshToken is already in use (exists)
+		/// </summary>
+		/// <param name="refreshToken"></param>
+		/// <returns>bool</returns>
+		bool RefreshTokenExists(string refreshToken);
+
+		/// <summary>
+		/// Used by all methods and must be set to send parameters to the datastore
 		/// </summary>
 		int SecurityEntitySeqId { get; set; }
 
