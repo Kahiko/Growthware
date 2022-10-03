@@ -12,18 +12,18 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     /// </summary>
     public abstract class ADBInteraction : IDBInteraction, IDisposable
     {
-#region Private Fields
+        #region Private Fields
         private bool m_DisposedValue;
-#endregion
+        #endregion
 
-#region Public Properties
+        #region Public Properties
         /// <summary>
         /// Used for all methods to connect to the database.
         /// </summary>
         public string ConnectionString { get; set; }
-#endregion
+        #endregion
 
-#region Private Methods
+        #region Private Methods
         /// <summary>
         /// Formats an error message containging the store procedure name and the parameters/values.
         /// </summary>
@@ -56,6 +56,15 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             return mMessage;
         }
 
+        protected virtual string Cleanup(string stringValue)
+        {
+            string mRetVal = stringValue;
+            mRetVal = mRetVal.Replace(";", "");
+            mRetVal = mRetVal.Replace("'", "");
+            mRetVal = mRetVal.Replace("\"", ""); 
+            return mRetVal;           
+        }
+
         /// <summary>
         /// Ensures  ConnectionString has a value.
         /// </summary>
@@ -67,16 +76,16 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 throw new DataAccessLayerException("The ConnectionString property cannot be null or blank!");
             }
         }
-#endregion
+        #endregion
 
-#region IDDBInteraction Members
+        #region IDDBInteraction Members
         /// <summary>
         /// Executes a non Query given the commandText and sql parameters if any
         /// </summary>
         /// <param name="commandText">String</param>
         /// <param name="sqlParameter">SqlParmeter</param>
         /// <exception cref="DataAccessLayerException"></exception>
-        protected int ExecuteNonQuery(String commandText, SqlParameter[] mSqlParameters)
+        protected int ExecuteNonQuery(String commandText, SqlParameter[] sqlParameters)
         {
             this.IsValid();
             try
@@ -84,15 +93,15 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 using (SqlConnection mSqlConnection = new(this.ConnectionString))
                 {
                     mSqlConnection.Open();
-                    using (SqlCommand mSqlCommand = new(commandText, mSqlConnection)) 
+                    using (SqlCommand mSqlCommand = new(commandText, mSqlConnection))
                     {
                         mSqlCommand.CommandType = CommandType.Text;
-                        if (mSqlParameters != null)
+                        if (sqlParameters != null)
                         {
-                            if (mSqlParameters.Length > 0)
+                            if (sqlParameters.Length > 0)
                             {
                                 mSqlCommand.CommandType = CommandType.StoredProcedure;
-                                foreach (SqlParameter mSqlParameter in mSqlParameters)
+                                foreach (SqlParameter mSqlParameter in sqlParameters)
                                 {
                                     mSqlCommand.Parameters.Add(mSqlParameter);
                                 }
@@ -110,12 +119,12 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 }
                 else
                 {
-                    throw new DataAccessLayerException(formatError(mSqlParameters, commandText, ex.ToString()), ex);
+                    throw new DataAccessLayerException(formatError(sqlParameters, commandText, ex.ToString()), ex);
                 }
             }
             catch (Exception ex)
             {
-                throw new DataAccessLayerException(formatError(mSqlParameters, commandText, ex.ToString()), ex);
+                throw new DataAccessLayerException(formatError(sqlParameters, commandText, ex.ToString()), ex);
             }
         }
 
@@ -127,6 +136,49 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         protected int ExecuteNonQuery(String commandText)
         {
             return this.ExecuteNonQuery(commandText, null);
+        }
+
+        protected object ExecuteScalar(string commandText, SqlParameter[] sqlParameters)
+        {
+            this.IsValid();
+            try
+            {
+                using (SqlConnection mSqlConnection = new(this.ConnectionString))
+                {
+                    mSqlConnection.Open();
+                    using (SqlCommand mSqlCommand = new(commandText, mSqlConnection))
+                    {
+                        mSqlCommand.CommandType = CommandType.Text;
+                        if (sqlParameters != null)
+                        {
+                            if (sqlParameters.Length > 0)
+                            {
+                                mSqlCommand.CommandType = CommandType.StoredProcedure;
+                                foreach (SqlParameter mSqlParameter in sqlParameters)
+                                {
+                                    mSqlCommand.Parameters.Add(mSqlParameter);
+                                }
+                            }
+                        }
+                        return mSqlCommand.ExecuteScalar();
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                if (ex.Message.ToUpper(CultureInfo.InvariantCulture).StartsWith("CANNOT OPEN DATABASE", StringComparison.OrdinalIgnoreCase))
+                {
+                    throw;
+                }
+                else
+                {
+                    throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+            }
         }
 
         /// <summary>
@@ -310,9 +362,9 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             }
             return mAdded_Updated_By;
         }
-#endregion
+        #endregion
 
-#region IDisposable Members
+        #region IDisposable Members
         /// <summary>
         /// Implements IDispose
         /// </summary>
@@ -351,6 +403,6 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
     }
 }

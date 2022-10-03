@@ -205,6 +205,17 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
+        /// Check the database to see if the refreshToken matches any existing Tokens
+        /// already in the data store.
+        /// </summary>
+        /// <param name="refreshToken"></param>
+        /// <returns>bool</returns>
+        public bool RefreshTokenExists(string refreshToken)
+        {
+            return m_DAccounts.RefreshTokenExists(refreshToken);
+        }
+
+        /// <summary>
         /// Performs either insert or update of an MAcountProfile, and re-populates the MAccountProfile with DB information.
         /// </summary>
         /// <param name="profile">MAccountProfile</param>

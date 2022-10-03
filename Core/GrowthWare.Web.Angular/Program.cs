@@ -1,9 +1,11 @@
+using GrowthWare.WebSupport.Utilities.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 builder.Services.AddAuthentication(opt =>
 {
@@ -43,6 +45,9 @@ builder.Services.AddSwaggerGen(c =>
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies", Version = "v1" });
 });
 
+// configure DI for application services
+builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+
 builder.Services.AddSession(options =>
 {
     options.Cookie.Name = ".Growthware.Session";
@@ -78,6 +83,9 @@ app.UseCors("EnableCORS");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+// custom jwt auth middleware
+app.UseMiddleware<JwtMiddleware>();
 
 // app.MapControllers();                            // Commented out
 app.MapControllerRoute(                             // Added

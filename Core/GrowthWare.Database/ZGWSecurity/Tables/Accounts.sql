@@ -23,8 +23,7 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Updated_Date]         DATETIME      NULL,
     CONSTRAINT [PK_Accounts] PRIMARY KEY CLUSTERED ([AccountSeqId] ASC),
     CONSTRAINT [FK_Accounts_Statuses] FOREIGN KEY ([StatusSeqId]) REFERENCES [ZGWSystem].[Statuses] ([StatusSeqId]),
-    CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC),
-    CONSTRAINT [UK_Accounts_ResetToken] UNIQUE NONCLUSTERED ([ResetToken] ASC)
+    CONSTRAINT [UK_Accounts] UNIQUE NONCLUSTERED ([Account] ASC)
 );
 
 

@@ -67,4 +67,12 @@ public static class AccountUtility
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         return Save(profile, saveRoles, saveGroups, mSecurityEntityProfile);
     }
+
+    public static bool RefreshTokenExists(string refreshToken) 
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        return mBAccount.RefreshTokenExists(refreshToken);
+    }
+
 }
