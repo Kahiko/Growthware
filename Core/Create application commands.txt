@@ -27,6 +27,8 @@ JWT:
 	https://code-maze.com/authentication-aspnetcore-jwt-1/
 	https://code-maze.com/authentication-aspnetcore-jwt-2/
 	https://devblogs.microsoft.com/dotnet/jwt-validation-and-authorization-in-asp-net-core/
+	https://www.syncfusion.com/blogs/post/best-practices-for-jwt-authentication-in-angular-apps.aspx
+	https://www.ducktypelabs.com/is-localstorage-bad/
 
 Application:
 	From Angular
