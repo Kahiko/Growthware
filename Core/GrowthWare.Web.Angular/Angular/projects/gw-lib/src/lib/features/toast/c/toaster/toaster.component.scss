@@ -1,3 +1,29 @@
 .toaster {
   z-index: 2000;
 }
+
+.position-fixed {
+  position: fixed;
+}
+
+.bottom-0 {
+  bottom: 0 !important;
+}
+
+.end-0 {
+  right: 0 !important;
+}
+
+.margin-16 {
+  margin: 16px;
+}
+
+.px-3 {
+  padding-right: 1rem !important;
+  padding-left: 1rem !important
+}
+
+.py-2 {
+  padding-top: .5rem !important;
+  padding-bottom: .5rem !important
+}
