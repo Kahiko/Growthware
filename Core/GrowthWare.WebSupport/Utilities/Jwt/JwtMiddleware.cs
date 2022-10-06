@@ -1,7 +1,7 @@
-using System.Threading.Tasks;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport.Utilities.Jwt;
 
@@ -9,11 +9,13 @@ public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
     
+    [CLSCompliant(false)]
     public JwtMiddleware(RequestDelegate next)
     {
         _next = next;
     }
 
+    [CLSCompliant(false)]
     public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
