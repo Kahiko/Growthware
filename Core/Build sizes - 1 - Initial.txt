@@ -1,0 +1,36 @@
+ng build gw-frontend
+√ Browser application bundle generation complete.
+√ Copying assets complete.
+√ Index html generation complete.
+
+Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.757218392c81ce6e.js      | main          | 195.23 kB |                53.28 kB
+polyfills.fccbe5d32b7a2e94.js | polyfills     |  33.08 kB |                10.64 kB
+runtime.18df3a9f5749c051.js   | runtime       |   1.05 kB |               604 bytes
+styles.ef46db3751d8e999.css   | styles        |   0 bytes |                       -
+
+                              | Initial Total | 229.35 kB |                64.50 kB
+
+Build at: 2022-10-06T10:21:31.374Z - Hash: c1dac4d9e2ae2a1a - Time: 19436ms
+
+D:\Development\Growthware\Core\GrowthWare.Web.Angular\Angular>
+--> ng build gw-lib
+Building Angular Package
+
+------------------------------------------------------------------------------
+Building entry point 'gw-lib'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Generating FESM2020
+√ Generating FESM2015
+√ Copying assets
+√ Writing package manifest
+√ Built gw-lib
+
+------------------------------------------------------------------------------
+Built Angular Package
+ - from: D:\Development\Growthware\Core\GrowthWare.Web.Angular\Angular\projects\gw-lib
+ - to:   D:\Development\Growthware\Core\GrowthWare.Web.Angular\Angular\dist\gw-lib
+------------------------------------------------------------------------------
+
+Build at: 2022-10-06T10:21:52.459Z - Time: 5198ms

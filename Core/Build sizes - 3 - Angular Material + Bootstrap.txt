@@ -1,0 +1,123 @@
+√ Browser application bundle generation complete.
+√ Copying assets complete.
+√ Index html generation complete.
+
+Initial Chunk Files           | Names         |  Raw Size | Estimated Transfer Size
+main.7bb48c332f7461c3.js      | main          | 259.30 kB |                69.33 kB
+styles.64149f24ab077b0a.css   | styles        |  74.00 kB |                 7.65 kB
+polyfills.4294a2ce1ff0ecef.js | polyfills     |  33.08 kB |                10.65 kB
+runtime.ed0e98ebfbb85096.js   | runtime       |   1.05 kB |               600 bytes
+
+                              | Initial Total | 367.44 kB |                88.22 kB
+
+Build at: 2022-10-06T11:08:35.173Z - Hash: d3093c6ba72d1a83 - Time: 5668ms
+Building Angular Package
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/common-code'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/common-code
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/toast'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/toast
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/logging'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/logging
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/models'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/models
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/modal'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/modal
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/navigation'
+------------------------------------------------------------------------------
+\ Compiling with Angular sources in Ivy partial compilation mode.
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/navigation
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/search'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/search
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/services'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/services
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/pager'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/pager
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/dynamic-table'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/dynamic-table
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/pick-list'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/pick-list
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/account'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/account
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib/src/lib/features/function'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Built @Growthware/Lib/src/lib/features/function
+
+------------------------------------------------------------------------------
+Building entry point '@Growthware/Lib'
+------------------------------------------------------------------------------
+√ Compiling with Angular sources in Ivy partial compilation mode.
+√ Writing FESM bundles
+√ Copying assets
+√ Writing package manifest
+√ Built @Growthware/Lib
+
+------------------------------------------------------------------------------
+Built Angular Package
+ - from: D:\Development\Growthware\Core\GrowthWare.Web.Angular\Angular\projects\gw-lib
+ - to:   D:\Development\Growthware\Core\GrowthWare.Web.Angular\Angular\dist\gw-lib
+------------------------------------------------------------------------------
+
+Build at: 2022-10-06T11:09:03.890Z - Time: 25079ms
