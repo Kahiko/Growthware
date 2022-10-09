@@ -33,7 +33,29 @@ export class AccountDetailsComponent implements OnInit {
     { id: 1, name: "Active" },
     { id: 4, name: "Change Password" },
     { id: 3, name: "Disabled" }
-  ]
+  ];
+
+  validTimezones = [
+    { id: -10,  name: "Hawaii (GMT -10)"              },
+    { id: -9,   name: "Alaska (GMT -9)"               },
+    { id: -8,   name: "Pacific Time (GMT -8)"         },
+    { id: -7,   name: "Mountain Time (GMT -7)"        },
+    { id: -6,   name: "Central Time (GMT -6)"         },
+    { id: -5,   name: "Eastern Time (GMT -5)"         },
+    { id: -4,   name: "Atlantic Time (GMT -4)"        },
+    { id: -3,   name: "Brasilia Time (GMT -3)"        },
+    { id: 0,    name: "Greenwich Mean Time (GMT +0)"  },
+    { id: 1,    name: "Central Europe Time (GMT +1)"  },
+    { id: 2,    name: "Eastern Europe Time (GMT +2)"  },
+    { id: 3,    name: "Middle Eastern Time (GMT +3)"  },
+    { id: 4,    name: "Abu Dhabi Time (GMT +4)"       },
+    { id: 5,    name: "Indian Time (GMT +5)"          },
+    { id: 8,    name: "Eastern China Time (GMT +8)"   },
+    { id: 9,    name: "Japan Time (GMT +9)"           },
+    { id: 10,   name: "Australian Time (GMT +10)"     },
+    { id: 11,   name: "Pacific Rim Time (GMT +11)"    },
+    { id: 12,   name: "New Zealand Time (GMT +12)"    },
+  ];
 
   constructor(
     private _AccountSvc: AccountService,
@@ -115,15 +137,27 @@ export class AccountDetailsComponent implements OnInit {
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],
         failedAttempts: [0],
-        statusSeqId: [''],
+        statusSeqId: [this._AccountProfile.status],
         isSystemAdmin: [false],
+        firstName: [this._AccountProfile.firstName],
+        lastName: [this._AccountProfile.lastName],
+        middleName: [this._AccountProfile.middleName],
+        preferredName: [this._AccountProfile.preferredName],
+        email: [this._AccountProfile.email],
+        timeZone: [this._AccountProfile.timeZone],
       });
     } else {
       this.frmAccount = this._FormBuilder.group({
         account: ['', [Validators.required]],
         failedAttempts: [0],
-        statusSeqId: [''],
+        statusSeqId: [1],
         isSystemAdmin: [false],
+        firstName: [''],
+        lastName: [''],
+        middleName: [''],
+        preferredName: [''],
+        email: [''],
+        timeZone: [-10],
       });
     }
   }

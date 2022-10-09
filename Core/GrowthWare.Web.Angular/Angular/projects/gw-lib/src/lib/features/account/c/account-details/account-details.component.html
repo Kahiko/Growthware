@@ -37,6 +37,60 @@
           <mat-grid-tile>4</mat-grid-tile>
 
           <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>First Name</mat-label>
+              <input matInput type="text" formControlName="firstName">
+              <mat-error *ngIf="getControls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Last Name</mat-label>
+              <input matInput type="text" formControlName="lastName">
+              <mat-error *ngIf="getControls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Middle Name</mat-label>
+              <input matInput type="text" formControlName="middleName">
+              <mat-error *ngIf="getControls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Preferred Name</mat-label>
+              <input matInput type="text" formControlName="preferredName">
+              <mat-error *ngIf="getControls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>E-Mail</mat-label>
+              <input matInput type="text" formControlName="email">
+              <mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <mat-form-field appearance="fill">
+              <mat-label>Timezone</mat-label>
+              <mat-select>
+                <mat-option *ngFor="let item of validTimezones" [value]="item.id">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+
+          <mat-grid-tile>1</mat-grid-tile>
           <mat-grid-tile>2</mat-grid-tile>
           <mat-grid-tile>3</mat-grid-tile>
           <mat-grid-tile>4</mat-grid-tile>
