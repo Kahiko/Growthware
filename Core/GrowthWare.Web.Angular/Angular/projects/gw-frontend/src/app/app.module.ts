@@ -9,18 +9,15 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from "@auth0/angular-jwt";
 // Library Modules
 import { ToastModule } from '@Growthware/Lib';
-import { NavigationModule } from '@Growthware/Lib';
 // Application Modules
 import { AuthGuard } from './guards/auth.guard';
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
+import { DefaultModule } from './skins/default/default.module';
 import { MSDemoRoutingModule } from './ms-demo/ms-demo.routing.module';
 // Application Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { DefaultComponent } from './skins/default/default-layout/default.component';
-import { DefaultHeaderComponent } from './skins/default/default-header/default-header.component';
-import { DefaultFooterComponent } from './skins/default/default-footer/default-footer.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -29,9 +26,6 @@ export function tokenGetter() {
 @NgModule({
   declarations: [
     AppComponent,
-    DefaultComponent,
-    DefaultHeaderComponent,
-    DefaultFooterComponent,
     HomeComponent,
   ],
   imports: [
@@ -51,9 +45,9 @@ export function tokenGetter() {
     }),
     MaterialModules,
     MSDemoRoutingModule,
-    NavigationModule,
     ReactiveFormsModule,
     ToastModule,
+    DefaultModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],
