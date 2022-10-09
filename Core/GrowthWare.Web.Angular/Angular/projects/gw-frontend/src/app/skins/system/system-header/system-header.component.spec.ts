@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DefaultSidebarComponent } from './default-sidebar.component';
+import { SystemHeaderComponent } from './system-header.component';
 
-describe('DefaultSidebarComponent', () => {
-  let component: DefaultSidebarComponent;
-  let fixture: ComponentFixture<DefaultSidebarComponent>;
+describe('SystemHeaderComponent', () => {
+  let component: SystemHeaderComponent;
+  let fixture: ComponentFixture<SystemHeaderComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DefaultSidebarComponent ]
+      declarations: [ SystemHeaderComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DefaultSidebarComponent);
+    fixture = TestBed.createComponent(SystemHeaderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

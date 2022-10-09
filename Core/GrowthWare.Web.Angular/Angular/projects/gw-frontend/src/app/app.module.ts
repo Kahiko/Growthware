@@ -18,9 +18,9 @@ import { MSDemoRoutingModule } from './ms-demo/ms-demo.routing.module';
 // Application Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { DefaultComponent } from './skins/default/default/default.component';
-import { DefaultHeaderComponent } from './skins/default/layout/default-header/default-header.component';
-import { DefaultFooterComponent } from './skins/default/layout/default-footer/default-footer.component';
+import { DefaultComponent } from './skins/default/default-layout/default.component';
+import { DefaultHeaderComponent } from './skins/default/default-header/default-header.component';
+import { DefaultFooterComponent } from './skins/default/default-footer/default-footer.component';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");

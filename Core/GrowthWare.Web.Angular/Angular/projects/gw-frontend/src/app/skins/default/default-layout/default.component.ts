@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AccountService, MenuListService } from '@Growthware/Lib';
 import { INavLink, NavLink } from '@Growthware/Lib';
 import { Subscription } from 'rxjs';
-import { sideNavTextAnimation } from './animations/side-nav';
+import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({
   selector: 'gw-frontend-default',
