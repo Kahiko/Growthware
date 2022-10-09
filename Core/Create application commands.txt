@@ -37,14 +37,17 @@ Application:
 		create ensureRoutesExist.initializer by hand
 		
 		ng generate module skins/default --routing --project gw-frontend
-		ng generate component skins/defaultComponent --module default --project gw-frontend
+		ng generate component skins/default/defaultLayout --module default --project gw-frontend
 		ng generate component skins/default/DefaultFooter --module default --project gw-frontend
 		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
 		ng generate component skins/default/DefaultSidebar --module default --project gw-frontend
 		
-		ng generate component skins/system/SystemFooter --module app --project gw-frontend
-		ng generate component skins/system/SystemHeader --module app --project gw-frontend
-		ng generate component skins/system/SystemSidebar --module app --project gw-frontend
+
+		ng generate module skins/system --routing --project gw-frontend
+		ng generate component skins/system/systemLayout --module system --project gw-frontend
+		ng generate component skins/system/SystemFooter --module system --project gw-frontend
+		ng generate component skins/system/SystemHeader --module system --project gw-frontend
+		ng generate component skins/system/SystemSidebar --module system --project gw-frontend
 		
 		ng generate service services/BaseService --project gw-frontend
 
