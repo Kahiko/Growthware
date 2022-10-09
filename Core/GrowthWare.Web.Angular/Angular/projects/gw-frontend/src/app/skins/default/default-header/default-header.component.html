@@ -3,32 +3,28 @@
     <mat-icon>menu</mat-icon>
   </button>
   <span class="spacer">{{applicationName}}</span>
-  <div fxFlex fxLayout="row" fxLayoutAlign="flex-end">
-    <span class="version__span">Version {{version}}</span>
-    <ul fxLayout="row" fxLayoutGap="20px" class="mat-toolbar__ul">
-      <li>
-        <button mat-icon-button>
-          <mat-icon>help_outline</mat-icon>
-        </button>
-      </li>
-      <li>
-        <button mat-button [matMenuTriggerFor]="menu">
-          <mat-icon>person_outline</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button *ngIf="!isAuthenticated" (click)="onLogin()" mat-menu-item>
-            <mat-icon>login</mat-icon>
-            Sign in
-          </button>
-          <a *ngIf="isAuthenticated" mat-menu-item [routerLink]="['/edit-my-account']">
-            <mat-icon>settings</mat-icon><span>Edit Profile</span>
-          </a>
-          <button *ngIf="isAuthenticated" (click)="onLogout()" mat-menu-item>
-            <mat-icon>logout</mat-icon>
-            Sign out
-          </button>
-        </mat-menu>
-      </li>
-    </ul>
-  </div>
+  <span>Version {{version}}</span>
+  <button mat-icon-button>
+    <mat-icon>help_outline</mat-icon>
+  </button>
+  <button mat-icon-button [matMenuTriggerFor]="menu">
+    <mat-icon>person_outline</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <div *ngIf="!isAuthenticated">
+      <button (click)="onLogin()" mat-menu-item>
+        <mat-icon>login</mat-icon>
+        <span>Sign in</span>
+      </button>
+    </div>
+    <div *ngIf="isAuthenticated">
+      <a mat-menu-item [routerLink]="['/edit-my-account']">
+        <mat-icon>settings</mat-icon><span>Edit Profile</span>
+      </a>
+      <button (click)="onLogout()" mat-menu-item>
+        <mat-icon>logout</mat-icon>
+        Sign out
+      </button>
+    </div>
+  </mat-menu>
 </mat-toolbar>
