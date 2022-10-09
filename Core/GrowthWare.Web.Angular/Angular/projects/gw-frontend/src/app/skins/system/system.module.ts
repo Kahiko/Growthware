@@ -5,7 +5,6 @@ import { SystemRoutingModule } from './system-routing.module';
 import { SystemLayoutComponent } from './system-layout/system-layout.component';
 import { SystemFooterComponent } from './system-footer/system-footer.component';
 import { SystemHeaderComponent } from './system-header/system-header.component';
-import { SystemSidebarComponent } from './system-sidebar/system-sidebar.component';
 
 
 @NgModule({
@@ -13,7 +12,6 @@ import { SystemSidebarComponent } from './system-sidebar/system-sidebar.componen
     SystemLayoutComponent,
     SystemFooterComponent,
     SystemHeaderComponent,
-    SystemSidebarComponent
   ],
   imports: [
     CommonModule,
