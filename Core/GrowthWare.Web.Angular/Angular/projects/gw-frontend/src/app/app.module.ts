@@ -13,8 +13,10 @@ import { ToastModule } from '@Growthware/Lib';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
-import { DefaultModule } from './skins/default/default.module';
 import { MSDemoRoutingModule } from './ms-demo/ms-demo.routing.module';
+// Application Modules
+import { DefaultModule } from './skins/default/default.module';
+import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
@@ -48,6 +50,7 @@ export function tokenGetter() {
     ReactiveFormsModule,
     ToastModule,
     DefaultModule,
+    SystemModule,
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent],

@@ -1,4 +1,12 @@
 <div>
   <gw-lib-toaster></gw-lib-toaster>
-  <gw-frontend-default></gw-frontend-default>
+  <div [ngSwitch]="skin">
+    <div *ngSwitchCase="'default'">
+      <gw-frontend-default></gw-frontend-default>
+    </div>
+    <div *ngSwitchCase="'system'">
+      <gw-frontend-system-layout></gw-frontend-system-layout>
+    </div>
+    <div *ngSwitchDefault>Fall through</div>
+  </div>
 </div>

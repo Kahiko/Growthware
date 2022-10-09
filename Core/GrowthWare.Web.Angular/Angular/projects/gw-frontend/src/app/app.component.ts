@@ -29,6 +29,7 @@ export const animateText = trigger('animateText', [
 export class AppComponent {
   title = 'FrontEnd';
   showFiller = false;
+  skin = 'default';
 
   constructor() { }
 }
