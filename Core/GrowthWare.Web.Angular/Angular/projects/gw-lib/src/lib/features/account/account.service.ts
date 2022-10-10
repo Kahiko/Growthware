@@ -35,6 +35,10 @@ export class AccountService {
     return 'addAccount'
   }
 
+  public get defaultAccount(): string {
+    return this._DefaultAccount;
+  }
+
   public get editModalId(): string {
     return 'editAccount'
   }

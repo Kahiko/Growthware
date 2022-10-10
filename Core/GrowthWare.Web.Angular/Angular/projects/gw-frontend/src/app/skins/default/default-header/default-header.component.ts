@@ -1,4 +1,5 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 // Library
@@ -24,7 +25,8 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _ModalSvc: ModalService,
-    private _ConfigurationSvc: ConfigurationService) { }
+    private _ConfigurationSvc: ConfigurationService,
+    private _Router: Router) { }
 
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
@@ -49,6 +51,14 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
       this.onModalOk
     }
     this._ModalSvc.open(mModalOptions);
+  }
+
+  onLogoClick(): void {
+    if(this._AccountSvc.account.trim().toLocaleLowerCase() === this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
+      this._Router.navigate(["generic_home"]);
+    } else {
+      this._Router.navigate(["home"]);
+    }
   }
 
   onModalOk() {

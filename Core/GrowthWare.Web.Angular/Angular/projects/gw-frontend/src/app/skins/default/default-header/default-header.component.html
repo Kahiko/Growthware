@@ -2,7 +2,9 @@
   <button style="outline: none;" mat-icon-button (click)="sidenav.toggle();">
     <mat-icon>menu</mat-icon>
   </button>
-  <span class="spacer">{{applicationName}}</span>
+  <span class="spacer">
+    <button (click)="onLogoClick()" class="button__link">{{applicationName}}</button>
+  </span>
   <span>Version {{version}}</span>
   <button mat-icon-button>
     <mat-icon>help_outline</mat-icon>
