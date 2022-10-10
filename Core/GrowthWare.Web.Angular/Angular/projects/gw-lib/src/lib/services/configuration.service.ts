@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -10,7 +10,7 @@ import { IAppSettings } from '@Growthware/Lib/src/lib/models';
   providedIn: 'root'
 })
 export class ConfigurationService {
-  private _ApplicationName = new Subject<string>();
+  private _ApplicationName = new BehaviorSubject('');
   private _ApiName: string = 'GrowthwareAPI/';
   private _ApiURL: string = '';
   private _Loaded: boolean = false;

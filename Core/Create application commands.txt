@@ -38,20 +38,21 @@ Application:
 	
 		ng generate service RouteLoader --project gw-frontend
 		create ensureRoutesExist.initializer by hand
-		
+	Skins
 		ng generate module skins/default --routing --project gw-frontend
 		ng generate component skins/default/DefaultFooter --module default --project gw-frontend
 		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
 		ng generate component skins/default/defaultLayout --module default --project gw-frontend
-		
 
 		ng generate module skins/system --routing --project gw-frontend
 		ng generate component skins/system/SystemFooter --module system --project gw-frontend
 		ng generate component skins/system/SystemHeader --module system --project gw-frontend
 		ng generate component skins/system/systemLayout --module system --project gw-frontend
+	Features
+		ng generate module features/home --routing --project gw-frontend
+		ng generate component features/home/c/GenericHome --module home --project gw-frontend
+		ng generate component features/home/c/Home --module home --project gw-frontend
 		
-		ng generate service services/BaseService --project gw-frontend
-
 		ng generate module features/accounts --routing --project gw-frontend
 
 		ng generate module features/functions --routing --project gw-frontend
