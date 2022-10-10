@@ -54,10 +54,10 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   }
 
   onLogoClick(): void {
-    if(this._AccountSvc.account.trim().toLocaleLowerCase() === this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
-      this._Router.navigate(["generic_home"]);
+    if(this._AccountSvc.account.trim().toLocaleLowerCase() !== this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
+      this._Router.navigate(["Home"]);
     } else {
-      this._Router.navigate(["home"]);
+      this._Router.navigate(["Generic_Home"]);
     }
   }
 

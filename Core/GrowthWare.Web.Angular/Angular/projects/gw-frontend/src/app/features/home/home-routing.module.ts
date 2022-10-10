@@ -6,8 +6,8 @@ import { GenericHomeComponent } from './c/generic-home/generic-home.component';
 
 const childRoutes: Routes = [
   { path: '', component: GenericHomeComponent },
-  { path: 'Generic_Home', component: GenericHomeComponent },
-  { path: 'Home', component: HomeComponent },
+  { path: 'generic_home', component: GenericHomeComponent },
+  { path: 'home', component: HomeComponent },
 ];
 
 @NgModule({

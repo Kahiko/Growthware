@@ -89,6 +89,7 @@ export class AccountService {
           localStorage.setItem("jwt", response.token);
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
+          this._Account = account;
           this._IsAuthenticated.next(true);
           resolve(true);
         },
