@@ -1,58 +1,32 @@
-// Third party Modules
 import { NgModule } from '@angular/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
-import { FlexLayoutModule } from '@angular/flex-layout';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { MaterialModules } from './material.module';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { JwtModule } from "@auth0/angular-jwt";
 // Library Modules
-import { ToastModule } from '@Growthware/Lib';
+import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 // Application Modules
-import { AuthGuard } from './guards/auth.guard';
-import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
-import { MSDemoRoutingModule } from './ms-demo/ms-demo.routing.module';
-// Application Modules
 import { DefaultModule } from './skins/default/default.module';
 import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-
-export function tokenGetter() {
-  return localStorage.getItem("jwt");
-}
 
 @NgModule({
   declarations: [
-    AppComponent,
-    HomeComponent,
+    AppComponent
   ],
   imports: [
     AppRoutingModule,
-    AccountsRoutingModule,
-    BrowserAnimationsModule,
     BrowserModule,
-    FlexLayoutModule,
-    FormsModule,
-    HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter: tokenGetter,
-        allowedDomains: ["localhost:5001"],
-        disallowedRoutes: []
-      }
-    }),
-    MaterialModules,
-    MSDemoRoutingModule,
-    ReactiveFormsModule,
-    ToastModule,
+    BrowserAnimationsModule,
     DefaultModule,
+    HttpClientModule,
+    JwtModule,
     SystemModule,
+    ToastModule,
   ],
-  providers: [AuthGuard],
-  bootstrap: [AppComponent],
+  providers: [],
+  bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

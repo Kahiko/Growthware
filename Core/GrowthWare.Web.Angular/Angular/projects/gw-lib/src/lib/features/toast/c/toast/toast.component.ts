@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { Toast } from 'bootstrap';
+// import { Toast } from 'bootstrap';
 import { EventType } from '../../event-type.enum';
 import { fromEvent, take } from 'rxjs';
 
@@ -29,7 +29,7 @@ export class ToastComponent implements OnInit {
   public typeClass: string = '';
   // public dateTime: string = new Date().toLocaleString()
 
-  toast!: Toast;
+  // toast!: Toast;
 
   ngOnInit() {
     switch (EventType[this.type]) {
@@ -53,20 +53,20 @@ export class ToastComponent implements OnInit {
   }
 
   private show() {
-    this.toast = new Toast(
-      this.toastEl.nativeElement,
-      this.type === EventType.Error ? { autohide: false, } : { delay: 3000, }
-    );
+    // this.toast = new Toast(
+    //   this.toastEl.nativeElement,
+    //   this.type === EventType.Error ? { autohide: false, } : { delay: 3000, }
+    // );
 
-    fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')
-      .pipe(take(1))
-      .subscribe(() => this.hide());
+    // fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')
+    //   .pipe(take(1))
+    //   .subscribe(() => this.hide());
 
-    this.toast.show();
+    // this.toast.show();
   }
 
   hide() {
-    this.toast.dispose();
+    // this.toast.dispose();
     this.disposeEvent.emit();
   }
 }

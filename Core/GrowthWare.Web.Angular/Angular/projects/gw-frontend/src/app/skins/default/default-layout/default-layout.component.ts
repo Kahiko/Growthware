@@ -1,17 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 // Library
 import { AccountService, MenuListService } from '@Growthware/Lib';
 import { INavLink, NavLink } from '@Growthware/Lib';
-import { Subscription } from 'rxjs';
 import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({
-  selector: 'gw-frontend-default',
-  templateUrl: './default.component.html',
-  styleUrls: ['./default.component.scss'],
+  selector: 'gw-frontend-default-layout',
+  templateUrl: './default-layout.component.html',
+  styleUrls: ['./default-layout.component.scss'],
   animations: [sideNavTextAnimation],
 })
-export class DefaultComponent implements OnDestroy, OnInit {
+export class DefaultLayoutComponent implements OnDestroy, OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
   showSideNavLinkText = false;

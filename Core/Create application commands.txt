@@ -2,6 +2,9 @@
 Configure Swagger:
 	https://www.daniaal.com/configuring-swagger-in-net-6/
 
+Toast:
+	https://fireship.io/lessons/angular-toast-message-notifications-from-scratch/
+
 Build with info (just gives longer name to the js file)
 	ng build --named-chunks --output-hashing=none --project gw-frontend
 

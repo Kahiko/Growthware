@@ -6,7 +6,7 @@
   [ngClass]="{'expanded': expanded}"
   routerLink="{{item.link}}"
   >
-  <mat-icon class="routeIcon">{{item?.icon}}</mat-icon>
+  <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
     <span fxFlex></span>

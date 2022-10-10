@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -13,21 +12,21 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavigationModule } from '@Growthware/Lib';
 // Modules/Components
 import { DefaultRoutingModule } from './default-routing.module';
-import { DefaultComponent } from './default-layout/default.component';
 import { DefaultFooterComponent } from './default-footer/default-footer.component';
 import { DefaultHeaderComponent } from './default-header/default-header.component';
+import { DefaultLayoutComponent } from './default-layout/default-layout.component';
+
 
 @NgModule({
   declarations: [
-    DefaultComponent,
     DefaultFooterComponent,
     DefaultHeaderComponent,
+    DefaultLayoutComponent
   ],
   imports: [
     CommonModule,
     DefaultRoutingModule,
-    FlexLayoutModule,
-    NavigationModule,
+
     MatButtonModule,
     MatDividerModule,
     MatIconModule,
@@ -35,9 +34,11 @@ import { DefaultHeaderComponent } from './default-header/default-header.componen
     MatMenuModule,
     MatSidenavModule,
     MatToolbarModule,
+
+    NavigationModule
   ],
-  exports:[
-    DefaultComponent
+  exports: [
+    DefaultLayoutComponent
   ]
 })
 export class DefaultModule { }

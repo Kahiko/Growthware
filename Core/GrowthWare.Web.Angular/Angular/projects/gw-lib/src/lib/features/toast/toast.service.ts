@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Toast } from 'bootstrap';
+// import { Toast } from 'bootstrap';
 import { distinct, Observable, Subject } from 'rxjs';
 import { EventType } from './event-type.enum';
 import { ToastMessage } from './toast-message.model';

@@ -28,9 +28,6 @@
               "projects/gw-frontend/src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
-              "./node_modules/material-icons/iconfont/material-icons.css",
               "projects/gw-frontend/src/theme.scss",
               "projects/gw-frontend/src/styles.scss"
             ],
@@ -101,15 +98,10 @@
               "projects/gw-frontend/src/assets"
             ],
             "styles": [
-              "./node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "./node_modules/roboto-fontface/css/roboto/roboto-fontface.css",
-              "./node_modules/material-icons/iconfont/material-icons.css",
               "projects/gw-frontend/src/theme.scss",
               "projects/gw-frontend/src/styles.scss"
             ],
-            "scripts": [
-              "./node_modules/bootstrap/dist/js/bootstrap.min.js"
-            ]
+            "scripts": []
           }
         }
       }
