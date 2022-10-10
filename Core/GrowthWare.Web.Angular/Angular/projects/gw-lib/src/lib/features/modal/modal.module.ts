@@ -3,7 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ModalComponent } from './c/modal.component';
 
-
+// Angular Material
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [
@@ -11,7 +13,10 @@ import { ModalComponent } from './c/modal.component';
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+
+    MatIconModule,
+    MatToolbarModule
   ],
   exports: [
     ModalComponent

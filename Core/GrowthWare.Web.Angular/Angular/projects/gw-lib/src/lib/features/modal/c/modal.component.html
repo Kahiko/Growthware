@@ -1,20 +1,22 @@
-<div class="modal-backdrop"></div>
-<div class="div-container">
-  <div class="custom-modal" [ngStyle]="{ 'height.px': height, 'width.px': width }">
-    <div class="custom-dialog">
-      <div class="modal-content">
-        <div class="modal-header blue">
-          <h3 class="modal-title">{{header}}</h3>
-          <button type="button" id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="btn-close btn-close-white" (click)="onCancel()" aria-label="Close"></button>
-        </div>
-        <div class="modal-body" [ngStyle]="{ 'height.px': height-70 }">
-          <p><ng-content></ng-content></p>
-        </div>
-        <div class="modal-footer">
-          <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
-          <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
-        </div>
-      </div>
+<!-- The Modal -->
+<div id="myModal" class="modal">
+
+  <!-- Modal content -->
+  <div class="modal-content" [ngStyle]="{ 'height.px': height, 'width.px': width }">
+    <mat-toolbar class="modal-header" color="primary">
+      <h2>{{header}}</h2>
+      <span class="spacer"></span>
+      <button id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="button__link" (click)="onCancel()" aria-label="Close">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="modal-body" [ngStyle]="{ 'height.px': height-70 }">
+      <p><ng-content></ng-content></p>
+    </div>
+    <div class="modal-footer">
+      <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
+      <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
     </div>
   </div>
+
 </div>
