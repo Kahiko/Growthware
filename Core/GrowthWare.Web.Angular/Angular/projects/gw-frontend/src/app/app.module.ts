@@ -12,6 +12,7 @@ import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
 import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
 import { DefaultModule } from './skins/default/default.module';
+import { FunctionsRoutingModule } from './features/functions/functions-routing.module';
 import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
@@ -33,6 +34,7 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     DefaultModule,
     FormsModule,
+    FunctionsRoutingModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
