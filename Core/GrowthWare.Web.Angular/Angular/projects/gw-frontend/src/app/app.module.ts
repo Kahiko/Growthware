@@ -10,10 +10,15 @@ import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
+import { AuthGuard } from './guards/auth.guard';
 import { DefaultModule } from './skins/default/default.module';
 import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
+
+export function tokenGetter() {
+  return localStorage.getItem("jwt");
+}
 
 @NgModule({
   declarations: [
@@ -26,12 +31,19 @@ import { AppComponent } from './app.component';
     DefaultModule,
     FormsModule,
     HttpClientModule,
-    JwtModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: tokenGetter,
+        allowedDomains: ["localhost:5001"],
+        disallowedRoutes: []
+      }
+    }),
     ReactiveFormsModule,
     SystemModule,
     ToastModule,
   ],
-  providers: [  {
+  providers: [
+    AuthGuard, {
     provide: UrlSerializer,
     useClass: LowerCaseUrlSerializer
   }],

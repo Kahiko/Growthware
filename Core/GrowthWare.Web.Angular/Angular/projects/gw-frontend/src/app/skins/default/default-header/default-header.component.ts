@@ -40,7 +40,9 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
       this._ConfigurationSvc.version.subscribe((val: string) => { this.version = val; })
     );
     this._Subscription.add(
-      this._AccountSvc.isAuthenticated.subscribe((val: boolean) => { this.isAuthenticated = val; })
+      this._AccountSvc.isAuthenticated.subscribe((val: boolean) => {
+        this.isAuthenticated = val;
+      })
     );
   }
 
@@ -55,9 +57,9 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 
   onLogoClick(): void {
     if(this._AccountSvc.account.trim().toLocaleLowerCase() !== this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
-      this._Router.navigate(["Home"]);
+      this._Router.navigate(['home']);
     } else {
-      this._Router.navigate(["Generic_Home"]);
+      this._Router.navigate(['generic_home']);
     }
   }
 

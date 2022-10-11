@@ -90,6 +90,7 @@ export class AccountService {
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
           this._Account = account;
+          this._Router.navigate(['home']);
           this._IsAuthenticated.next(true);
           resolve(true);
         },
@@ -113,8 +114,8 @@ export class AccountService {
     this._IsAuthenticated.next(false);
     const mNavLink: INavLink[] = [];
     this._SideNavSubject.next(mNavLink);
+    this._Router.navigate(['generic_home']);
     this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
-    this._Router.navigate(["home"]);
   }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
