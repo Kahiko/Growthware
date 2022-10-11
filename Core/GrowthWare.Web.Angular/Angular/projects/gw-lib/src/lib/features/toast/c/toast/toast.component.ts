@@ -58,9 +58,9 @@ export class ToastComponent implements OnInit {
     //   this.type === EventType.Error ? { autohide: false, } : { delay: 3000, }
     // );
 
-    // fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')
-    //   .pipe(take(1))
-    //   .subscribe(() => this.hide());
+    fromEvent(this.toastEl.nativeElement, 'hidden.bs.toast')
+      .pipe(take(1))
+      .subscribe(() => this.hide());
 
     // this.toast.show();
   }
