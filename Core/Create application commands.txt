@@ -60,6 +60,7 @@ Application:
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
+		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
 
 		ng generate interface models/CallbackButton --type model --project gw-lib
 		ng generate interface models/ClientChoices --type model --project gw-lib
