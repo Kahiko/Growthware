@@ -9,12 +9,14 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
 // Application Modules
+import { AccountsRoutingModule } from './features/accounts/accounts-routing.module';
 import { AppRoutingModule } from './app-routing.module';
-import { AuthGuard } from './guards/auth.guard';
 import { DefaultModule } from './skins/default/default.module';
 import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
+// Application
+import { AuthGuard } from './guards/auth.guard';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -25,6 +27,7 @@ export function tokenGetter() {
     AppComponent
   ],
   imports: [
+    AccountsRoutingModule,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
