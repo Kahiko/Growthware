@@ -12,3 +12,8 @@
 .loginForm__mat-form-field {
   width: 420px;
 }
+
+.loginForm-footer__div {
+  display: flex; justify-content: flex-end;
+  margin-right: 20px;
+}
