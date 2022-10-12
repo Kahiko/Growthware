@@ -1,26 +1,4 @@
 <!-- The Modal -->
-<div id="myModal" class="modal">
-
-  <!-- Modal content -->
-  <div class="modal-content" [ngStyle]="{ 'height.px': height, 'width.px': width }">
-    <mat-toolbar class="modal-header" color="primary">
-      <h2>{{header}}</h2>
-      <span class="spacer"></span>
-      <button id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="button__link" (click)="onCancel()" aria-label="Close">
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-toolbar>
-    <div class="modal-body" [ngStyle]="{ 'height.px': height-70 }">
-      <p><ng-content></ng-content></p>
-    </div>
-    <div class="modal-footer">
-      <button *ngIf="closeBtn.visible" type="button" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="{{closeBtn.class}}" (click)="onOk()">{{closeBtn.text}}</button>
-      <button *ngIf="okBtn.visible" type="button" id="{{okBtn.id}}" name="{{okBtn.name}}" class="{{okBtn.class}}" data-dismiss="modal" (click)="onClose()">{{okBtn.text}}</button>
-    </div>
-  </div>
-
-</div>
-<!-- The Modal -->
 <div id="{{modalId}}" class="modal-background">
   <!-- Modal content -->
   <div class="modal-content" [ngStyle]="{ 'height.px': height, 'width.px': width }">
@@ -37,8 +15,8 @@
       <p><ng-content></ng-content></p>
     </div>
     <div *ngIf="showFooter" class="modal-footer__div">
-      <button *ngIf="closeBtn.visible" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="modal-footer__button {{closeBtn.class}}" (click)="onClose()" mat-raised-button color="primary">{{closeBtn.text}}</button>
-      <button *ngIf="okBtn.visible" id="{{okBtn.id}}" name="{{okBtn.name}}" class="modal-footer__button {{okBtn.class}" data-dismiss="modal" (click)="onOk()" mat-raised-button color="primary">{{okBtn.text}}</button>
+      <button *ngIf="closeBtn.visible" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="modal-footer__button {{closeBtn.class}" (click)="onClose()" mat-raised-button color="primary">{{closeBtn.text}}</button>
+      <button *ngIf="okBtn.visible" id="{{okBtn.id}}" name="{{okBtn.name}}" class="modal-footer__button {{okBtn.class}}" data-dismiss="modal" (click)="onOk()" mat-raised-button color="primary">{{okBtn.text}}</button>
     </div>
   </div>
 </div>

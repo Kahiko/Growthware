@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Services
-import { LoggingService, LogLevel, } from '@Growthware/Lib/src/lib/features/logging';
+import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 
 // Interfaces / Common Code
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
@@ -85,6 +85,9 @@ export class ModalComponent implements OnInit {
     this.cancelBtn = options.buttons.cancelButton;
     this.closeBtn = options.buttons.closeButton;
     this.okBtn = options.buttons.okButton;
+    if(this.closeBtn.visible || this.okBtn.visible) {
+      this.showFooter = true;
+    }
 
   }
 

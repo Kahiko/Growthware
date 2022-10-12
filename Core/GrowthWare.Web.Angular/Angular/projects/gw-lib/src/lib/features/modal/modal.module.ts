@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalComponent } from './c/modal.component';
 
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
@@ -15,6 +16,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     CommonModule,
     FormsModule,
 
+    MatButtonModule,
     MatIconModule,
     MatToolbarModule
   ],
