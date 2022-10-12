@@ -28,8 +28,8 @@ export function tokenGetter() {
     AppComponent
   ],
   imports: [
-    AccountsRoutingModule,
     AppRoutingModule,
+    AccountsRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     DefaultModule,
