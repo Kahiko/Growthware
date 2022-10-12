@@ -1,8 +1,8 @@
-
 .button__link {
+  margin: auto;
   background: none!important;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   padding: 0!important;
   /*input has OS specific font-family*/
   color: white;
@@ -11,7 +11,7 @@
 }
 
 /* The Modal (background) */
-.modal {
+.modal-background {
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
   padding-top: 100px; /* Location of the box */
@@ -21,44 +21,52 @@
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: block;
 }
 
-/* Modal Content */
 .modal-content {
-  position: relative;
-  background-color: #fefefe;
-  margin: auto;
-  padding: 0;
-  border: 1px solid #888;
+  margin-left: auto;
+  margin-right: auto;
   width: 80%;
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
   -webkit-animation-name: animatetop;
   -webkit-animation-duration: 0.4s;
   animation-name: animatetop;
   animation-duration: 0.4s
+
 }
 
-/* Add Animation */
-@-webkit-keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+.modal-content,
+.modal-header__div,
+.modal-body__div,
+.modal-footer__div {
+  position: relative;
 }
 
-@keyframes animatetop {
-  from {top:-300px; opacity:0}
-  to {top:0; opacity:1}
+.modal-body__div,
+.modal-footer__div {
+  background-color: whitesmoke;
+  padding: 5px;
 }
 
-.modal-header {
-  padding: 2px 16px;
-  color: white;
-  block-size: fit-content;
-  height: 2.5rem;
+.mat-toolbar {
+  font-size: 1.2rem;
+  height: 1.8rem;
 }
 
-.modal-body {padding: 2px 16px;}
+.modal-header__div {
+  height: 1.9rem;
+}
 
-.modal-footer {
-  padding: 2px 16px;
-  color: white;
+.modal-body__div {
+  height: 100%;
+}
+
+.modal-footer__div {
+  display: flex; justify-content: flex-end;
+  border: 1px solid;
+}
+
+.modal-footer__button {
+  margin-left: 5px;
 }
