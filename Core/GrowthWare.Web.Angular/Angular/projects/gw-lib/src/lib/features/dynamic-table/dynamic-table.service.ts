@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
 
 import * as DefaultData from './dynamic-table.config.json';
 import { ICallbackButton, IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
@@ -10,11 +11,12 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 export class DynamicTableService {
   private _TableConfigurations: IDynamicTableConfiguration[] = [];
 
+  public tableConfigurationsChanged = new Subject<boolean>();
+
   constructor(private _GWCommon: GWCommon) {
     // Load the default data for the growthware application
-    const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(DefaultData));
-    for (let index = 0; index < mDefaultData.length; index++) {
-      this._TableConfigurations.push(mDefaultData[index]);
+    if(!this._GWCommon.isNullOrUndefined(DefaultData)) {
+      this.setTableConfiguration(DefaultData);
     }
   }
 
@@ -48,9 +50,27 @@ export class DynamicTableService {
    public getTableConfiguration(name: string): IDynamicTableConfiguration {
     const mRetVal = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
     if(this._GWCommon.isNullOrUndefined(mRetVal)) {
-      throw new Error(`Could not find the "${name}" configuration!`);
+      if(this._TableConfigurations.length != 0) {
+        throw new Error(`Could not find the "${name}" configuration!`);
+      } else {
+        throw new Error('TableConfigurations have not been loaded yet!');
+      }
     }
     return mRetVal;
+  }
+
+  /**
+   * Accepts json data as a string and converts it to an array of IDynamicTableConfiguration
+   *
+   * @param {*} data
+   * @memberof DynamicTableService
+   */
+  public setTableConfiguration(data: any): void {
+    const mDefaultData: IDynamicTableConfiguration[] = JSON.parse(JSON.stringify(data));
+    for (let index = 0; index < mDefaultData.length; index++) {
+      this._TableConfigurations.push(mDefaultData[index]);
+    }
+    this.tableConfigurationsChanged.next(true);
   }
 
   /**
