@@ -73,7 +73,7 @@ export class PagerComponent implements OnDestroy, OnInit {
   }
 
   /**
-   * Handels when there is a page change event
+   * Handles when there is a page change event
    *
    * @param {string} direction Valid values, First, Last, Next, Previous, or # (as a string so '1')
    * @memberof DynamicTableComponent
