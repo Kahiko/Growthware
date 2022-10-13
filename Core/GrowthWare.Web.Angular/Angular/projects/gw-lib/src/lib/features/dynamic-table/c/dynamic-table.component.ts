@@ -199,9 +199,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
             this._TableData = results.payLoad.data;
             this._TableDataSubject.next(results.payLoad.data);
             // get the "TotalRecords" column if it exists from the first row and update the local totalRecords
-            if(!this._GWCommon.isNullOrUndefined(results.payLoad.totalRecords)) {
-              this.totalRecords = results.payLoad.totalRecords;
-            }
+            this.totalRecords = results.payLoad.totalRecords;
             // set the activeRow to -1 b/c if there was one selected it's no longer valid
             this.activeRow = -1;
           }
