@@ -57,7 +57,7 @@
     "Development_GoogleClientSecret": "SHaNce3DoaGi-BO8mmmcvNUx",
     "Development_LDAP_Domain": "YourDomain",
     "Development_LDAP_Server": "LDAP://ad.YourDomain.???",
-    "Development_Log_Path": "D:/Development/Growthware/Core/GrowthWare.Presentation.Angular.io/Logs/",
+    "Development_Log_Path": "D:/Development/Growthware/Core/Logs/",
     "Development_Log_Priority": "debug",
     "Development_Log_Retention": "5",
     "Development_MicrosoftAccountClientId": "",
