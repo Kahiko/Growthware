@@ -22,8 +22,8 @@ namespace GrowthWare.Framework
         private static Mutex s_Mutex = new Mutex();
         private NLog.Logger m_Logger = NLog.LogManager.GetCurrentClassLogger();
         private string m_LogFileName = string.Empty;
-        private string m_LogFilePath = ConfigSettings.LogPath;
-        private string m_LogFile = string.Empty;
+        private string m_LogFilePath = string.Empty;
+        private string m_Log_Path_Name = string.Empty;
         private int m_CurrentLogLevel;
 
         private static string m_CurrentLogLevelString = string.Empty;
@@ -46,34 +46,60 @@ namespace GrowthWare.Framework
 
         private void init()
         {
+            this.m_LogFilePath = ConfigSettings.LogPath;
             // Make any directory separators the same
-            this.m_LogFilePath = this.m_LogFile.Replace(@"\", "/");
+            this.m_LogFilePath = this.m_LogFilePath.Replace(@"\", "/");
             // Replace with the current OS separator
-            this.m_LogFilePath =  this.m_LogFile.Replace(@"/",Path.DirectorySeparatorChar.ToString());
-            m_LogFile = m_LogFilePath + m_LogFileName;
-            m_CurrentLogLevelString = ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture);
+            this.m_LogFilePath = this.m_LogFilePath.Replace(@"/", Path.DirectorySeparatorChar.ToString());
             switch (ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture))
             {
                 case "DEBUG":
-                    m_CurrentLogLevel = 0;
+                    this.m_CurrentLogLevel = 0;
                     break;
                 case "INFO":
-                    m_CurrentLogLevel = 1;
+                    this.m_CurrentLogLevel = 1;
                     break;
                 case "WARN":
-                    m_CurrentLogLevel = 2;
+                    this.m_CurrentLogLevel = 2;
                     break;
                 case "ERROR":
-                    m_CurrentLogLevel = 3;
+                    this.m_CurrentLogLevel = 3;
                     break;
                 case "FATAL":
-                    m_CurrentLogLevel = 4;
+                    this.m_CurrentLogLevel = 4;
                     break;
                 default:
-                    m_CurrentLogLevel = 3;
+                    this.m_CurrentLogLevel = 3;
                     break;
             }
             DeleteOldLogs();
+            if (this.m_LogFileName != DateTime.Now.ToString(FILE_NAME_FORMAT, CultureInfo.InvariantCulture) + ".txt")
+            {
+                this.m_LogFileName = DateTime.Now.ToString(FILE_NAME_FORMAT, CultureInfo.InvariantCulture) + ".txt";
+                if (!m_LogFilePath.EndsWith(Path.DirectorySeparatorChar.ToString()))
+                {
+                    this.m_Log_Path_Name = this.m_LogFilePath + Path.DirectorySeparatorChar.ToString() + m_LogFileName;
+                }
+                else
+                {
+                    this.m_Log_Path_Name = m_LogFilePath + m_LogFileName;
+                }
+            }
+
+            // set up configuration for m_Logger
+            var mLoggingConfiguration = new NLog.Config.LoggingConfiguration();
+
+            // Targets where to log to: File and Console
+            NLog.Targets.FileTarget mFileTarget = new NLog.Targets.FileTarget("log_file") { FileName = this.m_Log_Path_Name };
+            // Rules for mapping loggers to targets            
+            //mLoggingConfiguration.AddRule(LogLevel.Info, LogLevel.Fatal, logconsole);
+            mLoggingConfiguration.AddRule(
+                NLog.LogLevel.Debug     // min
+                , NLog.LogLevel.Fatal   // max
+                , mFileTarget);
+
+            // Apply config           
+            NLog.LogManager.Configuration = mLoggingConfiguration;
         }
         private void DeleteOldLogs()
         {
@@ -245,72 +271,77 @@ namespace GrowthWare.Framework
             }
             try
             {
-                switch (priority)
+                if ((int)priority >= this.m_CurrentLogLevel)
                 {
-                    case LogPriority.Debug:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Debug(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Debug(mException);
-                        }
-                        break;
-                    case LogPriority.Info:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Info(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Info(mException);
-                        }
-                        break;
-                    case LogPriority.Warn:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Warn(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Warn(mException);
-                        }
-                        break;
-                    case LogPriority.Error:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Error(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Error(mException);
-                        }
-                        break;
-                    case LogPriority.Fatal:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Fatal(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Fatal(mException);
-                        }
-                        break;
-                    default:
-                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                        {
-                            m_Logger.Error(mName + " " + message);
-                        }
-                        else
-                        {
-                            m_Logger.Error(mException);
-                        }
-                        break;
+                    switch (priority)
+                    {
+                        case LogPriority.Debug:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Debug(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Debug(mException);
+                            }
+                            break;
+                        case LogPriority.Info:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Info(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Info(mException);
+                            }
+                            break;
+                        case LogPriority.Warn:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Warn(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Warn(mException);
+                            }
+                            break;
+                        case LogPriority.Error:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Error(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Error(mException);
+                            }
+                            break;
+                        case LogPriority.Fatal:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Fatal(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Fatal(mException);
+                            }
+                            break;
+                        default:
+                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                            {
+                                m_Logger.Error(mName + " " + message);
+                            }
+                            else
+                            {
+                                m_Logger.Error(mException);
+                            }
+                            break;
+                    }
+
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                string m = string.Empty;
                 // do nothing ... do not crash the application for
                 // the sake of logging.
                 // better to be missing a log entry!!!!
@@ -335,7 +366,7 @@ namespace GrowthWare.Framework
             this.disposedValue = true;
         }
 
-#region " IDisposable Support "
+        #region " IDisposable Support "
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -345,7 +376,7 @@ namespace GrowthWare.Framework
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-#endregion
+        #endregion
 
     }
 }
