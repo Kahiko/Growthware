@@ -170,7 +170,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Infoes the specified message.
+        /// Info's the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         public void Info(object message)
