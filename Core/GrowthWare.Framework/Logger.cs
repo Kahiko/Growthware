@@ -26,7 +26,7 @@ namespace GrowthWare.Framework
         private string m_LogFile = string.Empty;
         private int m_CurrentLogLevel;
 
-        private static string s_SCurrentLogLevel = string.Empty;
+        private static string m_CurrentLogLevelString = string.Empty;
         private delegate void closeAppender();
 
 
@@ -46,8 +46,12 @@ namespace GrowthWare.Framework
 
         private void init()
         {
+            // Make any directory separators the same
+            this.m_LogFilePath = this.m_LogFile.Replace(@"\", "/");
+            // Replace with the current OS separator
+            this.m_LogFilePath =  this.m_LogFile.Replace(@"/",Path.DirectorySeparatorChar.ToString());
             m_LogFile = m_LogFilePath + m_LogFileName;
-            s_SCurrentLogLevel = ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture);
+            m_CurrentLogLevelString = ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture);
             switch (ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture))
             {
                 case "DEBUG":
@@ -135,27 +139,27 @@ namespace GrowthWare.Framework
         {
             if (threshold.Equals(LogPriority.Debug))
             {
-                s_SCurrentLogLevel = "DEBUG";
+                m_CurrentLogLevelString = "DEBUG";
                 this.m_CurrentLogLevel = 0;
             }
             else if (threshold.Equals(LogPriority.Info))
             {
-                s_SCurrentLogLevel = "INFO";
+                m_CurrentLogLevelString = "INFO";
                 this.m_CurrentLogLevel = 1;
             }
             else if (threshold.Equals(LogPriority.Warn))
             {
-                s_SCurrentLogLevel = "WARN";
+                m_CurrentLogLevelString = "WARN";
                 this.m_CurrentLogLevel = 2;
             }
             else if (threshold.Equals(LogPriority.Error))
             {
-                s_SCurrentLogLevel = "ERROR";
+                m_CurrentLogLevelString = "ERROR";
                 this.m_CurrentLogLevel = 3;
             }
             else if (threshold.Equals(LogPriority.Fatal))
             {
-                s_SCurrentLogLevel = "FATAL";
+                m_CurrentLogLevelString = "FATAL";
                 this.m_CurrentLogLevel = 4;
             }
         }
