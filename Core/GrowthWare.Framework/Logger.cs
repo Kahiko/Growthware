@@ -197,7 +197,7 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Fatals the specified message.
+        /// Fatales the specified message.
         /// </summary>
         /// <param name="message">The message.</param>
         public void Fatal(object message)
