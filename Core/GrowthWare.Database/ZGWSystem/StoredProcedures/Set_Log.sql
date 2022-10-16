@@ -2,12 +2,12 @@
 /*
 Usage:
     DECLARE
-        @P_Account       VARCHAR (128) = 'System'
-        , @P_Component     VARCHAR (50)  = 'UI'
-        , @P_ClassName     VARCHAR (50)  = 'TestClass'
-        , @P_Level         VARCHAR (5)   = 'Debug'
-        , @P_MethodName    VARCHAR (50)  = 'TestMethod'
-        , @P_Msg           VARCHAR (MAX) = 'Just testing'
+        @P_Account       VARCHAR (128)    = 'System'
+        , @P_Component     VARCHAR (50)   = 'UI'
+        , @P_ClassName     VARCHAR (50)   = 'TestClass'
+        , @P_Level         VARCHAR (5)    = 'Debug'
+        , @P_MethodName    VARCHAR (50)   = 'TestMethod'
+        , @P_Msg           VVARCHAR (MAX) = 'Just testing'
         , @P_Primary_Key int
 
     EXEC [ZGWSystem].[Set_Log]
@@ -32,7 +32,7 @@ CREATE PROCEDURE [ZGWSystem].[Set_Log]
 	@P_ClassName     VARCHAR (50),
 	@P_Level         VARCHAR (5),
 	@P_MethodName    VARCHAR (50),
-	@P_Msg           VARCHAR (MAX),
+	@P_Msg           NVARCHAR (MAX),
 	@P_Primary_Key int OUTPUT
 AS
     SET NOCOUNT ON;
