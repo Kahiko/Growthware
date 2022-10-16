@@ -57,8 +57,10 @@ public class JwtUtils : IJwtUtils
             // return account id from JWT token if validation successful
             return mAccount;
         }
-        catch
+        catch(Exception ex)
         {
+            Logger mLogger = Logger.Instance();
+            mLogger.Debug(ex);
             // return null if validation fails
             return null;
         }
