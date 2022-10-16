@@ -244,6 +244,10 @@ namespace GrowthWare.Framework
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2201:DoNotRaiseReservedExceptionTypes"), System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1031:DoNotCatchGeneralExceptionTypes")]
         private void log(object message, LogPriority priority)
         {
+            if ((int)priority < this.CurrentLogLevel)
+            {
+                return;
+            }
             StackTrace mStackTrace = new StackTrace();
             Exception mException = null;
             string mName = string.Empty;
@@ -271,72 +275,68 @@ namespace GrowthWare.Framework
             }
             try
             {
-                if ((int)priority >= this.m_CurrentLogLevel)
+                switch (priority)
                 {
-                    switch (priority)
-                    {
-                        case LogPriority.Debug:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Debug(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Debug(mException);
-                            }
-                            break;
-                        case LogPriority.Info:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Info(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Info(mException);
-                            }
-                            break;
-                        case LogPriority.Warn:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Warn(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Warn(mException);
-                            }
-                            break;
-                        case LogPriority.Error:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Error(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Error(mException);
-                            }
-                            break;
-                        case LogPriority.Fatal:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Fatal(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Fatal(mException);
-                            }
-                            break;
-                        default:
-                            if (object.ReferenceEquals(message.GetType(), typeof(string)))
-                            {
-                                m_Logger.Error(mName + " " + message);
-                            }
-                            else
-                            {
-                                m_Logger.Error(mException);
-                            }
-                            break;
-                    }
-
+                    case LogPriority.Debug:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Debug(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Debug(mException);
+                        }
+                        break;
+                    case LogPriority.Info:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Info(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Info(mException);
+                        }
+                        break;
+                    case LogPriority.Warn:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Warn(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Warn(mException);
+                        }
+                        break;
+                    case LogPriority.Error:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Error(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Error(mException);
+                        }
+                        break;
+                    case LogPriority.Fatal:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Fatal(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Fatal(mException);
+                        }
+                        break;
+                    default:
+                        if (object.ReferenceEquals(message.GetType(), typeof(string)))
+                        {
+                            m_Logger.Error(mName + " " + message);
+                        }
+                        else
+                        {
+                            m_Logger.Error(mException);
+                        }
+                        break;
                 }
             }
             catch (Exception ex)
