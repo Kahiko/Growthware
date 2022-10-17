@@ -27,7 +27,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         }
 
         // authorization
-        MAccountProfile mAccount = (MAccountProfile)context.HttpContext.Items["Account"];
+        MAccountProfile mAccount = (MAccountProfile)context.HttpContext.Items["AccountProfile"];
         string mAction = (string)context.HttpContext.Items["Action"];
         MFunctionProfile mFunction = FunctionUtility.GetProfile(mAction, context.HttpContext);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
