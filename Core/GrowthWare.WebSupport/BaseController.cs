@@ -61,7 +61,7 @@ public abstract class BaseController : ControllerBase
                     mAuthenticated = true;
                     mAccountProfile.FailedAttempts = 0;
                     mAccountProfile.LastLogOn = DateTime.Now;
-                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"));
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
                     var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
                     var claims = new List<Claim> 

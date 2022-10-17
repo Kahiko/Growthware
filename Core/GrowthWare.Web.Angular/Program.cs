@@ -1,3 +1,4 @@
+using GrowthWare.Framework;
 using GrowthWare.WebSupport.Utilities.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -21,7 +22,7 @@ builder.Services.AddAuthentication(opt =>
             ValidateIssuerSigningKey = true,
             ValidIssuer = "https://localhost:5001",
             ValidAudience = "https://localhost:5001",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("superSecretKey@345"))
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret))
         };
     });
 builder.Services.AddCors(options =>

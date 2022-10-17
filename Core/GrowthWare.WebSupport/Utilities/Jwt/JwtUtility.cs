@@ -24,7 +24,9 @@ public class JwtUtils : IJwtUtils
         var key = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("AccountSeqId", account.Id.ToString()) }),
+            Subject = new ClaimsIdentity(new[] { 
+                new Claim("Account", account.Account) 
+            }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
@@ -52,10 +54,15 @@ public class JwtUtils : IJwtUtils
             }, out SecurityToken validatedToken);
 
             var mJwtToken = (JwtSecurityToken)validatedToken;
-            var mAccount = mJwtToken.Claims.First(x => x.Type == "Account").Value;
+            var mAccount = mJwtToken.Claims.First(x => x.Type == ClaimTypes.Name).Value;
 
             // return account id from JWT token if validation successful
             return mAccount;
+        }
+        catch(SecurityTokenExpiredException) 
+        {
+            // do nothing ... error is acceptable
+            return null;  
         }
         catch(Exception ex)
         {
