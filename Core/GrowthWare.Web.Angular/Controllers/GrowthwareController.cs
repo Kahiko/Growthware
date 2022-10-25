@@ -54,7 +54,14 @@ public class GrowthwareAPIController : BaseController
         mRetVal.Add(mNavLink);
         // Nested Administration link
         MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
-        MNavLink mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
+
+        MNavLink mAdminChild = new MNavLink("groups", "search-accounts", "Manage Groups");
+        mAdminNavLink.Children.Add(mAdminChild);
+
+        mAdminChild = new MNavLink("manage_roles", "search-accounts", "Manage Roles");
+        mAdminNavLink.Children.Add(mAdminChild);
+
+        mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
         mAdminNavLink.Children.Add(mAdminChild);
         mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
         mAdminNavLink.Children.Add(mAdminChild);
