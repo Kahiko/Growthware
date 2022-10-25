@@ -1,9 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+// This Feature
 import { AccountsRoutingModule } from './accounts-routing.module';
-
-
 @NgModule({
   declarations: [],
   imports: [
