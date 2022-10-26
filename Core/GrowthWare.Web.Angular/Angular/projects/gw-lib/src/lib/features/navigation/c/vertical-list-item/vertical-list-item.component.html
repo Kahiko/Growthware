@@ -4,6 +4,7 @@
   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
   (click)="onItemSelected(item)"
   [ngClass]="{'expanded': expanded}"
+  data-title="{{ item.linkText }}"
   >
   <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText">{{ item.linkText }}</span>
@@ -21,7 +22,8 @@
   [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
   href="{{item.link}}"
   target="_blank"
-  routerLink="{{item.link}}">
+  routerLink="{{item.link}}"
+  data-title="{{ item.linkText }}">
   <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
   <span *ngIf="showSideNavLinkText">{{ item.linkText }}</span>
   <span fxFlex *ngIf="item.children && item.children.length">
