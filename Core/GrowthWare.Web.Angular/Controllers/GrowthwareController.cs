@@ -44,28 +44,36 @@ public class GrowthwareAPIController : BaseController
     public List<MNavLink> GetLinks()
     {
         List<MNavLink> mRetVal = new List<MNavLink>();
-        MNavLink mNavLink = new MNavLink("home", "home", "Home");
-        mRetVal.Add(mNavLink);
-        mNavLink = new MNavLink("dialpad", "counter", "Counter");
-        mRetVal.Add(mNavLink);
-        mNavLink = new MNavLink("thermostat", "fetch-data", "Fetch Data");
-        mRetVal.Add(mNavLink);
-        mNavLink = new MNavLink("api", "swagger", "API", false);
-        mRetVal.Add(mNavLink);
-        // Nested Administration link
-        MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
+        MNavLink mNavLink;
+        if(this.Account != null) 
+        {
+            mNavLink = new MNavLink("home", "home", "Home");
+            mRetVal.Add(mNavLink);
+            mNavLink = new MNavLink("dialpad", "counter", "Counter");
+            mRetVal.Add(mNavLink);
+            mNavLink = new MNavLink("thermostat", "fetch-data", "Fetch Data");
+            mRetVal.Add(mNavLink);
+            mNavLink = new MNavLink("api", "swagger", "API", false);
+            mRetVal.Add(mNavLink);
+            // Nested Administration link
+            MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
 
-        MNavLink mAdminChild = new MNavLink("groups", "search-accounts", "Manage Groups");
-        mAdminNavLink.Children.Add(mAdminChild);
+            MNavLink mAdminChild = new MNavLink("groups", "search-accounts", "Manage Groups");
+            mAdminNavLink.Children.Add(mAdminChild);
 
-        mAdminChild = new MNavLink("manage_roles", "search-accounts", "Manage Roles");
-        mAdminNavLink.Children.Add(mAdminChild);
+            mAdminChild = new MNavLink("manage_roles", "search-accounts", "Manage Roles");
+            mAdminNavLink.Children.Add(mAdminChild);
 
-        mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
-        mAdminNavLink.Children.Add(mAdminChild);
-        mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
-        mAdminNavLink.Children.Add(mAdminChild);
-        mRetVal.Add(mAdminNavLink);
+            mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
+            mAdminNavLink.Children.Add(mAdminChild);
+            mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
+            mAdminNavLink.Children.Add(mAdminChild);
+            mRetVal.Add(mAdminNavLink);
+        } else 
+        {
+            mNavLink = new MNavLink("generic_home", "home", "Home");
+            mRetVal.Add(mNavLink);
+        }
         return mRetVal;
     }
 

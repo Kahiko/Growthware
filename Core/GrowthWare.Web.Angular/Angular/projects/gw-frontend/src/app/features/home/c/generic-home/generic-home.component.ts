@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
+import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
 
 @Component({
@@ -13,13 +14,17 @@ export class GenericHomeComponent implements OnDestroy, OnInit {
 
   applicationName: string = '';
 
-  constructor(private _ConfigurationSvc: ConfigurationService) { }
+  constructor(
+    private _AccountSvc: AccountService,
+    private _ConfigurationSvc: ConfigurationService
+  ) { }
 
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
   }
 
   ngOnInit(): void {
+    this._AccountSvc.getNavLinks();
     this._Subscription.add(
       this._ConfigurationSvc.applicationName.subscribe((val: string) => { this.applicationName = val;})
     );

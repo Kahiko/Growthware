@@ -152,7 +152,7 @@ export class AccountService {
    * TODO: this really should be used to populate an observable property
    * so that the links can change when say the account changes.
    */
-  private getNavLinks(): void {
+  public getNavLinks(): void {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
