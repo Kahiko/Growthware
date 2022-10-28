@@ -43,19 +43,19 @@ public class GrowthwareAPIController : BaseController
     [HttpGet("GetLinks")]
     public List<MNavLink> GetLinks()
     {
-        List<MNavLink> mRetVal = new List<MNavLink>();
+        List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;
         if(this.Account != null) 
         {
             mNavLink = new MNavLink("home", "home", "Home");
-            mRetVal.Add(mNavLink);
+            mRootNavLinks.Add(mNavLink);
             mNavLink = new MNavLink("dialpad", "counter", "Counter");
-            mRetVal.Add(mNavLink);
+            mRootNavLinks.Add(mNavLink);
             mNavLink = new MNavLink("thermostat", "fetch-data", "Fetch Data");
-            mRetVal.Add(mNavLink);
+            mRootNavLinks.Add(mNavLink);
             mNavLink = new MNavLink("api", "swagger", "API", false);
-            mRetVal.Add(mNavLink);
-            // Nested Administration link
+            mRootNavLinks.Add(mNavLink);
+            // Nested Administration links
             MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
 
             MNavLink mAdminChild = new MNavLink("groups", "manage-groups", "Manage Groups");
@@ -66,15 +66,17 @@ public class GrowthwareAPIController : BaseController
 
             mAdminChild = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
             mAdminNavLink.Children.Add(mAdminChild);
+
             mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
             mAdminNavLink.Children.Add(mAdminChild);
-            mRetVal.Add(mAdminNavLink);
+
+            mRootNavLinks.Add(mAdminNavLink);
         } else 
         {
             mNavLink = new MNavLink("home", "generic_home", "Home");
-            mRetVal.Add(mNavLink);
+            mRootNavLinks.Add(mNavLink);
         }
-        return mRetVal;
+        return mRootNavLinks;
     }
 
     [HttpGet("GetAppSettings")]
