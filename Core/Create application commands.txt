@@ -56,6 +56,10 @@ Application:
 		ng generate module features/accounts --routing --project gw-frontend
 
 		ng generate module features/functions --routing --project gw-frontend
+		
+		ng generate module features/groups --routing --project gw-frontend
+		
+		ng generate module features/roles --routing --project gw-frontend
 
 Library:
 	From Angular/projects/gw-lib/src/lib
@@ -122,15 +126,15 @@ Library:
 		ng generate service features/function/function --project gw-lib
 
 		ng generate module features/group --project gw-lib
-		ng generate interface features/group/groupProfile --type model --project gw-lib
-		ng generate component features/group/c/groupDetails --module group --style scss --project gw-lib
-		ng generate component features/group/c/Searchgroups --module group --style scss --project gw-lib
+		ng generate interface features/group/GroupProfile --type model --project gw-lib
+		ng generate component features/group/c/GroupDetails --module group --style scss --project gw-lib
+		ng generate component features/group/c/SearchGroups --module group --style scss --project gw-lib
 		ng generate service features/group/group --project gw-lib
 
 		ng generate module features/role --project gw-lib
-		ng generate interface features/role/roleProfile --type model --project gw-lib
-		ng generate component features/role/c/roleDetails --module role --style scss --project gw-lib
-		ng generate component features/role/c/Searchroles --module role --style scss --project gw-lib
+		ng generate interface features/role/RoleProfile --type model --project gw-lib
+		ng generate component features/role/c/RoleDetails --module role --style scss --project gw-lib
+		ng generate component features/role/c/SearchRoles --module role --style scss --project gw-lib
 		ng generate service features/role/role --project gw-lib
 
 https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
