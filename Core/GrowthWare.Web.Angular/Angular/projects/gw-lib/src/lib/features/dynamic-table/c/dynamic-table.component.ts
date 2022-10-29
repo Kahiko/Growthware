@@ -185,7 +185,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
         this.txtRecordsPerPage = this.tableConfiguration.numberOfRows;
         let mWidth: number = 0;
         this.tableConfiguration.columns.forEach((column: IDynamicTableColumn) => {
-            mWidth += +column.width;
+            mWidth += +column.width * 1.4;
           }
         );
         this.tableWidth = mWidth;

@@ -98,7 +98,7 @@
                 <td *ngFor="let column of tableConfiguration.columns">
                   <div [ngSwitch]="column.outputType">
                     <input *ngSwitchCase="'checkBox'" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}" class="input__checkbox">
-                    <span *ngSwitchDefault>{{row[column.name]}}</span>
+                    <span *ngSwitchDefault>{{formatData(row[column.name], column.outputType)}}</span>
                   </div>
                 </td>
               </tr>

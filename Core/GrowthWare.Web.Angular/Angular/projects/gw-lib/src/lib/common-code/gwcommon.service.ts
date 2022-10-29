@@ -60,14 +60,29 @@ export class GWCommon {
     if (this.isNullOrUndefined(data)) {
       return '&nbsp;';
     }
-    switch (format.toLowerCase()) {
+    let mFormattedData = data;
+    const mFormatParts: string[] = format.split(':');
+    let mFormat = mFormatParts[0];
+    switch (mFormat.toLowerCase()) {
       case 'date':
-        return this.formatDate(data);
+        mFormattedData = this.formatDate(data);
+        break;
+      case 'text':
+        if(mFormatParts.length > 1 && data.length > 0) {
+          const mDesiredLength = parseInt(mFormatParts[1]);
+          if(data.length > mDesiredLength) {
+            console.log('eclipsing the data');
+            console.log(data);
+            mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
+          }
+        }
+        break;
       default:
         const mMsg = "'" + format + "' is an unknown format";
         throw(mMsg);
         break;
     }
+    return mFormattedData;
   }
 
   /**
