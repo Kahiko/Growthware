@@ -39,6 +39,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   @ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<any>;
 
   activeRow: number = -1;
+  maxHeadHeight: number = 32;
   recordsPerPageSubject: Subject<number> = new Subject<number>();
   recordsPerPageMsg: string = '';
   rowHeight: number = 10;
@@ -177,6 +178,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     if (!this._GWCommon.isNullOrUndefined(this.configurationName) && !this._GWCommon.isNullOrEmpty(this.configurationName)) {
       this.tableConfiguration = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
       if (!this._GWCommon.isNullOrUndefined(this.tableConfiguration)) {
+        this.maxHeadHeight = this.tableConfiguration.maxHeadHeight;
         this.rowHeight = this.tableConfiguration.maxTableRowHeight;
         this._SearchCriteria = this._SearchSvc.getSearchCriteriaFromConfig(this.configurationName, this.tableConfiguration).payLoad;
         this.showHelp = this.tableConfiguration.showHelp;

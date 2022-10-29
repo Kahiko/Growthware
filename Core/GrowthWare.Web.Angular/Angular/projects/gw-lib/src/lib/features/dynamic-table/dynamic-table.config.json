@@ -17,8 +17,8 @@
       { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 164 }
     ],
     "captionText": "",
-    "maxHeadHeight":75,
-    "maxTableRowHeight": 32,
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 18,
     "name": "Accounts",
     "numberOfRows": 4,
     "showFirstRow": true,
@@ -45,8 +45,8 @@
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 160 }
     ],
     "captionText": "",
-    "maxHeadHeight":75,
-    "maxTableRowHeight": 16,
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 18,
     "name": "Functions",
     "numberOfRows": 8,
     "showFirstRow": true,
