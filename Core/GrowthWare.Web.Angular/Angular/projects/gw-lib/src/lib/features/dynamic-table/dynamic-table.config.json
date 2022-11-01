@@ -48,11 +48,11 @@
     "maxHeadHeight": 16,
     "maxTableRowHeight": 22,
     "name": "Functions",
-    "numberOfRows": 8,
+    "numberOfRows": 10,
     "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": false,
     "showSearch": false,
-    "tableHeight": 250
+    "tableHeight": 272
   }
 ]
