@@ -20,12 +20,12 @@
     "maxHeadHeight": 16,
     "maxTableRowHeight": 24,
     "name": "Accounts",
-    "numberOfRows": 4,
+    "numberOfRows": 10,
     "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": true,
     "showSearch": false,
-    "tableHeight": 176
+    "tableHeight": 286
   },
   {
     "buttons": [
@@ -46,13 +46,13 @@
     ],
     "captionText": "",
     "maxHeadHeight": 16,
-    "maxTableRowHeight": 22,
+    "maxTableRowHeight": 24,
     "name": "Functions",
     "numberOfRows": 10,
     "showFirstRow": true,
     "showThirdRow": true,
-    "showHelp": false,
-    "showSearch": false,
-    "tableHeight": 272
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
   }
 ]
