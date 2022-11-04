@@ -41,31 +41,10 @@ export class ConfigurationService {
           this._Loaded = true;
         },
         error: (errorResponse: any) => {
-          this.errorHandler(errorResponse, 'getAppSettings');
+          this._LoggingSvc.errorHandler(errorResponse, 'ConfigurationService', 'getAppSettings');
         },
         complete: () => console.info('complete')
       });
     }
-  }
-
-  /**
-   * Handles an HttpClient error
-   *
-   * @private
-   * @param {HttpErrorResponse} errorResponse
-   * @param {string} methodName
-   * @memberof LoggingService
-   */
-   private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
-    let errorMessage = '';
-    if (errorResponse.error instanceof ErrorEvent) {
-      // Get client-side error
-      errorMessage = errorResponse.error.message;
-    } else {
-      // Get server-side error
-      errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
-    }
-    this._LoggingSvc.console(`LoggingService.${methodName}:`, LogLevel.Error);
-    this._LoggingSvc.console(errorMessage, LogLevel.Error);
   }
 }

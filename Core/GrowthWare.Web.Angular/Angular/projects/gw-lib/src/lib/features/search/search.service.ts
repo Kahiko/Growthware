@@ -1,9 +1,11 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
-
+// Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
+import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
+// This Feature
 import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from './search-criteria.model';
 
 @Injectable({
@@ -16,29 +18,9 @@ export class SearchService {
 
   constructor(
     private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient
+    private _HttpClient: HttpClient,
+    private _LoggingSvc: LoggingService,
   ) { }
-
-  /**
-   * Handles an HttpClient error
-   *
-   * @private
-   * @param {HttpErrorResponse} errorResponse
-   * @param {string} methodName
-   * @memberof GWLibSearchService
-   */
-  private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
-    let errorMessage = '';
-    if (errorResponse.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = errorResponse.error.message;
-    } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
-    }
-    console.log(`GWLibSearchService.${methodName}:`);
-    console.log(errorMessage);
-  }
 
   /**
    * Calls GrowthwareAPI.Search
@@ -63,7 +45,7 @@ export class SearchService {
           resolve(mSearchResultsNVP);
         },
         error: (errorResponse: any) => {
-          this.errorHandler(errorResponse, 'getResults');
+          this._LoggingSvc.errorHandler(errorResponse, 'SearchService', 'getResults');
           reject(errorResponse);
         },
         // complete: () => console.info('complete')

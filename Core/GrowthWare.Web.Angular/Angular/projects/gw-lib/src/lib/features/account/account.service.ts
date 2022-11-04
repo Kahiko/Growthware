@@ -99,7 +99,7 @@ export class AccountService {
             this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
             reject(error.error);
           } else {
-            this.errorHandler(error, 'authenticate');
+            this._LoggingSvc.errorHandler(error, 'AccountService', 'authenticate');
             reject('Failed to call the API');
           }
         },
@@ -136,7 +136,7 @@ export class AccountService {
           resolve(response);
         },
         error: (error: any) => {
-          this.errorHandler(error, 'getAccount');
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
           reject('Failed to call the API');
         },
         // complete: () => {}
@@ -163,32 +163,11 @@ export class AccountService {
         this._SideNavSubject.next(response);
       },
       error: (error) => {
-        this.errorHandler(error, 'getNavLinks');
+        this._LoggingSvc.errorHandler(error, 'AccountService', 'getNavLinks');
       },
       complete: () => {
         // here as example
       }
     })
-  }
-
-  /**
-   * Handles an HttpClient error
-   *
-   * @private
-   * @param {HttpErrorResponse} errorResponse
-   * @param {string} methodName
-   * @memberof GWLibSearchService
-   */
-   private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
-    let errorMessage = '';
-    if (errorResponse.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = errorResponse.error.message;
-    } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
-    }
-    this._LoggingSvc.console(`AccountService.${methodName}:`, LogLevel.Error);
-    this._LoggingSvc.console(errorMessage, LogLevel.Error);
   }
 }
