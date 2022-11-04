@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
-
-import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
-
+// This Feature
 import { IFunctionProfile } from './function-profile.model';
+// Library
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
+import { UtilityService } from '@Growthware/Lib/src/lib/services';
 
 @Injectable({
   providedIn: 'root'
@@ -41,12 +42,20 @@ export class FunctionService {
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService
+    private _LoggingSvc: LoggingService,
+    private _UtilitySvc: UtilityService
   ) {
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
   }
 
 
+  /**
+   * Gets a FunctionProfile given the functionSeqId
+   *
+   * @param {number} functionSeqId
+   * @return {*}  {Promise<IFunctionProfile>}
+   * @memberof FunctionService
+   */
   public async getFunction(functionSeqId: number): Promise<IFunctionProfile> {
     const mQueryParameter: HttpParams = new HttpParams().append('functionSeqId', functionSeqId);
     const mHttpOptions = {
@@ -61,32 +70,11 @@ export class FunctionService {
           resolve(response);
         },
         error: (error: any) => {
-          this.errorHandler(error, 'getFunction');
+          this._UtilitySvc.errorHandler(error, 'FunctionService', 'getFunction');
           reject('Failed to call the API');
         },
         // complete: () => {}
       });
     });
-  }
-
-  /**
-   * Handles an HttpClient error
-   *
-   * @private
-   * @param {HttpErrorResponse} errorResponse
-   * @param {string} methodName
-   * @memberof GWLibSearchService
-   */
-   private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
-    let errorMessage = '';
-    if (errorResponse.error instanceof ErrorEvent) {
-        // Get client-side error
-        errorMessage = errorResponse.error.message;
-    } else {
-        // Get server-side error
-        errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
-    }
-    this._LoggingSvc.console(`FunctionService.${methodName}:`, LogLevel.Error);
-    this._LoggingSvc.console(errorMessage, LogLevel.Error);
   }
 }
