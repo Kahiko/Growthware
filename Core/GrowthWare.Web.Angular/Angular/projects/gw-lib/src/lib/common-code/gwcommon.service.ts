@@ -28,6 +28,13 @@ export class GWCommon {
     }
   }
 
+  /**
+   * Returns the base URL ending in a forward slash
+   *
+   * @readonly
+   * @type {string}
+   * @memberof GWCommon
+   */
   public get baseURL(): string {
     let mCurrentLocation = window.location;
     let mPort = mCurrentLocation.port;
@@ -157,6 +164,13 @@ export class GWCommon {
     return false;
   }
 
+  /**
+   * Determines if the value is a number
+   *
+   * @param {(string | number)} value
+   * @return {*}  {boolean}
+   * @memberof GWCommon
+   */
   public isNumber(value: string | number): boolean
   {
     let mRetVal: boolean = false;

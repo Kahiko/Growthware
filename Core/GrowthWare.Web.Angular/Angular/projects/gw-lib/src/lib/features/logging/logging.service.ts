@@ -191,7 +191,7 @@ export class LoggingService {
           this._LogConsole(response);
         },
         error: (errorResponse: any) => {
-          this.errorHandler(errorResponse, 'logDB');
+          this.errorHandler(errorResponse, 'LoggingService', 'logDB');
         },
       });
   }
@@ -247,7 +247,7 @@ export class LoggingService {
    * @param {string} methodName
    * @memberof LoggingService
    */
-  private errorHandler(errorResponse: HttpErrorResponse, methodName: string) {
+  public errorHandler(errorResponse: HttpErrorResponse, className: string, methodName: string) {
     let errorMessage = '';
     if (errorResponse.error instanceof ErrorEvent) {
       // Get client-side error
@@ -256,7 +256,7 @@ export class LoggingService {
       // Get server-side error
       errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
     }
-    console.log(`LoggingService.${methodName}:`);
+    console.log(`${methodName}.${methodName}:`);
     console.log(errorMessage);
   }
 }

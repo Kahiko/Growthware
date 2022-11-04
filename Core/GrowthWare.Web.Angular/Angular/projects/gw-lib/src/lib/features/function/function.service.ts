@@ -5,7 +5,6 @@ import { IFunctionProfile } from './function-profile.model';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
-import { UtilityService } from '@Growthware/Lib/src/lib/services';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +42,6 @@ export class FunctionService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
-    private _UtilitySvc: UtilityService
   ) {
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
   }
@@ -70,7 +68,7 @@ export class FunctionService {
           resolve(response);
         },
         error: (error: any) => {
-          this._UtilitySvc.errorHandler(error, 'FunctionService', 'getFunction');
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
           reject('Failed to call the API');
         },
         // complete: () => {}
