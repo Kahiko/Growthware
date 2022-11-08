@@ -339,7 +339,7 @@ namespace GrowthWare.Framework
                         break;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 string m = string.Empty;
                 // do nothing ... do not crash the application for
