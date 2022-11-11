@@ -66,7 +66,7 @@ public abstract class BaseController : ControllerBase
 
                     var claims = new List<Claim> 
                     { 
-                        new Claim(ClaimTypes.Name, mAccountProfile.Account), 
+                        new Claim("account", mAccountProfile.Account), 
                         // new Claim(ClaimTypes.Role, "Manager") 
                     };
 
