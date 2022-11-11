@@ -40,6 +40,18 @@ public static class AccountUtility
         return mRetVal;
     }
 
+    private static MAccountProfile getAccountByRefreshToken(string token)
+    {
+        if(String.IsNullOrEmpty(token)) 
+        {
+            throw new ArgumentException("token can not be null or empty", token);
+        }
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        MAccountProfile mRetVal = null;
+        mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        return mRetVal;
+    }
+
     /// <summary>
     /// Inserts or updates account information
     /// </summary>
