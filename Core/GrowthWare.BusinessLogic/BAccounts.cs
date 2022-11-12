@@ -198,7 +198,7 @@ namespace GrowthWare.BusinessLogic
                 } 
                 else 
                 {
-                    throw new BusinessLogicLayerException("token does not exist, unable to get account");
+                    throw new BusinessLogicLayerException("Invalid token");
                 }
                 m_DAccounts.Profile.Account = mAccount;
                 DataTable mAssignedRoles = m_DAccounts.Roles();
