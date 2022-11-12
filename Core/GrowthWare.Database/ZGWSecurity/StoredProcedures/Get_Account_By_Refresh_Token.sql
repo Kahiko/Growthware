@@ -38,6 +38,7 @@ BEGIN
 		,ACCT.[Middle_Name]
 		,ACCT.[Preferred_Name]
 		,ACCT.[Time_Zone]
+		,ACCT.[VerificationToken]
 		,ACCT.[Added_By]
 		,ACCT.[Added_Date]
 		,ACCT.[Updated_By]

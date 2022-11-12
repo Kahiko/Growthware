@@ -17,6 +17,7 @@ CREATE TABLE [ZGWSecurity].[Accounts] (
     [Middle_Name]          VARCHAR (35)  NULL,
     [Preferred_Name]       VARCHAR (50)  NULL,
     [Time_Zone]            INT           NULL,
+    [VerificationToken]    VARCHAR (MAX) NULL,
     [Added_By]             INT           CONSTRAINT [DF_Accounts_Added_By] DEFAULT ((1)) NOT NULL,
     [Added_Date]           DATETIME      CONSTRAINT [DF_Accounts_ADDED_DATE] DEFAULT (getdate()) NOT NULL,
     [Updated_By]           INT           NULL,

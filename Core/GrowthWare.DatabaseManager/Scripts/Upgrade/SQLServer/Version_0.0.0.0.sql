@@ -354,6 +354,7 @@ BEGIN
 		[Middle_Name] [varchar](35) NULL,
 		[Preferred_Name] [varchar](50) NULL,
 		[Time_Zone] [int] NULL,
+		[VerificationToken] VARCHAR (MAX) NULL,
 		[Added_By] [int] NOT NULL,
 		[Added_Date] [datetime] NOT NULL,
 		[Updated_By] [int] NULL,

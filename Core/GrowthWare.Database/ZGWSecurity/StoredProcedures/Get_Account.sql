@@ -48,6 +48,7 @@ BEGIN
 				, Middle_Name
 				, Preferred_Name
 				, Time_Zone
+				, VerificationToken
 				, Added_By
 				, Added_Date
 				, Updated_By
