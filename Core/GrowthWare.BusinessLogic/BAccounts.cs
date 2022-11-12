@@ -181,6 +181,34 @@ namespace GrowthWare.BusinessLogic
 
         }
 
+        public MAccountProfile GetProfileByResetToken(string token)
+        {
+            MAccountProfile mRetVal = null;
+            if (DatabaseIsOnline()) 
+            {
+                string mAccount = string.Empty;
+                string mColumnName = "Account";
+                m_DAccounts.Profile = new MAccountProfile();
+                m_DAccounts.Profile.ResetToken = token;
+                DataRow mDataRow = m_DAccounts.GetAccountByResetToken;
+                // we will need the "Account" in order to get the correct roles and groups
+                if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
+                {
+                    mAccount = mDataRow[mColumnName].ToString().Trim();
+                } 
+                else 
+                {
+                    throw new BusinessLogicLayerException("token does not exist, unable to get account");
+                }
+                m_DAccounts.Profile.Account = mAccount;
+                DataTable mAssignedRoles = m_DAccounts.Roles();
+                DataTable mAssignedGroups = m_DAccounts.Groups();
+                DataTable mRoles = m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mDataRow, mAssignedRoles, mAssignedGroups, mRoles);
+            }
+            return mRetVal;
+        }
+
         /// <summary>
         /// Returns a collection of MAccountProfiles without any role information
         /// </summary>

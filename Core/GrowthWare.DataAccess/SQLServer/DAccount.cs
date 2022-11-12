@@ -65,6 +65,18 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
+        DataRow IAccount.GetAccountByResetToken
+        {
+            get
+            {
+                String mStoredProcedure = "ZGWSecurity.Get_Account_By_Reset_Token";
+                SqlParameter[] mParameters = { 
+                    GetSqlParameter("@P_ResetToken", this.Cleanup(m_Profile.ResetToken), ParameterDirection.Input)
+                };
+                return base.GetDataRow(mStoredProcedure, mParameters);
+            }
+        }
+
         DataTable IAccount.GetAccounts
         {
             get

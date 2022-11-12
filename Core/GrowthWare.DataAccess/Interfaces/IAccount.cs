@@ -35,6 +35,8 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <returns>DataRow</returns>
 		DataRow GetAccount { get; }
 
+		DataRow GetAccountByResetToken { get; }
+
 		/// <summary>
 		/// Retrieves Account information given the JWT
 		/// </summary>

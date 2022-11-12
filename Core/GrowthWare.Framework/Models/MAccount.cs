@@ -1,8 +1,8 @@
 ﻿using GrowthWare.Framework.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
-
 
 namespace GrowthWare.Framework.Models;
 /// <summary>
@@ -99,6 +99,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
         this.PasswordLastSet = base.GetDateTime(dataRow, "PASSWORD_LAST_SET", DateTime.Now);
         this.MiddleName = base.GetString(dataRow, "MIDDLE_NAME");
         this.PreferredName = base.GetString(dataRow, "PREFERRED_NAME");
+        this.Token = base.GetString(dataRow, "Token");
         this.TimeZone = base.GetInt(dataRow, "TIME_ZONE");
     }
     #endregion
@@ -227,6 +228,11 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// </summary>
     public DateTime PasswordLastSet { get; set; }
 
+    public bool OwnsToken(string token) 
+    {
+        return this.RefreshTokens?.Find(x => x.Token == token) != null;
+    }
+
     /// <summary>
     /// The password for the account
     /// </summary>
@@ -263,6 +269,10 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// Prefered or nick name of the person for the account
     /// </summary>
     public String PreferredName { get; set; }
+
+    public List<RefreshToken> RefreshTokens { get; set; }
+    public string ResetToken { get; set; }
+    public DateTime? ResetTokenExpires { get; set; }
 
     /// <summary>
     /// The timezone for the account
