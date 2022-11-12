@@ -1,20 +1,12 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Text;
 using GrowthWare.Framework;
-using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
-using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Utilities;
+using GrowthWare.WebSupport.Utilities.Jwt;
 
 namespace GrowthWare.WebSupport;
-
 [Controller]
 [CLSCompliant(false)]
 public abstract class BaseController : ControllerBase
@@ -26,77 +18,72 @@ public abstract class BaseController : ControllerBase
     // returns the current security entity (default as defined in GrowthWare.json)
     public MSecurityEntity SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
 
+    [AllowAnonymous]
     [HttpPost("Authenticate")]
-    public ActionResult<MAccountProfile> Authenticate(string account, string password)
+    public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
     {
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
-        bool mAuthenticated = false;
-        bool mDomainPassed = false;
-        if (account.Contains(@"\"))
+        MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
+        if(mAccountProfile == null)
         {
-            mDomainPassed = true;
-        }        
-        MAccountProfile mAccountProfile = AccountUtility.GetAccount(account);
-        if (mDomainPassed && mAccountProfile == null)
-        {
-            int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
-            account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
-            mAccountProfile = AccountUtility.GetAccount(account);
-        }        
-        if(mAccountProfile != null)
-        {
-            if (ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
-            {
-                string mProfilePassword = string.Empty;
-                try
-                {
-                    mProfilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.CurrentProfile().EncryptionType);
-                }
-                catch (CryptoUtilityException)
-                {
-                    mProfilePassword = mAccountProfile.Password;
-                }
-                if (password == mProfilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
-                {
-                    mAuthenticated = true;
-                    mAccountProfile.FailedAttempts = 0;
-                    mAccountProfile.LastLogOn = DateTime.Now;
-                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
-                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-                    var claims = new List<Claim> 
-                    { 
-                        new Claim("account", mAccountProfile.Account), 
-                        // new Claim(ClaimTypes.Role, "Manager") 
-                    };
-
-                    var tokeOptions = new JwtSecurityToken(
-                        issuer: "https://localhost:5001",
-                        audience: "https://localhost:5001",
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(5),
-                        signingCredentials: signingCredentials
-                    );
-                    mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-                }
-                if (!mAuthenticated) 
-                { 
-                    mAccountProfile.FailedAttempts += 1; 
-                }
-                if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1) 
-                {
-                    mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
-                }
-                AccountUtility.Save(mAccountProfile, false, false);
-                mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
-                mAccountProfile.Password = "";
-            }
-        } else 
-        {
+            HttpContext.Items["AccountProfile"] = AccountUtility.GetAccount("Anonymous");
             return StatusCode(403, "Incorrect account or password");
         }
-        return Ok(mAccountProfile);
+        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse();
+        setTokenCookie(mAuthenticationResponse.RefreshToken);
+        HttpContext.Items["AccountProfile"] = mAccountProfile;
+        return Ok(mAuthenticationResponse);
+    }
+
+    [Authorize]
+    [HttpPost("Delete")]
+    public IActionResult Delete(int accountSeqId)
+    {
+            if (accountSeqId <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+            string mRetVal = "False";
+            Logger mLog = Logger.Instance();
+            // if (HttpContext.Items["EditId"] != null)
+            // {
+            //     int mEditId = int.Parse(HttpContext.Items["EditId"].ToString());
+            //     if (mEditId == accountSeqId)
+            //     {
+            //         MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
+            //         if (mSecurityInfo != null)
+            //         {
+            //             if (mSecurityInfo.MayDelete)
+            //             {
+            //                 try
+            //                 {
+            //                     AccountUtility.Delete(accountSeqId);
+            //                     mRetVal = "True";
+            //                 }
+            //                 catch (Exception ex)
+            //                 {
+            //                     mLog.Error(ex);
+            //                     throw;
+            //                 }
+            //             }
+            //             else
+            //             {
+            //                 Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
+            //                 mLog.Error(mError);
+            //                 return this.InternalServerError(mError);
+            //             }
+            //         }
+            //         else
+            //         {
+            //             Exception mError = new Exception("Security Info can not be determined nothing has been deleted!!!!");
+            //             mLog.Error(mError);
+            //             return this.InternalServerError(mError);
+            //         }
+            //     }
+            //     else
+            //     {
+            //         Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
+            //         mLog.Error(mError);
+            //         return this.InternalServerError(mError);
+            //     }
+            // }
+            return Ok(mRetVal);
     }
 
     private void setTokenCookie(string token)

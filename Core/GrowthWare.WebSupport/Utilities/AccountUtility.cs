@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using System.Security.Claims;
@@ -6,6 +8,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
+using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 
 namespace GrowthWare.WebSupport.Utilities;
@@ -13,6 +16,87 @@ public static class AccountUtility
 {
     private static String s_CachedAnonymousAccount = "AnonymousProfile";
     private static String s_AnonymousAccount = "Anonymous";
+
+    public static MAccountProfile Authenticate(string account, string password, string ipAddress)
+    {
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
+        bool mAuthenticated = false;
+        bool mDomainPassed = false;
+        if (account.Contains(@"\"))
+        {
+            mDomainPassed = true;
+        }        
+        MAccountProfile mAccountProfile = AccountUtility.GetAccount(account);
+        if (mDomainPassed && mAccountProfile == null)
+        {
+            int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
+            account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
+            mAccountProfile = AccountUtility.GetAccount(account);
+        }        
+        if(mAccountProfile != null)
+        {
+            if (ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
+            {
+                string mProfilePassword = string.Empty;
+                try
+                {
+                    mProfilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.CurrentProfile().EncryptionType);
+                }
+                catch (CryptoUtilityException)
+                {
+                    mProfilePassword = mAccountProfile.Password;
+                }
+                if (password == mProfilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
+                {
+                    mAuthenticated = true;
+                    mAccountProfile.FailedAttempts = 0;
+                    mAccountProfile.LastLogOn = DateTime.Now;
+                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
+                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+                    var claims = new List<Claim> 
+                    { 
+                        new Claim("account", mAccountProfile.Account), 
+                        // new Claim(ClaimTypes.Role, "Manager") 
+                    };
+
+                    var tokeOptions = new JwtSecurityToken(
+                        issuer: "https://localhost:5001",
+                        audience: "https://localhost:5001",
+                        claims: claims,
+                        expires: DateTime.Now.AddMinutes(5),
+                        signingCredentials: signingCredentials
+                    );
+                    mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+                    // TODO: generate jwt and refresh tokens
+                    // var jwtToken = GenerateJwtToken(mAccountProfile);
+                    // var refreshToken = GenerateRefreshToken(ipAddress);
+                    // mAccountProfile.RefreshTokens.Add(refreshToken);
+
+                }
+                if (!mAuthenticated) 
+                { 
+                    mAccountProfile.FailedAttempts += 1; 
+                }
+                if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1) 
+                {
+                    mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
+                }
+                AccountUtility.Save(mAccountProfile, false, false);
+                mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
+                mAccountProfile.Password = "";
+            }
+        }
+        return mAccountProfile;
+    }
+
+    public static void Delete(int accountSeqId)
+    {
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBAccount.Delete(accountSeqId);
+    }
 
     private static string generateJwtToken(MAccountProfile account)
     {
