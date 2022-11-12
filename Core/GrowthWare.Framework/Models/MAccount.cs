@@ -101,6 +101,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
         this.PreferredName = base.GetString(dataRow, "PREFERRED_NAME");
         this.Token = base.GetString(dataRow, "Token");
         this.TimeZone = base.GetInt(dataRow, "TIME_ZONE");
+        this.VerificationToken = base.GetString(dataRow, "VerificationToken");
     }
     #endregion
 
@@ -266,7 +267,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     public String MiddleName { get; set; }
 
     /// <summary>
-    /// Prefered or nick name of the person for the account
+    /// Preferred or nick name of the person for the account
     /// </summary>
     public String PreferredName { get; set; }
 
@@ -283,6 +284,8 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// Used to pass the JWT token to the front-end
     /// </summary>
     public string Token { get; set; }
+
+    public string VerificationToken{ get; set ;}
 
     /// <summary>
     /// The location of the account
