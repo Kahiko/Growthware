@@ -78,6 +78,7 @@ BEGIN
 			,Middle_Name VARCHAR(30)
 			,Preferred_Name VARCHAR(100)
 			,Time_Zone INT
+			,VerificationToken VARCHAR(max)
 			,Added_By INT
 			,Added_Date DATETIME
 			,Updated_By INT
@@ -102,6 +103,7 @@ BEGIN
 				,Accounts.Middle_Name
 				,Accounts.Preferred_Name
 				,Accounts.Time_Zone
+				,Accounts.VerificationToken
 				,Accounts.Added_By
 				,Accounts.Added_Date
 				,Accounts.Updated_By
@@ -135,6 +137,7 @@ BEGIN
 				,Accounts.Middle_Name
 				,Accounts.Preferred_Name
 				,Accounts.Time_Zone
+				,Accounts.VerificationToken
 				,Accounts.Added_By
 				,Accounts.Added_Date
 				,Accounts.Updated_By
@@ -167,10 +170,11 @@ BEGIN
 			, First_Name
 			, Last_Login
 			, Last_Name
-			, Location
+			, [Location]
 			, Middle_Name
 			, Preferred_Name
 			, Time_Zone
+			, VerificationToken
 			, Added_By
 			, Added_Date
 			, Updated_By
@@ -203,6 +207,7 @@ ELSE
 			, Middle_Name
 			, Preferred_Name
 			, Time_Zone
+			, VerificationToken
 			, Added_By
 			, Added_Date
 			, Updated_By
