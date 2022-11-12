@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -8,6 +9,17 @@ public static class AccountUtility
 {
     private static String s_CachedAnonymousAccount = "AnonymousProfile";
     private static String s_AnonymousAccount = "Anonymous";
+
+    public static string generateResetToken()
+    {
+        // token is a cryptographically strong random sequence of values
+        var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        if(RefreshTokenExists(token))
+        {
+            generateResetToken();
+        }
+        return token;
+    }
 
     /// <summary>
     /// Populates and returns a MAccountProfile if found in the DB
