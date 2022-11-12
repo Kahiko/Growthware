@@ -17,6 +17,8 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
         this.m_Action = action;
     }
 
+    public AuthorizeAttribute(){}
+
     public void OnAuthorization(AuthorizationFilterContext context)
     {
         // skip authorization if action is decorated with [AllowAnonymous] attribute
