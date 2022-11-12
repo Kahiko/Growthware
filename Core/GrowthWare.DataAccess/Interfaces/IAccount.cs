@@ -80,13 +80,15 @@ namespace GrowthWare.DataAccess.Interfaces
 		int Save();
 
 		/// <summary>
-		/// Save groups by passing a string or comma seporated groups to the database.
+		/// Save groups by passing a string or comma separated groups to the database.
 		/// </summary>
 		void SaveGroups();
 
 		/// <summary>
-		/// Save roles by passing a string or comma seporated rolse to the database.
+		/// Save roles by passing a string or comma separated roles to the database.
 		/// </summary>
 		void SaveRoles();
+
+		bool VerificationTokenExists(string token);
     }
 }

@@ -16,27 +16,38 @@ public static class AccountUtility
 
     private static string generateJwtToken(MAccountProfile account)
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var mJwtSecurityTokenHandler = new JwtSecurityTokenHandler();
+        var mKey = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
+        var mSecurityTokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new[] { new Claim("account", account.Account) }),
             Expires = DateTime.UtcNow.AddMinutes(15),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(mKey), SecurityAlgorithms.HmacSha256Signature)
         };
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-        return tokenHandler.WriteToken(token);
+        var mToken = mJwtSecurityTokenHandler.CreateToken(mSecurityTokenDescriptor);
+        return mJwtSecurityTokenHandler.WriteToken(mToken);
     }
 
     public static string generateResetToken()
     {
         // token is a cryptographically strong random sequence of values
-        var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        if(RefreshTokenExists(token))
+        var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        if(RefreshTokenExists(mToken))
         {
             generateResetToken();
         }
-        return token;
+        return mToken;
+    }
+
+    public static string generateVerificationToken()
+    {
+        // token is a cryptographically strong random sequence of values
+        var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        if(verificationTokenExists(mToken))
+        {
+            generateVerificationToken();
+        }
+        return mToken;
     }
 
     /// <summary>
@@ -94,41 +105,47 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    /// <summary>
-    /// Inserts or updates account information
-    /// </summary>
-    /// <param name="profile">MAccountProfile</param>
-    /// <param name="saveRoles">Boolean</param>
-    /// <param name="saveGroups">Boolean</param>
-    /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
-    /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
-    {
-        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
-        if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
-        BAccounts mBAccount = new BAccounts(securityEntityProfile, ConfigSettings.CentralManagement);
-        mBAccount.Save(profile, saveRoles, saveGroups);
-        return profile;
-    }
-
-    /// <summary>
-    /// Inserts or updates account information
-    /// </summary>
-    /// <param name="profile">MAccountProfile</param>
-    /// <param name="saveRoles">Boolean</param>
-    /// <param name="saveGroups">Boolean</param>
-    /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
-    {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        return Save(profile, saveRoles, saveGroups, mSecurityEntityProfile);
-    }
-
     public static bool RefreshTokenExists(string refreshToken) 
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         return mBAccount.RefreshTokenExists(refreshToken);
     }
+    
+    /// <summary>
+    /// Inserts or updates account information
+    /// </summary>
+    /// <param name="accountProfile">MAccountProfile</param>
+    /// <param name="saveRoles">Boolean</param>
+    /// <param name="saveGroups">Boolean</param>
+    /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
+    /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
+    {
+        if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
+        if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
+        BAccounts mBAccount = new BAccounts(securityEntityProfile, ConfigSettings.CentralManagement);
+        mBAccount.Save(accountProfile, saveRoles, saveGroups);
+        return accountProfile;
+    }
 
+    /// <summary>
+    /// Inserts or updates account information
+    /// </summary>
+    /// <param name="accountProfile">MAccountProfile</param>
+    /// <param name="saveRoles">Boolean</param>
+    /// <param name="saveGroups">Boolean</param>
+    /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
+    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRoles, bool saveGroups)
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        return Save(accountProfile, saveRoles, saveGroups, mSecurityEntityProfile);
+    }
+
+    public static bool verificationTokenExists(string token)
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        return mBAccount.RefreshTokenExists(token);        
+    }
 }

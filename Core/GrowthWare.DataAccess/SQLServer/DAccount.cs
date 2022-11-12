@@ -219,6 +219,23 @@ namespace GrowthWare.DataAccess.SQLServer
             base.ExecuteNonQuery(myStoreProcedure, myParameters);
         }
 
+        bool IAccount.VerificationTokenExists(string token)
+        {
+            bool mRetVal = false;
+            string mCleanedValue = this.Cleanup(token);
+            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @Token";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_Token", mCleanedValue), 
+			};            
+            mCommandText = String.Format(mCommandText, token);
+            Int32 mCount = (Int32) base.ExecuteScalar(mCommandText, mParameters);
+            if(mCount != 0)
+            {
+                mRetVal = true;
+            }
+            return mRetVal;
+        }
+
 #endregion
 
 #region Private Methods

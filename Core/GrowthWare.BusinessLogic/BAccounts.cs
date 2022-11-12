@@ -290,7 +290,7 @@ namespace GrowthWare.BusinessLogic
         /// mMAccountProfile.Account = "Account"
         /// mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType)
         /// mMAccountProfile.UpdatedBy = 1
-        /// mMAccountProfile.UpdagedDate = Date.Now
+        /// mMAccountProfile.UpdatedDate = Date.Now
         /// Dim mBll as new BAccounts(mySecurityEntityProfile)
         /// Dim mSaveRoles As Boolean = False;
         /// Dim mSaveGroups As Boolean = False;
@@ -326,6 +326,11 @@ namespace GrowthWare.BusinessLogic
                 }
                 profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
             }
+        }
+
+        public bool VerificationTokenExists(string token)
+        {
+            return m_DAccounts.VerificationTokenExists(token);
         }
     }
 }
