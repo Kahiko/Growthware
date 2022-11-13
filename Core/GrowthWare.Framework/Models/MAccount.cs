@@ -17,7 +17,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     private Collection<string> m_AssignedRoles = new Collection<string>();
     private Collection<string> m_AssignedGroups = new Collection<string>();
     private Collection<string> m_DerivedRoles = new Collection<string>();
-    private List<RefreshToken> m_RefreshToken = new List<RefreshToken>();
+    private List<RefreshToken> m_RefreshTokens = new List<RefreshToken>();
     private static String s_RoleColumn = "Roles";
     private static String s_GroupColumn = "Groups";
     #endregion
@@ -155,7 +155,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         if (detailRow != null)
         {
             this.Initialize(detailRow);
-            if (refreshTokens != null) setRefreshTokens(ref m_RefreshToken, refreshTokens);
+            if (refreshTokens != null) setRefreshTokens(ref m_RefreshTokens, refreshTokens);
             if (assignedRolesData != null) setRolesOrGroups(ref m_AssignedRoles, assignedRolesData.Rows, s_RoleColumn);
             if (assignedGroupsData != null) setRolesOrGroups(ref m_AssignedGroups, assignedGroupsData.Rows, s_GroupColumn);
             if (derivedRolesData != null) setRolesOrGroups(ref m_DerivedRoles, derivedRolesData.Rows, s_RoleColumn);
@@ -228,7 +228,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     public String Email { get; set; }
 
     /// <summary>
-    /// Used to determine if the client would like to recieve notifications.
+    /// Used to determine if the client would like to receive notifications.
     /// </summary>
     public bool EnableNotifications { get; set; }
 
@@ -253,7 +253,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     public String Password { get; set; }
 
     /// <summary>
-    /// The number of failed logon attemps
+    /// The number of failed logon attempts
     /// </summary>
     public int FailedAttempts { get; set; }
 
@@ -284,7 +284,13 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </summary>
     public String PreferredName { get; set; }
 
-    public List<RefreshToken> RefreshTokens { get; set; }
+    public List<RefreshToken> RefreshTokens 
+    {
+        get
+        {
+            return m_RefreshTokens;
+        }
+    }
     public string ResetToken { get; set; }
     public DateTime? ResetTokenExpires { get; set; }
 
