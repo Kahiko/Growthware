@@ -2,13 +2,14 @@
 using System;
 using System.Data;
 using System.Reflection;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
 /// <summary>
 /// Class MMessage
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MMessage : MBaseModel, IMessage
+public class MMessage : AbstractBaseModel, IMessage
 {
     #region "Member Properties"
     private int m_SecurityEntity_Seq_Id = 1;

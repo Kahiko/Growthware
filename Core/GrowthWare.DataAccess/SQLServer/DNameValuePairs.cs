@@ -11,7 +11,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DNameValuePairs
     /// </summary>
-    public class DNameValuePairs : ADBInteraction, INameValuePairs
+    public class DNameValuePairs : AbstractDBInteraction, INameValuePairs
     {
         private MNameValuePair m_Profile = new MNameValuePair();
         private int m_SecurityEntitySeqId;

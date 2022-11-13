@@ -10,7 +10,7 @@ namespace GrowthWare.Web.Angular.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GrowthwareAPIController : BaseController
+public class GrowthwareAPIController : AbstractController
 {
     private readonly ILogger<GrowthwareAPIController> _logger;
     private string m_ApplicationName = string.Empty;

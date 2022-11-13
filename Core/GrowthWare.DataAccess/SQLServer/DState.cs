@@ -7,7 +7,7 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DState : ADBInteraction, IState
+    public class DState : AbstractDBInteraction, IState
     {
         private MState m_Profile = null;
         private int m_SecurityEntitySeqID = -2;

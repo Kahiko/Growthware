@@ -6,7 +6,7 @@ using System.Data;
 using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer;
-public class DLogging : ADBInteraction, ILogging
+public class DLogging : AbstractDBInteraction, ILogging
 {
 
     MLoggingProfile ILogging.GetLog(int logSeqId)

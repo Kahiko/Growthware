@@ -2,13 +2,13 @@
 using System.Data;
 using GrowthWare.Framework.Interfaces;
 
-namespace GrowthWare.Framework.Models
+namespace GrowthWare.Framework.Models.Base
 {
     /// <summary>
     /// Base class for profile objects.
     /// </summary>
     [Serializable()]
-    public abstract class MBaseModel : MDatabaseFunctions, IBaseModel
+    public abstract class AbstractBaseModel : AbstractDatabaseFunctions, IBaseModel
     {
 
         int m_Id = -1;

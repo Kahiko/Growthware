@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using GrowthWare.Framework.Enumerations;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -8,7 +9,7 @@ namespace GrowthWare.Framework.Models
     /// Represents all of the prperties associated with a Security Entity.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MSecurityEntity : MBaseModel
+    public class MSecurityEntity : AbstractBaseModel
     {
 
 #region Protected Methods

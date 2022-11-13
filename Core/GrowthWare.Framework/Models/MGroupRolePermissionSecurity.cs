@@ -1,5 +1,6 @@
 ﻿using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Interfaces;
+using GrowthWare.Framework.Models.Base;
 using System;
 using System.Data;
 using System.Collections.ObjectModel;
@@ -20,7 +21,7 @@ namespace GrowthWare.Framework.Models
     /// roles from this class as well as the ones for yours.
     ///</remarks>
     [Serializable(), CLSCompliant(true)]
-    public abstract class MGroupRolePermissionSecurity : MBaseModel, IGroupRolePermissionSecurity
+    public abstract class AbstractGroupRolePermissionSecurity : AbstractBaseModel, IGroupRolePermissionSecurity
     {
         private Collection<string> m_AssignedAddRoles = new Collection<string>();
         private Collection<string> m_AssignedDeleteRoles = new Collection<string>();

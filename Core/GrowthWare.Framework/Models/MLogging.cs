@@ -1,6 +1,7 @@
 using GrowthWare.Framework.Enumerations;
 using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -8,7 +9,7 @@ namespace GrowthWare.Framework.Models
     /// Class MLoggingProfile
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MLoggingProfile : MDatabaseFunctions
+    public class MLoggingProfile : AbstractDatabaseFunctions
     {
         #region Member Objects
         string m_Account = "System";

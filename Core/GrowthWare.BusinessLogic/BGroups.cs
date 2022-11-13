@@ -27,7 +27,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BGroups : BaseBusinessLogic
+    public class BGroups : AbstractBusinessLogic
     {
         private IGroups m_DGroups;
 

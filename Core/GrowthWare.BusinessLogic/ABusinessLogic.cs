@@ -6,7 +6,7 @@ namespace GrowthWare.BusinessLogic
     /// <summary>
     /// Abstract (must inherit) class to add common code
     /// </summary>
-    public abstract class BaseBusinessLogic
+    public abstract class AbstractBusinessLogic
     {
         /// <summary>
         /// IsDatabaseOnline return bool based on ConfigSettings.DBStatus

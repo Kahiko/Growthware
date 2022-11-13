@@ -12,7 +12,7 @@ namespace GrowthWare.BusinessLogic
     /// BDBInformation is the business implementation for the DB information.
     /// </summary>
     [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Naming", "CA1709:IdentifiersShouldBeCasedCorrectly", MessageId = "BDB")]
-    public class BDBInformation : BaseBusinessLogic
+    public class BDBInformation : AbstractBusinessLogic
     {
         private IDBInformation m_DDBInformation;
 

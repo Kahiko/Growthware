@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Represents the properties necessary to interact with a servers directory(ies)
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public sealed class MDirectoryProfile : MBaseModel
+    public sealed class MDirectoryProfile : AbstractBaseModel
     {
 
 #region Constructors

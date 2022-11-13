@@ -11,7 +11,7 @@ namespace GrowthWare.BusinessLogic
     /// <summary>
     /// Class BNameValuePairs
     /// </summary>
-    public class BNameValuePairs : BaseBusinessLogic
+    public class BNameValuePairs : AbstractBusinessLogic
     {
         private INameValuePairs m_DNameValuePairs;
 

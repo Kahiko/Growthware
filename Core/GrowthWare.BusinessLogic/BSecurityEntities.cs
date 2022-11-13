@@ -47,7 +47,7 @@ namespace GrowthWare.BusinessLogic
     /// BSecurityEntities mBSecurityEntities = New BSecurityEntities(MSecurityEntity, ConfigSettings.CentralManagement);
     /// ]]>
     /// </code>	/// </example>
-    public class BSecurityEntities : BaseBusinessLogic
+    public class BSecurityEntities : AbstractBusinessLogic
     {
         private ISecurityEntities m_DSecurityEntities;
 

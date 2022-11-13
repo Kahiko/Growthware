@@ -11,7 +11,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Performs all data store interaction to SQL Server.
     /// </summary>
-    public class DSearch : ADBInteraction, ISearch
+    public class DSearch : AbstractDBInteraction, ISearch
     {
         private int m_SecurityEntityID;
 

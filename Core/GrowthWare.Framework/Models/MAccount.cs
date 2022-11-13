@@ -1,4 +1,5 @@
 ﻿using GrowthWare.Framework.Interfaces;
+using GrowthWare.Framework.Models.Base;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,18 +10,29 @@ namespace GrowthWare.Framework.Models;
 /// Properties for an account.
 /// </summary>
 [Serializable(), CLSCompliant(true)]
-public class MAccountProfile : MBaseModel, IGroupRoleSecurity
+public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
 {
 
     #region "Member fields"
     private Collection<string> m_AssignedRoles = new Collection<string>();
     private Collection<string> m_AssignedGroups = new Collection<string>();
     private Collection<string> m_DerivedRoles = new Collection<string>();
+    private List<RefreshToken> m_RefreshToken = new List<RefreshToken>();
     private static String s_RoleColumn = "Roles";
     private static String s_GroupColumn = "Groups";
     #endregion
 
     #region Private Methods
+    private static void setRefreshTokens(ref List<RefreshToken> refreshTokens, DataTable refreshTokenData)
+    {
+        refreshTokens = new List<RefreshToken>();
+        foreach (DataRow row in refreshTokenData.Rows)
+        {
+            RefreshToken mRefreshToken = new RefreshToken(row);
+            refreshTokens.Add(mRefreshToken);
+        }
+    }
+
     /// <summary>
     /// Sets the assigned roles or groups.
     /// </summary>
@@ -118,7 +130,7 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Will populate values based on the contents of the data row.
     /// </summary>
-    /// <param name="detailRow">Datarow containing base values</param>
+    /// <param name="detailRow">DataRow containing base values</param>
     /// <remarks>
     /// Class should be inherited to extend to your project specific properties
     /// </remarks>
@@ -138,11 +150,12 @@ public class MAccountProfile : MBaseModel, IGroupRoleSecurity
     /// <remarks>
     /// Class should be inherited to extend to your project specific properties
     /// </remarks>
-    public MAccountProfile(DataRow detailRow, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
+    public MAccountProfile(DataRow detailRow, DataTable refreshTokens, DataTable assignedRolesData, DataTable assignedGroupsData, DataTable derivedRolesData)
     {
         if (detailRow != null)
         {
             this.Initialize(detailRow);
+            if (refreshTokens != null) setRefreshTokens(ref m_RefreshToken, refreshTokens);
             if (assignedRolesData != null) setRolesOrGroups(ref m_AssignedRoles, assignedRolesData.Rows, s_RoleColumn);
             if (assignedGroupsData != null) setRolesOrGroups(ref m_AssignedGroups, assignedGroupsData.Rows, s_GroupColumn);
             if (derivedRolesData != null) setRolesOrGroups(ref m_DerivedRoles, derivedRolesData.Rows, s_RoleColumn);

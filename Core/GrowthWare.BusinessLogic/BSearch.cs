@@ -25,7 +25,7 @@ namespace GrowthWare.BusinessLogic;
     /// ]]>
     /// </code>
     /// </example>
-    public class BSearch : BaseBusinessLogic {
+    public class BSearch : AbstractBusinessLogic {
 
         private ISearch m_DSearch;
 

@@ -6,7 +6,7 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DDBInformation : ADBInteraction, IDBInformation
+    public class DDBInformation : AbstractDBInteraction, IDBInformation
     {
         private MDBInformation m_Profile = null;
         public MDBInformation Profile { get{return this.m_Profile;} set{this.m_Profile = value;} }

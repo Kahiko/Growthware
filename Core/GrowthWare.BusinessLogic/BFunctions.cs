@@ -28,7 +28,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BFunctions : BaseBusinessLogic
+    public class BFunctions : AbstractBusinessLogic
     {
         private IFunction m_DFunctions;
 

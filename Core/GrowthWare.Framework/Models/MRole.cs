@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Model object representing a Role.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MRole : MBaseModel
+    public class MRole : AbstractBaseModel
     {
 #region "Member Properties"
         private string m_Description = string.Empty;

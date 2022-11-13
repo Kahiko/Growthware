@@ -28,7 +28,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BAccounts : BaseBusinessLogic
+    public class BAccounts : AbstractBusinessLogic
     {
         private IAccount m_DAccounts;
 
@@ -144,10 +144,11 @@ namespace GrowthWare.BusinessLogic
             {
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Account = account;
+                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mAssignedRoles, mAssignedGroups, mRoles);
+                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
             return mRetVal;
         }
@@ -172,10 +173,11 @@ namespace GrowthWare.BusinessLogic
                     throw new BusinessLogicLayerException("token does not exist, unable to get account");
                 }
                 m_DAccounts.Profile.Account = mAccount;
+                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mDataRow, mAssignedRoles, mAssignedGroups, mRoles);
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
             return mRetVal;
 
@@ -201,10 +203,11 @@ namespace GrowthWare.BusinessLogic
                     throw new BusinessLogicLayerException("Invalid token");
                 }
                 m_DAccounts.Profile.Account = mAccount;
+                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
                 DataTable mAssignedRoles = m_DAccounts.Roles();
                 DataTable mAssignedGroups = m_DAccounts.Groups();
                 DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mDataRow, mAssignedRoles, mAssignedGroups, mRoles);
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
             return mRetVal;
         }
@@ -324,7 +327,8 @@ namespace GrowthWare.BusinessLogic
                 {
                     m_DAccounts.SaveRoles();
                 }
-                profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
+                // TODO: add save for the refresh tokens
+                profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
             }
         }
 

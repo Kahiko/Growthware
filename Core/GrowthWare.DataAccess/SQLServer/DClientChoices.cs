@@ -16,7 +16,7 @@ namespace GrowthWare.DataAccess.SQLServer
     ///		Properties where chosen instead of parameters because all
     ///		methods will need one or both to perform their work.
     ///	</remarks>
-    public class DClientChoices : ADBInteraction, IClientChoices
+    public class DClientChoices : AbstractDBInteraction, IClientChoices
     {
 
         #region Pubic Methods

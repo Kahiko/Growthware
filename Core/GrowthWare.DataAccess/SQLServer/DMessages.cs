@@ -10,7 +10,7 @@ namespace GrowthWare.DataAccess.SQLServer
     /// <summary>
     /// Class DMessages
     /// </summary>
-    public class DMessages : ADBInteraction, IMessages
+    public class DMessages : AbstractDBInteraction, IMessages
     {
         private MMessage m_Profile = new MMessage();
         private SqlParameter[] GetInsertUpdateParameters()

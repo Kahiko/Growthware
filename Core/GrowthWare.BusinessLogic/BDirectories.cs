@@ -21,7 +21,7 @@ namespace GrowthWare.BusinessLogic
     /// .DALNameSpace
     /// ]]>
     /// </remarks>
-    public class BDirectories : BaseBusinessLogic
+    public class BDirectories : AbstractBusinessLogic
     {
         private IDirectories m_DDirectories;
 

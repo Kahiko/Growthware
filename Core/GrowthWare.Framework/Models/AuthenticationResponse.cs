@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.ObjectModel;
 using System.Text.Json.Serialization;
 
@@ -20,6 +21,12 @@ public class AuthenticationResponse
         this.MiddleName = accountProfile.MiddleName;
         this.PreferredName = accountProfile.PreferredName;
         this.m_DerivedRoles = accountProfile.DerivedRoles;
+        if(accountProfile.RefreshTokens != null && accountProfile.RefreshTokens.Count > 0)
+        {
+            this.RefreshToken = accountProfile.RefreshTokens
+                .OrderByDescending(obj => obj.Created)
+                .FirstOrDefault().Token;
+        }
     }
 
     private Collection<string> m_DerivedRoles = new Collection<string>();

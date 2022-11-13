@@ -1,5 +1,5 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -11,7 +11,7 @@ namespace GrowthWare.Framework.Models
     /// Store procedures: 
     /// ZGWSystem.Set_DataBase_Information, ZGWSystem.Get_Database_Information
     /// </remarks>
-    public class MDBInformation : MBaseModel
+    public class MDBInformation : AbstractBaseModel
     {
 #region "Member Properties"
         private int mInformationSeqId = 1;

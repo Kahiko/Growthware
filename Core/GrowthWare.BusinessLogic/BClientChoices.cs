@@ -26,7 +26,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BClientChoices : BaseBusinessLogic
+    public class BClientChoices : AbstractBusinessLogic
     {
         private IClientChoices m_DClientChoices;
 

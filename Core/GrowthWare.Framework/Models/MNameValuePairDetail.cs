@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Properties for an Name Value Pair Detail.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MNameValuePairDetail : MBaseModel
+    public class MNameValuePairDetail : AbstractBaseModel
     {
 #region "Member Properties"
         private int m_NameValuePairSeqId = -1;

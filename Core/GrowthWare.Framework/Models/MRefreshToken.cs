@@ -1,12 +1,36 @@
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
-public class RefreshToken
+public class RefreshToken : AbstractBaseModel
 {
+    public RefreshToken(){}
+    
+    public RefreshToken(DataRow dataRow)
+    {
+        DateTime mDateTime = DateTime.Now;
+        this.RefreshTokenId = base.GetInt(dataRow, "RefreshTokenId");
+        this.AccountSeqId = base.GetInt(dataRow, "AccountSeqId");
+        this.Token = base.GetString(dataRow, "Token");
+        this.Expires = base.GetDateTime(dataRow, "Expires", mDateTime);
+        this.Created = base.GetDateTime(dataRow, "Created", mDateTime);
+        this.CreatedByIp = base.GetString(dataRow, "CreatedByIp");
+        this.Revoked = base.GetDateTime(dataRow, "Revoked", mDateTime);
+        if(this.Revoked == mDateTime)
+        {
+           this.Revoked = null; 
+        }
+        this.RevokedByIp = base.GetString(dataRow, "RevokedByIp");
+        this.ReplacedByToken = base.GetString(dataRow, "ReplacedByToken");
+        this.ReasonRevoked = base.GetString(dataRow, "ReasonRevoked");
+
+    }
+
     [Key]
-    public int Id { get; set; }
-    public MAccountProfile Account { get; set; }
+	public int RefreshTokenId { get; set; }
+    public int AccountSeqId { get; set; }
     public string Token { get; set; }
     public DateTime Expires { get; set; }
     public DateTime Created { get; set; }

@@ -71,9 +71,9 @@ public static class AccountUtility
                     mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
                     // TODO: generate jwt and refresh tokens
-                    // var jwtToken = GenerateJwtToken(mAccountProfile);
-                    // var refreshToken = GenerateRefreshToken(ipAddress);
-                    // mAccountProfile.RefreshTokens.Add(refreshToken);
+                    var jwtToken = generateJwtToken(mAccountProfile);
+                    var refreshToken = generateRefreshToken(ipAddress);
+                    mAccountProfile.RefreshTokens.Add(refreshToken);
 
                 }
                 if (!mAuthenticated) 
@@ -121,6 +121,28 @@ public static class AccountUtility
             generateResetToken();
         }
         return mToken;
+    }
+
+    public static RefreshToken generateRefreshToken(string ipAddress)
+    {
+        var mRetVal = new RefreshToken
+        {
+            // token is a cryptographically strong random sequence of values
+            Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),
+            // token is valid for 7 days
+            Expires = DateTime.UtcNow.AddDays(7),
+            Created = DateTime.UtcNow,
+            CreatedByIp = ipAddress
+        };
+
+        // ensure token is unique by checking against db
+        // var mTokenIsUnique = !_context.Accounts.Any(a => a.RefreshTokens.Any(t => t.Token == mRetVal.Token));
+        var mTokenIsUnique = !RefreshTokenExists(mRetVal.Token);
+
+        if (!mTokenIsUnique)
+            return generateRefreshToken(ipAddress);
+
+        return mRetVal;
     }
 
     public static string generateVerificationToken()

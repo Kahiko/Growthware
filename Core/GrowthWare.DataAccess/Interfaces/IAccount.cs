@@ -60,6 +60,8 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <remarks></remarks>
 		DataTable GetMenu(string account, MenuType menuType);
 
+		DataTable RefreshTokens();
+
 		/// <summary>
 		/// Returns all groups associated with a given SecurityEntitySeqID.
 		/// </summary>

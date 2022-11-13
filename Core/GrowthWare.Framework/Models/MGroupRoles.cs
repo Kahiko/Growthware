@@ -1,4 +1,5 @@
 ﻿using System;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -6,7 +7,7 @@ namespace GrowthWare.Framework.Models
     /// Model object representing GroupRoles
 	/// </summary>
 	[Serializable(), CLSCompliant(true)]
-    public class MGroupRoles : MBaseModel
+    public class MGroupRoles : AbstractBaseModel
     {
         private int m_AddedUpdatedBy;
         private int m_SecurityEntityID = -1;

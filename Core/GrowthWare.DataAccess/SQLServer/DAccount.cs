@@ -100,18 +100,29 @@ namespace GrowthWare.DataAccess.SQLServer
         bool IAccount.RefreshTokenExists(string refreshToken)
         {
             bool mRetVal = false;
+            Int32 mCount = 0;
             string mCleanedValue = this.Cleanup(refreshToken);
-            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @Token";
+            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @P_Token";
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Token", mCleanedValue), 
-			};            
-            mCommandText = String.Format(mCommandText, refreshToken);
-            Int32 mCount = (Int32) base.ExecuteScalar(mCommandText, mParameters);
-            if(mCount != 0)
+			};
+            var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+            if(mDbValue != null)
             {
-                mRetVal = true;
+                mCount = (Int32)mDbValue;
             }
             return mRetVal;
+        }
+
+        DataTable IAccount.RefreshTokens()
+        {
+            string mCommandText = "SELECT [RefreshTokenId], RT.[AccountSeqId], [Token], [Expires], [Created], [CreatedByIp], [Revoked], [RevokedByIp], [ReplacedByToken], [ReasonRevoked]";
+            mCommandText +=  "FROM [ZGWSecurity].[RefreshTokens] RT";
+            mCommandText +=  "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId];";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_Account", m_Profile.Account), 
+			};
+            return base.GetDataTable(mCommandText, mParameters, true);
         }
 
         DataTable IAccount.Roles()
@@ -222,13 +233,17 @@ namespace GrowthWare.DataAccess.SQLServer
         bool IAccount.VerificationTokenExists(string token)
         {
             bool mRetVal = false;
+            Int32 mCount = 0;
             string mCleanedValue = this.Cleanup(token);
             string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @Token";
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Token", mCleanedValue), 
 			};            
-            mCommandText = String.Format(mCommandText, token);
-            Int32 mCount = (Int32) base.ExecuteScalar(mCommandText, mParameters);
+            var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+            if(mDbValue != null)
+            {
+                mCount = (Int32)mDbValue;
+            }
             if(mCount != 0)
             {
                 mRetVal = true;

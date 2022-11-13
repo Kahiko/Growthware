@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Properties for an account.
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MNameValuePair : MBaseModel
+    public class MNameValuePair : AbstractBaseModel
     {
 #region "Member Properties"
         private string m_SchemaName = "dbo";

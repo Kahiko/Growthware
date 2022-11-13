@@ -7,7 +7,7 @@ namespace GrowthWare.Framework.Models
     /// Class MFunctionProfile
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MFunctionProfile : MGroupRolePermissionSecurity
+    public class MFunctionProfile : AbstractGroupRolePermissionSecurity
     {
 #region Member Objects
         private int m_NavigationTypeSeqId = 2;

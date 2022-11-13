@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Class MFunctionTypeProfile
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MFunctionTypeProfile : MBaseModel
+    public class MFunctionTypeProfile : AbstractBaseModel
     {
 #region "Member Properties"
         private int m_FunctionTypeSeqId = -1;

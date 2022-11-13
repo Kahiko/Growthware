@@ -28,7 +28,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BMessages : BaseBusinessLogic
+    public class BMessages : AbstractBusinessLogic
     {
         private IMessages m_DMessages;
         private MSecurityEntity m_SecurityEntityProfile;

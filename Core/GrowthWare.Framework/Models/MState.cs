@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models
 {
@@ -7,7 +8,7 @@ namespace GrowthWare.Framework.Models
     /// Properties that represent the table [ZGWOptional].[States]
     /// </summary>
     [Serializable(), CLSCompliant(true)]
-    public class MState : MBaseModel
+    public class MState : AbstractBaseModel
     {
 #region "Public Methods"
         public MState()

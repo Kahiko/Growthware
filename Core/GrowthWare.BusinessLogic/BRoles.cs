@@ -28,7 +28,7 @@ namespace GrowthWare.BusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public class BRoles : BaseBusinessLogic
+    public class BRoles : AbstractBusinessLogic
     {
         private IRoles m_DRoles;
 

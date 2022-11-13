@@ -9,7 +9,7 @@ using GrowthWare.WebSupport.Utilities.Jwt;
 namespace GrowthWare.WebSupport;
 [Controller]
 [CLSCompliant(false)]
-public abstract class BaseController : ControllerBase
+public abstract class AbstractController : ControllerBase
 {
     // returns the current authenticated account (null if not logged in)
     public MAccountProfile Account => (MAccountProfile)HttpContext.Items["AccountProfile"];
@@ -28,7 +28,7 @@ public abstract class BaseController : ControllerBase
             HttpContext.Items["AccountProfile"] = AccountUtility.GetAccount("Anonymous");
             return StatusCode(403, "Incorrect account or password");
         }
-        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse();
+        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mAuthenticationResponse.RefreshToken);
         HttpContext.Items["AccountProfile"] = mAccountProfile;
         return Ok(mAuthenticationResponse);
