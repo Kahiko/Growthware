@@ -83,9 +83,9 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// Executes a non Query given the commandText and sql parameters if any
         /// </summary>
         /// <param name="commandText">String</param>
-        /// <param name="sqlParameter">SqlParmeter</param>
+        /// <param name="sqlParameter">SqlParameter</param>
         /// <exception cref="DataAccessLayerException"></exception>
-        protected int ExecuteNonQuery(String commandText, SqlParameter[] sqlParameters)
+        protected int ExecuteNonQuery(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
         {
             this.IsValid();
             try
@@ -100,7 +100,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         {
                             if (sqlParameters.Length > 0)
                             {
-                                mSqlCommand.CommandType = CommandType.StoredProcedure;
+                                if(forceCommandText != true) 
+                                {
+                                    mSqlCommand.CommandType = CommandType.StoredProcedure;
+                                }
                                 foreach (SqlParameter mSqlParameter in sqlParameters)
                                 {
                                     mSqlCommand.Parameters.Add(mSqlParameter);
@@ -138,7 +141,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             return this.ExecuteNonQuery(commandText, null);
         }
 
-        protected object ExecuteScalar(string commandText, SqlParameter[] sqlParameters)
+        protected object ExecuteScalar(string commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
         {
             this.IsValid();
             try
@@ -153,7 +156,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         {
                             if (sqlParameters.Length > 0)
                             {
-                                mSqlCommand.CommandType = CommandType.StoredProcedure;
+                                if(forceCommandText != true)
+                                {
+                                    mSqlCommand.CommandType = CommandType.StoredProcedure;
+                                }
                                 foreach (SqlParameter mSqlParameter in sqlParameters)
                                 {
                                     mSqlCommand.Parameters.Add(mSqlParameter);
@@ -187,7 +193,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <param name="commandText">String</param>
         /// <returns>DataSet</returns>
         /// <remarks></remarks>
-        protected virtual DataSet GetDataSet(String commandText, SqlParameter[] sqlParameter)
+        protected virtual DataSet GetDataSet(String commandText, SqlParameter[] sqlParameter, bool forceCommandText = false)
         {
             this.IsValid();
             DataSet mRetVal = null;
@@ -202,7 +208,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     {
                         if (sqlParameter.Length > 0)
                         {
-                            mSqlCommand.CommandType = CommandType.StoredProcedure;
+                            if(forceCommandText != true)
+                            {
+                                mSqlCommand.CommandType = CommandType.StoredProcedure;
+                            }
                             foreach (SqlParameter mSqlParameter in sqlParameter)
                             {
                                 mSqlCommand.Parameters.Add(mSqlParameter);
@@ -235,9 +244,9 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <param name="sqlParameter">SqlParameter[]</param>
         /// <returns>DataTable</returns>
         /// <remarks></remarks>
-        protected virtual DataTable GetDataTable(String commandText, SqlParameter[] sqlParameter)
+        protected virtual DataTable GetDataTable(String commandText, SqlParameter[] sqlParameter, bool forceCommandText = false)
         {
-            DataTable mDataTable = this.GetDataSet(commandText, sqlParameter).Tables[0];
+            DataTable mDataTable = this.GetDataSet(commandText, sqlParameter, forceCommandText).Tables[0];
             return mDataTable;
         }
 
@@ -259,10 +268,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <param name="sqlParameter">SqlParameter[]</param>
         /// <returns>DataRow</returns>
         /// <remarks></remarks>
-        protected virtual DataRow GetDataRow(String commandText, SqlParameter[] parameters)
+        protected virtual DataRow GetDataRow(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
         {
             this.IsValid();
-            return this.GetDataTable(commandText, parameters).Rows[0];
+            return this.GetDataTable(commandText, sqlParameters, forceCommandText).Rows[0];
         }
 
         /// <summary>
