@@ -1,8 +1,6 @@
 export interface IAuthenticationResponse {
   account: string,
-  derivedRoles: [
-    string
-  ],
+  derivedRoles: string[],
   email: string,
   firstName: string,
   lastName: string,
