@@ -20,7 +20,6 @@ export class JwtInterceptor implements HttpInterceptor {
     const isLoggedIn = mAccount && mAccount.account != this._AccountSvc.defaultAccount;
     const isApiUrl = true;
     if (isLoggedIn && isApiUrl) {
-      const mm = '';
       request = request.clone({
           setHeaders: { Authorization: `Bearer ${mAccount.jwtToken}` }
       });
