@@ -45,7 +45,7 @@ public class GrowthwareAPIController : AbstractController
     {
         List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;
-        if(this.Account != null) 
+        if(this.Account != null && this.Account.Account != "Anonymous") 
         {
             mNavLink = new MNavLink("home", "home", "Home");
             mRootNavLinks.Add(mNavLink);

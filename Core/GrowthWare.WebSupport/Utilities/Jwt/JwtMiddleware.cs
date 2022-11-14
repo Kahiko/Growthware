@@ -2,12 +2,15 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using GrowthWare.Framework.Models;
 
 namespace GrowthWare.WebSupport.Utilities.Jwt;
 
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
+
+    private MAccountProfile m_AnonymousProfile = null;
     
     [CLSCompliant(false)]
     public JwtMiddleware(RequestDelegate next)
@@ -24,6 +27,14 @@ public class JwtMiddleware
         {
             // attach account to context on successful jwt validation
             httpContext.Items["AccountProfile"] = AccountUtility.GetAccount(mAccount);
+        }
+        else
+        {
+            if(this.m_AnonymousProfile == null)
+            {
+                this.m_AnonymousProfile = AccountUtility.GetAccount("Anonymous");
+            }           
+            httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
         }
 
         await _next(httpContext);

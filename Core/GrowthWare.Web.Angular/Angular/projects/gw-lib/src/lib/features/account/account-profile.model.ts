@@ -23,6 +23,7 @@ export interface IAccountProfile {
   middleName?: string;
   preferredName?: string;
   timeZone: number;
+  token?: string;
   location?: string;
   lastLogOn: string;
   getCommaSeparatedAssignedRoles?: string;
@@ -53,6 +54,7 @@ export class AccountProfile implements IAccountProfile {
   public middleName?: string;
   public preferredName?: string;
   public timeZone: number = -10;
+  public token?: string;
   public location?: string;
   public lastLogOn: string = '';
   public getCommaSeparatedAssignedRoles?: string;

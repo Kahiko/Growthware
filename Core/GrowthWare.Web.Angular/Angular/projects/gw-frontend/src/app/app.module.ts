@@ -3,7 +3,7 @@ import { UrlSerializer } from '@angular/router';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtModule } from "@auth0/angular-jwt";
 // Angular Material
 import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b/c of an injection error when loading component from library that uses angular material
@@ -18,6 +18,7 @@ import { SystemModule } from './skins/system/system.module';
 import { AppComponent } from './app.component';
 // Application
 import { AuthGuard } from './guards/auth.guard';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -46,10 +47,10 @@ export function tokenGetter() {
     ToastModule,
   ],
   providers: [
-    AuthGuard, {
-    provide: UrlSerializer,
-    useClass: LowerCaseUrlSerializer
-  }],
+    AuthGuard,
+    { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

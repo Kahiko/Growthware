@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
@@ -7,6 +7,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
 import { IAccountProfile } from './account-profile.model';
+import { IAuthenticationResponse } from './authentication-response.model';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -15,6 +16,7 @@ import { Router } from '@angular/router';
 export class AccountService {
 
   private _Account: string = '';
+  private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_Authenticate = '';
   private _Api_GetAccount: string = '';
@@ -29,6 +31,10 @@ export class AccountService {
   }
   public set account(value: string) {
     this._Account = value;
+  }
+
+  public get authenticationResponse(): IAuthenticationResponse {
+    return this._AuthenticationResponse;
   }
 
   public get addModalId(): string {
@@ -87,9 +93,10 @@ export class AccountService {
       this._HttpClient.post<String>(this._Api_Authenticate, null, mHttpOptions).subscribe({
         next: (response: any) => {
           localStorage.setItem("jwt", response.token);
+          this._Account = response.account;
+          this._AuthenticationResponse = response;
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
-          this._Account = account;
           this._Router.navigate(['home']);
           this._IsAuthenticated.next(true);
           resolve(true);
