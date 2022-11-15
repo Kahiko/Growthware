@@ -90,9 +90,9 @@ export class AccountService {
         }),
         params: mQueryParameter,
       };
-      this._HttpClient.post<String>(this._Api_Authenticate, null, mHttpOptions).subscribe({
+      this._HttpClient.post<IAuthenticationResponse>(this._Api_Authenticate, null, mHttpOptions).subscribe({
         next: (response: any) => {
-          localStorage.setItem("jwt", response.token);
+          localStorage.setItem("jwt", response.jwtToken);
           this._Account = response.account;
           this._AuthenticationResponse = response;
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);

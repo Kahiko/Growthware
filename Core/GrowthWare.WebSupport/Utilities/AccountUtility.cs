@@ -73,6 +73,7 @@ public static class AccountUtility
                     // TODO: generate jwt and refresh tokens
                     var jwtToken = generateJwtToken(mAccountProfile);
                     var refreshToken = generateRefreshToken(ipAddress);
+                    mAccountProfile.Token = jwtToken;
                     mAccountProfile.RefreshTokens.Add(refreshToken);
 
                 }
