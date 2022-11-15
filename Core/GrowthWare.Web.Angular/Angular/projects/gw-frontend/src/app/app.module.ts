@@ -19,6 +19,7 @@ import { AppComponent } from './app.component';
 // Application
 import { AuthGuard } from './guards/auth.guard';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 export function tokenGetter() {
   return localStorage.getItem("jwt");
@@ -50,6 +51,7 @@ export function tokenGetter() {
     AuthGuard,
     { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
   bootstrap: [AppComponent]
 })
