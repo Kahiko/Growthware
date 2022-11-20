@@ -121,9 +121,9 @@ namespace GrowthWare.BusinessLogic
                     m_DFunctions.Profile = new MFunctionProfile();
                     m_DFunctions.SecurityEntitySeqId = securityEntitySeqId;
                     mDSFunctions = m_DFunctions.GetFunctions;
-                    bool mHasAssingedRoles = false;
+                    bool mHasAssignedRoles = false;
                     bool mHasGroups = false;
-                    if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssingedRoles = true;
+                    if (mDSFunctions.Tables[1].Rows.Count > 0) mHasAssignedRoles = true;
                     if (mDSFunctions.Tables[2].Rows.Count > 0) mHasGroups = true;
                     DataRow[] mGroups = null;
                     DataRow[] mAssignedRoles = null;
@@ -133,7 +133,7 @@ namespace GrowthWare.BusinessLogic
                     {
                         mDerivedRoles = item.GetChildRows("DerivedRoles");
                         mAssignedRoles = null;
-                        if (mHasAssingedRoles) mAssignedRoles = item.GetChildRows("AssignedRoles");
+                        if (mHasAssignedRoles) mAssignedRoles = item.GetChildRows("AssignedRoles");
                         mGroups = null;
                         if (mHasGroups) mGroups = item.GetChildRows("Groups");
                         MFunctionProfile mProfile = new MFunctionProfile(item, mDerivedRoles, mAssignedRoles, mGroups);
