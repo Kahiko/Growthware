@@ -1,10 +1,10 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport;
 using GrowthWare.WebSupport.Utilities;
+using GrowthWare.WebSupport.Utilities.Jwt;
 
 namespace GrowthWare.Web.Angular.Controllers;
 
@@ -109,7 +109,7 @@ public class GrowthwareAPIController : AbstractController
         return true;
     }
 
-    [Authorize]
+    [Authorize("Search_Accounts")]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)
     {
@@ -135,7 +135,7 @@ public class GrowthwareAPIController : AbstractController
         return mRetVal;
     }
 
-    [Authorize]
+    [Authorize("Search_Functions")]
     [HttpPost("SearchFunctions")]
     public String SearchFunctions(UISearchCriteria searchCriteria)
     {

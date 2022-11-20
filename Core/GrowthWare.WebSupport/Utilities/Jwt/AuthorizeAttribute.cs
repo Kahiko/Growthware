@@ -14,10 +14,13 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
     readonly string m_Action = string.Empty;
     public AuthorizeAttribute(string action)
     {
-        this.m_Action = action;
+        if(action != null)
+        {
+            this.m_Action = action;
+        }
     }
 
-    public AuthorizeAttribute(){}
+    public AuthorizeAttribute() { }
 
     public void OnAuthorization(AuthorizationFilterContext context)
     {
@@ -30,15 +33,18 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
 
         // authorization
         MAccountProfile mAccount = (MAccountProfile)context.HttpContext.Items["AccountProfile"];
-        string mAction = (string)context.HttpContext.Items["Action"];
-        MFunctionProfile mFunction = FunctionUtility.GetProfile(mAction, context.HttpContext);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
-        context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
-        context.HttpContext.Items["Function"] = mFunction;
-        if (mAccount == null || !mSecurityInfo.MayView)
+        if (!String.IsNullOrEmpty(this.m_Action))
         {
-            // not logged in or role not authorized
-            context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            MFunctionProfile mFunction = FunctionUtility.GetProfile(this.m_Action, context.HttpContext);
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
+            context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
+            context.HttpContext.Items["Function"] = mFunction;
+            if (mAccount == null || !mSecurityInfo.MayView)
+            {
+                // not logged in or role not authorized
+                context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
+            }
         }
+
     }
 }
