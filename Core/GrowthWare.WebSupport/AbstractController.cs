@@ -19,11 +19,11 @@ public abstract class AbstractController : ControllerBase
     private string m_LogPriority = string.Empty;
 
     // returns the current authenticated account (null if not logged in)
-    public MAccountProfile Account => (MAccountProfile)HttpContext.Items["AccountProfile"];
+    public MAccountProfile m_AccountProfile => (MAccountProfile)HttpContext.Items["AccountProfile"];
     // returns the current authenticated accounts client choices (null if not logged in)
-    public MClientChoices ClientChoices => (MClientChoices)HttpContext.Items["ClientChoices"];
+    public MClientChoices m_ClientChoices => (MClientChoices)HttpContext.Items["ClientChoices"];
     // returns the current security entity (default as defined in GrowthWare.json)
-    public MSecurityEntity SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
+    public MSecurityEntity m_SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
 
     [AllowAnonymous]
     [HttpPost("Authenticate")]
@@ -102,7 +102,6 @@ public abstract class AbstractController : ControllerBase
         return Ok(mRetVal);
     }
 
-
     [HttpGet("GetAccount")]
     public MAccountProfile GetAccount(string account)
     {
@@ -147,7 +146,7 @@ public abstract class AbstractController : ControllerBase
     {
         List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;
-        if(this.Account != null && this.Account.Account != "Anonymous") 
+        if(this.m_AccountProfile != null && this.m_AccountProfile.Account != "Anonymous") 
         {
             mNavLink = new MNavLink("home", "home", "Home");
             mRootNavLinks.Add(mNavLink);
