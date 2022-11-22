@@ -14,7 +14,7 @@ using GrowthWare.Framework.Models;
 namespace GrowthWare.WebSupport.Utilities;
 public static class AccountUtility
 {
-    private static String s_CachedAnonymousAccount = "AnonymousProfile";
+    private static MAccountProfile m_CachedAnonymousAccount = null;
     private static String s_AnonymousAccount = "Anonymous";
 
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
@@ -32,7 +32,6 @@ public static class AccountUtility
         {
             int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
             account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
-            mAccountProfile = AccountUtility.GetAccount(account);
         }        
         if(mAccountProfile != null)
         {
@@ -170,7 +169,19 @@ public static class AccountUtility
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = mBAccount.GetProfile(account);
+            if(account != s_AnonymousAccount)
+            {
+                mRetVal = mBAccount.GetProfile(account);
+            }
+            else
+            {
+                mRetVal = m_CachedAnonymousAccount;
+                if(mRetVal == null)
+                {
+                    m_CachedAnonymousAccount = mBAccount.GetProfile(account);
+                    mRetVal = m_CachedAnonymousAccount;
+                }
+            }
         }
         catch (InvalidOperationException)
         {
