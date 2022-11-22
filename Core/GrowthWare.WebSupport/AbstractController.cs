@@ -120,6 +120,28 @@ public abstract class AbstractController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetAppSettings")]
+    public UIAppSettings GetAppSettings()
+    {
+        UIAppSettings mRetVal = new UIAppSettings();
+        if(this.m_LogPriority == string.Empty)
+        {
+            this.m_LogPriority = ConfigSettings.LogPriority;
+        }
+        if(this.m_ApplicationName == string.Empty)
+        {
+            this.m_ApplicationName = ConfigSettings.AppDisplayedName;
+        }
+        if(this.m_Version == string.Empty)
+        {
+            this.m_Version = ConfigSettings.Version;
+        }
+        mRetVal.LogPriority = this.m_LogPriority;
+        mRetVal.Name = this.m_ApplicationName;
+        mRetVal.Version = this.m_Version;
+        return mRetVal;
+    }
+
     [HttpGet("GetLinks")]
     public List<MNavLink> GetLinks()
     {
@@ -159,26 +181,12 @@ public abstract class AbstractController : ControllerBase
         return mRootNavLinks;
     }
 
-    [HttpGet("GetAppSettings")]
-    public UIAppSettings GetAppSettings()
+    private string ipAddress()
     {
-        UIAppSettings mRetVal = new UIAppSettings();
-        if(this.m_LogPriority == string.Empty)
-        {
-            this.m_LogPriority = ConfigSettings.LogPriority;
-        }
-        if(this.m_ApplicationName == string.Empty)
-        {
-            this.m_ApplicationName = ConfigSettings.AppDisplayedName;
-        }
-        if(this.m_Version == string.Empty)
-        {
-            this.m_Version = ConfigSettings.Version;
-        }
-        mRetVal.LogPriority = this.m_LogPriority;
-        mRetVal.Name = this.m_ApplicationName;
-        mRetVal.Version = this.m_Version;
-        return mRetVal;
+        if (Request.Headers.ContainsKey("X-Forwarded-For"))
+            return Request.Headers["X-Forwarded-For"];
+        else
+            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 
     [HttpPost("Log")]
@@ -248,13 +256,5 @@ public abstract class AbstractController : ControllerBase
             Expires = DateTime.UtcNow.AddDays(7)
         };
         Response.Cookies.Append("refreshToken", token, cookieOptions);
-    }
-
-    private string ipAddress()
-    {
-        if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            return Request.Headers["X-Forwarded-For"];
-        else
-            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 }
