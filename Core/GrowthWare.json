@@ -39,7 +39,7 @@
     "Development_Auto_Create_Account_StatusId": "4",
     "Development_DAL": "SQLServer",
     "Development_DAL_SQLServer_Assembly_Name": "GrowthWare.DataAccess",
-    "Development_DAL_SQLServer_Connectionstring": "server=(local);Integrated Security=SSPI;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
+    "Development_DAL_SQLServer_ConnectionString": "server=(local);Integrated Security=SSPI;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
     "Development_DAL_SQLServer_Name_Space": "GrowthWare.DataAccess.SQLServer",
     "Development_Default_Security_Entity_ID": "1",
     "Development_Enable_Cache": "true",

@@ -33,7 +33,7 @@ namespace GrowthWare.Framework
             String mDal = DataAccessLayer;
             if(m_ConnectionString == null || (string.IsNullOrEmpty(m_ConnectionString) || string.IsNullOrWhiteSpace(m_ConnectionString)))
             {
-                m_ConnectionString = GetAppSettingValue("DAL_" + mDal + "_Connectionstring", true);
+                m_ConnectionString = GetAppSettingValue("DAL_" + mDal + "_ConnectionString", true);
                 try
                 {
                     CryptoUtility.Decrypt(m_ConnectionString, EncryptionType);
