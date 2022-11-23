@@ -37,7 +37,6 @@ public abstract class AbstractController : ControllerBase
         }
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mAuthenticationResponse.RefreshToken);
-        HttpContext.Items["AccountProfile"] = mAccountProfile;
         return Ok(mAuthenticationResponse);
     }
 
