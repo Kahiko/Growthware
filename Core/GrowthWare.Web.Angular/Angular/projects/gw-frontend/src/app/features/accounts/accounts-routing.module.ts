@@ -4,7 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { AccountDetailsComponent, LoginComponent, SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account';
 
 const childRoutes: Routes = [
-  { path: '', component: SearchAccountsComponent},
+  { path: 'search-accounts', component: SearchAccountsComponent},
   { path: 'edit-account', component: AccountDetailsComponent },
   { path: 'edit-my-account', component: AccountDetailsComponent },
   { path: 'login', component: LoginComponent}
