@@ -40,7 +40,7 @@ public interface IDatabaseFunctions
         ///          ([col1], [col2]) VALUES
         ///         ,(data1, 'data2')
         /// 
-        /// Note: Formating done for example only.
+        /// Note: Formatting done for example only.
         /// </returns>
         /// <remarks>
         /// All properties must be populated first if not this will may have adverse effects.
@@ -62,7 +62,7 @@ public interface IDatabaseFunctions
         /// A method to return m_TableName
         /// </summary>
         /// <remarks>
-        ///     Avoids adding a propery that would be then
+        ///     Avoids adding a property that would be then
         ///     need to be accounted for in any of the reflection 
         ///     loop logic dealing with properties.
         /// </remarks>
