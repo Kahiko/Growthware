@@ -22,7 +22,7 @@ export class JwtInterceptor implements HttpInterceptor {
     // Here is where you would alter the code if you have more than on API
     const mRequestURL = this._GWCommon.baseURL + 'GrowthwareAPI';
     const mIsApiUrl = request.url.startsWith(mRequestURL);
-    console.log(mRequestURL);
+    // console.log(mRequestURL);
     if (mIsLoggedIn && mIsApiUrl) {
       request = request.clone({
           setHeaders: { Authorization: `Bearer ${mAuthenticationResponse.jwtToken}` }
