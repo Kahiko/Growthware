@@ -76,14 +76,19 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             {
                 DataRow mRow = mDataTable.NewRow();
                 PropertyInfo[] mProperties = item.GetType().GetProperties();
-                foreach (PropertyInfo mProperty in mProperties)
+                foreach (PropertyInfo mPropertyItem in mProperties)
                 {
-                    var mValue = mProperty.GetValue(item, null);
-                    if (mValue == null || string.IsNullOrEmpty(mValue.ToString()) || string.IsNullOrWhiteSpace(mValue.ToString()))
+                    var mValue = mPropertyItem.GetValue(item, null);
+                    var mPropertyType = mPropertyItem.PropertyType;
+                    if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
                     {
-                        mValue = " ";
+                        mPropertyType = mPropertyType.GetGenericArguments()[0];
                     }
-                    mRow[mProperty.Name] = mValue;
+                    if ((mValue == null || string.IsNullOrEmpty(mValue.ToString()) || string.IsNullOrWhiteSpace(mValue.ToString())))
+                    {
+                        mValue = DBNull.Value;
+                    }
+                    mRow[mPropertyItem.Name] = mValue;
                 }
                 mDataTable.Rows.Add(mRow);
             }
