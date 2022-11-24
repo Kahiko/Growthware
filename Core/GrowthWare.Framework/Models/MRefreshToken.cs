@@ -4,11 +4,11 @@ using System.Data;
 using GrowthWare.Framework.Models.Base;
 
 namespace GrowthWare.Framework.Models;
-public class RefreshToken : AbstractBaseModel
+public class MRefreshToken : AbstractDatabaseFunctions
 {
-    public RefreshToken(){}
+    public MRefreshToken(){}
     
-    public RefreshToken(DataRow dataRow)
+    public MRefreshToken(DataRow dataRow)
     {
         DateTime mDateTime = DateTime.Now;
         this.RefreshTokenId = base.GetInt(dataRow, "RefreshTokenId");
