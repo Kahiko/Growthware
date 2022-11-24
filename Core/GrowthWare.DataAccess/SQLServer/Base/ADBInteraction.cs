@@ -59,10 +59,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         }
 
         /// <summary>
-        /// Performs a bulk upload of MBaseDatabaseProfile objects into the
+        /// Performs a bulk upload of IDatabaseFunctions objects into the
         /// database. Note: Requires an object with a primary key!
         /// </summary>
-        /// <param name="listOfIDatabaseFunctions">MBaseDatabaseProfile[]</param>
+        /// <param name="listOfIDatabaseFunctions">List of IDatabaseFunctions</param>
         /// <param name="doDelete">bool</param>
         internal void BulkInsert(List<IDatabaseFunctions> listOfIDatabaseFunctions, bool doDelete)
         {

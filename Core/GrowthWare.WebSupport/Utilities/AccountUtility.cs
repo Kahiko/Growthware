@@ -122,9 +122,9 @@ public static class AccountUtility
         return mToken;
     }
 
-    public static RefreshToken generateRefreshToken(string ipAddress)
+    public static MRefreshToken generateRefreshToken(string ipAddress)
     {
-        var mRetVal = new RefreshToken
+        var mRetVal = new MRefreshToken
         {
             // token is a cryptographically strong random sequence of values
             Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),
