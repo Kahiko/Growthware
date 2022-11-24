@@ -210,7 +210,7 @@ namespace GrowthWare.DataAccess.SQLServer
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
 
-        void SaveRefreshTokens()
+        void IAccount.SaveRefreshTokens()
         {
             base.BulkInsert(this.m_Profile.RefreshTokens.ToArray(), true);
         }
