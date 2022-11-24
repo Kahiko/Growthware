@@ -212,7 +212,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         void IAccount.SaveRefreshTokens()
         {
-            base.BulkInsert(this.m_Profile.RefreshTokens.ToArray(), true);
+            base.BulkInsert(this.m_Profile.RefreshTokens.ToArray(), true, false);
         }
 
         void IAccount.SaveRoles()

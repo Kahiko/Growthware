@@ -62,109 +62,139 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// Performs a bulk upload of IDatabaseFunctions objects into the
         /// database. Note: Requires an object with a primary key!
         /// </summary>
-        /// <param name="listOfIDatabaseFunctions">An array of IDatabaseFunctions</param>
+        /// <param name="listOfProfiles">An array of IDatabaseFunctions</param>
         /// <param name="doDelete"></param>
-        internal void BulkInsert(IDatabaseFunctions[] listOfIDatabaseFunctions, bool doDelete)
+        /// <param name="includePrimaryKey"></param>
+        internal void BulkInsert(IDatabaseFunctions[] listOfProfiles, bool doDelete, bool includePrimaryKey)
         {
-            string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
-            IDatabaseFunctions mFirstObj = listOfIDatabaseFunctions[0];
-            DataTable mDataTable = mFirstObj.GetEmptyTable(mTempTableName);
-            string mDestinationTableName = mFirstObj.GetTableName();
-            string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
-            // populate table with data from the AzFTLChanges
-            foreach (var item in listOfIDatabaseFunctions)
+            if (listOfProfiles != null && listOfProfiles.Length > 0)
             {
-                DataRow mRow = mDataTable.NewRow();
-                PropertyInfo[] mProperties = item.GetType().GetProperties();
-                foreach (PropertyInfo mPropertyItem in mProperties)
-                {
-                    var mValue = mPropertyItem.GetValue(item, null);
-                    var mPropertyType = mPropertyItem.PropertyType;
-                    if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
-                    {
-                        mPropertyType = mPropertyType.GetGenericArguments()[0];
-                    }
-                    if ((mValue == null || string.IsNullOrEmpty(mValue.ToString()) || string.IsNullOrWhiteSpace(mValue.ToString())))
-                    {
-                        mValue = DBNull.Value;
-                    }
-                    mRow[mPropertyItem.Name] = mValue;
-                }
-                mDataTable.Rows.Add(mRow);
-            }
-            using var mSqlConnection = new SqlConnection(this.ConnectionString);
-            mSqlConnection.Open();
-            SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
-            // 1.) Create Destination Table
-            string mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", mTempTableName, mDestinationTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-            {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            // 2.) Perform SqlBulkCopy of the datatable in a temporary table
-            using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.KeepIdentity, mSqlTransaction))
-            {
-                mSqlBulkCopy.BatchSize = 5000;
-                mSqlBulkCopy.DestinationTableName = mTempTableName;
-                mSqlBulkCopy.WriteToServer(mDataTable);
-            }
-            // 3.) Delete all rows associated from the db if needed
-            if (doDelete)
-            {
-                mCommandText = "DELETE {0} FROM {1} Destination INNER JOIN {2} TempTable ON Destination.{3} = TempTable.{4};";
-                mCommandText = string.Format(mCommandText, mDestinationTableName, mDestinationTableName, mTempTableName, mPrimaryKeyName, mPrimaryKeyName);
-                // Doing the following makes this specific to [dbo].[AzFTLChange] and will be an issue if we start using this for
-                //  a different table, the previous two lines did not delete anything b/c the listOfProfiles
-                //  come with a new primary key and nothing ever got deleted
-                mCommandText = @"DELETE Destination FROM {0} Destination INNER JOIN {1} TempTable ON Destination.[AzFTLScannerLogId] = TempTable.[AzFTLScannerLogId] AND Destination.[Time] = TempTable.[Time] AND Destination.[Parameter] = TempTable.[Parameter] AND Destination.[Channel] = TempTable.[Channel] AND Destination.[FromPort] = TempTable.[FromPort] AND Destination.[ToPort] = TempTable.[ToPort];";
-                mCommandText = string.Format(mCommandText, mDestinationTableName, mTempTableName);
-                using SqlCommand mSqlCommand = new SqlCommand(mCommandText)
-                {
-                    Connection = mSqlConnection,
-                    CommandType = CommandType.Text,
-                    Transaction = mSqlTransaction
-                };
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            // 4.) Insert all the rows from the temp table into AzFTLChange
-            mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", mDestinationTableName, mTempTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-            {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
-            // 5.) finally delete the temporary table
-            mCommandText = string.Format("DROP TABLE {0}", mTempTableName);
-            using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
-            {
-                mSqlCommand.Connection = mSqlConnection;
-                mSqlCommand.CommandType = CommandType.Text;
-                mSqlCommand.Transaction = mSqlTransaction;
-                if (mSqlConnection.State != ConnectionState.Open)
-                {
-                    mSqlConnection.Open();
-                }
-                mSqlCommand.ExecuteNonQuery();
-            }
+                string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
+                IDatabaseFunctions mFirstObj = listOfProfiles[0];
+                DataTable mDataTable = mFirstObj.GetEmptyTable(mTempTableName, includePrimaryKey);
+                string mDestinationTableName = mFirstObj.GetTableName();
+                string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
+                string mForeignKeyName = mFirstObj.GetForeignKeyName();
+                string mCleanPrimaryKeyName = mPrimaryKeyName.Replace("[","").Replace("]","");
+                string mCommandText = string.Empty;
 
-            mSqlTransaction.Commit();
+                // Populate mDataTable with the data from the listOfIDatabaseFunctions
+                foreach (var item in listOfProfiles)
+                {
+                    DataRow mRow = mDataTable.NewRow();
+                    PropertyInfo[] mProperties = item.GetType().GetProperties();
+                    foreach (PropertyInfo mPropertyItem in mProperties) 
+                    {
+                        var mValue = mPropertyItem.GetValue(item, null);
+                        var mPropertyType = mPropertyItem.PropertyType;
+                        // deal with nullable properties
+                        if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            mPropertyType = mPropertyType.GetGenericArguments()[0];
+                        }
+                        if (mValue == null)
+                        {
+                            mValue = DBNull.Value;
+                        }
+                        if(!includePrimaryKey) 
+                        {
+                            if (mCleanPrimaryKeyName.ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
+                            {
+                                mRow[mPropertyItem.Name] = mValue;
+                            }
+                        }
+                    }
+                }
+
+                using var mSqlConnection = new SqlConnection(this.ConnectionString);
+                mSqlConnection.Open();
+                SqlTransaction mSqlTransaction = mSqlConnection.BeginTransaction();
+
+                // 1.) Create Destination Table
+                mCommandText = string.Format("SELECT * INTO {0} FROM {1} Where 1 = 2", mTempTableName, mDestinationTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
+                {
+                    mSqlCommand.Connection = mSqlConnection;
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.Transaction = mSqlTransaction;
+                    if (mSqlConnection.State != ConnectionState.Open)
+                    {
+                        mSqlConnection.Open();
+                    }
+                    mSqlCommand.ExecuteNonQuery();
+                }
+                if (!includePrimaryKey) 
+                {
+                    mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", mTempTableName, mFirstObj.GetPrimaryKeyName());
+                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText)) 
+                    {
+                        mSqlCommand.Connection = mSqlConnection;
+                        mSqlCommand.CommandType = CommandType.Text;
+                        mSqlCommand.Transaction = mSqlTransaction;
+                        if (mSqlConnection.State != ConnectionState.Open)
+                        {
+                            mSqlConnection.Open();
+                        }
+                        mSqlCommand.ExecuteNonQuery();
+                    }
+                }
+
+                // 2.) Perform SqlBulkCopy of the data table in a temporary table
+                using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.KeepIdentity, mSqlTransaction))
+                {
+                    mSqlBulkCopy.BatchSize = 5000;
+                    mSqlBulkCopy.DestinationTableName = mTempTableName;
+                    mSqlBulkCopy.WriteToServer(mDataTable);
+                }
+                // 3.) Delete all rows associated from the db if needed
+                if (doDelete)
+                {
+                    // semi correct should account for the primary key or in other words join on all columns except the primary key
+                    // b/c the primary key if one exists is always unique
+                    // for now I'm going to insist that the Destination have a single foreign key
+                    mCommandText = "DELETE {0} FROM {1} Destination INNER JOIN {2} TempTable ON Destination.{3} = TempTable.{4};";
+                    mCommandText = string.Format(mCommandText, mDestinationTableName, mDestinationTableName, mTempTableName, mForeignKeyName, mForeignKeyName);
+                    using SqlCommand mSqlCommand = new SqlCommand(mCommandText)
+                    {
+                        Connection = mSqlConnection,
+                        CommandType = CommandType.Text,
+                        Transaction = mSqlTransaction
+                    };
+                    if (mSqlConnection.State != ConnectionState.Open)
+                    {
+                        mSqlConnection.Open();
+                    }
+                    mSqlCommand.ExecuteNonQuery();
+                }
+                // 4.) Insert all the rows from the temp table into AzFTLChange
+                mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", mDestinationTableName, mTempTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
+                {
+                    mSqlCommand.Connection = mSqlConnection;
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.Transaction = mSqlTransaction;
+                    if (mSqlConnection.State != ConnectionState.Open)
+                    {
+                        mSqlConnection.Open();
+                    }
+                    mSqlCommand.ExecuteNonQuery();
+                }
+                // 5.) finally delete the temporary table
+                mCommandText = string.Format("DROP TABLE {0}", mTempTableName);
+                using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
+                {
+                    mSqlCommand.Connection = mSqlConnection;
+                    mSqlCommand.CommandType = CommandType.Text;
+                    mSqlCommand.Transaction = mSqlTransaction;
+                    if (mSqlConnection.State != ConnectionState.Open)
+                    {
+                        mSqlConnection.Open();
+                    }
+                    mSqlCommand.ExecuteNonQuery();
+                }
+
+                mSqlTransaction.Commit();
+            }
         }
 
         protected virtual string Cleanup(string stringValue)
@@ -172,8 +202,8 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             string mRetVal = stringValue;
             mRetVal = mRetVal.Replace(";", "");
             mRetVal = mRetVal.Replace("'", "");
-            mRetVal = mRetVal.Replace("\"", ""); 
-            return mRetVal;           
+            mRetVal = mRetVal.Replace("\"", "");
+            return mRetVal;
         }
 
         /// <summary>
@@ -211,7 +241,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         {
                             if (sqlParameters.Length > 0)
                             {
-                                if(forceCommandText != true) 
+                                if (forceCommandText != true)
                                 {
                                     mSqlCommand.CommandType = CommandType.StoredProcedure;
                                 }
@@ -267,7 +297,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         {
                             if (sqlParameters.Length > 0)
                             {
-                                if(forceCommandText != true)
+                                if (forceCommandText != true)
                                 {
                                     mSqlCommand.CommandType = CommandType.StoredProcedure;
                                 }
@@ -319,7 +349,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     {
                         if (sqlParameter.Length > 0)
                         {
-                            if(forceCommandText != true)
+                            if (forceCommandText != true)
                             {
                                 mSqlCommand.CommandType = CommandType.StoredProcedure;
                             }

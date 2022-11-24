@@ -69,10 +69,11 @@ public static class AccountUtility
                     );
                     mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
 
-                    var jwtToken = generateJwtToken(mAccountProfile);
-                    var refreshToken = generateRefreshToken(ipAddress);
-                    mAccountProfile.Token = jwtToken;
-                    mAccountProfile.RefreshTokens.Add(refreshToken);
+                    var mJwtToken = generateJwtToken(mAccountProfile);
+                    var mRefreshToken = generateRefreshToken(ipAddress);
+                    mRefreshToken.AccountSeqId = mAccountProfile.Id;
+                    mAccountProfile.Token = mJwtToken;
+                    mAccountProfile.RefreshTokens.Add(mRefreshToken);
 
                 }
                 if (!mAuthenticated) 
@@ -83,7 +84,7 @@ public static class AccountUtility
                 {
                     mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
                 }
-                AccountUtility.Save(mAccountProfile, false, false);
+                AccountUtility.Save(mAccountProfile, true, false, false);
                 mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
                 mAccountProfile.Password = "";
             }
@@ -122,7 +123,7 @@ public static class AccountUtility
         return mToken;
     }
 
-    public static MRefreshToken generateRefreshToken(string ipAddress)
+    private static MRefreshToken generateRefreshToken(string ipAddress)
     {
         var mRetVal = new MRefreshToken
         {
@@ -233,16 +234,17 @@ public static class AccountUtility
     /// Inserts or updates account information
     /// </summary>
     /// <param name="accountProfile">MAccountProfile</param>
+    /// <param name="saveRefreshTokens">Boolean</param>
     /// <param name="saveRoles">Boolean</param>
     /// <param name="saveGroups">Boolean</param>
     /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
+    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
     {
         if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
         if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
         BAccounts mBAccount = new BAccounts(securityEntityProfile, ConfigSettings.CentralManagement);
-        mBAccount.Save(accountProfile, saveRoles, saveGroups);
+        mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         return accountProfile;
     }
 
@@ -250,13 +252,14 @@ public static class AccountUtility
     /// Inserts or updates account information
     /// </summary>
     /// <param name="accountProfile">MAccountProfile</param>
+    /// <param name="saveRefreshTokens">Boolean</param>
     /// <param name="saveRoles">Boolean</param>
     /// <param name="saveGroups">Boolean</param>
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRoles, bool saveGroups)
+    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        return Save(accountProfile, saveRoles, saveGroups, mSecurityEntityProfile);
+        return Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mSecurityEntityProfile);
     }
 
     public static bool verificationTokenExists(string token)

@@ -6,10 +6,14 @@ using GrowthWare.Framework.Models.Base;
 namespace GrowthWare.Framework.Models;
 public class MRefreshToken : AbstractDatabaseFunctions
 {
-    public MRefreshToken(){}
+    public MRefreshToken()
+    {
+        this.setKeyAndTable();
+    }
     
     public MRefreshToken(DataRow dataRow)
     {
+        this.setKeyAndTable();
         DateTime mDateTime = DateTime.Now;
         this.RefreshTokenId = base.GetInt(dataRow, "RefreshTokenId");
         this.AccountSeqId = base.GetInt(dataRow, "AccountSeqId");
@@ -28,6 +32,13 @@ public class MRefreshToken : AbstractDatabaseFunctions
 
     }
 
+    private void setKeyAndTable()
+    {
+        this.m_ForeignKeyName = "[AccountSeqId]";
+        this.m_PrimaryKeyName = "[RefreshTokenId]";
+        this.m_TableName = "[ZGWSecurity].[RefreshTokens]";
+    }
+
     [Key]
 	public int RefreshTokenId { get; set; }
     public int AccountSeqId { get; set; }
@@ -39,7 +50,7 @@ public class MRefreshToken : AbstractDatabaseFunctions
     public string RevokedByIp { get; set; }
     public string ReplacedByToken { get; set; }
     public string ReasonRevoked { get; set; }
-    public bool IsExpired => DateTime.UtcNow >= Expires;
-    public bool IsRevoked => Revoked != null;
-    public bool IsActive => Revoked == null && !IsExpired;
+    public bool IsExpired() { return DateTime.UtcNow >= Expires; }
+    public bool IsRevoked() { return Revoked != null; }
+    public bool IsActive() { return Revoked == null && !IsExpired(); }
 }

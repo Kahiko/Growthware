@@ -12,12 +12,15 @@ namespace GrowthWare.Framework.Models.Base
     /// Code only no properties.
     /// Inherit from MProfile if you need the base properties as well.
     /// </summary>
-    public abstract class AbstractDatabaseFunctions: IDatabaseFunctions
+    public abstract class AbstractDatabaseFunctions : IDatabaseFunctions
     {
+        // Only needs to be set if you intend on using BulkInsert
+        protected string m_ForeignKeyName = string.Empty;
+
         protected string m_PrimaryKeyName = string.Empty;
 
         protected string m_TableName = string.Empty;
-        
+
         protected HashSet<Type> m_NumTypes = new HashSet<Type>
         {
             typeof(int),  typeof(double),  typeof(decimal),
@@ -94,18 +97,34 @@ namespace GrowthWare.Framework.Models.Base
             return mRetVal;
         }
 
-        DataTable IDatabaseFunctions.GetEmptyTable(string tableName)
+        DataTable IDatabaseFunctions.GetEmptyTable(string tableName, bool includePrimaryKey)
         {
             DataTable mTempRetTable = null;
             DataTable mRetTable = null;
             mTempRetTable = new DataTable(tableName);
+            string mPrimaryKeyName = this.m_PrimaryKeyName.Replace("[","").Replace("]","");
             try
             {
                 mTempRetTable.Locale = CultureInfo.InvariantCulture;
                 PropertyInfo[] mPropertyInfo = this.GetType().GetProperties();
                 foreach (PropertyInfo mPropertyItem in mPropertyInfo)
                 {
-                    mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyItem.PropertyType);
+                    if (mPrimaryKeyName.ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
+                    {
+                        var mPropertyType = mPropertyItem.PropertyType;
+                        if (mPropertyType.IsGenericType && mPropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                        {
+                            mPropertyType = mPropertyType.GetGenericArguments()[0];
+                        }
+                        if(mPropertyItem.Name.ToLowerInvariant() != mPrimaryKeyName.ToLowerInvariant()) 
+                        {
+                            mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
+                        } 
+                        else if (includePrimaryKey) 
+                        {
+                            mTempRetTable.Columns.Add(mPropertyItem.Name, mPropertyType);
+                        }
+                    }
                 }
                 mRetTable = mTempRetTable;
             }
@@ -133,7 +152,7 @@ namespace GrowthWare.Framework.Models.Base
             }
             string mRetVal = this.getInsertTableFragment(usePrimaryKey);
             mRetVal += " VALUES " + this.getInsertDataFragment(usePrimaryKey);
-            return mRetVal;            
+            return mRetVal;
         }
 
         private string getInsertTableFragment(bool usePrimaryKey)
@@ -167,7 +186,7 @@ namespace GrowthWare.Framework.Models.Base
                     {
                         if (mPropertyItem.GetValue(this, null) != null)
                         {
-                            mRetVal +=  (Convert.ToUInt32(mPropertyItem.GetValue(this, null))).ToString() + " ,";
+                            mRetVal += (Convert.ToUInt32(mPropertyItem.GetValue(this, null))).ToString() + " ,";
                         }
                         else
                         {
@@ -176,20 +195,22 @@ namespace GrowthWare.Framework.Models.Base
                     }
                     else if (!IsNumeric(mPropertyItem.PropertyType))
                     {
-                        if (mPropertyItem.GetValue(this, null) != null) 
+                        if (mPropertyItem.GetValue(this, null) != null)
                         {
                             mRetVal += "'" + mPropertyItem.GetValue(this, null).ToString().Replace("'", "''") + "' ,";
-                        } else 
+                        }
+                        else
                         {
                             mRetVal += "'Property was null' ,";
                         }
                     }
                     else
                     {
-                        if (mPropertyItem.GetValue(this, null) != null) 
+                        if (mPropertyItem.GetValue(this, null) != null)
                         {
                             mRetVal += mPropertyItem.GetValue(this, null).ToString() + " ,";
-                        } else 
+                        }
+                        else
                         {
                             mRetVal += "'Property was null' ,";
                         }
@@ -201,7 +222,7 @@ namespace GrowthWare.Framework.Models.Base
                     {
                         if (mPropertyItem.GetValue(this, null) != null)
                         {
-                            mRetVal +=  (Convert.ToUInt32(mPropertyItem.GetValue(this, null))).ToString() + " ,";
+                            mRetVal += (Convert.ToUInt32(mPropertyItem.GetValue(this, null))).ToString() + " ,";
                         }
                         else
                         {
@@ -210,20 +231,22 @@ namespace GrowthWare.Framework.Models.Base
                     }
                     else if (!IsNumeric(mPropertyItem.PropertyType))
                     {
-                        if (mPropertyItem.GetValue(this, null) != null) 
+                        if (mPropertyItem.GetValue(this, null) != null)
                         {
                             mRetVal += "'" + mPropertyItem.GetValue(this, null).ToString() + "' ,";
-                        } else 
+                        }
+                        else
                         {
                             mRetVal += "'Property was null' ,";
                         }
                     }
                     else
                     {
-                        if (mPropertyItem.GetValue(this, null) != null) 
+                        if (mPropertyItem.GetValue(this, null) != null)
                         {
                             mRetVal += mPropertyItem.GetValue(this, null).ToString() + " ,";
-                        } else 
+                        }
+                        else
                         {
                             mRetVal += "'Property was null' ,";
                         }
@@ -253,11 +276,6 @@ namespace GrowthWare.Framework.Models.Base
             return mRetVal;
         }
 
-        string IDatabaseFunctions.GetPrimaryKeyName()
-        {
-            return m_PrimaryKeyName;
-        }
-
         /// <summary>
         /// Returns a String given the a DataRow and Column name.
         /// </summary>
@@ -276,9 +294,19 @@ namespace GrowthWare.Framework.Models.Base
             return mRetVal;
         }
 
-        public string GetTableName()
+        string IDatabaseFunctions.GetForeignKeyName()
         {
-            return m_TableName;
+            return this.m_ForeignKeyName;
+        }
+
+        string IDatabaseFunctions.GetPrimaryKeyName()
+        {
+            return this.m_PrimaryKeyName;
+        }
+
+        string IDatabaseFunctions.GetTableName()
+        {
+            return this.m_TableName;
         }
 
         /// <summary>

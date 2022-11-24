@@ -297,7 +297,7 @@ namespace GrowthWare.BusinessLogic
         /// Dim mBll as new BAccounts(mySecurityEntityProfile)
         /// Dim mSaveRoles As Boolean = False;
         /// Dim mSaveGroups As Boolean = False;
-        /// mMAccountProfile = mbill.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
+        /// mMAccountProfile = mBll.SaveAccount(mMAccountProfile, mSaveRoles, mSaveGroups)
         /// ]]>
         /// </code>
         /// <code language="C#">
@@ -305,14 +305,15 @@ namespace GrowthWare.BusinessLogic
         /// mMAccountProfile.Account = "Account";
         /// mMAccountProfile.Password = CryptoUtility.Encrypt("my password", ConfigSettings.EncryptionType);
         /// mMAccountProfile.UpdatedBy = 1;
-        /// mMAccountProfile.UpdagedDate = Date.Now();
+        /// mMAccountProfile.UpdatedDate = Date.Now();
         /// BAccounts mBll = new BAccounts(mySecurityEntityProfile);
         /// bool mSaveRoles = false;
+        /// bool mSaveRefreshTokens = true
         /// bool mSaveGroups = true;
-        /// mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, mSaveRoles, mSaveGroups);
+        /// mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
         /// </code>
         /// </example>
-        public void Save(MAccountProfile profile, bool saveRoles, bool saveGroups)
+        public void Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
             m_DAccounts.Profile = profile;
@@ -322,6 +323,10 @@ namespace GrowthWare.BusinessLogic
                 if (saveGroups)
                 {
                     m_DAccounts.SaveGroups();
+                }
+                if(saveRefreshTokens)
+                {
+                    m_DAccounts.SaveRefreshTokens();
                 }
                 if (saveRoles)
                 {
