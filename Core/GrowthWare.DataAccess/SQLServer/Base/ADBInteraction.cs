@@ -62,9 +62,9 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// Performs a bulk upload of IDatabaseFunctions objects into the
         /// database. Note: Requires an object with a primary key!
         /// </summary>
-        /// <param name="listOfIDatabaseFunctions">List of IDatabaseFunctions</param>
-        /// <param name="doDelete">bool</param>
-        internal void BulkInsert(List<IDatabaseFunctions> listOfIDatabaseFunctions, bool doDelete)
+        /// <param name="listOfIDatabaseFunctions">An array of IDatabaseFunctions</param>
+        /// <param name="doDelete"></param>
+        internal void BulkInsert(IDatabaseFunctions[] listOfIDatabaseFunctions, bool doDelete)
         {
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
             IDatabaseFunctions mFirstObj = listOfIDatabaseFunctions[0];
