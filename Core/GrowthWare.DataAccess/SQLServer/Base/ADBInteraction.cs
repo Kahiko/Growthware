@@ -165,7 +165,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     }
                     mSqlCommand.ExecuteNonQuery();
                 }
-                // 4.) Insert all the rows from the temp table into AzFTLChange
+                // 4.) Insert all the rows from the temp table into Destination
                 mCommandText = string.Format("INSERT INTO {0} SELECT * FROM {1}", mDestinationTableName, mTempTableName);
                 using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
                 {
