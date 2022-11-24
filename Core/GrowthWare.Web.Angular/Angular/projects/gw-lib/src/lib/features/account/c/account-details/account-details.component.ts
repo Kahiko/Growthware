@@ -139,27 +139,27 @@ export class AccountDetailsComponent implements OnInit {
     if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],
+        email: [this._AccountProfile.email],
         failedAttempts: [0],
-        statusSeqId: [this._AccountProfile.status],
-        isSystemAdmin: [false],
         firstName: [this._AccountProfile.firstName],
+        isSystemAdmin: [false],
         lastName: [this._AccountProfile.lastName],
         middleName: [this._AccountProfile.middleName],
         preferredName: [this._AccountProfile.preferredName],
-        email: [this._AccountProfile.email],
+        statusSeqId: [this._AccountProfile.status],
         timeZone: [this._AccountProfile.timeZone],
       });
     } else {
       this.frmAccount = this._FormBuilder.group({
         account: ['', [Validators.required]],
+        email: [''],
         failedAttempts: [0],
-        statusSeqId: [1],
-        isSystemAdmin: [false],
         firstName: [''],
+        isSystemAdmin: [false],
         lastName: [''],
         middleName: [''],
         preferredName: [''],
-        email: [''],
+        statusSeqId: [1],
         timeZone: [-10],
       });
     }
