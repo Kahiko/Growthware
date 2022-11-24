@@ -23,6 +23,7 @@ export class AccountDetailsComponent implements OnInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
+  selectedStatus: number = 0;
   selectedTimeZone: number = 0;
 
   showDerived: boolean = true;
@@ -139,6 +140,7 @@ export class AccountDetailsComponent implements OnInit {
 
   private populateForm(): void {
     if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
+      this.selectedStatus = this._AccountProfile.status;
       this.selectedTimeZone = this._AccountProfile.timeZone;
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],

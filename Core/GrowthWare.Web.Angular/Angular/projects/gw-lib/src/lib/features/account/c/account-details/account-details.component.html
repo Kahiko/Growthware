@@ -49,7 +49,7 @@
           <mat-grid-tile> <!--Status-->
             <mat-form-field class="mat-form-field" appearance="fill">
               <mat-label>Status</mat-label>
-              <mat-select>
+              <mat-select [(value)]="selectedStatus">
                 <mat-option *ngFor="let item of validStatus" [value]="item.id">
                   {{item.name}}
                 </mat-option>
