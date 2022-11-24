@@ -63,9 +63,8 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// database. Note: Requires an object with a primary key!
         /// </summary>
         /// <param name="listOfIDatabaseFunctions">MBaseDatabaseProfile[]</param>
-        /// <param name="sqlConnection">SqlConnection</param>
         /// <param name="doDelete">bool</param>
-        internal void BulkInsert(List<IDatabaseFunctions> listOfIDatabaseFunctions, SqlConnection sqlConnection, bool doDelete)
+        internal void BulkInsert(List<IDatabaseFunctions> listOfIDatabaseFunctions, bool doDelete)
         {
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
             IDatabaseFunctions mFirstObj = listOfIDatabaseFunctions[0];
