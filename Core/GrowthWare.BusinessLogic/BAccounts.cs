@@ -118,7 +118,7 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Returns Account model based given the acccount name 
+        /// Returns Account model based given the account name 
         /// </summary>
         /// <param name="account">String</param>
         /// <returns>MAccountProfile</returns>
@@ -127,13 +127,13 @@ namespace GrowthWare.BusinessLogic
         /// <code language="VB.NET">
         /// <![CDATA[
         /// Dim mBll as new BAccounts(mySecurityEntityProfile)
-        /// Dim mMAccountProfile as MAccountProfile = mbill.GetAccountProfile("Tester")
+        /// Dim mMAccountProfile as MAccountProfile = mBill.GetAccountProfile("Tester")
         /// ]]>
         /// </code>
         /// <code language="C#">
         /// <![CDATA[
         /// BAccounts mBll = new BAccounts(mySecurityEntityProfile);
-        /// MAccountProfile mMAccountProfile = mbill.GetAccountProfile("Tester");
+        /// MAccountProfile mMAccountProfile = mBill.GetAccountProfile("Tester");
         /// ]]>
         /// </code>
         /// </example>
@@ -310,7 +310,7 @@ namespace GrowthWare.BusinessLogic
         /// bool mSaveRoles = false;
         /// bool mSaveRefreshTokens = true
         /// bool mSaveGroups = true;
-        /// mMAccountProfile = mbill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
+        /// mMAccountProfile = mBill.SaveAccount(ref mMAccountProfile, saveRefreshTokens, mSaveRoles, mSaveGroups);
         /// </code>
         /// </example>
         public void Save(MAccountProfile profile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
