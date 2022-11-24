@@ -71,9 +71,9 @@ public class JwtUtils : IJwtUtils
         }
     }
 
-    public RefreshToken GenerateRefreshToken(string ipAddress)
+    public MRefreshToken GenerateRefreshToken(string ipAddress)
     {
-        var refreshToken = new RefreshToken
+        var refreshToken = new MRefreshToken
         {
             // token is a cryptographically strong random sequence of values
             Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),

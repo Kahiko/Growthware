@@ -5,5 +5,5 @@ public interface IJwtUtils
 {
     public string GenerateJwtToken(MAccountProfile account);
     public string ValidateJwtToken(string token);
-    public RefreshToken GenerateRefreshToken(string ipAddress);
+    public MRefreshToken GenerateRefreshToken(string ipAddress);
 }
