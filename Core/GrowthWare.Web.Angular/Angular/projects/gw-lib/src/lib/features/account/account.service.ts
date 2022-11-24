@@ -21,6 +21,7 @@ export class AccountService {
   private _Api_Authenticate = '';
   private _Api_GetAccount: string = '';
   private _Api_GetLinks: string = '';
+  private _CurrentAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
   private _Reason: string = '';
@@ -39,6 +40,10 @@ export class AccountService {
 
   public get addModalId(): string {
     return 'addAccount'
+  }
+
+  public get currentAccount(): string {
+    return this._CurrentAccount;
   }
 
   public get defaultAccount(): string {
@@ -94,6 +99,7 @@ export class AccountService {
         next: (response: any) => {
           localStorage.setItem("jwt", response.jwtToken);
           this._Account = response.account;
+          this._CurrentAccount = this._Account;
           this._AuthenticationResponse = response;
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();

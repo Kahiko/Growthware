@@ -67,16 +67,19 @@ export class AccountDetailsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this._AccountSvc.getAccount(this._AccountSvc.account).then((accountProfile: IAccountProfile) => {
+    let mDesiredAccount: string = '';
+    if(this._Router.url === '/search-accounts') {
+      mDesiredAccount = this._AccountSvc.account;
+      this.canCancel = true;
+    } else {
+      mDesiredAccount = this._AccountSvc.currentAccount;
+    }
+    this._AccountSvc.getAccount(mDesiredAccount).then((accountProfile: IAccountProfile) => {
       this._AccountProfile = accountProfile;
       this.populateForm();
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
-    // console.log(this._Router.url);
-    if(this._Router.url === '/search-accounts') {
-      this.canCancel = true;
-    }
 
     if(this._Router.url === '/edit-my-account') {
       this.canDelete = false;
