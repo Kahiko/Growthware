@@ -70,7 +70,7 @@
           <mat-grid-tile> <!--Timezone-->
             <mat-form-field appearance="fill">
               <mat-label>Timezone</mat-label>
-              <mat-select>
+              <mat-select [(value)]="selectedTimeZone">
                 <mat-option *ngFor="let item of validTimezones" [value]="item.id">
                   {{item.name}}
                 </mat-option>
@@ -79,10 +79,11 @@
           </mat-grid-tile>
           <mat-grid-tile></mat-grid-tile> <!--blank-->
           <mat-grid-tile></mat-grid-tile> <!--blank-->
-          <mat-grid-tile>1</mat-grid-tile>
-          <mat-grid-tile>2</mat-grid-tile>
-          <mat-grid-tile>3</mat-grid-tile>
-          <mat-grid-tile>4</mat-grid-tile>
+          <!--Blank row-->
+          <mat-grid-tile></mat-grid-tile> <!--1-->
+          <mat-grid-tile></mat-grid-tile> <!--2-->
+          <mat-grid-tile></mat-grid-tile> <!--3-->
+          <mat-grid-tile></mat-grid-tile> <!--4-->
         </mat-grid-list>
       </div>
     </mat-tab>
