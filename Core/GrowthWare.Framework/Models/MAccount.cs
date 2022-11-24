@@ -17,18 +17,18 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     private Collection<string> m_AssignedRoles = new Collection<string>();
     private Collection<string> m_AssignedGroups = new Collection<string>();
     private Collection<string> m_DerivedRoles = new Collection<string>();
-    private List<RefreshToken> m_RefreshTokens = new List<RefreshToken>();
+    private List<MRefreshToken> m_RefreshTokens = new List<MRefreshToken>();
     private static String s_RoleColumn = "Roles";
     private static String s_GroupColumn = "Groups";
     #endregion
 
     #region Private Methods
-    private static void setRefreshTokens(ref List<RefreshToken> refreshTokens, DataTable refreshTokenData)
+    private static void setRefreshTokens(ref List<MRefreshToken> refreshTokens, DataTable refreshTokenData)
     {
-        refreshTokens = new List<RefreshToken>();
+        refreshTokens = new List<MRefreshToken>();
         foreach (DataRow row in refreshTokenData.Rows)
         {
-            RefreshToken mRefreshToken = new RefreshToken(row);
+            MRefreshToken mRefreshToken = new MRefreshToken(row);
             refreshTokens.Add(mRefreshToken);
         }
     }
@@ -284,7 +284,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </summary>
     public String PreferredName { get; set; }
 
-    public List<RefreshToken> RefreshTokens 
+    public List<MRefreshToken> RefreshTokens 
     {
         get
         {
