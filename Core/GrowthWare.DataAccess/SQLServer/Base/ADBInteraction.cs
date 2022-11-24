@@ -217,7 +217,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         }
         #endregion
 
-        #region IDDBInteraction Members
+        #region IDBInteraction Members
         /// <summary>
         /// Executes a non Query given the commandText and sql parameters if any
         /// </summary>
@@ -455,7 +455,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         }
 
         /// <summary>
-        /// Retruns a SqlParameter given the ParameterName, ParameterValue and Direction.
+        /// Returns a SqlParameter given the ParameterName, ParameterValue and Direction.
         /// </summary>
         /// <param name="parameterName">String</param>
         /// <param name="parameterValue">Object</param>

@@ -120,7 +120,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     #region "Public Methods"
 
     /// <summary>
-    /// Provides a new account profile with the default vaules
+    /// Provides a new account profile with the default values
     /// </summary>
     /// <remarks></remarks>
     public MAccountProfile()
@@ -207,7 +207,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     }
 
     /// <summary>
-    /// Represents the roles that have been assigned either directly or through assoication of a role to a group.
+    /// Represents the roles that have been assigned either directly or through association of a role to a group.
     /// </summary>
     public Collection<String> DerivedRoles
     {
@@ -312,7 +312,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     public string Location { get; set; }
 
     /// <summary>
-    /// The date and time the account was last loged on
+    /// The date and time the account was last logged on
     /// </summary>
     public DateTime LastLogOn { get; set; }
 
