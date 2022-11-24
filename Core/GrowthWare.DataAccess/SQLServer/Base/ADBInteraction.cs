@@ -62,18 +62,18 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// Performs a bulk upload of MBaseDatabaseProfile objects into the
         /// database. Note: Requires an object with a primary key!
         /// </summary>
-        /// <param name="listOfProfiles">MBaseDatabaseProfile[]</param>
+        /// <param name="listOfIDatabaseFunctions">MBaseDatabaseProfile[]</param>
         /// <param name="sqlConnection">SqlConnection</param>
         /// <param name="doDelete">bool</param>
-        internal void BulkInsert(List<IDatabaseFunctions> listOfProfiles, SqlConnection sqlConnection, bool doDelete)
+        internal void BulkInsert(List<IDatabaseFunctions> listOfIDatabaseFunctions, SqlConnection sqlConnection, bool doDelete)
         {
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
-            IDatabaseFunctions mFirstObj = listOfProfiles[0];
+            IDatabaseFunctions mFirstObj = listOfIDatabaseFunctions[0];
             DataTable mDataTable = mFirstObj.GetEmptyTable(mTempTableName);
             string mDestinationTableName = mFirstObj.GetTableName();
             string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
             // populate table with data from the AzFTLChanges
-            foreach (var item in listOfProfiles)
+            foreach (var item in listOfIDatabaseFunctions)
             {
                 DataRow mRow = mDataTable.NewRow();
                 PropertyInfo[] mProperties = item.GetType().GetProperties();
