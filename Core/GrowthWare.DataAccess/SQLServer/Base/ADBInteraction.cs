@@ -1,7 +1,7 @@
 using GrowthWare.DataAccess.Interfaces.Base;
 using GrowthWare.Framework.Interfaces;
-using GrowthWare.Framework.Models.Base;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
@@ -27,7 +27,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
 
         #region Private Methods
         /// <summary>
-        /// Formats an error message containging the store procedure name and the parameters/values.
+        /// Formats an error message containing the store procedure name and the parameters/values.
         /// </summary>
         /// <param name="parameters">The sql parameters used when the error was created.</param>
         /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
@@ -65,7 +65,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <param name="listOfProfiles">MBaseDatabaseProfile[]</param>
         /// <param name="sqlConnection">SqlConnection</param>
         /// <param name="doDelete">bool</param>
-        internal void BulkInsert(AbstractDatabaseFunctions[] listOfProfiles, SqlConnection sqlConnection, bool doDelete)
+        internal void BulkInsert(List<IDatabaseFunctions> listOfProfiles, SqlConnection sqlConnection, bool doDelete)
         {
             string mTempTableName = "[" + Guid.NewGuid().ToString() + "]";
             IDatabaseFunctions mFirstObj = listOfProfiles[0];
