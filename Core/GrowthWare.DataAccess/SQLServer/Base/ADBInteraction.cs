@@ -74,7 +74,6 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 string mDestinationTableName = mFirstObj.GetTableName();
                 string mPrimaryKeyName = mFirstObj.GetPrimaryKeyName();
                 string mForeignKeyName = mFirstObj.GetForeignKeyName();
-                string mCleanPrimaryKeyName = mPrimaryKeyName.Replace("[","").Replace("]","");
                 string mCommandText = string.Empty;
 
                 // Populate mDataTable with the data from the listOfIDatabaseFunctions
@@ -97,7 +96,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         }
                         if(!includePrimaryKey) 
                         {
-                            if (mCleanPrimaryKeyName.ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
+                            if (mPrimaryKeyName.Replace("[", "").Replace("]", "").ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
                             {
                                 mRow[mPropertyItem.Name] = mValue;
                             }
