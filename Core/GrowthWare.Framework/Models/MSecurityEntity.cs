@@ -3,16 +3,16 @@ using System.Data;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models.Base;
 
-namespace GrowthWare.Framework.Models
-{
-    /// <summary>
-    /// Represents all of the prperties associated with a Security Entity.
-    /// </summary>
-    [Serializable(), CLSCompliant(true)]
-    public class MSecurityEntity : AbstractBaseModel
-    {
+namespace GrowthWare.Framework.Models;
 
-#region Protected Methods
+/// <summary>
+/// Represents all of the prperties associated with a Security Entity.
+/// </summary>
+[Serializable(), CLSCompliant(true)]
+public class MSecurityEntity : AbstractBaseModel
+{
+
+    #region Protected Methods
         /// <summary>
         /// Initializes all of the properties given a data row.
         /// </summary>
@@ -34,9 +34,9 @@ namespace GrowthWare.Framework.Models
             this.ConnectionString = base.GetString(dataRow, "DAL_STRING");
             EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
         }
-#endregion
+    #endregion
 
-#region Public Methods
+    #region Public Methods
         /// <summary>
         /// Will return a account profile with the default vaules
         /// </summary>
@@ -57,9 +57,9 @@ namespace GrowthWare.Framework.Models
         {
             Initialize(dataRow);
         }
-#endregion
+    #endregion
 
-#region Public Properties
+    #region Public Properties
         /// <summary>
         /// Represents the connection string
         /// </summary>
@@ -120,6 +120,5 @@ namespace GrowthWare.Framework.Models
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Design", "CA1056:UriPropertiesShouldNotBeStrings")]
         public string Url { get; set; }
-#endregion
-    }
+    #endregion
 }
