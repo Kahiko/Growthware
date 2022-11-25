@@ -10,14 +10,12 @@ namespace GrowthWare.WebSupport.Jwt;
 public class JwtMiddleware
 {
     private readonly RequestDelegate _next;
-    private readonly IAccountService m_AccountService;
 
     private MAccountProfile m_AnonymousProfile = null;
     
     [CLSCompliant(false)]
-    public JwtMiddleware(RequestDelegate next, IAccountService accountService)
+    public JwtMiddleware(RequestDelegate next)
     {
-        m_AccountService = accountService;
         _next = next;
     }
 
@@ -29,13 +27,13 @@ public class JwtMiddleware
         if (mAccount != null)
         {
             // attach account to context on successful jwt validation
-            httpContext.Items["AccountProfile"] = m_AccountService.GetAccount(mAccount);
+            httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
         }
         else
         {
             if(this.m_AnonymousProfile == null)
             {
-                this.m_AnonymousProfile = m_AccountService.GetAccount("Anonymous");
+                this.m_AnonymousProfile = accountService.GetAccount("Anonymous");
             }           
             httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
         }
