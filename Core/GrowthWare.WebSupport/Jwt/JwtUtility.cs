@@ -9,7 +9,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Services;
 
-namespace GrowthWare.WebSupport.Utilities.Jwt;
+namespace GrowthWare.WebSupport.Jwt;
 public class JwtUtils : IJwtUtils
 {
     // private readonly AppSettings _appSettings;

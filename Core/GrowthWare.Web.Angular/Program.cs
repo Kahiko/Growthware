@@ -1,6 +1,6 @@
 using GrowthWare.Framework;
 using GrowthWare.WebSupport.Services;
-using GrowthWare.WebSupport.Utilities.Jwt;
+using GrowthWare.WebSupport.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;

@@ -1,6 +1,6 @@
 using GrowthWare.Framework.Models;
 
-namespace GrowthWare.WebSupport.Utilities.Jwt;
+namespace GrowthWare.WebSupport.Jwt;
 public interface IJwtUtils
 {
     public string GenerateJwtToken(MAccountProfile account);

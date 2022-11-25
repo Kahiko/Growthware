@@ -7,7 +7,7 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Services;
 using GrowthWare.WebSupport.Utilities;
-using GrowthWare.WebSupport.Utilities.Jwt;
+using GrowthWare.WebSupport.Jwt;
 
 namespace GrowthWare.WebSupport;
 

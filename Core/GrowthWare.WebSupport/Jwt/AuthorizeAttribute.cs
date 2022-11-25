@@ -1,11 +1,12 @@
 using GrowthWare.Framework.Models;
+using GrowthWare.WebSupport.Utilities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
 
-namespace GrowthWare.WebSupport.Utilities.Jwt;
+namespace GrowthWare.WebSupport.Jwt;
 
 [CLSCompliant(false)]
 [AttributeUsage(AttributeTargets.Class | AttributeTargets.Method)]
