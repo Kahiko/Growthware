@@ -10,14 +10,20 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
+using GrowthWare.WebSupport.Utilities;
 
-namespace GrowthWare.WebSupport.Utilities;
-public static class AccountUtility
+namespace GrowthWare.WebSupport.Services;
+public class AccountService : IAccountService
 {
-    private static MAccountProfile m_CachedAnonymousAccount = null;
-    private static String s_AnonymousAccount = "Anonymous";
+    private MAccountProfile m_CachedAnonymousAccount = null;
+    private String s_AnonymousAccount = "Anonymous";
 
-    public static MAccountProfile Authenticate(string account, string password, string ipAddress)
+    public AccountService() 
+    {
+
+    }
+
+    public MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
@@ -27,7 +33,7 @@ public static class AccountUtility
         {
             mDomainPassed = true;
         }        
-        MAccountProfile mAccountProfile = AccountUtility.GetAccount(account);
+        MAccountProfile mAccountProfile = GetAccount(account);
         if (mDomainPassed && mAccountProfile == null)
         {
             int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
@@ -84,7 +90,7 @@ public static class AccountUtility
                 {
                     mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
                 }
-                AccountUtility.Save(mAccountProfile, true, false, false);
+                Save(mAccountProfile, true, false, false);
                 mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
                 mAccountProfile.Password = "";
             }
@@ -92,13 +98,13 @@ public static class AccountUtility
         return mAccountProfile;
     }
 
-    public static void Delete(int accountSeqId)
+    public void Delete(int accountSeqId)
     {
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBAccount.Delete(accountSeqId);
     }
 
-    private static string generateJwtToken(MAccountProfile account)
+    private string generateJwtToken(MAccountProfile account)
     {
         var mJwtSecurityTokenHandler = new JwtSecurityTokenHandler();
         var mKey = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
@@ -112,7 +118,7 @@ public static class AccountUtility
         return mJwtSecurityTokenHandler.WriteToken(mToken);
     }
 
-    public static string generateResetToken()
+    private string generateResetToken()
     {
         // token is a cryptographically strong random sequence of values
         var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
@@ -123,7 +129,7 @@ public static class AccountUtility
         return mToken;
     }
 
-    private static MRefreshToken generateRefreshToken(string ipAddress)
+    private MRefreshToken generateRefreshToken(string ipAddress)
     {
         var mRetVal = new MRefreshToken
         {
@@ -145,7 +151,7 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    public static string generateVerificationToken()
+    private string generateVerificationToken()
     {
         // token is a cryptographically strong random sequence of values
         var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
@@ -161,7 +167,7 @@ public static class AccountUtility
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public static MAccountProfile GetAccount(String account)
+    public MAccountProfile GetAccount(String account)
     {
         if(String.IsNullOrEmpty(account)) {
             throw new ArgumentException("account can not be null or empty", account);
@@ -199,7 +205,7 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    private static MAccountProfile getAccountByRefreshToken(string token)
+    private MAccountProfile getAccountByRefreshToken(string token)
     {
         if(String.IsNullOrEmpty(token)) 
         {
@@ -211,7 +217,7 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    private static MAccountProfile getAccountByResetToken(string token)
+    private MAccountProfile getAccountByResetToken(string token)
     {
         if(String.IsNullOrEmpty(token)) 
         {
@@ -223,7 +229,7 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    public static bool RefreshTokenExists(string refreshToken) 
+    public bool RefreshTokenExists(string refreshToken) 
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
@@ -239,7 +245,7 @@ public static class AccountUtility
     /// <param name="saveGroups">Boolean</param>
     /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
+    public MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
     {
         if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
         if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
@@ -256,13 +262,13 @@ public static class AccountUtility
     /// <param name="saveRoles">Boolean</param>
     /// <param name="saveGroups">Boolean</param>
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
+    public MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         return Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mSecurityEntityProfile);
     }
 
-    public static bool verificationTokenExists(string token)
+    private bool verificationTokenExists(string token)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);

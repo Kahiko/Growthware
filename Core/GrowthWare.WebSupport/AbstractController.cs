@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.WebSupport.Services;
 using GrowthWare.WebSupport.Utilities;
 using GrowthWare.WebSupport.Utilities.Jwt;
 
@@ -14,6 +15,7 @@ namespace GrowthWare.WebSupport;
 public abstract class AbstractController : ControllerBase
 {
 
+    protected IAccountService m_AccountService;
     private string m_ApplicationName = string.Empty;
     private string m_Version = string.Empty;
     private string m_LogPriority = string.Empty;
@@ -29,10 +31,10 @@ public abstract class AbstractController : ControllerBase
     [HttpPost("Authenticate")]
     public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
     {
-        MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
+        MAccountProfile mAccountProfile = m_AccountService.Authenticate(account, password, ipAddress());
         if (mAccountProfile == null)
         {
-            HttpContext.Items["AccountProfile"] = AccountUtility.GetAccount("Anonymous");
+            HttpContext.Items["AccountProfile"] = m_AccountService.GetAccount("Anonymous");
             return StatusCode(403, "Incorrect account or password");
         }
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
@@ -107,7 +109,7 @@ public abstract class AbstractController : ControllerBase
         MAccountProfile mRetVal = new MAccountProfile();
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
         {
-            mRetVal = AccountUtility.GetAccount(account);
+            mRetVal = m_AccountService.GetAccount(account);
         }
         if(mRetVal == null)
         {
@@ -177,6 +179,15 @@ public abstract class AbstractController : ControllerBase
             mRootNavLinks.Add(mNavLink);
         }
         return mRootNavLinks;
+    }
+
+    [HttpGet("GetSecurityInfo")]
+    public MSecurityInfo GetSecurityInfo(string action) 
+    { 
+        MSecurityInfo mRetVal = new MSecurityInfo();
+        if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException("action", " can not be null or blank!");
+        
+        return mRetVal;
     }
 
     private string ipAddress()

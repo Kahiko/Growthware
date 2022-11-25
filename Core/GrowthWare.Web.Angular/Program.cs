@@ -1,4 +1,5 @@
 using GrowthWare.Framework;
+using GrowthWare.WebSupport.Services;
 using GrowthWare.WebSupport.Utilities.Jwt;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -35,6 +36,7 @@ builder.Services.AddCors(options =>
     });
 });
 // Add services to the container.
+builder.Services.AddHttpContextAccessor();          // Added to accommodate Services that need HttpContext
 
 // builder.Services.AddControllers();               // Commented out
 builder.Services.AddControllersWithViews();         // Added
@@ -45,9 +47,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies", Version = "v1" });
 });
-
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+builder.Services.AddSingleton<IAccountService, AccountService>();
 
 builder.Services.AddSession(options =>
 {
