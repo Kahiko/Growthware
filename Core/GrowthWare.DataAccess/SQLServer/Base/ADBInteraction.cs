@@ -138,7 +138,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 }
 
                 // 2.) Perform SqlBulkCopy of the data table in a temporary table
-                using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.KeepIdentity, mSqlTransaction))
+                using (var mSqlBulkCopy = new SqlBulkCopy(mSqlConnection, SqlBulkCopyOptions.Default, mSqlTransaction))
                 {
                     mSqlBulkCopy.BatchSize = 5000;
                     mSqlBulkCopy.DestinationTableName = mTempTableName;
