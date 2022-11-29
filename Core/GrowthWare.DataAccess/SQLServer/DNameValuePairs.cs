@@ -53,21 +53,21 @@ namespace GrowthWare.DataAccess.SQLServer
         DataTable INameValuePairs.GetAllNVP()
         {
             String storeProc = "ZGWSystem.Get_Name_Value_Pair";
-            SqlParameter[] mParameters = GetSelectParameters();
+            SqlParameter[] mParameters = getSelectParameters();
             return base.GetDataTable(storeProc, mParameters);
         }
 
         DataRow INameValuePairs.NameValuePair()
         {
             String storeProc = "ZGWSystem.Get_Name_Value_Pair";
-            SqlParameter[] mParameters = GetSelectParameters();
+            SqlParameter[] mParameters = getSelectParameters();
             return base.GetDataRow(storeProc, mParameters);
         }
 
         int INameValuePairs.Save()
         {
             String storeProc = "ZGWSystem.Set_Name_Value_Pair";
-            SqlParameter[] mParameters = GetInsertUpdateParameters();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
             int mRetVal = -1;
             base.ExecuteNonQuery(storeProc, mParameters);
             mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
@@ -158,7 +158,7 @@ namespace GrowthWare.DataAccess.SQLServer
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
         }
 
-        private SqlParameter[] GetInsertUpdateParameters()
+        private SqlParameter[] getInsertUpdateParameters()
         {
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_NVPSeqId", m_Profile.Id), 
@@ -174,7 +174,7 @@ namespace GrowthWare.DataAccess.SQLServer
             return mParameters;
         }
 
-        private SqlParameter[] GetSelectParameters()
+        private SqlParameter[] getSelectParameters()
         {
             SqlParameter[] mParameters = { new SqlParameter("@P_NVPSeqId", m_Profile.Id), new SqlParameter("@P_AccountSeqId", m_AccountId), new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };
             return mParameters;

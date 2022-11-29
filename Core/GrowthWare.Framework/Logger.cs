@@ -72,7 +72,7 @@ namespace GrowthWare.Framework
                     this.m_CurrentLogLevel = 3;
                     break;
             }
-            DeleteOldLogs();
+            deleteOldLogs();
             if (this.m_LogFileName != DateTime.Now.ToString(FILE_NAME_FORMAT, CultureInfo.InvariantCulture) + ".txt")
             {
                 this.m_LogFileName = DateTime.Now.ToString(FILE_NAME_FORMAT, CultureInfo.InvariantCulture) + ".txt";
@@ -101,7 +101,7 @@ namespace GrowthWare.Framework
             // Apply config           
             NLog.LogManager.Configuration = mLoggingConfiguration;
         }
-        private void DeleteOldLogs()
+        private void deleteOldLogs()
         {
             int mCounter = 0;
             int mPosSep = 0;

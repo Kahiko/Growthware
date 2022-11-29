@@ -57,7 +57,7 @@ namespace GrowthWare.Framework
                 m_Len = source.Length;
                 m_Idx = -1;
                 m_NumericalValue = 0;
-                NextChar();
+                nextChar();
                 NextToken();
             }
 
@@ -112,19 +112,19 @@ namespace GrowthWare.Framework
                 }
                 else if (char.IsDigit(m_CurChar))
                 {
-                    ParseNumericalValue();
+                    parseNumericalValue();
                     return;
                 }
                 else
                 {
                     //ignore this character and loop some more
                     //NextChar()
-                    ParseString();
+                    parseString();
                     return;
                 }
             }
 
-            private void NextChar()
+            private void nextChar()
             {
                 m_Idx += 1;
                 if (m_Idx >= m_Len)
@@ -137,20 +137,20 @@ namespace GrowthWare.Framework
                 }
             }
 
-            private void ParseNumericalValue()
+            private void parseNumericalValue()
             {
                 int start = m_Idx;
                 char NumberDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator[0];
                 char NumberGroupSeparator = NumberFormatInfo.CurrentInfo.NumberGroupSeparator[0];
                 do
                 {
-                    NextChar();
+                    nextChar();
                     if (m_CurChar == NumberDecimalSeparator)
                     {
                         // parse digits after the Decimal Separator
                         do
                         {
-                            NextChar();
+                            nextChar();
                             if (!char.IsDigit(m_CurChar) && m_CurChar != NumberGroupSeparator) break; // TODO: might not be correct. Was : Exit Do
 
                         }
@@ -176,7 +176,7 @@ namespace GrowthWare.Framework
                 }
             }
 
-            private void ParseString()
+            private void parseString()
             {
                 int start = m_Idx;
                 bool roman = (m_NaturalComparer.m_NaturalComparerOptions & NaturalComparerOption.RomanNumber) != 0;
@@ -187,22 +187,22 @@ namespace GrowthWare.Framework
                 {
                     if (roman)
                     {
-                        int thisRomanValue = NaturalComparer.RomanLetterValue(m_CurChar);
+                        int thisRomanValue = NaturalComparer.romanLetterValue(m_CurChar);
                         if (thisRomanValue > 0)
                         {
                             bool handled = false;
 
                             if ((thisRomanValue == 1 || thisRomanValue == 10 || thisRomanValue == 100))
                             {
-                                NextChar();
-                                int nextRomanValue = NaturalComparer.RomanLetterValue(m_CurChar);
+                                nextChar();
+                                int nextRomanValue = NaturalComparer.romanLetterValue(m_CurChar);
                                 if (nextRomanValue == thisRomanValue * 10 | nextRomanValue == thisRomanValue * 5)
                                 {
                                     handled = true;
                                     if (nextRomanValue <= lastRoman)
                                     {
                                         romanValue += nextRomanValue - thisRomanValue;
-                                        NextChar();
+                                        nextChar();
                                         lastRoman = thisRomanValue / 10;
                                         cptLastRoman = 0;
                                     }
@@ -214,7 +214,7 @@ namespace GrowthWare.Framework
                             }
                             else
                             {
-                                NextChar();
+                                nextChar();
                             }
                             if (!handled)
                             {
@@ -257,7 +257,7 @@ namespace GrowthWare.Framework
                     }
                     else
                     {
-                        NextChar();
+                        nextChar();
                     }
                     if (!char.IsLetter(m_CurChar)) break; // TODO: might not be correct. Was : Exit Do
 
@@ -351,7 +351,7 @@ namespace GrowthWare.Framework
             //identical
         }
 
-        private static int RomanLetterValue(char c)
+        private static int romanLetterValue(char c)
         {
             switch (c)
             {

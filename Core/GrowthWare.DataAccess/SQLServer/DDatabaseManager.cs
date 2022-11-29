@@ -36,14 +36,14 @@ namespace GrowthWare.DataAccess.SQLServer
                 // Define the DML scirpt
                 string mInsertFile = mScriptDirectory + "Version_1.0.0.0.sql";
 
-                Boolean mSuccess = this.Replace_N_Run(mCreationFile, mSqlConnection);
+                Boolean mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
                 if (!mSuccess)
                 {
                     string mError = "Was not able to create the '{0}' database file name {1}.";
                     mError = String.Format(mError, this.DatabaseName, mCreationFile);
                     throw new Exception(mError);
                 }
-                mSuccess = this.Replace_N_Run(mInsertFile, mSqlConnection);
+                mSuccess = this.replace_N_Run(mInsertFile, mSqlConnection);
                 if (!mSuccess)
                 {
                     string mError = "Was not able to insert the data in into '{0}'.";
@@ -140,7 +140,7 @@ namespace GrowthWare.DataAccess.SQLServer
             return mRetVal;
         }
 
-        private bool Replace_N_Run(string scriptFile, SqlConnection sqlConnection)
+        private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
         {
             bool mSuccess = false;
             // Replace 'YourDatabaseName' with the given database name

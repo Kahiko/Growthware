@@ -30,8 +30,8 @@ namespace GrowthWare.Framework
 
                 // for ease of preparation, we'll utilize code found in a different 
                 // article. http://www.aspalliance.com/535 
-                md5key = MD5Encryption(value);
-                hashedkey = MD5SaltedHashEncryption(value);
+                md5key = encryptionMD5(value);
+                hashedkey = saltedHashEncryptionMD5(value);
 
                 // loop to transfer the keys. 
                 for (int i = 0; i <= hashedkey.Length - 1; i++)
@@ -174,7 +174,7 @@ namespace GrowthWare.Framework
         /// </summary>
         /// <param name="toEncrypt">System.String.  Usually a password.</param>
         /// <returns>System.Byte[]</returns>
-        private static byte[] MD5Encryption(string toEncrypt)
+        private static byte[] encryptionMD5(string toEncrypt)
         {
             try
             {
@@ -205,7 +205,7 @@ namespace GrowthWare.Framework
         /// </summary> 
         /// <param name="toEncrypt">System.String. Usually a password.</param> 
         /// <returns>System.Byte[]</returns> 
-        private static byte[] MD5SaltedHashEncryption(string toEncrypt)
+        private static byte[] saltedHashEncryptionMD5(string toEncrypt)
         {
             try
             {

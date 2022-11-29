@@ -54,7 +54,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 {
                     string mStoredProcedure = "ZGWSecurity.Get_Function";
                     DataTable mFunctions = base.GetDataTable(mStoredProcedure, mParameters);
-                    mDSFunctions = this.GetSecurity();
+                    mDSFunctions = this.getSecurity();
                     mDSFunctions.Tables[0].TableName = "DerivedRoles";
                     mDSFunctions.Tables[1].TableName = "AssignedRoles";
                     mDSFunctions.Tables[2].TableName = "Groups";
@@ -227,7 +227,7 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-        private DataSet GetSecurity()
+        private DataSet getSecurity()
         {
             string mStoreProcedure = "ZGWSecurity.Get_Function_Security";
             SqlParameter[] mParameters = { new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId) };

@@ -13,7 +13,7 @@ namespace GrowthWare.DataAccess.SQLServer
     public class DMessages : AbstractDBInteraction, IMessages
     {
         private MMessage m_Profile = new MMessage();
-        private SqlParameter[] GetInsertUpdateParameters()
+        private SqlParameter[] getInsertUpdateParameters()
         {
             SqlParameter[] myParameters = { 
 				new SqlParameter("@P_MessageSeqId", m_Profile.Id), new SqlParameter("@P_SecurityEntitySeqId", m_Profile.SecurityEntitySeqId), 
@@ -62,7 +62,7 @@ namespace GrowthWare.DataAccess.SQLServer
         void IMessages.Save()
         {
             String storeProc = "ZGWCoreWeb.Set_Message";
-            SqlParameter[] mParameters = GetInsertUpdateParameters();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
             ExecuteNonQuery(storeProc, mParameters);
         }
     }

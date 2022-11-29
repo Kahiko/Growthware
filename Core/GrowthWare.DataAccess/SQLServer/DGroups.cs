@@ -47,7 +47,7 @@ namespace GrowthWare.DataAccess.SQLServer
         public void AddGroup()
         {
             String mStoreProc = "ZGWSecurity.Set_Group";
-            SqlParameter[] mParameters = GetInsertUpdateParameters();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
             base.ExecuteNonQuery( mStoreProc, mParameters);
         }
 
@@ -79,7 +79,7 @@ namespace GrowthWare.DataAccess.SQLServer
         /// <returns>bool</returns>
         public void Save()
         {
-            SqlParameter[] mParameters = GetInsertUpdateParameters();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
             String mStoreProc = "ZGWSecurity.Set_Group";
             base.ExecuteNonQuery( mStoreProc, mParameters);
         }
@@ -117,7 +117,7 @@ namespace GrowthWare.DataAccess.SQLServer
             return true;
         }
 
-        private SqlParameter[] GetInsertUpdateParameters()
+        private SqlParameter[] getInsertUpdateParameters()
         {
             SqlParameter[] mParameters = { new SqlParameter("@P_GroupSeqId", Profile.Id), new SqlParameter("@P_Name", Profile.Name), new SqlParameter("@P_Description", Profile.Description), new SqlParameter("@P_SecurityEntitySeqId", Profile.SecurityEntityID), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(Profile)), GetSqlParameter("@P_PRIMARY_KEY", Profile.Id, ParameterDirection.Output) };
             return mParameters;

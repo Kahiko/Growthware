@@ -12,7 +12,7 @@ namespace GrowthWare.DatabaseManager
     {
         private static Version m_DesiredVersion = null;
 
-        private static string GetArgument(string[] args, string name)
+        private static string getArgument(string[] args, string name)
         {
             string mRetVal = null;
             for (int i = 0; i < args.Length; i++)
@@ -31,24 +31,24 @@ namespace GrowthWare.DatabaseManager
         {
             if (args == null || args.Length == 0) // Check for null array
             {
-                ShowHelp();
+                showHelp();
                 return;
             }
             else
             {
-                string mHelp = GetArgument(args, "--Help");
+                string mHelp = getArgument(args, "--Help");
                 if (mHelp != null)
                 {
-                    ShowHelp();
+                    showHelp();
                     return;
                 }
-                mHelp = GetArgument(args, "--H");
+                mHelp = getArgument(args, "--H");
                 if (mHelp != null)
                 {
-                    ShowHelp();
+                    showHelp();
                     return;
                 }
-                m_DesiredVersion = new Version(GetArgument(args, "--Version"));
+                m_DesiredVersion = new Version(getArgument(args, "--Version"));
             }
             string mAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
             DataTable mAvailbleFiles = null;
@@ -180,7 +180,7 @@ namespace GrowthWare.DatabaseManager
             Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
         }
 
-        private static void ShowHelp()
+        private static void showHelp()
         {
             string mTab = "    ";
             Console.WriteLine("args is null");
