@@ -33,6 +33,15 @@ public class MSecurityEntity : AbstractBaseModel
             this.DataAccessLayerNamespace = base.GetString(dataRow, "DAL_NAME_SPACE");
             this.ConnectionString = base.GetString(dataRow, "DAL_STRING");
             EncryptionType = (EncryptionType)base.GetInt(dataRow, "ENCRYPTION_TYPE");
+            string mConnectionString = this.ConnectionString;
+            try
+            {
+                this.ConnectionString = CryptoUtility.Decrypt(mConnectionString, EncryptionType);
+            }
+            catch (CryptoUtilityException)
+            {
+                // do nothing atm the values is more than likely clear text
+            }
         }
     #endregion
 

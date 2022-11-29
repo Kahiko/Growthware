@@ -20,7 +20,7 @@ public class JwtMiddleware
     }
 
     [CLSCompliant(false)]
-    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService)
+    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService, IClientChoicesService clientChoicesService)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         string mAccount = jwtUtils.ValidateJwtToken(token);
@@ -28,6 +28,8 @@ public class JwtMiddleware
         {
             // attach account to context on successful jwt validation
             httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
+            MClientChoicesState mClientChoicesState = clientChoicesService.GetClientChoicesState(mAccount);
+            httpContext.Items["ClientChoicesState"] = mClientChoicesState;
         }
         else
         {

@@ -17,9 +17,15 @@ public static class FunctionUtility
     /// </summary>
     /// <returns>A Collection of MFunctionProfiles</returns>
     [CLSCompliant(false)]
-    public static Collection<MFunctionProfile> Functions(HttpContext context)
+    public static Collection<MFunctionProfile> Functions(HttpContext httpContext)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MClientChoicesState mClientChoicesState =  (MClientChoicesState)httpContext.Items["ClientChoicesState"];
+        if (mClientChoicesState != null && mClientChoicesState[MClientChoices.SecurityEntityID] != null) 
+        {
+            int mSecurityEntityID = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID]);
+            mSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID);
+        }
         BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = null;

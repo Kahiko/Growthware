@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
+using System.IO;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace GrowthWare.Framework.Models;
 
@@ -46,6 +49,26 @@ public class MClientChoicesState
     }
 
     /// <summary>
+    /// Parses the JSON string representation of a MClientChoicesState
+    /// </summary>
+    /// <param name="jsonString"></param>
+    public MClientChoicesState(string jsonString) 
+    {
+        if(jsonString == null || string.IsNullOrEmpty(jsonString)) throw new ArgumentNullException("jsonString", "jsonString cannot be a null reference (Nothing in Visual Basic)!");
+        JsonNode mClientChoicesState = JsonNode.Parse(jsonString)!;
+        if (mClientChoicesState != null) 
+        {
+            AccountName = mClientChoicesState!["AccountName"]!.ToString();
+            IsDirty = bool.Parse(mClientChoicesState!["IsDirty"]!.ToString());
+            JsonObject mChoicesHashtable = mClientChoicesState!["ChoicesHashtable"]!.AsObject();
+            foreach (var item in mChoicesHashtable)
+            {
+                m_ClientChoices.Add(item.Key, item.Value);
+            }
+        }
+    }
+
+    /// <summary>
     /// Gets or sets the name of the account.
     /// </summary>
     /// <value>The name of the account.</value>
@@ -71,7 +94,7 @@ public class MClientChoicesState
     /// <returns>[ERROR: invalid expression ReturnTypeName.FullName].</returns>
     public String this[string key]
     {
-        get { return (string)m_ClientChoices[key]; }
+        get { return m_ClientChoices[key].ToString(); }
         set
         {
             m_ClientChoices[key] = value;

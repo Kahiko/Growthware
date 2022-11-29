@@ -385,7 +385,8 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         /// <remarks></remarks>
         protected virtual DataTable GetDataTable(String commandText, SqlParameter[] sqlParameter, bool forceCommandText = false)
         {
-            DataTable mDataTable = this.GetDataSet(commandText, sqlParameter, forceCommandText).Tables[0].Copy();
+            DataSet mDataSet = this.GetDataSet(commandText, sqlParameter, forceCommandText);
+            DataTable mDataTable = mDataSet.Tables[0].Copy();
             return mDataTable;
         }
 
