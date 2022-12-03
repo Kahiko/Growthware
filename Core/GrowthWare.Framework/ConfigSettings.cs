@@ -20,9 +20,9 @@ namespace GrowthWare.Framework
 #if(DEBUG)
                // In Debug mode - use parent directory.
                 m_SettingsDirectory = Directory.GetParent(m_SettingsDirectory).ToString();
-                Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
+                // Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
 #else
-                Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
+                // Console.WriteLine("m_SettingsDirectory: " + m_SettingsDirectory);
 #endif
             m_Configuration = new ConfigurationBuilder()
                 .SetBasePath(m_SettingsDirectory)
