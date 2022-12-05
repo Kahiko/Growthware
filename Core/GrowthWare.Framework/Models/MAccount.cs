@@ -36,16 +36,16 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// Sets the assigned roles or groups.
     /// </summary>
-    /// <param name="StringCollectionObject">The collection of roles or groups that need to be set</param>
-    /// <param name="GroupsOrRoles">The DataRowCollection that represents either roles or groups</param>
-    /// <param name="ColumnName">The column name to retrieve the data from</param>
-    private static void setRolesOrGroups(ref Collection<string> StringCollectionObject, DataRowCollection GroupsOrRoles, String ColumnName)
+    /// <param name="collectionOfStrings">The collection of roles or groups that need to be set</param>
+    /// <param name="groupsOrRoles">The DataRowCollection that represents either roles or groups</param>
+    /// <param name="columnName">The column name to retrieve the data from</param>
+    private static void setRolesOrGroups(ref Collection<string> collectionOfStrings, DataRowCollection groupsOrRoles, String columnName)
     {
-        foreach (DataRow mRow in GroupsOrRoles)
+        foreach (DataRow mRow in groupsOrRoles)
         {
-            if (!Convert.IsDBNull(mRow[ColumnName]))
+            if (!Convert.IsDBNull(mRow[columnName]))
             {
-                StringCollectionObject.Add(mRow[ColumnName].ToString());
+                collectionOfStrings.Add(mRow[columnName].ToString());
             }
         }
     }
