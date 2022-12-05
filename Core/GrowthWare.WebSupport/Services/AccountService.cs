@@ -190,7 +190,6 @@ public class AccountService : IAccountService
                 if (m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null)
                 {
                     string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName);
-                    JsonNode mClientChoicesState = JsonNode.Parse(mJsonString)!;
                     if (mJsonString != null && !String.IsNullOrEmpty(mJsonString)) 
                     {
                         mRetVal = JsonSerializer.Deserialize<MAccountProfile>(mJsonString);
