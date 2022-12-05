@@ -78,8 +78,8 @@ export class GWCommon {
         if(mFormatParts.length > 1 && data.length > 0) {
           const mDesiredLength = parseInt(mFormatParts[1]);
           if(data.length > mDesiredLength) {
-            console.log('eclipsing the data');
-            console.log(data);
+            // console.log('eclipsing the data');
+            // console.log(data);
             mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
           }
         }
