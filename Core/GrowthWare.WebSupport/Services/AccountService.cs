@@ -1,11 +1,14 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using Microsoft.IdentityModel.Tokens;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
@@ -18,9 +21,14 @@ public class AccountService : IAccountService
     private MAccountProfile m_CachedAnonymousAccount = null;
     private String s_AnonymousAccount = "Anonymous";
 
-    public AccountService() 
-    {
+    private String s_SessionName = "SessionAccount";
 
+    private IHttpContextAccessor m_HttpContextAccessor;
+
+    [CLSCompliant(false)]
+    public AccountService(IHttpContextAccessor httpContextAccessor)
+    {
+        this.m_HttpContextAccessor = httpContextAccessor;
     }
 
     public MAccountProfile Authenticate(string account, string password, string ipAddress)
@@ -32,14 +40,14 @@ public class AccountService : IAccountService
         if (account.Contains(@"\"))
         {
             mDomainPassed = true;
-        }        
+        }
         MAccountProfile mAccountProfile = GetAccount(account);
         if (mDomainPassed && mAccountProfile == null)
         {
             int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
             account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
-        }        
-        if(mAccountProfile != null)
+        }
+        if (mAccountProfile != null)
         {
             if (ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
             {
@@ -60,8 +68,8 @@ public class AccountService : IAccountService
                     var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
                     var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
 
-                    var claims = new List<Claim> 
-                    { 
+                    var claims = new List<Claim>
+                    {
                         new Claim("account", mAccountProfile.Account), 
                         // new Claim(ClaimTypes.Role, "Manager") 
                     };
@@ -82,11 +90,11 @@ public class AccountService : IAccountService
                     mAccountProfile.RefreshTokens.Add(mRefreshToken);
 
                 }
-                if (!mAuthenticated) 
-                { 
-                    mAccountProfile.FailedAttempts += 1; 
+                if (!mAuthenticated)
+                {
+                    mAccountProfile.FailedAttempts += 1;
                 }
-                if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1) 
+                if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1)
                 {
                     mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
                 }
@@ -122,7 +130,7 @@ public class AccountService : IAccountService
     {
         // token is a cryptographically strong random sequence of values
         var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        if(RefreshTokenExists(mToken))
+        if (RefreshTokenExists(mToken))
         {
             generateResetToken();
         }
@@ -155,7 +163,7 @@ public class AccountService : IAccountService
     {
         // token is a cryptographically strong random sequence of values
         var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        if(verificationTokenExists(mToken))
+        if (verificationTokenExists(mToken))
         {
             generateVerificationToken();
         }
@@ -169,21 +177,49 @@ public class AccountService : IAccountService
     /// <returns>MAccountProfile or null</returns>
     public MAccountProfile GetAccount(String account)
     {
-        if(String.IsNullOrEmpty(account)) {
+        if (String.IsNullOrEmpty(account))
+        {
             throw new ArgumentException("account can not be null or empty", account);
         }
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         try
         {
-            if(account != s_AnonymousAccount)
+            if (account != s_AnonymousAccount)
             {
-                mRetVal = mBAccount.GetProfile(account);
+                if (m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null)
+                {
+                    string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName);
+                    JsonNode mClientChoicesState = JsonNode.Parse(mJsonString)!;
+                    if (mJsonString != null && !String.IsNullOrEmpty(mJsonString)) 
+                    {
+                        mRetVal = JsonSerializer.Deserialize<MAccountProfile>(mJsonString);
+                        if (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant())
+                        {
+                            mRetVal = mBAccount.GetProfile(account);
+                            mJsonString = JsonSerializer.Serialize(mRetVal);
+                            m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                        }
+                    }
+                    else
+                    {
+                        mRetVal = mBAccount.GetProfile(account);
+                        mJsonString = JsonSerializer.Serialize(mRetVal);
+                        m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                    }
+                }
+                else
+                {
+                    mRetVal = mBAccount.GetProfile(account);
+                    string mJsonString = JsonSerializer.Serialize(mRetVal);
+                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                }
             }
             else
             {
+                // TODO: Add code to use session
                 mRetVal = m_CachedAnonymousAccount;
-                if(mRetVal == null)
+                if (mRetVal == null)
                 {
                     m_CachedAnonymousAccount = mBAccount.GetProfile(account);
                     mRetVal = m_CachedAnonymousAccount;
@@ -207,7 +243,7 @@ public class AccountService : IAccountService
 
     private MAccountProfile getAccountByRefreshToken(string token)
     {
-        if(String.IsNullOrEmpty(token)) 
+        if (String.IsNullOrEmpty(token))
         {
             throw new ArgumentException("token can not be null or empty", token);
         }
@@ -219,7 +255,7 @@ public class AccountService : IAccountService
 
     private MAccountProfile getAccountByResetToken(string token)
     {
-        if(String.IsNullOrEmpty(token)) 
+        if (String.IsNullOrEmpty(token))
         {
             throw new ArgumentException("token can not be null or empty", token);
         }
@@ -229,13 +265,13 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
-    public bool RefreshTokenExists(string refreshToken) 
+    public bool RefreshTokenExists(string refreshToken)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         return mBAccount.RefreshTokenExists(refreshToken);
     }
-    
+
     /// <summary>
     /// Inserts or updates account information
     /// </summary>
@@ -272,6 +308,6 @@ public class AccountService : IAccountService
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-        return mBAccount.RefreshTokenExists(token);        
+        return mBAccount.RefreshTokenExists(token);
     }
 }
