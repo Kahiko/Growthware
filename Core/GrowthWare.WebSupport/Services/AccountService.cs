@@ -187,7 +187,7 @@ public class AccountService : IAccountService
         {
             if (account != s_AnonymousAccount)
             {
-                if (m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null)
+                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null)
                 {
                     string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName);
                     if (mJsonString != null && !String.IsNullOrEmpty(mJsonString)) 
