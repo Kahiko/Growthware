@@ -142,13 +142,20 @@ namespace GrowthWare.BusinessLogic
             MAccountProfile mRetVal = null;
             if (DatabaseIsOnline()) 
             {
-                m_DAccounts.Profile = new MAccountProfile();
-                m_DAccounts.Profile.Account = account;
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                if(account != null && !String.IsNullOrWhiteSpace(account)) 
+                {
+                    m_DAccounts.Profile = new MAccountProfile();
+                    m_DAccounts.Profile.Account = account;
+                    DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+                    DataTable mAssignedRoles = m_DAccounts.Roles();
+                    DataTable mAssignedGroups = m_DAccounts.Groups();
+                    DataTable mRoles = m_DAccounts.Security();
+                    mRetVal = new MAccountProfile(m_DAccounts.GetAccount, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+                }
+                else 
+                {
+                    throw new ArgumentException("account can not be null or empty", account);
+                }
             }
             return mRetVal;
         }
