@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
+using System.Text.Json.Serialization;
 
 namespace GrowthWare.Framework.Models;
 /// <summary>
@@ -250,6 +251,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// The password for the account
     /// </summary>
+    [JsonIgnore]
     public String Password { get; set; }
 
     /// <summary>
