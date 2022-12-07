@@ -216,6 +216,10 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         {
             return m_DerivedRoles;
         }
+        set 
+        {
+            m_DerivedRoles = value;   
+        }
     }
 
     /// <summary>
@@ -251,7 +255,6 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <summary>
     /// The password for the account
     /// </summary>
-    [JsonIgnore]
     public String Password { get; set; }
 
     /// <summary>
