@@ -247,6 +247,11 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </summary>
     public DateTime PasswordLastSet { get; set; }
 
+    /// <summary>
+    /// Indicates if the account owns the token
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     public bool OwnsToken(string token) 
     {
         return this.RefreshTokens?.Find(x => x.Token == token) != null;
@@ -289,6 +294,10 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </summary>
     public String PreferredName { get; set; }
 
+    /// <summary>
+    /// A list of refresh tokens
+    /// </summary>
+    /// <value></value>
     public List<MRefreshToken> RefreshTokens 
     {
         get
@@ -296,7 +305,17 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
             return m_RefreshTokens;
         }
     }
+
+    /// <summary>
+    /// The reset token
+    /// </summary>
+    /// <value></value>
     public string ResetToken { get; set; }
+    
+    /// <summary>
+    /// Indicates when the reset token expires
+    /// </summary>
+    /// <value></value>
     public DateTime? ResetTokenExpires { get; set; }
 
     /// <summary>
@@ -309,6 +328,10 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// </summary>
     public string Token { get; set; }
 
+    /// <summary>
+    /// The verification token
+    /// </summary>
+    /// <value></value>
     public string VerificationToken{ get; set ;}
 
     /// <summary>
