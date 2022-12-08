@@ -1,8 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// Angular Material
+// Library
+import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
+import { PickListModule } from '@Growthware/Lib/src/lib/features/pick-list';
+// Feature Components
 import { RoleDetailsComponent } from './c/role-details/role-details.component';
 import { SearchRolesComponent } from './c/search-roles/search-roles.component';
-
 
 
 @NgModule({
@@ -11,7 +16,9 @@ import { SearchRolesComponent } from './c/search-roles/search-roles.component';
     SearchRolesComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    DynamicTableModule,
+    PickListModule
   ]
 })
 export class RoleModule { }
