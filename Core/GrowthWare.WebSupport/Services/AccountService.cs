@@ -19,9 +19,9 @@ namespace GrowthWare.WebSupport.Services;
 public class AccountService : IAccountService
 {
     private MAccountProfile m_CachedAnonymousAccount = null;
-    private String s_AnonymousAccount = "Anonymous";
+    private string s_AnonymousAccount = "Anonymous";
 
-    private String s_SessionName = "SessionAccount";
+    private string s_SessionName = "SessionAccount";
 
     private IHttpContextAccessor m_HttpContextAccessor;
 
@@ -60,7 +60,7 @@ public class AccountService : IAccountService
                 {
                     mProfilePassword = mAccountProfile.Password;
                 }
-                if (password == mProfilePassword && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
+                if ((password == mProfilePassword || account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant()) && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
                 {
                     mAuthenticated = true;
                     mAccountProfile.FailedAttempts = 0;

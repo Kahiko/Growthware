@@ -19,13 +19,14 @@ public abstract class AbstractController : ControllerBase
     private string m_ApplicationName = string.Empty;
     private string m_Version = string.Empty;
     private string m_LogPriority = string.Empty;
+    private string s_AnonymousAccount = "Anonymous";
 
-    // returns the current authenticated account (null if not logged in)
-    public MAccountProfile m_AccountProfile => (MAccountProfile)HttpContext.Items["AccountProfile"];
-    // returns the current authenticated accounts client choices (null if not logged in)
-    public MClientChoices m_ClientChoices => (MClientChoices)HttpContext.Items["ClientChoices"];
-    // returns the current security entity (default as defined in GrowthWare.json)
-    public MSecurityEntity m_SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
+    // // returns the current authenticated account (null if not logged in)
+    // public MAccountProfile m_AccountProfile => (MAccountProfile)HttpContext.Items["AccountProfile"];
+    // // returns the current authenticated accounts client choices (null if not logged in)
+    // public MClientChoices m_ClientChoices => (MClientChoices)HttpContext.Items["ClientChoices"];
+    // // returns the current security entity (default as defined in GrowthWare.json)
+    // public MSecurityEntity m_SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
 
     [AllowAnonymous]
     [HttpPost("Authenticate")]
@@ -147,7 +148,8 @@ public abstract class AbstractController : ControllerBase
     {
         List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;
-        if(this.m_AccountProfile != null && this.m_AccountProfile.Account != "Anonymous") 
+        MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
         {
             mNavLink = new MNavLink("home", "home", "Home");
             mRootNavLinks.Add(mNavLink);
@@ -204,6 +206,12 @@ public abstract class AbstractController : ControllerBase
         // MLoggingProfile mProfile = new MLoggingProfile(profile);
         LoggingUtility.Save(profile);
         return true;
+    }
+
+    [HttpGet("Logoff")]
+    public ActionResult<AuthenticationResponse> Logoff()
+    { 
+        return this.Authenticate(this.s_AnonymousAccount, "none");
     }
 
     [Authorize("Search_Accounts")]

@@ -21,6 +21,7 @@ export class AccountService {
   private _Api_Authenticate = '';
   private _Api_GetAccount: string = '';
   private _Api_GetLinks: string = '';
+  private _Api_Logoff: string = '';
   private _CurrentAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
@@ -77,6 +78,7 @@ export class AccountService {
     this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
     this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
     this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
+    this._Api_Logoff = this._GWCommon.baseURL + this._ApiName + 'Logoff';
   }
 
   public async authenticate(account: string, password: string): Promise<boolean | string> {
@@ -124,11 +126,27 @@ export class AccountService {
   public logout(): void {
     localStorage.removeItem("jwt")
     this.account = this._DefaultAccount;
-    this._IsAuthenticated.next(false);
-    const mNavLink: INavLink[] = [];
-    this._SideNavSubject.next(mNavLink);
-    this._Router.navigate(['generic_home']);
-    this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
+      next: (response: any) => {
+        localStorage.setItem("jwt", response.jwtToken);
+        this._Account = response.account;
+        this._CurrentAccount = this._Account;
+        this._AuthenticationResponse = response;
+        this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+        this.getNavLinks();
+        this._Router.navigate(['generic_home']);
+        this._IsAuthenticated.next(false);
+      },
+      error: (error: any) => {
+        this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
+      },
+      // complete: () => {}
+    });
   }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
