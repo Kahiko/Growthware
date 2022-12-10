@@ -107,7 +107,7 @@
           </table>
       </div>
       <div *ngIf="tableConfiguration.showThirdRow" class="dynamicTableFooterDiv" style="display: flex;">
-        <span style="margin: 5px;" id="totalRecords">{{totalRecords}} total items</span>
+        <span *ngIf="totalRecords > 0" style="margin: 5px;" id="totalRecords">{{totalRecords}} total items</span>
         <span style="margin: 5px;">
           <button
             *ngIf="tableConfiguration.buttons.length > 2 && tableConfiguration.buttons[2].visible"
