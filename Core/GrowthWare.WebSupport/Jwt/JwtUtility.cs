@@ -5,20 +5,22 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
+using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Services;
+using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport.Jwt;
 public class JwtUtils : IJwtUtils
 {
     // private readonly AppSettings _appSettings;
 
-    private IAccountService m_AccountService = null;
+    // private IAccountService m_AccountService = null;
 
-    public JwtUtils(IAccountService accountService)
+    public JwtUtils()
     {
-        m_AccountService = accountService;
+        // m_AccountService = accountService;
     }
 
     public string GenerateJwtToken(MAccountProfile account)
@@ -88,7 +90,10 @@ public class JwtUtils : IJwtUtils
         };
 
         // ensure token is unique by checking against db
-        var tokenIsUnique = this.m_AccountService.RefreshTokenExists(refreshToken.Token);
+        // var tokenIsUnique = this.m_AccountService.RefreshTokenExists(refreshToken.Token);
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
             return GenerateRefreshToken(ipAddress);

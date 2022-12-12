@@ -62,7 +62,7 @@ namespace GrowthWare.Framework
             get { return int.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", true), CultureInfo.InvariantCulture); }
         }
         /// <summary>
-        /// Retruns App_Displayed_Name from the WEB.CONFIG file
+        /// Returns App_Displayed_Name from the WEB.CONFIG file
         /// </summary>
         /// <value></value>
         /// <returns>String</returns>
@@ -373,6 +373,15 @@ namespace GrowthWare.Framework
         public static string DBStatus
         {
             get { return GetAppSettingValue("DB_Status"); }
+        }
+
+        /// <summary>
+        /// Gets the RefreshTokenTTL value from Growthware.json for the given environment.
+        /// </summary>
+        /// <value></value>
+        public static int RefreshTokenTTL
+        {
+            get { return int.Parse(GetAppSettingValue("RefreshTokenTTL", true));}
         }
 
         /// <summary>

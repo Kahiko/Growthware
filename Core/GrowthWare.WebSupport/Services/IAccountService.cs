@@ -12,6 +12,8 @@ public interface IAccountService
 
     public MAccountProfile GetAccount(String account);
 
+    public AuthenticationResponse RefreshToken(string token, string ipAddress);
+
     public bool RefreshTokenExists(string refreshToken);
 
     public MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups);

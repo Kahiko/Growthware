@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { map, Observable, Subject } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -22,10 +22,12 @@ export class AccountService {
   private _Api_GetAccount: string = '';
   private _Api_GetLinks: string = '';
   private _Api_Logoff: string = '';
+  private _Api_RefreshToken: string = '';
   private _CurrentAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
   private _Reason: string = '';
+  private _RefreshTokenTimeout: any;
   private _SideNavSubject = new Subject<INavLink[]>();
 
   public get account(): string {
@@ -79,6 +81,7 @@ export class AccountService {
     this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
     this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
     this._Api_Logoff = this._GWCommon.baseURL + this._ApiName + 'Logoff';
+    this._Api_RefreshToken = this._GWCommon.baseURL + this._ApiName + 'RefreshToken';
   }
 
   public async authenticate(account: string, password: string): Promise<boolean | string> {
@@ -149,6 +152,41 @@ export class AccountService {
     });
   }
 
+  private startRefreshTokenTimer() {
+    // parse json object from base64 encoded jwt token
+    const jwtToken = JSON.parse(atob(this._AuthenticationResponse.jwtToken.split('.')[1]));
+
+    // set a timeout to refresh the token a minute before it expires
+    const expires = new Date(jwtToken.exp * 1000);
+    const timeout = expires.getTime() - Date.now() - (60 * 1000);
+    this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+}
+
+  public refreshToken(): Observable<any> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      withCredentials: true,
+    };
+    // return this._HttpClient.post<any>(this._Api_RefreshToken, {}, { withCredentials: true })
+    // .pipe(map((account) => {
+    //     // this.accountSubject.next(account);
+    //     this._AuthenticationResponse = account
+    //     this.startRefreshTokenTimer();
+    //     return account;
+    // }));
+    return this._HttpClient.post<any>(this._Api_RefreshToken, null, mHttpOptions)
+    .pipe(map((response) => {
+        // this.accountSubject.next(account);
+        this._AuthenticationResponse = response;
+        this.startRefreshTokenTimer();
+        this._Account = response.account;
+        this._IsAuthenticated.next(true);
+        return this._AuthenticationResponse;
+    }));
+  }
+
   public async getAccount(account: string): Promise<IAccountProfile> {
     let mAccount: string = account;
     if(this._GWCommon.isNullOrEmpty(mAccount)) {
@@ -180,8 +218,6 @@ export class AccountService {
    *
    * @return {*}  {Promise<INavLink[]>}
    * @memberof AccountService
-   * TODO: this really should be used to populate an observable property
-   * so that the links can change when say the account changes.
    */
   public getNavLinks(): void {
     const mHttpOptions = {

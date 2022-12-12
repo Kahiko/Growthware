@@ -4,15 +4,16 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
+using GrowthWare.WebSupport.Jwt;
 using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport.Services;
@@ -264,11 +265,81 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
+    private MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
+    {
+        var newRefreshToken = generateRefreshToken(ipAddress);
+        revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
+        return newRefreshToken;
+    }
+
+    public AuthenticationResponse RefreshToken(string token, string ipAddress)
+    {
+        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MRefreshToken refreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
+
+        if (refreshToken.IsRevoked())
+        {
+            // revoke all descendant tokens in case this token has been compromised
+            revokeDescendantRefreshTokens(refreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+            this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
+            // _context.Update(account);
+            // _context.SaveChanges();
+        }
+        if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
+        // replace old refresh token with a new one (rotate token)
+        var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
+        mAccountProfile.RefreshTokens.Add(newRefreshToken);
+        // remove old refresh tokens from account
+        removeOldRefreshTokens(mAccountProfile);
+
+        // save changes to db
+        this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
+
+        // generate new jwt
+        JwtUtils mJwtUtils = new JwtUtils();
+        var jwtToken = mJwtUtils.GenerateJwtToken(mAccountProfile);
+
+        // return data in authenticate response object
+        AuthenticationResponse mResponse = new AuthenticationResponse(mAccountProfile);
+        mResponse.JwtToken = jwtToken;
+        mResponse.RefreshToken = newRefreshToken.Token;
+        return mResponse;
+    }
+
     public bool RefreshTokenExists(string refreshToken)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         return mBAccount.RefreshTokenExists(refreshToken);
+    }
+
+    private void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
+    {
+        token.Revoked = DateTime.UtcNow;
+        token.RevokedByIp = ipAddress;
+        token.ReasonRevoked = reason;
+        token.ReplacedByToken = replacedByToken;
+    }
+
+    private void revokeDescendantRefreshTokens(MRefreshToken refreshToken, MAccountProfile account, string ipAddress, string reason)
+    {
+        // recursively traverse the refresh token chain and ensure all descendants are revoked
+        if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
+        {
+            var childToken = account.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+            if (childToken.IsActive())
+                revokeRefreshToken(childToken, ipAddress, reason);
+            else
+                revokeDescendantRefreshTokens(childToken, account, ipAddress, reason);
+        }
+    }
+
+    private void removeOldRefreshTokens(MAccountProfile account)
+    {
+        account.RefreshTokens.RemoveAll(x => 
+            !x.IsActive() && 
+            x.Created.AddDays(ConfigSettings.RefreshTokenTTL) <= DateTime.UtcNow);
     }
 
     /// <summary>

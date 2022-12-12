@@ -214,6 +214,15 @@ public abstract class AbstractController : ControllerBase
         return this.Authenticate(this.s_AnonymousAccount, "none");
     }
 
+    [HttpPost("RefreshToken")]
+    public ActionResult<AuthenticationResponse> RefreshToken()
+    {
+        var mRefreshToken = Request.Cookies["refreshToken"];
+        AuthenticationResponse mAuthenticationResponse = m_AccountService.RefreshToken(mRefreshToken, ipAddress());
+        setTokenCookie(mAuthenticationResponse.RefreshToken);
+        return Ok(mAuthenticationResponse);
+    }
+
     [Authorize("Search_Accounts")]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)
