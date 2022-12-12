@@ -411,7 +411,14 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         protected virtual DataRow GetDataRow(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
         {
             this.IsValid();
-            return this.GetDataTable(commandText, sqlParameters, forceCommandText).Rows[0];
+            DataTable mDataTable =  this.GetDataTable(commandText, sqlParameters, forceCommandText);
+            if(mDataTable.Rows.Count > 0 ){
+              return mDataTable.Rows[0];
+            }
+            else
+            {
+              return null;
+            }
         }
 
         /// <summary>
