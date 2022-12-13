@@ -228,13 +228,13 @@ public class AccountService : IAccountService
         }
         catch (InvalidOperationException)
         {
-            String mMSG = "Count not find account: " + account + " in the database";
+            String mMSG = "Account not find account: " + account + " in the database";
             Logger mLog = Logger.Instance();
             mLog.Error(mMSG);
         }
         catch (IndexOutOfRangeException)
         {
-            String mMSG = "Count not find account: " + account + " in the database";
+            String mMSG = "Account not find account: " + account + " in the database";
             Logger mLog = Logger.Instance();
             mLog.Error(mMSG);
         }
