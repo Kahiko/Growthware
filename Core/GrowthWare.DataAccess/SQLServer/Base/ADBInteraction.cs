@@ -102,6 +102,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                             }
                         }
                     }
+                    mDataTable.Rows.Add(mRow);
                 }
 
                 using var mSqlConnection = new SqlConnection(this.ConnectionString);
