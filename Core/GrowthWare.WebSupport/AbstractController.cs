@@ -229,13 +229,13 @@ public abstract class AbstractController : ControllerBase
         }
         catch (System.Exception ex)
         {
-            this.m_Logger.Error(ex);
             if(ex.Message.Contains("token does not exist"))
             {
                 throw;
             }
             else
             {
+                this.m_Logger.Error(ex);
                 throw new Exception("token does not exist, unable to get account");
             }
         }
