@@ -289,6 +289,7 @@ public class AccountService : IAccountService
         if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
         // replace old refresh token with a new one (rotate token)
         var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
+        newRefreshToken.AccountSeqId = mAccountProfile.Id;
         mAccountProfile.RefreshTokens.Add(newRefreshToken);
         // remove old refresh tokens from account
         removeOldRefreshTokens(mAccountProfile);
