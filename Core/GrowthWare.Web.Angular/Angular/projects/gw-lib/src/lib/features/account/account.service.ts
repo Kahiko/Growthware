@@ -144,6 +144,7 @@ export class AccountService {
         this.getNavLinks();
         this._Router.navigate(['generic_home']);
         this._IsAuthenticated.next(false);
+        this.stopRefreshTokenTimer();
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
@@ -160,6 +161,10 @@ export class AccountService {
     const expires = new Date(jwtToken.exp * 1000);
     const timeout = expires.getTime() - Date.now() - (60 * 1000);
     this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+  }
+
+  private stopRefreshTokenTimer() {
+    clearTimeout(this._RefreshTokenTimeout);
 }
 
   public refreshToken(): Observable<any> {
