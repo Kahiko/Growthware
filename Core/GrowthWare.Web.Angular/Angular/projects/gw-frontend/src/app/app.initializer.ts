@@ -5,6 +5,9 @@ export function appInitializer(accountSvc: AccountService) {
   return () => accountSvc.refreshToken()
       .pipe(
           // catch error to start app on success or failure
-          catchError(() => of())
+          catchError((err) => {
+            console.log(err);
+            return of();
+          })
       );
 }
