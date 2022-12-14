@@ -166,7 +166,7 @@ namespace GrowthWare.BusinessLogic
             if (DatabaseIsOnline()) 
             {
                 string mAccount = string.Empty;
-                string mColumnName = "Account";
+                string mColumnName = "ACCT";
                 m_DAccounts.Profile = new MAccountProfile();
                 m_DAccounts.Profile.Token = token;
                 DataRow mDataRow = m_DAccounts.GetAccountByRefreshToken;
