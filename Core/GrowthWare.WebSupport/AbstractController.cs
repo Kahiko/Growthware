@@ -18,6 +18,9 @@ public abstract class AbstractController : ControllerBase
     protected IAccountService m_AccountService;
     private string m_ApplicationName = string.Empty;
     private string m_Version = string.Empty;
+    
+    private Logger m_Logger = Logger.Instance();
+    
     private string m_LogPriority = string.Empty;
     private string s_AnonymousAccount = "Anonymous";
 
@@ -217,10 +220,25 @@ public abstract class AbstractController : ControllerBase
     [HttpPost("RefreshToken")]
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
-        var mRefreshToken = Request.Cookies["refreshToken"];
-        AuthenticationResponse mAuthenticationResponse = m_AccountService.RefreshToken(mRefreshToken, ipAddress());
-        setTokenCookie(mAuthenticationResponse.RefreshToken);
-        return Ok(mAuthenticationResponse);
+        try
+        {
+            var mRefreshToken = Request.Cookies["refreshToken"];
+            AuthenticationResponse mAuthenticationResponse = m_AccountService.RefreshToken(mRefreshToken, ipAddress());
+            setTokenCookie(mAuthenticationResponse.RefreshToken);
+            return Ok(mAuthenticationResponse);
+        }
+        catch (System.Exception ex)
+        {
+            this.m_Logger.Error(ex);
+            if(ex.Message.Contains("token does not exist"))
+            {
+                throw;
+            }
+            else
+            {
+                throw new Exception("token does not exist, unable to get account");
+            }
+        }
     }
 
     [Authorize("Search_Accounts")]
