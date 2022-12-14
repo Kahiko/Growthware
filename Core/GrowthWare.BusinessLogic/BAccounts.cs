@@ -174,20 +174,19 @@ namespace GrowthWare.BusinessLogic
                 if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
                 {
                     mAccount = mDataRow[mColumnName].ToString().Trim();
+                    m_DAccounts.Profile.Account = mAccount;
+                    DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+                    DataTable mAssignedRoles = m_DAccounts.Roles();
+                    DataTable mAssignedGroups = m_DAccounts.Groups();
+                    DataTable mRoles = m_DAccounts.Security();
+                    mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
                 } 
                 else 
                 {
                     throw new BusinessLogicLayerException("token does not exist, unable to get account");
                 }
-                m_DAccounts.Profile.Account = mAccount;
-                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
-                DataTable mAssignedRoles = m_DAccounts.Roles();
-                DataTable mAssignedGroups = m_DAccounts.Groups();
-                DataTable mRoles = m_DAccounts.Security();
-                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
             }
             return mRetVal;
-
         }
 
         public MAccountProfile GetProfileByResetToken(string token)
