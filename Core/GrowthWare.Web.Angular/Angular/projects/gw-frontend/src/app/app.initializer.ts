@@ -6,7 +6,8 @@ export function appInitializer(accountSvc: AccountService) {
       .pipe(
           // catch error to start app on success or failure
           catchError((err) => {
-            console.log(err);
+            // console.log(err);
+            // return nothing
             return of();
           })
       );
