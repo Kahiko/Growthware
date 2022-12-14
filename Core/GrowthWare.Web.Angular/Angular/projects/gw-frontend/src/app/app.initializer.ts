@@ -1,14 +1,10 @@
 import { AccountService } from '@Growthware/Lib/src/lib/features/account';
+import { catchError, finalize, of } from 'rxjs';
 
-export function appInitializer(accountService: AccountService) {
-  return () => new Promise(resolve => {
-      // attempt to refresh token on app start up to auto authenticate
-      accountService.refreshToken()
-          .subscribe()
-          .add(() => teardown(resolve));
-  });
-
-  function teardown(resolve: any): void {
-    return resolve;
-  }
+export function appInitializer(accountSvc: AccountService) {
+  return () => accountSvc.refreshToken()
+      .pipe(
+          // catch error to start app on success or failure
+          catchError(() => of())
+      );
 }
