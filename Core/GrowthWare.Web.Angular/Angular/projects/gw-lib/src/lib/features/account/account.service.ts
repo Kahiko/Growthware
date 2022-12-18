@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { map, Observable, Subject } from 'rxjs';
+import { catchError, of } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -27,7 +28,7 @@ export class AccountService {
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
   private _Reason: string = '';
-  private _RefreshTokenTimeout: any;
+  private _RefreshTokenTimeout?: NodeJS.Timeout;
   private _SideNavSubject = new Subject<INavLink[]>();
 
   public get account(): string {
@@ -155,7 +156,8 @@ export class AccountService {
 
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
-    const jwtToken = JSON.parse(atob(this._AuthenticationResponse.jwtToken.split('.')[1]));
+    const jwtBase64 = this.authenticationResponse!.jwtToken!.split('.')[1];
+    const jwtToken = JSON.parse(atob(jwtBase64));
 
     // set a timeout to refresh the token a minute before it expires
     const expires = new Date(jwtToken.exp * 1000);
@@ -174,22 +176,31 @@ export class AccountService {
       }),
       withCredentials: true,
     };
-    // return this._HttpClient.post<any>(this._Api_RefreshToken, {}, { withCredentials: true })
-    // .pipe(map((account) => {
-    //     // this.accountSubject.next(account);
-    //     this._AuthenticationResponse = account
-    //     this.startRefreshTokenTimer();
-    //     return account;
-    // }));
     return this._HttpClient.post<any>(this._Api_RefreshToken, null, mHttpOptions)
-    .pipe(map((response) => {
+    .pipe(
+      map((response) => {
         // this.accountSubject.next(account);
         this._AuthenticationResponse = response;
-        this.startRefreshTokenTimer();
         this._Account = response.account;
-        this._IsAuthenticated.next(true);
+        if(response.account != this._DefaultAccount) {
+          this.startRefreshTokenTimer();
+          this.getNavLinks();
+          // components have not loaded as of yet so
+          // we are waiting 1/2 second to give them enough time to load before
+          // triggering this._IsAuthenticated
+          setTimeout(() => { this._IsAuthenticated.next(true); }, 500);
+        } else {
+          this._IsAuthenticated.next(false);
+        }
         return this._AuthenticationResponse;
-    }));
+      }),
+      catchError((err) => {
+        // console.log(err);
+        this.logout();
+        // return nothing
+        return of();
+      })
+    );
   }
 
   public async getAccount(account: string): Promise<IAccountProfile> {
