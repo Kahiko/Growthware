@@ -364,6 +364,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("App_Name", true); }
         }
 
+        public static string Actions_EditAccount
+        {
+            get { return GetAppSettingValue("Actions_EditAccount", true); }
+        }
+
         /// <summary>
         /// Returns DB_Status from the CONFIG file
         /// </summary>
