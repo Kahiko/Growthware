@@ -119,6 +119,12 @@ public abstract class AbstractController : ControllerBase
             HttpContext.Session.SetInt32("EditId", 1);
             return Ok(mAccountProfile);
         }
+        else if(mSecurityInfo.MayView)
+        {
+            MAccountProfile mAccountProfile = this.getAccount(account);
+            HttpContext.Session.Remove("EditId");
+            return Ok(mAccountProfile);
+        }
         else
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
