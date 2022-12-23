@@ -107,8 +107,27 @@ public abstract class AbstractController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [HttpGet("EditAccount")]
+    public ActionResult<MAccountProfile> EditAccount(string account)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount, HttpContext);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mSecurityInfo.MayEdit)
+        {
+            MAccountProfile mAccountProfile = this.GetAccount(account);
+            HttpContext.Session.SetInt32("EditId", 1);
+            return Ok(mAccountProfile);
+        }
+        else
+        {
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        }
+    }
+
+
     [HttpGet("GetAccount")]
-    public MAccountProfile GetAccount(string account)
+    private MAccountProfile GetAccount(string account)
     {
         MAccountProfile mRetVal = new MAccountProfile();
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
