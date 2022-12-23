@@ -215,8 +215,9 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
+    const mUrl = this._GWCommon.baseURL + this._ApiName + this.reason;
     return new Promise<IAccountProfile>((resolve, reject) => {
-      this._HttpClient.get<IAccountProfile>(this._Api_GetAccount, mHttpOptions).subscribe({
+      this._HttpClient.get<IAccountProfile>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
