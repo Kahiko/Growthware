@@ -115,7 +115,7 @@ public abstract class AbstractController : ControllerBase
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if(mSecurityInfo.MayEdit)
         {
-            MAccountProfile mAccountProfile = this.GetAccount(account);
+            MAccountProfile mAccountProfile = this.getAccount(account);
             HttpContext.Session.SetInt32("EditId", 1);
             return Ok(mAccountProfile);
         }
@@ -125,9 +125,7 @@ public abstract class AbstractController : ControllerBase
         }
     }
 
-
-    [HttpGet("GetAccount")]
-    private MAccountProfile GetAccount(string account)
+    private MAccountProfile getAccount(string account)
     {
         MAccountProfile mRetVal = new MAccountProfile();
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
