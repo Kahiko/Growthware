@@ -98,7 +98,7 @@ export class AccountDetailsComponent implements OnInit {
       if(this._AccountSvc.reason === 'add') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
-      if(this._AccountSvc.reason === 'edit') {
+      if(this._AccountSvc.reason === 'EditAccount') {
         this._ModalSvc.close(this._AccountSvc.editModalId);
       }
     }
