@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
-import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
+import { ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 import { IAccountProfile } from '../../account-profile.model';

@@ -5,7 +5,7 @@ import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableBtnMethods, INameValuePare } from '@Growthware/Lib/src/lib/models';
-import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
+import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 
 import { AccountDetailsComponent } from '../account-details/account-details.component';
 import { AccountService } from '../../account.service';
@@ -19,6 +19,8 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
 
   private _SearchCriteriaChangedSub: Subscription = new Subscription();
+  private _WindowSize = new WindowSize(350,900);
+
 
   public configurationName = 'Accounts';
   public results: any;
@@ -64,7 +66,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
 
   private onBtnTopRight () {
     this._AccountSvc.reason = 'add'
-    const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.addModalId, 'Add Account', AccountDetailsComponent, ModalSize.ExtraLarge);
+    const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.addModalId, 'Add Account', AccountDetailsComponent, this._WindowSize);
     this._ModalSvc.open(mModalOptions);
   }
 
@@ -78,7 +80,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
     const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
     this._AccountSvc.account = mDataRow.Account;
     this._AccountSvc.reason = 'edit';
-    const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.editModalId, 'Edit Account', AccountDetailsComponent, ModalSize.ExtraLarge);
+    const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.editModalId, 'Edit Account', AccountDetailsComponent, this._WindowSize);
     this._ModalSvc.open(mModalOptions);
   }
 }

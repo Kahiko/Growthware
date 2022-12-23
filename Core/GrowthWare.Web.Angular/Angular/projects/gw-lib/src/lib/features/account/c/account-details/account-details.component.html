@@ -125,17 +125,15 @@
       </div>
     </mat-tab>
   </mat-tab-group>
-  <div class="row buttonRow">
-    <div class="column">
-      <button type="submit" [disabled]="frmAccount.invalid" mat-button color="primary">
-        <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
-      </button>
-      <button *ngIf="canDelete" (click)="onDelete()" mat-button color="warn">
-        <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
-      </button>
-      <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
-        <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
-      </button>
-    </div>
+  <div class="buttonRow">
+    <button type="submit" [disabled]="frmAccount.invalid" mat-button color="primary">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">save</i>Save
+    </button>
+    <button *ngIf="canDelete" (click)="onDelete()" mat-button color="warn">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">delete</i>Delete
+    </button>
+    <button *ngIf="canCancel" (click)="onCancel()" mat-button color="accent">
+      <i style="padding-right: 3px;" class="inline-icon material-icons">cancel</i>Cancel
+    </button>
   </div>
 </form>

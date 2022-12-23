@@ -1,6 +1,5 @@
 .mat-tab-group {
-  height: calc(68vh);
-  min-height: 100%;
+  height: calc(34vh);
   font-size: .8rem;
 }
 
@@ -30,7 +29,6 @@
 }
 
 .buttonRow {
-  display: flex;
+  float: right;
   text-align: right;
-  margin-top: 5px;
 }
