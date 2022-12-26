@@ -11,16 +11,17 @@ namespace GrowthWare.WebSupport.Utilities;
 
 public static class FunctionUtility
 {
+    private static IHttpContextAccessor m_IHttpContextAccessor = null;
 
     /// <summary>
     /// Retrieves all functions from the either the database or cache
     /// </summary>
     /// <returns>A Collection of MFunctionProfiles</returns>
     [CLSCompliant(false)]
-    public static Collection<MFunctionProfile> Functions(HttpContext httpContext)
+    public static Collection<MFunctionProfile> Functions()
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        MClientChoicesState mClientChoicesState =  (MClientChoicesState)httpContext.Items["ClientChoicesState"];
+        MClientChoicesState mClientChoicesState =  (MClientChoicesState)m_IHttpContextAccessor.HttpContext.Items["ClientChoicesState"];
         if (mClientChoicesState != null && mClientChoicesState[MClientChoices.SecurityEntityID] != null) 
         {
             int mSecurityEntityID = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID]);
@@ -39,12 +40,12 @@ public static class FunctionUtility
     }
 
     [CLSCompliant(false)]
-    public static MFunctionProfile GetProfile(String action, HttpContext context)
+    public static MFunctionProfile GetProfile(String action)
     {
         MFunctionProfile mRetVal = null;
         if (!string.IsNullOrEmpty(action))
         {
-            var mResult = from mProfile in Functions(context)
+            var mResult = from mProfile in Functions()
                           where mProfile.Action.ToLower(CultureInfo.CurrentCulture) == action.ToLower(CultureInfo.CurrentCulture)
                           select mProfile;
             mRetVal = new MFunctionProfile();
@@ -58,5 +59,11 @@ public static class FunctionUtility
             }
         }
         return mRetVal;
+    }
+
+    [CLSCompliant(false)]
+    public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+    {
+        m_IHttpContextAccessor = httpContextAccessor;
     }
 }

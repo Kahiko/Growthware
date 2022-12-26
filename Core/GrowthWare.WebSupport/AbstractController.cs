@@ -111,7 +111,7 @@ public abstract class AbstractController : ControllerBase
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount, HttpContext);
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if(mSecurityInfo.MayEdit)
         {

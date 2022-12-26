@@ -1,6 +1,7 @@
 using GrowthWare.Framework;
 using GrowthWare.WebSupport.Services;
 using GrowthWare.WebSupport.Jwt;
+using GrowthWare.WebSupport.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -61,7 +62,12 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
-
+IHttpContextAccessor httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
+if(httpContextAccessor != null)
+{
+    FunctionUtility.SetHttpContextAccessor(httpContextAccessor);
+    SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
+} 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

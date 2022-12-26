@@ -16,7 +16,7 @@ public class ClientChoicesService : IClientChoicesService
 
     private static MClientChoicesState m_AnonymousClientChoicesState;
 
-    private IHttpContextAccessor m_HttpContextAccessor;
+    private static IHttpContextAccessor m_HttpContextAccessor = null;
 
     [CLSCompliant(false)]
     public ClientChoicesService(IHttpContextAccessor httpContextAccessor)
@@ -133,5 +133,4 @@ public class ClientChoicesService : IClientChoicesService
             return ConfigSettings.DefaultSecurityEntityID;
         }
     }
-
 }

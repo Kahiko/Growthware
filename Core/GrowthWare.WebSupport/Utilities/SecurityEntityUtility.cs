@@ -1,4 +1,4 @@
-
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -14,11 +14,26 @@ public static class SecurityEntityUtility
 {
 
     private static Collection<MSecurityEntity> m_SecurityEntities = null;
+    private static IHttpContextAccessor m_HttpContextAccessor = null;
 
     public static MSecurityEntity CurrentProfile()
     {
-        MSecurityEntity mRetVal = DefaultProfile();
-        return mRetVal;
+        MSecurityEntity mRetProfile = null;
+        if(m_HttpContextAccessor != null) 
+        {
+            string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(MClientChoices.SessionName);
+            if(mJsonString != null)
+            {
+                MClientChoicesState mClientChoicesState = new MClientChoicesState(mJsonString);
+                if (mClientChoicesState != null) 
+                {
+                    int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
+                    mRetProfile = GetProfile(mSecurityEntity);
+                }
+            }
+            if (mRetProfile == null) mRetProfile = DefaultProfile();
+        }
+        return mRetProfile;
     }
 
     public static MSecurityEntity DefaultProfile()
@@ -89,6 +104,12 @@ public static class SecurityEntityUtility
     {
         BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         return mBSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin).DefaultView;
+    }
+
+    [CLSCompliant(false)]
+    public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
+    {
+        m_HttpContextAccessor = httpContextAccessor;
     }
 
     public static Collection<MSecurityEntity> Profiles()
