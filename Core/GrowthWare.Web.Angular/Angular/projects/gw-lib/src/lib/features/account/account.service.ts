@@ -182,13 +182,16 @@ export class AccountService {
         // this.accountSubject.next(account);
         this._AuthenticationResponse = response;
         this._Account = response.account;
+        this._CurrentAccount = this._Account;
         if(response.account != this._DefaultAccount) {
           this.startRefreshTokenTimer();
           this.getNavLinks();
           // components have not loaded as of yet so
           // we are waiting 1/2 second to give them enough time to load before
           // triggering this._IsAuthenticated
-          setTimeout(() => { this._IsAuthenticated.next(true); }, 500);
+          setTimeout(() => {
+            this._IsAuthenticated.next(true);
+          }, 500);
         } else {
           this._IsAuthenticated.next(false);
         }

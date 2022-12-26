@@ -71,11 +71,19 @@ export class AccountDetailsComponent implements OnInit {
 
   ngOnInit(): void {
     let mDesiredAccount: string = '';
-    if(this._Router.url === '/search-accounts') {
-      mDesiredAccount = this._AccountSvc.account;
-      this.canCancel = true;
-    } else {
-      mDesiredAccount = this._AccountSvc.currentAccount;
+
+    switch (this._Router.url) {
+      case '/search-accounts':
+        mDesiredAccount = this._AccountSvc.account;
+        this.canCancel = true;
+        break;
+      case '/edit-my-account':
+        this._AccountSvc.reason = 'EditProfile';
+        mDesiredAccount = this._AccountSvc.currentAccount;
+        this.canDelete = false;
+        break;
+      default:
+        break;
     }
     this._AccountSvc.getAccount(mDesiredAccount).then((accountProfile: IAccountProfile) => {
       this._AccountProfile = accountProfile;
@@ -83,12 +91,6 @@ export class AccountDetailsComponent implements OnInit {
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
     });
-
-    if(this._Router.url === '/edit-my-account') {
-      this.canDelete = false;
-    } else {
-      // TODO: add more logic to check authorization
-    }
     // TODO: add more logic to check authorization and show/hide Save button
     this.populateForm();
   }
