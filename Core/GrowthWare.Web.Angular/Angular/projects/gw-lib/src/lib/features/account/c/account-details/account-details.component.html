@@ -1,5 +1,5 @@
 <form [formGroup]="frmAccount" (ngSubmit)="onSubmit(frmAccount)" novalidate>
-  <mat-tab-group class="mat-tab-group"  mat-align-tabs="center">
+  <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px;">
     <mat-tab label="Account Information">
       <div class="mat-tab__container">
         <mat-grid-list class="mat-tab__container__grid-list" cols="4" rowHeight="4:1">
@@ -79,27 +79,28 @@
           </mat-grid-tile>
           <mat-grid-tile></mat-grid-tile> <!--blank-->
           <mat-grid-tile></mat-grid-tile> <!--blank-->
-          <!--Blank row-->
-          <mat-grid-tile></mat-grid-tile> <!--1-->
-          <mat-grid-tile></mat-grid-tile> <!--2-->
-          <mat-grid-tile></mat-grid-tile> <!--3-->
-          <mat-grid-tile></mat-grid-tile> <!--4-->
+          <!--Blank row
+          <mat-grid-tile>1</mat-grid-tile>
+          <mat-grid-tile>2</mat-grid-tile>
+          <mat-grid-tile>3</mat-grid-tile>
+          <mat-grid-tile>4</mat-grid-tile>
+           -->
         </mat-grid-list>
       </div>
     </mat-tab>
     <mat-tab *ngIf="showGroups" label="Roles">
       <div class="mat-tab__container">
         <div class="mat-tab__content">
-            <gw-lib-pick-list
-              id="roles"
-              name="roles"
-              allItemsText="Available Roles"
-              header="Assign roles"
-              pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-              selectedItemsText="Selected Roles"
-              size=8
-              width=120></gw-lib-pick-list>
-          </div>
+          <gw-lib-pick-list
+            id="roles"
+            name="roles"
+            allItemsText="Available Roles"
+            header="Assign roles"
+            pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+            selectedItemsText="Selected Roles"
+            size=8
+            width=120></gw-lib-pick-list>
+        </div>
       </div>
     </mat-tab>
     <mat-tab *ngIf="showGroups" label="Groups">

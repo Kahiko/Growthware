@@ -1,34 +1,20 @@
-.mat-tab-group {
-  height: calc(34vh);
-  font-size: .8rem;
-}
-
 .mat-tab__container {
-  position: relative;
-  // height: calc(67vh);
-  min-width: 98%;
-  vertical-align: middle;
-  text-align: center;
+  min-height: 300px;
   border-bottom: 1px solid lightgray;
   border-left: 1px solid lightgray;
   border-right: 1px solid lightgray;
+  font-size: .8rem;
+  vertical-align: middle;
+  text-align: center;
 }
 
 .mat-tab__content {
   display: inline-block;
   margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.mat-tab__container__grid-list {
-  margin-top: 10px;
-}
-
-.mat-form-field {
-  padding-left: 5px;
 }
 
 .buttonRow {
+  // border: solid 1px; // for testing
   float: right;
   text-align: right;
 }
