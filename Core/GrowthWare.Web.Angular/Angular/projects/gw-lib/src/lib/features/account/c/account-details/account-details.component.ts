@@ -93,13 +93,13 @@ export class AccountDetailsComponent implements OnInit {
       // Request #2
       return this._AccountSvc.getSecutiryInfo('EditAccount')
     }).catch((reason) => {
-      this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
+      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getAccount:', LogLevel.Error);
     }).then((response) => {
       console.log(response);
       // Response Handler #2
       this.populateForm();
     }).catch((reason) => {
-      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit:', LogLevel.Error);
+      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getSecutiryInfo:', LogLevel.Error);
     });
     // TODO: add more logic to check authorization and show/hide Save button
     this.populateForm();
