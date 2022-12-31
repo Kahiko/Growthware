@@ -8,6 +8,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
 import { IAccountProfile } from './account-profile.model';
+import { ISecurityInfo } from './security-info.model';
 import { IAuthenticationResponse } from './authentication-response.model';
 import { Router } from '@angular/router';
 
@@ -256,5 +257,28 @@ export class AccountService {
         // here as example
       }
     })
+  }
+
+  public async getSecutiryInfo(action: string): Promise<ISecurityInfo> {
+    const mQueryParameter: HttpParams = new HttpParams().append('action', action);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    const mUrl = this._GWCommon.baseURL + this._ApiName + 'GetSecurityInfo';
+    return new Promise<ISecurityInfo>((resolve, reject) => {
+      this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });     
+    });
   }
 }

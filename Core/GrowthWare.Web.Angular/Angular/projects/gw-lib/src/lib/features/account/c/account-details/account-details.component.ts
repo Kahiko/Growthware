@@ -7,6 +7,7 @@ import { ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 import { IAccountProfile } from '../../account-profile.model';
+import { SecurityInfo } from '../../security-info.model';
 import { AccountService } from '../../account.service';
 
 @Component({
@@ -85,11 +86,20 @@ export class AccountDetailsComponent implements OnInit {
       default:
         break;
     }
+    // Request #1 in the chain
     this._AccountSvc.getAccount(mDesiredAccount).then((accountProfile: IAccountProfile) => {
+      // Response Handler #1
       this._AccountProfile = accountProfile;
-      this.populateForm();
+      // Request #2
+      return this._AccountSvc.getSecutiryInfo('EditAccount')
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Account Error:', LogLevel.Error);
+    }).then((response) => {
+      console.log(response);
+      // Response Handler #2
+      this.populateForm();
+    }).catch((reason) => {
+      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit:', LogLevel.Error);
     });
     // TODO: add more logic to check authorization and show/hide Save button
     this.populateForm();
