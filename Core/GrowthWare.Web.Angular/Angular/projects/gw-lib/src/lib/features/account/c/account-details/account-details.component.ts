@@ -26,6 +26,12 @@ export class AccountDetailsComponent implements OnInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
+  groupsAvalible: Array<string> = [];
+  groupsSelected: Array<string> = [];
+
+  rolesAvalible: Array<string> = [];
+  rolesSelected: Array<string> = [];
+
   selectedStatus: number = 0;
   selectedTimeZone: number = 0;
 
@@ -95,52 +101,61 @@ export class AccountDetailsComponent implements OnInit {
         break;
     }
     // Request #1 in the chain
-    this._GroupSvc.getGroups().then((response) => {
+    this._GroupSvc.getGroups().catch((error) => {
+      this._LoggingSvc.toast("Error getting groups:\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((groups) => {
       // Response Handler #1
-      if(response != null) {
-        // set the avalible groups
+      if(groups != null) {
+        this.groupsAvalible = groups;
       }
       // Request #2
       return this._RoleSvc.getRoles();
-    }).catch((reason) => {
-      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getAccount:', LogLevel.Error);
-    }).then((response) => {
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting roles:\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((roles) => {
       // Response Handler #2
-      if(response != null) {
+      if(roles != null) {
         // set the avalible groups
       }
       // Request #3
       return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
-    }).catch((reason) => {
-      this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getSecutiryInfo:', LogLevel.Error);
-    }).then((response) => {
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.reason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((reasonSecurityInfo) => {
       // Response Handler #3
-      if(response != null) {
-        this._SecurityInfoAccount = response;
+      if(reasonSecurityInfo != null) {
+        this._SecurityInfoAccount = reasonSecurityInfo;
       }
       // Request #4
       return this._AccountSvc.getSecutiryInfo('View_Account_Group_Tab');
-    }).then((response)=>{
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting security info for 'Group tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((groupTabSecurityInfo)=>{
       // Response Handler #4
-      if(response != null) {
-        this._SecurityInfoGroups = response;
+      if(groupTabSecurityInfo != null) {
+        this._SecurityInfoGroups = groupTabSecurityInfo;
       }
       // Request #5
       return this._AccountSvc.getSecutiryInfo('View_Account_Role_Tab');
-    }).then((response) => {
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((roleTabSecurityInfo) => {
       // Response Handler #5
-      if(response != null) {
-        this._SecurityInfoRoles = response;
+      if(roleTabSecurityInfo != null) {
+        this._SecurityInfoRoles = roleTabSecurityInfo;
       }
       // Request #6
       return this._AccountSvc.getAccount(mDesiredAccount);
-    }).then((accountProfile) => {
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting account information :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((accountProfile) => { // getAccount(mDesiredAccount);
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
         this.applySecurity();
         this.populateForm();
       } 
     });
+    this.applySecurity();
     this.populateForm();
   }
 
@@ -162,7 +177,9 @@ export class AccountDetailsComponent implements OnInit {
         if(this._SecurityInfoRoles != null) {
           this.showRoles = this._SecurityInfoRoles.mayView;
         }
-      break;
+        break;
+      case 'add':
+        break;
       default:
         break;
     }       

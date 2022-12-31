@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -187,6 +188,14 @@ public abstract class AbstractController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetGroups")]
+    public ActionResult<ArrayList> GetGroups()
+    {
+        ArrayList mRetVal;
+        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        return Ok(mRetVal);
+    }
+
     [HttpGet("GetLinks")]
     public List<MNavLink> GetLinks()
     {
@@ -225,6 +234,13 @@ public abstract class AbstractController : ControllerBase
             mRootNavLinks.Add(mNavLink);
         }
         return mRootNavLinks;
+    }
+
+    [HttpGet("GetRoles")]
+    public ActionResult<ArrayList> GetRoles()
+    {
+        ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        return Ok(mRetVal);
     }
 
     [HttpGet("GetSecurityInfo")]
