@@ -6,4 +6,8 @@ import { Injectable } from '@angular/core';
 export class GroupService {
 
   constructor() { }
+
+  public async getGroups(): Promise<any> {
+    
+  }
 }

@@ -6,4 +6,8 @@ import { Injectable } from '@angular/core';
 export class RoleService {
 
   constructor() { }
+
+  public async getRoles(): Promise<any> {
+    
+  }
 }

@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
 
-import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
-import { ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { GroupService } from '@Growthware/Lib/src/lib/features/group';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
+import { RoleService } from '@Growthware/Lib/src/lib/features/role';
 
 import { IAccountProfile } from '../../account-profile.model';
 import { ISecurityInfo } from '../../security-info.model';
@@ -27,9 +29,13 @@ export class AccountDetailsComponent implements OnInit {
   selectedStatus: number = 0;
   selectedTimeZone: number = 0;
 
-  showDerived: boolean = true;
-  showRoles: boolean = true;
-  showGroups: boolean = true;
+  showDerived: boolean = false;
+  showRoles: boolean = false;
+  showGroups: boolean = false;
+
+  private _SecurityInfoAccount: null | ISecurityInfo = null;
+  private _SecurityInfoGroups: null | ISecurityInfo = null;
+  private _SecurityInfoRoles: null | ISecurityInfo = null;
 
   submitted: boolean = false;
 
@@ -64,9 +70,11 @@ export class AccountDetailsComponent implements OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
+    private _GroupSvc: GroupService,
     private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+    private _RoleSvc: RoleService,
     private _Router: Router
     ) { }
 
@@ -87,34 +95,77 @@ export class AccountDetailsComponent implements OnInit {
         break;
     }
     // Request #1 in the chain
-    this._AccountSvc.getAccount(mDesiredAccount).then((accountProfile: IAccountProfile) => {
+    this._GroupSvc.getGroups().then((response) => {
       // Response Handler #1
-      this._AccountProfile = accountProfile;
+      if(response != null) {
+        // set the avalible groups
+      }
       // Request #2
-      return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
+      return this._RoleSvc.getRoles();
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getAccount:', LogLevel.Error);
     }).then((response) => {
-      if(response != null) {
-        switch (this._AccountSvc.reason.toLowerCase()) {
-          case 'addaccount':
-            this.canDelete = false;
-            break;
-            case 'editaccount':
-            this.canDelete = response.mayDelete;
-            this.canSave = response.mayEdit
-          break;
-          default:
-            break;
-        }
-      }
       // Response Handler #2
-      this.populateForm();
+      if(response != null) {
+        // set the avalible groups
+      }
+      // Request #3
+      return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getSecutiryInfo:', LogLevel.Error);
+    }).then((response) => {
+      // Response Handler #3
+      if(response != null) {
+        this._SecurityInfoAccount = response;
+      }
+      // Request #4
+      return this._AccountSvc.getSecutiryInfo('View_Account_Group_Tab');
+    }).then((response)=>{
+      // Response Handler #4
+      if(response != null) {
+        this._SecurityInfoGroups = response;
+      }
+      // Request #5
+      return this._AccountSvc.getSecutiryInfo('View_Account_Role_Tab');
+    }).then((response) => {
+      // Response Handler #5
+      if(response != null) {
+        this._SecurityInfoRoles = response;
+      }
+      // Request #6
+      return this._AccountSvc.getAccount(mDesiredAccount);
+    }).then((accountProfile) => {
+      if(accountProfile != null) {
+        this._AccountProfile = accountProfile;
+        this.applySecurity();
+        this.populateForm();
+      } 
     });
-    // TODO: add more logic to check authorization and show/hide Save button
     this.populateForm();
+  }
+
+  private applySecurity() {
+    switch (this._AccountSvc.reason.toLowerCase()) {
+      case 'addaccount':
+        this.canDelete = false;
+        this.showDerived = true;
+        break;
+        case 'editaccount':
+        this.showDerived = true;
+        if(this._SecurityInfoAccount != null) {
+          this.canDelete = this._SecurityInfoAccount.mayDelete;
+          this.canSave = this._SecurityInfoAccount.mayEdit
+        }
+        if(this._SecurityInfoGroups != null) {
+          this.showGroups = this._SecurityInfoGroups.mayView;
+        }
+        if(this._SecurityInfoRoles != null) {
+          this.showRoles = this._SecurityInfoRoles.mayView;
+        }
+      break;
+      default:
+        break;
+    }       
   }
 
   closeModal(): void {
