@@ -230,10 +230,14 @@ public abstract class AbstractController : ControllerBase
     [HttpGet("GetSecurityInfo")]
     public ActionResult<MSecurityInfo> GetSecurityInfo(string action) 
     { 
+        MSecurityInfo mSecurityInfo = new MSecurityInfo();
         if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException("action", " can not be null or blank!");
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mFunctionProfile != null) 
+        {
+            mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        }
         return Ok(mSecurityInfo);
     }
 
