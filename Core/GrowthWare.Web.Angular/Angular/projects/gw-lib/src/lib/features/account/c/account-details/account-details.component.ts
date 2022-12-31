@@ -7,7 +7,7 @@ import { ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 import { IAccountProfile } from '../../account-profile.model';
-import { SecurityInfo } from '../../security-info.model';
+import { ISecurityInfo } from '../../security-info.model';
 import { AccountService } from '../../account.service';
 
 @Component({
@@ -91,11 +91,23 @@ export class AccountDetailsComponent implements OnInit {
       // Response Handler #1
       this._AccountProfile = accountProfile;
       // Request #2
-      return this._AccountSvc.getSecutiryInfo('EditAccount')
+      return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
     }).catch((reason) => {
       this._LoggingSvc.toast(reason, 'Error AccountDetailsComponent.ngOnInit - getAccount:', LogLevel.Error);
     }).then((response) => {
-      console.log(response);
+      if(response != null) {
+        switch (this._AccountSvc.reason.toLowerCase()) {
+          case 'addaccount':
+            this.canDelete = false;
+            break;
+            case 'editaccount':
+            this.canDelete = response.mayDelete;
+            this.canSave = response.mayEdit
+          break;
+          default:
+            break;
+        }
+      }
       // Response Handler #2
       this.populateForm();
     }).catch((reason) => {
