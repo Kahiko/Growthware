@@ -47,7 +47,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
     this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePare) => {
       if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
         this._SearchSvc.searchAccounts(criteria).then((results) => {
-          this._DataSvc.notifyDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
+          this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
         }).catch((error) => {
           console.log(error);
         });

@@ -32,7 +32,7 @@ export class PagerComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._DataChangedSub = this._DataSvc.dataChanged.subscribe(
+    this._DataChangedSub = this._DataSvc.searchDataChanged.subscribe(
       (results: ISearchResultsNVP) => {
         if (
           this.name.trim().toLowerCase() === results.name.trim().toLowerCase()

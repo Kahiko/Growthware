@@ -193,7 +193,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
       }
       // subscribe to the data change event and update the local data
       this._Subscriptions.add(
-        this._DataSvc.dataChanged.subscribe((results: ISearchResultsNVP) => {
+        this._DataSvc.searchDataChanged.subscribe((results: ISearchResultsNVP) => {
           if (this.configurationName.trim().toLowerCase() === results.name.trim().toLowerCase()) {
             // update the local search criteria with the one used to perform the search
             this._SearchCriteria = results.payLoad.searchCriteria;
