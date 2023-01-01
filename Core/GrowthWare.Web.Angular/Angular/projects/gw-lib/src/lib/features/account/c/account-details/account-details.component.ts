@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
-
+// Library
+import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { GroupService } from '@Growthware/Lib/src/lib/features/group';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
-
+// Feature
 import { IAccountProfile } from '../../account-profile.model';
 import { ISecurityInfo } from '../../security-info.model';
 import { AccountService } from '../../account.service';
@@ -17,7 +18,7 @@ import { AccountService } from '../../account.service';
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss']
 })
-export class AccountDetailsComponent implements OnInit {
+export class AccountDetailsComponent implements AfterViewInit {
   private _AccountProfile!: IAccountProfile;
 
   frmAccount!: FormGroup;
@@ -27,9 +28,11 @@ export class AccountDetailsComponent implements OnInit {
   canSave: boolean = false;
 
   groupsAvalible: Array<string> = [];
+  groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
 
   rolesAvalible: Array<string> = [];
+  rolesPickListName: string = 'roles';
   rolesSelected: Array<string> = [];
 
   selectedStatus: number = 0;
@@ -76,6 +79,7 @@ export class AccountDetailsComponent implements OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
+    private _DataSvc: DataService,
     private _GroupSvc: GroupService,
     private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
@@ -83,6 +87,10 @@ export class AccountDetailsComponent implements OnInit {
     private _RoleSvc: RoleService,
     private _Router: Router
     ) { }
+
+  ngAfterViewInit(): void {
+    
+  }
 
   ngOnInit(): void {
     let mDesiredAccount: string = '';
@@ -106,7 +114,12 @@ export class AccountDetailsComponent implements OnInit {
     }).then((groups) => {
       // Response Handler #1
       if(groups != null) {
-        this.groupsAvalible = groups;
+        // TODO: this would indicate that the pick-list component isn't loaded at this point
+        // and we are simply adding a delay to give it time... need to find a better way
+        // such as a different lifecycle hook?
+        setTimeout(() => {
+          this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups);
+        }, 500);  
       }
       // Request #2
       return this._RoleSvc.getRoles();
@@ -115,7 +128,12 @@ export class AccountDetailsComponent implements OnInit {
     }).then((roles) => {
       // Response Handler #2
       if(roles != null) {
-        // set the avalible groups
+        // TODO: this would indicate that the pick-list component isn't loaded at this point
+        // and we are simply adding a delay to give it time... need to find a better way
+        // such as a different lifecycle hook?
+        setTimeout(() => {
+          this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles);
+        }, 500);        
       }
       // Request #3
       return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
