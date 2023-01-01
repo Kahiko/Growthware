@@ -75,9 +75,9 @@ export class GWCommon {
         mFormattedData = this.formatDate(data);
         break;
       case 'text':
-        if(mFormatParts.length > 1 && data.length > 0) {
+        if (mFormatParts.length > 1 && data.length > 0) {
           const mDesiredLength = parseInt(mFormatParts[1]);
-          if(data.length > mDesiredLength) {
+          if (data.length > mDesiredLength) {
             // console.log('eclipsing the data');
             // console.log(data);
             mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
@@ -86,7 +86,7 @@ export class GWCommon {
         break;
       default:
         const mMsg = "'" + format + "' is an unknown format";
-        throw(mMsg);
+        throw (mMsg);
         break;
     }
     return mFormattedData;
@@ -110,11 +110,11 @@ export class GWCommon {
 
   public getTotalRecords(data: Array<any>): number {
     let mRetVal = -1;
-    if(data && data.length > 0) {
+    if (data && data.length > 0) {
       const mFirstRow = data[0];
-      if(mFirstRow) {
+      if (mFirstRow) {
         const mTotalRecords = mFirstRow['TotalRecords'];
-        if(mTotalRecords) {
+        if (mTotalRecords) {
           mRetVal = mTotalRecords;
         }
       }
@@ -171,15 +171,128 @@ export class GWCommon {
    * @return {*}  {boolean}
    * @memberof GWCommon
    */
-  public isNumber(value: string | number): boolean
-  {
+  public isNumber(value: string | number): boolean {
     let mRetVal: boolean = false;
-    if(!this.isNullOrUndefined(value) &&
+    if (!this.isNullOrUndefined(value) &&
       !this.isNullOrEmpty(value.toString()) &&
       !isNaN(Number(value.toString()))) {
-        mRetVal = true;
+      mRetVal = true;
     }
     return mRetVal;
   }
-}
 
+  /********** Natural Sorting *****************/
+  /*
+  * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
+  * Author: Jim Palmer (based on chunking idea from Dave Koelle)
+  * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
+  */
+  public static naturalSort(a: any, b: any): number {
+    const re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi
+    const sre = /(^[ ]*|[ ]*$)/g
+    const dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/
+    const hre = /^0x[0-9a-f]+$/i
+    const ore = /^0/
+    // convert all to strings and trim()
+    const x = a.toString().replace(sre, '') || ''
+    const y = b.toString().replace(sre, '') || ''
+    // chunk/tokenize
+    const xN = x.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0')
+    const yN = y.replace(re, '\0$1\0').replace(/\0$/, '').replace(/^\0/, '').split('\0')
+    // numeric, hex or date detection
+    const xD = parseInt(x.match(hre)) || (xN.length != 1 && x.match(dre) && Date.parse(x))
+    const yD = parseInt(y.match(hre)) || xD && y.match(dre) && Date.parse(y) || null;
+    // first try and sort Hex codes or Dates
+    if (yD)
+      if (xD < yD) return -1;
+      else if (xD > yD) return 1;
+    // natural sorting through split numeric strings and default strings
+    for (var cLoc = 0, numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+      // find floats not starting with '0', string or 0 if not defined (Clint Priest)
+      var oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+      var oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+      // handle numeric vs string comparison - number < string - (Kyle Adams)
+      if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1;
+      // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'
+      else if (typeof oFxNcL !== typeof oFyNcL) {
+        oFxNcL += '';
+        oFyNcL += '';
+      }
+      if (oFxNcL < oFyNcL) return -1;
+      if (oFxNcL > oFyNcL) return 1;
+    }
+    return 0;
+  }
+  /**
+   * @description sortData is a basic sort for an array.
+   *
+   * @requires #sortBy a basic comparer function
+   *
+   * @param {Array} columnName this is the array to be sorted
+   * @param {String} columnName this is the name of the column or element in the array
+   * @param {String} orderByDirection this is the desired direction valid options asc or desc
+   *
+   * @returns {Array} a sorted array of object given a object property
+   *
+   * @usage:
+   * @usage:
+   * var myArray = [
+   *  {'First': '', 'Last': '', 'Middle': ''},
+   *  {'First': '', 'Last': '', 'Middle': ''}
+   * ]; // of course your array will have many "rows" not just two
+   * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
+   * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "Last"
+   *
+   */
+  public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
+    const isArray = (Object.prototype.toString.call(dataArray) === "[object Array]");
+    if (!isArray) {
+      console.log('Common.sortArray: dataArray is not an "Array" exiting!');
+      return;
+    }
+    let mReverse = false;
+
+    if (orderByDirection.toUpperCase() === 'ASC') {
+      mReverse = true;
+    }
+    const newArray = dataArray.slice();
+    dataArray = [];
+    newArray.sort(this.sortBy(columnName, mReverse));
+    dataArray = newArray.slice();
+    return dataArray;
+  }
+
+  /**
+   * @description Returns a function which will sort an
+   * array of objects by the given key.
+   *
+   */
+  private static sortBy(key: string | number, reverse: boolean): any {
+    // Move smaller items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveSmaller = reverse ? 1 : -1;
+
+    // Move larger items towards the front
+    // or back of the array depending on if
+    // we want to sort the array in reverse
+    // order or not.
+    const moveLarger = reverse ? -1 : 1;
+
+    /**
+     * @param  {*} a
+     * @param  {*} b
+     * @return {Number}
+     */
+    return (a: any, b: any) => {
+      if (a[key] < b[key]) {
+        return moveSmaller;
+      }
+      if (a[key] > b[key]) {
+        return moveLarger;
+      }
+      return 0;
+    };
+  }
+}
