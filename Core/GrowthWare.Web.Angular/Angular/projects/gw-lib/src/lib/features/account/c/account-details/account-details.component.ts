@@ -117,9 +117,7 @@ export class AccountDetailsComponent implements AfterViewInit {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
-        setTimeout(() => {
-          this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups);
-        }, 500);  
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);  
       }
       // Request #2
       return this._RoleSvc.getRoles();
@@ -131,9 +129,7 @@ export class AccountDetailsComponent implements AfterViewInit {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
-        setTimeout(() => {
-          this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles);
-        }, 500);        
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
       // Request #3
       return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
