@@ -82,4 +82,16 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
     this._ModalSvc.open(this._ModalOptions);
   }
 
+  switchAll(e: any, source: string, destination: string): void {
+    alert('Move all from left to right');
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
+  switchList(e: any, source: string, destination: string): void {
+    alert('Move one from left to right');
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
 }

@@ -1,5 +1,4 @@
-.pickListTable
-{
+.pickListTable {
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
@@ -11,8 +10,8 @@
     font-size: 1rem;
     background-color: #DCDDDE;
 }
-.pickListTableHeader td
-{
+
+.pickListTableHeader td {
     background-color: #B2B2B2;
     -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
@@ -22,24 +21,19 @@
     vertical-align: middle;
     font-size: .8rem;
 }
-.pickListTableHelp td
-{
+
+.pickListTableHelp td {
     padding: 2px;
     font-size: .5rem;
 }
-.pickListTableContents
-{
+
+.pickListTableContents {
     padding: 2px;
     font-size: .8rem;
 }
-.listPickerArrow
-{
-  border-radius: 5px;
-  margin: 3px;
-  border-color: whitesmoke;
-}
+
 .help {
     font-size: 1.2rem;
-    text-align: center; 
+    text-align: center;
     vertical-align: middle;
-  }
+}
