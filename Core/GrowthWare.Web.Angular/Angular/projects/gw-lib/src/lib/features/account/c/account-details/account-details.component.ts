@@ -165,6 +165,16 @@ export class AccountDetailsComponent implements AfterViewInit {
     }).then((accountProfile) => { // getAccount(mDesiredAccount);
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
+        let mRoles: string[] = [];
+        let mGroups: string[] = [];
+        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.assignedRoles)) {
+          mRoles = this._AccountProfile.assignedRoles!;
+          setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
+        }
+        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.groups)) {
+          mGroups = this._AccountProfile.groups!;
+          setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
+        }
         this.applySecurity();
         this.populateForm();
       } 
