@@ -2,7 +2,7 @@
   <tbody>
       <tr class="pickListTableHeader">
           <td>
-              {{header}}&nbsp;&nbsp;<img alt="Help" data-ng-show="pickListTableHelp.length > 0" (click)="onShowHelp()" src="/assets/growthware/images/help.gif" title="Help">
+            {{header}}<mat-icon class="help" (click)="onShowHelp()">help</mat-icon>
           </td>
       </tr>
       <tr>
@@ -17,12 +17,11 @@
                       </tr>
                       <tr>
                           <td valign="top">
-                              <select name="{{id}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
-                                  <!-- <option ng-repeat="item in availableItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
-                                  <option *ngFor="let item of availableItems | async; let rowIndex=index;" [value]="item">
-                                    {{item}}
-                                  </option>                                  
-                              </select>
+                            <select name="{{name}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                                <option *ngFor="let item of availableItems | async; let rowIndex=index;" [value]="item">
+                                {{item}}
+                                </option>                                  
+                            </select>
                           </td>
                           <td valign="middle">
                               <input name="" value=" -> " data-ng-click="switchList('_SrcList', '_DstList')" class="listPickerArrow" style="width: 50px; text-align: right;" type="button" title="Move selected items from left to right"><br/>
@@ -31,8 +30,11 @@
                               <input name="" value=" <<- " data-ng-click="switchAll('_DstList', '_SrcList')" class="listPickerArrow" style="width: 50px; text-align: right;" type="button" title="Move 'All' items from right to left">
                           </td>
                           <td valign="top">
-                              <select name="{{id}}_DstList" id="{{id}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                              <select name="{{name}}_DstList" id="{{id}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
                                   <!-- <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
+                                  <option *ngFor="let item of selectedItems | async; let rowIndex=index;" [value]="item">
+                                    {{item}}
+                                  </option>    
                               </select>
                           </td>
                           <td></td>

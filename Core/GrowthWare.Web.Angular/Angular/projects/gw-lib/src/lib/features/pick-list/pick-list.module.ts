@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
 import { PickListComponent } from './c/pick-list/pick-list.component';
 
 
@@ -9,7 +10,8 @@ import { PickListComponent } from './c/pick-list/pick-list.component';
     PickListComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatIconModule
   ],
   exports: [
     PickListComponent
