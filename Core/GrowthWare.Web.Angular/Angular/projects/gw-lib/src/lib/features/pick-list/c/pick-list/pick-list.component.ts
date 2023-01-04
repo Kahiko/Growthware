@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, Subject, Subscription } from 'rxjs';
+import { ViewChild } from '@angular/core';
+import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
@@ -83,15 +84,75 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   switchAll(e: any, source: string, destination: string): void {
-    alert('Move all from left to right');
+    var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+    var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
+    if(objFromBox.length > 0) {
+      if(source == '_SrcList') {
+        // remove all from _AvailableItemsData add to _SelectedItemsData
+        for (let mOutterIndex = 0; mOutterIndex < objFromBox.length; mOutterIndex++) {
+          this._SelectedItemsData.push(objFromBox.item(mOutterIndex)?.text);
+        }
+        this._AvailableItemsData = [];
+        this.sortDataArrays();
+      } else {
+        // remove all from _SelectedItemsData add to _AvailableItemsData
+        for (let mOutterIndex = 0; mOutterIndex < objFromBox.length; mOutterIndex++) {
+          this._AvailableItemsData.push(objFromBox.item(mOutterIndex)?.text);
+        }
+        this._SelectedItemsData = [];
+        this.sortDataArrays();
+      }
+    }
     e.stopPropagation();
     e.preventDefault();
   }
 
   switchList(e: any, source: string, destination: string): void {
-    alert('Move one from left to right');
+    var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+    var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
+    if(objFromBox.selectedOptions.length > 0) {
+      if(source == '_SrcList') {
+        // remove from _AvailableItemsData add to _SelectedItemsData
+        for (let mOutterIndex = 0; mOutterIndex < objFromBox.selectedOptions.length; mOutterIndex++) {
+          for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
+            if(objFromBox.selectedOptions[mOutterIndex].text == this._AvailableItemsData[mInnerIndex]) {
+              this._AvailableItemsData.splice(mInnerIndex, 1);
+              break;
+            }
+          }
+          this._SelectedItemsData.push(objFromBox.selectedOptions[mOutterIndex].text);
+        }
+        this.sortDataArrays();
+      } else {
+        // remove from _SelectedItemsData add to _AvailableItemsData
+        for (let mOutterIndex = 0; mOutterIndex < objFromBox.selectedOptions.length; mOutterIndex++) {
+          for (let mInnerIndex = 0; mInnerIndex < this._SelectedItemsData.length; mInnerIndex++) {
+            if(objFromBox.selectedOptions[mOutterIndex].text == this._SelectedItemsData[mInnerIndex]) {
+              this._SelectedItemsData.splice(mInnerIndex, 1);
+              break;
+            }
+          }
+          this._AvailableItemsData.push(objFromBox.selectedOptions[mOutterIndex].text);
+        }
+        this.sortDataArrays();
+      }
+    }
     e.stopPropagation();
     e.preventDefault();
+  }
+
+  private sortDataArrays(): void{
+    let sortedArray = this._AvailableItemsData.slice();
+    sortedArray.sort(function (a, b) {
+      return GWCommon.naturalSort(a, b);
+    });
+    this._AvailableItemsSubject.next(sortedArray);
+
+    sortedArray = this._SelectedItemsData.slice();
+    sortedArray.sort(function (a, b) {
+      return GWCommon.naturalSort(a, b);
+    });
+    this._SelectedItemsSubject.next(sortedArray);
   }
 
 }
