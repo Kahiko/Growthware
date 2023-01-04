@@ -21,7 +21,6 @@ export class AccountService {
   private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_Authenticate = '';
-  private _Api_GetAccount: string = '';
   private _Api_GetLinks: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
@@ -79,7 +78,6 @@ export class AccountService {
     private _LoggingSvc: LoggingService,
     private _Router: Router
   ) {
-    this._Api_GetAccount = this._GWCommon.baseURL + this._ApiName + 'GetAccount';
     this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
     this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
     this._Api_Logoff = this._GWCommon.baseURL + this._ApiName + 'Logoff';
@@ -278,7 +276,7 @@ export class AccountService {
           reject('Failed to call the API');
         },
         // complete: () => {}
-      });     
+      });
     });
   }
 }
