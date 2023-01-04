@@ -5,8 +5,9 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService } from '@Growthware/Lib/src/lib/features/modal';
-
 @Component({
   selector: 'gw-lib-pick-list',
   templateUrl: './pick-list.component.html',
@@ -33,7 +34,11 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   readonly selectedItems = this._SelectedItemsSubject.asObservable();
   sortOnChange: boolean = true;
 
-  constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _ModalSvc: ModalService) { }
+  constructor(
+    private _DataSvc: DataService,
+    private _GWCommon: GWCommon,
+    private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService) { }
 
   ngOnDestroy(): void {
     this._Subscriptions.unsubscribe();
@@ -44,35 +49,52 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._ModalOptions = new ModalOptions(this.id + '_Modal', this.header, this.pickListTableHelp)
-    this._Subscriptions.add(
-      this._DataSvc.dataChanged.subscribe((results: DataNVP) => {
-        if (this.name.trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
-          // update the local data
-          this._AvailableItemsData = results.payLoad;
-          this._AvailableItemsSubject.next(results.payLoad);
-        };
-        if (this.name.trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
-          // update the local data
-          this._SelectedItemsData = results.payLoad;
-          this._SelectedItemsSubject.next(results.payLoad);
-          for (let mOutterIndex = 0; mOutterIndex < this._SelectedItemsData.length; mOutterIndex++) {
-            for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
-              if (this._SelectedItemsData[mOutterIndex] == this._AvailableItemsData[mInnerIndex]) {
-                const mIndexInArray = this._AvailableItemsData.indexOf(this._SelectedItemsData[mOutterIndex], 0);
-                this._AvailableItemsData.splice(mIndexInArray, 1);
-                break;
+    if (!this._GWCommon.isNullOrUndefined(this.id) && !this._GWCommon.isNullOrEmpty(this.id)) {
+      this._ModalOptions = new ModalOptions(this.id + '_Modal', this.header, this.pickListTableHelp)
+      this._Subscriptions.add(
+        this._DataSvc.dataChanged.subscribe((results: DataNVP) => {
+          if (this.name.trim().toLowerCase() + '_availableitems' === results.name.trim().toLowerCase()) {
+            // update the local data
+            this._AvailableItemsData = results.payLoad;
+            this._AvailableItemsSubject.next(results.payLoad);
+          };
+          if (this.name.trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
+            // update the local data
+            this._SelectedItemsData = results.payLoad;
+            this._SelectedItemsSubject.next(results.payLoad);
+            for (let mOutterIndex = 0; mOutterIndex < this._SelectedItemsData.length; mOutterIndex++) {
+              for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
+                if (this._SelectedItemsData[mOutterIndex] == this._AvailableItemsData[mInnerIndex]) {
+                  const mIndexInArray = this._AvailableItemsData.indexOf(this._SelectedItemsData[mOutterIndex], 0);
+                  this._AvailableItemsData.splice(mIndexInArray, 1);
+                  break;
+                }
               }
             }
-          }
-          let sortedArray = this._AvailableItemsData.slice();
-          sortedArray.sort(function (a, b) {
-            return GWCommon.naturalSort(a, b);
-          });
-          this._AvailableItemsSubject.next(sortedArray);
-        };
-      })
-    );
+            let sortedArray = this._AvailableItemsData.slice();
+            sortedArray.sort(function (a, b) {
+              return GWCommon.naturalSort(a, b);
+            });
+            this._AvailableItemsSubject.next(sortedArray);
+          };
+        })
+      );
+    } else {
+      const mLogDestinations: Array<LogDestination> = [];
+      mLogDestinations.push(LogDestination.Console);
+      mLogDestinations.push(LogDestination.Toast);
+      const mLogOptions: ILogOptions = new LogOptions(
+        'PickListComponent.ngOnInit: id is blank',
+        LogLevel.Error,
+        mLogDestinations,
+        'PickListComponent',
+        'PickListComponent',
+        'ngOnInit',
+        'system',
+        'PickListComponent'
+      )
+      this._LoggingSvc.log(mLogOptions);
+    }
   }
 
   onMove(listBox: string, direction: string): void {
