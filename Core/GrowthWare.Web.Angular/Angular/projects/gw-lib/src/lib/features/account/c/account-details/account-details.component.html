@@ -106,7 +106,7 @@
     <mat-tab *ngIf="showGroups" label="Groups">
       <div class="mat-tab__container">
         <div class="mat-tab__content">
-          <gw-lib-pick-list
+          <gw-lib-pick-list #groupPickList
             id="groups"
             name="{{groupsPickListName}}"
             allItemsText="Available Groups"

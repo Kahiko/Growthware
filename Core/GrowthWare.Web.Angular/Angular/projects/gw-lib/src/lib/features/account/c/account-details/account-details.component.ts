@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // Library
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { GroupService } from '@Growthware/Lib/src/lib/features/group';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
+import { PickListComponent } from '@Growthware/Lib/src/lib/features/pick-list';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
 // Feature
 import { IAccountProfile } from '../../account-profile.model';
@@ -18,8 +20,14 @@ import { AccountService } from '../../account.service';
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss']
 })
-export class AccountDetailsComponent implements AfterViewInit {
+export class AccountDetailsComponent implements OnDestroy, OnInit {
   private _AccountProfile!: IAccountProfile;
+  private _SecurityInfoAccount: null | ISecurityInfo = null;
+  private _SecurityInfoGroups: null | ISecurityInfo = null;
+  private _SecurityInfoRoles: null | ISecurityInfo = null;
+  private _Subscription: Subscription = new Subscription();
+  @ViewChild('rolePickList', {static: false}) private _RolePickList!: PickListComponent;
+  @ViewChild('groupPickList', {static: false}) private _GroupPickList!: PickListComponent;
 
   frmAccount!: FormGroup;
 
@@ -27,11 +35,11 @@ export class AccountDetailsComponent implements AfterViewInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
-  groupsAvalible: Array<string> = [];
+  groupsAvailable: Array<string> = [];
   groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
 
-  rolesAvalible: Array<string> = [];
+  rolesAvailable: Array<string> = [];
   rolesPickListName: string = 'roles';
   rolesSelected: Array<string> = [];
 
@@ -41,10 +49,6 @@ export class AccountDetailsComponent implements AfterViewInit {
   showDerived: boolean = false;
   showRoles: boolean = false;
   showGroups: boolean = false;
-
-  private _SecurityInfoAccount: null | ISecurityInfo = null;
-  private _SecurityInfoGroups: null | ISecurityInfo = null;
-  private _SecurityInfoRoles: null | ISecurityInfo = null;
 
   submitted: boolean = false;
 
@@ -88,8 +92,8 @@ export class AccountDetailsComponent implements AfterViewInit {
     private _Router: Router
     ) { }
 
-  ngAfterViewInit(): void {
-    
+  ngOnDestroy(): void {
+    this._Subscription.unsubscribe();
   }
 
   ngOnInit(): void {
@@ -97,7 +101,11 @@ export class AccountDetailsComponent implements AfterViewInit {
 
     switch (this._Router.url) {
       case '/search-accounts':
-        mDesiredAccount = this._AccountSvc.account;
+        if(this._AccountSvc.reason.toLowerCase() != "newprofile") {
+          mDesiredAccount = this._AccountSvc.account;
+        } else {
+          mDesiredAccount = "new";
+        }
         this.canCancel = true;
         break;
       case '/edit-my-account':
@@ -108,7 +116,7 @@ export class AccountDetailsComponent implements AfterViewInit {
       default:
         break;
     }
-    // Request #1 in the chain
+    // Load data - Request #1 in the chain
     this._GroupSvc.getGroups().catch((error) => {
       this._LoggingSvc.toast("Error getting groups:\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((groups) => {
@@ -117,7 +125,7 @@ export class AccountDetailsComponent implements AfterViewInit {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);  
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
       }
       // Request #2
       return this._RoleSvc.getRoles();
@@ -177,17 +185,26 @@ export class AccountDetailsComponent implements AfterViewInit {
         }
         this.applySecurity();
         this.populateForm();
-      } 
+      }
     });
+
+    this._Subscription.add(this._RolePickList.selectedItems.subscribe((data) => {
+      this._AccountProfile.assignedRoles = data;
+    }));
+
+    this._Subscription.add(this._GroupPickList.selectedItems.subscribe((data) => {
+      this._AccountProfile.groups = data;
+    }));
+
     this.applySecurity();
     this.populateForm();
   }
 
   private applySecurity() {
     switch (this._AccountSvc.reason.toLowerCase()) {
-      case 'addaccount':
+      case 'newprofile':
         this.canDelete = false;
-        this.showDerived = true;
+        this.showDerived = false;
         break;
         case 'editaccount':
         this.showDerived = true;
@@ -206,12 +223,12 @@ export class AccountDetailsComponent implements AfterViewInit {
         break;
       default:
         break;
-    }       
+    }
   }
 
   closeModal(): void {
     if(this._Router.url === '/search-accounts') {
-      if(this._AccountSvc.reason === 'add') {
+      if(this._AccountSvc.reason === 'NewProfile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
       if(this._AccountSvc.reason === 'EditAccount') {
@@ -249,9 +266,12 @@ export class AccountDetailsComponent implements AfterViewInit {
 
   onSubmit(form: FormGroup): void {
     console.log('Valid?', form.valid); // true or false
-    console.log('Accounts', form.value.account);
-    this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-    this.closeModal();
+    if(form.valid) {
+      this._AccountProfile.account = form.value.account;
+      console.log('AccountProfile', this._AccountProfile);
+      this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+      this.closeModal();
+    }
   }
 
   private populateForm(): void {

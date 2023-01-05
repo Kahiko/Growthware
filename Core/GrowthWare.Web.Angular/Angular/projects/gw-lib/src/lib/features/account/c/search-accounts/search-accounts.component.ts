@@ -65,7 +65,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   }
 
   private onBtnTopRight () {
-    this._AccountSvc.reason = 'add'
+    this._AccountSvc.reason = 'NewProfile'
     const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.addModalId, 'Add Account', AccountDetailsComponent, this._WindowSize);
     this._ModalSvc.open(mModalOptions);
   }

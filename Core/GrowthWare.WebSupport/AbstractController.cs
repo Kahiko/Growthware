@@ -132,6 +132,13 @@ public abstract class AbstractController : ControllerBase
         }
     }
 
+    [HttpGet("NewProfile")]
+    public ActionResult<MAccountProfile> NewProfile(string account)
+    {
+        return new MAccountProfile();
+    }
+
+
     [HttpGet("EditProfile")]
     public ActionResult<MAccountProfile> EditProfile(string account)
     {
