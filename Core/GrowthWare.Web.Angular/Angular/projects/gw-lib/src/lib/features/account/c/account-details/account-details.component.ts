@@ -39,6 +39,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
 
+  litAccountWarning: string = '';
+  litEMailWarning: string = '';
+  litFirstNameWarning: string = '';
+  litLastNameWarning: string = '';
+  litStatusWarning: string = '';
+
   rolesAvailable: Array<string> = [];
   rolesPickListName: string = 'roles';
   rolesSelected: Array<string> = [];
