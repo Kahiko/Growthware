@@ -2,130 +2,133 @@
   <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px;">
     <mat-tab label="Account Information">
       <div class="mat-tab__container">
-        <div class="table" style="width: 98%; padding: 5px;">
-          <div class="tr">
-            <div class="td" style="width: 50%;">
-              <div class="table" style="width: 100%;">
-                <div class="tr"><!--Account/Status-->
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Account: </span><mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+        <div class="mat-tab__content">
+          <div class="table" style="padding: 5px;">
+            <div class="tr">
+              <div class="td" style="width: 50%;">
+                <div class="table" style="width: 100%;">
+                  <div class="tr"><!--Account/Status-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Account: </span><mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="account" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Status: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-select [(value)]="selectedStatus" class="Form_Field rounded">
+                        <mat-option *ngFor="let item of validStatus" [value]="item.id">
+                          {{item.name}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
                   </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="account" class="Form_Field rounded">
+                  <div class="tr" style="border: solid 1px;"><!--SysAdmin/Failed-->
+                    <div class="td left">
+                      <span class="Form_LabelText">System Administrator: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-checkbox formControlName="isSystemAdmin" class="Form_Field">System Administrator</mat-checkbox>
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Failed Logon Attempts: </span>
+                    </div>
+                    <div class="td left">
+                      <span id="litFailedAttempts" *ngIf="false"></span>
+                      <input matInput type="number" formControlName="failedAttempts" class="Form_Field rounded">
+                    </div>
                   </div>
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Status: </span>
+                  <div class="tr" style="border: solid 1px;"><!--FirstName/LastName-->
+                    <div class="td left">
+                      <span class="Form_LabelText">First Name: </span><mat-error *ngIf="getControls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="firstName" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Last Name: </span><mat-error *ngIf="getControls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="lastName" class="Form_Field rounded">
+                    </div>
                   </div>
-                  <div class="td left" style="width: 25%;">
-                    <mat-select [(value)]="selectedStatus" class="Form_Field rounded">
-                      <mat-option *ngFor="let item of validStatus" [value]="item.id">
-                        {{item.name}}
-                      </mat-option>
-                    </mat-select>
+                  <div class="tr" style="border: solid 1px;"><!--MiddleName/blank-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="getControls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="middleName" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Preferred Name: </span><mat-error *ngIf="getControls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="preferredName" class="Form_Field rounded">
+                    </div>
                   </div>
-                </div>
-                <div class="tr" style="border: solid 1px;"><!--SysAdmin/Failed-->
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">System Administrator: </span>
+                  <div class="tr" style="border: solid 1px;"><!--EMail/Timezone-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Email: </span><mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="email" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Timezone: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-select [(value)]="selectedTimeZone" class="rounded">
+                        <mat-option *ngFor="let item of validTimezones" [value]="item.id">
+                          {{item.name}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
                   </div>
-                  <div class="td left" style="width: 25%;">
-                    <mat-checkbox formControlName="isSystemAdmin" class="Form_Field">System Administrator</mat-checkbox>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Failed Logon Attempts: </span>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <span id="litFailedAttempts" *ngIf="false"></span>
-                    <input matInput type="number" formControlName="failedAttempts" class="Form_Field rounded">
-                  </div>
-                </div>
-                <div class="tr" style="border: solid 1px;"><!--FirstName/LastName-->
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">First Name: </span><mat-error *ngIf="getControls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="firstName" class="Form_Field rounded">
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Last Name: </span><mat-error *ngIf="getControls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="lastName" class="Form_Field rounded">
-                  </div>
-                </div>
-                <div class="tr" style="border: solid 1px;"><!--MiddleName/blank-->
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="getControls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="middleName" class="Form_Field rounded">
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Preferred Name: </span><mat-error *ngIf="getControls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="preferredName" class="Form_Field rounded">
-                  </div>
-                </div>
-                <div class="tr" style="border: solid 1px;"><!--EMail/Timezone-->
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Email: </span><mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <input matInput type="text" formControlName="email" class="Form_Field rounded">
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <span class="Form_LabelText">Timezone: </span>
-                  </div>
-                  <div class="td left" style="width: 25%;">
-                    <mat-select [(value)]="selectedTimeZone" class="rounded">
-                      <mat-option *ngFor="let item of validTimezones" [value]="item.id">
-                        {{item.name}}
-                      </mat-option>
-                    </mat-select>
-                  </div>
-                </div>
-                <div *ngIf="false" class="tr" style="border: solid 1px;"><!--blank/blank-->
-                  <div class="td left" style="width: 25%; border: solid 1px;">
-                    text:
-                  </div>
-                  <div class="td left" style="width: 25%; border: solid 1px;">
-                    control
-                  </div>
-                  <div class="td left" style="width: 25%; border: solid 1px;">
-                    text:
-                  </div>
-                  <div class="td left" style="width: 25%; border: solid 1px;">
-                    control
+                  <div *ngIf="false" class="tr" style="border: solid 1px;"><!--blank/blank-->
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      text:
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      control
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      text:
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      control
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div class="tr">
-            <div class="td">
-              <span class="Form_SubSectionText"><b>Optional Information </b></span>
+            <hr>
+            <div class="tr">
+              <div class="td">
+                <span class="Form_SubSectionText"><b>Optional Information </b></span>
+              </div>
             </div>
-          </div>
-          <div class="tr">
-            <div class="td">
-              <div class="table">
-                <div class="tr">
-                  <div class="td left">
-                    <span class="Form_LabelText">Location: </span>
+            <div class="tr">
+              <div class="td">
+                <div class="table">
+                  <div class="tr">
+                    <div class="td left">
+                      <span class="Form_LabelText">Location: </span>
+                    </div>
+                    <div class="td left">
+                      <input id="txtLocation" maxlength="128" class="Form_Field rounded" />
+                    </div>
                   </div>
-                  <div class="td left">
-                    <input id="txtLocation" maxlength="128" class="Form_Field rounded" />
-                  </div>
-                </div>
-                <div class="tr">
-                  <div class="td left">
-                    <span class="Form_LabelText">Email Notifications: </span>
-                  </div>
-                  <div class="td left">
-                    <input type="checkbox" id="chkEnableNotifications" class="Form_Field" checked="true" text="Receive Email Notifications" />
-                    <br />
-                    <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
+                  <div class="tr">
+                    <div class="td left">
+                      <span class="Form_LabelText">Email Notifications: </span>
+                    </div>
+                    <div class="td left">
+                      <input type="checkbox" id="chkEnableNotifications" class="Form_Field" checked="true" text="Receive Email Notifications" />
+                      <br />
+                      <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
+                    </div>
                   </div>
                 </div>
               </div>

@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
 import { AccountService, MenuListService } from '@Growthware/Lib';
@@ -10,6 +10,7 @@ import { sideNavTextAnimation } from '../animations/side-nav';
   templateUrl: './default-layout.component.html',
   styleUrls: ['./default-layout.component.scss'],
   animations: [sideNavTextAnimation],
+  encapsulation: ViewEncapsulation.None,
 })
 export class DefaultLayoutComponent implements OnDestroy, OnInit {
   private _Subscriptions: Subscription = new Subscription();

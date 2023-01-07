@@ -19,7 +19,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
 
   private _SearchCriteriaChangedSub: Subscription = new Subscription();
-  private _WindowSize = new WindowSize(395,900);
+  private _WindowSize = new WindowSize(450,900);
 
 
   public configurationName = 'Accounts';
