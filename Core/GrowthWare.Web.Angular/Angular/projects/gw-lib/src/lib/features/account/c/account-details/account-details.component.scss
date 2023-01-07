@@ -12,3 +12,15 @@
   display: inline-block;
   margin-top: 10px;
 }
+
+// .mat-checkbox-frame,
+// .mat-checkbox-background,
+// .mat-checkbox-anim-unchecked-checked,
+// .mat-checkbox-anim-checked-unchecked {
+//   transform: scale(.7);
+// }
+
+.mat-checkbox,
+.mat-checkbox-inner-container {
+  transform: scale(.7);
+}
