@@ -61,7 +61,6 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
           if (this.name.trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
             // update the local data
             this._SelectedItemsData = results.payLoad;
-            this._SelectedItemsSubject.next(results.payLoad);
             for (let mOuterIndex = 0; mOuterIndex < this._SelectedItemsData.length; mOuterIndex++) {
               for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
                 if (this._SelectedItemsData[mOuterIndex] == this._AvailableItemsData[mInnerIndex]) {
@@ -71,11 +70,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
                 }
               }
             }
-            let sortedArray = this._AvailableItemsData.slice();
-            sortedArray.sort(function (a, b) {
-              return GWCommon.naturalSort(a, b);
-            });
-            this._AvailableItemsSubject.next(sortedArray);
+            this.sortDataArrays();
           };
         })
       );
