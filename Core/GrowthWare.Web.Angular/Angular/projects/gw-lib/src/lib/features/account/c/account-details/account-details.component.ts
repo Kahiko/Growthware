@@ -287,6 +287,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],
         email: [this._AccountProfile.email],
+        enableNotifications: [this._AccountProfile.enableNotifications],
         failedAttempts: [0],
         firstName: [this._AccountProfile.firstName],
         isSystemAdmin: [false],
@@ -300,6 +301,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this.frmAccount = this._FormBuilder.group({
         account: ['', [Validators.required]],
         email: [''],
+        enableNotifications: [false],
         failedAttempts: [0],
         firstName: [''],
         isSystemAdmin: [false],
