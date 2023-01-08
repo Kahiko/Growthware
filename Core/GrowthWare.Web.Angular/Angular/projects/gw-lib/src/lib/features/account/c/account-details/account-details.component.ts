@@ -122,10 +122,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       default:
         break;
     }
-    // Load data - Request #1 in the chain
-    this._GroupSvc.getGroups().catch((error) => {
+    this._GroupSvc.getGroups().catch((error) => { // Load data - Request #1 in the chain
       this._LoggingSvc.toast("Error getting groups:\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((groups) => {
+    }).then((groups) => { // Handles getGroups returns getRoles
       // Response Handler #1
       if(groups != null) {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
@@ -137,7 +136,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       return this._RoleSvc.getRoles();
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting roles:\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((roles) => {
+    }).then((roles) => { // Handles getRoles returns getSecurityInfo(this._AccountSvc.reason)
       // Response Handler #2
       if(roles != null) {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
@@ -149,7 +148,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       return this._AccountSvc.getSecurityInfo(this._AccountSvc.reason);
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.reason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((reasonSecurityInfo) => {
+    }).then((reasonSecurityInfo) => { // Handles getSecurityInfo(this._AccountSvc.reason) returns getSecurityInfo('View_Account_Group_Tab')
       // Response Handler #3
       if(reasonSecurityInfo != null) {
         this._SecurityInfoAccount = reasonSecurityInfo;
@@ -158,7 +157,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       return this._AccountSvc.getSecurityInfo('View_Account_Group_Tab');
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for 'Group tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((groupTabSecurityInfo)=>{
+    }).then((groupTabSecurityInfo)=>{ // Handles getSecurityInfo('View_Account_Group_Tab') returns getSecurityInfo('View_Account_Role_Tab')
       // Response Handler #4
       if(groupTabSecurityInfo != null) {
         this._SecurityInfoGroups = groupTabSecurityInfo;
@@ -167,7 +166,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       return this._AccountSvc.getSecurityInfo('View_Account_Role_Tab');
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((roleTabSecurityInfo) => { // this._AccountSvc.getSecutiryInfo('View_Account_Role_Tab');
+    }).then((roleTabSecurityInfo) => { // Handles getSecurityInfo('View_Account_Role_Tab') returns getAccount(mDesiredAccount)
       // Response Handler #5
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
@@ -176,7 +175,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       return this._AccountSvc.getAccount(mDesiredAccount);
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting account information :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((accountProfile) => { // getAccount(mDesiredAccount);
+    }).then((accountProfile) => { // Handles getAccount(mDesiredAccount)
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
         let mRoles: string[] = [];
@@ -194,13 +193,13 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       }
     });
 
-    this._Subscription.add(this._RolePickList.selectedItems.subscribe((data) => {
-      this._AccountProfile.assignedRoles = data;
-    }));
+    // this._Subscription.add(this._RolePickList.selectedItems.subscribe((data) => {
+    //   this._AccountProfile.assignedRoles = data;
+    // }));
 
-    this._Subscription.add(this._GroupPickList.selectedItems.subscribe((data) => {
-      this._AccountProfile.groups = data;
-    }));
+    // this._Subscription.add(this._GroupPickList.selectedItems.subscribe((data) => {
+    //   this._AccountProfile.groups = data;
+    // }));
 
     this.applySecurity();
     this.populateForm();
