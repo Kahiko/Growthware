@@ -62,10 +62,10 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
             // update the local data
             this._SelectedItemsData = results.payLoad;
             this._SelectedItemsSubject.next(results.payLoad);
-            for (let mOutterIndex = 0; mOutterIndex < this._SelectedItemsData.length; mOutterIndex++) {
+            for (let mOuterIndex = 0; mOuterIndex < this._SelectedItemsData.length; mOuterIndex++) {
               for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
-                if (this._SelectedItemsData[mOutterIndex] == this._AvailableItemsData[mInnerIndex]) {
-                  const mIndexInArray = this._AvailableItemsData.indexOf(this._SelectedItemsData[mOutterIndex], 0);
+                if (this._SelectedItemsData[mOuterIndex] == this._AvailableItemsData[mInnerIndex]) {
+                  const mIndexInArray = this._AvailableItemsData.indexOf(this._SelectedItemsData[mOuterIndex], 0);
                   this._AvailableItemsData.splice(mIndexInArray, 1);
                   break;
                 }
@@ -111,15 +111,15 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
     if(objFromBox.length > 0) {
       if(source == '_SrcList') {
         // remove all from _AvailableItemsData add to _SelectedItemsData
-        for (let mOutterIndex = 0; mOutterIndex < objFromBox.length; mOutterIndex++) {
-          this._SelectedItemsData.push(objFromBox.item(mOutterIndex)?.text);
+        for (let mOuterIndex = 0; mOuterIndex < objFromBox.length; mOuterIndex++) {
+          this._SelectedItemsData.push(objFromBox.item(mOuterIndex)?.text);
         }
         this._AvailableItemsData = [];
         this.sortDataArrays();
       } else {
         // remove all from _SelectedItemsData add to _AvailableItemsData
-        for (let mOutterIndex = 0; mOutterIndex < objFromBox.length; mOutterIndex++) {
-          this._AvailableItemsData.push(objFromBox.item(mOutterIndex)?.text);
+        for (let mOuterIndex = 0; mOuterIndex < objFromBox.length; mOuterIndex++) {
+          this._AvailableItemsData.push(objFromBox.item(mOuterIndex)?.text);
         }
         this._SelectedItemsData = [];
         this.sortDataArrays();
@@ -135,26 +135,26 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
     if(objFromBox.selectedOptions.length > 0) {
       if(source == '_SrcList') {
         // remove from _AvailableItemsData add to _SelectedItemsData
-        for (let mOutterIndex = 0; mOutterIndex < objFromBox.selectedOptions.length; mOutterIndex++) {
+        for (let mOuterIndex = 0; mOuterIndex < objFromBox.selectedOptions.length; mOuterIndex++) {
           for (let mInnerIndex = 0; mInnerIndex < this._AvailableItemsData.length; mInnerIndex++) {
-            if(objFromBox.selectedOptions[mOutterIndex].text == this._AvailableItemsData[mInnerIndex]) {
+            if(objFromBox.selectedOptions[mOuterIndex].text == this._AvailableItemsData[mInnerIndex]) {
               this._AvailableItemsData.splice(mInnerIndex, 1);
               break;
             }
           }
-          this._SelectedItemsData.push(objFromBox.selectedOptions[mOutterIndex].text);
+          this._SelectedItemsData.push(objFromBox.selectedOptions[mOuterIndex].text);
         }
         this.sortDataArrays();
       } else {
         // remove from _SelectedItemsData add to _AvailableItemsData
-        for (let mOutterIndex = 0; mOutterIndex < objFromBox.selectedOptions.length; mOutterIndex++) {
+        for (let mOuterIndex = 0; mOuterIndex < objFromBox.selectedOptions.length; mOuterIndex++) {
           for (let mInnerIndex = 0; mInnerIndex < this._SelectedItemsData.length; mInnerIndex++) {
-            if(objFromBox.selectedOptions[mOutterIndex].text == this._SelectedItemsData[mInnerIndex]) {
+            if(objFromBox.selectedOptions[mOuterIndex].text == this._SelectedItemsData[mInnerIndex]) {
               this._SelectedItemsData.splice(mInnerIndex, 1);
               break;
             }
           }
-          this._AvailableItemsData.push(objFromBox.selectedOptions[mOutterIndex].text);
+          this._AvailableItemsData.push(objFromBox.selectedOptions[mOuterIndex].text);
         }
         this.sortDataArrays();
       }
