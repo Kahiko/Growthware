@@ -96,7 +96,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     private _ModalSvc: ModalService,
     private _RoleSvc: RoleService,
     private _Router: Router
-    ) { }
+  ) { }
 
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
