@@ -15,14 +15,16 @@ import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-tab
 import { PickListModule } from '@Growthware/Lib/src/lib/features/pick-list';
 // Feature Components
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
+import { ChangePasswordComponent } from './c/change-password/change-password.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 import { LoginComponent } from './c/login/login.component';
 
 @NgModule({
   declarations: [
     AccountDetailsComponent,
+    ChangePasswordComponent,
     SearchAccountsComponent,
-    LoginComponent
+    LoginComponent,
   ],
   imports: [
     CommonModule,
@@ -41,6 +43,7 @@ import { LoginComponent } from './c/login/login.component';
   ],
   exports: [
     AccountDetailsComponent,
+    ChangePasswordComponent,
     SearchAccountsComponent
   ]
 })

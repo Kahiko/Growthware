@@ -21,6 +21,7 @@ public class AuthenticationResponse
         this.MiddleName = accountProfile.MiddleName;
         this.PreferredName = accountProfile.PreferredName;
         this.m_DerivedRoles = accountProfile.DerivedRoles;
+        this.Status = accountProfile.Status;
         if(accountProfile.RefreshTokens != null && accountProfile.RefreshTokens.Count > 0)
         {
             this.RefreshToken = accountProfile.RefreshTokens
@@ -50,6 +51,8 @@ public class AuthenticationResponse
     public String MiddleName { get; set; }
 
     public String PreferredName { get; set; }
+
+    public int Status { get; set; }
 
     public bool IsVerified { get; set; }
     public string JwtToken { get; set; }

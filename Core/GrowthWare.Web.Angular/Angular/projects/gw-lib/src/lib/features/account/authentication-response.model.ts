@@ -6,6 +6,7 @@ export interface IAuthenticationResponse {
   lastName: string,
   middleName: string,
   preferredName: string,
+  status: number,
   isVerified: true,
   jwtToken: string
 }

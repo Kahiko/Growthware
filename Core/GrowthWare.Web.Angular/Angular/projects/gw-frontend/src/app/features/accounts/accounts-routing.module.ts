@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AccountDetailsComponent, LoginComponent, SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account';
+import { AccountDetailsComponent, ChangePasswordComponent, LoginComponent } from '@Growthware/Lib/src/lib/features/account';
+import { SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account';
 
 const childRoutes: Routes = [
   { path: 'search-accounts', component: SearchAccountsComponent},
   { path: 'edit-account', component: AccountDetailsComponent },
   { path: 'edit-my-account', component: AccountDetailsComponent },
-  { path: 'login', component: LoginComponent}
+  { path: 'login', component: LoginComponent},
+  { path: 'change-password', component: ChangePasswordComponent },
 ];
 
 

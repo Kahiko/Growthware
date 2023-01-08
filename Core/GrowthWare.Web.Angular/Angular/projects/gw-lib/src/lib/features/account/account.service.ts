@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { map, Observable, Subject } from 'rxjs';
 import { catchError, of } from 'rxjs';
 
@@ -10,7 +11,6 @@ import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 import { IAccountProfile } from './account-profile.model';
 import { ISecurityInfo } from './security-info.model';
 import { IAuthenticationResponse } from './authentication-response.model';
-import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +28,7 @@ export class AccountService {
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
   private _Reason: string = '';
+  private _Status: number = 2;
   private _RefreshTokenTimeout?: NodeJS.Timeout;
   private _SideNavSubject = new Subject<INavLink[]>();
 
@@ -69,6 +70,13 @@ export class AccountService {
     this._Reason = value;
   }
 
+  public get status(): number {
+    return this._Status;
+  }
+  public set status(value: number) {
+    this._Status = value;
+  }
+
   readonly isAuthenticated = this._IsAuthenticated.asObservable();
   readonly sideNavSubject = this._SideNavSubject.asObservable();
 
@@ -101,14 +109,17 @@ export class AccountService {
         params: mQueryParameter,
       };
       this._HttpClient.post<IAuthenticationResponse>(this._Api_Authenticate, null, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: IAuthenticationResponse) => {
           localStorage.setItem("jwt", response.jwtToken);
           this._Account = response.account;
           this._CurrentAccount = this._Account;
+          this._Status = response.status;
           this._AuthenticationResponse = response;
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
-          this._Router.navigate(['home']);
+          if(this._Status == 4) {
+            this._Router.navigate(['change-password']);
+          }
           this._IsAuthenticated.next(true);
           resolve(true);
         },
