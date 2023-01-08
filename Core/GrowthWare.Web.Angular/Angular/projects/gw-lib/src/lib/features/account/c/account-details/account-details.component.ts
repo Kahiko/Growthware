@@ -26,8 +26,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   private _SecurityInfoGroups: null | ISecurityInfo = null;
   private _SecurityInfoRoles: null | ISecurityInfo = null;
   private _Subscription: Subscription = new Subscription();
-  @ViewChild('rolePickList', {static: false}) private _RolePickList!: PickListComponent;
-  @ViewChild('groupPickList', {static: false}) private _GroupPickList!: PickListComponent;
+  // @ViewChild('rolePickList', {static: false}) private _RolePickList!: PickListComponent;
+  // @ViewChild('groupPickList', {static: false}) private _GroupPickList!: PickListComponent;
 
   frmAccount!: FormGroup;
 
@@ -192,18 +192,18 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.populateForm();
       }
     });
-
-    // This should be done through the data servers and not directly through the
-    // component b/c the component is in a tab so isn't available at this point...
-
-    // this._Subscription.add(this._RolePickList.selectedItems.subscribe((data) => {
-    //   this._AccountProfile.assignedRoles = data;
-    // }));
-
-    // this._Subscription.add(this._GroupPickList.selectedItems.subscribe((data) => {
-    //   this._AccountProfile.groups = data;
-    // }));
-
+    this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
+      switch (data.name.toLowerCase()) {
+        case "roles":
+          this._AccountProfile.assignedRoles = data.payLoad;
+          break;
+        case "roles":
+          this._AccountProfile.groups = data.payLoad;
+          break
+        default:
+          break;
+      }
+    }));
     this.applySecurity();
     this.populateForm();
   }
