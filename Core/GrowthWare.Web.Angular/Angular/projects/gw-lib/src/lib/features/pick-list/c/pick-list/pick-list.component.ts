@@ -101,6 +101,8 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   switchAll(e: any, source: string, destination: string): void {
+    e.stopPropagation();
+    e.preventDefault();
     var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
     var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
     if(objFromBox.length > 0) {
@@ -120,11 +122,11 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.sortDataArrays();
       }
     }
-    e.stopPropagation();
-    e.preventDefault();
   }
 
   switchList(e: any, source: string, destination: string): void {
+    e.stopPropagation();
+    e.preventDefault();
     var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
     var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
     if(objFromBox.selectedOptions.length > 0) {
@@ -154,8 +156,6 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
         this.sortDataArrays();
       }
     }
-    e.stopPropagation();
-    e.preventDefault();
   }
 
   private sortDataArrays(): void{
@@ -170,6 +170,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
       return GWCommon.naturalSort(a, b);
     });
     this._SelectedItemsSubject.next(sortedArray);
+    this._DataSvc.notifyDataChanged(this.id, sortedArray);
   }
 
 }
