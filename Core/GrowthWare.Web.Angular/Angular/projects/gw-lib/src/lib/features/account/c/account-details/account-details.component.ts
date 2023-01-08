@@ -193,6 +193,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       }
     });
 
+    // This should be done through the data servers and not directly through the
+    // component b/c the component is in a tab so isn't available at this point...
+
     // this._Subscription.add(this._RolePickList.selectedItems.subscribe((data) => {
     //   this._AccountProfile.assignedRoles = data;
     // }));
