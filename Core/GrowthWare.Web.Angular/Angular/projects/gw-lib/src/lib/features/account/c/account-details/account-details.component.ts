@@ -8,7 +8,6 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { GroupService } from '@Growthware/Lib/src/lib/features/group';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
-import { PickListComponent } from '@Growthware/Lib/src/lib/features/pick-list';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
 // Feature
 import { IAccountProfile } from '../../account-profile.model';
@@ -26,8 +25,6 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   private _SecurityInfoGroups: null | ISecurityInfo = null;
   private _SecurityInfoRoles: null | ISecurityInfo = null;
   private _Subscription: Subscription = new Subscription();
-  // @ViewChild('rolePickList', {static: false}) private _RolePickList!: PickListComponent;
-  // @ViewChild('groupPickList', {static: false}) private _GroupPickList!: PickListComponent;
 
   frmAccount!: FormGroup;
 
@@ -290,9 +287,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         account: [this._AccountProfile.account, [Validators.required]],
         email: [this._AccountProfile.email],
         enableNotifications: [this._AccountProfile.enableNotifications],
-        failedAttempts: [0],
+        failedAttempts: [this._AccountProfile.failedAttempts],
         firstName: [this._AccountProfile.firstName],
-        isSystemAdmin: [false],
+        isSystemAdmin: [this._AccountProfile.isSystemAdmin],
         lastName: [this._AccountProfile.lastName],
         middleName: [this._AccountProfile.middleName],
         preferredName: [this._AccountProfile.preferredName],
