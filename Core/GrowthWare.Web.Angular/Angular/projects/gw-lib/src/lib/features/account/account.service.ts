@@ -257,7 +257,7 @@ export class AccountService {
     })
   }
 
-  public async getSecutiryInfo(action: string): Promise<ISecurityInfo> {
+  public async getSecurityInfo(action: string): Promise<ISecurityInfo> {
     const mQueryParameter: HttpParams = new HttpParams().append('action', action);
     const mHttpOptions = {
       headers: new HttpHeaders({

@@ -146,7 +146,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
       // Request #3
-      return this._AccountSvc.getSecutiryInfo(this._AccountSvc.reason);
+      return this._AccountSvc.getSecurityInfo(this._AccountSvc.reason);
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.reason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((reasonSecurityInfo) => {
@@ -155,7 +155,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this._SecurityInfoAccount = reasonSecurityInfo;
       }
       // Request #4
-      return this._AccountSvc.getSecutiryInfo('View_Account_Group_Tab');
+      return this._AccountSvc.getSecurityInfo('View_Account_Group_Tab');
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for 'Group tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((groupTabSecurityInfo)=>{
@@ -164,10 +164,10 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this._SecurityInfoGroups = groupTabSecurityInfo;
       }
       // Request #5
-      return this._AccountSvc.getSecutiryInfo('View_Account_Role_Tab');
+      return this._AccountSvc.getSecurityInfo('View_Account_Role_Tab');
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((roleTabSecurityInfo) => {
+    }).then((roleTabSecurityInfo) => { // this._AccountSvc.getSecutiryInfo('View_Account_Role_Tab');
       // Response Handler #5
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
