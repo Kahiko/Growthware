@@ -70,13 +70,6 @@ export class AccountService {
     this._Reason = value;
   }
 
-  public get status(): number {
-    return this._Status;
-  }
-  public set status(value: number) {
-    this._Status = value;
-  }
-
   readonly isAuthenticated = this._IsAuthenticated.asObservable();
   readonly sideNavSubject = this._SideNavSubject.asObservable();
 
