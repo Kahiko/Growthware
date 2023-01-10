@@ -18,8 +18,9 @@ export class ChangePasswordComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this._ActivatedRoute.queryParams
-    .subscribe(params => this._Return = params['return'] || '/home');
+    this._ActivatedRoute.queryParams.subscribe((params) => {
+      this._Return = params['return'] || '/home';
+    });
   }
 
   changePassword() {
