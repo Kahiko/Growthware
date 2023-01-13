@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-// Library
-import { AccountService } from '@Growthware/Lib/src/lib/features/account';
+// Feature
+import { AccountService } from '../../account.service';
+
 @Component({
   selector: 'gw-lib-change-password',
   templateUrl: './change-password.component.html',
