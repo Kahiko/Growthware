@@ -62,7 +62,7 @@ builder.Services.AddSession(options =>
 });
 
 var app = builder.Build();
-IHttpContextAccessor httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
+IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
 if(httpContextAccessor != null)
 {
     FunctionUtility.SetHttpContextAccessor(httpContextAccessor);
