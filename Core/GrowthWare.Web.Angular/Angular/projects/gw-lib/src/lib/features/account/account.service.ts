@@ -111,7 +111,7 @@ export class AccountService {
           this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           this.getNavLinks();
           if(this._Status == 4) {
-            this._Router.navigate(['change-password']);
+            this._Router.navigate(['/accounts/change-password']);
           }
           this._IsAuthenticated.next(true);
           resolve(true);
