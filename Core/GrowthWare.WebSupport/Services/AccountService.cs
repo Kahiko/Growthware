@@ -119,7 +119,10 @@ public class AccountService : IAccountService
         var mKey = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
         var mSecurityTokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("account", account.Account) }),
+            Subject = new ClaimsIdentity(new[] { 
+                new Claim("account", account.Account),
+                new Claim("status", account.Status.ToString())
+                }),
             Expires = DateTime.UtcNow.AddMinutes(15),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(mKey), SecurityAlgorithms.HmacSha256Signature)
         };
