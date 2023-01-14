@@ -103,7 +103,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     let mDesiredAccount: string = '';
 
     switch (this._Router.url) {
-      case '/search-accounts':
+      case '/accounts':
         if(this._AccountSvc.reason.toLowerCase() != "newprofile") {
           mDesiredAccount = this._AccountSvc.account;
         } else {
@@ -111,7 +111,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         }
         this.canCancel = true;
         break;
-      case '/edit-my-account':
+      case '/accounts/edit-my-account':
         this._AccountSvc.reason = 'EditProfile';
         mDesiredAccount = this._AccountSvc.currentAccount;
         this.canDelete = false;
@@ -232,7 +232,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    if(this._Router.url === '/search-accounts') {
+    if(this._Router.url === '/') {
       if(this._AccountSvc.reason === 'NewProfile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }

@@ -5,7 +5,7 @@ import { AccountDetailsComponent, ChangePasswordComponent, LoginComponent } from
 import { SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account';
 
 const childRoutes: Routes = [
-  { path: 'search-accounts', component: SearchAccountsComponent},
+  { path: '', component: SearchAccountsComponent},
   { path: 'edit-account', component: AccountDetailsComponent },
   { path: 'edit-my-account', component: AccountDetailsComponent },
   { path: 'login', component: LoginComponent},

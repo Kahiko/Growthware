@@ -20,10 +20,10 @@
       </button>
     </div>
     <div *ngIf="isAuthenticated">
-      <a mat-menu-item [routerLink]="['/edit-my-account']">
+      <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
         <mat-icon>settings</mat-icon><span>Edit Profile</span>
       </a>
-      <a mat-menu-item [routerLink]="['/change-password']">
+      <a mat-menu-item [routerLink]="['accounts//change-password']">
         <mat-icon>settings</mat-icon><span>Change Password</span>
       </a>
       <button (click)="onLogout()" mat-menu-item>
