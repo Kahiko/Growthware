@@ -4,6 +4,14 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 // Library
 import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 
+interface IToken {
+  account: string;
+  exp: number;
+  iat: number;
+  nbf: number;
+  status: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -16,38 +24,50 @@ export class AuthGuard implements CanActivate  {
   ){}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const token = localStorage.getItem("jwt");
+    const mTokenStr = localStorage.getItem("jwt");
     let mRedirectUrl: string = '';
-    if (token && !this._JwtHelper.isTokenExpired(token)) {
+    let mReturn: boolean = false;
+    if (mTokenStr && !this._JwtHelper.isTokenExpired(mTokenStr)) {
       // console.log(this._JwtHelper.decodeToken(token))
-      switch (this._AccountSvc.authenticationResponse.status) {
+      const mToken: IToken = this._JwtHelper.decodeToken(mTokenStr)
+      switch (parseInt(mToken.status)) {
         case 1:
           mRedirectUrl = '/home';
+          mReturn = false;
           break;
         case 4:
-          console.log(state);
+          // console.log(state);
           mRedirectUrl = '/accounts/change-password';
+          mReturn = true;
           break;
         case 5:
           mRedirectUrl = '/accounts/edit-my-account';
+          mReturn = false;
           break;
         default:
           break;
       }
-      if(mRedirectUrl !== '') {
-        if(!state.url.startsWith(mRedirectUrl)) {
-          this._Router.navigate([mRedirectUrl], {
-            queryParams: {
-              return: state.url
-            }
-          });
-          return false;
-        }
-      }
+      this.handleRedirect(mRedirectUrl, state, mReturn);
       return true;
     }
 
     this._AccountSvc.logout();
     return false;
+  }
+
+  private handleRedirect(redirectUrl: string, state: RouterStateSnapshot, returnParameter: boolean): void {
+    if(redirectUrl !== '') {
+      if(!state.url.startsWith(redirectUrl)) {
+        if(returnParameter) {
+          this._Router.navigate([redirectUrl], {
+            queryParams: {
+              return: state.url
+            }
+          });
+        } else {
+          this._Router.navigate([redirectUrl]);
+        }
+      }
+    }
   }
 }
