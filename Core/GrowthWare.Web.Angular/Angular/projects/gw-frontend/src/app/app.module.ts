@@ -12,6 +12,8 @@ import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 // Library Modules
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
+// Library Misc
+import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
 import { DefaultModule } from './skins/default/default.module';
@@ -20,7 +22,6 @@ import { SystemModule } from './skins/system/system.module';
 import { AppComponent } from './app.component';
 // Application
 import { appInitializer } from './app.initializer';
-import { AuthGuard } from './guards/auth.guard';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
