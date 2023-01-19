@@ -18,6 +18,7 @@ import { AccountDetailsComponent } from './c/account-details/account-details.com
 import { ChangePasswordComponent } from './c/change-password/change-password.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 import { LoginComponent } from './c/login/login.component';
+import { LogoutComponent } from './c/logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { LoginComponent } from './c/login/login.component';
     ChangePasswordComponent,
     SearchAccountsComponent,
     LoginComponent,
+    LogoutComponent,
   ],
   imports: [
     CommonModule,

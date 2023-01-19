@@ -26,10 +26,9 @@
       <a mat-menu-item [routerLink]="['/accounts/change-password']">
         <mat-icon>settings</mat-icon><span>Change Password</span>
       </a>
-      <button (click)="onLogout()" mat-menu-item>
-        <mat-icon>logout</mat-icon>
-        Sign out
-      </button>
+      <a mat-menu-item [routerLink]="['/accounts/logout']">
+        <mat-icon>logout</mat-icon><span>logout</span>
+      </a>
     </div>
   </mat-menu>
 </mat-toolbar>
