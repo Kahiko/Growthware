@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
-// Library
-import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 
 interface IToken {
   account: string;
@@ -18,7 +16,6 @@ interface IToken {
 export class AuthGuard implements CanActivate  {
 
   constructor(
-    private _AccountSvc: AccountService,
     private _Router: Router,
     private _JwtHelper: JwtHelperService
   ){}
@@ -51,7 +48,7 @@ export class AuthGuard implements CanActivate  {
       return true;
     }
 
-    this._AccountSvc.logout();
+    this.handleRedirect('/accounts/logout', state, false);
     return false;
   }
 
