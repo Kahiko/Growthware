@@ -49,7 +49,7 @@ export class AuthGuard implements CanActivate  {
     }
 
     this.handleRedirect('/accounts/logout', state, false);
-    return false;
+    return true; // b/c we are now navigating to logout we can return true
   }
 
   private handleRedirect(redirectUrl: string, state: RouterStateSnapshot, returnParameter: boolean): void {
