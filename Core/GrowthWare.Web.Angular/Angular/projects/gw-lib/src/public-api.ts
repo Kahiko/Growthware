@@ -15,5 +15,6 @@ export * from '@Growthware/Lib/src/lib/features/pick-list';
 export * from '@Growthware/Lib/src/lib/features/role';
 export * from '@Growthware/Lib/src/lib/features/search';
 export * from '@Growthware/Lib/src/lib/features/toast';
+export * from '@Growthware/Lib/src/lib/guards';
 export * from '@Growthware/Lib/src/lib/models';
 export * from '@Growthware/Lib/src/lib/services';
