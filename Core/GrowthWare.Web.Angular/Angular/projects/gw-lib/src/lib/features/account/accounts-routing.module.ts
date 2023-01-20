@@ -1,9 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
-import { AccountDetailsComponent, ChangePasswordComponent, LoginComponent } from '@Growthware/Lib/src/lib/features/account';
-import { LogoutComponent, SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account';
+import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+// Feature
+import { AccountDetailsComponent } from './c/account-details/account-details.component';
+import { ChangePasswordComponent } from './c/change-password/change-password.component';
+import { LoginComponent } from './c/login/login.component';
+import { LogoutComponent } from './c/logout/logout.component';
+import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},

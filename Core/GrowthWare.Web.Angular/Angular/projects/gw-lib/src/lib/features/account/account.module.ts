@@ -19,6 +19,9 @@ import { ChangePasswordComponent } from './c/change-password/change-password.com
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 import { LoginComponent } from './c/login/login.component';
 import { LogoutComponent } from './c/logout/logout.component';
+// Feature Modules
+import { AccountsRoutingModule } from './accounts-routing.module';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { LogoutComponent } from './c/logout/logout.component';
     LogoutComponent,
   ],
   imports: [
+    AccountsRoutingModule,
     CommonModule,
     DynamicTableModule,
     FormsModule,
