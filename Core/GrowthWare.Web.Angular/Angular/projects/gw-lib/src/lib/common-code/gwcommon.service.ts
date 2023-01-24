@@ -44,14 +44,13 @@ export class GWCommon {
     } else {
       mPort = ':' + mPort;
     }
-    let mURL =
-      mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort;
-    const mLastSlashPos = mCurrentPath.lastIndexOf('/');
-    if (mLastSlashPos !== 0) {
-      mURL = mURL + '/' + mCurrentPath;
-    } else {
-      mURL = mURL + '/';
-    }
+    let mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort + '/';
+    // const mLastSlashPos = mCurrentPath.lastIndexOf('/');
+    // if (mLastSlashPos !== 0) {
+    //   mURL = mURL + '/' + mCurrentPath;
+    // } else {
+    //   mURL = mURL + '/';
+    // }
     return mURL;
   }
 
