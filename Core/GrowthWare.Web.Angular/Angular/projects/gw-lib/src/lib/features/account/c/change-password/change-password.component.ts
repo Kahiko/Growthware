@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // Library
-import { GWCommon } from '@Growthware/Lib';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 // Feature
 import { AccountService } from '../../account.service';
 
