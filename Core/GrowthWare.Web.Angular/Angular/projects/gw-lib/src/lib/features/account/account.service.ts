@@ -87,7 +87,7 @@ export class AccountService {
     this._Api_RefreshToken = this._GWCommon.baseURL + this._ApiName + 'RefreshToken';
   }
 
-  public async authenticate(account: string, password: string): Promise<boolean | string> {
+  public async authenticate(account: string, password: string, forceDb: boolean = false): Promise<boolean | string> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(account)) {
         throw new Error("account can not be blank!");
@@ -97,6 +97,7 @@ export class AccountService {
       }
       let mQueryParameter: HttpParams = new HttpParams().append('account', account);
       mQueryParameter=mQueryParameter.append('password', password);
+      mQueryParameter=mQueryParameter.append('forceDb', forceDb);
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -139,6 +140,7 @@ export class AccountService {
     if(this._GWCommon.isNullOrEmpty(oldPassword)) {
       throw new Error("oldPassword can not be blank!");
     }
+    console.log(this._Api_ChangePassword);
     return new Promise<boolean>((resolve, reject) => {
       let mQueryParameter: HttpParams = new HttpParams().append('oldPassword', oldPassword);
       mQueryParameter=mQueryParameter.append('newPassword', newPassword);
@@ -152,6 +154,7 @@ export class AccountService {
         next: (response: string) => {
           if(response.startsWith('Success')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
+            this.authenticate(this._Account, newPassword, true);
             resolve(true);
           } else {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
