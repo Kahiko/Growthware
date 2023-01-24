@@ -13,6 +13,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
+using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Jwt;
 using GrowthWare.WebSupport.Utilities;
 
@@ -105,6 +106,70 @@ public class AccountService : IAccountService
             }
         }
         return mAccountProfile;
+    }
+
+    public string ChangePassword(UIChangePassword changePassword)
+    {
+        string mRetVal = string.Empty;
+        MMessage mMessageProfile = new MMessage();
+        MAccountProfile mAccountProfile = (MAccountProfile)m_HttpContextAccessor.HttpContext.Items["AccountProfile"];
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        string mCurrentPassword = "";
+        try
+        {
+            mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntity.EncryptionType);
+        }
+        catch (System.Exception)
+        {
+            mCurrentPassword = mAccountProfile.Password;
+        }
+        if(mAccountProfile.Status != (int)SystemStatus.ChangePassword) 
+        {
+            if(changePassword.OldPassword == mCurrentPassword)
+            {
+                mAccountProfile.PasswordLastSet = System.DateTime.Now;
+                mAccountProfile.Status = (int)SystemStatus.Active;
+                mAccountProfile.FailedAttempts = 0;
+                mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                try
+                {
+                    Save(mAccountProfile, false, false, false);
+                }
+                catch (System.Exception)
+                {
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+                }
+            }
+            else
+            {
+                mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
+            }
+        } 
+        else 
+        {
+            try
+            {
+                mAccountProfile.PasswordLastSet = System.DateTime.Now;
+                mAccountProfile.Status = (int)SystemStatus.Active;
+                mAccountProfile.FailedAttempts = 0;
+                mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                try
+                {
+                    Save(mAccountProfile, false, false, false);
+                }
+                catch (System.Exception)
+                {
+                    mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+                }
+            }
+            catch (Exception)
+            {
+                mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
+            }            
+        }
+        //AccountUtility.RemoveInMemoryInformation(true);
+        mRetVal = mMessageProfile.Body;
+        return mRetVal;
     }
 
     public void Delete(int accountSeqId)

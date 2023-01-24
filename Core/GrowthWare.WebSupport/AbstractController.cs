@@ -50,69 +50,16 @@ public abstract class AbstractController : ControllerBase
 
     [Authorize("ChangePassword")]
     [HttpPost("ChangePassword")]
-    public ActionResult ChangePassword(UIChangePassword mChangePassword)
+    public ActionResult ChangePassword(string oldPassword, string newPassword)
     {
+        UIChangePassword mChangePassword = new UIChangePassword();
+        mChangePassword.OldPassword = oldPassword;
+        mChangePassword.NewPassword = newPassword;
         // if (mChangePassword. <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
         if(mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
         if(mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
-        MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        string mCurrentPassword = "";
-        try
-        {
-            mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntity.EncryptionType);
-        }
-        catch (System.Exception)
-        {
-            mCurrentPassword = mAccountProfile.Password;
-        }
-        if(mAccountProfile.Status != (int)SystemStatus.ChangePassword) 
-        {
-            if(mChangePassword.OldPassword == mCurrentPassword)
-            {
-                mAccountProfile.PasswordLastSet = System.DateTime.Now;
-                mAccountProfile.Status = (int)SystemStatus.Active;
-                mAccountProfile.FailedAttempts = 0;
-                mAccountProfile.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                try
-                {
-                    this.m_AccountService.Save(mAccountProfile, false, false, false);
-                }
-                catch (System.Exception)
-                {
-                    // mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-                }
-            }
-            else
-            {
-                // mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
-            }
-        } 
-        else 
-        {
-            try
-            {
-                mAccountProfile.PasswordLastSet = System.DateTime.Now;
-                mAccountProfile.Status = (int)SystemStatus.Active;
-                mAccountProfile.FailedAttempts = 0;
-                mAccountProfile.Password = CryptoUtility.Encrypt(mChangePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                try
-                {
-                    this.m_AccountService.Save(mAccountProfile, false, false, false);
-                }
-                catch (System.Exception)
-                {
-                    // mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-                }
-            }
-            catch (Exception)
-            {
-                // mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-            }            
-        }
-        //AccountUtility.RemoveInMemoryInformation(true);
-        //return Ok(mMessageProfile.Body);
-        return Ok();
+        string mRetVal = m_AccountService.ChangePassword(mChangePassword);
+        return Ok(mRetVal);
     }
 
     /// <summary>

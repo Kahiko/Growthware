@@ -66,6 +66,7 @@ IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContext
 if(httpContextAccessor != null)
 {
     FunctionUtility.SetHttpContextAccessor(httpContextAccessor);
+    MessageUtility.SetHttpContextAccessor(httpContextAccessor);
     SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
 } 
 // Configure the HTTP request pipeline.

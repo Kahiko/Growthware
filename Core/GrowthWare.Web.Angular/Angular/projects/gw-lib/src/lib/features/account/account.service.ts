@@ -9,8 +9,8 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
 import { IAccountProfile } from './account-profile.model';
-import { ISecurityInfo } from './security-info.model';
 import { IAuthenticationResponse } from './authentication-response.model';
+import { ISecurityInfo } from './security-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,7 @@ export class AccountService {
   private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAPI/';
   private _Api_Authenticate = '';
+  private _Api_ChangePassword = '';
   private _Api_GetLinks: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
@@ -79,8 +80,9 @@ export class AccountService {
     private _LoggingSvc: LoggingService,
     private _Router: Router
   ) {
-    this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
     this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
+    this._Api_ChangePassword = this._GWCommon.baseURL + this._ApiName + 'ChangePassword';
+    this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
     this._Api_Logoff = this._GWCommon.baseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._GWCommon.baseURL + this._ApiName + 'RefreshToken';
   }
@@ -123,6 +125,46 @@ export class AccountService {
           } else {
             this._LoggingSvc.errorHandler(error, 'AccountService', 'authenticate');
             reject('Failed to call the API');
+          }
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
+    if(this._GWCommon.isNullOrEmpty(newPassword)) {
+      throw new Error("newPassword can not be blank!");
+    }
+    if(this._GWCommon.isNullOrEmpty(oldPassword)) {
+      throw new Error("oldPassword can not be blank!");
+    }
+    return new Promise<boolean>((resolve, reject) => {
+      let mQueryParameter: HttpParams = new HttpParams().append('oldPassword', oldPassword);
+      mQueryParameter=mQueryParameter.append('newPassword', newPassword);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.post<any>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
+        next: (response: string) => {
+          if(response.startsWith('Success')) {
+            this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
+            resolve(true);
+          } else {
+            this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
+            reject(false);
+          }
+        },
+        error: (error: any) => {
+          if(error.status && error.status === 403) {
+            this._LoggingSvc.toast('Unable to change password', 'Change password', LogLevel.Error);
+            reject(error.error);
+          } else {
+            this._LoggingSvc.errorHandler(error, 'AccountService', 'authenticate');
+            reject(false);
           }
         },
         // complete: () => {}

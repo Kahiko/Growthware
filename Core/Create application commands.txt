@@ -52,8 +52,6 @@ Application:
 		ng generate module features/home --routing --project gw-frontend
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend
 		ng generate component features/home/c/Home --module home --project gw-frontend
-		
-		ng generate module features/accounts --routing --project gw-frontend
 
 		ng generate module features/functions --routing --project gw-frontend
 		
