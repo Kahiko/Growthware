@@ -14,13 +14,10 @@ using GrowthWare.WebSupport.Utilities;
 namespace GrowthWare.WebSupport.Jwt;
 public class JwtUtils : IJwtUtils
 {
-    // private readonly AppSettings _appSettings;
-
-    // private IAccountService m_AccountService = null;
 
     public JwtUtils()
     {
-        // m_AccountService = accountService;
+        // nothing atm
     }
 
     public string GenerateJwtToken(MAccountProfile account)
@@ -90,7 +87,6 @@ public class JwtUtils : IJwtUtils
         };
 
         // ensure token is unique by checking against db
-        // var tokenIsUnique = this.m_AccountService.RefreshTokenExists(refreshToken.Token);
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
