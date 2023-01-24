@@ -181,10 +181,7 @@ public class AccountService : IAccountService
     /// <returns>MAccountProfile or null</returns>
     public MAccountProfile GetAccount(String account)
     {
-        if (String.IsNullOrEmpty(account))
-        {
-            throw new ArgumentException("account can not be null or empty", account);
-        }
+        if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         try
