@@ -28,10 +28,6 @@ export class AuthGuard implements CanActivate  {
       // console.log(this._JwtHelper.decodeToken(token))
       const mToken: IToken = this._JwtHelper.decodeToken(mTokenStr)
       switch (parseInt(mToken.status)) {
-        case 1:
-          mRedirectUrl = '/home';
-          mReturn = false;
-          break;
         case 4:
           // console.log(state);
           mRedirectUrl = '/accounts/change-password';
