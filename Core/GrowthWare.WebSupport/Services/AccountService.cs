@@ -100,8 +100,11 @@ public class AccountService : IAccountService
                 {
                     mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
                 }
+                // TODO: Need to come up with an exception Anonymous like getting it keeping it in memory
+                // and always handing that out and never saving it?
                 Save(mAccountProfile, true, false, false);
-                mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
+                // mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
+                mAccountProfile.PasswordLastSet = DateTime.Now;
                 mAccountProfile.Password = "";
             }
         }
