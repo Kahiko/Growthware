@@ -23,23 +23,25 @@ public class JwtMiddleware
     public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService, IClientChoicesService clientChoicesService)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-        string mAccount = jwtUtils.ValidateJwtToken(token);
-        if (mAccount != null)
+        if(token != null)
         {
-            // attach account to context on successful jwt validation
-            httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
-            MClientChoicesState mClientChoicesState = clientChoicesService.GetClientChoicesState(mAccount);
-            httpContext.Items["ClientChoicesState"] = mClientChoicesState;
-        }
-        else
-        {
-            if(this.m_AnonymousProfile == null)
+            string mAccount = jwtUtils.ValidateJwtToken(token);
+            if (mAccount != null)
             {
-                this.m_AnonymousProfile = accountService.GetAccount("Anonymous");
-            }           
-            httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
+                // attach account to context on successful jwt validation
+                httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
+                MClientChoicesState mClientChoicesState = clientChoicesService.GetClientChoicesState(mAccount);
+                httpContext.Items["ClientChoicesState"] = mClientChoicesState;
+            }
+            else
+            {
+                if(this.m_AnonymousProfile == null)
+                {
+                    this.m_AnonymousProfile = accountService.GetAccount("Anonymous");
+                }           
+                httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
+            }
         }
-
         await _next(httpContext);
     }
 }
