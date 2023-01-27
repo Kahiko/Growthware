@@ -87,7 +87,7 @@ export class AccountService {
     this._Api_RefreshToken = this._GWCommon.baseURL + this._ApiName + 'RefreshToken';
   }
 
-  public async authenticate(account: string, password: string, forceDb: boolean = false): Promise<boolean | string> {
+  public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(account)) {
         throw new Error("account can not be blank!");
@@ -97,7 +97,6 @@ export class AccountService {
       }
       let mQueryParameter: HttpParams = new HttpParams().append('account', account);
       mQueryParameter=mQueryParameter.append('password', password);
-      mQueryParameter=mQueryParameter.append('forceDb', forceDb);
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -111,7 +110,9 @@ export class AccountService {
           this._CurrentAccount = this._Account;
           this._Status = response.status;
           this._AuthenticationResponse = response;
-          this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
+          if(!silent) {
+            this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
+          }
           this.getNavLinks();
           if(this._Status == 4) {
             this._Router.navigate(['/accounts/change-password']);
@@ -146,13 +147,14 @@ export class AccountService {
       mQueryParameter=mQueryParameter.append('newPassword', newPassword);
       const mHttpOptions = {
         headers: new HttpHeaders({
-          'Content-Type': 'application/json',
+          'Content-Type': 'text/plain',
         }),
+        responseType: "text" as "json",
         params: mQueryParameter,
       };
       this._HttpClient.post<any>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
         next: (response: string) => {
-          if(response.startsWith('Success')) {
+          if(response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
             this.authenticate(this._Account, newPassword, true);
             resolve(true);
