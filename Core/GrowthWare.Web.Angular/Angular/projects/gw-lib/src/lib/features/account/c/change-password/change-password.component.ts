@@ -73,7 +73,7 @@ export class ChangePasswordComponent implements OnDestroy, OnInit {
   getErrorMessage(fieldName: string) {
     switch (fieldName) {
       case 'oldPassword':
-        if(this._AccountSvc.authenticationResponse.status == 4) {
+        if(this._AccountSvc.authenticationResponse.status != 4) {
           if (this.getControls['oldPassword'].hasError('required')) {
             return 'Required';
           }
