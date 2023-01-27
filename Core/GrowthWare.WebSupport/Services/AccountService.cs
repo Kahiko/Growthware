@@ -318,9 +318,16 @@ public class AccountService : IAccountService
         {
             throw new ArgumentException("token can not be null or empty", token);
         }
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
-        mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        try
+        {
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        }
+        catch (System.Exception)
+        {
+            throw;
+        }
         return mRetVal;
     }
 
@@ -345,38 +352,45 @@ public class AccountService : IAccountService
 
     public AuthenticationResponse RefreshToken(string token, string ipAddress)
     {
-        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        MRefreshToken refreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
-
-        if (refreshToken.IsRevoked())
+        try
         {
-            // revoke all descendant tokens in case this token has been compromised
-            revokeDescendantRefreshTokens(refreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+            MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+            MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+            MRefreshToken refreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
+
+            if (refreshToken.IsRevoked())
+            {
+                // revoke all descendant tokens in case this token has been compromised
+                revokeDescendantRefreshTokens(refreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+                this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
+                // _context.Update(account);
+                // _context.SaveChanges();
+            }
+            if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
+            // replace old refresh token with a new one (rotate token)
+            var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
+            newRefreshToken.AccountSeqId = mAccountProfile.Id;
+            mAccountProfile.RefreshTokens.Add(newRefreshToken);
+            // remove old refresh tokens from account
+            removeOldRefreshTokens(mAccountProfile);
+
+            // save changes to db
             this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
-            // _context.Update(account);
-            // _context.SaveChanges();
+
+            // generate new jwt
+            JwtUtils mJwtUtils = new JwtUtils();
+            var jwtToken = mJwtUtils.GenerateJwtToken(mAccountProfile);
+
+            // return data in authenticate response object
+            AuthenticationResponse mResponse = new AuthenticationResponse(mAccountProfile);
+            mResponse.JwtToken = jwtToken;
+            mResponse.RefreshToken = newRefreshToken.Token;
+            return mResponse;            
         }
-        if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
-        // replace old refresh token with a new one (rotate token)
-        var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
-        newRefreshToken.AccountSeqId = mAccountProfile.Id;
-        mAccountProfile.RefreshTokens.Add(newRefreshToken);
-        // remove old refresh tokens from account
-        removeOldRefreshTokens(mAccountProfile);
-
-        // save changes to db
-        this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
-
-        // generate new jwt
-        JwtUtils mJwtUtils = new JwtUtils();
-        var jwtToken = mJwtUtils.GenerateJwtToken(mAccountProfile);
-
-        // return data in authenticate response object
-        AuthenticationResponse mResponse = new AuthenticationResponse(mAccountProfile);
-        mResponse.JwtToken = jwtToken;
-        mResponse.RefreshToken = newRefreshToken.Token;
-        return mResponse;
+        catch (System.Exception)
+        {
+            throw;
+        }
     }
 
     public bool RefreshTokenExists(string refreshToken)

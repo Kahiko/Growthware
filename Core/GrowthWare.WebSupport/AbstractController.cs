@@ -315,7 +315,8 @@ public abstract class AbstractController : ControllerBase
         {
             if(ex.Message.Contains("token does not exist"))
             {
-                throw;
+                return NotFound();
+                // throw;
             }
             else
             {
