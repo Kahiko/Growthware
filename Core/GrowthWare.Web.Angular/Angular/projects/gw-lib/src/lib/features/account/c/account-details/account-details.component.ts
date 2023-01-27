@@ -232,7 +232,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    if(this._Router.url === '/') {
+    if(this._Router.url === '/accounts') {
       if(this._AccountSvc.reason === 'NewProfile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
