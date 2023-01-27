@@ -43,7 +43,7 @@ public class AccountService : IAccountService
         {
             mDomainPassed = true;
         }
-        MAccountProfile mAccountProfile = GetAccount(account);
+        MAccountProfile mAccountProfile = GetAccount(account, true);
         if (mDomainPassed && mAccountProfile == null)
         {
             int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
@@ -250,16 +250,16 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public MAccountProfile GetAccount(String account)
+    public MAccountProfile GetAccount(String account, bool forceDb = false)
     {
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         try
         {
+            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
             if (account != s_AnonymousAccount)
             {
-                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null)
+                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null && !forceDb)
                 {
                     string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName);
                     if (mJsonString != null && !String.IsNullOrEmpty(mJsonString)) 

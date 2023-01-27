@@ -12,7 +12,7 @@ public interface IAccountService
 
     public string ChangePassword(UIChangePassword changePassword);
 
-    public MAccountProfile GetAccount(String account);
+    public MAccountProfile GetAccount(String account, bool forceDb = false);
 
     public AuthenticationResponse RefreshToken(string token, string ipAddress);
 
