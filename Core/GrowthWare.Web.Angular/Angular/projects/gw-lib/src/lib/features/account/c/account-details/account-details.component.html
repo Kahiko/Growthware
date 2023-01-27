@@ -1,8 +1,8 @@
 <form [formGroup]="frmAccount" (ngSubmit)="onSubmit(frmAccount)" novalidate>
   <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px;">
     <mat-tab label="Account Information">
-      <div class="mat-tab__container">
-        <div class="mat-tab__content">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents">
           <div class="table Form_Table" style="padding: 5px;">
             <div class="tr ">
               <div class="td" style="width: 50%;">
@@ -25,7 +25,7 @@
                       </mat-select>
                     </div>
                   </div>
-                  <div class="tr" style="border: solid 1px;"><!--SysAdmin/Failed-->
+                  <div class="tr"><!--SysAdmin/Failed-->
                     <div class="td left">
                       <span class="Form_LabelText">System Administrator: </span>
                     </div>
@@ -40,7 +40,7 @@
                       <input matInput type="number" formControlName="failedAttempts" class="Form_Field rounded">
                     </div>
                   </div>
-                  <div class="tr" style="border: solid 1px;"><!--FirstName/LastName-->
+                  <div class="tr"><!--FirstName/LastName-->
                     <div class="td left">
                       <span class="Form_LabelText">First Name: </span><mat-error *ngIf="getControls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
                     </div>
@@ -54,7 +54,7 @@
                       <input matInput type="text" formControlName="lastName" class="Form_Field rounded">
                     </div>
                   </div>
-                  <div class="tr" style="border: solid 1px;"><!--MiddleName/blank-->
+                  <div class="tr"><!--MiddleName/blank-->
                     <div class="td left">
                       <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="getControls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
                     </div>
@@ -68,7 +68,7 @@
                       <input matInput type="text" formControlName="preferredName" class="Form_Field rounded">
                     </div>
                   </div>
-                  <div class="tr" style="border: solid 1px;"><!--EMail/Timezone-->
+                  <div class="tr"><!--EMail/Timezone-->
                     <div class="td left">
                       <span class="Form_LabelText">Email: </span><mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
                     </div>
@@ -86,7 +86,7 @@
                       </mat-select>
                     </div>
                   </div>
-                  <div *ngIf="false" class="tr" style="border: solid 1px;"><!--blank/blank-->
+                  <div *ngIf="false" class="tr"><!--blank/blank-->
                     <div class="td left" style="width: 25%; border: solid 1px;">
                       text:
                     </div>
@@ -138,8 +138,8 @@
       </div>
     </mat-tab>
     <mat-tab *ngIf="showRoles" label="Roles">
-      <div class="mat-tab__container">
-        <div class="mat-tab__content">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents">
           <gw-lib-pick-list #rolePickList
             id="roles"
             name="{{rolesPickListName}}"
@@ -153,8 +153,8 @@
       </div>
     </mat-tab>
     <mat-tab *ngIf="showGroups" label="Groups">
-      <div class="mat-tab__container">
-        <div class="mat-tab__content">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents">
           <gw-lib-pick-list #groupPickList
             id="groups"
             name="{{groupsPickListName}}"
@@ -168,8 +168,8 @@
       </div>
     </mat-tab>
     <mat-tab *ngIf="showDerived" label="Derived Roles">
-      <div class="mat-tab__container">
-        <div class="mat-tab__content">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents">
           Derived Roles
         </div>
       </div>
