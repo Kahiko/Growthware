@@ -61,6 +61,24 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile"
+        },        
+        {
+            "label": "Angular-Watch",
+            "dependsOn": "Angular-Web-Build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile",
+            "options": {
+                "cwd": "${workspaceFolder}/GrowthWare.Web.Angular"
+            }
+            
         }
     ]
 }
