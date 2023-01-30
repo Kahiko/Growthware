@@ -12,7 +12,7 @@ import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from './search-cr
   providedIn: 'root'
 })
 export class SearchService {
-  private _SearchUrl: string = this._GWCommon.baseURL + 'GrowthwareAPI/Search';
+  private _BaseUrl: string = '';
 
   public searchCriteriaChanged = new Subject<SearchCriteriaNVP>();
 
@@ -20,7 +20,9 @@ export class SearchService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
-  ) { }
+  ) {
+    this._BaseUrl = this._GWCommon.baseURL;
+  }
 
   /**
    * Calls GrowthwareAPI.Search
@@ -98,7 +100,7 @@ export class SearchService {
    * @memberof SearchService
    */
   public async searchAccounts(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthwareAccount/SearchAccounts';
+    const mUrl = this._BaseUrl + 'GrowthwareAccount/SearchAccounts';
     return this.getResults(mUrl, criteria);
   }
 
@@ -110,7 +112,7 @@ export class SearchService {
    * @memberof SearchService
    */
    public async searchFunctions(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthwareFunction/SearchFunctions';
+    const mUrl = this._BaseUrl + 'GrowthwareFunction/SearchFunctions';
     return this.getResults(mUrl, criteria);
   }
 
