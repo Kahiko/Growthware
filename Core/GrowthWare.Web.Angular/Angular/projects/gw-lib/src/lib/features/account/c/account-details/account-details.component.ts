@@ -32,6 +32,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   canDelete: boolean = false;
   canSave: boolean = false;
 
+  derivedRolesId: string = 'derivedRoles'
+
   groupsAvailable: Array<string> = [];
   groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
@@ -283,6 +285,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
       this.selectedStatus = this._AccountProfile.status;
       this.selectedTimeZone = this._AccountProfile.timeZone;
+      this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],
         email: [this._AccountProfile.email],
@@ -296,6 +299,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         statusSeqId: [this._AccountProfile.status],
         timeZone: [this._AccountProfile.timeZone],
       });
+
     } else {
       this.frmAccount = this._FormBuilder.group({
         account: ['', [Validators.required]],

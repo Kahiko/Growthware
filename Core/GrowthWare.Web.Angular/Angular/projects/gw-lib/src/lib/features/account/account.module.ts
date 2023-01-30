@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 // Library
 import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { PickListModule } from '@Growthware/Lib/src/lib/features/pick-list';
+import { SnakeListModule } from '@Growthware/Lib/src/lib/features/snake-list';
 // Feature Components
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { ChangePasswordComponent } from './c/change-password/change-password.component';
@@ -46,6 +47,7 @@ import { AccountsRoutingModule } from './accounts-routing.module';
     MatSelectModule,
     PickListModule,
     ReactiveFormsModule,
+    SnakeListModule,
   ],
   exports: [
     AccountDetailsComponent,

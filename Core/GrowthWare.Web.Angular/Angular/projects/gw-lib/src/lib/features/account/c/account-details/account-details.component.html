@@ -170,7 +170,9 @@
     <mat-tab *ngIf="showDerived" label="Derived Roles">
       <div class="mat-tab__container formSection">
         <div class="mat-tab__content formSectionContents">
-          Derived Roles
+          <div>
+            <gw-lib-snake-list id="{{derivedRolesId}}"></gw-lib-snake-list>
+          </div>
         </div>
       </div>
     </mat-tab>

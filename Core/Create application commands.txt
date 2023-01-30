@@ -144,3 +144,6 @@ https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-a
 		ng generate interface features/navigation/NavLink --type model --project gw-lib
 		ng generate component features/navigation/c/menuListItem --module navigation --style scss --project gw-lib
 		ng generate service features/navigation/menuList --project gw-lib
+
+		ng generate module features/snake-list --project gw-lib
+		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
