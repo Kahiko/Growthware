@@ -263,6 +263,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
     }
 
+    [HttpPost("Save")]
     public ActionResult<bool> Save(UIAccountProfile uiAccountProfile)
     {
         // requesting profile same as 
