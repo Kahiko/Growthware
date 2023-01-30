@@ -25,6 +25,7 @@ export class AccountService {
   private _Api_GetLinks: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
+  private _BaseURL: string = '';
   private _CurrentAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
   private _IsAuthenticated = new Subject<boolean>();
@@ -80,11 +81,12 @@ export class AccountService {
     private _LoggingSvc: LoggingService,
     private _Router: Router
   ) {
-    this._Api_Authenticate = this._GWCommon.baseURL + this._ApiName + 'Authenticate';
-    this._Api_ChangePassword = this._GWCommon.baseURL + this._ApiName + 'ChangePassword';
-    this._Api_GetLinks = this._GWCommon.baseURL + this._ApiName + 'GetLinks';
-    this._Api_Logoff = this._GWCommon.baseURL + this._ApiName + 'Logoff';
-    this._Api_RefreshToken = this._GWCommon.baseURL + this._ApiName + 'RefreshToken';
+    this._BaseURL = this._GWCommon.baseURL;
+    this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
+    this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
+    this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
+    this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
+    this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
   }
 
   public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
@@ -268,7 +270,7 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._GWCommon.baseURL + this._ApiName + this.reason;
+    const mUrl = this._BaseURL + this._ApiName + this.reason;
     return new Promise<IAccountProfile>((resolve, reject) => {
       this._HttpClient.get<IAccountProfile>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
@@ -316,7 +318,7 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._GWCommon.baseURL + this._ApiName + 'GetSecurityInfo';
+    const mUrl = this._BaseURL + this._ApiName + 'GetSecurityInfo';
     return new Promise<ISecurityInfo>((resolve, reject) => {
       this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
