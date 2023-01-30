@@ -19,7 +19,7 @@ export class AccountService {
 
   private _Account: string = '';
   private _AuthenticationResponse!: IAuthenticationResponse;
-  private _ApiName: string = 'GrowthwareAPI/';
+  private _ApiName: string = 'GrowthwareAccount/';
   private _Api_Authenticate = '';
   private _Api_ChangePassword = '';
   private _Api_GetLinks: string = '';

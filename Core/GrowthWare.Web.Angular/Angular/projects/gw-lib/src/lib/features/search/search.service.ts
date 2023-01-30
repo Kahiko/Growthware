@@ -98,7 +98,7 @@ export class SearchService {
    * @memberof SearchService
    */
   public async searchAccounts(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthwareAPI/SearchAccounts';
+    const mUrl = this._GWCommon.baseURL + 'GrowthwareAccount/SearchAccounts';
     return this.getResults(mUrl, criteria);
   }
 
@@ -110,7 +110,7 @@ export class SearchService {
    * @memberof SearchService
    */
    public async searchFunctions(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._GWCommon.baseURL + 'GrowthwareAPI/SearchFunctions';
+    const mUrl = this._GWCommon.baseURL + 'GrowthwareFunction/SearchFunctions';
     return this.getResults(mUrl, criteria);
   }
 

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using GrowthWare.WebSupport;
-using GrowthWare.WebSupport.Services;
+using GrowthWare.WebSupport.BaseControllers;
 
 namespace GrowthWare.Web.Angular.Controllers;
 
@@ -10,10 +9,9 @@ public class GrowthwareAPIController : AbstractController
 {
     private readonly ILogger<GrowthwareAPIController> _logger;
 
-    public GrowthwareAPIController(ILogger<GrowthwareAPIController> logger, IAccountService accountService)
+    public GrowthwareAPIController(ILogger<GrowthwareAPIController> logger)
     {
-        this.m_AccountService = accountService;
-        _logger = logger;
+        this._logger = logger;
     }
 
 }
