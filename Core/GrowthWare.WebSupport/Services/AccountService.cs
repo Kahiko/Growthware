@@ -137,6 +137,9 @@ public class AccountService : IAccountService
                 try
                 {
                     Save(mAccountProfile, false, false, false);
+                    string mJsonString = JsonSerializer.Serialize(mAccountProfile);
+                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);                    
+                    mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");                    
                 }
                 catch (System.Exception)
                 {
