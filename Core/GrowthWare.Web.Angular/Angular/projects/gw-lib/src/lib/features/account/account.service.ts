@@ -20,6 +20,7 @@ export class AccountService {
   private _Account: string = '';
   private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAccount/';
+  private _ApiSecurityName: string = 'GrowthwareAPI/';
   private _Api_Authenticate = '';
   private _Api_ChangePassword = '';
   private _Api_GetLinks: string = '';
@@ -318,7 +319,7 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._BaseURL + this._ApiName + 'GetSecurityInfo';
+    const mUrl = this._BaseURL + this._ApiSecurityName + 'GetSecurityInfo';
     return new Promise<ISecurityInfo>((resolve, reject) => {
       this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {

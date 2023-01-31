@@ -215,14 +215,6 @@ public abstract class AbstractAccountController : ControllerBase
         return mRootNavLinks;
     }
 
-    [HttpGet("GetRoles")]
-    public ActionResult<ArrayList> GetRoles()
-    {
-        ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
-        return Ok(mRetVal);
-    }
-
-
     private string ipAddress()
     {
         if (Request.Headers.ContainsKey("X-Forwarded-For"))

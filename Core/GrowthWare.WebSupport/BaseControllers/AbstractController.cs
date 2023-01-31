@@ -49,14 +49,6 @@ public abstract class AbstractController : ControllerBase
         return mRetVal;
     }
 
-    [HttpGet("GetGroups")]
-    public ActionResult<ArrayList> GetGroups()
-    {
-        ArrayList mRetVal;
-        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
-        return Ok(mRetVal);
-    }
-
     [HttpGet("GetSecurityInfo")]
     public ActionResult<MSecurityInfo> GetSecurityInfo(string action) 
     { 

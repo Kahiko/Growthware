@@ -8,7 +8,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
   providedIn: 'root'
 })
 export class GroupService {
-  private _ApiName: string = 'GrowthwareAPI/';
+  private _ApiName: string = 'GrowthwareGroup/';
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { }
 

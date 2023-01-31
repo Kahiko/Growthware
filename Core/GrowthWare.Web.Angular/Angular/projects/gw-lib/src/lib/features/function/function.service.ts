@@ -12,7 +12,7 @@ import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 export class FunctionService {
 
   private _FunctionSeqId: number = -1;
-  private _ApiName: string = 'GrowthwareAPI/';
+  private _ApiName: string = 'GrowthwareFunction/';
   private _Api_GetFunction: string = '';
   private _Reason: string = '';
 

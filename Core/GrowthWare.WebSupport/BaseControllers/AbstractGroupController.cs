@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.WebSupport.Jwt;
@@ -8,12 +9,21 @@ using GrowthWare.WebSupport.Utilities;
 namespace GrowthWare.WebSupport.BaseControllers;
 
 [CLSCompliant(false)]
-public abstract class AbstractFunctionController : ControllerBase
+public abstract class AbstractGroupController : ControllerBase
 {
 
-    [Authorize("Search_Functions")]
-    [HttpPost("SearchFunctions")]
-    public String SearchFunctions(UISearchCriteria searchCriteria)
+    [HttpGet("GetGroups")]
+    public ActionResult<ArrayList> GetGroups()
+    {
+        ArrayList mRetVal;
+        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        return Ok(mRetVal);
+    }
+
+
+    [Authorize("Search_Groups")]
+    [HttpPost("SearchGroups")]
+    public String SearchGroups(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
         string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
