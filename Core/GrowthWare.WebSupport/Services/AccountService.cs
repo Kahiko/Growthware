@@ -21,6 +21,7 @@ namespace GrowthWare.WebSupport.Services;
 public class AccountService : IAccountService
 {
     private MAccountProfile m_CachedAnonymousAccount = null;
+    private int[] m_InvalidStatus = {(int)SystemStatus.Disabled, (int)SystemStatus.Inactive};
     private string s_AnonymousAccount = "Anonymous";
 
     private string s_SessionName = "SessionAccount";
@@ -62,7 +63,7 @@ public class AccountService : IAccountService
                 {
                     mProfilePassword = mAccountProfile.Password;
                 }
-                if ((password == mProfilePassword || account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant()) && (mAccountProfile.Status != Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture) || mAccountProfile.Status != Convert.ToInt32(SystemStatus.Inactive, CultureInfo.InvariantCulture)))
+                if (password == mProfilePassword && account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant() && !this.m_InvalidStatus.Contains(mAccountProfile.Status))
                 {
                     mAuthenticated = true;
                     mAccountProfile.FailedAttempts = 0;
@@ -92,17 +93,19 @@ public class AccountService : IAccountService
                     mAccountProfile.RefreshTokens.Add(mRefreshToken);
 
                 }
-                if (!mAuthenticated)
+                if (mAuthenticated)
+                {
+                    this.Save(mAccountProfile, true, false, false);
+                }
+                else
                 {
                     mAccountProfile.FailedAttempts += 1;
+                    mAccountProfile = GetAccount(this.s_AnonymousAccount);
+                    if (mAccountProfile.FailedAttempts == ConfigSettings.FailedAttempts && ConfigSettings.FailedAttempts != -1)
+                    {
+                        mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
+                    }
                 }
-                if (mAccountProfile.FailedAttempts == Convert.ToInt32(ConfigSettings.FailedAttempts) && Convert.ToInt32(ConfigSettings.FailedAttempts, CultureInfo.InvariantCulture) != -1)
-                {
-                    mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
-                }
-                // TODO: Need to come up with an exception Anonymous like getting it keeping it in memory
-                // and always handing that out and never saving it?
-                Save(mAccountProfile, true, false, false);
                 // mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
                 mAccountProfile.PasswordLastSet = DateTime.Now;
                 mAccountProfile.Password = "";

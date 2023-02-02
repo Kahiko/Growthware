@@ -113,15 +113,21 @@ export class AccountService {
           this._CurrentAccount = this._Account;
           this._Status = response.status;
           this._AuthenticationResponse = response;
-          if(!silent) {
+          if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
             this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           }
           this.getNavLinks();
-          if(this._Status == 4) {
-            this._Router.navigate(['/accounts/change-password']);
+          if(account.toLowerCase() !== response.account.toLowerCase()) {
+            this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
+            this._IsAuthenticated.next(false);
+            resolve(false);
+          } else {
+            if(this._Status == 4) {
+              this._Router.navigate(['/accounts/change-password']);
+            }
+            this._IsAuthenticated.next(true);
+            resolve(true);
           }
-          this._IsAuthenticated.next(true);
-          resolve(true);
         },
         error: (error: any) => {
           if(error.status && error.status === 403) {
