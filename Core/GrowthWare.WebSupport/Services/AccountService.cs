@@ -260,46 +260,46 @@ public class AccountService : IAccountService
     {
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         MAccountProfile mRetVal = null;
+        BAccounts mBAccount = null;
+        string mJsonString = string.Empty;
+        string mSessionNameToUse = s_SessionName;
+        if(account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant()) 
+        {
+            mSessionNameToUse = s_AnonymousAccount;
+        }
         try
         {
-            BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            if (account != s_AnonymousAccount)
-            {
-                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName) != null && !forceDb)
+            if(forceDb) {
+                mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+                mRetVal = mBAccount.GetProfile(account);
+                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null)
                 {
-                    string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(s_SessionName);
-                    if (mJsonString != null && !String.IsNullOrEmpty(mJsonString)) 
-                    {
-                        mRetVal = JsonSerializer.Deserialize<MAccountProfile>(mJsonString);
-                        if (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant())
-                        {
-                            mRetVal = mBAccount.GetProfile(account);
-                            mJsonString = JsonSerializer.Serialize(mRetVal);
-                            m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
-                        }
-                    }
-                    else
-                    {
-                        mRetVal = mBAccount.GetProfile(account);
-                        mJsonString = JsonSerializer.Serialize(mRetVal);
-                        m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
-                    }
-                }
-                else
-                {
-                    mRetVal = mBAccount.GetProfile(account);
-                    string mJsonString = JsonSerializer.Serialize(mRetVal);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                    mJsonString = JsonSerializer.Serialize(mRetVal);
+                    m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
                 }
             }
             else
             {
-                // TODO: Add code to use session
-                mRetVal = m_CachedAnonymousAccount;
-                if (mRetVal == null)
+                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null)
                 {
-                    m_CachedAnonymousAccount = mBAccount.GetProfile(account);
-                    mRetVal = m_CachedAnonymousAccount;
+                    mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(mSessionNameToUse);
+                    if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
+                    {
+                        mRetVal = JsonSerializer.Deserialize<MAccountProfile>(mJsonString);
+                    }
+                    else
+                    {
+                        mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+                        mRetVal = mBAccount.GetProfile(account);
+                        mJsonString = JsonSerializer.Serialize(mRetVal);
+                        m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
+                    }
+                }
+                else
+                {
+                    // there is no session so you have to get from the DB and since there is no session no need to attempt to add it to session
+                    mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+                    mRetVal = mBAccount.GetProfile(account);
                 }
             }
         }
