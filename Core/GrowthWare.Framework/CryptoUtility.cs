@@ -26,56 +26,88 @@ namespace GrowthWare.Framework
             {
                 // create the byte arrays needed to create the key and iv. 
                 byte[] md5key = null;
-                byte[] hashedkey = null;
+                byte[] hashedKey = null;
 
                 // for ease of preparation, we'll utilize code found in a different 
                 // article. http://www.aspalliance.com/535 
                 md5key = encryptionMD5(value);
-                hashedkey = saltedHashEncryptionMD5(value);
+                hashedKey = saltedHashEncryptionMD5(value);
 
                 // loop to transfer the keys. 
-                for (int i = 0; i <= hashedkey.Length - 1; i++)
+                for (int i = 0; i <= hashedKey.Length - 1; i++)
                 {
-                    s_KEY_192[i] = hashedkey[i];
+                    s_KEY_24_BYTE[i] = hashedKey[i];
                 }
 
                 // create the start and mid portion of the hashed key 
-                int startcount = hashedkey.Length;
+                int startCount = hashedKey.Length;
                 // always 128 
-                int midcount = md5key.Length / 2;
+                int midCount = md5key.Length / 2;
                 // always 64 
 
                 // loop to fill in the rest of the key, and create 
                 // the IV with the remaining. 
-                for (int i = midcount; i <= md5key.Length - 1; i++)
+                for (int i = midCount; i <= md5key.Length - 1; i++)
                 {
-                    s_KEY_192[startcount + (i - midcount)] = md5key[i];
-                    s_IV_192[i - midcount] = md5key[i - midcount];
+                    s_KEY_24_BYTE[startCount + (i - midCount)] = md5key[i];
+                    s_IV_24_BYTE[i - midCount] = md5key[i - midCount];
                 }
 
                 // clean up resources. 
                 md5key = null;
-                hashedkey = null;
+                hashedKey = null;
             }
         }
 
         //8 bytes randomly selected for both the Key and the Initialization Vector
         //the IV is used to encrypt the first block of text so that any repetitive 
         //patterns are not apparent
-        private static byte[] s_KEY_64 = { 83, 68, 91, 37, 128, 64, 92, 197 };
+        private static byte[] s_KEY_8_BYTE = { 83, 68, 91, 37, 128, 64, 92, 197 };
 
-        private static byte[] s_IV_64 = { 6, 55, 118, 219, 92, 197, 78, 69 };
-        //24 byte or 192 bit key for TripleDES
-        private static byte[] s_KEY_192 = {83, 68, 91, 37, 128, 64, 92, 197,
-		  87, 215, 61, 243, 148, 20, 252, 34,
-		  38, 69, 83, 201, 74, 211, 6, 98};
-        //24 byte or 192 bit Initialization Vector for TripleDES
-        private static byte[] s_IV_192 = {6, 55, 118, 219, 92, 197, 78, 69,
-		  247, 110, 61, 189, 247, 110, 61, 189,
-		  243, 148, 20, 252, 34, 133, 174, 189};
+        private static byte[] s_IV_8_BYTE = { 6, 55, 118, 219, 92, 197, 78, 69 };
+
+        private static byte[] s_KEY_24_BYTE = {
+            83,  68, 91,  37, 128,  64,  92, 197,
+		    87, 215, 61, 243, 148,  20, 252,  34,
+		    38,  69, 83, 201,  74, 211,   6,  98
+        };
+
+        private static byte[] s_IV_24_BYTE = {
+              6,  55, 118, 219,  92, 197,  78,  69,
+		    247, 110,  61, 189, 247, 110,  61, 189,
+		    243, 148,  20, 252,  34, 133, 174, 189
+        };
+
+        private static byte[] s_KEY_32_BYTE = { 
+            156, 174, 234, 86, 123,  61,  10, 101, 
+             18, 109,   4, 95, 150, 106, 152,  90, 
+             55, 122, 113, 55,  14, 227, 171,  37, 
+             81, 236,   2, 52, 252, 155,  43, 159 
+        };
+
+        private static byte[] s_IV_16_BYTE = { 
+            128, 121, 176, 114, 247, 121, 132, 48, 
+            231,  20, 119,  43, 177, 185,   8, 99
+        };
 #endregion
 
 #region Public Methods
+        public static bool TryEncrypt(string valueToEncrypt, out string value, EncryptionType encryptionType)
+        {
+            bool mRetVal = false;
+            string mOutValue = valueToEncrypt;
+            try
+            {
+                mOutValue = Encrypt(valueToEncrypt, encryptionType);
+            }
+            catch (System.Exception)
+            {
+                // do nothing
+            }
+            value = mOutValue;
+            return mRetVal;
+        }
+
         /// <summary>
         /// Performs encryption given the desired encryption type.
         /// </summary>
@@ -83,9 +115,25 @@ namespace GrowthWare.Framework
         /// <param name="encryptionType">If "TripleDES" is not specified the DES is returned.</param>
         /// <returns>Encrypted string</returns>
         /// <remarks>encryptionType is case sensitive.</remarks>
-        public static string GetEncrypt(string valueToEncrypt, EncryptionType encryptionType)
+        public static string Encrypt(string valueToEncrypt, EncryptionType encryptionType)
         {
             return Encrypt(valueToEncrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
+        }
+
+        public static bool TryEncrypt(string valueToEncrypt, out string value, EncryptionType encryptionType, string saltExpression)
+        {
+            bool mRetVal = false;
+            string mOutValue = valueToEncrypt;
+            try
+            {
+                mOutValue = Encrypt(valueToEncrypt, encryptionType);
+            }
+            catch (System.Exception)
+            {
+                // do nothing
+            }
+            value = mOutValue;
+            return mRetVal;
         }
 
         /// <summary>
@@ -110,8 +158,24 @@ namespace GrowthWare.Framework
             }
         }
 
+        public static bool TryDecrypt(string valueToDecrypt, out string value, EncryptionType encryptionType)
+        {
+            bool mRetVal = false;
+            string mOutValue = valueToDecrypt;
+            try
+            {
+                mOutValue = Decrypt(valueToDecrypt, encryptionType);
+            }
+            catch (System.Exception)
+            {
+                // do nothing
+            }
+            value = mOutValue;
+            return mRetVal;
+        }
+
         /// <summary>
-        /// Performs dencryption.
+        /// Performs decryption.
         /// </summary>
         /// <param name="valueToDecrypt">Encrypted string</param>
         /// <param name="encryptionType">If "TripleDES" is not specified the DES is returned.</param>
@@ -122,8 +186,24 @@ namespace GrowthWare.Framework
             return Decrypt(valueToDecrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
         }
 
+        public static bool TryDecrypt(string valueToDecrypt, out string value, EncryptionType encryptionType, string saltExpression)
+        {
+            bool mRetVal = false;
+            string mOutValue = valueToDecrypt;
+            try
+            {
+                mOutValue = Decrypt(valueToDecrypt, encryptionType, saltExpression);
+            }
+            catch (System.Exception)
+            {
+                // do nothing
+            }
+            value = mOutValue;
+            return mRetVal;
+        }
+
         /// <summary>
-        /// Performs dencryption.
+        /// Performs decryption.
         /// </summary>
         /// <param name="valueToDecrypt">String</param>
         /// <param name="encryptionType">EncryptionType</param>
@@ -252,7 +332,7 @@ namespace GrowthWare.Framework
                 {
                     DES mDES = DES.Create();
                     mMemoryStream = new MemoryStream();
-                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mDES.CreateEncryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Write);
+                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mDES.CreateEncryptor(s_KEY_8_BYTE, s_IV_8_BYTE), CryptoStreamMode.Write);
                     StreamWriter mStreamWriter = new StreamWriter(mCryptoStream);
                     mStreamWriter.Write(valueToEncrypt);
                     mStreamWriter.Flush();
@@ -298,7 +378,7 @@ namespace GrowthWare.Framework
                         //convert from string to byte array
                         byte[] buffer = Convert.FromBase64String(EncryptedValue);
                         mMemoryStream = new MemoryStream(buffer);
-                        CryptoStream cs = new CryptoStream(mMemoryStream, mDES.CreateDecryptor(s_KEY_64, s_IV_64), CryptoStreamMode.Read);
+                        CryptoStream cs = new CryptoStream(mMemoryStream, mDES.CreateDecryptor(s_KEY_8_BYTE, s_IV_8_BYTE), CryptoStreamMode.Read);
                         StreamReader sr = new StreamReader(cs);
                         mRetVal = sr.ReadToEnd();
                     }
@@ -322,13 +402,7 @@ namespace GrowthWare.Framework
             return mRetVal;
         }
 
-        /// <summary>
-        /// Private method to perform DES3 encryption
-        /// </summary>
-        /// <param name="valueToEncrypt">String to be DES3 encrypted</param>
-        /// <returns>Encrypted string</returns>
-        /// <remarks></remarks>
-        private static string encryptTripleDES(string valueToEncrypt)
+        private static string encryptAes(string valueToEncrypt)
         {
             string retVal = valueToEncrypt;
             if (!string.IsNullOrEmpty(valueToEncrypt))
@@ -336,9 +410,10 @@ namespace GrowthWare.Framework
                 MemoryStream mMemoryStream = null;
                 try
                 {
-                    TripleDES mTripleDES = TripleDES.Create();
+                    Aes mAes = Aes.Create();
                     mMemoryStream = new MemoryStream();
-                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateEncryptor(s_KEY_192, s_IV_64), CryptoStreamMode.Write);
+                    // For Aes the IV size is 16 bytes, and the default key size is 32 (16 and 24 are also allowed)
+                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mAes.CreateEncryptor(s_KEY_32_BYTE, s_IV_16_BYTE), CryptoStreamMode.Write);
                     StreamWriter mStreamWriter = new StreamWriter(mCryptoStream);
                     mStreamWriter.Write(valueToEncrypt);
                     mStreamWriter.Flush();
@@ -363,6 +438,87 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Private method to perform DES3 encryption
+        /// </summary>
+        /// <param name="valueToEncrypt">String to be DES3 encrypted</param>
+        /// <returns>Encrypted string</returns>
+        /// <remarks></remarks>
+        private static string encryptTripleDES(string valueToEncrypt)
+        {
+            string retVal = valueToEncrypt;
+            if (!string.IsNullOrEmpty(valueToEncrypt))
+            {
+                MemoryStream mMemoryStream = null;
+                try
+                {
+                    TripleDES mTripleDES = TripleDES.Create();
+                    mMemoryStream = new MemoryStream();
+                    CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateEncryptor(s_KEY_24_BYTE, s_IV_8_BYTE), CryptoStreamMode.Write);
+                    StreamWriter mStreamWriter = new StreamWriter(mCryptoStream);
+                    mStreamWriter.Write(valueToEncrypt);
+                    mStreamWriter.Flush();
+                    mCryptoStream.FlushFinalBlock();
+                    mMemoryStream.Flush();
+                    //convert back to a string
+                    retVal = Convert.ToBase64String(mMemoryStream.GetBuffer(), 0, int.Parse(mMemoryStream.Length.ToString(CultureInfo.InvariantCulture), CultureInfo.InvariantCulture));
+                }
+                catch (Exception ex)
+                {
+                    throw new CryptoUtilityException("error using encrypt Triple DES", ex);
+                }
+                finally
+                {
+                    if (mMemoryStream != null)
+                    {
+                        mMemoryStream.Dispose();
+                    }
+                }
+            }
+            return retVal;
+        }
+
+        private static string decryptAes(string encryptedValue)
+        {
+            string mRetVal = string.Empty;
+            MemoryStream mMemoryStream = null;
+            if (!string.IsNullOrEmpty(encryptedValue))
+            {
+                try
+                {
+                    Aes mTripleDES = Aes.Create();
+                    if (isBase64String(encryptedValue))
+                    {
+                        //convert from string to byte array
+                        byte[] buffer = Convert.FromBase64String(encryptedValue);
+                        mMemoryStream = new MemoryStream(buffer);
+                        // For Aes the IV size is 16 bytes, and the default key size is 32 (16 and 24 are also allowed)
+                        CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateDecryptor(s_KEY_32_BYTE, s_IV_16_BYTE), CryptoStreamMode.Read);
+                        StreamReader mStreamReader = new StreamReader(mCryptoStream);
+                        mRetVal = mStreamReader.ReadToEnd();
+                    }
+                    else
+                    {
+                        mRetVal = encryptedValue;
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new CryptoUtilityException("error using Decrypt Triple DES", ex);
+                }
+                finally
+                {
+                    if (mMemoryStream != null)
+                    {
+                        mMemoryStream.Dispose();
+                    }
+                }
+
+            }
+            return mRetVal;
+        }
+
+        /// <summary>
         /// Private method to DES3 decryption.
         /// </summary>
         /// <param name="encryptedValue">DES3 encrypted string</param>
@@ -382,7 +538,7 @@ namespace GrowthWare.Framework
                         //convert from string to byte array
                         byte[] buffer = Convert.FromBase64String(encryptedValue);
                         mMemoryStream = new MemoryStream(buffer);
-                        CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateDecryptor(s_KEY_192, s_IV_64), CryptoStreamMode.Read);
+                        CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mTripleDES.CreateDecryptor(s_KEY_24_BYTE, s_IV_8_BYTE), CryptoStreamMode.Read);
                         StreamReader mStreamReader = new StreamReader(mCryptoStream);
                         mRetVal = mStreamReader.ReadToEnd();
                     }

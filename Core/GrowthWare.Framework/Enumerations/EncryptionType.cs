@@ -12,6 +12,10 @@ namespace GrowthWare.Framework.Enumerations
         /// <summary>
 		/// Indicates Triple DES encryption
 		/// </summary>
+		Aes = 4,
+        /// <summary>
+		/// Indicates Triple DES encryption
+		/// </summary>
 		TripleDes = 1,
 		/// <summary>
 		/// Indicates DES encryption
