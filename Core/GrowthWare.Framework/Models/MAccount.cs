@@ -194,6 +194,10 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
         {
             return m_AssignedRoles;
         }
+        set
+        {
+           if(value != null) { this.m_AssignedRoles = value; }
+        }
     }
 
     /// <summary>
