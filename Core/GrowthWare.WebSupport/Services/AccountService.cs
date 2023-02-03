@@ -34,11 +34,18 @@ public class AccountService : IAccountService
         this.m_HttpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// Performs the authentication logic
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="password"></param>
+    /// <param name="ipAddress"></param>
+    /// <returns>MAccountProfile if authenticated null if not authenticated</returns>
     public MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
-        string mRequestedAccount = account;
+        string mRequestedAccount = account;  // It's good practice to leave parameters unchanged.
         bool mAuthenticated = true;
         bool mIsAnonymous = false;
         bool mIsDomainAccount = false;
