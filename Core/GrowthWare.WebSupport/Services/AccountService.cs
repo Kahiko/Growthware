@@ -38,79 +38,97 @@ public class AccountService : IAccountService
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
-        bool mAuthenticated = false;
-        bool mDomainPassed = false;
-        if (account.Contains(@"\"))
+        string mRequestedAccount = account;
+        bool mAuthenticated = true;
+        bool mIsAnonymous = false;
+        bool mIsDomainAccount = false;
+        int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
+        bool mForceDb = true;
+        if (mDomainPos != -1) 
         {
-            mDomainPassed = true;
+            mIsDomainAccount = true; 
+            mRequestedAccount = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
         }
-        MAccountProfile mAccountProfile = GetAccount(account, true);
-        if (mDomainPassed && mAccountProfile == null)
+        mIsAnonymous = mRequestedAccount.ToLowerInvariant() == this.s_AnonymousAccount.ToLowerInvariant();
+        if(mIsAnonymous) 
         {
-            int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
-            account = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
+            mForceDb = false;
+            mAuthenticated = true;
         }
-        if (mAccountProfile != null)
+        MAccountProfile mAccountProfile = GetAccount(mRequestedAccount, mForceDb);
+        if (!mIsAnonymous)
         {
-            if (ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
+            if (!this.m_InvalidStatus.Contains(mAccountProfile.Status))
             {
-                string mProfilePassword = string.Empty;
-                try
+                // the account is not in an invalid status
+                if (!mIsDomainAccount && ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
                 {
-                    mProfilePassword = CryptoUtility.Decrypt(mAccountProfile.Password, SecurityEntityUtility.CurrentProfile().EncryptionType);
-                }
-                catch (CryptoUtilityException)
-                {
-                    mProfilePassword = mAccountProfile.Password;
-                }
-                if (password == mProfilePassword && account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant() && !this.m_InvalidStatus.Contains(mAccountProfile.Status))
-                {
-                    mAuthenticated = true;
-                    mAccountProfile.FailedAttempts = 0;
-                    mAccountProfile.LastLogOn = DateTime.Now;
-                    var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
-                    var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-                    var claims = new List<Claim>
+                    // proprietary authentication
+                    string mProfilePassword = string.Empty;
+                    CryptoUtility.TryDecrypt(mAccountProfile.Password, out mProfilePassword, ConfigSettings.EncryptionType);
+                    mAuthenticated = password == mProfilePassword;
+                    if(mAuthenticated)
                     {
-                        new Claim("account", mAccountProfile.Account), 
-                        // new Claim(ClaimTypes.Role, "Manager") 
-                    };
-
-                    var tokeOptions = new JwtSecurityToken(
-                        issuer: "https://localhost:5001",
-                        audience: "https://localhost:5001",
-                        claims: claims,
-                        expires: DateTime.Now.AddMinutes(5),
-                        signingCredentials: signingCredentials
-                    );
-                    mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-
-                    var mJwtToken = generateJwtToken(mAccountProfile);
-                    var mRefreshToken = generateRefreshToken(ipAddress);
-                    mRefreshToken.AccountSeqId = mAccountProfile.Id;
-                    mAccountProfile.Token = mJwtToken;
-                    mAccountProfile.RefreshTokens.Add(mRefreshToken);
-
-                }
-                if (mAuthenticated)
-                {
-                    this.Save(mAccountProfile, true, false, false);
+                        mAuthenticated = mAccountProfile.FailedAttempts < 4 && mAccountProfile.Status != (int)SystemStatus.Disabled;
+                    }
                 }
                 else
                 {
-                    mAccountProfile.FailedAttempts += 1;
-                    mAccountProfile = GetAccount(this.s_AnonymousAccount);
-                    if (mAccountProfile.FailedAttempts == ConfigSettings.FailedAttempts && ConfigSettings.FailedAttempts != -1)
-                    {
-                        mAccountProfile.Status = Convert.ToInt32(SystemStatus.Disabled, CultureInfo.InvariantCulture);
-                    }
+                    // TODO: LDAP authentication
                 }
-                // mAccountProfile.PasswordLastSet = new DateTime(1941, 12, 7, 12, 0, 0);
-                mAccountProfile.PasswordLastSet = DateTime.Now;
-                mAccountProfile.Password = "";
             }
         }
+        if(mAuthenticated)
+        {
+            // setup tokens, claims and what not
+            mAccountProfile = setTokens(mAccountProfile, ipAddress);
+            mAccountProfile.FailedAttempts = 0;
+            if(!mIsAnonymous) { mAccountProfile.LastLogOn = DateTime.Now; }
+            this.Save(mAccountProfile, true, false, false);
+            mAccountProfile.Password = ""; // Don't want to ever send the password out
+        }
+        else
+        {
+            // return null
+            mAccountProfile.FailedAttempts += 1;
+            if(mAccountProfile.FailedAttempts > 3 && mAccountProfile.Status != (int)SystemStatus.Disabled)
+            {
+                mAccountProfile.Status = (int)SystemStatus.Disabled;
+            }
+            this.Save(mAccountProfile, true, false, false);
+            mAccountProfile = null;
+        }
+        return mAccountProfile;
+    }
+
+    private MAccountProfile setTokens(MAccountProfile accountProfile, string ipAddress)
+    {
+        MAccountProfile mAccountProfile = accountProfile;
+        mAccountProfile.FailedAttempts = 0;
+        mAccountProfile.LastLogOn = DateTime.Now;
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
+        var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+            {
+                new Claim("account", mAccountProfile.Account), 
+                // new Claim(ClaimTypes.Role, "Manager") 
+            };
+
+        var tokeOptions = new JwtSecurityToken(
+            issuer: "https://localhost:5001",
+            audience: "https://localhost:5001",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(5),
+            signingCredentials: signingCredentials
+        );
+        mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+        var mJwtToken = generateJwtToken(mAccountProfile);
+        var mRefreshToken = generateRefreshToken(ipAddress);
+        mRefreshToken.AccountSeqId = mAccountProfile.Id;
+        mAccountProfile.Token = mJwtToken;
+        mAccountProfile.RefreshTokens.Add(mRefreshToken);
         return mAccountProfile;
     }
 
