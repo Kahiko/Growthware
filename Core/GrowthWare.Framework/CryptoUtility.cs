@@ -149,6 +149,8 @@ namespace GrowthWare.Framework
             setKeys = saltExpression;
             switch (encryptionType)
             {
+                case EncryptionType.Aes:
+                    return encryptAes(valueToEncrypt);
                 case EncryptionType.TripleDes:
                     return encryptTripleDES(valueToEncrypt);
                 case EncryptionType.Des:
@@ -215,6 +217,8 @@ namespace GrowthWare.Framework
             setKeys = saltExpression;
             switch (encryptionType)
             {
+                case EncryptionType.Aes:
+                    return decryptAes(valueToDecrypt);
                 case EncryptionType.TripleDes:
                     return decryptTripleDES(valueToDecrypt);
                 case EncryptionType.Des:
