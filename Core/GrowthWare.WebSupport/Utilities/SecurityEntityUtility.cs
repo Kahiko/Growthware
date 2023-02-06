@@ -116,8 +116,14 @@ public static class SecurityEntityUtility
     {
         if (m_SecurityEntities == null)
         {
+            m_SecurityEntities = new Collection<MSecurityEntity>();
             BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
-            m_SecurityEntities = mBSecurityEntities.SecurityEntities();
+            foreach (MSecurityEntity mSecurityEntity in mBSecurityEntities.SecurityEntities())
+            {
+                mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
+                m_SecurityEntities.Add(mSecurityEntity);
+            }
+            // m_SecurityEntities = mBSecurityEntities.SecurityEntities();
         }
         return m_SecurityEntities;
     }
