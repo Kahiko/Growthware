@@ -46,7 +46,7 @@ public class AccountService : IAccountService
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mRequestedAccount = account;  // It's good practice to leave parameters unchanged.
-        bool mAuthenticated = true;
+        bool mAuthenticated = false;
         bool mIsAnonymous = false;
         bool mIsDomainAccount = false;
         int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
