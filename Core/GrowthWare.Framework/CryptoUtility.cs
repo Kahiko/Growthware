@@ -167,6 +167,7 @@ namespace GrowthWare.Framework
             try
             {
                 mOutValue = Decrypt(valueToDecrypt, encryptionType);
+                mRetVal = true;
             }
             catch (System.Exception)
             {
