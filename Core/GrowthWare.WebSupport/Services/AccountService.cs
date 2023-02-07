@@ -146,11 +146,7 @@ public class AccountService : IAccountService
         MAccountProfile mAccountProfile = (MAccountProfile)m_HttpContextAccessor.HttpContext.Items["AccountProfile"];
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         string mCurrentPassword = "";
-        try
-        {
-            mCurrentPassword = CryptoUtility.Decrypt(mAccountProfile.Password, mSecurityEntity.EncryptionType);
-        }
-        catch (System.Exception)
+        if(!CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType))
         {
             mCurrentPassword = mAccountProfile.Password;
         }
