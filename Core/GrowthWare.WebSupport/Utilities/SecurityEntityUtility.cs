@@ -44,6 +44,7 @@ public static class SecurityEntityUtility
             DataAccessLayer = ConfigSettings.DataAccessLayer,
             DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName,
             DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace,
+            EncryptionType = ConfigSettings.EncryptionType,
             Id = ConfigSettings.DefaultSecurityEntityID
         };
     }

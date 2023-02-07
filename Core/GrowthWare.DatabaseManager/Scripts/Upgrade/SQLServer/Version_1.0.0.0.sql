@@ -62,7 +62,7 @@ SET @V_NO_UITrue = 1 -- True
 SET @V_NO_UIFalse = 0 -- True
 SET @V_PRIMARY_KEY = NULL -- Not needed when setup up the database
 SET @V_ErrorCode = NULL -- Not needed when setup up the database
-SET @V_ENCRYPTION_TYPE = 1 -- TripleDES
+SET @V_ENCRYPTION_TYPE = 3 -- Aes
 SET @V_ENABLE_INHERITANCE = 1 -- 0 = FALSE 1 = TRUE
 SET @V_Sort_Order = 0
 SET @V_META_KEY_WORDS = ''
