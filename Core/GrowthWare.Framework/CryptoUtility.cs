@@ -92,6 +92,14 @@ namespace GrowthWare.Framework
 #endregion
 
 #region Public Methods
+
+        /// <summary>
+        /// Attempts to encrypt the valueToEncrypt. A return value indicates whether the encryption succeeded.
+        /// </summary>
+        /// <param name="valueToEncrypt"></param>
+        /// <param name="value"></param>
+        /// <param name="encryptionType"></param>
+        /// <returns></returns>
         public static bool TryEncrypt(string valueToEncrypt, out string value, EncryptionType encryptionType)
         {
             bool mRetVal = false;
@@ -120,6 +128,15 @@ namespace GrowthWare.Framework
             return Encrypt(valueToEncrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
         }
 
+        /// <summary>
+        /// Attempts to encrypt the valueToEncrypt. A return value indicates whether the encryption succeeded.
+        /// </summary>
+        /// <param name="valueToEncrypt"></param>
+        /// <param name="value"></param>
+        /// <param name="encryptionType"></param>
+        /// <param name="saltExpression"></param>
+        /// <returns></returns>
+        /// <remarks>value is either the encrypted value or the unchanged value of valueToEncrypt</remarks>
         public static bool TryEncrypt(string valueToEncrypt, out string value, EncryptionType encryptionType, string saltExpression)
         {
             bool mRetVal = false;
@@ -161,6 +178,14 @@ namespace GrowthWare.Framework
             }
         }
 
+        /// <summary>
+        /// Attempts to decrypt the valueToDecrypt. A return value indicates whether the decryption succeeded.
+        /// </summary>
+        /// <param name="valueToDecrypt"></param>
+        /// <param name="value"></param>
+        /// <param name="encryptionType"></param>
+        /// <returns></returns>
+        /// <remarks>value is either the decrypted value or the unchanged value of valueToDecrypt</remarks>
         public static bool TryDecrypt(string valueToDecrypt, out string value, EncryptionType encryptionType)
         {
             bool mRetVal = false;
@@ -190,6 +215,15 @@ namespace GrowthWare.Framework
             return Decrypt(valueToDecrypt, encryptionType, ConfigSettings.EncryptionSaltExpression);
         }
 
+        /// <summary>
+        /// Attempts to decrypt the valueToDecrypt. A return value indicates whether the decryption succeeded.
+        /// </summary>
+        /// <param name="valueToDecrypt"></param>
+        /// <param name="value"></param>
+        /// <param name="encryptionType"></param>
+        /// <param name="saltExpression"></param>
+        /// <returns></returns>
+        /// <remarks>value is either the decrypted value or the unchanged value of valueToDecrypt</remarks>
         public static bool TryDecrypt(string valueToDecrypt, out string value, EncryptionType encryptionType, string saltExpression)
         {
             bool mRetVal = false;
