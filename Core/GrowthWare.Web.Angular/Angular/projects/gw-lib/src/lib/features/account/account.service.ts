@@ -26,6 +26,7 @@ export class AccountService {
   private _Api_GetLinks: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
+  private _Api_SaveAccount: string = '';
   private _BaseURL: string = '';
   private _CurrentAccount: string = '';
   private _DefaultAccount: string = 'Anonymous'
@@ -88,6 +89,7 @@ export class AccountService {
     this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
+    this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
   }
 
   public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
@@ -210,6 +212,22 @@ export class AccountService {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
       },
       // complete: () => {}
+    });
+  }
+
+  async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
+    // const mQueryParameter: HttpParams = new HttpParams().append('accountProfile', accountProfile);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
+        next: (response: any) => {}
+        , error: (error: any) => {}
+        //, complete: () => {}
+      });
     });
   }
 

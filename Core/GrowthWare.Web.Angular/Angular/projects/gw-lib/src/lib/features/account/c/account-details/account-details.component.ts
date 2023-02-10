@@ -245,14 +245,14 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     this._AccountSvc.reason = '';
   }
 
-  get getControls() {
+  get controls() {
     return this.frmAccount.controls;
   }
 
   getErrorMessage(fieldName: string) {
     switch (fieldName) {
       case 'account':
-        if (this.getControls['account'].hasError('required')) {
+        if (this.controls['account'].hasError('required')) {
           return 'Required';
         }
         break;
@@ -274,10 +274,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   onSubmit(form: FormGroup): void {
     console.log('Valid?', form.valid); // true or false
     if(form.valid) {
-      this._AccountProfile.account = form.value.account;
+      this.populateProfile();
       console.log('AccountProfile', this._AccountProfile);
-      this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-      this.closeModal();
+      this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
+        this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+        this.closeModal();
+      });
     }
   }
 
@@ -294,6 +296,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         firstName: [this._AccountProfile.firstName],
         isSystemAdmin: [this._AccountProfile.isSystemAdmin],
         lastName: [this._AccountProfile.lastName],
+        location: [this._AccountProfile.location],
         middleName: [this._AccountProfile.middleName],
         preferredName: [this._AccountProfile.preferredName],
         statusSeqId: [this._AccountProfile.status],
@@ -309,11 +312,28 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         firstName: [''],
         isSystemAdmin: [false],
         lastName: [''],
+        location: [''],
         middleName: [''],
         preferredName: [''],
         statusSeqId: [1],
         timeZone: [-10],
       });
     }
+  }
+
+  private populateProfile(): void {
+    this._AccountProfile.account = this.controls['account'].getRawValue();
+    // this._AccountProfile.assignedRoles = '';
+    this._AccountProfile.email = this.controls['email'].getRawValue();
+    this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
+    this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
+    this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
+    // this._AccountProfile.groups = '';
+    this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
+    this._AccountProfile.location = this.controls['location'].getRawValue();
+    this._AccountProfile.middleName = this.controls['middleName'].getRawValue();
+    this._AccountProfile.preferredName = this.controls['preferredName'].getRawValue();
+    this._AccountProfile.status = this.selectedStatus;
+    this._AccountProfile.timeZone = this.selectedTimeZone;
   }
 }

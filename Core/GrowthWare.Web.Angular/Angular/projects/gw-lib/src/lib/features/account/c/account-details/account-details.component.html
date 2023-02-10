@@ -9,7 +9,7 @@
                 <div class="table" style="width: 100%;">
                   <div class="tr"><!--Account/Status-->
                     <div class="td left">
-                      <span class="Form_LabelText">Account: </span><mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+                      <span class="Form_LabelText">Account: </span><mat-error *ngIf="controls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="account" class="Form_Field rounded">
@@ -42,13 +42,13 @@
                   </div>
                   <div class="tr"><!--FirstName/LastName-->
                     <div class="td left">
-                      <span class="Form_LabelText">First Name: </span><mat-error *ngIf="getControls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
+                      <span class="Form_LabelText">First Name: </span><mat-error *ngIf="controls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="firstName" class="Form_Field rounded">
                     </div>
                     <div class="td left">
-                      <span class="Form_LabelText">Last Name: </span><mat-error *ngIf="getControls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
+                      <span class="Form_LabelText">Last Name: </span><mat-error *ngIf="controls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="lastName" class="Form_Field rounded">
@@ -56,13 +56,13 @@
                   </div>
                   <div class="tr"><!--MiddleName/blank-->
                     <div class="td left">
-                      <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="getControls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
+                      <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="controls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="middleName" class="Form_Field rounded">
                     </div>
                     <div class="td left">
-                      <span class="Form_LabelText">Preferred Name: </span><mat-error *ngIf="getControls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
+                      <span class="Form_LabelText">Preferred Name: </span><mat-error *ngIf="controls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="preferredName" class="Form_Field rounded">
@@ -70,7 +70,7 @@
                   </div>
                   <div class="tr"><!--EMail/Timezone-->
                     <div class="td left">
-                      <span class="Form_LabelText">Email: </span><mat-error *ngIf="getControls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
+                      <span class="Form_LabelText">Email: </span><mat-error *ngIf="controls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
                     </div>
                     <div class="td left">
                       <input matInput type="text" formControlName="email" class="Form_Field rounded">
@@ -117,7 +117,7 @@
                       <span class="Form_LabelText">Location: </span>
                     </div>
                     <div class="td left">
-                      <input id="txtLocation" maxlength="128" class="Form_Field rounded" />
+                      <input formControlName="location" id="txtLocation" maxlength="128" class="Form_Field rounded" />
                     </div>
                   </div>
                   <div class="tr">

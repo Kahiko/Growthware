@@ -255,12 +255,45 @@ public abstract class AbstractAccountController : ControllerBase
         }
     }
 
-    [HttpPost("Save")]
-    public ActionResult<bool> Save(UIAccountProfile uiAccountProfile)
+    [HttpPost("SaveAccount")]
+    public ActionResult<bool> SaveAccount(MAccountProfile accountProfile)
     {
         // requesting profile same as 
         bool mRetVal = false;
-
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        var mEditId =  HttpContext.Session.GetInt32("EditId");
+        if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
+        {
+            // we don't want to save the of the properties so we get the profile from the DB
+            MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true);
+            if(mExistingAccount == null) 
+            {
+                mExistingAccount = new MAccountProfile();
+                mExistingAccount.Password = ""; // should be auto generated and 
+            }
+            mExistingAccount.Account = accountProfile.Account;
+            // mAccountProfile.AssignedRoles = accountProfile.AssignedRoles;
+            mExistingAccount.Email = accountProfile.Email;
+            mExistingAccount.EnableNotifications = accountProfile.EnableNotifications;
+            mExistingAccount.FirstName = accountProfile.FirstName;
+            mExistingAccount.Groups = accountProfile.Groups;
+            mExistingAccount.Id = accountProfile.Id;
+            mExistingAccount.LastName = accountProfile.LastName;
+            mExistingAccount.Location = accountProfile.Location;
+            mExistingAccount.MiddleName = accountProfile.MiddleName;
+            mExistingAccount.Name = accountProfile.Account;
+            mExistingAccount.PreferredName = accountProfile.PreferredName;
+            mExistingAccount.Status = accountProfile.Status;
+            mExistingAccount.TimeZone = accountProfile.TimeZone;
+            mExistingAccount.UpdatedBy = mRequestingProfile.Id;
+            mExistingAccount.UpdatedDate = DateTime.Now;
+        }
+        else
+        {
+            this.m_Logger.Error(mRequestingProfile.Account + " does not have permissions to 'SaveAccount'");
+        }
         return Ok(mRetVal);
     }
 
