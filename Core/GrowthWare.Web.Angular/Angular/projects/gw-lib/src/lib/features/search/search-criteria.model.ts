@@ -18,6 +18,16 @@ export class SearchCriteria implements ISearchCriteria {
   ) {}
 }
 
+export interface ISearchCriteriaNVP extends INameValuePare {
+  name: string,
+  payLoad: ISearchCriteria
+}
+
+export class SearchCriteriaNVP implements ISearchCriteriaNVP {
+
+  constructor(public name: string, public payLoad: ISearchCriteria) {}
+}
+
 
 export interface ISearchResultsNVP extends INameValuePare {
   name: string,
@@ -26,11 +36,6 @@ export interface ISearchResultsNVP extends INameValuePare {
     totalRecords: number,
     searchCriteria: ISearchCriteria,
   }
-}
-
-export class SearchCriteriaNVP implements INameValuePare {
-
-  constructor(public name: string, public payLoad: ISearchCriteria) {}
 }
 
 export class SearchResultsNVP implements ISearchResultsNVP {

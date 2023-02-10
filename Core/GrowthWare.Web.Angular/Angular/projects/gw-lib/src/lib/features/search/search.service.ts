@@ -6,13 +6,14 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { IDynamicTableConfiguration } from '@Growthware/Lib/src/lib/models';
 import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 // This Feature
-import { SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from './search-criteria.model';
+import { SearchCriteria, ISearchCriteriaNVP, SearchCriteriaNVP, SearchResultsNVP } from './search-criteria.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
   private _BaseUrl: string = '';
+  private _SearchCriteria_NVP_Array: SearchCriteriaNVP[] = [];
 
   public searchCriteriaChanged = new Subject<SearchCriteriaNVP>();
 
@@ -92,6 +93,15 @@ export class SearchService {
     return mRetVal;
   }
 
+  public getSearchCriteria(name: string): null | SearchCriteria {
+    const index = this._SearchCriteria_NVP_Array.findIndex(searchCriteriaNVP=> searchCriteriaNVP.name === name);
+    let mRetVal = null;
+    if(index > -1) {
+      mRetVal = this._SearchCriteria_NVP_Array[index].payLoad;
+    }
+    return mRetVal;
+  }
+
   /**
    * Calls GrowthwareAPI.SearchAccounts
    *
@@ -118,6 +128,7 @@ export class SearchService {
 
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
     const mChangedCriteria = new SearchCriteriaNVP( name, searchCriteria );
+    this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria);
     this.searchCriteriaChanged.next(mChangedCriteria);
   }
 }

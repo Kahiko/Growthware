@@ -5,6 +5,7 @@ import { map, Observable, Subject } from 'rxjs';
 import { catchError, of } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { SearchService, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
 
@@ -81,7 +82,8 @@ export class AccountService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
-    private _Router: Router
+    private _Router: Router,
+    private _SearchSvc: SearchService
   ) {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
@@ -224,8 +226,17 @@ export class AccountService {
     };
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
-        next: (response: any) => {}
-        , error: (error: any) => {}
+        next: (response: any) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent line 25
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
+          }
+          resolve(response);
+        }
+        , error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'saveAccount');
+          reject(error);
+        }
         //, complete: () => {}
       });
     });

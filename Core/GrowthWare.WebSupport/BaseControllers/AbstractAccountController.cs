@@ -115,22 +115,17 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        HttpContext.Session.Remove("EditId");
+        MAccountProfile mAccountProfile = this.m_AccountService.GetAccount(account, true, false);
         if(mSecurityInfo.MayEdit)
         {
-            MAccountProfile mAccountProfile = this.getAccount(account);
             HttpContext.Session.SetInt32("EditId", mAccountProfile.Id);
-            return Ok(mAccountProfile);
-        }
-        else if(mSecurityInfo.MayView)
-        {
-            MAccountProfile mAccountProfile = this.getAccount(account);
-            HttpContext.Session.Remove("EditId");
-            return Ok(mAccountProfile);
         }
         else
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
+        return Ok(mAccountProfile);
     }
 
     [HttpGet("NewProfile")]
@@ -263,18 +258,21 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
+        MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
         var mEditId =  HttpContext.Session.GetInt32("EditId");
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
         {
-            // we don't want to save the of the properties so we get the profile from the DB
-            MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true);
+            // we don't want to save the of the properties from the UI so we get the profile from the DB
+            MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true, false);
             if(mExistingAccount == null) 
             {
                 mExistingAccount = new MAccountProfile();
+                mExistingAccount.Id = -1;
                 mExistingAccount.Password = ""; // should be auto generated and 
             }
             mExistingAccount.Account = accountProfile.Account;
-            // mAccountProfile.AssignedRoles = accountProfile.AssignedRoles;
+            mExistingAccount.AssignedRoles = accountProfile.AssignedRoles;
             mExistingAccount.Email = accountProfile.Email;
             mExistingAccount.EnableNotifications = accountProfile.EnableNotifications;
             mExistingAccount.FirstName = accountProfile.FirstName;
@@ -289,6 +287,8 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.TimeZone = accountProfile.TimeZone;
             mExistingAccount.UpdatedBy = mRequestingProfile.Id;
             mExistingAccount.UpdatedDate = DateTime.Now;
+            this.m_AccountService.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
+            mRetVal = true;
         }
         else
         {

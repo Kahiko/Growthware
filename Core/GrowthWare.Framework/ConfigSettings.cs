@@ -708,6 +708,26 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Version"); }
         }
 
+        public static string View_Account_Group_Tab
+        {
+             get { return GetAppSettingValue("Actions_View_Account_Group_Tab", true); }
+        }
+
+        public static string View_Account_Role_Tab
+        {
+             get { return GetAppSettingValue("Actions_View_Account_Role_Tab", true); }
+        }
+
+        public static string View_Function_Group_Tab
+        {
+             get { return GetAppSettingValue("Actions_View_Function_Group_Tab", true); }
+        }
+
+        public static string View_Function_Role_Tab
+        {
+             get { return GetAppSettingValue("Actions_View_Function_Role_Tab", true); }
+        }
+
         /// <summary>
         /// Returns Assembly from the web config and used to load the correct assembly name
         /// </summary>

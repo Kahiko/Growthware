@@ -275,7 +275,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     console.log('Valid?', form.valid); // true or false
     if(form.valid) {
       this.populateProfile();
-      console.log('AccountProfile', this._AccountProfile);
+      // console.log('AccountProfile', this._AccountProfile);
       this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
         this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
         this.closeModal();

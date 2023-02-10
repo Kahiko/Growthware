@@ -277,7 +277,7 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public MAccountProfile GetAccount(String account, bool forceDb = false)
+    public MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = true)
     {
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         MAccountProfile mRetVal = null;
@@ -293,10 +293,17 @@ public class AccountService : IAccountService
             if(forceDb) {
                 mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBAccount.GetProfile(account);
-                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null)
+                if(!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
-                    mJsonString = JsonSerializer.Serialize(mRetVal);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
+                    if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && updateSession)
+                    {
+                        mJsonString = JsonSerializer.Serialize(mRetVal);
+                        m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
+                    }
+                }
+                else
+                {
+                    mRetVal = null;
                 }
             }
             else
@@ -321,6 +328,7 @@ public class AccountService : IAccountService
                     // there is no session so you have to get from the DB and since there is no session no need to attempt to add it to session
                     mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                     mRetVal = mBAccount.GetProfile(account);
+                    if(String.IsNullOrWhiteSpace(mRetVal.Account)) mRetVal = null;
                 }
             }
         }
