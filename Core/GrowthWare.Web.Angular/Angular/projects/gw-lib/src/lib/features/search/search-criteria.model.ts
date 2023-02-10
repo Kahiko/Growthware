@@ -28,15 +28,6 @@ export interface ISearchResultsNVP extends INameValuePare {
   }
 }
 
-export interface ISearchResultsNVP extends INameValuePare {
-  name: string,
-  payLoad: {
-    data: Array<any>
-    totalRecords: number,
-    searchCriteria: ISearchCriteria,
-  }
-}
-
 export class SearchCriteriaNVP implements INameValuePare {
 
   constructor(public name: string, public payLoad: ISearchCriteria) {}
