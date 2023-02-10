@@ -272,7 +272,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   onSubmit(form: FormGroup): void {
-    console.log('Valid?', form.valid); // true or false
+    // console.log('Valid?', form.valid); // true or false
     if(form.valid) {
       this.populateProfile();
       // console.log('AccountProfile', this._AccountProfile);
