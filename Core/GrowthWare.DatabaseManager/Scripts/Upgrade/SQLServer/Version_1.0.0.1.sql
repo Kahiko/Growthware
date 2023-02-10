@@ -20,6 +20,9 @@ DECLARE @V_Action VARCHAR(256)          = ''
 	, @V_Resolve VARCHAR(MAX)			= NULL
 	, @V_Source VARCHAR(512)			= 'None'
     , @V_SystemID INT					= (SELECT AccountSeqId from ZGWSecurity.Accounts where Account = 'System')
+    , @V_Permission_Add INT				= (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Add')
+    , @V_Permission_Delete INT			= (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Delete')
+    , @V_Permission_Edit INT			= (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Edit')
     , @V_Permission_View INT			= (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View')
 
 -- Setup the values for the new/updated Function
@@ -32,7 +35,8 @@ SET @V_Notes = 'Used as a security holder to determine who can Save and Account 
 EXEC ZGWSecurity.Set_Function @V_FunctionID, @V_Name, @V_Description, @V_FunctionTypeSeqId, @V_Source, @V_Controller, @V_Resolve, @V_EnableViewStateFalse, @V_EnableNotificationsFalse, @V_Redirect_On_Timeout, @V_IsNavFalse, @V_LinkBehaviorInternal, @V_NO_UI, @V_NAV_TYPE, @V_Action, @V_META_KEY_WORDS, @V_ParentID, @V_Notes, @V_SystemID, @V_Debug;
 -- Set the Security for the new/updated Function
 SET @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where action=@V_Action)
-EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_Permission_View,@V_SystemID, @V_Debug
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Add, @V_SystemID, @V_Debug
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Edit, @V_SystemID, @V_Debug
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
