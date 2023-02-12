@@ -53,6 +53,8 @@ Application:
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend
 		ng generate component features/home/c/Home --module home --project gw-frontend
 
+		ng generate module features/fileManager --routing --project gw-frontend
+
 		ng generate module features/functions --routing --project gw-frontend
 		
 		ng generate module features/groups --routing --project gw-frontend
@@ -119,6 +121,16 @@ Library:
 
 		ng generate module features/PickList --project gw-lib
 		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
+
+		ng generate module features/fileManager --project gw-lib
+		ng generate component features/file-manager/c/fileList --module file-manager --style scss --project gw-lib
+		ng generate component features/file-manager/c/fileManager --module file-manager --style scss --project gw-lib
+		ng generate component features/file-manager/c/upload --module file-manager --style scss --project gw-lib
+		ng generate service features/file-manager/fileManager --project gw-lib
+
+		ng generate module features/sortBy --project gw-lib
+		ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib
+		ng generate service features/sort-by/sortBy --project gw-lib
 
 		ng generate module features/function --project gw-lib
 		ng generate interface features/function/functionProfile --type model --project gw-lib

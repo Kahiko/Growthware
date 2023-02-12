@@ -201,6 +201,9 @@ public abstract class AbstractAccountController : ControllerBase
             mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
             mAdminNavLink.Children.Add(mAdminChild);
 
+            mAdminChild = new MNavLink("folder_shared", "file-manager", "File Manager");
+            mAdminNavLink.Children.Add(mAdminChild);
+
             mRootNavLinks.Add(mAdminNavLink);
         } else 
         {

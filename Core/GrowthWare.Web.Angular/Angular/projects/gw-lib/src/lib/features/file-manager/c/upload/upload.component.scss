@@ -1,0 +1,45 @@
+button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  // background: blue;
+  // color: white;
+  border: none;
+  // border-radius: 5px;
+  // padding-right: 12px;
+  margin-left: 3px;
+}
+
+.fixedWidthParent {
+  max-width: 122px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.progressContainer {
+  position: relative;
+  display: flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.progressContainer__text {
+  color: white;
+  margin: 0;
+  padding: 0;
+  position: absolute;
+  z-index: 1;
+}
+
+.mat-progress-bar {
+  height: 1.5em;
+}
+
+.flexWidthChild {
+  height: 1.5rem;
+  left: calc(0vw);
+  margin-top: auto;
+  position: relative;
+  vertical-align: middle;
+  width: 100vw;
+}

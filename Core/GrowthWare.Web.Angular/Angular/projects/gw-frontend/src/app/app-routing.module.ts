@@ -5,6 +5,7 @@ import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
+  { path: 'file-manager', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'accounts', loadChildren: () => import('@Growthware/Lib/src/lib/features/account').then(m => m.AccountModule), canActivate: [AuthGuard]  },
   { path: 'search-functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule), canActivate: [AuthGuard]  },
   { path: 'manage-groups', loadChildren: () => import('./features/groups/groups.module').then(m => m.GroupsModule), canActivate: [AuthGuard]  },
