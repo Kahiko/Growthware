@@ -32,7 +32,7 @@ export class JwtInterceptor implements HttpInterceptor {
     ];
     const mUrlIndex = mApiUrls.findIndex(item => request.url.toLowerCase().startsWith(item.toLowerCase()));
     const mIsApiUrl = mUrlIndex > -1;
-    console.log(mIsApiUrl + ' - ' + request.url);
+    // console.log(mIsApiUrl + ' - ' + request.url);
     if (mIsLoggedIn && mIsApiUrl) {
       request = request.clone({
           setHeaders: { Authorization: `Bearer ${mAuthenticationResponse.jwtToken}` }
