@@ -19,10 +19,20 @@ export class JwtInterceptor implements HttpInterceptor {
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const mAuthenticationResponse = this._AccountSvc.authenticationResponse;
     const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.defaultAccount;
-    // Here is where you would alter the code if you have more than on API
-    const mRequestURL = this._GWCommon.baseURL + 'GrowthwareAPI';
-    const mIsApiUrl = request.url.startsWith(mRequestURL);
-    // console.log(mRequestURL);
+    // This will need to match any Api's you have in proxy.conf.js
+    const mBaseUrl = this._GWCommon.baseURL;
+    const mApiUrls = [
+      mBaseUrl + "GrowthwareAccount",
+      mBaseUrl + "GrowthwareAPI",
+      mBaseUrl + "GrowthwareFile",
+      mBaseUrl + "GrowthwareFunction",
+      mBaseUrl + "GrowthwareGroup",
+      mBaseUrl + "GrowthwareRole",
+      mBaseUrl + "swagger"
+    ];
+    const mUrlIndex = mApiUrls.findIndex(item => request.url.toLowerCase().startsWith(item.toLowerCase()));
+    const mIsApiUrl = mUrlIndex > -1;
+    console.log(mIsApiUrl + ' - ' + request.url);
     if (mIsLoggedIn && mIsApiUrl) {
       request = request.clone({
           setHeaders: { Authorization: `Bearer ${mAuthenticationResponse.jwtToken}` }
