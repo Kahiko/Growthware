@@ -1,13 +1,13 @@
 .mat-toolbar {
     block-size: fit-content;
     height: 2.5rem;
-    border: 1px solid lightgray;
+    border: 1px solid whitesmoke;
 }
 
 .container {
-    border-left: 1px solid lightgray;
-    border-right: 1px solid lightgray;
-    border-bottom: 1px solid lightgray;
+    border-left: 1px solid whitesmoke;
+    border-right: 1px solid whitesmoke;
+    border-bottom: 1px solid whitesmoke;
     margin-left: 0;
     width: calc(100% - 2px);
 }
@@ -17,8 +17,4 @@ button {
     flex-direction: row;
     align-items: center;
     border: none;
-}
-
-.iconButton {
-    margin-left: 3px;
 }

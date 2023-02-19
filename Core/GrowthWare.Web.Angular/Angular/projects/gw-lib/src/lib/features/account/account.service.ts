@@ -268,6 +268,7 @@ export class AccountService {
     .pipe(
       map((response) => {
         // this.accountSubject.next(account);
+        console.log('AuthenticationResponse', response);
         this._AuthenticationResponse = response;
         this._Account = response.account;
         this._CurrentAccount = this._Account;

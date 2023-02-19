@@ -20,7 +20,7 @@ using GrowthWare.WebSupport.Utilities;
 namespace GrowthWare.WebSupport.Services;
 public class AccountService : IAccountService
 {
-    private MAccountProfile m_CachedAnonymousAccount = null;
+    // private MAccountProfile m_CachedAnonymousAccount = null;
     private int[] m_InvalidStatus = {(int)SystemStatus.Disabled, (int)SystemStatus.Inactive};
     private string s_AnonymousAccount = "Anonymous";
 

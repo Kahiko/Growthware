@@ -1,0 +1,32 @@
+.example-tree-invisible {
+    display: none;
+}
+
+/*
+ * This padding sets alignment of the nested nodes.
+ */
+.example-tree .mat-nested-tree-node div[role=group] {
+    padding-left: 50px; /*Original value: 40*/
+}
+
+/*
+ * Padding for leaf nodes.
+ * Leaf nodes need to have padding so as to align with other non-leaf nodes
+ * under the same parent.
+ */
+.example-tree div[role=group]>.mat-tree-node {
+    padding-left: 50px; /*Original value: 40*/
+}
+
+.background-highlight {
+    background-color: rgb(198, 218, 238);
+}
+
+.mat-tree-node {
+    min-height: 1.6em !important;
+    height: 1.6em;
+}
+
+.mat-tree-node:hover {
+    background-color: rgb(222, 234, 247) !important;
+}

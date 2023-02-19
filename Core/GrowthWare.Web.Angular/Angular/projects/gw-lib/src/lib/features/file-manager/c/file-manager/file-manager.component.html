@@ -1,35 +1,37 @@
 <mat-toolbar>
-    <span>
-        <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
-            <span color="white" class="material-icons">add</span> 
-            <span>New Folder</span>
-        </button>        
-    </span>
-    <span>
-        <gw-lib-upload></gw-lib-upload>
-    </span>
-    <span>
-        <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
-            <span color="white" class="material-icons">refresh</span> 
-        </button>        
-    </span>
-    <span class="spacer"></span>
-    <span>
-        <button type="button" mat-button color="accent" id="btnView_" name="btnView_">
-            <span color="white" class="material-icons">grid_view</span> 
-        </button>
-    </span>
-    <span>
-        <button type="button" mat-button color="accent" id="btnInfo_" name="btnInfo_">
-            <span color="white" class="material-icons">info_outline</span> 
-        </button>
-    </span>
+  <span>
+    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
+      <span color="white" class="material-icons">add</span>
+      <span>New Folder</span>
+    </button>
+  </span>
+  <span>
+    <gw-lib-upload></gw-lib-upload>
+  </span>
+  <span>
+    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
+      <span color="white" class="material-icons">refresh</span>
+    </button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button type="button" mat-button color="accent" id="btnView_" name="btnView_">
+      <span color="white" class="material-icons">grid_view</span>
+    </button>
+  </span>
+  <span>
+    <button type="button" mat-button color="accent" id="btnInfo_" name="btnInfo_">
+      <span color="white" class="material-icons">info_outline</span>
+    </button>
+  </span>
 </mat-toolbar>
 <div class="table container">
-    <div class="tr">
-        <div class="td" style="border-right: 1px solid lightgray; width: 300px;">TreeView</div>
-        <div class="td">
-            <gw-lib-file-list></gw-lib-file-list>
-        </div>
+  <div class="tr">
+    <div class="td" style="border-right: 1px solid whitesmoke; width: 300px;">
+      <gw-lib-directory-tree></gw-lib-directory-tree>
     </div>
+    <div class="td" style="vertical-align: top;">
+      <gw-lib-file-list></gw-lib-file-list>
+    </div>
+  </div>
 </div>
