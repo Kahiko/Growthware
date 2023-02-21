@@ -1,6 +1,5 @@
 ﻿using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework;
-using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using System;
 using System.Collections.ObjectModel;
