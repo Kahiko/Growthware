@@ -6,6 +6,9 @@ import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 // Library Imports
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
+import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+
 // Interfaces/Models
 import { IDynamicTableColumn, IDynamicTableConfiguration, DynamicTableBtnMethods } from '@Growthware/Lib/src/lib/models';
 import { CallbackMethod } from '@Growthware/Lib/src/lib/models';
@@ -16,8 +19,6 @@ import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService, ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { ISearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableService } from '../dynamic-table.service';
-import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
-import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 
 @Component({

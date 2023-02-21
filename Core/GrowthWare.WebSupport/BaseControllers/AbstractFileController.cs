@@ -50,7 +50,7 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     [HttpGet("GetDirectories")]
-    public ActionResult<MDirectoryTree> GetDirectories(int functionSeqId)
+    public ActionResult<MDirectoryTree> GetDirectories(string action)
     {
         string mCurrentDirectory = Directory.GetCurrentDirectory();
         mCurrentDirectory = "D:\\Development\\Growthware\\Core\\GrowthWare.Web.Angular\\Angular\\projects\\gw-lib\\src\\lib\\features";
