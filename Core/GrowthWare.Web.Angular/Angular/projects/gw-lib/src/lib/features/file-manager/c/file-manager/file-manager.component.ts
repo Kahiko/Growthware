@@ -17,6 +17,7 @@ export class FileManagerComponent implements OnInit {
 
   @Input() configurationName: string = '';
   directoryConfigurationName: string = '';
+  fileConfigurationName: string = '';
 
   constructor(
     private _FileManagerSvc: FileManagerService,
@@ -31,6 +32,7 @@ export class FileManagerComponent implements OnInit {
     const mRouteOnly = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
     this.configurationName = mRouteOnly;
     this.directoryConfigurationName = this.configurationName + '_Directories';
+    this.fileConfigurationName = this.configurationName + '_Files';
     this._FileManagerSvc.getDirectories(mRouteOnly, this.directoryConfigurationName);
   }
 }
