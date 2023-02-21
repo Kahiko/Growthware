@@ -74,5 +74,9 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   selectDirectory(node: any): void {
     this.activeNode = node;
     // get the file data using this._FileManagerSvc
+    console.log('node', node);
+    console.log('configurationName', this.configurationName);
+    const mAction = this.configurationName.replace('_Directories', '');
+    this._FileManagerSvc.getFiles(mAction, mAction + '_Files', node.name);
   }
 }
