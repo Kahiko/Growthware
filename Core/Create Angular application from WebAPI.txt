@@ -90,7 +90,7 @@ The two configurations:
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net6.0/FromWebAPI.dll",
+            "program": "${workspaceFolder}/bin/Debug/net7.0/FromWebAPI.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
@@ -226,7 +226,7 @@ module.exports = PROXY_CONFIG;
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <IsPackable>false</IsPackable>
     <SpaRoot>Angular\</SpaRoot>
