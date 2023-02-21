@@ -1,19 +1,14 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.IO;
 using System.Text;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Jwt;
+using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport.BaseControllers;
 
-public class DirectoryInfoLight
-{
-    public string FullName { get; set; }
-    public bool HasChildren { get; set; }
-    public string Name { get; set; }
-    public string Parent { get; set; }
-}
 public class FileTreeManager
 {
     private DirectoryInfo mDirectoryInfo;
@@ -44,7 +39,7 @@ public abstract class AbstractFileController : ControllerBase
 {
     [Authorize("GetFiles")]
     [HttpGet("GetFiles")]
-    public ActionResult<DirectoryInfoLight[]> GetFiles()
+    public ActionResult<FileInfo[]> GetFiles()
     {
         return Ok();
     }
@@ -52,11 +47,17 @@ public abstract class AbstractFileController : ControllerBase
     [HttpGet("GetDirectories")]
     public ActionResult<MDirectoryTree> GetDirectories(string action)
     {
-        string mCurrentDirectory = Directory.GetCurrentDirectory();
-        mCurrentDirectory = "D:\\Development\\Growthware\\Core\\GrowthWare.Web.Angular\\Angular\\projects\\gw-lib\\src\\lib\\features";
-        // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
-        MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mCurrentDirectory));
-        string result =  mDirTree.ToJson();
-        return Ok(mDirTree);
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mSecurityInfo.MayView)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
+            MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mDirectoryProfile.Directory));
+            string result =  mDirTree.ToJson();
+            return Ok(mDirTree);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 }
