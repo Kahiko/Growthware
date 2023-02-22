@@ -1,4 +1,4 @@
-<ul class="grid-list" [ngStyle]="getTemplateColumnsStyle()">
+<ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
   <li *ngFor="let item of data | async; let rowIndex = index">
     {{ item.shortFileName }}
   </li>

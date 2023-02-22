@@ -1,5 +1,8 @@
-.grid-list {
-    list-style-type: none;
-    display: grid;
-    // grid-template-columns: repeat(4, 1fr);
-  }
+.grid-list__ul {
+  position: absolute;
+  left: 295px;
+  margin-top: 0;
+  list-style-type: none;
+  display: grid;
+  gap: .5rem;
+}
