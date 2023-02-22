@@ -50,6 +50,10 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
           this._DataSubject.next(data.payLoad);
+          const mAction = this.configurationName.replace('_Directories', '');
+          const mForControlName = mAction + '_Files';
+          this.activeNode = data.payLoad[0];
+          this._FileManagerSvc.getFiles(mAction, mForControlName, data.payLoad[0].name);
         }
       }));
     } else {

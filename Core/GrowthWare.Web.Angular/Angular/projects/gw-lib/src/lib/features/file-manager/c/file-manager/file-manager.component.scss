@@ -18,3 +18,14 @@ button {
     align-items: center;
     border: none;
 }
+
+.directories {
+    border-right: 1px solid whitesmoke; 
+    width: 300px; 
+    overflow-y: scroll;
+    overflow-x: auto;
+}
+
+.fileList {
+    vertical-align: top;
+}
