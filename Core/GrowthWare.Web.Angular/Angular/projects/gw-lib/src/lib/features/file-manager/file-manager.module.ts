@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
@@ -27,6 +28,7 @@ import { DirectoryTreeComponent } from './c/directory-tree/directory-tree.compon
     CommonModule,
     MatButtonModule,
     MatIconModule,
+    MatMenuModule,
     MatProgressBarModule,
     MatToolbarModule,
     MatTreeModule,

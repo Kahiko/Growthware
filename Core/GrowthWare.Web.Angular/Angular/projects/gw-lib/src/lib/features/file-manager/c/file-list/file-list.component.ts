@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
+import { MatMenuTrigger } from '@angular/material/menu';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
@@ -17,9 +18,14 @@ export class FileListComponent implements OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
   readonly data = this._DataSubject.asObservable();
+  // we create an object that contains coordinates 
+  menuTopLeftPosition =  {x: '0', y: '0'} 
 
   @Input() id: string = '';
   @Input() numberOfColumns: string = '4';
+
+  // reference to the MatMenuTrigger in the DOM 
+  @ViewChild( MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
 
   constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
 
@@ -47,5 +53,29 @@ export class FileListComponent implements OnInit {
     return obj;
   }
 
+  onPropertiesClick(item: any) {
+    const mm: string = '';
+  }
+
+  /**
+   * Method called when the user click with the right button
+   * @param event MouseEvent, it contains the coordinates
+   * @param item Our data contained in the row of the table
+   */
+  onRightClick(event: MouseEvent, item: any) {
+    // preventDefault avoids to show the visualization of the right-click menu of the browser
+    event.preventDefault();
+
+    // we record the mouse position in our object
+    this.menuTopLeftPosition.x = event.clientX.toString();
+    this.menuTopLeftPosition.y = event.clientY.toString();
+
+    // we open the menu
+    // we pass to the menu the information about our object
+    this.matMenuTrigger.menuData = {item: item}
+
+    // we open the menu
+    this.matMenuTrigger.openMenu();
+  }
 }
 

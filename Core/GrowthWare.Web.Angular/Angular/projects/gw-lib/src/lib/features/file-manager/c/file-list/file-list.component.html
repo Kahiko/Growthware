@@ -1,5 +1,21 @@
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
-  <li *ngFor="let item of data | async; let rowIndex = index">
+  <li *ngFor="let item of data | async; let rowIndex = index" (contextmenu)="onRightClick($event, { content: item })">
     {{ item.shortFileName }}
   </li>
 </ul>
+
+<!-- an hidden div is created to set the position of appearance of the menu-->
+<div 
+  style="visibility: hidden; position: fixed;"
+  [style.left.px]="menuTopLeftPosition.x"
+  [style.top.px]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="rightMenu">
+</div>
+
+<!-- standar material menu -->
+<mat-menu #rightMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button mat-menu-item>Rename</button>
+    <button mat-menu-item (click)="onPropertiesClick(item.content)">Properties</button>
+  </ng-template>
+</mat-menu>
