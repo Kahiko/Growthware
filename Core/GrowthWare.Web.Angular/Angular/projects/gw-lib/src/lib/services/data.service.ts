@@ -14,8 +14,8 @@ export class DataService {
 
   constructor(private _GWCommon: GWCommon) { }
 
-  public notifyDataChanged(name: string, data: Array<any>): void {
-    const mDataNVP: DataNVP = new DataNVP(name, data);
+  public notifyDataChanged(dataName: string, data: Array<any>): void {
+    const mDataNVP: DataNVP = new DataNVP(dataName, data);
     this.dataChanged.next(mDataNVP);
   }
 
