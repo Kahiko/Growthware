@@ -9,6 +9,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 // Library
 import { SortByModule } from '@Growthware/Lib/src/lib/features/sort-by';
+import { SnakeListModule } from '@Growthware/Lib/src/lib/features/snake-list';
 // Feature
 import { FileManagerComponent } from './c/file-manager/file-manager.component';
 import { UploadComponent } from './c/upload/upload.component';
@@ -30,7 +31,8 @@ import { DirectoryTreeComponent } from './c/directory-tree/directory-tree.compon
     MatToolbarModule,
     MatTreeModule,
     ScrollingModule,
-    SortByModule
+    SortByModule,
+    SnakeListModule
   ]
 })
 export class FileManagerModule { }

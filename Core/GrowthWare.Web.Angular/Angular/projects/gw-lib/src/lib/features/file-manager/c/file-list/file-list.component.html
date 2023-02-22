@@ -1,1 +1,3 @@
-<p>file-list works!</p>
+<ul class="grid-list">
+    <li *ngFor="let item of data | async; let rowIndex=index;">{{item.shortFileName}}</li>
+  </ul>

@@ -1,0 +1,45 @@
+using System;
+using System.IO;
+
+namespace GrowthWare.Framework.Models;
+
+public class FileInfoLight
+{
+    public DateTime CreationTime {get; set;}
+    public string Extension {get; set;}
+    public string FullName {get; set;}
+    public string Modified {get; set;}
+    public string Name {get; set;}
+    public string ShortFileName{get; set;}
+    public string Size {get; set;}
+
+    public FileInfoLight(FileInfo fileInfo)
+    {
+        string mFilename = fileInfo.Name;
+        const int mByteConversion = 1024;
+        double mBytes = Convert.ToDouble(fileInfo.Length);
+
+        this.CreationTime = fileInfo.CreationTime;
+        this.Extension = fileInfo.Extension;
+        this.FullName = Path.GetFileName(fileInfo.DirectoryName + Path.DirectorySeparatorChar.ToString() + mFilename);
+        this.Modified = File.GetLastWriteTime(fileInfo.Directory.FullName + Path.DirectorySeparatorChar.ToString() + fileInfo.Name).ToString();
+        this.Name = fileInfo.Name;
+        this.ShortFileName = mFilename.Remove(mFilename.Length - fileInfo.Extension.Length, fileInfo.Extension.Length);
+        if (mBytes >= Math.Pow(mByteConversion, 3)) //GB Range
+        {
+            this.Size = string.Concat(Math.Round(mBytes / Math.Pow(mByteConversion, 3), 2), " GB");
+        }
+        else if (mBytes >= Math.Pow(mByteConversion, 2)) //MB Range
+        {
+            this.Size = string.Concat(Math.Round(mBytes / Math.Pow(mByteConversion, 2), 2), " MB");
+        }
+        else if (mBytes >= mByteConversion) //KB Range
+        {
+            this.Size = string.Concat(Math.Round(mBytes / mByteConversion, 2), " KB");
+        }
+        else //Bytes
+        {
+            this.Size = string.Concat(mBytes, " Bytes");
+        }
+    }
+}

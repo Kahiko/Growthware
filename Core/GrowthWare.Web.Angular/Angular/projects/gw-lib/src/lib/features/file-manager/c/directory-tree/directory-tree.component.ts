@@ -24,6 +24,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
   @Input() configurationName: string = '';
+  @Input() filesConfigurationName: string = '';
 
   activeNode?: IDirectoryTree;
   treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
@@ -73,10 +74,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   selectDirectory(node: any): void {
     this.activeNode = node;
-    // get the file data using this._FileManagerSvc
-    console.log('node', node);
-    console.log('configurationName', this.configurationName);
     const mAction = this.configurationName.replace('_Directories', '');
-    this._FileManagerSvc.getFiles(mAction, mAction + '_Files', node.name);
+    const mForControlName = mAction + '_Files';
+    this._FileManagerSvc.getFiles(mAction, mForControlName, node.name);
   }
 }

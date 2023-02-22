@@ -6,11 +6,7 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 // Feature
 import { IDirectoryTree } from './directory-tree.model';
-
-export interface IFileInfoLight {
-  creationTime: string;
-  name: string;
-}
+import { IFileInfoLight } from './file-info-light.model';
 
 @Injectable({
   providedIn: 'root'
@@ -52,7 +48,7 @@ export class FileManagerService {
     });
   }
 
-  public getFiles(action: string, name: string, path: string) {
+  public getFiles(action: string, controlId: string, path: string) {
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
     mQueryParameter = mQueryParameter.append('path', path);
     const mHttpOptions = {
@@ -63,8 +59,7 @@ export class FileManagerService {
     };
     this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
       next: (response) => {
-        // console.log('response', response);
-        this._DataSvc.notifyDataChanged(name, response);
+        this._DataSvc.notifyDataChanged(controlId, response);
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');

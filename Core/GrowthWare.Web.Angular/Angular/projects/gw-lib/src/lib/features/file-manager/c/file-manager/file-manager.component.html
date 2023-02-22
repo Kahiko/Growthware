@@ -28,10 +28,11 @@
 <div class="table container">
   <div class="tr">
     <div class="td" style="border-right: 1px solid whitesmoke; width: 300px;">
-      <gw-lib-directory-tree configurationName="{{directoryConfigurationName}}"></gw-lib-directory-tree>
+      <gw-lib-directory-tree configurationName="{{directoryConfigurationName}}" filesConfigurationName="{{fileConfigurationName}}"></gw-lib-directory-tree>
     </div>
     <div class="td" style="vertical-align: top;">
-      <gw-lib-file-list id="{{fileConfigurationName}}"></gw-lib-file-list>
+      <gw-lib-file-list id="{{fileConfigurationName}}" numberOfColumns="3"></gw-lib-file-list>
+      <!-- <gw-lib-snake-list id="{{fileConfigurationName}}"></gw-lib-snake-list> -->
     </div>
   </div>
 </div>

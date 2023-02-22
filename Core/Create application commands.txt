@@ -129,6 +129,7 @@ Library:
 		ng generate component features/file-manager/c/upload --module file-manager --style scss --project gw-lib
 		ng generate service features/file-manager/fileManager --project gw-lib
 		ng generate interface features/file-manager/directoryTree --type model --project gw-lib
+		ng generate interface features/file-manager/fileInfoLight --type model --project gw-lib
 
 		ng generate module features/sortBy --project gw-lib
 		ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib

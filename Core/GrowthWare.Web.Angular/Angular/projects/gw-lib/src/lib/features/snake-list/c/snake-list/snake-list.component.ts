@@ -31,7 +31,7 @@ export class SnakeListComponent implements OnDestroy, OnInit {
       this._LoggingSvc.toast('The is can not be blank!', 'Snake List Component', LogLevel.Error);
     } else {
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
-        if(data.name.toLowerCase() === this.id.toLowerCase()) {
+        if(data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
           this._DataSubject.next(data.payLoad);
         }
       }));

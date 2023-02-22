@@ -9,18 +9,6 @@ using GrowthWare.WebSupport.Utilities;
 
 namespace GrowthWare.WebSupport.BaseControllers;
 
-public class FileInfoLight
-{
-    public DateTime CreationTime {get; set;}
-    public string Name {get; set;}
-
-    public FileInfoLight(FileInfo fileInfo)
-    {
-        this.CreationTime = fileInfo.CreationTime;
-        this.Name = fileInfo.Name;
-    }
-}
-
 public class FileTreeManager
 {
     private DirectoryInfo mDirectoryInfo;

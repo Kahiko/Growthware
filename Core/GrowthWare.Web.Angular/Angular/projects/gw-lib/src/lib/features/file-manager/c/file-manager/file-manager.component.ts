@@ -29,7 +29,7 @@ export class FileManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mRouteOnly = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    const mRouteOnly: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
     this.configurationName = mRouteOnly;
     this.directoryConfigurationName = this.configurationName + '_Directories';
     this.fileConfigurationName = this.configurationName + '_Files';
