@@ -19,7 +19,7 @@ export class FileListComponent implements OnInit {
   readonly data = this._DataSubject.asObservable();
 
   @Input() id: string = '';
-  @Input() numberOfColumns: string = '';
+  @Input() numberOfColumns: string = '4';
 
   constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
 
@@ -38,6 +38,13 @@ export class FileListComponent implements OnInit {
         }
       }));
     }
+  }
+
+  getTemplateColumnsStyle(): Object {
+    let obj :Object;
+    obj = { 'grid-template-columns':'repeat('+Number(this.numberOfColumns)+', 1fr)'};
+    // console.log('obj', obj);
+    return obj;
   }
 
 }
