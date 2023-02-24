@@ -12,6 +12,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 // Interfaces/Models
 import { IDynamicTableColumn, IDynamicTableConfiguration, DynamicTableBtnMethods } from '@Growthware/Lib/src/lib/models';
 import { CallbackMethod } from '@Growthware/Lib/src/lib/models';
+import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 
 // Features (Components/Interfaces/Models/Services)
 import { PagerComponent } from '@Growthware/Lib/src/lib/features/pager';
@@ -19,7 +20,7 @@ import { DataService } from '@Growthware/Lib/src/lib/services';
 import { SearchService, ISearchResultsNVP, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { ISearchCriteria } from '@Growthware/Lib/src/lib/features/search';
 import { DynamicTableService } from '../dynamic-table.service';
-import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
+
 
 @Component({
   selector: 'gw-lib-dynamic-table',
