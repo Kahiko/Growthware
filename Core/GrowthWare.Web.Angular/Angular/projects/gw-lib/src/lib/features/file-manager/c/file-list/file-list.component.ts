@@ -1,11 +1,15 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { MatMenuTrigger } from '@angular/material/menu';
+import { TemplateRef } from '@angular/core';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
+import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
+// Feature
+import { IFileInfoLight } from '../../file-info-light.model';
 
 @Component({
   selector: 'gw-lib-file-list',
@@ -20,14 +24,22 @@ export class FileListComponent implements OnInit {
   readonly data = this._DataSubject.asObservable();
   // we create an object that contains coordinates 
   menuTopLeftPosition =  {x: '0', y: '0'} 
+  selectedFile!: IFileInfoLight;
 
   @Input() id: string = '';
   @Input() numberOfColumns: string = '4';
 
   // reference to the MatMenuTrigger in the DOM 
-  @ViewChild( MatMenuTrigger, {static: true}) matMenuTrigger!: MatMenuTrigger; 
+  @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
+  @ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!:TemplateRef<any>;
+  @ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<any>;
 
-  constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
+  constructor(
+    private _DataSvc: DataService,
+    private _GWCommon: GWCommon,
+    private _LoggingSvc: LoggingService,
+    private _ModalSvc: ModalService,
+  ) { }
 
   ngOnDestroy(): void {
     this._Subscriptions.unsubscribe();
@@ -53,8 +65,21 @@ export class FileListComponent implements OnInit {
     return obj;
   }
 
-  onPropertiesClick(item: any) {
-    const mm: string = '';
+  onRenameClick(item: IFileInfoLight) {
+    console.log('item', item);
+    this.selectedFile = item;
+    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(450, 600));
+    this._ModalSvc.open(mModalOptions);
+  }
+
+  onPropertiesClick(item: IFileInfoLight) {
+    this.selectedFile = item;
+    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onPropertiesClick', 'Properties', this._FileProperties, new WindowSize(80, 600));
+    mModalOptions.buttons.okButton.visible = true;
+    mModalOptions.buttons.okButton.callbackMethod = () => {
+      this._ModalSvc.close('FileListComponent.onPropertiesClick');
+    }
+    this._ModalSvc.open(mModalOptions);
   }
 
   /**
@@ -72,10 +97,10 @@ export class FileListComponent implements OnInit {
 
     // we open the menu
     // we pass to the menu the information about our object
-    this.matMenuTrigger.menuData = {item: item}
+    this._MatMenuTrigger.menuData = {item: item}
 
     // we open the menu
-    this.matMenuTrigger.openMenu();
+    this._MatMenuTrigger.openMenu();
   }
 }
 

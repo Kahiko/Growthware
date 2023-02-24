@@ -15,7 +15,46 @@
 <!-- standar material menu -->
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
-    <button mat-menu-item>Rename</button>
+    <button mat-menu-item (click)="onRenameClick(item.content)">Rename</button>
     <button mat-menu-item (click)="onPropertiesClick(item.content)">Properties</button>
   </ng-template>
 </mat-menu>
+
+<ng-template #renameFile>
+  
+</ng-template>
+
+<ng-template #fileProperties>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <div class="table Form_Table" style="margin: auto; width: 98%">
+        <div class="tr Form_LabelRow">
+          <div class="td right">
+            <span class="Form_LabelText">Name:</span>
+          </div>
+          <div class="td left">
+            <span class="Form_Field">{{selectedFile.name}}</span>
+          </div>
+          <div class="td right">
+            <span class="Form_LabelText">Size:</span>
+          </div>
+          <div class="td left">
+            <span class="Form_Field">{{selectedFile.size}}</span>
+          </div>
+        </div>
+        <div class="tr Form_LabelRow">
+          <div class="td right"><span class="Form_LabelText">Created:</span></div>
+          <div class="td left"><div class="td left"><span class="Form_Field">{{selectedFile.createdShort}}</span></div></div>
+          <div class="td right"><span class="Form_LabelText">Modified:</span></div>
+          <div class="td left"><span class="Form_Field">{{selectedFile.modifiedShort}}</span></div>
+        </div>
+        <div class="tr">
+          <div class="td right"></div>
+          <div class="td left"></div>
+          <div class="td right"></div>
+          <div class="td left"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
