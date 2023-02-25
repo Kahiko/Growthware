@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Utilities;
 
@@ -37,6 +39,8 @@ public class FileTreeManager
 [CLSCompliant(false)]
 public abstract class AbstractFileController : ControllerBase
 {
+    string m_TempUploadDirectory = "tempUpload" + Path.DirectorySeparatorChar;
+
     // [Authorize("GetFiles")]
     // [HttpGet("GetFiles")]
     // public ActionResult<FileInfo[]> GetFiles()
@@ -71,14 +75,168 @@ public abstract class AbstractFileController : ControllerBase
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             DirectoryInfo mDirectoryInto = new DirectoryInfo(mDirectoryProfile.Directory);
-            FileInfo mm = new FileInfo("maba");
             List<FileInfoLight> mRetVal = new List<FileInfoLight>();
             foreach (FileInfo item in mDirectoryInto.GetFiles())
             {
                 mRetVal.Add(new FileInfoLight(item));
             }
-            // Console.WriteLine(mRetVal[0]);
             return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    private static void mergeFiles(string file1, string file2)
+    {
+        FileStream mFileStream1 = null;
+        FileStream mFileStream2 = null;
+        try
+        {
+            mFileStream1 = System.IO.File.Open(file1, FileMode.Append);
+            mFileStream2 = System.IO.File.Open(file2, FileMode.Open);
+            byte[] fs2Content = new byte[mFileStream2.Length];
+            mFileStream2.Read(fs2Content, 0, (int)mFileStream2.Length);
+            mFileStream1.Write(fs2Content, 0, (int)mFileStream2.Length);
+        }
+        catch (Exception ex)
+        {
+            // m_Logger.LogDB(ex.Message, LogPriority.Error, "AzFileControllerBase.mergeFiles");
+        }
+        finally
+        {
+            if (mFileStream1 != null) mFileStream1.Close();
+            if (mFileStream2 != null) mFileStream2.Close();
+            System.IO.File.Delete(file2);
+        }
+    }
+
+    [HttpPost("RenameFile")]
+    public ActionResult RenameFile(string action, string oldName, string newName)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
+        if(mSecurityInfo.MayEdit)
+        {
+            return Ok();
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [HttpPost("UploadFile")]
+    public async Task<IActionResult> UploadFile(string action, string currentPath)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
+        if(mSecurityInfo.MayAdd)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            if(mDirectoryProfile != null)
+            {
+                UploadResponse mRetVal = new UploadResponse();
+                mRetVal.IsSuccess = false;
+                try
+                {
+                    string mStartingDirectory = mDirectoryProfile.Directory;
+                    string mUploadDirectory = ""; // need to get from directory
+                    string mFullPath = string.Empty;
+                    DirectoryInfo mDirectoryInfo = null;
+                    if (currentPath.Contains(":"))
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
+                    }
+                    if(!mStartingDirectory.EndsWith(Path.DirectorySeparatorChar))
+                    {
+                        mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + currentPath;
+                    }
+                    else
+                    {
+                        mUploadDirectory = mStartingDirectory + currentPath;
+                    }
+                    if(!mUploadDirectory.EndsWith(Path.DirectorySeparatorChar)) mUploadDirectory += Path.DirectorySeparatorChar;
+                    if (!Directory.Exists(mUploadDirectory))
+                    {
+                        return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
+                    }
+                    if (Request.Form.Files.Count() > 0)
+                    {
+                        // do the upload
+                        IFormFile mFormFile = Request.Form.Files[0]; // we will only ever have one file
+                        if (mFormFile.FileName == "blob")
+                        {
+                            if (mFormFile.Name.EndsWith("_UploadNumber_1"))
+                            {
+                                mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                                mDirectoryInfo.Delete(true);
+                                mDirectoryInfo.Refresh();
+                                while (mDirectoryInfo.Exists)
+                                {
+                                    System.Threading.Thread.Sleep(100);
+                                    mDirectoryInfo.Refresh();
+                                }
+                                var t2 = Task.Run(() => mDirectoryInfo.Create());
+                                await Task.WhenAll(t2);
+                            }
+                            mFullPath = mUploadDirectory + mFormFile.Name;
+                            mRetVal.FileName = mFormFile.Name;
+                        }
+                        else
+                        {
+                            // this is a single file so no need to upload to the temp upload
+                            mUploadDirectory = mUploadDirectory.Replace(m_TempUploadDirectory, "");
+                            mFullPath = mUploadDirectory + mFormFile.FileName;
+                            mRetVal.FileName = mFormFile.FileName;
+                        }
+                        if (System.IO.File.Exists(mFullPath)) System.IO.File.Delete(mFullPath);
+                        using (var stream = new FileStream(mFullPath, FileMode.Create))
+                        {
+                            await mFormFile.CopyToAsync(stream);
+                        }
+                        mRetVal.Data = "Successfully uploaded";
+                        mRetVal.IsSuccess = true;
+                    }
+                    if (!String.IsNullOrWhiteSpace(Request.Form["completed"]) && Request.Form["completed"].ToString().ToLowerInvariant() == "true")
+                    {
+                        mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                        string mFileName = Request.Form["fileName"].ToString(); // Set in file-management.service.ts - upload
+
+                        // merge all of the together
+                        FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().OrderBy(x => x.Name).ToArray();
+                        if (mSortedFiles.Count() > 0)
+                        {
+                            // Determine the new file name using the first full name in the sorted files
+                            string mNewFileName = mSortedFiles[0].FullName.Replace(m_TempUploadDirectory, ""); // The original intended directory
+                            mNewFileName = mNewFileName.Replace("_UploadNumber_1", ""); // strip off the _UploadNumber_1
+                            if (System.IO.File.Exists(mNewFileName)) System.IO.File.Delete(mNewFileName);
+                            for (int i = 0; i < mSortedFiles.Count(); i++)
+                            {
+                                mergeFiles(mNewFileName, mSortedFiles[i].FullName);
+                            }
+                            mRetVal.Data = "Successfully uploaded";
+                            mRetVal.FileName = mNewFileName.Replace(mStartingDirectory + Path.DirectorySeparatorChar + currentPath, "");
+                            mRetVal.IsSuccess = true;
+                        }
+                        else
+                        {
+                            System.IO.File.Move(mFullPath, mFullPath.Replace(m_TempUploadDirectory, ""));
+                            mRetVal.Data = "Successfully uploaded";
+                            mRetVal.FileName = mFileName.Replace(mStartingDirectory, "");
+                            mRetVal.IsSuccess = true;
+                        }
+                    }
+                    mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + currentPath;
+                    mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                    if (mDirectoryInfo.GetFiles().Count() == 0)
+                    {
+                        mDirectoryInfo.Delete();
+                    }
+                }
+                catch (System.Exception ex)
+                {
+                    // m_Logger.LogDB(ex.Message, LogPriority.Error, "AzFileControllerBase.Upload");
+                }
+                return Ok(mRetVal);
+            }
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
