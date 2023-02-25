@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -26,12 +27,14 @@ import { DirectoryTreeComponent } from './c/directory-tree/directory-tree.compon
   ],
   imports: [
     CommonModule,
+    FormsModule,
     MatButtonModule,
     MatIconModule,
     MatMenuModule,
     MatProgressBarModule,
     MatToolbarModule,
     MatTreeModule,
+    ReactiveFormsModule,
     ScrollingModule,
     SortByModule,
     SnakeListModule

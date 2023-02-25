@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { TemplateRef } from '@angular/core';
@@ -22,6 +23,7 @@ export class FileListComponent implements OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
   readonly data = this._DataSubject.asObservable();
+  frmRenameFile!: FormGroup;
   // we create an object that contains coordinates 
   menuTopLeftPosition =  {x: '0', y: '0'} 
   selectedFile!: IFileInfoLight;
@@ -37,6 +39,7 @@ export class FileListComponent implements OnInit {
   constructor(
     private _DataSvc: DataService,
     private _GWCommon: GWCommon,
+    private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
   ) { }
@@ -47,6 +50,7 @@ export class FileListComponent implements OnInit {
 
   ngOnInit(): void {
     this.id = this.id.trim();
+    this.populateRenameFileForm();
     if(this._GWCommon.isNullOrUndefined(this.id)) {
       this._LoggingSvc.toast('The is can not be blank!', 'File List Component', LogLevel.Error);
     } else {
@@ -56,6 +60,23 @@ export class FileListComponent implements OnInit {
         }
       }));
     }
+  }
+
+  get getControls() {
+    return this.frmRenameFile.controls;
+  }
+
+  getErrorMessage(fieldName: string): string | undefined {
+    switch (fieldName) {
+      case 'newName':
+        if (this.getControls['newPassword'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      default:
+        break;
+    }
+    return undefined;
   }
 
   getTemplateColumnsStyle(): Object {
@@ -68,7 +89,7 @@ export class FileListComponent implements OnInit {
   onRenameClick(item: IFileInfoLight) {
     console.log('item', item);
     this.selectedFile = item;
-    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(450, 600));
+    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
@@ -80,6 +101,16 @@ export class FileListComponent implements OnInit {
       this._ModalSvc.close('FileListComponent.onPropertiesClick');
     }
     this._ModalSvc.open(mModalOptions);
+  }
+
+  onSubmit(form: FormGroup): void {
+
+  }
+
+  private populateRenameFileForm(): void {
+    this.frmRenameFile = this._FormBuilder.group({
+      newFileName: ['', [Validators.required]],
+    });
   }
 
   /**
