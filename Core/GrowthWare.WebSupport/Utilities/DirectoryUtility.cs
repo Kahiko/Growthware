@@ -43,6 +43,11 @@ public static class DirectoryUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Get the desired MDirectoryProfile given the functionSeqId
+    /// </summary>
+    /// <param name="functionSeqId">int</param>
+    /// <returns>A populated MDirectoryProfile or null</returns>
     public static MDirectoryProfile GetDirectoryProfile(int functionSeqId)
     {
             var mResult = from mProfile in Directories()
