@@ -23,6 +23,7 @@ export class FileManagerService {
   private _SelectedPath: string = '\\';
 
   uploadStatusChanged:  Subject<IUploadStatus> = new Subject<IUploadStatus>();
+
   get selectedPath(){
     return this._SelectedPath;
   };
