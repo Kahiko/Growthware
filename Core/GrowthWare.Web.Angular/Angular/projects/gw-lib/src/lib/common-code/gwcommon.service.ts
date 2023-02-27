@@ -222,6 +222,18 @@ export class GWCommon {
     }
     return 0;
   }
+
+  /**
+   * sleep for x number of milliseconds
+   *
+   * @param {number} ms
+   * @return {*}
+   * @memberof UtilityService
+   */
+  public async sleep(ms: number) {
+    await new Promise(resolve => setTimeout(()=>resolve(true), ms)).then(()=> {/* do nothing */});
+  }
+
   /**
    * @description sortData is a basic sort for an array.
    *
