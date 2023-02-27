@@ -173,6 +173,7 @@ public abstract class AbstractFileController : ControllerBase
                         IFormFile mFormFile = Request.Form.Files[0]; // we will only ever have one file
                         if (mFormFile.FileName == "blob")
                         {
+                            mUploadDirectory += this.m_TempUploadDirectory + Path.DirectorySeparatorChar;
                             if (mFormFile.Name.EndsWith("_UploadNumber_1"))
                             {
                                 mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
@@ -191,8 +192,6 @@ public abstract class AbstractFileController : ControllerBase
                         }
                         else
                         {
-                            // this is a single file so no need to upload to the temp upload
-                            mUploadDirectory = mUploadDirectory.Replace(m_TempUploadDirectory, "");
                             mFullPath = mUploadDirectory + mFormFile.FileName;
                             mRetVal.FileName = mFormFile.FileName;
                         }
@@ -220,6 +219,13 @@ public abstract class AbstractFileController : ControllerBase
                             {
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
+                            // delete the temp upload directory if no more files need to be merged
+                            mUploadDirectory = this.m_TempUploadDirectory + Path.DirectorySeparatorChar;
+                            mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                            if (mDirectoryInfo.GetFiles().Count() == 0)
+                            {
+                                mDirectoryInfo.Delete();
+                            }
                             mRetVal.Data = "Successfully uploaded";
                             mRetVal.FileName = mNewFileName.Replace(mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath, "");
                             mRetVal.IsSuccess = true;
@@ -231,12 +237,6 @@ public abstract class AbstractFileController : ControllerBase
                             mRetVal.FileName = mFileName.Replace(mStartingDirectory, "");
                             mRetVal.IsSuccess = true;
                         }
-                    }
-                    mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath;
-                    mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                    if (mDirectoryInfo.GetFiles().Count() == 0)
-                    {
-                        mDirectoryInfo.Delete();
                     }
                 }
                 catch (System.Exception ex)

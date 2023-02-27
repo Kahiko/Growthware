@@ -1,6 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
@@ -8,6 +8,7 @@ import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/loggi
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
+import { IUploadStatus } from '../../upload-status.model';
 
 @Component({
   selector: 'gw-lib-upload',
@@ -18,6 +19,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   private _NumberOfFilesCompleted: number = 0;  
   private _ProgressModalId: string = 'progressTemplate'
   private _TotalNumberOfFiles: number = 0;
+  private _Subscription: Subscription = new Subscription();
 
   isMultiple: boolean = true;
   fileProgressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
@@ -43,7 +45,24 @@ export class UploadComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this.id = this.id.trim();
     if(!this._GWCommon.isNullOrEmpty(this.id)) {
-
+      this._Subscription.add(this._FileManagerSvc.uploadStatusChanged.subscribe((data: IUploadStatus) => {
+        // TODO: the component will need to add the _Files to the name and not have
+        // the file-manager.component.ts do this
+        if (data.id.toLowerCase() + "_files" === this.id.toLowerCase()) {
+          const mPercent: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
+          this.fileProgressSubject.next(mPercent);
+          if(mPercent == 100) {
+            this._NumberOfFilesCompleted = this._NumberOfFilesCompleted + 1;
+            const mTotalPercent: number = Math.floor((this._NumberOfFilesCompleted / this._TotalNumberOfFiles) * 100);
+            this.overallProgressSubject.next(mTotalPercent);
+            if(mTotalPercent == 100) {
+              this._GWCommon.sleep(500).then(() => {
+                this.showFileProgress = false;
+              });
+            }
+          }
+        }
+      }));
     } else{
       const mLogDestinations: Array<LogDestination> = [];
       mLogDestinations.push(LogDestination.Console);
