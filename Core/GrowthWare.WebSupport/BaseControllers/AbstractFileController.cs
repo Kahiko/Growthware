@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.WebSupport.Utilities;
 
@@ -40,6 +41,7 @@ public class FileTreeManager
 public abstract class AbstractFileController : ControllerBase
 {
     string m_TempUploadDirectory = "tempUpload" + Path.DirectorySeparatorChar;
+    private static Logger m_Logger;
 
     // [Authorize("GetFiles")]
     // [HttpGet("GetFiles")]
@@ -99,7 +101,7 @@ public abstract class AbstractFileController : ControllerBase
         }
         catch (Exception ex)
         {
-            // m_Logger.LogDB(ex.Message, LogPriority.Error, "AzFileControllerBase.mergeFiles");
+            m_Logger.Error(ex.Message);
         }
         finally
         {
@@ -123,10 +125,12 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     [HttpPost("UploadFile")]
-    public async Task<IActionResult> UploadFile(string action, string currentPath)
+    public async Task<IActionResult> UploadFile()
     {
+        string mAction = Request.Form["action"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
+        string mSelectedPath = Request.Form["selectedPath"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
         if(mSecurityInfo.MayAdd)
         {
@@ -141,17 +145,22 @@ public abstract class AbstractFileController : ControllerBase
                     string mUploadDirectory = ""; // need to get from directory
                     string mFullPath = string.Empty;
                     DirectoryInfo mDirectoryInfo = null;
-                    if (currentPath.Contains(":"))
+                    if (mSelectedPath.Contains(":"))
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
                     }
                     if(!mStartingDirectory.EndsWith(Path.DirectorySeparatorChar))
                     {
-                        mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + currentPath;
+                        mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath;
                     }
                     else
                     {
-                        mUploadDirectory = mStartingDirectory + currentPath;
+                        mUploadDirectory = mStartingDirectory + mSelectedPath;
+                    }
+                    if(mUploadDirectory.Replace(mStartingDirectory, "") == Path.DirectorySeparatorChar + mSelectedPath)
+                    {
+                        int mLastIndex = mUploadDirectory.LastIndexOf(mSelectedPath);
+                        mUploadDirectory = mUploadDirectory.Substring(0,mLastIndex);
                     }
                     if(!mUploadDirectory.EndsWith(Path.DirectorySeparatorChar)) mUploadDirectory += Path.DirectorySeparatorChar;
                     if (!Directory.Exists(mUploadDirectory))
@@ -198,8 +207,7 @@ public abstract class AbstractFileController : ControllerBase
                     if (!String.IsNullOrWhiteSpace(Request.Form["completed"]) && Request.Form["completed"].ToString().ToLowerInvariant() == "true")
                     {
                         mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                        string mFileName = Request.Form["fileName"].ToString(); // Set in file-management.service.ts - upload
-
+                        string mFileName = Request.Form["fileName"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
                         // merge all of the together
                         FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().OrderBy(x => x.Name).ToArray();
                         if (mSortedFiles.Count() > 0)
@@ -213,7 +221,7 @@ public abstract class AbstractFileController : ControllerBase
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
                             mRetVal.Data = "Successfully uploaded";
-                            mRetVal.FileName = mNewFileName.Replace(mStartingDirectory + Path.DirectorySeparatorChar + currentPath, "");
+                            mRetVal.FileName = mNewFileName.Replace(mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath, "");
                             mRetVal.IsSuccess = true;
                         }
                         else
@@ -224,7 +232,7 @@ public abstract class AbstractFileController : ControllerBase
                             mRetVal.IsSuccess = true;
                         }
                     }
-                    mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + currentPath;
+                    mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath;
                     mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                     if (mDirectoryInfo.GetFiles().Count() == 0)
                     {
@@ -233,7 +241,7 @@ public abstract class AbstractFileController : ControllerBase
                 }
                 catch (System.Exception ex)
                 {
-                    // m_Logger.LogDB(ex.Message, LogPriority.Error, "AzFileControllerBase.Upload");
+                    m_Logger.Error(ex.Message);
                 }
                 return Ok(mRetVal);
             }

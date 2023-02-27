@@ -17,7 +17,7 @@ export class FileManagerComponent implements OnInit {
 
   @Input() configurationName: string = '';
   directoryConfigurationName: string = '';
-  fileConfigurationName: string = '';
+  fileConfigurationId: string = '';
 
   constructor(
     private _FileManagerSvc: FileManagerService,
@@ -29,10 +29,10 @@ export class FileManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mRouteOnly: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
-    this.configurationName = mRouteOnly;
+    const mAction: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.configurationName = mAction;
     this.directoryConfigurationName = this.configurationName + '_Directories';
-    this.fileConfigurationName = this.configurationName + '_Files';
-    this._FileManagerSvc.getDirectories(mRouteOnly, this.directoryConfigurationName);
+    this.fileConfigurationId = this.configurationName + '_Files';
+    this._FileManagerSvc.getDirectories(mAction, this.directoryConfigurationName);
   }
 }

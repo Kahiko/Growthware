@@ -5,3 +5,7 @@ export * from './directory-tree.model';
 export * from './file-info-light.model';
 export * from './file-manager.module';
 export * from './file-manager.service';
+export * from './file-upload-parameters.model';
+export * from './multi-part-file-upload-parameters.model';
+export * from './upload-response.model';
+export * from './upload-status.model';

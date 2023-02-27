@@ -45,7 +45,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.configurationName = this.configurationName.trim();
-    if(!this._GWCommon.isNullOrUndefined(this.configurationName)) {
+    if(!this._GWCommon.isNullOrEmpty(this.configurationName)) {
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
