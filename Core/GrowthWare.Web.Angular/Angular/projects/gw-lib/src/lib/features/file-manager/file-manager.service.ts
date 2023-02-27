@@ -39,7 +39,14 @@ export class FileManagerService {
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
-  public getDirectories(action: string, name: string): void {
+  /**
+   * @description Retrieves an array of IDirectoryTree for the gien path
+   *  
+   * @param {string} action Used to determine the directory and enforce security on the server
+   * @param {string} path The relative of the directory path 
+   * @memberof FileManagerService
+   */
+  public getDirectories(action: string, path: string): void {
     const mQueryParameter: HttpParams = new HttpParams().append('action', action);
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -51,7 +58,7 @@ export class FileManagerService {
       next: (response: IDirectoryTree) => {
         const mDirectoryTree = [];
         mDirectoryTree.push(response);
-        this._DataSvc.notifyDataChanged(name, mDirectoryTree);
+        this._DataSvc.notifyDataChanged(path, mDirectoryTree);
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
@@ -61,11 +68,11 @@ export class FileManagerService {
   }
 
   /**
+   * @description Retrives a array of IFileInfoLight for the given path
    *
-   *
-   * @param {string} action Used to determine the upload directory and enforce security on the server
-   * @param {string} controlId
-   * @param {string} path
+   * @param {string} action Used to determine the directory and enforce security on the server
+   * @param {string} controlId The id of the controler the files are for
+   * @param {string} path The relative of the directory path 
    * @memberof FileManagerService
    */
   public getFiles(action: string, controlId: string, path: string) {
@@ -92,8 +99,8 @@ export class FileManagerService {
   /**
    * @description Calculates the total number of chuncks needed to upload a large file
    *
-   * @param {number} fileSize
-   * @param {number} chunkSize
+   * @param {number} fileSize  The size of the file
+   * @param {number} chunkSize The size of the chunck that the server can accept
    * @return {*}  {number}
    * @memberof FileManagerService
    */
