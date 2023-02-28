@@ -177,12 +177,15 @@ public abstract class AbstractFileController : ControllerBase
                             if (mFormFile.Name.EndsWith("_UploadNumber_1"))
                             {
                                 mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                                mDirectoryInfo.Delete(true);
-                                mDirectoryInfo.Refresh();
-                                while (mDirectoryInfo.Exists)
+                                if(mDirectoryInfo.Exists)
                                 {
-                                    System.Threading.Thread.Sleep(100);
+                                    mDirectoryInfo.Delete(true);
                                     mDirectoryInfo.Refresh();
+                                    while (mDirectoryInfo.Exists)
+                                    {
+                                        System.Threading.Thread.Sleep(100);
+                                        mDirectoryInfo.Refresh();
+                                    }
                                 }
                                 var t2 = Task.Run(() => mDirectoryInfo.Create());
                                 await Task.WhenAll(t2);

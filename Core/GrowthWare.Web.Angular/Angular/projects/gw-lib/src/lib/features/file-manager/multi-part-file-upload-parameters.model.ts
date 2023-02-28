@@ -1,24 +1,24 @@
 import { IFileUploadParameters } from "./file-upload-parameters.model";
 
 export interface IMultiPartFileUploadParameters extends IFileUploadParameters {
-  endingByte: number;
-  id: string;
-  retryNumber: number;
-  startingByte: number;
+  action: string;
   totalNumberOfUploads: number;
   uploadNumber: number;
+  retryNumber: number;
+  startingByte: number;
+  endingByte: number;
 }
 
 export class MultiPartFileUploadParameters implements IMultiPartFileUploadParameters {
+  public endingByte: number = 0;
+  public retryNumber: number = 0;
+  public startingByte: number = 0;
+  public uploadNumber: number = 0;
+
   constructor(
-    public id: string,
+    public action: string,
     public file: File,
     public totalNumberOfUploads: number,
-    public uploadNumber: number = 0,
-    public retryNumber: number = 0,
-    public startingByte: number = 0,
-    public endingByte: number = 29000000,
-    public chunkSize: number = 29000000,
-    public selectedPath: string = ''
+    public chunkSize: number,
   ) {}
 }

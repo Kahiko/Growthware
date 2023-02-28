@@ -24,10 +24,6 @@ export class FileManagerService {
 
   uploadStatusChanged:  Subject<IUploadStatus> = new Subject<IUploadStatus>();
 
-  get selectedPath(){
-    return this._SelectedPath;
-  };
-
   constructor(
     private _DataSvc: DataService,
     private _GWCommon: GWCommon,
@@ -111,7 +107,39 @@ export class FileManagerService {
   }
 
   private multiPartFileUpload(parameters: IMultiPartFileUploadParameters) {
-
+    const mParams = {...parameters}; // it's good practice to leave parameter values unchanged
+    let mNextUploadNumber = mParams.uploadNumber + 1;
+    const mFileSize: number = mParams.file.size;
+    const mMultiUploadFileName = mParams.file.name + "_UploadNumber_" + mNextUploadNumber;
+    if(mParams.uploadNumber < mParams.totalNumberOfUploads) {
+      const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
+      const mFormData: FormData = new FormData();
+      mFormData.append('action', mParams.action);
+      mFormData.append('selectedPath', this._SelectedPath);      
+      mFormData.append(mMultiUploadFileName, mBlob);
+      const mUrl: string = this._Api_UploadFile;
+      this._HttpClient.post<IUploadResponse>(mUrl, mFormData).subscribe({
+        next: (response: IUploadResponse) => {
+          const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
+          mParams.uploadNumber = mNextUploadNumber;
+          mParams.startingByte = parameters.endingByte;
+          mParams.endingByte = parameters.endingByte + parameters.chunkSize
+          this.uploadStatusChanged.next(mUploadStatus);
+          this.multiPartFileUpload(mParams);
+        },
+        error: (error: any) => {
+          if(parameters.retryNumber < 4) {
+            mParams.retryNumber = mParams.retryNumber + 1;
+            this.multiPartFileUpload(mParams);
+          } else {
+            this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
+            const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mMultiUploadFileName, error, false, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
+            mParams.uploadNumber = mNextUploadNumber;
+          }
+        },
+        // complete: () => {}
+      });
+    };
   }
 
   private multiUploadComplete(fileName: string, uri: string): Observable<IUploadResponse> {
@@ -126,14 +154,13 @@ export class FileManagerService {
    *
    * @private
    * @param {File} file the HTML "file" object
-   * @param {string} selectedPath The selected path the file is bing uploaded to
    * @param {string} action Used to determine the upload directory and enforce security on the server
    * @memberof FileManagerService
    */
-  private singleFileUpload(file: File, selectedPath: string, action: string) {
+  private singleFileUpload(file: File, action: string) {
     const mFormData = new FormData();
     mFormData.append('action', action);
-    mFormData.append('selectedPath', selectedPath);
+    mFormData.append('selectedPath', this._SelectedPath);
     mFormData.append(file.name, file);
     mFormData.append('complete', 'true');
     this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
@@ -153,20 +180,23 @@ export class FileManagerService {
    * @description Uploads file by calling either multiPartFileUpload or singleFileUpload depending on the file size.
    *
    * @param {string} action Passed along to the API and used to enforce security on the server
-   * @param {string} selectedPath The currently selected path
    * @param {File} file An HTML "File" object
    * @param {number} [chunkSize=3072000] Used to break the "File" up if the file size is greater than the chunkSize.  The number is in direct relation to KestrelServerLimits.MaxRequestBodySize Property
    * @memberof FileManagerService
    */
-  uploadFile(action: string, selectedPath: string, file: File, chunkSize: number = 3072000)
+  uploadFile(action: string, file: File, chunkSize: number = 3072000)
   {
     const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, chunkSize);
     if (mTotalNumberOfUploads > 1) {
-      const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(action, file, mTotalNumberOfUploads);
-      mMultiPartFileUpload.selectedPath = selectedPath;
+      const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
+        action,
+        file,
+        mTotalNumberOfUploads,
+        chunkSize
+      )
       this.multiPartFileUpload(mMultiPartFileUpload);
     } else{
-      this.singleFileUpload(file, selectedPath, action);
+      this.singleFileUpload(file, action);
     }
   }
 }

@@ -93,12 +93,11 @@ export class UploadComponent implements OnDestroy, OnInit {
     this.showFileProgress = true;
     this.showOverallProgress = true;
     const mAction = this.id.replace('_Files', '');
-    const mSelectedPath = this._FileManagerSvc.selectedPath;
     // Loop through all of the selected files and upload them
     for (let index = 0; index < mFileList.length; index++) {
       const mFile = mFileList[index];
       this.currentFile = mFile.name;
-      this._FileManagerSvc.uploadFile(mAction, mSelectedPath, mFile);
+      this._FileManagerSvc.uploadFile(mAction, mFile);
     }
     // Clear the value so you can choose the same file(s) again
     event.target.value = '';
