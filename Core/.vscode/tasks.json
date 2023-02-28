@@ -38,6 +38,19 @@
             "problemMatcher": "$msCompile"
         },
         {
+            "label": "Angular-Web-Build-Watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "build",
+                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
             "label": "Web-Publish",
             "command": "dotnet",
             "type": "process",
