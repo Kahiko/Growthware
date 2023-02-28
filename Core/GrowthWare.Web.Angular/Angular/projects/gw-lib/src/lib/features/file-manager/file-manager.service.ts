@@ -43,8 +43,9 @@ export class FileManagerService {
    * @param {string} path The relative of the directory path 
    * @memberof FileManagerService
    */
-  public getDirectories(action: string, path: string): void {
-    const mQueryParameter: HttpParams = new HttpParams().append('action', action);
+  public getDirectories(action: string, path: string, forControl: string): void {
+    let mQueryParameter: HttpParams = new HttpParams().append('action', action);
+    mQueryParameter = mQueryParameter.append('selectedPath', path);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -55,7 +56,7 @@ export class FileManagerService {
       next: (response: IDirectoryTree) => {
         const mDirectoryTree = [];
         mDirectoryTree.push(response);
-        this._DataSvc.notifyDataChanged(path, mDirectoryTree);
+        this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
@@ -69,19 +70,19 @@ export class FileManagerService {
    *
    * @param {string} action Used to determine the directory and enforce security on the server
    * @param {string} controlId The id of the controler the files are for
-   * @param {string} path The relative of the directory path 
+   * @param {string} selectedPath The relative of the directory path 
    * @memberof FileManagerService
    */
-  public getFiles(action: string, controlId: string, path: string) {
+  public getFiles(action: string, controlId: string, selectedPath: string) {
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
-    mQueryParameter = mQueryParameter.append('path', path);
+    mQueryParameter = mQueryParameter.append('selectedPath', selectedPath);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       params: mQueryParameter,
     };
-    this._SelectedPath = path;
+    this._SelectedPath = selectedPath;
     this._HttpClient.get<IFileInfoLight[]>(this._Api_GetFiles, mHttpOptions).subscribe({
       next: (response) => {
         this._DataSvc.notifyDataChanged(controlId, response);
@@ -117,8 +118,7 @@ export class FileManagerService {
       mFormData.append('action', mParams.action);
       mFormData.append('selectedPath', this._SelectedPath);      
       mFormData.append(mMultiUploadFileName, mBlob);
-      const mUrl: string = this._Api_UploadFile;
-      this._HttpClient.post<IUploadResponse>(mUrl, mFormData).subscribe({
+      this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
         next: (response: IUploadResponse) => {
           const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
           mParams.uploadNumber = mNextUploadNumber;
@@ -140,10 +140,25 @@ export class FileManagerService {
         // complete: () => {}
       });
     };
+    if(mParams.uploadNumber == mParams.totalNumberOfUploads) {
+      this.multiUploadComplete(mParams.action, mParams.file.name, this._Api_UploadFile).subscribe({
+        next: (response: IUploadResponse) => {
+          const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
+          this.uploadStatusChanged.next(mUploadStatus);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
+          const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mParams.file.name, error, true, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
+          this.uploadStatusChanged.next(mUploadStatus);
+        },
+        // complete: () => {}
+      });
+    }
   }
 
-  private multiUploadComplete(fileName: string, uri: string): Observable<IUploadResponse> {
+  private multiUploadComplete(action: string, fileName: string, uri: string): Observable<IUploadResponse> {
     var mFormData = new FormData();
+    mFormData.append('action', action);
     mFormData.append('fileName', fileName);
     mFormData.append('completed', 'true');
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    

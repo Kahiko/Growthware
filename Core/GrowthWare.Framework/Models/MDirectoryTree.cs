@@ -12,8 +12,9 @@ public class MDirectoryTree
     public bool IsFolder { get; set; }
     public string Key { get; set; }
     public string Name { get; set; }
+    public string RelitivePath { get; set; }
 
-    public MDirectoryTree(DirectoryInfo directoryInfo)
+    public MDirectoryTree(DirectoryInfo directoryInfo, string rootPath)
     {
         // Set the properties
         Children = new List<MDirectoryTree>();
@@ -22,9 +23,10 @@ public class MDirectoryTree
         IsFolder = true;
         Key = directoryInfo.Name.Replace(" ", "").ToLower();
         Name = directoryInfo.Name;
+        RelitivePath = directoryInfo.FullName.Replace(rootPath, "");
         foreach (DirectoryInfo mDirectoryInfo in directoryInfo.GetDirectories())
         {
-            Children.Add(new MDirectoryTree(mDirectoryInfo));
+            Children.Add(new MDirectoryTree(mDirectoryInfo, rootPath));
         }
     }
 

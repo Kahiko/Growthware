@@ -1,8 +1,9 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { BehaviorSubject, Subscription } from 'rxjs';
-import { MatMenuTrigger } from '@angular/material/menu';
 import { TemplateRef } from '@angular/core';
+import { MatMenuTrigger } from '@angular/material/menu';
+import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
@@ -23,12 +24,12 @@ export class FileListComponent implements OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
   readonly data = this._DataSubject.asObservable();
+
+  id: string = '';
   frmRenameFile!: FormGroup;
-  // we create an object that contains coordinates 
-  menuTopLeftPosition =  {x: '0', y: '0'} 
+  menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates 
   selectedFile!: IFileInfoLight;
 
-  @Input() id: string = '';
   @Input() numberOfColumns: string = '4';
 
   // reference to the MatMenuTrigger in the DOM 
@@ -42,6 +43,7 @@ export class FileListComponent implements OnInit {
     private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+    private _Router: Router
   ) { }
 
   ngOnDestroy(): void {
@@ -49,7 +51,7 @@ export class FileListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this.id.trim();
+    this.id = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + "_Files";
     this.populateRenameFileForm();
     if(this._GWCommon.isNullOrUndefined(this.id)) {
       this._LoggingSvc.toast('The is can not be blank!', 'File List Component', LogLevel.Error);

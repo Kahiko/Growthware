@@ -41,7 +41,7 @@ public class FileTreeManager
 public abstract class AbstractFileController : ControllerBase
 {
     string m_TempUploadDirectory = "tempUpload" + Path.DirectorySeparatorChar;
-    private static Logger m_Logger;
+    private static Logger m_Logger = Logger.Instance();
 
     // [Authorize("GetFiles")]
     // [HttpGet("GetFiles")]
@@ -51,7 +51,7 @@ public abstract class AbstractFileController : ControllerBase
     // }
 
     [HttpGet("GetDirectories")]
-    public ActionResult<MDirectoryTree> GetDirectories(string action)
+    public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
@@ -60,7 +60,7 @@ public abstract class AbstractFileController : ControllerBase
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
-            MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mDirectoryProfile.Directory));
+            MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mDirectoryProfile.Directory), mDirectoryProfile.Directory);
             string result =  mDirTree.ToJson();
             return Ok(mDirTree);
         }
@@ -68,7 +68,7 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     [HttpGet("GetFiles")]
-    public ActionResult<List<FileInfoLight>> GetFiles(string action, string path)
+    public ActionResult<List<FileInfoLight>> GetFiles(string action, string selectedPath)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
@@ -76,15 +76,29 @@ public abstract class AbstractFileController : ControllerBase
         if(mSecurityInfo.MayView)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            DirectoryInfo mDirectoryInto = new DirectoryInfo(mDirectoryProfile.Directory);
+            string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+            DirectoryInfo mDirectoryInto = new DirectoryInfo(mPath);
             List<FileInfoLight> mRetVal = new List<FileInfoLight>();
-            foreach (FileInfo item in mDirectoryInto.GetFiles())
+            if(mDirectoryInto.GetFiles() != null)
             {
-                mRetVal.Add(new FileInfoLight(item));
+                foreach (FileInfo item in mDirectoryInto.GetFiles())
+                {
+                    mRetVal.Add(new FileInfoLight(item));
+                }
             }
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    private string calculatePath(string directory, string selectedPath)
+    {
+        string mRetVal = string.Empty;
+        if(selectedPath != null) { mRetVal = selectedPath; }
+        if(!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
+        mRetVal = directory + mRetVal;
+        if(mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
+        return mRetVal;
     }
 
     private static void mergeFiles(string file1, string file2)
@@ -142,38 +156,26 @@ public abstract class AbstractFileController : ControllerBase
                 try
                 {
                     string mStartingDirectory = mDirectoryProfile.Directory;
-                    string mUploadDirectory = ""; // need to get from directory
+                    string mUploadDirectory = "";
                     string mFullPath = string.Empty;
                     DirectoryInfo mDirectoryInfo = null;
                     if (mSelectedPath.Contains(":"))
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
                     }
-                    if(!mStartingDirectory.EndsWith(Path.DirectorySeparatorChar))
-                    {
-                        mUploadDirectory = mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath;
-                    }
-                    else
-                    {
-                        mUploadDirectory = mStartingDirectory + mSelectedPath;
-                    }
-                    if(mUploadDirectory.Replace(mStartingDirectory, "") == Path.DirectorySeparatorChar + mSelectedPath)
-                    {
-                        int mLastIndex = mUploadDirectory.LastIndexOf(mSelectedPath);
-                        mUploadDirectory = mUploadDirectory.Substring(0,mLastIndex);
-                    }
-                    if(!mUploadDirectory.EndsWith(Path.DirectorySeparatorChar)) mUploadDirectory += Path.DirectorySeparatorChar;
+                    mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
                     if (!Directory.Exists(mUploadDirectory))
                     {
                         return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
                     }
+                    mUploadDirectory += this.m_TempUploadDirectory;
                     if (Request.Form.Files.Count() > 0)
                     {
                         // do the upload
                         IFormFile mFormFile = Request.Form.Files[0]; // we will only ever have one file
+                        mRetVal.FileName = mFormFile.FileName;
                         if (mFormFile.FileName == "blob")
                         {
-                            mUploadDirectory += this.m_TempUploadDirectory + Path.DirectorySeparatorChar;
                             if (mFormFile.Name.EndsWith("_UploadNumber_1"))
                             {
                                 mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
@@ -187,16 +189,14 @@ public abstract class AbstractFileController : ControllerBase
                                         mDirectoryInfo.Refresh();
                                     }
                                 }
-                                var t2 = Task.Run(() => mDirectoryInfo.Create());
-                                await Task.WhenAll(t2);
+                                Task mCreateDirTask = Task.Run(() => mDirectoryInfo.Create());
+                                await Task.WhenAll(mCreateDirTask);
                             }
                             mFullPath = mUploadDirectory + mFormFile.Name;
-                            mRetVal.FileName = mFormFile.Name;
                         }
                         else
                         {
-                            mFullPath = mUploadDirectory + mFormFile.FileName;
-                            mRetVal.FileName = mFormFile.FileName;
+                            mFullPath = mUploadDirectory.Replace(this.m_TempUploadDirectory, "") + mFormFile.FileName;
                         }
                         if (System.IO.File.Exists(mFullPath)) System.IO.File.Delete(mFullPath);
                         using (var stream = new FileStream(mFullPath, FileMode.Create))
@@ -223,7 +223,6 @@ public abstract class AbstractFileController : ControllerBase
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
                             // delete the temp upload directory if no more files need to be merged
-                            mUploadDirectory = this.m_TempUploadDirectory + Path.DirectorySeparatorChar;
                             mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                             if (mDirectoryInfo.GetFiles().Count() == 0)
                             {
@@ -245,6 +244,7 @@ public abstract class AbstractFileController : ControllerBase
                 catch (System.Exception ex)
                 {
                     m_Logger.Error(ex.Message);
+                    return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile failed.");
                 }
                 return Ok(mRetVal);
             }

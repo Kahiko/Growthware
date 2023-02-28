@@ -1,5 +1,6 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
@@ -21,6 +22,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   private _TotalNumberOfFiles: number = 0;
   private _Subscription: Subscription = new Subscription();
 
+  id: string = '';
   isMultiple: boolean = true;
   fileProgressSubject: BehaviorSubject<number> = new BehaviorSubject<number>(0);
   currentFile: string = '';
@@ -28,27 +30,28 @@ export class UploadComponent implements OnDestroy, OnInit {
   showFileProgress: boolean = false;
   showOverallProgress: boolean = false;
 
-  @Input() id: string = '';
   @Input() multiple: string = 'false';
-  @ViewChild('progressTemplate', { read: TemplateRef }) progressTemplate!:TemplateRef<any>;
+  @ViewChild('progressTemplate', { read: TemplateRef }) private _ProgressTemplate!:TemplateRef<any>;
 
   constructor(
     private _FileManagerSvc: FileManagerService,
     private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService
+    private _ModalSvc: ModalService,
+    private _Router: Router
   ) { }
 
   ngOnDestroy(): void {
   }
 
   ngOnInit(): void {
-    this.id = this.id.trim();
+    this.id = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + "_Upload";
     if(!this._GWCommon.isNullOrEmpty(this.id)) {
       this._Subscription.add(this._FileManagerSvc.uploadStatusChanged.subscribe((data: IUploadStatus) => {
         // TODO: the component will need to add the _Files to the name and not have
         // the file-manager.component.ts do this
-        if (data.id.toLowerCase() + "_files" === this.id.toLowerCase()) {
+        // console.log('data', data);
+        if (data.id.toLowerCase() + "_upload" === this.id.toLowerCase()) {
           const mPercent: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
           this.fileProgressSubject.next(mPercent);
           if(mPercent == 100) {
@@ -58,6 +61,9 @@ export class UploadComponent implements OnDestroy, OnInit {
             if(mTotalPercent == 100) {
               this._GWCommon.sleep(500).then(() => {
                 this.showFileProgress = false;
+                this._GWCommon.sleep(3000).then(() => {
+                  this.onOk();
+                });
               });
             }
           }
@@ -84,7 +90,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   onFileSelected(event: any): void {  
     // const mFileList: FileList = {...event.target.files};
     const mFileList = event.target.files;
-    const mModalOptions: ModalOptions = new ModalOptions(this._ProgressModalId, 'Progress', this.progressTemplate, new WindowSize(150, 400));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ProgressModalId, 'Progress', this._ProgressTemplate, new WindowSize(150, 400));
     this._ModalSvc.open(mModalOptions);
     this._NumberOfFilesCompleted = 0;
     this._TotalNumberOfFiles = mFileList.length;
@@ -92,7 +98,7 @@ export class UploadComponent implements OnDestroy, OnInit {
     this.overallProgressSubject.next(0);
     this.showFileProgress = true;
     this.showOverallProgress = true;
-    const mAction = this.id.replace('_Files', '');
+    const mAction = this.id.replace('_Upload', '');
     // Loop through all of the selected files and upload them
     for (let index = 0; index < mFileList.length; index++) {
       const mFile = mFileList[index];
@@ -103,7 +109,7 @@ export class UploadComponent implements OnDestroy, OnInit {
     event.target.value = '';
   }
 
-  onProgresssDone(): void {
+  onOk(): void {
     this._ModalSvc.close(this._ProgressModalId);
   }
 }

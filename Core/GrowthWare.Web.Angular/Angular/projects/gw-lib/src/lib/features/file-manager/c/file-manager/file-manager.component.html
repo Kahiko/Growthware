@@ -6,7 +6,7 @@
     </button>
   </span>
   <span>
-    <gw-lib-upload id="{{fileConfigurationId}}"></gw-lib-upload>
+    <gw-lib-upload></gw-lib-upload>
   </span>
   <span>
     <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
@@ -28,10 +28,10 @@
 <div class="table container">
   <div class="tr">
     <div class="td directories">
-      <gw-lib-directory-tree configurationName="{{directoryConfigurationName}}" filesConfigurationName="{{fileConfigurationId}}"></gw-lib-directory-tree>
+      <gw-lib-directory-tree></gw-lib-directory-tree>
     </div>
     <div class="td fileList">
-      <gw-lib-file-list id="{{fileConfigurationId}}" numberOfColumns="5"></gw-lib-file-list>
+      <gw-lib-file-list numberOfColumns="5"></gw-lib-file-list>
     </div>
   </div>
 </div>
