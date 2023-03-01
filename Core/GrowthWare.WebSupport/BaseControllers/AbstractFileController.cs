@@ -174,7 +174,8 @@ public abstract class AbstractFileController : ControllerBase
                         using (var stream = new FileStream(mFullPath, FileMode.Create))
                         {
                             await mFormFile.CopyToAsync(stream);
-                        }                    
+                        }
+                        mRetVal.IsSuccess = true;
                         return Ok(mRetVal);
                     }
                     string mCompleted = Request.Form["completed"];
@@ -197,6 +198,9 @@ public abstract class AbstractFileController : ControllerBase
                             {
                                 mDirectoryInfo.Delete();
                             }
+                            mRetVal.FileName = mNewFileName.Replace(mDirectoryInfo.FullName.Replace(this.m_TempUploadDirectory, ""), "");
+                            mRetVal.IsSuccess = true;
+                            return Ok(mRetVal);                            
                         }
                     }
                     return StatusCode(StatusCodes.Status500InternalServerError, "No file found in Request.Form.Files.");
