@@ -22,6 +22,9 @@ export class FileManagerService {
   private _Api_UploadFile: string = '';
   private _SelectedPath: string = '\\';
 
+  public get SelectedPath(): string {
+    return this._SelectedPath;
+  };
   uploadStatusChanged:  Subject<IUploadStatus> = new Subject<IUploadStatus>();
 
   constructor(
