@@ -48,8 +48,6 @@ export class UploadComponent implements OnDestroy, OnInit {
     this.id = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + "_Upload";
     if(!this._GWCommon.isNullOrEmpty(this.id)) {
       this._Subscription.add(this._FileManagerSvc.uploadStatusChanged.subscribe((data: IUploadStatus) => {
-        // TODO: the component will need to add the _Files to the name and not have
-        // the file-manager.component.ts do this
         // console.log('data', data);
         if (data.id.toLowerCase() + "_upload" === this.id.toLowerCase()) {
           const mPercent: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
