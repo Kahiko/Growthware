@@ -193,6 +193,10 @@ public abstract class AbstractFileController : ControllerBase
                             {
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
+                            if(mDirectoryInfo.GetFiles().Count() == 0) 
+                            {
+                                mDirectoryInfo.Delete();
+                            }
                         }
                     }
                     return StatusCode(StatusCodes.Status500InternalServerError, "No file found in Request.Form.Files.");
