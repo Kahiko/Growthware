@@ -51,7 +51,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
-          console.log('data.payLoad', data.payLoad);
+          // console.log('data.payLoad', data.payLoad);
           this._DataSubject.next(data.payLoad);
           if(this.doGetFiles) {
             const mAction = this.configurationName.replace('_Directories', '');
