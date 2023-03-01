@@ -116,7 +116,8 @@ export class FileManagerService {
       const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
       const mFormData: FormData = new FormData();
       mFormData.append('action', mParams.action);
-      mFormData.append('selectedPath', this._SelectedPath);      
+      mFormData.append('selectedPath', this._SelectedPath);
+      mFormData.append('completed', 'false');
       mFormData.append(mMultiUploadFileName, mBlob);
       this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
         next: (response: IUploadResponse) => {
@@ -159,8 +160,9 @@ export class FileManagerService {
   private multiUploadComplete(action: string, fileName: string, uri: string): Observable<IUploadResponse> {
     var mFormData = new FormData();
     mFormData.append('action', action);
-    mFormData.append('fileName', fileName);
     mFormData.append('completed', 'true');
+    mFormData.append('fileName', fileName);
+    mFormData.append('selectedPath', this._SelectedPath);
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 

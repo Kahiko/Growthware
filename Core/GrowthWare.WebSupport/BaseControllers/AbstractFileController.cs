@@ -143,78 +143,49 @@ public abstract class AbstractFileController : ControllerBase
     {
         string mAction = Request.Form["action"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
         string mSelectedPath = Request.Form["selectedPath"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
-        if(mSecurityInfo.MayAdd)
+        if(string.IsNullOrEmpty(mAction)) { return StatusCode(StatusCodes.Status500InternalServerError, "Missing the 'action' property."); }
+        if (mSelectedPath.Contains(":"))
         {
-            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            if(mDirectoryProfile != null)
+            return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
+        }
+        try
+        {
+            MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
+            if(mSecurityInfo.MayAdd)
             {
-                UploadResponse mRetVal = new UploadResponse();
-                mRetVal.IsSuccess = false;
-                try
+                MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+                if(mDirectoryProfile != null)
                 {
-                    string mStartingDirectory = mDirectoryProfile.Directory;
-                    string mUploadDirectory = "";
-                    string mFullPath = string.Empty;
-                    DirectoryInfo mDirectoryInfo = null;
-                    if (mSelectedPath.Contains(":"))
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
-                    }
-                    mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
-                    if (!Directory.Exists(mUploadDirectory))
-                    {
-                        return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
-                    }
-                    mUploadDirectory += this.m_TempUploadDirectory;
+                    UploadResponse mRetVal = new UploadResponse();
+                    mRetVal.IsSuccess = false;
+                    string mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath) + Path.DirectorySeparatorChar + this.m_TempUploadDirectory;
+                    // create the upload directory if one doest exist
+                    DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                    if(!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
                     if (Request.Form.Files.Count() > 0)
                     {
-                        // do the upload
-                        IFormFile mFormFile = Request.Form.Files[0]; // we will only ever have one file
-                        mRetVal.FileName = mFormFile.FileName;
-                        if (mFormFile.FileName == "blob")
-                        {
-                            if (mFormFile.Name.EndsWith("_UploadNumber_1"))
-                            {
-                                mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                                if(mDirectoryInfo.Exists)
-                                {
-                                    mDirectoryInfo.Delete(true);
-                                    mDirectoryInfo.Refresh();
-                                    while (mDirectoryInfo.Exists)
-                                    {
-                                        System.Threading.Thread.Sleep(100);
-                                        mDirectoryInfo.Refresh();
-                                    }
-                                }
-                                Task mCreateDirTask = Task.Run(() => mDirectoryInfo.Create());
-                                await Task.WhenAll(mCreateDirTask);
-                            }
-                            mFullPath = mUploadDirectory + mFormFile.Name;
-                        }
-                        else
-                        {
-                            mFullPath = mUploadDirectory.Replace(this.m_TempUploadDirectory, "") + mFormFile.FileName;
-                        }
+                        // attempt the upload
+                        IFormFile mFormFile = Request.Form.Files[0]; // there should only ever be one
+                        mRetVal.FileName = mFormFile.Name;
+                        string mFullPath = mUploadDirectory + mRetVal.FileName;
                         if (System.IO.File.Exists(mFullPath)) System.IO.File.Delete(mFullPath);
                         using (var stream = new FileStream(mFullPath, FileMode.Create))
                         {
                             await mFormFile.CopyToAsync(stream);
-                        }
-                        mRetVal.Data = "Successfully uploaded";
-                        mRetVal.IsSuccess = true;
+                        }                    
+                        return Ok(mRetVal);
                     }
-                    if (!String.IsNullOrWhiteSpace(Request.Form["completed"]) && Request.Form["completed"].ToString().ToLowerInvariant() == "true")
+                    string mCompleted = Request.Form["completed"];
+                    if (!String.IsNullOrWhiteSpace(mCompleted) && mCompleted.ToLowerInvariant() == "true")
                     {
-                        mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                        string mFileName = Request.Form["fileName"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
-                        // merge all of the together
-                        FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().OrderBy(x => x.Name).ToArray();
-                        if (mSortedFiles.Count() > 0)
+                        // merge logic
+                        string mFileName = Request.Form["fileName"];
+                        // get file that start with the file name
+                        FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().Where(f => f.Name.StartsWith(mFileName)).OrderBy(x => x.Name).ToArray();
+                        if(mSortedFiles != null && mSortedFiles.Count() > 0)
                         {
-                            // Determine the new file name using the first full name in the sorted files
                             string mNewFileName = mSortedFiles[0].FullName.Replace(m_TempUploadDirectory, ""); // The original intended directory
                             mNewFileName = mNewFileName.Replace("_UploadNumber_1", ""); // strip off the _UploadNumber_1
                             if (System.IO.File.Exists(mNewFileName)) System.IO.File.Delete(mNewFileName);
@@ -222,33 +193,18 @@ public abstract class AbstractFileController : ControllerBase
                             {
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
-                            // delete the temp upload directory if no more files need to be merged
-                            mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
-                            if (mDirectoryInfo.GetFiles().Count() == 0)
-                            {
-                                mDirectoryInfo.Delete();
-                            }
-                            mRetVal.Data = "Successfully uploaded";
-                            mRetVal.FileName = mNewFileName.Replace(mStartingDirectory + Path.DirectorySeparatorChar + mSelectedPath, "");
-                            mRetVal.IsSuccess = true;
-                        }
-                        else
-                        {
-                            System.IO.File.Move(mFullPath, mFullPath.Replace(m_TempUploadDirectory, ""));
-                            mRetVal.Data = "Successfully uploaded";
-                            mRetVal.FileName = mFileName.Replace(mStartingDirectory, "");
-                            mRetVal.IsSuccess = true;
                         }
                     }
+                    return StatusCode(StatusCodes.Status500InternalServerError, "No file found in Request.Form.Files.");
                 }
-                catch (System.Exception ex)
-                {
-                    m_Logger.Error(ex.Message);
-                    return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile failed.");
-                }
-                return Ok(mRetVal);
+                return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
             }
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");            
         }
-        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        catch (System.Exception ex)
+        {
+            Logger.Instance().Fatal(ex);
+            return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile Failed.");
+        }
     }
 }
