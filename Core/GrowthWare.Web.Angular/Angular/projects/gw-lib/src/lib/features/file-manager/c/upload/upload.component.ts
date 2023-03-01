@@ -62,8 +62,10 @@ export class UploadComponent implements OnDestroy, OnInit {
               this._GWCommon.sleep(500).then(() => {
                 this.showFileProgress = false;
                 const mAction = this.id.replace('_Upload', '');
-                const mForControlName = mAction + "_Files";
+                let mForControlName = mAction + "_Files";
                 this._FileManagerSvc.getFiles(mAction, mForControlName, this._FileManagerSvc.SelectedPath);
+                mForControlName = mForControlName.replace('_Files', '_Directories');
+                this._FileManagerSvc.getDirectories(mAction, '\\', mForControlName);
                 this._GWCommon.sleep(3000).then(() => {
                   this.onOk();
                 });
