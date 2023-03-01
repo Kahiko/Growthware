@@ -73,6 +73,7 @@ Library:
 		ng generate interface models/SecurityInfo --type model --project gw-lib
 
 		ng generate service services/data --project gw-lib
+		ng generate service services/security --project gw-lib
 		ng generate service services/configuration --project gw-lib
 		ng generate interface models/AppSettings --type model --project gw-lib
 

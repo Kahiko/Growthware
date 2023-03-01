@@ -7,4 +7,4 @@ export * from './account-profile.model';
 export * from './account.module';
 export * from './account.service';
 export * from './authentication-response.model';
-export * from './security-info.model';
+export * from '../../models/security-info.model';

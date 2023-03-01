@@ -6,12 +6,13 @@ import { catchError, of } from 'rxjs';
 
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { SearchService, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
+import { SecurityService } from '@Growthware/Lib/src/lib/services';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
+import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
 
 import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse } from './authentication-response.model';
-import { ISecurityInfo } from './security-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,6 @@ export class AccountService {
   private _Account: string = '';
   private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAccount/';
-  private _ApiSecurityName: string = 'GrowthwareAPI/';
   private _Api_Authenticate = '';
   private _Api_ChangePassword = '';
   private _Api_GetLinks: string = '';
@@ -83,7 +83,7 @@ export class AccountService {
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
     private _Router: Router,
-    private _SearchSvc: SearchService
+    private _SearchSvc: SearchService,
   ) {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
@@ -345,28 +345,5 @@ export class AccountService {
         // here as example
       }
     })
-  }
-
-  public async getSecurityInfo(action: string): Promise<ISecurityInfo> {
-    const mQueryParameter: HttpParams = new HttpParams().append('action', action);
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      params: mQueryParameter,
-    };
-    const mUrl = this._BaseURL + this._ApiSecurityName + 'GetSecurityInfo';
-    return new Promise<ISecurityInfo>((resolve, reject) => {
-      this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
-        next: (response: any) => {
-          resolve(response);
-        },
-        error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
-          reject('Failed to call the API');
-        },
-        // complete: () => {}
-      });
-    });
   }
 }
