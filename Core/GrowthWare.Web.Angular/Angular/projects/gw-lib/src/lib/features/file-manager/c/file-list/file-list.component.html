@@ -15,15 +15,25 @@
 <!-- standar material menu -->
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
+    <button mat-menu-item (click)="onDeleteClick(item.content)">Delete</button>
     <button mat-menu-item (click)="onRenameClick(item.content)">Rename</button>
     <button mat-menu-item (click)="onPropertiesClick(item.content)">Properties</button>
   </ng-template>
 </mat-menu>
 
+<ng-template #deleteFile>
+  <div class="formSection">
+    <div class="formSectionContents">
+
+      Are you sure you would like to delete<br>'{{selectedFile.name}}'?
+    </div>
+  </div>
+</ng-template>
+
 <ng-template #renameFile>
   <div class="formSection">
     <div class="formSectionContents">
-      <form [formGroup]="frmRenameFile" (ngSubmit)="onSubmit(frmRenameFile)">
+      <form [formGroup]="frmRenameFile" (ngSubmit)="onRenameSubmit(frmRenameFile)">
         <div class="table">
           <div class="tr">
             <div class="td left">

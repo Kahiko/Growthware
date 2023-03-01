@@ -10,6 +10,7 @@ import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
+import { SecurityService } from '@Growthware/Lib/src/lib/services';
 // Feature
 import { IFileInfoLight } from '../../file-info-light.model';
 
@@ -34,6 +35,7 @@ export class FileListComponent implements OnInit {
 
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
+  @ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!:TemplateRef<any>;
   @ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!:TemplateRef<any>;
   @ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<any>;
 
@@ -43,7 +45,8 @@ export class FileListComponent implements OnInit {
     private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    private _Router: Router
+    private _Router: Router,
+    private _SecuritySvc: SecurityService
   ) { }
 
   ngOnDestroy(): void {
@@ -51,7 +54,9 @@ export class FileListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + "_Files";
+    const mAction = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.id = mAction + "_Files";
+
     this.populateRenameFileForm();
     if(this._GWCommon.isNullOrUndefined(this.id)) {
       this._LoggingSvc.toast('The is can not be blank!', 'File List Component', LogLevel.Error);
@@ -88,6 +93,17 @@ export class FileListComponent implements OnInit {
     return obj;
   }
 
+  onDeleteClick(item: IFileInfoLight){
+    console.log('item', item);
+    this.selectedFile = item;
+    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onDeleteClick', 'Delete File', this._DeleteFile, new WindowSize(84, 300));
+    mModalOptions.buttons.okButton.visible = true;
+    mModalOptions.buttons.okButton.callbackMethod = () => {
+      this._ModalSvc.close('FileListComponent.onDeleteClick');
+    }
+    this._ModalSvc.open(mModalOptions);
+  }
+
   onRenameClick(item: IFileInfoLight) {
     console.log('item', item);
     this.selectedFile = item;
@@ -105,7 +121,7 @@ export class FileListComponent implements OnInit {
     this._ModalSvc.open(mModalOptions);
   }
 
-  onSubmit(form: FormGroup): void {
+  onRenameSubmit(form: FormGroup): void {
 
   }
 
