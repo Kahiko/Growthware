@@ -11,7 +11,8 @@ import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
 export class SecurityService {
 
   private _BaseURL: string = '';
-  private _APISecurity: string = '';
+  private _Api:string = '';
+  private _ApiSecurity: string = '';
 
   constructor(
     private _GWCommon: GWCommon,
@@ -19,7 +20,8 @@ export class SecurityService {
     private _LoggingSvc: LoggingService,
   ) { 
     this._BaseURL = this._GWCommon.baseURL;
-    this._APISecurity = this._BaseURL + 'GrowthwareAPI/';
+    this._Api = this._BaseURL + 'GrowthwareAPI/';
+    this._ApiSecurity = this._Api + 'GetSecurityInfo';
   }
 
   public async getSecurityInfo(action: string): Promise<ISecurityInfo> {
@@ -30,14 +32,15 @@ export class SecurityService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._BaseURL + this._APISecurity + 'GetSecurityInfo';
+    // const mUrl = this._BaseURL + this._APISecurity + 'GetSecurityInfo';
+    const mUrl = this._ApiSecurity;
     return new Promise<ISecurityInfo>((resolve, reject) => {
       this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
         error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
+          this._LoggingSvc.errorHandler(error, 'SecurityService', 'getSecurityInfo');
           reject('Failed to call the API');
         },
         // complete: () => {}
