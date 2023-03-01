@@ -61,6 +61,9 @@ export class UploadComponent implements OnDestroy, OnInit {
             if(mTotalPercent == 100) {
               this._GWCommon.sleep(500).then(() => {
                 this.showFileProgress = false;
+                const mAction = this.id.replace('_Upload', '');
+                const mForControlName = mAction + "_Files";
+                this._FileManagerSvc.getFiles(mAction, mForControlName, this._FileManagerSvc.SelectedPath);
                 this._GWCommon.sleep(3000).then(() => {
                   this.onOk();
                 });
@@ -102,7 +105,9 @@ export class UploadComponent implements OnDestroy, OnInit {
     // Loop through all of the selected files and upload them
     for (let index = 0; index < mFileList.length; index++) {
       const mFile = mFileList[index];
-      this.currentFile = mFile.name;
+      let mFileName: string = mFile.name;
+      mFileName = mFileName.substring(0, 50);
+      this.currentFile = mFileName;
       this._FileManagerSvc.uploadFile(mAction, mFile);
     }
     // Clear the value so you can choose the same file(s) again
