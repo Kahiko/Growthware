@@ -24,6 +24,13 @@ export class SecurityService {
     this._ApiSecurity = this._Api + 'GetSecurityInfo';
   }
 
+  /**
+   * @description Calls the API to retrive a SecurityInfo for the given action
+   *
+   * @param {string} action
+   * @return {*}  {Promise<ISecurityInfo>}
+   * @memberof SecurityService
+   */
   public async getSecurityInfo(action: string): Promise<ISecurityInfo> {
     const mQueryParameter: HttpParams = new HttpParams().append('action', action);
     const mHttpOptions = {
