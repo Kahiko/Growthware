@@ -151,7 +151,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    * @param item Our data contained in the row of the table
    */
   onRightClick(event: MouseEvent, item: any) {
-    console.log('item', item);
+    // console.log('item', item);
     // preventDefault avoids to show the visualization of the right-click menu of the browser
     event.preventDefault();
 
