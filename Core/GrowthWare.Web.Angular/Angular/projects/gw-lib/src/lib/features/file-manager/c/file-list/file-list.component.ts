@@ -93,25 +93,26 @@ export class FileListComponent implements OnInit {
     return obj;
   }
 
-  onDeleteClick(item: IFileInfoLight){
+  onMenuDeleteClick(item: IFileInfoLight){
     console.log('item', item);
     this.selectedFile = item;
     const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onDeleteClick', 'Delete File', this._DeleteFile, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
+    mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
       this._ModalSvc.close('FileListComponent.onDeleteClick');
     }
     this._ModalSvc.open(mModalOptions);
   }
 
-  onRenameClick(item: IFileInfoLight) {
+  onMenuRenameClick(item: IFileInfoLight) {
     console.log('item', item);
     this.selectedFile = item;
     const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
-  onPropertiesClick(item: IFileInfoLight) {
+  onMenuPropertiesClick(item: IFileInfoLight) {
     this.selectedFile = item;
     const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onPropertiesClick', 'Properties', this._FileProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
