@@ -1,27 +1,100 @@
 <cdk-virtual-scroll-viewport itemSize="48" style="height: 500px;">
-    <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
-      <!-- This is the tree node template for leaf nodes -->
-      <!-- There is inline padding applied to this node using styles. This padding value depends on the mat-icon-button width. -->
-      <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle (click)="selectDirectory(node)" [ngClass]="{ 'background-highlight': activeNode === node }">
-        {{node.name}}
-      </mat-tree-node>
-      <!-- This is the tree node template for expandable nodes -->
-      <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
-          <div class="mat-tree-node" (click)="selectDirectory(node)" [ngClass]="{ 'background-highlight': activeNode === node }">
-            <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
-              <mat-icon class="mat-icon-rtl-mirror">
-                {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}&nbsp;folder
-              </mat-icon>
-              <mat-icon class="mat-icon-rtl-mirror">
-                {{ treeControl.isExpanded(node) ? 'folder' : 'folder_open' }}
-              </mat-icon>              
-            </button>
-            &nbsp;&nbsp;&nbsp;{{node.name}}
+  <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree">
+    <!-- This is the tree node template for leaf nodes -->
+    <!-- There is inline padding applied to this node using styles. This padding value depends on the mat-icon-button width. -->
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle
+      (click)="selectDirectory(node)"
+      (contextmenu)="onRightClick($event, { content: node })"
+      [ngClass]="{ 'background-highlight': activeNode === node }">
+      {{node.name}}
+    </mat-tree-node>
+    <!-- This is the tree node template for expandable nodes -->
+    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+      <div class="mat-tree-node" 
+        (click)="selectDirectory(node)"
+        (contextmenu)="onRightClick($event, { content: node })"
+        [ngClass]="{ 'background-highlight': activeNode === node }">
+        <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}&nbsp;folder
+          </mat-icon>
+          <mat-icon class="mat-icon-rtl-mirror">
+            {{ treeControl.isExpanded(node) ? 'folder' : 'folder_open' }}
+          </mat-icon>
+        </button>
+        &nbsp;&nbsp;&nbsp;{{node.name}}
+      </div>
+      <!-- There is inline padding applied to this div using styles. This padding value depends on the mat-icon-button width.  -->
+      <div [class.example-tree-invisible]="!treeControl.isExpanded(node)" role="group">
+        <ng-container matTreeNodeOutlet></ng-container>
+      </div>
+    </mat-nested-tree-node>
+  </mat-tree>
+</cdk-virtual-scroll-viewport>
+
+<!-- an hidden div is created to set the position of appearance of the menu-->
+<div 
+  style="visibility: hidden; position: fixed;"
+  [style.left.px]="menuTopLeftPosition.x"
+  [style.top.px]="menuTopLeftPosition.y"
+  [matMenuTriggerFor]="rightMenu">
+</div>
+
+<!-- standar material menu -->
+<mat-menu #rightMenu="matMenu">
+  <ng-template matMenuContent let-item="item">
+    <button mat-menu-item (click)="onMenuDeleteClick(item.content)">Delete</button>
+    <button mat-menu-item (click)="onMenuRenameClick(item.content)">Rename</button>
+    <button mat-menu-item (click)="onMenuPropertiesClick(item.content)">Properties</button>
+  </ng-template>
+</mat-menu>
+
+<ng-template #deleteDirectory>
+  Are you sure you would like to delete<br>'???'?
+</ng-template>
+
+<ng-template #renameDirectory>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <form [formGroup]="frmRenameDirectory" (ngSubmit)="onRenameSubmit(frmRenameDirectory)">
+        <div class="table">
+          <div class="tr">
+            <div class="td left">
+              <span class="Form_LabelText">New name&nbsp;:</span>
+            </div>
+            <div class="td right">
+              <input formControlName="newFileName" class="Form_Field rounded" id="newFileName" />&nbsp;
+            </div>
+            <div class="td">
+              <span *ngIf="getControls['newFileName'].hasError('required')" class="Form_LabelTextRed">{{getErrorMessage('newFileName')}}</span>
+            </div>
           </div>
-          <!-- There is inline padding applied to this div using styles. This padding value depends on the mat-icon-button width.  -->
-          <div [class.example-tree-invisible]="!treeControl.isExpanded(node)" role="group">
-            <ng-container matTreeNodeOutlet></ng-container>
+          <div class="tr">
+            <div class="td"></div>
+            <div class="td right">
+              <button type="submit" [disabled]="frmRenameDirectory.invalid" mat-button class="Form_Button" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+              </button>
+            </div>
+            <div class="td"></div>
+          </div>
         </div>
-      </mat-nested-tree-node>
-    </mat-tree>  
-  </cdk-virtual-scroll-viewport>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #directoryProperties>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <div class="table Form_Table" style="margin: auto; width: 98%">
+        <div class="tr Form_LabelRow">
+          <div class="td right"></div>
+          <div class="td left"></div>
+          <div class="td right"></div>
+          <div class="td left"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
