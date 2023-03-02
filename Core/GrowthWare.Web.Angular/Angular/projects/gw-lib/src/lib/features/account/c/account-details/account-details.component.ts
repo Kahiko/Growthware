@@ -6,13 +6,13 @@ import { Subscription } from 'rxjs';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { GroupService } from '@Growthware/Lib/src/lib/features/group';
+import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
 import { SecurityService } from '@Growthware/Lib/src/lib/services';
 // Feature
 import { IAccountProfile } from '../../account-profile.model';
-import { ISecurityInfo } from '../../../../models/security-info.model';
 import { AccountService } from '../../account.service';
 
 @Component({
