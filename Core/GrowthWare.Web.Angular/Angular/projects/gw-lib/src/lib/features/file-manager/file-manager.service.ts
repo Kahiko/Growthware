@@ -110,20 +110,28 @@ export class FileManagerService {
     return mRetVal;    
   }
 
+  /**
+   * @description Uploads files that are too large to be sent in a single upload by using recursion
+   * to call the API with a "slice" of the file.
+   *
+   * @private
+   * @param {IMultiPartFileUploadParameters} parameters
+   * @memberof FileManagerService
+   */
   private multiPartFileUpload(parameters: IMultiPartFileUploadParameters) {
     const mParams = {...parameters}; // it's good practice to leave parameter values unchanged
     let mNextUploadNumber = mParams.uploadNumber + 1;
     const mFileSize: number = mParams.file.size;
     const mMultiUploadFileName = mParams.file.name + "_UploadNumber_" + mNextUploadNumber;
-    if(mParams.uploadNumber < mParams.totalNumberOfUploads) {
+    if(mParams.uploadNumber < mParams.totalNumberOfUploads) { // do we need to send any more pices of the file
       const mBlob: Blob = mParams.file.slice.call(mParams.file, mParams.startingByte, mParams.endingByte);
       const mFormData: FormData = new FormData();
       mFormData.append('action', mParams.action);
-      mFormData.append('selectedPath', this._SelectedPath);
       mFormData.append('completed', 'false');
+      mFormData.append('selectedPath', this._SelectedPath);
       mFormData.append(mMultiUploadFileName, mBlob);
       this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
-        next: (response: IUploadResponse) => {
+        next: (response: IUploadResponse) => { // update the parameters can call this method again
           const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, false, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
           mParams.uploadNumber = mNextUploadNumber;
           mParams.startingByte = parameters.endingByte;
@@ -144,7 +152,7 @@ export class FileManagerService {
         // complete: () => {}
       });
     };
-    if(mParams.uploadNumber == mParams.totalNumberOfUploads) {
+    if(mParams.uploadNumber == mParams.totalNumberOfUploads) { // make sure this is the last upload
       this.multiUploadComplete(mParams.action, mParams.file.name, this._Api_UploadFile).subscribe({
         next: (response: IUploadResponse) => {
           const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
@@ -160,6 +168,17 @@ export class FileManagerService {
     }
   }
 
+  /**
+   * @description Helper method that calls the upload API so the merging of the file chunks (slices)
+   * can be done
+   *
+   * @private
+   * @param {string} action
+   * @param {string} fileName
+   * @param {string} uri
+   * @return {*}  {Observable<IUploadResponse>}
+   * @memberof FileManagerService
+   */
   private multiUploadComplete(action: string, fileName: string, uri: string): Observable<IUploadResponse> {
     var mFormData = new FormData();
     mFormData.append('action', action);
