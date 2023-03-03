@@ -25,7 +25,9 @@ export class FileManagerService {
   public get SelectedPath(): string {
     return this._SelectedPath;
   };
+
   uploadStatusChanged:  Subject<IUploadStatus> = new Subject<IUploadStatus>();
+  selectedDirectoryChanged:  Subject<IDirectoryTree> = new Subject<IDirectoryTree>();
 
   constructor(
     private _DataSvc: DataService,
@@ -213,6 +215,10 @@ export class FileManagerService {
       },
       // complete: () => {}
     });
+  }
+
+  public setSelectedDirectory(directoryTree: IDirectoryTree): void {
+    this.selectedDirectoryChanged.next(directoryTree);
   }
   
   /**

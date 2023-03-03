@@ -15,8 +15,8 @@ import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 // Feature
-import { FileManagerService } from '../../file-manager.service';
 import { IDirectoryTree } from '../../directory-tree.model';
+import { FileManagerService } from '../../file-manager.service';
 
 @Component({
   selector: 'gw-lib-directory-tree',
@@ -80,6 +80,9 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
             this._FileManagerSvc.getFiles(mAction, mForControlName, data.payLoad[0].relitivePath);
           }
         }
+      }));
+      this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged.subscribe((data: IDirectoryTree) => {
+        this.activeNode = data;   
       }));
     } else {
       const mLogDestinations: Array<LogDestination> = [];
@@ -173,10 +176,12 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     });
   }
 
-  selectDirectory(node: IDirectoryTree): void {
-    this.activeNode = node;
-    const mAction = this.configurationName.replace('_Directories', '');
-    const mForControlName = mAction + '_Files';
-    this._FileManagerSvc.getFiles(mAction, mForControlName, node.relitivePath);
+  onSelectDirectory(node: IDirectoryTree): void {
+    this._FileManagerSvc.setSelectedDirectory(node);
+    if(this.doGetFiles) {
+      const mAction = this.configurationName.replace('_Directories', '');
+      const mForControlName = mAction + '_Files';
+      this._FileManagerSvc.getFiles(mAction, mForControlName, node.relitivePath);
+    }
   }
 }
