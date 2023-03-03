@@ -202,8 +202,9 @@ export class FileManagerService {
     const mFormData = new FormData();
     mFormData.append('action', action);
     mFormData.append('selectedPath', this._SelectedPath);
+    mFormData.append(file.name + '_UploadNumber_1', file);
     mFormData.append('fileName', file.name);
-    mFormData.append('complete', 'true');
+    mFormData.append('completed', 'true');
     this._HttpClient.post<IUploadResponse>(this._Api_UploadFile, mFormData).subscribe({
       next: (response: IUploadResponse) => {
         const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);

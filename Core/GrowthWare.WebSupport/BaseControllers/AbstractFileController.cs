@@ -163,6 +163,7 @@ public abstract class AbstractFileController : ControllerBase
                     string mUploadDirectory = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath) + Path.DirectorySeparatorChar + this.m_TempUploadDirectory;
                     // create the upload directory if one doest exist
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
+                    string mCompleted = Request.Form["completed"];
                     if(!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
                     if (Request.Form.Files.Count() > 0)
                     {
@@ -176,9 +177,7 @@ public abstract class AbstractFileController : ControllerBase
                             await mFormFile.CopyToAsync(stream);
                         }
                         mRetVal.IsSuccess = true;
-                        return Ok(mRetVal);
                     }
-                    string mCompleted = Request.Form["completed"];
                     if (!String.IsNullOrWhiteSpace(mCompleted) && mCompleted.ToLowerInvariant() == "true")
                     {
                         // merge logic
