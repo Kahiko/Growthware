@@ -10,6 +10,7 @@ import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
+import { ISecurityInfo, SecurityInfo } from '@Growthware/Lib/src/lib/models';
 import { SecurityService } from '@Growthware/Lib/src/lib/services';
 // Feature
 import { IFileInfoLight } from '../../file-info-light.model';
@@ -30,6 +31,8 @@ export class FileListComponent implements OnInit {
   frmRenameFile!: FormGroup;
   menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates 
   selectedFile!: IFileInfoLight;
+  showDelete: boolean = false;
+  showRename: boolean = false;
 
   @Input() numberOfColumns: string = '4';
 
@@ -56,6 +59,13 @@ export class FileListComponent implements OnInit {
   ngOnInit(): void {
     const mAction = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
     this.id = mAction + "_Files";
+    this._SecuritySvc.getSecurityInfo(mAction).then((response: ISecurityInfo) => {
+      this.showDelete = response.mayDelete;
+      this.showRename = response.mayEdit;
+    }).catch((error)=>{
+      this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
+    });
+
 
     this.populateRenameFileForm();
     if(this._GWCommon.isNullOrUndefined(this.id)) {
