@@ -230,7 +230,7 @@ export class FileManagerService {
    * @param {number} [chunkSize=3072000] Used to break the "File" up if the file size is greater than the chunkSize.  The number is in direct relation to KestrelServerLimits.MaxRequestBodySize Property
    * @memberof FileManagerService
    */
-  uploadFile(action: string, file: File, chunkSize: number = 3072000)
+  uploadFile(action: string, file: File, chunkSize: number = 29696000)
   {
     const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, chunkSize);
     if (mTotalNumberOfUploads > 1) {
