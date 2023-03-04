@@ -199,8 +199,12 @@ public abstract class AbstractFileController : ControllerBase
                             }
                             mRetVal.FileName = mNewFileName.Replace(mDirectoryInfo.FullName.Replace(this.m_TempUploadDirectory, ""), "");
                             mRetVal.IsSuccess = true;
-                            return Ok(mRetVal);                            
+                            return Ok(mRetVal);
                         }
+                    }
+                    if(mRetVal.IsSuccess)
+                    {
+                        return Ok(mRetVal);
                     }
                     return StatusCode(StatusCodes.Status500InternalServerError, "No file found in Request.Form.Files.");
                 }
