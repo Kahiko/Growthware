@@ -45,6 +45,14 @@ export class FileManagerService {
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
+  /**
+   * @description Deletes a file from the currently selected path
+   *
+   * @param {string} action Used to determine the upload directory and enforce security on the server
+   * @param {string} fileName The file name to delete
+   * @return {*}  {Promise<boolean>}
+   * @memberof FileManagerService
+   */
   async deleteFile(action: string, fileName: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(action)) {
