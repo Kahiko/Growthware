@@ -35,6 +35,26 @@ public abstract class AbstractFileController : ControllerBase
         return mRetVal;
     }
 
+    [HttpDelete("DeleteFile")]
+    public ActionResult<bool> DeleteFile(string action, string selectedPath, string fileName)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mSecurityInfo.MayDelete)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            string mFileName = this.calculatePath(mDirectoryProfile.Directory, selectedPath) + fileName;
+            if(System.IO.File.Exists(mFileName))
+            {
+                System.IO.File.Delete(mFileName);
+                return Ok(true);
+            }
+            return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", mFileName));
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
     [HttpGet("GetDirectories")]
     public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
     {

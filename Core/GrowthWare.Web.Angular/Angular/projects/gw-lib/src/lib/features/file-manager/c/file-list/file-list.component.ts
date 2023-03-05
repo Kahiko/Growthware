@@ -112,6 +112,13 @@ export class FileListComponent implements OnInit {
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
+      this._FileManagerSvc.deleteFile(this._Action, this.selectedFile.name).then((_)=>{
+        this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
+        this._LoggingSvc.toast('File was deleted', 'Delete file', LogLevel.Success);
+      }).catch((error) => {
+        this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onMenuDeleteClick');
+        this._LoggingSvc.toast('Was not able to delete the file', 'Delete file error', LogLevel.Error);
+      });
       this._ModalSvc.close('FileListComponent.onDeleteClick');
     }
     this._ModalSvc.open(mModalOptions);
