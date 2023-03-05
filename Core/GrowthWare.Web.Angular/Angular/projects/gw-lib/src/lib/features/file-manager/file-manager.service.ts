@@ -78,7 +78,7 @@ export class FileManagerService {
   /**
    * @description Retrieves an array of IDirectoryTree for the gien path
    *  
-   * @param {string} action Used to determine the directory and enforce security on the server
+   * @param {string} action Used to determine the upload directory and enforce security on the server
    * @param {string} path The relative of the directory path 
    * @memberof FileManagerService
    */
@@ -107,7 +107,7 @@ export class FileManagerService {
   /**
    * @description Retrives a array of IFileInfoLight for the given path
    *
-   * @param {string} action Used to determine the directory and enforce security on the server
+   * @param {string} action Used to determine the upload directory and enforce security on the server
    * @param {string} controlId The id of the controler the files are for
    * @param {string} selectedPath The relative of the directory path 
    * @memberof FileManagerService
@@ -209,9 +209,9 @@ export class FileManagerService {
    * can be done
    *
    * @private
-   * @param {string} action
-   * @param {string} fileName
-   * @param {string} uri
+   * @param {string} action Used to determine the upload directory and enforce security on the server
+   * @param {string} fileName The file name for this Chunk
+   * @param {string} uri The Uniform Resource Identifier
    * @return {*}  {Observable<IUploadResponse>}
    * @memberof FileManagerService
    */
@@ -224,6 +224,15 @@ export class FileManagerService {
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 
+  /**
+   * @description Renames an existing file
+   *
+   * @param {string} action Used to determine the upload directory and enforce security on the server
+   * @param {string} oldName The name of the file to rename
+   * @param {string} newName The new name of the file
+   * @return {*}  {Promise<boolean>}
+   * @memberof FileManagerService
+   */
   async renameFile(action: string, oldName: string, newName: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(action)) {
@@ -293,7 +302,7 @@ export class FileManagerService {
   /**
    * @description Uploads file by calling either multiPartFileUpload or singleFileUpload depending on the file size.
    *
-   * @param {string} action Passed along to the API and used to enforce security on the server
+   * @param {string} action Used to determine the upload directory and enforce security on the server
    * @param {File} file An HTML "File" object
    * @param {number} [chunkSize=3072000] Used to break the "File" up if the file size is greater than the chunkSize.  The number is in direct relation to KestrelServerLimits.MaxRequestBodySize Property
    * @memberof FileManagerService
