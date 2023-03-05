@@ -19,6 +19,7 @@ export class FileManagerService {
   private _Api: string = '';
   private _Api_GetDirectories: string = '';
   private _Api_GetFiles: string = '';
+  private _Api_RenameFile: string = '';
   private _Api_UploadFile: string = '';
   private _SelectedPath: string = '\\';
 
@@ -38,6 +39,7 @@ export class FileManagerService {
     this._Api = this._GWCommon.baseURL + 'GrowthwareFile/';
     this._Api_GetDirectories = this._Api + 'GetDirectories';
     this._Api_GetFiles = this._Api + 'GetFiles';
+    this._Api_RenameFile = this._Api + 'RenameFile';
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
@@ -188,6 +190,40 @@ export class FileManagerService {
     mFormData.append('fileName', fileName);
     mFormData.append('selectedPath', this._SelectedPath);
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
+  }
+
+  async renameFile(action: string, oldName: string, newName: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if(this._GWCommon.isNullOrEmpty(action)) {
+        throw new Error("action can not be blank!");
+      }
+      if(this._GWCommon.isNullOrEmpty(oldName)) {
+        throw new Error("oldName can not be blank!");
+      }
+      if(this._GWCommon.isNullOrEmpty(newName)) {
+        throw new Error("newName can not be blank!");
+      }
+      let mQueryParameter: HttpParams = new HttpParams().append('action', action);
+      mQueryParameter=mQueryParameter.append('selectedPath', this._SelectedPath);
+      mQueryParameter=mQueryParameter.append('oldName', oldName);
+      mQueryParameter=mQueryParameter.append('newName', newName);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.post<boolean>(this._Api_RenameFile, null, mHttpOptions).subscribe({
+        next:( response: boolean ) => {
+          resolve(response)
+        },
+        error:( error: any ) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameFile');
+          reject(false);
+        },
+        complete:( ) => {}
+      });
+    });
   }
 
   /**

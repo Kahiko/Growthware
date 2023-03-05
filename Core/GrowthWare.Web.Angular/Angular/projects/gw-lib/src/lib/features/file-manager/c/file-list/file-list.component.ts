@@ -13,6 +13,7 @@ import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/
 import { ISecurityInfo, SecurityInfo } from '@Growthware/Lib/src/lib/models';
 import { SecurityService } from '@Growthware/Lib/src/lib/services';
 // Feature
+import { FileManagerService } from '../../file-manager.service';
 import { IFileInfoLight } from '../../file-info-light.model';
 
 @Component({
@@ -22,7 +23,9 @@ import { IFileInfoLight } from '../../file-info-light.model';
 })
 export class FileListComponent implements OnInit {
 
+  private _Action: string = '';
   private _DataSubject = new BehaviorSubject<any[]>([]);
+  private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
   private _Subscriptions: Subscription = new Subscription();
 
   readonly data = this._DataSubject.asObservable();
@@ -45,6 +48,7 @@ export class FileListComponent implements OnInit {
   constructor(
     private _DataSvc: DataService,
     private _GWCommon: GWCommon,
+    private _FileManagerSvc: FileManagerService,
     private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
@@ -57,17 +61,15 @@ export class FileListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mAction = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
-    this.id = mAction + "_Files";
-    this._SecuritySvc.getSecurityInfo(mAction).then((response: ISecurityInfo) => {
+    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.id = this._Action + "_Files";
+    this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
       this.showDelete = response.mayDelete;
       this.showRename = response.mayEdit;
     }).catch((error)=>{
       this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
     });
 
-
-    this.populateRenameFileForm();
     if(this._GWCommon.isNullOrUndefined(this.id)) {
       this._LoggingSvc.toast('The is can not be blank!', 'File List Component', LogLevel.Error);
     } else {
@@ -116,8 +118,9 @@ export class FileListComponent implements OnInit {
   }
 
   onMenuRenameClick(item: IFileInfoLight) {
-    console.log('item', item);
+    // console.log('item', item);
     this.selectedFile = item;
+    this.populateRenameFileForm(this.selectedFile.name);
     const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
@@ -133,12 +136,18 @@ export class FileListComponent implements OnInit {
   }
 
   onRenameSubmit(form: FormGroup): void {
-
+    this._FileManagerSvc.renameFile(this._Action, this.selectedFile.name, form.value['newFileName']).then((response) => {
+      form.reset();
+      this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
+      this._ModalSvc.close('FileListComponent.onRenameClick');
+    }).catch((error) => {
+      this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');
+    });
   }
 
-  private populateRenameFileForm(): void {
+  private populateRenameFileForm(fileName: string): void {
     this.frmRenameFile = this._FormBuilder.group({
-      newFileName: ['', [Validators.required]],
+      newFileName: [fileName, [Validators.required]],
     });
   }
 

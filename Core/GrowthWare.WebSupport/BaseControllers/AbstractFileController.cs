@@ -126,13 +126,26 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     [HttpPost("RenameFile")]
-    public ActionResult RenameFile(string action, string oldName, string newName)
+    public ActionResult RenameFile(string action, string selectedPath, string oldName, string newName)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
         if(mSecurityInfo.MayEdit)
         {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+            string mOldFileName = mPath + oldName;
+            string mNewFileName = mPath + newName;
+            if(!System.IO.File.Exists(mOldFileName)) 
+            {
+                return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", oldName));
+            }
+            if(System.IO.File.Exists(mNewFileName)) 
+            {
+                return StatusCode(StatusCodes.Status409Conflict , String.Format("The file '{0}' already exists please delete it first", oldName));
+            }
+            System.IO.File.Move(mOldFileName, mNewFileName);
             return Ok();
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
