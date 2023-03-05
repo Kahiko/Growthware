@@ -147,6 +147,7 @@ export class FileListComponent implements OnInit {
       form.reset();
       this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
       this._ModalSvc.close('FileListComponent.onRenameClick');
+      this._LoggingSvc.toast('File was renamed', 'Rename file', LogLevel.Success);
     }).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');
     });
