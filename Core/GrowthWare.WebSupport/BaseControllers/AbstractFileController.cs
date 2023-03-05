@@ -57,7 +57,7 @@ public abstract class AbstractFileController : ControllerBase
         if(mSecurityInfo.MayDelete)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            string mFileName = this.calculatePath(mDirectoryProfile.Directory, selectedPath) + fileName;
+            string mFileName = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, selectedPath), fileName);
             if(System.IO.File.Exists(mFileName))
             {
                 System.IO.File.Delete(mFileName);
