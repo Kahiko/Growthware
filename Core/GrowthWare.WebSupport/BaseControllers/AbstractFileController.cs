@@ -25,6 +25,12 @@ public abstract class AbstractFileController : ControllerBase
     //     return Ok();
     // }
 
+    /// <summary>
+    /// Calculates the path given the directory and the selected (or desired) path
+    /// </summary>
+    /// <param name="directory"></param>
+    /// <param name="selectedPath"></param>
+    /// <returns>string</returns>
     private string calculatePath(string directory, string selectedPath)
     {
         string mRetVal = string.Empty;
@@ -35,6 +41,13 @@ public abstract class AbstractFileController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Deletes a file (fileName) using the action and selected to determine the exact path the file is located in
+    /// </summary>
+    /// <param name="action">Used to determine both security and the root path</param>
+    /// <param name="selectedPath">The path beyond the actions directory</param>
+    /// <param name="fileName"></param>
+    /// <returns></returns>
     [HttpDelete("DeleteFile")]
     public ActionResult<bool> DeleteFile(string action, string selectedPath, string fileName)
     {
@@ -55,6 +68,12 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// Returns hierarchical representing a directory structure
+    /// </summary>
+    /// <param name="action">Used to determine both security and the root path</param>
+    /// <param name="selectedPath">The path beyond the actions directory</param>
+    /// <returns>a json string representation of the MDirectoryTree object</returns>
     [HttpGet("GetDirectories")]
     public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
     {
