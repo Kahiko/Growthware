@@ -25,6 +25,16 @@ public abstract class AbstractFileController : ControllerBase
     //     return Ok();
     // }
 
+    private string calculatePath(string directory, string selectedPath)
+    {
+        string mRetVal = string.Empty;
+        if(selectedPath != null) { mRetVal = selectedPath; }
+        if(!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
+        mRetVal = directory + mRetVal;
+        if(mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
+        return mRetVal;
+    }
+
     [HttpGet("GetDirectories")]
     public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
     {
@@ -64,16 +74,6 @@ public abstract class AbstractFileController : ControllerBase
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
-    }
-
-    private string calculatePath(string directory, string selectedPath)
-    {
-        string mRetVal = string.Empty;
-        if(selectedPath != null) { mRetVal = selectedPath; }
-        if(!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
-        mRetVal = directory + mRetVal;
-        if(mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
-        return mRetVal;
     }
 
     private static void mergeFiles(string file1, string file2)
