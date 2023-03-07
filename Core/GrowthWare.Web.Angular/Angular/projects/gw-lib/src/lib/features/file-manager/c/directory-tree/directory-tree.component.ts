@@ -25,7 +25,8 @@ import { FileManagerService } from '../../file-manager.service';
 })
 export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
-  private _DataSubject = new BehaviorSubject<IDirectoryTree[]>([]);
+  private _Action: string = '';
+  private _DirectoriesSubject = new BehaviorSubject<IDirectoryTree[]>([]);
   private _Subscriptions: Subscription = new Subscription();
 
   @Input() doGetFiles: boolean = true;
@@ -33,14 +34,15 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   activeNode?: IDirectoryTree;
   configurationName: string = ''
   frmRenameDirectory!: FormGroup;
-  menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates 
+  menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates
+  selectedPath: string = '';
 
   get getControls() {
     return this.frmRenameDirectory.controls;
   }
 
   treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
-  readonly dataSource = this._DataSubject.asObservable();
+  readonly dataSource = this._DirectoriesSubject.asObservable();
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
   @ViewChild('deleteDirectory', { read: TemplateRef }) private _DeleteDirectory!:TemplateRef<any>;
@@ -65,23 +67,26 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   }
 
   ngOnInit(): void {
-    this.configurationName = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + '_Directories';
+    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.configurationName = this._Action + '_Directories';
     if(!this._GWCommon.isNullOrEmpty(this.configurationName)) {
       this.populateRenameDirectoryForm()
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
           // console.log('data.payLoad', data.payLoad);
-          this._DataSubject.next(data.payLoad);
+          this._DirectoriesSubject.next(data.payLoad);
           if(this.doGetFiles) {
             const mAction = this.configurationName.replace('_Directories', '');
             const mForControlName = mAction + '_Files';
             this.activeNode = data.payLoad[0];
+            this.selectedPath = data.payLoad[0].relitivePath;
             this._FileManagerSvc.getFiles(mAction, mForControlName, data.payLoad[0].relitivePath);
           }
         }
       }));
       this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged.subscribe((data: IDirectoryTree) => {
+        this.selectedPath = data.relitivePath;
         this.activeNode = data;   
       }));
     } else {
@@ -124,7 +129,12 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
-      this._ModalSvc.close('FileListComponent.onDeleteClick');
+      this._FileManagerSvc.deleteDirectory(this._Action, this.selectedPath).then((response) => {
+        this._ModalSvc.close('DirectoryTreeComponent.onMenuDeleteClick');
+      }).catch((error) => {
+        this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
+        this._LoggingSvc.toast('Was not able to delete the directory', 'Delete directory error', LogLevel.Error);
+      });
     }
     this._ModalSvc.open(mModalOptions);
   }

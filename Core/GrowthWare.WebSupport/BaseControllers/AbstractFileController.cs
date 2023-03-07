@@ -41,6 +41,27 @@ public abstract class AbstractFileController : ControllerBase
         return mRetVal;
     }
 
+    [HttpDelete("DeleteDirectory")]
+    public ActionResult<bool> DeleteDirectory(string action, string selectedPath)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mSecurityInfo.MayDelete)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            string mFullPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+            if(mFullPath != mDirectoryProfile.Directory)
+            {
+                DirectoryInfo mDirectoryInfo = new DirectoryInfo(mFullPath);
+                RecursiveDelete(mDirectoryInfo);
+                return Ok(true);
+            }
+            return StatusCode(StatusCodes.Status403Forbidden, "The root directory can not be deleted");
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
     /// <summary>
     /// Deletes a file (fileName) using the action and selected to determine the exact path the file is located in
     /// </summary>
@@ -137,6 +158,26 @@ public abstract class AbstractFileController : ControllerBase
             if (mFileStream2 != null) mFileStream2.Close();
             System.IO.File.Delete(file2);
         }
+    }
+
+    public static void RecursiveDelete(DirectoryInfo directoryInfo)
+    {
+        if (!directoryInfo.Exists)
+        {
+            return;
+        }
+
+        foreach (DirectoryInfo mDirectoryInfo in directoryInfo.EnumerateDirectories())
+        {
+            RecursiveDelete(mDirectoryInfo);
+        }
+        FileInfo[] mFiles = directoryInfo.GetFiles();
+        foreach (var mFileInfo in mFiles)
+        {
+            mFileInfo.IsReadOnly = false;
+            mFileInfo.Delete();
+        }
+        directoryInfo.Delete();
     }
 
     [HttpPost("RenameFile")]

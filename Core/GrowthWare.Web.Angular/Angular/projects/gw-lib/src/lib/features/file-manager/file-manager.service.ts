@@ -19,6 +19,7 @@ export class FileManagerService {
   private _Api: string = '';
   private _Api_GetDirectories: string = '';
   private _Api_GetFiles: string = '';
+  private _Api_DeleteDirectory: string = '';
   private _Api_DeleteFile: string = '';
   private _Api_RenameFile: string = '';
   private _Api_UploadFile: string = '';
@@ -40,9 +41,39 @@ export class FileManagerService {
     this._Api = this._GWCommon.baseURL + 'GrowthwareFile/';
     this._Api_GetDirectories = this._Api + 'GetDirectories';
     this._Api_GetFiles = this._Api + 'GetFiles';
+    this._Api_DeleteDirectory = this._Api + 'DeleteDirectory';
     this._Api_DeleteFile = this._Api + 'DeleteFile';
     this._Api_RenameFile = this._Api + 'RenameFile';
     this._Api_UploadFile = this._Api + 'UploadFile';
+  }
+
+  async deleteDirectory(action: string, selectedPath: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      if(this._GWCommon.isNullOrEmpty(action)) {
+        throw new Error("action can not be blank!");
+      }
+      if(this._GWCommon.isNullOrEmpty(selectedPath)) {
+        throw new Error("selectedPath can not be blank!");
+      };
+      let mQueryParameter: HttpParams = new HttpParams().append('action', action);
+      mQueryParameter=mQueryParameter.append('selectedPath', selectedPath);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
+        next:( response: boolean ) => {
+          resolve(response)
+        },
+        error:( error: any ) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
+          reject(false);
+        },
+        complete:( ) => {}
+      });
+    });
   }
 
   /**

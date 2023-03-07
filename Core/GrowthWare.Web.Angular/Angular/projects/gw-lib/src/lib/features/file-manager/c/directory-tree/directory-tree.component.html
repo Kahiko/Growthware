@@ -50,7 +50,8 @@
 </mat-menu>
 
 <ng-template #deleteDirectory>
-  Are you sure you would like to delete<br>'???'?
+  Are you sure you would like to delete<br>'{{selectedPath}}'<br>
+  and all of the subdirectories and files?
 </ng-template>
 
 <ng-template #renameDirectory>
