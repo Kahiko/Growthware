@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/GrowthWare.DatabaseManager/GrowthWare.DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/GrowthWare.DatabaseManager/GrowthWare.DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -31,7 +31,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -44,7 +44,7 @@
             "args": [
                 "watch",
                 "build",
-                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -56,7 +56,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -69,7 +69,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/GrowthWare.DatabaseManager/GrowthWare.DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -83,13 +83,13 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/GrowthWare.Web.Angular/GrowthWare.Web.Angular.csproj",
+                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
             "problemMatcher": "$msCompile",
             "options": {
-                "cwd": "${workspaceFolder}/GrowthWare.Web.Angular"
+                "cwd": "${workspaceFolder}/Web.Angular"
             }
             
         }

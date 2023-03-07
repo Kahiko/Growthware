@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.WebSupport", "GrowthWare.WebSupport\GrowthWare.WebSupport.csproj", "{19D38BA5-BD76-4FEB-AD5F-E1362EB7F26F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebSupport", "WebSupport\GrowthWare.WebSupport.csproj", "{19D38BA5-BD76-4FEB-AD5F-E1362EB7F26F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Framework", "GrowthWare.Framework\GrowthWare.Framework.csproj", "{3E9CBBCD-CCEB-42EC-B4EB-3C0A1BC4F5C1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\GrowthWare.Framework.csproj", "{3E9CBBCD-CCEB-42EC-B4EB-3C0A1BC4F5C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.DatabaseManager", "GrowthWare.DatabaseManager\GrowthWare.DatabaseManager.csproj", "{6536D0CE-E523-4893-AE84-345EF0AF3F54}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabaseManager", "DatabaseManager\GrowthWare.DatabaseManager.csproj", "{6536D0CE-E523-4893-AE84-345EF0AF3F54}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.DataAccess", "GrowthWare.DataAccess\GrowthWare.DataAccess.csproj", "{F3E32F3D-2020-4440-B92E-36C62720C137}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\GrowthWare.DataAccess.csproj", "{F3E32F3D-2020-4440-B92E-36C62720C137}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.BusinessLogic", "GrowthWare.BusinessLogic\GrowthWare.BusinessLogic.csproj", "{397DBE8D-489F-40CA-8D98-9DDCEA85C406}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLogic", "BusinessLogic\GrowthWare.BusinessLogic.csproj", "{397DBE8D-489F-40CA-8D98-9DDCEA85C406}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GrowthWare.Web.Angular", "GrowthWare.Web.Angular\GrowthWare.Web.Angular.csproj", "{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Web.Angular", "Web.Angular\GrowthWare.Web.Angular.csproj", "{9A2EAA04-2A25-4A6A-8CCF-EBF719F2C1DD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

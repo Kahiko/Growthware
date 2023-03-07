@@ -1,0 +1,30 @@
+/* Tabs */
+.mat-tab__container {
+  min-height: 350px;
+  border-bottom: 1px solid lightgray;
+  border-left: 1px solid lightgray;
+  border-right: 1px solid lightgray;
+  font-size: .8rem;
+  vertical-align: middle;
+  text-align: center;
+}
+.mat-tab__content {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+input[type] {
+  width: 132px;
+}
+
+// .mat-checkbox-frame,
+// .mat-checkbox-background,
+// .mat-checkbox-anim-unchecked-checked,
+// .mat-checkbox-anim-checked-unchecked {
+//   transform: scale(.7);
+// }
+
+.mat-checkbox,
+.mat-checkbox-inner-container {
+  transform: scale(.7);
+}

@@ -107,7 +107,7 @@ The two configurations:
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

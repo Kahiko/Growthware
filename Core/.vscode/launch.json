@@ -20,9 +20,9 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -52,9 +52,9 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -75,9 +75,9 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -101,12 +101,12 @@
             "request": "launch",
             "preLaunchTask": "DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.DatabaseManager/bin/Debug/net7.0/GrowthWare.DatabaseManager.dll",
+            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net7.0/DatabaseManager.dll",
             "args": [
                 "--Version",
                 "1.0.0.1"
             ],
-            "cwd": "${workspaceFolder}/GrowthWare.DatabaseManager",
+            "cwd": "${workspaceFolder}/DatabaseManager",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false
@@ -117,9 +117,9 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -129,7 +129,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/GrowthWare.Web.Angular"
+                "/Views": "${workspaceFolder}/Web.Angular"
             }
         },
         {
@@ -138,9 +138,9 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build-Watch",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/GrowthWare.Web.Angular/bin/Debug/net7.0/GrowthWare.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/GrowthWare.Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -150,7 +150,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/GrowthWare.Web.Angular"
+                "/Views": "${workspaceFolder}/Web.Angular"
             }
         },
         {
@@ -166,10 +166,10 @@
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular/Projects/gw-front-end",
+            "webRoot": "${workspaceFolder}/Web.Angular/Angular/Projects/gw-front-end",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/Angular/*"
+              "webpack:///./*": "${workspaceRoot}/Web.Angular/Angular/*"
             }
         },
         {
@@ -179,10 +179,10 @@
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/GrowthWare.Web.Angular/Angular/Projects/gw-front-end",
+            "webRoot": "${workspaceFolder}/Web.Angular/Angular/Projects/gw-front-end",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/GrowthWare.Web.Angular/Angular/*"
+              "webpack:///./*": "${workspaceRoot}/Web.Angular/Angular/*"
             }
         }
     ]
