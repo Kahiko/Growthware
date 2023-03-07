@@ -3,7 +3,7 @@ using System.Data;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 
-namespace GrowthWare.WebSupport.Utilities;
+namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
 {
     public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)

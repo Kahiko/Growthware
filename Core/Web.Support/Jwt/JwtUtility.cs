@@ -8,10 +8,10 @@ using System.Text;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
-using GrowthWare.WebSupport.Services;
-using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Web.Support.Services;
+using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.WebSupport.Jwt;
+namespace GrowthWare.Web.Support.Jwt;
 public class JwtUtils : IJwtUtils
 {
 

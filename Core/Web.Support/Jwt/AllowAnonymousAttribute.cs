@@ -1,6 +1,6 @@
 using System;
 
-namespace GrowthWare.WebSupport.Jwt;
+namespace GrowthWare.Web.Support.Jwt;
 [AttributeUsage(AttributeTargets.Method)]
 public class AllowAnonymousAttribute : Attribute
 { }

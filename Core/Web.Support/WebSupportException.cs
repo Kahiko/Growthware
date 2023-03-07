@@ -1,7 +1,7 @@
 using System;
 using System.Runtime.Serialization;
 
-namespace GrowthWare.WebSupport
+namespace GrowthWare.Web.Support
 {
     /// <summary>
     /// Created to distinguish errors created in the data access layer.
@@ -29,7 +29,7 @@ namespace GrowthWare.WebSupport
 		/// </summary>
 		/// <param name="message">string</param>
 		/// <param name="innerException">Exception</param>
-		public WebSupportException(string message, Exception innerException):base(message, innerException)
+		public WebSupportException(string message, Exception innerException): base(message, innerException)
 		{
 		
 		}

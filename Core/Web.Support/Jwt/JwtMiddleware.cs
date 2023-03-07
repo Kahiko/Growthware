@@ -3,9 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using GrowthWare.Framework.Models;
-using GrowthWare.WebSupport.Services;
+using GrowthWare.Web.Support.Services;
 
-namespace GrowthWare.WebSupport.Jwt;
+namespace GrowthWare.Web.Support.Jwt;
 
 public class JwtMiddleware
 {

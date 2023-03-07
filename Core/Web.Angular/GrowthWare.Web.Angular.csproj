@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebSupport\GrowthWare.WebSupport.csproj" />
+    <ProjectReference Include="..\Web.Support\GrowthWare.Web.Support.csproj" />
     <ProjectReference Include="..\Framework\GrowthWare.Framework.csproj" />
   </ItemGroup>
 

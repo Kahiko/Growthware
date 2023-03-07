@@ -9,7 +9,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 
-namespace GrowthWare.WebSupport.Utilities;
+namespace GrowthWare.Web.Support.Utilities;
 
 public static class MessageUtility
 {

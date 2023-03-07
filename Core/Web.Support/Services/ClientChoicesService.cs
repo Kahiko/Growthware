@@ -6,9 +6,9 @@ using System.Globalization;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
-using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.WebSupport.Services;
+namespace GrowthWare.Web.Support.Services;
 
 public class ClientChoicesService : IClientChoicesService
 {

@@ -8,9 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
-using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.WebSupport.BaseControllers;
+namespace GrowthWare.Web.Support.BaseControllers;
 
 [CLSCompliant(false)]
 public abstract class AbstractFileController : ControllerBase

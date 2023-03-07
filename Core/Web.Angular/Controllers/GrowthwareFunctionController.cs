@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using GrowthWare.WebSupport.BaseControllers;
-using GrowthWare.WebSupport.Services;
+using GrowthWare.Web.Support.BaseControllers;
+using GrowthWare.Web.Support.Services;
 
 namespace GrowthWare.Web.Angular.Controllers;
 

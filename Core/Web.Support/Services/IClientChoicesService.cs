@@ -1,6 +1,6 @@
 using GrowthWare.Framework.Models;
 
-namespace GrowthWare.WebSupport.Services;
+namespace GrowthWare.Web.Support.Services;
 
 public interface IClientChoicesService
 {

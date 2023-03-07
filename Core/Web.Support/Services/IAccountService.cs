@@ -2,7 +2,7 @@ using System;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 
-namespace GrowthWare.WebSupport.Services;
+namespace GrowthWare.Web.Support.Services;
 
 public interface IAccountService
 {

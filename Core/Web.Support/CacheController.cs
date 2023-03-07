@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using System;
 
-namespace GrowthWare.WebSupport;
+namespace GrowthWare.Web.Support;
 
 /// <summary>
 /// Facade for System.Web.Caching

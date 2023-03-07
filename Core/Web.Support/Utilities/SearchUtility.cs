@@ -4,7 +4,7 @@ using System;
 using System.Data;
 using System.Text;
 
-namespace GrowthWare.WebSupport.Utilities;
+namespace GrowthWare.Web.Support.Utilities;
 public static class SearchUtility
 {
     private static BSearch m_BSearch = null;

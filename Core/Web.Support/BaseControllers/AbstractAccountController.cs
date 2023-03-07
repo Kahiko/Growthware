@@ -5,11 +5,11 @@ using System.Collections.Generic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
-using GrowthWare.WebSupport.Services;
-using GrowthWare.WebSupport.Jwt;
-using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Web.Support.Services;
+using GrowthWare.Web.Support.Jwt;
+using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.WebSupport.BaseControllers;
+namespace GrowthWare.Web.Support.BaseControllers;
 
 [CLSCompliant(false)]
 public abstract class AbstractAccountController : ControllerBase

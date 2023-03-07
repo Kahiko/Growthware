@@ -14,10 +14,10 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
-using GrowthWare.WebSupport.Jwt;
-using GrowthWare.WebSupport.Utilities;
+using GrowthWare.Web.Support.Jwt;
+using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.WebSupport.Services;
+namespace GrowthWare.Web.Support.Services;
 public class AccountService : IAccountService
 {
     // private MAccountProfile m_CachedAnonymousAccount = null;

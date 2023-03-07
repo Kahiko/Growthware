@@ -8,7 +8,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 
-namespace GrowthWare.WebSupport.Utilities;
+namespace GrowthWare.Web.Support.Utilities;
 
 public static class SecurityEntityUtility
 {
