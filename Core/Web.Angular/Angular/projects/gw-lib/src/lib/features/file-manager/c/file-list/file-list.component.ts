@@ -25,6 +25,8 @@ export class FileListComponent implements OnInit {
 
   private _Action: string = '';
   private _DataSubject = new BehaviorSubject<any[]>([]);
+  private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
+  private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
   private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
   private _Subscriptions: Subscription = new Subscription();
 
@@ -108,7 +110,7 @@ export class FileListComponent implements OnInit {
   onMenuDeleteClick(item: IFileInfoLight){
     console.log('item', item);
     this.selectedFile = item;
-    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onDeleteClick', 'Delete File', this._DeleteFile, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete File', this._DeleteFile, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
@@ -128,16 +130,16 @@ export class FileListComponent implements OnInit {
     // console.log('item', item);
     this.selectedFile = item;
     this.populateRenameFileForm(this.selectedFile.name);
-    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onRenameClick', 'Rename File', this._RenameFile, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameFile, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
   onMenuPropertiesClick(item: IFileInfoLight) {
     this.selectedFile = item;
-    const mModalOptions: ModalOptions = new ModalOptions('FileListComponent.onPropertiesClick', 'Properties', this._FileProperties, new WindowSize(80, 600));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this._FileProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
-      this._ModalSvc.close('FileListComponent.onPropertiesClick');
+      this._ModalSvc.close(this._ModalId_Properties);
     }
     this._ModalSvc.open(mModalOptions);
   }
@@ -146,7 +148,7 @@ export class FileListComponent implements OnInit {
     this._FileManagerSvc.renameFile(this._Action, this.selectedFile.name, form.value['newFileName']).then((response) => {
       form.reset();
       this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
-      this._ModalSvc.close('FileListComponent.onRenameClick');
+      this._ModalSvc.close(this._ModalId_Rename);
       this._LoggingSvc.toast('File was renamed', 'Rename file', LogLevel.Success);
     }).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');

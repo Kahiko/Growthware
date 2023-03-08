@@ -29,6 +29,9 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private _Action: string = '';
   private _DirectoriesSubject = new BehaviorSubject<IDirectoryTree[]>([]);
+  private _ModalId_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
+  private _ModalId_Properties = 'DirectoryTreeComponent.onMenuPropertiesClick';
+  private _ModalId_Rename = 'DirectoryTreeComponent.onMenuRenameClick';
   private _SecurityInfo: ISecurityInfo = new SecurityInfo();
   private _Subscriptions: Subscription = new Subscription();
 
@@ -137,12 +140,12 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   onMenuDeleteClick(item: IDirectoryTree){
     console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions('DirectoryTreeComponent.onMenuDeleteClick', 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
       this._FileManagerSvc.deleteDirectory(this._Action, this.selectedPath).then((response) => {
-        this._ModalSvc.close('DirectoryTreeComponent.onMenuDeleteClick');
+        this._ModalSvc.close(this._ModalId_Delete);
       }).catch((error) => {
         this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         this._LoggingSvc.toast('Was not able to delete the directory', 'Delete directory error', LogLevel.Error);
@@ -153,17 +156,17 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   onMenuPropertiesClick(item: IDirectoryTree) {
     console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions('DirectoryTreeComponent.onMenuPropertiesClick', 'Properties', this.__DirectoryProperties, new WindowSize(80, 600));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this.__DirectoryProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
-      this._ModalSvc.close('DirectoryTreeComponent.onMenuPropertiesClick');
+      this._ModalSvc.close(this._ModalId_Properties);
     }
     this._ModalSvc.open(mModalOptions);
   }
 
   onMenuRenameClick(item: IDirectoryTree) {
     console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions('DirectoryTreeComponent.onMenuRenameClick', 'Rename File', this._RenameDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameDirectory, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
