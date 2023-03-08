@@ -139,7 +139,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
 
   onMenuDeleteClick(item: IDirectoryTree){
-    console.log('item', item);
+    // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
@@ -155,7 +155,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   }
 
   onMenuPropertiesClick(item: IDirectoryTree) {
-    console.log('item', item);
+    // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this.__DirectoryProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
@@ -165,7 +165,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   }
 
   onMenuRenameClick(item: IDirectoryTree) {
-    console.log('item', item);
+    // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameDirectory, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
