@@ -14,6 +14,8 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib/features/logging';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
+import { ISecurityInfo, SecurityInfo } from '@Growthware/Lib/src/lib/models';
+import { SecurityService } from '@Growthware/Lib/src/lib/services';
 // Feature
 import { IDirectoryTree } from '../../directory-tree.model';
 import { FileManagerService } from '../../file-manager.service';
@@ -27,6 +29,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private _Action: string = '';
   private _DirectoriesSubject = new BehaviorSubject<IDirectoryTree[]>([]);
+  private _SecurityInfo: ISecurityInfo = new SecurityInfo();
   private _Subscriptions: Subscription = new Subscription();
 
   @Input() doGetFiles: boolean = true;
@@ -41,8 +44,11 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     return this.frmRenameDirectory.controls;
   }
 
-  treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
   readonly dataSource = this._DirectoriesSubject.asObservable();
+  treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
+  showDelete: boolean = false;
+  showRename: boolean = false;  
+
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
   @ViewChild('deleteDirectory', { read: TemplateRef }) private _DeleteDirectory!:TemplateRef<any>;
@@ -57,7 +63,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    private _Router: Router
+    private _Router: Router,
+    private _SecuritySvc: SecurityService
   ) { 
     // do nothing
   }
@@ -70,6 +77,11 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
     this.configurationName = this._Action + '_Directories';
     if(!this._GWCommon.isNullOrEmpty(this.configurationName)) {
+      this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
+        this._SecurityInfo = response;
+      }).catch((error)=>{
+        this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
+      });
       this.populateRenameDirectoryForm()
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
@@ -187,6 +199,13 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   }
 
   onSelectDirectory(node: IDirectoryTree): void {
+    // console.log('node', node);
+    this.showDelete = false;
+    this.showRename = false;
+    if(node.relitivePath.length !== 0 ) {
+      this.showDelete = this._SecurityInfo.mayDelete;
+      this.showRename = this._SecurityInfo.mayEdit;
+    }
     this._FileManagerSvc.setSelectedDirectory(node);
     if(this.doGetFiles) {
       const mAction = this.configurationName.replace('_Directories', '');
