@@ -108,7 +108,7 @@ export class FileListComponent implements OnInit {
   }
 
   onMenuDeleteClick(item: IFileInfoLight){
-    console.log('item', item);
+    // console.log('item', item);
     this.selectedFile = item;
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete File', this._DeleteFile, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
