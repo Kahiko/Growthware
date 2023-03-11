@@ -171,7 +171,16 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   }
 
   onRenameSubmit(form: FormGroup): void {
-
+    // console.log('form', form);
+    this._ModalSvc.close(this._ModalId_Rename);
+      this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName']).then((response) => {
+        form.reset();
+        this._FileManagerSvc.getFiles(this._Action, this._Action + '_Files', this._FileManagerSvc.SelectedPath);
+        this._ModalSvc.close(this._ModalId_Rename);
+        this._LoggingSvc.toast('File was renamed', 'Rename direcory', LogLevel.Success);
+      }).catch((error) => {
+        this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');
+      });
   }
 
   /**
@@ -199,7 +208,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private populateRenameDirectoryForm(): void {
     this.frmRenameDirectory = this._FormBuilder.group({
-      newFileName: ['', [Validators.required]],
+      newDirectoryName: ['', [Validators.required]],
     });
   }
 

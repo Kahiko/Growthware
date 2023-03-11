@@ -180,6 +180,39 @@ public abstract class AbstractFileController : ControllerBase
         directoryInfo.Delete();
     }
 
+    [HttpPost("RenameDirectory")]
+    public ActionResult RenameDirectory(string action, string selectedPath, string newName)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
+        if(mSecurityInfo.MayEdit)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            if(mDirectoryProfile != null)
+            {
+                string[] mSelectedPathParts = selectedPath.Split(@"\");
+                string mSelectedPath = "";
+                if(mSelectedPathParts.Count() == 0) { mSelectedPathParts = selectedPath.Split(@"/"); }
+                if(mSelectedPathParts.Count() > 2)
+                {
+                    mSelectedPath = selectedPath.Replace(mSelectedPathParts[mSelectedPathParts.Count() -1], "");
+                }
+                string mOldDirectoryName = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+                string mNewDirectoryName = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
+                mNewDirectoryName = Path.Combine(mNewDirectoryName, newName);
+                if(mOldDirectoryName != mDirectoryProfile.Directory)
+                {
+                    Directory.Move(mOldDirectoryName, mNewDirectoryName);
+                    return Ok();
+                }
+                return StatusCode(StatusCodes.Status403Forbidden, "Not allowed to change the root directory");
+            }
+            return StatusCode(StatusCodes.Status404NotFound , "Could not determine the directory information");
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
     [HttpPost("RenameFile")]
     public ActionResult RenameFile(string action, string selectedPath, string oldName, string newName)
     {
@@ -189,19 +222,23 @@ public abstract class AbstractFileController : ControllerBase
         if(mSecurityInfo.MayEdit)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
-            string mOldFileName = mPath + oldName;
-            string mNewFileName = mPath + newName;
-            if(!System.IO.File.Exists(mOldFileName)) 
+            if(mDirectoryProfile != null)
             {
-                return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", oldName));
+                string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+                string mOldFileName = mPath + oldName;
+                string mNewFileName = mPath + newName;
+                if(!System.IO.File.Exists(mOldFileName)) 
+                {
+                    return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", oldName));
+                }
+                if(System.IO.File.Exists(mNewFileName)) 
+                {
+                    return StatusCode(StatusCodes.Status409Conflict , String.Format("The file '{0}' already exists please delete it first", oldName));
+                }
+                System.IO.File.Move(mOldFileName, mNewFileName);
+                return Ok();
             }
-            if(System.IO.File.Exists(mNewFileName)) 
-            {
-                return StatusCode(StatusCodes.Status409Conflict , String.Format("The file '{0}' already exists please delete it first", oldName));
-            }
-            System.IO.File.Move(mOldFileName, mNewFileName);
-            return Ok();
+            return StatusCode(StatusCodes.Status404NotFound , "Could not determine the directory information");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
