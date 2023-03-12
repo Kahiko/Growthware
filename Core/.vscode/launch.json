@@ -101,7 +101,7 @@
             "request": "launch",
             "preLaunchTask": "DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net7.0/DatabaseManager.dll",
+            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net7.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
                 "1.0.0.1"
