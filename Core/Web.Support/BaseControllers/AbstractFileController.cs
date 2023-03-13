@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -104,10 +104,23 @@ public abstract class AbstractFileController : ControllerBase
         if(mSecurityInfo.MayView)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
-            MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mDirectoryProfile.Directory), mDirectoryProfile.Directory);
-            string result =  mDirTree.ToJson();
-            return Ok(mDirTree);
+            DirectoryInfo mDirectoryInfo = new DirectoryInfo(mDirectoryProfile.Directory);
+            try
+            {
+                if(mDirectoryInfo == null || !mDirectoryInfo.Exists) 
+                { 
+                    mDirectoryInfo.Create(); 
+                }
+                // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
+                MDirectoryTree mDirTree = new MDirectoryTree(mDirectoryInfo, mDirectoryProfile.Directory);
+                string result =  mDirTree.ToJson();
+                return Ok(mDirTree);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Instance().Error(ex);
+                return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+            }
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
