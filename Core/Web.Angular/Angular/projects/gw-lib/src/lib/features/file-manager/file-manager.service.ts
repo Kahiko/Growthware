@@ -49,6 +49,14 @@ export class FileManagerService {
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
+  /**
+   * Deletes a directory, subdirectory and all files
+   *
+   * @param {string} action
+   * @param {string} selectedPath
+   * @return {*}  {Promise<boolean>}
+   * @memberof FileManagerService
+   */
   async deleteDirectory(action: string, selectedPath: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(action)) {
