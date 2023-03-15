@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span>
-    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
+    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_" (click)="onCreateDirectory()">
       <span color="white" class="material-icons">add</span>
       <span>New Folder</span>
     </button>
@@ -9,7 +9,7 @@
     <gw-lib-upload></gw-lib-upload>
   </span>
   <span>
-    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_">
+    <button type="button" mat-button color="accent" id="btnRefresh_" name="btnRefresh_">
       <span color="white" class="material-icons">refresh</span>
     </button>
   </span>
@@ -35,3 +35,33 @@
     </div>
   </div>
 </div>
+<ng-template #createDirectory>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <form [formGroup]="frmCreateDirectory" (ngSubmit)="onCreateDirectorySubmit(frmCreateDirectory)">
+        <div class="table">
+          <div class="tr">
+            <div class="td left">
+              <span class="Form_LabelText">New name&nbsp;:</span>
+            </div>
+            <div class="td right">
+              <input formControlName="newDirectoryName" class="Form_Field rounded" id="newDirectoryName" />&nbsp;
+            </div>
+            <div class="td">
+              <span *ngIf="getControls['newDirectoryName'].hasError('required')" class="Form_LabelTextRed">{{getErrorMessage('newDirectoryName')}}</span>
+            </div>
+          </div>
+          <div class="tr">
+            <div class="td"></div>
+            <div class="td right">
+              <button type="submit" [disabled]="frmCreateDirectory.invalid" mat-button class="Form_Button" style="float: right;" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+              </button>
+            </div>
+            <div class="td"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
