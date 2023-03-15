@@ -265,6 +265,14 @@ export class FileManagerService {
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 
+  /**
+   * Renames a directory
+   *
+   * @param {string} action
+   * @param {string} newName
+   * @return {*}  {Promise<boolean>}
+   * @memberof FileManagerService
+   */
   async renameDirectory(action: string, newName: string): Promise<boolean> {
     if(this._GWCommon.isNullOrEmpty(action)) {
       throw new Error("action can not be blank!");
