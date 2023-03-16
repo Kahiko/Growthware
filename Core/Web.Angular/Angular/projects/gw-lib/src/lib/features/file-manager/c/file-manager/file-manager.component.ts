@@ -18,6 +18,7 @@ import { FileManagerService } from '../../file-manager.service';
 })
 export class FileManagerComponent implements OnInit {
 
+  private _Action: string = '';
   private _ModalId_CreateDirectory: string = "CreateDirectoryForm";
 
   frmCreateDirectory!: FormGroup;
@@ -37,10 +38,10 @@ export class FileManagerComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const mAction: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
-    this.configurationName = mAction;
-    const mForControl: string = mAction + "_Directories";
-    this._FileManagerSvc.getDirectories(mAction, '\\', mForControl);
+    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.configurationName = this._Action;
+    const mForControl: string = this._Action + "_Directories";
+    this._FileManagerSvc.getDirectories(this._Action, '\\', mForControl);
     this.populateCreateDirectoryForm('');
   }
 
@@ -68,9 +69,17 @@ export class FileManagerComponent implements OnInit {
     this._ModalSvc.open(mModalOptions);
   }
 
-  onCreateDirectorySubmit(form: FormGroup): void
+  onCreateDirectorySubmit(): void
   {
-    this._ModalSvc.close(this._ModalId_CreateDirectory);
+    // this.frmCreateDirectory.reset();
+    // this._ModalSvc.close(this._ModalId_CreateDirectory);
+    this._FileManagerSvc.createDirectory(this._Action, this.getControls['newDirectoryName'].value).then((response) => {
+      this.frmCreateDirectory.reset();
+      this._ModalSvc.close(this._ModalId_CreateDirectory);
+      this._LoggingSvc.toast('Folder has been created', 'New Folder', LogLevel.Success);
+    }).catch((error) => {
+      this._LoggingSvc.errorHandler(error, 'FileManagerComponent', 'onCreateDirectorySubmit');
+    });
   }
 
 

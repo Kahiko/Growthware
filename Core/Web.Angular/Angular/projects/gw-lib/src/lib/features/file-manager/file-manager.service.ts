@@ -55,6 +55,7 @@ export class FileManagerService {
    * Creates a new directory in the currectly selected directory
    *
    * @param {string} action
+   * @param {string} selectedPath
    * @param {string} newPath
    * @return {*}  {Promise<any>}
    * @memberof FileManagerService
@@ -68,7 +69,7 @@ export class FileManagerService {
       throw new Error("newPath can not be blank!");
     };
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
-    mQueryParameter = mQueryParameter.append('selectedPath', this._SelectedPath);
+    mQueryParameter = mQueryParameter.append('selectedPath', this.SelectedPath);
     mQueryParameter = mQueryParameter.append('newPath', newPath);
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -77,7 +78,7 @@ export class FileManagerService {
       params: mQueryParameter,
     };
     return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<any>(this._Api_CreateDirectory, mHttpOptions).subscribe({
+      this._HttpClient.post<any>(this._Api_CreateDirectory, null, mHttpOptions).subscribe({
         next:( response: boolean ) => {
           resolve(response)
         },
