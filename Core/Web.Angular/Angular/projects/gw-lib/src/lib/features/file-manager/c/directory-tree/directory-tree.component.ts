@@ -50,7 +50,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   readonly dataSource = this._DirectoriesSubject.asObservable();
   treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
   showDelete: boolean = false;
-  showRename: boolean = false;  
+  showRename: boolean = false;
 
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;

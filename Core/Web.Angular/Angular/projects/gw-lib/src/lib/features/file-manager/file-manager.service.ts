@@ -24,7 +24,12 @@ export class FileManagerService {
   private _Api_RenameDirectory: string = '';
   private _Api_RenameFile: string = '';
   private _Api_UploadFile: string = '';
+  private _CurrentDirectoryTree!: IDirectoryTree;
   private _SelectedPath: string = '\\';
+
+  public set CurrentDirectoryTree(value: IDirectoryTree) {
+    this._CurrentDirectoryTree = value;
+  }
 
   public get SelectedPath(): string {
     return this._SelectedPath;
@@ -123,7 +128,7 @@ export class FileManagerService {
    * @param {string} path The relative of the directory path 
    * @memberof FileManagerService
    */
-  public getDirectories(action: string, path: string, forControl: string): void {
+  public async getDirectories(action: string, path: string, forControl: string): Promise<boolean> {
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
     mQueryParameter = mQueryParameter.append('selectedPath', path);
     const mHttpOptions = {
@@ -132,16 +137,20 @@ export class FileManagerService {
       }),
       params: mQueryParameter,
     };
-    this._HttpClient.get<IDirectoryTree>(this._Api_GetDirectories, mHttpOptions).subscribe({
-      next: (response: IDirectoryTree) => {
-        const mDirectoryTree = [];
-        mDirectoryTree.push(response);
-        this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
-      },
-      error: (error: any) => {
-        this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
-      },
-      // complete: () => {}
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.get<IDirectoryTree>(this._Api_GetDirectories, mHttpOptions).subscribe({
+        next: (response: IDirectoryTree) => {
+          const mDirectoryTree = [];
+          mDirectoryTree.push(response);
+          this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
+          resolve(true);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
+          reject(false);
+        },
+        // complete: () => {}
+      });
     });
   }
 
@@ -265,6 +274,20 @@ export class FileManagerService {
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 
+  async refresh(action: string): Promise<any> {
+    const mAction = action.trim();
+    const mSelectedNode = this._CurrentDirectoryTree;
+    const mDirectoryControlName = mAction + '_Directories';
+    const mFileControleName = mAction + '_Files';
+    this.getDirectories(mAction, mDirectoryControlName, mSelectedNode.relitivePath).catch((error) => {
+      this._LoggingSvc.errorHandler(error, 'FileManagerService', 'refresh/getDirectories');
+    }).then((response: any) => {
+      this.selectedDirectoryChanged.next(mSelectedNode);
+      this._SelectedPath = mSelectedNode.relitivePath;
+      this.getFiles(mAction, mFileControleName, this._SelectedPath);
+    });
+  }
+
   async renameDirectory(action: string, newName: string): Promise<boolean> {
     if(this._GWCommon.isNullOrEmpty(action)) {
       throw new Error("action can not be blank!");
@@ -367,6 +390,7 @@ export class FileManagerService {
   }
 
   public setSelectedDirectory(directoryTree: IDirectoryTree): void {
+    this._CurrentDirectoryTree = directoryTree;
     this.selectedDirectoryChanged.next(directoryTree);
   }
   

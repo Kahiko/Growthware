@@ -17,6 +17,8 @@ export class FileManagerComponent implements OnInit {
 
   @Input() configurationName: string = '';
 
+  private _Action: string = '';
+
   constructor(
     private _FileManagerSvc: FileManagerService,
     private _GWCommon: GWCommon,
@@ -28,8 +30,13 @@ export class FileManagerComponent implements OnInit {
 
   ngOnInit(): void {
     const mAction: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this._Action = mAction;
     this.configurationName = mAction;
     const mForControl: string = mAction + "_Directories";
     this._FileManagerSvc.getDirectories(mAction, '\\', mForControl);
+  }
+
+  onRefresh(): void {
+    this._FileManagerSvc.refresh(this._Action);
   }
 }

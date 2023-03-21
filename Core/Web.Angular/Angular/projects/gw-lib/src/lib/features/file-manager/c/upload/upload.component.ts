@@ -17,6 +17,7 @@ import { IUploadStatus } from '../../upload-status.model';
   styleUrls: ['./upload.component.scss']
 })
 export class UploadComponent implements OnDestroy, OnInit {
+  private _Action: string = '';
   private _NumberOfFilesCompleted: number = 0;  
   private _ProgressModalId: string = 'progressTemplate'
   private _TotalNumberOfFiles: number = 0;
@@ -45,25 +46,22 @@ export class UploadComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this.id = this._Router.url.split('?')[0] .replace('/', '').replace('\\','') + "_Upload";
+    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this.id = this._Action + "_Upload";
     if(!this._GWCommon.isNullOrEmpty(this.id)) {
       this._Subscription.add(this._FileManagerSvc.uploadStatusChanged.subscribe((data: IUploadStatus) => {
         // console.log('data', data);
         if (data.id.toLowerCase() + "_upload" === this.id.toLowerCase()) {
-          const mPercent: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
-          this.fileProgressSubject.next(mPercent);
-          if(mPercent == 100) {
+          const mFilePercentage: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
+          this.fileProgressSubject.next(mFilePercentage);
+          if(mFilePercentage == 100) {
             this._NumberOfFilesCompleted = this._NumberOfFilesCompleted + 1;
             const mTotalPercent: number = Math.floor((this._NumberOfFilesCompleted / this._TotalNumberOfFiles) * 100);
             this.overallProgressSubject.next(mTotalPercent);
             if(mTotalPercent == 100) {
               this._GWCommon.sleep(500).then(() => {
                 this.showFileProgress = false;
-                const mAction = this.id.replace('_Upload', '');
-                let mForControlName = mAction + "_Files";
-                this._FileManagerSvc.getFiles(mAction, mForControlName, this._FileManagerSvc.SelectedPath);
-                mForControlName = mForControlName.replace('_Files', '_Directories');
-                this._FileManagerSvc.getDirectories(mAction, '\\', mForControlName);
+                this._FileManagerSvc.refresh(this._Action);
                 this._GWCommon.sleep(3000).then(() => {
                   this.onOk();
                 });
