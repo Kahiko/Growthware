@@ -7,7 +7,7 @@
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/GrowthWare.DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -19,7 +19,7 @@
             "type": "process",
             "args": [
                 "publish",
-                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/GrowthWare.DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -69,7 +69,7 @@
             "args": [
                 "watch",
                 "run",
-                "${workspaceFolder}/DatabaseManager/DatabaseManager.csproj",
+                "${workspaceFolder}/DatabaseManager/GrowthWare.DatabaseManager.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],

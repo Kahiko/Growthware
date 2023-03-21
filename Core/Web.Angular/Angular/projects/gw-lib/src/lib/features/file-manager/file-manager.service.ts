@@ -19,6 +19,7 @@ export class FileManagerService {
   private _Api: string = '';
   private _Api_GetDirectories: string = '';
   private _Api_GetFiles: string = '';
+  private _Api_CreateDirectory: string = '';
   private _Api_DeleteDirectory: string = '';
   private _Api_DeleteFile: string = '';
   private _Api_RenameDirectory: string = '';
@@ -47,6 +48,7 @@ export class FileManagerService {
     this._Api = this._GWCommon.baseURL + 'GrowthwareFile/';
     this._Api_GetDirectories = this._Api + 'GetDirectories';
     this._Api_GetFiles = this._Api + 'GetFiles';
+    this._Api_CreateDirectory = this._Api + 'CreateDirectory';
     this._Api_DeleteDirectory = this._Api + 'DeleteDirectory';
     this._Api_DeleteFile = this._Api + 'DeleteFile';
     this._Api_RenameDirectory = this._Api + 'RenameDirectory';
@@ -54,6 +56,54 @@ export class FileManagerService {
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
+  /**
+   * Creates a new directory in the currectly selected directory
+   *
+   * @param {string} action
+   * @param {string} selectedPath
+   * @param {string} newPath
+   * @return {*}  {Promise<any>}
+   * @memberof FileManagerService
+   */
+  async createDirectory(action: string, newPath: string): Promise<any>
+  {
+    if(this._GWCommon.isNullOrEmpty(action)) {
+      throw new Error("action can not be blank!");
+    }
+    if(this._GWCommon.isNullOrEmpty(newPath)) {
+      throw new Error("newPath can not be blank!");
+    };
+    let mQueryParameter: HttpParams = new HttpParams().append('action', action);
+    mQueryParameter = mQueryParameter.append('selectedPath', this.SelectedPath);
+    mQueryParameter = mQueryParameter.append('newPath', newPath);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<any>(this._Api_CreateDirectory, null, mHttpOptions).subscribe({
+        next:( response: boolean ) => {
+          resolve(response)
+        },
+        error:( error: any ) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'createDirectory');
+          reject(false);
+        },
+        complete:( ) => {}
+      });
+    });
+  }
+
+  /**
+   * Deletes a directory, subdirectory and all files
+   *
+   * @param {string} action
+   * @param {string} selectedPath
+   * @return {*}  {Promise<boolean>}
+   * @memberof FileManagerService
+   */
   async deleteDirectory(action: string, selectedPath: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(action)) {

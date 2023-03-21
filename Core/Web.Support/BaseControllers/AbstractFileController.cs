@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Security.AccessControl;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
@@ -41,6 +41,27 @@ public abstract class AbstractFileController : ControllerBase
         return mRetVal;
     }
 
+    [HttpPost("CreateDirectory")]
+    public ActionResult CreateDirectory(string action, string selectedPath, string newPath)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if(mSecurityInfo.MayAdd)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            string mCurrentPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+            string mNewDirectoryName = Path.Combine(mCurrentPath, newPath);
+            DirectoryInfo mDirectoryInfo = new DirectoryInfo(mNewDirectoryName);
+            if(!mDirectoryInfo.Exists) 
+            {
+                mDirectoryInfo.Create();
+            }
+            return Ok();
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
     [HttpDelete("DeleteDirectory")]
     public ActionResult<bool> DeleteDirectory(string action, string selectedPath)
     {
@@ -54,7 +75,7 @@ public abstract class AbstractFileController : ControllerBase
             if(mFullPath != mDirectoryProfile.Directory)
             {
                 DirectoryInfo mDirectoryInfo = new DirectoryInfo(mFullPath);
-                RecursiveDelete(mDirectoryInfo);
+                recursiveDelete(mDirectoryInfo);
                 return Ok(true);
             }
             return StatusCode(StatusCodes.Status403Forbidden, "The root directory can not be deleted");
@@ -104,10 +125,23 @@ public abstract class AbstractFileController : ControllerBase
         if(mSecurityInfo.MayView)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
-            MDirectoryTree mDirTree = new MDirectoryTree(new DirectoryInfo(mDirectoryProfile.Directory), mDirectoryProfile.Directory);
-            string result =  mDirTree.ToJson();
-            return Ok(mDirTree);
+            DirectoryInfo mDirectoryInfo = new DirectoryInfo(mDirectoryProfile.Directory);
+            try
+            {
+                if(mDirectoryInfo == null || !mDirectoryInfo.Exists) 
+                { 
+                    mDirectoryInfo.Create(); 
+                }
+                // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
+                MDirectoryTree mDirTree = new MDirectoryTree(mDirectoryInfo, mDirectoryProfile.Directory);
+                string result =  mDirTree.ToJson();
+                return Ok(mDirTree);
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Instance().Error(ex);
+                return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+            }
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -160,7 +194,11 @@ public abstract class AbstractFileController : ControllerBase
         }
     }
 
-    public static void RecursiveDelete(DirectoryInfo directoryInfo)
+    /// <summary>
+    /// Deletes a directory and all subdirectories and files
+    /// </summary>
+    /// <param name="directoryInfo"></param>
+    private static void recursiveDelete(DirectoryInfo directoryInfo)
     {
         if (!directoryInfo.Exists)
         {
@@ -169,7 +207,7 @@ public abstract class AbstractFileController : ControllerBase
 
         foreach (DirectoryInfo mDirectoryInfo in directoryInfo.EnumerateDirectories())
         {
-            RecursiveDelete(mDirectoryInfo);
+            recursiveDelete(mDirectoryInfo);
         }
         FileInfo[] mFiles = directoryInfo.GetFiles();
         foreach (var mFileInfo in mFiles)
