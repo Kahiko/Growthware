@@ -43,10 +43,6 @@ export class FileManagerComponent implements OnInit {
     this.configurationName = mAction;
     const mForControl: string = mAction + "_Directories";
     this._FileManagerSvc.getDirectories(mAction, '\\', mForControl);
-    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
-    this.configurationName = this._Action;
-    const mForControl: string = this._Action + "_Directories";
-    this._FileManagerSvc.getDirectories(this._Action, '\\', mForControl);
     this.populateCreateDirectoryForm('');
   }
 
