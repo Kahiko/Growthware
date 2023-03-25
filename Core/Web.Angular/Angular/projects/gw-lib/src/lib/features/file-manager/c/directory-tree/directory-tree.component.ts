@@ -6,7 +6,7 @@ import { TemplateRef } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 // import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { of, BehaviorSubject, map, Subscription } from 'rxjs';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
@@ -29,6 +29,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private _Action: string = '';
   private _DirectoriesSubject = new BehaviorSubject<IDirectoryTree[]>([]);
+  private _DirectoryData!: IDirectoryTree[];
   private _ModalId_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
   private _ModalId_Properties = 'DirectoryTreeComponent.onMenuPropertiesClick';
   private _ModalId_Rename = 'DirectoryTreeComponent.onMenuRenameClick';
@@ -90,6 +91,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
           // console.log('data.payLoad', data.payLoad);
+          this._DirectoryData = data.payLoad;
           this._DirectoriesSubject.next(data.payLoad);
           if(this.doGetFiles) {
             const mAction = this.configurationName.replace('_Directories', '');
@@ -145,7 +147,21 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
       this._FileManagerSvc.deleteDirectory(this._Action, this.selectedPath).then((response) => {
-        this._ModalSvc.close(this._ModalId_Delete);
+        const mRelitivePathParts = item.relitivePath.split('\\');
+        let mDesirectedPath: string = '';
+        for (let index = 1; index < mRelitivePathParts.length -1; index++) {
+          mDesirectedPath += '\\' + mRelitivePathParts[index];            
+        }
+        this._FileManagerSvc.getDirectories(this._Action, mDesirectedPath, this.configurationName).catch((error: any) => {
+          this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
+        }).then((response) => {
+          this._FileManagerSvc.refresh(this._Action);
+          const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this._DirectoryData, mDesirectedPath, 'relitivePath', 'children')
+          if(mPreviousDirectoryNode !== null) {
+            this._FileManagerSvc.setSelectedDirectory(mPreviousDirectoryNode);
+          }
+          this._ModalSvc.close(this._ModalId_Delete);
+        });
       }).catch((error) => {
         this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         this._LoggingSvc.toast('Was not able to delete the directory', 'Delete directory error', LogLevel.Error);

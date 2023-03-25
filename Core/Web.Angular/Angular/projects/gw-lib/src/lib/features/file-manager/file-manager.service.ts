@@ -120,16 +120,17 @@ export class FileManagerService {
         }),
         params: mQueryParameter,
       };
-      this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
-        next:( response: boolean ) => {
-          resolve(response)
-        },
-        error:( error: any ) => {
-          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
-          reject(false);
-        },
-        complete:( ) => {}
-      });
+      resolve(true);
+      // this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
+      //   next:( response: boolean ) => {
+      //     resolve(response)
+      //   },
+      //   error:( error: any ) => {
+      //     this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
+      //     reject(false);
+      //   },
+      //   complete:( ) => {}
+      // });
     });
   }
 
@@ -324,11 +325,14 @@ export class FileManagerService {
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 
-  async refresh(action: string): Promise<any> {
+  async refresh(action: string, directoryTree?: IDirectoryTree): Promise<any> {
     const mAction = action.trim();
-    const mSelectedNode = this._CurrentDirectoryTree;
+    let mSelectedNode = this._CurrentDirectoryTree;
     const mDirectoryControlName = mAction + '_Directories';
     const mFileControleName = mAction + '_Files';
+    if(directoryTree != undefined) {
+      mSelectedNode = directoryTree;
+    }
     this.getDirectories(mAction, mDirectoryControlName, mSelectedNode.relitivePath).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'FileManagerService', 'refresh/getDirectories');
     }).then((response: any) => {
