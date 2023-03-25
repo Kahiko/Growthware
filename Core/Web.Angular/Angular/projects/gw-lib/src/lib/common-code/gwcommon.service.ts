@@ -122,6 +122,39 @@ export class GWCommon {
   }
 
   /**
+   * Searches hierarchical data for an object with specified prop with value
+   *
+   * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
+   * @param {(string | number)} searchValue value of searched node's  prop
+   * @param {string} nameOfProperty name of the property used to compare against the value parameter
+   * @param {string} nameOfChildNodes name of prop that holds child nodes array (default value of 'children')
+   * @return {*}  {*} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+   * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+   * @memberof GWCommon
+   */
+  public hierarchySearch(data: any, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): object | null {
+    var i: number // iterator
+    var mNode: any = null; // found node
+    if (Array.isArray(data)) { // if entry object is array objects, check each object
+      for (i = 0; i < data.length; i++) {
+        mNode = this.hierarchySearch(data[i], searchValue, nameOfProperty, nameOfChildNodes);
+        if (mNode) { // if found matching object, return it.
+          return mNode;
+        }
+      }
+    } else if (typeof data === 'object') { // standard tree node (one root)
+      if (data[nameOfProperty] !== undefined && data[nameOfProperty] === searchValue) {
+        return data; // found matching node
+      }
+    }
+    if (data[nameOfChildNodes] !== undefined && data[nameOfChildNodes].length > 0) { // did not find the node but there more children to search
+      return this.hierarchySearch(data[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes);
+    } else {
+      return null; // node does not match and did not find it in any of the children
+    }
+  }
+
+  /**
    * Determines if the obj is a function
    *
    * @static
@@ -222,6 +255,7 @@ export class GWCommon {
     }
     return 0;
   }
+
 
   /**
    * sleep for x number of milliseconds
