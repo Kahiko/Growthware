@@ -155,11 +155,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
         this._FileManagerSvc.getDirectories(this._Action, mDesirectedPath, this.configurationName).catch((error: any) => {
           this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         }).then((response) => {
-          this._FileManagerSvc.refresh(this._Action);
           const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this._DirectoryData, mDesirectedPath, 'relitivePath', 'children')
-          if(mPreviousDirectoryNode !== null) {
-            this._FileManagerSvc.setSelectedDirectory(mPreviousDirectoryNode);
-          }
+          this.selectDirectory(mPreviousDirectoryNode);
           this._ModalSvc.close(this._ModalId_Delete);
         });
       }).catch((error) => {
@@ -230,17 +227,21 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   onSelectDirectory(node: IDirectoryTree): void {
     // console.log('node', node);
-    this.showDelete = false;
-    this.showRename = false;
-    if(node.relitivePath.length !== 0 ) {
-      this.showDelete = this._SecurityInfo.mayDelete;
-      this.showRename = this._SecurityInfo.mayEdit;
-    }
-    this._FileManagerSvc.setSelectedDirectory(node);
+    this.selectDirectory(node);
     if(this.doGetFiles) {
       const mAction = this.configurationName.replace('_Directories', '');
       const mForControlName = mAction + '_Files';
       this._FileManagerSvc.getFiles(mAction, mForControlName, node.relitivePath);
     }
+  }
+
+  private selectDirectory(directoryTree: IDirectoryTree): void {
+    this.showDelete = false;
+    this.showRename = false;
+    if(directoryTree.relitivePath.length !== 0 ) {
+      this.showDelete = this._SecurityInfo.mayDelete;
+      this.showRename = this._SecurityInfo.mayEdit;
+    }
+    this._FileManagerSvc.setSelectedDirectory(directoryTree);    
   }
 }
