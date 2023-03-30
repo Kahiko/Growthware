@@ -4,7 +4,7 @@ import { NestedTreeControl } from '@angular/cdk/tree';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
-// import { MatTreeNestedDataSource } from '@angular/material/tree';
+import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Router } from '@angular/router';
 import { of, BehaviorSubject, map, Subscription } from 'rxjs';
 // Library
@@ -28,8 +28,6 @@ import { FileManagerService } from '../../file-manager.service';
 export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private _Action: string = '';
-  private _DirectoriesSubject = new BehaviorSubject<IDirectoryTree[]>([]);
-  private _DirectoryData!: IDirectoryTree[];
   private _ModalId_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
   private _ModalId_Properties = 'DirectoryTreeComponent.onMenuPropertiesClick';
   private _ModalId_Rename = 'DirectoryTreeComponent.onMenuRenameClick';
@@ -48,7 +46,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     return this.frmRenameDirectory.controls;
   }
 
-  readonly dataSource = this._DirectoriesSubject.asObservable();
+  dataSource = new MatTreeNestedDataSource<IDirectoryTree>();
   treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
   showDelete: boolean = false;
   showRename: boolean = false;
@@ -91,8 +89,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
           // console.log('data.payLoad', data.payLoad);
-          this._DirectoryData = data.payLoad;
-          this._DirectoriesSubject.next(data.payLoad);
+          this.dataSource.data = data.payLoad;
           if(this.doGetFiles) {
             const mAction = this.configurationName.replace('_Directories', '');
             const mForControlName = mAction + '_Files';
@@ -103,6 +100,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
         }
       }));
       this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged.subscribe((data: IDirectoryTree) => {
+        this.expand(this.dataSource.data, data.relitivePath);
         this.selectedPath = data.relitivePath;
         this.activeNode = data;   
       }));
@@ -122,6 +120,19 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       )
       this._LoggingSvc.log(mLogOptions);
     }
+  }
+
+  expand(data: IDirectoryTree[], relitivePath: string): any {
+    data.forEach(node => {
+      if (node.children && node.children.find(c => c.relitivePath === relitivePath)) {
+        this.treeControl.expand(node);
+        // this.expand(this.dataSource.data, node.relitivePath);
+        this.expand(data, node.relitivePath);
+      }
+      else if (node.children && node.children.find(c => c.children)) {
+        this.expand(node.children, relitivePath);
+      }
+    });
   }
 
   getErrorMessage(fieldName: string): string | undefined {
@@ -155,7 +166,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
         this._FileManagerSvc.getDirectories(this._Action, mDesirectedPath, this.configurationName).catch((error: any) => {
           this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         }).then((response) => {
-          const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this._DirectoryData, mDesirectedPath, 'relitivePath', 'children')
+          const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this.dataSource.data, mDesirectedPath, 'relitivePath', 'children');
           this.selectDirectory(mPreviousDirectoryNode);
           this._ModalSvc.close(this._ModalId_Delete);
         });
