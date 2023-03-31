@@ -122,7 +122,7 @@ export class GWCommon {
   }
 
   /**
-   * Searches hierarchical data for an object with specified prop with value
+   * @description Searches hierarchical data for an object with specified properties value
    *
    * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
    * @param {(string | number)} searchValue value of searched node's  prop
