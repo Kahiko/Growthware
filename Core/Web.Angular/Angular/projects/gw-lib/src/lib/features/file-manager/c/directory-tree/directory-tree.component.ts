@@ -6,7 +6,7 @@ import { TemplateRef } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { Router } from '@angular/router';
-import { of, BehaviorSubject, map, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 // Library
 import { DataNVP } from '@Growthware/Lib/src/lib/models';
 import { DataService } from '@Growthware/Lib/src/lib/services';
@@ -122,6 +122,14 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     }
   }
 
+  /**
+   * Expands all the parent nodes given the hierarchical data and the value of the unique node property
+   *
+   * @param {IDirectoryTree[]} data
+   * @param {string} relitivePath
+   * @return {*}  {*}
+   * @memberof DirectoryTreeComponent
+   */
   expand(data: IDirectoryTree[], relitivePath: string): any {
     data.forEach(node => {
       if (node.children && node.children.find(c => c.relitivePath === relitivePath)) {
@@ -135,6 +143,13 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     });
   }
 
+  /**
+   * @description Return text for the given field if there is an error with the field
+   *
+   * @param {string} fieldName
+   * @return {*}  {(string | undefined)}
+   * @memberof DirectoryTreeComponent
+   */
   getErrorMessage(fieldName: string): string | undefined {
     switch (fieldName) {
       case 'newName':
@@ -150,6 +165,12 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   hasChild = (_: number, node: IDirectoryTree) => !!node.children && node.children.length > 0;
 
+  /**
+   * @description Handles the delete menu click
+   *
+   * @param {IDirectoryTree} item The tree node
+   * @memberof DirectoryTreeComponent
+   */
   onMenuDeleteClick(item: IDirectoryTree){
     // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
@@ -173,6 +194,12 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     this._ModalSvc.open(mModalOptions);
   }
 
+  /**
+   * @description Handles the properties menu click
+   *
+   * @param {IDirectoryTree} item The tree node
+   * @memberof DirectoryTreeComponent
+   */
   onMenuPropertiesClick(item: IDirectoryTree) {
     // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this.__DirectoryProperties, new WindowSize(80, 600));
@@ -183,12 +210,24 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     this._ModalSvc.open(mModalOptions);
   }
 
+  /**
+   * @description Handles the rename menu click
+   *
+   * @param {IDirectoryTree} item The tree node
+   * @memberof DirectoryTreeComponent
+   */
   onMenuRenameClick(item: IDirectoryTree) {
     // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameDirectory, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
+  /**
+   * @description Handles the rename submit click
+   *
+   * @param {IDirectoryTree} item The tree node
+   * @memberof DirectoryTreeComponent
+   */
   onRenameSubmit(form: FormGroup): void {
     // console.log('form', form);
     this._ModalSvc.close(this._ModalId_Rename);
@@ -225,16 +264,36 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     this._MatMenuTrigger.openMenu();
   }
 
+  /**
+   * @description populates the Rename Directory Form
+   *
+   * @private
+   * @memberof DirectoryTreeComponent
+   */
   private populateRenameDirectoryForm(): void {
     this.frmRenameDirectory = this._FormBuilder.group({
       newDirectoryName: ['', [Validators.required]],
     });
   }
 
+  /**
+   * @description Handles the when the tree node has been clicked
+   *
+   * @param {IDirectoryTree} node
+   * @memberof DirectoryTreeComponent
+   */
   onSelectDirectory(node: IDirectoryTree): void {
     this.selectDirectory(node);
   }
 
+  /**
+   * @description Return the previous directory node's relitive path
+   *
+   * @private
+   * @param {IDirectoryTree} directoryTree
+   * @return {*}  {string}
+   * @memberof DirectoryTreeComponent
+   */
   private previousRelitavePath(directoryTree: IDirectoryTree): string {
     const mRelitivePathParts = directoryTree.relitivePath.split('\\');
     let mRetVal: string = '';
@@ -244,6 +303,13 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     return mRetVal;
   }
 
+  /**
+   * @description Performs the logic for a select directory event
+   *
+   * @private
+   * @param {IDirectoryTree} directoryTree
+   * @memberof DirectoryTreeComponent
+   */
   private selectDirectory(directoryTree: IDirectoryTree): void {
     this.showDelete = false;
     this.showRename = false;
