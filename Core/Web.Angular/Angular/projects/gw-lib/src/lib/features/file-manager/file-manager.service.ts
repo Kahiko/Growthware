@@ -120,17 +120,16 @@ export class FileManagerService {
         }),
         params: mQueryParameter,
       };
-      resolve(true);
-      // this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
-      //   next:( response: boolean ) => {
-      //     resolve(response)
-      //   },
-      //   error:( error: any ) => {
-      //     this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
-      //     reject(false);
-      //   },
-      //   complete:( ) => {}
-      // });
+      this._HttpClient.delete<boolean>(this._Api_DeleteDirectory, mHttpOptions).subscribe({
+        next:( response: boolean ) => {
+          resolve(response)
+        },
+        error:( error: any ) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'deleteFile');
+          reject(false);
+        },
+        complete:( ) => {}
+      });
     });
   }
 
