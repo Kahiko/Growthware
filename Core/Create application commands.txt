@@ -158,6 +158,11 @@ Library:
 		ng generate component features/role/c/SearchRoles --module role --style scss --project gw-lib
 		ng generate service features/role/role --project gw-lib
 
+// https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes
+		ng generate module features/loader --project gw-lib
+		ng generate component features/loader/c/loader --module loader --style scss --project gw-lib
+		ng generate service features/loader/loader --project gw-lib
+
 https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
 	https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
 		ng generate module features/navigation --project gw-lib
