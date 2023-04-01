@@ -218,7 +218,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuRenameClick(item: IDirectoryTree) {
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename File', this._RenameDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename Directory', this._RenameDirectory, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
   }
 
