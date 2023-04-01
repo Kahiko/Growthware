@@ -9,7 +9,9 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b/c of an injection error when loading component from library that uses angular material
 // Library Services
 import { AccountService } from '@Growthware/Lib/src/lib/features/account';
+import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
 // Library Modules
+import { LoaderModule } from '@Growthware/Lib/src/lib/features/loader';
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
 // Library Misc
@@ -22,6 +24,7 @@ import { SystemModule } from './skins/system/system.module';
 import { AppComponent } from './app.component';
 // Application
 import { appInitializer } from './app.initializer';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
@@ -39,6 +42,7 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     DefaultModule,
     HttpClientModule,
+    LoaderModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,
@@ -55,6 +59,7 @@ export function tokenGetter() {
     AuthGuard,
     { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
+    { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true, deps: [LoaderService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
   ],
