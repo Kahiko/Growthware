@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler } from '@angular/common/http';
+import { HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
 import { HttpInterceptor } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 // Library
 import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
@@ -14,20 +15,23 @@ import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
 @Injectable()
 export class LoaderInterceptor implements HttpInterceptor {
     private _TotalRequests: number = 0;
+    private _CompletedRequests = 0;
 
     constructor(
         private _LoadingSvc: LoaderService
     ) { }
 
-    intercept(request: HttpRequest<any>, next: HttpHandler) {
-        this._TotalRequests++;
+    intercept(request: HttpRequest<unknown>, next: HttpHandler ): Observable<HttpEvent<unknown>> {
         this._LoadingSvc.setLoading(true);
-
+        this._TotalRequests++;
         return next.handle(request).pipe(
             finalize(() => {
-                this._TotalRequests--;
-                if (this._TotalRequests === 0) {
+                this._CompletedRequests++;
+                // console.log(this._CompletedRequests, this._TotalRequests);
+                if (this._CompletedRequests === this._TotalRequests) {
                     this._LoadingSvc.setLoading(false);
+                    this._CompletedRequests = 0;
+                    this._TotalRequests = 0;
                 }
             })
         );
