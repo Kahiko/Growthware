@@ -20,7 +20,7 @@ export class LoaderComponent implements OnInit {
   }
 
   private listenToLoading(): void {
-    this._LoaderSvc.loadingChanged
+    this._LoaderSvc.loading$
       .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
       .subscribe((loading) => {
         this.loading = loading;

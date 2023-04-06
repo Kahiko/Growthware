@@ -8,12 +8,12 @@ export class LoaderService {
 
   private _IsLoading = new BehaviorSubject<boolean>(false);
 
-  loadingChanged: Observable<boolean> = this._IsLoading.asObservable();
+  loading$: Observable<boolean> = this._IsLoading.asObservable();
   
   constructor() { }
 
   /**
-   * Sets _IsLoading.next triggering loadingChanged
+   * Sets _IsLoading.next triggering loading$
    *
    * @param {boolean} isLoading
    * @memberof LoaderService
