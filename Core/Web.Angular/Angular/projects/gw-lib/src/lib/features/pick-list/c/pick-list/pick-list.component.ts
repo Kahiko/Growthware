@@ -30,8 +30,8 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   private _SelectedItemsSubject = new BehaviorSubject<any[]>([]);
   private _SelectedItemsData: any[] = [];
 
-  readonly availableItems = this._AvailableItemsSubject.asObservable();
-  readonly selectedItems = this._SelectedItemsSubject.asObservable();
+  readonly availableItems$ = this._AvailableItemsSubject.asObservable();
+  readonly selectedItems$ = this._SelectedItemsSubject.asObservable();
   sortOnChange: boolean = true;
 
   constructor(

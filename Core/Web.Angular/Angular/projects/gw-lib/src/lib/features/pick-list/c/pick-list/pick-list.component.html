@@ -18,7 +18,7 @@
                       <tr>
                           <td valign="top">
                             <select name="{{name}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
-                                <option *ngFor="let item of availableItems | async; let rowIndex=index;" [value]="item">
+                                <option *ngFor="let item of availableItems$ | async; let rowIndex=index;" [value]="item">
                                 {{item}}
                                 </option>
                             </select>
@@ -32,7 +32,7 @@
                           <td valign="top">
                               <select name="{{name}}_DstList" id="{{id}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
                                   <!-- <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
-                                  <option *ngFor="let item of selectedItems | async; let rowIndex=index;" [value]="item">
+                                  <option *ngFor="let item of selectedItems$ | async; let rowIndex=index;" [value]="item">
                                     {{item}}
                                   </option>
                               </select>
