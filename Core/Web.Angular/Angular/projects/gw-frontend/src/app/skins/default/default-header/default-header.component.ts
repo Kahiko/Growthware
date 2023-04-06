@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 // Library
-import { AccountService } from '@Growthware/Lib/src/lib/features/account';
+import { AccountService, IAuthenticationResponse } from '@Growthware/Lib/src/lib/features/account';
 import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login/login.component';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
@@ -40,8 +40,8 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
       this._ConfigurationSvc.version.subscribe((val: string) => { this.version = val; })
     );
     this._Subscription.add(
-      this._AccountSvc.isAuthenticated.subscribe((val: boolean) => {
-        this.isAuthenticated = val;
+      this._AccountSvc.authenticationResponseChanged.subscribe((val: IAuthenticationResponse) => {
+        this.isAuthenticated = val.account.toLowerCase() != this._AccountSvc.defaultAccount.toLowerCase();
       })
     );
   }
@@ -56,7 +56,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   }
 
   onLogoClick(): void {
-    if(this._AccountSvc.account.trim().toLocaleLowerCase() !== this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
+    if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
       this._Router.navigate(['home']);
     } else {
       this._Router.navigate(['generic_home']);

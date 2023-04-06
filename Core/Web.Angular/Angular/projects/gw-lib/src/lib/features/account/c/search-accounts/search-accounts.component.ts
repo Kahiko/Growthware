@@ -65,7 +65,7 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
   }
 
   private onBtnTopRight () {
-    this._AccountSvc.reason = 'NewProfile'
+    this._AccountSvc.editReason = 'NewProfile'
     const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.addModalId, 'Add Account', AccountDetailsComponent, this._WindowSize);
     this._ModalSvc.open(mModalOptions);
   }
@@ -78,8 +78,8 @@ export class SearchAccountsComponent implements OnDestroy, OnInit {
 
   private onRowDoubleClick (rowNumber: number): void {
     const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
-    this._AccountSvc.account = mDataRow.Account;
-    this._AccountSvc.reason = 'EditAccount';
+    this._AccountSvc.editAccount = mDataRow.Account;
+    this._AccountSvc.editReason = 'EditAccount';
     const mModalOptions: IModalOptions = new ModalOptions(this._AccountSvc.editModalId, 'Edit Account', AccountDetailsComponent, this._WindowSize);
     this._ModalSvc.open(mModalOptions);
   }

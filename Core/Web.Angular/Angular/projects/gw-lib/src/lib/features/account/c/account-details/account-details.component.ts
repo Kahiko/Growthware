@@ -108,16 +108,16 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
     switch (this._Router.url) {
       case '/accounts':
-        if(this._AccountSvc.reason.toLowerCase() != "newprofile") {
-          mDesiredAccount = this._AccountSvc.account;
+        if(this._AccountSvc.editReason.toLowerCase() != "newprofile") {
+          mDesiredAccount = this._AccountSvc.editAccount;
         } else {
           mDesiredAccount = "new";
         }
         this.canCancel = true;
         break;
       case '/accounts/edit-my-account':
-        this._AccountSvc.reason = 'EditProfile';
-        mDesiredAccount = this._AccountSvc.currentAccount;
+        this._AccountSvc.editReason = 'EditProfile';
+        mDesiredAccount = this._AccountSvc.authenticationResponse.account;
         this.canDelete = false;
         break;
       default:
@@ -146,9 +146,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
       // Request #3
-      return this._SecuritySvc.getSecurityInfo(this._AccountSvc.reason);
+      return this._SecuritySvc.getSecurityInfo(this._AccountSvc.editReason);
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.reason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
+      this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.editReason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((reasonSecurityInfo) => { // Handles getSecurityInfo(this._AccountSvc.reason) returns getSecurityInfo('View_Account_Group_Tab')
       // Response Handler #3
       if(reasonSecurityInfo != null) {
@@ -210,7 +210,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   private applySecurity() {
-    switch (this._AccountSvc.reason.toLowerCase()) {
+    switch (this._AccountSvc.editReason.toLowerCase()) {
       case 'newprofile':
         this.canDelete = false;
         this.showDerived = false;
@@ -237,14 +237,14 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
   closeModal(): void {
     if(this._Router.url === '/accounts') {
-      if(this._AccountSvc.reason === 'NewProfile') {
+      if(this._AccountSvc.editReason === 'NewProfile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
-      if(this._AccountSvc.reason === 'EditAccount') {
+      if(this._AccountSvc.editReason === 'EditAccount') {
         this._ModalSvc.close(this._AccountSvc.editModalId);
       }
     }
-    this._AccountSvc.reason = '';
+    this._AccountSvc.editReason = '';
   }
 
   get controls() {

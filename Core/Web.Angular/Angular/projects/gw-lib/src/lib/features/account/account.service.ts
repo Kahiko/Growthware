@@ -1,26 +1,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
 import { catchError, of } from 'rxjs';
-
+// Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { SearchService, SearchCriteria } from '@Growthware/Lib/src/lib/features/search';
-import { SecurityService } from '@Growthware/Lib/src/lib/services';
+import { SearchService } from '@Growthware/Lib/src/lib/features/search';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
-import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
-
+// Feature
 import { IAccountProfile } from './account-profile.model';
-import { IAuthenticationResponse } from './authentication-response.model';
+import { IClientChoices } from './client-choices.model';
+import { AuthenticationResponse, IAuthenticationResponse } from './authentication-response.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AccountService {
 
-  private _Account: string = '';
-  private _AuthenticationResponse!: IAuthenticationResponse;
   private _ApiName: string = 'GrowthwareAccount/';
   private _Api_Authenticate = '';
   private _Api_ChangePassword = '';
@@ -28,36 +25,16 @@ export class AccountService {
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
   private _Api_SaveAccount: string = '';
+  private _AuthenticationResponse = new AuthenticationResponse();
+  private _AuthenticationResponseSubject: BehaviorSubject<IAuthenticationResponse> = new BehaviorSubject<IAuthenticationResponse>(this._AuthenticationResponse);
   private _BaseURL: string = '';
-  private _CurrentAccount: string = '';
-  private _DefaultAccount: string = 'Anonymous'
-  private _IsAuthenticated = new Subject<boolean>();
-  private _Reason: string = '';
-  private _Status: number = 2;
+  private _ClientChoices: Subject<IClientChoices> = new Subject<IClientChoices>();
+  private _DefaultAccount: string = 'Anonymous';
   private _RefreshTokenTimeout?: NodeJS.Timeout;
   private _SideNavSubject = new Subject<INavLink[]>();
 
-  public get account(): string {
-    return this._Account;
-  }
-  public set account(value: string) {
-    this._Account = value;
-  }
-
-  public get authenticationResponse(): IAuthenticationResponse {
-    return this._AuthenticationResponse;
-  }
-
   public get addModalId(): string {
     return 'addAccount'
-  }
-
-  public get currentAccount(): string {
-    return this._CurrentAccount;
-  }
-
-  public get defaultAccount(): string {
-    return this._DefaultAccount;
   }
 
   public get editModalId(): string {
@@ -68,15 +45,21 @@ export class AccountService {
     return 'login';
   }
 
-  public get reason(): string {
-    return this._Reason;
-  }
-  public set reason(value: string) {
-    this._Reason = value;
+  public get authenticationResponse(): IAuthenticationResponse {
+    return this._AuthenticationResponseSubject.getValue();
   }
 
-  readonly isAuthenticated = this._IsAuthenticated.asObservable();
-  readonly sideNavSubject = this._SideNavSubject.asObservable();
+  editAccount: string = '';
+  editReason: string = '';
+
+  readonly authenticationResponseChanged = this._AuthenticationResponseSubject.asObservable();
+  readonly clientChoicesChanged = this._ClientChoices.asObservable();
+  
+  public get defaultAccount(): string {
+    return this._DefaultAccount;
+  }
+
+  readonly sideNavChanged = this._SideNavSubject.asObservable();
 
   constructor(
     private _GWCommon: GWCommon,
@@ -113,23 +96,19 @@ export class AccountService {
       this._HttpClient.post<IAuthenticationResponse>(this._Api_Authenticate, null, mHttpOptions).subscribe({
         next: (response: IAuthenticationResponse) => {
           localStorage.setItem("jwt", response.jwtToken);
-          this._Account = response.account;
-          this._CurrentAccount = this._Account;
-          this._Status = response.status;
-          this._AuthenticationResponse = response;
+          this._AuthenticationResponseSubject.next(response);
           if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
             this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           }
           this.getNavLinks();
           if(account.toLowerCase() !== response.account.toLowerCase()) {
             this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
-            this._IsAuthenticated.next(false);
             resolve(false);
           } else {
-            if(this._Status == 4) {
+            if(response.status == 4) {
               this._Router.navigate(['/accounts/change-password']);
             }
-            this._IsAuthenticated.next(true);
+            // this._IsAuthenticated.next(true);
             resolve(true);
           }
         },
@@ -169,7 +148,8 @@ export class AccountService {
         next: (response: string) => {
           if(response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-            this.authenticate(this._Account, newPassword, true);
+            // this.authenticate(this._Account, newPassword, true);
+            this.authenticate(this._AuthenticationResponseSubject.getValue().account, newPassword, true);
             resolve(true);
           } else {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
@@ -192,7 +172,6 @@ export class AccountService {
 
   public logout(): void {
     localStorage.removeItem("jwt")
-    this.account = this._DefaultAccount;
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -201,13 +180,11 @@ export class AccountService {
     this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
       next: (response: any) => {
         localStorage.setItem("jwt", response.jwtToken);
-        this._Account = response.account;
-        this._CurrentAccount = this._Account;
-        this._AuthenticationResponse = response;
+        this._AuthenticationResponseSubject.next(response);
         this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
         this.getNavLinks();
         this._Router.navigate(['generic_home']);
-        this._IsAuthenticated.next(false);
+        // this._IsAuthenticated.next(false);
         this.stopRefreshTokenTimer();
       },
       error: (error: any) => {
@@ -244,7 +221,7 @@ export class AccountService {
 
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
-    const jwtBase64 = this.authenticationResponse!.jwtToken!.split('.')[1];
+    const jwtBase64 = this._AuthenticationResponseSubject.getValue().jwtToken!.split('.')[1];
     const jwtToken = JSON.parse(atob(jwtBase64));
 
     // set a timeout to refresh the token a minute before it expires
@@ -269,22 +246,21 @@ export class AccountService {
       map((response) => {
         // this.accountSubject.next(account);
         // console.log('AuthenticationResponse', response);
-        this._AuthenticationResponse = response;
-        this._Account = response.account;
-        this._CurrentAccount = this._Account;
         if(response.account != this._DefaultAccount) {
           this.startRefreshTokenTimer();
-          this.getNavLinks();
+          // this.getNavLinks();
           // components have not loaded as of yet so
           // we are waiting 1/2 second to give them enough time to load before
           // triggering this._IsAuthenticated
           setTimeout(() => {
-            this._IsAuthenticated.next(true);
+            // this._IsAuthenticated.next(true);
+            this._AuthenticationResponseSubject.next(response);
           }, 500);
         } else {
-          this._IsAuthenticated.next(false);
+          // this._IsAuthenticated.next(false);
+          this._AuthenticationResponseSubject.next(response);
         }
-        return this._AuthenticationResponse;
+        return this._AuthenticationResponseSubject;
       }),
       catchError((err) => {
         // console.log(err);
@@ -307,7 +283,7 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._BaseURL + this._ApiName + this.reason;
+    const mUrl = this._BaseURL + this._ApiName + this.editReason;
     return new Promise<IAccountProfile>((resolve, reject) => {
       this._HttpClient.get<IAccountProfile>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {

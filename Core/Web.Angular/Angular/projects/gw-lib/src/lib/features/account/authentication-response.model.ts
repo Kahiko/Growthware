@@ -7,6 +7,21 @@ export interface IAuthenticationResponse {
   middleName: string,
   preferredName: string,
   status: number,
-  isVerified: true,
+  isVerified: boolean,
   jwtToken: string
+}
+
+export class AuthenticationResponse implements IAuthenticationResponse {
+  account = 'Anonymous';
+  derivedRoles = ['authenticated'];
+  email = '';
+  firstName = '';
+  lastName = '';
+  middleName = '';
+  preferredName = '';
+  status = 4;
+  isVerified = true;
+  jwtToken = '';
+
+  constructor() {}
 }
