@@ -1,5 +1,5 @@
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
-  <li *ngFor="let item of data | async; let rowIndex = index" (contextmenu)="onRightClick($event, { content: item })">
+  <li *ngFor="let item of data$ | async; let rowIndex = index" (contextmenu)="onRightClick($event, { content: item })">
     {{ item.shortFileName }}
   </li>
 </ul>

@@ -30,7 +30,7 @@ export class FileListComponent implements OnInit {
   private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
   private _Subscriptions: Subscription = new Subscription();
 
-  readonly data = this._DataSubject.asObservable();
+  readonly data$ = this._DataSubject.asObservable();
 
   id: string = '';
   frmRenameFile!: FormGroup;
