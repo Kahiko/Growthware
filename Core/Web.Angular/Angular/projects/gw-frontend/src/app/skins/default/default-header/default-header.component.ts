@@ -34,10 +34,10 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this._Subscription.add(
-      this._ConfigurationSvc.applicationName.subscribe((val: string) => { this.applicationName = val; })
+      this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
     );
     this._Subscription.add(
-      this._ConfigurationSvc.version.subscribe((val: string) => { this.version = val; })
+      this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
     );
     this._Subscription.add(
       this._AccountSvc.authenticationResponse$.subscribe((val: IAuthenticationResponse) => {

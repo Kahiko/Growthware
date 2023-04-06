@@ -26,7 +26,7 @@ export class GenericHomeComponent implements OnDestroy, OnInit {
   ngOnInit(): void {
     this._AccountSvc.getNavLinks();
     this._Subscription.add(
-      this._ConfigurationSvc.applicationName.subscribe((val: string) => { this.applicationName = val;})
+      this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val;})
     );
   }
 

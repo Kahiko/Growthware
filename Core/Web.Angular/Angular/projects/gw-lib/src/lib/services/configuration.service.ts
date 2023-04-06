@@ -17,9 +17,9 @@ export class ConfigurationService {
   private _LogPriority = new Subject<string>();
   private _Version = new Subject<string>();
 
-  readonly applicationName = this._ApplicationName.asObservable();
-  readonly logPriority = this._LogPriority.asObservable();
-  readonly version = this._Version.asObservable();
+  readonly applicationName$ = this._ApplicationName.asObservable();
+  readonly logPriority$ = this._LogPriority.asObservable();
+  readonly version$ = this._Version.asObservable();
 
   constructor(
     private _GWCommon: GWCommon,
