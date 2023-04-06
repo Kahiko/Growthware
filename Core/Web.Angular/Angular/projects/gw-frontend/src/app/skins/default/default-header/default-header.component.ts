@@ -40,7 +40,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
       this._ConfigurationSvc.version.subscribe((val: string) => { this.version = val; })
     );
     this._Subscription.add(
-      this._AccountSvc.authenticationResponseChanged.subscribe((val: IAuthenticationResponse) => {
+      this._AccountSvc.authenticationResponse$.subscribe((val: IAuthenticationResponse) => {
         this.isAuthenticated = val.account.toLowerCase() != this._AccountSvc.defaultAccount.toLowerCase();
       })
     );

@@ -52,8 +52,8 @@ export class AccountService {
   editAccount: string = '';
   editReason: string = '';
 
-  readonly authenticationResponseChanged = this._AuthenticationResponseSubject.asObservable();
-  readonly clientChoicesChanged = this._ClientChoices.asObservable();
+  readonly authenticationResponse$ = this._AuthenticationResponseSubject.asObservable();
+  readonly clientChoices$ = this._ClientChoices.asObservable();
   
   public get defaultAccount(): string {
     return this._DefaultAccount;
