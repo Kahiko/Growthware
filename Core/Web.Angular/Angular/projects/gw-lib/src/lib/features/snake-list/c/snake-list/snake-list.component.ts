@@ -16,7 +16,7 @@ export class SnakeListComponent implements OnDestroy, OnInit {
   private _DataSubject = new BehaviorSubject<any[]>([]);
   private _Subscriptions: Subscription = new Subscription();
 
-  readonly data = this._DataSubject.asObservable();
+  readonly data$ = this._DataSubject.asObservable();
   @Input() id: string = '';
 
   constructor(private _DataSvc: DataService, private _GWCommon: GWCommon, private _LoggingSvc: LoggingService,) { }
