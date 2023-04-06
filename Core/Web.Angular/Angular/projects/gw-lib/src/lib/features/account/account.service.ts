@@ -59,7 +59,7 @@ export class AccountService {
     return this._DefaultAccount;
   }
 
-  readonly sideNavChanged = this._SideNavSubject.asObservable();
+  readonly sideNav$ = this._SideNavSubject.asObservable();
 
   constructor(
     private _GWCommon: GWCommon,

@@ -29,7 +29,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this._Subscriptions.add(
-      this._AccountSvc.sideNavChanged.subscribe((navLinks)=>{
+      this._AccountSvc.sideNav$.subscribe((navLinks)=>{
         this.verticalNavLinks = navLinks;
       })
     );
