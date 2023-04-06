@@ -12,10 +12,10 @@ export class ToastService {
 
   private _toastMessages = new Subject<ToastMessage>();
 
-  public toastEvents: Observable<ToastMessage>;
+  public toastEvents$: Observable<ToastMessage>;
 
   constructor() {
-    this.toastEvents = this._toastMessages.asObservable();
+    this.toastEvents$ = this._toastMessages.asObservable();
   }
 
   /**

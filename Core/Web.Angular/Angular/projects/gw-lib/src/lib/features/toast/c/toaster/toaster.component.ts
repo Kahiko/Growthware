@@ -26,7 +26,7 @@ export class ToasterComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._ToastSub = this._ToastSvc.toastEvents
+    this._ToastSub = this._ToastSvc.toastEvents$
     .subscribe((toast: ToastMessage) => {
       const mIncomingToast: IToastMessage = new ToastMessage(toast.message, toast.title, toast.eventType);
       const mExistingToast: IToastMessage = this.currentToasts.filter(x => x.message.toLocaleLowerCase() == mIncomingToast.message.toLocaleLowerCase())[0];
