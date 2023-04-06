@@ -9,7 +9,7 @@ export class MenuListService {
   private _ShowNavText = new BehaviorSubject<boolean>(false);
 
   public currentUrl = new BehaviorSubject<string>('');
-  readonly showNavText = this._ShowNavText.asObservable();
+  readonly showNavText$ = this._ShowNavText.asObservable();
 
   constructor(private router: Router) {
     this.router.events.subscribe({

@@ -42,7 +42,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
       this.depth = 0;
     }
     this._Subscription.add(
-      this._MenuListSvc.showNavText.subscribe((value) => { this.showSideNavLinkText = value; })
+      this._MenuListSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
     );
   }
 
