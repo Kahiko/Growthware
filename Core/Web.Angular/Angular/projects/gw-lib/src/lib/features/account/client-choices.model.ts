@@ -1,0 +1,15 @@
+export interface IClientChoices {
+    account: string,
+	alternatingRowBackColor: string,
+	backColor: string,
+	colorScheme: string,
+	favoriteAction: string,
+	headerForeColor: string,
+	headColor: string,
+	leftColor: string,
+	recordsPerPage: number,
+	rowBackColor: string,
+	securityEntityID: number,
+	securityEntityName: string,
+	subHeadColor: string,
+}

@@ -67,7 +67,6 @@ Library:
 		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
 
 		ng generate interface models/CallbackButton --type model --project gw-lib
-		ng generate interface models/ClientChoices --type model --project gw-lib
 		ng generate interface models/NameValuePare --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
@@ -113,6 +112,7 @@ Library:
 		ng generate module features/account --project gw-lib
 		ng generate interface features/account/accountProfile --type model --project gw-lib
 		ng generate interface features/account/authenticationResponse --type model --project gw-lib
+		ng generate interface features/account/clientChoices --type model --project gw-lib
 		ng generate component features/account/c/accountDetails --module accounts --style scss --project gw-lib
 		ng generate component features/account/c/SearchAccounts --module accounts --style scss --project gw-lib
 		ng generate component features/account/c/login --module account.module --project gw-lib
