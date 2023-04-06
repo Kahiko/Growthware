@@ -1,7 +1,7 @@
 <div>
   <gw-lib-toaster></gw-lib-toaster>
   <gw-lib-loader></gw-lib-loader>
-  <ng-container *ngIf="(skin | async) as layout" [ngSwitch]="layout">
+  <ng-container *ngIf="(skin$ | async) as layout" [ngSwitch]="layout">
     <gw-frontend-default-layout *ngSwitchCase="'default'"></gw-frontend-default-layout>
     <gw-frontend-system-layout *ngSwitchCase="'system'"></gw-frontend-system-layout>
     <div *ngSwitchDefault>Fall through</div>

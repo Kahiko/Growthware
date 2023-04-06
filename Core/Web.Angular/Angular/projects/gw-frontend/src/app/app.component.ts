@@ -10,7 +10,7 @@ export class AppComponent {
 
   private _Skin: BehaviorSubject<string> = new BehaviorSubject<string>('default');
 
-  readonly skin = this._Skin.asObservable();
+  readonly skin$ = this._Skin.asObservable();
   // skin = 'default';
   title = 'gw-frontend';
 
