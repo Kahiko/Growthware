@@ -49,7 +49,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
   searchText: string = '';
   showHelp: boolean = true;
   tableConfiguration!: IDynamicTableConfiguration;
-  readonly tableData = this._TableDataSubject.asObservable();
+  readonly tableData$ = this._TableDataSubject.asObservable();
   tableWidth: number = 200;
   tableHeight: number = 206;
   totalRecords: number = -1;
