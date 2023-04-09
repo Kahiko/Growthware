@@ -48,11 +48,6 @@ import { AccountsRoutingModule } from './accounts-routing.module';
     PickListModule,
     ReactiveFormsModule,
     SnakeListModule,
-  ],
-  exports: [
-    AccountDetailsComponent,
-    ChangePasswordComponent,
-    SearchAccountsComponent
   ]
 })
 export class AccountModule { }
