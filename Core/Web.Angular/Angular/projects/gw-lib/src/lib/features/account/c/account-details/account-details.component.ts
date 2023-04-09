@@ -10,7 +10,7 @@ import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
-import { SecurityService } from '@Growthware/Lib/src/lib/services';
+import { SecurityService } from '@Growthware/Lib/src/lib/features/security';
 // Feature
 import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';

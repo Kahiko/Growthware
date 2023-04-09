@@ -15,7 +15,7 @@ import { LogDestination, ILogOptions, LogOptions } from '@Growthware/Lib/src/lib
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 import { ISecurityInfo, SecurityInfo } from '@Growthware/Lib/src/lib/models';
-import { SecurityService } from '@Growthware/Lib/src/lib/services';
+import { SecurityService } from '@Growthware/Lib/src/lib/features/security';
 // Feature
 import { IDirectoryTree } from '../../directory-tree.model';
 import { FileManagerService } from '../../file-manager.service';

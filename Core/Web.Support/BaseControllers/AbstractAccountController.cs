@@ -186,27 +186,40 @@ public abstract class AbstractAccountController : ControllerBase
             mNavLink = new MNavLink("api", "swagger", "API", false);
             mRootNavLinks.Add(mNavLink);
             // Nested Administration links
-            MNavLink mAdminNavLink = new MNavLink("admin_panel_settings", "", "Administration", false);
+            MNavLink mAdminLinks = new MNavLink("admin_panel_settings", "", "Administration", false);
 
-            MNavLink mAdminChild = new MNavLink("groups", "manage-groups", "Manage Groups");
-            mAdminNavLink.Children.Add(mAdminChild);
+            MNavLink mChildLink = new MNavLink("groups", "manage-groups", "Manage Groups");
+            mAdminLinks.Children.Add(mChildLink);
 
-            mAdminChild = new MNavLink("manage_roles", "manage-roles", "Manage Roles");
-            mAdminNavLink.Children.Add(mAdminChild);
+            mChildLink = new MNavLink("manage_roles", "manage-roles", "Manage Roles");
+            mAdminLinks.Children.Add(mChildLink);
 
-            mAdminChild = new MNavLink("manage_accounts", "accounts", "Manage Accounts");
-            mAdminNavLink.Children.Add(mAdminChild);
+            mChildLink = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
+            mAdminLinks.Children.Add(mChildLink);
 
-            mAdminChild = new MNavLink("functions", "search-functions", "Manage Functions");
-            mAdminNavLink.Children.Add(mAdminChild);
+            mChildLink = new MNavLink("functions", "search-functions", "Manage Functions");
+            mAdminLinks.Children.Add(mChildLink);
 
-            mAdminChild = new MNavLink("folder_shared", "manage_cache_dependency", "Manage Cache Dependency");
-            mAdminNavLink.Children.Add(mAdminChild);
+            mChildLink = new MNavLink("folder_shared", "manage_cache_dependency", "Manage Cache Dependency");
+            mAdminLinks.Children.Add(mChildLink);
 
-            mAdminChild = new MNavLink("folder_shared", "manage_logs", "Manage Logs");
-            mAdminNavLink.Children.Add(mAdminChild);
+            mChildLink = new MNavLink("folder_shared", "manage_logs", "Manage Logs");
+            mAdminLinks.Children.Add(mChildLink);
+            // Nested Administration\Security links
+            MNavLink mSecurityLinks = new MNavLink("admin_panel_settings", "", "Security", false);
+            mChildLink = new MNavLink("enhanced_encryption", "encryption-helper", "Encryption Helper");
+            mSecurityLinks.Children.Add(mChildLink);
 
-            mRootNavLinks.Add(mAdminNavLink);
+            mChildLink = new MNavLink("admin_panel_settings", "guid-helper", "GUID Helper");
+            mSecurityLinks.Children.Add(mChildLink);
+
+            mChildLink = new MNavLink("shuffle", "random-numbers", "Random number Helper");
+            mSecurityLinks.Children.Add(mChildLink);
+
+            mAdminLinks.Children.Add(mSecurityLinks);
+
+            mRootNavLinks.Add(mAdminLinks);
+
         } else 
         {
             mNavLink = new MNavLink("home", "generic_home", "Home");
