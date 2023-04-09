@@ -215,7 +215,7 @@ public abstract class AbstractAccountController : ControllerBase
 
             mChildLink = new MNavLink("shuffle", "random-numbers", "Random number Helper");
             mSecurityLinks.Children.Add(mChildLink);
-
+            // add the security lings to the administration links
             mAdminLinks.Children.Add(mSecurityLinks);
 
             mRootNavLinks.Add(mAdminLinks);
