@@ -145,11 +145,8 @@ public class AccountService : IAccountService
         MMessage mMessageProfile = new MMessage();
         MAccountProfile mAccountProfile = (MAccountProfile)m_HttpContextAccessor.HttpContext.Items["AccountProfile"];
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        string mCurrentPassword = "";
-        if(!CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType))
-        {
-            mCurrentPassword = mAccountProfile.Password;
-        }
+        string mCurrentPassword = mAccountProfile.Password;
+        CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
         if(mAccountProfile.Status != (int)SystemStatus.ChangePassword) 
         {
             if(changePassword.OldPassword == mCurrentPassword)
@@ -157,7 +154,10 @@ public class AccountService : IAccountService
                 mAccountProfile.PasswordLastSet = System.DateTime.Now;
                 mAccountProfile.Status = (int)SystemStatus.Active;
                 mAccountProfile.FailedAttempts = 0;
-                mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                // mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                string mEncryptedPassword;
+                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword,  mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                mAccountProfile.Password = mEncryptedPassword;
                 try
                 {
                     Save(mAccountProfile, false, false, false);
@@ -182,7 +182,10 @@ public class AccountService : IAccountService
                 mAccountProfile.PasswordLastSet = System.DateTime.Now;
                 mAccountProfile.Status = (int)SystemStatus.Active;
                 mAccountProfile.FailedAttempts = 0;
-                mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                string mEncryptedPassword;
+                // mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                CryptoUtility.TryEncrypt("", out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                mAccountProfile.Password = mEncryptedPassword;
                 try
                 {
                     Save(mAccountProfile, false, false, false);

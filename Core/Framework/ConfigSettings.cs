@@ -36,7 +36,9 @@ namespace GrowthWare.Framework
                 m_ConnectionString = GetAppSettingValue("DAL_" + mDal + "_ConnectionString", true);
                 try
                 {
-                    CryptoUtility.Decrypt(m_ConnectionString, EncryptionType);
+                    // CryptoUtility.decryptDES(m_ConnectionString, EncryptionType);
+                    CryptoUtility.TryDecrypt(m_ConnectionString, out m_ConnectionString, EncryptionType);
+
                 }
                 catch (CryptoUtilityException)
                 {
@@ -587,7 +589,10 @@ namespace GrowthWare.Framework
             {
                 try
                 {
-                    return CryptoUtility.Decrypt(GetAppSettingValue("SMTP_Account", true), EncryptionType);
+                    // return CryptoUtility.decryptDES(GetAppSettingValue("SMTP_Account", true), EncryptionType);
+                    string mRetVal = GetAppSettingValue("SMTP_Account", true);
+                    CryptoUtility.TryDecrypt(mRetVal, out mRetVal, EncryptionType);
+                    return mRetVal;
                 }
                 catch (CryptoUtilityException)
                 {
@@ -650,7 +655,10 @@ namespace GrowthWare.Framework
             {
                 try
                 {
-                    return CryptoUtility.Decrypt(GetAppSettingValue("SMTP_Password",true), EncryptionType);
+                    // return CryptoUtility.decryptDES(GetAppSettingValue("SMTP_Password",true), EncryptionType);
+                    string mRetVal = GetAppSettingValue("SMTP_Password", true);
+                    CryptoUtility.TryDecrypt(mRetVal, out mRetVal, EncryptionType);
+                    return mRetVal;
                 }
                 catch (CryptoUtilityException)
                 {
@@ -766,13 +774,21 @@ namespace GrowthWare.Framework
         public static string GetAppSettingValue(string settingName, Boolean fromEnvironment)
         {
             string mRetVal = string.Empty;
-            if (fromEnvironment)
+            try
             {
-                mRetVal = m_Configuration.GetSection("AppSettings")[Environment + settingName].ToString();
+                if (fromEnvironment)
+                {
+                    mRetVal = m_Configuration.GetSection("AppSettings")[Environment + settingName].ToString();
+                }
+                else
+                {
+                    mRetVal = m_Configuration.GetSection("AppSettings")[settingName].ToString();
+                }                
             }
-            else
+            catch (System.Exception)
             {
-                mRetVal = m_Configuration.GetSection("AppSettings")[settingName].ToString();
+                string mMsg = "Could not find entry for {0} (fromEnvironment: '{1}') in file '{3}'";
+                throw new Exception(String.Format(mMsg, settingName, fromEnvironment, m_SettingsDirectory + @"\GrowthWare.json"));
             }
             return mRetVal;
         }

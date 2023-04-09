@@ -57,8 +57,12 @@ namespace GrowthWare.DataAccess.SQLServer
                 using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
                 mSqlCommand.CommandType = CommandType.Text;
                 mSqlCommand.ExecuteNonQuery();
-                string mEncryptedConnectionString = CryptoUtility.Encrypt(ConfigSettings.ConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                string mEncryptedPassword = CryptoUtility.Encrypt("none", ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                // string mEncryptedConnectionString = CryptoUtility.Encrypt(ConfigSettings.ConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                string mEncryptedConnectionString;
+                CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                // string mEncryptedPassword = CryptoUtility.Encrypt("none", ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                string mEncryptedPassword = "none";
+                CryptoUtility.TryEncrypt(mEncryptedPassword, out mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 // Update all of the just added security entites to the configured data access layer information
                 mCommandText = @"
                 UPDATE [ZGWSecurity].[Security_Entities] SET 

@@ -121,7 +121,10 @@ public static class SecurityEntityUtility
             BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
             foreach (MSecurityEntity mSecurityEntity in mBSecurityEntities.SecurityEntities())
             {
-                mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
+                // mSecurityEntity.ConnectionString = CryptoUtility.Decrypt(mSecurityEntity.ConnectionString, ConfigSettings.EncryptionType);
+                string mDecryptedPassword;
+                CryptoUtility.TryDecrypt(mSecurityEntity.ConnectionString, out mDecryptedPassword, ConfigSettings.EncryptionType);
+                mSecurityEntity.ConnectionString = mDecryptedPassword;
                 m_SecurityEntities.Add(mSecurityEntity);
             }
             // m_SecurityEntities = mBSecurityEntities.SecurityEntities();

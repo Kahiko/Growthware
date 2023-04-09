@@ -36,7 +36,9 @@ public class MSecurityEntity : AbstractBaseModel
             string mConnectionString = this.ConnectionString;
             try
             {
-                this.ConnectionString = CryptoUtility.Decrypt(mConnectionString, EncryptionType);
+                // this.ConnectionString = CryptoUtility.decryptDES(mConnectionString, EncryptionType);
+                CryptoUtility.TryDecrypt(mConnectionString, out mConnectionString, this.EncryptionType);
+                this.ConnectionString = mConnectionString;
             }
             catch (CryptoUtilityException)
             {
