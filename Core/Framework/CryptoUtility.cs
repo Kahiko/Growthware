@@ -219,7 +219,7 @@ namespace GrowthWare.Framework
                     byte[] mIV = mSymmetricAlgorithm.IV;
                     using (mMemoryStream = new MemoryStream()) {
                         mMemoryStream.Write(mIV, 0, mIV.Length);  // Add the IV to the first 16 bytes of the encrypted value
-                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_8_BYTE, mSymmetricAlgorithm.IV), CryptoStreamMode.Write)) {
+                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_8_BYTE, mIV), CryptoStreamMode.Write)) {
                             using (StreamWriter mStreamWriter = new StreamWriter(mCryptoStream)) {
                                 mStreamWriter.Write(valueToEncrypt);
                             }
@@ -304,7 +304,7 @@ namespace GrowthWare.Framework
                     byte[] mIV = mSymmetricAlgorithm.IV;
                     using (mMemoryStream = new MemoryStream()) {
                         mMemoryStream.Write(mIV, 0, mIV.Length);  // Add the IV to the first 16 bytes of the encrypted value
-                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_32_BYTE, mSymmetricAlgorithm.IV), CryptoStreamMode.Write)) {
+                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_32_BYTE, mIV), CryptoStreamMode.Write)) {
                             using (StreamWriter mStreamWriter = new StreamWriter(mCryptoStream)) {
                                 mStreamWriter.Write(valueToEncrypt);
                             }
@@ -346,7 +346,7 @@ namespace GrowthWare.Framework
                     byte[] mIV = mSymmetricAlgorithm.IV;
                     using (mMemoryStream = new MemoryStream()) {
                         mMemoryStream.Write(mIV, 0, mIV.Length);  // Add the IV to the first 16 bytes of the encrypted value
-                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_24_BYTE, mSymmetricAlgorithm.IV), CryptoStreamMode.Write)) {
+                        using (CryptoStream mCryptoStream = new CryptoStream(mMemoryStream, mSymmetricAlgorithm.CreateEncryptor(s_KEY_24_BYTE, mIV), CryptoStreamMode.Write)) {
                             using (StreamWriter mStreamWriter = new StreamWriter(mCryptoStream)) {
                                 mStreamWriter.Write(valueToEncrypt);
                             }
