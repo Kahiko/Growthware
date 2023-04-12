@@ -7,9 +7,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EncryptDecryptComponent implements OnInit {
 
+  encryptedText: string = '';
+  decryptedText: string = '';
+  saltExpression: string = '';
+  selectedEncryptionType: number = 3;
+
+  validEncryptionTypes  = [
+    { id: 3, name: "Aes" },
+    { id: 2, name: "Des" },
+    { id: 1, name: "Triple Des" },
+    { id: 0, name: "None" }
+  ];
+
   constructor() { }
 
   ngOnInit(): void {
+  }
+
+  onEncrypt() {
+
+  }
+
+  onDecrypt() {
+
   }
 
 }

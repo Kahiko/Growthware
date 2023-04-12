@@ -1,1 +1,49 @@
-<p>encrypt-decrypt works!</p>
+<div class="table">
+    <div class="tr">
+        <div class="td">
+            Encryption type:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            <mat-select [(value)]="selectedEncryptionType" class="rounded">
+                <mat-option *ngFor="let item of validEncryptionTypes" [value]="item.id">
+                  {{item.name}}
+                </mat-option>
+              </mat-select>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Salt Expression:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Control:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Text:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Control:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Results:
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            Control:
+        </div>
+        <div class="td">
+            copy text
+        </div>
+    </div>
+</div>
