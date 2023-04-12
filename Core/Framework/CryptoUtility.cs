@@ -4,7 +4,6 @@ using GrowthWare.Framework.Enumerations;
 using System.Text;
 using System;
 using System.Text.RegularExpressions;
-using System.Globalization;
 
 namespace GrowthWare.Framework
 {
@@ -16,17 +15,18 @@ namespace GrowthWare.Framework
     public sealed class CryptoUtility
     {
 #region Member Fields
-        //8 bytes randomly selected for the Key
+        // Please note that the s_KEY values will be replaced by the setKey property
+        // 8 bytes randomly selected for the Key
         private static byte[] s_KEY_8_BYTE = { 83, 68, 91, 37, 128, 64, 92, 197 };
 
-        //24 bytes randomly selected for the Key
+        // 24 bytes randomly selected for the Key
         private static byte[] s_KEY_24_BYTE = {
             83,  68, 91,  37, 128,  64,  92, 197,
 		    87, 215, 61, 243, 148,  20, 252,  34,
 		    38,  69, 83, 201,  74, 211,   6,  98
         };
 
-        //32 bytes randomly selected for the Key
+        // 32 bytes randomly selected for the Key
         private static byte[] s_KEY_32_BYTE = { 
             156, 174, 234, 86, 123,  61,  10, 101, 
              18, 109,   4, 95, 150, 106, 152,  90, 
@@ -47,6 +47,7 @@ namespace GrowthWare.Framework
         /// <remarks>value is either the encrypted value or the unchanged value of valueToEncrypt</remarks>
         public static bool TryEncrypt(string valueToEncrypt, out string value, EncryptionType encryptionType, string saltExpression)
         {
+            setKeys = saltExpression;
             bool mRetVal = false;
             string mOutValue = valueToEncrypt;
             try
@@ -106,6 +107,7 @@ namespace GrowthWare.Framework
         /// <remarks>value is either the decrypted value or the unchanged value of valueToDecrypt</remarks>
         public static bool TryDecrypt(string valueToDecrypt, out string value, EncryptionType encryptionType, string saltExpression)
         {
+            setKeys = saltExpression;
             bool mRetVal = false;
             string mOutValue = valueToDecrypt;
             try
@@ -160,15 +162,33 @@ namespace GrowthWare.Framework
         private CryptoUtility()
         {
         }
+        /// <summary> 
+        /// SetKeys will create keys based on the hash value of the "value"
+        /// </summary> 
+        private static string setKeys
+        {
+            set
+            {
+                // create the byte arrays needed to create the key and iv. 
+                byte[] mSaltedHashKey = null;
+
+                mSaltedHashKey = encryptSHA512(value);  // Returns a Length of 64
+                Buffer.BlockCopy(mSaltedHashKey, 0, s_KEY_8_BYTE, 0, s_KEY_8_BYTE.Length);
+                Buffer.BlockCopy(mSaltedHashKey, 0, s_KEY_24_BYTE, 0, s_KEY_24_BYTE.Length);
+                Buffer.BlockCopy(mSaltedHashKey, 0, s_KEY_32_BYTE, 0, s_KEY_32_BYTE.Length);
+
+                mSaltedHashKey = null;
+            }
+        }
 
         /// <summary> 
         /// Encrypts the string to a byte array using the SHA512 Encryption 
         /// Algorithm with an additional Salted Hash. 
-        /// <see cref="System.Security.Cryptography.MD5CryptoServiceProvider"/> 
+        /// <see cref="System.Security.Cryptography.SHA512"/> 
         /// </summary> 
         /// <param name="toEncrypt">System.String. Usually a password.</param> 
         /// <returns>System.Byte[]</returns> 
-        private static byte[] saltedHashEncryptionSHA512(string toEncrypt)
+        private static byte[] encryptSHA512(string toEncrypt)
         {
             try
             {
@@ -251,7 +271,7 @@ namespace GrowthWare.Framework
         /// <remarks></remarks>
         private static string decryptDES(string encryptedValue)
         {
-            string mRetVal = string.Empty;
+            string mRetVal = encryptedValue;
 
             if (!string.IsNullOrEmpty(encryptedValue))
             {
@@ -270,7 +290,11 @@ namespace GrowthWare.Framework
                                     mRetVal = reader.ReadToEnd();
                                 }
                             }
-                        } 
+                        }
+                        if(string.IsNullOrWhiteSpace(mRetVal) && !string.IsNullOrWhiteSpace(encryptedValue)) 
+                        {
+                           mRetVal = encryptedValue;
+                        }
                     }
                     else
                     {
@@ -372,7 +396,7 @@ namespace GrowthWare.Framework
 
         private static string decryptAes(string encryptedValue)
         {
-            string mRetVal = string.Empty;
+            string mRetVal = encryptedValue;
             MemoryStream mMemoryStream = null;
             if (!string.IsNullOrEmpty(encryptedValue))
             {
@@ -390,7 +414,11 @@ namespace GrowthWare.Framework
                                     mRetVal = reader.ReadToEnd();
                                 }
                             }
-                        } 
+                        }
+                        if(string.IsNullOrWhiteSpace(mRetVal) && !string.IsNullOrWhiteSpace(encryptedValue)) 
+                        {
+                           mRetVal = encryptedValue;
+                        }
                     }
                     else
                     {
@@ -422,7 +450,7 @@ namespace GrowthWare.Framework
         /// <remarks></remarks>
         private static string decryptTripleDES(string encryptedValue)
         {
-            string mRetVal = string.Empty;
+            string mRetVal = encryptedValue;
             MemoryStream mMemoryStream = null;
             if (!string.IsNullOrEmpty(encryptedValue))
             {
@@ -440,7 +468,11 @@ namespace GrowthWare.Framework
                                     mRetVal = reader.ReadToEnd();
                                 }
                             }
-                        } 
+                        }
+                        if(string.IsNullOrWhiteSpace(mRetVal) && !string.IsNullOrWhiteSpace(encryptedValue)) 
+                        {
+                           mRetVal = encryptedValue;
+                        }
                     }
                     else
                     {
