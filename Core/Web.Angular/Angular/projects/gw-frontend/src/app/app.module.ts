@@ -13,12 +13,9 @@ import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
 // Library Modules
 import { LoaderModule } from '@Growthware/Lib/src/lib/features/loader';
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
-import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
-// import { SecurityRoutingModule } from '@Growthware/Lib/src/lib/features/security';
-import { AccountsRoutingModule } from '@Growthware/Lib/src/lib/features/account/accounts-routing.module';
-import { SecurityRoutingModule } from '@Growthware/Lib/src/lib/features/security/security-routing.module';
 // Library Misc
 import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
+import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
 import { DefaultModule } from './skins/default/default.module';
@@ -41,8 +38,6 @@ export function tokenGetter() {
   ],
   imports: [
     AppRoutingModule,
-    AccountsRoutingModule,
-    SecurityRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
     DefaultModule,
