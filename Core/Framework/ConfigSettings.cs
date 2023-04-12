@@ -34,16 +34,9 @@ namespace GrowthWare.Framework
             if(m_ConnectionString == null || (string.IsNullOrEmpty(m_ConnectionString) || string.IsNullOrWhiteSpace(m_ConnectionString)))
             {
                 m_ConnectionString = GetAppSettingValue("DAL_" + mDal + "_ConnectionString", true);
-                try
-                {
-                    // CryptoUtility.decryptDES(m_ConnectionString, EncryptionType);
-                    CryptoUtility.TryDecrypt(m_ConnectionString, out m_ConnectionString, EncryptionType);
-
-                }
-                catch (CryptoUtilityException)
-                {
-                    // do nothing atm the values is more than likely clear text
-                }
+                string mDecryptedValue = string.Empty;
+                CryptoUtility.TryDecrypt(m_ConnectionString, out mDecryptedValue, EncryptionType);
+                m_ConnectionString = mDecryptedValue;
             }
         }        
 
