@@ -85,8 +85,9 @@ export class AccountService {
       if(this._GWCommon.isNullOrEmpty(password)) {
         throw new Error("password can not be blank!");
       }
-      let mQueryParameter: HttpParams = new HttpParams().append('account', account);
-      mQueryParameter=mQueryParameter.append('password', password);
+      const mQueryParameter: HttpParams = new HttpParams()
+        .set('account', account)
+        .set('password', password);
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
@@ -135,8 +136,9 @@ export class AccountService {
     }
     console.log(this._Api_ChangePassword);
     return new Promise<boolean>((resolve, reject) => {
-      let mQueryParameter: HttpParams = new HttpParams().append('oldPassword', oldPassword);
-      mQueryParameter=mQueryParameter.append('newPassword', newPassword);
+      const mQueryParameter: HttpParams = new HttpParams()
+        .set('oldPassword', oldPassword)
+        .set('newPassword', newPassword);
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'text/plain',
