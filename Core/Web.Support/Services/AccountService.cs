@@ -183,8 +183,7 @@ public class AccountService : IAccountService
                 mAccountProfile.Status = (int)SystemStatus.Active;
                 mAccountProfile.FailedAttempts = 0;
                 string mEncryptedPassword;
-                // mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
-                CryptoUtility.TryEncrypt("", out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 mAccountProfile.Password = mEncryptedPassword;
                 try
                 {
