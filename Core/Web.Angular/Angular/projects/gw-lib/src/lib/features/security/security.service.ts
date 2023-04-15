@@ -3,7 +3,8 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
-import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
+// Feature
+import { ISecurityInfo } from './security-info.model';
 
 @Injectable({
   providedIn: 'root'

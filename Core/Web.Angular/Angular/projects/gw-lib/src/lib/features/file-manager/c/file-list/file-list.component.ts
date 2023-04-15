@@ -10,7 +10,7 @@ import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
-import { ISecurityInfo, SecurityInfo } from '@Growthware/Lib/src/lib/models';
+import { ISecurityInfo } from '@Growthware/Lib/src/lib/features/security';
 import { SecurityService } from '@Growthware/Lib/src/lib/features/security';
 // Feature
 import { FileManagerService } from '../../file-manager.service';

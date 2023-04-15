@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
 import { DataService } from '@Growthware/Lib/src/lib/services';
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { GroupService } from '@Growthware/Lib/src/lib/features/group';
-import { ISecurityInfo } from '@Growthware/Lib/src/lib/models';
+import { ISecurityInfo } from '@Growthware/Lib/src/lib/features/security';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { RoleService } from '@Growthware/Lib/src/lib/features/role';
