@@ -8,6 +8,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -150,6 +151,22 @@ public abstract class AbstractAccountController : ControllerBase
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
+    }
+
+    [HttpGet("EncryptDecrypt")]
+    public ContentResult EncryptDecrypt(string txtValue, int encryptionType, bool encrypt)
+    {
+        string mRetVal = string.Empty;
+        EncryptionType mEncryptionType = (EncryptionType)encryptionType;
+        if(encrypt) 
+        {
+            CryptoUtility.TryEncrypt(txtValue, out mRetVal, mEncryptionType);
+        } 
+        else 
+        {
+            CryptoUtility.TryDecrypt(txtValue, out mRetVal, mEncryptionType);
+        }
+        return Content(mRetVal);
     }
 
     private MAccountProfile getAccount(string account)

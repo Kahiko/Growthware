@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+// Library
+import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 @Component({
   selector: 'gw-lib-encrypt-decrypt',
@@ -7,29 +11,47 @@ import { Component, OnInit } from '@angular/core';
 })
 export class EncryptDecryptComponent implements OnInit {
 
-  encryptedText: string = '';
-  decryptedText: string = '';
-  saltExpression: string = '';
+  processedText: string = '';
   selectedEncryptionType: number = 3;
+  textValue: string = '';
 
-  validEncryptionTypes  = [
+  validEncryptionTypes = [
     { id: 3, name: "Aes" },
     { id: 2, name: "Des" },
     { id: 1, name: "Triple Des" },
     { id: 0, name: "None" }
   ];
 
-  constructor() { }
+  constructor(
+    private _GWCommon: GWCommon,
+    private _HttpClient: HttpClient,
+    private _LoggingSvc: LoggingService,
+  ) { }
 
   ngOnInit(): void {
   }
 
-  onEncrypt() {
-
-  }
-
-  onDecrypt() {
-
+  encryptDecrypt(encrypt: boolean) {
+    const mQueryParameter = new HttpParams()
+      .set('txtValue', this.textValue)
+      .set('encryptionType', this.selectedEncryptionType)
+      .set('encrypt', encrypt);
+    const mHttpOptions: Object = {
+      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
+      responseType: 'text',
+      params: mQueryParameter
+    }
+    const mUrl = this._GWCommon.baseURL + 'GrowthwareAccount/EncryptDecrypt';
+    this._HttpClient.get<string>(mUrl, mHttpOptions).subscribe({
+      next: (response: any) => {
+        this.processedText = response;
+      },
+      error: (error: any) => {
+        this._LoggingSvc.errorHandler(error, 'EncryptDecryptComponent', 'encryptDecrypt');
+        this.processedText = 'Failed to call the API';
+      },
+      // complete: () => {}
+    });
   }
 
 }
