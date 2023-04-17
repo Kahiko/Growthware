@@ -3,6 +3,7 @@ import { Subscription } from 'rxjs';
 // Library
 import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
+import { MenuType } from '@Growthware/Lib/src/lib/models';
 
 @Component({
   selector: 'gw-frontend-generic-home',
@@ -24,7 +25,7 @@ export class GenericHomeComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._AccountSvc.getNavLinks();
+    this._AccountSvc.getNavLinks(MenuType.Hierarchical);
     this._Subscription.add(
       this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val;})
     );

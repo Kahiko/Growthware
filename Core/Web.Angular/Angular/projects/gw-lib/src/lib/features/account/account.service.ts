@@ -8,6 +8,7 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { SearchService } from '@Growthware/Lib/src/lib/features/search';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { INavLink } from '@Growthware/Lib/src/lib/features/navigation';
+import { MenuType } from '@Growthware/Lib/src/lib/models';
 // Feature
 import { IAccountProfile } from './account-profile.model';
 import { IClientChoices } from './client-choices.model';
@@ -304,11 +305,14 @@ export class AccountService {
    * @return {*}  {Promise<INavLink[]>}
    * @memberof AccountService
    */
-  public getNavLinks(): void {
+  public getNavLinks(menuType: MenuType): void {
+    const mQueryParameter: HttpParams = new HttpParams()
+      .set('menuType', menuType);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-      })
+      }),
+      params: mQueryParameter
     };
     this._HttpClient.get<INavLink[]>(this._Api_GetLinks, mHttpOptions).subscribe({
       next: (response) => {

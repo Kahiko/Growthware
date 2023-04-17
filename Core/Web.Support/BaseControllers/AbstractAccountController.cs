@@ -187,7 +187,7 @@ public abstract class AbstractAccountController : ControllerBase
 
 
     [HttpGet("GetLinks")]
-    public List<MNavLink> GetLinks()
+    public List<MNavLink> GetLinks(int menuType)
     {
         List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;

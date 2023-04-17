@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
 import { AccountService, MenuListService } from '@Growthware/Lib';
-import { INavLink, NavLink } from '@Growthware/Lib';
+import { MenuType, INavLink } from '@Growthware/Lib';
 import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({
@@ -35,7 +35,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
     );
     this._Subscriptions.add(
       this._AccountSvc.authenticationResponse$.subscribe((_)=>{
-        this._AccountSvc.getNavLinks();
+        this._AccountSvc.getNavLinks(MenuType.Hierarchical);
       })
     );
   }

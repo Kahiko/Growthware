@@ -69,6 +69,7 @@ Library:
 		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
 
 		ng generate interface models/CallbackButton --type model --project gw-lib
+		ng generate enum models/MenuType --type enum --project gw-lib
 		ng generate interface models/NameValuePare --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
