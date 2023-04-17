@@ -109,3 +109,22 @@ runtime.dfffda2c776cc6c9.js   | runtime                   |    3.13 kB |        
 Lazy Chunk Files              | Names                     |   Raw Size | Estimated Transfer Size
 568.dcb06333d41d8342.js       | features-home-home-module |    6.17 kB |                 1.74 kB
 ************************* Stop  AppRoutingModule (HomeModule, AccountModule (Library)) *************************
+************************* Start AppRoutingModule (HomeModule, AccountsModule, FileManagerModule, FunctionsModule, SecurityModule, GroupsModule, RolesModule (Local)) *************************
+Initial Chunk Files           | Names                                     |   Raw Size | Estimated Transfer Size
+main.447b6b707467217b.js      | main                                      |  842.31 kB |               186.54 kB
+styles.e8286451efd67d6b.css   | styles                                    |  142.50 kB |                11.45 kB
+polyfills.4feb3989d3b46f4d.js | polyfills                                 |   33.08 kB |                10.66 kB
+runtime.00d772d47edc9f1b.js   | runtime                                   |    3.25 kB |                 1.54 kB
+
+                              | Initial Total                             | 1021.14 kB |               210.20 kB
+
+Lazy Chunk Files              | Names                                     |   Raw Size | Estimated Transfer Size
+515.811ee1783e8eebb6.js       | features-file-manager-file-manager-module |   58.70 kB |                11.92 kB
+568.6a31c58ec4d103b8.js       | features-home-home-module                 |    6.16 kB |                 1.74 kB
+43.41d772cd98db2a74.js        | features-functions-functions-module       |    3.95 kB |                 1.43 kB
+20.f599190dd15bec63.js        | features-accounts-accounts-module         |  793 bytes |               359 bytes
+78.3307922be6cff7a4.js        | features-groups-groups-module             |  517 bytes |               271 bytes
+717.169a60ccf4c7d48d.js       | features-roles-roles-module               |  517 bytes |               269 bytes
+
+Build at: 2023-04-17T14:07:04.381Z - Hash: 1fffce8e639afb36 - Time: 11527ms
+************************* Stop  AppRoutingModule (HomeModule, AccountsModule, FileManagerModule, FunctionsModule, SecurityModule, GroupsModule, RolesModule (Local)) *************************
