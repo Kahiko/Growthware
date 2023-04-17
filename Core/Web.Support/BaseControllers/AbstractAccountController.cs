@@ -211,7 +211,7 @@ public abstract class AbstractAccountController : ControllerBase
             mChildLink = new MNavLink("manage_roles", "manage-roles", "Manage Roles");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("manage_accounts", "search-accounts", "Manage Accounts");
+            mChildLink = new MNavLink("manage_accounts", "accounts", "Manage Accounts");
             mAdminLinks.Children.Add(mChildLink);
 
             mChildLink = new MNavLink("functions", "search-functions", "Manage Functions");
