@@ -7,28 +7,27 @@ import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
+  private _BaseUrl: string = '';
 
   /**
    *
    */
-  constructor(private _AccountSvc: AccountService, private _GWCommon: GWCommon) {
-
-
+  constructor(private _AccountSvc: AccountService, private _GWCommon: GWCommon) { 
+    this._BaseUrl = _GWCommon.baseURL;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const mAuthenticationResponse = this._AccountSvc.authenticationResponse;
     const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.defaultAccount;
     // This will need to match any Api's you have in proxy.conf.js
-    const mBaseUrl = this._GWCommon.baseURL;
     const mApiUrls = [
-      mBaseUrl + "GrowthwareAccount",
-      mBaseUrl + "GrowthwareAPI",
-      mBaseUrl + "GrowthwareFile",
-      mBaseUrl + "GrowthwareFunction",
-      mBaseUrl + "GrowthwareGroup",
-      mBaseUrl + "GrowthwareRole",
-      mBaseUrl + "swagger"
+      this._BaseUrl + "GrowthwareAccount",
+      this._BaseUrl + "GrowthwareAPI",
+      this._BaseUrl + "GrowthwareFile",
+      this._BaseUrl + "GrowthwareFunction",
+      this._BaseUrl + "GrowthwareGroup",
+      this._BaseUrl + "GrowthwareRole",
+      this._BaseUrl + "swagger"
     ];
     const mUrlIndex = mApiUrls.findIndex(item => request.url.toLowerCase().startsWith(item.toLowerCase()));
     const mIsApiUrl = mUrlIndex > -1;
