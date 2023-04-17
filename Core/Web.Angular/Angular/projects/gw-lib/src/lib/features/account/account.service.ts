@@ -101,7 +101,6 @@ export class AccountService {
           if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
             this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           }
-          this.getNavLinks();
           if(account.toLowerCase() !== response.account.toLowerCase()) {
             this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
             resolve(false);
@@ -184,7 +183,6 @@ export class AccountService {
         localStorage.setItem("jwt", response.jwtToken);
         this._AuthenticationResponseSubject.next(response);
         this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
-        this.getNavLinks();
         this._Router.navigate(['generic_home']);
         // this._IsAuthenticated.next(false);
         this.stopRefreshTokenTimer();

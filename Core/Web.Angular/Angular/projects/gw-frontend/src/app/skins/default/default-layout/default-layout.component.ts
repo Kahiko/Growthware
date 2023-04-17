@@ -33,6 +33,11 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
         this.verticalNavLinks = navLinks;
       })
     );
+    this._Subscriptions.add(
+      this._AccountSvc.authenticationResponse$.subscribe((_)=>{
+        this._AccountSvc.getNavLinks();
+      })
+    );
   }
 
   onShowSideNavLinkText(): void {
