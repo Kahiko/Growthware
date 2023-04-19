@@ -235,14 +235,14 @@ export class AccountService {
     clearTimeout(this._RefreshTokenTimeout);
 }
 
-  public refreshToken(): Observable<any> {
+  public refreshToken(): Observable<IAuthenticationResponse> {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
       withCredentials: true,
     };
-    return this._HttpClient.post<any>(this._Api_RefreshToken, null, mHttpOptions)
+    return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
     .pipe(
       map((response) => {
         // this.accountSubject.next(account);
@@ -261,7 +261,7 @@ export class AccountService {
           // this._IsAuthenticated.next(false);
           this._AuthenticationResponseSubject.next(response);
         }
-        return this._AuthenticationResponseSubject;
+        return this._AuthenticationResponseSubject.getValue();
       }),
       catchError((err) => {
         // console.log(err);
