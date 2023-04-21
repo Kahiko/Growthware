@@ -223,12 +223,13 @@ export class AccountService {
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
     const jwtBase64 = this._AuthenticationResponseSubject.getValue().jwtToken!.split('.')[1];
-    const jwtToken = JSON.parse(atob(jwtBase64));
-
-    // set a timeout to refresh the token a minute before it expires
-    const expires = new Date(jwtToken.exp * 1000);
-    const timeout = expires.getTime() - Date.now() - (60 * 1000);
-    this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
+    if(jwtBase64) {
+      const jwtToken = JSON.parse(window.atob(jwtBase64));
+      // set a timeout to refresh the token a minute before it expires
+      const expires = new Date(jwtToken.exp * 1000);
+      const timeout = expires.getTime() - Date.now() - (60 * 1000);
+      this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);  
+    }
   }
 
   private stopRefreshTokenTimer() {
@@ -245,22 +246,8 @@ export class AccountService {
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
     .pipe(
       map((response) => {
-        // this.accountSubject.next(account);
-        // console.log('AuthenticationResponse', response);
-        if(response.account != this._DefaultAccount) {
-          this.startRefreshTokenTimer();
-          // this.getNavLinks();
-          // components have not loaded as of yet so
-          // we are waiting 1/2 second to give them enough time to load before
-          // triggering this._IsAuthenticated
-          setTimeout(() => {
-            // this._IsAuthenticated.next(true);
-            this._AuthenticationResponseSubject.next(response);
-          }, 500);
-        } else {
-          // this._IsAuthenticated.next(false);
-          this._AuthenticationResponseSubject.next(response);
-        }
+        this._AuthenticationResponseSubject.next(response);
+        this.startRefreshTokenTimer();
         return this._AuthenticationResponseSubject.getValue();
       }),
       catchError((err) => {
