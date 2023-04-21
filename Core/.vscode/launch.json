@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "compounds": [
         {
-            "name": "1.) API-Watch + Chrome",
+            "name": "1.) API + Chrome",
             "configurations": ["API", "PWA Chrome"]
         },
         {
