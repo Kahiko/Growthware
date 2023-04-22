@@ -11,7 +11,6 @@ import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b
 import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
 // Library Modules
-import { LoaderModule } from '@Growthware/Lib/src/lib/features/loader';
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
 // Library Misc
 import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
@@ -42,7 +41,6 @@ export function tokenGetter() {
     BrowserAnimationsModule,
     DefaultModule,
     HttpClientModule,
-    LoaderModule,
     JwtModule.forRoot({
       config: {
         tokenGetter: tokenGetter,

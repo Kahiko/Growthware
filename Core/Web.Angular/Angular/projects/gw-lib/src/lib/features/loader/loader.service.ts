@@ -1,16 +1,28 @@
-import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { EventEmitter, Injectable } from '@angular/core';
+import { BehaviorSubject, Observable, debounceTime } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LoaderService {
-
+  private _Counter = 0;
+  private _Delay = 700;
   private _IsLoading = new BehaviorSubject<boolean>(false);
 
-  loading$: Observable<boolean> = this._IsLoading.asObservable();
+  public stateChanged$ = new EventEmitter<boolean>();
   
-  constructor() { }
+  constructor() { 
+    this._IsLoading.pipe(debounceTime(this._Delay))
+      .subscribe(value => {
+        if (value) {
+          this._Counter++;
+        }
+        else if (this._Counter > 0) {
+          this._Counter--;
+        }
+      this.stateChanged$.emit(this._Counter > 0);
+    });
+  }
 
   /**
    * Sets _IsLoading.next triggering loading$

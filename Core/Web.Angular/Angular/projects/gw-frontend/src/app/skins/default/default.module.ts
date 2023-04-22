@@ -9,6 +9,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
+import { LoaderModule } from '@Growthware/Lib/src/lib/features/loader';
 import { NavigationModule } from '@Growthware/Lib';
 // Modules/Components
 import { DefaultRoutingModule } from './default-routing.module';
@@ -26,7 +27,7 @@ import { DefaultLayoutComponent } from './default-layout/default-layout.componen
   imports: [
     CommonModule,
     DefaultRoutingModule,
-
+    LoaderModule,
     MatButtonModule,
     MatDividerModule,
     MatIconModule,

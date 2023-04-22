@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {delay} from 'rxjs/operators';
+import { AfterViewInit, Component, OnDestroy } from '@angular/core';
+import { Subscription } from 'rxjs';
 // Feature
 import { LoaderService } from '../../loader.service';
 
@@ -8,22 +8,25 @@ import { LoaderService } from '../../loader.service';
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.scss']
 })
-export class LoaderComponent implements OnInit {
+export class LoaderComponent implements AfterViewInit, OnDestroy {
+  private _Subscriptions: Subscription = new Subscription();
   loading: boolean = false;
 
   constructor(
     private _LoaderSvc: LoaderService
   ) { }
 
-  ngOnInit(): void {
-    this.listenToLoading();
+  ngAfterViewInit(): void {
+    this._Subscriptions = this._LoaderSvc.stateChanged$
+      .subscribe(value => {
+        if (this.loading !== value) {
+          this.loading = value;
+        }
+      });
   }
 
-  private listenToLoading(): void {
-    this._LoaderSvc.loading$
-      .pipe(delay(0)) // This prevents a ExpressionChangedAfterItHasBeenCheckedError for subsequent requests
-      .subscribe((loading) => {
-        this.loading = loading;
-      });
+  ngOnDestroy(): void {
+    // Though this is very unlikely you just never know how this is going to be used
+    this._Subscriptions.unsubscribe();
   }
 }
