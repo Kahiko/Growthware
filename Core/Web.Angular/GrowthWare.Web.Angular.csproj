@@ -41,11 +41,14 @@
   <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
     <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
     <Exec WorkingDirectory="$(SpaRoot)" Command="npm install" />
-    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build -- --prod" />
+    <!-- Build the Library and Application -->
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build gw-lib -- --configuration production" />
+    <Exec WorkingDirectory="$(SpaRoot)" Command="npm run build gw-frontend -- --configuration production" />
 
     <!-- Include the newly-built files in the publish output -->
     <ItemGroup>
-      <DistFiles Include="$(SpaRoot)dist\**; $(SpaRoot)dist-server\**" />
+      <!-- Originaly $(SpaRoot)dist\** needed to change in b/c we separate the Angular application and library-->
+      <DistFiles Include="$(SpaRoot)dist\gw-frontend\**" />
       <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
         <RelativePath>wwwroot\%(RecursiveDir)%(FileName)%(Extension)</RelativePath>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -53,5 +56,4 @@
       </ResolvedFileToPublish>
     </ItemGroup>
   </Target>
-
 </Project>

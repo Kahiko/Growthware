@@ -8,6 +8,11 @@ Toast:
 Build with info (just gives longer name to the js file)
 	ng build --named-chunks --output-hashing=none --project gw-frontend
 
+Build both .Net and Angular
+	From the same directory where GrowthwareCore.sln is located.  
+		Example: D:\Development\Growthware\Core
+	dotnet publish --configuration Release --runtime win-x64 --self-contained false --output c:\Temp\Growthware
+
 Building a Skinnable, Multi-Tenant Angular Application
 	https://itnext.io/building-a-skinnable-multi-tenant-angular-application-7bc6f558fc0c
 

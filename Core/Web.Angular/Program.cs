@@ -71,22 +71,20 @@ if(httpContextAccessor != null)
     SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
 } 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(c =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
-    });
-}
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
+});
 if (!app.Environment.IsDevelopment())               // Added
 {
+    app.UseDefaultFiles();                          // Added
+    app.UseStaticFiles();                           // Added
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
-app.UseStaticFiles();                               // Added
 app.UseRouting();                                   // Added
 
 app.UseSession();
@@ -104,7 +102,5 @@ app.MapControllerRoute(                             // Added
     name: "default",
     pattern: "{controller}/{action=Index}/{id?}"
 );
-
-app.MapFallbackToFile("index.html");                // Added
 
 app.Run();
