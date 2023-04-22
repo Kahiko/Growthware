@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs';
 
 // Library
 import { AccountService, IAuthenticationResponse } from '@Growthware/Lib/src/lib/features/account';
+import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login/login.component';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
 import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
@@ -16,6 +17,7 @@ import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
 export class DefaultHeaderComponent implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
 
+  accountName: string = '';
   applicationName: string = '';
   isAuthenticated: boolean = false;
   version: string = '';
@@ -24,8 +26,9 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 
   constructor(
     private _AccountSvc: AccountService,
-    private _ModalSvc: ModalService,
     private _ConfigurationSvc: ConfigurationService,
+    private _GWCommon: GWCommon,
+    private _ModalSvc: ModalService,
     private _Router: Router) { }
 
   ngOnDestroy(): void {
@@ -42,6 +45,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
     this._Subscription.add(
       this._AccountSvc.authenticationResponse$.subscribe((val: IAuthenticationResponse) => {
         this.isAuthenticated = val.account.toLowerCase() != this._AccountSvc.defaultAccount.toLowerCase();
+        this.accountName = this._GWCommon.formatData(val.account, 'text:28');
       })
     );
   }

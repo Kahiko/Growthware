@@ -20,6 +20,7 @@
       </button>
     </div>
     <div *ngIf="isAuthenticated">
+      <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
       <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
         <mat-icon>settings</mat-icon><span>Edit Profile</span>
       </a>
