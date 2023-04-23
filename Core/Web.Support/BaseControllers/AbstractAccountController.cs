@@ -196,10 +196,6 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mNavLink = new MNavLink("home", "home", "Home");
             mRootNavLinks.Add(mNavLink);
-            mNavLink = new MNavLink("dialpad", "counter", "Counter");
-            mRootNavLinks.Add(mNavLink);
-            mNavLink = new MNavLink("thermostat", "fetch-data", "Fetch Data");
-            mRootNavLinks.Add(mNavLink);
             mNavLink = new MNavLink("api", "swagger", "API", false);
             mRootNavLinks.Add(mNavLink);
             // Nested Administration links
