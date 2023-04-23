@@ -74,43 +74,42 @@ Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
 		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
-
+Common Models
 		ng generate interface models/CallbackButton --type model --project gw-lib
 		ng generate enum models/MenuType --type enum --project gw-lib
 		ng generate interface models/NameValuePare --type model --project gw-lib
 		ng generate interface models/SearchCriteria --type model --project gw-lib
 		ng generate interface models/SecurityInfo --type model --project gw-lib
-
+Common Services
 		ng generate service services/data --project gw-lib
-		ng generate service services/security --project gw-lib
 		ng generate service services/configuration --project gw-lib
 		ng generate interface models/AppSettings --type model --project gw-lib
 
 		ng generate service features/search --project gw-lib
-		
+Toast		
 		ng generate module features/toast --project gw-lib
 		ng generate component features/toast/c/toast --module toast --style scss --project gw-lib
 		ng generate component features/toast/c/toaster --module toast --style scss --project gw-lib
 		ng generate service features/toast/toast --project gw-lib
 		ng generate interface features/toast/ToastMessage --type model --project gw-lib
 		ng generate enum features/toast/EventType --type enum --project gw-lib
-		
+Logging		
 		ng generate service features/logging/logging --project gw-lib
 		ng generate enum features/logging/LogDestination --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
 		ng generate interface features/logging/LogOptions --type model --project gw-lib
 		ng generate interface features/logging/LoggingProfile --type model --project gw-lib
-
+Pager
 		ng generate module features/pager --project gw-lib
 		ng generate component features/pager/c/pager --module pager --style scss --project gw-lib
-		
+Dynamic Table		
 		ng generate module features/dynamic-table --project gw-lib
 		ng generate component features/dynamic-table/c/dynamic-table --module dynamic-table --project gw-lib --style scss
 		ng generate service features/dynamic-table --project gw-lib
 		ng generate interface models/DynamicTableBtnMethods --type model --project gw-lib
 		ng generate interface models/DynamicTableColumn --type model --project gw-lib
 		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
-
+Modal
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/modal --module modal --style scss --project gw-lib
 		ng generate service features/modal/modal --project gw-lib
@@ -118,7 +117,7 @@ Library:
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib
 		ng generate interface features/modal/ContentObject --type model --project gw-lib
 		ng generate interface features/modal/WindowSize --type model --project gw-lib
-		
+Accounts		
 		ng generate module features/account --project gw-lib
 		ng generate interface features/account/accountProfile --type model --project gw-lib
 		ng generate interface features/account/authenticationResponse --type model --project gw-lib
@@ -132,7 +131,7 @@ Library:
 
 		ng generate module features/PickList --project gw-lib
 		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
-
+File Manager
 		ng generate module features/fileManager --project gw-lib
 		ng generate component features/file-manager/c/fileList --module file-manager --style scss --project gw-lib
 		ng generate component features/file-manager/c/fileManager --module file-manager --style scss --project gw-lib
@@ -149,19 +148,19 @@ Library:
 		ng generate module features/sortBy --project gw-lib
 		ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib
 		ng generate service features/sort-by/sortBy --project gw-lib
-
+Functions
 		ng generate module features/function --project gw-lib
 		ng generate interface features/function/functionProfile --type model --project gw-lib
 		ng generate component features/function/c/functionDetails --module function --style scss --project gw-lib
 		ng generate component features/function/c/Searchfunctions --module function --style scss --project gw-lib
 		ng generate service features/function/function --project gw-lib
-
+Groups
 		ng generate module features/group --project gw-lib
 		ng generate interface features/group/GroupProfile --type model --project gw-lib
 		ng generate component features/group/c/GroupDetails --module group --style scss --project gw-lib
 		ng generate component features/group/c/SearchGroups --module group --style scss --project gw-lib
 		ng generate service features/group/group --project gw-lib
-
+Roles
 		ng generate module features/role --project gw-lib
 		ng generate interface features/role/RoleProfile --type model --project gw-lib
 		ng generate component features/role/c/RoleDetails --module role --style scss --project gw-lib
@@ -182,8 +181,9 @@ https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-a
 
 		ng generate module features/snake-list --project gw-lib
 		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
-
+Security
 		ng generate module features/security --project gw-lib
+		ng generate service services/security --project gw-lib
 		ng generate component features/security/c/EncryptDecrypt --module security --style scss --project gw-lib
 		ng generate component features/security/c/GuidHelper --module security --style scss --project gw-lib
 		ng generate component features/security/c/RandomNumbers --module security --style scss --project gw-lib
