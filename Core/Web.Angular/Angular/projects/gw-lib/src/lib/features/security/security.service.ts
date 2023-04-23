@@ -14,7 +14,7 @@ export class SecurityService {
   private _BaseURL: string = '';
   private _Api:string = '';
   private _Api_GUID: string = '';
-  private _ApiSecurity: string = '';
+  private _Api_Security: string = '';
 
   constructor(
     private _GWCommon: GWCommon,
@@ -24,7 +24,7 @@ export class SecurityService {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api = this._BaseURL + 'GrowthwareAPI/';
     this._Api_GUID = this._Api + 'GetGUID';
-    this._ApiSecurity = this._Api + 'GetSecurityInfo';
+    this._Api_Security = this._Api + 'GetSecurityInfo';
   }
 
   /**
@@ -43,7 +43,7 @@ export class SecurityService {
       params: mQueryParameter,
     };
     // const mUrl = this._BaseURL + this._APISecurity + 'GetSecurityInfo';
-    const mUrl = this._ApiSecurity;
+    const mUrl = this._Api_Security;
     return new Promise<ISecurityInfo>((resolve, reject) => {
       this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
@@ -58,6 +58,12 @@ export class SecurityService {
     });
   }
 
+  /**
+   * @description Returns a GUID
+   *
+   * @return {*}  {Promise<string>}
+   * @memberof SecurityService
+   */
   public async getGuid(): Promise<string> {
     const mHttpOptions = {
       headers: new HttpHeaders({
