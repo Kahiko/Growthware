@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
@@ -19,8 +20,16 @@ export class FileManagerComponent implements OnInit {
 
   private _Action: string = '';
   private _ModalId_CreateDirectory: string = "CreateDirectoryForm";
+  private _Skin: BehaviorSubject<string> = new BehaviorSubject<string>('default');
 
+  fileContent: string = 'snake'
   frmCreateDirectory!: FormGroup;
+  validFileContents = [
+    {id: 'snake', name: 'List', icon: 'summarize'},
+    {id: 'details', name: 'Details', icon: 'list'},
+    {id: 'table', name: 'Table', icon: 'table_rows'},
+  ];
+  readonly skin$ = this._Skin.asObservable();
 
   @Input() configurationName: string = '';
   @ViewChild('createDirectory', { read: TemplateRef }) private _CreateDirectory!:TemplateRef<any>;

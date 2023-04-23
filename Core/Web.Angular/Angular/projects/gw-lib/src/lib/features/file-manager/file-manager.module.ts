@@ -10,6 +10,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTreeModule } from '@angular/material/tree';
 import { ScrollingModule } from '@angular/cdk/scrolling';
 // Library
+import { DynamicTableModule } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { SortByModule } from '@Growthware/Lib/src/lib/features/sort-by';
 import { SnakeListModule } from '@Growthware/Lib/src/lib/features/snake-list';
 // Feature
@@ -27,6 +28,7 @@ import { DirectoryTreeComponent } from './c/directory-tree/directory-tree.compon
   ],
   imports: [
     CommonModule,
+    DynamicTableModule,
     FormsModule,
     MatButtonModule,
     MatIconModule,

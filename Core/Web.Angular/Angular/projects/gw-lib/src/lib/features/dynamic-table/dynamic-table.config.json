@@ -220,8 +220,8 @@
   },
   {
     "buttons": [
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
-      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": true  },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": false },
       { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
       { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
     ],
@@ -236,38 +236,12 @@
     "captionText": "",
     "maxHeadHeight": 16,
     "maxTableRowHeight": 24,
-    "name": "Manage_Logs",
+    "name": "FileManagerTable",
     "numberOfRows": 10,
     "showFirstRow": true,
     "showThirdRow": true,
-    "showHelp": true,
-    "showSearch": true,
-    "tableHeight": 286
-  },
-  {
-    "buttons": [
-      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
-      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
-      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
-      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
-    ],
-    "columns": [
-      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "checkBox", "isPrimaryKey": true , "label": "Delete"      , "name": "Delete"    , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width": 60  },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "File/Folder" , "name": "Name"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Type"        , "name": "Type"      , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Size"        , "name": "Size"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 80  },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Modified"    , "name": "Modified"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Total Rows"  , "name": "TotalRows" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
-    ],
-    "captionText": "",
-    "maxHeadHeight": 16,
-    "maxTableRowHeight": 24,
-    "name": "Manage_Cache_Dependency",
-    "numberOfRows": 10,
-    "showFirstRow": true,
-    "showThirdRow": true,
-    "showHelp": true,
-    "showSearch": true,
+    "showHelp": false,
+    "showSearch": false,
     "tableHeight": 286
   }
 ]
