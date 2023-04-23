@@ -16,7 +16,7 @@ import { EncryptDecryptComponent } from './c/encrypt-decrypt/encrypt-decrypt.com
 import { GuidHelperComponent } from './c/guid-helper/guid-helper.component';
 import { RandomNumbersComponent } from './c/random-numbers/random-numbers.component';
 // Feature Modules
-import { SecurityRoutingModule } from './security-routing.module';
+// import { SecurityRoutingModule } from './security-routing.module';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import { SecurityRoutingModule } from './security-routing.module';
     RandomNumbersComponent,
   ],
   imports: [
-    SecurityRoutingModule,
+    // SecurityRoutingModule,
     CommonModule,
     DynamicTableModule,
     FormsModule,

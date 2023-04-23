@@ -214,7 +214,7 @@ public abstract class AbstractAccountController : ControllerBase
             mChildLink = new MNavLink("manage_accounts", "accounts", "Manage Accounts");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("functions", "search-functions", "Manage Functions");
+            mChildLink = new MNavLink("functions", "functions", "Manage Functions");
             mAdminLinks.Children.Add(mChildLink);
 
             mChildLink = new MNavLink("folder_shared", "manage_cache_dependency", "Manage Cache Dependency");
@@ -224,13 +224,13 @@ public abstract class AbstractAccountController : ControllerBase
             mAdminLinks.Children.Add(mChildLink);
             // Nested Administration\Security links
             MNavLink mSecurityLinks = new MNavLink("admin_panel_settings", "", "Security", false);
-            mChildLink = new MNavLink("enhanced_encryption", "encryption-helper", "Encryption Helper");
+            mChildLink = new MNavLink("enhanced_encryption", "security", "Encryption Helper");
             mSecurityLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("admin_panel_settings", "guid-helper", "GUID Helper");
+            mChildLink = new MNavLink("admin_panel_settings", "security/guid-helper", "GUID Helper");
             mSecurityLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("shuffle", "random-numbers", "Random number Helper");
+            mChildLink = new MNavLink("shuffle", "security/random-numbers", "Random number Helper");
             mSecurityLinks.Children.Add(mChildLink);
             // add the security lings to the administration links
             mAdminLinks.Children.Add(mSecurityLinks);

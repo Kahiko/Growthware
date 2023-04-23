@@ -68,6 +68,8 @@ Application:
 		
 		ng generate module features/roles --routing --project gw-frontend
 
+		ng generate module features/security --routing --project gw-frontend
+
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -181,7 +183,7 @@ https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-a
 		ng generate module features/snake-list --project gw-lib
 		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
 
-		ng generate module features/security --routing --project gw-lib
+		-- ng generate module features/security --routing --project gw-lib
 		ng generate component features/security/c/EncryptDecrypt --module security --style scss --project gw-lib
 		ng generate component features/security/c/GuidHelper --module security --style scss --project gw-lib
 		ng generate component features/security/c/RandomNumbers --module security --style scss --project gw-lib
