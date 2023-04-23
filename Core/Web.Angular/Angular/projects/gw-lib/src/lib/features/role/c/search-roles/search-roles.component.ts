@@ -3,9 +3,8 @@ import { Subscription } from 'rxjs';
 // Features (Components/Interfaces/Models/Services)
 import { DynamicTableComponent, DynamicTableService } from '@Growthware/Lib/src/lib/features/dynamic-table';
 import { DataService } from '@Growthware/Lib/src/lib/services';
-import { SearchService, SearchCriteriaNVP } from '@Growthware/Lib/src/lib/features/search';
-import { DynamicTableBtnMethods, INameValuePare } from '@Growthware/Lib/src/lib/models';
-import { ModalService, IModalOptions, ModalOptions, ModalSize } from '@Growthware/Lib/src/lib/features/modal';
+import { SearchService } from '@Growthware/Lib/src/lib/features/search';
+import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 
 
 @Component({
