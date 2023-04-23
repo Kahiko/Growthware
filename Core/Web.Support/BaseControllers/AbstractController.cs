@@ -49,6 +49,13 @@ public abstract class AbstractController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetGUID")]
+    public ActionResult<string> GetGUID() 
+    {
+        string mRetVal = Guid.NewGuid().ToString();
+        return Ok(mRetVal);
+    }
+    
     [HttpGet("GetSecurityInfo")]
     public ActionResult<MSecurityInfo> GetSecurityInfo(string action) 
     { 

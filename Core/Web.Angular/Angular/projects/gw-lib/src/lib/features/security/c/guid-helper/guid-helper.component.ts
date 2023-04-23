@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+// Feature
+import { SecurityService } from '../../security.service';
+import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 
 @Component({
   selector: 'gw-lib-guid-helper',
@@ -7,9 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GuidHelperComponent implements OnInit {
 
-  constructor() { }
+  guidText: string = '';
+
+  constructor(
+    private _LoggingSvc: LoggingService,
+    private _SecuritySvc: SecurityService
+  ) { }
 
   ngOnInit(): void {
+  }
+
+  onGuid(): void {
+    this._SecuritySvc.getGuid().catch((error: any)=>{
+      this._LoggingSvc.errorHandler(error, 'GuidHelperComponent', 'onGuid');
+    }).then((response)=>{
+      if(response) {
+        this.guidText = response;
+      }
+    });
   }
 
 }

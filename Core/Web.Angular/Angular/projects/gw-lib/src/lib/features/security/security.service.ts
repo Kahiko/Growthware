@@ -13,6 +13,7 @@ export class SecurityService {
 
   private _BaseURL: string = '';
   private _Api:string = '';
+  private _Api_GUID: string = '';
   private _ApiSecurity: string = '';
 
   constructor(
@@ -22,6 +23,7 @@ export class SecurityService {
   ) { 
     this._BaseURL = this._GWCommon.baseURL;
     this._Api = this._BaseURL + 'GrowthwareAPI/';
+    this._Api_GUID = this._Api + 'GetGUID';
     this._ApiSecurity = this._Api + 'GetSecurityInfo';
   }
 
@@ -54,5 +56,29 @@ export class SecurityService {
         // complete: () => {}
       });
     });
+  }
+
+  public async getGuid(): Promise<string> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      responseType: "text" as "json",
+    };
+    const mUrl = this._Api_GUID;
+    return new Promise<string>((resolve, reject) => {
+      this._HttpClient.get<string>(mUrl, mHttpOptions).subscribe({
+        next: (response: string)=>{
+          resolve(response);
+        },
+        error: (error: any)=>{
+          this._LoggingSvc.errorHandler(error, 'SecurityService', 'getGuid');
+          reject('Failed to call the API');          
+        },
+        complete: ()=>{
+          // doing nothing atm
+        }
+      });
+    })
   }
 }
