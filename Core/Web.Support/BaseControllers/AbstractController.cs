@@ -6,6 +6,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
+using System.Collections.Generic;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -19,6 +20,8 @@ public abstract class AbstractController : ControllerBase
     private Logger m_Logger = Logger.Instance();
     
     private string m_LogPriority = string.Empty;
+
+    private Random m_Random = new Random(System.DateTime.Now.Millisecond);
 
     // // returns the current authenticated account (null if not logged in)
     // public MAccountProfile m_AccountProfile => (MAccountProfile)HttpContext.Items["AccountProfile"];
@@ -53,6 +56,17 @@ public abstract class AbstractController : ControllerBase
     public ActionResult<string> GetGUID() 
     {
         string mRetVal = Guid.NewGuid().ToString();
+        return Ok(mRetVal);
+    }
+
+    [HttpGet("GetRandomNumbers")]
+    public ActionResult<List<int>> GetRandomNumbers(int amountOfNumbers, int maxNumber, int minNumber)
+    {
+        List<int> mRetVal = new List<int>();
+        for (int i = 0; i < amountOfNumbers; i++)
+        {
+            mRetVal.Add(this.m_Random.Next(minNumber, maxNumber));
+        }
         return Ok(mRetVal);
     }
     

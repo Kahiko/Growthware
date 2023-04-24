@@ -14,6 +14,7 @@ export class SecurityService {
   private _BaseURL: string = '';
   private _Api:string = '';
   private _Api_GUID: string = '';
+  private _Api_RandomNumbers: string = '';
   private _Api_Security: string = '';
 
   constructor(
@@ -24,6 +25,7 @@ export class SecurityService {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api = this._BaseURL + 'GrowthwareAPI/';
     this._Api_GUID = this._Api + 'GetGUID';
+    this._Api_RandomNumbers = this._Api + 'GetRandomNumbers';
     this._Api_Security = this._Api + 'GetSecurityInfo';
   }
 
@@ -86,5 +88,34 @@ export class SecurityService {
         }
       });
     })
+  }
+
+  public async getRandomNumbers(amountOfNumbers: number, maxNumber: number, minNumber: number): Promise<number[]> {
+    const mQueryParameter: HttpParams = new HttpParams()
+      .set('amountOfNumbers', amountOfNumbers)
+      .set('maxNumber', maxNumber)
+      .set('minNumber', minNumber);
+
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    
+    return new Promise<number[]>((resolve, reject) => {
+      this._HttpClient.get<number[]>(this._Api_RandomNumbers, mHttpOptions).subscribe({
+        next: (response: number[])=>{
+          resolve(response);
+        },
+        error: (error: any)=>{
+          this._LoggingSvc.errorHandler(error, 'SecurityService', 'getGuid');
+          reject('Failed to call the API');          
+        },
+        complete: ()=>{
+          // doing nothing atm
+        }
+      });
+    })   
   }
 }

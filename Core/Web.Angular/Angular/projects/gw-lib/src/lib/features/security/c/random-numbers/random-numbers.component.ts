@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+// Library
+import { LogLevel, LoggingService } from '@Growthware/Lib/src/lib/features/logging';
+// Feature
+import { SecurityService } from '../../security.service';
 
 @Component({
   selector: 'gw-lib-random-numbers',
@@ -7,9 +11,36 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RandomNumbersComponent implements OnInit {
 
-  constructor() { }
+
+  results: string = '';
+  amountOfNumbers: number = 8;
+  maxNumber: number = 255;
+  minNumber: number = 0;
+
+  constructor(
+    private _LoggingSvc: LoggingService,
+    private _SecuritySvc: SecurityService
+  ) { }
 
   ngOnInit(): void {
+    // do nothing atm
+  }
+
+  /**
+   * @description 
+   *
+   * @memberof RandomNumbersComponent
+   */
+  doGetNumbers(): void {
+    this.results = '';
+    this._SecuritySvc.getRandomNumbers(this.amountOfNumbers, this.maxNumber, this.minNumber).catch((error: any)=>{
+      this._LoggingSvc.toast('Error calling the API', 'Random Numbers', LogLevel.Error);
+    }).then((response)=>{
+      if(response)
+      {
+        this.results = response.toString();
+      }
+    });
   }
 
 }
