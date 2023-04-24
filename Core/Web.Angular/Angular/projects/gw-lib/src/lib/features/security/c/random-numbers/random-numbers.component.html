@@ -1,56 +1,56 @@
-<div>
-    <div class="row top-buffer">
-        <div class="col-lg-1">
+<div class="table">
+    <div class="tr">
+        <div class="td">
             <span class="Form_LabelText">Minimum:</span>
         </div>
-        <div class="col-sm-1" style="width: 20px;">
+        <div class="td" style="width: 20px;">
 
         </div>
-        <div class="col-lg-10">
+        <div class="td">
             <input type="number" id="txtMinNumber" [(ngModel)]="minNumber" class="rounded" style="width: 322px;" />
         </div>
     </div>
-    <div class="row top-buffer">
-        <div class="col-lg-1">
+    <div class="tr">
+        <div class="td">
             <span class="Form_LabelText">Maximum:</span>
         </div>
-        <div class="col-sm-1" style="width: 20px;">
+        <div class="td" style="width: 20px;">
 
         </div>
-        <div class="col-lg-10">
+        <div class="td">
             <input type="number" id="txtMaxNumber" [(ngModel)]="maxNumber" class="rounded" style="width: 322px;" />
         </div>
     </div>
-    <div class="row top-buffer">
-        <div class="col-lg-1">
+    <div class="tr">
+        <div class="td">
             <span class="Form_LabelText">How Many Numbers:</span>
         </div>
-        <div class="col-sm-1" style="width: 20px;">
+        <div class="td" style="width: 20px;">
 
         </div>
-        <div class="col-lg-10">
+        <div class="td">
             <input type="number" id="txtAmountOfNumbers" [(ngModel)]="amountOfNumbers" class="rounded" style="width: 322px;" />
         </div>
     </div>
-    <div class="row top-buffer">
-        <div class="col-lg-1">
+    <div class="tr">
+        <div class="td">
             <span class="Form_LabelText">Results:</span>
         </div>
-        <div class="col-sm-1" style="width: 20px;">
+        <div class="td" style="width: 20px;">
 
         </div>
-        <div class="col-lg-10">
+        <div class="td">
             <textarea id="txtResults" name="txtResults" rows="4" cols="50" [(ngModel)]="results" class="rounded">Textarea</textarea>
         </div>
     </div>
-    <div class="row top-buffer">
-        <div class="col-lg-1">
+    <div class="tr">
+        <div class="td">
             
         </div>
-        <div class="col-sm-1" style="width: 20px;">
+        <div class="td" style="width: 20px;">
 
         </div>
-        <div class="col-lg-10">
+        <div class="td">
             <button id="btnSave" (click)="doGetNumbers()" mat-raised-button class="Form_Button" color="primary">
                 Get Numbers
             </button>
