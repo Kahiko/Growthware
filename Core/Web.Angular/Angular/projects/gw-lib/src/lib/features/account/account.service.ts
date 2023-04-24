@@ -109,7 +109,6 @@ export class AccountService {
             if(response.status == 4) {
               this._Router.navigate(['/accounts/change-password']);
             }
-            // this._IsAuthenticated.next(true);
             resolve(true);
           }
         },
@@ -150,7 +149,6 @@ export class AccountService {
         next: (response: string) => {
           if(response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-            // this.authenticate(this._Account, newPassword, true);
             this.authenticate(this._AuthenticationResponseSubject.getValue().account, newPassword, true);
             resolve(true);
           } else {
@@ -185,7 +183,6 @@ export class AccountService {
         this._AuthenticationResponseSubject.next(response);
         this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
         this._Router.navigate(['generic_home']);
-        // this._IsAuthenticated.next(false);
         this.stopRefreshTokenTimer();
       },
       error: (error: any) => {
@@ -196,7 +193,6 @@ export class AccountService {
   }
 
   async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
-    // const mQueryParameter: HttpParams = new HttpParams().append('accountProfile', accountProfile);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -228,7 +224,7 @@ export class AccountService {
       // set a timeout to refresh the token a minute before it expires
       const expires = new Date(jwtToken.exp * 1000);
       const timeout = expires.getTime() - Date.now() - (60 * 1000);
-      this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);  
+      this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
     }
   }
 
