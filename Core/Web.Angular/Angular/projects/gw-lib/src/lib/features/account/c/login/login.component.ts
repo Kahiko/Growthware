@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';
 import { ModalService } from '@Growthware/Lib/src/lib/features/modal';
 import { AccountService } from '../../account.service';
@@ -9,7 +9,10 @@ import { AccountService } from '../../account.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements AfterViewInit, OnInit {
+
+  @ViewChild('account') account!: ElementRef;
+
   loginForm!: FormGroup;
 
   get getControls() {
@@ -24,6 +27,12 @@ export class LoginComponent implements OnInit {
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
   ) { }
+
+  ngAfterViewInit(): void {
+    setTimeout(() => {
+      this.account.nativeElement.focus();
+    }, 100);
+  }
 
   ngOnInit(): void {
     this.loginForm = this._FormBuilder.group({

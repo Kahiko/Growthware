@@ -2,14 +2,14 @@
   <div>
     <mat-form-field class="loginForm__mat-form-field" appearance="fill">
       <mat-label>Account</mat-label>
-      <input matInput type="text" formControlName="account">
+      <input matInput type="text" formControlName="account" #account>
       <mat-error *ngIf="getControls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
     </mat-form-field>
   </div>
   <div>
     <mat-form-field class="loginForm__mat-form-field" appearance="fill">
       <mat-label>Password</mat-label>
-      <input matInput type="text" formControlName="password">
+      <input matInput type="password" formControlName="password">
       <mat-error *ngIf="getControls['password'].invalid">{{getErrorMessage('password')}}</mat-error>
     </mat-form-field>
   </div>
