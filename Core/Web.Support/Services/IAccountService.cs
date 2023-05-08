@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 
@@ -13,6 +15,8 @@ public interface IAccountService
     public string ChangePassword(UIChangePassword changePassword);
 
     public MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = true);
+
+    public IList<MMenuTree> GetMenuItems(string account, MenuType menuType);
 
     public AuthenticationResponse RefreshToken(string token, string ipAddress);
 

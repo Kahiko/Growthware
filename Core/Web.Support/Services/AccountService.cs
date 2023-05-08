@@ -2,6 +2,7 @@
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
@@ -377,6 +378,46 @@ public class AccountService : IAccountService
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         mRetVal = mBAccount.GetProfileByResetToken(token);
+        return mRetVal;
+    }
+
+    private DataTable getMenuData(string account, MenuType menuType)
+    {
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mRetVal = null;
+        if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+        {
+            String mAnonMenu = menuType.ToString() + "Anonymous_Menu";
+            string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(mAnonMenu);
+            if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
+            {
+                mRetVal = JsonSerializer.Deserialize<DataTable>(mJsonString);
+            }
+            else
+            {
+                mRetVal = mBAccount.GetMenu(account, menuType);
+                mJsonString = JsonSerializer.Serialize(mRetVal);
+                m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);                
+            }
+        }
+        else
+        {
+            mRetVal = mBAccount.GetMenu(account, menuType);
+        }
+        return mRetVal;
+    }
+
+    public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
+    {
+        DataTable mDataTable = getMenuData(account, (MenuType)menuType);
+        IList<MMenuTree> mFlatList = MMenuTree.GetFlatList(mDataTable);
+        IList<MMenuTree> mRetVal = mFlatList;
+        if(menuType == MenuType.Hierarchical)
+        {
+            mRetVal = TreeHelper.GetHierarchicalList(mFlatList);
+        }
+        string mm = string.Empty;
         return mRetVal;
     }
 

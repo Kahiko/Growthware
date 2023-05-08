@@ -241,6 +241,23 @@ public abstract class AbstractAccountController : ControllerBase
         return mRootNavLinks;
     }
 
+    [HttpGet("GetMenuItems")]
+    public IList<MMenuTree> GetMenuItems(int menuType)
+    {
+        MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        IList<MMenuTree> mRetVal = null;
+        MenuType mMenuType = (MenuType)menuType;
+        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
+        {
+            mRetVal = m_AccountService.GetMenuItems(mAccountProfile.Account, mMenuType);
+        } 
+        else 
+        {
+            mRetVal = m_AccountService.GetMenuItems(this.s_AnonymousAccount, mMenuType);
+        }
+        return mRetVal;
+    }
+
     private string ipAddress()
     {
         if (Request.Headers.ContainsKey("X-Forwarded-For"))
