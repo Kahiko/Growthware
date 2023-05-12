@@ -20,7 +20,7 @@ public interface ITreeNode<T> where T : class
     /// <summary>
     /// The parent of this node, or null if it is the root of the tree.
     /// </summary>
-    T Parent
+    int ParentId
     {
         get;
         set;
