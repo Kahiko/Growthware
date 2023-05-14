@@ -13,7 +13,13 @@ public class MMenuTree : ITreeNode<MMenuTree>
 
     }
 
-    public static List<MMenuTree> FillRecursive(IList<MMenuTree> flatObjects, int parentId)
+    /// <summary>
+    /// Returns a Hierarchical tree given a list of flat objects that has a parrent id
+    /// </summary>
+    /// <param name="flatObjects">A flat list of this type of objects</param>
+    /// <param name="parentId"></param>
+    /// <returns></returns>
+    public static List<MMenuTree> FillRecursive(List<MMenuTree> flatObjects, int parentId)
     {
         List<MMenuTree> recursiveObjects = new List<MMenuTree>();
         var mResults = flatObjects.Where(x => x.ParentId == parentId).ToList();
@@ -32,6 +38,11 @@ public class MMenuTree : ITreeNode<MMenuTree>
         return recursiveObjects;
     }
 
+    /// <summary>
+    /// Returns flat list of this type of object
+    /// </summary>
+    /// <param name="dataTable"></param>
+    /// <returns></returns>
     public static List<MMenuTree> GetFlatList(DataTable dataTable)
     {
         List<MMenuTree> mRetVal = new List<MMenuTree>(); 
@@ -40,8 +51,6 @@ public class MMenuTree : ITreeNode<MMenuTree>
             int mParentId = (int)mDataRow["ParentID"];
             if (mParentId != 1)
             {
-                mMenuTree.Parent = new MMenuTree();
-                mMenuTree.Parent.Id = mParentId;
                 mMenuTree.ParentId = mParentId;
             }
             mRetVal.Add(mMenuTree);
@@ -56,6 +65,7 @@ public class MMenuTree : ITreeNode<MMenuTree>
         Id = int.Parse(dataRow["MenuID"].ToString());
         Label = dataRow["Title"].ToString();
     }
+
 #region Properties
     public string Action {get; set;}
     public IList<MMenuTree> Children {get; set;}
