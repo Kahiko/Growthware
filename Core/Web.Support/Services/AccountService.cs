@@ -22,7 +22,7 @@ namespace GrowthWare.Web.Support.Services;
 public class AccountService : IAccountService
 {
     // private MAccountProfile m_CachedAnonymousAccount = null;
-    private int[] m_InvalidStatus = {(int)SystemStatus.Disabled, (int)SystemStatus.Inactive};
+    private int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private string s_AnonymousAccount = "Anonymous";
 
     private string s_SessionName = "SessionAccount";
@@ -52,13 +52,13 @@ public class AccountService : IAccountService
         bool mIsDomainAccount = false;
         int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
         bool mForceDb = true;
-        if (mDomainPos != -1) 
+        if (mDomainPos != -1)
         {
-            mIsDomainAccount = true; 
+            mIsDomainAccount = true;
             mRequestedAccount = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
         }
         mIsAnonymous = mRequestedAccount.ToLowerInvariant() == this.s_AnonymousAccount.ToLowerInvariant();
-        if(mIsAnonymous) 
+        if (mIsAnonymous)
         {
             mForceDb = false;
             mAuthenticated = true;
@@ -75,7 +75,7 @@ public class AccountService : IAccountService
                     string mProfilePassword = string.Empty;
                     CryptoUtility.TryDecrypt(mAccountProfile.Password, out mProfilePassword, ConfigSettings.EncryptionType);
                     mAuthenticated = password == mProfilePassword;
-                    if(mAuthenticated)
+                    if (mAuthenticated)
                     {
                         mAuthenticated = mAccountProfile.FailedAttempts < 4 && mAccountProfile.Status != (int)SystemStatus.Disabled;
                     }
@@ -86,12 +86,12 @@ public class AccountService : IAccountService
                 }
             }
         }
-        if(mAuthenticated)
+        if (mAuthenticated)
         {
             // setup tokens, claims and what not
             mAccountProfile = setTokens(mAccountProfile, ipAddress);
             mAccountProfile.FailedAttempts = 0;
-            if(!mIsAnonymous) { mAccountProfile.LastLogOn = DateTime.Now; }
+            if (!mIsAnonymous) { mAccountProfile.LastLogOn = DateTime.Now; }
             this.Save(mAccountProfile, true, false, false);
             mAccountProfile.Password = ""; // Don't want to ever send the password out
         }
@@ -99,7 +99,7 @@ public class AccountService : IAccountService
         {
             // return null
             mAccountProfile.FailedAttempts += 1;
-            if(mAccountProfile.FailedAttempts > 3 && mAccountProfile.Status != (int)SystemStatus.Disabled)
+            if (mAccountProfile.FailedAttempts > 3 && mAccountProfile.Status != (int)SystemStatus.Disabled)
             {
                 mAccountProfile.Status = (int)SystemStatus.Disabled;
             }
@@ -148,23 +148,23 @@ public class AccountService : IAccountService
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         string mCurrentPassword = mAccountProfile.Password;
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
-        if(mAccountProfile.Status != (int)SystemStatus.ChangePassword) 
+        if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
         {
-            if(changePassword.OldPassword == mCurrentPassword)
+            if (changePassword.OldPassword == mCurrentPassword)
             {
                 mAccountProfile.PasswordLastSet = System.DateTime.Now;
                 mAccountProfile.Status = (int)SystemStatus.Active;
                 mAccountProfile.FailedAttempts = 0;
                 // mAccountProfile.Password = CryptoUtility.Encrypt(changePassword.NewPassword.Trim(), mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 string mEncryptedPassword;
-                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword,  mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 mAccountProfile.Password = mEncryptedPassword;
                 try
                 {
                     Save(mAccountProfile, false, false, false);
                     string mJsonString = JsonSerializer.Serialize(mAccountProfile);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);                    
-                    mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");                    
+                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                    mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
                 {
@@ -175,8 +175,8 @@ public class AccountService : IAccountService
             {
                 mMessageProfile = MessageUtility.GetProfile("PasswordNotMatched");
             }
-        } 
-        else 
+        }
+        else
         {
             try
             {
@@ -190,7 +190,7 @@ public class AccountService : IAccountService
                 {
                     Save(mAccountProfile, false, false, false);
                     string mJsonString = JsonSerializer.Serialize(mAccountProfile);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);                    
+                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
                     mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
@@ -201,7 +201,7 @@ public class AccountService : IAccountService
             catch (Exception)
             {
                 mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
-            }            
+            }
         }
         //AccountUtility.RemoveInMemoryInformation(true);
         mRetVal = mMessageProfile.Body;
@@ -220,7 +220,7 @@ public class AccountService : IAccountService
         var mKey = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
         var mSecurityTokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { 
+            Subject = new ClaimsIdentity(new[] {
                 new Claim("account", account.Account),
                 new Claim("status", account.Status.ToString())
                 }),
@@ -287,16 +287,17 @@ public class AccountService : IAccountService
         BAccounts mBAccount = null;
         string mJsonString = string.Empty;
         string mSessionNameToUse = s_SessionName;
-        if(account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant()) 
+        if (account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant())
         {
             mSessionNameToUse = s_AnonymousAccount;
         }
         try
         {
-            if(forceDb) {
+            if (forceDb)
+            {
                 mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBAccount.GetProfile(account);
-                if(!String.IsNullOrWhiteSpace(mRetVal.Account))
+                if (!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
                     if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && updateSession)
                     {
@@ -331,7 +332,7 @@ public class AccountService : IAccountService
                     // there is no session so you have to get from the DB and since there is no session no need to attempt to add it to session
                     mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                     mRetVal = mBAccount.GetProfile(account);
-                    if(String.IsNullOrWhiteSpace(mRetVal.Account)) mRetVal = null;
+                    if (String.IsNullOrWhiteSpace(mRetVal.Account)) mRetVal = null;
                 }
             }
         }
@@ -398,7 +399,7 @@ public class AccountService : IAccountService
             {
                 mRetVal = mBAccount.GetMenu(account, menuType);
                 mJsonString = JsonSerializer.Serialize(mRetVal);
-                m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);                
+                m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);
             }
         }
         else
@@ -411,13 +412,11 @@ public class AccountService : IAccountService
     public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
     {
         DataTable mDataTable = getMenuData(account, (MenuType)menuType);
-        IList<MMenuTree> mFlatList = MMenuTree.GetFlatList(mDataTable);
-        IList<MMenuTree> mRetVal = mFlatList;
-        if(menuType == MenuType.Hierarchical)
+        IList<MMenuTree> mRetVal = MMenuTree.GetFlatList(mDataTable);
+        if (menuType == MenuType.Hierarchical)
         {
-            mRetVal = TreeHelper.GetHierarchicalList(mFlatList);
+            mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
         }
-        string mm = string.Empty;
         return mRetVal;
     }
 
@@ -463,7 +462,7 @@ public class AccountService : IAccountService
             AuthenticationResponse mResponse = new AuthenticationResponse(mAccountProfile);
             mResponse.JwtToken = jwtToken;
             mResponse.RefreshToken = newRefreshToken.Token;
-            return mResponse;            
+            return mResponse;
         }
         catch (System.Exception)
         {
@@ -501,8 +500,8 @@ public class AccountService : IAccountService
 
     private void removeOldRefreshTokens(MAccountProfile account)
     {
-        account.RefreshTokens.RemoveAll(x => 
-            !x.IsActive() && 
+        account.RefreshTokens.RemoveAll(x =>
+            !x.IsActive() &&
             x.Created.AddDays(ConfigSettings.RefreshTokenTTL) <= DateTime.UtcNow);
     }
 
