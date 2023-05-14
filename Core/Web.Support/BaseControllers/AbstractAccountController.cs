@@ -242,7 +242,7 @@ public abstract class AbstractAccountController : ControllerBase
     }
 
     [HttpGet("GetMenuItems")]
-    public IList<MMenuTree> GetMenuItems(int menuType)
+    public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
         MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         IList<MMenuTree> mRetVal = null;
@@ -255,7 +255,8 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRetVal = m_AccountService.GetMenuItems(this.s_AnonymousAccount, mMenuType);
         }
-        return mRetVal;
+
+        return Ok(mRetVal);
     }
 
     private string ipAddress()
