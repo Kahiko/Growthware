@@ -38,6 +38,9 @@ SET @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where actio
 EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Add, @V_SystemID, @V_Debug
 EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Edit, @V_SystemID, @V_Debug
 
+-- Update ZGWSecurity.Functions data
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'accounts' WHERE [Action] = 'Search_Accounts';
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '1.0.0.1',

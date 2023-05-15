@@ -1,5 +1,9 @@
 -- Downgrade
 
+
+-- Update ZGWSecurity.Functions data
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action] = 'accounts';
+
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 
 UPDATE [ZGWSystem].[Database_Information] SET
