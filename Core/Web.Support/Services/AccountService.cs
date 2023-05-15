@@ -398,8 +398,11 @@ public class AccountService : IAccountService
             else
             {
                 mRetVal = mBAccount.GetMenu(account, menuType);
-                mJsonString = JsonSerializer.Serialize(mRetVal);
-                m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);
+                if(mRetVal != null && mRetVal.Rows.Count > 0)
+                {
+                    mJsonString = JsonSerializer.Serialize(mRetVal);
+                    m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);
+                }
             }
         }
         else
