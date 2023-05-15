@@ -62,7 +62,7 @@ public class MMenuTree : ITreeNode<MMenuTree>
     {
         Action = dataRow["URL"].ToString();
         Description = dataRow["Description"].ToString();
-        Id = int.Parse(dataRow["MenuID"].ToString());
+        Id = int.Parse(dataRow["Id"].ToString());
         Label = dataRow["Title"].ToString();
     }
 
