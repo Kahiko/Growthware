@@ -16,14 +16,14 @@ public interface ITreeNode<T> where T : class
     /// <param name="flatObjects">A flat list of this type of objects</param>
     /// <param name="parentId"></param>
     /// <returns></returns>
-    public List<T> FillRecursive(IList<T> flatObjects, int parentId);
+    // public List<T> FillRecursive(IList<T> flatObjects, int parentId);
 
     /// <summary>
     /// Returns flat list of this type of object
     /// </summary>
     /// <param name="dataTable"></param>
     /// <returns></returns>
-    public List<T> GetFlatList(DataTable dataTable);
+    // public List<T> GetFlatList(DataTable dataTable);
 
     /// <summary>
     /// A unique identifier for the node.
