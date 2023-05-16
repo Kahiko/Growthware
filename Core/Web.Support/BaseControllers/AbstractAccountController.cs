@@ -346,7 +346,7 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
-    [Authorize("Search_Accounts")]
+    [Authorize("Accounts")]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)
     {

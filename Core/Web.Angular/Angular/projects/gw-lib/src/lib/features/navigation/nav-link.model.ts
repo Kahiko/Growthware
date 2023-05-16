@@ -4,8 +4,11 @@
  */
 
 export interface INavLink {
+  "action": string
+  "description": string
   "disabled": boolean
   "icon": string;
+  "label": string;
   "link": string;
   "linkText": string;
   "isRouterLink": boolean;
@@ -19,7 +22,10 @@ export class NavLink implements INavLink {
   // public children = new Array<INavLink>;
 
   constructor(
+    public action: string,
+    public description: string,
     public icon: string,
+    public label: string,
     public link: string,
     public linkText: string,
     public isRouterLink: boolean = true,

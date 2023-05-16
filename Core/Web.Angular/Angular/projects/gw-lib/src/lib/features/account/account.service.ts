@@ -23,6 +23,7 @@ export class AccountService {
   private _Api_Authenticate = '';
   private _Api_ChangePassword = '';
   private _Api_GetLinks: string = '';
+  private _Api_GetMenuItems: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
   private _Api_SaveAccount: string = '';
@@ -73,6 +74,7 @@ export class AccountService {
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
     this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
+    this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
     this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
@@ -297,7 +299,7 @@ export class AccountService {
       }),
       params: mQueryParameter
     };
-    this._HttpClient.get<INavLink[]>(this._Api_GetLinks, mHttpOptions).subscribe({
+    this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
       next: (response) => {
         this._SideNavSubject.next(response);
       },

@@ -11,7 +11,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractFunctionController : ControllerBase
 {
 
-    [Authorize("Search_Functions")]
+    [Authorize("Functions")]
     [HttpPost("SearchFunctions")]
     public String SearchFunctions(UISearchCriteria searchCriteria)
     {
