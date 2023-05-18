@@ -187,6 +187,8 @@ GO
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action] = 'accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Functions' WHERE [Action] = 'functions';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditAccount' WHERE [Action] = 'Edit-My-Account';
+
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 

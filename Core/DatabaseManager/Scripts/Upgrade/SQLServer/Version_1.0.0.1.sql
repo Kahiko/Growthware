@@ -27,17 +27,24 @@ DECLARE @V_Action VARCHAR(256)          = ''
 
 -- Setup the values for the new/updated Function
 PRINT 'Adding SaveAccount'
-SET @V_FunctionID = -1;
-SET @V_Description = 'A security entry to determine who can Save and Account (not their own)';
-SET @V_Action = 'SaveAccount';
-SET @V_Name = 'Save Account';
-SET @V_Notes = 'Used as a security holder to determine who can Save and Account (not their own).';
-EXEC ZGWSecurity.Set_Function @V_FunctionID, @V_Name, @V_Description, @V_FunctionTypeSeqId, @V_Source, @V_Controller, @V_Resolve, @V_EnableViewStateFalse, @V_EnableNotificationsFalse, @V_Redirect_On_Timeout, @V_IsNavFalse, @V_LinkBehaviorInternal, @V_NO_UI, @V_NAV_TYPE, @V_Action, @V_META_KEY_WORDS, @V_ParentID, @V_Notes, @V_SystemID, @V_Debug;
--- Set the Security for the new/updated Function
-SET @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where action=@V_Action)
-EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Add, @V_SystemID, @V_Debug
-EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Edit, @V_SystemID, @V_Debug
+IF NOT EXISTS (SELECT TOP(1) 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount')
+	BEGIN
+		SET @V_FunctionID = -1;
+		SET @V_Description = 'A security entry to determine who can Save and Account (not their own)';
+		SET @V_Action = 'SaveAccount';
+		SET @V_Name = 'Save Account';
+		SET @V_Notes = 'Used as a security holder to determine who can Save and Account (not their own).';
+		EXEC ZGWSecurity.Set_Function @V_FunctionID, @V_Name, @V_Description, @V_FunctionTypeSeqId, @V_Source, @V_Controller, @V_Resolve, @V_EnableViewStateFalse, @V_EnableNotificationsFalse, @V_Redirect_On_Timeout, @V_IsNavFalse, @V_LinkBehaviorInternal, @V_NO_UI, @V_NAV_TYPE, @V_Action, @V_META_KEY_WORDS, @V_ParentID, @V_Notes, @V_SystemID, @V_Debug;
+		-- Set the Security for the new/updated Function
+		SET @V_FunctionID = (select FunctionSeqId from ZGWSecurity.Functions where action=@V_Action)
+		EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Add, @V_SystemID, @V_Debug
+		EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID, 1, 'Developer', @V_Permission_Edit, @V_SystemID, @V_Debug
+	END
+--END IF
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('ZGWSecurity.Get_Menu_Data'))
+   exec('CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data] AS BEGIN SET NOCOUNT ON; END')
+GO
 
 /*
 Usage:
@@ -86,62 +93,61 @@ DECLARE @V_AvalibleItems TABLE (
 	)
 
 INSERT INTO @V_AvalibleItems
-SELECT -- Menu items via roles
-	[FUNCTIONS].FunctionSeqId AS [ID]
-	,[FUNCTIONS].[Name] AS Title
-	,[FUNCTIONS].[Description]
-	,[FUNCTIONS].[Action] AS URL
-	,[FUNCTIONS].ParentSeqId AS Parent_Id
-	,[FUNCTIONS].Sort_Order AS Sort_Order
-	,ROLES.[Name] AS ROLE
-	,[FUNCTIONS].FunctionTypeSeqId
-FROM ZGWSecurity.Roles_Security_Entities SE_ROLES WITH (NOLOCK)
-	,ZGWSecurity.Roles ROLES WITH (NOLOCK)
-	,ZGWSecurity.Roles_Security_Entities_Functions [SECURITY] WITH (NOLOCK)
-	,ZGWSecurity.Functions [FUNCTIONS] WITH (NOLOCK)
-	,ZGWSecurity.[Permissions] [Permissions] WITH (NOLOCK)
-WHERE SE_ROLES.RoleSeqId = ROLES.RoleSeqId
-	AND [SECURITY].RolesSecurityEntitiesSeqId = SE_ROLES.RolesSecurityEntitiesSeqId
-	AND [SECURITY].FunctionSeqId = [FUNCTIONS].FunctionSeqId
-	AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
-	AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-	AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
-	AND [FUNCTIONS].Is_Nav = 1
-	AND SE_ROLES.SecurityEntitySeqId IN (
-		SELECT SecurityEntitySeqId
-		FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
+	SELECT -- Menu items via roles
+		[FUNCTIONS].FunctionSeqId AS [ID]
+		,[FUNCTIONS].[Name] AS Title
+		,[FUNCTIONS].[Description]
+		,[FUNCTIONS].[Action] AS URL
+		,[FUNCTIONS].ParentSeqId AS Parent_Id
+		,[FUNCTIONS].Sort_Order AS Sort_Order
+		,ROLES.[Name] AS ROLE
+		,[FUNCTIONS].FunctionTypeSeqId
+	FROM ZGWSecurity.Roles_Security_Entities SE_ROLES WITH (NOLOCK)
+		,ZGWSecurity.Roles ROLES WITH (NOLOCK)
+		,ZGWSecurity.Roles_Security_Entities_Functions [SECURITY] WITH (NOLOCK)
+		,ZGWSecurity.Functions [FUNCTIONS] WITH (NOLOCK)
+		,ZGWSecurity.[Permissions] [Permissions] WITH (NOLOCK)
+	WHERE SE_ROLES.RoleSeqId = ROLES.RoleSeqId
+		AND [SECURITY].RolesSecurityEntitiesSeqId = SE_ROLES.RolesSecurityEntitiesSeqId
+		AND [SECURITY].FunctionSeqId = [FUNCTIONS].FunctionSeqId
+		AND [Permissions].NVP_DetailSeqId = SECURITY.PermissionsNVPDetailSeqId
+		AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
+		AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
+		AND [FUNCTIONS].Is_Nav = 1
+		AND SE_ROLES.SecurityEntitySeqId IN (
+			SELECT SecurityEntitySeqId
+			FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
 		)
 
 UNION ALL
-
-SELECT -- Menu items via groups
-	[FUNCTIONS].FunctionSeqId AS [ID]
-	,[FUNCTIONS].[Name] AS Title
-	,[FUNCTIONS].[Description]
-	,[FUNCTIONS].[Action] AS URL
-	,[FUNCTIONS].ParentSeqId AS Parent_Id
-	,[FUNCTIONS].Sort_Order AS Sort_Order
-	,ROLES.[Name] AS ROLE
-	,[FUNCTIONS].FunctionTypeSeqId
-FROM ZGWSecurity.Groups_Security_Entities_Functions WITH (NOLOCK)
-	,ZGWSecurity.Groups_Security_Entities WITH (NOLOCK)
-	,ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH (NOLOCK)
-	,ZGWSecurity.Roles_Security_Entities WITH (NOLOCK)
-	,ZGWSecurity.Roles ROLES WITH (NOLOCK)
-	,ZGWSecurity.Functions [FUNCTIONS] WITH (NOLOCK)
-	,ZGWSecurity.[Permissions] [Permissions] WITH (NOLOCK)
-WHERE ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
-	AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId
-	AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
-	AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
-	AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
-	AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
-	AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
-	AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
-	AND [FUNCTIONS].Is_Nav = 1
-	AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (
-		SELECT SecurityEntitySeqId
-		FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
+	SELECT -- Menu items via groups
+		[FUNCTIONS].FunctionSeqId AS [ID]
+		,[FUNCTIONS].[Name] AS Title
+		,[FUNCTIONS].[Description]
+		,[FUNCTIONS].[Action] AS URL
+		,[FUNCTIONS].ParentSeqId AS Parent_Id
+		,[FUNCTIONS].Sort_Order AS Sort_Order
+		,ROLES.[Name] AS ROLE
+		,[FUNCTIONS].FunctionTypeSeqId
+	FROM ZGWSecurity.Groups_Security_Entities_Functions WITH (NOLOCK)
+		,ZGWSecurity.Groups_Security_Entities WITH (NOLOCK)
+		,ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH (NOLOCK)
+		,ZGWSecurity.Roles_Security_Entities WITH (NOLOCK)
+		,ZGWSecurity.Roles ROLES WITH (NOLOCK)
+		,ZGWSecurity.Functions [FUNCTIONS] WITH (NOLOCK)
+		,ZGWSecurity.[Permissions] [Permissions] WITH (NOLOCK)
+	WHERE ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS].FunctionSeqId
+		AND ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Functions.GroupsSecurityEntitiesSeqId
+		AND ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.GroupsSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities.GroupsSecurityEntitiesSeqId
+		AND ZGWSecurity.Roles_Security_Entities.RolesSecurityEntitiesSeqId = ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities.RolesSecurityEntitiesSeqId
+		AND ROLES.RoleSeqId = ZGWSecurity.Roles_Security_Entities.RoleSeqId
+		AND [Permissions].NVP_DetailSeqId = ZGWSecurity.Groups_Security_Entities_Functions.PermissionsNVPDetailSeqId
+		AND [Permissions].NVP_DetailSeqId = @V_Permission_Id
+		AND [FUNCTIONS].Navigation_Types_NVP_DetailSeqId = @P_Navigation_Types_NVP_DetailSeqId
+		AND [FUNCTIONS].Is_Nav = 1
+		AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (
+			SELECT SecurityEntitySeqId
+			FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
 		)
 
 --SELECT * FROM @V_AvalibleMenuItems -- DEBUG
@@ -244,6 +250,7 @@ GO
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'accounts' WHERE [Action] = 'Search_Accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'functions' WHERE [Action] = 'Search_Functions';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Edit-My-Account' WHERE [Action] = 'EditAccount';
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
