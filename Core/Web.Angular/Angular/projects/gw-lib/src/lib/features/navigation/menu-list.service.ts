@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class MenuListService {
-  private _ShowNavText = new BehaviorSubject<boolean>(true);
+  private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
 
   public currentUrl = new BehaviorSubject<string>('');
   readonly showNavText$ = this._ShowNavText.asObservable();
