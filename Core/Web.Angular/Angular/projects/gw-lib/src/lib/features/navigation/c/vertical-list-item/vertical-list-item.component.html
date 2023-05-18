@@ -35,7 +35,7 @@
 </a>
 <div *ngIf="expanded">
   <div mat-list-item class="drawer-nav-list__list-item">
-    <gw-lib-vertical-list-item [showSideNavLinkText]=showSideNavLinkText *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
+    <gw-lib-vertical-list-item *ngFor="let child of item.children" [item]="child" [depth]="depth+1">
     </gw-lib-vertical-list-item>
   </div>
 </div>

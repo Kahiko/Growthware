@@ -21,10 +21,10 @@ import { MenuListService } from '../../menu-list.service';
 })
 export class VerticalListItemComponent implements OnDestroy, OnInit {
   expanded!: boolean;
+  showSideNavLinkText!: boolean;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   @Input() depth!: number;
   @Input() item!: INavLink;
-  @Input() showSideNavLinkText: boolean = true;
 
   private _Subscription: Subscription = new Subscription();
 

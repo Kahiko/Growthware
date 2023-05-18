@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class MenuListService {
-  private _ShowNavText = new BehaviorSubject<boolean>(false);
+  private _ShowNavText = new BehaviorSubject<boolean>(true);
 
   public currentUrl = new BehaviorSubject<string>('');
   readonly showNavText$ = this._ShowNavText.asObservable();
@@ -19,6 +19,10 @@ export class MenuListService {
         }
       },
     });
+  }
+
+  getShowNavText(): boolean {
+    return this._ShowNavText.getValue();
   }
 
   setShowNavText(value: boolean): void {

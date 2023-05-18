@@ -15,7 +15,7 @@ import { sideNavTextAnimation } from '../animations/side-nav';
 export class DefaultLayoutComponent implements OnDestroy, OnInit {
   private _Subscriptions: Subscription = new Subscription();
 
-  showSideNavLinkText = false;
+  showSideNavLinkText!: boolean;
   verticalNavLinks: Array<INavLink> = [];
 
   constructor(
@@ -28,9 +28,15 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this.showSideNavLinkText = this._MenuListSvc.getShowNavText();
     this._Subscriptions.add(
       this._AccountSvc.sideNav$.subscribe((navLinks)=>{
         this.verticalNavLinks = navLinks;
+      })
+    );
+    this._Subscriptions.add(
+      this._MenuListSvc.showNavText$.subscribe((value)=>{
+        this.showSideNavLinkText = value;
       })
     );
     this._Subscriptions.add(
@@ -41,7 +47,6 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
   }
 
   onShowSideNavLinkText(): void {
-    this.showSideNavLinkText = !this.showSideNavLinkText;
-    this._MenuListSvc.setShowNavText(this.showSideNavLinkText);
+    this._MenuListSvc.setShowNavText(!this.showSideNavLinkText);
   }
 }
