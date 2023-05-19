@@ -35,7 +35,7 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mAuthenticationResponse);
     }
 
-    [Authorize("ChangePassword")]
+    [Authorize("/accounts/change-password")]
     [HttpPost("ChangePassword")]
     public ActionResult ChangePassword(string oldPassword, string newPassword)
     {
@@ -109,7 +109,7 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
-    [HttpGet("EditAccount")]
+    [HttpGet("/accounts/edit-my-account")]
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];

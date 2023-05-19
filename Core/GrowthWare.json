@@ -18,8 +18,8 @@
     "Version": "0.0.0.1",
 
     "Development_Actions_AccessDenied": "AccessDenied",
-    "Development_Actions_ChangePassword": "ChangePassword",
-    "Development_Actions_EditAccount": "EditAccount",
+    "Development_Actions_ChangePassword": "/accounts/change-password",
+    "Development_Actions_EditAccount": "/accounts/edit-my-account",
     "Development_Actions_EditFunction": "Functions",
     "Development_Actions_EditGroups": "Manage_Groups",
     "Development_Actions_EditMessages": "Search_Messages",
