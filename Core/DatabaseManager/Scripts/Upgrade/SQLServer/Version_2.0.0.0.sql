@@ -255,7 +255,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/change-password' WHER
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
-    [Version] = '1.0.0.1',
+    [Version] = '2.0.0.0',
     [Updated_By] = 3,
     [Updated_Date] = getdate()
 WHERE [Version] = '1.0.0.0'
