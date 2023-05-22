@@ -189,6 +189,9 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action]
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Functions' WHERE [Action] = 'functions';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditAccount' WHERE [Action] = 'Edit-My-Account';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'ChangePassword' WHERE [Action] = '/accounts/change-password';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'RandomNumbers' WHERE [Action] = '/security/random-numbers';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'guidhelper' WHERE [Action] = '/security/guid_helper';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Encryption_Helper' WHERE [Action] = 'security';
 
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'

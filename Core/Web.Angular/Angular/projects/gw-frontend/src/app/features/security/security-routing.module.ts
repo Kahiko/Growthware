@@ -9,8 +9,8 @@ import { RandomNumbersComponent } from '@Growthware/Lib/src/lib/features/securit
 
 const childRoutes: Routes = [
   { path: '', component: EncryptDecryptComponent, canActivate: [AuthGuard] },
-  { path: 'guid-helper', component: GuidHelperComponent },
-  { path: 'random-numbers', component: RandomNumbersComponent },
+  { path: 'guid_helper', component: GuidHelperComponent },        // /security/guid_helper
+  { path: 'random-numbers', component: RandomNumbersComponent },  // /security/random_numbers
 ];
 
 

@@ -26,7 +26,7 @@
     "Development_Actions_EditOtherAccount": "Accounts",
     "Development_Actions_EditRoles": "Search_Roles",
     "Development_Actions_EditSecurityEntity": "Search_Security_Entities",
-    "Development_Actions_Encryption_Helper": "Encryption_Helper",
+    "Development_Actions_Encryption_Helper": "/security/encryption_helper",
     "Development_Actions_Logon": "Logon",
     "Development_Actions_UnknownAction": "UnknownAction",
     "Development_Actions_View_Account_Group_Tab": "View_Account_Group_Tab",

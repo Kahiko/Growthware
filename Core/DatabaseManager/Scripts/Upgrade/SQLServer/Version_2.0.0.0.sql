@@ -252,6 +252,9 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'accounts' WHERE [Action] = 'Sea
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'functions' WHERE [Action] = 'Search_Functions';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/Edit-My-Account' WHERE [Action] = 'EditAccount';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/change-password' WHERE [Action] = 'changepassword';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/random-numbers' WHERE [Action] = 'RandomNumbers';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/guid_helper' WHERE [Action] = 'guidhelper';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'security' WHERE [Action] = 'Encryption_Helper';
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
