@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent } from './c/modal.component';
+import { ModalComponent } from './c/popup/modal.component';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';

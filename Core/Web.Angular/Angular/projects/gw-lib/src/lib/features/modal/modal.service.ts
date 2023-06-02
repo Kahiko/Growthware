@@ -5,7 +5,7 @@ import { DOCUMENT } from '@angular/common';
 
 // Components
 import { ContentObject, IContentObject } from './content-object.model';
-import { ModalComponent } from './c/modal.component';
+import { ModalComponent } from './c/popup/modal.component';
 
 // Services
 import { LoggingService, LogLevel } from '@Growthware/Lib/src/lib/features/logging';

@@ -6,8 +6,8 @@ import { LoggingService } from '@Growthware/Lib/src/lib/features/logging';
 // Interfaces / Common Code
 import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
 import { CallbackButton, ICallbackButton } from '@Growthware/Lib/src/lib/models';
-import { IModalOptions } from '../modal-options.model';
-import { IWindowSize, WindowSize } from '../window-size.model';
+import { IModalOptions } from '../../modal-options.model';
+import { IWindowSize, WindowSize } from '../../window-size.model';
 
 @Component({
   selector: 'gw-lib-modal',
