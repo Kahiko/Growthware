@@ -6,9 +6,7 @@
       <mat-toolbar class="mat-toolbar" color="primary">
         <h2>{{header}}</h2>
         <span class="spacer"></span>
-        <button id="{{cancelBtn.id}}" name="{{cancelBtn.name}}" class="button__link" (click)="onCancel()" aria-label="Close">
-          <mat-icon>close</mat-icon>
-        </button>
+        <span id="{{cancelBtn.id}}" (click)="onCancel()" class="button__link" aria-label="Close">&times;</span>
       </mat-toolbar>
     </div>
     <div class="modal-body__div">
