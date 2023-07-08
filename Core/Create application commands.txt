@@ -112,6 +112,7 @@ Dynamic Table
 Modal
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/popup/modal --module modal --style scss --project gw-lib
+		ng generate directive features/modal/c/directive/modalDirective --module modal --selector gwModalDirective --project gw-lib
 		ng generate service features/modal/modal --project gw-lib
 		ng generate enum features/modal/ModalSize --type enum --project gw-lib
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib

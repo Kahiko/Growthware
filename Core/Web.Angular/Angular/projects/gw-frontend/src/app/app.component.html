@@ -1,5 +1,6 @@
 <div>
   <gw-lib-toaster></gw-lib-toaster>
+  <div gwModalDirective></div>
   <ng-container *ngIf="(skin$ | async) as layout" [ngSwitch]="layout">
     <gw-frontend-default-layout *ngSwitchCase="'default'"></gw-frontend-default-layout>
     <gw-frontend-system-layout *ngSwitchCase="'system'"></gw-frontend-system-layout>

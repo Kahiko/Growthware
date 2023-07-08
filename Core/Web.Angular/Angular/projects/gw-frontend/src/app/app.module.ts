@@ -12,6 +12,7 @@ import { AccountService } from '@Growthware/Lib/src/lib/features/account';
 import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
 // Library Modules
 import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
+import { ModalModule } from '@Growthware/Lib/src/lib/features/modal';
 // Library Misc
 import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
 import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
@@ -50,6 +51,7 @@ export function tokenGetter() {
       }
     }),
     MatSelectModule,
+    ModalModule,
     ReactiveFormsModule,
     SystemModule,
     ToastModule,

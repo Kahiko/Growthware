@@ -1,3 +1,4 @@
+export * from './c/directive/modal-directive.directive';
 export * from './c/popup/modal.component';
 export * from './content-object.model';
 export * from './modal-options.model';
