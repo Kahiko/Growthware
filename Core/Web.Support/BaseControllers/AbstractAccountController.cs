@@ -109,7 +109,8 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
-    [HttpGet("/accounts/edit-my-account")]
+    // [HttpGet("/accounts/edit-my-account")]
+    [HttpGet("EditAccount")]
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
