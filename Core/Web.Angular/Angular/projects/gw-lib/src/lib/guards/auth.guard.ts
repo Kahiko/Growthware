@@ -26,19 +26,21 @@ export class AuthGuard implements CanActivate  {
     let mReturn: boolean = false;
     if (mTokenStr && !this._JwtHelper.isTokenExpired(mTokenStr)) {
       // console.log(this._JwtHelper.decodeToken(token))
-      const mToken: IToken = this._JwtHelper.decodeToken(mTokenStr)
-      switch (parseInt(mToken.status)) {
-        case 4:
-          // console.log(state);
-          mRedirectUrl = '/accounts/change-password';
-          mReturn = true;
-          break;
-        case 5:
-          mRedirectUrl = '/accounts/edit-my-account';
-          mReturn = false;
-          break;
-        default:
-          break;
+      const mToken: IToken | null = this._JwtHelper.decodeToken(mTokenStr)
+      if(mToken) {
+        switch (parseInt(mToken.status)) {
+          case 4:
+            // console.log(state);
+            mRedirectUrl = '/accounts/change-password';
+            mReturn = true;
+            break;
+          case 5:
+            mRedirectUrl = '/accounts/edit-my-account';
+            mReturn = false;
+            break;
+          default:
+            break;
+        }
       }
       this.handleRedirect(mRedirectUrl, state, mReturn);
       return true;
