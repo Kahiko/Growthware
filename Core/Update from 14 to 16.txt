@@ -1,18 +1,23 @@
 del package-lock.json
 rmdir /s/q node_modules
 npm install
+npm install -g npm@9.8.0
 ng update @angular-eslint/schematics@15 --allow-dirty
-ng update @angular/core@15 @angular/cli@15 --allow-dirty
+-- ng update @angular/core@15 @angular/cli@15 --allow-dirty (looks like update @angular-eslint/schematics@15 update this)
 ng update @angular/material@15 @angular/cdk@15 --allow-dirty
 ng generate @angular/material:mdc-migration
 
 Search for "// TODO(mdc-migration):"
 
+rmdir /s/q node_modules
+npm install
 ng update @angular-eslint/schematics@16 --allow-dirty
 ng update @angular/core@16 @angular/cli@16 --allow-dirty
 ng update @angular/material@16 @angular/cdk@16 --allow-dirty
 
-ng update @auth0/angular-jwt --allow-dirty
+-- ng update @auth0/angular-jwt --allow-dirty
+--ng update @microsoft/signalr --allow-dirty
+
 ng update rxjs@latest --allow-dirty
 ng update tslib@latest --allow-dirty
 ng update @types/jasmine@latest --allow-dirty
@@ -20,8 +25,13 @@ ng update karma-jasmine-html-reporter --allow-dirty
 ng update jasmine-core@latest --allow-dirty
 ng update @typescript-eslint/eslint-plugin@latest --allow-dirty
 ng update eslint@latest --allow-dirty
-ng update karma-coverage --allow-dirty
+ng update karma-coverage@latest --allow-dirty
 ng update karma-chrome-launcher@latest --allow-dirty
 ng update karma@latest --allow-dirty
-npm install @types/node
-	ensure "types" in both tsconfig.app.json and tsconfig.lib.json has "node"
+-- npm install @types/node
+--	ensure "types" in both tsconfig.app.json and tsconfig.lib.json has "node"
+ng update material-icons@latest --allow-dirty
+
+Added the following to $theme: ( in xx-theme.scss:
+  typography: mat.define-typography-config(),
+  density: 0,
