@@ -130,6 +130,7 @@ Accounts
 		ng generate component features/account/c/login --module account.module --project gw-lib
 		ng generate component features/account/c/ChangePassword --module account.module --project gw-lib
 		ng generate component features/account/c/Logout --module account.module --project gw-lib
+		ng generate component features/account/c/SelectPreferences --module account.module --project gw-lib
 		ng generate service features/account/account --project gw-lib
 
 		ng generate module features/PickList --project gw-lib

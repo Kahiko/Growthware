@@ -22,6 +22,7 @@ import { LoginComponent } from './c/login/login.component';
 import { LogoutComponent } from './c/logout/logout.component';
 // Feature Modules
 import { AccountsRoutingModule } from './accounts-routing.module';
+import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
 
 
 @NgModule({
@@ -31,6 +32,7 @@ import { AccountsRoutingModule } from './accounts-routing.module';
     SearchAccountsComponent,
     LoginComponent,
     LogoutComponent,
+    SelectPreferencesComponent,
   ],
   imports: [
     AccountsRoutingModule,

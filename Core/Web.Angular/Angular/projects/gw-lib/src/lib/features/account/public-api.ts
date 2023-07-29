@@ -3,6 +3,7 @@ export * from './c/change-password/change-password.component';
 export * from './c/login/login.component';
 export * from './c/logout/logout.component';
 export * from './c/search-accounts/search-accounts.component';
+export * from './c/select-preferences/select-preferences.component';
 export * from './account-profile.model';
 export * from './account.module';
 export * from './account.service';
