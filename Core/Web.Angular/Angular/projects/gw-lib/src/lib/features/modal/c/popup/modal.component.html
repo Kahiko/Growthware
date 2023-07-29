@@ -1,15 +1,13 @@
-<!-- The Modal -->
-<div id="{{modalId}}" class="modal-background">
-  <!-- Modal content -->
-  <div class="modal-content" [ngStyle]="{ 'height.px': height, 'width.px': width }">
-    <div class="modal-header__div">
-      <mat-toolbar class="mat-toolbar" color="primary">
+<div class="modal-background">
+  <div class="modal__div" [ngStyle]="{ 'width.px': width + 10 }">
+    <div>
+      <mat-toolbar class="mat-toolbar toolbar" color="primary">
         <h2>{{header}}</h2>
         <span class="spacer"></span>
         <span id="{{cancelBtn.id}}" (click)="onCancel()" class="button__link" aria-label="Close">&times;</span>
       </mat-toolbar>
     </div>
-    <div class="modal-body__div">
+    <div class="modal-body__div" [ngStyle]="{ 'height.px': height, 'width.px': width }">
       <p><ng-content></ng-content></p>
     </div>
     <div *ngIf="showFooter" class="modal-footer__div">

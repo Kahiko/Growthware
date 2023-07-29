@@ -1,15 +1,3 @@
-.button__link {
-  margin: auto;
-  background: none!important;
-  border: none;
-  font-size: 1.5rem;
-  padding: 0!important;
-  /*input has OS specific font-family*/
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-}
-
 /* The Modal (background) */
 .modal-background {
   position: fixed; /* Stay in place */
@@ -24,47 +12,40 @@
   display: block;
 }
 
-.modal-content {
+.modal__div {
+  background-color: whitesmoke;
   margin-left: auto;
   margin-right: auto;
-  width: 80%;
-  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
-  -webkit-animation-name: animatetop;
-  -webkit-animation-duration: 0.4s;
-  animation-name: animatetop;
-  animation-duration: 0.4s
-
-}
-
-.modal-content,
-.modal-header__div,
-.modal-body__div,
-.modal-footer__div {
-  position: relative;
-}
-
-.modal-body__div,
-.modal-footer__div {
-  background-color: whitesmoke;
-  padding: 5px;
-}
-
-toolbar {
-  font-size: 1.2rem;
-  height: 1.8rem;
-}
-
-.modal-header__div {
-  height: 1.9rem;
 }
 
 .modal-body__div {
-  height: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
 }
 
 .modal-footer__div {
+  padding-top: 5px;
+  padding-bottom: 5px;
   display: flex; justify-content: flex-end;
   border-top: 1px solid;
+}
+
+.toolbar {
+  font-size: 1.2rem;
+  height: 3.2rem;
+}
+
+.button__link {
+  margin: auto;
+  background: none!important;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0!important;
+  /*input has OS specific font-family*/
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .modal-footer__button {
