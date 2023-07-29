@@ -8,13 +8,11 @@ import { ChangePasswordComponent } from './c/change-password/change-password.com
 import { LoginComponent } from './c/login/login.component';
 import { LogoutComponent } from './c/logout/logout.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
-import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
   { path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent},
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'logout', component: LogoutComponent },
