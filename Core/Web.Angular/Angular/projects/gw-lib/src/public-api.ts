@@ -4,6 +4,7 @@
 
 export * from '@Growthware/Lib/src/lib/common-code';
 export * from '@Growthware/Lib/src/lib/features/account';
+export * from '@Growthware/Lib/src/lib/features/community-calendar';
 export * from '@Growthware/Lib/src/lib/features/dynamic-table';
 export * from '@Growthware/Lib/src/lib/features/file-manager';
 export * from '@Growthware/Lib/src/lib/features/function';

@@ -72,6 +72,8 @@ Application:
 
 		ng generate module features/messages --routing --project gw-frontend
 
+		ng generate module features/CommunityCalendar --routing --project gw-frontend
+
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -170,12 +172,18 @@ Roles
 		ng generate component features/role/c/RoleDetails --module role --style scss --project gw-lib
 		ng generate component features/role/c/SearchRoles --module role --style scss --project gw-lib
 		ng generate service features/role/role --project gw-lib
-messages
+Messages
 		ng generate module features/message --project gw-lib
 		ng generate interface features/message/MessageProfile --type model --project gw-lib
 		ng generate component features/message/c/MessageDetails --module message --style scss --project gw-lib
 		ng generate component features/message/c/SearchMessages --module message --style scss --project gw-lib
 		ng generate service features/message/message --project gw-lib
+
+Community Calendar
+		ng generate module features/CommunityCalendar --project gw-lib
+		ng generate interface features/community-calendar/CalendarProfile --type model --project gw-lib
+		ng generate component features/community-calendar/c/Calendar --module community-calendar --style scss --project gw-lib
+		ng generate service features/community-calendar/Calendar --project gw-lib
 
 // https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes
 		ng generate module features/loader --project gw-lib
