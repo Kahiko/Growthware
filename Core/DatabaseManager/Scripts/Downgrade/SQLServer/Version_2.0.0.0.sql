@@ -194,6 +194,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'SelectPreferences' WHERE [Actio
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'RandomNumbers' WHERE [Action] = '/security/random-numbers';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'guidhelper' WHERE [Action] = '/security/guid_helper';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Encryption_Helper' WHERE [Action] = 'security';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Security_Entities' WHERE [Action] = 'search_security_entities';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'CommunityCalendar' WHERE [Action] = 'communitycalendar';
 
 

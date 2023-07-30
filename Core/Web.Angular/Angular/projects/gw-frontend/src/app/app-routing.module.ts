@@ -10,6 +10,7 @@ const routes: Routes = [
   { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule), canActivate: [AuthGuard]  },
   { path: 'security', loadChildren: () => import('./features/security/security.module').then(m => m.SecurityModule)  },
+  { path: 'search_security_entities', loadChildren: () => import('./features/security-entities/security-entities.module').then(m => m.SecurityEntitiesModule)  },
   { path: 'manage_groups', loadChildren: () => import('./features/groups/groups.module').then(m => m.GroupsModule), canActivate: [AuthGuard]  },
   { path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
   { path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },

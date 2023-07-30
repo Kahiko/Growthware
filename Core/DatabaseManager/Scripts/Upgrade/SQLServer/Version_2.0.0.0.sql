@@ -257,6 +257,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/selectpreferences' WH
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/random-numbers' WHERE [Action] = 'RandomNumbers';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/guid_helper' WHERE [Action] = 'guidhelper';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'security' WHERE [Action] = 'Encryption_Helper';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'search_security_entities' WHERE [Action] = 'Search_Security_Entities';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'communitycalendar' WHERE [Action] = 'CommunityCalendar';
 
 -- Update the version
@@ -265,3 +266,4 @@ UPDATE [ZGWSystem].[Database_Information] SET
     [Updated_By] = 3,
     [Updated_Date] = getdate()
 WHERE [Version] = '1.0.0.0'
+

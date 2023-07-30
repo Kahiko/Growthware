@@ -74,6 +74,8 @@ Application:
 
 		ng generate module features/CommunityCalendar --routing --project gw-frontend
 
+		ng generate module features/SecurityEntities --routing --project gw-frontend
+
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -208,3 +210,11 @@ Security
 		ng generate component features/security/c/EncryptDecrypt --module security --style scss --project gw-lib
 		ng generate component features/security/c/GuidHelper --module security --style scss --project gw-lib
 		ng generate component features/security/c/RandomNumbers --module security --style scss --project gw-lib
+
+Security Entities
+		Security_Entities
+		ng generate module features/SecurityEntities --project gw-lib
+		ng generate interface features/security-entities/SecurityEntityProfile --type model --project gw-lib
+		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --project gw-lib
+		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --project gw-lib
+		ng generate service features/security-entities/SecurityEntity --project gw-lib
