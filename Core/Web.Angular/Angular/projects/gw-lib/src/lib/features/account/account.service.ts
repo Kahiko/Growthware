@@ -135,7 +135,7 @@ export class AccountService {
     if(this._GWCommon.isNullOrEmpty(oldPassword)) {
       throw new Error("oldPassword can not be blank!");
     }
-    console.log(this._Api_ChangePassword);
+    // console.log(this._Api_ChangePassword);
     return new Promise<boolean>((resolve, reject) => {
       const mQueryParameter: HttpParams = new HttpParams()
         .set('oldPassword', oldPassword)

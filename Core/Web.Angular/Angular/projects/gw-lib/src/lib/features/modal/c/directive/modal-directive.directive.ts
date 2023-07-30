@@ -45,7 +45,7 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
   ngOnInit() {
     this._Subscription.add(
       this._ModalSvc.openCalled$.subscribe((modalOptions: IModalOptions) => {
-        console.log("modalOptions:", modalOptions);
+        // console.log("modalOptions:", modalOptions);
         const mNgContent = this.resolveNgContent(modalOptions.contentPayLoad);
         const mComponentRef = this._ViewContainerRef.createComponent<any>(ModalComponent, {
           projectableNodes: [mNgContent]
