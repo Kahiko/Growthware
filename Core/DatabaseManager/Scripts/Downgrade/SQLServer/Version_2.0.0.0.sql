@@ -187,6 +187,7 @@ GO
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action] = 'accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Functions' WHERE [Action] = 'functions';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'CopyFunctionSecurity' WHERE [Action] = '/functions/copyfunctionsecurity';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditAccount' WHERE [Action] = '/accounts/Edit-My-Account';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'ChangePassword' WHERE [Action] = '/accounts/change-password';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'SelectPreferences' WHERE [Action] = '/accounts/selectpreferences';
