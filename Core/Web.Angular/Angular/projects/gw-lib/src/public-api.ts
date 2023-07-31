@@ -13,6 +13,7 @@ export * from '@Growthware/Lib/src/lib/features/loader';
 export * from '@Growthware/Lib/src/lib/features/logging';
 export * from '@Growthware/Lib/src/lib/features/message';
 export * from '@Growthware/Lib/src/lib/features/modal';
+export * from '@Growthware/Lib/src/lib/features/name-value-pair';
 export * from '@Growthware/Lib/src/lib/features/navigation';
 export * from '@Growthware/Lib/src/lib/features/pager';
 export * from '@Growthware/Lib/src/lib/features/pick-list';

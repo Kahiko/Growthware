@@ -76,6 +76,8 @@ Application:
 
 		ng generate module features/SecurityEntities --routing --project gw-frontend
 
+		ng generate module features/NameValuePairs --routing --project gw-frontend
+
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -218,3 +220,11 @@ Security Entities
 		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --project gw-lib
 		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --project gw-lib
 		ng generate service features/security-entities/SecurityEntity --project gw-lib
+
+NameValuePairs
+		ng generate module features/NameValuePair --project gw-lib
+		ng generate interface features/name-value-pair/NameValuePairProfile --type model --project gw-lib
+		ng generate component features/name-value-pair/c/NameValuePairDetails --module name-value-pair --style scss --project gw-lib
+		ng generate component features/name-value-pair/c/SearchNameValuePairs --module name-value-pair --style scss --project gw-lib
+		ng generate component features/name-value-pair/c/SearchNameValuePairDetails --module name-value-pair --style scss --project gw-lib
+		ng generate service features/name-value-pair/name-value-pairs --project gw-lib
