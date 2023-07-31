@@ -78,6 +78,8 @@ Application:
 
 		ng generate module features/NameValuePairs --routing --project gw-frontend
 
+		ng generate module features/States --routing --project gw-frontend
+
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -228,3 +230,11 @@ NameValuePairs
 		ng generate component features/name-value-pair/c/SearchNameValuePairs --module name-value-pair --style scss --project gw-lib
 		ng generate component features/name-value-pair/c/SearchNameValuePairDetails --module name-value-pair --style scss --project gw-lib
 		ng generate service features/name-value-pair/name-value-pairs --project gw-lib
+
+States
+		search_states
+		ng generate module features/States --project gw-lib
+		ng generate interface features/states/StateProfile --type model --project gw-lib
+		ng generate component features/states/c/StateDetails --module states --style scss --project gw-lib
+		ng generate component features/states/c/SearchStates --module states --style scss --project gw-lib
+		ng generate service features/states/states --project gw-lib
