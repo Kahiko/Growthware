@@ -80,6 +80,7 @@ Application:
 
 		ng generate module features/States --routing --project gw-frontend
 
+		ng generate module features/Workflows --routing --project gw-frontend
 Library:
 	From Angular/projects/gw-lib/src/lib
 		ng generate service common-code/gwcommon --project gw-lib
@@ -238,3 +239,11 @@ States
 		ng generate component features/states/c/StateDetails --module states --style scss --project gw-lib
 		ng generate component features/states/c/SearchStates --module states --style scss --project gw-lib
 		ng generate service features/states/states --project gw-lib
+
+Workflows
+		addeditworkflow
+		ng generate module features/Workflows --project gw-lib
+		ng generate interface features/workflows/WorkflowProfile --type model --project gw-lib
+		ng generate component features/workflows/c/WorkflowDetails --module workflows --style scss --project gw-lib
+		ng generate component features/workflows/c/SearchWorkflows --module workflows --style scss --project gw-lib
+		ng generate service features/workflows/workflows --project gw-lib

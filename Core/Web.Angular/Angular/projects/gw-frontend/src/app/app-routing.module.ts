@@ -17,6 +17,7 @@ const routes: Routes = [
   { path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
   { path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },
   { path: 'communitycalendar', loadChildren: () => import('./features/community-calendar/community-calendar.module').then(m => m.CommunityCalendarModule)  },
+  { path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
 ];
 
 @NgModule({

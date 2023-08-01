@@ -23,6 +23,7 @@ export * from '@Growthware/Lib/src/lib/features/security';
 export * from '@Growthware/Lib/src/lib/features/snake-list';
 export * from '@Growthware/Lib/src/lib/features/sort-by';
 export * from '@Growthware/Lib/src/lib/features/toast';
+export * from '@Growthware/Lib/src/lib/features/workflows';
 export * from '@Growthware/Lib/src/lib/guards';
 export * from '@Growthware/Lib/src/lib/models';
 export * from '@Growthware/Lib/src/lib/services';
