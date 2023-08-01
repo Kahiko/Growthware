@@ -14,96 +14,96 @@ Build at: 2022-10-08T10:57:18.561Z - Hash: 5b345c4ed788b38e - Time: 11076ms
 Building Angular Package
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/common-code'
+Building entry point '@Growthware/Lib/src/common-code'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/common-code
+√ Built @Growthware/Lib/src/common-code
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/toast'
+Building entry point '@Growthware/Lib/src/features/toast'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/toast
+√ Built @Growthware/Lib/src/features/toast
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/logging'
+Building entry point '@Growthware/Lib/src/features/logging'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/logging
+√ Built @Growthware/Lib/src/features/logging
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/models'
+Building entry point '@Growthware/Lib/src/models'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/models
+√ Built @Growthware/Lib/src/models
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/modal'
+Building entry point '@Growthware/Lib/src/features/modal'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/modal
+√ Built @Growthware/Lib/src/features/modal
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/navigation'
+Building entry point '@Growthware/Lib/src/features/navigation'
 ------------------------------------------------------------------------------
 \ Compiling with Angular sources in Ivy partial compilation mode.
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/navigation
+√ Built @Growthware/Lib/src/features/navigation
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/search'
+Building entry point '@Growthware/Lib/src/features/search'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/search
+√ Built @Growthware/Lib/src/features/search
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/services'
+Building entry point '@Growthware/Lib/src/services'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/services
+√ Built @Growthware/Lib/src/services
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/pager'
+Building entry point '@Growthware/Lib/src/features/pager'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/pager
+√ Built @Growthware/Lib/src/features/pager
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/dynamic-table'
+Building entry point '@Growthware/Lib/src/features/dynamic-table'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/dynamic-table
+√ Built @Growthware/Lib/src/features/dynamic-table
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/pick-list'
+Building entry point '@Growthware/Lib/src/features/pick-list'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/pick-list
+√ Built @Growthware/Lib/src/features/pick-list
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/account'
+Building entry point '@Growthware/Lib/src/features/account'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/account
+√ Built @Growthware/Lib/src/features/account
 
 ------------------------------------------------------------------------------
-Building entry point '@Growthware/Lib/src/lib/features/function'
+Building entry point '@Growthware/Lib/src/features/function'
 ------------------------------------------------------------------------------
 √ Compiling with Angular sources in Ivy partial compilation mode.
 √ Writing FESM bundles
-√ Built @Growthware/Lib/src/lib/features/function
+√ Built @Growthware/Lib/src/features/function
 
 ------------------------------------------------------------------------------
 Building entry point '@Growthware/Lib'

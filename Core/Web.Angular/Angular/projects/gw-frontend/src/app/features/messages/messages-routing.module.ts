@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { SearchMessagesComponent } from '@Growthware/Lib/src/lib/features/message';
+import { SearchMessagesComponent } from '@Growthware/Lib/src/features/message';
 
 const routes: Routes = [
   { path: '', component: SearchMessagesComponent},

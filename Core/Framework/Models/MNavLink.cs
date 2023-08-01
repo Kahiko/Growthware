@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 /// Note this matches typescript object 
-/// @Growthware/Lib/src/lib/features/navigation/nav-link.model.ts
+/// @Growthware/Lib/src/features/navigation/nav-link.model.ts
 /// any changes needed here will also need to be made there
 
 namespace GrowthWare.Framework.Models;

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+import { AuthGuard } from '@Growthware/Lib/src/guards';
 // Feature
-import { SearchWorkflowsComponent } from '@Growthware/Lib/src/lib/features/workflows/c/search-workflows/search-workflows.component';
+import { SearchWorkflowsComponent } from '@Growthware/Lib/src/features/workflows/c/search-workflows/search-workflows.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchWorkflowsComponent, canActivate: [AuthGuard] },

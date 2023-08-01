@@ -82,7 +82,7 @@ Application:
 
 		ng generate module features/Workflows --routing --project gw-frontend
 Library:
-	From Angular/projects/gw-lib/src/lib
+	From Angular/projects/gw-lib/src
 		ng generate service common-code/gwcommon --project gw-lib
 		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
 Common Models
