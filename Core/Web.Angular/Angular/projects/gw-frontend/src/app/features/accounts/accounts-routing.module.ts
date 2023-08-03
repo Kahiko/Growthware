@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library MISC
-import { AuthGuard } from '@Growthware/Lib/src/guards';
+import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
 // Library Components
-import { AccountDetailsComponent } from '@Growthware/Lib/src/features/account/c/account-details/account-details.component';
-import { ChangePasswordComponent } from '@Growthware/Lib/src/features/account/c/change-password/change-password.component';
-import { LoginComponent } from '@Growthware/Lib/src/features/account/c/login/login.component';
-import { LogoutComponent } from '@Growthware/Lib/src/features/account/c/logout/logout.component';
-import { SearchAccountsComponent } from '@Growthware/Lib/src/features/account/c/search-accounts/search-accounts.component';
-import { SelectPreferencesComponent } from '@Growthware/Lib/src/features/account/c/select-preferences/select-preferences.component';
+import { AccountDetailsComponent } from '@Growthware/Lib/src/lib/features/account/c/account-details/account-details.component';
+import { ChangePasswordComponent } from '@Growthware/Lib/src/lib/features/account/c/change-password/change-password.component';
+import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login/login.component';
+import { LogoutComponent } from '@Growthware/Lib/src/lib/features/account/c/logout/logout.component';
+import { SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account/c/search-accounts/search-accounts.component';
+import { SelectPreferencesComponent } from '@Growthware/Lib/src/lib/features/account/c/select-preferences/select-preferences.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
