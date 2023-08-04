@@ -81,6 +81,8 @@ Application:
 		ng generate module features/States --routing --project gw-frontend
 
 		ng generate module features/Workflows --routing --project gw-frontend
+
+		ng generate module features/Logging --routing --project gw-frontend
 Library:
 	From Angular/projects/gw-lib/src
 		ng generate service common-code/gwcommon --project gw-lib
@@ -105,6 +107,8 @@ Toast
 		ng generate interface features/toast/ToastMessage --type model --project gw-lib
 		ng generate enum features/toast/EventType --type enum --project gw-lib
 Logging		
+		ng generate module features/logging --project gw-lib
+		ng generate component features/logging/c/SetLogLevel --module logging --style scss --project gw-lib
 		ng generate service features/logging/logging --project gw-lib
 		ng generate enum features/logging/LogDestination --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
