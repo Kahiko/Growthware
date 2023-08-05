@@ -23,6 +23,7 @@ import { LogoutComponent } from './c/logout/logout.component';
 // Feature Modules
 import { AccountsRoutingModule } from './accounts-routing.module';
 import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
+import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import { SelectPreferencesComponent } from './c/select-preferences/select-prefer
     LoginComponent,
     LogoutComponent,
     SelectPreferencesComponent,
+    UpdateAnonymousProfileComponent,
   ],
   imports: [
     AccountsRoutingModule,

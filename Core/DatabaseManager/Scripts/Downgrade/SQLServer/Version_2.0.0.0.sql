@@ -191,10 +191,13 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'CopyFunctionSecurity' WHERE [Ac
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditAccount' WHERE [Action] = '/accounts/Edit-My-Account';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'ChangePassword' WHERE [Action] = '/accounts/change-password';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'SelectPreferences' WHERE [Action] = '/accounts/selectpreferences';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'UpdateAnonymousProfile' WHERE [Action] = '/accounts/updateanonymousprofile';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'RandomNumbers' WHERE [Action] = '/security/random-numbers';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'guidhelper' WHERE [Action] = '/security/guid_helper';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Encryption_Helper' WHERE [Action] = 'security';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Security_Entities' WHERE [Action] = 'search_security_entities';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'LineCount' WHERE [Action] = '/sys_admin/linecount';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditDBInformation' WHERE [Action] = '/sys_admin/editdbinformation';
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 

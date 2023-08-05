@@ -254,10 +254,13 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/functions/copyfunctionsecurity
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/Edit-My-Account' WHERE [Action] = 'EditAccount';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/change-password' WHERE [Action] = 'changepassword';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/selectpreferences' WHERE [Action] = 'SelectPreferences';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/updateanonymousprofile' WHERE [Action] = 'UpdateAnonymousProfile';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/random-numbers' WHERE [Action] = 'RandomNumbers';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/security/guid_helper' WHERE [Action] = 'guidhelper';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'security' WHERE [Action] = 'Encryption_Helper';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'search_security_entities' WHERE [Action] = 'Search_Security_Entities';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/sys_admin/linecount' WHERE [Action] = 'LineCount';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/sys_admin/editdbinformation' WHERE [Action] = 'EditDBInformation';
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET

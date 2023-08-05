@@ -9,12 +9,14 @@ import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login
 import { LogoutComponent } from '@Growthware/Lib/src/lib/features/account/c/logout/logout.component';
 import { SearchAccountsComponent } from '@Growthware/Lib/src/lib/features/account/c/search-accounts/search-accounts.component';
 import { SelectPreferencesComponent } from '@Growthware/Lib/src/lib/features/account/c/select-preferences/select-preferences.component';
+import { UpdateAnonymousProfileComponent } from '@Growthware/Lib/src/lib/features/account/c/update-anonymous-profile/update-anonymous-profile.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
   { path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
+  { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent},
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'logout', component: LogoutComponent },

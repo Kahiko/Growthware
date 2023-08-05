@@ -83,6 +83,8 @@ Application:
 		ng generate module features/Workflows --routing --project gw-frontend
 
 		ng generate module features/Logging --routing --project gw-frontend
+
+		ng generate module features/SysAdmin --routing --project gw-frontend
 Library:
 	From Angular/projects/gw-lib/src
 		ng generate service common-code/gwcommon --project gw-lib
@@ -144,6 +146,7 @@ Accounts
 		ng generate component features/account/c/ChangePassword --module account.module --project gw-lib
 		ng generate component features/account/c/Logout --module account.module --project gw-lib
 		ng generate component features/account/c/SelectPreferences --module account.module --project gw-lib
+		ng generate component features/account/c/UpdateAnonymousProfile --module account.module --project gw-lib
 		ng generate service features/account/account --project gw-lib
 
 		ng generate module features/PickList --project gw-lib
@@ -251,3 +254,9 @@ Workflows
 		ng generate component features/workflows/c/WorkflowDetails --module workflows --style scss --project gw-lib
 		ng generate component features/workflows/c/SearchWorkflows --module workflows --style scss --project gw-lib
 		ng generate service features/workflows/workflows --project gw-lib
+
+SysAdmin
+		ng generate module features/SysAdmin --project gw-lib
+		ng generate component features/sys-admin/c/LineCount --module sys-admin --style scss --project gw-lib
+		ng generate component features/sys-admin/c/edit-db-information --module sys-admin --style scss --project gw-lib
+		ng generate service features/sys-admin/SysAdmin --project gw-lib
