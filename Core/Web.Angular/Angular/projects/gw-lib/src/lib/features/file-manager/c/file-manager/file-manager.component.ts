@@ -71,7 +71,6 @@ export class FileManagerComponent implements OnInit {
     return undefined;
   }
 
-
   onCreateDirectory() {
     // console.log('item', item);
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'New Folder', this._CreateDirectory, new WindowSize(84, 300));
@@ -90,7 +89,6 @@ export class FileManagerComponent implements OnInit {
       this._LoggingSvc.errorHandler(error, 'FileManagerComponent', 'onCreateDirectorySubmit');
     });
   }
-
 
   private populateCreateDirectoryForm(directoryName: string): void {
     this.frmCreateDirectory = this._FormBuilder.group({
