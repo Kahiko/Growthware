@@ -9,8 +9,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
-import { LoaderModule } from '@Growthware/src/features/loader';
-import { NavigationModule } from '@Growthware/src/features/navigation';
+import { LoaderModule } from '@Growthware/features/loader';
+import { NavigationModule } from '@Growthware/features/navigation';
 // Modules/Components
 import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultFooterComponent } from './default-footer/default-footer.component';

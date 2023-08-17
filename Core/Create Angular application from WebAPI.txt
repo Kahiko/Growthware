@@ -38,7 +38,7 @@ From a command prompt and the directory you would like to create your new projec
 			1.) Import the class from your <yourLibraryName>.modules.ts
 					into the app.module.ts of <yourApplicationName>
 			2.) Add the imported name to the imports: array
-			import { <yourLibraryName>Module } from 'projects/gw-lib/src/public-api';
+			import { <yourLibraryName>Module } from 'projects/gw-lib/public-api';
 			
 			imports: [<yourLibraryName>Module]
 	

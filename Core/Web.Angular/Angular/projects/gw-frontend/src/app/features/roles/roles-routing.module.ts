@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { SearchRolesComponent } from '@Growthware/src/features/role';
+import { SearchRolesComponent } from '@Growthware/features/role';
 
 const childRoutes: Routes = [
   { path: '', component: SearchRolesComponent},

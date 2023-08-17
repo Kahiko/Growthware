@@ -8,14 +8,14 @@ import { JwtModule } from "@auth0/angular-jwt";
 // Angular Material
 import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b/c of an injection error when loading component from library that uses angular material
 // Library Services
-import { AccountService } from '@Growthware/src/features/account';
-import { LoaderService } from '@Growthware/src/features/loader';
+import { AccountService } from '@Growthware/features/account';
+import { LoaderService } from '@Growthware/features/loader';
 // Library Modules
-import { ToastModule } from '@Growthware/src/features/toast';
-import { ModalModule } from '@Growthware/src/features/modal';
+import { ToastModule } from '@Growthware/features/toast';
+import { ModalModule } from '@Growthware/features/modal';
 // Library Misc
-// import { AuthGuard } from '@Growthware/src/common-code';
-import { LowerCaseUrlSerializer } from '@Growthware/src/common-code';
+// import { AuthGuard } from '@Growthware/common-code';
+import { LowerCaseUrlSerializer } from '@Growthware/common-code';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
 // Application Modules (UI Skins)

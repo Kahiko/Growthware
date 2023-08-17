@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library MISC
 // Library Components
-import { CalendarComponent } from '@Growthware/src/features/community-calendar';
+import { CalendarComponent } from '@Growthware/features/community-calendar';
 
 const childRoutes: Routes = [
   // { path: '', component: CalendarComponent, canActivate: [AuthGuard]},

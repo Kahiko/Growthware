@@ -1,4 +1,4 @@
-import { AccountService } from '@Growthware/src/features/account';
+import { AccountService } from '@Growthware/features/account';
 import { catchError, of, tap } from 'rxjs';
 
 export function appInitializer(accountSvc: AccountService) {

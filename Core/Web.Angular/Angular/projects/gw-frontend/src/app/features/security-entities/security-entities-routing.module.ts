@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/src/common-code';
+import { AuthGuard } from '@Growthware/common-code';
 // Feature
-import { SearchSecurityEntitiesComponent } from '@Growthware/src/features/security-entities/c/search-security-entities/search-security-entities.component';
+import { SearchSecurityEntitiesComponent } from '@Growthware/features/security-entities/c/search-security-entities/search-security-entities.component';
 
 const childRoutes: Routes = [
   { path: '', component: SearchSecurityEntitiesComponent, canActivate: [AuthGuard] },

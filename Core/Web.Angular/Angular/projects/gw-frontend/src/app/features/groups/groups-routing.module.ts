@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { SearchGroupsComponent } from '@Growthware/src/features/group';
+import { SearchGroupsComponent } from '@Growthware/features/group';
 
 const childRoutes: Routes = [
   { path: '', component: SearchGroupsComponent},

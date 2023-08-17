@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Application
-import { AuthGuard } from '@Growthware/src/common-code';
+import { AuthGuard } from '@Growthware/common-code';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },

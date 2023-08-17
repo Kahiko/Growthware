@@ -106,7 +106,7 @@
     "gw-lib": {
       "projectType": "library",
       "root": "projects/gw-lib",
-      "sourceRoot": "projects/gw-lib/src",
+      "sourceRoot": "projects/gw-lib",
       "prefix": "gw-lib",
       "architect": {
         "build": {

@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService } from '@Growthware/src/features/account';
-import { ConfigurationService } from '@Growthware/src/features/configuration';
-import { MenuType } from '@Growthware/src/features/navigation';
+import { AccountService } from '@Growthware/features/account';
+import { ConfigurationService } from '@Growthware/features/configuration';
+import { MenuType } from '@Growthware/features/navigation';
 
 @Component({
   selector: 'gw-frontend-generic-home',
