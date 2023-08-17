@@ -44,15 +44,17 @@ Application:
 		ng generate service RouteLoader --project gw-frontend
 		create ensureRoutesExist.initializer by hand
 	Skins
-		ng generate module skins/default --routing --project gw-frontend
+		--ng generate module skins/default --routing --project gw-frontend
+		ng generate module skins/default --project gw-frontend
 		ng generate component skins/default/DefaultFooter --module default --project gw-frontend
 		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
 		ng generate component skins/default/defaultLayout --module default --project gw-frontend
 
-		ng generate module skins/system --routing --project gw-frontend
+		--ng generate module skins/system --routing --project gw-frontend
+		ng generate module skins/system --project gw-frontend
 		ng generate component skins/system/SystemFooter --module system --project gw-frontend
 		ng generate component skins/system/SystemHeader --module system --project gw-frontend
-		ng generate component skins/system/systemLayout --module system --project gw-frontend
+		ng generate component skins/system/SystemLayout --module system --project gw-frontend
 	Features
 		ng generate module features/home --routing --project gw-frontend
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend
@@ -87,176 +89,171 @@ Application:
 		ng generate module features/SysAdmin --routing --project gw-frontend
 Library:
 	From Angular/projects/gw-lib/src
-		ng generate service common-code/gwcommon --project gw-lib
-		ng generate service common-code/LowerCaseUrlSerializer --project gw-lib
-Common Models
-		ng generate interface models/CallbackButton --type model --project gw-lib
-		ng generate enum models/MenuType --type enum --project gw-lib
-		ng generate interface models/NameValuePare --type model --project gw-lib
-		ng generate interface models/SearchCriteria --type model --project gw-lib
-		ng generate interface models/SecurityInfo --type model --project gw-lib
-Common Services
-		ng generate service services/data --project gw-lib
-		ng generate service services/configuration --project gw-lib
-		ng generate interface models/AppSettings --type model --project gw-lib
-
-		ng generate service features/search --project gw-lib
-Toast		
+common-code:
+		ng generate guard common-code/AuthGuard --project gw-lib --skip-tests
+		ng generate service common-code/gwCommon --project gw-lib --skip-tests
+		ng generate service common-code/LowerCaseUrlSerializer --project  gw-lib --skip-tests
+Shared Models
+		ng generate interface shared/models/CallbackButton --type model --project gw-lib
+		ng generate interface shared/models/NameValuePair --type model --project gw-lib
+Toast:
 		ng generate module features/toast --project gw-lib
-		ng generate component features/toast/c/toast --module toast --style scss --project gw-lib
-		ng generate component features/toast/c/toaster --module toast --style scss --project gw-lib
-		ng generate service features/toast/toast --project gw-lib
-		ng generate interface features/toast/ToastMessage --type model --project gw-lib
 		ng generate enum features/toast/EventType --type enum --project gw-lib
-Logging		
+		ng generate component features/toast/c/toast --module toast --style scss --project gw-lib --skip-tests
+		ng generate component features/toast/c/toaster --module toast --style scss --project gw-lib --skip-tests
+		ng generate interface features/toast/ToastMessage --type model --project gw-lib
+		ng generate service features/toast/toast --project gw-lib --skip-tests
+Logging:
 		ng generate module features/logging --project gw-lib
-		ng generate component features/logging/c/SetLogLevel --module logging --style scss --project gw-lib
-		ng generate service features/logging/logging --project gw-lib
 		ng generate enum features/logging/LogDestination --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
 		ng generate interface features/logging/LogOptions --type model --project gw-lib
 		ng generate interface features/logging/LoggingProfile --type model --project gw-lib
-Pager
-		ng generate module features/pager --project gw-lib
-		ng generate component features/pager/c/pager --module pager --style scss --project gw-lib
-Dynamic Table		
-		ng generate module features/dynamic-table --project gw-lib
-		ng generate component features/dynamic-table/c/dynamic-table --module dynamic-table --project gw-lib --style scss
-		ng generate service features/dynamic-table --project gw-lib
-		ng generate interface models/DynamicTableBtnMethods --type model --project gw-lib
-		ng generate interface models/DynamicTableColumn --type model --project gw-lib
-		ng generate interface models/DynamicTableConfiguration --type model --project gw-lib
-Modal
+		ng generate service features/logging/logging --skip-tests --project gw-lib
+		ng generate component features/logging/c/SetLogLevel --module logging --style scss --skip-tests --project gw-lib
+Modal:
 		ng generate module features/modal --project gw-lib
-		ng generate component features/modal/c/popup/modal --module modal --style scss --project gw-lib
-		ng generate directive features/modal/c/directive/modalDirective --module modal --selector gwModalDirective --project gw-lib
-		ng generate service features/modal/modal --project gw-lib
+		ng generate component features/modal/c/popup/modal --module modal --style scss --skip-tests --project gw-lib
+		ng generate directive features/modal/c/directive/modalDirective --module modal --selector gwModalDirective --skip-tests --project gw-lib
+		ng generate service features/modal/modal --skip-tests --project gw-lib
 		ng generate enum features/modal/ModalSize --type enum --project gw-lib
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib
 		ng generate interface features/modal/ContentObject --type model --project gw-lib
 		ng generate interface features/modal/WindowSize --type model --project gw-lib
-Accounts		
-		ng generate module features/account --project gw-lib
-		ng generate interface features/account/accountProfile --type model --project gw-lib
-		ng generate interface features/account/authenticationResponse --type model --project gw-lib
-		ng generate interface features/account/clientChoices --type model --project gw-lib
-		ng generate component features/account/c/accountDetails --module accounts --style scss --project gw-lib
-		ng generate component features/account/c/SearchAccounts --module accounts --style scss --project gw-lib
-		ng generate component features/account/c/login --module account.module --project gw-lib
-		ng generate component features/account/c/ChangePassword --module account.module --project gw-lib
-		ng generate component features/account/c/Logout --module account.module --project gw-lib
-		ng generate component features/account/c/SelectPreferences --module account.module --project gw-lib
-		ng generate component features/account/c/UpdateAnonymousProfile --module account.module --project gw-lib
-		ng generate service features/account/account --project gw-lib
-
+Pager:
+		ng generate module features/pager --project gw-lib
+		ng generate component features/pager/c/pager --module pager --style scss --project gw-lib --skip-tests
+Dynamic Table:
+		ng generate module features/dynamic-table --project gw-lib
+		ng generate interface features/dynamic-table/DynamicTableBtnMethods --type model --project gw-lib
+		ng generate interface features/dynamic-table/DynamicTableColumn --type model --project gw-lib
+		ng generate interface features/dynamic-table/DynamicTableConfiguration --type model --project gw-lib
+		ng generate component features/dynamic-table/c/dynamic-table --module dynamic-table --project gw-lib --style scss --skip-tests
+		ng generate service features/dynamic-table --project gw-lib --skip-tests
+Search:
+		ng generate service features/search/search --project gw-lib --skip-tests
+		ng generate interface features/search/SearchCriteria --type model --project gw-lib
+Shared Services
+		ng generate service shared/services/data --project gw-lib --skip-tests
+Configuration feature (new)
+		ng generate interface features/Configuration/AppSettings --type model --project gw-lib
+		ng generate service features/configuration/configuration --skip-tests --project gw-lib
+Navigation:
+	https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
+	https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
+		ng generate module features/navigation --project gw-lib
+		ng generate component features/navigation/c/vertical-list-item --module navigation --style scss --project gw-lib
+		ng generate interface features/navigation/NavLink --type model --project gw-lib
+		ng generate enum features/navigation/MenuType --type enum --project gw-lib
+		ng generate service features/navigation/navigation --project gw-lib
+Security:
+		ng generate module features/security --project gw-lib
+		ng generate service features/security/security --project gw-lib
+		ng generate interface features/security/SecurityInfo --type model --project gw-lib
+		ng generate component features/security/c/EncryptDecrypt --module security --style scss --project gw-lib
+		ng generate component features/security/c/GuidHelper --module security --style scss --project gw-lib
+		ng generate component features/security/c/RandomNumbers --module security --style scss --project gw-lib
+PickList:
 		ng generate module features/PickList --project gw-lib
 		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
-File Manager
-		ng generate module features/fileManager --project gw-lib
-		ng generate component features/file-manager/c/fileList --module file-manager --style scss --project gw-lib
-		ng generate component features/file-manager/c/fileManager --module file-manager --style scss --project gw-lib
-		ng generate component features/file-manager/c/directoryTree --module file-manager --style scss --project gw-lib
-		ng generate component features/file-manager/c/upload --module file-manager --style scss --project gw-lib
-		ng generate service features/file-manager/fileManager --project gw-lib
-		ng generate interface features/file-manager/directoryTree --type model --project gw-lib
-		ng generate interface features/file-manager/fileInfoLight --type model --project gw-lib
-		ng generate interface features/file-manager/uploadResponse --type model --project gw-lib
-		ng generate interface features/file-manager/MultiPartFileUploadParameters --type model --project gw-lib
-		ng generate interface features/file-manager/FileUploadParameters --type model --project gw-lib
-		ng generate interface features/file-manager/UploadStatus --type model --project gw-lib
-
-		ng generate module features/sortBy --project gw-lib
-		ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib
-		ng generate service features/sort-by/sortBy --project gw-lib
-Functions
-		ng generate module features/function --project gw-lib
-		ng generate interface features/function/functionProfile --type model --project gw-lib
-
-		ng generate component features/function/c/CopyFunctionSecurity --module function --style scss --project gw-lib
-
-		ng generate component features/function/c/functionDetails --module function --style scss --project gw-lib
-		ng generate component features/function/c/Searchfunctions --module function --style scss --project gw-lib
-		ng generate service features/function/function --project gw-lib
-Groups
+Groups:
 		ng generate module features/group --project gw-lib
 		ng generate interface features/group/GroupProfile --type model --project gw-lib
 		ng generate component features/group/c/GroupDetails --module group --style scss --project gw-lib
 		ng generate component features/group/c/SearchGroups --module group --style scss --project gw-lib
 		ng generate service features/group/group --project gw-lib
-Roles
+Roles:
 		ng generate module features/role --project gw-lib
 		ng generate interface features/role/RoleProfile --type model --project gw-lib
 		ng generate component features/role/c/RoleDetails --module role --style scss --project gw-lib
 		ng generate component features/role/c/SearchRoles --module role --style scss --project gw-lib
 		ng generate service features/role/role --project gw-lib
+SnakeList:
+		ng generate module features/snake-list --project gw-lib
+		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
+Accounts:
+		ng generate module features/account --project gw-lib
+		ng generate interface features/account/models/accountProfile --type model --project gw-lib
+		ng generate interface features/account/models/authenticationResponse --type model --project gw-lib
+		ng generate interface features/account/models/clientChoices --type model --project gw-lib
+		ng generate component features/account/c/accountDetails --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/SearchAccounts --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/login --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/ChangePassword --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/Logout --module account.module --skip-tests --project gw-lib
+		ng generate component features/account/c/SelectPreferences --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/UpdateAnonymousProfile --module account.module --skip-tests --project gw-lib
+		ng generate service features/account/account --project gw-lib
+Sort By:
+		ng generate module features/sortBy --project gw-lib
+		ng generate component features/sort-by/c/sortBy --module sort-by --style scss --project gw-lib
+		ng generate service features/sort-by/sortBy --project gw-lib
+File Manager:
+		ng generate module features/fileManager --project gw-lib
+		ng generate component features/file-manager/c/FileManager --module file-manager --style scss --skip-tests --project gw-lib
+		ng generate component features/file-manager/c/FileList --module file-manager --style scss --skip-tests --project gw-lib
+		ng generate component features/file-manager/c/DirectoryTree --module file-manager --style scss --skip-tests --project gw-lib
+		ng generate component features/file-manager/c/Upload --module file-manager --style scss --skip-tests --project gw-lib
+		ng generate interface features/file-manager/models/directoryTree --type model --project gw-lib
+		ng generate interface features/file-manager/models/fileInfoLight --type model --project gw-lib
+		ng generate interface features/file-manager/models/uploadResponse --type model --project gw-lib
+		ng generate interface features/file-manager/models/MultiPartFileUploadParameters --type model --project gw-lib
+		ng generate interface features/file-manager/models/FileUploadParameters --type model --project gw-lib
+		ng generate interface features/file-manager/models/UploadStatus --type model --project gw-lib
+		ng generate service features/file-manager/FileManager --skip-tests --project gw-lib
+Functions
+		ng generate module features/function --project gw-lib
+		ng generate interface features/function/functionProfile --type model --project gw-lib
+		ng generate component features/function/c/CopyFunctionSecurity --module function --style scss --skip-tests --project gw-lib
+		ng generate component features/function/c/functionDetails --module function --style scss --skip-tests --project gw-lib
+		ng generate component features/function/c/Searchfunctions --module function --style scss --skip-tests --project gw-lib
+		ng generate service features/function/function --project gw-lib
 Messages
 		ng generate module features/message --project gw-lib
 		ng generate interface features/message/MessageProfile --type model --project gw-lib
-		ng generate component features/message/c/MessageDetails --module message --style scss --project gw-lib
-		ng generate component features/message/c/SearchMessages --module message --style scss --project gw-lib
-		ng generate service features/message/message --project gw-lib
-
+		ng generate component features/message/c/MessageDetails --module message --style scss --skip-tests --project gw-lib
+		ng generate component features/message/c/SearchMessages --module message --style scss --skip-tests --project gw-lib
+		ng generate service features/message/message --skip-tests --project gw-lib
 Community Calendar
 		ng generate module features/CommunityCalendar --project gw-lib
 		ng generate interface features/community-calendar/CalendarProfile --type model --project gw-lib
-		ng generate component features/community-calendar/c/Calendar --module community-calendar --style scss --project gw-lib
-		ng generate service features/community-calendar/Calendar --project gw-lib
+		ng generate component features/community-calendar/c/Calendar --module community-calendar --style scss --skip-tests --project gw-lib
+		ng generate service features/community-calendar/Calendar --skip-tests --project gw-lib
 
 // https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes
 		ng generate module features/loader --project gw-lib
 		ng generate component features/loader/c/loader --module loader --style scss --project gw-lib
 		ng generate service features/loader/loader --project gw-lib
-
-https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
-	https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
-		ng generate module features/navigation --project gw-lib
-		ng generate interface features/navigation/NavLink --type model --project gw-lib
-		ng generate component features/navigation/c/menuListItem --module navigation --style scss --project gw-lib
-		ng generate service features/navigation/menuList --project gw-lib
-
-		ng generate module features/snake-list --project gw-lib
-		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
-Security
-		ng generate module features/security --project gw-lib
-		ng generate service services/security --project gw-lib
-		ng generate component features/security/c/EncryptDecrypt --module security --style scss --project gw-lib
-		ng generate component features/security/c/GuidHelper --module security --style scss --project gw-lib
-		ng generate component features/security/c/RandomNumbers --module security --style scss --project gw-lib
-
-Security Entities
+Security Entities:
 		Security_Entities
 		ng generate module features/SecurityEntities --project gw-lib
 		ng generate interface features/security-entities/SecurityEntityProfile --type model --project gw-lib
-		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --project gw-lib
-		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --project gw-lib
-		ng generate service features/security-entities/SecurityEntity --project gw-lib
-
-NameValuePairs
+		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --skip-tests --project gw-lib
+		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --skip-tests --project gw-lib
+		ng generate service features/security-entities/SecurityEntity --skip-tests --project gw-lib
+NameValuePairs:
 		ng generate module features/NameValuePair --project gw-lib
 		ng generate interface features/name-value-pair/NameValuePairProfile --type model --project gw-lib
-		ng generate component features/name-value-pair/c/NameValuePairDetails --module name-value-pair --style scss --project gw-lib
-		ng generate component features/name-value-pair/c/SearchNameValuePairs --module name-value-pair --style scss --project gw-lib
-		ng generate component features/name-value-pair/c/SearchNameValuePairDetails --module name-value-pair --style scss --project gw-lib
-		ng generate service features/name-value-pair/name-value-pairs --project gw-lib
-
-States
+		ng generate component features/name-value-pair/c/NameValuePairDetails --module name-value-pair --style scss --skip-tests --project gw-lib
+		ng generate component features/name-value-pair/c/SearchNameValuePairs --module name-value-pair --style scss --skip-tests --project gw-lib
+		ng generate component features/name-value-pair/c/SearchNameValuePairDetails --module name-value-pair --style scss --skip-tests --project gw-lib
+		ng generate service features/name-value-pair/name-value-pairs --skip-tests --project gw-lib
+States:
 		search_states
 		ng generate module features/States --project gw-lib
 		ng generate interface features/states/StateProfile --type model --project gw-lib
-		ng generate component features/states/c/StateDetails --module states --style scss --project gw-lib
-		ng generate component features/states/c/SearchStates --module states --style scss --project gw-lib
-		ng generate service features/states/states --project gw-lib
-
-Workflows
+		ng generate component features/states/c/StateDetails --module states --style scss --skip-tests --project gw-lib
+		ng generate component features/states/c/SearchStates --module states --style scss --skip-tests --project gw-lib
+		ng generate service features/states/states --skip-tests --project gw-lib
+Workflows:
 		addeditworkflow
 		ng generate module features/Workflows --project gw-lib
 		ng generate interface features/workflows/WorkflowProfile --type model --project gw-lib
-		ng generate component features/workflows/c/WorkflowDetails --module workflows --style scss --project gw-lib
-		ng generate component features/workflows/c/SearchWorkflows --module workflows --style scss --project gw-lib
-		ng generate service features/workflows/workflows --project gw-lib
-
-SysAdmin
+		ng generate component features/workflows/c/WorkflowDetails --module workflows --style scss --skip-tests --project gw-lib
+		ng generate component features/workflows/c/SearchWorkflows --module workflows --style scss --skip-tests --project gw-lib
+		ng generate service features/workflows/workflows --skip-tests --project gw-lib
+SysAdmin:
 		ng generate module features/SysAdmin --project gw-lib
-		ng generate component features/sys-admin/c/LineCount --module sys-admin --style scss --project gw-lib
-		ng generate component features/sys-admin/c/edit-db-information --module sys-admin --style scss --project gw-lib
-		ng generate service features/sys-admin/SysAdmin --project gw-lib
+		ng generate component features/sys-admin/c/LineCount --module sys-admin --style scss --skip-tests --project gw-lib
+		ng generate component features/sys-admin/c/edit-db-information --module sys-admin --style scss --skip-tests --project gw-lib
+		ng generate service features/sys-admin/SysAdmin --skip-tests --project gw-lib

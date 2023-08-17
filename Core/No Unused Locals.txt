@@ -1,0 +1,3 @@
+Add:
+    "noUnusedLocals": true,
+to the "compilerOptions": section in the tsconfig.json file

@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpRequest, HttpHandler, HttpEvent, HttpInterceptor } from '@angular/common/http';
 import { Observable } from 'rxjs';
 // Library
-import { AccountService } from '@Growthware/Lib/src/lib/features/account';
-import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
+import { AccountService } from '@Growthware/src/features/account';
+import { GWCommon } from '@Growthware/src/common-code';
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
@@ -13,7 +13,7 @@ export class JwtInterceptor implements HttpInterceptor {
    *
    */
   constructor(private _AccountSvc: AccountService, private _GWCommon: GWCommon) { 
-    this._BaseUrl = _GWCommon.baseURL;
+    this._BaseUrl = this._GWCommon.baseURL;
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+import { AuthGuard } from '@Growthware/src/common-code';
 // Feature
-import { EncryptDecryptComponent } from '@Growthware/Lib/src/lib/features/security/c/encrypt-decrypt/encrypt-decrypt.component';
-import { GuidHelperComponent } from '@Growthware/Lib/src/lib/features/security/c/guid-helper/guid-helper.component';
-import { RandomNumbersComponent } from '@Growthware/Lib/src/lib/features/security/c/random-numbers/random-numbers.component';
+import { EncryptDecryptComponent } from '@Growthware/src/features/security/c/encrypt-decrypt/encrypt-decrypt.component';
+import { GuidHelperComponent } from '@Growthware/src/features/security/c/guid-helper/guid-helper.component';
+import { RandomNumbersComponent } from '@Growthware/src/features/security/c/random-numbers/random-numbers.component';
 
 const childRoutes: Routes = [
   { path: '', component: EncryptDecryptComponent, canActivate: [AuthGuard] },

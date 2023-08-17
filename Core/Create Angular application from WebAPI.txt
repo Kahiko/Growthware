@@ -68,7 +68,12 @@ Files you'll need to edit the following files:
 	<dotNetProjectName>\<baseAngular>
 		\angular.json
 		\package.json
+    \projects\<yourLibraryName>\tsconfig.lib.json
+    "resolveJsonModule": true,
 
+tsconfig.json:
+  Add "resolveJsonModule": true, to the "compilerOptions": { section if you are going to server .json files off line
+    
 Important NOTE
 	The port numbers in Properties\launchSettings.json need to match your .vscode\launch.json port numbers
 		launchSettings.json		"applicationUrl": "https://localhost:7243;http://localhost:5043",

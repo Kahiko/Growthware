@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, MenuListService } from '@Growthware/Lib';
-import { MenuType, INavLink } from '@Growthware/Lib';
+import { AccountService, MenuListService } from '@Growthware';
+import { MenuType, INavLink } from '@Growthware';
 import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({

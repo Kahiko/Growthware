@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { SearchfunctionsComponent } from '@Growthware/Lib/src/lib/features/function';
-import { CopyFunctionSecurityComponent } from '@Growthware/Lib/src/lib/features/function';
+import { SearchfunctionsComponent } from '@Growthware/src/features/function';
+import { CopyFunctionSecurityComponent } from '@Growthware/src/features/function';
 
 const childRoutes: Routes = [
   { path: '', component: SearchfunctionsComponent },

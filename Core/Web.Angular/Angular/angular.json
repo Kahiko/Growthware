@@ -20,7 +20,9 @@
             "outputPath": "dist/gw-frontend",
             "index": "projects/gw-frontend/src/index.html",
             "main": "projects/gw-frontend/src/main.ts",
-            "polyfills": "projects/gw-frontend/src/polyfills.ts",
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "projects/gw-frontend/tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
@@ -28,7 +30,7 @@
               "projects/gw-frontend/src/assets"
             ],
             "styles": [
-              "projects/gw-frontend/src/theme.scss",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/gw-frontend/src/styles.scss"
             ],
             "scripts": []
@@ -45,12 +47,6 @@
                   "type": "anyComponentStyle",
                   "maximumWarning": "2kb",
                   "maximumError": "4kb"
-                }
-              ],
-              "fileReplacements": [
-                {
-                  "replace": "projects/gw-frontend/src/environments/environment.ts",
-                  "with": "projects/gw-frontend/src/environments/environment.prod.ts"
                 }
               ],
               "outputHashing": "all"
@@ -88,17 +84,18 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/gw-frontend/src/test.ts",
-            "polyfills": "projects/gw-frontend/src/polyfills.ts",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "projects/gw-frontend/tsconfig.spec.json",
-            "karmaConfig": "projects/gw-frontend/karma.conf.js",
             "inlineStyleLanguage": "scss",
             "assets": [
               "projects/gw-frontend/src/favicon.ico",
               "projects/gw-frontend/src/assets"
             ],
             "styles": [
-              "projects/gw-frontend/src/theme.scss",
+              "@angular/material/prebuilt-themes/indigo-pink.css",
               "projects/gw-frontend/src/styles.scss"
             ],
             "scripts": []
@@ -130,23 +127,17 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "main": "projects/gw-lib/src/test.ts",
             "tsConfig": "projects/gw-lib/tsconfig.spec.json",
-            "karmaConfig": "projects/gw-lib/karma.conf.js"
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         }
       }
     }
   },
   "cli": {
-    "analytics": "eba52701-aedd-4315-af48-0e49fe832a09"
-  },
-  "schematics": {
-    "@angular-eslint/schematics:application": {
-      "setParserOptionsProject": true
-    },
-    "@angular-eslint/schematics:library": {
-      "setParserOptionsProject": true
-    }
+    "analytics": "f05c723c-e4b9-49fd-a71b-97092d2ee6ba"
   }
 }

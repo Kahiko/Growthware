@@ -3,11 +3,11 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 // Library
-import { AccountService, IAuthenticationResponse } from '@Growthware/Lib/src/lib/features/account';
-import { GWCommon } from '@Growthware/Lib/src/lib/common-code';
-import { LoginComponent } from '@Growthware/Lib/src/lib/features/account/c/login/login.component';
-import { ModalService, ModalOptions, WindowSize } from '@Growthware/Lib/src/lib/features/modal';
-import { ConfigurationService } from '@Growthware/Lib/src/lib/services';
+import { AccountService, IAuthenticationResponse } from '@Growthware/src/features/account';
+import { GWCommon } from '@Growthware/src/common-code';
+import { LoginComponent } from '@Growthware/src/features/account/c/login/login.component';
+import { ModalService, ModalOptions, WindowSize } from '@Growthware/src/features/modal';
+import { ConfigurationService } from '@Growthware/src/features/configuration';
 
 @Component({
   selector: 'gw-frontend-default-header',

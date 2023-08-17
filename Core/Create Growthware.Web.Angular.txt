@@ -59,17 +59,17 @@ From a command prompt and the directory you would like to create your new projec
 	@angular-eslint/schematics - Optional but very usefull
 
 	npm install run-script-os --save
-	npm install bootstrap --save
-	npm install @ngrx/store --save
-	npm install @ngrx/effects --save
-	npm install @ngrx/router-store --save
-	rem npm install ngx-toastr --save -- attempting self atm
-	npm install @types/bootstrap --save -- may not need
+	--npm install bootstrap --save
+	--npm install @ngrx/store --save
+	--npm install @ngrx/effects --save
+	--npm install @ngrx/router-store --save
+	--rem npm install ngx-toastr --save -- attempting self atm
+	--npm install @types/bootstrap --save -- may not need
 
 	npm install @auth0/angular-jwt --save
 
-	npm install ng-samurai --save-dev
-	npm install @ngrx/store-devtools --save-dev
+	--npm install ng-samurai --save-dev
+	--npm install @ngrx/store-devtools --save-dev
 
 	ng add @angular/material --project gw-frontend
 	ng add @angular-eslint/schematics

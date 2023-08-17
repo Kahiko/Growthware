@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+import { AuthGuard } from '@Growthware/src/common-code';
 // Feature
-import { SetLogLevelComponent } from '@Growthware/Lib/src/lib/features/logging/c/set-log-level/set-log-level.component';
+import { SetLogLevelComponent } from '@Growthware/src/features/logging/c/set-log-level/set-log-level.component';
 
 const childRoutes: Routes = [
   { path: '', component: SetLogLevelComponent, canActivate: [AuthGuard] },

@@ -3,5 +3,10 @@
     "cSpell.words": [
         "Growthware",
         "searchfunctions"
+    ],
+    "eslint.enable": true,
+    "eslint.validate": [
+      "javascript", // ...
+      "html" // Add "html" to enable linting `.html` files.
     ]
 }

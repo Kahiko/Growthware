@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Application
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+import { AuthGuard } from '@Growthware/src/common-code';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
   { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule), canActivate: [AuthGuard]  },
   { path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
-  { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
+  // { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule), canActivate: [AuthGuard]  },  
   { path: 'search_name_value_pairs', loadChildren: () => import('./features/name-value-pairs/name-value-pairs.module').then(m => m.NameValuePairsModule), canActivate: [AuthGuard]  },  
   { path: 'search_states', loadChildren: () => import('./features/states/states-routing.module').then(m => m.StatesRoutingModule), canActivate: [AuthGuard]  },  

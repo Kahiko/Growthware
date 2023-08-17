@@ -8,14 +8,14 @@ import { JwtModule } from "@auth0/angular-jwt";
 // Angular Material
 import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b/c of an injection error when loading component from library that uses angular material
 // Library Services
-import { AccountService } from '@Growthware/Lib/src/lib/features/account';
-import { LoaderService } from '@Growthware/Lib/src/lib/features/loader';
+import { AccountService } from '@Growthware/src/features/account';
+import { LoaderService } from '@Growthware/src/features/loader';
 // Library Modules
-import { ToastModule } from '@Growthware/Lib/src/lib/features/toast';
-import { ModalModule } from '@Growthware/Lib/src/lib/features/modal';
+import { ToastModule } from '@Growthware/src/features/toast';
+import { ModalModule } from '@Growthware/src/features/modal';
 // Library Misc
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards/auth.guard';
-import { LowerCaseUrlSerializer } from '@Growthware/Lib/src/lib/common-code';
+// import { AuthGuard } from '@Growthware/src/common-code';
+import { LowerCaseUrlSerializer } from '@Growthware/src/common-code';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
 // Application Modules (UI Skins)
@@ -57,7 +57,6 @@ export function tokenGetter() {
     ToastModule,
   ],
   providers: [
-    AuthGuard,
     { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
     { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true, deps: [LoaderService] },

@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/Lib/src/lib/guards';
+import { AuthGuard } from '@Growthware/src/common-code';
 // Feature
-import { LineCountComponent } from '@Growthware/Lib/src/lib/features/sys-admin';
-import { EditDbInformationComponent } from '@Growthware/Lib/src/lib/features/sys-admin';
+import { LineCountComponent } from '@Growthware/src/features/sys-admin';
+import { EditDbInformationComponent } from '@Growthware/src/features/sys-admin';
 
 const childRoutes: Routes = [
   { path: 'linecount', component: LineCountComponent, canActivate: [AuthGuard] },
