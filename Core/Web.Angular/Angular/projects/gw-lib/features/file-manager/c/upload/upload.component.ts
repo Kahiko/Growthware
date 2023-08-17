@@ -43,6 +43,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnDestroy(): void {
+    this._Subscription.unsubscribe();
   }
 
   ngOnInit(): void {
