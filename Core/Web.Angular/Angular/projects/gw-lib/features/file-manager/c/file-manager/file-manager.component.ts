@@ -32,6 +32,7 @@ export class FileManagerComponent implements OnInit {
 
   @Input() configurationName: string = '';
   @ViewChild('createDirectory', { read: TemplateRef }) private _CreateDirectory!:TemplateRef<any>;
+  @ViewChild('helpText', { read: TemplateRef }) private _HelpText!:TemplateRef<any>;
 
   constructor(
     private _FileManagerSvc: FileManagerService,
@@ -92,6 +93,11 @@ export class FileManagerComponent implements OnInit {
     this.frmCreateDirectory = this._FormBuilder.group({
       newDirectoryName: [directoryName, [Validators.required]],
     });
+  }
+
+  onHelp(): void {
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'Help', this._HelpText, new WindowSize(200, 550));
+    this._ModalSvc.open(mModalOptions)
   }
 
   onRefresh(): void {

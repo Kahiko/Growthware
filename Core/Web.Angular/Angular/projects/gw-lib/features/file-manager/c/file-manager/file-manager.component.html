@@ -1,6 +1,6 @@
 <mat-toolbar>
   <span>
-    <button type="button" mat-button color="accent" id="btnNewFolder_" name="btnNewFolder_" (click)="onCreateDirectory()">
+    <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName}}" name="btnNewFolder_{{configurationName}}" (click)="onCreateDirectory()">
       <span color="white" class="material-icons">add</span>
       <span>New Folder</span>
     </button>
@@ -9,18 +9,18 @@
     <gw-lib-upload></gw-lib-upload>
   </span>
   <span>
-    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_" name="btnRefresh_">
+    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName}}" name="btnRefresh_{{configurationName}}">
       <span color="white" class="material-icons">refresh</span>
     </button>
   </span>
   <span class="spacer"></span>
   <span>
-    <button type="button" mat-button color="accent" id="btnView_" name="btnView_">
+    <button type="button" mat-button color="accent" id="btnView_{{configurationName}}" name="btnView_{{configurationName}}">
       <span color="white" class="material-icons">grid_view</span>
     </button>
   </span>
   <span>
-    <button type="button" mat-button color="accent" id="btnInfo_" name="btnInfo_">
+    <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName}}" name="btnInfo_{{configurationName}}">
       <span color="white" class="material-icons">info_outline</span>
     </button>
   </span>
@@ -41,6 +41,23 @@
     </div>
   </div>
 </div>
+<ng-template #helpText>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <p>
+        File manage uses "right click" context menu to manage files and folders.
+      </p>
+      <p>
+        Foler:
+      </p>
+      <ul>
+        <li>Select the desired folder by "left" clicking on the folder</li>
+        <li>"Right" click on the folder to open the context menu</li>
+      </ul>      
+    </div>
+  </div>
+
+</ng-template>
 <ng-template #createDirectory>
   <div class="formSection">
     <div class="formSectionContents">
