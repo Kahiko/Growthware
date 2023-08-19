@@ -12,8 +12,8 @@ import { MenuListService } from '../../menu-list.service';
   styleUrls: ['./vertical-list-item.component.scss'],
   animations: [
     trigger('indicatorRotate', [
-      state('collapsed', style({transform: 'rotate(0deg)'})),
-      state('expanded', style({transform: 'rotate(180deg)'})),
+      state('collapsed', style({transform: 'rotate(270deg)'})),
+      state('expanded', style({transform: 'rotate(360deg)'})),
       transition('expanded <=> collapsed',
         animate('225ms cubic-bezier(0.4,0.0,0.2,1)')
       )
@@ -39,6 +39,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    console.log('this.item: ', this.item);
     if (this.depth === undefined) {
       this.depth = 0;
     }

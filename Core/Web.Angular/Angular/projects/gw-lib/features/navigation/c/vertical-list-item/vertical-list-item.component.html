@@ -1,37 +1,49 @@
 <a *ngIf="item.isRouterLink || item.children.length > 0"
-  mat-list-item
-  class="drawer-nav-list__list-item"
-  [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-  (click)="onItemSelected(item)"
-  [ngClass]="{'expanded': expanded}"
-  data-title="{{ item.description }}"
-  >
-  <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
-  <span *ngIf="showSideNavLinkText">{{ item.label }}</span>
-  <span fxFlex *ngIf="item.children && item.children.length">
-    <span fxFlex></span>
-    <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-      expand_more
-    </mat-icon>
-    <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
-  </span>
+    mat-list-item
+    class="drawer-nav-list__list-item"
+    [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+    (click)="onItemSelected(item)"
+    [ngClass]="{'expanded': expanded}"
+    data-title="{{ item.description }}">
+  <div style="display: flex;">
+    <span>
+      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+    </span>
+    <span>
+      <span *ngIf="item.children && item.children.length">
+        <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+          expand_more
+        </mat-icon>
+        <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
+      </span>
+      <span class="spacer">
+        <span *ngIf="showSideNavLinkText">{{ item.label }}</span>
+      </span>  
+    </span>
+  </div>
 </a>
 <a *ngIf="!item.isRouterLink && item.children.length === 0"
-  mat-list-item
-  class="drawer-nav-list__list-item"
-  [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-  href="{{item.action}}"
-  routerLink="{{item.action}}"
-  data-title="{{ item.description }}">
-  <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
-  <span *ngIf="showSideNavLinkText">{{ item.label }}</span>
-  <span fxFlex *ngIf="item.children && item.children.length">
-    <span fxFlex></span>
-    <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-      expand_more
-    </mat-icon>
-    <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
-  </span>
+    mat-list-item
+    class="drawer-nav-list__list-item"
+    [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+    href="{{item.action}}"
+    routerLink="{{item.action}}"
+    data-title="{{ item.description }}">
+  <div style="display: flex;">
+    <span>
+      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+    </span>
+    <span *ngIf="item.children && item.children.length==0" style="width: 24px;"></span>
+    <span *ngIf="item.children && item.children.length">
+      <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+        expand_more
+      </mat-icon>
+      <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
+    </span>
+    <span class="spacer">
+      <span *ngIf="showSideNavLinkText">{{ item.label }}</span>
+    </span>
+  </div>
 </a>
 <div *ngIf="expanded">
   <div mat-list-item class="drawer-nav-list__list-item">
