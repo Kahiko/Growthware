@@ -39,7 +39,6 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    console.log('this.item: ', this.item);
     if (this.depth === undefined) {
       this.depth = 0;
     }
