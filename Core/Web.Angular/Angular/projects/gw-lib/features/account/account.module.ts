@@ -21,7 +21,6 @@ import { SearchAccountsComponent } from './c/search-accounts/search-accounts.com
 import { LoginComponent } from './c/login/login.component';
 import { LogoutComponent } from './c/logout/logout.component';
 // Feature Modules
-import { AccountsRoutingModule } from './accounts-routing.module';
 import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
 import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
 
@@ -37,7 +36,6 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
     UpdateAnonymousProfileComponent,
   ],
   imports: [
-    AccountsRoutingModule,
     CommonModule,
     DynamicTableModule,
     FormsModule,
