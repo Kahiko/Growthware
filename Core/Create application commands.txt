@@ -6,7 +6,7 @@ Toast:
 	https://fireship.io/lessons/angular-toast-message-notifications-from-scratch/
 
 Build with info (just gives longer name to the js file)
-	ng build --named-chunks --output-hashing=none --project gw-frontend
+	ng serve --host=127.0.0.1 --port 44455
 
 Build both .Net and Angular
 	From the same directory where GrowthwareCore.sln is located.  
