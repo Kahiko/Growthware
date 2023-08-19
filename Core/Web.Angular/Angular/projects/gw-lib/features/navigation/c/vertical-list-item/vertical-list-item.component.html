@@ -12,7 +12,7 @@
     <span>
       <span *ngIf="item.children && item.children.length">
         <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-          expand_more
+          chevron_right
         </mat-icon>
         <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
       </span>
@@ -36,7 +36,7 @@
     <span *ngIf="item.children && item.children.length==0" style="width: 24px;"></span>
     <span *ngIf="item.children && item.children.length">
       <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-        expand_more
+        chevron_right
       </mat-icon>
       <span *ngIf="showSideNavLinkText===true && item.children.length===0">{{ item.label }}</span>
     </span>
