@@ -1,1 +1,39 @@
-<p>line-count works!</p>
+<div class="table Form_Table" style="padding: 5px;">
+    <div class="tr"><!--Account/Status-->
+        <div class="td left">
+          <span class="Form_LabelText">Exclusion Pattern: </span>
+        </div>
+        <div class="td left">
+            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.excludePattern" class="Form_Field rounded"></textarea>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td left">
+            <span class="Form_LabelText">Files: </span>
+        </div>
+        <div class="td left">
+            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.includeFiles" class="Form_Field rounded"></textarea>
+        </div>                
+    </div>
+    <div class="tr">
+        <div class="td left">
+            <span class="Form_LabelText">Directory: </span>
+        </div>
+        <div class="td left">
+            <textarea type="text" TextMode="MultiLine" [(ngModel)]="countInfo.theDirectory" class="Form_Field rounded"></textarea>
+        </div>                
+    </div>
+    <div class="tr">
+        <div class="td left"></div>
+        <div class="td right">
+            <button mat-raised-button id="btnCount" (click)="onBtnCount()" color="primary">Count</button>
+        </div>
+    </div>
+</div>
+<div class="table" style="padding: 5px;">
+    <div class="tr">
+        <div class="td left">
+            <span id="litLineCount" [innerHTML]="lineCount"></span>
+        </div>
+    </div>
+</div>

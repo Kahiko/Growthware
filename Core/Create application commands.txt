@@ -254,6 +254,7 @@ Workflows:
 		ng generate service features/workflows/workflows --skip-tests --project gw-lib
 SysAdmin:
 		ng generate module features/SysAdmin --project gw-lib
+		ng generate interface features/sys-admin/LineCount --type model --project gw-lib
 		ng generate component features/sys-admin/c/LineCount --module sys-admin --style scss --skip-tests --project gw-lib
 		ng generate component features/sys-admin/c/edit-db-information --module sys-admin --style scss --skip-tests --project gw-lib
 		ng generate service features/sys-admin/SysAdmin --skip-tests --project gw-lib

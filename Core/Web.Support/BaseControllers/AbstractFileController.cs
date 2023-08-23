@@ -5,9 +5,11 @@ using System.Collections.Generic;
 using System.Security.AccessControl;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
+using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 
 namespace GrowthWare.Web.Support.BaseControllers;
@@ -168,6 +170,25 @@ public abstract class AbstractFileController : ControllerBase
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [HttpPost("GetLineCount")]
+    public ActionResult<string> GetLineCount(UICountInfo countInfo)
+    {
+        string mRetVal = string.Empty;
+        int mDirectoryLineCount = 0;
+        int mTotalLinesOfCode = 0;
+        StringBuilder mSB = new StringBuilder();
+        DirectoryInfo mCurrentDirectory = new DirectoryInfo(countInfo.TheDirectory);
+        String[] mFileArray = countInfo.IncludeFiles.Split(',');
+        String[] mExclusionArray = countInfo.ExcludePattern.Split(',');
+        List<String> mExcludeList = new List<String>();
+        foreach (string item in mExclusionArray)
+        {
+            mExcludeList.Add(item.ToString().Trim().ToUpper());
+        }
+        mRetVal = FileUtility.GetLineCount(mCurrentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, ref mTotalLinesOfCode, mFileArray);
+        return Ok(mRetVal);
     }
 
     private static void mergeFiles(string file1, string file2)

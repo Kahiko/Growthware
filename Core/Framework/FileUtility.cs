@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace GrowthWare.Framework
@@ -11,6 +13,58 @@ namespace GrowthWare.Framework
     /// </summary>
     public static class FileUtility
     {
+        static String s_Space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray) {
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
+            DirectoryInfo[] subDirectories = null;
+            try
+            {
+                // subDirectories = theDirectory.GetDirectories();
+                List<string> mExcludeDirectories = new List<string>();
+                mExcludeDirectories.Add("node_modules");
+                mExcludeDirectories.Add(".vscode");
+                mExcludeDirectories.Add(".angular");
+                mExcludeDirectories.Add("bin");
+                mExcludeDirectories.Add("obj");
+                subDirectories = theDirectory.GetDirectories().Where(d => !mExcludeDirectories.Contains(d.Name)).ToArray();
+                int x = 0;
+                int numDirectories = subDirectories.Length - 1;
+                if (directoryLineCount > 0)
+                {
+                    totalLinesOfCode += totalLinesOfCode;
+                    outputBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount);
+                    outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                    directoryLineCount = 0;
+                }
+                for (x = 0; x <= numDirectories; x++)
+                {
+                    if (subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "BIN" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "DEBUG" && subDirectories[x].Name.Trim().ToUpper(CultureInfo.InvariantCulture) != "RELEASE")
+                    {
+                        CountDirectory(subDirectories[x], outputBuilder, excludeList, fileArray, ref directoryLineCount);
+                        if (directoryLineCount > 0)
+                        {
+                            totalLinesOfCode += directoryLineCount;
+                            outputBuilder.AppendLine("<br>Lines of code for " + subDirectories[x].Name + " " + directoryLineCount);
+                            outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                            directoryLineCount = 0;
+                        }
+                    }
+                    checked
+                    {
+                        level = level + 1;
+                    }
+                    GetLineCount(subDirectories[x], level, outputBuilder, excludeList, directoryLineCount, ref totalLinesOfCode, fileArray);
+                }
+            }
+            catch (NullReferenceException)
+            {
+                outputBuilder.AppendLine("Directory not found");
+            }
+            return outputBuilder.ToString();
+        }
+
         /// <summary>
         /// Retruns the parent full name.
         /// </summary>
@@ -22,6 +76,63 @@ namespace GrowthWare.Framework
             DirectoryInfo mDirInfo = new DirectoryInfo(path);
             mRetVal = mDirInfo.Parent.FullName.ToString();
             return mRetVal;
+        }
+
+        public static void CountDirectory(DirectoryInfo theDirectory, StringBuilder outputBuilder, List<String> excludeList, String[] fileArray, ref int directoryLineCount)
+        {
+            if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
+            if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
+            if (excludeList == null) throw new ArgumentNullException("excludeList", "excludeList cannot be a null reference (Nothing in Visual Basic)!");
+            if (fileArray == null) throw new ArgumentNullException("fileArray", "fileArray cannot be a null reference (Nothing in Visual Basic)!");
+
+            Boolean writeDirectory = true;
+            int FileLineCount = 0;
+            foreach (String sFileType in fileArray)
+            {
+                // this loops files
+                Boolean countFile = true;
+                foreach (FileInfo directoryFile in theDirectory.GetFiles(sFileType.Trim()))
+                {
+                    countFile = true;
+                    foreach (var item in excludeList)
+                    {
+                        if (directoryFile.Name.ToUpper(CultureInfo.InvariantCulture).IndexOf(item, StringComparison.OrdinalIgnoreCase) > -1)
+                        {
+                            countFile = false;
+                            break;
+                        }
+                    }
+                    if (countFile)
+                    {
+                        using (StreamReader sr = File.OpenText(directoryFile.FullName))
+                        {
+                            //loop until the end
+                            while (sr.Peek() > -1)
+                            {
+                                String myString = sr.ReadLine();
+                                if ((!myString.Trim().StartsWith("'", StringComparison.OrdinalIgnoreCase) || !myString.Trim().StartsWith("//", StringComparison.OrdinalIgnoreCase)) & myString.Trim().Length != 0)
+                                {
+                                    FileLineCount += 1;
+                                }
+                            }                            
+                        }
+                        if (FileLineCount > 0)
+                        {
+                            if (writeDirectory)
+                            {
+                                outputBuilder.AppendLine("<br>" + theDirectory.FullName);
+                                writeDirectory = false;
+                            }
+                            outputBuilder.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
+                        }
+                        if (FileLineCount > 0)
+                        {
+                            directoryLineCount += FileLineCount;
+                        }
+                    }
+                    FileLineCount = 0;
+                }
+            }
         }
 
         /// <summary>
