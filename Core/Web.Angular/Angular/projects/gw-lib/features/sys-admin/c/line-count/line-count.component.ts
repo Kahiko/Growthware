@@ -35,7 +35,7 @@ export class LineCountComponent implements OnInit {
   onBtnCount() {
     this.lineCount = '';
     this._SysAdminSvc.getLineCount(this.countInfo).then((lineCount: string) => {
-      console.log('lineCount:', lineCount);
+      // console.log('lineCount:', lineCount);
       this.lineCount = lineCount;
     });
   }
