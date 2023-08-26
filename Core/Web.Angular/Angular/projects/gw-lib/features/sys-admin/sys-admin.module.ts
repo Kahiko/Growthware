@@ -6,12 +6,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 // Feature
 import { LineCountComponent } from './c/line-count/line-count.component';
-import { EditDbInformationComponent } from './c/edit-db-information/edit-db-information.component';
 
 @NgModule({
   declarations: [
-    LineCountComponent,
-    EditDbInformationComponent
+    LineCountComponent
   ],
   imports: [
     CommonModule,

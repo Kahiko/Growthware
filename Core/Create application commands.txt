@@ -136,7 +136,9 @@ Search:
 Shared Services
 		ng generate service shared/services/data --project gw-lib --skip-tests
 Configuration feature (new)
+		ng generate component features/configuration/c/edit-db-information --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/Configuration/AppSettings --type model --project gw-lib
+		ng generate interface features/Configuration/DBInformation --type model --project gw-lib
 		ng generate service features/configuration/configuration --skip-tests --project gw-lib
 Navigation:
 	https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
@@ -256,5 +258,4 @@ SysAdmin:
 		ng generate module features/SysAdmin --project gw-lib
 		ng generate interface features/sys-admin/LineCount --type model --project gw-lib
 		ng generate component features/sys-admin/c/LineCount --module sys-admin --style scss --skip-tests --project gw-lib
-		ng generate component features/sys-admin/c/edit-db-information --module sys-admin --style scss --skip-tests --project gw-lib
 		ng generate service features/sys-admin/SysAdmin --skip-tests --project gw-lib

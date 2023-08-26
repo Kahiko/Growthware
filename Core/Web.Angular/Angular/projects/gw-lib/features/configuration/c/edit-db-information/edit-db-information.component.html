@@ -1,0 +1,30 @@
+<div class="table Form_Table" style="padding: 5px;">
+    <div class="tr">
+        <div class="td right">
+            <span class="Form_LabelText">Version: </span>
+        </div>
+        <div class="td left">
+            <label id="lblVersion" class="Form_LabelText">{{dbInformation.version}}</label>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td right">
+            <span class="Form_LabelText">Enable Inheritance: </span>
+        </div>
+        <div class="td left">
+            <mat-select id="dropEnableInheritance" [(value)]="selectedInheritance" class="Form_Field rounded">
+                <mat-option *ngFor="let item of validInheritances" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td left"></div>
+        <div class="td right">
+            <button mat-raised-button id="btnSave" (click)="onBtsSave()" class="Form_Button" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+            </button>
+        </div>
+    </div>
+</div>

@@ -52,6 +52,12 @@ public abstract class AbstractController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetDBInformation")]
+    public MDBInformation GetDBInformation() {
+        MDBInformation mRetVal = DBInformationUtility.DBInformation();
+        return mRetVal;
+    }
+
     [HttpGet("GetGUID")]
     public ActionResult<string> GetGUID() 
     {
@@ -91,5 +97,15 @@ public abstract class AbstractController : ControllerBase
         // MLoggingProfile mProfile = new MLoggingProfile(profile);
         LoggingUtility.Save(profile);
         return true;
+    }
+
+    [HttpPost("UpdateProfile")]
+    public ActionResult<bool> UpdateProfile(int enableInheritance)
+    {
+        bool mRetVal = false;
+        MDBInformation mProfile = DBInformationUtility.DBInformation();
+        mProfile.EnableInheritance = enableInheritance;
+        mRetVal = DBInformationUtility.UpdateProfile(mProfile);
+        return Ok(mRetVal);
     }
 }
