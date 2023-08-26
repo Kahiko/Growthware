@@ -88,6 +88,18 @@ export class SearchService {
     return this.getResults(mUrl, criteria);
   }
 
+  /**
+   * Calls GrowthwareAPI.SearchAccounts
+   *
+   * @param {SearchCriteriaNVP} criteria
+   * @return {*}  {Promise<any>}
+   * @memberof SearchService
+   */
+  public async searchGroups(criteria: SearchCriteriaNVP): Promise<any> {
+    const mUrl = this._BaseUrl + 'GrowthwareGroup/SearchGroups';
+    return this.getResults(mUrl, criteria);
+  }
+
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
     const mChangedCriteria = new SearchCriteriaNVP( name, searchCriteria );
     this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria);

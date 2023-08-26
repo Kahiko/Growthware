@@ -21,12 +21,12 @@ public abstract class AbstractGroupController : ControllerBase
     }
 
 
-    [Authorize("Search_Groups")]
+    [Authorize("Manage_Groups")]
     [HttpPost("SearchGroups")]
     public String SearchGroups(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
-        string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
+        string mColumns = "[GroupSeqId], [Name], [Description], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
         if(searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
@@ -38,7 +38,7 @@ public abstract class AbstractGroupController : ControllerBase
                 OrderByClause = mOrderByClause,
                 PageSize = searchCriteria.pageSize,
                 SelectedPage = searchCriteria.selectedPage,
-                TableOrView = "[ZGWSystem].[vwSearchFunctions]",
+                TableOrView = "[ZGWSecurity].[Groups]",
                 WhereClause = mWhereClause
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);

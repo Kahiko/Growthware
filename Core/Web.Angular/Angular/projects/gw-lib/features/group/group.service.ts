@@ -10,6 +10,17 @@ import { LoggingService } from '@Growthware/features/logging';
 export class GroupService {
   private _ApiName: string = 'GrowthwareGroup/';
 
+  public get addModalId(): string {
+    return 'addAccount'
+  }
+
+  public get editModalId(): string {
+    return 'editAccount'
+  }
+
+  editAccount: string = '';
+  editReason: string = '';
+
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { }
 
   public async getGroups(): Promise<any> {

@@ -1,12 +1,12 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
-// Features (Components/Interfaces/Models/Services)
+// Library
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@Growthware/features/dynamic-table';
 import { DataService } from '@Growthware/shared/services';
 import { SearchService, SearchCriteriaNVP } from '@Growthware/features/search';
 import { INameValuePare } from '@Growthware/shared/models';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@Growthware/features/modal';
-
+// Feature
 import { AccountDetailsComponent } from '../account-details/account-details.component';
 import { AccountService } from '../../account.service';
 
