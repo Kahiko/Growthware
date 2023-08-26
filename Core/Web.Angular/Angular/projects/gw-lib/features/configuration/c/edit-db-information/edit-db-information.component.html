@@ -11,7 +11,7 @@
         <div class="td right">
             <span class="Form_LabelText">Enable Inheritance: </span>
         </div>
-        <div class="td left">
+        <div class="td left" style="width: 120px;">
             <mat-select id="dropEnableInheritance" [(value)]="selectedInheritance" class="Form_Field rounded">
                 <mat-option *ngFor="let item of validInheritances" [value]="item.id">
                     {{item.name}}
