@@ -25,6 +25,7 @@ export class SearchfunctionsComponent extends BaseSearchComponent {
   ) { 
     super();
     this.configurationName = 'Functions';
+    this._TheFeatureName = 'Function';
     this._TheApi = 'GrowthwareFunction/SearchFunctions';
     this._TheComponent = FunctionDetailsComponent;
     this._TheWindowSize = new WindowSize(450,900);

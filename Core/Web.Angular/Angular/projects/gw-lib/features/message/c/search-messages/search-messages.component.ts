@@ -25,6 +25,7 @@ export class SearchMessagesComponent extends BaseSearchComponent {
   ) { 
     super();
     this.configurationName = 'Messages';
+    this._TheFeatureName = 'Message';
     this._TheApi = 'GrowthwareMessage/SearchMessages';
     this._TheComponent = MessageDetailsComponent;
     this._TheWindowSize = new WindowSize(450,900);

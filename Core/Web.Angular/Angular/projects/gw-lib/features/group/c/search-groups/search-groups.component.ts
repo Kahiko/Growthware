@@ -25,6 +25,7 @@ export class SearchGroupsComponent extends BaseSearchComponent {
   ) { 
     super();
     this.configurationName = 'Groups';
+    this._TheFeatureName = 'Group';
     this._TheApi = 'GrowthwareGroup/SearchGroups';
     this._TheComponent = GroupDetailsComponent;
     this._TheWindowSize = new WindowSize(450,900);

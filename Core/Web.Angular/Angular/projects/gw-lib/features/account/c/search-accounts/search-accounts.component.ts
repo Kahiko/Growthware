@@ -25,6 +25,7 @@ export class SearchAccountsComponent extends BaseSearchComponent {
   ) { 
     super();
     this.configurationName = 'Accounts';
+    this._TheFeatureName = 'Account';
     this._TheApi = 'GrowthwareAccount/SearchAccounts';
     this._TheComponent = AccountDetailsComponent;
     this._TheWindowSize = new WindowSize(450,900);

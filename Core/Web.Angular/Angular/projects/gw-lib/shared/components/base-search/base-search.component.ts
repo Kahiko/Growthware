@@ -19,6 +19,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   protected _TheApi: string = '';
   protected _TheComponent: any = {};
+  protected _TheFeatureName: string = 'Not set';
   protected _TheWindowSize = new WindowSize(450,900);
 
   protected _TheService: any = {};
@@ -65,7 +66,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   private onBtnTopRight () {
     this._TheService.editReason = 'NewProfile'
-    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addModalId, 'Add Account', this._TheComponent, this._TheWindowSize);
+    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addModalId, 'Add ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);
     }
@@ -81,7 +82,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
     const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
     this._TheService.editAccount = mDataRow.Account;
     this._TheService.editReason = 'EditAccount';
-    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.editModalId, 'Edit Account', this._TheComponent, this._TheWindowSize);
+    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.editModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);
     }
