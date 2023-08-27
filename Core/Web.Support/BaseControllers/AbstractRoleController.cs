@@ -24,7 +24,7 @@ public abstract class AbstractRoleController : ControllerBase
     public String SearchRoles(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
-        string mColumns = "[FunctionSeqId], [Name], [Description], [Action], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
+        string mColumns = "[RoleSeqId], [Name], [Description], [Is_System], [Is_System_Only], [Added_By], [Added_Date], [Updated_By], [Updated_Date]";
         if(searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
@@ -36,7 +36,7 @@ public abstract class AbstractRoleController : ControllerBase
                 OrderByClause = mOrderByClause,
                 PageSize = searchCriteria.pageSize,
                 SelectedPage = searchCriteria.selectedPage,
-                TableOrView = "[ZGWSystem].[vwSearchFunctions]",
+                TableOrView = "[ZGWSecurity].[Roles]",
                 WhereClause = mWhereClause
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);

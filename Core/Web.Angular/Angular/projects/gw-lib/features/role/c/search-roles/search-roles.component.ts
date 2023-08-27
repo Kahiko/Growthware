@@ -1,36 +1,37 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component } from '@angular/core';
 // Library
-import { DynamicTableComponent } from '@Growthware/features/dynamic-table';
-// import { DynamicTableService } from '@Growthware/features/dynamic-table';
-// import { DataService } from '@Growthware/shared/services';
-// import { SearchService } from '@Growthware/features/search';
-// import { ModalService } from '@Growthware/features/modal';
+import { BaseSearchComponent } from '@Growthware/shared/components';
+import { DynamicTableService } from '@Growthware/features/dynamic-table';
+import { DataService } from '@Growthware/shared/services';
+import { SearchService } from '@Growthware/features/search';
+import { ModalService, WindowSize } from '@Growthware/features/modal';
+// Feature
+import { RoleDetailsComponent } from '../role-details/role-details.component';
+import { RoleService } from '../../role.service';
 
 @Component({
   selector: 'gw-lib-search-roles',
   templateUrl: './search-roles.component.html',
   styleUrls: ['./search-roles.component.scss']
 })
-export class SearchRolesComponent implements OnDestroy, OnInit {
-  @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
+export class SearchRolesComponent extends BaseSearchComponent {
 
-  private _SearchCriteriaChangedSub: Subscription = new Subscription();
-
-  public configurationName = 'Roles';
-  public results: any;
   constructor(
-    // private _DataSvc: DataService,
-    // private _DynamicTableSvc: DynamicTableService,
-    // private _ModalSvc: ModalService,
-    // private _SearchSvc: SearchService,
-  ) { }
-
-  ngOnDestroy(): void {
-    this._SearchCriteriaChangedSub.unsubscribe();
+    theFeatureSvc: RoleService,
+    dataSvc: DataService,
+    dynamicTableSvc: DynamicTableService,
+    modalSvc: ModalService,
+    searchSvc: SearchService,
+  ) { 
+    super();
+    this.configurationName = 'Roles';
+    this._TheApi = 'GrowthwareRole/SearchRoles';
+    this._TheComponent = RoleDetailsComponent;
+    this._TheWindowSize = new WindowSize(450,900);
+    this._TheService = theFeatureSvc;
+    this._DataSvc = dataSvc;
+    this._DynamicTableSvc = dynamicTableSvc;
+    this._ModalSvc = modalSvc;
+    this._SearchSvc = searchSvc;
   }
-
-  ngOnInit(): void {
-  }
-
 }
