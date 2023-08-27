@@ -31,7 +31,8 @@ export class SearchService {
    * @return {*}  {Promise<any>}
    * @memberof GWLibSearchService
    */
-  private async getResults(url: string, criteria: SearchCriteriaNVP): Promise<any> {
+  public async getResults(url: string, criteria: SearchCriteriaNVP): Promise<any> {
+    const mUrl: string = this._BaseUrl + url;
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ export class SearchService {
     };
     return new Promise<SearchResultsNVP>((resolve, reject) => {
       this._HttpClient
-      .post<any>(url, criteria.payLoad, mHttpOptions)
+      .post<any>(mUrl, criteria.payLoad, mHttpOptions)
       .subscribe({
         next: (response: any) => {
           const mTotalRecords = this._GWCommon.getTotalRecords(response);
@@ -62,42 +63,6 @@ export class SearchService {
       mRetVal = this._SearchCriteria_NVP_Array[index].payLoad;
     }
     return mRetVal;
-  }
-
-  /**
-   * Calls GrowthwareAPI.SearchAccounts
-   *
-   * @param {SearchCriteriaNVP} criteria
-   * @return {*}  {Promise<any>}
-   * @memberof SearchService
-   */
-  public async searchAccounts(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._BaseUrl + 'GrowthwareAccount/SearchAccounts';
-    return this.getResults(mUrl, criteria);
-  }
-
-  /**
-   * Calls GrowthwareAPI.SearchFunctions
-   *
-   * @param {SearchCriteriaNVP} criteria
-   * @return {*}  {Promise<any>}
-   * @memberof SearchService
-   */
-   public async searchFunctions(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._BaseUrl + 'GrowthwareFunction/SearchFunctions';
-    return this.getResults(mUrl, criteria);
-  }
-
-  /**
-   * Calls GrowthwareAPI.SearchAccounts
-   *
-   * @param {SearchCriteriaNVP} criteria
-   * @return {*}  {Promise<any>}
-   * @memberof SearchService
-   */
-  public async searchGroups(criteria: SearchCriteriaNVP): Promise<any> {
-    const mUrl = this._BaseUrl + 'GrowthwareGroup/SearchGroups';
-    return this.getResults(mUrl, criteria);
   }
 
   public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {

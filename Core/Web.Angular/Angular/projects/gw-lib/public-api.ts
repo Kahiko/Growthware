@@ -29,5 +29,6 @@ export * from '@Growthware/features/sys-admin';
 export * from '@Growthware/features/toast';
 export * from '@Growthware/features/workflows';
 
+export * from '@Growthware/shared/components';
 export * from '@Growthware/shared/models';
 export * from '@Growthware/shared/services';

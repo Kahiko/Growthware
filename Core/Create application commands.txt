@@ -96,6 +96,8 @@ common-code:
 Shared Models
 		ng generate interface shared/models/CallbackButton --type model --project gw-lib
 		ng generate interface shared/models/NameValuePair --type model --project gw-lib
+Shared Components:
+		ng generate component shared/components/baseSearch --inline-template --inline-style --skip-import --skip-tests --project gw-lib
 Toast:
 		ng generate module features/toast --project gw-lib
 		ng generate enum features/toast/EventType --type enum --project gw-lib
