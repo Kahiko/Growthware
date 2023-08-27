@@ -11,7 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
-
+import { DynamicTableModule } from '@Growthware/features/dynamic-table';
 // Feature Components
 import { MessageDetailsComponent } from './c/message-details/message-details.component';
 import { SearchMessagesComponent } from './c/search-messages/search-messages.component';
@@ -24,6 +24,7 @@ import { SearchMessagesComponent } from './c/search-messages/search-messages.com
   ],
   imports: [
     CommonModule,
+    DynamicTableModule,
 
     MatButtonModule,
     MatCheckboxModule,

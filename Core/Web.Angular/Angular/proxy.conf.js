@@ -12,6 +12,7 @@ const PROXY_CONFIG = [
       "/GrowthwareFile",
       "/GrowthwareFunction",
       "/GrowthwareGroup",
+      "/GrowthwareMessage",
       "/GrowthwareRole",
       "/swagger"
    ],
