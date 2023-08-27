@@ -10,6 +10,17 @@ import { LoggingService } from '@Growthware/features/logging';
 export class RoleService {
   private _ApiName: string = 'GrowthwareRole/';
 
+  public get addModalId(): string {
+    return 'addRole'
+  }
+
+  public get editModalId(): string {
+    return 'editRole'
+  }
+
+  editAccount: string = '';
+  editReason: string = '';
+
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { }
 
   public async getRoles(): Promise<any> {
