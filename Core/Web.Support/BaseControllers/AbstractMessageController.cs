@@ -28,7 +28,7 @@ public abstract class AbstractMessageController : ControllerBase
                 OrderByClause = mOrderByClause,
                 PageSize = searchCriteria.pageSize,
                 SelectedPage = searchCriteria.selectedPage,
-                TableOrView = "[ZGWCoreWeb].[Messages]",
+                TableOrView = "[ZGWCoreWeb].[vwSearchMessages]",
                 WhereClause = mWhereClause
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
