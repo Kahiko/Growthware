@@ -15,6 +15,7 @@ const PROXY_CONFIG = [
       "/GrowthwareMessage",
       "/GrowthwareRole",
       "/GrowthwareSecurityEntity",
+      "/GrowthwareState",
       "/swagger"
    ],
     target: target,
