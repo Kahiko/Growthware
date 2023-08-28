@@ -36,7 +36,7 @@ public abstract class AbstractRoleController : ControllerBase
                 OrderByClause = mOrderByClause,
                 PageSize = searchCriteria.pageSize,
                 SelectedPage = searchCriteria.selectedPage,
-                TableOrView = "[ZGWSecurity].[Roles]",
+                TableOrView = "[ZGWSecurity].[vwSearchRoles]",
                 WhereClause = mWhereClause
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
