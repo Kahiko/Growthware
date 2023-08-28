@@ -38,7 +38,7 @@ public abstract class AbstractGroupController : ControllerBase
                 OrderByClause = mOrderByClause,
                 PageSize = searchCriteria.pageSize,
                 SelectedPage = searchCriteria.selectedPage,
-                TableOrView = "[ZGWSecurity].[Groups]",
+                TableOrView = "[ZGWSecurity].[vwSearchGroups]",
                 WhereClause = mWhereClause
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);

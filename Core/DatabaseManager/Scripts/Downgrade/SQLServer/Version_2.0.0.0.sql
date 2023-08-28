@@ -183,7 +183,27 @@ ORDER BY
 RETURN 0
 
 GO
+SET ANSI_NULLS ON
+GO
 
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER VIEW [ZGWSecurity].[vwSearchGroups] AS
+	SELECT
+		G.[GroupSeqId] AS Group_SEQ_ID,
+		G.[Name],
+		G.[Description],
+		Added_By = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_By),
+		Added_Date = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_Date),
+		G.[Updated_By],
+		G.[Updated_Date],
+		RSE.SecurityEntitySeqId
+	FROM
+		ZGWSecurity.Groups G WITH(NOLOCK)
+		INNER JOIN ZGWSecurity.Groups_Security_Entities RSE WITH(NOLOCK)
+			ON G.GroupSeqId = RSE.GroupSeqId
+GO
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action] = 'accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Functions' WHERE [Action] = 'functions';

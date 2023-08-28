@@ -45,6 +45,27 @@ IF NOT EXISTS (SELECT TOP(1) 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = '
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('ZGWSecurity.Get_Menu_Data'))
    exec('CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data] AS BEGIN SET NOCOUNT ON; END')
 GO
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER VIEW [ZGWSecurity].[vwSearchGroups] AS
+	SELECT
+		G.[GroupSeqId],
+		G.[Name],
+		G.[Description],
+		Added_By = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_By),
+		Added_Date = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_Date),
+		G.[Updated_By],
+		G.[Updated_Date],
+		RSE.SecurityEntitySeqId
+	FROM
+		ZGWSecurity.Groups G WITH(NOLOCK)
+		INNER JOIN ZGWSecurity.Groups_Security_Entities RSE WITH(NOLOCK)
+			ON G.GroupSeqId = RSE.GroupSeqId
+GO
 
 /*
 Usage:
