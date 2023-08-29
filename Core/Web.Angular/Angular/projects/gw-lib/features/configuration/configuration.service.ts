@@ -80,7 +80,7 @@ export class ConfigurationService {
       throw new Error("enableInheritance can not be blank!");
     }
     const mQueryParameter: HttpParams = new HttpParams()
-      .set('enableInheritance', enableInheritance)
+      .set('enableInheritance', enableInheritance);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export class ConfigurationService {
       params: mQueryParameter,
     };
     return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<boolean>(this._ApiSetDBInformationURL, mHttpOptions).subscribe({
+      this._HttpClient.post<boolean>(this._ApiSetDBInformationURL, mHttpOptions, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
