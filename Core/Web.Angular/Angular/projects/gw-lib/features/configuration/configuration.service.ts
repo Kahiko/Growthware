@@ -88,7 +88,7 @@ export class ConfigurationService {
       params: mQueryParameter,
     };
     return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<boolean>(this._ApiSetDBInformationURL, mHttpOptions, mHttpOptions).subscribe({
+      this._HttpClient.post<boolean>(this._ApiSetDBInformationURL, mQueryParameter, mHttpOptions).subscribe({
         next: (response: any) => {
           resolve(response);
         },
