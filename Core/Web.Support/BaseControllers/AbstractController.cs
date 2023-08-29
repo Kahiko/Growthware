@@ -7,6 +7,8 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
+using GrowthWare.Web.Support.Jwt;
+using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -16,9 +18,9 @@ public abstract class AbstractController : ControllerBase
 
     private string m_ApplicationName = string.Empty;
     private string m_Version = string.Empty;
-    
+
     private Logger m_Logger = Logger.Instance();
-    
+
     private string m_LogPriority = string.Empty;
 
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
@@ -34,15 +36,15 @@ public abstract class AbstractController : ControllerBase
     public UIAppSettings GetAppSettings()
     {
         UIAppSettings mRetVal = new UIAppSettings();
-        if(this.m_LogPriority == string.Empty)
+        if (this.m_LogPriority == string.Empty)
         {
             this.m_LogPriority = ConfigSettings.LogPriority;
         }
-        if(this.m_ApplicationName == string.Empty)
+        if (this.m_ApplicationName == string.Empty)
         {
             this.m_ApplicationName = ConfigSettings.AppDisplayedName;
         }
-        if(this.m_Version == string.Empty)
+        if (this.m_Version == string.Empty)
         {
             this.m_Version = ConfigSettings.Version;
         }
@@ -53,15 +55,23 @@ public abstract class AbstractController : ControllerBase
     }
 
     [HttpGet("GetDBInformation")]
-    public MDBInformation GetDBInformation() {
+    public MDBInformation GetDBInformation()
+    {
         MDBInformation mRetVal = DBInformationUtility.DBInformation();
         return mRetVal;
     }
 
     [HttpGet("GetGUID")]
-    public ActionResult<string> GetGUID() 
+    public ActionResult<string> GetGUID()
     {
         string mRetVal = Guid.NewGuid().ToString();
+        return Ok(mRetVal);
+    }
+
+    [HttpGet("GetLogLevel")]
+    public ActionResult<int> GetLogLevel()
+    {
+        int mRetVal = this.m_Logger.CurrentLogLevel;
         return Ok(mRetVal);
     }
 
@@ -75,26 +85,34 @@ public abstract class AbstractController : ControllerBase
         }
         return Ok(mRetVal);
     }
-    
+
     [HttpGet("GetSecurityInfo")]
-    public ActionResult<MSecurityInfo> GetSecurityInfo(string action) 
-    { 
+    public ActionResult<MSecurityInfo> GetSecurityInfo(string action)
+    {
         MSecurityInfo mSecurityInfo = new MSecurityInfo();
         if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException("action", " can not be null or blank!");
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
-        if(mFunctionProfile != null) 
+        if (mFunctionProfile != null)
         {
             mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         }
         return Ok(mSecurityInfo);
     }
 
+    [Authorize("SetLogLevel")]
+    [HttpPost("SetLogLevel")]
+    public ActionResult<bool> SetLogLevel(int logLevel)
+    {
+        bool mRetVal = false;
+        m_Logger.SetThreshold((LogPriority)logLevel);
+        mRetVal = true;
+        return Ok(mRetVal);
+    }
 
     [HttpPost("Log")]
     public bool Log(MLoggingProfile profile)
     {
-        // MLoggingProfile mProfile = new MLoggingProfile(profile);
         LoggingUtility.Save(profile);
         return true;
     }

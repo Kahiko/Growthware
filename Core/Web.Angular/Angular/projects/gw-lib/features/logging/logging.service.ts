@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+// Library
+import { GWCommon } from '@Growthware/common-code';
+import { EventType, ToastService, ToastMessage } from '@Growthware/features/toast';
+// Feature
 import { ILogOptions, LogOptions } from './log-options.model';
 import { LogDestination } from './log-destination.enum';
 import { ILoggingProfile, LoggingProfile } from './logging-profile.model';
 import { LogLevel } from './log-level.enum';
-import { GWCommon } from '@Growthware/common-code';
-import { EventType, ToastService, ToastMessage } from '@Growthware/features/toast';
 
 @Injectable({
   providedIn: 'root',
@@ -14,14 +15,45 @@ import { EventType, ToastService, ToastMessage } from '@Growthware/features/toas
 export class LoggingService {
   // https://adrianhall.github.io/cloud/2019/06/30/building-an-efficient-logger-in-typescript/
 
-  private _LoggingURL: string = '';
+  private _ApiName: string = 'GrowthwareAPI/';
+  private _Api_CurrentLogLevel = 'GetLogLevel';
+  private _Api_Log: string = 'log';
+  private _Api_SetLogLevel = 'SetLogLevel';
 
   constructor(
     private _HttpClient: HttpClient,
     private _GWCommon: GWCommon,
     private _ToastSvc: ToastService
   ) {
-    this._LoggingURL = _GWCommon.baseURL + 'GrowthwareAPI/Log';
+    this._Api_Log = _GWCommon.baseURL + this._ApiName + 'Log';
+    this._Api_SetLogLevel = _GWCommon.baseURL + this._ApiName + 'SetLogLevel';
+    this._Api_CurrentLogLevel = _GWCommon.baseURL + this._ApiName  + 'GetLogLevel';
+  }
+
+  public async getLogLevel(): Promise<number> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      responseType: "text" as "json",
+    };
+    return new Promise<number>((resolve, reject) => {
+      this._HttpClient.get<any>(this._Api_CurrentLogLevel, mHttpOptions).subscribe({
+        next: (response: number) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          if(error.status && error.status === 403) {
+            this.toast('Unable to get log level', 'Get Log Level', LogLevel.Error);
+            reject(error.error);
+          } else {
+            this.errorHandler(error, 'LoggingService', 'getLogLevel');
+            reject(false);
+          }
+        },
+        // complete: () => {}
+      });      
+    })
   }
 
   private getStackTrace(): string {
@@ -98,6 +130,36 @@ export class LoggingService {
     });
   }
 
+  public async setLogLevel(logLevel: number): Promise<boolean> {
+    const mQueryParameter: HttpParams = new HttpParams()
+    .set('logLevel', logLevel);    
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      responseType: "text" as "json",
+      params: mQueryParameter,
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<any>(this._Api_SetLogLevel, mQueryParameter, mHttpOptions).subscribe({
+        next: (response: string) => {
+          this.toast('Successfully set the log level', 'Set Log Level', LogLevel.Success);
+          resolve(true);
+        },
+        error: (error: any) => {
+          if(error.status && error.status === 403) {
+            this.toast('Unable to set log level', 'Set Log Level', LogLevel.Error);
+            reject(error.error);
+          } else {
+            this.errorHandler(error, 'LoggingService', 'setLogLevel');
+            reject(false);
+          }
+        },
+        // complete: () => {}
+      });      
+    })
+  }
+
   /**
    * Use to log a message to the console.
    *
@@ -169,7 +231,7 @@ export class LoggingService {
   }
 
   private _LogDB(options: ILogOptions): void {
-    this.console(this._LoggingURL, LogLevel.Info);
+    // this.console(this._LoggingURL, LogLevel.Info);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -185,7 +247,7 @@ export class LoggingService {
     );
     mData.logDate = new Date().toISOString();
     this._HttpClient
-      .post<any>(this._LoggingURL, mData, mHttpOptions)
+      .post<any>(this. _Api_Log, mData, mHttpOptions)
       .subscribe({
         next: (response: any) => {
           this._LogConsole(response);

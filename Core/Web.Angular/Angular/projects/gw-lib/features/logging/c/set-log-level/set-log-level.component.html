@@ -1,1 +1,27 @@
-<p>set-log-level works!</p>
+<h2>
+    <p>
+        Setting the log leve is temporary and will revert to the configured value when the application is restarted.
+    </p>   
+</h2>
+<div class="table Form_Table">
+    <div class="tr">
+        <div class="td left">
+            <label class="Form_Label">Log Level:</label>
+        </div>
+        <div class="td left" style="width: 120px;">
+            <mat-select [(ngModel)]="selectedLogLevel" class="Form_Field rounded">
+                <mat-option *ngFor="let item of validLogLevels" [value]="item.id">
+                    {{item.name}}
+                </mat-option>
+            </mat-select>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td"></div>
+        <div class="td right">
+            <button mat-button class="Form_Button" (click)="onbtnSave()" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+              </button>
+        </div>
+    </div>
+</div>
