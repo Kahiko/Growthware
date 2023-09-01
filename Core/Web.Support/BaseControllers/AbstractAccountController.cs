@@ -9,6 +9,8 @@ using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
+using System.Data;
+using System.Linq;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -16,6 +18,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractAccountController : ControllerBase
 {
     protected IAccountService m_AccountService;
+    protected IClientChoicesService m_ClientChoicesService;
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";
 
@@ -170,6 +173,30 @@ public abstract class AbstractAccountController : ControllerBase
         return Content(mRetVal);
     }
 
+    /// <summary>
+    /// Returns the current account from HttpContext, if Context is not available then "Anonymous" will be returned
+    /// </summary>
+    /// <returns>MAccountProfile</returns>
+    private MAccountProfile getCurrentAccount()
+    {
+        MAccountProfile mRetVal = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        if(mRetVal == null) 
+        {
+            mRetVal = m_AccountService.GetAccount("Anonymous");
+            if(mRetVal == null)
+            {
+                mRetVal = m_AccountService.GetAccount("Anonymous", true);
+            }
+        }
+        mRetVal.Password = string.Empty;
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a MAccountProfile given the account. If the account is not specivied ("" or "_") then a new MAccountProfile will be returned.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns>MAccountProfile</returns>
     private MAccountProfile getAccount(string account)
     {
         MAccountProfile mRetVal = new MAccountProfile();
@@ -258,6 +285,46 @@ public abstract class AbstractAccountController : ControllerBase
         }
 
         return Ok(mRetVal);
+    }
+
+    [HttpGet("GetPreferences")]
+    public UIAccountChoices GetPreferences()
+    {
+        MAccountProfile mRequestingProfile = this.getCurrentAccount();
+        MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(mRequestingProfile.Account);
+        UIAccountChoices mRetVal = new UIAccountChoices(mClientChoicesState);
+        return mRetVal;
+    }
+
+    [HttpGet("GetSelectableActions")]
+    public List<UISelectedableAction> GetSelectableActions()
+    {
+        List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
+        IList<MMenuTree> mMenuItems = m_AccountService.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
+        addSelectedActions(mMenuItems, ref mRetVal);
+        mMenuItems = m_AccountService.GetMenuItems(getCurrentAccount().Account, MenuType.Horizontal);
+        addSelectedActions(mMenuItems, ref mRetVal);
+        mMenuItems = m_AccountService.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
+        addSelectedActions(mMenuItems, ref mRetVal);
+        return mRetVal;
+    }
+
+    private void addSelectedActions(IList<MMenuTree> menuTree, ref List<UISelectedableAction> selectedableActions)
+    {
+        foreach(MMenuTree mMenuTree in menuTree)
+        {
+            if(mMenuTree.Children == null || mMenuTree.Children.Count == 0)
+            {
+                UISelectedableAction mSelectedableAction = new UISelectedableAction();
+                mSelectedableAction.Action = mMenuTree.Action;
+                mSelectedableAction.Title = mMenuTree.Label;
+                selectedableActions.Add(mSelectedableAction);
+            } 
+            else 
+            {
+                addSelectedActions(mMenuTree.Children, ref selectedableActions);
+            }
+        }
     }
 
     private string ipAddress()

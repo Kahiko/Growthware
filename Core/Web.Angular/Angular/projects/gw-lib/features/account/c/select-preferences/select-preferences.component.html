@@ -1,1 +1,47 @@
-<p>select-preferences works!</p>
+<form [formGroup]="frmSelectPreferences" (ngSubmit)="onSubmit(frmSelectPreferences)" novalidate>
+    <div class="table Form_Table" style="padding: 5px;">
+        <div class="tr" *ngFor="let item of validColorSchemes; let colorSchemIndex = index">
+            <div class="td">
+                <label *ngIf="colorSchemIndex == 0" id="colorSchemGroupLabel">Pick your favorite color scheme</label>
+            </div>
+            <div class="td left" style="width: 346px;">
+                <mat-radio-group aria-labelledby="colorSchemGroupLabel" formControlName="selectedColorScheme">
+                    <mat-radio-button [value]="item.color_Scheme">
+                        <div style="display: inline-block; width: 50px;">{{item.color_Scheme}} </div>
+                        <div *ngFor="let property of item | keyvalue; let propertyIndex = index" style="display: inline-block; margin-right: 1em;">
+                            <div *ngIf="propertyIndex > 0" [ngStyle]="{'background-color': property.value}" style="height: 2opx; width: 20px;">&nbsp;</div>
+                        </div>   
+                    </mat-radio-button>
+                </mat-radio-group>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td left">
+                <span class="Form_LabelText">Favorite Link: </span>
+            </div>
+            <div class="td right">
+                <mat-select id="dropFavoriteLink" [(value)]="selectedLink" class="Form_Field rounded">
+                    <mat-option *ngFor="let item of validLinks" [value]="item.action">
+                        {{item.title}}
+                    </mat-option>
+                </mat-select>
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td left">
+                <span class="Form_LabelText">Prefered records per page: </span>
+            </div>
+            <div class="td left">
+                <input matInput type="number" id="txtRecordsPerPage" name="txtRecordsPerPage" formControlName="recordsPerPage" class="Form_Field rounded" style="height:auto;">
+            </div>
+        </div>
+        <div class="tr">
+            <div class="td left"></div>
+            <div class="td right">
+                <button type="submit" [disabled]="frmSelectPreferences.invalid" mat-button class="Form_Button" color="primary">
+                    <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+                  </button>
+            </div>
+        </div>
+    </div>    
+</form>

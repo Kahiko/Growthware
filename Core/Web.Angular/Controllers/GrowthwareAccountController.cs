@@ -10,9 +10,10 @@ public class GrowthwareAccountController : AbstractAccountController
 {
     private readonly ILogger<GrowthwareAPIController> m_logger;
 
-    public GrowthwareAccountController(ILogger<GrowthwareAPIController> logger, IAccountService accountService)
+    public GrowthwareAccountController(ILogger<GrowthwareAPIController> logger, IAccountService accountService, IClientChoicesService clientChoicesService)
     {
         base.m_AccountService = accountService;
+        base.m_ClientChoicesService = clientChoicesService;
         this.m_logger = logger;
     }
 

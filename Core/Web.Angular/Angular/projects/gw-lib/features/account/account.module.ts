@@ -8,6 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
@@ -39,14 +40,17 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
     CommonModule,
     DynamicTableModule,
     FormsModule,
+
     MatButtonModule,
     MatCheckboxModule,
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule,
     MatInputModule,
-    MatTabsModule,
+    MatRadioModule,
     MatSelectModule,
+    MatTabsModule,
+
     PickListModule,
     ReactiveFormsModule,
     SnakeListModule,

@@ -11,8 +11,9 @@ import { INavLink } from '@Growthware/features/navigation';
 import { MenuType } from '@Growthware/features/navigation';
 // Feature
 import { IAccountProfile } from './account-profile.model';
-import { IClientChoices } from './client-choices.model';
+import { ClientChoices, IClientChoices } from './client-choices.model';
 import { AuthenticationResponse, IAuthenticationResponse } from './authentication-response.model';
+import { ISelectedableAction } from './selectedable-action.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,16 +22,19 @@ export class AccountService {
 
   private _ApiName: string = 'GrowthwareAccount/';
   private _Api_Authenticate = '';
+  private _Api_ClientChoices = '';
   private _Api_ChangePassword = '';
   // private _Api_GetLinks: string = '';
   private _Api_GetMenuItems: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
   private _Api_SaveAccount: string = '';
+  private _Api_SelectableActions: string = '';
   private _AuthenticationResponse = new AuthenticationResponse();
   private _AuthenticationResponseSubject: BehaviorSubject<IAuthenticationResponse> = new BehaviorSubject<IAuthenticationResponse>(this._AuthenticationResponse);
   private _BaseURL: string = '';
-  private _ClientChoices: Subject<IClientChoices> = new Subject<IClientChoices>();
+  private _ClientChoices: IClientChoices = new ClientChoices();
+  private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(this._ClientChoices);
   private _DefaultAccount: string = 'Anonymous';
   private _RefreshTokenTimeout?: NodeJS.Timeout;
   private _SideNavSubject = new Subject<INavLink[]>();
@@ -51,11 +55,15 @@ export class AccountService {
     return this._AuthenticationResponseSubject.getValue();
   }
 
+  public get clientChoices(): IClientChoices {
+    return this._ClientChoicesSubject.getValue();
+  }
+
   editAccount: string = '';
   editReason: string = '';
 
   readonly authenticationResponse$ = this._AuthenticationResponseSubject.asObservable();
-  readonly clientChoices$ = this._ClientChoices.asObservable();
+  readonly clientChoices$ = this._ClientChoicesSubject.asObservable();
   
   public get defaultAccount(): string {
     return this._DefaultAccount;
@@ -73,11 +81,13 @@ export class AccountService {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
+    this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
     // this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
     this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
     this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
+    this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
   }
 
   public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
@@ -88,10 +98,10 @@ export class AccountService {
       if(this._GWCommon.isNullOrEmpty(password)) {
         throw new Error("password can not be blank!");
       }
-      const mQueryParameter: HttpParams = new HttpParams()
+      let mQueryParameter: HttpParams = new HttpParams()
         .set('account', account)
         .set('password', password);
-      const mHttpOptions = {
+        const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),
@@ -102,6 +112,7 @@ export class AccountService {
           localStorage.setItem("jwt", response.jwtToken);
           this._AuthenticationResponseSubject.next(response);
           if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
+            this.getClientChoices();
             this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           }
           if(account.toLowerCase() !== response.account.toLowerCase()) {
@@ -166,6 +177,25 @@ export class AccountService {
             this._LoggingSvc.errorHandler(error, 'AccountService', 'authenticate');
             reject(false);
           }
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async getClientChoices(): Promise<IClientChoices> {
+    let mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+    };
+    return new Promise<IClientChoices>((resolve, reject) => {
+      this._HttpClient.get<IClientChoices>(this._Api_ClientChoices, mHttpOptions).subscribe({
+        next: (response: IClientChoices) => {
+          this._ClientChoicesSubject.next(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getClientChoices');
         },
         // complete: () => {}
       });
@@ -310,5 +340,25 @@ export class AccountService {
         // here as example
       }
     })
+  }
+
+  public async getSelectableActions(): Promise<ISelectedableAction[]> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<ISelectedableAction[]>((resolve, reject) => {
+      this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
   }
 }
