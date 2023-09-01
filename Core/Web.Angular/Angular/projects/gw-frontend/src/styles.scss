@@ -59,6 +59,19 @@ html, body { height: 100%; }
 }
 
 /* Rounded Corners */
+.selectRounded {
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px #666;
+  -webkit-box-shadow: 2px 2px 3px #666;
+  box-shadow: 2px 2px 3px #666;
+  padding: 4px 7px;
+  outline: 0;
+  -webkit-appearance: none;  
+}
+
 select.rounded {
     border: 1px solid #ccc;
     -moz-border-radius: 5px;

@@ -299,6 +299,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetSelectableActions")]
     public List<UISelectedableAction> GetSelectableActions()
     {
+        List<string> mExcludedActions = new List<string>(){"favorite","logoff", "logon"};
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
         IList<MMenuTree> mMenuItems = m_AccountService.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
@@ -306,6 +307,13 @@ public abstract class AbstractAccountController : ControllerBase
         addSelectedActions(mMenuItems, ref mRetVal);
         mMenuItems = m_AccountService.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
+        // not the best way b/c this is defined in the DB but it's better than nothing
+        foreach(string mAction in mExcludedActions) 
+        {
+            var mItemToRemove = mRetVal.SingleOrDefault(r => r.Title.ToLower().Contains(mAction.ToLower()));
+            if (mItemToRemove != null) { mRetVal.Remove(mItemToRemove); }
+        }
+        mRetVal = mRetVal.OrderBy(o=>o.Title).ToList();
         return mRetVal;
     }
 
