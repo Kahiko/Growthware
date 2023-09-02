@@ -68,7 +68,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
     const mSelectedColor: string = this.controls['selectedColorScheme'].getRawValue();
     const mSelectedColorScheme = this.validColorSchemes.find(item => item.color_Scheme === mSelectedColor);
     if(mSelectedColorScheme) {
-      this.clientChoices.alternatingRowBackColor = mSelectedColorScheme?.alternatingRow_BackColor;
+      this.clientChoices.alternatingRowBackColor = mSelectedColorScheme.alternatingRow_BackColor;
       this.clientChoices.backColor = mSelectedColorScheme.back_Color;
       this.clientChoices.colorScheme = mSelectedColorScheme.color_Scheme;
       this.clientChoices.headColor = mSelectedColorScheme.head_Color;
@@ -77,6 +77,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
       this.clientChoices.rowBackColor = mSelectedColorScheme.row_BackColor;
       this.clientChoices.subHeadColor = mSelectedColorScheme.sub_Head_Color;
       this.clientChoices.action = this.selectedAction;
+      this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
       this._AccountSvc.saveClientChoices(this.clientChoices).catch((error) => {
         this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
       }).then((_) => {
@@ -103,9 +104,4 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
       });
     }
   }
-
-  onRecordsChanged(element: any): void {
-    // nothing atm
-  }
-
 }

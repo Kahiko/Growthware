@@ -90,13 +90,14 @@ public class ClientChoicesService : IClientChoicesService
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
         BClientChoices mBClientChoices = new BClientChoices(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         mBClientChoices.Save(clientChoicesState);
-        // if (updateContext)
-        // {
-        //     if (HttpContext.Current.Cache != null)
-        //     {
-        //         HttpContext.Current.Cache[MClientChoices.SessionName] = clientChoicesState;
-        //     }
-        // }
+        if (updateContext)
+        {
+            if (m_HttpContextAccessor.HttpContext.Session != null)
+            {
+                string mJsonString = JsonSerializer.Serialize(clientChoicesState);
+                m_HttpContextAccessor.HttpContext.Session.SetString(MClientChoices.SessionName, mJsonString);
+            }
+        }
     }
 
     /// <summary>

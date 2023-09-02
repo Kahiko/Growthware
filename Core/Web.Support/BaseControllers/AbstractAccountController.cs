@@ -431,6 +431,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(accountChoices.Account);
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action;
+            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString();
             mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor;
             mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme;
             mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor;
