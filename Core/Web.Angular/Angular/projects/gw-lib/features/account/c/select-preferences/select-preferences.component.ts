@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { Subscription } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/common-code';
+import { LogLevel, LoggingService } from '@Growthware/features/logging';
 // Feature
 import { AccountService } from '../../account.service';
 import { ClientChoices, IClientChoices } from '../../client-choices.model';
@@ -19,7 +20,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
   clientChoices: IClientChoices = new ClientChoices();
   frmSelectPreferences!: FormGroup;
   selectedColorScheme!: string;
-  selectedLink!: string;
+  selectedAction!: string;
 
   validColorSchemes = [
     { color_Scheme: 'Blue'	  ,head_Color: '#C7C7C7'	,header_ForeColor: 'Black'	,row_BackColor: '#b6cbeb'	,alternatingRow_BackColor: '#6699cc'	,sub_Head_Color: '#b6cbeb'	,back_Color: '#ffffff'	,left_Color: '#eeeeee' },
@@ -37,6 +38,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
     private _GWCommon: GWCommon,
+    private _LoggingSvc: LoggingService,
   ) {
     this.selectedColorScheme = 'Blue';
   }
@@ -63,14 +65,32 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
   }
   
   onSubmit(form: FormGroup): void {
-    // nothing atm
+    const mSelectedColor: string = this.controls['selectedColorScheme'].getRawValue();
+    const mSelectedColorScheme = this.validColorSchemes.find(item => item.color_Scheme === mSelectedColor);
+    if(mSelectedColorScheme) {
+      this.clientChoices.alternatingRowBackColor = mSelectedColorScheme?.alternatingRow_BackColor;
+      this.clientChoices.backColor = mSelectedColorScheme.back_Color;
+      this.clientChoices.colorScheme = mSelectedColorScheme.color_Scheme;
+      this.clientChoices.headColor = mSelectedColorScheme.head_Color;
+      this.clientChoices.headerForeColor = mSelectedColorScheme.header_ForeColor;
+      this.clientChoices.leftColor = mSelectedColorScheme.left_Color;
+      this.clientChoices.rowBackColor = mSelectedColorScheme.row_BackColor;
+      this.clientChoices.subHeadColor = mSelectedColorScheme.sub_Head_Color;
+      this.clientChoices.action = this.selectedAction;
+      this._AccountSvc.saveClientChoices(this.clientChoices).catch((error) => {
+        this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
+      }).then((_) => {
+        this._LoggingSvc.toast('Client choices saved', 'Save client choices', LogLevel.Success);
+      })
+    }
+    console.log('clientChoices', this.clientChoices);
   }
 
   private populateForm(): void {
     if(!this._GWCommon.isNullOrUndefined(this.clientChoices)) {
-      this.selectedLink = 'home';
-      if(!this._GWCommon.isNullOrEmpty(this.clientChoices.favoriteAction)) {
-        this.selectedLink = this.clientChoices.favoriteAction;
+      this.selectedAction = 'home';
+      if(!this._GWCommon.isNullOrEmpty(this.clientChoices.action)) {
+        this.selectedAction = this.clientChoices.action.toLocaleLowerCase();
       }
       this.frmSelectPreferences = this._FormBuilder.group({
         recordsPerPage: [this.clientChoices.recordsPerPage, [Validators.required]],

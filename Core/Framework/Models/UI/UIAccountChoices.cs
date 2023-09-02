@@ -22,8 +22,11 @@ public class UIAccountChoices : AbstractBaseModel
     /// <param name="clientChoicesState">State of the client choices.</param>
     public UIAccountChoices(MClientChoicesState clientChoicesState)
     {
-        if (clientChoicesState[MClientChoices.AccountName] != null)
+        if (clientChoicesState[MClientChoices.AccountName] != null) 
+        {
             AccountName = clientChoicesState[MClientChoices.AccountName].ToString(CultureInfo.InvariantCulture);
+            Account = AccountName;
+        }
         if (clientChoicesState[MClientChoices.Action] != null)
             Action = clientChoicesState[MClientChoices.Action].ToString(CultureInfo.InvariantCulture);
         if (clientChoicesState[MClientChoices.BackColor] != null)

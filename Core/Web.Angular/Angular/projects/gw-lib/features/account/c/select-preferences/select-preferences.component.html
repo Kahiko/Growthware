@@ -20,7 +20,7 @@
                 <span class="Form_LabelText">Favorite Link: </span>
             </div>
             <div class="td left">
-                <mat-select id="dropFavoriteLink" [(value)]="selectedLink" class="Form_Field selectRounded" style="width: 300px;">
+                <mat-select id="dropFavoriteLink" [(value)]="selectedAction" class="Form_Field selectRounded" style="width: 300px;">
                     <mat-option *ngFor="let item of validLinks" [value]="item.action" class="multiline-mat-option.mat-option">
                         {{item.title}}
                     </mat-option>

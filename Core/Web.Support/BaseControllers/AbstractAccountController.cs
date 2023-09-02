@@ -422,6 +422,30 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [HttpPost("SaveClientChoices")]
+    public ActionResult<bool> SaveClientChoices(UIAccountChoices accountChoices)
+    {
+        if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
+        bool mRetVal = false;
+        if(accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower()) 
+        {
+            MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(accountChoices.Account);
+            mClientChoicesState[MClientChoices.Action] = accountChoices.Action;
+            mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor;
+            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme;
+            mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor;
+            mClientChoicesState[MClientChoices.HeaderForeColor] = accountChoices.HeaderForeColor;
+            mClientChoicesState[MClientChoices.RowBackColor] = accountChoices.RowBackColor;
+            mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor;
+            mClientChoicesState[MClientChoices.LeftColor] = accountChoices.LeftColor;
+            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString();
+            mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor;
+            m_ClientChoicesService.Save(mClientChoicesState);
+            mRetVal = true;
+        }
+        return mRetVal;
+    }
+
     [Authorize("Accounts")]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)

@@ -1,9 +1,10 @@
 export interface IClientChoices {
     account: string,
+	accountName: string,
+	action: string,
 	alternatingRowBackColor: string,
 	backColor: string,
 	colorScheme: string,
-	favoriteAction: string,
 	headerForeColor: string,
 	headColor: string,
 	leftColor: string,
@@ -16,10 +17,11 @@ export interface IClientChoices {
 
 export class ClientChoices implements IClientChoices {
     account = 'Anonymous';
+	accountName = 'Anonymous';
+	action = '';
 	alternatingRowBackColor = '';
 	backColor = '';
 	colorScheme = 'Blue';
-	favoriteAction = '';
 	headerForeColor = '';
 	headColor = '';
 	leftColor = '';
