@@ -1,15 +1,13 @@
-<div>
-  <div>
-    <input type="button" (click)="setCurrentMonth()" value="today" />
-    <input type="button" (click)="decreaseMonth()" value="-" />
-    <input type="button" (click)="increaseMonth()" value="+" />
-  </div>
-</div>
 <table class='calendar-table' *ngIf="calendar">
   <thead>
     <tr style="text-align: center; width: 100%">
       <td colspan="7">
         <h1 style="text-align: center; width: 100%">{{displayMonth}}</h1>
+        <div>
+          <input type="button" (click)="decreaseMonth()" value="-" />
+          <input type="button" (click)="setCurrentMonth()" value="today" />
+          <input type="button" (click)="increaseMonth()" value="+" />
+        </div>
       </td>
     </tr>
     <tr>
