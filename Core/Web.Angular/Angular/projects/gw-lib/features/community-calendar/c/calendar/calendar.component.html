@@ -4,9 +4,15 @@
       <td colspan="7">
         <h1 style="text-align: center; width: 100%">{{displayMonth}}</h1>
         <div>
-          <input type="button" (click)="decreaseMonth()" value="-" />
-          <input type="button" (click)="setCurrentMonth()" value="today" />
-          <input type="button" (click)="increaseMonth()" value="+" />
+          <button (click)="decreaseMonth()" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">remove</i>
+          </button>
+          <button (click)="setCurrentMonth()" mat-button class="Form_Button" color="primary">
+            Today
+          </button>
+          <button (click)="increaseMonth()" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">add</i>
+          </button>
         </div>
       </td>
     </tr>
