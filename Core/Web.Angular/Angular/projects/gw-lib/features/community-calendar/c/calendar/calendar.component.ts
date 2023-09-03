@@ -31,27 +31,43 @@ export class CalendarComponent implements OnInit {
     this.calendar = [];
     let mCalendar: CalendarDay[] = [];
     // we set the date 
-    let day: Date = new Date(new Date().setMonth(new Date().getMonth() + monthIndex));
+    const day: Date = new Date(new Date().setMonth(new Date().getMonth() + monthIndex));
 
     // set the dispaly month for UI
     this.displayMonth = this.monthNames[day.getMonth()];
 
-    let startingDateOfCalendar = this.getStartDateForCalendar(day);
+    const startingDateOfCalendar = this.getStartDateForCalendar(day);
 
     let dateToAdd = startingDateOfCalendar;
-
-    for (var i = 0; i < 42; i++) {
+    const mDayNeededForCalendar = this.getNumberOfCalendarDays(day);
+    for (var i = 0; i < mDayNeededForCalendar; i++) {
       this.calendar.push(new CalendarDay(new Date(dateToAdd)));
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
     }
     mCalendar = this._GWCommon.splitArray(this.calendar, 7);
     this.calendar = JSON.parse(JSON.stringify(mCalendar));
-    // console.log('calendar', JSON.stringify(this.calendar));
+  }
+
+  /**
+   * Calculates the number of calendar days in a given month.
+   *
+   * @param {Date} day - The date used to determine the month.
+   * @return {number} The number of calendar days in the specified month.
+   */
+  private getNumberOfCalendarDays(day: Date): number {
+    const mYear = day.getFullYear();
+    const mMonth = day.getMonth()+ 1;
+    const mFristDay = new Date(mYear, mMonth, 1).getDay();
+    const mLastDay = new Date(mYear, mMonth + 1, 0).getDay();
+    const mDaysFromLastMonth = mFristDay - 1 == -1 ? 6 : mFristDay - 1;
+    const mDaysFromNextMonth = 6 - mLastDay == -1 ? 0 : 6 - mLastDay;
+    const mDaysInMonth = new Date(mYear, mMonth + 1, 0).getDate();
+    return (mDaysFromLastMonth + mDaysInMonth + mDaysFromNextMonth) + 1;    
   }
 
   private getStartDateForCalendar(selectedDate: Date){
     // for the day we selected let's get the previous month last day
-    let lastDayOfPreviousMonth = new Date(selectedDate.setDate(0));
+    const lastDayOfPreviousMonth = new Date(selectedDate.setDate(0));
 
     // start by setting the starting date of the calendar same as the last day of previous month
     let startingDateOfCalendar: Date = lastDayOfPreviousMonth;
