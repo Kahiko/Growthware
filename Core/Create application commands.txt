@@ -222,7 +222,9 @@ Messages
 Community Calendar
 		ng generate module features/CommunityCalendar --project gw-lib
 		ng generate interface features/community-calendar/CalendarProfile --type model --project gw-lib
+		ng generate interface features/community-calendar/CalendarDay --type model --project gw-lib
 		ng generate component features/community-calendar/c/Calendar --module community-calendar --style scss --skip-tests --project gw-lib
+		ng generate component features/community-calendar/c/dayOfWeek --module community-calendar --selector gwDayOfWeek --skip-tests --project gw-lib
 		ng generate service features/community-calendar/Calendar --skip-tests --project gw-lib
 
 // https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes

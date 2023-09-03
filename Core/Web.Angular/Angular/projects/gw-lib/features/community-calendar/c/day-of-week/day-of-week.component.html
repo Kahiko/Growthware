@@ -1,0 +1,4 @@
+<div class="calendar-day-header" [ngClass]="{'blue-date': day.isToday}">
+    <strong>{{day.date.getDate()}}</strong>
+    <strong *ngIf="day.isToday || (day.date.getDate() == 1)"> {{monthNames[day.date.getMonth()]}}</strong>
+</div>

@@ -206,6 +206,10 @@ export class GWCommon {
     return mRetVal;
   }
 
+  public isString(value: any) {
+    return typeof value === 'string' || value instanceof String;
+  }
+
   /********** Natural Sorting *****************/
   /*
   * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
@@ -332,5 +336,27 @@ export class GWCommon {
       }
       return 0;
     };
+  }
+
+  /**
+   * Splits an array into multiple arrays of a specified size.
+   *
+   * @param {Array<any>} arrayToSplit - The array to be split.
+   * @param {number} numberInSubArray - The number of elements in each subarray.
+   * @return {any[]} The resulting array of subarrays.
+   * 
+   * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
+   *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
+   */
+  public splitArray(arrayToSplit: Array<any>, numberInSubArray: number): any[] {
+    let idx: number = 0;
+    const mResult: any[] = [];
+    while (idx < arrayToSplit.length) {
+        if (idx % numberInSubArray === 0) mResult.push([])
+        const mNewElement = JSON.parse(JSON.stringify(arrayToSplit[idx++]));
+        // const mNewElement = arrayToSplit[idx++];
+        mResult[mResult.length - 1].push(mNewElement);
+    }
+    return mResult;
   }
 }
