@@ -54,7 +54,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
   @ViewChild('deleteDirectory', { read: TemplateRef }) private _DeleteDirectory!:TemplateRef<any>;
-  @ViewChild('directoryProperties', { read: TemplateRef }) private __DirectoryProperties!:TemplateRef<any>;
+  @ViewChild('directoryProperties', { read: TemplateRef }) private _DirectoryProperties!:TemplateRef<any>;
   @ViewChild('renameDirectory', { read: TemplateRef }) private _RenameDirectory!:TemplateRef<any>;
 
 
@@ -202,7 +202,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuPropertiesClick(item: IDirectoryTree) {
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this.__DirectoryProperties, new WindowSize(80, 600));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this._DirectoryProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
       this._ModalSvc.close(this._ModalId_Properties);
