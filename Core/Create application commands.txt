@@ -219,7 +219,7 @@ Messages
 		ng generate component features/message/c/MessageDetails --module message --style scss --skip-tests --project gw-lib
 		ng generate component features/message/c/SearchMessages --module message --style scss --skip-tests --project gw-lib
 		ng generate service features/message/message --skip-tests --project gw-lib
-Community Calendar
+Community Calendar (https://dev.to/rickystam/how-to-build-a-full-screen-calendar-like-outlook-in-angular-5dcg)
 		ng generate module features/CommunityCalendar --project gw-lib
 		ng generate interface features/community-calendar/CalendarProfile --type model --project gw-lib
 		ng generate interface features/community-calendar/CalendarDay --type model --project gw-lib
