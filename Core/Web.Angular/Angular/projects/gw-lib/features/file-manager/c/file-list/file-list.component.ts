@@ -73,7 +73,7 @@ export class FileListComponent implements OnInit {
     });
 
     if(this._GWCommon.isNullOrUndefined(this.id)) {
-      this._LoggingSvc.toast('The is can not be blank!', 'File List Component', LogLevel.Error);
+      this._LoggingSvc.toast('The id can not be blank!', 'File List Component', LogLevel.Error);
     } else {
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
