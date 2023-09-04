@@ -460,6 +460,13 @@ export class FileManagerService {
     });
   }
 
+  /**
+   * @description Sets the selected directory and triggers the selectedDirectoryChanged event.
+   *
+   * @param {IDirectoryTree} directoryTree - The directory tree used to set as the selected directory.
+   * @return {void} This function does not return anything.
+   * @memberof FileManagerService
+   */
   public setSelectedDirectory(directoryTree: IDirectoryTree): void {
     this._CurrentDirectoryTree = directoryTree;
     this.selectedDirectoryChanged.next(directoryTree);
