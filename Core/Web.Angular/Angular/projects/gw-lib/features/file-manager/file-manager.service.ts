@@ -351,6 +351,14 @@ export class FileManagerService {
     });
   }
 
+  /**
+   * @description Renames a directory asynchronously.
+   *
+   * @param {string} action - Used to determine the upload directory and enforce security on the server.
+   * @param {string} newName - The new name for the directory.
+   * @return {Promise<boolean>} A promise that resolves to true if the directory was renamed successfully, or false otherwise.
+   * @memberof FileManagerService
+   */
   async renameDirectory(action: string, newName: string): Promise<boolean> {
     if(this._GWCommon.isNullOrEmpty(action)) {
       throw new Error("action can not be blank!");
