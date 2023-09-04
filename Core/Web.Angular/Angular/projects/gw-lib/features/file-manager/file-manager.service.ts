@@ -176,7 +176,9 @@ export class FileManagerService {
    *  
    * @param {string} action Used to determine the upload directory and enforce security on the server
    * @param {string} path The relative of the directory path 
+   * @param {string} forControl - The control to notify.
    * @memberof FileManagerService
+   * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the operation.
    */
   public async getDirectories(action: string, path: string, forControl: string): Promise<boolean> {
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
