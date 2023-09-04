@@ -330,7 +330,7 @@ export class FileManagerService {
  * @description Refreshes the specified action.
  *
  * @param {string} action - Used to determine the upload directory and enforce security on the server.
- * @param {IDirectoryTree} directoryTree - Optional directory tree to use for the refresh.
+ * @param {IDirectoryTree} directoryTree - Optional directory tree to use to determine the selected path.
  * @return {Promise<any>} A Promise that resolves when the refresh is complete.
  * @memberof FileManagerService
  */
