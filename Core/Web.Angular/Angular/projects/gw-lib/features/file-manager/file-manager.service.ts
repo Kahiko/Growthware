@@ -311,9 +311,9 @@ export class FileManagerService {
    * can be done
    *
    * @private
-   * @param {string} action Used to determine the upload directory and enforce security on the server
-   * @param {string} fileName The file name for this Chunk
-   * @param {string} uri The Uniform Resource Identifier
+   * @param {string} action Used to determine the upload directory and enforce security on the server.
+   * @param {string} fileName The file name for this Chunk.
+   * @param {string} uri The Uniform Resource Identifier.
    * @return {*}  {Observable<IUploadResponse>}
    * @memberof FileManagerService
    */
@@ -326,6 +326,14 @@ export class FileManagerService {
     return this._HttpClient.post<IUploadResponse>(uri, mFormData);    
   }
 
+/**
+ * @description Refreshes the specified action.
+ *
+ * @param {string} action - Used to determine the upload directory and enforce security on the server.
+ * @param {IDirectoryTree} directoryTree - Optional directory tree to use for the refresh.
+ * @return {Promise<any>} A Promise that resolves when the refresh is complete.
+ * @memberof FileManagerService
+ */
   async refresh(action: string, directoryTree?: IDirectoryTree): Promise<any> {
     const mAction = action.trim();
     let mSelectedNode = this._CurrentDirectoryTree;
