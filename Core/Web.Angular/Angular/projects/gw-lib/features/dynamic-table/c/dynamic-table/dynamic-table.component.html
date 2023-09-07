@@ -16,7 +16,7 @@
             {{recordsPerPageMsg}}
           </label>
         </span>
-        <span *ngIf="showHelp" class="material-icons" (click)="onHelp()" style="position:relative; margin: 5px;">help</span>
+        <span *ngIf="showHelp" class="material-icons" (click)="onHelp()" style="position:relative; margin: 5px; cursor: pointer;">help</span>
         <span style="margin: 5px;">
           <button
             *ngIf="tableConfiguration.buttons.length > 0 && tableConfiguration.buttons[0].visible"
