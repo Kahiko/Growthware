@@ -16,6 +16,7 @@ export class DayOfWeekComponent implements OnInit {
     "July", "August", "September", "October", "November", "December"
   ];
   @Input() day?: any;
+  @Input() weekNumber?: number;
 
   constructor(
     private _GWCommon: GWCommon,
@@ -27,7 +28,7 @@ export class DayOfWeekComponent implements OnInit {
       this._LoggingService.toast('the "day" property is required', 'DayOfWeekComponent', LogLevel.Error);
     } else {
       this.day = new CalendarDay(new Date(this.day.value.date));
-      // console.log('DayOfWeek', this.day);
+      console.log('DayOfWeek', this.day);
     }
   }
 
