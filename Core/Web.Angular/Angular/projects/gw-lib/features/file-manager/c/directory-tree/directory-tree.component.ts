@@ -84,7 +84,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       }).catch((error)=>{
         this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
       });
-      this.populateRenameDirectoryForm()
+      this.populateRenameDirectoryForm();
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
