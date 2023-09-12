@@ -50,9 +50,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
   @ViewChild('deleteDirectory', { read: TemplateRef }) private _DeleteDirectory!:TemplateRef<any>;
   @ViewChild('directoryProperties', { read: TemplateRef }) private _DirectoryProperties!:TemplateRef<any>;
-  // @ViewChild('renameDirectory', { read: TemplateRef }) private _RenameDirectory!:TemplateRef<any>;
-
-
+  
   constructor(
     private _DataSvc: DataService,
     private _FileManagerSvc: FileManagerService,
