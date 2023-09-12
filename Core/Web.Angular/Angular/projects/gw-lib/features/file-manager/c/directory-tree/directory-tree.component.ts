@@ -1,7 +1,6 @@
 import { Component, Input, AfterViewInit, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { TemplateRef } from '@angular/core';
 import { MatMenuTrigger } from '@angular/material/menu';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
@@ -19,6 +18,8 @@ import { SecurityService } from '@Growthware/features/security';
 // Feature
 import { IDirectoryTree } from '../../directory-tree.model';
 import { FileManagerService } from '../../file-manager.service';
+import { RenameDirectoryComponent } from '../rename-directory/rename-directory.component';
+
 
 @Component({
   selector: 'gw-lib-directory-tree',
@@ -28,9 +29,8 @@ import { FileManagerService } from '../../file-manager.service';
 export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   private _Action: string = '';
-  private _ModalId_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
-  private _ModalId_Properties = 'DirectoryTreeComponent.onMenuPropertiesClick';
-  private _ModalId_Rename = 'DirectoryTreeComponent.onMenuRenameClick';
+  private _ModalId_Directory_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
+  private _ModalId_Directory_Properties = 'DirectoryTreeComponent.onMenuPropertiesClick';
   private _SecurityInfo: ISecurityInfo = new SecurityInfo();
   private _Subscriptions: Subscription = new Subscription();
 
@@ -38,13 +38,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
   activeNode?: IDirectoryTree;
   configurationName: string = ''
-  frmRenameDirectory!: FormGroup;
   menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates
   selectedPath: string = '';
-
-  get getControls() {
-    return this.frmRenameDirectory.controls;
-  }
 
   dataSource = new MatTreeNestedDataSource<IDirectoryTree>();
   treeControl = new NestedTreeControl<IDirectoryTree>(node => node.children);
@@ -55,14 +50,13 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
   @ViewChild('deleteDirectory', { read: TemplateRef }) private _DeleteDirectory!:TemplateRef<any>;
   @ViewChild('directoryProperties', { read: TemplateRef }) private _DirectoryProperties!:TemplateRef<any>;
-  @ViewChild('renameDirectory', { read: TemplateRef }) private _RenameDirectory!:TemplateRef<any>;
+  // @ViewChild('renameDirectory', { read: TemplateRef }) private _RenameDirectory!:TemplateRef<any>;
 
 
   constructor(
     private _DataSvc: DataService,
     private _FileManagerSvc: FileManagerService,
     private _GWCommon: GWCommon,
-    private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _Router: Router,
@@ -84,7 +78,6 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
       }).catch((error)=>{
         this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
       });
-      this.populateRenameDirectoryForm();
       // logic to start getting data
       this._Subscriptions.add(this._DataSvc.dataChanged.subscribe((data: DataNVP) => {
         if(data.name.toLowerCase() === this.configurationName.toLowerCase()) {
@@ -143,26 +136,6 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     });
   }
 
-  /**
-   * @description Return text for the given field if there is an error with the field
-   *
-   * @param {string} fieldName
-   * @return {*}  {(string | undefined)}
-   * @memberof DirectoryTreeComponent
-   */
-  getErrorMessage(fieldName: string): string | undefined {
-    switch (fieldName) {
-      case 'newName':
-        if (this.getControls['newPassword'].hasError('required')) {
-          return 'Required';
-        }
-        break;
-      default:
-        break;
-    }
-    return undefined;
-  }
-
   hasChild = (_: number, node: IDirectoryTree) => !!node.children && node.children.length > 0;
 
   /**
@@ -173,7 +146,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuDeleteClick(item: IDirectoryTree){
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Directory_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.text = 'Yes';
     mModalOptions.buttons.okButton.callbackMethod = () => {
@@ -182,7 +155,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
         this._FileManagerSvc.getDirectories(this._Action, mPreviousRelitavePath, this.configurationName).then((response) => {
           const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this.dataSource.data, mPreviousRelitavePath, 'relitivePath', 'children');
           this.selectDirectory(mPreviousDirectoryNode);
-          this._ModalSvc.close(this._ModalId_Delete);
+          this._ModalSvc.close(this._ModalId_Directory_Delete);
         }).catch((error: any) => {
           this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         });
@@ -202,10 +175,10 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuPropertiesClick(item: IDirectoryTree) {
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this._DirectoryProperties, new WindowSize(80, 600));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Directory_Properties, 'Properties', this._DirectoryProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {
-      this._ModalSvc.close(this._ModalId_Properties);
+      this._ModalSvc.close(this._ModalId_Directory_Properties);
     }
     this._ModalSvc.open(mModalOptions);
   }
@@ -218,27 +191,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuRenameClick(item: IDirectoryTree) {
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Rename, 'Rename Directory', this._RenameDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._FileManagerSvc.ModalId_Rename_Directory, 'Rename Directory', RenameDirectoryComponent, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
-  }
-
-  /**
-   * @description Handles the rename submit click
-   *
-   * @param {IDirectoryTree} item The tree node
-   * @memberof DirectoryTreeComponent
-   */
-  onRenameSubmit(form: FormGroup): void {
-    // console.log('form', form);
-    this._ModalSvc.close(this._ModalId_Rename);
-      this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName']).then((response) => {
-        form.reset();
-        this._FileManagerSvc.getFiles(this._Action, this._Action + '_Files', this._FileManagerSvc.SelectedPath);
-        this._ModalSvc.close(this._ModalId_Rename);
-        this._LoggingSvc.toast('File was renamed', 'Rename direcory', LogLevel.Success);
-      }).catch((error) => {
-        this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');
-      });
   }
 
   /**
@@ -262,18 +216,6 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
 
     // we open the menu
     this._MatMenuTrigger.openMenu();
-  }
-
-  /**
-   * @description populates the Rename Directory Form
-   *
-   * @private
-   * @memberof DirectoryTreeComponent
-   */
-  private populateRenameDirectoryForm(): void {
-    this.frmRenameDirectory = this._FormBuilder.group({
-      newDirectoryName: ['', [Validators.required]],
-    });
   }
 
   /**
