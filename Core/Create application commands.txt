@@ -163,7 +163,7 @@ PickList:
 Groups:
 		ng generate module features/group --project gw-lib
 		ng generate interface features/group/GroupProfile --type model --project gw-lib
-		ng generate component features/group/c/GroupDetails --module group --style scss --project gw-lib
+		ng generate component features/group/c/GroupDetails  --standalone --style scss --project gw-lib
 		ng generate component features/group/c/SearchGroups --module group --style scss --project gw-lib
 		ng generate service features/group/group --project gw-lib
 Roles:
