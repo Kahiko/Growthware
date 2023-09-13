@@ -125,7 +125,6 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
     data.forEach(node => {
       if (node.children && node.children.find(c => c.relitivePath === relitivePath)) {
         this.treeControl.expand(node);
-        // this.expand(this.dataSource.data, node.relitivePath);
         this.expand(data, node.relitivePath);
       }
       else if (node.children && node.children.find(c => c.children)) {
