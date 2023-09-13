@@ -1,0 +1,14 @@
+/* Tabs */
+.mat-mdc-tab__container {
+    min-height: 350px;
+    border-bottom: 1px solid lightgray;
+    border-left: 1px solid lightgray;
+    border-right: 1px solid lightgray;
+    font-size: .8rem;
+    vertical-align: middle;
+    text-align: center;
+  }
+  .mat-mdc-tab__content {
+    display: inline-block;
+    margin-top: 10px;
+  }
