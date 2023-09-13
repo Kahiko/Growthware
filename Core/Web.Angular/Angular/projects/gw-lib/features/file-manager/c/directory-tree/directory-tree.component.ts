@@ -91,7 +91,6 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
         }
       }));
       this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged.subscribe((data: IDirectoryTree) => {
-        this.dataSource.data = this.dataSource.data.slice();
         this.selectedPath = data.relitivePath;
         this.activeNode = data;   
         this.expand(this.dataSource.data, data.relitivePath);
