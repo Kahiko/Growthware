@@ -29,7 +29,11 @@ export class FileManagerService {
   private _SelectedPath: string = '\\';
 
   public set CurrentDirectoryTree(value: IDirectoryTree) {
-    this._CurrentDirectoryTree = value;
+    this._CurrentDirectoryTree = JSON.parse(JSON.stringify(value));
+  }
+
+  public get CurrentDirectoryTree(): IDirectoryTree {
+    return JSON.parse(JSON.stringify(this._CurrentDirectoryTree));
   }
 
   public get SelectedPath(): string {
@@ -196,6 +200,7 @@ export class FileManagerService {
         next: (response: IDirectoryTree) => {
           const mDirectoryTree = [];
           mDirectoryTree.push(response);
+          // console.log('getDirectories.mDirectoryTree', mDirectoryTree);
           this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
           resolve(true);
         },
@@ -361,13 +366,35 @@ export class FileManagerService {
    * @return {Promise<boolean>} A promise that resolves to true if the directory was renamed successfully, or false otherwise.
    * @memberof FileManagerService
    */
-  async renameDirectory(action: string, newName: string): Promise<boolean> {
+  async renameDirectory(action: string, newName: string, directoryControlName: string): Promise<boolean> {
+    /**
+     * 1.) Get the current directory
+     * 2.) Calculate the new directory to select when rename is successful
+     * 3.) Call FileManagerService to rename the directory
+     * 4.) If successful, set the selected directory to the calculated new directory in step 2
+     * 5.) Refresh the directory tree and file list
+     * 6.) Close the modal
+     *
+     * 4.) If unsuccessful, log the error
+     * 5.) Notify the client
+     * 6.) Close the modal
+     *
+     *
+     */
+
     if(this._GWCommon.isNullOrEmpty(action)) {
       throw new Error("action can not be blank!");
     }
     if(this._GWCommon.isNullOrEmpty(newName)) {
       throw new Error("newName can not be blank!");
     }
+    const mDirectoryParts = this.SelectedPath.split('\\');
+    mDirectoryParts[mDirectoryParts.length - 1] = newName;
+    const mNewSelectedPath = mDirectoryParts.join('\\');
+    const mCurrentDirectoryTree = this.CurrentDirectoryTree;
+    mCurrentDirectoryTree.key = newName.replace(' ', '').toLowerCase();
+    mCurrentDirectoryTree.name = newName;
+    mCurrentDirectoryTree.relitivePath = mNewSelectedPath;
     return new Promise<boolean>((resolve, reject) => {
       let mQueryParameter: HttpParams = new HttpParams().append('action', action);
       mQueryParameter=mQueryParameter.append('selectedPath', this._SelectedPath);
@@ -380,7 +407,14 @@ export class FileManagerService {
       };
       this._HttpClient.post<boolean>(this._Api_RenameDirectory, null, mHttpOptions).subscribe({
         next:( response: boolean ) => {
-          resolve(response)
+          this.getDirectories(action, mCurrentDirectoryTree.relitivePath, directoryControlName).catch((error) => {
+            this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameDirectory/getDirectories');
+            reject(false);
+          }).then((_) => {
+            // console.log('mCurrentDirectoryTree', mCurrentDirectoryTree);
+            this.setSelectedDirectory(mCurrentDirectoryTree);
+            resolve(response);
+          })
         },
         error:( error: any ) => {
           this._LoggingSvc.errorHandler(error, 'FileManagerService', 'renameDirectory');
@@ -470,6 +504,7 @@ export class FileManagerService {
    * @memberof FileManagerService
    */
   public setSelectedDirectory(directoryTree: IDirectoryTree): void {
+    // console.log('directoryTree.setSelectedDirectory', directoryTree);
     this._CurrentDirectoryTree = directoryTree;
     this.selectedDirectoryChanged.next(directoryTree);
   }

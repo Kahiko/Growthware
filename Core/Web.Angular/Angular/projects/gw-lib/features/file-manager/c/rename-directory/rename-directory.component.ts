@@ -1,6 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 // Library
@@ -14,13 +19,12 @@ import { FileManagerService } from '../../file-manager.service';
   standalone: true,
   imports: [MatButtonModule, CommonModule, ReactiveFormsModule],
   templateUrl: './rename-directory.component.html',
-  styleUrls: ['./rename-directory.component.scss']
+  styleUrls: ['./rename-directory.component.scss'],
 })
 export class RenameDirectoryComponent implements OnInit {
-  
   private _Action: string = '';
 
-  public configurationName: string = ''
+  public configurationName: string = '';
   public frmRenameDirectory!: FormGroup;
 
   constructor(
@@ -28,14 +32,14 @@ export class RenameDirectoryComponent implements OnInit {
     private _FormBuilder: FormBuilder,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    private _Router: Router,
-  ) { }
+    private _Router: Router
+  ) {}
 
   ngOnInit(): void {
-    this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
+    this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
     this.configurationName = this._Action + '_Directories';
     this.populateRenameDirectoryForm();
-    console.log(this._Action)
+    // console.log(this._Action);
   }
 
   get getControls() {
@@ -81,16 +85,17 @@ export class RenameDirectoryComponent implements OnInit {
    * @memberof DirectoryTreeComponent
    */
   onRenameSubmit(form: FormGroup): void {
-    this._LoggingSvc.toast('Working on Rename', 'Rename direcory', LogLevel.Info);
-    this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
-      // this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName']).then((response) => {
-      //   form.reset();
-      //   this._FileManagerSvc.getFiles(this._Action, this._Action + '_Files', this._FileManagerSvc.SelectedPath);
-      //   this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
-      //   this._LoggingSvc.toast('Directory was renamed', 'Rename direcory', LogLevel.Success);
-      // }).catch((error) => {
-      //   this._LoggingSvc.toast('Directory was NOT renamed', 'Rename direcory', LogLevel.Error);
-      //   this._LoggingSvc.errorHandler(error, 'RenameDirectoryComponent', 'onRenameSubmit');
-      // });
+    this._LoggingSvc.toast(
+      'Working on Rename',
+      'Rename direcory',
+      LogLevel.Info
+    );
+    this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName'], this._Action + '_Directories').then((response) => {
+        form.reset();
+        this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
+      }).catch((error) => {
+      this._LoggingSvc.toast('Directory was NOT renamed', 'Rename direcory', LogLevel.Error);
+      this._LoggingSvc.errorHandler(error, 'RenameDirectoryComponent', 'onRenameSubmit');
+    });
   }
 }
