@@ -40,7 +40,8 @@ export class FileManagerService {
     return this._SelectedPath;
   };
 
-  ModalId_Rename_Directory = 'DirectoryTreeComponent.onMenuRenameClick';
+  ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
+  ModalId_CreateDirectory: string = "CreateDirectoryForm";
 
   uploadStatusChanged:  Subject<IUploadStatus> = new Subject<IUploadStatus>();
   selectedDirectoryChanged:  Subject<IDirectoryTree> = new Subject<IDirectoryTree>();

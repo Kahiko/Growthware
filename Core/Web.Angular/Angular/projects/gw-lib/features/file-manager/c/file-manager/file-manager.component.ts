@@ -1,14 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 // Library
-import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalOptions, ModalService, WindowSize } from '@Growthware/features/modal';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
-
+import { AddDirectoryComponent } from '../add-directory/add-directory.component';
 
 @Component({
   selector: 'gw-lib-file-manager',
@@ -31,13 +30,10 @@ export class FileManagerComponent implements OnInit {
   readonly skin$ = this._Skin.asObservable();
 
   @Input() configurationName: string = '';
-  @ViewChild('createDirectory', { read: TemplateRef }) private _CreateDirectory!:TemplateRef<any>;
   @ViewChild('helpText', { read: TemplateRef }) private _HelpText!:TemplateRef<any>;
 
   constructor(
     private _FileManagerSvc: FileManagerService,
-    private _FormBuilder: FormBuilder,
-    private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _Router: Router
   ) { 
@@ -50,49 +46,12 @@ export class FileManagerComponent implements OnInit {
     this.configurationName = mAction;
     const mForControl: string = mAction + "_Directories";
     this._FileManagerSvc.getDirectories(mAction, '\\', mForControl);
-    this.populateCreateDirectoryForm('');
-  }
-
-  get getControls() {
-    return this.frmCreateDirectory.controls;
-  }
-
-  getErrorMessage(fieldName: string): string | undefined {
-    switch (fieldName) {
-      case 'newName':
-        if (this.getControls['newPassword'].hasError('required')) {
-          return 'Required';
-        }
-        break;
-      default:
-        break;
-    }
-    return undefined;
   }
 
   onCreateDirectory() {
     // console.log('item', item);
-    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'New Folder', this._CreateDirectory, new WindowSize(84, 300));
+    const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_CreateDirectory, 'New Folder', AddDirectoryComponent, new WindowSize(84, 300));
     this._ModalSvc.open(mModalOptions);
-  }
-
-  onCreateDirectorySubmit(): void
-  {
-    // this.frmCreateDirectory.reset();
-    // this._ModalSvc.close(this._ModalId_CreateDirectory);
-    this._FileManagerSvc.createDirectory(this._Action, this.getControls['newDirectoryName'].value).then((response) => {
-      this.frmCreateDirectory.reset();
-      this._ModalSvc.close(this._ModalId_CreateDirectory);
-      this._LoggingSvc.toast('Folder has been created', 'New Folder', LogLevel.Success);
-    }).catch((error) => {
-      this._LoggingSvc.errorHandler(error, 'FileManagerComponent', 'onCreateDirectorySubmit');
-    });
-  }
-
-  private populateCreateDirectoryForm(directoryName: string): void {
-    this.frmCreateDirectory = this._FormBuilder.group({
-      newDirectoryName: [directoryName, [Validators.required]],
-    });
   }
 
   onHelp(): void {

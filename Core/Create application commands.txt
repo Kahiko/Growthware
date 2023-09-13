@@ -200,6 +200,7 @@ File Manager:
 		ng generate component features/file-manager/c/DirectoryTree --module file-manager --style scss --skip-tests --project gw-lib
 		ng generate component features/file-manager/c/Upload --module file-manager --style scss --skip-tests --project gw-lib
 		ng generate component features/file-manager/c/RenameDirectory --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/file-manager/c/AddDirectory --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/file-manager/models/directoryTree --type model --project gw-lib
 		ng generate interface features/file-manager/models/fileInfoLight --type model --project gw-lib
 		ng generate interface features/file-manager/models/uploadResponse --type model --project gw-lib
