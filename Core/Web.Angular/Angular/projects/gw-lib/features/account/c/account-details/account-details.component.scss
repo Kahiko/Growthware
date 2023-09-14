@@ -1,5 +1,5 @@
 /* Tabs */
-.mat-mdc-tab__container {
+.mat-tab__container {
   min-height: 350px;
   border-bottom: 1px solid lightgray;
   border-left: 1px solid lightgray;
@@ -8,7 +8,7 @@
   vertical-align: middle;
   text-align: center;
 }
-.mat-mdc-tab__content {
+.mat-tab__content {
   display: inline-block;
   margin-top: 10px;
 }
