@@ -109,7 +109,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     switch (this._Router.url) {
       case '/accounts':
         if(this._AccountSvc.editReason.toLowerCase() != "newprofile") {
-          mDesiredAccount = this._AccountSvc.editAccount;
+          // console.log('editRow', this._AccountSvc.editRow);
+          mDesiredAccount = this._AccountSvc.editRow.Account;
         } else {
           mDesiredAccount = "new";
         }

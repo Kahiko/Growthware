@@ -80,7 +80,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   private onRowDoubleClick (rowNumber: number): void {
     const mDataRow: any = this.dynamicTable.getRowData(rowNumber);
-    this._TheService.editAccount = mDataRow.Account;
+    this._TheService.editRow = mDataRow;
     this._TheService.editReason = 'EditAccount';
     const mModalOptions: IModalOptions = new ModalOptions(this._TheService.editModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {

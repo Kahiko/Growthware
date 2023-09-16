@@ -60,8 +60,8 @@ export class AccountService {
     return this._ClientChoicesSubject.getValue();
   }
 
-  editAccount: string = '';
   editReason: string = '';
+  editRow: any = {};
 
   readonly authenticationResponse$ = this._AuthenticationResponseSubject.asObservable();
   readonly clientChoices$ = this._ClientChoicesSubject.asObservable();
