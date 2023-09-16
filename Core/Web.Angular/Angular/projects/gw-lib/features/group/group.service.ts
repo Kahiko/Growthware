@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
+// Feature
+import { IGroupProfile } from './group-profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GroupService {
   private _ApiName: string = 'GrowthwareGroup/';
+  private _Api_GetGroupForEdit = '';
 
   public get addModalId(): string {
     return 'addAccount'
@@ -18,10 +21,37 @@ export class GroupService {
     return 'editAccount'
   }
 
-  editAccount: string = '';
+  editRow: any = {};
   editReason: string = '';
 
-  constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { }
+  constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
+    this._Api_GetGroupForEdit = this._GWCommon.baseURL + this._ApiName + 'GetGroupForEdit/';
+  }
+
+  public async getGroupForEdit(groupSeqId: number): Promise<IGroupProfile> {
+    console.log('groupSeqId', groupSeqId);
+    return new Promise<IGroupProfile>((resolve, reject) => {
+      const mQueryParameter: HttpParams = new HttpParams()
+        .set('groupSeqId', groupSeqId);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.get<IGroupProfile>(this._Api_GetGroupForEdit, mHttpOptions).subscribe({
+        next: (response: IGroupProfile) => {
+          console.log('getGroupForEdit.GetGroupForEdit.response', response);
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'GroupService', 'getGroupForEdit');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    })
+  }
 
   public async getGroups(): Promise<any> {
     return new Promise<boolean>((resolve, reject) => {
