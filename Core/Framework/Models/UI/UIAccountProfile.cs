@@ -3,7 +3,7 @@ public class UIAccountProfile
 {
     public string Account;
     public UIAccountGroups AccountGroups;
-    public UIAccountRoles AccountRoles;
+    public UIRoles AccountRoles;
     public bool CanSaveRoles;
     public bool CanSaveGroups;
     public int Id;
