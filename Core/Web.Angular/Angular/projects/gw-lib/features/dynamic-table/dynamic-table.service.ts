@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 // Library
-import { ICallbackButton } from '@Growthware/shared/models';
 import { GWCommon } from '@Growthware/common-code';
 import { SearchCriteria, SearchCriteriaNVP } from '@Growthware/features/search';
 // Feature
@@ -21,26 +20,6 @@ export class DynamicTableService {
     if(!this._GWCommon.isNullOrUndefined(DefaultData)) {
       this.setTableConfiguration(DefaultData);
     }
-  }
-
-  /**
-   * Returns an array of objects that adhere to ICallbackButton interface
-   *
-   * @param {string} name
-   * @return {*}  {ICallbackButton[]}
-   * @memberof DynamicTableService
-   */
-  public getButtons(name: string): ICallbackButton[] {
-    const mRetVal: ICallbackButton[] = new Array<ICallbackButton>();
-    const mTableConfiguration: IDynamicTableConfiguration = this._TableConfigurations.filter(x => x.name.toLocaleLowerCase() == name.toLocaleLowerCase())[0];
-    if(!this._GWCommon.isNullOrUndefined(mTableConfiguration)) {
-      mTableConfiguration.buttons.forEach((element: ICallbackButton) => {
-        mRetVal.push(element);
-      });
-    } else {
-      console.log(`Could not find the "${name}" configuration!`);
-    }
-    return mRetVal;
   }
 
   /**
