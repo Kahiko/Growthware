@@ -61,6 +61,6 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        void Save();
+        int Save();
     }
 }

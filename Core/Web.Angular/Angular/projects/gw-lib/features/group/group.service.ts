@@ -12,6 +12,7 @@ import { IGroupProfile } from './group-profile.model';
 export class GroupService {
   private _ApiName: string = 'GrowthwareGroup/';
   private _Api_GetGroupForEdit = '';
+  private _Api_SaveGroup = '';
 
   public get addModalId(): string {
     return 'addAccount'
@@ -26,6 +27,7 @@ export class GroupService {
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
     this._Api_GetGroupForEdit = this._GWCommon.baseURL + this._ApiName + 'GetGroupForEdit/';
+    this._Api_SaveGroup = this._GWCommon.baseURL + this._ApiName + 'SaveGroup/';
   }
 
   public async getGroupForEdit(groupSeqId: number): Promise<IGroupProfile> {
@@ -72,5 +74,25 @@ export class GroupService {
         // complete: () => {}
       });
     });
+  }
+
+  public async saveGroup(profile : IGroupProfile): Promise<boolean> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<boolean>(this._Api_SaveGroup, profile, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'GroupService', 'saveGroup');
+          reject(false);
+        },
+        // complete: () => {}
+      });
+    })
   }
 }

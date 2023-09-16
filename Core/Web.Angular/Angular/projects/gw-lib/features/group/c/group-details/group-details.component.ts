@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -37,8 +38,9 @@ import { IGroupProfile, GroupProfile } from '../../group-profile.model';
   templateUrl: './group-details.component.html',
   styleUrls: ['./group-details.component.scss']
 })
-export class GroupDetailsComponent implements OnInit {
+export class GroupDetailsComponent implements OnDestroy, OnInit {
   private _GroupProfile: IGroupProfile = new GroupProfile();
+  private _Subscription: Subscription = new Subscription();
 
   canDelete: boolean = false;
   frmGroup!: FormGroup;
@@ -54,6 +56,10 @@ export class GroupDetailsComponent implements OnInit {
     private _ModalSvc: ModalService,
   ) { }
 
+  ngOnDestroy(): void {
+    this._Subscription.unsubscribe();
+  }
+
   ngOnInit(): void {
     if(this._GroupSvc.editReason.toLowerCase() != "newprofile") {
       console.log('editRow', this._GroupSvc.editRow);
@@ -68,6 +74,16 @@ export class GroupDetailsComponent implements OnInit {
       console.log('Adding a new group');
     }
     this.populateForm();
+    this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
+      // console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()). // used to determine the data name
+      switch (data.name.toLowerCase()) {
+        case 'roles':
+          this._GroupProfile.rolesInGroup = data.payLoad;
+          break;
+        default:
+          break;
+      }
+    }));
   }
 
   get controls() {
@@ -100,7 +116,13 @@ export class GroupDetailsComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup): void {
-    this._LoggingSvc.toast('Group has been saved', 'Save Group', LogLevel.Success);
+    this.populateProfile();
+    this._GroupSvc.saveGroup(this._GroupProfile).then((response) => {
+      this._LoggingSvc.toast('The group has been saved', 'Save Group', LogLevel.Success);
+      this.closeModal();
+    }).catch((_) => {
+      this._LoggingSvc.toast('The group could not be saved', 'Save Group', LogLevel.Error);
+    })
   }
 
   private populateForm(): void {
@@ -108,5 +130,11 @@ export class GroupDetailsComponent implements OnInit {
       name: [this._GroupProfile.name, Validators.required],
       description: [this._GroupProfile.description],
     });
+  }
+
+  private populateProfile(): void {
+    this._GroupProfile.name = this.controls['name'].getRawValue();
+    this._GroupProfile.description = this.controls['description'].getRawValue();
+
   }
 }

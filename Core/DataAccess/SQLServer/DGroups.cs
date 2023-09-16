@@ -77,11 +77,13 @@ namespace GrowthWare.DataAccess.SQLServer
         /// Updates a group effects all Security Entities
         /// </summary>
         /// <returns>bool</returns>
-        public void Save()
+        public int Save()
         {
             SqlParameter[] mParameters = getInsertUpdateParameters();
             String mStoreProc = "ZGWSecurity.Set_Group";
             base.ExecuteNonQuery( mStoreProc, mParameters);
+            int mRetVal = int.Parse(GetParameterValue("@P_GroupSeqId", mParameters));
+            return mRetVal;
         }
 
         /// <summary>

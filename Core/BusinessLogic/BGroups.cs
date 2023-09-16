@@ -150,11 +150,16 @@ public class BGroups : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The profile.</param>
     /// <returns><c>true</c> if XXXX, <c>false</c> otherwise</returns>
-    public void Save(MGroupProfile profile)
+    public int Save(MGroupProfile profile)
     {
         if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        int mRetVal = 0;
         m_DGroups.Profile = profile;
-        if (DatabaseIsOnline()) m_DGroups.Save();
+        if (DatabaseIsOnline())
+        {
+            mRetVal = m_DGroups.Save();
+        }
+        return mRetVal;
     }
 
     /// <summary>

@@ -12,6 +12,26 @@ public static class GroupUtility
 {
     static BGroups m_BGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
 
+    public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
+    {
+        // Save the profile
+        int mSavedGroupSeqId = m_BGroups.Save(profile);
+        MGroupProfile mSavedGroupProfile = m_BGroups.GetProfile(mSavedGroupSeqId);
+        // set the groupRoles id's
+        groupRoles.Id = mSavedGroupSeqId;
+        groupRoles.GroupSeqId = groupRoles.Id;
+        // Save the group roles
+        m_BGroups.UpdateGroupRoles(groupRoles);
+        // get the profile from the DB
+        UIGroupProfile mRetVal = GetUIGroupProfile(groupRoles.Id, groupRoles.SecurityEntityID);
+        return mRetVal;
+    }
+
+    public static void UpdateGroupRoles(MGroupRoles groupRoles)
+    {
+        m_BGroups.UpdateGroupRoles(groupRoles);
+    }
+
     public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
     {
         UIGroupProfile mRetVal = new UIGroupProfile();
