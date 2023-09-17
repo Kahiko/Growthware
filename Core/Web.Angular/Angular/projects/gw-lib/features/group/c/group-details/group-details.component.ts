@@ -61,18 +61,17 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    let mIdToGet = -1;
     if(this._GroupSvc.editReason.toLowerCase() != "newprofile") {
-      console.log('editRow', this._GroupSvc.editRow);
-      console.log('Editing a group');
-      this._GroupSvc.getGroupForEdit(this._GroupSvc.editRow.GroupSeqId).then((response: IGroupProfile) => {
-        this._GroupProfile = response;
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', this._GroupProfile.rolesInGroup); }, 500);
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', this._GroupProfile.rolesNotInGroup); }, 500);
-        this.populateForm();
-      })
-    } else{
-      console.log('Adding a new group');
+      // console.log('editRow', this._GroupSvc.editRow);
+      mIdToGet = this._GroupSvc.editRow.GroupSeqId;
     }
+    this._GroupSvc.getGroupForEdit(mIdToGet).then((response: IGroupProfile) => {
+      this._GroupProfile = response;
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', this._GroupProfile.rolesInGroup); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', this._GroupProfile.rolesNotInGroup); }, 500);
+      this.populateForm();
+    })
     this.populateForm();
     this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
       // console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()). // used to determine the data name
