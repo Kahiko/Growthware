@@ -6,6 +6,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
@@ -35,8 +36,12 @@ public static class GroupUtility
     public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
     {
         UIGroupProfile mRetVal = new UIGroupProfile();
-        MGroupProfile mGroupProfile = m_BGroups.GetProfile(groupSeqId);
+        MGroupProfile mGroupProfile = new MGroupProfile();
         MGroupRoles mGroupRoles = new MGroupRoles();
+        if(groupSeqId != -1)
+        {
+            mGroupProfile = m_BGroups.GetProfile(groupSeqId);
+        }
         // Populate mRetVal
         mRetVal.Description = mGroupProfile.Description;
         mRetVal.Id = mGroupProfile.Id;
