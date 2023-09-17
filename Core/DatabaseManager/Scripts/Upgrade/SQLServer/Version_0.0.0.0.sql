@@ -1,82 +1,82 @@
 USE [master]
 GO
-IF DB_ID ( N'Growthware' ) IS NOT NULL
+IF DB_ID ( N'YourDatabaseName' ) IS NOT NULL
 BEGIN
-	ALTER DATABASE [Growthware] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
-	DROP DATABASE [Growthware];
+	ALTER DATABASE [YourDatabaseName] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE [YourDatabaseName];
 END
-CREATE DATABASE [Growthware]
+CREATE DATABASE [YourDatabaseName]
 GO
-ALTER DATABASE [Growthware] SET COMPATIBILITY_LEVEL = 140
+ALTER DATABASE [YourDatabaseName] SET COMPATIBILITY_LEVEL = 140
 GO
 IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
 begin
-EXEC [Growthware].[dbo].[sp_fulltext_database] @action = 'enable'
+EXEC [YourDatabaseName].[dbo].[sp_fulltext_database] @action = 'enable'
 end
 GO
-ALTER DATABASE [Growthware] SET ANSI_NULL_DEFAULT ON 
+ALTER DATABASE [YourDatabaseName] SET ANSI_NULL_DEFAULT ON 
 GO
-ALTER DATABASE [Growthware] SET ANSI_NULLS ON 
+ALTER DATABASE [YourDatabaseName] SET ANSI_NULLS ON 
 GO
-ALTER DATABASE [Growthware] SET ANSI_PADDING ON 
+ALTER DATABASE [YourDatabaseName] SET ANSI_PADDING ON 
 GO
-ALTER DATABASE [Growthware] SET ANSI_WARNINGS ON 
+ALTER DATABASE [YourDatabaseName] SET ANSI_WARNINGS ON 
 GO
-ALTER DATABASE [Growthware] SET ARITHABORT ON 
+ALTER DATABASE [YourDatabaseName] SET ARITHABORT ON 
 GO
-ALTER DATABASE [Growthware] SET AUTO_CLOSE OFF 
+ALTER DATABASE [YourDatabaseName] SET AUTO_CLOSE OFF 
 GO
-ALTER DATABASE [Growthware] SET AUTO_SHRINK OFF 
+ALTER DATABASE [YourDatabaseName] SET AUTO_SHRINK OFF 
 GO
-ALTER DATABASE [Growthware] SET AUTO_UPDATE_STATISTICS ON 
+ALTER DATABASE [YourDatabaseName] SET AUTO_UPDATE_STATISTICS ON 
 GO
-ALTER DATABASE [Growthware] SET CURSOR_CLOSE_ON_COMMIT OFF 
+ALTER DATABASE [YourDatabaseName] SET CURSOR_CLOSE_ON_COMMIT OFF 
 GO
-ALTER DATABASE [Growthware] SET CURSOR_DEFAULT  LOCAL 
+ALTER DATABASE [YourDatabaseName] SET CURSOR_DEFAULT  LOCAL 
 GO
-ALTER DATABASE [Growthware] SET CONCAT_NULL_YIELDS_NULL ON 
+ALTER DATABASE [YourDatabaseName] SET CONCAT_NULL_YIELDS_NULL ON 
 GO
-ALTER DATABASE [Growthware] SET NUMERIC_ROUNDABORT OFF 
+ALTER DATABASE [YourDatabaseName] SET NUMERIC_ROUNDABORT OFF 
 GO
-ALTER DATABASE [Growthware] SET QUOTED_IDENTIFIER ON 
+ALTER DATABASE [YourDatabaseName] SET QUOTED_IDENTIFIER ON 
 GO
-ALTER DATABASE [Growthware] SET RECURSIVE_TRIGGERS OFF 
+ALTER DATABASE [YourDatabaseName] SET RECURSIVE_TRIGGERS OFF 
 GO
-ALTER DATABASE [Growthware] SET  DISABLE_BROKER 
+ALTER DATABASE [YourDatabaseName] SET  DISABLE_BROKER 
 GO
-ALTER DATABASE [Growthware] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+ALTER DATABASE [YourDatabaseName] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
 GO
-ALTER DATABASE [Growthware] SET DATE_CORRELATION_OPTIMIZATION OFF 
+ALTER DATABASE [YourDatabaseName] SET DATE_CORRELATION_OPTIMIZATION OFF 
 GO
-ALTER DATABASE [Growthware] SET TRUSTWORTHY OFF 
+ALTER DATABASE [YourDatabaseName] SET TRUSTWORTHY OFF 
 GO
-ALTER DATABASE [Growthware] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+ALTER DATABASE [YourDatabaseName] SET ALLOW_SNAPSHOT_ISOLATION OFF 
 GO
-ALTER DATABASE [Growthware] SET PARAMETERIZATION SIMPLE 
+ALTER DATABASE [YourDatabaseName] SET PARAMETERIZATION SIMPLE 
 GO
-ALTER DATABASE [Growthware] SET READ_COMMITTED_SNAPSHOT OFF 
+ALTER DATABASE [YourDatabaseName] SET READ_COMMITTED_SNAPSHOT OFF 
 GO
-ALTER DATABASE [Growthware] SET HONOR_BROKER_PRIORITY OFF 
+ALTER DATABASE [YourDatabaseName] SET HONOR_BROKER_PRIORITY OFF 
 GO
-ALTER DATABASE [Growthware] SET RECOVERY FULL 
+ALTER DATABASE [YourDatabaseName] SET RECOVERY FULL 
 GO
-ALTER DATABASE [Growthware] SET  MULTI_USER 
+ALTER DATABASE [YourDatabaseName] SET  MULTI_USER 
 GO
-ALTER DATABASE [Growthware] SET PAGE_VERIFY NONE  
+ALTER DATABASE [YourDatabaseName] SET PAGE_VERIFY NONE  
 GO
-ALTER DATABASE [Growthware] SET DB_CHAINING OFF 
+ALTER DATABASE [YourDatabaseName] SET DB_CHAINING OFF 
 GO
-ALTER DATABASE [Growthware] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+ALTER DATABASE [YourDatabaseName] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
 GO
-ALTER DATABASE [Growthware] SET TARGET_RECOVERY_TIME = 0 SECONDS 
+ALTER DATABASE [YourDatabaseName] SET TARGET_RECOVERY_TIME = 0 SECONDS 
 GO
-ALTER DATABASE [Growthware] SET DELAYED_DURABILITY = DISABLED 
+ALTER DATABASE [YourDatabaseName] SET DELAYED_DURABILITY = DISABLED 
 GO
-EXEC sys.sp_db_vardecimal_storage_format N'Growthware', N'ON'
+EXEC sys.sp_db_vardecimal_storage_format N'YourDatabaseName', N'ON'
 GO
-ALTER DATABASE [Growthware] SET QUERY_STORE = OFF
+ALTER DATABASE [YourDatabaseName] SET QUERY_STORE = OFF
 GO
-USE [Growthware]
+USE [YourDatabaseName]
 GO
 /****** Object:  Schema [ZGWCoreWeb]    Script Date: 7/4/2022 10:50:33 AM ******/
 IF NOT EXISTS (SELECT *
@@ -4346,7 +4346,7 @@ BEGIN
 		, ACCT.[Added_Date]
 		, ACCT.[Updated_By]
 		, ACCT.[Updated_Date]
-	FROM [Growthware].[ZGWSecurity].[Accounts] ACCT
+	FROM [YourDatabaseName].[ZGWSecurity].[Accounts] ACCT
 		INNER JOIN [ZGWSecurity].[RefreshTokens] RT ON
 			RT.[Token] = @P_Token
 			AND ACCT.[AccountSeqId] = RT.[AccountSeqId]
@@ -4410,7 +4410,7 @@ BEGIN
 		,ACCT.[Added_Date]
 		,ACCT.[Updated_By]
 		,ACCT.[Updated_Date]
-	FROM [Growthware].[ZGWSecurity].[Accounts] ACCT
+	FROM [YourDatabaseName].[ZGWSecurity].[Accounts] ACCT
 -- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
     WHERE
         ACCT.[ResetToken] = @P_ResetToken
@@ -7473,72 +7473,62 @@ AS
 			,@V_Added_Updated_Date DATETIME = GETDATE()
 
 	IF @P_GroupSeqId > -1
-		BEGIN
-	-- UPDATE PROFILE
-	UPDATE ZGWSecurity.Groups
-			SET 
-				[Name] = @P_Name,
-				[Description] = @P_Description,
-				Updated_By = @P_Added_Updated_By,
-				Updated_Date = @V_Added_Updated_Date
-			WHERE
-				GroupSeqId = @P_GroupSeqId
+		BEGIN -- UPDATE PROFILE
+			UPDATE ZGWSecurity.Groups
+				SET 
+					[Name] = @P_Name,
+					[Description] = @P_Description,
+					Updated_By = @P_Added_Updated_By,
+					Updated_Date = @V_Added_Updated_Date
+				WHERE
+					GroupSeqId = @P_GroupSeqId;
 
-	SELECT @P_Primary_Key = @P_GroupSeqId
-END
+				SELECT @P_Primary_Key = @P_GroupSeqId;
+			END
 	ELSE
-		BEGIN
-	-- INSERT a new row in the table.
-	-- CHECK FOR DUPLICATE Name BEFORE INSERTING
-	IF NOT EXISTS( SELECT [Name]
-	FROM ZGWSecurity.Groups
-	WHERE [Name] = @P_Name)
+		BEGIN -- INSERT a new row in the table.
+			-- CHECK FOR DUPLICATE Name BEFORE INSERTING
+			IF NOT EXISTS(SELECT [Name] FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
 				BEGIN
-		INSERT ZGWSecurity.Groups
-			(
-			[Name],
-			[Description],
-			Added_By,
-			Added_Date
-			)
-		VALUES
-			(
-				@P_Name,
-				@P_Description,
-				@P_Added_Updated_By,
-				@V_Added_Updated_Date
-					)
-		SELECT @P_Primary_Key=SCOPE_IDENTITY()
-	-- Get the IDENTITY value for the row just inserted.
-	END
+					INSERT ZGWSecurity.Groups (
+						[Name],
+						[Description],
+						Added_By,
+						Added_Date
+					) VALUES (
+						@P_Name,
+						@P_Description,
+						@P_Added_Updated_By,
+						@V_Added_Updated_Date
+					);
+					-- Get the IDENTITY value for the row just inserted.
+					SELECT @P_Primary_Key=SCOPE_IDENTITY();
+				END
 			ELSE
 				--PRINT 'ENTERING SECURITY INFORMATION FOR THE GROUP'
-				SET @P_Primary_Key = (SELECT GroupSeqId
-	FROM ZGWSecurity.Groups
-	WHERE [Name] = @P_Name)
--- END IF
-END
+				SET @P_Primary_Key = (SELECT GroupSeqId FROM ZGWSecurity.Groups WHERE [Name] = @P_Name)
+			-- END IF
+		END
 	-- END IF
-	IF(SELECT COUNT(*)
-FROM ZGWSecurity.Groups_Security_Entities
-WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId AND GroupSeqId = @P_Primary_Key) = 0 
-	BEGIN
-	-- ADD GROUP REFERENCE TO SE_SECURITY
-	INSERT ZGWSecurity.Groups_Security_Entities
-		(
-		SecurityEntitySeqId,
-		GroupSeqId,
-		Added_By,
-		Added_Date
-		)
-	VALUES
-		(
+	IF(
+		SELECT COUNT(*) 
+		FROM ZGWSecurity.Groups_Security_Entities 
+		WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId 
+		AND GroupSeqId = @P_Primary_Key
+	) = 0 
+	BEGIN -- ADD GROUP REFERENCE TO SE_SECURITY
+		INSERT ZGWSecurity.Groups_Security_Entities (
+			SecurityEntitySeqId,
+			GroupSeqId,
+			Added_By,
+			Added_Date
+		) VALUES (
 			@P_SecurityEntitySeqId,
 			@P_Primary_Key,
 			@P_Added_Updated_By,
 			@V_Added_Updated_Date
-			)
-END
+		);
+	END
 RETURN 0
 GO
 /****** Object:  StoredProcedure [ZGWSecurity].[Set_Group_Roles]    Script Date: 7/4/2022 10:50:33 AM ******/
@@ -10796,16 +10786,16 @@ FROM sys.fn_listextendedproperty(N'MS_Description' , N'SCHEMA',N'ZGWSecurity', N
 GO
 USE [master]
 GO
-ALTER DATABASE [Growthware] SET  READ_WRITE 
+ALTER DATABASE [YourDatabaseName] SET  READ_WRITE 
 GO
-USE [Growthware]
+USE [YourDatabaseName]
 GO
 
 -- Handle security for the local service
 IF SUSER_ID (N'NT AUTHORITY\LOCAL SERVICE') IS NULL
 	BEGIN
 		PRINT 'ADDING [NT AUTHORITY\LOCAL SERVICE] TO THE DB'
-		CREATE LOGIN [NT AUTHORITY\LOCAL SERVICE] FROM WINDOWS WITH DEFAULT_DATABASE = [Growthware];
+		CREATE LOGIN [NT AUTHORITY\LOCAL SERVICE] FROM WINDOWS WITH DEFAULT_DATABASE = [YourDatabaseName];
 	END
 --END IF
 IF NOT EXISTS(select * FROM SYS.DATABASE_PRINCIPALS WHERE NAME = 'NT AUTHORITY\LOCAL SERVICE')
