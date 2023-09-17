@@ -124,60 +124,48 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       default:
         break;
     }
-    this._GroupSvc.getGroups().catch((error) => { // Load data - Request #1 in the chain
-      this._LoggingSvc.toast("Error getting groups:\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((groups) => { // Handles getGroups returns getRoles
-      // Response Handler #1
+    this._GroupSvc.getGroups().then((groups) => {                           // Response Handler #1
       if(groups != null) {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
       }
-      // Request #2
-      return this._RoleSvc.getRoles();
-    }).catch((error) => {
-      this._LoggingSvc.toast("Error getting roles:\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((roles) => { // Handles getRoles returns getSecurityInfo(this._AccountSvc.reason)
-      // Response Handler #2
+      return this._RoleSvc.getRoles();                                      // Request #2
+    }).catch((error) => { 
+      this._LoggingSvc.toast("Error getting groups:\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((roles) => {                                                    // Response Handler #2
       if(roles != null) {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
-      // Request #3
-      return this._SecuritySvc.getSecurityInfo('EditAccount');
+      return this._SecuritySvc.getSecurityInfo('EditAccount');              // Request #3
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting security info for 'EditAccount' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((reasonSecurityInfo) => { // Handles getSecurityInfo(this._AccountSvc.reason) returns getSecurityInfo('View_Account_Group_Tab')
-      // Response Handler #3
+      this._LoggingSvc.toast("Error getting roles:\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((reasonSecurityInfo) => {                                       // Response Handler #3
       if(reasonSecurityInfo != null) {
         this._SecurityInfoAccount = reasonSecurityInfo;
       }
-      // Request #4
-      return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab');
+      return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab');   // Request #4
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting security info for 'Group tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((groupTabSecurityInfo)=>{ // Handles getSecurityInfo('View_Account_Group_Tab') returns getSecurityInfo('View_Account_Role_Tab')
-      // Response Handler #4
+      this._LoggingSvc.toast("Error getting security info for 'EditAccount' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((groupTabSecurityInfo) => {                                     // Response Handler #4
       if(groupTabSecurityInfo != null) {
         this._SecurityInfoGroups = groupTabSecurityInfo;
       }
-      // Request #5
-      return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');
+      return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');    // Request #5
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((roleTabSecurityInfo) => { // Handles getSecurityInfo('View_Account_Role_Tab') returns getAccount(mDesiredAccount)
-      // Response Handler #5
+      this._LoggingSvc.toast("Error getting security info for 'Group tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((roleTabSecurityInfo) => {                                      // Response Handler #5
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
       }
-      // Request #6
-      return this._AccountSvc.getAccount(mDesiredAccount);
+      return this._AccountSvc.getAccount(mDesiredAccount);                  // Request #6
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting account information :\r\n" + error, 'Account Details:', LogLevel.Error);
-    }).then((accountProfile) => { // Handles getAccount(mDesiredAccount)
+      this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
+    }).then((accountProfile) => {                                           // Response Handler #6
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
         let mRoles: string[] = [];
@@ -193,6 +181,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.applySecurity();
         this.populateForm();
       }
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting account information :\r\n" + error, 'Account Details:', LogLevel.Error);
     });
     this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
       switch (data.name.toLowerCase()) {
@@ -238,10 +228,10 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
   closeModal(): void {
     if(this._Router.url === '/accounts') {
-      if(this._AccountSvc.editReason === 'NewProfile') {
+      if(this._AccountSvc.editReason.toLocaleLowerCase() === 'newprofile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
-      if(this._AccountSvc.editReason === 'EditProfile') {
+      if(this._AccountSvc.editReason.toLocaleLowerCase() === 'editprofile') {
         this._ModalSvc.close(this._AccountSvc.editModalId);
       }
     }

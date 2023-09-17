@@ -322,7 +322,7 @@ export class AccountService {
       }),
       params: mQueryParameter,
     };
-    const mUrl = this._BaseURL + this._ApiName + this.editReason;
+    const mUrl = this._BaseURL + this._ApiName + 'EditAccount';
     return new Promise<IAccountProfile>((resolve, reject) => {
       this._HttpClient.get<IAccountProfile>(mUrl, mHttpOptions).subscribe({
         next: (response: any) => {
