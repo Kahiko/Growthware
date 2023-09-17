@@ -64,16 +64,6 @@ public abstract class AbstractGroupController : ControllerBase
         return Ok(mRetVal);
     }
 
-    MGroupProfile populateProfile(UIGroupProfile profile)
-    {
-        MGroupProfile mRetVal = new MGroupProfile();
-        mRetVal.Name = profile.Name;
-        mRetVal.Description = profile.Description;
-        mRetVal.Id = profile.Id;
-        mRetVal.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
-        return mRetVal;
-    }
-
     [AllowAnonymous]
     [HttpPost("SaveGroup")]
     public ActionResult<UIGroupProfile> SaveGroup(UIGroupProfile groupProfile)
@@ -91,33 +81,39 @@ public abstract class AbstractGroupController : ControllerBase
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == groupProfile.Id)
             {
-                if (mSecurityInfo.MayEdit)
+                if (groupProfile.Id > -1) 
                 {
-                    mProfileToSave.UpdatedBy = mRequestingProfile.Id;
-                    mProfileToSave.UpdatedDate = DateTime.Now;
-                    mGroupRoles.UpdatedBy = mProfileToSave.UpdatedBy;
-                    mGroupRoles.UpdatedDate = mProfileToSave.UpdatedDate;
+                    if (mSecurityInfo.MayEdit)
+                    {
+                        mProfileToSave.UpdatedBy = mRequestingProfile.Id;
+                        mProfileToSave.UpdatedDate = DateTime.Now;
+                        mGroupRoles.UpdatedBy = mProfileToSave.UpdatedBy;
+                        mGroupRoles.UpdatedDate = mProfileToSave.UpdatedDate;
+                    } 
+                    else 
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
                 } 
                 else 
                 {
-                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    if (mSecurityInfo.MayAdd)
+                    {
+                        mProfileToSave.AddedBy = mRequestingProfile.Id;
+                        mProfileToSave.AddedDate = DateTime.Now;
+                        mGroupRoles.AddedBy = mProfileToSave.AddedBy;
+                        mGroupRoles.AddedDate = mProfileToSave.AddedDate;
+                    }
+                    else 
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
                 }
             }
-            if (groupProfile.Id == -1)
-            {
-                if (mSecurityInfo.MayAdd)
-                {
-                    mProfileToSave.AddedBy = mRequestingProfile.Id;
-                    mProfileToSave.AddedDate = DateTime.Now;
-                    mGroupRoles.AddedBy = mProfileToSave.AddedBy;
-                    mGroupRoles.AddedDate = mProfileToSave.AddedDate;
-                }
-                else 
-                {
-                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
-                }
-            }
-            mProfileToSave = populateProfile(groupProfile);
+            mProfileToSave.Name = groupProfile.Name;
+            mProfileToSave.Description = groupProfile.Description;
+            mProfileToSave.Id = groupProfile.Id;
+            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
             UIGroupProfile mRetVal = GroupUtility.Save(mProfileToSave, mGroupRoles);
             return Ok(mRetVal);
         }

@@ -82,7 +82,7 @@ namespace GrowthWare.DataAccess.SQLServer
             SqlParameter[] mParameters = getInsertUpdateParameters();
             String mStoreProc = "ZGWSecurity.Set_Group";
             base.ExecuteNonQuery( mStoreProc, mParameters);
-            int mRetVal = int.Parse(GetParameterValue("@P_GroupSeqId", mParameters));
+            int mRetVal = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters));
             return mRetVal;
         }
 
