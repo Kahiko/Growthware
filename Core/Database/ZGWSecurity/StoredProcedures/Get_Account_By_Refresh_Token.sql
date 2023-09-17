@@ -41,7 +41,7 @@ BEGIN
 		, ACCT.[Added_Date]
 		, ACCT.[Updated_By]
 		, ACCT.[Updated_Date]
-	FROM [Growthware].[ZGWSecurity].[Accounts] ACCT
+	FROM [ZGWSecurity].[Accounts] ACCT
 		INNER JOIN [ZGWSecurity].[RefreshTokens] RT ON
 			RT.[Token] = @P_Token
 			AND ACCT.[AccountSeqId] = RT.[AccountSeqId]

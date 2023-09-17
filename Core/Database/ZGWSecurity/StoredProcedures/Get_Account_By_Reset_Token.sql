@@ -43,7 +43,7 @@ BEGIN
 		,ACCT.[Added_Date]
 		,ACCT.[Updated_By]
 		,ACCT.[Updated_Date]
-	FROM [Growthware].[ZGWSecurity].[Accounts] ACCT
+	FROM [ZGWSecurity].[Accounts] ACCT
 -- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
     WHERE
         ACCT.[ResetToken] = @P_ResetToken
