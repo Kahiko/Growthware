@@ -31,7 +31,7 @@ export class GroupService {
   }
 
   public async getGroupForEdit(groupSeqId: number): Promise<IGroupProfile> {
-    console.log('groupSeqId', groupSeqId);
+    // console.log('GroupService.getGroupForEdit.groupSeqId', groupSeqId);
     return new Promise<IGroupProfile>((resolve, reject) => {
       const mQueryParameter: HttpParams = new HttpParams()
         .set('groupSeqId', groupSeqId);
