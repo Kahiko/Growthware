@@ -147,9 +147,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
       // Request #3
-      return this._SecuritySvc.getSecurityInfo(this._AccountSvc.editReason);
+      return this._SecuritySvc.getSecurityInfo('EditAccount');
     }).catch((error) => {
-      this._LoggingSvc.toast("Error getting security info for '" + this._AccountSvc.editReason + "' :\r\n" + error, 'Account Details:', LogLevel.Error);
+      this._LoggingSvc.toast("Error getting security info for 'EditAccount' :\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((reasonSecurityInfo) => { // Handles getSecurityInfo(this._AccountSvc.reason) returns getSecurityInfo('View_Account_Group_Tab')
       // Response Handler #3
       if(reasonSecurityInfo != null) {
@@ -216,7 +216,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.canDelete = false;
         this.showDerived = false;
         break;
-        case 'editaccount':
+        case 'editprofile':
         this.showDerived = true;
         if(this._SecurityInfoAccount != null) {
           this.canDelete = this._SecurityInfoAccount.mayDelete;
@@ -241,7 +241,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       if(this._AccountSvc.editReason === 'NewProfile') {
         this._ModalSvc.close(this._AccountSvc.addModalId);
       }
-      if(this._AccountSvc.editReason === 'EditAccount') {
+      if(this._AccountSvc.editReason === 'EditProfile') {
         this._ModalSvc.close(this._AccountSvc.editModalId);
       }
     }
