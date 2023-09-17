@@ -43,7 +43,7 @@ export class GroupService {
       };
       this._HttpClient.get<IGroupProfile>(this._Api_GetGroupForEdit, mHttpOptions).subscribe({
         next: (response: IGroupProfile) => {
-          console.log('getGroupForEdit.GetGroupForEdit.response', response);
+          // console.log('getGroupForEdit.GetGroupForEdit.response', response);
           resolve(response);
         },
         error: (error: any) => {
