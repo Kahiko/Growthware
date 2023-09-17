@@ -15,11 +15,11 @@ export class GroupService {
   private _Api_SaveGroup = '';
 
   public get addModalId(): string {
-    return 'addAccount'
+    return 'addProfile'
   }
 
   public get editModalId(): string {
-    return 'editAccount'
+    return 'editProfile'
   }
 
   editRow: any = {};
@@ -68,7 +68,7 @@ export class GroupService {
           resolve(response);
         },
         error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
+          this._LoggingSvc.errorHandler(error, 'GroupService', 'getGroups');
           reject('Failed to call the API');
         },
         // complete: () => {}

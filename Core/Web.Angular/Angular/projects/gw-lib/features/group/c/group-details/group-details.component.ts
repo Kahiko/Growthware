@@ -15,6 +15,7 @@ import { DataService } from '@Growthware/shared/services';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { PickListModule } from '@Growthware/features/pick-list';
+import { ISecurityInfo, SecurityService } from '@Growthware/features/security';
 // Feature
 import { GroupService } from '../../group.service';
 import { IGroupProfile, GroupProfile } from '../../group-profile.model';
@@ -44,6 +45,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
   canDelete: boolean = false;
   frmGroup!: FormGroup;
+  securityInfo!: ISecurityInfo;
   rolesAvailable: Array<string> = [];
   rolesPickListName: string = 'roles';
   rolesSelected: Array<string> = [];
@@ -54,6 +56,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
     private _GroupSvc: GroupService,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+    private _SecuritySvc: SecurityService
   ) { }
 
   ngOnDestroy(): void {
@@ -71,6 +74,10 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', this._GroupProfile.rolesInGroup); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', this._GroupProfile.rolesNotInGroup); }, 500);
       this.populateForm();
+      return this._SecuritySvc.getSecurityInfo('Manage_Groups');
+    }).then((response: ISecurityInfo) => {
+      this.securityInfo = response;
+      this.applySecurity();
     })
     this.populateForm();
     this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
@@ -85,12 +92,25 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
     }));
   }
 
+  applySecurity(): void {
+    this.canDelete = this.securityInfo.mayDelete;
+    if(this._GroupSvc.editReason.toLowerCase() == 'newprofile') {
+      this.canDelete = false;
+    }
+  }
+
   get controls() {
     return this.frmGroup.controls;
   }
 
   closeModal(): void {
-    this._ModalSvc.close(this._GroupSvc.editModalId);
+    // console.log('GroupDetailsComponent.closeModal.editReason', this._GroupSvc.editReason);
+    // console.log('GroupDetailsComponent.closeModal.editModalId', this._GroupSvc.editModalId);
+    if(this._GroupSvc.editReason.toLowerCase() !== "newprofile") {
+      this._ModalSvc.close(this._GroupSvc.editModalId);
+    } else {
+      this._ModalSvc.close(this._GroupSvc.addModalId);
+    }
   }
 
   getErrorMessage(fieldName: string) {
