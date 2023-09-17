@@ -15,6 +15,7 @@ import { DataService } from '@Growthware/shared/services';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { PickListModule } from '@Growthware/features/pick-list';
+import { SearchService } from '@Growthware/features/search';
 import { ISecurityInfo, SecurityService } from '@Growthware/features/security';
 // Feature
 import { GroupService } from '../../group.service';
@@ -56,6 +57,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
     private _GroupSvc: GroupService,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+    private _SearchSvc: SearchService,
     private _SecuritySvc: SecurityService
   ) { }
 
@@ -131,12 +133,21 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
   }
 
   onDelete(): void {
-    
+    // console.log('GroupDetailsComponent.onDelete');
+    this._GroupSvc.delete(this._GroupProfile.id).then((response) => {
+      this.updateSearch();
+      this._LoggingSvc.toast('The group has been deleted', 'Delete Group', LogLevel.Success);
+      this.closeModal();
+    }).catch((error: any) => {
+      this._LoggingSvc.errorHandler(error, 'GroupService', 'delete');
+      this._LoggingSvc.toast('The group could not be deleted', 'Delete Group', LogLevel.Error);
+    });
   }
 
   onSubmit(form: FormGroup): void {
     this.populateProfile();
     this._GroupSvc.saveGroup(this._GroupProfile).then((response) => {
+      this.updateSearch();
       this._LoggingSvc.toast('The group has been saved', 'Save Group', LogLevel.Success);
       this.closeModal();
     }).catch((_) => {
@@ -154,6 +165,13 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
   private populateProfile(): void {
     this._GroupProfile.name = this.controls['name'].getRawValue();
     this._GroupProfile.description = this.controls['description'].getRawValue();
-
   }
+
+  updateSearch(): void {
+    var mSearchCriteria = this._SearchSvc.getSearchCriteria("Groups"); // from SearchAccountsComponent line 25
+    if(mSearchCriteria != null) {
+      this._SearchSvc.setSearchCriteria("Groups", mSearchCriteria);
+    }    
+  }
+
 }

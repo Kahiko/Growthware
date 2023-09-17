@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
@@ -65,6 +66,25 @@ public static class GroupUtility
         }
         mRetVal.RolesNotInGroup = mRolesNotInGroup.ToArray();
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Deletes the group.
+    /// </summary>
+    /// <param name="profile"></param>
+    /// <exception cref="ArgumentNullException"></exception> <summary>
+    /// 
+    /// </summary>
+    /// <param name="profile"></param>
+    public static void Delete(MGroupProfile profile)
+    {
+        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in VB) or empty!");
+        if(profile.Id != -1) 
+        {
+            bool success = false;
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            success = mBGroups.DeleteGroup(profile);
+        }
     }
 
     public static MGroupProfile GetGroupProfile(int groupSeqId) 

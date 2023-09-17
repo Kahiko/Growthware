@@ -16,6 +16,30 @@ public abstract class AbstractGroupController : ControllerBase
 {
 
     [AllowAnonymous]
+    [HttpPost("DeleteGroup")]
+    public ActionResult<bool> DeleteGroup(int groupSeqId)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayDelete)
+        {
+            if (HttpContext.Session.GetString("EditId") != null)
+            {
+                if (int.Parse(HttpContext.Session.GetString("EditId")) == groupSeqId)
+                {
+                    MGroupProfile mProfile = GroupUtility.GetGroupProfile(groupSeqId);
+                    GroupUtility.Delete(mProfile);
+                    return Ok(true);
+                }
+            }
+            return StatusCode(StatusCodes.Status204NoContent, "Could not find the group to delete");
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
     [HttpGet("GetGroupForEdit")]
     public ActionResult<UIGroupProfile> GetGroupForEdit(int groupSeqId)
     {
