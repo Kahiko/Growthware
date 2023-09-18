@@ -11,6 +11,7 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
 using System.Data;
 using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -116,26 +117,26 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("EditAccount")]
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
+        
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         HttpContext.Session.Remove("EditId");
-        MAccountProfile mAccountProfile = this.m_AccountService.GetAccount(account, true, false);
+        MAccountProfile mAccountProfile = new MAccountProfile();
+        if(account != "new") // Populate from the DB
+        {
+            mAccountProfile = this.m_AccountService.GetAccount(account, true, false);
+        } 
+        else // Populate what we can
+        {
+            mAccountProfile = getNewProfile(mRequestingProfile);
+        }
         if(mSecurityInfo.MayEdit)
         {
             HttpContext.Session.SetInt32("EditId", mAccountProfile.Id);
+            return Ok(mAccountProfile);
         }
-        else
-        {
-            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
-        }
-        return Ok(mAccountProfile);
-    }
-
-    [HttpGet("NewProfile")]
-    public ActionResult<MAccountProfile> NewProfile(string account)
-    {
-        return new MAccountProfile();
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
 
@@ -287,6 +288,22 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    private MAccountProfile getNewProfile(MAccountProfile requestingAccount)
+    {
+        MAccountProfile mRetVal = new MAccountProfile();
+        Collection<string> mDefaultRoles = new Collection<string>(){"Authenticated"};
+        mRetVal.AddedBy = requestingAccount.Id;
+        mRetVal.AddedDate = DateTime.Now;
+        mRetVal.AssignedRoles = mDefaultRoles;
+        mRetVal.PasswordLastSet = DateTime.Now.AddYears(-22);
+        mRetVal.LastLogOn = DateTime.Now.AddYears(-22);
+        mRetVal.UpdatedDate = DateTime.Now.AddYears(-22);
+        mRetVal.Status = (int)SystemStatus.ChangePassword;
+        mRetVal.Location = "";
+        mRetVal.TimeZone = -8;
+        return mRetVal;
+    }
+
     [HttpGet("GetPreferences")]
     public UIAccountChoices GetPreferences()
     {
@@ -392,8 +409,7 @@ public abstract class AbstractAccountController : ControllerBase
             MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true, false);
             if(mExistingAccount == null) 
             {
-                mExistingAccount = new MAccountProfile();
-                mExistingAccount.Id = -1;
+                mExistingAccount = this.getNewProfile(mRequestingProfile);
                 mExistingAccount.Password = ""; // should be auto generated and 
             }
             mExistingAccount.Account = accountProfile.Account;

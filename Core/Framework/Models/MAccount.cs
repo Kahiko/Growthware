@@ -126,6 +126,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <remarks></remarks>
     public MAccountProfile()
     {
+        this.AddedDate = DateTime.Now;
     }
 
     /// <summary>

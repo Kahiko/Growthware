@@ -205,8 +205,17 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       case 'newprofile':
         this.canDelete = false;
         this.showDerived = false;
+        if(this._SecurityInfoAccount != null) {
+          this.canSave = this._SecurityInfoAccount.mayEdit
+        }
+        if(this._SecurityInfoGroups != null) {
+          this.showGroups = this._SecurityInfoGroups.mayView;
+        }
+        if(this._SecurityInfoRoles != null) {
+          this.showRoles = this._SecurityInfoRoles.mayView;
+        }
         break;
-        case 'editprofile':
+      case 'editprofile':
         this.showDerived = true;
         if(this._SecurityInfoAccount != null) {
           this.canDelete = this._SecurityInfoAccount.mayDelete;
@@ -249,6 +258,14 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           return 'Required';
         }
         break;
+      case 'email':
+        if (this.controls['email'].hasError('required')) {
+          return 'Required';
+        }
+        if (this.controls['email'].hasError('email')) {
+          return 'Not a valid email';
+        }    
+        break;
       default:
         break;
     }
@@ -283,7 +300,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
       this.frmAccount = this._FormBuilder.group({
         account: [this._AccountProfile.account, [Validators.required]],
-        email: [this._AccountProfile.email],
+        email: [this._AccountProfile.email, [Validators.required, Validators.email]],
         enableNotifications: [this._AccountProfile.enableNotifications],
         failedAttempts: [this._AccountProfile.failedAttempts],
         firstName: [this._AccountProfile.firstName],
