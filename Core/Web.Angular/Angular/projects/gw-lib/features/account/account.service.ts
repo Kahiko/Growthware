@@ -25,6 +25,7 @@ export class AccountService {
   private _Api_ClientChoices = '';
   private _Api_ChangePassword = '';
   // private _Api_GetLinks: string = '';
+  private _Api_DeleteAccount: string = '';
   private _Api_GetMenuItems: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
@@ -81,6 +82,7 @@ export class AccountService {
   ) {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
+    this._Api_DeleteAccount = this._BaseURL + this._ApiName + 'DeleteAccount';
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
     this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
     // this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
@@ -179,6 +181,34 @@ export class AccountService {
             this._LoggingSvc.errorHandler(error, 'AccountService', 'authenticate');
             reject(false);
           }
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async delete(id: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const mQueryParameter: HttpParams = new HttpParams()
+        .set('accountSeqId', id);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'text/plain',
+        }),
+        responseType: "text" as "json",
+        params: mQueryParameter,
+      };
+      this._HttpClient.delete<boolean>(this._Api_DeleteAccount, mHttpOptions).subscribe({
+        next: (response: boolean) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent line 25
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
+          }
+          resolve(true);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'delete');
+          reject(false);
         },
         // complete: () => {}
       });

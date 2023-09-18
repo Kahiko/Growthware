@@ -181,10 +181,10 @@
     <button type="submit" [disabled]="frmAccount.invalid" mat-button class="Form_Button" color="primary">
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
     </button>
-    <button *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+    <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
     </button>
-    <button *ngIf="canCancel" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+    <button type="button" *ngIf="canCancel" (click)="onCancel()" mat-button class="Form_Button" color="accent">
       <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
     </button>
   </div>

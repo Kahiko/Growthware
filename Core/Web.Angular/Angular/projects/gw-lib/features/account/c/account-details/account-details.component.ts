@@ -141,7 +141,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         // such as a different lifecycle hook?
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
-      return this._SecuritySvc.getSecurityInfo('EditAccount');              // Request #3
+      return this._SecuritySvc.getSecurityInfo('Accounts');              // Request #3
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting roles:\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((reasonSecurityInfo) => {                                       // Response Handler #3
@@ -219,7 +219,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.showDerived = true;
         if(this._SecurityInfoAccount != null) {
           this.canDelete = this._SecurityInfoAccount.mayDelete;
-          this.canSave = this._SecurityInfoAccount.mayEdit
+          this.canSave = this._SecurityInfoAccount.mayEdit;
         }
         if(this._SecurityInfoGroups != null) {
           this.showGroups = this._SecurityInfoGroups.mayView;
@@ -232,6 +232,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         break;
       default:
         break;
+    }
+    if(this._Router.url === '/accounts/edit-my-account') {
+      this.canDelete = false;
+      this.showDerived = false;
+      this.showGroups = false;
+      this.showRoles = false;
     }
   }
 
@@ -277,8 +283,13 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   onDelete(): void {
-    this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
-    this.closeModal();
+    this._AccountSvc.delete(this._AccountProfile.id).then((response) => {
+      console.log('AccountDetailsComponent.onDelete', response);
+      this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
+      this.closeModal();
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error deleting account!', 'Delete Account', LogLevel.Error);
+    })
   }
 
   onSubmit(form: FormGroup): void {
@@ -289,6 +300,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
         this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
         this.closeModal();
+      }).catch((error) => {
+        
       });
     }
   }

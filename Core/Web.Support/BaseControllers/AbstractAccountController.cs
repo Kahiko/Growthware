@@ -58,14 +58,16 @@ public abstract class AbstractAccountController : ControllerBase
     /// </summary>
     /// <param name="accountSeqId"></param>
     /// <returns>ActionResult<bool></returns>
-    private ActionResult<bool> DeleteAccount(int accountSeqId)
+    [HttpDelete("DeleteAccount")]
+    public ActionResult<bool> DeleteAccount(int accountSeqId)
     {
+        // TODO: Remove/comment out the HttpDelete and change the access modifier to private!!!
+
         // This is here only for example it is this developers view that deleting accounts
         // is extremely risky and should be left to say a backend developer (DBA if you like)
         // it is possible for data to be associated with an account outside the realms of this
         // application and deleting it here could be quite an issue
 
-        // TODO: Comment this section of code out!!!
         if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
