@@ -1,4 +1,5 @@
-﻿using GrowthWare.Framework.Interfaces;
+﻿using GrowthWare.Framework.Enumerations;
+using GrowthWare.Framework.Interfaces;
 using GrowthWare.Framework.Models.Base;
 using System;
 using System.Collections.Generic;
@@ -126,7 +127,21 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <remarks></remarks>
     public MAccountProfile()
     {
+
+    }
+
+    public MAccountProfile(int requestingAccountId)
+    {
+        Collection<string> mDefaultRoles = new Collection<string>(){"Authenticated"};
+        this.AddedBy = requestingAccountId;
         this.AddedDate = DateTime.Now;
+        this.AssignedRoles = mDefaultRoles;
+        this.PasswordLastSet = DateTime.Now.AddYears(-22);
+        this.LastLogOn = DateTime.Now.AddYears(-22);
+        this.UpdatedDate = DateTime.Now.AddYears(-22);
+        this.Status = (int)SystemStatus.ChangePassword;
+        this.Location = "";
+        this.TimeZone = -8;
     }
 
     /// <summary>

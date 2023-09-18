@@ -122,14 +122,10 @@ public abstract class AbstractAccountController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         HttpContext.Session.Remove("EditId");
-        MAccountProfile mAccountProfile = new MAccountProfile();
+        MAccountProfile mAccountProfile = new MAccountProfile(mRequestingProfile.Id);
         if(account != "new") // Populate from the DB
         {
             mAccountProfile = this.m_AccountService.GetAccount(account, true, false);
-        } 
-        else // Populate what we can
-        {
-            mAccountProfile = getNewProfile(mRequestingProfile);
         }
         if(mSecurityInfo.MayEdit)
         {
@@ -288,22 +284,6 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
-    private MAccountProfile getNewProfile(MAccountProfile requestingAccount)
-    {
-        MAccountProfile mRetVal = new MAccountProfile();
-        Collection<string> mDefaultRoles = new Collection<string>(){"Authenticated"};
-        mRetVal.AddedBy = requestingAccount.Id;
-        mRetVal.AddedDate = DateTime.Now;
-        mRetVal.AssignedRoles = mDefaultRoles;
-        mRetVal.PasswordLastSet = DateTime.Now.AddYears(-22);
-        mRetVal.LastLogOn = DateTime.Now.AddYears(-22);
-        mRetVal.UpdatedDate = DateTime.Now.AddYears(-22);
-        mRetVal.Status = (int)SystemStatus.ChangePassword;
-        mRetVal.Location = "";
-        mRetVal.TimeZone = -8;
-        return mRetVal;
-    }
-
     [HttpGet("GetPreferences")]
     public UIAccountChoices GetPreferences()
     {
@@ -409,7 +389,7 @@ public abstract class AbstractAccountController : ControllerBase
             MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true, false);
             if(mExistingAccount == null) 
             {
-                mExistingAccount = this.getNewProfile(mRequestingProfile);
+                mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
                 mExistingAccount.Password = ""; // should be auto generated and 
             }
             mExistingAccount.Account = accountProfile.Account;
