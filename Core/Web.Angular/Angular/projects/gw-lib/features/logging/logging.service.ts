@@ -319,6 +319,6 @@ export class LoggingService {
       errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
     }
     console.log(`${className}.${methodName}:`);
-    console.log(errorMessage);
+    console.log('\t' + errorMessage);
   }
 }
