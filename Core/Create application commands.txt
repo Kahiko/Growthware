@@ -163,13 +163,13 @@ PickList:
 Groups:
 		ng generate module features/group --project gw-lib
 		ng generate interface features/group/GroupProfile --type model --project gw-lib
-		ng generate component features/group/c/GroupDetails  --standalone --style scss --project gw-lib
+		ng generate component features/group/c/GroupDetails --standalone --style scss --project gw-lib
 		ng generate component features/group/c/SearchGroups --module group --style scss --project gw-lib
 		ng generate service features/group/group --project gw-lib
 Roles:
 		ng generate module features/role --project gw-lib
 		ng generate interface features/role/RoleProfile --type model --project gw-lib
-		ng generate component features/role/c/RoleDetails --module role --style scss --project gw-lib
+		ng generate component features/role/c/RoleDetails --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/role/c/SearchRoles --module role --style scss --project gw-lib
 		ng generate service features/role/role --project gw-lib
 SnakeList:
