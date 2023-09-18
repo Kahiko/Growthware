@@ -58,59 +58,30 @@ public abstract class AbstractAccountController : ControllerBase
     /// </summary>
     /// <param name="accountSeqId"></param>
     /// <returns>ActionResult</returns>
-    private IActionResult DeleteAccount(int accountSeqId)
+    private ActionResult<bool> DeleteAccount(int accountSeqId)
     {
         // This is here only for example it is this developers view that deleting accounts
         // is extremely risky and should be left to say a backend developer (DBA if you like)
         // it is possible for data to be associated with an account outside the realms of this
         // application and deleting it here could be quite an issue
 
-        // TODO: Finish code for the example
-        if (accountSeqId <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
-        string mRetVal = "False";
-        // if (HttpContext.Items["EditId"] != null)
-        // {
-        //     int mEditId = int.Parse(HttpContext.Items["EditId"].ToString());
-        //     if (mEditId == accountSeqId)
-        //     {
-        //         MSecurityInfo mSecurityInfo = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.GetAppSettingValue("Actions_EditOtherAccount", true)), AccountUtility.CurrentProfile());
-        //         if (mSecurityInfo != null)
-        //         {
-        //             if (mSecurityInfo.MayDelete)
-        //             {
-        //                 try
-        //                 {
-        //                     AccountUtility.Delete(accountSeqId);
-        //                     mRetVal = "True";
-        //                 }
-        //                 catch (Exception ex)
-        //                 {
-        //                     this.m_Logger.Error(ex);
-        //                     throw;
-        //                 }
-        //             }
-        //             else
-        //             {
-        //                 Exception mError = new Exception("The account (" + AccountUtility.CurrentProfile().Account + ") being used does not have the correct permissions to delete");
-        //                 this.m_Logger.Error(mError);
-        //                 return this.InternalServerError(mError);
-        //             }
-        //         }
-        //         else
-        //         {
-        //             Exception mError = new Exception("Security Info can not be determined nothing has been deleted!!!!");
-        //             this.m_Logger.Error(mError);
-        //             return this.InternalServerError(mError);
-        //         }
-        //     }
-        //     else
-        //     {
-        //         Exception mError = new Exception("Identifier you have last looked at does not match the one passed in nothing has been saved!!!!");
-        //         this.m_Logger.Error(mError);
-        //         return this.InternalServerError(mError);
-        //     }
-        // }
-        return Ok(mRetVal);
+        // TODO: Comment this section of code out!!!
+        if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        var mEditId =  HttpContext.Session.GetInt32("EditId");
+        if(mEditId != null) 
+        {
+            if(mSecurityInfo.MayDelete)
+            {
+                this.m_AccountService.Delete(accountSeqId);
+                HttpContext.Session.Remove("EditId");
+                return Ok(true);
+            }
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        }
+        return StatusCode(StatusCodes.Status204NoContent, "Could not find the account to delete");
     }
 
     // [HttpGet("/accounts/edit-my-account")]
