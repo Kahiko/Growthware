@@ -57,7 +57,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// Example of how to delete an account
     /// </summary>
     /// <param name="accountSeqId"></param>
-    /// <returns>ActionResult</returns>
+    /// <returns>ActionResult<bool></returns>
     private ActionResult<bool> DeleteAccount(int accountSeqId)
     {
         // This is here only for example it is this developers view that deleting accounts
