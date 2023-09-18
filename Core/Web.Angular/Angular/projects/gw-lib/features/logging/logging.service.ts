@@ -318,7 +318,7 @@ export class LoggingService {
       // Get server-side error
       errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
     }
-    console.log(`${methodName}.${methodName}:`);
+    console.log(`${className}.${methodName}:`);
     console.log(errorMessage);
   }
 }
