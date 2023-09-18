@@ -7,6 +7,7 @@ export interface IAuthenticationResponse {
   middleName: string,
   preferredName: string,
   status: number,
+  isSystemAdmin: boolean,
   isVerified: boolean,
   jwtToken: string
 }
@@ -20,6 +21,7 @@ export class AuthenticationResponse implements IAuthenticationResponse {
   middleName = '';
   preferredName = '';
   status = 4;
+  isSystemAdmin = true;
   isVerified = true;
   jwtToken = '';
 

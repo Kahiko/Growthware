@@ -304,7 +304,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         enableNotifications: [this._AccountProfile.enableNotifications],
         failedAttempts: [this._AccountProfile.failedAttempts],
         firstName: [this._AccountProfile.firstName],
-        isSystemAdmin: [this._AccountProfile.isSystemAdmin],
+        isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
         lastName: [this._AccountProfile.lastName],
         location: [this._AccountProfile.location],
         middleName: [this._AccountProfile.middleName],
@@ -312,7 +312,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         statusSeqId: [this._AccountProfile.status],
         timeZone: [this._AccountProfile.timeZone],
       });
-
+      
     } else {
       this.frmAccount = this._FormBuilder.group({
         account: ['', [Validators.required]],
@@ -320,7 +320,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         enableNotifications: [false],
         failedAttempts: [0],
         firstName: [''],
-        isSystemAdmin: [false],
+        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
         lastName: [''],
         location: [''],
         middleName: [''],
@@ -339,6 +339,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
     this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
     // this._AccountProfile.groups = '';
+    this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();
     this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
     this._AccountProfile.location = this.controls['location'].getRawValue();
     this._AccountProfile.middleName = this.controls['middleName'].getRawValue();

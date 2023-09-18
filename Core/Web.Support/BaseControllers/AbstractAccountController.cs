@@ -399,6 +399,10 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.FirstName = accountProfile.FirstName;
             mExistingAccount.Groups = accountProfile.Groups;
             mExistingAccount.Id = accountProfile.Id;
+            if(mRequestingProfile.IsSystemAdmin) 
+            {
+                mExistingAccount.IsSystemAdmin = accountProfile.IsSystemAdmin;
+            }
             mExistingAccount.LastName = accountProfile.LastName;
             mExistingAccount.Location = accountProfile.Location;
             mExistingAccount.MiddleName = accountProfile.MiddleName;

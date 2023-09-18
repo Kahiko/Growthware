@@ -15,6 +15,7 @@ public class AuthenticationResponse
         this.Account = accountProfile.Account;
         this.Email = accountProfile.Email;
         this.FirstName = accountProfile.FirstName;
+        this.IsSystemAdmin = accountProfile.IsSystemAdmin;
         this.IsVerified = true;
         this.JwtToken = accountProfile.Token;
         this.LastName = accountProfile.LastName;
@@ -53,6 +54,8 @@ public class AuthenticationResponse
     public String PreferredName { get; set; }
 
     public int Status { get; set; }
+
+    public bool IsSystemAdmin { get; set; }
 
     public bool IsVerified { get; set; }
     public string JwtToken { get; set; }
