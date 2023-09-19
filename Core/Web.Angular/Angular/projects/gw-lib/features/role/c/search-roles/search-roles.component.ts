@@ -28,7 +28,7 @@ export class SearchRolesComponent extends BaseSearchComponent {
     this._TheFeatureName = 'Role';
     this._TheApi = 'GrowthwareRole/SearchRoles';
     this._TheComponent = RoleDetailsComponent;
-    this._TheWindowSize = new WindowSize(450,900);
+    this._TheWindowSize = new WindowSize(400,450);
     this._TheService = theFeatureSvc;
     this._DataSvc = dataSvc;
     this._DynamicTableSvc = dynamicTableSvc;
