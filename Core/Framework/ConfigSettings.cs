@@ -3,6 +3,7 @@ using System.IO;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using GrowthWare.Framework.Enumerations;
+using System.Diagnostics.Contracts;
 
 namespace GrowthWare.Framework
 {
@@ -367,6 +368,11 @@ namespace GrowthWare.Framework
         public static string Actions_EditGroups
         {
             get { return GetAppSettingValue("Actions_EditGroups", true); }
+        }
+
+        public static string Actions_EditRoles
+        {
+            get { return GetAppSettingValue("Actions_EditRoles", true); }
         }
 
         /// <summary>
