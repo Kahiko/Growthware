@@ -13,7 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { PickListModule } from '@Growthware/features/pick-list';
-import { ISecurityInfo, SecurityService } from '@Growthware/features/security';
+import { ISecurityInfo, SecurityInfo, SecurityService } from '@Growthware/features/security';
 // Feature
 import { RoleService } from '../../role.service';
 import { IRoleProfile, RoleProfile } from '../../role-profile.model';
@@ -39,9 +39,10 @@ import { IRoleProfile, RoleProfile } from '../../role-profile.model';
 export class RoleDetailsComponent implements OnDestroy, OnInit {
 
   private _Role: IRoleProfile = new RoleProfile();
+  private _SecurityInfo: ISecurityInfo = new SecurityInfo();
 
-  canAdd: boolean = false;
   canDelete: boolean = false;
+  canSave: boolean = false;
   frmRole!: FormGroup;
   membersPickListName: string = 'membersList';
   securityInfo!: ISecurityInfo;
@@ -61,23 +62,25 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this._SecuritySvc.getSecurityInfo('Search_Roles').then((securityInfo: ISecurityInfo) => { // Request #1
       // Response Hendler #1
       // console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);
-      this.canAdd = securityInfo.mayAdd;
-      this.canDelete = securityInfo.mayDelete;
+      this._SecurityInfo = securityInfo;
       let mRoleSeqId: number = -1;
-      if(this._RoleSvc.editRow.RoleSeqId) {
+      if(this._RoleSvc.editReason === 'EditProfile') {
         mRoleSeqId = this._RoleSvc.editRow.RoleSeqId;
+        this.canSave = securityInfo.mayEdit;
+      } else {
+        this.canSave = securityInfo.mayAdd;
       }
-      if(mRoleSeqId === -1) {
-        this.canDelete = false;
-      }
+      // TODO: Looks like this._RoleSvc.editRow is not always being set correctly
       return this._RoleSvc.getRoleForEdit(mRoleSeqId); // Request #2
     }).catch((error: any) => { // Request #1 error
       this._LoggingSvc.toast("Error getting security info for 'EditRole' :\r\n" + error, 'Role Details:', LogLevel.Error);
     }).then((profile) => {
       if(profile) {
         this._Role = profile;
-        if(profile.isSystemOnly) {
+        if(profile.id === -1 || profile.isSystemOnly) {
           this.canDelete = false;
+        } else {
+          this.canDelete = this._SecurityInfo.mayDelete;
         }
       }
       this.populateForm();
@@ -99,6 +102,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   closeModal(): void {
     // console.log('GroupDetailsComponent.closeModal.editReason', this._GroupSvc.editReason);
     // console.log('GroupDetailsComponent.closeModal.editModalId', this._GroupSvc.editModalId);
+    this._RoleSvc.editRow.RoleSeqId = -1;
     if(this._RoleSvc.editReason.toLowerCase() !== "newprofile") {
       this._ModalSvc.close(this._RoleSvc.editModalId);
     } else {
