@@ -47,7 +47,7 @@
                             </div>
                             <div class="td"></div>
                         </div>
-                    </div>    
+                    </div> 
                 </div>
             </div>
         </mat-tab>
@@ -56,7 +56,7 @@
                 <div class="mat-tab__content formSectionContents">
                     <gw-lib-pick-list #rolePickList
                         id="Members"
-                        name="{{accountPickListName}}"
+                        name="{{membersPickListName}}"
                         allItemsText="Available Accounts"
                         header="Assign accounts"
                         pickListTableHelp="Select accounts from either the 'Available Accounts' or the 'Selected Accounts' then use the center arrow buttons to move the role for one list to the other."
@@ -69,14 +69,14 @@
         </mat-tab>
     </mat-tab-group>
     <div class="buttonRow">
-        <button type="submit" [disabled]="frmRole.invalid" mat-button class="Form_Button" color="primary">
+        <button type="submit" *ngIf="canAdd" [disabled]="frmRole.invalid" mat-button class="Form_Button" color="primary">
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
-          </button>
-          <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+        </button>
+        <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
-          </button>
-          <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+        </button>
+        <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
-          </button>
+        </button>
     </div>
 </form>

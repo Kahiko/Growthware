@@ -124,7 +124,7 @@ namespace GrowthWare.BusinessLogic
         public MRole GetProfile(MRole profile)
         {
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
-            MRole mRetVal = null;
+            MRole mRetVal = new MRole();
             m_DRoles.Profile = profile;
             if (DatabaseIsOnline()) mRetVal = new MRole(m_DRoles.ProfileData());
             return mRetVal;

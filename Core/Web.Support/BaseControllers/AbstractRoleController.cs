@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
@@ -11,6 +13,21 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractRoleController : ControllerBase
 {
+    [HttpGet("GetRoleForEdit")]
+    public ActionResult<UIRole> GetRoleForEdit(int roleSeqId)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayEdit)
+        {
+            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile());
+            HttpContext.Session.SetString("EditId", roleSeqId.ToString());
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
 
     [HttpGet("GetRoles")]
     public ActionResult<ArrayList> GetRoles()
