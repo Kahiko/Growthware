@@ -35,11 +35,13 @@ namespace GrowthWare.DataAccess.SQLServer
             base.ExecuteNonQuery( mStoreProc,  mParameters);
         }
 
-        void IRoles.Save()
+        int IRoles.Save()
         {
-            SqlParameter[] myParameters = getInsertUpdateParameters();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
             string myStoreProcedure = "ZGWSecurity.Set_Role";
-            base.ExecuteNonQuery( myStoreProcedure,  myParameters);
+            base.ExecuteNonQuery( myStoreProcedure,  mParameters);
+            int mRetVal = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters));
+            return mRetVal;
         }
 
         DataTable IRoles.RolesBySecurityEntity()

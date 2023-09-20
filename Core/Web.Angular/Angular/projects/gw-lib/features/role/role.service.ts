@@ -12,6 +12,7 @@ import { IRoleProfile } from './role-profile.model';
 export class RoleService {
   private _ApiName: string = 'GrowthwareRole/';
   private _Api_GetRole: string = '';
+  private _Api_Save: string = '';
 
   public get addModalId(): string {
     return 'addRole'
@@ -26,6 +27,7 @@ export class RoleService {
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
     this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'GetRoleForEdit';
+    this._Api_Save = this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
   }
 
   public async getRoleForEdit(roleSeqId: number): Promise<IRoleProfile> {
@@ -66,6 +68,32 @@ export class RoleService {
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
           reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  /**
+   * Saves the profile information.
+   *
+   * @param {IRoleProfile} profile - The profile to be saved.
+   * @return {Promise<any>} A promise that resolves with the result of saving the profile.
+   */
+  public async save(profile: IRoleProfile): Promise<any> {
+    return new Promise<boolean>((resolve, reject) => {
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      };
+      this._HttpClient.post<boolean>(this._Api_Save, profile, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'RoleService', 'save');
+          reject(false);
         },
         // complete: () => {}
       });

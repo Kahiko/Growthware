@@ -13,6 +13,20 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractRoleController : ControllerBase
 {
+
+    public string[] GetAccountsInRole(int groupSeqId, int securityEntityId) 
+    {
+         string[] mRetVal = new string[] { };
+         return mRetVal;
+     }
+
+    public string[] GetAccountsNotInRole(int groupSeqId, int securityEntityId) 
+    {
+         string[] mRetVal = new string[] { };
+         return mRetVal;
+    }
+
+
     [HttpGet("GetRoleForEdit")]
     public ActionResult<UIRole> GetRoleForEdit(int roleSeqId)
     {
@@ -23,6 +37,8 @@ public abstract class AbstractRoleController : ControllerBase
         if (mSecurityInfo.MayEdit)
         {
             UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile());
+            mRetVal.AccountsInRole = GetAccountsInRole(roleSeqId, mSecurityEntity.Id);
+            mRetVal.AccountsNotInRole = GetAccountsNotInRole(roleSeqId, mSecurityEntity.Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }
@@ -34,6 +50,53 @@ public abstract class AbstractRoleController : ControllerBase
     {
         ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
         return Ok(mRetVal);
+    }
+
+    [HttpPost("SaveRole")]
+    public ActionResult<UIRole> SaveRole(UIRole roleProfile)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        MRole mProfileToSave = new MRole();
+        if (HttpContext.Session.GetString("EditId") != null)
+        {
+            if (int.Parse(HttpContext.Session.GetString("EditId")) == roleProfile.Id)
+            {
+                if (roleProfile.Id > -1) 
+                {
+                    if (mSecurityInfo.MayEdit)
+                    {
+                        mProfileToSave.UpdatedBy = mRequestingProfile.Id;
+                        mProfileToSave.UpdatedDate = DateTime.Now;
+                    } 
+                    else 
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
+                } 
+                else 
+                {
+                    if (mSecurityInfo.MayAdd)
+                    {
+                        mProfileToSave.AddedBy = mRequestingProfile.Id;
+                        mProfileToSave.AddedDate = DateTime.Now;
+                    }
+                    else 
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
+                }
+            }
+            mProfileToSave.Name = roleProfile.Name;
+            mProfileToSave.Description = roleProfile.Description;
+            mProfileToSave.Id = roleProfile.Id;
+            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
+            UIRole mRetVal = RoleUtility.Save(mProfileToSave);
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status304NotModified, "Unable to save");
     }
 
     [Authorize("Search_Roles")]

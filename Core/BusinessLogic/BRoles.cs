@@ -98,11 +98,13 @@ namespace GrowthWare.BusinessLogic
         /// Saves the specified profile.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        public void Save(MRole profile)
+        public int Save(MRole profile)
         {
+            int mRetVal = -1;
             if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
             m_DRoles.Profile = profile;
-            if (DatabaseIsOnline()) m_DRoles.Save();
+            if (DatabaseIsOnline()) mRetVal = m_DRoles.Save();
+            return mRetVal;
         }
 
         /// <summary>

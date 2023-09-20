@@ -30,16 +30,12 @@ public static class RoleUtility
         return mRetVal;
     }
 
-    public static UIRole GetUIProfile(int roleSeqId, MSecurityEntity securityEntity)
+    static DataTable GetAllRolesBySecurityEntity(int securityEntityId)
     {
-        MRole mRoleProfile = new MRole();
-        mRoleProfile.Id = roleSeqId;
-        mRoleProfile.SecurityEntityID = securityEntity.Id;
-        mRoleProfile = m_BRoles.GetProfile(mRoleProfile);
-        UIRole mRetVal = new UIRole(mRoleProfile);
-
-
-        return mRetVal;
+        // TODO: Add cache
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mRoles = mBRoles.GetRolesBySecurityEntity(securityEntityId);
+        return mRoles;
     }
 
     public static ArrayList GetRolesArrayListBySecurityEntity(int securityEntityId)
@@ -53,11 +49,21 @@ public static class RoleUtility
         return mRetVal;        
     }
 
-    static DataTable GetAllRolesBySecurityEntity(int securityEntityId)
+    public static UIRole GetUIProfile(int roleSeqId, MSecurityEntity securityEntity)
     {
-        // TODO: Add cache
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        DataTable mRoles = mBRoles.GetRolesBySecurityEntity(securityEntityId);
-        return mRoles;
+        MRole mRoleProfile = new MRole();
+        mRoleProfile.Id = roleSeqId;
+        mRoleProfile.SecurityEntityID = securityEntity.Id;
+        mRoleProfile = m_BRoles.GetProfile(mRoleProfile);
+        UIRole mRetVal = new UIRole(mRoleProfile);
+        return mRetVal;
+    }
+
+    public static UIRole Save(MRole roleProfile)
+    {
+        m_BRoles.Save(roleProfile);
+        m_BRoles.GetProfile(roleProfile);
+        UIRole mRetVal = new UIRole(roleProfile);
+        return mRetVal;
     }
 }

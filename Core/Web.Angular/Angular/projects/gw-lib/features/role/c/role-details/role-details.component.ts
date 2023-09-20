@@ -139,8 +139,8 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this.frmRole = this._FormBuilder.group({
       name: [this._Role.name, Validators.required],
       description: [this._Role.description],
-      isSystem :[{value : false, disabled: !true}],
-      isSystemOnly :[{value : false, disabled: !true}],
+      isSystem :[{value : this._Role.isSystem, disabled: this._Role.isSystemOnly}],
+      isSystemOnly :[{value : this._Role.isSystemOnly, disabled: this._Role.isSystemOnly}],
     });
   }
 }
