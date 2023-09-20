@@ -27,7 +27,7 @@ export class RoleService {
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
     this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'GetRoleForEdit';
-    this._Api_Save = this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
+    this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
   }
 
   public async getRoleForEdit(roleSeqId: number): Promise<IRoleProfile> {
