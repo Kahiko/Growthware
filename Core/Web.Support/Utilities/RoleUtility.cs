@@ -4,6 +4,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -74,11 +75,22 @@ public static class RoleUtility
         return mRetVal;
     }
 
-    public static UIRole Save(MRole roleProfile)
+    public static UIRole Save(MRole roleProfile, string[] accountsInRole)
     {
-        m_BRoles.Save(roleProfile);
-        m_BRoles.GetProfile(roleProfile);
-        UIRole mRetVal = new UIRole(roleProfile);
-        return mRetVal;
+        MRole mRoleToSave = new MRole(roleProfile);
+        if (roleProfile.Id > -1) 
+        {
+            MRole mProfileFromDB = m_BRoles.GetProfile(mRoleToSave);
+            mRoleToSave.AddedBy = mProfileFromDB.AddedBy; 
+            mRoleToSave.AddedDate = mProfileFromDB.AddedDate;
+        }
+        mRoleToSave.Id = m_BRoles.Save(mRoleToSave);
+        UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
+        return new UIRole(mRoleToSave);
+    }
+
+    public static bool UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
+    {
+        return m_BRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
     }
 }

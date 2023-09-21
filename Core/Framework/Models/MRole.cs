@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using GrowthWare.Framework.Models.Base;
+using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Framework.Models
 {
@@ -25,12 +26,17 @@ namespace GrowthWare.Framework.Models
         /// <param name="dataRow">The DataRow.</param>
         protected new void Initialize(DataRow dataRow)
         {
-            base.NameColumnName = "NAME";
-            base.IdColumnName = "ROLE_SEQ_ID";
+            Initialize();
             base.Initialize(dataRow);
             m_Description = base.GetString(dataRow, "DESCRIPTION");
             m_IsSystem = base.GetBool(dataRow, "IS_SYSTEM");
             m_IsSystemOnly = base.GetBool(dataRow, "IS_SYSTEM_ONLY");
+        }
+
+        private void Initialize()
+        {
+            base.NameColumnName = "NAME";
+            base.IdColumnName = "ROLE_SEQ_ID";
         }
 #endregion
 
@@ -41,6 +47,35 @@ namespace GrowthWare.Framework.Models
         /// </summary>
         public MRole()
         {
+        }
+
+        public MRole(MRole roleProfile) 
+        {
+            this.AddedBy = roleProfile.AddedBy;
+            this.AddedDate = roleProfile.AddedDate;
+            this.Description = roleProfile.Description;
+            this.Id = roleProfile.Id;
+            this.IsSystem = roleProfile.IsSystem;
+            if(!roleProfile.IsSystemOnly)
+            {
+                this.IsSystemOnly = roleProfile.IsSystemOnly;
+            }
+            this.Name = roleProfile.Name;
+            this.SecurityEntityID = roleProfile.SecurityEntityID;
+            this.UpdatedBy = roleProfile.UpdatedBy;
+            this.UpdatedDate = roleProfile.UpdatedDate;
+        }
+
+        public MRole(UIRole uiRole)
+        {
+            this.Description = uiRole.Description;
+            this.Id = uiRole.Id;
+            this.IsSystem = uiRole.IsSystem;
+            if(!uiRole.IsSystemOnly)
+            {
+                this.m_IsSystemOnly = uiRole.IsSystemOnly;
+            }
+            this.Name = uiRole.Name;
         }
 
         /// <summary>

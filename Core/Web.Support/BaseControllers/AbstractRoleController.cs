@@ -44,7 +44,7 @@ public abstract class AbstractRoleController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        MRole mProfileToSave = new MRole();
+        MRole mProfileToSave = new MRole(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
             if (int.Parse(HttpContext.Session.GetString("EditId")) == roleProfile.Id)
@@ -74,11 +74,8 @@ public abstract class AbstractRoleController : ControllerBase
                     }
                 }
             }
-            mProfileToSave.Name = roleProfile.Name;
-            mProfileToSave.Description = roleProfile.Description;
-            mProfileToSave.Id = roleProfile.Id;
             mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
-            UIRole mRetVal = RoleUtility.Save(mProfileToSave);
+            UIRole mRetVal = RoleUtility.Save(mProfileToSave, roleProfile.AccountsInRole);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status304NotModified, "Unable to save");

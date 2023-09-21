@@ -16,6 +16,7 @@ import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { ISecurityInfo, SecurityInfo, SecurityService } from '@Growthware/features/security';
+import { SearchService } from '@Growthware/features/search';
 // Feature
 import { RoleService } from '../../role.service';
 import { IRoleProfile, RoleProfile } from '../../role-profile.model';
@@ -57,6 +58,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _RoleSvc: RoleService,
+    private _SearchSvc: SearchService,
     private _SecuritySvc: SecurityService,
   ) { 
     this.frmRole = this._FormBuilder.group({})
@@ -149,6 +151,15 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   onSubmit(form: FormGroup): void {
+    this.populateProfile();
+    this._RoleSvc.save(this._Role).then((response: IRoleProfile) => {
+      this.updateSearch();
+      // this._Role = response;
+      // this.populateForm();
+      this._LoggingSvc.toast('The role has been saved', 'Save Role', LogLevel.Success);
+    }).catch((error: any) => {
+      this._LoggingSvc.toast('The role could not be saved', 'Save Role', LogLevel.Error);
+    });
     this.closeModal();
   }
 
@@ -159,5 +170,19 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
       isSystem :[{value : this._Role.isSystem, disabled: this._Role.isSystemOnly}],
       isSystemOnly :[{value : this._Role.isSystemOnly, disabled: this._Role.isSystemOnly}],
     });
+  }
+
+  private populateProfile(): void {
+    this._Role.name = this.controls['name'].getRawValue();
+    this._Role.description = this.controls['description'].getRawValue();
+    this._Role.isSystem = this.controls['isSystem'].getRawValue();
+    this._Role.isSystemOnly = this.controls['isSystemOnly'].getRawValue();
+  }
+
+  updateSearch(): void {
+    var mSearchCriteria = this._SearchSvc.getSearchCriteria("Roles"); // from SearchAccountsComponent line 25
+    if(mSearchCriteria != null) {
+      this._SearchSvc.setSearchCriteria("Roles", mSearchCriteria);
+    }    
   }
 }

@@ -40,7 +40,7 @@ namespace GrowthWare.DataAccess.SQLServer
             SqlParameter[] mParameters = getInsertUpdateParameters();
             string myStoreProcedure = "ZGWSecurity.Set_Role";
             base.ExecuteNonQuery( myStoreProcedure,  mParameters);
-            int mRetVal = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters));
+            int mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters));
             return mRetVal;
         }
 
@@ -85,6 +85,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 mSqlTransaction = mSqlConnection.BeginTransaction(IsolationLevel.Serializable);
                 // delete all the accounts for this role/SecurityEntity
                 SqlCommand mSqlCommand = new SqlCommand("ZGWSecurity.Delete_Roles_Accounts", mSqlConnection);
+                mSqlCommand.CommandType = CommandType.StoredProcedure;
                 mSqlCommand.Transaction = mSqlTransaction;
 
                 SqlParameter mSqlParameter = new SqlParameter("@P_ROLE_SEQ_ID", roleSeqID);
