@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
@@ -12,13 +12,14 @@ import { AccountService } from '../../account.service';
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
-export class ChangePasswordComponent implements OnDestroy, OnInit {
+export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit {
 
   private _Return: string = '';
   private _Subscription: Subscription = new Subscription();
 
   hideOldPassword: boolean = true;
   frmChangePassword!: FormGroup;
+  @ViewChild('newPassword', {static: false}) newPassword!: ElementRef<HTMLInputElement>;
 
   constructor(
     private _AccountSvc: AccountService,
@@ -27,6 +28,10 @@ export class ChangePasswordComponent implements OnDestroy, OnInit {
     private _FormBuilder: FormBuilder,
     private _Router: Router,
   ) { }
+
+  ngAfterViewInit(): void {
+    this.newPassword.nativeElement.focus();
+  }
 
   ngOnInit(): void {
     this._ActivatedRoute.queryParams.subscribe((params) => {
@@ -116,7 +121,6 @@ export class ChangePasswordComponent implements OnDestroy, OnInit {
         newPassword: ['', [Validators.required]],
         confirmPassword: ['', [Validators.required]],
       });
-
     }
   }
 
