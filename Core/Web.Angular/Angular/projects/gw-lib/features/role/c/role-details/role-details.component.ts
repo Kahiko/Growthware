@@ -119,9 +119,6 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    // console.log('GroupDetailsComponent.closeModal.editReason', this._GroupSvc.editReason);
-    // console.log('GroupDetailsComponent.closeModal.editModalId', this._GroupSvc.editModalId);
-    this._RoleSvc.editRow.RoleSeqId = -1;
     if(this._RoleSvc.editReason.toLowerCase() !== "newprofile") {
       this._ModalSvc.close(this._RoleSvc.editModalId);
     } else {
@@ -154,8 +151,6 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this.populateProfile();
     this._RoleSvc.save(this._Role).then((response: IRoleProfile) => {
       this.updateSearch();
-      // this._Role = response;
-      // this.populateForm();
       this._LoggingSvc.toast('The role has been saved', 'Save Role', LogLevel.Success);
     }).catch((error: any) => {
       this._LoggingSvc.toast('The role could not be saved', 'Save Role', LogLevel.Error);
