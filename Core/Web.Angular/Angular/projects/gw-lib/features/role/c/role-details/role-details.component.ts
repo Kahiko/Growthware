@@ -98,6 +98,9 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_SelectedItems', this._Role.accountsInRole); }, 500);        
         if(profile.id === -1 || profile.isSystemOnly) {
           this.canDelete = false;
+          if(profile.isSystemOnly) {
+            this.canSave = false;
+          }
         } else {
           this.canDelete = this._SecurityInfo.mayDelete;
         }
