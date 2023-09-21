@@ -11,18 +11,31 @@ public static class RoleUtility
 {
     static BRoles m_BRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
 
-    private static string[] GetAccountsNotInRole(MRole profile)
+    private static string[] getAccountsInRole(MRole profile) 
+    {
+        DataTable mDataTable = m_BRoles.GetAccountsInRole(profile);
+        string[] mRetVal = getStrings(mDataTable);
+        return mRetVal;
+    }
+
+    private static string[] getAccountsNotInRole(MRole profile)
+    {
+        DataTable mDataTable = m_BRoles.GetAccountsNotInRole(profile);
+        string[] mRetVal = getStrings(mDataTable);
+        return mRetVal;
+    }
+
+    private static string[] getStrings(DataTable mDataTable)
     {
         string[] mRetVal = new string[] { };
-        DataTable mDataTable = m_BRoles.GetAccountsInRole(profile);
         ArrayList mArrayList = new ArrayList();
         if(mDataTable != null)
         {
             foreach (DataRow mDataRow in mDataTable.Rows)
             {
-                if(mDataRow["Account"] != null)
+                if(mDataRow["ACCT"] != null)
                 {
-                    mArrayList.Add(mDataRow["Account"].ToString());                    
+                    mArrayList.Add(mDataRow["ACCT"].ToString());                    
                 }
             }
         }
@@ -56,6 +69,8 @@ public static class RoleUtility
         mRoleProfile.SecurityEntityID = securityEntity.Id;
         mRoleProfile = m_BRoles.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
+        mRetVal.AccountsInRole = getAccountsInRole(mRoleProfile);
+        mRetVal.AccountsNotInRole = getAccountsNotInRole(mRoleProfile);
         return mRetVal;
     }
 

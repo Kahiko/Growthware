@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -10,6 +11,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 // import { GWCommon } from '@Growthware/common-code';
+import { DataService } from '@Growthware/shared/services';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { PickListModule } from '@Growthware/features/pick-list';
@@ -40,6 +42,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
 
   private _Role: IRoleProfile = new RoleProfile();
   private _SecurityInfo: ISecurityInfo = new SecurityInfo();
+  private _Subscription: Subscription = new Subscription();
 
   canDelete: boolean = false;
   canSave: boolean = false;
@@ -50,6 +53,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   constructor(
     private _FormBuilder: FormBuilder,
     // private _GWCommon: GWCommon,
+    private _DataSvc: DataService,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _RoleSvc: RoleService,
@@ -59,6 +63,17 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
+    this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
+      // console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()); // used to determine the data name 
+      switch (data.name.toLowerCase()) {
+          case 'roles':
+              // set the paload to whatever you are using to track the "selected" items
+              this._Role.accountsInRole = data.payLoad;
+              break;
+          default:
+              break;
+      }
+      }));
     this._SecuritySvc.getSecurityInfo('Search_Roles').then((securityInfo: ISecurityInfo) => { // Request #1
       // Response Hendler #1
       // console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);
@@ -77,6 +92,8 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     }).then((profile) => {
       if(profile) {
         this._Role = profile;
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_AvailableItems', this._Role.accountsNotInRole); }, 500);
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.membersPickListName + '_SelectedItems', this._Role.accountsInRole); }, 500);        
         if(profile.id === -1 || profile.isSystemOnly) {
           this.canDelete = false;
         } else {
@@ -92,7 +109,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    // nothing atm
+    this._Subscription.unsubscribe();
   }
 
   get controls() {

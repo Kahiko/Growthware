@@ -14,19 +14,6 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractRoleController : ControllerBase
 {
 
-    public string[] GetAccountsInRole(int groupSeqId, int securityEntityId) 
-    {
-         string[] mRetVal = new string[] { };
-         return mRetVal;
-     }
-
-    public string[] GetAccountsNotInRole(int groupSeqId, int securityEntityId) 
-    {
-         string[] mRetVal = new string[] { };
-         return mRetVal;
-    }
-
-
     [HttpGet("GetRoleForEdit")]
     public ActionResult<UIRole> GetRoleForEdit(int roleSeqId)
     {
@@ -37,8 +24,6 @@ public abstract class AbstractRoleController : ControllerBase
         if (mSecurityInfo.MayEdit)
         {
             UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile());
-            mRetVal.AccountsInRole = GetAccountsInRole(roleSeqId, mSecurityEntity.Id);
-            mRetVal.AccountsNotInRole = GetAccountsNotInRole(roleSeqId, mSecurityEntity.Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }
