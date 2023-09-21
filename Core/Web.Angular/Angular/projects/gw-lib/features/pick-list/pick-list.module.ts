@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular material
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Feature
 import { PickListComponent } from './c/pick-list/pick-list.component';
@@ -11,6 +12,8 @@ import { PickListComponent } from './c/pick-list/pick-list.component';
   ],
   imports: [
     CommonModule,
+
+    MatButtonModule,
     MatIconModule
   ],
   exports: [

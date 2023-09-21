@@ -2,7 +2,10 @@
   <tbody>
       <tr class="pickListTableHeader">
           <td>
-            {{header}}&nbsp;&nbsp;<img alt="Help" (click)="onShowHelp()" src="/assets/images/help.gif" title="Help">
+            {{header}}&nbsp;&nbsp;
+            <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
+              </button>
           </td>
       </tr>
       <tr>
