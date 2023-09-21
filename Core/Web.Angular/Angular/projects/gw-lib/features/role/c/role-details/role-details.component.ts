@@ -144,7 +144,12 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   onDelete(): void {
-    this.closeModal();
+    this._RoleSvc.delete(this._Role.id).then((_) => {
+      this.updateSearch();
+      this.closeModal();
+    }).catch((error: any) => {
+      this._LoggingSvc.toast('The role could not be deleted', 'Delete Role', LogLevel.Error);
+    })
   }
 
   onSubmit(form: FormGroup): void {

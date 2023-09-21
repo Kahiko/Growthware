@@ -11,6 +11,7 @@ import { IRoleProfile } from './role-profile.model';
 })
 export class RoleService {
   private _ApiName: string = 'GrowthwareRole/';
+  private _Api_Delete: string = '';
   private _Api_GetRole: string = '';
   private _Api_Save: string = '';
 
@@ -26,8 +27,32 @@ export class RoleService {
   editReason: string = '';
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
+    this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteRole';
     this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'GetRoleForEdit';
     this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
+  }
+  
+  public async delete(roleSeqId: number): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      const mQueryParameter: HttpParams = new HttpParams()
+        .set('roleSeqId', roleSeqId);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.delete<boolean>(this._Api_Delete, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'RoleService', 'delete');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });    
   }
 
   /**

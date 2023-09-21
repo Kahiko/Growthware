@@ -14,6 +14,29 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractRoleController : ControllerBase
 {
 
+    [HttpDelete("DeleteRole")]
+    public ActionResult DeleteRole(int roleSeqId)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (HttpContext.Session.GetString("EditId") != null)
+        {
+            if (int.Parse(HttpContext.Session.GetString("EditId")) == roleSeqId)
+            {
+                UIRole mProfile = RoleUtility.GetUIProfile(roleSeqId, mSecurityEntity.Id);
+                if(mSecurityInfo.MayDelete && !mProfile.IsSystemOnly)
+                {
+                    RoleUtility.DeleteRole(roleSeqId, mSecurityEntity.Id);
+                    return Ok(true);
+                }
+                return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+            }
+        }
+        return StatusCode(StatusCodes.Status304NotModified, "Unable to delete");
+    }
+
     [HttpGet("GetRoleForEdit")]
     public ActionResult<UIRole> GetRoleForEdit(int roleSeqId)
     {
@@ -21,9 +44,13 @@ public abstract class AbstractRoleController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (HttpContext.Session.GetString("EditId") != null)
+        {
+
+        }
         if (mSecurityInfo.MayEdit)
         {
-            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile());
+            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile().Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }

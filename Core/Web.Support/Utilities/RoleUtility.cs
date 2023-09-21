@@ -52,6 +52,16 @@ public static class RoleUtility
         return mRoles;
     }
 
+    public static bool DeleteRole(int roleSeqId, int securityEntitySeqId)
+    {
+        UIRole mRoleFromDB = GetUIProfile(roleSeqId, securityEntitySeqId);
+        MRole mRoleToDelete = new MRole(mRoleFromDB);
+        mRoleToDelete.Id = roleSeqId;
+        mRoleToDelete.SecurityEntityID = securityEntitySeqId;
+        m_BRoles.DeleteRole(mRoleToDelete);
+        return true;
+    }
+
     public static ArrayList GetRolesArrayListBySecurityEntity(int securityEntityId)
     {
         DataTable mGroupsTable = GetAllRolesBySecurityEntity(securityEntityId);
@@ -63,11 +73,11 @@ public static class RoleUtility
         return mRetVal;        
     }
 
-    public static UIRole GetUIProfile(int roleSeqId, MSecurityEntity securityEntity)
+    public static UIRole GetUIProfile(int roleSeqId, int securityEntitySeqId)
     {
         MRole mRoleProfile = new MRole();
         mRoleProfile.Id = roleSeqId;
-        mRoleProfile.SecurityEntityID = securityEntity.Id;
+        mRoleProfile.SecurityEntityID = securityEntitySeqId;
         mRoleProfile = m_BRoles.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
         mRetVal.AccountsInRole = getAccountsInRole(mRoleProfile);
