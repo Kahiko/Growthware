@@ -36,3 +36,7 @@ You'll need to do the following in your component class
                 // this will unsubscribe to all registered subscriptions in a single go.
                 this._Subscription.unsubscribe();
             }
+
+    5.) Once you have your items call the data service:
+            setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
+            setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
