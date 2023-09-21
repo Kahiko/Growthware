@@ -66,7 +66,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this._Subscription.add(this._DataSvc.dataChanged.subscribe((data) => {
       // console.log('GroupDetailsComponent.ngOnInit',data.name.toLowerCase()); // used to determine the data name 
       switch (data.name.toLowerCase()) {
-          case 'roles':
+          case 'membersList':
               // set the paload to whatever you are using to track the "selected" items
               this._Role.accountsInRole = data.payLoad;
               break;
