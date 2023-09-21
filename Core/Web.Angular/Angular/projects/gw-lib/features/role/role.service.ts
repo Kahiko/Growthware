@@ -30,6 +30,12 @@ export class RoleService {
     this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
   }
 
+  /**
+   * Retrieves the role profile for editing based on the given role sequence ID.
+   *
+   * @param {number} roleSeqId - The sequence ID of the role to retrieve.
+   * @return {Promise<IRoleProfile>} A promise that resolves with the role profile.
+   */
   public async getRoleForEdit(roleSeqId: number): Promise<IRoleProfile> {
     return new Promise<IRoleProfile>((resolve, reject) => {
       const mQueryParameter: HttpParams = new HttpParams()
@@ -53,6 +59,11 @@ export class RoleService {
     });
   }
 
+  /**
+   * Retrieves the roles from the server.
+   *
+   * @return {Promise<any>} A promise that resolves with the roles data.
+   */
   public async getRoles(): Promise<any> {
     return new Promise<boolean>((resolve, reject) => {
       const mHttpOptions = {
