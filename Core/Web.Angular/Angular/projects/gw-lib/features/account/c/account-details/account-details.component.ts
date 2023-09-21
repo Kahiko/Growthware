@@ -45,9 +45,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   litLastNameWarning: string = '';
   litStatusWarning: string = '';
 
-  rolesAvailable: Array<string> = [];
   rolesPickListName: string = 'roles';
-  rolesSelected: Array<string> = [];
 
   selectedStatus: number = 0;
   selectedTimeZone: number = 0;
