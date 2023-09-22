@@ -13,13 +13,10 @@ import { MatSelectModule } from '@angular/material/select';
 // Library
 import { DynamicTableModule } from '@Growthware/features/dynamic-table';
 // Feature Components
-import { MessageDetailsComponent } from './c/message-details/message-details.component';
 import { SearchMessagesComponent } from './c/search-messages/search-messages.component';
-
 
 @NgModule({
   declarations: [
-    MessageDetailsComponent,
     SearchMessagesComponent
   ],
   imports: [
