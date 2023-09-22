@@ -47,41 +47,36 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
   ngOnInit() {
     this._Subscription.add(
       this._ModalSvc.openCalled$.subscribe((modalOptions: IModalOptions) => {
-        /**
-         * 1.) Resolve the ngContent
-         * 2.) Get a reference to the ModalComponent
-         * 3.) Send the modalOptions to the ModalComponent.setUp
-         * 4.) Create an instance of the ModalComponent
-         * 5.) Create an instance of the ContentObject
-         * 6.) If the ngContent is a Component, Set payloadRef
-         * 7.) Add the ContentObject to the _ActiveModals
-         * 8.) Register the newly created ModalComponent ref using the `ApplicationRef` instance
-         *        (applicationRef.attachView(componentRef.hostView);)
-         * 9.) Include the component view into change detection cycles 
-         *        (componentRef.changeDetectorRef.detectChanges())
-         */
         const mKey = modalOptions.modalId;
-        const mContentObject = new ContentObject(mKey, false, null, null);
+        // Create an instance of the ContentObject
+        const mContentObject = new ContentObject(mKey, this._IsComponent, null, null);
+        // Resolve the ngContent
         const mResolvedContent = this.resolveNgContent(modalOptions.contentPayLoad);
         let mNgContent = mResolvedContent;
+        // If the ngContent is a Component, Set payloadRef
         if(this._IsComponent) {
           mResolvedContent.changeDetectorRef.detectChanges();
           mContentObject.payloadRef = mResolvedContent;
           mContentObject.isComponent = true;
           mNgContent = [[mResolvedContent.location.nativeElement]];
         }
+        // Get a reference to the ModalComponent
         const mModalComponentRef = createComponent(ModalComponent, { environmentInjector: this._EnvironmentInjector, projectableNodes: [mNgContent] });
+        // Create an instance of the ModalComponent
         const mModalComponent = mModalComponentRef.instance as ModalComponent;
         mContentObject.nativeElement = mModalComponentRef.location.nativeElement;
+        // Send the modalOptions to the ModalComponent.setUp
         mModalComponent.setUp(modalOptions);
-        // setup the callback methods here
         this.setUpCallBacks(modalOptions, mModalComponent);
         mContentObject.modalComponentRef = mModalComponentRef;
         this._GWCommon.baseURL;
         // Add the modal to the ui
         document.body.appendChild(mContentObject.nativeElement);
+        // Register the newly created ModalComponent ref using the `ApplicationRef` instance
         this._ApplicationRef.attachView(mContentObject.modalComponentRef.hostView);
+        // Include the component view into change detection cycles 
         mContentObject.modalComponentRef.changeDetectorRef.detectChanges();
+        // Add the ContentObject to the _ActiveModals
         this._ActiveModals.push(mContentObject);
       })
     );
