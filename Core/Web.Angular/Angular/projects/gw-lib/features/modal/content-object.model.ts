@@ -1,16 +1,19 @@
 export interface IContentObject {
-  componentRef: any;
   isComponent: boolean;
   key: string;
-  value: any;
+  modalComponentRef: any;
+  payloadRef: any;
+  nativeElement: any;
 }
 
 export class ContentObject implements IContentObject {
 
+  payloadRef: any = null;
+
   constructor(
-    public componentRef: any,
-    public isComponent: boolean,
     public key: string,
-    public value: any,
+    public isComponent: boolean,
+    public modalComponentRef: any,
+    public nativeElement: any,
   ) { }
 }
