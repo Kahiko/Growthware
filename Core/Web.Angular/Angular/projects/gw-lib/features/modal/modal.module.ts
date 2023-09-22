@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 // Feature
 import { ModalComponent } from './c/popup/modal.component';
-import { ModalDirectiveDirective } from './c/directive/modal-directive.directive';
+import { ModalDirective } from './c/directive/modal-directive.directive';
 
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -13,7 +13,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 @NgModule({
   declarations: [
     ModalComponent,
-    ModalDirectiveDirective
+    ModalDirective
   ],
   imports: [
     CommonModule,
@@ -25,7 +25,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
   ],
   exports: [
     // ModalComponent,
-    ModalDirectiveDirective
+    ModalDirective
   ]
 })
 export class ModalModule { }

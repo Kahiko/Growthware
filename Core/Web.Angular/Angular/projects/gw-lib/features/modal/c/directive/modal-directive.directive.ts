@@ -16,22 +16,21 @@ type Content<T> = string | TemplateRef<T> | Type<T>;
 @Directive({
   selector: '[gwModalDirective]'
 })
-export class ModalDirectiveDirective implements OnDestroy, OnInit {
+export class ModalDirective implements OnDestroy, OnInit {
 
   private _ActiveModals: IContentObject[] = [];
-  // private _ComponentRef: any;
   private _IsComponent: boolean = false;
   private _Subscription: Subscription = new Subscription();
 
   constructor(
     @Inject(DOCUMENT) private _Document: Document,
-    private _GWCommon: GWCommon,
     private _Injector: Injector,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+    private _GWCommon: GWCommon,
     private _ViewContainerRef: ViewContainerRef
   ) { }
-
+  
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
   }
@@ -45,13 +44,11 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
   ngOnInit() {
     this._Subscription.add(
       this._ModalSvc.openCalled$.subscribe((modalOptions: IModalOptions) => {
-        // console.log("modalOptions:", modalOptions);
         const mNgContent = this.resolveNgContent(modalOptions.contentPayLoad);
-        const mModalComponentRef = this._ViewContainerRef.createComponent<any>(ModalComponent, {
+        const mComponentRef = this._ViewContainerRef.createComponent<any>(ModalComponent, {
           projectableNodes: [mNgContent]
         });
-        const mPayLoadRef = this._ViewContainerRef.createComponent<any>(modalOptions.contentPayLoad);
-        const mModalComponent = (mModalComponentRef.instance as ModalComponent);
+        const mModalComponent = (mComponentRef.instance as ModalComponent);
 
         // setup the callback methods here
         if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
@@ -76,7 +73,7 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
           }
         }
         // let the modal component work with any changes made to it
-        mModalComponentRef.hostView.detectChanges();
+        mComponentRef.hostView.detectChanges();
         // setup the callback methods here
         if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
           mModalComponent.cancelCallBackMethod = modalOptions.buttons.cancelButton.callbackMethod;
@@ -101,11 +98,8 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
         }
         // send the options to finish setting up the modal component's properties
         mModalComponent.setUp(modalOptions);
-        const { nativeElement } = mModalComponentRef.location;
-        const mContentObject = new ContentObject(modalOptions.modalId, this._IsComponent, mModalComponentRef, nativeElement)
-        if(this._IsComponent) {
-          mContentObject.payloadRef = mPayLoadRef;
-        }
+        const { nativeElement } = mComponentRef.location;
+        const mContentObject = new ContentObject(modalOptions.modalId, this._IsComponent, mComponentRef, nativeElement)
         this._ActiveModals.push(mContentObject);
         this._Document.body.appendChild(nativeElement);
       })
@@ -134,18 +128,17 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
    *
    * @private
    * @param {string} key
-   * @memberof ModalDirectiveDirective
+   * @memberof ModalDirective
    */
   private close(key: string) {
     const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
     if (mContentObj !== undefined) {
       try {
         this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
+        this._Document.body.removeChild(mContentObj.nativeElement);
         if(mContentObj.isComponent) {
-          mContentObj.payloadRef.destroy();
           mContentObj.modalComponentRef.destroy();
         }
-        this._Document.body.removeChild(mContentObj.nativeElement);
       } catch (error) {
         let mMsg
         if (error instanceof Error) {
@@ -164,7 +157,7 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
    * @template T - The type of the content.
    * @param {Content<T>} content - The content to resolve.
    * @return {any} - The resolved ngContent.
-   * @memberof ModalDirectiveDirective
+   * @memberof ModalDirective
    */  
   private resolveNgContent<T>(content: Content<T>) {
     this._IsComponent = false;
@@ -178,9 +171,8 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
       mRetVal = [mViewRef.rootNodes];
     } else if (content instanceof Type) {         /** Otherwise it's a component */
       this._IsComponent = true;
-      // const mComponentRef = this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector});
-      // this._ComponentRef = this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector});
-      mRetVal = [[this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector}).location.nativeElement]];
+      const mComponentRef = this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector});
+      mRetVal = [[mComponentRef.location.nativeElement]];
     }
     return mRetVal;
   }
