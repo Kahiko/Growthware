@@ -1,4 +1,4 @@
-import { ApplicationRef, Inject, createComponent, Directive, EnvironmentInjector , OnInit } from '@angular/core';
+import { Inject, Directive, OnInit, ViewContainerRef, Injector } from '@angular/core';
 import { OnDestroy, TemplateRef, Type } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Subscription } from 'rxjs';
@@ -24,14 +24,12 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
 
   constructor(
-    private _ApplicationRef: ApplicationRef,
     @Inject(DOCUMENT) private _Document: Document,
-    private _EnvironmentInjector: EnvironmentInjector,
     private _GWCommon: GWCommon,
-    // private _Injector: Injector,
+    private _Injector: Injector,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    // private _ViewContainerRef: ViewContainerRef
+    private _ViewContainerRef: ViewContainerRef
   ) { }
 
   ngOnDestroy(): void {
@@ -47,37 +45,69 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
   ngOnInit() {
     this._Subscription.add(
       this._ModalSvc.openCalled$.subscribe((modalOptions: IModalOptions) => {
-        const mKey = modalOptions.modalId;
-        // Create an instance of the ContentObject
-        const mContentObject = new ContentObject(mKey, this._IsComponent, null, null);
-        // Resolve the ngContent
-        const mResolvedContent = this.resolveNgContent(modalOptions.contentPayLoad);
-        let mNgContent = mResolvedContent;
-        // If the ngContent is a Component, Set payloadRef
-        if(this._IsComponent) {
-          mResolvedContent.changeDetectorRef.detectChanges();
-          mContentObject.payloadRef = mResolvedContent;
-          mContentObject.isComponent = true;
-          mNgContent = [[mResolvedContent.location.nativeElement]];
+        // console.log("modalOptions:", modalOptions);
+        const mNgContent = this.resolveNgContent(modalOptions.contentPayLoad);
+        const mModalComponentRef = this._ViewContainerRef.createComponent<any>(ModalComponent, {
+          projectableNodes: [mNgContent]
+        });
+        const mPayLoadRef = this._ViewContainerRef.createComponent<any>(modalOptions.contentPayLoad);
+        const mModalComponent = (mModalComponentRef.instance as ModalComponent);
+
+        // setup the callback methods here
+        if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
+          mModalComponent.cancelCallBackMethod = modalOptions.buttons.cancelButton.callbackMethod;
+        } else {
+          mModalComponent.cancelCallBackMethod = () => {
+            this.close(modalOptions.modalId);
+          };
         }
-        // Get a reference to the ModalComponent
-        const mModalComponentRef = createComponent(ModalComponent, { environmentInjector: this._EnvironmentInjector, projectableNodes: [mNgContent] });
-        // Create an instance of the ModalComponent
-        const mModalComponent = mModalComponentRef.instance as ModalComponent;
-        mContentObject.nativeElement = mModalComponentRef.location.nativeElement;
-        // Send the modalOptions to the ModalComponent.setUp
+        if (this._GWCommon.isFunction(modalOptions.buttons.closeButton.callbackMethod)) {
+          mModalComponent.closeCallBackMethod = modalOptions.buttons.closeButton.callbackMethod;
+        } else {
+          if(modalOptions.buttons.closeButton.visible) {
+            this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error)
+          }
+        }
+        if (this._GWCommon.isFunction(modalOptions.buttons.okButton.callbackMethod)) {
+          mModalComponent.oKCallBackMethod = modalOptions.buttons.okButton.callbackMethod;
+        } else {
+          if(modalOptions.buttons.okButton.visible) {
+            this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
+          }
+        }
+        // let the modal component work with any changes made to it
+        mModalComponentRef.hostView.detectChanges();
+        // setup the callback methods here
+        if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
+          mModalComponent.cancelCallBackMethod = modalOptions.buttons.cancelButton.callbackMethod;
+        } else {
+          mModalComponent.cancelCallBackMethod = () => {
+            this.close(modalOptions.modalId);
+          };
+        }
+        if (this._GWCommon.isFunction(modalOptions.buttons.closeButton.callbackMethod)) {
+          mModalComponent.closeCallBackMethod = modalOptions.buttons.closeButton.callbackMethod;
+        } else {
+          if(modalOptions.buttons.closeButton.visible) {
+            this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error)
+          }
+        }
+        if (this._GWCommon.isFunction(modalOptions.buttons.okButton.callbackMethod)) {
+          mModalComponent.oKCallBackMethod = modalOptions.buttons.okButton.callbackMethod;
+        } else {
+          if(modalOptions.buttons.okButton.visible) {
+            this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
+          }
+        }
+        // send the options to finish setting up the modal component's properties
         mModalComponent.setUp(modalOptions);
-        this.setUpCallBacks(modalOptions, mModalComponent);
-        mContentObject.modalComponentRef = mModalComponentRef;
-        this._GWCommon.baseURL;
-        // Add the modal to the ui
-        document.body.appendChild(mContentObject.nativeElement);
-        // Register the newly created ModalComponent ref using the `ApplicationRef` instance
-        this._ApplicationRef.attachView(mContentObject.modalComponentRef.hostView);
-        // Include the component view into change detection cycles 
-        mContentObject.modalComponentRef.changeDetectorRef.detectChanges();
-        // Add the ContentObject to the _ActiveModals
+        const { nativeElement } = mModalComponentRef.location;
+        const mContentObject = new ContentObject(modalOptions.modalId, this._IsComponent, mModalComponentRef, nativeElement)
+        if(this._IsComponent) {
+          mContentObject.payloadRef = mPayLoadRef;
+        }
         this._ActiveModals.push(mContentObject);
+        this._Document.body.appendChild(nativeElement);
       })
     );
 
@@ -88,30 +118,6 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
     this._Subscription.add(this._ModalSvc.closeCalled$.subscribe((key: string) => {
       this.close(key);  
     }));
-  }
-
-  setUpCallBacks(modalOptions: IModalOptions, modalComponent: ModalComponent) {
-    if (this._GWCommon.isFunction(modalOptions.buttons.cancelButton.callbackMethod)) {
-      modalComponent.cancelCallBackMethod = modalOptions.buttons.cancelButton.callbackMethod;
-    } else {
-      modalComponent.cancelCallBackMethod = () => {
-        this.close(modalOptions.modalId);
-      };
-    }
-    if (this._GWCommon.isFunction(modalOptions.buttons.closeButton.callbackMethod)) {
-      modalComponent.closeCallBackMethod = modalOptions.buttons.closeButton.callbackMethod;
-    } else {
-      if(modalOptions.buttons.closeButton.visible) {
-        this._LoggingSvc.toast('You have not set the options.buttons.closeButton.callbackMethod', 'Modal Service', LogLevel.Error)
-      }
-    }
-    if (this._GWCommon.isFunction(modalOptions.buttons.okButton.callbackMethod)) {
-      modalComponent.oKCallBackMethod = modalOptions.buttons.okButton.callbackMethod;
-    } else {
-      if(modalOptions.buttons.okButton.visible) {
-        this._LoggingSvc.toast('You have not set the options.buttons.okButton.callbackMethod', 'Modal Service', LogLevel.Error)
-      }
-    }    
   }
 
   /**
@@ -135,11 +141,11 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
     if (mContentObj !== undefined) {
       try {
         this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
-        this._Document.body.removeChild(mContentObj.nativeElement);
         if(mContentObj.isComponent) {
           mContentObj.payloadRef.destroy();
+          mContentObj.modalComponentRef.destroy();
         }
-        mContentObj.modalComponentRef.destroy();
+        this._Document.body.removeChild(mContentObj.nativeElement);
       } catch (error) {
         let mMsg
         if (error instanceof Error) {
@@ -165,17 +171,16 @@ export class ModalDirectiveDirective implements OnDestroy, OnInit {
     let mRetVal: any;
     if (typeof content === 'string') {            /** String */
       const element = this._Document.createTextNode(content);
-      mRetVal = element;
+      mRetVal = [[element]];
     } else if (content instanceof TemplateRef) {  /** ngTemplate */
       const mTemplateRef = Object.create(content) as T;
       const mViewRef = content.createEmbeddedView(mTemplateRef);
-      mRetVal = mViewRef.rootNodes;
+      mRetVal = [mViewRef.rootNodes];
     } else if (content instanceof Type) {         /** Otherwise it's a component */
       this._IsComponent = true;
       // const mComponentRef = this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector});
       // this._ComponentRef = this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector});
-      // mRetVal = [[this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector}).location.nativeElement]];
-      mRetVal = createComponent(content, { environmentInjector: this._EnvironmentInjector});
+      mRetVal = [[this._ViewContainerRef.createComponent<any>(content, {injector: this._Injector}).location.nativeElement]];
     }
     return mRetVal;
   }
