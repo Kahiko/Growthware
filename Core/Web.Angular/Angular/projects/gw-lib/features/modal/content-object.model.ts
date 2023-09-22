@@ -2,8 +2,8 @@ export interface IContentObject {
   isComponent: boolean;
   key: string;
   modalComponentRef: any;
-  payloadRef: any;
   nativeElement: any;
+  payloadRef: any;
 }
 
 export class ContentObject implements IContentObject {
