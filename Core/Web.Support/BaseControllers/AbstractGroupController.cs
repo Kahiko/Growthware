@@ -47,7 +47,7 @@ public abstract class AbstractGroupController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if (mSecurityInfo.MayEdit)
+        if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
             HttpContext.Session.SetString("EditId", groupSeqId.ToString());
             UIGroupProfile mRetVal = GroupUtility.GetUIGroupProfile(groupSeqId, mSecurityEntity.Id);

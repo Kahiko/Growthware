@@ -1,1 +1,23 @@
-<p>standalone message-details works!</p>
+<form [formGroup]="frmMessage" (ngSubmit)="onSubmit(frmMessage)">
+    <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px; min-width: 400px;">
+        <mat-tab label="General">
+            <div class="mat-tab__container formSection">
+                <div class="mat-tab__content formSectionContents">
+                    <div class="table" style="padding: 5px; width: 100%;">
+                        <div class="tr">
+                            <div class="td">details</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="frmMessage.invalid" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+          </button>
+          <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+          </button>
+    </div>
+</form>
