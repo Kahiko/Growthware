@@ -44,7 +44,7 @@ export class ModalService {
           this._ApplicationRef.detachView(mContentObj.payloadRef.hostView);
           mContentObj.payloadRef.destroy();
         } catch (error) {
-          let mMsg
+          let mMsg;
           if (error instanceof Error) {
             mMsg = error.message
           } else {
