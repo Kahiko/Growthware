@@ -41,6 +41,13 @@ public abstract class AbstractMessageController : ControllerBase
                 {
                     // do nothing not all message have their own profile so there are no tags
                 }
+                finally
+                {
+                    if(string.IsNullOrEmpty(mRetVal.AvalibleTags)) 
+                    {
+                        mRetVal.AvalibleTags = "No tags avalible for this message.";
+                    }
+                }
             }
             HttpContext.Session.SetInt32("EditId", mRetVal.Id);
             return Ok(mRetVal);
