@@ -2,7 +2,7 @@
   <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
     <mat-tab label="Account Information">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents">
+        <div class="mat-tab__content formSectionContents tabHeight">
           <div class="table" style="padding: 5px;">
             <div class="tr">
               <div class="td" style="width: 50%;">
@@ -139,7 +139,7 @@
     </mat-tab>
     <mat-tab *ngIf="showRoles" label="Roles">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents">
+        <div class="mat-tab__content formSectionContents tabHeight">
           <gw-lib-pick-list #rolePickList
             id="roles"
             name="{{rolesPickListName}}"
@@ -154,7 +154,7 @@
     </mat-tab>
     <mat-tab *ngIf="showGroups" label="Groups">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents">
+        <div class="mat-tab__content formSectionContents tabHeight">
           <gw-lib-pick-list #groupPickList
             id="groups"
             name="{{groupsPickListName}}"
@@ -169,7 +169,7 @@
     </mat-tab>
     <mat-tab *ngIf="showDerived" label="Derived Roles">
       <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents">
+        <div class="mat-tab__container formSection tabHeight">
           <div>
             <gw-lib-snake-list id="{{derivedRolesId}}"></gw-lib-snake-list>
           </div>
