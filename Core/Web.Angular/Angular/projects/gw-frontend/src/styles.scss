@@ -6,12 +6,12 @@ html, body { height: 100%; }
   flex: 1 1 auto;
 }
 
-
 [data-title]:hover:after {
   opacity: 1;
   transition: all 0.1s ease 0.5s;
   visibility: visible;
 }
+
 [data-title]:after {
   content: attr(data-title);
   position: absolute;
@@ -41,16 +41,40 @@ html, body { height: 100%; }
 }
 
 /* Table */
-.table {
+div.table {
   display: table;
+  width: 100%;
+  // background-color: lightblue;
+  border-collapse: collapse;
+  // border: 1px solid red;
 }
-.tr {
+
+div.tr {
   display: table-row;
 }
-.td {
-  padding: 5px;
+div.caption {border:1px solid grey; caption-side: bottom; display: table-caption; text-align: center; }
+div.group {display: table-row-group; }
+
+div.td {
   display: table-cell;
+  // border: 1px solid red;
 }
+
+div.colspan,
+div.colspan+div.td {
+  border: 0;
+}
+
+div.colspan>div {
+  width: 1px;
+}
+
+div.colspan>div>div {
+  position: relative;
+  width: 99px;
+  overflow: hidden;
+}
+
 .left {
   text-align: left;
 }
