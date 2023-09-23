@@ -46,6 +46,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
   canDelete: boolean = false;
   frmGroup!: FormGroup;
+  height: number = 350;
   securityInfo!: ISecurityInfo;
   rolesAvailable: Array<string> = [];
   rolesPickListName: string = 'roles';
