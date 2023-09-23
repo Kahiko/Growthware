@@ -45,7 +45,7 @@ export class MessageService {
       };
       this._HttpClient.get<IMessageProfile>(this._Api_GetProfile, mHttpOptions).subscribe({
         next: (response: IMessageProfile) => {
-          console.log('MessageService.getProfile.response', response);
+          // console.log('MessageService.getProfile.response', response);
           resolve(response);
         },
         error: (error: any) => {

@@ -15,7 +15,7 @@ public abstract class AbstractMessageController : ControllerBase
 {
     [AllowAnonymous]
     [HttpGet("GetProfile")]
-    public ActionResult<MMessage> GetProfile(int id)
+    public ActionResult<UIMessageProfile> GetProfile(int id)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
@@ -24,12 +24,25 @@ public abstract class AbstractMessageController : ControllerBase
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
             HttpContext.Session.SetString("EditId", id.ToString());
-            MMessage mRetVal = new MMessage();
-            mRetVal = MessageUtility.GetProfile(id);
-            if(mRetVal == null)
+            MMessage mProfileFromDb = new MMessage();
+            mProfileFromDb = MessageUtility.GetProfile(id);
+            UIMessageProfile mRetVal = new UIMessageProfile();
+            if(mProfileFromDb != null)
             {
-                mRetVal = new MMessage();
+                mRetVal = new UIMessageProfile(mProfileFromDb);
+                try
+                {
+                    string mAssembley = "GrowthWare.Framework";
+                    string mNameSpace = "GrowthWare.Framework.Models";
+                    MMessage mMessageProfile = (MMessage)ObjectFactory.Create(mAssembley, mNameSpace, "M" + mRetVal.Name);
+                    mRetVal.AvalibleTags = mMessageProfile.GetTags(Environment.NewLine);;
+                }
+                catch (System.Exception)
+                {
+                    // do nothing not all message have their own profile so there are no tags
+                }
             }
+            HttpContext.Session.SetInt32("EditId", mRetVal.Id);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");    }

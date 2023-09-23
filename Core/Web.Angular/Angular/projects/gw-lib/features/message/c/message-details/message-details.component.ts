@@ -39,17 +39,18 @@ export class MessageDetailsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.frmMessage = this._FormBuilder.group({});
+    this.populateForm(); // need to make sure the form controls are set ¯\_(ツ)_/¯
     let mIdToGet = -1;
-    console.log('editRow', this._MessageSvc.editRow);
+    // console.log('editRow', this._MessageSvc.editRow);
     if(this._MessageSvc.editReason.toLowerCase() != "newprofile") {
       mIdToGet = this._MessageSvc.editRow.MessageSeqId;
     }
-    console.log('mIdToGet', mIdToGet);
+    // console.log('mIdToGet', mIdToGet);
     
     this._MessageSvc.getProfile(mIdToGet).then((response: IMessageProfile) => {
-      // console.log('MessageDetailsComponent.ngOnInit.getProfile', response);
+      // console.log('getProfile', this._MessageSvc.editRow);
       this._Profile = response;
+      console.log('MessageDetailsComponent.ngOnInit.getProfile', this._Profile);
       this.populateForm();
       this.applySecurity();
     }).catch((error: any) => {
@@ -84,8 +85,11 @@ export class MessageDetailsComponent implements OnInit {
 
   private populateForm(): void {
     this.frmMessage = this._FormBuilder.group({
-      body: [this._Profile.body, Validators.required],
+      avalibleTags: [this._Profile.avalibleTags],
       description: [this._Profile.description],
+      messageBody: [this._Profile.body, Validators.required],
+      name: [{value : this._Profile.name, disabled: this._Profile.id > -1}],
+      title: [this._Profile.title, Validators.required],
     });
   }
 }

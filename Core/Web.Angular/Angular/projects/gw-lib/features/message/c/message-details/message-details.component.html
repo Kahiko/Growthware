@@ -10,25 +10,24 @@
             </td>
             <td style="width: 10px;"></td>
             <td class="left">
-                <span id="lblName" class="Form_Field">just text</span>
-                <input type="text" id="txtName" class="rounded" *ngIf="false" />
-        </td>
+                <input type="text" id="txtName" formControlName="name" class="rounded" />
+            </td>
         </tr>
         <tr>
             <td style="width: 10px;" colspan="3">
                 <span class="Form_LabelText">Description: </span><br />
-                <input type="text" id="txtDescription" class="rounded" style="height: 49px; width: 847px;" TextMode="MultiLine" MaxLength="128" />
+                <input type="text" id="txtDescription" formControlName="description" class="rounded" style="height: 49px; width: 847px;" TextMode="MultiLine" MaxLength="128" />
             </td>
         </tr>
         <tr>
             <td class="left" style="vertical-align: top;">
                 <span class="Form_LabelText">Title: </span><br />
-                <input type="text" id="txtMessageTitle" class="rounded" Columns="50" MaxLength="100" style="Width: 95%;" />
+                <input type="text" id="txtMessageTitle" formControlName="title" class="rounded" Columns="50" MaxLength="100" style="Width: 95%;" />
             </td>
             <td style="width: 10px;"></td>
             <td class="left">
-                <span class="Form_LabelText">Title: </span><br />
-                <textarea id="txtTags" class="rounded" TextMode="MultiLine" Columns="15" Rows="5" style="Width: 95%;"></textarea>
+                <span class="Form_LabelText">Tags: </span><br />
+                <textarea id="txtTags" formControlName="avalibleTags" class="rounded" TextMode="MultiLine" Columns="15" Rows="5" style="Width: 95%;"></textarea>
             </td>
         </tr>
         <tr>
@@ -40,7 +39,8 @@
         <tr>
             <td colspan="3">
                 <span class="Form_LabelText">Message Body:</span>
-                <textarea type="text" id="txtMessageBody" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;"></textarea>
+                <!-- <textarea type="text" formControlName="body" id="txtMessageBody" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;"></textarea> -->
+                <textarea  id="txtMessageBody" formControlName="messageBody" maxlength="512" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;" matInput></textarea>
             </td>
         </tr>
     </table>
