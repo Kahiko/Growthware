@@ -98,7 +98,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   ) { }
 
   ngOnDestroy(): void {
-    console.log('AccountDetailsComponent.ngOnDestroy called', this._AccountProfile);
+    // console.log('AccountDetailsComponent.ngOnDestroy called', this._AccountProfile);
     this._Subscription.unsubscribe();
   }
 
