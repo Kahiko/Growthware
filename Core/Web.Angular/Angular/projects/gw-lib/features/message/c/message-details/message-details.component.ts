@@ -5,7 +5,6 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { MessageService } from '../../message.service';
@@ -21,8 +20,7 @@ import { IMessageProfile, MessageProfile } from '../../message-profile.model';
     ReactiveFormsModule,
 
     MatButtonModule,
-    MatIconModule,
-    MatTabsModule
+    MatIconModule
   ],
   templateUrl: './message-details.component.html',
   styleUrls: ['./message-details.component.scss']
