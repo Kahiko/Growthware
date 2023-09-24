@@ -305,7 +305,7 @@ Usage:
 	DECLARE 
 		@P_MessageSeqId INT = 1,
 		@P_SecurityEntitySeqId INT = 2,
-		@P_Name VARCHAR(50) 'Test',
+		@P_Name VARCHAR(50) = 'Test',
 		@P_Title VARCHAR(100) = 'Just Testing',
 		@P_Description VARCHAR(512) = 'Some description',
 		@P_Body VARCHAR(MAX) = 'The body',
