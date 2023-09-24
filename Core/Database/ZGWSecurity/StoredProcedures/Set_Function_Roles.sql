@@ -75,35 +75,32 @@ END
 			SecurityEntitySeqId = @P_SecurityEntitySeqId
 
 		IF @P_Debug = 1 PRINT('@V_RolesSecurityEntitiesSeqId = ' + CONVERT(VARCHAR,@V_RolesSecurityEntitiesSeqId))
-		IF NOT EXISTS(
-							SELECT
-			RolesSecurityEntitiesSeqId
-		FROM
-			ZGWSecurity.Roles_Security_Entities_Functions
-		WHERE 
-							FunctionSeqId = @P_FunctionSeqId
-			AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
-			AND RolesSecurityEntitiesSeqId = @V_RolesSecurityEntitiesSeqId)
-						BEGIN TRY
-							IF @P_Debug = 1 PRINT 'Insert new record'
-							INSERT ZGWSecurity.Roles_Security_Entities_Functions
-			(
-			FunctionSeqId,
-			RolesSecurityEntitiesSeqId,
-			PermissionsNVPDetailSeqId,
-			Added_By
-			)
-		VALUES
-			(
-				@P_FunctionSeqId,
-				@V_RolesSecurityEntitiesSeqId,
-				@P_PermissionsNVPDetailSeqId,
-				@P_Added_Updated_By
-							)
-						END TRY
-						BEGIN CATCH
-							GOTO ABEND
-						END CATCH
+		IF NOT EXISTS (
+			SELECT
+				RolesSecurityEntitiesSeqId
+			FROM
+				ZGWSecurity.Roles_Security_Entities_Functions
+			WHERE 
+				FunctionSeqId = @P_FunctionSeqId
+				AND PermissionsNVPDetailSeqId = @P_PermissionsNVPDetailSeqId
+				AND RolesSecurityEntitiesSeqId = @V_RolesSecurityEntitiesSeqId)
+			BEGIN TRY
+				IF @P_Debug = 1 PRINT 'Insert new record'
+				INSERT ZGWSecurity.Roles_Security_Entities_Functions (
+					FunctionSeqId,
+					RolesSecurityEntitiesSeqId,
+					PermissionsNVPDetailSeqId,
+					Added_By
+				) VALUES (
+					@P_FunctionSeqId,
+					@V_RolesSecurityEntitiesSeqId,
+					@P_PermissionsNVPDetailSeqId,
+					@P_Added_Updated_By
+				)
+			END TRY
+			BEGIN CATCH
+				GOTO ABEND
+			END CATCH
 	--END IF
 	END
 	SET @P_Roles = RIGHT(@P_Roles, LEN(@P_Roles) - @V_Pos)
