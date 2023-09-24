@@ -8,11 +8,10 @@ import { MatIconModule } from '@angular/material/icon';
 // Library
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
-import { SecurityService } from '@Growthware/features/security';
+import { SecurityService, ISecurityInfo } from '@Growthware/features/security';
 // Feature
 import { MessageService } from '../../message.service';
 import { IMessageProfile, MessageProfile } from '../../message-profile.model';
-import { ISecurityInfo } from '@Growthware';
 
 @Component({
   selector: 'gw-lib-message-details',
