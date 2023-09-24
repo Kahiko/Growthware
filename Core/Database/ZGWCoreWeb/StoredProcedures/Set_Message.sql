@@ -107,18 +107,15 @@ END
 	-- INSERT a new row in the table.
 
 	-- CHECK FOR DUPLICATE Name BEFORE INSERTING
-	IF EXISTS( SELECT [Name]
+	IF EXISTS(SELECT [Name]
 	FROM ZGWCoreWeb.[Messages]
-	WHERE [Name] = @P_Name AND
-		SecurityEntitySeqId = @P_SecurityEntitySeqId
-			)
-			BEGIN
+	WHERE [Name] = @P_Name AND SecurityEntitySeqId = @P_SecurityEntitySeqId)
+	BEGIN
 		RAISERROR ('The message you entered already exists in the database.',16,1)
 		RETURN
 	END
 
-	INSERT ZGWCoreWeb.[Messages]
-		(
+	INSERT ZGWCoreWeb.[Messages] (
 		SecurityEntitySeqId,
 		[Name],
 		Title,
@@ -127,18 +124,16 @@ END
 		Format_As_HTML,
 		Added_By,
 		Added_Date
-		)
-	VALUES
-		(
-			@P_SecurityEntitySeqId,
-			@P_Name,
-			@P_Title,
-			@P_Description,
-			@P_Body,
-			@P_Format_As_HTML,
-			@P_Added_Updated_By,
-			@V_Now
-			)
+	) VALUES (
+		@P_SecurityEntitySeqId,
+		@P_Name,
+		@P_Title,
+		@P_Description,
+		@P_Body,
+		@P_Format_As_HTML,
+		@P_Added_Updated_By,
+		@V_Now
+	);
 	SELECT @P_Primary_Key = SCOPE_IDENTITY()
 -- Get the IDENTITY value for the row just inserted.
 END
