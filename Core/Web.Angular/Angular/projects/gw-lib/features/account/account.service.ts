@@ -265,7 +265,7 @@ export class AccountService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
         next: (response: any) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent line 25
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
           }
