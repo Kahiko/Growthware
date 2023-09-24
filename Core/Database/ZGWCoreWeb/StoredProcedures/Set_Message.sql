@@ -65,7 +65,12 @@ BEGIN
 				WHERE MessageSeqId = @P_MessageSeqId
 					AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 			-- set the output id just in case.
-			SELECT @P_Primary_Key = @P_MessageSeqId
+			SELECT 
+				@P_Primary_Key = [MessageSeqId]
+			FROM 
+				ZGWCoreWeb.[Messages] 
+			WHERE 
+				[Name] = @P_Name AND SecurityEntitySeqId = @P_SecurityEntitySeqId
 		END
 	ELSE
 		BEGIN
