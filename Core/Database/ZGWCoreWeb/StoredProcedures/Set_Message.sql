@@ -31,6 +31,10 @@ Usage:
 -- Create date: 09/02/2011
 -- Description:	Inserts or updates ZGWCoreWeb.[Messages]
 -- =============================================
+-- Author:		Michael Regan
+-- Modified date: 09/24/2023
+-- Description:	Was not return the correct value for P_Primary_Key when updating
+-- =============================================
 CREATE PROCEDURE [ZGWCoreWeb].[Set_Message] @P_MessageSeqId INT
 	,@P_SecurityEntitySeqId INT
 	,@P_Name VARCHAR(50)
