@@ -32,20 +32,19 @@
         </tr>
         <tr>
             <td colspan="3" style="width: 10px;">
-                <input type="checkbox" id="chkFormatAsHTML" />
-                <label for="chkEnableNotifications">Enable Notifications</label>
+                <input type="checkbox" id="chkFormatAsHTML" formControlName="formatAsHtml" />
+                <label for="chkEnableNotifications">Format as HTML</label>
             </td>
         </tr>
         <tr>
             <td colspan="3">
                 <span class="Form_LabelText">Message Body:</span>
-                <!-- <textarea type="text" formControlName="body" id="txtMessageBody" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;"></textarea> -->
                 <textarea  id="txtMessageBody" formControlName="messageBody" maxlength="512" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;" matInput></textarea>
             </td>
         </tr>
     </table>
     <div class="buttonRow">
-        <button type="submit" [disabled]="frmMessage.invalid" mat-button class="Form_Button" color="primary">
+        <button *ngIf="canSave" type="submit" [disabled]="frmMessage.invalid" mat-button class="Form_Button" color="primary">
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
           </button>
           <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">

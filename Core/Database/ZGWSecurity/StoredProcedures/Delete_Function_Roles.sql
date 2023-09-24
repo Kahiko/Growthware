@@ -8,7 +8,7 @@ Usage:
 		@P_ErrorCode int,
 		@P_Debug INT = 1
 
-	exec ZGWSecurity.Delete_Function_Groups
+	exec ZGWSecurity.Delete_Function_Roles
 		@P_FunctionSeqId,
 		@P_SecurityEntitySeqId,
 		@P_PermissionsNVPDetailSeqId,

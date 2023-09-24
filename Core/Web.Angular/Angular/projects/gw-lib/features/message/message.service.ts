@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
+import { SearchService } from '@Growthware/features/search';
 // Feature
 import { IMessageProfile } from './message-profile.model';
 
@@ -13,6 +14,7 @@ export class MessageService {
 
   private _Api_GetProfile: string = '';
   private _ApiName: string = 'GrowthwareMessage/';
+  private _Api_Save: string = '';
   
   public get addModalId(): string {
     return 'addMessage'
@@ -28,9 +30,11 @@ export class MessageService {
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient, 
-    private _LoggingSvc: LoggingService
+    private _LoggingSvc: LoggingService,
+    private _SearchSvc: SearchService
   ) { 
     this._Api_GetProfile = this._GWCommon.baseURL + this._ApiName + 'GetProfile/';
+    this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save/';
   }
 
   public async getProfile(id: number): Promise<IMessageProfile> {
@@ -50,6 +54,30 @@ export class MessageService {
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'MessageService', 'getMessageForEdit');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    })
+  }
+
+  public async save(messageProfile: IMessageProfile): Promise<IMessageProfile> {
+    return new Promise<IMessageProfile>((resolve, reject) => {
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+      };
+      this._HttpClient.post<IMessageProfile>(this._Api_Save, messageProfile, mHttpOptions).subscribe({
+        next: (response: IMessageProfile) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Messages"); // from SearchMessagesComponent (this.configurationName)
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Messages", mSearchCriteria);
+          }
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'MessageService', 'save');
           reject('Failed to call the API');
         },
         // complete: () => {}

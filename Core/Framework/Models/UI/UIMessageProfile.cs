@@ -5,7 +5,11 @@ namespace GrowthWare.Framework.Models.UI;
 
 public class UIMessageProfile
 {
-    public UIMessageProfile(){}
+    public UIMessageProfile()
+    {
+        this.Id = -1;
+        this.AvalibleTags = "No tags avalible for this message.";
+    }
 
     public UIMessageProfile(MMessage message)
     {

@@ -157,13 +157,15 @@ public class BMessages : AbstractBusinessLogic
     /// </summary>
     /// <param name="profile">The message profile.</param>
     /// <returns>System.Int32.</returns>
-    public void Save(MMessage profile)
+    public int Save(MMessage profile)
     {
         if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!!");
+        int mRetVal = -1;
         if (DatabaseIsOnline())
         {
             m_DMessages.Profile = profile;
-            m_DMessages.Save();
+            mRetVal = m_DMessages.Save();
         }
+        return mRetVal;
     }
 }

@@ -43,11 +43,13 @@ public static class MessageUtility
     /// Saves the specified profile.
     /// </summary>
     /// <param name="profile">The profile.</param>
-    public static void Save(MMessage profile)
+    public static int Save(MMessage profile)
     {
         BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        mBMessages.Save(profile);
+        int mRetVal = -1;
+        mRetVal = mBMessages.Save(profile);
         RemoveCachedMessagesCollection();
+        return mRetVal;
     }
 
     [CLSCompliant(false)]

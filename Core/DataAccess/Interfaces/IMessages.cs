@@ -37,5 +37,5 @@ public interface IMessages : IDBInteraction
     /// <summary>
     /// Saves this instance.
     /// </summary>
-    void Save();
+    int Save();
 }

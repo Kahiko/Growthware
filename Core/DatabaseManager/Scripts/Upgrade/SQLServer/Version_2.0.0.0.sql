@@ -443,6 +443,24 @@ IF @P_Debug = 1
 RETURN 0
 GO
 
+DECLARE @V_Now datetime,
+		@V_SystemID INT = (SELECT AccountSeqId FROM ZGWSecurity.Accounts where Account = 'System'),
+		@V_MyAction VARCHAR(256),
+		@V_FunctionID INT,
+		@V_ViewPermission   INT = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View'),
+		@V_AddPermission    INT = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Add'),
+		@V_EditPermission   INT = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Edit'),
+		@V_DeletePermission INT	= (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Delete'),
+		@V_Debug int = 0;
+
+SET @V_FunctionID = (SELECT FunctionTypeSeqId FROM ZGWSecurity.Function_Types WHERE [Name] = 'Module');
+
+SET @V_MyAction = 'EditMessage';
+SET @V_FunctionID = (SELECT FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction);
+
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_AddPermission,@V_SystemID, @V_Debug;
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermission,@V_SystemID, @V_Debug;
+
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'accounts' WHERE [Action] = 'Search_Accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'functions' WHERE [Action] = 'Search_Functions';

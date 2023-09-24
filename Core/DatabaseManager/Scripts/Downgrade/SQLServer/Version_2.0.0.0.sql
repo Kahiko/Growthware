@@ -404,6 +404,20 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditDBInformation' WHERE [Actio
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 
+DECLARE 
+	@V_FunctionSeqId int = 4,
+	@V_SecurityEntitySeqId	INT = 1,
+	@V_PermissionsNVPDetailSeqId INT = 1,
+	@V_ErrorCode int,
+	@V_Debug INT = 0;
+
+SET @V_FunctionSeqId = (SELECT FunctionSeqId from ZGWSecurity.Functions WHERE action='EditMessage');
+
+SET @V_PermissionsNVPDetailSeqId = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Add');
+EXEC ZGWSecurity.Delete_Function_Roles @V_FunctionSeqId, @V_SecurityEntitySeqId, @V_PermissionsNVPDetailSeqId, @V_ErrorCode OUT;
+SET @V_PermissionsNVPDetailSeqId = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'Edit');
+EXEC ZGWSecurity.Delete_Function_Roles @V_FunctionSeqId, @V_SecurityEntitySeqId, @V_PermissionsNVPDetailSeqId, @V_ErrorCode OUT;
+
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '1.0.0.0',
     [Updated_By] = null,

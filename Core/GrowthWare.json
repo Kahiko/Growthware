@@ -22,7 +22,7 @@
     "Development_Actions_EditAccount": "/accounts/edit-my-account",
     "Development_Actions_EditFunction": "Functions",
     "Development_Actions_EditGroups": "Manage_Groups",
-    "Development_Actions_EditMessages": "Search_Messages",
+    "Development_Actions_EditMessages": "EditMessage",
     "Development_Actions_EditOtherAccount": "Accounts",
     "Development_Actions_EditRoles": "Search_Roles",
     "Development_Actions_EditSecurityEntity": "Search_Security_Entities",

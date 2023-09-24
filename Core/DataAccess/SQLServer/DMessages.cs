@@ -4,6 +4,7 @@ using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
+using System.Globalization;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
@@ -20,7 +21,7 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Name", m_Profile.Name), new SqlParameter("@P_Title", m_Profile.Title), 
 				new SqlParameter("@P_Description", m_Profile.Description), new SqlParameter("@P_BODY", m_Profile.Body), 
 				new SqlParameter("@P_Format_As_HTML", m_Profile.FormatAsHtml), new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)), 
-				GetSqlParameter("@P_PRIMARY_KEY", -1, ParameterDirection.Output) 
+				GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output) 
 			};
             return myParameters;
         }
@@ -59,11 +60,12 @@ namespace GrowthWare.DataAccess.SQLServer
             return GetDataRow(storeProc, mParamaters);
         }
 
-        void IMessages.Save()
+        int IMessages.Save()
         {
             String storeProc = "ZGWCoreWeb.Set_Message";
             SqlParameter[] mParameters = getInsertUpdateParameters();
             ExecuteNonQuery(storeProc, mParameters);
+            return int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
         }
     }
 }

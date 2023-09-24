@@ -370,6 +370,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Actions_EditGroups", true); }
         }
 
+        public static string Actions_EditMessages
+        {
+            get { return GetAppSettingValue("Actions_EditMessages", true); }
+        }
+
         public static string Actions_EditRoles
         {
             get { return GetAppSettingValue("Actions_EditRoles", true); }
