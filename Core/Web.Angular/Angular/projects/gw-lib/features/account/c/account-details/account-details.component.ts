@@ -299,8 +299,6 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
         this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
         this.closeModal();
-      }).catch((error) => {
-        
       });
     }
   }
