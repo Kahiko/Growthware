@@ -447,7 +447,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
             {
                 foreach (SqlParameter parameter in parameters)
                 {
-                    if (parameter.ParameterName == parameterName)
+                    if (parameter.ParameterName.ToLowerInvariant() == parameterName.ToLowerInvariant())
                     {
                         if (!Convert.IsDBNull(parameter.Value))
                         {
