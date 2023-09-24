@@ -194,9 +194,9 @@ ALTER VIEW [ZGWSecurity].[vwSearchGroups] AS
 		G.[GroupSeqId] AS Group_SEQ_ID,
 		G.[Name],
 		G.[Description],
-		Added_By = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_By),
-		G.Added_Date
-		G.[Updated_By] = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Updated_By),
+		[Added_By] = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Added_By),
+		G.Added_Date,
+		[Updated_By] = (SELECT Account FROM ZGWSecurity.Accounts WHERE AccountSeqId = G.Updated_By),
 		G.[Updated_Date],
 		RSE.SecurityEntitySeqId
 	FROM
