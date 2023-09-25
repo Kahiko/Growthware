@@ -1,1 +1,62 @@
-<p>Standalone function-details works!</p>
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
+    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
+      <mat-tab label="Function Information">
+        <div class="mat-tab__container formSection">
+          <div class="mat-tab__content formSectionContents tabHeight">
+            <input matInput type="text" formControlName="name" class="Form_Field rounded">
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="showRoles" label="Roles">
+        <div class="mat-tab__container formSection">
+          <div class="mat-tab__content formSectionContents tabHeight">
+            <gw-lib-pick-list #rolePickList
+              id="roles"
+              name="{{rolesPickListName}}"
+              allItemsText="Available Roles"
+              header="Assign roles"
+              pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+              selectedItemsText="Selected Roles"
+              size=8
+              width=120></gw-lib-pick-list>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="showGroups" label="Groups">
+        <div class="mat-tab__container formSection">
+          <div class="mat-tab__content formSectionContents tabHeight">
+            <gw-lib-pick-list #groupPickList
+              id="groups"
+              name="{{groupsPickListName}}"
+              allItemsText="Available Groups"
+              header="Assign Groups"
+              pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
+              selectedItemsText="Selected Groups"
+              size=8
+              width=120></gw-lib-pick-list>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="showDerived" label="Derived Roles">
+        <div class="mat-tab__container formSection">
+          <div class="mat-tab__container formSection tabHeight">
+            <div>
+              <gw-lib-snake-list id="{{derivedRolesId}}"></gw-lib-snake-list>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+      <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+      </button>
+      <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+      </button>
+      <button type="button" *ngIf="canCancel" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+      </button>
+    </div>
+  </form>
+  

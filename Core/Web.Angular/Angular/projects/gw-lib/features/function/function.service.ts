@@ -16,6 +16,9 @@ export class FunctionService {
   private _Api_GetFunction: string = '';
   private _Reason: string = '';
 
+  editReason: string = '';
+  editRow: any = {};
+
   public get functionSeqId(): number {
     return this._FunctionSeqId;
   }
