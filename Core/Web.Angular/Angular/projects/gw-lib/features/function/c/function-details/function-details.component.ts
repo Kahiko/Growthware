@@ -58,7 +58,15 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
 
-  rolesPickListName: string = 'roles';
+  groupsPickListNameView: string = 'viewGroups';
+  groupsPickListNameAdd: string = 'addGroups';
+  groupsPickListNameEdit: string = 'editGroups';
+  groupsPickListNameDelete: string = 'deleteGroups';
+
+  rolesPickListNameView: string = 'viewRoles';
+  rolesPickListNameAdd: string = 'addRoles';
+  rolesPickListNameEdit: string = 'editRoles';
+  rolesPickListNameDelete: string = 'deleteRoles';
 
   showRoles: boolean = false;
   showGroups: boolean = false;

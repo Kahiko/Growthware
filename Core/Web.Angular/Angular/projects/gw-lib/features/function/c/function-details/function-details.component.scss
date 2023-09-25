@@ -1,4 +1,11 @@
-.tabHeight { // From (SearchfunctionsComponent._TheWindowSize)
-    min-height: 325px; // -125px
-    min-width: 850px;  // -50px
-  }
+.tabHeight {
+  // From (SearchfunctionsComponent._TheWindowSize)
+  min-height: 450px; // -125px
+  min-width: 850px; // -50px
+}
+
+.centerDiv {
+  margin: auto;
+  width: 50%;
+  padding-left: 50px;
+}

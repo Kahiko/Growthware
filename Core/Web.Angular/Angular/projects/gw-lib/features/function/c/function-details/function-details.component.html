@@ -7,33 +7,131 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab *ngIf="showRoles" label="Roles">
+      <mat-tab label="Menu Order">
         <div class="mat-tab__container formSection">
           <div class="mat-tab__content formSectionContents tabHeight">
-            <gw-lib-pick-list #rolePickList
-              id="roles"
-              name="{{rolesPickListName}}"
-              allItemsText="Available Roles"
-              header="Assign roles"
-              pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
-              selectedItemsText="Selected Roles"
-              size=8
-              width=120></gw-lib-pick-list>
+            Menu Order
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab *ngIf="showRoles" label="Roles">
+        <div class="mat-tab__container">
+          <div class="mat-tab__content formSectionContents tabHeight">
+            <div class="table">
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #rolesView
+                    id="viewRoles"
+                    name="{{rolesPickListNameView}}"
+                    allItemsText="Available Roles"
+                    header="Assign roles"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #rolesAdd
+                    id="addRoles"
+                    name="{{rolesPickListNameAdd}}"
+                    allItemsText="Available Roles"
+                    header="Assign roles"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+              </div>
+              <div class="tr" style="height: 10px;"></div>
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #rolesEdit
+                    id="editRoles"
+                    name="{{rolesPickListNameEdit}}"
+                    allItemsText="Available Roles"
+                    header="Assign roles"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #rolesDelete
+                    id="deleteRoles"
+                    name="{{rolesPickListNameDelete}}"
+                    allItemsText="Available Roles"
+                    header="Assign roles"
+                    pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                    selectedItemsText="Selected Roles"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </mat-tab>
       <mat-tab *ngIf="showGroups" label="Groups">
+        <div class="mat-tab__container ">
+          <div class="mat-tab__content formSectionContents tabHeight">
+            <div class="table">
+              <div class="tr">
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #groupsView
+                    id="viewGroups"
+                    name="{{groupsPickListNameView}}"
+                    allItemsText="Available Groups"
+                    header="Assign Groups"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #groupsAdd
+                    id="addGroups"
+                    name="{{groupsPickListNameAdd}}"
+                    allItemsText="Available Groups"
+                    header="Assign roGroupsles"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+              </div>
+              <div class="tr" style="height: 10px;"></div>
+              <div class="tr" style="padding-top: 5px;">
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #groupsEdit
+                    id="editGroups"
+                    name="{{groupsPickListNameEdit}}"
+                    allItemsText="Available Groups"
+                    header="Assign Groups"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+                <div class="td centerDiv">
+                  <gw-lib-pick-list #groupsDelete
+                    id="deleteGroups"
+                    name="{{groupsPickListNameDelete}}"
+                    allItemsText="Available Groups"
+                    header="Assign Groups"
+                    pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                    selectedItemsText="Selected Groups"
+                    size=8
+                    width=120></gw-lib-pick-list>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Directory Information">
         <div class="mat-tab__container formSection">
           <div class="mat-tab__content formSectionContents tabHeight">
-            <gw-lib-pick-list #groupPickList
-              id="groups"
-              name="{{groupsPickListName}}"
-              allItemsText="Available Groups"
-              header="Assign Groups"
-              pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
-              selectedItemsText="Selected Groups"
-              size=8
-              width=120></gw-lib-pick-list>
+            Directory information
           </div>
         </div>
       </mat-tab>
