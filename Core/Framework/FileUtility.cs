@@ -34,8 +34,8 @@ namespace GrowthWare.Framework
                 if (directoryLineCount > 0)
                 {
                     totalLinesOfCode += totalLinesOfCode;
-                    outputBuilder.AppendLine("<br>Lines of code for " + theDirectory.Name + " " + directoryLineCount);
-                    outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                    outputBuilder.AppendLine("Lines of code for " + theDirectory.Name + " " + directoryLineCount);
+                    outputBuilder.AppendLine("Lines of so far " + totalLinesOfCode);
                     directoryLineCount = 0;
                 }
                 for (x = 0; x <= numDirectories; x++)
@@ -46,8 +46,8 @@ namespace GrowthWare.Framework
                         if (directoryLineCount > 0)
                         {
                             totalLinesOfCode += directoryLineCount;
-                            outputBuilder.AppendLine("<br>Lines of code for " + subDirectories[x].Name + " " + directoryLineCount);
-                            outputBuilder.AppendLine("<br>Lines of so far " + totalLinesOfCode);
+                            outputBuilder.AppendLine("Lines of code for " + subDirectories[x].Name + " " + directoryLineCount);
+                            outputBuilder.AppendLine("Lines of so far " + totalLinesOfCode);
                             directoryLineCount = 0;
                         }
                     }
@@ -120,10 +120,10 @@ namespace GrowthWare.Framework
                         {
                             if (writeDirectory)
                             {
-                                outputBuilder.AppendLine("<br>" + theDirectory.FullName);
+                                outputBuilder.AppendLine(theDirectory.FullName);
                                 writeDirectory = false;
                             }
-                            outputBuilder.AppendLine("<br>" + s_Space + directoryFile.Name + " " + FileLineCount);
+                            outputBuilder.AppendLine(s_Space + directoryFile.Name + " " + FileLineCount);
                         }
                         if (FileLineCount > 0)
                         {
