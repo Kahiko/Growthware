@@ -2,7 +2,7 @@ namespace GrowthWare.Framework.Models.UI;
 public class UIAccountProfile
 {
     public string Account;
-    public UIAccountGroups AccountGroups;
+    public UIGroups AccountGroups;
     public UIRoles AccountRoles;
     public bool CanSaveRoles;
     public bool CanSaveGroups;
