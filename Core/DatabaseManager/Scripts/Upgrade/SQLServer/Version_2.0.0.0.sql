@@ -461,6 +461,12 @@ SET @V_FunctionID = (SELECT FunctionSeqId from ZGWSecurity.Functions where actio
 EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_AddPermission,@V_SystemID, @V_Debug;
 EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermission,@V_SystemID, @V_Debug;
 
+SET @V_MyAction = 'FunctionSecurity';
+SET @V_FunctionID = (SELECT FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction);
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_AddPermission,@V_SystemID, @V_Debug;
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermission,@V_SystemID, @V_Debug;
+EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_DeletePermission,@V_SystemID, @V_Debug;
+
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'accounts' WHERE [Action] = 'Search_Accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'functions' WHERE [Action] = 'Search_Functions';
