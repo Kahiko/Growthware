@@ -1,3 +1,4 @@
-.tabHeight {
-    min-height: 350px;
-}
+.tabHeight { // From (SearchfunctionsComponent._TheWindowSize)
+    min-height: 325px; // -125px
+    min-width: 850px;  // -50px
+  }

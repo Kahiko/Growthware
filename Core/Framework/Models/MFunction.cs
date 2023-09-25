@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Framework.Models
 {
@@ -37,6 +38,20 @@ namespace GrowthWare.Framework.Models
         public MFunctionProfile(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
             this.Initialize(profileDataRow, derivedRoles, assignedRoles, groups);
+        }
+
+        public MFunctionProfile(UIFunctionProfile uIFunctionProfile)
+        {
+            this.Action = uIFunctionProfile.Action;
+            this.Description = uIFunctionProfile.Description;
+            this.EnableViewState = uIFunctionProfile.EnableViewState;
+            this.EnableNotifications = uIFunctionProfile.EnableNotifications;
+            this.FunctionTypeSeqId = uIFunctionProfile.FunctionTypeSeqId;
+            this.IsNavigable = uIFunctionProfile.IsNavigable;
+            this.LinkBehavior = uIFunctionProfile.LinkBehavior;
+            this.NoUI = uIFunctionProfile.NoUI;
+            this.NavigationTypeSeqId = uIFunctionProfile.NavigationTypeSeqId;
+            this.ParentId = uIFunctionProfile.ParentId;
         }
 
 #endregion

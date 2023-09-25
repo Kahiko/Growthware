@@ -1,5 +1,7 @@
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
@@ -10,6 +12,27 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractFunctionController : ControllerBase
 {
+    [AllowAnonymous]
+    [HttpGet("GetFunction")]
+    public ActionResult<MFunctionProfile> GetFunction(int functionSeqId)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("FunctionSecurity");
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        
+        if(mSecurityInfo.MayView) 
+        {
+            MFunctionProfile mRetVal = new MFunctionProfile();
+            mRetVal = FunctionUtility.GetProfile(functionSeqId);
+            if(mRetVal == null)
+            {
+                mRetVal = new MFunctionProfile();
+            }
+            HttpContext.Session.SetInt32("EditId", mRetVal.FunctionTypeSeqId);
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
 
     [Authorize("Functions")]
     [HttpPost("SearchFunctions")]

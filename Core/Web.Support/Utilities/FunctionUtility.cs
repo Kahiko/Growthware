@@ -61,6 +61,24 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    public static MFunctionProfile GetProfile(int functionSeqId)
+    {
+        MFunctionProfile mRetVal = null;
+        var mResult = from mProfile in Functions()
+                        where mProfile.Id == functionSeqId
+                        select mProfile;
+        mRetVal = new MFunctionProfile();
+        try
+        {
+            mRetVal = mResult.First();
+        }
+        catch (InvalidOperationException)
+        {
+            mRetVal = new MFunctionProfile();
+        }
+        return mRetVal;
+    }
+
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {

@@ -3,7 +3,7 @@
       <mat-tab label="Function Information">
         <div class="mat-tab__container formSection">
           <div class="mat-tab__content formSectionContents tabHeight">
-            <input matInput type="text" formControlName="name" class="Form_Field rounded">
+            <input matInput type="text" formControlName="action" class="Form_Field rounded">
           </div>
         </div>
       </mat-tab>
@@ -37,7 +37,7 @@
           </div>
         </div>
       </mat-tab>
-      <mat-tab *ngIf="showDerived" label="Derived Roles">
+      <mat-tab label="Derived Roles">
         <div class="mat-tab__container formSection">
           <div class="mat-tab__container formSection tabHeight">
             <div>
@@ -54,7 +54,7 @@
       <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
         <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
       </button>
-      <button type="button" *ngIf="canCancel" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+      <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
         <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
       </button>
     </div>

@@ -11,10 +11,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DataService } from '@Growthware/shared/services';
 // import { GWCommon } from '@Growthware/common-code';
-import { GroupService } from '@Growthware/features/group';
+// import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
-import { RoleService } from '@Growthware/features/role';
+// import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
 import { SnakeListModule } from '@Growthware/features/snake-list';
@@ -49,7 +49,6 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
 
   frmProfile!: FormGroup;
 
-  canCancel: boolean = false;
   canDelete: boolean = false;
   canSave: boolean = false;
 
@@ -61,19 +60,39 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
 
   rolesPickListName: string = 'roles';
 
-  showDerived: boolean = false;
   showRoles: boolean = false;
   showGroups: boolean = false;
+  
+  validFunctionTypes = [
+    {id: 1, text:	'Module'},
+    {id: 2, text:	'Security'},
+    {id: 3, text:	'Menu Item'},
+    {id: 4, text:	'Calendar'},
+    {id: 5, text:	'File Manager'},   
+  ];
+
+  validLinkBehaviors = [
+    {id: 1, text:	'Internal'},
+    {id: 2, text:	'Popup'},
+    {id: 3, text:	'External'},
+    {id: 4, text:	'NewPage'},
+  ];
+
+  validNavigationTypes = [
+    {id: 1, text:	'Horizontal'},
+    {id: 2, text:	'Vertical'},
+    {id: 3, text:	'Hierarchical'},
+  ];
 
   constructor(
     private _ProfileSvc: FunctionService,
     private _FormBuilder: FormBuilder,
     private _DataSvc: DataService,
-    private _GroupSvc: GroupService,
+    // private _GroupSvc: GroupService,
     // private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    private _RoleSvc: RoleService,
+    // private _RoleSvc: RoleService,
     private _SecuritySvc: SecurityService    
   ) { }
 
@@ -86,20 +105,57 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }
     console.log('mEditId', mEditId);
     console.log('_SecurityInfo', this._SecurityInfo);
-    console.log('_GroupSvc', this._GroupSvc);
-    console.log('_RoleSvc', this._RoleSvc);
-    console.log('_SecuritySvc', this._SecuritySvc);
+    // console.log('_GroupSvc', this._GroupSvc);
+    // console.log('_RoleSvc', this._RoleSvc);
+    /**
+     * FunctionSecurity
+     * View_Function_Role_Tab
+     * View_Function_Group_Tab
+     */
+    this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // #1 Request/Handler
+      // console.log('securityInfo', securityInfo);
+      this._SecurityInfo = securityInfo;
+      this.canSave = this._SecurityInfo.mayEdit || this._SecurityInfo.mayAdd;
+      this.canDelete = this._SecurityInfo.mayDelete
+      return this._SecuritySvc.getSecurityInfo('View_Function_Role_Tab');           // #2 Request
+    }).catch((error) => {                                                           // Request #1 Error Handler
+      this._LoggingSvc.toast("Error getting function security:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((roleSecurity) => {                                                     // Request #2 Handler
+      // console.log('roleSecurity', roleSecurity);
+      if(roleSecurity) {
+        this.showRoles = roleSecurity.mayView;
+      }
+      return this._SecuritySvc.getSecurityInfo('View_Function_Group_Tab');          // #3 Request
+    }).catch((error) => {                                                           // Request #2 Error Handler
+      this._LoggingSvc.toast("Error getting security for the groups tab:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((groupSecurity) => {                                                    // Request #3 Handler
+      // console.log('groupSecurity', groupSecurity);
+      if(groupSecurity) {
+        this.showGroups = groupSecurity.mayView;
+      }      
+      return this._ProfileSvc.getFunction(mEditId);                                 // #4 Request
+    }).catch((error) => {
+      this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((profile) => {                                                          // Request #4 Handler
+      console.log('profile', profile);
+      if(profile) {
+        this._Profile = profile;
+      }
+      this.applySecurity();
+      this.populateForm();
+    }).catch((error) => {                                                           // Request #4 Error Handler
+      this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
+    })
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
 
     this._LoggingSvc.toast('FunctionDetailsComponent.ngOnInit', 'Function Details:', LogLevel.Info);
     this.populateForm();
-    this.applySecurity();
-
   }
 
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
+    this._ProfileSvc.editReason = '';
   }
 
   get controls() {
@@ -111,9 +167,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    this._ProfileSvc.editReason = '';
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-      this._ModalSvc.close(this._ProfileSvc.addModalId);
+      this._ModalSvc.close(this._ProfileSvc.editModalId);
     } else {
       this._ModalSvc.close(this._ProfileSvc.addModalId);
     }
@@ -133,7 +188,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
 
   private populateForm(): void {
     this.frmProfile = this._FormBuilder.group({
-      name: [this._Profile.name, [Validators.required]],
+      action: [this._Profile.action, [Validators.required]],
     });
   }
 
