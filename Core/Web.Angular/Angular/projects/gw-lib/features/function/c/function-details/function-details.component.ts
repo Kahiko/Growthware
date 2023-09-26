@@ -14,7 +14,7 @@ import { DataService } from '@Growthware/shared/services';
 // import { GWCommon } from '@Growthware/common-code';
 // import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
-import { ModalService } from '@Growthware/features/modal';
+import { ModalService, IModalOptions, ModalOptions } from '@Growthware/features/modal';
 // import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
@@ -22,8 +22,6 @@ import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
-import { IModalOptions } from '@Growthware';
-import { ModalOptions } from '@Growthware';
 
 @Component({
   selector: 'gw-lib-function-details',
