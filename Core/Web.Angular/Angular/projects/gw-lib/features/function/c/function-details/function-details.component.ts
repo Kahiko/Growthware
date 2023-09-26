@@ -8,6 +8,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DataService } from '@Growthware/shared/services';
@@ -37,6 +38,7 @@ import { IFunctionProfile, FunctionProfile } from '../../function-profile.model'
     MatFormFieldModule, 
     MatIconModule, 
     MatInputModule,
+    MatSelectModule,
     MatTabsModule
 
   ],
@@ -49,6 +51,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   private _SecurityInfo: ISecurityInfo = new SecurityInfo();
   private _Subscription: Subscription = new Subscription();
   @ViewChild('helpAction') private _HelpAction!: TemplateRef<any>;
+  @ViewChild('helpSource') private _HelpSource!: TemplateRef<any>;
+  @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 
   frmProfile!: FormGroup;
@@ -71,6 +75,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   rolesPickListNameAdd: string = 'addRoles';
   rolesPickListNameEdit: string = 'editRoles';
   rolesPickListNameDelete: string = 'deleteRoles';
+
+  selectedFunctionType: number = 1;
 
   showRoles: boolean = false;
   showGroups: boolean = false;
@@ -198,12 +204,25 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     // nothing atm
   }
 
-  onHelpAction(): void {
-    this._HelpOptions.contentPayLoad = this._HelpAction;
+  onHelp(controleName: string): void {
+    switch (controleName) {
+      case 'Action':
+        this._HelpOptions.contentPayLoad = this._HelpAction;
+        break;
+      case 'Source':
+        this._HelpOptions.contentPayLoad = this._HelpSource;
+        break
+      case 'Control':
+        this._HelpOptions.contentPayLoad = this._HelpControl;
+        break;
+      default:
+        break;
+    }
     this._ModalSvc.open(this._HelpOptions);
   }  
 
   private populateForm(): void {
+    this.selectedFunctionType = this._Profile.functionTypeSeqId;
     this.frmProfile = this._FormBuilder.group({
       action: [this._Profile.action, [Validators.required]],
       description: [this._Profile.description],
@@ -212,7 +231,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
       id: [{value: this._Profile.id, disabled: true}],
       isNavigable: [this._Profile.isNavigable],
       linkBehavior: [this._Profile.linkBehavior],
-      functionTypeSeqId: [this._Profile.functionTypeSeqId],
+      // functionTypeSeqId: [this._Profile.functionTypeSeqId],
       groups: [this._Profile.groups],
       name: [this._Profile.name],
       metaKeywords: [this._Profile.metaKeywords],

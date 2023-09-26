@@ -10,7 +10,7 @@
               </div>
               <div class="td middleCell"></div>
               <div class="td left">
-                <input matInput type="text" formControlName="functionSeqId" class="Form_Field rounded">
+                <input matInput type="text" formControlName="id" class="Form_Field rounded">
               </div>
             </div>
             <div class="tr">
@@ -57,26 +57,46 @@
                 <span class="Form_LabelText">Action:</span>
               </div>
               <div class="td middleCell">
-                <i (click)="onHelpAction()" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+                <i (click)="onHelp('Action')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
               </div>
               <div class="td left">
                 <input matInput type="text" formControlName="action" class="Form_Field rounded">
               </div>
             </div>
             <div class="tr">
-              <div class="td left"></div>
+              <div class="td left">
+                <span class="Form_LabelText">Type: </span>
+              </div>
               <div class="td middleCell"></div>
-              <div class="td left"></div>
+              <div class="td left">
+                <mat-select [(value)]="selectedFunctionType" class="rounded">
+                  <mat-option *ngFor="let item of validFunctionTypes" [value]="item.id">
+                    {{item.text}}
+                  </mat-option>
+                </mat-select>
+              </div>
             </div>
             <div class="tr">
-              <div class="td left"></div>
-              <div class="td middleCell"></div>
-              <div class="td left"></div>
+              <div class="td left">
+                <span class="Form_LabelText">Source: </span>
+              </div>
+              <div class="td middleCell">
+                <i (click)="onHelp('Source')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+              </div>
+              <div class="td left">
+                <input matInput type="text" formControlName="source" class="Form_Field rounded">
+              </div>
             </div>
             <div class="tr">
-              <div class="td left"></div>
-              <div class="td middleCell"></div>
-              <div class="td left"></div>
+              <div class="td left">
+                <span class="Form_LabelText">Controller: </span>
+              </div>
+              <div class="td middleCell">
+                <i (click)="onHelp('Control')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+              </div>
+              <div class="td left">
+                <input matInput type="text" formControlName="controller" class="Form_Field rounded">
+              </div>
             </div>
           </div>
         </div>
