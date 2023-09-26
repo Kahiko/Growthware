@@ -8,6 +8,7 @@ export interface IFunctionProfile {
   linkBehavior: number;
   functionTypeSeqId: number;
   groups: string[];
+  name: string;
   metaKeywords: string;
   navigationTypeSeqId: number;
   notes: string;
@@ -30,6 +31,7 @@ export class FunctionProfile implements IFunctionProfile {
   public functionTypeSeqId: number = 3;
   public groups: string[] = [];
   public metaKeywords: string = '';
+  public name: string = '';
   public navigationTypeSeqId: number = 3;
   public notes: string = '';
   public noUI: boolean = false;

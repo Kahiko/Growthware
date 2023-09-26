@@ -1,10 +1,11 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -21,6 +22,8 @@ import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
+import { IModalOptions } from '@Growthware';
+import { ModalOptions } from '@Growthware';
 
 @Component({
   selector: 'gw-lib-function-details',
@@ -33,6 +36,7 @@ import { IFunctionProfile, FunctionProfile } from '../../function-profile.model'
     SnakeListModule,
 
     MatButtonModule, 
+    MatFormFieldModule, 
     MatIconModule, 
     MatInputModule,
     MatTabsModule
@@ -46,6 +50,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   private _Profile: IFunctionProfile = new FunctionProfile();
   private _SecurityInfo: ISecurityInfo = new SecurityInfo();
   private _Subscription: Subscription = new Subscription();
+  @ViewChild('helpAction') private _HelpAction!: TemplateRef<any>;
+  private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 
   frmProfile!: FormGroup;
 
@@ -194,9 +200,32 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     // nothing atm
   }
 
+  onHelpAction(): void {
+    this._HelpOptions.contentPayLoad = this._HelpAction;
+    this._ModalSvc.open(this._HelpOptions);
+  }  
+
   private populateForm(): void {
     this.frmProfile = this._FormBuilder.group({
       action: [this._Profile.action, [Validators.required]],
+      description: [this._Profile.description],
+      enableViewState: [this._Profile.enableViewState],
+      enableNotifications: [this._Profile.enableNotifications],
+      id: [{value: this._Profile.id, disabled: true}],
+      isNavigable: [this._Profile.isNavigable],
+      linkBehavior: [this._Profile.linkBehavior],
+      functionTypeSeqId: [this._Profile.functionTypeSeqId],
+      groups: [this._Profile.groups],
+      name: [this._Profile.name],
+      metaKeywords: [this._Profile.metaKeywords],
+      navigationTypeSeqId: [this._Profile.navigationTypeSeqId],
+      notes: [this._Profile.notes],
+      noUI: [this._Profile.noUI],
+      parentId: [this._Profile.parentId],
+      redirectOnTimeout: [this._Profile.redirectOnTimeout],
+      roles: [this._Profile.roles],
+      source: [this._Profile.source],
+      controller: [this._Profile.controller],
     });
   }
 

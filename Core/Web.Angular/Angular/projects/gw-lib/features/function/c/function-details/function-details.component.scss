@@ -9,3 +9,65 @@
   width: 50%;
   padding-left: 50px;
 }
+
+.firstCell {
+  width: 30px;
+}
+
+.middleCell {
+  vertical-align: middle;
+  width: 20px;
+}
+
+.top {
+  vertical-align: top;
+}
+
+/* Tabs (did not work) */
+.mat-mdc-tab-list {
+  .mat-ink-bar {
+    display: none;
+  }
+}
+
+.mat-mdc-tab-labels {
+  .mat-mdc-tab-label {
+    opacity: 1;
+    padding: 5px;
+    border: 1px solid gray;
+    border-bottom: none;
+    color: #333;
+    min-width: 50px;
+  }
+  .mat-mdc-tab-label-active {
+    @extend .mat-mdc-tab-label;
+    color: blue;
+    -webkit-box-shadow: inset 0px 3px 0px 0px blue;
+    -moz-box-shadow: inset 0px 3px 0px 0px blue;
+    box-shadow: inset 0px 3px 0px 0px blue;
+    border-top: 1px solid gray;
+    border-left: 1px solid gray;
+    border-right: 1px solid gray;
+  }
+}
+.mat-mdc-tab-body-wrapper {
+  top: -1px;
+  border: 1px solid gray;
+  padding: 10px;
+}
+
+/**  Copyright 2019 Google LLC. All Rights Reserved.
+  Use of this source code is governed by an MIT-style license that
+  can be found in the LICENSE file at http://angular.io/license */
+
+
+  
+.mat-mdc-tab-nav-bar, .mat-mdc-tab-header {
+  border-bottom: none
+}
+.mat-mdc-tab-body-wrapper {
+  top: -1px;
+}
+.mat-mdc-tab-labels .mat-mdc-tab-label-active {
+  border-bottom: 1px solid #fafafa;
+}
