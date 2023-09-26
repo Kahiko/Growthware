@@ -35,7 +35,6 @@ export class ModalService {
     const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
     if (mContentObj !== undefined) {
       if(mContentObj.isComponent) {
-        this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
         try {
           // destroy parent
           this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
@@ -55,6 +54,7 @@ export class ModalService {
       } else {
         this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
       }
+      this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
     }
   }
 
@@ -93,7 +93,7 @@ export class ModalService {
     // append to body, we will use platform document for this
     const mDialogElement = (<EmbeddedViewRef<any>>mModalComponentRef.hostView).rootNodes[0];
     // setup a ContentObject to add to the array
-    const mContentObject = new ContentObject(options.modalId, true, mModalComponentRef, null)
+    const mContentObject = new ContentObject(options.modalId, this._IsComponent, mModalComponentRef, null)
     if(this._IsComponent) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
       mContentObject.payloadRef = mResolvedNgContent;
     }
