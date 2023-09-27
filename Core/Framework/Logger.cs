@@ -50,7 +50,29 @@ namespace GrowthWare.Framework
             // Make any directory separators the same
             this.m_LogFilePath = this.m_LogFilePath.Replace(@"\", "/");
             // Replace with the current OS separator
-            this.m_LogFilePath = this.m_LogFilePath.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+            this.m_LogFilePath = this.m_LogFilePath.Replace(@"/", Path.DirectorySeparatorChar.ToString());            
+            if(!Directory.Exists(m_LogFilePath))
+            {
+                try
+                {
+                    Directory.CreateDirectory(this.m_LogFilePath);
+                }
+                catch (DirectoryNotFoundException)
+                {
+                    this.m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + "Logs" + Path.DirectorySeparatorChar.ToString();
+                    int mIndex = m_LogFilePath.IndexOf("bin");
+                    if (mIndex >= 0)
+                    {
+                        m_LogFilePath = m_LogFilePath.Substring(0, mIndex) + "Logs" + Path.DirectorySeparatorChar.ToString();;
+                    }
+                    Directory.CreateDirectory(m_LogFilePath);
+                }
+                catch (IOException)
+                {
+                     this.m_LogFilePath = AppDomain.CurrentDomain.BaseDirectory + Path.DirectorySeparatorChar.ToString() + "Logs" + Path.DirectorySeparatorChar.ToString();
+                     Directory.CreateDirectory(m_LogFilePath);
+                }
+            }
             switch (ConfigSettings.LogPriority.ToString().ToUpper(CultureInfo.InvariantCulture))
             {
                 case "DEBUG":
