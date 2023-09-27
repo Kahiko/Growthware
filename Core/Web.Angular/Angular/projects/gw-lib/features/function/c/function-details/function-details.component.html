@@ -1,6 +1,6 @@
 <form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
   <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
-    <mat-tab label="Function Information">
+    <mat-tab label="General">
       <div class="mat-tab__container">
         <div class="mat-tab__content formSectionContents tabHeight">
           <div class="table">
@@ -69,7 +69,7 @@
               </div>
               <div class="td middleCell"></div>
               <div class="td left">
-                <mat-select [(value)]="selectedFunctionType" class="rounded">
+                <mat-select [(value)]="selectedFunctionType" class="rounded" style="width: 150px;">
                   <mat-option *ngFor="let item of validFunctionTypes" [value]="item.id">
                     {{item.text}}
                   </mat-option>
@@ -116,6 +116,34 @@
       
                 <input type="checkbox" ID="chkIsNav" formControlName="isNavigable" />
                 <label for="chkIsNav">Is Nav</label>
+              </div>
+            </div>
+          </div>
+          <div class="table">
+            <div class="tr">
+              <div class="td left">
+                <span class="Form_LabelText" style="display: in;">Nav type: </span>
+                <mat-select [(value)]="selectedNavigationType" class="rounded" style="width: 150px;">
+                  <mat-option *ngFor="let item of validNavigationTypes" [value]="item.id">
+                    {{item.text}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="td">
+                <span class="Form_LabelText">Parent: </span>
+                <mat-select [(value)]="selectedParentId" class="rounded" style="width: 150px;">
+                  <mat-option *ngFor="let item of avalibleParents" [value]="item.id">
+                    {{item.text}}
+                  </mat-option>
+                </mat-select>
+              </div>
+              <div class="td">
+                <span class="Form_LabelText">Link Behavior: </span>
+                <mat-select [(value)]="selectedLinkBehavior" class="rounded" style="width: 150px;">
+                  <mat-option *ngFor="let item of validLinkBehaviors" [value]="item.id">
+                    {{item.text}}
+                  </mat-option>
+                </mat-select>
               </div>
             </div>
           </div>

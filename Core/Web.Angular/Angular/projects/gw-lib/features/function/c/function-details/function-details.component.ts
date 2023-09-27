@@ -55,6 +55,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 
+  avalibleParents = [{id: 1, text:	'Module'}];
+  
   frmProfile!: FormGroup;
 
   canDelete: boolean = false;
@@ -77,6 +79,9 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   rolesPickListNameDelete: string = 'deleteRoles';
 
   selectedFunctionType: number = 1;
+  selectedNavigationType: number = 1;
+  selectedParentId: number = -1;
+  selectedLinkBehavior: number = 1;
 
   showRoles: boolean = false;
   showGroups: boolean = false;
@@ -166,8 +171,6 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     })
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
-
-    this._LoggingSvc.toast('FunctionDetailsComponent.ngOnInit', 'Function Details:', LogLevel.Info);
     this.populateForm();
   }
 
@@ -223,6 +226,9 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
 
   private populateForm(): void {
     this.selectedFunctionType = this._Profile.functionTypeSeqId;
+    this.selectedNavigationType = this._Profile.navigationTypeSeqId;
+    this.selectedParentId = this._Profile.parentId;
+    this.selectedLinkBehavior = this._Profile.linkBehavior;
     this.frmProfile = this._FormBuilder.group({
       action: [this._Profile.action, [Validators.required]],
       description: [this._Profile.description],
