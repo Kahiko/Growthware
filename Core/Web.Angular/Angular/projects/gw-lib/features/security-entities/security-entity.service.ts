@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
