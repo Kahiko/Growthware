@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService } from '@Growthware/features/account';
+// import { AccountService } from '@Growthware/features/account';
 import { ConfigurationService } from '@Growthware/features/configuration';
-import { MenuType } from '@Growthware/features/navigation';
+// import { MenuType } from '@Growthware/features/navigation';
 
 @Component({
   selector: 'gw-frontend-generic-home',
@@ -16,7 +16,7 @@ export class GenericHomeComponent implements OnDestroy, OnInit {
   applicationName: string = '';
 
   constructor(
-    private _AccountSvc: AccountService,
+    // private _AccountSvc: AccountService,
     private _ConfigurationSvc: ConfigurationService
   ) { }
 
@@ -25,7 +25,7 @@ export class GenericHomeComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    this._AccountSvc.getNavLinks(MenuType.Hierarchical);
+    // this._AccountSvc.getNavLinks(MenuType.Hierarchical);
     this._Subscription.add(
       this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val;})
     );

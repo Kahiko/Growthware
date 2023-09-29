@@ -1,14 +1,14 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, map, Observable } from 'rxjs';
 import { catchError, of } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { SearchService } from '@Growthware/features/search';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
-import { INavLink } from '@Growthware/features/navigation';
-import { MenuType } from '@Growthware/features/navigation';
+// import { INavLink } from '@Growthware/features/navigation';
+// import { MenuType } from '@Growthware/features/navigation';
 // Feature
 import { IAccountProfile } from './account-profile.model';
 import { ClientChoices, IClientChoices } from './client-choices.model';
@@ -26,7 +26,7 @@ export class AccountService {
   private _Api_ChangePassword = '';
   // private _Api_GetLinks: string = '';
   private _Api_DeleteAccount: string = '';
-  private _Api_GetMenuItems: string = '';
+  // private _Api_GetMenuItems: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
   private _Api_SaveAccount: string = '';
@@ -39,7 +39,7 @@ export class AccountService {
   private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(this._ClientChoices);
   private _DefaultAccount: string = 'Anonymous';
   private _RefreshTokenTimeout?: NodeJS.Timeout;
-  private _SideNavSubject = new Subject<INavLink[]>();
+  // private _SideNavSubject = new Subject<INavLink[]>();
 
   public get addModalId(): string {
     return 'addAccount'
@@ -71,7 +71,7 @@ export class AccountService {
     return this._DefaultAccount;
   }
 
-  readonly sideNav$ = this._SideNavSubject.asObservable();
+  // readonly sideNav$ = this._SideNavSubject.asObservable();
 
   constructor(
     private _GWCommon: GWCommon,
@@ -86,7 +86,7 @@ export class AccountService {
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
     this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
     // this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
-    this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
+    // this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
     this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
@@ -373,26 +373,26 @@ export class AccountService {
    * @return {*}  {Promise<INavLink[]>}
    * @memberof AccountService
    */
-  public getNavLinks(menuType: MenuType): void {
-    const mQueryParameter: HttpParams = new HttpParams()
-      .set('menuType', menuType);
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      params: mQueryParameter
-    };
-    this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
-      next: (response) => {
-        this._SideNavSubject.next(response);
-      },
-      error: (error) => {
-        this._LoggingSvc.errorHandler(error, 'AccountService', 'getNavLinks');
-      },
-      complete: () => {
-        // here as example
-      }
-    })
+  public getNavLinks(menuType: any): void {
+    // const mQueryParameter: HttpParams = new HttpParams()
+    //   .set('menuType', menuType);
+    // const mHttpOptions = {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json',
+    //   }),
+    //   params: mQueryParameter
+    // };
+    // this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
+    //   next: (response) => {
+    //     this._SideNavSubject.next(response);
+    //   },
+    //   error: (error) => {
+    //     this._LoggingSvc.errorHandler(error, 'AccountService', 'getNavLinks');
+    //   },
+    //   complete: () => {
+    //     // here as example
+    //   }
+    // })
   }
 
   public async getSelectableActions(): Promise<ISelectedableAction[]> {

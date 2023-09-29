@@ -13,6 +13,7 @@ import { LoaderModule } from '@Growthware/features/loader';
 import { NavigationModule } from '@Growthware/features/navigation';
 // Library Standalone
 import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
+import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
 // Modules/Components
 import { DefaultRoutingModule } from './default-routing.module';
 import { DefaultFooterComponent } from './default-footer/default-footer.component';
@@ -27,9 +28,11 @@ import { DefaultLayoutComponent } from './default-layout/default-layout.componen
     DefaultLayoutComponent
   ],
   imports: [
+    HierarchicalHorizontalComponent,
+    HierarchicalVerticalComponent,
+
     CommonModule,
     DefaultRoutingModule,
-    HierarchicalHorizontalComponent,
     LoaderModule,
     MatButtonModule,
     MatDividerModule,

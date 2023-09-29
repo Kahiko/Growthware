@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Library
+import { AccountService } from '@Growthware/features/account';
 import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
@@ -23,12 +24,14 @@ export class HierarchicalHorizontalComponent extends BaseHierarchicalComponent {
   // @Input() override item!: INavLink;    
 
   constructor(
+    accountSvc: AccountService,
     dataSvc: DataService,
     gwCommon: GWCommon,
     loggingSvc: LoggingService,
     menuListSvc: MenuService,
   ) {
     super();
+    this._AccountSvc = accountSvc;
     this._DataSvc = dataSvc;
     this._GWCommon = gwCommon;
     this._LoggingSvc = loggingSvc;

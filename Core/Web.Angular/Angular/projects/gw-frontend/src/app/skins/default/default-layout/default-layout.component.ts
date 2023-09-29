@@ -29,11 +29,11 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.showSideNavLinkText = this._MenuListSvc.getShowNavText();
-    this._Subscriptions.add(
-      this._AccountSvc.sideNav$.subscribe((navLinks)=>{
-        this.verticalNavLinks = navLinks;
-      })
-    );
+    // this._Subscriptions.add(
+    //   this._AccountSvc.sideNav$.subscribe((navLinks)=>{
+    //     this.verticalNavLinks = navLinks;
+    //   })
+    // );
     this._Subscriptions.add(
       this._MenuListSvc.showNavText$.subscribe((value)=>{
         this.showSideNavLinkText = value;
