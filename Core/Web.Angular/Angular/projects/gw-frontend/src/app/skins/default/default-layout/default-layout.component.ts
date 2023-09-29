@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, MenuListService } from '@Growthware';
+import { AccountService, MenuService } from '@Growthware';
 import { MenuType, INavLink } from '@Growthware';
 import { sideNavTextAnimation } from '../animations/side-nav';
 
@@ -20,7 +20,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
 
   constructor(
     private _AccountSvc: AccountService,
-    private _MenuListSvc: MenuListService
+    private _MenuListSvc: MenuService
   ) { }
 
   ngOnDestroy(): void {

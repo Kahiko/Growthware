@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 // Feature
 import { INavLink } from '../../nav-link.model';
-import { MenuListService } from '../../menu-list.service';
+import { MenuService } from '../../menu.service';
 
 @Component({
   selector: 'gw-lib-vertical-list-item',
@@ -30,7 +30,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
 
   constructor(
-    private _MenuListSvc: MenuListService,
+    private _MenuListSvc: MenuService,
     public _Router: Router
   ) { }
 

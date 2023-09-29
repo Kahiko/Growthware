@@ -147,7 +147,10 @@ Navigation:
 	https://stackoverflow.com/questions/56054770/how-to-create-a-nested-menu-using-angular-mat-nav-material-updated		
 	https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
 		ng generate module features/navigation --project gw-lib
-		ng generate component features/navigation/c/vertical-list-item --module navigation --style scss --project gw-lib
+		ng generate component features/navigation/c/HierarchicalHorizontal --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/navigation/c/HierarchicalVertical --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/navigation/c/Horizontal --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/navigation/c/Vertical --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/navigation/NavLink --type model --project gw-lib
 		ng generate enum features/navigation/MenuType --type enum --project gw-lib
 		ng generate service features/navigation/navigation --project gw-lib

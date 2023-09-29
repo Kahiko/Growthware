@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class MenuListService {
+export class MenuService {
   private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
 
   public currentUrl = new BehaviorSubject<string>('');
