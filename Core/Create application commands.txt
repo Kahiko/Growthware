@@ -209,7 +209,7 @@ File Manager:
 		ng generate interface features/file-manager/models/FileUploadParameters --type model --project gw-lib
 		ng generate interface features/file-manager/models/UploadStatus --type model --project gw-lib
 		ng generate service features/file-manager/FileManager --skip-tests --project gw-lib
-Functions
+Functions:
 		ng generate module features/function --project gw-lib
 		ng generate interface features/function/functionProfile --type model --project gw-lib
 		ng generate component features/function/c/CopyFunctionSecurity --module function --style scss --skip-tests --project gw-lib
@@ -237,9 +237,10 @@ Community Calendar (https://dev.to/rickystam/how-to-build-a-full-screen-calendar
 Security Entities:
 		Security_Entities
 		ng generate module features/SecurityEntities --project gw-lib
-		ng generate interface features/security-entities/SecurityEntityProfile --type model --project gw-lib
-		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --skip-tests --project gw-lib
 		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --skip-tests --project gw-lib
+		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --skip-tests --project gw-lib
+		ng generate component features/security-entities/c/SelectSecutiryEntity --standalone --style scss --skip-tests --project gw-lib
+		ng generate interface features/security-entities/SecurityEntityProfile --type model --project gw-lib
 		ng generate service features/security-entities/SecurityEntity --skip-tests --project gw-lib
 NameValuePairs:
 		ng generate module features/NameValuePair --project gw-lib
