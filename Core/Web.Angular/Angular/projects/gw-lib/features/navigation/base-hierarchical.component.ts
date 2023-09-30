@@ -1,5 +1,4 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -25,14 +24,7 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
   
   private _Subscription: Subscription = new Subscription();
 
-  expanded!: boolean;
-  @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
-
-  showSideNavLinkText!: boolean;
   navLinks: Array<INavLink> = [];
-
-  depth!: number;
-  item!: INavLink;  
 
   protected _AccountSvc!: AccountService;
   protected _GWCommon!: GWCommon;
@@ -60,22 +52,12 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
       this._Subscription.add(
         this._DataSvc.dataChanged.subscribe((data) => {
           if(data.name.toLowerCase() === this.dataName.toLowerCase()) {
+            // console.log('this.dataName', this.dataName);
+            // console.log('BaseHierarchicalComponent.ngOnInit.navLinks', this.navLinks);
             this.navLinks = data.payLoad;
-            console.log('this.dataName', this.dataName);
-            console.log('BaseHierarchicalComponent.ngOnInit.navLinks', this.navLinks);
           }
         })
       );
-    }
-  }
-
-  onItemSelected(item: INavLink) {
-    if (!item.children || !item.children.length) {
-      this._Router.navigate([item.link]);
-      // this.navService.closeNav();
-    }
-    if (item.children && item.children.length) {
-      this.expanded = !this.expanded;
     }
   }
 }

@@ -50,7 +50,6 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
   onItemSelected(item: INavLink) {
     if (!item.children || !item.children.length) {
       this._Router.navigate([item.link]);
-      // this.navService.closeNav();
     }
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;

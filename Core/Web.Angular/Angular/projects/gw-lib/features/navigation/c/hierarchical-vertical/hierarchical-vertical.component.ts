@@ -11,6 +11,7 @@ import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { BaseHierarchicalComponent } from '../../base-hierarchical.component'
 import { MenuService } from '../../menu.service';
+import { NavigationModule } from '../../navigation.module';
 
 @Component({
   selector: 'gw-lib-hierarchical-vertical',
@@ -19,6 +20,8 @@ import { MenuService } from '../../menu.service';
     CommonModule,
 
     MatIconModule,
+
+    NavigationModule,
   ],
   templateUrl: './hierarchical-vertical.component.html',
   styleUrls: ['./hierarchical-vertical.component.scss']

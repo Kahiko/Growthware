@@ -1,1 +1,3 @@
-<span>Hierarchical Vertical</span>
+<ng-container *ngFor="let item of navLinks">
+  <gw-lib-vertical-list-item [item]="item"></gw-lib-vertical-list-item>
+</ng-container>
