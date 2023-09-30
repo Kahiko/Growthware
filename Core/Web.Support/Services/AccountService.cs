@@ -380,45 +380,56 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
-    private DataTable getMenuData(string account, MenuType menuType)
+    public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        DataTable mRetVal = null;
-        if (account.ToUpper(CultureInfo.InvariantCulture) == "ANONYMOUS")
+        IList<MMenuTree> mRetVal = null;
+        string mDataName = menuType.ToString() + "_" + account + "_Menu";
+        string mJsonString = this.getStringData(account, mDataName);
+        if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
         {
-            String mAnonMenu = menuType.ToString() + "Anonymous_Menu";
-            string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(mAnonMenu);
-            if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
-            {
-                mRetVal = JsonSerializer.Deserialize<DataTable>(mJsonString);
-            }
-            else
-            {
-                mRetVal = mBAccount.GetMenu(account, menuType);
-                if(mRetVal != null && mRetVal.Rows.Count > 0)
-                {
-                    mJsonString = JsonSerializer.Serialize(mRetVal);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(mAnonMenu, mJsonString);
-                }
-            }
+            mRetVal = JsonSerializer.Deserialize<IList<MMenuTree>>(mJsonString);
+            return mRetVal;
         }
-        else
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mDataTable = null;
+        mDataTable = mBAccount.GetMenu(account, menuType);
+        if (mDataTable != null && mDataTable.Rows.Count > 0)
         {
-            mRetVal = mBAccount.GetMenu(account, menuType);
+            mRetVal = MMenuTree.GetFlatList(mDataTable);
+            if (menuType == MenuType.Hierarchical)
+            {
+                mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
+            }
+            this.setStringData(account, mDataName, JsonSerializer.Serialize(mRetVal));
         }
         return mRetVal;
     }
 
-    public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
+    private string getStringData(string account, string dataName)
     {
-        DataTable mDataTable = getMenuData(account, (MenuType)menuType);
-        IList<MMenuTree> mRetVal = MMenuTree.GetFlatList(mDataTable);
-        if (menuType == MenuType.Hierarchical)
+        if (account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
-            mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
+            // TODO: should attempting to get from cache instead of session but the cache has not been developed yet
+            return m_HttpContextAccessor.HttpContext.Session.GetString(dataName);
         }
-        return mRetVal;
+        else
+        {
+            return m_HttpContextAccessor.HttpContext.Session.GetString(dataName);
+        }
+    }
+
+    private void setStringData(string account, string dataName, string data)
+    {
+        if (account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            // TODO: should attempting to put the string into cache instead of session but the cache has not been developed yet
+            m_HttpContextAccessor.HttpContext.Session.SetString(dataName, data);
+        }
+        else
+        {
+            m_HttpContextAccessor.HttpContext.Session.SetString(dataName, data);
+        }
     }
 
     private MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
