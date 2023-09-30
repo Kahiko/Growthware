@@ -121,7 +121,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     // console.log('editReason', this._ProfileSvc.editReason);
-    console.log('editRow', this._ProfileSvc.editRow);
+    // console.log('editRow', this._ProfileSvc.editRow);
     let mEditId = -1;
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.FunctionSeqId;
