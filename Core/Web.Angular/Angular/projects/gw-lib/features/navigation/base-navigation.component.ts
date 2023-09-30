@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, AfterContentInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -20,7 +20,7 @@ import { MenuType } from './menu-type.model';
     styles: [
     ]
   })
-export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
+export abstract class BaseNavigationComponent implements AfterContentInit, OnDestroy {
   
   private _Subscription: Subscription = new Subscription();
 
@@ -31,22 +31,22 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
   protected _DataSvc!: DataService;
   protected _LoggingSvc!: LoggingService;
   protected _MenuListSvc!: MenuService;
+  protected _MenuType: MenuType = MenuType.Hierarchical;
   protected _Router!: Router;
 
   name: string = '';
-  menuType: MenuType = MenuType.Hierarchical;
 
   ngOnDestroy(): void {
     this._Subscription.unsubscribe();
   }
 
-  ngOnInit(): void {
+  ngAfterContentInit(): void {
     if(this._GWCommon.isNullOrEmpty(this.name)) {
       this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
     } else {
       this._Subscription.add(
         this._AccountSvc.authenticationResponse$.subscribe((value) => { 
-          this._MenuListSvc.getNavLinks(this.menuType, this.name);
+          this._MenuListSvc.getNavLinks(this._MenuType, this.name);
         })
       );
       this._Subscription.add(
@@ -58,6 +58,6 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
           }
         })
       );
-    }
+    }    
   }
 }
