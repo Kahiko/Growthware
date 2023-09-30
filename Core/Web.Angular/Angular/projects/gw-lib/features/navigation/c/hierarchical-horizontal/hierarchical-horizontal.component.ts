@@ -19,7 +19,7 @@ import { MenuService } from '../../menu.service';
 })
 export class HierarchicalHorizontalComponent extends BaseHierarchicalComponent {
 
-  @Input() override dataName: string = '';
+  @Input() override name: string = '';
   // @Input() override depth!: number;
   // @Input() override item!: INavLink;    
 

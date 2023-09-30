@@ -33,7 +33,7 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
   protected _MenuListSvc!: MenuService;
   protected _Router!: Router;
 
-  dataName: string = '';
+  name: string = '';
   menuType: MenuType = MenuType.Hierarchical;
 
   ngOnDestroy(): void {
@@ -41,17 +41,17 @@ export abstract class BaseHierarchicalComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    if(this._GWCommon.isNullOrEmpty(this.dataName)) {
-      this._LoggingSvc.toast('the "dataName" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
+    if(this._GWCommon.isNullOrEmpty(this.name)) {
+      this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
     } else {
       this._Subscription.add(
         this._AccountSvc.authenticationResponse$.subscribe((value) => { 
-          this._MenuListSvc.getNavLinks(this.menuType, this.dataName);
+          this._MenuListSvc.getNavLinks(this.menuType, this.name);
         })
       );
       this._Subscription.add(
         this._DataSvc.dataChanged.subscribe((data) => {
-          if(data.name.toLowerCase() === this.dataName.toLowerCase()) {
+          if(data.name.toLowerCase() === this.name.toLowerCase()) {
             // console.log('this.dataName', this.dataName);
             // console.log('BaseHierarchicalComponent.ngOnInit.navLinks', this.navLinks);
             this.navLinks = data.payLoad;
