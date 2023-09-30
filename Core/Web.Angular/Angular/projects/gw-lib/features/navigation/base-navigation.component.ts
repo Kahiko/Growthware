@@ -26,6 +26,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
 
   expanded!: boolean;
   @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
+  depth: number = 0;
   navLinks: Array<INavLink> = [];
   showSideNavLinkText!: boolean;
   

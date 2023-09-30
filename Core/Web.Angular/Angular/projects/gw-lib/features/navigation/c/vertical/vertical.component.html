@@ -1,5 +1,5 @@
 <ng-container *ngFor="let item of navLinks">
     <div>
-        {{item.action}}
+        <a mat-list-item (click)="onItemSelected(item)" data-title="{{ item.description }}">{{ item.label }}</a>
     </div>
 </ng-container>

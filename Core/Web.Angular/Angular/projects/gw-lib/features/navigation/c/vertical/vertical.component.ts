@@ -14,6 +14,7 @@ import { BaseNavigationComponent } from '../../base-navigation.component'
 import { MenuService } from '../../menu.service';
 // import { NavigationModule } from '../../navigation.module';
 import { MenuType } from '../../menu-type.model';
+import { INavLink } from '../../nav-link.model';
 
 @Component({
   selector: 'gw-lib-vertical',
@@ -51,5 +52,14 @@ export class VerticalComponent extends BaseNavigationComponent implements OnInit
 
   ngOnInit(): void {
     this._MenuType = MenuType.Vertical;
+  }
+
+  onItemSelected(item: INavLink) {
+    if (!item.children || !item.children.length) {
+      this._Router.navigate([item.link]);
+    }
+    if (item.children && item.children.length) {
+      this.expanded = !this.expanded;
+    }
   }
 }
