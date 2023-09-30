@@ -317,6 +317,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     { 
+        // TODO: need to remove anything from session for the current account
         return this.Authenticate(this.s_AnonymousAccount, "none");
     }
 
