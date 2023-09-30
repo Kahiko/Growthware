@@ -1,4 +1,4 @@
-import { Component, AfterContentInit, OnDestroy } from '@angular/core';
+import { Component, AfterContentInit, OnDestroy, HostBinding } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -24,8 +24,11 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   
   private _Subscription: Subscription = new Subscription();
 
+  expanded!: boolean;
+  @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
   navLinks: Array<INavLink> = [];
-
+  showSideNavLinkText!: boolean;
+  
   protected _AccountSvc!: AccountService;
   protected _GWCommon!: GWCommon;
   protected _DataSvc!: DataService;
