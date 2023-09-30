@@ -12,7 +12,6 @@ import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { BaseNavigationComponent } from '../../base-navigation.component'
 import { MenuService } from '../../menu.service';
-// import { NavigationModule } from '../../navigation.module';
 import { MenuType } from '../../menu-type.model';
 import { INavLink } from '../../nav-link.model';
 

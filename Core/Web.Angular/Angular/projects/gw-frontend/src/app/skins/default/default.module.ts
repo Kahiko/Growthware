@@ -12,6 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoaderModule } from '@Growthware/features/loader';
 import { NavigationModule } from '@Growthware/features/navigation';
 // Library Standalone
+import { HorizontalComponent } from '@Growthware/features/navigation';
 import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
 import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
 import { VerticalComponent } from '@Growthware/features/navigation';
@@ -29,6 +30,7 @@ import { DefaultLayoutComponent } from './default-layout/default-layout.componen
     DefaultLayoutComponent
   ],
   imports: [
+    HorizontalComponent,
     HierarchicalHorizontalComponent,
     HierarchicalVerticalComponent,
     VerticalComponent,
