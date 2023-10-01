@@ -5,7 +5,9 @@ import { AuthGuard } from '@Growthware/common-code';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
+  { path: 'naturalsort', loadComponent: () => import('@Growthware/features/sys-admin/c/natural-sort/natural-sort.component').then(m => m.NaturalSortComponent), canActivate: [AuthGuard] },
   { path: 'selectasecurityentity', loadComponent: () => import('@Growthware/features/security-entities/c/select-secutiry-entity/select-secutiry-entity.component').then(m => m.SelectSecutiryEntityComponent), canActivate: [AuthGuard] },
+  { path: 'update', loadComponent: () => import('@Growthware/features/sys-admin/c/update-session/update-session.component').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
   { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule), canActivate: [AuthGuard]  },
   { path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
