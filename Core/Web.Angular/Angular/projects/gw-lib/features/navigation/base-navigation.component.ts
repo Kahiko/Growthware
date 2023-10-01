@@ -7,15 +7,16 @@ import { AccountService } from '@Growthware/features/account';
 import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
+import { ModalService } from '@Growthware/features/modal';
 // Feature
 import { INavLink } from './nav-link.model';
-import { MenuService } from './menu.service';
-import { MenuType } from './menu-type.model';
+import { NavigationService } from './navigation.service';
+import { MenuTypes } from './menu-types.enum';
 
 @Component({
     selector: 'gw-lib-base-search',
     standalone: true,
-    imports: [CommonModule],    
+    imports: [CommonModule],
     template: ``,
     styles: [
     ]
@@ -34,8 +35,9 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   protected _GWCommon!: GWCommon;
   protected _DataSvc!: DataService;
   protected _LoggingSvc!: LoggingService;
-  protected _MenuListSvc!: MenuService;
-  protected _MenuType: MenuType = MenuType.Hierarchical;
+  protected _MenuType: MenuTypes = MenuTypes.Hierarchical;
+  protected _ModalSvc!: ModalService;
+  protected _NavigationSvc!: NavigationService;
   protected _Router!: Router;
 
   name: string = '';
@@ -45,12 +47,13 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   }
 
   ngAfterContentInit(): void {
+    console.log('BaseNavigationComponent.ngAfterContentInit._ModalSvc', this._ModalSvc);
     if(this._GWCommon.isNullOrEmpty(this.name)) {
       this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
     } else {
       this._Subscription.add(
         this._AccountSvc.authenticationResponse$.subscribe((value) => { 
-          this._MenuListSvc.getNavLinks(this._MenuType, this.name);
+          this._NavigationSvc.getNavLinks(this._MenuType, this.name);
         })
       );
       this._Subscription.add(
@@ -63,5 +66,13 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
         })
       );
     }    
+  }
+
+  protected onItemSelected(item: INavLink) {
+    // console.log('BaseNavigationComponent.onItemSelected.item', item);
+    if (item.children && item.children.length) {
+      this.expanded = !this.expanded;
+    }
+    this._NavigationSvc.navigateTo(item);
   }
 }

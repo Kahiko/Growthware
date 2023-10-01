@@ -387,6 +387,9 @@ ALTER VIEW [ZGWSecurity].[vwSearchRoles] AS
 			ON R.RoleSeqId = RSE.RoleSeqId
 GO
 
+
+
+
 -- Update ZGWSecurity.Functions data
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Accounts' WHERE [Action] = 'accounts';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Functions' WHERE [Action] = 'functions';
@@ -401,6 +404,9 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Encryption_Helper' WHERE [Actio
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Search_Security_Entities' WHERE [Action] = 'search_security_entities';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'LineCount' WHERE [Action] = '/sys_admin/linecount';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditDBInformation' WHERE [Action] = '/sys_admin/editdbinformation';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Logoff' WHERE [Action] = '/accounts/logout';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Logon' WHERE [Action] = '/accounts/logon';
+UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 1 WHERE [Action] = '/accounts/logon';
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 

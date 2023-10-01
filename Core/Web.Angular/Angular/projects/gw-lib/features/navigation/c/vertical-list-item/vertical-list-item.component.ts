@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
 // Feature
 import { INavLink } from '../../nav-link.model';
-import { MenuService } from '../../menu.service';
+import { NavigationService } from '../../navigation.service';
 
 @Component({
   selector: 'gw-lib-vertical-list-item',
@@ -30,7 +30,7 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
 
   constructor(
-    private _MenuListSvc: MenuService,
+    private _NavigationSvc: NavigationService,
     public _Router: Router
   ) { }
 
@@ -43,16 +43,14 @@ export class VerticalListItemComponent implements OnDestroy, OnInit {
       this.depth = 0;
     }
     this._Subscription.add(
-      this._MenuListSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
+      this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
     );
   }
 
   onItemSelected(item: INavLink) {
-    if (!item.children || !item.children.length) {
-      this._Router.navigate([item.link]);
-    }
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;
     }
+    this._NavigationSvc.navigateTo(item);
   }
 }

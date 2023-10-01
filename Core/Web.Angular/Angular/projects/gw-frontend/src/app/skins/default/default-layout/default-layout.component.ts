@@ -1,8 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, MenuService } from '@Growthware';
-import { MenuType, INavLink } from '@Growthware';
+import { AccountService, NavigationService } from '@Growthware';
+import { MenuTypes, INavLink } from '@Growthware';
 import { sideNavTextAnimation } from '../animations/side-nav';
 
 @Component({
@@ -20,7 +20,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
 
   constructor(
     private _AccountSvc: AccountService,
-    private _MenuListSvc: MenuService
+    private _MenuListSvc: NavigationService
   ) { }
 
   ngOnDestroy(): void {
@@ -41,7 +41,7 @@ export class DefaultLayoutComponent implements OnDestroy, OnInit {
     );
     this._Subscriptions.add(
       this._AccountSvc.authenticationResponse$.subscribe((_)=>{
-        this._AccountSvc.getNavLinks(MenuType.Hierarchical);
+        this._AccountSvc.getNavLinks(MenuTypes.Hierarchical);
       })
     );
   }

@@ -8,12 +8,13 @@ import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { INavLink } from './nav-link.model';
-import { MenuType } from './menu-type.model';
+import { MenuTypes } from './menu-types.enum';
+import { LinkBehaviors } from './link-behaviors.enum';
 
 @Injectable({
   providedIn: 'root',
 })
-export class MenuService {
+export class NavigationService {
 
   private _ApiName: string = 'GrowthwareAccount/';
   private _Api_GetMenuItems: string = '';
@@ -29,11 +30,11 @@ export class MenuService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
-    private router: Router
+    private _Router: Router
   ) {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
-    this.router.events.subscribe({
+    this._Router.events.subscribe({
       next: (event: any) => {
         if (event instanceof NavigationEnd) {
           this.currentUrl.next(event.urlAfterRedirects);
@@ -42,7 +43,7 @@ export class MenuService {
     });
   }
 
-  public getNavLinks(menuType: MenuType, configuarionName: string): void {
+  public getNavLinks(menuType: MenuTypes, configuarionName: string): void {
     const mQueryParameter: HttpParams = new HttpParams()
       .set('menuType', menuType);
     const mHttpOptions = {
@@ -56,7 +57,7 @@ export class MenuService {
         this._DataSvc.notifyDataChanged(configuarionName, response);
       },
       error: (error) => {
-        this._LoggingSvc.errorHandler(error, 'MenuService', 'getNavLinks');
+        this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
       },
       complete: () => {
         // here as example
@@ -66,6 +67,29 @@ export class MenuService {
 
   getShowNavText(): boolean {
     return this._ShowNavText.getValue();
+  }
+
+  navigateTo(navLink: INavLink): void {
+    if (!navLink.children || !navLink.children.length) {
+      switch (navLink.linkBehavior) {
+        case LinkBehaviors.Internal:
+          this._Router.navigate([navLink.action.toLowerCase()]);
+          break;
+        case LinkBehaviors.Popup:
+          this._Router.navigate([navLink.action.toLowerCase()]);
+          // TODO: need to fingure out how to get the windows size to here.
+          // I don't like the idea of putting into the DB by that may be the best way.
+          // this._Router.navigate([item.action.toLowerCase()]);
+          break;
+        case LinkBehaviors.External:
+        case LinkBehaviors.NewPage:
+          window.open(navLink.link, '_blank');
+          break;
+        default:
+          this._Router.navigate([navLink.action.toLowerCase()]);
+          break;
+      }
+    }    
   }
 
   setShowNavText(value: boolean): void {

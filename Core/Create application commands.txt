@@ -153,6 +153,7 @@ Navigation:
 		ng generate component features/navigation/c/Vertical --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/navigation/NavLink --type model --project gw-lib
 		ng generate enum features/navigation/MenuType --type enum --project gw-lib
+		ng generate enum features/navigation/LinkBehaviors --type enum --project gw-lib
 		ng generate service features/navigation/navigation --project gw-lib
 Security:
 		ng generate module features/security --project gw-lib

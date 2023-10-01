@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GrowthWare.Framework.Enumerations;
 
 /// Note this matches typescript object 
 /// @Growthware/features/navigation/nav-link.model.ts
@@ -18,7 +19,8 @@ public class MNavLink
 
     public MNavLink(
         string icon, 
-        string link, 
+        string link,
+        LinkBehaviors LinkBehavior,
         string linkText,
         bool isRouterLink = true,
         string styleClass = "",
@@ -28,6 +30,7 @@ public class MNavLink
         this.Icon = icon;
         this.IsRouterLink = isRouterLink;
         this.Link = link;
+        this.LinkBehavior = (int)LinkBehavior;
         this.LinkText = linkText;
         this.RouterLinkActive = routerLinkActive;
     }
@@ -35,6 +38,7 @@ public class MNavLink
     public bool Disabled { get; set; }
     public string Icon { get; set; }
     public string Link { get; set; }
+    public int LinkBehavior { get; set; }
     public string LinkText { get; set; }
     public bool IsRouterLink { get; set; }
     public string StyleClass { get; set; }

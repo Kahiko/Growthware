@@ -10,6 +10,7 @@ export interface INavLink {
   "icon": string;
   "label": string;
   "link": string;
+  "linkBehavior": number;
   "linkText": string;
   "isRouterLink": boolean;
   "styleClass": string;
@@ -27,6 +28,7 @@ export class NavLink implements INavLink {
     public icon: string,
     public label: string,
     public link: string,
+    public linkBehavior: number,
     public linkText: string,
     public isRouterLink: boolean = true,
     public styleClass: string = '',

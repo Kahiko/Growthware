@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Interfaces;
 
 namespace GrowthWare.Framework.Models;
@@ -32,6 +33,7 @@ public class MMenuTree : ITreeNode<MMenuTree>
                 Id = item.Id,
                 Label = item.Label,
                 ParentId = item.ParentId,
+                LinkBehavior = item.LinkBehavior,
                 Children = FillRecursive(flatObjects, item.Id)
             });
         }
@@ -64,6 +66,7 @@ public class MMenuTree : ITreeNode<MMenuTree>
         Description = dataRow["Description"].ToString();
         Id = int.Parse(dataRow["Id"].ToString());
         Label = dataRow["Title"].ToString();
+        LinkBehavior = int.Parse(dataRow["LinkBehavior"].ToString());
     }
 
 #region Properties
@@ -72,6 +75,7 @@ public class MMenuTree : ITreeNode<MMenuTree>
     public string Description {get; set;}
     public int Id {get; set;}
     public string Label {get; set;}
+    public int LinkBehavior{get; set;}
     public MMenuTree Parent {get; set;}
     public int ParentId { get; set; }
 #endregion

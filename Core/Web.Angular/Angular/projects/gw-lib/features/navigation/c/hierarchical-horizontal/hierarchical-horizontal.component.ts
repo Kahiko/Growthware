@@ -7,7 +7,7 @@ import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { BaseNavigationComponent } from '../../base-navigation.component'
-import { MenuService } from '../../menu.service';
+import { NavigationService } from '../../navigation.service';
 // import { INavLink } from '../../nav-link.model';
 
 @Component({
@@ -28,13 +28,13 @@ export class HierarchicalHorizontalComponent extends BaseNavigationComponent {
     dataSvc: DataService,
     gwCommon: GWCommon,
     loggingSvc: LoggingService,
-    menuListSvc: MenuService,
+    menuListSvc: NavigationService,
   ) {
     super();
     this._AccountSvc = accountSvc;
     this._DataSvc = dataSvc;
     this._GWCommon = gwCommon;
     this._LoggingSvc = loggingSvc;
-    this._MenuListSvc = menuListSvc;
+    this._NavigationSvc = menuListSvc;
   }
 }

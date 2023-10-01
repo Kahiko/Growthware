@@ -26,8 +26,7 @@
     mat-list-item
     class="drawer-nav-list__list-item"
     [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-    href="{{item.action}}"
-    routerLink="{{item.action}}"
+    (click)="onItemSelected(item)"
     data-title="{{ item.description }}">
   <div style="display: flex;">
     <span>

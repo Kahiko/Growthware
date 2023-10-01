@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library MISC
@@ -17,7 +18,7 @@ const childRoutes: Routes = [
   { path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
   { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
-  { path: 'login', component: LoginComponent},
+  { path: 'logon', component: LoginComponent},
   { path: 'change-password', component: ChangePasswordComponent },
   { path: 'logout', component: LogoutComponent },
 ];

@@ -192,39 +192,39 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
         {
-            mNavLink = new MNavLink("home", "home", "Home");
+            mNavLink = new MNavLink("home", "home", LinkBehaviors.Internal, "Home");
             mRootNavLinks.Add(mNavLink);
-            mNavLink = new MNavLink("api", "swagger", "API", false);
+            mNavLink = new MNavLink("api", "swagger", LinkBehaviors.Internal, "API", false);
             mRootNavLinks.Add(mNavLink);
             // Nested Administration links
-            MNavLink mAdminLinks = new MNavLink("admin_panel_settings", "", "Administration", false);
+            MNavLink mAdminLinks = new MNavLink("admin_panel_settings", "", LinkBehaviors.Internal, "Administration", false);
 
-            MNavLink mChildLink = new MNavLink("groups", "manage-groups", "Manage Groups");
+            MNavLink mChildLink = new MNavLink("groups", "manage-groups", LinkBehaviors.Internal, "Manage Groups");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("manage_roles", "manage-roles", "Manage Roles");
+            mChildLink = new MNavLink("manage_roles", "manage-roles", LinkBehaviors.Internal, "Manage Roles");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("manage_accounts", "accounts", "Manage Accounts");
+            mChildLink = new MNavLink("manage_accounts", "accounts", LinkBehaviors.Internal, "Manage Accounts");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("functions", "functions", "Manage Functions");
+            mChildLink = new MNavLink("functions", "functions", LinkBehaviors.Internal, "Manage Functions");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("folder_shared", "manage_cache_dependency", "Manage Cache Dependency");
+            mChildLink = new MNavLink("folder_shared", "manage_cache_dependency", LinkBehaviors.Internal, "Manage Cache Dependency");
             mAdminLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("folder_shared", "manage_logs", "Manage Logs");
+            mChildLink = new MNavLink("folder_shared", "manage_logs", LinkBehaviors.Internal, "Manage Logs");
             mAdminLinks.Children.Add(mChildLink);
             // Nested Administration\Security links
-            MNavLink mSecurityLinks = new MNavLink("admin_panel_settings", "", "Security", false);
-            mChildLink = new MNavLink("enhanced_encryption", "security", "Encryption Helper");
+            MNavLink mSecurityLinks = new MNavLink("admin_panel_settings", "", LinkBehaviors.Internal, "Security", false);
+            mChildLink = new MNavLink("enhanced_encryption", "security", LinkBehaviors.Internal, "Encryption Helper");
             mSecurityLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("admin_panel_settings", "security/guid-helper", "GUID Helper");
+            mChildLink = new MNavLink("admin_panel_settings", "security/guid-helper", LinkBehaviors.Internal, "GUID Helper");
             mSecurityLinks.Children.Add(mChildLink);
 
-            mChildLink = new MNavLink("shuffle", "security/random-numbers", "Random number Helper");
+            mChildLink = new MNavLink("shuffle", "security/random-numbers", LinkBehaviors.Internal, "Random number Helper");
             mSecurityLinks.Children.Add(mChildLink);
             // add the security lings to the administration links
             mAdminLinks.Children.Add(mSecurityLinks);
@@ -233,7 +233,7 @@ public abstract class AbstractAccountController : ControllerBase
 
         } else 
         {
-            mNavLink = new MNavLink("home", "generic_home", "Home");
+            mNavLink = new MNavLink("home", "generic_home", LinkBehaviors.Internal, "Home");
             mRootNavLinks.Add(mNavLink);
         }
         return mRootNavLinks;

@@ -11,8 +11,8 @@ import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { BaseNavigationComponent } from '../../base-navigation.component'
-import { MenuService } from '../../menu.service';
-import { MenuType } from '../../menu-type.model';
+import { NavigationService } from '../../navigation.service';
+import { MenuTypes } from '../../menu-types.enum';
 import { INavLink } from '../../nav-link.model';
 
 @Component({
@@ -37,7 +37,7 @@ export class HorizontalComponent extends BaseNavigationComponent implements OnIn
     dataSvc: DataService,
     gwCommon: GWCommon,
     loggingSvc: LoggingService,
-    menuListSvc: MenuService,
+    menuListSvc: NavigationService,
     runter: Router,
   ) {
     super();
@@ -45,20 +45,15 @@ export class HorizontalComponent extends BaseNavigationComponent implements OnIn
     this._DataSvc = dataSvc;
     this._GWCommon = gwCommon;
     this._LoggingSvc = loggingSvc;
-    this._MenuListSvc = menuListSvc;
+    this._NavigationSvc = menuListSvc;
     this._Router = runter;
   }
 
   ngOnInit(): void {
-    this._MenuType = MenuType.Horizontal;
+    this._MenuType = MenuTypes.Horizontal;
   }
 
-  onItemSelected(item: INavLink) {
-    if (!item.children || !item.children.length) {
-      this._Router.navigate([item.link]);
-    }
-    if (item.children && item.children.length) {
-      this.expanded = !this.expanded;
-    }
+  override onItemSelected(item: INavLink) {
+    super.onItemSelected(item);
   }
 }

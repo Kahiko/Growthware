@@ -23,6 +23,10 @@ Usage:
 -- Create date: 05/15/2023
 -- Description:	Changed returned columns
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 10/01/2023
+-- Description:	Added Link_Behavior
+-- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data] @P_SecurityEntitySeqId INT
 	,@P_Navigation_Types_NVP_DetailSeqId INT
 	,@P_Account VARCHAR(128)
@@ -35,15 +39,16 @@ DECLARE @V_Permission_Id INT
 SET @V_Permission_Id = ZGWSecurity.Get_View_PermissionSeqId()
 
 DECLARE @V_AvalibleItems TABLE (
-	[ID] INT
-	,Title VARCHAR(30)
+	 [ID] INT
+	,[Title] VARCHAR(30)
 	,[Description] VARCHAR(256)
-	,URL VARCHAR(256)
-	,Parent_Id INT
-	,Sort_Order INT
+	,[URL] VARCHAR(256)
+	,[Parent_Id] INT
+	,[Sort_Order] INT
 	,[Role] VARCHAR(50)
-	,FunctionTypeSeqId INT
-	)
+	,[FunctionTypeSeqId] INT
+	,[Link_Behavior] INT
+);
 
 INSERT INTO @V_AvalibleItems
 SELECT -- Menu items via roles
@@ -55,6 +60,7 @@ SELECT -- Menu items via roles
 	,[FUNCTIONS].Sort_Order AS Sort_Order
 	,ROLES.[Name] AS ROLE
 	,[FUNCTIONS].FunctionTypeSeqId
+	,[FUNCTIONS].Link_Behavior
 FROM ZGWSecurity.Roles_Security_Entities SE_ROLES WITH (NOLOCK)
 	,ZGWSecurity.Roles ROLES WITH (NOLOCK)
 	,ZGWSecurity.Roles_Security_Entities_Functions [SECURITY] WITH (NOLOCK)
@@ -83,6 +89,7 @@ SELECT -- Menu items via groups
 	,[FUNCTIONS].Sort_Order AS Sort_Order
 	,ROLES.[Name] AS ROLE
 	,[FUNCTIONS].FunctionTypeSeqId
+	,[FUNCTIONS].Link_Behavior
 FROM ZGWSecurity.Groups_Security_Entities_Functions WITH (NOLOCK)
 	,ZGWSecurity.Groups_Security_Entities WITH (NOLOCK)
 	,ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH (NOLOCK)
@@ -102,7 +109,7 @@ WHERE ZGWSecurity.Groups_Security_Entities_Functions.FunctionSeqId = [FUNCTIONS]
 	AND ZGWSecurity.Groups_Security_Entities.SecurityEntitySeqId IN (
 		SELECT SecurityEntitySeqId
 		FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
-		)
+	);
 
 --SELECT * FROM @V_AvalibleMenuItems -- DEBUG
 DECLARE @V_AccountRoles TABLE (Roles VARCHAR(30)) -- Roles belonging to the account
@@ -114,41 +121,44 @@ EXEC ZGWSecurity.Get_Account_Security @P_Account
 
 --SELECT * FROM @V_AccountRoles -- DEBUG
 DECLARE @V_AllMenuItems TABLE (
-	[ID] INT
-	,Title VARCHAR(30)
+	 [ID] INT
+	,[Title] VARCHAR(30)
 	,[Description] VARCHAR(256)
-	,URL VARCHAR(256)
-	,Parent_Id INT
-	,Sort_Order INT
-	,ROLE VARCHAR(50)
-	,FunctionTypeSeqId INT
-	)
+	,[URL] VARCHAR(256)
+	,[Parent_Id] INT
+	,[Sort_Order] INT
+	,[ROLE] VARCHAR(50)
+	,[FunctionTypeSeqId] INT
+	,[Link_Behavior] INT
+);
 
 INSERT INTO @V_AllMenuItems
 SELECT -- Last but not least get the menu items when there are matching account roles.
-	[ID]
-	,Title
+	 [ID]
+	,[Title]
 	,[Description]
-	,URL
-	,Parent_Id
-	,Sort_Order
+	,[URL]
+	,[Parent_Id]
+	,[Sort_Order]
 	,[Role]
-	,FunctionTypeSeqId
+	,[FunctionTypeSeqId]
+	,[Link_Behavior]
 FROM @V_AvalibleItems
 WHERE ROLE IN (
 		SELECT DISTINCT Roles
 		FROM @V_AccountRoles
-		)
+	);
 
 DECLARE @V_DistinctItems TABLE (
-	[ID] INT
-	,TITLE VARCHAR(30)
+	 [ID] INT
+	,[TITLE] VARCHAR(30)
 	,[Description] VARCHAR(256)
-	,URL VARCHAR(256)
-	,Parent_Id INT
-	,Sort_Order INT
-	,FunctionTypeSeqId INT
-	)
+	,[URL] VARCHAR(256)
+	,[Parent_Id] INT
+	,[Sort_Order] INT
+	,[FunctionTypeSeqId] INT
+	,[Link_Behavior] INT
+);
 
 INSERT INTO @V_DistinctItems
 SELECT DISTINCT [ID]
@@ -158,39 +168,38 @@ SELECT DISTINCT [ID]
 	,Parent_Id
 	,Sort_Order
 	,FunctionTypeSeqId
+	,[Link_Behavior]
 FROM @V_AllMenuItems
 
-IF EXISTS (
-		SELECT TOP (1) 1
-		FROM @V_DistinctItems
-		WHERE [TITLE] = 'Favorite'
-		)
-BEGIN
-	DECLARE @V_FavoriteAction VARCHAR(256)
+IF EXISTS (SELECT TOP (1) 1 FROM @V_DistinctItems WHERE [TITLE] = 'Favorite')
+	BEGIN
+		DECLARE @V_FavoriteAction VARCHAR(256)
 
-	SET @V_FavoriteAction = (
+		SET @V_FavoriteAction = (
 			SELECT [FavoriteAction]
 			FROM [ZGWCoreWeb].[Account_Choices]
 			WHERE [Account] = @P_Account
-			);
+		);
 
-	IF @V_FavoriteAction IS NOT NULL
-	BEGIN
-		UPDATE @V_DistinctItems
-		SET [URL] = @V_FavoriteAction
-		WHERE [TITLE] = 'Favorite';
+		IF @V_FavoriteAction IS NOT NULL
+			BEGIN
+				UPDATE @V_DistinctItems
+				SET [URL] = @V_FavoriteAction
+				WHERE [TITLE] = 'Favorite';
+			END
+		--END IF
 	END
-			--END IF
-END
-
 --END IF
-SELECT [Id]
+
+SELECT 
+	 [Id]
 	,[Title] AS Title
 	,[Description]
 	,[URL]
-	,Parent_Id AS [ParentId]
-	,Sort_Order
-	,FunctionTypeSeqId AS Function_Type_Seq_ID
+	,[Parent_Id] AS [ParentId]
+	,[Sort_Order]
+	,[FunctionTypeSeqId] AS [Function_Type_Seq_ID]
+	,[Link_Behavior] AS [LinkBehavior]
 FROM @V_DistinctItems
 ORDER BY Parent_Id
 	,Sort_Order

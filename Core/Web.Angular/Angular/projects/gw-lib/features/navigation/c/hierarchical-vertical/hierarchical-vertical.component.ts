@@ -10,9 +10,9 @@ import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { BaseNavigationComponent } from '../../base-navigation.component'
-import { MenuService } from '../../menu.service';
+import { NavigationService } from '../../navigation.service';
 import { NavigationModule } from '../../navigation.module';
-import { MenuType } from '../../menu-type.model';
+import { MenuTypes } from '../../menu-types.enum';
 
 @Component({
   selector: 'gw-lib-hierarchical-vertical',
@@ -36,7 +36,7 @@ export class HierarchicalVerticalComponent extends BaseNavigationComponent imple
     dataSvc: DataService,
     gwCommon: GWCommon,
     loggingSvc: LoggingService,
-    menuListSvc: MenuService,
+    menuListSvc: NavigationService,
     runter: Router,
   ) {
     super();
@@ -44,11 +44,11 @@ export class HierarchicalVerticalComponent extends BaseNavigationComponent imple
     this._DataSvc = dataSvc;
     this._GWCommon = gwCommon;
     this._LoggingSvc = loggingSvc;
-    this._MenuListSvc = menuListSvc;
+    this._NavigationSvc = menuListSvc;
     this._Router = runter;
   }
 
   ngOnInit(): void {
-    this._MenuType = MenuType.Hierarchical
+    this._MenuType = MenuTypes.Hierarchical
   }
 }
