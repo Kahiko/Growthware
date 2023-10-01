@@ -53,7 +53,7 @@ export class NavigationService {
       params: mQueryParameter
     };
     this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
-      next: (response) => {
+      next: (response: INavLink[]) => {
         this._DataSvc.notifyDataChanged(configuarionName, response);
       },
       error: (error) => {
@@ -70,6 +70,7 @@ export class NavigationService {
   }
 
   navigateTo(navLink: INavLink): void {
+    console.log('NavigationService.navigateTo', navLink);
     if (!navLink.children || !navLink.children.length) {
       switch (navLink.linkBehavior) {
         case LinkBehaviors.Internal:
@@ -82,8 +83,10 @@ export class NavigationService {
           // this._Router.navigate([item.action.toLowerCase()]);
           break;
         case LinkBehaviors.External:
-        case LinkBehaviors.NewPage:
           window.open(navLink.link, '_blank');
+          break;
+        case LinkBehaviors.NewPage:
+          window.open('/' + navLink.link.toLowerCase(), '_blank');
           break;
         default:
           this._Router.navigate([navLink.action.toLowerCase()]);

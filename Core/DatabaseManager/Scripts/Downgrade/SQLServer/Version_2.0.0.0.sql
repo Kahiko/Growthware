@@ -407,6 +407,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = 'EditDBInformation' WHERE [Actio
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Logoff' WHERE [Action] = '/accounts/logout';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Logon' WHERE [Action] = '/accounts/logon';
 UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 1 WHERE [Action] = '/accounts/logon';
+UPDATE [ZGWSecurity].[Functions] SET [Source] = 'Functions/System/TestNaturalSort.aspx' WHERE [Action] = 'MSNewPage';
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 

@@ -1,4 +1,3 @@
-
 /*
 Usage:
 	DECLARE 
@@ -25,7 +24,7 @@ Usage:
 -- =============================================
 -- Author:		Michael Regan
 -- Create date: 10/01/2023
--- Description:	Added Link_Behavior
+-- Description:	Added Link_Behavior and Source to the output
 -- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Get_Menu_Data] @P_SecurityEntitySeqId INT
 	,@P_Navigation_Types_NVP_DetailSeqId INT
@@ -48,19 +47,21 @@ DECLARE @V_AvalibleItems TABLE (
 	,[Role] VARCHAR(50)
 	,[FunctionTypeSeqId] INT
 	,[Link_Behavior] INT
+	,[Source] VARCHAR(512)
 );
 
 INSERT INTO @V_AvalibleItems
 SELECT -- Menu items via roles
 	[FUNCTIONS].FunctionSeqId AS [ID]
-	,[FUNCTIONS].[Name] AS Title
+	,[FUNCTIONS].[Name] AS [Title]
 	,[FUNCTIONS].[Description]
-	,[FUNCTIONS].[Action] AS URL
-	,[FUNCTIONS].ParentSeqId AS Parent_Id
-	,[FUNCTIONS].Sort_Order AS Sort_Order
-	,ROLES.[Name] AS ROLE
-	,[FUNCTIONS].FunctionTypeSeqId
-	,[FUNCTIONS].Link_Behavior
+	,[FUNCTIONS].[Action] AS [URL]
+	,[FUNCTIONS].[ParentSeqId] AS [Parent_Id]
+	,[FUNCTIONS].[Sort_Order] AS [Sort_Order]
+	,[ROLES].[Name] AS [ROLE]
+	,[FUNCTIONS].[FunctionTypeSeqId]
+	,[FUNCTIONS].[Link_Behavior]
+	,[FUNCTIONS].[Source]
 FROM ZGWSecurity.Roles_Security_Entities SE_ROLES WITH (NOLOCK)
 	,ZGWSecurity.Roles ROLES WITH (NOLOCK)
 	,ZGWSecurity.Roles_Security_Entities_Functions [SECURITY] WITH (NOLOCK)
@@ -76,20 +77,21 @@ WHERE SE_ROLES.RoleSeqId = ROLES.RoleSeqId
 	AND SE_ROLES.SecurityEntitySeqId IN (
 		SELECT SecurityEntitySeqId
 		FROM ZGWSecurity.Get_Entity_Parents(1, @P_SecurityEntitySeqId)
-		)
+	)
 
 UNION ALL
 
 SELECT -- Menu items via groups
 	[FUNCTIONS].FunctionSeqId AS [ID]
-	,[FUNCTIONS].[Name] AS Title
+	,[FUNCTIONS].[Name] AS [Title]
 	,[FUNCTIONS].[Description]
 	,[FUNCTIONS].[Action] AS URL
-	,[FUNCTIONS].ParentSeqId AS Parent_Id
-	,[FUNCTIONS].Sort_Order AS Sort_Order
-	,ROLES.[Name] AS ROLE
-	,[FUNCTIONS].FunctionTypeSeqId
-	,[FUNCTIONS].Link_Behavior
+	,[FUNCTIONS].[ParentSeqId] AS [Parent_Id]
+	,[FUNCTIONS].[Sort_Order] AS [Sort_Order]
+	,ROLES.[Name] AS [ROLE]
+	,[FUNCTIONS].[FunctionTypeSeqId]
+	,[FUNCTIONS].[Link_Behavior]
+	,[FUNCTIONS].[Source]
 FROM ZGWSecurity.Groups_Security_Entities_Functions WITH (NOLOCK)
 	,ZGWSecurity.Groups_Security_Entities WITH (NOLOCK)
 	,ZGWSecurity.Groups_Security_Entities_Roles_Security_Entities WITH (NOLOCK)
@@ -130,6 +132,7 @@ DECLARE @V_AllMenuItems TABLE (
 	,[ROLE] VARCHAR(50)
 	,[FunctionTypeSeqId] INT
 	,[Link_Behavior] INT
+	,[Source] VARCHAR(512)
 );
 
 INSERT INTO @V_AllMenuItems
@@ -143,6 +146,7 @@ SELECT -- Last but not least get the menu items when there are matching account 
 	,[Role]
 	,[FunctionTypeSeqId]
 	,[Link_Behavior]
+	,[Source]
 FROM @V_AvalibleItems
 WHERE ROLE IN (
 		SELECT DISTINCT Roles
@@ -158,6 +162,7 @@ DECLARE @V_DistinctItems TABLE (
 	,[Sort_Order] INT
 	,[FunctionTypeSeqId] INT
 	,[Link_Behavior] INT
+	,[Source] VARCHAR(512)
 );
 
 INSERT INTO @V_DistinctItems
@@ -169,6 +174,7 @@ SELECT DISTINCT [ID]
 	,Sort_Order
 	,FunctionTypeSeqId
 	,[Link_Behavior]
+	,[Source]
 FROM @V_AllMenuItems
 
 IF EXISTS (SELECT TOP (1) 1 FROM @V_DistinctItems WHERE [TITLE] = 'Favorite')
@@ -200,6 +206,7 @@ SELECT
 	,[Sort_Order]
 	,[FunctionTypeSeqId] AS [Function_Type_Seq_ID]
 	,[Link_Behavior] AS [LinkBehavior]
+	,[Source] AS [Link]
 FROM @V_DistinctItems
 ORDER BY Parent_Id
 	,Sort_Order

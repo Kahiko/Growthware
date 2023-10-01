@@ -47,7 +47,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   }
 
   ngAfterContentInit(): void {
-    console.log('BaseNavigationComponent.ngAfterContentInit._ModalSvc', this._ModalSvc);
+    // console.log('BaseNavigationComponent.ngAfterContentInit._ModalSvc', this._ModalSvc);
     if(this._GWCommon.isNullOrEmpty(this.name)) {
       this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
     } else {
@@ -69,7 +69,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   }
 
   protected onItemSelected(item: INavLink) {
-    // console.log('BaseNavigationComponent.onItemSelected.item', item);
+    console.log('BaseNavigationComponent.onItemSelected.item', item);
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;
     }
