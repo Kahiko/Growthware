@@ -70,7 +70,7 @@ export class NavigationService {
   }
 
   navigateTo(navLink: INavLink): void {
-    console.log('NavigationService.navigateTo', navLink);
+    // console.log('NavigationService.navigateTo', navLink);
     if (!navLink.children || !navLink.children.length) {
       switch (navLink.linkBehavior) {
         case LinkBehaviors.Internal:
