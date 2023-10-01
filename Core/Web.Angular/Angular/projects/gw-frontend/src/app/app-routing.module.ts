@@ -5,6 +5,7 @@ import { AuthGuard } from '@Growthware/common-code';
 
 const routes: Routes = [
   { path: '', loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule) },
+  { path: 'selectasecurityentity', loadComponent: () => import('@Growthware/features/security-entities/c/select-secutiry-entity/select-secutiry-entity.component').then(m => m.SelectSecutiryEntityComponent), canActivate: [AuthGuard] },
   { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule), canActivate: [AuthGuard]  },
   { path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
@@ -16,9 +17,7 @@ const routes: Routes = [
   { path: 'manage_groups', loadChildren: () => import('./features/groups/groups.module').then(m => m.GroupsModule), canActivate: [AuthGuard]  },
   { path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
   { path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },
-
   { path: 'sys_admin', loadChildren: () => import('./features/sys-admin/sys-admin.module').then(m => m.SysAdminModule)  },
-
   { path: 'communitycalendar', loadChildren: () => import('./features/community-calendar/community-calendar.module').then(m => m.CommunityCalendarModule)  },
   { path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
   { path: 'setloglevel', loadChildren: () => import('./features/logging/logging.module').then(m => m.LoggingModule)  },
