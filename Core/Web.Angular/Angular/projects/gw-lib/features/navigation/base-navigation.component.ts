@@ -69,7 +69,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   }
 
   protected onItemSelected(item: INavLink) {
-    console.log('BaseNavigationComponent.onItemSelected.item', item);
+    // console.log('BaseNavigationComponent.onItemSelected.item', item);
     if (item.children && item.children.length) {
       this.expanded = !this.expanded;
     }
