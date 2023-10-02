@@ -116,7 +116,9 @@ export class AccountService {
           localStorage.setItem("jwt", response.jwtToken);
           this._AuthenticationResponseSubject.next(response);
           if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
-            this.getClientChoices();
+            this.getClientChoices().then((clientChoices) => {
+              this._Router.navigate([clientChoices.action.toLowerCase()]);
+            });
             this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
           }
           if(account.toLowerCase() !== response.account.toLowerCase()) {
@@ -224,9 +226,11 @@ export class AccountService {
     return new Promise<IClientChoices>((resolve, reject) => {
       this._HttpClient.get<IClientChoices>(this._Api_ClientChoices, mHttpOptions).subscribe({
         next: (response: IClientChoices) => {
+          resolve(response);
           this._ClientChoicesSubject.next(response);
         },
         error: (error: any) => {
+          reject(false);
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getClientChoices');
         },
         // complete: () => {}
