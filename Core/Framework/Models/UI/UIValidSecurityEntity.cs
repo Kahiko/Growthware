@@ -1,3 +1,4 @@
+using System;
 using System.Data;
 
 namespace GrowthWare.Framework.Models.UI;
@@ -6,17 +7,17 @@ public class UIValidSecurityEntity
 {
     public UIValidSecurityEntity() { }
 
-    public UIValidSecurityEntity(DataRowView dataRowView)
+    public UIValidSecurityEntity(DataRow dataRowView)
     {
-        if(dataRowView["SecurityEntitySeqId"] != null)
+        if(dataRowView["SecurityEntityID"] != DBNull.Value)
         {
-            this.Id = int.Parse(dataRowView["SecurityEntitySeqId"].ToString());
+            this.Id = int.Parse(dataRowView["SecurityEntityID"].ToString());
         }
-        if(dataRowView["Name"] != null)
+        if(dataRowView["Name"] != DBNull.Value)
         {
             this.Name = dataRowView["Name"].ToString();
         }
-        if(dataRowView["Description"] != null) 
+        if(dataRowView["Description"] != DBNull.Value) 
         {
             this.Description = dataRowView["Description"].ToString();
         }

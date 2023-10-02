@@ -39,19 +39,20 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         return mRetVal;        
     }
 
-    [HttpPost("GetValidSecurityEntities")]
+    [AllowAnonymous]
+    [HttpGet("GetValidSecurityEntities")]
     public ActionResult<List<UIValidSecurityEntity>> GetValidSecurityEntities()
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        if(mRequestingProfile.Account.ToLower() == "anonymous" || mRequestingProfile.Status == (int) SystemStatus.Active)
+        if(mRequestingProfile.Account.ToLower() == "anonymous" && mRequestingProfile.Status != (int) SystemStatus.Active)
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         List<UIValidSecurityEntity> mRetVal = new List<UIValidSecurityEntity>();
         
-        DataView mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
-        foreach (DataRowView mDataRowView in mDataView.Table.Rows)
+        DataTable mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
+        foreach (DataRow mDataRowView in mDataView.Rows)
         {
             UIValidSecurityEntity mItem = new UIValidSecurityEntity(mDataRowView);
             mRetVal.Add(mItem);
