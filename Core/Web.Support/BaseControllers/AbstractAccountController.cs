@@ -328,6 +328,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             var mRefreshToken = Request.Cookies["refreshToken"];
             AuthenticationResponse mAuthenticationResponse = m_AccountService.RefreshToken(mRefreshToken, ipAddress());
+            MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(mAuthenticationResponse.Account);
             setTokenCookie(mAuthenticationResponse.RefreshToken);
             return Ok(mAuthenticationResponse);
         }
@@ -403,18 +404,22 @@ public abstract class AbstractAccountController : ControllerBase
         bool mRetVal = false;
         if(accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower()) 
         {
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
+            MClientChoicesState mDefaultClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState("Anonymous");
             MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(accountChoices.Account);
-            mClientChoicesState[MClientChoices.Action] = accountChoices.Action;
-            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString();
-            mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor;
-            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme;
-            mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor;
-            mClientChoicesState[MClientChoices.HeaderForeColor] = accountChoices.HeaderForeColor;
-            mClientChoicesState[MClientChoices.RowBackColor] = accountChoices.RowBackColor;
-            mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor;
-            mClientChoicesState[MClientChoices.LeftColor] = accountChoices.LeftColor;
-            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString();
-            mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor;
+            mClientChoicesState[MClientChoices.AccountName] = accountChoices.Account;
+            mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
+            mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor ?? mDefaultClientChoicesState[MClientChoices.AlternatingRowBackColor];
+            mClientChoicesState[MClientChoices.BackColor] = accountChoices.BackColor ?? mDefaultClientChoicesState[MClientChoices.BackColor];
+            mClientChoicesState[MClientChoices.ColorScheme] = accountChoices.ColorScheme ?? mDefaultClientChoicesState[MClientChoices.ColorScheme];
+            mClientChoicesState[MClientChoices.HeadColor] = accountChoices.HeadColor ?? mDefaultClientChoicesState[MClientChoices.HeadColor];
+            mClientChoicesState[MClientChoices.HeaderForeColor] = accountChoices.HeaderForeColor ?? mDefaultClientChoicesState[MClientChoices.HeaderForeColor];
+            mClientChoicesState[MClientChoices.LeftColor] = accountChoices.LeftColor ?? mDefaultClientChoicesState[MClientChoices.LeftColor];
+            mClientChoicesState[MClientChoices.RecordsPerPage] = accountChoices.RecordsPerPage.ToString() ?? mDefaultClientChoicesState[MClientChoices.RecordsPerPage];
+            mClientChoicesState[MClientChoices.RowBackColor] = accountChoices.RowBackColor ?? mDefaultClientChoicesState[MClientChoices.RowBackColor];
+            mClientChoicesState[MClientChoices.SecurityEntityID] = mSecurityEntity.Id.ToString();
+            mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
+            mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             m_ClientChoicesService.Save(mClientChoicesState);
             mRetVal = true;
         }

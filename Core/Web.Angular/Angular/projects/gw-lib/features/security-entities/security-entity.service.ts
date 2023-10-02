@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
+// Feature
+import { IValidSecurityEntity } from './valid-security-entity.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,10 +33,10 @@ export class SecurityEntityService {
     this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities'
   }
 
-  public async getValidSecurityEntities(): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
-      this._HttpClient.get<any>(this._Api_GetValidSecurityEntities).subscribe({
-        next: (response: any) => {
+  public async getValidSecurityEntities(): Promise<IValidSecurityEntity[]> {
+    return new Promise<IValidSecurityEntity[]>((resolve, reject) => {
+      this._HttpClient.get<IValidSecurityEntity[]>(this._Api_GetValidSecurityEntities).subscribe({
+        next: (response: IValidSecurityEntity[]) => {
           resolve(response);
         },
         error: (error: any) => {
