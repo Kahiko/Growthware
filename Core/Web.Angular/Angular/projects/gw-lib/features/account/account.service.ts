@@ -332,7 +332,9 @@ export class AccountService {
     .pipe(
       map((response) => {
         this._AuthenticationResponseSubject.next(response);
-        this.getClientChoices();
+        this.getClientChoices().then((clientChoices) => {
+          this._Router.navigate([clientChoices.action.toLowerCase()])
+        });
         this.startRefreshTokenTimer();
         return this._AuthenticationResponseSubject.getValue();
       }),
