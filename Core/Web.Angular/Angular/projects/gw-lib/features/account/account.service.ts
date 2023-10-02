@@ -328,6 +328,7 @@ export class AccountService {
     .pipe(
       map((response) => {
         this._AuthenticationResponseSubject.next(response);
+        this.getClientChoices();
         this.startRefreshTokenTimer();
         return this._AuthenticationResponseSubject.getValue();
       }),
