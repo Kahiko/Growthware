@@ -1,5 +1,31 @@
 <div class="table">
     <div class="tr">
+        <div class="td">
+            <mat-form-field class="loginForm__mat-form-field" appearance="fill">
+                <mat-select [(value)]="selectedSortDirection" (selectionChange)="getData();" class="rounded" style="width: 150px;">
+                    <mat-option *ngFor="let item of validSortDirections" [value]="item.id">
+                        {{item.text}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="td">
+            Start: <span id="startTime">{{startTime}}</span>
+        </div>
+        <div class="td">
+            Stop: <span id="stopTime">{{stopTime}}</span>
+        </div>
+        <div class="td">
+            Elapsed: <span id="elapsed">{{totalMilliseconds}}</span>
+        </div>
+    </div>
+</div>
+<div class="table">
+    <div class="tr">
+        <div class="td centerCell">DataTable using Framework.SortTable</div>
+        <div class="td centerCell">DataView  using DataView.Sort</div>
+    </div>
+    <div class="tr">
         <div class="td" style="border: solid 1px;">
             <table mat-table [dataSource]="dataTableSource" style="width: 400px;">
                 <!--- Note that these columns can be defined in any order.
