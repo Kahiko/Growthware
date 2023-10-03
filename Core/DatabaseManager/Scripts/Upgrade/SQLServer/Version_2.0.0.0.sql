@@ -504,6 +504,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/logout' WHERE [Action
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/logon' WHERE [Action] = 'Logon';
 UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 2 WHERE [Action] = 'Logon';
 UPDATE [ZGWSecurity].[Functions] SET [Source] = 'functions' WHERE [Action] = 'MSNewPage';
+UPDATE [GrowthWare].[ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'generic_home' WHERE [Account] = 'Anonymous'
 
 
 -- Update the version
