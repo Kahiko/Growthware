@@ -237,7 +237,7 @@ $altTheme: mat.define-dark-theme((
 @include mat.all-component-themes($theme);
 
 .theme-alternate {
-  @include mat.all-component-themes($altTheme);
+  @include mat.all-component-colors($altTheme);
 }
 
 // Specific component overrides, pieces that are not in line with the general theming
