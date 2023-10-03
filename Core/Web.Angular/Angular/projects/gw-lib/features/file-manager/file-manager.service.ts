@@ -24,6 +24,7 @@ export class FileManagerService {
   private _Api_DeleteFile: string = '';
   private _Api_RenameDirectory: string = '';
   private _Api_RenameFile: string = '';
+  private _Api_GetTestNaturalSort: string = '';
   private _Api_UploadFile: string = '';
   private _CurrentDirectoryTree!: IDirectoryTree;
   private _SelectedPath: string = '\\';
@@ -60,6 +61,7 @@ export class FileManagerService {
     this._Api_DeleteFile = this._Api + 'DeleteFile';
     this._Api_RenameDirectory = this._Api + 'RenameDirectory';
     this._Api_RenameFile = this._Api + 'RenameFile';
+    this._Api_GetTestNaturalSort = this._Api + 'GetTestNaturalSort';
     this._Api_UploadFile = this._Api + 'UploadFile';
   }
 
@@ -240,6 +242,28 @@ export class FileManagerService {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
       },
       // complete: () => {}
+    });
+  }
+
+  public async getTestNaturalSort(sortDirection: string): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      const mQueryParameter: HttpParams = new HttpParams().append('sortDirection', sortDirection);
+      const mHttpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/json',
+        }),
+        params: mQueryParameter,
+      };
+      this._HttpClient.get<any>(this._Api_GetTestNaturalSort, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getTestNaturalSort');
+          reject(false);
+        },
+        // complete: () => {}
+      });
     });
   }
 

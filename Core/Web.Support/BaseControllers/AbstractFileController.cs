@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Security.AccessControl;
 using System.IO;
 using System.Linq;
@@ -148,6 +149,7 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+
     [HttpGet("GetFiles")]
     public ActionResult<List<FileInfoLight>> GetFiles(string action, string selectedPath)
     {
@@ -188,6 +190,95 @@ public abstract class AbstractFileController : ControllerBase
             mExcludeList.Add(item.ToString().Trim().ToUpper());
         }
         mRetVal = FileUtility.GetLineCount(mCurrentDirectory, 0, mSB, mExcludeList, mDirectoryLineCount, ref mTotalLinesOfCode, mFileArray);
+        return Ok(mRetVal);
+    }
+
+    [HttpGet("GetTestNaturalSort")]
+    public  ActionResult<UITestNaturalSort> GetTestNaturalSort(string sortDirection)
+    {
+        UITestNaturalSort mRetVal = new UITestNaturalSort();
+        DataTable mDataTable = new DataTable("MyTable");
+        mDataTable.Columns.Add("col1", System.Type.GetType("System.String"));
+        mDataTable.Columns.Add("col2", System.Type.GetType("System.String"));
+        DataRow mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter(10)";
+        mDataRow["col2"] = "Chapter(10)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter 2 Ep 2-3";
+        mDataRow["col2"] = "Chapter 2 Ep 2-3";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter 2 Ep 1-2";
+        mDataRow["col2"] = "Chapter 2 Ep 1-2";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "";
+        mDataRow["col2"] = "";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Rocky(IV)";
+        mDataRow["col2"] = "Rocky(IV)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter(1)";
+        mDataRow["col2"] = "Chapter(1)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter(11)";
+        mDataRow["col2"] = "Chapter(11)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Rocky(I)";
+        mDataRow["col2"] = "Rocky(I)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Rocky(II)";
+        mDataRow["col2"] = "Rocky(II)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Rocky(IX)";
+        mDataRow["col2"] = "Rocky(IX)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Rocky(X)";
+        mDataRow["col2"] = "Rocky(X)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter(2)";
+        mDataRow["col2"] = "Chapter(2)";
+        mDataTable.Rows.Add(mDataRow);
+        mDataRow = mDataTable.NewRow();
+        mDataRow["col1"] = "Chapter 1 Ep 2-3";
+        mDataRow["col2"] = "Chapter 1 Ep 2-3";
+        mDataTable.Rows.Add(mDataRow);
+        DataView mDataView = mDataTable.DefaultView;
+        SortTable mSortTable = new Framework.SortTable();
+        mSortTable.Sort(mDataTable, "col1", sortDirection);
+
+        mRetVal.StartTime = mSortTable.StartTime.ToString();
+        mRetVal.StopTime = mSortTable.StopTime.ToString();
+        TimeSpan mSpan = mSortTable.StopTime.Subtract(mSortTable.StartTime);
+        mRetVal.TotalMilliseconds = mSpan.Milliseconds.ToString();
+        mDataView.Sort = "col1 " + sortDirection;
+
+        List<MColumns> mDataTableList = mDataTable.AsEnumerable().Select(item => new MColumns
+                                {
+                                    col1 = item["col1"].ToString() ,
+                                    col2 = item["col2"].ToString()
+                                }).ToList() ;
+        mDataTableList.RemoveAt(0);
+        List<MColumns> mDataViewList = mDataView.Table.AsEnumerable().Select(item => new MColumns
+                                {
+                                    col1 = item["col1"].ToString() ,
+                                    col2 = item["col2"].ToString()
+                                }).ToList() ;
+
+        mDataViewList.RemoveAt(0);
+        mRetVal.DataTable = mDataTableList;
+        mRetVal.DataView = mDataViewList;
+        mDataTable.Dispose();
+        mDataView.Dispose();
         return Ok(mRetVal);
     }
 
