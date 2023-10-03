@@ -261,5 +261,8 @@ _Pvt_Extensions
 # Paket dependency manager
 .paket/paket.exe
 
+# Angular build error files
+Web.Angular/Angular/projects/*.d.ts
+Web.Angular/Angular/projects/*.mjs
 # FAKE - F# Make
 .fake/
