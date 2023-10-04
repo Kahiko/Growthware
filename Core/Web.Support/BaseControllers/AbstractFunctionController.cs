@@ -32,6 +32,7 @@ public abstract class AbstractFunctionController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+
     [AllowAnonymous]
     [HttpGet("GetFunctionTypes")]
     public ActionResult<List<UIKeyValuePair>> GetFunctionTypes()
@@ -40,6 +41,19 @@ public abstract class AbstractFunctionController : ControllerBase
         if (mSecurityInfo != null && mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = FunctionUtility.GetFunctionTypes();
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetLinkBehaviors")]
+    public ActionResult<List<UIKeyValuePair>> GetLinkBehaviors()
+    {
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if (mSecurityInfo != null && mSecurityInfo.MayView)
+        {
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetLinkBehaviors();
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

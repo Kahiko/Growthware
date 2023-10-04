@@ -145,8 +145,8 @@
                 <span class="Form_LabelText">Link Behavior: </span>
                 <mat-form-field>
                   <mat-select [(value)]="selectedLinkBehavior" class="rounded" style="width: 150px;">
-                    <mat-option *ngFor="let item of validLinkBehaviors" [value]="item.id">
-                      {{item.text}}
+                    <mat-option *ngFor="let item of validLinkBehaviors" [value]="item.key">
+                      {{item.value}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

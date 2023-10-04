@@ -88,12 +88,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   
   validFunctionTypes = [{key: -1, value: 'None'}];
 
-  validLinkBehaviors = [
-    {id: 1, text:	'Internal'},
-    {id: 2, text:	'Popup'},
-    {id: 3, text:	'External'},
-    {id: 4, text:	'NewPage'},
-  ];
+  validLinkBehaviors = [{key: -1, value: 'None'}];
 
   validNavigationTypes = [{key: -1, value: 'None'}];
 
@@ -163,14 +158,17 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
       return this._ProfileSvc.getNavigationTypes();                                 // #6 Request
     }).catch((error) => {                                                           // Request #5 Error Handler
       this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((navigationTypes: any) => {                                              // Request #6 Handler
+    }).then((navigationTypes: any) => {                                             // Request #6 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);                                       // Request #6 Handler
       this.validNavigationTypes = navigationTypes;
-      // TODO: Get Link behaviors
+      return this._ProfileSvc.getLinkBehaviors();                                   // #7 Request
+    }).catch((error: any) => {                                                      // Request #6 Error Handler
+      this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((linkBehaviors: any) => {                                               // Request #7 Handler
+      // console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
+      this.validLinkBehaviors = linkBehaviors;
       this.applySecurity();
       this.populateForm();
-    }).catch((error: any) => {                                                               // Request #6 Error Handler
-      this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);

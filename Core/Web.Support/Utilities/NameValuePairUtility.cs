@@ -10,22 +10,52 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class NameValuePairUtility
 {
-    private static List<UIKeyValuePair> m_NavigationTypes = null;
-    
-    public static List<UIKeyValuePair> GetNavigationTypes()
+    // TODO: this will work for now but will need to be added to a caching sub system
+
+    private static Dictionary<int, List<UIKeyValuePair>> m_NameValuePairCache = new Dictionary<int, List<UIKeyValuePair>>();
+
+    /// <summary>
+    /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behavior types from the database
+    /// </summary>
+    /// <param name="nameValuePairSeqId"></param>
+    /// <returns>List<UIKeyValuePair></returns>
+    private static List<UIKeyValuePair> getNameValuePairs(int nameValuePairSeqId)
     {
-        if(m_NavigationTypes == null) 
+        if (!m_NameValuePairCache.ContainsKey(nameValuePairSeqId))
         {
             DataTable mDataTable = new DataTable();
-            int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
-            getNameValuePairDetails(ref mDataTable, mNVPSeqId);
-            m_NavigationTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
+            getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
+            List<UIKeyValuePair> mPairs = null;
+            mPairs = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
                 Key = int.Parse(item["NVP_SEQ_DET_ID"].ToString()) ,
                 Value = item["NVP_DET_VALUE"].ToString()
             }).ToList();
-
+            m_NameValuePairCache.Add(nameValuePairSeqId, mPairs);
         }
-        return m_NavigationTypes;
+        List<UIKeyValuePair> mRetVal = m_NameValuePairCache[nameValuePairSeqId];
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behaviors
+    /// </summary>
+    /// <returns>List<UIKeyValuePair></returns>
+    public static List<UIKeyValuePair> GetLinkBehaviors()
+    {
+        int mNVPSeqId = 3; // From .[ZGWSystem].[Name_Value_Pairs]
+        List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
+        return mLinkBehaviorTypes;
+    }
+
+    /// <summary>
+    /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing navigation types
+    /// </summary>
+    /// <returns>List<UIKeyValuePair></returns>
+    public static List<UIKeyValuePair> GetNavigationTypes()
+    {
+        int mNVPSeqId = 1; // From .[ZGWSystem].[Name_Value_Pairs]
+        List<UIKeyValuePair> mLinkBehaviorTypes = getNameValuePairs(mNVPSeqId);
+        return mLinkBehaviorTypes;
     }
 
     private static void getNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)

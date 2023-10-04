@@ -17,7 +17,6 @@ public static class FunctionUtility
 {
     private static IHttpContextAccessor m_IHttpContextAccessor = null;
     private static List<UIKeyValuePair> m_FunctionTypes = null;
-    private static List<UIKeyValuePair> m_NavigationTypes = null;
 
     /// <summary>
     /// Retrieves all functions from the either the database or cache

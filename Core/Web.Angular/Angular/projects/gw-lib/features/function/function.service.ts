@@ -15,6 +15,7 @@ export class FunctionService {
   private _ApiName: string = 'GrowthwareFunction/';
   private _Api_GetFunction: string = '';
   private _Api_FunctionTypes: string = '';
+  private _Api_LinkBehaviors: string = '';
   private _Api_NavigationTypes: string = '';
   private _Reason: string = '';
 
@@ -51,6 +52,7 @@ export class FunctionService {
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
     this._Api_FunctionTypes = this._GWCommon.baseURL + this._ApiName + 'GetFunctionTypes';
     this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
+    this._Api_LinkBehaviors = this._GWCommon.baseURL + this._ApiName + 'GetLinkBehaviors';
   }
 
 
@@ -91,6 +93,21 @@ export class FunctionService {
   public async getFuncitonTypes(): Promise<any> {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.get<any>(this._Api_FunctionTypes).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async getLinkBehaviors(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.get<any>(this._Api_LinkBehaviors).subscribe({
         next: (response: any) => {
           resolve(response);
         },
