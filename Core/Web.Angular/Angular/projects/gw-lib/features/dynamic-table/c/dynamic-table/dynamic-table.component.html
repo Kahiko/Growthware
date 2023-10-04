@@ -98,7 +98,7 @@
                 <td *ngFor="let column of tableConfiguration.columns">
                   <div [ngSwitch]="column.outputType">
                     <input *ngSwitchCase="'checkBox'" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}" class="input__checkbox">
-                    <i *ngSwitchCase="'icon'" (click)="onEditClick(rowIndex)" style="padding-right: 3px;" class="Form_Button_Icon material-icons">edit</i>
+                    <i *ngSwitchCase="'icon'" (click)="onEditClick(rowIndex)" id="editIcon_{{tableConfiguration.name}}_{{column.name}}" class="Form_Button_Icon material-icons">edit</i>
                     <span *ngSwitchDefault>{{formatData(row[column.name], column.outputType)}}</span>
                   </div>
                 </td>
