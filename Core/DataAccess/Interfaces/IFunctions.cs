@@ -8,6 +8,8 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface IFunction : IDBInteraction
     {
+        DataTable MenuTypes();
+
         /// <summary>
         /// Used by all methods and must be set to send parameters to the data store
         /// </summary>

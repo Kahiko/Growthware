@@ -90,6 +90,13 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
+        DataTable IFunction.MenuTypes()
+        {
+            string mStoreProcedure = "ZGWSecurity.Get_Menu_Types";
+            SqlParameter[] mParameters = { new SqlParameter("@P_FunctionTypeSeqId", -1) };
+            return base.GetDataTable(mStoreProcedure, mParameters);
+        }
+
         MFunctionProfile IFunction.Profile
         {
             get

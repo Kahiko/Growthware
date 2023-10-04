@@ -86,13 +86,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   showRoles: boolean = false;
   showGroups: boolean = false;
   
-  validFunctionTypes = [
-    {id: 1, text:	'Module'},
-    {id: 2, text:	'Security'},
-    {id: 3, text:	'Menu Item'},
-    {id: 4, text:	'Calendar'},
-    {id: 5, text:	'File Manager'},   
-  ];
+  validFunctionTypes = [{key: -1, value: 'None'}];
 
   validLinkBehaviors = [
     {id: 1, text:	'Internal'},
@@ -101,11 +95,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     {id: 4, text:	'NewPage'},
   ];
 
-  validNavigationTypes = [
-    {id: 1, text:	'Horizontal'},
-    {id: 2, text:	'Vertical'},
-    {id: 3, text:	'Hierarchical'},
-  ];
+  validNavigationTypes = [{key: -1, value: 'None'}];
 
   constructor(
     private _ProfileSvc: FunctionService,
@@ -164,11 +154,24 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
       if(profile) {
         this._Profile = profile;
       }
-      this.applySecurity();
-      this.populateForm();
+      return this._ProfileSvc.getFuncitonTypes();                                   // #5 Request
     }).catch((error) => {                                                           // Request #4 Error Handler
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
-    })
+    }).then((functionTypes: any) => {                                               // Request #5 Handler
+      // console.log('FunctionDetailsComponent.ngOnInit.functionTypes', functionTypes);
+      this.validFunctionTypes = functionTypes;
+      return this._ProfileSvc.getNavigationTypes();                                 // #6 Request
+    }).catch((error) => {                                                           // Request #5 Error Handler
+      this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((navigationTypes: any) => {                                              // Request #6 Handler
+      console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);                                       // Request #6 Handler
+      this.validNavigationTypes = navigationTypes;
+      // TODO: Get Link behaviors
+      this.applySecurity();
+      this.populateForm();
+    }).catch((error: any) => {                                                               // Request #6 Error Handler
+      this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
+    });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
     this.populateForm();

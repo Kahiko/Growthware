@@ -203,6 +203,11 @@ namespace GrowthWare.BusinessLogic
         {
             if (DatabaseIsOnline()) m_DFunctions.Delete(functionSeqId);
         }
+        
+        public DataTable MenuTypes()
+        {
+            return m_DFunctions.MenuTypes();
+        }
 
         /// <summary>
         /// Moves the menu order.

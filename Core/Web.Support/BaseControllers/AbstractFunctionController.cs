@@ -6,6 +6,7 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using System.Collections.Generic;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -16,10 +17,8 @@ public abstract class AbstractFunctionController : ControllerBase
     [HttpGet("GetFunction")]
     public ActionResult<MFunctionProfile> GetFunction(int functionSeqId)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("FunctionSecurity");
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        
-        if(mSecurityInfo.MayView) 
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if(mSecurityInfo != null && mSecurityInfo.MayView)
         {
             MFunctionProfile mRetVal = new MFunctionProfile();
             mRetVal = FunctionUtility.GetProfile(functionSeqId);
@@ -33,6 +32,39 @@ public abstract class AbstractFunctionController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    [AllowAnonymous]
+    [HttpGet("GetFunctionTypes")]
+    public ActionResult<List<UIKeyValuePair>> GetFunctionTypes()
+    {
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if (mSecurityInfo != null && mSecurityInfo.MayView)
+        {
+            List<UIKeyValuePair> mRetVal = FunctionUtility.GetFunctionTypes();
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetNavigationTypes")]
+    public ActionResult<List<UIKeyValuePair>> GetNavigationTypes()
+    {
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if (mSecurityInfo != null && mSecurityInfo.MayView)
+        {
+            List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetNavigationTypes();
+            return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    private MSecurityInfo GetSecurityInfo(string action)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        return mSecurityInfo;
+    }
 
     [Authorize("Functions")]
     [HttpPost("SearchFunctions")]

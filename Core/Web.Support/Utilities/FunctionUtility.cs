@@ -6,12 +6,18 @@ using System.Linq;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
+using GrowthWare.Framework.Models.UI;
+using System.Collections.Generic;
+using System.Data;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GrowthWare.Web.Support.Utilities;
 
 public static class FunctionUtility
 {
     private static IHttpContextAccessor m_IHttpContextAccessor = null;
+    private static List<UIKeyValuePair> m_FunctionTypes = null;
+    private static List<UIKeyValuePair> m_NavigationTypes = null;
 
     /// <summary>
     /// Retrieves all functions from the either the database or cache
@@ -37,6 +43,23 @@ public static class FunctionUtility
             // CacheController.AddToCacheDependency(mCacheName, mRetVal);
         }
         return mRetVal;
+    }
+
+    public static List<UIKeyValuePair> GetFunctionTypes()
+    {
+        if(m_FunctionTypes == null) 
+        {
+            MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+            BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+            DataTable mDataTable = mBFunctions.FunctionTypes();
+            m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair
+                                    {
+                                        Key = int.Parse(item["FUNCTION_TYPE_SEQ_ID"].ToString()) ,
+                                        Value = item["Name"].ToString()
+                                    }).ToList() ;
+
+        }
+        return m_FunctionTypes;
     }
 
     [CLSCompliant(false)]

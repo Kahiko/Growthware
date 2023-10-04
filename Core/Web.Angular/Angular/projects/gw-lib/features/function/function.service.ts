@@ -14,6 +14,8 @@ export class FunctionService {
   private _FunctionSeqId: number = -1;
   private _ApiName: string = 'GrowthwareFunction/';
   private _Api_GetFunction: string = '';
+  private _Api_FunctionTypes: string = '';
+  private _Api_NavigationTypes: string = '';
   private _Reason: string = '';
 
   editReason: string = '';
@@ -47,6 +49,8 @@ export class FunctionService {
     private _LoggingSvc: LoggingService,
   ) {
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
+    this._Api_FunctionTypes = this._GWCommon.baseURL + this._ApiName + 'GetFunctionTypes';
+    this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
   }
 
 
@@ -72,6 +76,41 @@ export class FunctionService {
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  /**
+   * Retrieves the function types from the API.
+   *
+   * @return {Promise<any>} A promise that resolves with the response from the API.
+   */
+  public async getFuncitonTypes(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.get<any>(this._Api_FunctionTypes).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async getNavigationTypes(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.get<any>(this._Api_NavigationTypes).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
           reject('Failed to call the API');
         },
         // complete: () => {}

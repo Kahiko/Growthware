@@ -70,8 +70,8 @@
               <div class="td middleCell"></div>
               <div class="td left">
                 <mat-select [(value)]="selectedFunctionType" class="rounded" style="width: 150px;">
-                  <mat-option *ngFor="let item of validFunctionTypes" [value]="item.id">
-                    {{item.text}}
+                  <mat-option *ngFor="let item of validFunctionTypes" [value]="item.key">
+                    {{item.value}}
                   </mat-option>
                 </mat-select>
               </div>
@@ -123,27 +123,33 @@
             <div class="tr">
               <div class="td left">
                 <span class="Form_LabelText" style="display: in;">Nav type: </span>
-                <mat-select [(value)]="selectedNavigationType" class="rounded" style="width: 150px;">
-                  <mat-option *ngFor="let item of validNavigationTypes" [value]="item.id">
-                    {{item.text}}
-                  </mat-option>
-                </mat-select>
+                <mat-form-field>
+                  <mat-select placeholder="Navigation Type" [(value)]="selectedNavigationType" class="rounded" style="width: 150px;">
+                    <mat-option *ngFor="let item of validNavigationTypes" [value]="item.key">
+                      {{item.value}}
+                    </mat-option>
+                  </mat-select>  
+                </mat-form-field>
               </div>
               <div class="td">
                 <span class="Form_LabelText">Parent: </span>
-                <mat-select [(value)]="selectedParentId" class="rounded" style="width: 150px;">
-                  <mat-option *ngFor="let item of avalibleParents" [value]="item.id">
-                    {{item.text}}
-                  </mat-option>
-                </mat-select>
+                <mat-form-field>
+                  <mat-select [(value)]="selectedParentId" class="rounded" style="width: 150px;">
+                    <mat-option *ngFor="let item of avalibleParents" [value]="item.id">
+                      {{item.text}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
               <div class="td">
                 <span class="Form_LabelText">Link Behavior: </span>
-                <mat-select [(value)]="selectedLinkBehavior" class="rounded" style="width: 150px;">
-                  <mat-option *ngFor="let item of validLinkBehaviors" [value]="item.id">
-                    {{item.text}}
-                  </mat-option>
-                </mat-select>
+                <mat-form-field>
+                  <mat-select [(value)]="selectedLinkBehavior" class="rounded" style="width: 150px;">
+                    <mat-option *ngFor="let item of validLinkBehaviors" [value]="item.id">
+                      {{item.text}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
             </div>
           </div>
