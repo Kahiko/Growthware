@@ -44,8 +44,8 @@
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text"   , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 },
       { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text"   , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 }
     ],
-    "captionText": "",
-    "maxHeadHeight": 16,
+    "captionText": "Add/Edit Functions",
+    "maxHeadHeight": 18,
     "maxTableRowHeight": 24,
     "name": "Functions",
     "numberOfRows": 10,
