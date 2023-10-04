@@ -116,8 +116,8 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.FunctionSeqId;
     }
-    console.log('mEditId', mEditId);
-    console.log('_SecurityInfo', this._SecurityInfo);
+    // console.log('mEditId', mEditId);
+    // console.log('_SecurityInfo', this._SecurityInfo);
     // console.log('_GroupSvc', this._GroupSvc);
     // console.log('_RoleSvc', this._RoleSvc);
     /**
@@ -150,7 +150,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
-      console.log('profile', profile);
+      // console.log('profile', profile);
       if(profile) {
         this._Profile = profile;
       }
@@ -164,7 +164,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {                                                           // Request #5 Error Handler
       this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((navigationTypes: any) => {                                              // Request #6 Handler
-      console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);                                       // Request #6 Handler
+      // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);                                       // Request #6 Handler
       this.validNavigationTypes = navigationTypes;
       // TODO: Get Link behaviors
       this.applySecurity();
