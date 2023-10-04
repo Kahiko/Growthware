@@ -76,6 +76,12 @@ export class GWCommon {
           }
         }
         break;
+      case 'checkBox':
+        mFormattedData = data
+        break;
+      case 'icon':
+        mFormattedData = '';
+        break;
       default:
         const mMsg = "'" + format + "' is an unknown format";
         throw (mMsg);

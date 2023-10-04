@@ -61,20 +61,20 @@
                 <th *ngFor="let column of tableConfiguration.columns" [ngStyle]="{ 'min-width.px': column.width, 'max-width.px': column.width }">
                   <div [ngStyle]="{ 'min-height.px': maxHeadHeight, 'max-height.px': maxHeadHeight }">
                     <div style="display: inline-block;">
-                      <input
-                      *ngIf="column.allowSearch"
-                      type="checkBox"
-                      id="check_Search_{{tableConfiguration.name}}_{{column.name}}"
-                      name="check_Search_{{tableConfiguration.name}}_{{column.name}}"
-                      [(ngModel)]="column.searchSelected"
-                      (click)="onSearchClick(column.name, $event);"
-                      class="input__checkbox"
-                      title="Include in search">
+                      <input *ngIf="column.allowSearch"
+                              type="checkBox"
+                              id="check_Search_{{tableConfiguration.name}}_{{column.name}}"
+                              name="check_Search_{{tableConfiguration.name}}_{{column.name}}"
+                              [(ngModel)]="column.searchSelected"
+                              (click)="onSearchClick(column.name, $event);"
+                              class="input__checkbox"
+                              title="Include in search">
                     &nbsp;
                     </div>
                     <div style="display: inline-block;">
-                      <span *ngIf="column.allowSort" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" (click)="onSortChange(column.name)" class="span__sort">{{column.label}}</span>
-                      <span *ngIf="!column.allowSort" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" class="span__sort">{{column.label}}</span>
+                      <span *ngIf="column.allowSort && column.visible" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" (click)="onSortChange(column.name)" class="span__sort">{{column.label}}</span>
+                      <span *ngIf="!column.allowSort && column.editText !== 'image' && column.visible" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" class="span__sort">{{column.label}}</span>
+                      <span *ngIf="!column.allowSort && column.editText === 'image' && column.visible" id="column_Sort_{{tableConfiguration.name}}_{{column.name}}" class="span__sort">{{column.label}}</span>
                       &nbsp;
                     </div>
                     <div style="display: inline-block; position:relative;">
@@ -98,6 +98,7 @@
                 <td *ngFor="let column of tableConfiguration.columns">
                   <div [ngSwitch]="column.outputType">
                     <input *ngSwitchCase="'checkBox'" type="checkBox" id="check_{{tableConfiguration.name}}_{{column.name}}" name="check_{{tableConfiguration.name}}_{{column.name}}" class="input__checkbox">
+                    <i *ngSwitchCase="'icon'" (click)="onEditClick(rowIndex)" style="padding-right: 3px;" class="Form_Button_Icon material-icons">edit</i>
                     <span *ngSwitchDefault>{{formatData(row[column.name], column.outputType)}}</span>
                   </div>
                 </td>

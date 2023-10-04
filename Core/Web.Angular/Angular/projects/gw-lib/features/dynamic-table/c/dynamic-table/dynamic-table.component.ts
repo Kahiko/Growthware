@@ -387,6 +387,12 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
     this._LoggingSvc.toast('You have not set the onBottomRight call back method using the setButtonMethods', 'DynamicTableComponent', LogLevel.Error);
   }
 
+  onEditClick(rowNumber: number) {
+    if(this._OnRowDoubleClickCallbackMethod && this._GWCommon.isFunction(this._OnRowDoubleClickCallbackMethod)) {
+      this._OnRowDoubleClickCallbackMethod(rowNumber);
+    }
+  }
+
   onHelp() {
     const mModalOptions: ModalOptions = new ModalOptions('DynamicTableComponent.onHelp', 'Help', this.helpTemplate, new WindowSize(450, 600));
     this._ModalSvc.open(mModalOptions);
