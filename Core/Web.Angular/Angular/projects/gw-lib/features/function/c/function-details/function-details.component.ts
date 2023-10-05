@@ -55,7 +55,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
 
-  avalibleParents = [{id: 1, text:	'Module'}];
+  avalibleParents = [{key: -1, value: 'None'}];
   
   frmProfile!: FormGroup;
 
@@ -159,7 +159,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {                                                           // Request #5 Error Handler
       this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((navigationTypes: any) => {                                             // Request #6 Handler
-      // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);                                       // Request #6 Handler
+      // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
       this.validNavigationTypes = navigationTypes;
       return this._ProfileSvc.getLinkBehaviors();                                   // #7 Request
     }).catch((error: any) => {                                                      // Request #6 Error Handler
@@ -167,8 +167,16 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).then((linkBehaviors: any) => {                                               // Request #7 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
       this.validLinkBehaviors = linkBehaviors;
+      return this._ProfileSvc.getAvalibleParents();                                  // #8 Request
+    }).catch((error) => {                                                            // Request #7 Error Handler
+      this._LoggingSvc.toast("Error getting link behaviors:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((avalibleParents: any)=>{                                                // Request #8 Handler
+      // console.log('FunctionDetailsComponent.ngOnInitavalibleParents', avalibleParents);
+      this.avalibleParents = avalibleParents;
       this.applySecurity();
       this.populateForm();
+    }).catch((error) => {                                                           // Request #8 Error Handler
+      this._LoggingSvc.toast("Error getting avalible parents:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);

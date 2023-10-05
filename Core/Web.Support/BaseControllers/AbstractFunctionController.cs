@@ -13,6 +13,19 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractFunctionController : ControllerBase
 {
+
+    [AllowAnonymous]
+    [HttpGet("GetAvalibleParents")]
+    public ActionResult GetAvalibleParents()
+    {
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if(mSecurityInfo.MayView)
+        {
+            return Ok(FunctionUtility.GetAvalibleParents());
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
     [AllowAnonymous]
     [HttpGet("GetFunction")]
     public ActionResult<MFunctionProfile> GetFunction(int functionSeqId)

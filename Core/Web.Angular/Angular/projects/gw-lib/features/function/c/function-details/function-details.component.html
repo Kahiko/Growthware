@@ -135,8 +135,8 @@
                 <span class="Form_LabelText">Parent: </span>
                 <mat-form-field>
                   <mat-select [(value)]="selectedParentId" class="rounded" style="width: 150px;">
-                    <mat-option *ngFor="let item of avalibleParents" [value]="item.id">
-                      {{item.text}}
+                    <mat-option *ngFor="let item of avalibleParents" [value]="item.key">
+                      {{item.value}}
                     </mat-option>
                   </mat-select>
                 </mat-form-field>

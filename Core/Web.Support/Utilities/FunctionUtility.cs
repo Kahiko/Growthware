@@ -44,6 +44,16 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    public static List<UIKeyValuePair> GetAvalibleParents()
+    {
+        List<UIKeyValuePair> mRetVal = Functions().Select(item => new UIKeyValuePair {
+            Key = item.FunctionTypeSeqId ,
+            Value = item.Name
+        }).ToList();
+
+        return mRetVal;
+    }
+
     public static List<UIKeyValuePair> GetFunctionTypes()
     {
         if(m_FunctionTypes == null) 
@@ -51,11 +61,10 @@ public static class FunctionUtility
             MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             DataTable mDataTable = mBFunctions.FunctionTypes();
-            m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair
-                                    {
-                                        Key = int.Parse(item["FUNCTION_TYPE_SEQ_ID"].ToString()) ,
-                                        Value = item["Name"].ToString()
-                                    }).ToList() ;
+            m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
+                Key = int.Parse(item["FUNCTION_TYPE_SEQ_ID"].ToString()) ,
+                Value = item["Name"].ToString()
+            }).ToList() ;
 
         }
         return m_FunctionTypes;
