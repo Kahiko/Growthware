@@ -47,7 +47,7 @@ public static class FunctionUtility
     public static List<UIKeyValuePair> GetAvalibleParents()
     {
         List<UIKeyValuePair> mRetVal = Functions().Select(item => new UIKeyValuePair {
-            Key = item.FunctionTypeSeqId ,
+            Key = item.Id ,
             Value = item.Name
         }).ToList();
 
