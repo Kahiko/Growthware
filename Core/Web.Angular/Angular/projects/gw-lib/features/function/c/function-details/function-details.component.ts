@@ -111,10 +111,6 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.FunctionSeqId;
     }
-    // console.log('mEditId', mEditId);
-    // console.log('_SecurityInfo', this._SecurityInfo);
-    // console.log('_GroupSvc', this._GroupSvc);
-    // console.log('_RoleSvc', this._RoleSvc);
     /**
      * FunctionSecurity
      * View_Function_Role_Tab
@@ -145,7 +141,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
-      // console.log('profile', profile);
+      console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
       if(profile) {
         this._Profile = profile;
       }
@@ -171,7 +167,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {                                                            // Request #7 Error Handler
       this._LoggingSvc.toast("Error getting link behaviors:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((avalibleParents: any)=>{                                                // Request #8 Handler
-      // console.log('FunctionDetailsComponent.ngOnInitavalibleParents', avalibleParents);
+      // console.log('FunctionDetailsComponent.ngOnInit.avalibleParents', avalibleParents);
       this.avalibleParents = avalibleParents;                                        // #9 Request
       return this._RoleSvc.getRoles();
     }).catch((error) => {                                                            // Request #8 Error Handler
@@ -250,6 +246,18 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   }  
 
   private populateForm(): void {
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameAdd + '_SelectedItems', this._Profile.assignedAddRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameDelete + '_SelectedItems', this._Profile.assignedDeleteRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_SelectedItems', this._Profile.assignedEditRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameView + '_SelectedItems', this._Profile.assignedViewRoles); }, 500);
+
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameAdd + '_SelectedItems', this._Profile.addGroups); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_SelectedItems', this._Profile.deleteGroups); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_SelectedItems', this._Profile.editGroups); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_SelectedItems', this._Profile.viewGroups); }, 500);
+
+    // const mGroups = this._Profile.groups!;
+    // setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
     this.selectedFunctionType = this._Profile.functionTypeSeqId;
     this.selectedNavigationType = this._Profile.navigationTypeSeqId;
     this.selectedParentId = this._Profile.parentId;
