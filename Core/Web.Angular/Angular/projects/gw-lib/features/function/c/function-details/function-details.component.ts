@@ -141,7 +141,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
-      console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
+      // console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
       if(profile) {
         this._Profile = profile;
       }
@@ -182,7 +182,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     }).catch((error: any) => {                                                        // Request #9 Error Handler
       this._LoggingSvc.toast("Error getting avalible roles:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((groups: any) => {
-      console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
+      // console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameAdd + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_AvailableItems', groups); }, 500);
