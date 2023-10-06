@@ -13,10 +13,10 @@ import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DataService } from '@Growthware/shared/services';
 // import { GWCommon } from '@Growthware/common-code';
-// import { GroupService } from '@Growthware/features/group';
+import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService, IModalOptions, ModalOptions } from '@Growthware/features/modal';
-// import { RoleService } from '@Growthware/features/role';
+import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
 import { SnakeListModule } from '@Growthware/features/snake-list';
@@ -96,11 +96,11 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     private _ProfileSvc: FunctionService,
     private _FormBuilder: FormBuilder,
     private _DataSvc: DataService,
-    // private _GroupSvc: GroupService,
+    private _GroupSvc: GroupService,
     // private _GWCommon: GWCommon,
     private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
-    // private _RoleSvc: RoleService,
+    private _RoleSvc: RoleService,
     private _SecuritySvc: SecurityService    
   ) { }
 
@@ -172,11 +172,27 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
       this._LoggingSvc.toast("Error getting link behaviors:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((avalibleParents: any)=>{                                                // Request #8 Handler
       // console.log('FunctionDetailsComponent.ngOnInitavalibleParents', avalibleParents);
-      this.avalibleParents = avalibleParents;
+      this.avalibleParents = avalibleParents;                                        // #9 Request
+      return this._RoleSvc.getRoles();
+    }).catch((error) => {                                                            // Request #8 Error Handler
+      this._LoggingSvc.toast("Error getting avalible parents:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((roles: any) => {                                                        // Request #9 Handler
+      // console.log('FunctionDetailsComponent.ngOnInit.roles', roles);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameAdd + '_AvailableItems', roles); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameDelete + '_AvailableItems', roles); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_AvailableItems', roles); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameView + '_AvailableItems', roles); }, 500);
+      return this._GroupSvc.getGroups();
+    }).catch((error: any) => {                                                        // Request #9 Error Handler
+      this._LoggingSvc.toast("Error getting avalible roles:\r\n" + error, 'Function Details:', LogLevel.Error);
+    }).then((groups: any) => {
+      console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameAdd + '_AvailableItems', groups); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_AvailableItems', groups); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_AvailableItems', groups); }, 500);
+      setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_AvailableItems', groups); }, 500);
       this.applySecurity();
       this.populateForm();
-    }).catch((error) => {                                                           // Request #8 Error Handler
-      this._LoggingSvc.toast("Error getting avalible parents:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
