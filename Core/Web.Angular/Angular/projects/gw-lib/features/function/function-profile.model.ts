@@ -1,5 +1,19 @@
 export interface IFunctionProfile {
   action: string;
+  assignedViewRoles: string[];
+  assignedAddRoles: string[];
+  assignedEditRoles: string[];
+  assignedDeleteRoles: string[];
+
+  addGroups: string[];
+  deleteGroups: string[];
+  editGroups: string[];
+  viewGroups: string[];
+
+  derivedViewRoles: string[];
+  derivedAddRoles: string[];
+  derivedEditRoles: string[];
+  derivedDeleteRoles: string[];
   description: string;
   enableViewState: boolean;
   enableNotifications: boolean;
@@ -22,6 +36,20 @@ export interface IFunctionProfile {
 
 export class FunctionProfile implements IFunctionProfile {
   public action: string = '';
+  public assignedViewRoles: string[] = [];
+  public assignedAddRoles: string[] = [];
+  public assignedEditRoles: string[] = [];
+  public assignedDeleteRoles: string[] = [];
+
+  public addGroups: string[] = [];
+  public deleteGroups: string[] = [];
+  public editGroups: string[] = [];
+  public viewGroups: string[] = [];
+
+  public derivedViewRoles: string[] = [];
+  public derivedAddRoles: string[] = [];
+  public derivedEditRoles: string[] = [];
+  public derivedDeleteRoles: string[] = [];
   public description: string = '';
   public enableViewState: boolean = false;
   public enableNotifications: boolean = false;
