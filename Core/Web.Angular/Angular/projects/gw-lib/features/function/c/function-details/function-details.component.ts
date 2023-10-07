@@ -16,6 +16,7 @@ import { DataService } from '@Growthware/shared/services';
 import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService, IModalOptions, ModalOptions } from '@Growthware/features/modal';
+import { IKeyValuePair, KeyValuePair } from '@Growthware/shared/models';
 import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
@@ -86,11 +87,11 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   showRoles: boolean = false;
   showGroups: boolean = false;
   
-  validFunctionTypes = [{key: -1, value: 'None'}];
+  validFunctionTypes: IKeyValuePair[] = [new KeyValuePair()];
 
-  validLinkBehaviors = [{key: -1, value: 'None'}];
+  validLinkBehaviors: IKeyValuePair[] = [new KeyValuePair()];
 
-  validNavigationTypes = [{key: -1, value: 'None'}];
+  validNavigationTypes: IKeyValuePair[] = [new KeyValuePair()];
 
   constructor(
     private _ProfileSvc: FunctionService,
@@ -148,19 +149,19 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
       return this._ProfileSvc.getFuncitonTypes();                                   // #5 Request
     }).catch((error) => {                                                           // Request #4 Error Handler
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((functionTypes: any) => {                                               // Request #5 Handler
+    }).then((functionTypes: IKeyValuePair[]) => {                                               // Request #5 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.functionTypes', functionTypes);
       this.validFunctionTypes = functionTypes;
       return this._ProfileSvc.getNavigationTypes();                                 // #6 Request
     }).catch((error) => {                                                           // Request #5 Error Handler
       this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((navigationTypes: any) => {                                             // Request #6 Handler
+    }).then((navigationTypes: IKeyValuePair[]) => {                                             // Request #6 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
       this.validNavigationTypes = navigationTypes;
       return this._ProfileSvc.getLinkBehaviors();                                   // #7 Request
     }).catch((error: any) => {                                                      // Request #6 Error Handler
       this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((linkBehaviors: any) => {                                               // Request #7 Handler
+    }).then((linkBehaviors: IKeyValuePair[]) => {                                               // Request #7 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
       this.validLinkBehaviors = linkBehaviors;
       return this._ProfileSvc.getAvalibleParents();                                  // #8 Request
