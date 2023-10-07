@@ -1,14 +1,14 @@
-export interface INameValuePare {
+export interface INameValuePair {
     name: string,
     payLoad: any
   }
   
-  export class DataNVP implements INameValuePare {
+  export class DataNVP implements INameValuePair {
   
     constructor(public name: string, public payLoad: Array<any>) {}
   }
   
-  export class SearchTotalRecordsNVP implements INameValuePare {
+  export class SearchTotalRecordsNVP implements INameValuePair {
   
     constructor(public name: string, public payLoad: number) {}
   }

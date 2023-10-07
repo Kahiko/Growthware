@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@Growthware/features/dynamic-table';
 import { DataService } from '@Growthware/shared/services';
 import { SearchService, SearchCriteriaNVP } from '@Growthware/features/search';
-import { INameValuePare } from '@Growthware/shared/models';
+import { INameValuePair } from '@Growthware/shared/models';
 import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@Growthware/features/modal';
 
 @Component({
@@ -48,7 +48,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   }
 
   ngOnInit(): void {
-    this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePare) => {
+    this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
       if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
         this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
           this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);

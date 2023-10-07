@@ -1,4 +1,4 @@
-import { INameValuePare } from "@Growthware/shared/models";
+import { INameValuePair } from "@Growthware/shared/models";
 
 export interface ISearchCriteria {
   searchColumns: Array<string>,
@@ -18,7 +18,7 @@ export class SearchCriteria implements ISearchCriteria {
   ) {}
 }
 
-export interface ISearchCriteriaNVP extends INameValuePare {
+export interface ISearchCriteriaNVP extends INameValuePair {
   name: string,
   payLoad: ISearchCriteria
 }
@@ -29,7 +29,7 @@ export class SearchCriteriaNVP implements ISearchCriteriaNVP {
 }
 
 
-export interface ISearchResultsNVP extends INameValuePare {
+export interface ISearchResultsNVP extends INameValuePair {
   name: string,
   payLoad: {
     data: Array<any>
