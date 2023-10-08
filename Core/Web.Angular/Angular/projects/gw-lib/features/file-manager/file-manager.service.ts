@@ -203,6 +203,7 @@ export class FileManagerService {
         next: (response: IDirectoryTree) => {
           const mDirectoryTree = [];
           mDirectoryTree.push(response);
+          this.CurrentDirectoryTree = mDirectoryTree[0];
           // console.log('getDirectories.mDirectoryTree', mDirectoryTree);
           this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
           resolve(true);
