@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 // Services
 // Interfaces / Common Code
@@ -11,7 +11,7 @@ import { IWindowSize, WindowSize } from '../../window-size.model';
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
-export class ModalComponent implements OnInit {
+export class ModalComponent implements OnDestroy, OnInit {
   public header: string = '';
   public height: number = 0;
   public modalId: string = '';
@@ -95,6 +95,10 @@ export class ModalComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    document.removeEventListener('keyup', this.keyDownHandler);
+  }
+
   ngOnInit(): void {
     document.addEventListener('keyup', (e) => {
       this.keyDownHandler(e);
@@ -103,7 +107,6 @@ export class ModalComponent implements OnInit {
 
   onCancel(): void {
     if (this.cancelCallBackMethod) {
-      document.removeEventListener('keydown', this.keyDownHandler);
       this.cancelCallBackMethod();
     }
   }
