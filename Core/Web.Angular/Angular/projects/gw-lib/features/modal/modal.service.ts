@@ -7,6 +7,7 @@ import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { GWCommon } from '@Growthware/common-code';
 // Features
 import { ContentObject, IContentObject } from './content-object.model';
+import { ContentType } from './content-type.enum';
 import { ModalComponent } from './c/popup/modal.component';
 import { IModalOptions } from './modal-options.model';
 
@@ -17,7 +18,7 @@ type Content<T> = string | TemplateRef<T> | Type<T>;
 })
 export class ModalService {
   private _ActiveModals: IContentObject[] = [];
-  private _IsComponent: boolean = false;
+  private _ContentType: ContentType = ContentType.String;
 
   constructor(
     private _ApplicationRef: ApplicationRef,
@@ -34,7 +35,7 @@ export class ModalService {
   public close(key: string) {
     const mContentObj = this._ActiveModals.find((obj: IContentObject) => obj.key.toUpperCase() === key.toUpperCase() as string);
     if (mContentObj !== undefined) {
-      if(mContentObj.isComponent) {
+      if(mContentObj.contentType === ContentType.Component) {
         try {
           // destroy parent
           this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
@@ -77,7 +78,7 @@ export class ModalService {
     const mResolvedNgContent = this.resolveNgContent(options.contentPayLoad);
     // first, create the child
     let mNgContent: any = mResolvedNgContent;
-    if(this._IsComponent) {
+    if(this._ContentType === ContentType.Component) {
       // attach ComponentRef to the application reference
       this._ApplicationRef.attachView(mResolvedNgContent.hostView);
       // get root nodes
@@ -93,8 +94,8 @@ export class ModalService {
     // append to body, we will use platform document for this
     const mDialogElement = (<EmbeddedViewRef<any>>mModalComponentRef.hostView).rootNodes[0];
     // setup a ContentObject to add to the array
-    const mContentObject = new ContentObject(options.modalId, this._IsComponent, mModalComponentRef, null)
-    if(this._IsComponent) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
+    const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef, null)
+    if(this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
       mContentObject.payloadRef = mResolvedNgContent;
     }
     this._ActiveModals.push(mContentObject);
@@ -113,18 +114,19 @@ export class ModalService {
    * @memberof ModalDirective
    */  
   private resolveNgContent<T>(content: Content<T>) {
-    this._IsComponent = false;
+    this._ContentType = ContentType.String;
     let mRetVal: any;
     if (typeof content === 'string') {            /** String */
       const element = this._Document.createTextNode(content);
       mRetVal = [[element]];
     } else if (content instanceof TemplateRef) {  /** ngTemplate */
+      this._ContentType = ContentType.Template;
       const mTemplateRef = Object.create(content) as T;
       const mViewRef = content.createEmbeddedView(mTemplateRef);
       this._ApplicationRef.attachView(mViewRef);
       mRetVal = [mViewRef.rootNodes];
     } else if (content instanceof Type) {         /** Otherwise it's a component */
-      this._IsComponent = true;
+      this._ContentType = ContentType.Component;
       mRetVal = createComponent(content, { environmentInjector: this._ApplicationRef.injector });
     }
     return mRetVal;

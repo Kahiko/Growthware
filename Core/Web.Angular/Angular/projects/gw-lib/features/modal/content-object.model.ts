@@ -1,5 +1,7 @@
+import { ContentType } from "./content-type.enum";
+
 export interface IContentObject {
-  isComponent: boolean;
+  contentType: ContentType;
   key: string;
   modalComponentRef: any;
   nativeElement: any;
@@ -12,7 +14,7 @@ export class ContentObject implements IContentObject {
 
   constructor(
     public key: string,
-    public isComponent: boolean,
+    public contentType: ContentType,
     public modalComponentRef: any,
     public nativeElement: any,
   ) { }

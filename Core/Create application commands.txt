@@ -120,6 +120,7 @@ Modal:
 		ng generate module features/modal --project gw-lib
 		ng generate component features/modal/c/popup/modal --module modal --style scss --skip-tests --project gw-lib
 		ng generate service features/modal/modal --skip-tests --project gw-lib
+		ng generate enum features/modal/ContentType --type enum --project gw-lib
 		ng generate enum features/modal/ModalSize --type enum --project gw-lib
 		ng generate interface features/modal/ModalOptions --type model --project gw-lib
 		ng generate interface features/modal/ContentObject --type model --project gw-lib
