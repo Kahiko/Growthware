@@ -22,13 +22,15 @@ import { DirectoryTreeComponent } from './c/directory-tree/directory-tree.compon
 @NgModule({
   declarations: [
     FileManagerComponent,
-    UploadComponent,
     FileListComponent,
     DirectoryTreeComponent
   ],
   imports: [
     CommonModule,
     DynamicTableModule,
+
+    UploadComponent,
+
     FormsModule,
     MatButtonModule,
     MatIconModule,

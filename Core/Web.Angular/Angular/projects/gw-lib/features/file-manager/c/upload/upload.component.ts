@@ -1,7 +1,12 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { TemplateRef, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { BehaviorSubject, Subscription } from 'rxjs';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LogDestination, ILogOptions, LogOptions } from '@Growthware/features/logging';
@@ -13,6 +18,14 @@ import { IUploadStatus } from '../../upload-status.model';
 
 @Component({
   selector: 'gw-lib-upload',
+  standalone: true,
+  imports: [
+    CommonModule,
+    
+    MatButtonModule,
+    MatIconModule,
+    MatProgressBarModule,
+  ],
   templateUrl: './upload.component.html',
   styleUrls: ['./upload.component.scss']
 })
