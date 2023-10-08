@@ -77,8 +77,6 @@ export class ModalService {
     // first, create the child
     let mNgContent: any = mResolvedNgContent;
     if(this._ContentType === ContentType.Component) {
-      // attach ComponentRef to the application reference
-      this._ApplicationRef.attachView(mResolvedNgContent.hostView);
       // get root nodes
       mNgContent = (<EmbeddedViewRef<any>>mResolvedNgContent.hostView).rootNodes;
     }
@@ -126,6 +124,9 @@ export class ModalService {
     } else if (content instanceof Type) {         /** Otherwise it's a component */
       this._ContentType = ContentType.Component;
       mRetVal = createComponent(content, { environmentInjector: this._ApplicationRef.injector });
+      // attach ComponentRef to the application reference
+      this._ApplicationRef.attachView(mRetVal.hostView);
+
     }
     return mRetVal;
   }
