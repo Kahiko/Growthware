@@ -92,7 +92,7 @@ export class ModalService {
     // append to body, we will use platform document for this
     const mDialogElement = (<EmbeddedViewRef<any>>mModalComponentRef.hostView).rootNodes[0];
     // setup a ContentObject to add to the array
-    const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef, null)
+    const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef)
     if(this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
       mContentObject.payloadRef = mResolvedNgContent;
     }

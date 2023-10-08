@@ -4,7 +4,6 @@ export interface IContentObject {
   contentType: ContentType;
   key: string;
   modalComponentRef: any;
-  nativeElement: any;
   payloadRef: any;
 }
 
@@ -16,6 +15,5 @@ export class ContentObject implements IContentObject {
     public key: string,
     public contentType: ContentType,
     public modalComponentRef: any,
-    public nativeElement: any,
   ) { }
 }
