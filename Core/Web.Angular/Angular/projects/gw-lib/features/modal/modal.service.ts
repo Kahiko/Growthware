@@ -37,9 +37,6 @@ export class ModalService {
     if (mContentObj !== undefined) {
       if(mContentObj.contentType === ContentType.Component) {
         try {
-          // destroy parent
-          this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
-          mContentObj.modalComponentRef.destroy();
           // destroy child
           this._ApplicationRef.detachView(mContentObj.payloadRef.hostView);
           mContentObj.payloadRef.destroy();
@@ -52,9 +49,10 @@ export class ModalService {
           }
           this._LoggingSvc.console(mMsg, LogLevel.Error);
         }
-      } else {
-        this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
       }
+      // remove and destroy the modal component
+      this._ApplicationRef.detachView(mContentObj.modalComponentRef.hostView);
+      mContentObj.modalComponentRef.destroy();
       this._ActiveModals = this._ActiveModals.filter(obj => obj !== mContentObj);
     }
   }
