@@ -8,7 +8,7 @@
       </mat-toolbar>
     </div>
     <div class="modal-body__div" [ngStyle]="{ 'height.px': height, 'width.px': width }">
-      <p><ng-content></ng-content></p>
+      <ng-content></ng-content>
     </div>
     <div *ngIf="showFooter" class="modal-footer__div">
       <button *ngIf="closeBtn.visible" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="modal-footer__button {{closeBtn.class}" (click)="onClose()" mat-raised-button color="primary">{{closeBtn.text}}</button>
