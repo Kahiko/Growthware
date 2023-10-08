@@ -121,7 +121,7 @@ export class FileListComponent implements OnInit {
         this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onMenuDeleteClick');
         this._LoggingSvc.toast('Was not able to delete the file', 'Delete file error', LogLevel.Error);
       });
-      this._ModalSvc.close('FileListComponent.onDeleteClick');
+      this._ModalSvc.close(this._ModalId_Delete);
     }
     this._ModalSvc.open(mModalOptions);
   }
