@@ -121,6 +121,7 @@ export class ModalService {
     } else if (content instanceof TemplateRef) {  /** ngTemplate */
       const mTemplateRef = Object.create(content) as T;
       const mViewRef = content.createEmbeddedView(mTemplateRef);
+      this._ApplicationRef.attachView(mViewRef);
       mRetVal = [mViewRef.rootNodes];
     } else if (content instanceof Type) {         /** Otherwise it's a component */
       this._IsComponent = true;
