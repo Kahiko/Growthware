@@ -1,8 +1,7 @@
-import { Component, OnDestroy, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,18 +11,18 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { DataService } from '@Growthware/shared/services';
-// import { GWCommon } from '@Growthware/common-code';
 import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService, IModalOptions, ModalOptions } from '@Growthware/features/modal';
 import { IKeyValuePair, KeyValuePair } from '@Growthware/shared/models';
 import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
-import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
+import { SecurityService } from '@Growthware/features/security';
 import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
+import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 
 @Component({
   selector: 'gw-lib-function-details',
@@ -46,22 +45,16 @@ import { IFunctionProfile, FunctionProfile } from '../../function-profile.model'
   templateUrl: './function-details.component.html',
   styleUrls: ['./function-details.component.scss']
 })
-export class FunctionDetailsComponent implements OnDestroy, OnInit {
+export class FunctionDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
-  private _Profile: IFunctionProfile = new FunctionProfile();
-  private _SecurityInfo: ISecurityInfo = new SecurityInfo();
-  private _Subscription: Subscription = new Subscription();
   @ViewChild('helpAction') private _HelpAction!: TemplateRef<any>;
   @ViewChild('helpSource') private _HelpSource!: TemplateRef<any>;
   @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
+  
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
+  private _Profile: IFunctionProfile = new FunctionProfile();
 
   avalibleParents = [{key: -1, value: 'None'}];
-  
-  frmProfile!: FormGroup;
-
-  canDelete: boolean = false;
-  canSave: boolean = false;
 
   derivedRolesId: string = 'derivedRoles'
 
@@ -94,16 +87,22 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   validNavigationTypes: IKeyValuePair[] = [new KeyValuePair()];
 
   constructor(
-    private _ProfileSvc: FunctionService,
     private _FormBuilder: FormBuilder,
-    private _DataSvc: DataService,
     private _GroupSvc: GroupService,
-    // private _GWCommon: GWCommon,
-    private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
     private _RoleSvc: RoleService,
-    private _SecuritySvc: SecurityService    
-  ) { }
+    dataSvc: DataService,
+    loggingSvc: LoggingService,
+    modalSvc: ModalService,
+    profileSvc: FunctionService,
+    securitySvc: SecurityService    
+  ) { 
+    super();
+    this._DataSvc = dataSvc;
+    this._LoggingSvc = loggingSvc;
+    this._ModalSvc = modalSvc;
+    this._ProfileSvc = profileSvc;
+    this._SecuritySvc = securitySvc;
+  }
 
   ngOnInit(): void {
     // console.log('editReason', this._ProfileSvc.editReason);
@@ -196,36 +195,7 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
     this.populateForm();
   }
 
-  ngOnDestroy(): void {
-    this._Subscription.unsubscribe();
-    this._ProfileSvc.editReason = '';
-  }
-
-  get controls() {
-    return this.frmProfile.controls;
-  }
-
   private applySecurity() {
-    // nothing atm
-  }
-
-  closeModal(): void {
-    if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-      this._ModalSvc.close(this._ProfileSvc.editModalId);
-    } else {
-      this._ModalSvc.close(this._ProfileSvc.addModalId);
-    }
-  }
-
-  onSubmit(form: FormGroup): void {
-    this.populateProfile();
-  }
-
-  onCancel(): void {
-    this.closeModal();
-  }
-
-  onDelete(): void {
     // nothing atm
   }
 
@@ -287,6 +257,11 @@ export class FunctionDetailsComponent implements OnDestroy, OnInit {
   }
 
   populateProfile(): void {
-    // nothing atm
+    this._LoggingSvc.toast('FunctionDetailsComponent.populateProfile', 'Function Details:', LogLevel.Error);
+  }
+
+  save(): void {
+    this._LoggingSvc.toast('FunctionDetailsComponent.save', 'Function Details:', LogLevel.Error);
+    this.onClose();
   }
 }
