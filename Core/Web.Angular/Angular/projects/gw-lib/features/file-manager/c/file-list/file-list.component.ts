@@ -107,6 +107,18 @@ export class FileListComponent implements OnInit {
     return obj;
   }
 
+  onLeftClick(item: IFileInfoLight) {
+    if(!this.selectedFile) {
+      this.selectedFile = item;
+    } else {
+      if(this.selectedFile.name !== item.name) {
+        this.selectedFile = item;
+      } else {
+        this.selectedFile.name = '';
+      }  
+    }
+  }
+
   onMenuDeleteClick(item: IFileInfoLight){
     // console.log('item', item);
     this.selectedFile = item;
@@ -167,6 +179,7 @@ export class FileListComponent implements OnInit {
    * @param item Our data contained in the row of the table
    */
   onRightClick(event: MouseEvent, item: any) {
+    this.selectedFile = item.content;
     // preventDefault avoids to show the visualization of the right-click menu of the browser
     event.preventDefault();
 

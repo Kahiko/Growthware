@@ -1,5 +1,5 @@
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
-  <li *ngFor="let item of data$ | async; let rowIndex = index" (contextmenu)="onRightClick($event, { content: item })">
+  <li *ngFor="let item of data$ | async; let rowIndex = index" (click)="onLeftClick(item)" (contextmenu)="onRightClick($event, { content: item })" [ngClass]="{ 'background-highlight': selectedFile === item }">
     {{ item.shortFileName }}
   </li>
 </ul>
