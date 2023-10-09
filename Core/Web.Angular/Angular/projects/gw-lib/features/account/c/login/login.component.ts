@@ -36,8 +36,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
 
   ngOnInit(): void {
     this.loginForm = this._FormBuilder.group({
-      account: ['', [Validators.required]],
-      password: ['', [Validators.required, Validators.minLength(4)]]
+      account: ['Developer', [Validators.required]],
+      password: ['none', [Validators.required, Validators.minLength(4)]]
     })
   }
 
