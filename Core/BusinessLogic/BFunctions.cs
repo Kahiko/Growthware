@@ -76,7 +76,7 @@ namespace GrowthWare.BusinessLogic
         {
             if (securityEntityProfile == null)
             {
-                throw new ArgumentException("The securityEntityProfile and not be null!");
+                throw new ArgumentException("The securityEntityProfile can not be null!");
             }
             if (centralManagement)
             {
