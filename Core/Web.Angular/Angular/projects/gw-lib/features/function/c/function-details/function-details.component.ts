@@ -129,8 +129,6 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // #1 Request/Handler
       // console.log('securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
-      this.canSave = this._SecurityInfo.mayEdit || this._SecurityInfo.mayAdd;
-      this.canDelete = this._SecurityInfo.mayDelete
       return this._SecuritySvc.getSecurityInfo('View_Function_Role_Tab');           // #2 Request
     }).catch((error) => {                                                           // Request #1 Error Handler
       this._LoggingSvc.toast("Error getting function security:\r\n" + error, 'Function Details:', LogLevel.Error);
@@ -203,10 +201,6 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
     this.createForm();
-  }
-
-  private applySecurity() {
-    // nothing atm
   }
   
   createForm(): void {

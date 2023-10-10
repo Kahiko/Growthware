@@ -38,6 +38,14 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         this._ProfileSvc.editRow = '';
     }
 
+    protected applySecurity() {
+        this.canSave = this._SecurityInfo.mayEdit || this._SecurityInfo.mayAdd;
+        this.canDelete = this._SecurityInfo.mayDelete
+        if(this._ProfileSvc.editReason.toLowerCase() == 'newprofile') {
+            this.canDelete = false;
+        }
+    }
+
     protected onCancel(): void {
         this.onClose();
     }
