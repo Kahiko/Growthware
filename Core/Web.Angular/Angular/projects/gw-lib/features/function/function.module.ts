@@ -10,7 +10,7 @@ import { CopyFunctionSecurityComponent } from './c/copy-function-security/copy-f
 @NgModule({
   declarations: [
     SearchfunctionsComponent,
-    CopyFunctionSecurityComponent
+    CopyFunctionSecurityComponent,
   ],
   imports: [
     CommonModule,

@@ -168,6 +168,7 @@ Security:
 PickList:
 		ng generate module features/PickList --project gw-lib
 		ng generate component features/pick-list/c/pick-list --module pick-list --style scss --project gw-lib
+		ng generate component features/pick-list/c/list --standalone --style scss --skip-tests --project gw-lib
 Groups:
 		ng generate module features/group --project gw-lib
 		ng generate interface features/group/GroupProfile --type model --project gw-lib

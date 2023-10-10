@@ -5,6 +5,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
@@ -17,6 +18,7 @@ import { ModalService, IModalOptions, ModalOptions } from '@Growthware/features/
 import { IKeyValuePair, KeyValuePair } from '@Growthware/shared/models';
 import { RoleService } from '@Growthware/features/role';
 import { PickListModule } from '@Growthware/features/pick-list';
+import { ListComponent } from '@Growthware/features/pick-list';
 import { SecurityService } from '@Growthware/features/security';
 import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
@@ -34,8 +36,11 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/co
     ReactiveFormsModule,
     SnakeListModule,
 
+    ListComponent,
+
     MatButtonModule, 
-    MatFormFieldModule, 
+    MatFormFieldModule,
+    MatGridListModule,
     MatIconModule, 
     MatInputModule,
     MatSelectModule,
@@ -71,6 +76,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   rolesPickListNameAdd: string = 'addRoles';
   rolesPickListNameEdit: string = 'editRoles';
   rolesPickListNameDelete: string = 'deleteRoles';
+
+  derivedRolesView: string = 'derivedRolesView';
+  derivedRolesAdd: string = 'derivedRolesAdd';
+  derivedRolesEdit: string = 'derivedRolesEdit';
+  derivedRolesDelete: string = 'derivedRolesDelete';
 
   selectedFunctionType: number = 1;
   selectedNavigationType: number = 1;
@@ -233,6 +243,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     this.selectedNavigationType = this._Profile.navigationTypeSeqId;
     this.selectedParentId = this._Profile.parentId;
     this.selectedLinkBehavior = this._Profile.linkBehavior;
+    // this._DataSvc.notifyDataChanged(this.derivedRolesId, this._Profile.);
     this.frmProfile = this._FormBuilder.group({
       action: [this._Profile.action, [Validators.required]],
       description: [this._Profile.description],

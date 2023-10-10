@@ -173,7 +173,7 @@
                   id="viewRoles"
                   name="{{rolesPickListNameView}}"
                   allItemsText="Available Roles"
-                  header="Assign roles"
+                  header="View roles"
                   pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
                   selectedItemsText="Selected Roles"
                   size=8
@@ -184,7 +184,7 @@
                   id="addRoles"
                   name="{{rolesPickListNameAdd}}"
                   allItemsText="Available Roles"
-                  header="Assign roles"
+                  header="Add roles"
                   pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
                   selectedItemsText="Selected Roles"
                   size=8
@@ -198,7 +198,7 @@
                   id="editRoles"
                   name="{{rolesPickListNameEdit}}"
                   allItemsText="Available Roles"
-                  header="Assign roles"
+                  header="Edit roles"
                   pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
                   selectedItemsText="Selected Roles"
                   size=8
@@ -208,8 +208,7 @@
                 <gw-lib-pick-list #rolesDelete
                   id="deleteRoles"
                   name="{{rolesPickListNameDelete}}"
-                  allItemsText="Available Roles"
-                  header="Assign roles"
+                  header="Delete roles"
                   pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
                   selectedItemsText="Selected Roles"
                   size=8
@@ -230,7 +229,7 @@
                   id="viewGroups"
                   name="{{groupsPickListNameView}}"
                   allItemsText="Available Groups"
-                  header="Assign Groups"
+                  header="View Groups"
                   pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
                   selectedItemsText="Selected Groups"
                   size=8
@@ -241,7 +240,7 @@
                   id="addGroups"
                   name="{{groupsPickListNameAdd}}"
                   allItemsText="Available Groups"
-                  header="Assign roGroupsles"
+                  header="Add Groups"
                   pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
                   selectedItemsText="Selected Groups"
                   size=8
@@ -255,7 +254,7 @@
                   id="editGroups"
                   name="{{groupsPickListNameEdit}}"
                   allItemsText="Available Groups"
-                  header="Assign Groups"
+                  header="Edit Groups"
                   pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
                   selectedItemsText="Selected Groups"
                   size=8
@@ -266,7 +265,7 @@
                   id="deleteGroups"
                   name="{{groupsPickListNameDelete}}"
                   allItemsText="Available Groups"
-                  header="Assign Groups"
+                  header="Delete Groups"
                   pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
                   selectedItemsText="Selected Groups"
                   size=8
@@ -285,10 +284,51 @@
       </div>
     </mat-tab>
     <mat-tab label="Derived Roles">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__container formSection tabHeight">
+      <div class="mat-tab__container">
+        <div class="mat-tab__container formSectionContents tabHeight">
           <div>
-            <gw-lib-snake-list id="{{derivedRolesId}}"></gw-lib-snake-list>
+            <mat-grid-list cols="2" rowHeight="2:1">
+              <mat-grid-tile>
+                <gw-lib-list #derivedViewRoles
+                  id="derivedViewRoles"
+                  name="{{derivedRolesView}}"
+                  allItemsText=""
+                  header="Derived View Roles"
+                  pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+                  size=8
+                  width=200></gw-lib-list>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <gw-lib-list #derivedAddRoles
+                  id="derivedAddRoles"
+                  name="{{derivedRolesView}}"
+                  allItemsText=""
+                  header="Derived Add Roles"
+                  pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+                  size=8
+                  width=200></gw-lib-list> 
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <gw-lib-list #derivedEditRoles
+                  id="derivedEditRoles"
+                  name="{{derivedRolesView}}"
+                  allItemsText=""
+                  header="Derived Edit Roles"
+                  pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+                  size=8
+                  width=200></gw-lib-list>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <gw-lib-list #derivedDeleteRoles
+                  id="derivedDeleteRoles"
+                  name="{{derivedRolesView}}"
+                  allItemsText=""
+                  header="Derived Delete Roles"
+                  pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+                  size=8
+                  width=200></gw-lib-list>
+              </mat-grid-tile>
+            </mat-grid-list>
           </div>
         </div>
       </div>
