@@ -151,7 +151,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
-      // console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
+      console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
       if(profile) {
         this._Profile = profile;
       }
@@ -236,6 +236,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_SelectedItems', this._Profile.deleteGroups); }, 500);
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_SelectedItems', this._Profile.editGroups); }, 500);
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_SelectedItems', this._Profile.viewGroups); }, 500);
+
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.derivedRolesAdd + '_AvailableItems', this._Profile.derivedAddRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.derivedRolesDelete + '_AvailableItems', this._Profile.derivedDeleteRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.derivedRolesEdit + '_AvailableItems', this._Profile.derivedEditRoles); }, 500);
+    setTimeout(() => { this._DataSvc.notifyDataChanged(this.derivedRolesView + '_AvailableItems', this._Profile.derivedViewRoles); }, 500);
 
     // const mGroups = this._Profile.groups!;
     // setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
