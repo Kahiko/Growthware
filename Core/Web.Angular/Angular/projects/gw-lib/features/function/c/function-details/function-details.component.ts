@@ -202,11 +202,35 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
-    this.populateForm();
+    this.createForm();
   }
 
   private applySecurity() {
     // nothing atm
+  }
+  
+  createForm(): void {
+    this.frmProfile = this._FormBuilder.group({
+      action: [this._Profile.action, [Validators.required]],
+      description: [this._Profile.description],
+      enableViewState: [this._Profile.enableViewState],
+      enableNotifications: [this._Profile.enableNotifications],
+      id: [{value: this._Profile.id, disabled: true}],
+      isNavigable: [this._Profile.isNavigable],
+      linkBehavior: [this._Profile.linkBehavior],
+      // functionTypeSeqId: [this._Profile.functionTypeSeqId],
+      groups: [this._Profile.groups],
+      name: [this._Profile.name],
+      metaKeywords: [this._Profile.metaKeywords],
+      navigationTypeSeqId: [this._Profile.navigationTypeSeqId],
+      notes: [this._Profile.notes],
+      noUI: [this._Profile.noUI],
+      parentId: [this._Profile.parentId],
+      redirectOnTimeout: [this._Profile.redirectOnTimeout],
+      roles: [this._Profile.roles],
+      source: [this._Profile.source],
+      controller: [this._Profile.controller],
+    });    
   }
 
   onHelp(controleName: string): void {
@@ -227,6 +251,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   }  
 
   private populateForm(): void {
+    this.createForm();
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameAdd + '_SelectedItems', this._Profile.assignedAddRoles); }, 500);
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameDelete + '_SelectedItems', this._Profile.assignedDeleteRoles); }, 500);
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_SelectedItems', this._Profile.assignedEditRoles); }, 500);
@@ -249,27 +274,6 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     this.selectedParentId = this._Profile.parentId;
     this.selectedLinkBehavior = this._Profile.linkBehavior;
     // this._DataSvc.notifyDataChanged(this.derivedRolesId, this._Profile.);
-    this.frmProfile = this._FormBuilder.group({
-      action: [this._Profile.action, [Validators.required]],
-      description: [this._Profile.description],
-      enableViewState: [this._Profile.enableViewState],
-      enableNotifications: [this._Profile.enableNotifications],
-      id: [{value: this._Profile.id, disabled: true}],
-      isNavigable: [this._Profile.isNavigable],
-      linkBehavior: [this._Profile.linkBehavior],
-      // functionTypeSeqId: [this._Profile.functionTypeSeqId],
-      groups: [this._Profile.groups],
-      name: [this._Profile.name],
-      metaKeywords: [this._Profile.metaKeywords],
-      navigationTypeSeqId: [this._Profile.navigationTypeSeqId],
-      notes: [this._Profile.notes],
-      noUI: [this._Profile.noUI],
-      parentId: [this._Profile.parentId],
-      redirectOnTimeout: [this._Profile.redirectOnTimeout],
-      roles: [this._Profile.roles],
-      source: [this._Profile.source],
-      controller: [this._Profile.controller],
-    });
   }
 
   populateProfile(): void {

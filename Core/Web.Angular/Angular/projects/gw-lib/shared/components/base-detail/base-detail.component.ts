@@ -66,6 +66,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         return this.frmProfile.controls;
     }
 
+    abstract createForm(): void;
     abstract populateProfile(): void;
     abstract save(): void;
 
