@@ -157,9 +157,14 @@
       </div>
     </mat-tab>
     <mat-tab label="Menu Order">
-      <div class="mat-tab__container formSection">
+      <div class="mat-tab__container">
         <div class="mat-tab__content formSectionContents tabHeight">
-          Menu Order
+          <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let movie of functionOrder" cdkDrag>
+              <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+              {{movie.name}}
+            </div>
+          </div>          
         </div>
       </div>
     </mat-tab>

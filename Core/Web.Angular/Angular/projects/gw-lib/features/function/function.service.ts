@@ -15,6 +15,7 @@ export class FunctionService {
   private _ApiName: string = 'GrowthwareFunction/';
   private _Api_AvalibleParents: string = '';
   private _Api_GetFunction: string = '';
+  private _Api_GetFunctionOrder: string = '';
   private _Api_FunctionTypes: string = '';
   private _Api_LinkBehaviors: string = '';
   private _Api_NavigationTypes: string = '';
@@ -52,6 +53,7 @@ export class FunctionService {
   ) {
     this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
+    this._Api_GetFunctionOrder = this._GWCommon.baseURL + this._ApiName + 'GetFunctionOrder';
     this._Api_FunctionTypes = this._GWCommon.baseURL + this._ApiName + 'GetFunctionTypes';
     this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
     this._Api_LinkBehaviors = this._GWCommon.baseURL + this._ApiName + 'GetLinkBehaviors';
@@ -94,6 +96,28 @@ export class FunctionService {
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async GetFunctionOrder(functionSeqId: number): Promise<any> {
+    const mQueryParameter: HttpParams = new HttpParams().append('functionSeqId', functionSeqId);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.get<any>(this._Api_GetFunctionOrder, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFunctionOrder');
           reject('Failed to call the API');
         },
         // complete: () => {}

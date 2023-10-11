@@ -10,6 +10,13 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDragPlaceholder,
+  CdkDropList,
+  moveItemInArray,
+} from '@angular/cdk/drag-drop';
 // Library
 import { DataService } from '@Growthware/shared/services';
 import { GroupService } from '@Growthware/features/group';
@@ -44,8 +51,9 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/co
     MatIconModule, 
     MatInputModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
 
+    CdkDropList, CdkDrag, CdkDragPlaceholder
   ],
   templateUrl: './function-details.component.html',
   styleUrls: ['./function-details.component.scss']
@@ -62,6 +70,8 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   avalibleParents = [{key: -1, value: 'None'}];
 
   derivedRolesId: string = 'derivedRoles'
+
+  functionOrder: any = [];
 
   groupsAvailable: Array<string> = [];
   groupsPickListName: string = 'groups';
@@ -195,8 +205,14 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_AvailableItems', groups); }, 500);
+      return this._ProfileSvc.GetFunctionOrder(this._Profile.id);
+    }).then((response: any) => {
+      // console.log('FunctionDetailsComponent.ngOnInit.GetFunctionOrder', response);
+      this.functionOrder = response;
       this.applySecurity();
       this.populateForm();
+    }).catch((error: any) => {                                                       // Request #9 Error Handler
+      this._LoggingSvc.toast("Error getting avalible groups:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
@@ -225,6 +241,10 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       source: [this._Profile.source],
       controller: [this._Profile.controller],
     });    
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.functionOrder, event.previousIndex, event.currentIndex);
   }
 
   onHelp(controleName: string): void {

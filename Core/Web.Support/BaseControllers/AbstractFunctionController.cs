@@ -7,6 +7,7 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
+using System.Security.Cryptography.Xml;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -45,7 +46,6 @@ public abstract class AbstractFunctionController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
-
     [AllowAnonymous]
     [HttpGet("GetFunctionTypes")]
     public ActionResult<List<UIKeyValuePair>> GetFunctionTypes()
@@ -81,6 +81,18 @@ public abstract class AbstractFunctionController : ControllerBase
         {
             List<UIKeyValuePair> mRetVal = NameValuePairUtility.GetNavigationTypes();
             return Ok(mRetVal);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetFunctionOrder")]
+    public ActionResult<List<UIFunctionMenuOrder>> GetFunctionOrder(int functionSeqId)
+    {
+        MSecurityInfo mSecurityInfo = this.GetSecurityInfo("FunctionSecurity");
+        if(mSecurityInfo.MayView)
+        {
+            return Ok(FunctionUtility.GetFunctionOrder(functionSeqId));
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }

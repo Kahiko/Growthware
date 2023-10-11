@@ -54,6 +54,22 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    public static List<UIFunctionMenuOrder> GetFunctionOrder(int functionSeqId)
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+        BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        DataTable mDataTable = mBFunctions.GetMenuOrder(mFunctionProfile);
+        List<UIFunctionMenuOrder> mRetVal = null;
+        mRetVal = mDataTable.AsEnumerable().Select(item => new UIFunctionMenuOrder {
+            Function_Seq_Id = int.Parse(item["FUNCTION_SEQ_ID"].ToString()) ,
+            Action = item["Action"].ToString(),
+            Name = item["Name"].ToString()
+        }).ToList();
+
+        return mRetVal;
+    }
+
     public static List<UIKeyValuePair> GetFunctionTypes()
     {
         if(m_FunctionTypes == null) 
