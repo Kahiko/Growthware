@@ -232,7 +232,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       id: [{value: this._Profile.id, disabled: true}],
       impersonation: [this._Profile.directoryData.impersonate],
       impersonationAccount: [this._Profile.directoryData.impersonateAccount],
-      impersionationPassword: [this._Profile.directoryData.impersonatePassword],
+      impersonatePassword: [this._Profile.directoryData.impersonatePassword],
       isNavigable: [this._Profile.isNavigable],
       linkBehavior: [this._Profile.linkBehavior],
       // functionTypeSeqId: [this._Profile.functionTypeSeqId],
