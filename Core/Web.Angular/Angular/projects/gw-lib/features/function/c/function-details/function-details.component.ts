@@ -162,7 +162,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     }).catch((error) => {                                                           // Request #3 Error Handler
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
-      console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
+      // console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
       if(profile) {
         this._Profile = profile;
         this.functionMenuOrders = this._Profile.functionMenuOrders;
@@ -227,7 +227,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       enableViewState: [this._Profile.enableViewState],
       enableNotifications: [this._Profile.enableNotifications],
       id: [{value: this._Profile.id, disabled: true}],
-      impersonation: [this._Profile.directoryData.impersonate],
+      impersonate: [this._Profile.directoryData.impersonate],
       impersonationAccount: [this._Profile.directoryData.impersonateAccount],
       impersonatePassword: [this._Profile.directoryData.impersonatePassword],
       isNavigable: [this._Profile.isNavigable],
@@ -298,7 +298,28 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   populateProfile(): void {
-    this._LoggingSvc.toast('FunctionDetailsComponent.populateProfile', 'Function Details:', LogLevel.Error);
+    this._Profile.action = this.controls['action'].getRawValue();
+    this._Profile.controller = this.controls['controller'].getRawValue();
+    this._Profile.description = this.controls['description'].getRawValue();
+    this._Profile.directoryData.directory = this.controls['directory'].getRawValue(); // I don't think this is correct need to verify
+    this._Profile.enableViewState = this.controls['enableViewState'].getRawValue();
+    this._Profile.enableNotifications = this.controls['enableNotifications'].getRawValue();
+    // this._Profile.id = this.controls['id'].getRawValue();
+    this._Profile.directoryData.impersonate = this.controls['impersonate'].getRawValue();
+    this._Profile.directoryData.impersonateAccount = this.controls['impersonationAccount'].getRawValue();
+    this._Profile.directoryData.impersonatePassword = this.controls['impersonatePassword'].getRawValue();
+    this._Profile.isNavigable = this.controls['isNavigable'].getRawValue();
+    this._Profile.functionTypeSeqId = this.selectedFunctionType;
+    this._Profile.linkBehavior = this.selectedLinkBehavior;
+    this._Profile.metaKeywords = this.controls['metaKeywords'].getRawValue();
+    this._Profile.name = this.controls['name'].getRawValue();
+    this._Profile.navigationTypeSeqId = this.selectedNavigationType;
+    this._Profile.notes = this.controls['notes'].getRawValue();
+    this._Profile.noUI = this.controls['noUI'].getRawValue();
+    this._Profile.parentId = this.selectedParentId;
+    this._Profile.redirectOnTimeout = this.controls['redirectOnTimeout'].getRawValue();
+    this._Profile.source = this.controls['source'].getRawValue();
+    console.log('FunctionDetailsComponent.populateProfile', this._Profile);
   }
 
   save(): void {
