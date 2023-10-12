@@ -282,9 +282,49 @@
       </div>
     </mat-tab>
     <mat-tab label="Directory Information">
-      <div class="mat-tab__container formSection">
+      <div class="mat-tab__container">
         <div class="mat-tab__content formSectionContents tabHeight">
-          Directory information
+          <div class="table">
+            <div class="tr">
+              <div class="td right">
+                <span class="Form_LabelText">Directory: </span>
+              </div>
+              <div class="td" style="width: 20px;"></div>
+              <div class="td left">
+                <input matInput type="text" formControlName="directory" #directory class="Form_Field rounded"><br/>
+                <mat-hint align="end">{{directory.value.length}}/255</mat-hint>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td right">
+                <span class="Form_LabelText">Requries Impersonation: </span>
+              </div>
+              <div class="td" style="width: 20px;"></div>
+              <div class="td left">
+                <mat-checkbox formControlName="impersonation" class="Form_Field"></mat-checkbox>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td right">
+                <span class="Form_LabelText">Account: </span>
+              </div>
+              <div class="td" style="width: 20px;"></div>
+              <div class="td left">
+                <input matInput type="text" formControlName="impersonationAccount" #impersonationAccount class="Form_Field rounded">
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td right">
+                <span class="Form_LabelText">Password: </span>
+              </div>
+              <div class="td" style="width: 20px;">
+                <i (click)="onHelp('Passord')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+              </div>
+              <div class="td left">
+                <input matInput type="text" formControlName="impersonatePassword" #impersonatePassword class="Form_Field rounded">&nbsp;!Leave blank to keep the same password!
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>
@@ -360,4 +400,11 @@
 </ng-template>
 <ng-template #helpControl>
   Note: Used for AngularJs implementations.<br />
+</ng-template>
+<ng-template #helpPassword>
+  For security reasons passwords are not displayed but are retained.<br />
+  If you are editing the Function and do not want to change the password then<br />
+  simply leave it blank and the original will be kept.<br />
+  If this is a new Function or you wish to change the password then fill out the<br />
+  the box provided.
 </ng-template>

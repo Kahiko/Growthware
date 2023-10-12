@@ -72,6 +72,11 @@
   border-bottom: 1px solid #fafafa;
 }
 
+.mat-mdc-checkbox,
+.checkbox-inner-container {
+  transform: scale(.7);
+}
+
 .example-list {
   width: 500px;
   max-width: 100%;

@@ -1,3 +1,5 @@
+import { IDirectoryData, DirectoryData } from "./directory-data.model";
+
 export interface IFunctionProfile {
   action: string;
   assignedViewRoles: string[];
@@ -14,6 +16,9 @@ export interface IFunctionProfile {
   derivedAddRoles: string[];
   derivedEditRoles: string[];
   derivedDeleteRoles: string[];
+
+  directoryData: IDirectoryData;
+
   description: string;
   enableViewState: boolean;
   enableNotifications: boolean;
@@ -40,7 +45,7 @@ export class FunctionProfile implements IFunctionProfile {
   public assignedAddRoles: string[] = [];
   public assignedEditRoles: string[] = [];
   public assignedDeleteRoles: string[] = [];
-
+  public directoryData: IDirectoryData = new DirectoryData();
   public addGroups: string[] = [];
   public deleteGroups: string[] = [];
   public editGroups: string[] = [];
@@ -51,6 +56,7 @@ export class FunctionProfile implements IFunctionProfile {
   public derivedEditRoles: string[] = [];
   public derivedDeleteRoles: string[] = [];
   public description: string = '';
+
   public enableViewState: boolean = false;
   public enableNotifications: boolean = false;
   public id: number = -1;

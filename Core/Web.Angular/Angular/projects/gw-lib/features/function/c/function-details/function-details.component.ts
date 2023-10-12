@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,7 +46,8 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/co
 
     ListComponent,
 
-    MatButtonModule, 
+    MatButtonModule,
+    MatCheckboxModule, 
     MatFormFieldModule,
     MatGridListModule,
     MatIconModule, 
@@ -61,8 +63,9 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/co
 export class FunctionDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
   @ViewChild('helpAction') private _HelpAction!: TemplateRef<any>;
-  @ViewChild('helpSource') private _HelpSource!: TemplateRef<any>;
   @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
+  @ViewChild('helpSource') private _HelpSource!: TemplateRef<any>;
+  @ViewChild('helpPassword') private _HelpPassword!: TemplateRef<any>;
   
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
   private _Profile: IFunctionProfile = new FunctionProfile();
@@ -223,9 +226,13 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     this.frmProfile = this._FormBuilder.group({
       action: [this._Profile.action, [Validators.required]],
       description: [this._Profile.description],
+      directory: [this._Profile.directoryData.directory],
       enableViewState: [this._Profile.enableViewState],
       enableNotifications: [this._Profile.enableNotifications],
       id: [{value: this._Profile.id, disabled: true}],
+      impersonation: [this._Profile.directoryData.impersonate],
+      impersonationAccount: [this._Profile.directoryData.impersonateAccount],
+      impersionationPassword: [this._Profile.directoryData.impersonatePassword],
       isNavigable: [this._Profile.isNavigable],
       linkBehavior: [this._Profile.linkBehavior],
       // functionTypeSeqId: [this._Profile.functionTypeSeqId],
@@ -257,6 +264,9 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
         break
       case 'Control':
         this._HelpOptions.contentPayLoad = this._HelpControl;
+        break;
+      case 'Passord':
+        this._HelpOptions.contentPayLoad = this._HelpPassword;
         break;
       default:
         break;

@@ -104,6 +104,8 @@ namespace GrowthWare.Framework.Models
         /// <remarks>Designed to be used in any search options</remarks>
         public string Description { get; set; }
 
+        public MDirectoryProfile DirectoryData { get; set; }
+
         /// <summary>
         /// Indicates to the system if the "page's" view state should be enabled.
         /// </summary>

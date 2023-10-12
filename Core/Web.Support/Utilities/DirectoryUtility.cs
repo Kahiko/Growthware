@@ -60,11 +60,11 @@ public static class DirectoryUtility
             }
             catch (NullReferenceException)
             {
-                mRetVal = null;
+                mRetVal = new MDirectoryProfile();
             }
             catch (InvalidOperationException)
             {
-                return null;
+                return new MDirectoryProfile();
             }
             return mRetVal;
     }

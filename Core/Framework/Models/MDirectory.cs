@@ -18,6 +18,8 @@ public sealed class MDirectoryProfile : AbstractBaseModel
     /// <remarks></remarks>
     public MDirectoryProfile()
     {
+        m_Function_Seq_ID = -1;
+        Id = -1;
     }
 
     /// <summary>
