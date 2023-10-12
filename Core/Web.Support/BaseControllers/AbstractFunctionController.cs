@@ -41,6 +41,7 @@ public abstract class AbstractFunctionController : ControllerBase
                 mRetVal = new MFunctionProfile();
             }
             mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mRetVal.Id);
+            mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mRetVal.Id);
             HttpContext.Session.SetInt32("EditId", mRetVal.FunctionTypeSeqId);
             return Ok(mRetVal);
         }

@@ -1,4 +1,5 @@
 import { IDirectoryData, DirectoryData } from "./directory-data.model";
+import { IFunctionMenuOrder } from "./function-menu-order.model";
 
 export interface IFunctionProfile {
   action: string;
@@ -23,6 +24,7 @@ export interface IFunctionProfile {
   enableViewState: boolean;
   enableNotifications: boolean;
   id: number;
+  functionMenuOrders: IFunctionMenuOrder[];
   isNavigable: boolean;
   linkBehavior: number;
   functionTypeSeqId: number;
@@ -62,6 +64,7 @@ export class FunctionProfile implements IFunctionProfile {
   public id: number = -1;
   public isNavigable: boolean = false;
   public linkBehavior: number = 1;
+  public functionMenuOrders: IFunctionMenuOrder[] = [];
   public functionTypeSeqId: number = 3;
   public groups: string[] = [];
   public metaKeywords: string = '';

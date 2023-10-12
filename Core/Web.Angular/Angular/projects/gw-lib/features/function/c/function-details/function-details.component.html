@@ -160,7 +160,7 @@
       <div class="mat-tab__container">
         <div class="mat-tab__content formSectionContents tabHeight">
           <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
-            <div class="example-box" *ngFor="let movie of functionOrder" cdkDrag>
+            <div class="example-box" *ngFor="let movie of functionMenuOrders" cdkDrag>
               <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
               {{movie.name}}
             </div>

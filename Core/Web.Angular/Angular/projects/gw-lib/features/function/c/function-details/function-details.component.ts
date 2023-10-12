@@ -74,7 +74,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
   derivedRolesId: string = 'derivedRoles'
 
-  functionOrder: any = [];
+  functionMenuOrders: any = [];
 
   groupsAvailable: Array<string> = [];
   groupsPickListName: string = 'groups';
@@ -139,10 +139,10 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
      * View_Function_Role_Tab
      * View_Function_Group_Tab
      */
-    this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // #1 Request/Handler
+    this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // Request/Handler #1
       // console.log('securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
-      return this._SecuritySvc.getSecurityInfo('View_Function_Role_Tab');           // #2 Request
+      return this._SecuritySvc.getSecurityInfo('View_Function_Role_Tab');           // Request #2 getSecurityInfo('View_Function_Role_Tab')
     }).catch((error) => {                                                           // Request #1 Error Handler
       this._LoggingSvc.toast("Error getting function security:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((roleSecurity) => {                                                     // Request #2 Handler
@@ -150,71 +150,68 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       if(roleSecurity) {
         this.showRoles = roleSecurity.mayView;
       }
-      return this._SecuritySvc.getSecurityInfo('View_Function_Group_Tab');          // #3 Request
+      return this._SecuritySvc.getSecurityInfo('View_Function_Group_Tab');          // Request #3 getSecurityInfo('View_Function_Group_Tab')
     }).catch((error) => {                                                           // Request #2 Error Handler
       this._LoggingSvc.toast("Error getting security for the groups tab:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((groupSecurity) => {                                                    // Request #3 Handler
+    }).then((groupSecurity) => {                                                    // Request #3 Handler getSecurityInfo('View_Function_Group_Tab')
       // console.log('groupSecurity', groupSecurity);
       if(groupSecurity) {
         this.showGroups = groupSecurity.mayView;
       }      
-      return this._ProfileSvc.getFunction(mEditId);                                 // #4 Request
-    }).catch((error) => {
+      return this._ProfileSvc.getFunction(mEditId);                                 // Request #4 getFunction(mEditId)
+    }).catch((error) => {                                                           // Request #3 Error Handler
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((profile) => {                                                          // Request #4 Handler
       console.log('FunctionDetailsComponent.ngOnInit.profile', profile);
       if(profile) {
         this._Profile = profile;
+        this.functionMenuOrders = this._Profile.functionMenuOrders;
       }
-      return this._ProfileSvc.getFuncitonTypes();                                   // #5 Request
+      return this._ProfileSvc.getFuncitonTypes();                                   // Request #5 getFuncitonTypes()
     }).catch((error) => {                                                           // Request #4 Error Handler
       this._LoggingSvc.toast("Error getting function:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((functionTypes: IKeyValuePair[]) => {                                               // Request #5 Handler
+    }).then((functionTypes: IKeyValuePair[]) => {                                   // Request #5 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.functionTypes', functionTypes);
       this.validFunctionTypes = functionTypes;
-      return this._ProfileSvc.getNavigationTypes();                                 // #6 Request
+      return this._ProfileSvc.getNavigationTypes();                                 // Request #6 getNavigationTypes()
     }).catch((error) => {                                                           // Request #5 Error Handler
       this._LoggingSvc.toast("Error getting function types:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((navigationTypes: IKeyValuePair[]) => {                                             // Request #6 Handler
+    }).then((navigationTypes: IKeyValuePair[]) => {                                 // Request #6 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
       this.validNavigationTypes = navigationTypes;
-      return this._ProfileSvc.getLinkBehaviors();                                   // #7 Request
+      return this._ProfileSvc.getLinkBehaviors();                                   // Request #7 getLinkBehaviors() Request
     }).catch((error: any) => {                                                      // Request #6 Error Handler
       this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((linkBehaviors: IKeyValuePair[]) => {                                               // Request #7 Handler
+    }).then((linkBehaviors: IKeyValuePair[]) => {                                   // Request #7 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
       this.validLinkBehaviors = linkBehaviors;
-      return this._ProfileSvc.getAvalibleParents();                                  // #8 Request
-    }).catch((error) => {                                                            // Request #7 Error Handler
+      return this._ProfileSvc.getAvalibleParents();                                 // Request #8 getAvalibleParents()
+    }).catch((error) => {                                                           // Request #7 Error Handler
       this._LoggingSvc.toast("Error getting link behaviors:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((avalibleParents: any)=>{                                                // Request #8 Handler
+    }).then((avalibleParents: any)=>{                                               // Request #8 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.avalibleParents', avalibleParents);
-      this.avalibleParents = avalibleParents;                                        // #9 Request
-      return this._RoleSvc.getRoles();
-    }).catch((error) => {                                                            // Request #8 Error Handler
+      this.avalibleParents = avalibleParents;
+      return this._RoleSvc.getRoles();                                              // Request #9 getRoles()
+    }).catch((error) => {                                                           // Request #8 Error Handler
       this._LoggingSvc.toast("Error getting avalible parents:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((roles: any) => {                                                        // Request #9 Handler
+    }).then((roles: any) => {                                                       // Request #9 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.roles', roles);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameAdd + '_AvailableItems', roles); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameDelete + '_AvailableItems', roles); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_AvailableItems', roles); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameView + '_AvailableItems', roles); }, 500);
-      return this._GroupSvc.getGroups();
-    }).catch((error: any) => {                                                        // Request #9 Error Handler
+      return this._GroupSvc.getGroups();                                            // Request #10 getGroups()
+    }).catch((error: any) => {                                                      // Request #9 Error Handler
       this._LoggingSvc.toast("Error getting avalible roles:\r\n" + error, 'Function Details:', LogLevel.Error);
-    }).then((groups: any) => {
+    }).then((groups: any) => {                                                      // Request #10 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameAdd + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameDelete + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_AvailableItems', groups); }, 500);
-      return this._ProfileSvc.GetFunctionOrder(this._Profile.id);
-    }).then((response: any) => {
-      // console.log('FunctionDetailsComponent.ngOnInit.GetFunctionOrder', response);
-      this.functionOrder = response;
       this.applySecurity();
       this.populateForm();
-    }).catch((error: any) => {                                                       // Request #9 Error Handler
+    }).catch((error: any) => {
       this._LoggingSvc.toast("Error getting avalible groups:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
@@ -251,7 +248,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.functionOrder, event.previousIndex, event.currentIndex);
+    moveItemInArray(this.functionMenuOrders, event.previousIndex, event.currentIndex);
   }
 
   onHelp(controleName: string): void {

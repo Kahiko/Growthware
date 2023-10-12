@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using GrowthWare.Framework.Models.UI;
 
@@ -76,6 +77,7 @@ namespace GrowthWare.Framework.Models
             Controller = base.GetString(profileDataRow, "Controller");
             EnableViewState = base.GetBool(profileDataRow, "ENABLE_VIEW_STATE");
             EnableNotifications = base.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS");
+            FunctionMenuOrders = new List<UIFunctionMenuOrder>();
             RedirectOnTimeout = base.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT");
             IsNavigable = base.GetBool(profileDataRow, "IS_NAV");
             LinkBehavior = base.GetInt(profileDataRow, "Link_Behavior");
@@ -116,6 +118,8 @@ namespace GrowthWare.Framework.Models
         /// Intended to be used to send notifications when this profile is "used" by the client
         /// </summary>
         public bool EnableNotifications { get; set; }
+
+        public List<UIFunctionMenuOrder> FunctionMenuOrders {get; set;}
 
         /// <summary>
         /// Use to determin if a function is a navigation function

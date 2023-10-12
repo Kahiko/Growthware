@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+
 namespace GrowthWare.Framework.Models.UI;
 public class UIFunctionProfile
 {
@@ -13,6 +15,7 @@ public class UIFunctionProfile
         this.Description = functionProfile.Description;
         this.EnableViewState = functionProfile.EnableViewState;
         this.EnableNotifications = functionProfile.EnableNotifications;
+        this.FunctionMenuOrders = new List<UIFunctionMenuOrder>();
         this.Id = functionProfile.Id;
         this.IsNavigable = functionProfile.IsNavigable;
         this.LinkBehavior = functionProfile.LinkBehavior;
@@ -68,6 +71,8 @@ public class UIFunctionProfile
     /// Intended to be used to send notifications when this profile is "used" by the client
     /// </summary>
     public bool EnableNotifications { get; set; }
+
+    public List<UIFunctionMenuOrder> FunctionMenuOrders { get; set; }   
 
     /// <summary>
     /// Use to determin if a function is a navigation function
