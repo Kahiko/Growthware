@@ -17,7 +17,7 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
         this.EnableViewState = functionProfile.EnableViewState;
         this.EnableNotifications = functionProfile.EnableNotifications;
         this.FunctionMenuOrders = new List<UIFunctionMenuOrder>();
-        this.Id = functionProfile.Id;
+        base.Id = functionProfile.Id;
         this.IsNavigable = functionProfile.IsNavigable;
         this.LinkBehavior = functionProfile.LinkBehavior;
         this.FunctionTypeSeqId = functionProfile.FunctionTypeSeqId;
