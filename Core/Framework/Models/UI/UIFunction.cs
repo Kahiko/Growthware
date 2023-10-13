@@ -56,8 +56,8 @@ public class UIFunctionProfile
 
     public string[] Groups;
     public string[] Roles;
-    public bool CanSaveRoles;
-    public bool CanSaveGroups;
+    public bool CanSaveRoles{get; set;}
+    public bool CanSaveGroups{get; set;}
 
     /// <summary>
     /// Represents the Action to be take within the system.

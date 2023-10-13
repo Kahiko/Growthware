@@ -44,6 +44,8 @@ public abstract class AbstractFunctionController : ControllerBase
             }
             HttpContext.Session.SetInt32("EditId", mFunctionProfile.Id);
             UIFunctionProfile mRetVal = new UIFunctionProfile(mFunctionProfile);
+            mRetVal.CanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
+            mRetVal.CanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
             mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
@@ -157,10 +159,6 @@ public abstract class AbstractFunctionController : ControllerBase
                         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                     }
                 }
-                bool saveGroups = false;
-                // bool saveRoles = false;
-
-
             }
             mRetVal = true;
             return Ok(mRetVal);

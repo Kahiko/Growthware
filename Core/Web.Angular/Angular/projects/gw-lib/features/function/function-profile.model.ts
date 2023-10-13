@@ -9,6 +9,10 @@ export interface IFunctionProfile {
   assignedDeleteRoles: string[];
 
   addGroups: string[];
+
+  canSaveGroups: boolean;
+  canSaveRoles: boolean;
+
   deleteGroups: string[];
   editGroups: string[];
   viewGroups: string[];
@@ -52,6 +56,9 @@ export class FunctionProfile implements IFunctionProfile {
   public deleteGroups: string[] = [];
   public editGroups: string[] = [];
   public viewGroups: string[] = [];
+
+  public canSaveGroups: boolean = false;
+  public canSaveRoles: boolean = false;
 
   public derivedViewRoles: string[] = [];
   public derivedAddRoles: string[] = [];

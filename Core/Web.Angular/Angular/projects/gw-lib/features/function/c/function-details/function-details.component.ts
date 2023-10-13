@@ -134,11 +134,6 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.FunctionSeqId;
     }
-    /**
-     * FunctionSecurity
-     * View_Function_Role_Tab
-     * View_Function_Group_Tab
-     */
     this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // Request/Handler #1
       // console.log('securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
@@ -210,6 +205,8 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameEdit + '_AvailableItems', groups); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameView + '_AvailableItems', groups); }, 500);
       this.applySecurity();
+      this.showGroups = this._Profile.canSaveGroups;
+      this.showRoles = this._Profile.canSaveRoles;      
       this.populateForm();
     }).catch((error: any) => {
       this._LoggingSvc.toast("Error getting avalible groups:\r\n" + error, 'Function Details:', LogLevel.Error);
