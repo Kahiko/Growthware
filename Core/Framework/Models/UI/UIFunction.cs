@@ -51,7 +51,7 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
 
     private void init() 
     { 
-        this.Id = -1;
+        base.Id = -1;
         this.FunctionTypeSeqId = 1;
         this.Groups = new string[]{};
         this.LinkBehavior = 1;
@@ -64,7 +64,6 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
     public string[] Roles;
     public bool CanSaveRoles;
     public bool CanSaveGroups;
-    public int Id;
 
     /// <summary>
     /// Represents the Action to be take within the system.
