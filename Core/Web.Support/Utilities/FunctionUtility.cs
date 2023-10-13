@@ -10,6 +10,7 @@ using GrowthWare.Framework.Models.UI;
 using System.Collections.Generic;
 using System.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
+using System.Xml.Linq;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -124,6 +125,12 @@ public static class FunctionUtility
             mRetVal = new MFunctionProfile();
         }
         return mRetVal;
+    }
+
+    public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles, MSecurityEntity securityEntity)
+    {
+        BFunctions mBFunctions = new BFunctions(securityEntity, ConfigSettings.CentralManagement);
+        return mBFunctions.Save(profile, saveGroups, saveRoles);
     }
 
     [CLSCompliant(false)]

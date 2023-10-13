@@ -124,7 +124,6 @@ public abstract class AbstractFunctionController : ControllerBase
         string mReturnMsg = string.Empty; // to be used for other security checks so we can pass it back to the client
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
-            bool mRetVal = false;
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MFunctionProfile mExistingProfile = FunctionUtility.GetProfile(functionProfile.Id);
             if(mExistingProfile == null)
@@ -160,8 +159,40 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                 }
             }
-            mRetVal = true;
-            return Ok(mRetVal);
+            bool mCanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
+            bool mCanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
+            try
+            {
+                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mCanSaveGroups, mCanSaveRoles, SecurityEntityUtility.CurrentProfile());
+                if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
+                {
+                    MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(functionProfile.Id);
+                    if(mDirectoryProfile == null)
+                    {
+                        mDirectoryProfile = new MDirectoryProfile();
+                        mDirectoryProfile.FunctionSeqId = mFunctionSeqId;
+                    }
+                    mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
+                    mDirectoryProfile.Impersonate = functionProfile.DirectoryData.Impersonate;
+                    if(functionProfile.DirectoryData.Impersonate)
+                    {
+                        mDirectoryProfile.ImpersonateAccount = functionProfile.DirectoryData.ImpersonateAccount;
+                        if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.ImpersonatePassword))
+                        {
+                            mDirectoryProfile.ImpersonatePassword = functionProfile.DirectoryData.ImpersonatePassword;
+                        }
+                    }
+                    mDirectoryProfile.Name = functionProfile.DirectoryData.Name;
+                    mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
+                    // DirectoryUtility.Save(mDirectoryProfile, SecurityEntityUtility.CurrentProfile());
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Logger.Instance().Error(ex);
+                return Ok(false);
+            }
+            return Ok(true);
         }
         if(mEditId!=null) 
         {
