@@ -1,9 +1,10 @@
 using System.Collections.Generic;
+using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Framework.Models.UI;
-public class UIFunctionProfile
+public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
 {
-    public UIFunctionProfile() 
+    public UIFunctionProfile()
     {
         this.init();
     }
@@ -21,6 +22,7 @@ public class UIFunctionProfile
         this.LinkBehavior = functionProfile.LinkBehavior;
         this.FunctionTypeSeqId = functionProfile.FunctionTypeSeqId;
         this.MetaKeywords = functionProfile.MetaKeywords;
+        this.Name = functionProfile.Name;
         this.NavigationTypeSeqId = functionProfile.NavigationTypeSeqId;
         this.Notes = functionProfile.Notes;
         this.NoUI = functionProfile.NoUI;
@@ -28,6 +30,23 @@ public class UIFunctionProfile
         this.RedirectOnTimeout = functionProfile.RedirectOnTimeout;
         this.Source = functionProfile.Source;
         this.Controller = functionProfile.Controller;
+        string mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Add);
+        this.SetAssignedRoles(mRoles, PermissionType.Add);
+        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Delete);
+        this.SetAssignedRoles(mRoles, PermissionType.Delete);
+        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Edit);
+        this.SetAssignedRoles(mRoles, PermissionType.Edit);
+        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.View);
+        this.SetAssignedRoles(mRoles, PermissionType.View);
+
+        string mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Add);
+        this.SetGroups(mGroups, PermissionType.Add);
+        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Delete);
+        this.SetGroups(mGroups, PermissionType.Delete);
+        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Edit);
+        this.SetGroups(mGroups, PermissionType.Edit);
+        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.View);
+        this.SetGroups(mGroups, PermissionType.View);
     }
 
     private void init() 
@@ -59,7 +78,7 @@ public class UIFunctionProfile
     /// <remarks>Designed to be used in any search options</remarks>
     public string Description { get; set; }
 
-    public UIDirectory DirectoryData { get; set; }
+    public MDirectoryProfile DirectoryData { get; set; }
 
     /// <summary>
     /// Indicates to the system if the "page's" view state should be enabled.

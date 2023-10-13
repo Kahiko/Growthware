@@ -31,23 +31,24 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("GetFunction")]
-    public ActionResult<MFunctionProfile> GetFunction(int functionSeqId)
+    public ActionResult<UIFunctionProfile> GetFunctionForEdit(int functionSeqId)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         if(mSecurityInfo != null && mSecurityInfo.MayView)
         {
-            MFunctionProfile mRetVal = new MFunctionProfile();
-            mRetVal = FunctionUtility.GetProfile(functionSeqId);
-            if(mRetVal == null)
+            MFunctionProfile mFunctionProfile = new MFunctionProfile();
+            mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
+            if(mFunctionProfile == null)
             {
-                mRetVal = new MFunctionProfile();
+                mFunctionProfile = new MFunctionProfile();
             }
-            mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mRetVal.Id);
-            mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mRetVal.Id);
-            HttpContext.Session.SetInt32("EditId", mRetVal.FunctionTypeSeqId);
+            HttpContext.Session.SetInt32("EditId", mFunctionProfile.Id);
+            UIFunctionProfile mRetVal = new UIFunctionProfile(mFunctionProfile);
+            mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
         }
-        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");        
     }
 
     [AllowAnonymous]
@@ -111,7 +112,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
     [AllowAnonymous]
     [HttpPost("Save")]
-    public ActionResult<bool> Save(MFunctionProfile functionProfile)
+    public ActionResult<bool> Save(UIFunctionProfile functionProfile)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
         MSecurityInfo mViewRoleTabSecurityInfo = this.getSecurityInfo("View_Function_Role_Tab");
@@ -122,7 +123,43 @@ public abstract class AbstractFunctionController : ControllerBase
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             bool mRetVal = false;
+            // we don't want to save the of the properties from the UI so we get the profile from the DB
+            MFunctionProfile mExistingFunction = FunctionUtility.GetProfile(functionProfile.Id);
+            if(mExistingFunction == null)
+            {
+                mExistingFunction = new MFunctionProfile();
+            }
+            MFunctionProfile mProfileToSave = new MFunctionProfile(functionProfile);
+            if (mEditId == functionProfile.Id)
+            {
+                if (functionProfile.Id > -1) 
+                {
+                    if (mSecurityInfo.MayEdit)
+                    {
+                        mProfileToSave.UpdatedBy = mRequestingProfile.Id;
+                        mProfileToSave.UpdatedDate = DateTime.Now;
+                    }else
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
+                }
+                else
+                {
+                    if (mSecurityInfo.MayAdd)
+                    {
+                        mProfileToSave.AddedBy = mRequestingProfile.Id;
+                        mProfileToSave.AddedDate = DateTime.Now;
+                    }
+                    else
+                    {
+                        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                    }
+                }
+                bool saveGroups = false;
+                // bool saveRoles = false;
 
+
+            }
             mRetVal = true;
             return Ok(mRetVal);
         }

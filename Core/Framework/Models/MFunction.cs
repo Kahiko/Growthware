@@ -41,6 +41,35 @@ namespace GrowthWare.Framework.Models
             this.Initialize(profileDataRow, derivedRoles, assignedRoles, groups);
         }
 
+        public MFunctionProfile(MFunctionProfile functionProfile)
+        {
+            this.Action = functionProfile.Action;
+            this.AddedBy = functionProfile.AddedBy;
+            this.AddedDate = functionProfile.AddedDate;
+            this.Controller = functionProfile.Controller;
+            this.Description = functionProfile.Description;
+            this.EnableNotifications = functionProfile.EnableNotifications;
+            this.EnableViewState = functionProfile.EnableViewState;
+            this.FunctionTypeSeqId = functionProfile.FunctionTypeSeqId;
+            this.Id = functionProfile.Id;
+            this.IdColumnName = functionProfile.IdColumnName;
+            this.IsNavigable = functionProfile.IsNavigable;
+            this.LinkBehavior = functionProfile.LinkBehavior;
+            this.MetaKeywords = functionProfile.MetaKeywords;
+            this.Name = functionProfile.Name;
+            this.NameColumnName = functionProfile.NameColumnName;
+            this.NavigationTypeSeqId = functionProfile.NavigationTypeSeqId;
+            this.Notes = functionProfile.Notes;
+            this.NoUI = functionProfile.NoUI;
+            this.ParentId = functionProfile.ParentId;
+            this.PermissionColumn = functionProfile.PermissionColumn;
+            this.RedirectOnTimeout = functionProfile.RedirectOnTimeout;
+            this.RoleColumn = functionProfile.RoleColumn;
+            this.Source = functionProfile.Source;
+            this.UpdatedBy = functionProfile.UpdatedBy;
+            this.UpdatedDate = functionProfile.UpdatedDate;
+        }
+
         public MFunctionProfile(UIFunctionProfile uIFunctionProfile)
         {
             this.Action = uIFunctionProfile.Action;
@@ -77,7 +106,6 @@ namespace GrowthWare.Framework.Models
             Controller = base.GetString(profileDataRow, "Controller");
             EnableViewState = base.GetBool(profileDataRow, "ENABLE_VIEW_STATE");
             EnableNotifications = base.GetBool(profileDataRow, "ENABLE_NOTIFICATIONS");
-            FunctionMenuOrders = new List<UIFunctionMenuOrder>();
             RedirectOnTimeout = base.GetBool(profileDataRow, "REDIRECT_ON_TIMEOUT");
             IsNavigable = base.GetBool(profileDataRow, "IS_NAV");
             LinkBehavior = base.GetInt(profileDataRow, "Link_Behavior");
@@ -106,8 +134,6 @@ namespace GrowthWare.Framework.Models
         /// <remarks>Designed to be used in any search options</remarks>
         public string Description { get; set; }
 
-        public MDirectoryProfile DirectoryData { get; set; }
-
         /// <summary>
         /// Indicates to the system if the "page's" view state should be enabled.
         /// </summary>
@@ -118,8 +144,6 @@ namespace GrowthWare.Framework.Models
         /// Intended to be used to send notifications when this profile is "used" by the client
         /// </summary>
         public bool EnableNotifications { get; set; }
-
-        public List<UIFunctionMenuOrder> FunctionMenuOrders {get; set;}
 
         /// <summary>
         /// Use to determin if a function is a navigation function

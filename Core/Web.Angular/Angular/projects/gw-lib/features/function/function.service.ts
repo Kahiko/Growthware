@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-// This Feature
-import { IFunctionProfile } from './function-profile.model';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
+import { SearchService } from '@Growthware/features/search';
+// Feature
+import { IFunctionProfile } from './function-profile.model';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,7 @@ export class FunctionService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
+    private _SearchSvc: SearchService,
   ) {
     this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
@@ -186,6 +188,10 @@ export class FunctionService {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_Save, functionProfile, mHttpOptions).subscribe({
         next: (response: any) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Functions"); // from SearchFunctionsComponent (this.configurationName)
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Functions", mSearchCriteria);
+          }
           resolve(response);
         },
         error: (error: any) => {
