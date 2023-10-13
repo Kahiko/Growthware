@@ -124,10 +124,10 @@ public abstract class AbstractFunctionController : ControllerBase
         {
             bool mRetVal = false;
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MFunctionProfile mExistingFunction = FunctionUtility.GetProfile(functionProfile.Id);
-            if(mExistingFunction == null)
+            MFunctionProfile mExistingProfile = FunctionUtility.GetProfile(functionProfile.Id);
+            if(mExistingProfile == null)
             {
-                mExistingFunction = new MFunctionProfile();
+                mExistingProfile = new MFunctionProfile();
             }
             MFunctionProfile mProfileToSave = new MFunctionProfile(functionProfile);
             if (mEditId == functionProfile.Id)
@@ -136,6 +136,8 @@ public abstract class AbstractFunctionController : ControllerBase
                 {
                     if (mSecurityInfo.MayEdit)
                     {
+                        mProfileToSave.AddedBy = mExistingProfile.AddedBy;
+                        mProfileToSave.AddedDate = mExistingProfile.AddedDate;
                         mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                         mProfileToSave.UpdatedDate = DateTime.Now;
                     }else

@@ -1,8 +1,9 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using GrowthWare.Framework.Enumerations;
 
 namespace GrowthWare.Framework.Models.UI;
-public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
+public class UIFunctionProfile
 {
     public UIFunctionProfile()
     {
@@ -17,7 +18,7 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
         this.EnableViewState = functionProfile.EnableViewState;
         this.EnableNotifications = functionProfile.EnableNotifications;
         this.FunctionMenuOrders = new List<UIFunctionMenuOrder>();
-        base.Id = functionProfile.Id;
+        this.Id = functionProfile.Id;
         this.IsNavigable = functionProfile.IsNavigable;
         this.LinkBehavior = functionProfile.LinkBehavior;
         this.FunctionTypeSeqId = functionProfile.FunctionTypeSeqId;
@@ -31,27 +32,20 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
         this.Source = functionProfile.Source;
         this.Controller = functionProfile.Controller;
         string mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Add);
-        this.SetAssignedRoles(mRoles, PermissionType.Add);
-        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Delete);
-        this.SetAssignedRoles(mRoles, PermissionType.Delete);
-        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.Edit);
-        this.SetAssignedRoles(mRoles, PermissionType.Edit);
-        mRoles = functionProfile.GetCommaSeparatedAssignedRoles(PermissionType.View);
-        this.SetAssignedRoles(mRoles, PermissionType.View);
+        this.AssignedViewRoles = functionProfile.AssignedViewRoles;
+        this.AssignedAddRoles = functionProfile.AssignedAddRoles;
+        this.AssignedEditRoles = functionProfile.AssignedEditRoles;
+        this.AssignedDeleteRoles = functionProfile.AssignedDeleteRoles;
 
-        string mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Add);
-        this.SetGroups(mGroups, PermissionType.Add);
-        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Delete);
-        this.SetGroups(mGroups, PermissionType.Delete);
-        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.Edit);
-        this.SetGroups(mGroups, PermissionType.Edit);
-        mGroups = functionProfile.GetCommaSeparatedGroups(PermissionType.View);
-        this.SetGroups(mGroups, PermissionType.View);
+        this.ViewGroups = functionProfile.ViewGroups;
+        this.AddGroups = functionProfile.AddGroups;
+        this.EditGroups = functionProfile.EditGroups;
+        this.DeleteGroups = functionProfile.DeleteGroups;
     }
 
     private void init() 
     { 
-        base.Id = -1;
+        this.Id = -1;
         this.FunctionTypeSeqId = 1;
         this.Groups = new string[]{};
         this.LinkBehavior = 1;
@@ -90,7 +84,19 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
     /// </summary>
     public bool EnableNotifications { get; set; }
 
-    public List<UIFunctionMenuOrder> FunctionMenuOrders { get; set; }   
+    public List<UIFunctionMenuOrder> FunctionMenuOrders { get; set; }
+
+    public int Id{get; set;}
+
+    public Collection<string> AssignedViewRoles{get; set;}
+    public Collection<string> AssignedAddRoles{get; set;}
+    public Collection<string> AssignedEditRoles{get; set;}
+    public Collection<string> AssignedDeleteRoles{get; set;}
+
+    public Collection<string> ViewGroups{get; set;}
+    public Collection<string> AddGroups{get; set;}
+    public Collection<string> EditGroups{get; set;}
+    public Collection<string> DeleteGroups{get; set;}
 
     /// <summary>
     /// Use to determin if a function is a navigation function
@@ -124,6 +130,8 @@ public class UIFunctionProfile: AbstractGroupRolePermissionSecurity
     /// </summary>
     /// <value>The meta key words.</value>
     public string MetaKeywords { get; set; }
+
+    public string Name{get; set;}
 
     /// <summary>
     /// Gets or sets the navigation type seq id.

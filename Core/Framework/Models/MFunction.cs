@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Framework.Models
@@ -72,21 +74,53 @@ namespace GrowthWare.Framework.Models
 
         public MFunctionProfile(UIFunctionProfile uIFunctionProfile)
         {
+            this.init();
             this.Action = uIFunctionProfile.Action;
+            this.Controller = uIFunctionProfile.Controller;
             this.Description = uIFunctionProfile.Description;
-            this.EnableViewState = uIFunctionProfile.EnableViewState;
             this.EnableNotifications = uIFunctionProfile.EnableNotifications;
+            this.EnableViewState = uIFunctionProfile.EnableViewState;
             this.FunctionTypeSeqId = uIFunctionProfile.FunctionTypeSeqId;
+            this.Id = uIFunctionProfile.Id;
             this.IsNavigable = uIFunctionProfile.IsNavigable;
             this.LinkBehavior = uIFunctionProfile.LinkBehavior;
-            this.NoUI = uIFunctionProfile.NoUI;
+            this.MetaKeywords = uIFunctionProfile.MetaKeywords;
+            this.Name = uIFunctionProfile.Name;
             this.NavigationTypeSeqId = uIFunctionProfile.NavigationTypeSeqId;
+            this.NoUI = uIFunctionProfile.NoUI;
+            this.Notes = uIFunctionProfile.Notes;
             this.ParentId = uIFunctionProfile.ParentId;
+            this.RedirectOnTimeout = uIFunctionProfile.RedirectOnTimeout;
+            this.Source = uIFunctionProfile.Source;
+
+            string mRoles = string.Join(",", uIFunctionProfile.AssignedViewRoles);
+            this.SetAssignedRoles(mRoles, PermissionType.View);
+            mRoles = string.Join(",", uIFunctionProfile.AssignedAddRoles);
+            this.SetAssignedRoles(mRoles, PermissionType.Add);
+            mRoles = string.Join(",", uIFunctionProfile.AssignedEditRoles);
+            this.SetAssignedRoles(mRoles, PermissionType.Edit);
+            mRoles = string.Join(",", uIFunctionProfile.AssignedDeleteRoles);
+            this.SetAssignedRoles(mRoles, PermissionType.Delete);
+
+            string mGroups = string.Join(",", uIFunctionProfile.ViewGroups);
+            this.SetGroups(mGroups, PermissionType.View);
+            mGroups = string.Join(",", uIFunctionProfile.AddGroups);
+            this.SetGroups(mGroups, PermissionType.Add);
+            mGroups = string.Join(",", uIFunctionProfile.EditGroups);
+            this.SetGroups(mGroups, PermissionType.Edit);
+            mGroups = string.Join(",", uIFunctionProfile.DeleteGroups);
+            this.SetGroups(mGroups, PermissionType.Delete);
         }
 
 #endregion
 
 #region Private methods
+
+        void init()
+        {
+            base.NameColumnName = "NAME";
+            base.IdColumnName = "FUNCTION_SEQ_ID";
+        }
 
         /// <summary>
         /// Initializes the specified profile with the given DataRow.
@@ -97,8 +131,7 @@ namespace GrowthWare.Framework.Models
         /// <param name="groups">The groups.</param>
         internal new void Initialize(DataRow profileDataRow, DataRow[] derivedRoles, DataRow[] assignedRoles, DataRow[] groups)
         {
-            base.NameColumnName = "NAME";
-            base.IdColumnName = "FUNCTION_SEQ_ID";
+            init();
             m_FunctionTypeSeqId = base.GetInt(profileDataRow, "FUNCTION_TYPE_SEQ_ID");
             Description = base.GetString(profileDataRow, "DESCRIPTION");
             Notes = base.GetString(profileDataRow, "NOTES");

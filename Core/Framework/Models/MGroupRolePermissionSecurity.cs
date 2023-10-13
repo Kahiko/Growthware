@@ -295,22 +295,25 @@ namespace GrowthWare.Framework.Models
         /// <param name="permission">The permission.</param>
         public void SetAssignedRoles(string commaSeparatedRoles, PermissionType permission)
         {
-            switch (permission)
+            if(!string.IsNullOrEmpty(commaSeparatedRoles))
             {
-                case PermissionType.Add:
-                    setRolesOrGroups(ref m_AssignedAddRoles, commaSeparatedRoles);
-                    break;
-                case PermissionType.Delete:
-                    setRolesOrGroups(ref m_AssignedDeleteRoles, commaSeparatedRoles);
-                    break;
-                case PermissionType.Edit:
-                    setRolesOrGroups(ref m_AssignedEditRoles, commaSeparatedRoles);
-                    break;
-                case PermissionType.View:
-                    setRolesOrGroups(ref m_AssignedViewRoles, commaSeparatedRoles);
-                    break;
-                default:
-                    break;
+                switch (permission)
+                {
+                    case PermissionType.Add:
+                        setRolesOrGroups(ref m_AssignedAddRoles, commaSeparatedRoles);
+                        break;
+                    case PermissionType.Delete:
+                        setRolesOrGroups(ref m_AssignedDeleteRoles, commaSeparatedRoles);
+                        break;
+                    case PermissionType.Edit:
+                        setRolesOrGroups(ref m_AssignedEditRoles, commaSeparatedRoles);
+                        break;
+                    case PermissionType.View:
+                        setRolesOrGroups(ref m_AssignedViewRoles, commaSeparatedRoles);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
