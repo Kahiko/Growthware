@@ -19,6 +19,7 @@ export class FunctionService {
   private _Api_FunctionTypes: string = '';
   private _Api_LinkBehaviors: string = '';
   private _Api_NavigationTypes: string = '';
+  private _Api_Save: string = '';
   private _Reason: string = '';
 
   editReason: string = '';
@@ -57,6 +58,7 @@ export class FunctionService {
     this._Api_FunctionTypes = this._GWCommon.baseURL + this._ApiName + 'GetFunctionTypes';
     this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
     this._Api_LinkBehaviors = this._GWCommon.baseURL + this._ApiName + 'GetLinkBehaviors';
+    this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save';
   }
 
   public async getAvalibleParents(): Promise<any> {
@@ -103,7 +105,7 @@ export class FunctionService {
     });
   }
 
-  public async GetFunctionOrder(functionSeqId: number): Promise<any> {
+  public async getFunctionOrder(functionSeqId: number): Promise<any> {
     const mQueryParameter: HttpParams = new HttpParams().append('functionSeqId', functionSeqId);
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -168,6 +170,26 @@ export class FunctionService {
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async save(functionProfile: IFunctionProfile): Promise<boolean> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.post<boolean>(this._Api_Save, functionProfile, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'save');
           reject('Failed to call the API');
         },
         // complete: () => {}

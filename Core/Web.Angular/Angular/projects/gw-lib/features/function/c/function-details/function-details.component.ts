@@ -319,11 +319,20 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     this._Profile.parentId = this.selectedParentId;
     this._Profile.redirectOnTimeout = this.controls['redirectOnTimeout'].getRawValue();
     this._Profile.source = this.controls['source'].getRawValue();
-    console.log('FunctionDetailsComponent.populateProfile', this._Profile);
+    // console.log('FunctionDetailsComponent.populateProfile', this._Profile);
   }
 
   save(): void {
-    this._LoggingSvc.toast('FunctionDetailsComponent.save', 'Function Details:', LogLevel.Error);
-    this.onClose();
+    // this._LoggingSvc.toast('FunctionDetailsComponent.save', 'Function Details:', LogLevel.Error);
+    this._ProfileSvc.save(this._Profile).then((respnse: boolean) => {
+      if (respnse) {
+        this._LoggingSvc.toast('Function has been saved', 'Function Details:', LogLevel.Success);
+        this.onClose();
+      } else {
+        this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
+      }
+    }).catch((error: any) => {
+      this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
+    })
   }
 }

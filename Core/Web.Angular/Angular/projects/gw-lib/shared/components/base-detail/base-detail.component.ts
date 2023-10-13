@@ -56,7 +56,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         } else {
             this._ModalSvc.close(this._ProfileSvc.addModalId);
         }
-        this._LoggingSvc.toast('BaseDetailComponent.onClose', 'Function Details:', LogLevel.Error);
+        // this._LoggingSvc.toast('BaseDetailComponent.onClose', 'Function Details:', LogLevel.Error);
     }
 
     protected onDelete(): void {
@@ -65,7 +65,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
     }
 
     protected onSubmit(form: FormGroup): void {
-        this._LoggingSvc.toast('BaseDetailComponent.onSubmit', 'Function Details:', LogLevel.Error);
+        // this._LoggingSvc.toast('BaseDetailComponent.onSubmit', 'Function Details:', LogLevel.Error);
         this.populateProfile();
         this.save();
     }
