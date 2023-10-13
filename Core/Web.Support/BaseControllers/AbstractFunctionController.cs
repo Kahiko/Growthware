@@ -159,11 +159,53 @@ public abstract class AbstractFunctionController : ControllerBase
                     }
                 }
             }
-            bool mCanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
-            bool mCanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
+            bool mSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
+            bool mSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
+
+            string ViewRoles = String.Join(",", mProfileToSave.AssignedViewRoles);
+            string AddRoles = String.Join(",", mProfileToSave.AssignedAddRoles);
+            string EditRoles = String.Join(",", mProfileToSave.AssignedEditRoles);
+            string DeleteRoles = String.Join(",", mProfileToSave.AssignedDeleteRoles);
+
+            string ViewGroups =  String.Join(",", mProfileToSave.ViewGroups);
+            string AddGroups = String.Join(",", mProfileToSave.AddGroups);
+            string EditGroups = String.Join(",", mProfileToSave.EditGroups);
+            string DeleteGroups = String.Join(",", mProfileToSave.DeleteGroups);
+            
+            if(mSaveRoles)
+            {
+                if(String.Join(",", mExistingProfile.AssignedViewRoles) != ViewRoles) {
+                    mSaveRoles = true;
+                }
+                if(String.Join(",", mExistingProfile.AssignedAddRoles) != AddRoles) {
+                    mSaveRoles = true;
+                }
+                if(String.Join(",", mExistingProfile.AssignedEditRoles) != EditRoles) {
+                    mSaveRoles = true;
+                }
+                if(String.Join(",", mExistingProfile.AssignedDeleteRoles) != DeleteRoles) {
+                    mSaveRoles = true;
+                }
+            }
+            if(mSaveGroups)
+            {
+                if(String.Join(",", mExistingProfile.ViewGroups) != ViewGroups) {
+                    mSaveGroups = true;
+                }
+                if(String.Join(",", mExistingProfile.AddGroups) != AddGroups) {
+                    mSaveGroups = true;
+                }
+                if(String.Join(",", mExistingProfile.EditGroups) != EditGroups) {
+                    mSaveGroups = true;
+                }
+                if(String.Join(",", mExistingProfile.DeleteGroups) != DeleteGroups) {
+                    mSaveGroups = true;
+                }
+            }
+
             try
             {
-                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mCanSaveGroups, mCanSaveRoles, SecurityEntityUtility.CurrentProfile());
+                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles, SecurityEntityUtility.CurrentProfile());
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
                     MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(functionProfile.Id);

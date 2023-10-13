@@ -26,6 +26,7 @@ public static class FunctionUtility
     [CLSCompliant(false)]
     public static Collection<MFunctionProfile> Functions()
     {
+        // TODO: Cache has not been implemented
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         MClientChoicesState mClientChoicesState =  (MClientChoicesState)m_IHttpContextAccessor.HttpContext.Items["ClientChoicesState"];
         if (mClientChoicesState != null && mClientChoicesState[MClientChoices.SecurityEntityID] != null) 
@@ -33,12 +34,12 @@ public static class FunctionUtility
             int mSecurityEntityID = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID]);
             mSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID);
         }
-        BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = null;
         // mRetVal = (Collection<MFunctionProfile>)(context.Cache[mCacheName]);
         if (mRetVal == null)
         {
+            BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBFunctions.GetFunctions(mSecurityEntityProfile.Id);
             // CacheController.AddToCacheDependency(mCacheName, mRetVal);
         }
