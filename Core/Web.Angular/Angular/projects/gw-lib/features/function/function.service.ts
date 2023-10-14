@@ -15,6 +15,7 @@ export class FunctionService {
   private _FunctionSeqId: number = -1;
   private _ApiName: string = 'GrowthwareFunction/';
   private _Api_AvalibleParents: string = '';
+  private _Api_Delete: string = '';
   private _Api_GetFunction: string = '';
   private _Api_GetFunctionOrder: string = '';
   private _Api_FunctionTypes: string = '';
@@ -55,12 +56,35 @@ export class FunctionService {
     private _SearchSvc: SearchService,
   ) {
     this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
+    this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteFunction';
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
     this._Api_GetFunctionOrder = this._GWCommon.baseURL + this._ApiName + 'GetFunctionOrder';
     this._Api_FunctionTypes = this._GWCommon.baseURL + this._ApiName + 'GetFunctionTypes';
     this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
     this._Api_LinkBehaviors = this._GWCommon.baseURL + this._ApiName + 'GetLinkBehaviors';
     this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save';
+  }
+
+  public async deleteFunction(functionSeqId: number): Promise<boolean> {
+    const mQueryParameter: HttpParams = new HttpParams().append('functionSeqId', functionSeqId);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.delete<any>(this._Api_Delete, mHttpOptions).subscribe({
+        next: (response: boolean) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'deleteFunction');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
   }
 
   public async getAvalibleParents(): Promise<any> {

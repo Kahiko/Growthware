@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Library
 import { DataService } from '@Growthware/shared/services';
-import { LogLevel, LoggingService } from '@Growthware/features/logging';
+import { LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
 
@@ -60,8 +60,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
     }
 
     protected onDelete(): void {
-        this._LoggingSvc.toast('BaseDetailComponent.onDelete', 'Function Details:', LogLevel.Error);
-        this.onClose();
+        this.delete();
     }
 
     protected onSubmit(form: FormGroup): void {
@@ -74,6 +73,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         return this.frmProfile.controls;
     }
 
+    abstract delete(): void;
     abstract createForm(): void;
     abstract populateProfile(): void;
     abstract save(): void;

@@ -228,6 +228,19 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     });    
   }
 
+  delete(): void {
+    this._ProfileSvc.deleteFunction(this._Profile.id).then((response: boolean) => {
+      if (response) {
+        this._LoggingSvc.toast('Function has been deleted', 'Function Details:', LogLevel.Success);
+        this.onClose();
+      } else {
+        this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
+      }
+    }).catch((error: any) => {
+      this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
+    });
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.functionMenuOrders, event.previousIndex, event.currentIndex);
   }

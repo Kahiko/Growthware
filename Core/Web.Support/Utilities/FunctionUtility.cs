@@ -12,6 +12,7 @@ using System.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Xml.Linq;
 using Microsoft.AspNetCore.Razor.Language;
+using System.Security.Cryptography.X509Certificates;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -19,6 +20,19 @@ public static class FunctionUtility
 {
     private static IHttpContextAccessor m_IHttpContextAccessor = null;
     private static List<UIKeyValuePair> m_FunctionTypes = null;
+
+    /// <summary>
+    /// Deletes a function from the database.
+    /// </summary>
+    /// <param name="functionSeqId">int</param>
+    public static void Delete(int functionSeqId)
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBFunctions.Delete(functionSeqId);
+        CacheController.RemoveFromCache(mCacheName);
+    }
 
     /// <summary>
     /// Retrieves all functions from the either the database or cache

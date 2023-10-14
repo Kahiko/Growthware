@@ -17,6 +17,26 @@ public abstract class AbstractFunctionController : ControllerBase
     private Logger m_Logger = Logger.Instance();
 
     [AllowAnonymous]
+    [HttpDelete("DeleteFunction")]
+    public ActionResult<bool> Delete(int functionSeqId)
+    {
+        MSecurityInfo mSecurityInfo = this.getSecurityInfo("FunctionSecurity");
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        if(mSecurityInfo.MayDelete)
+        {
+            var mEditId =  HttpContext.Session.GetInt32("EditId");
+            if(mEditId != null && mEditId == functionSeqId)
+            {
+                FunctionUtility.Delete(functionSeqId);
+                return Ok(true);
+            }
+            this.m_Logger.Error(String.Format("'{0}' attempted to delete a function without having the editid set properly, possible attempt to breach security.", mRequestingProfile.Account));
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
     [HttpGet("GetAvalibleParents")]
     public ActionResult GetAvalibleParents()
     {
