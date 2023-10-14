@@ -56,6 +56,11 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves the menu order for the given function
+    /// </summary>
+    /// <param name="functionSeqId"></param>
+    /// <returns>List<UIFunctionMenuOrder></returns>
     public static List<UIFunctionMenuOrder> GetFunctionOrder(int functionSeqId)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
@@ -72,6 +77,10 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves all function types
+    /// </summary>
+    /// <returns>List<UIKeyValuePair></returns>
     public static List<UIKeyValuePair> GetFunctionTypes()
     {
         if(m_FunctionTypes == null) 
@@ -88,6 +97,11 @@ public static class FunctionUtility
         return m_FunctionTypes;
     }
 
+    /// <summary>
+    /// Retrieves a MFunctionProfile given the action
+    /// </summary>
+    /// <param name="action">string</param>
+    /// <returns>MFunctionProfile</returns>
     [CLSCompliant(false)]
     public static MFunctionProfile GetProfile(String action)
     {
@@ -110,6 +124,11 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves a MFunctionProfile given the functionSeqId
+    /// </summary>
+    /// <param name="functionSeqId">int</param>
+    /// <returns>MFunctionProfile</returns>
     public static MFunctionProfile GetProfile(int functionSeqId)
     {
         MFunctionProfile mRetVal = null;
@@ -128,12 +147,23 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Saves the given MFunctionProfile to the database
+    /// </summary>
+    /// <param name="profile">MFunctionProfile</param>
+    /// <param name="saveGroups">bool used to indicate if groups should be saved</param>
+    /// <param name="saveRoles">bool used to indicate if roles should be saved</param>
+    /// <returns>The Id representing the updated/inserted function</returns>
     public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         return mBFunctions.Save(profile, saveGroups, saveRoles);
     }
 
+    /// <summary>
+    /// Set the HttpContextAccessor for the application.
+    /// </summary>
+    /// <param name="httpContextAccessor">An instance of IHttpContextAccessor to be set as the HttpContextAccessor.</param>
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {
