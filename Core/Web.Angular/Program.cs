@@ -2,6 +2,7 @@ using GrowthWare.Framework;
 using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using GrowthWare.Web.Support;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -65,6 +66,7 @@ var app = builder.Build();
 IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
 if(httpContextAccessor != null)
 {
+    CacheController.SetHttpContextAccessor(httpContextAccessor);
     DirectoryUtility.SetHttpContextAccessor(httpContextAccessor);
     FunctionUtility.SetHttpContextAccessor(httpContextAccessor);
     MessageUtility.SetHttpContextAccessor(httpContextAccessor);

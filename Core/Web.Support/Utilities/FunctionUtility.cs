@@ -29,15 +29,12 @@ public static class FunctionUtility
     {
         // TODO: Cache has not been implemented
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        MClientChoicesState mClientChoicesState =  (MClientChoicesState)m_IHttpContextAccessor.HttpContext.Items["ClientChoicesState"];
-        if (mClientChoicesState != null && mClientChoicesState[MClientChoices.SecurityEntityID] != null) 
-        {
-            int mSecurityEntityID = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID]);
-            mSecurityEntityProfile = SecurityEntityUtility.GetProfile(mSecurityEntityID);
-        }
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = null;
-        // mRetVal = (Collection<MFunctionProfile>)(context.Cache[mCacheName]);
+        // this seems to be an issue b/c the AssignedXXX of the MFunctionProfile
+        // is read only so when it is retrived from the cache they are empty and
+        // since security relys on them being set correctly all security fails!!!
+        // mRetVal = CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
         {
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
