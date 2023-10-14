@@ -69,6 +69,12 @@ public static class DirectoryUtility
             return mRetVal;
     }
 
+    public static void Save(MDirectoryProfile profile)
+    {
+        BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBDirectories.Save(profile);
+    }
+
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {
