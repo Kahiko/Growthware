@@ -154,10 +154,10 @@ namespace GrowthWare.DataAccess.SQLServer
 			{ 
 				GetSqlParameter("@P_FunctionSeqId", m_Profile.Id,ParameterDirection.InputOutput), 
 				new SqlParameter("@P_Name", m_Profile.Name), 
-				new SqlParameter("@P_Description", m_Profile.Description), 
+				new SqlParameter("@P_Description", m_Profile.Description ?? ""), 
 				new SqlParameter("@P_FunctionTypeSeqId", m_Profile.FunctionTypeSeqId), 
-				new SqlParameter("@P_Source", m_Profile.Source), 
-                new SqlParameter("@P_Controller", m_Profile.Controller), 
+				new SqlParameter("@P_Source", m_Profile.Source ?? ""), 
+                new SqlParameter("@P_Controller", m_Profile.Controller ?? ""), 
 				new SqlParameter("@P_Enable_View_State", m_Profile.EnableViewState), 
 				new SqlParameter("@P_Enable_Notifications", m_Profile.EnableNotifications), 
 				new SqlParameter("@P_Redirect_On_Timeout", m_Profile.RedirectOnTimeout), 
@@ -166,9 +166,9 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_NO_UI", m_Profile.NoUI), 
 				new SqlParameter("@P_NAV_TYPE_ID", m_Profile.NavigationTypeSeqId), 
 				new SqlParameter("@P_Action", m_Profile.Action), 
-				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords), 
+				new SqlParameter("@P_Meta_Key_Words", m_Profile.MetaKeywords ?? ""), 
 				new SqlParameter("@P_ParentSeqId", m_Profile.ParentId), 
-				new SqlParameter("@P_Notes", m_Profile.Notes), 
+				new SqlParameter("@P_Notes", m_Profile.Notes ?? ""), 
 				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			};
             String mStoreProc = "ZGWSecurity.Set_Function";
