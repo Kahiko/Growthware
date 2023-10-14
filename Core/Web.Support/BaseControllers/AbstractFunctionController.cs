@@ -7,8 +7,6 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
-using System.Security.Cryptography.Xml;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using System.Linq;
 
 namespace GrowthWare.Web.Support.BaseControllers;
