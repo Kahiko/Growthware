@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Data;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Razor.Language;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -46,12 +47,16 @@ public static class FunctionUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves all of the avalible parents
+    /// </summary>
+    /// <returns>List<UIKeyValuePair></returns>
     public static List<UIKeyValuePair> GetAvalibleParents()
     {
-        List<UIKeyValuePair> mRetVal = Functions().Select(item => new UIKeyValuePair {
+        List<UIKeyValuePair> mRetVal = Functions().Where(item => item.IsNavigable).Select(item => new UIKeyValuePair {
             Key = item.Id ,
             Value = item.Name
-        }).ToList();
+        }).OrderBy(item => item.Value).ToList();
 
         return mRetVal;
     }
