@@ -197,6 +197,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
     });
 
     setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
+    this._Profile = new FunctionProfile();
     this.createForm();
   }
   
@@ -215,7 +216,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       linkBehavior: [this._Profile.linkBehavior],
       // functionTypeSeqId: [this._Profile.functionTypeSeqId],
       groups: [this._Profile.groups],
-      name: [this._Profile.name],
+      name: [this._Profile.name, [Validators.required]],
       metaKeywords: [this._Profile.metaKeywords],
       navigationTypeSeqId: [this._Profile.navigationTypeSeqId],
       notes: [this._Profile.notes],
@@ -225,7 +226,9 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       roles: [this._Profile.roles],
       source: [this._Profile.source],
       controller: [this._Profile.controller],
-    });    
+    });
+    const mm = '';
+    console.log(mm)
   }
 
   delete(): void {
@@ -243,6 +246,24 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.functionMenuOrders, event.previousIndex, event.currentIndex);
+  }
+
+  getErrorMessage(fieldName: string) {
+    switch (fieldName) {
+      case 'name':
+        if (this.controls['name'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'action':
+        if (this.controls['action'].hasError('required')) {
+          return 'Required';
+        }    
+        break;
+      default:
+        break;
+    }
+    return undefined;
   }
 
   onHelp(controleName: string): void {

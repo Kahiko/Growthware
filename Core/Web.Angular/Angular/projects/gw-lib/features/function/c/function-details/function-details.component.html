@@ -15,11 +15,11 @@
             </div>
             <div class="tr">
               <div class="td left">
-                <span class="Form_LabelText">Name:</span>
+                <span class="Form_LabelText">Name:</span><mat-error *ngIf="controls['name'].invalid" style="display: inline-block; padding-left: 5px;">*</mat-error>
               </div>
               <div class="td middleCell"></div>
               <div class="td left">
-                <input matInput type="text" formControlName="name" class="Form_Field rounded">
+                <input matInput type="text" formControlName="name" class="Form_Field rounded"><mat-error *ngIf="controls['name'].invalid && controls['name'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('name')}}</mat-error>
               </div>
             </div>
             <div class="tr">
@@ -54,13 +54,14 @@
             </div>
             <div class="tr">
               <div class="td left">
-                <span class="Form_LabelText">Action:</span>
+                <span class="Form_LabelText">Action:</span><mat-error *ngIf="controls['action'].invalid" style="display: inline-block; padding-left: 5px;">*</mat-error>
               </div>
               <div class="td middleCell">
                 <i (click)="onHelp('Action')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
               </div>
               <div class="td left">
                 <input matInput type="text" formControlName="action" class="Form_Field rounded">
+                <mat-error *ngIf="controls['action'].invalid && controls['action'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('action')}}</mat-error>
               </div>
             </div>
             <div class="tr">
