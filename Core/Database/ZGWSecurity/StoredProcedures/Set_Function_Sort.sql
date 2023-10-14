@@ -31,8 +31,8 @@ BEGIN
 				@V_Id = [Id]
 				, @V_FunctionSeqId = CONVERT(INT, [Data])
 			FROM @V_TblSplitValues WHERE [Processed] = 0 ORDER BY [Id];
-			PRINT 'FunctionSeqId ' + CONVERT(VARCHAR(10), @V_FunctionSeqId) + ' Sort = ' + CONVERT(VARCHAR(10), @V_Id - 1);
-			-- UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = @V_Id - 1 WHERE [FunctionSeqId] = @V_FunctionSeqId;
+			-- PRINT 'FunctionSeqId ' + CONVERT(VARCHAR(10), @V_FunctionSeqId) + ' Sort = ' + CONVERT(VARCHAR(10), @V_Id - 1);
+			UPDATE [ZGWSecurity].[Functions] SET [Sort_Order] = @V_Id - 1 WHERE [FunctionSeqId] = @V_FunctionSeqId;
 			UPDATE @V_TblSplitValues SET [Processed] = 1 WHERE [Id] = @V_Id;
 		END
 	--END WHILE
