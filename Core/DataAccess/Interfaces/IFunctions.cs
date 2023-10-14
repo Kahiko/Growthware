@@ -61,8 +61,8 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Updates the menu order.
         /// </summary>
+        /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
         /// <param name="profile">The profile.</param>
-        /// <param name="direction">The direction.</param>
-        void UpdateMenuOrder(MFunctionProfile profile, DirectionType direction);
+        void UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile);
     }
 }

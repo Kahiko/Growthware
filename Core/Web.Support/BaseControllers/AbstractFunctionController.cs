@@ -9,6 +9,7 @@ using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
 using System.Security.Cryptography.Xml;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using System.Linq;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -206,13 +207,14 @@ public abstract class AbstractFunctionController : ControllerBase
             try
             {
                 int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles, SecurityEntityUtility.CurrentProfile());
+                mProfileToSave.Id = mFunctionSeqId;
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {
-                    MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(functionProfile.Id);
+                    MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mProfileToSave.Id);
                     if(mDirectoryProfile == null)
                     {
                         mDirectoryProfile = new MDirectoryProfile();
-                        mDirectoryProfile.FunctionSeqId = mFunctionSeqId;
+                        mDirectoryProfile.FunctionSeqId = mProfileToSave.Id;
                     }
                     mDirectoryProfile.Directory = functionProfile.DirectoryData.Directory;
                     mDirectoryProfile.Impersonate = functionProfile.DirectoryData.Impersonate;
@@ -228,6 +230,8 @@ public abstract class AbstractFunctionController : ControllerBase
                     mDirectoryProfile.UpdatedBy = mRequestingProfile.Id;
                     // DirectoryUtility.Save(mDirectoryProfile, SecurityEntityUtility.CurrentProfile());
                 }
+                string mCommaSeporatedIds = String.Join(",", functionProfile.FunctionMenuOrders.Select(item => item.Function_Seq_Id.ToString()));
+                FunctionUtility.UpdateMenuOrder(mCommaSeporatedIds, mProfileToSave);
             }
             catch (System.Exception ex)
             {

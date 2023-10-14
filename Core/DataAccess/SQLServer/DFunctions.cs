@@ -206,12 +206,11 @@ namespace GrowthWare.DataAccess.SQLServer
             base.ExecuteNonQuery(mStoreProcedure, mParameters);
         }
 
-        void IFunction.UpdateMenuOrder(MFunctionProfile profile, DirectionType direction)
+        void IFunction.UpdateMenuOrder(string commaSeparated_Ids, MFunctionProfile profile)
         {
             string mStoreProcedure = "ZGWSecurity.Set_Function_Sort";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_FunctionSeqId", profile.Id), 
-				new SqlParameter("@P_Direction", direction), 
+				new SqlParameter("@P_Commaseparated_Ids", commaSeparated_Ids), 
 				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
 				GetSqlParameter("@P_Primary_Key", "", ParameterDirection.Output)
 			};

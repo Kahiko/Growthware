@@ -210,13 +210,13 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
-        /// Moves the menu order.
+        /// Updates the sort order fot the given functions in the commaSeparated_Ids.
         /// </summary>
+        /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
         /// <param name="profile">The profile.</param>
-        /// <param name="direction">The direction.</param>
-        public void MoveMenuOrder(MFunctionProfile profile, DirectionType direction)
+        public void UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
         {
-            if (DatabaseIsOnline()) m_DFunctions.UpdateMenuOrder(profile, direction);
+            if (DatabaseIsOnline()) m_DFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
         }
     }
 }

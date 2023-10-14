@@ -139,4 +139,15 @@ public static class FunctionUtility
     {
         m_IHttpContextAccessor = httpContextAccessor;
     }
+
+    /// <summary>
+    /// Updates the sort order fot the given functions in the commaSeparated_Ids.
+    /// </summary>
+    /// <param name="commaSeparated_Ids">A comma separated list of ids</param>
+    /// <param name="profile">The profile.</param>
+    public static void UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
+    {
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
+    }
 }
