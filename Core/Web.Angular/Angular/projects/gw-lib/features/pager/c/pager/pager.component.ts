@@ -38,24 +38,28 @@ export class PagerComponent implements OnDestroy, OnInit {
           this.name.trim().toLowerCase() === results.name.trim().toLowerCase()
         ) {
           this._SearchCriteria = results.payLoad.searchCriteria;
-          const mFirstRow = results.payLoad.data[0];
-          if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
-            const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
-            if (mTotalRecords > results.payLoad.searchCriteria.pageSize) {
-              const mPageSize: number = results.payLoad.searchCriteria.pageSize;
-              let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
-              if(mTotalRecords%mCalculatedPages != 0) {
-                mCalculatedPages += 1;
-              }
-              if (this.totalPages !== mCalculatedPages) {
-                this.pages.splice(0, this.pages.length);
-                this.selectedPage = '1';
-                for (let index = 1; index < mCalculatedPages + 1; index++) {
-                  this.pages.push(index);
+          if(results.payLoad.data) {
+            const mFirstRow = results.payLoad.data[0];
+            if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
+              const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
+              if (mTotalRecords > results.payLoad.searchCriteria.pageSize) {
+                const mPageSize: number = results.payLoad.searchCriteria.pageSize;
+                let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
+                if(mTotalRecords%mCalculatedPages != 0) {
+                  mCalculatedPages += 1;
                 }
-                this.totalPages = mCalculatedPages;
+                if (this.totalPages !== mCalculatedPages) {
+                  this.pages.splice(0, this.pages.length);
+                  this.selectedPage = '1';
+                  for (let index = 1; index < mCalculatedPages + 1; index++) {
+                    this.pages.push(index);
+                  }
+                  this.totalPages = mCalculatedPages;
+                }
               }
             }
+          } else {
+            this.totalPages = 0;
           }
         }
       }
