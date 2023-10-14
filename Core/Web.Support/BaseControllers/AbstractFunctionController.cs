@@ -206,7 +206,7 @@ public abstract class AbstractFunctionController : ControllerBase
 
             try
             {
-                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles, SecurityEntityUtility.CurrentProfile());
+                int mFunctionSeqId = FunctionUtility.Save(mProfileToSave, mSaveGroups, mSaveRoles);
                 mProfileToSave.Id = mFunctionSeqId;
                 if(!string.IsNullOrWhiteSpace(functionProfile.DirectoryData.Directory))
                 {

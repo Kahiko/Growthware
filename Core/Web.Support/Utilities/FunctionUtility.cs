@@ -128,9 +128,9 @@ public static class FunctionUtility
         return mRetVal;
     }
 
-    public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles, MSecurityEntity securityEntity)
+    public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
-        BFunctions mBFunctions = new BFunctions(securityEntity, ConfigSettings.CentralManagement);
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         return mBFunctions.Save(profile, saveGroups, saveRoles);
     }
 
