@@ -7,23 +7,23 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
-using Microsoft.AspNetCore.Http.Features;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
 {
-    static BGroups m_BGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+    private static CacheController m_CacheController = CacheController.Instance();
 
     public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         // Save the profile
-        int mSavedGroupSeqId = m_BGroups.Save(profile);
-        MGroupProfile mSavedGroupProfile = m_BGroups.GetProfile(mSavedGroupSeqId);
+        int mSavedGroupSeqId = mBGroups.Save(profile);
+        MGroupProfile mSavedGroupProfile = mBGroups.GetProfile(mSavedGroupSeqId);
         // set the groupRoles id's
         groupRoles.Id = mSavedGroupSeqId;
         groupRoles.GroupSeqId = groupRoles.Id;
         // Save the group roles
-        m_BGroups.UpdateGroupRoles(groupRoles);
+        mBGroups.UpdateGroupRoles(groupRoles);
         // get the profile from the DB
         UIGroupProfile mRetVal = GetUIGroupProfile(groupRoles.Id, groupRoles.SecurityEntityID);
         return mRetVal;
@@ -31,7 +31,8 @@ public static class GroupUtility
 
     public static void UpdateGroupRoles(MGroupRoles groupRoles)
     {
-        m_BGroups.UpdateGroupRoles(groupRoles);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBGroups.UpdateGroupRoles(groupRoles);
     }
 
     public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
@@ -41,7 +42,8 @@ public static class GroupUtility
         MGroupRoles mGroupRoles = new MGroupRoles();
         if(groupSeqId != -1)
         {
-            mGroupProfile = m_BGroups.GetProfile(groupSeqId);
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mGroupProfile = mBGroups.GetProfile(groupSeqId);
         }
         // Populate mRetVal
         mRetVal.Description = mGroupProfile.Description;
@@ -89,14 +91,16 @@ public static class GroupUtility
 
     public static MGroupProfile GetGroupProfile(int groupSeqId) 
     {
-        MGroupProfile mRetVal = m_BGroups.GetProfile(groupSeqId);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
         return mRetVal;
     }
 
     private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
-        mRetVal = m_BGroups.GetSelectedRoles(groupRoles);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mRetVal = mBGroups.GetSelectedRoles(groupRoles);
         return mRetVal;
     }
 
@@ -114,7 +118,14 @@ public static class GroupUtility
     private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
     {
         // TODO: Add cache
-        DataTable mGroups = m_BGroups.GetGroupsBySecurityEntity(securityEntityId);
-        return mGroups;
+        String mCacheName = securityEntityId.ToString() + "_Groups";
+        DataTable mRetVal = m_CacheController.GetFromCache<DataTable>(mCacheName);
+        if(mRetVal == null)
+        {
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
+            m_CacheController.AddToCache(mCacheName, mRetVal);
+        }
+        return mRetVal;
     }
 }
