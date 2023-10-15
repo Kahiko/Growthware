@@ -26,6 +26,9 @@ public class CacheController
     private static readonly Mutex m_Mutex = new Mutex();
     private readonly IMemoryCache m_MemoryCache;
 
+    /// <summary>
+    /// Prevent any other instances of this class from being created
+    /// </summary>
     private CacheController()
     {
         this.s_CacheDirectory = Path.Combine(System.Environment.CurrentDirectory, "CacheDependency");
@@ -77,32 +80,20 @@ public class CacheController
         if (!ConfigSettings.CentralManagement & ConfigSettings.EnableCache)
         {
             string mFileName = cacheName + ".txt";
-            string mFileNameAndPath = Path.Combine(s_CacheDirectory, cacheName + ".txt");
             // Create the file if it does not exist
-            if (!File.Exists(mFileNameAndPath))
+            if (prepDirecotry())
             {
-                try
+                if (prepFile(cacheName))
                 {
-                    if(!Directory.Exists(s_CacheDirectory))
-                    {
-                        Directory.CreateDirectory(s_CacheDirectory);
-                    }
-                    File.Create(mFileNameAndPath).Close();
                     // Get the file provider and create the change token
                     PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
                     IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
                     // Register the change callback to remove the item from the cache
-                    mChangeToken.RegisterChangeCallback(ChangeCallback, cacheName);
+                    mChangeToken.RegisterChangeCallback(changeCallback, cacheName);
                     // Create entry options with the change token and add the value to the cache
                     MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
                     // Add the value to the cache
                     m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
-                }
-                catch (System.Exception ex)
-                {
-                    Logger mLogger = Logger.Instance();
-                    mLogger.Error("Unable to create cache file");
-                    mLogger.Error(ex.Message);
                 }
             }
         }
@@ -112,13 +103,13 @@ public class CacheController
     /// Handles the change callback created in AddToCache
     /// </summary>
     /// <param name="state"></param>
-    private void ChangeCallback(object state)
+    private void changeCallback(object state)
     {
         if (state != default)
         {
             string mCacheName = (string)state;
             string mFileNameAndPath = Path.Combine(s_CacheDirectory, mCacheName + ".txt");
-            if(File.Exists(mFileNameAndPath))
+            if (File.Exists(mFileNameAndPath))
             {
                 File.Delete(mFileNameAndPath);
             }
@@ -139,7 +130,7 @@ public class CacheController
         DirectoryInfo mDirectoryInfo = new DirectoryInfo(this.s_CacheDirectory);
         foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
         {
-            mFileInfo.Delete(); 
+            mFileInfo.Delete();
         }
         m_MemoryCache.Dispose();
     }
@@ -151,7 +142,7 @@ public class CacheController
     public void RemoveFromCache(string cacheName)
     {
         string mFileNameAndPath = Path.Combine(s_CacheDirectory, cacheName + ".txt");
-        if(File.Exists(mFileNameAndPath))
+        if (File.Exists(mFileNameAndPath))
         {
             File.Delete(mFileNameAndPath);
         }
@@ -159,5 +150,55 @@ public class CacheController
         {
             m_MemoryCache.Remove(cacheName);
         }
+    }
+
+    /// <summary>
+    /// Prepares the cache directory.
+    /// </summary>
+    /// <returns>False if unable to create cache directory</returns>
+    private bool prepDirecotry()
+    {
+        bool mRetVal = true;
+        try
+        {
+            if (!Directory.Exists(s_CacheDirectory))
+            {
+                Directory.CreateDirectory(s_CacheDirectory);
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Logger mLogger = Logger.Instance();
+            mLogger.Error("Unable to create cache directory");
+            mLogger.Error(ex.Message);
+            mRetVal = false;
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Prepares the cache file.
+    /// </summary>
+    /// <param name="cacheName"></param>
+    /// <returns>False if unable to create cache file</returns>
+    private bool prepFile(string cacheName)
+    {
+        bool mRetVal = true;
+        try
+        {
+            string mFileNameAndPath = Path.Combine(s_CacheDirectory, cacheName + ".txt");
+            if (!File.Exists(mFileNameAndPath))
+            {
+                File.Create(mFileNameAndPath).Close();
+            }
+        }
+        catch (System.Exception ex)
+        {
+            Logger mLogger = Logger.Instance();
+            mLogger.Error("Unable to create cache file");
+            mLogger.Error(ex.Message);
+            mRetVal = false;
+        }
+        return mRetVal;
     }
 }
