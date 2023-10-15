@@ -81,17 +81,30 @@ public class CacheController
             // Create the file if it does not exist
             if (!File.Exists(mFileNameAndPath))
             {
-                File.Create(mFileNameAndPath).Close();
+                try
+                {
+                    if(!Directory.Exists(s_CacheDirectory))
+                    {
+                        Directory.CreateDirectory(s_CacheDirectory);
+                    }
+                    File.Create(mFileNameAndPath).Close();
+                    // Get the file provider and create the change token
+                    PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
+                    IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
+                    // Register the change callback to remove the item from the cache
+                    mChangeToken.RegisterChangeCallback(ChangeCallback, cacheName);
+                    // Create entry options with the change token and add the value to the cache
+                    MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
+                    // Add the value to the cache
+                    m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
+                }
+                catch (System.Exception ex)
+                {
+                    Logger mLogger = Logger.Instance();
+                    mLogger.Error("Unable to create cache file");
+                    mLogger.Error(ex.Message);
+                }
             }
-            // Get the file provider and create the change token
-            PhysicalFileProvider mPhysicalFileProvider = new PhysicalFileProvider(s_CacheDirectory);
-            IChangeToken mChangeToken = mPhysicalFileProvider.Watch(mFileName);
-            // Register the change callback to remove the item from the cache
-            mChangeToken.RegisterChangeCallback(ChangeCallback, cacheName);
-            // Create entry options with the change token and add the value to the cache
-            MemoryCacheEntryOptions mMemoryCacheEntryOptions = new MemoryCacheEntryOptions().AddExpirationToken(mChangeToken);
-            // Add the value to the cache
-            m_MemoryCache.Set(cacheName, value, mMemoryCacheEntryOptions);
         }
     }
 
