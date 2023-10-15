@@ -41,12 +41,12 @@ public static class FunctionUtility
         // TODO: Cache has not been implemented
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-        Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);;
+        Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
         {
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBFunctions.GetFunctions(mSecurityEntityProfile.Id);
-            m_CacheController.AddToCacheDependency<Collection<MFunctionProfile>>(mCacheName, mRetVal);
+            m_CacheController.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
     }

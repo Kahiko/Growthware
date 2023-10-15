@@ -34,7 +34,7 @@ public static class DirectoryUtility
         {
             BDirectories mBDirectories = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBDirectories.Directories();
-            m_CacheController.AddToCacheDependency<Collection<MDirectoryProfile>>(mCacheName, mRetVal);
+            m_CacheController.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
     }

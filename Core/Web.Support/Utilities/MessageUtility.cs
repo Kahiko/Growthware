@@ -121,7 +121,7 @@ public static class MessageUtility
         {
             BMessages mBMessages = new BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
-            CacheController.Instance().AddToCacheDependency<Collection<MMessage>>(mCacheName, mMessageCollection);
+            CacheController.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;
     }
