@@ -37,7 +37,6 @@ public static class FunctionUtility
     [CLSCompliant(false)]
     public static Collection<MFunctionProfile> Functions()
     {
-        // TODO: Cache has not been implemented
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
