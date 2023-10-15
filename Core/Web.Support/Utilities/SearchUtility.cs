@@ -7,7 +7,6 @@ using System.Text;
 namespace GrowthWare.Web.Support.Utilities;
 public static class SearchUtility
 {
-    private static BSearch m_BSearch = null;
 
     public static Tuple<string, string> GetOrderByAndWhere(string columns, string[] searchColumns, string[] sortColumnInfo, string searchText)
     {
@@ -56,9 +55,9 @@ public static class SearchUtility
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
-        m_BSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
+        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
-        mDataTable = m_BSearch.GetSearchResults(searchCriteria);
+        mDataTable = mBSearch.GetSearchResults(searchCriteria);
         var mStringBuilder = new StringBuilder();
         if (mDataTable.Rows.Count > 0)
         {
