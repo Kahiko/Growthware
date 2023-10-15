@@ -342,7 +342,7 @@ EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_EditPermissio
 EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_DeletePermission,@V_SystemID, @V_Debug
 PRINT 'Adding cache directory'
 -- Add directory information
-EXEC ZGWOptional.Set_Directory @V_FunctionID ,'D:\Development\YourDatabaseName\VB\YourDatabaseName.WebAngularJS\CacheDependency',0,'','',@V_SystemID,@V_PRIMARY_KEY, @V_Debug
+EXEC ZGWOptional.Set_Directory @V_FunctionID ,'D:\Development\Growthware\Core\Web.Angular\CacheDependency',0,'','',@V_SystemID,@V_PRIMARY_KEY, @V_Debug
 
 PRINT 'cache directory management'
 -- Add module
