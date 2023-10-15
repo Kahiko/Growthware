@@ -15,7 +15,6 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class FunctionUtility
 {
     private static CacheController m_CacheController = CacheController.Instance();
-    private static IHttpContextAccessor m_IHttpContextAccessor = null;
     private static List<UIKeyValuePair> m_FunctionTypes = null;
 
     /// <summary>
@@ -170,16 +169,6 @@ public static class FunctionUtility
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheController.RemoveFromCache(mCacheName);
         return mRetVal;
-    }
-
-    /// <summary>
-    /// Set the HttpContextAccessor for the application.
-    /// </summary>
-    /// <param name="httpContextAccessor">An instance of IHttpContextAccessor to be set as the HttpContextAccessor.</param>
-    [CLSCompliant(false)]
-    public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
-    {
-        m_IHttpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>

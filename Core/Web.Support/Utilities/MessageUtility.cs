@@ -13,8 +13,6 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class MessageUtility
 {
-    private static IHttpContextAccessor m_IHttpContextAccessor = null;
-
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
     private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
@@ -51,12 +49,6 @@ public static class MessageUtility
         RemoveCachedMessagesCollection();
         return mRetVal;
     }
-
-    [CLSCompliant(false)]
-    public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
-    {
-        m_IHttpContextAccessor = httpContextAccessor;
-    }    
 
     /// <summary>
     /// Gets the name of the message profile by.

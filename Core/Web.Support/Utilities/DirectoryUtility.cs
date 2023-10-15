@@ -19,7 +19,6 @@ public static class DirectoryUtility
     /// The m_ directory info cached name
     /// </summary>
     private static string s_DirectoryInfoCachedName = "DirectoryInfoCollection";
-    private static IHttpContextAccessor m_HttpContextAccessor = null;
 
     /// <summary>
     /// Gets the directories.
@@ -71,11 +70,5 @@ public static class DirectoryUtility
         mBDirectories.Save(profile);
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheController.RemoveFromCache(mCacheName);
-    }
-
-    [CLSCompliant(false)]
-    public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
-    {
-        m_HttpContextAccessor = httpContextAccessor;
     }
 }

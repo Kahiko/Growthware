@@ -66,9 +66,6 @@ var app = builder.Build();
 IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
 if(httpContextAccessor != null)
 {
-    DirectoryUtility.SetHttpContextAccessor(httpContextAccessor);
-    FunctionUtility.SetHttpContextAccessor(httpContextAccessor);
-    MessageUtility.SetHttpContextAccessor(httpContextAccessor);
     SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
 } 
 // Configure the HTTP request pipeline.
