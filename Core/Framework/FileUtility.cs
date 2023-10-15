@@ -5,6 +5,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
+using GrowthWare.Framework.Models;
 
 namespace GrowthWare.Framework
 {
@@ -15,7 +16,8 @@ namespace GrowthWare.Framework
     {
         static String s_Space = "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
 
-        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray) {
+        public static string GetLineCount(DirectoryInfo theDirectory, int level, StringBuilder outputBuilder, List<String> excludeList, int directoryLineCount, ref int totalLinesOfCode, String[] fileArray)
+        {
             if (theDirectory == null) throw new ArgumentNullException("theDirectory", "theDirectory cannot be a null reference (Nothing in Visual Basic)!");
             if (outputBuilder == null) throw new ArgumentNullException("outputBuilder", "outputBuilder cannot be a null reference (Nothing in Visual Basic)!");
             DirectoryInfo[] subDirectories = null;
@@ -114,7 +116,7 @@ namespace GrowthWare.Framework
                                 {
                                     FileLineCount += 1;
                                 }
-                            }                            
+                            }
                         }
                         if (FileLineCount > 0)
                         {
@@ -133,6 +135,63 @@ namespace GrowthWare.Framework
                     FileLineCount = 0;
                 }
             }
+        }
+
+        public static string CreateDirectory(string currentDirectory, string newDirectoryName, MDirectoryProfile directoryProfile)
+        {
+            if (directoryProfile == null)
+            {
+                throw new ArgumentNullException("directoryProfile", "directoryProfile can not be null reference (Nothing in Visual Basic)");
+            }
+            string mRetVal = null;
+            mRetVal = "Successfully created the new directory!";
+            /**
+             * TODO: This is legacy code that I'm not sure we should do.  Doing so will not work for all OS's.
+             * WindowsImpersonationContext is specific to windows and I haven't researched it for other OS's
+             */
+            // WindowsImpersonationContext impersonatedUser = null;
+            // try
+            // {
+            //     if (directoryProfile.Impersonate)
+            //     {
+            //         impersonatedUser = WebImpersonate.ImpersonateNow(directoryProfile.ImpersonateAccount, directoryProfile.ImpersonatePassword);
+            //     }
+            //     Directory.CreateDirectory(currentDirectory + "\\" + newDirectoryName);
+            // }
+            // catch (IOException ex)
+            // {
+            //     Logger mLog = Logger.Instance();
+            //     mLog.Error(ex);
+            //     mRetVal = "Directory was not created!";
+            // }
+            // finally
+            // {
+            //     if (directoryProfile.Impersonate)
+            //     {
+            //         // Stop impersonating the user.
+            //         if ((impersonatedUser != null))
+            //         {
+            //             impersonatedUser.Undo();
+            //         }
+            //     }
+            // }
+            return mRetVal;
+        }
+
+        public static string CreateDirectory(string directoryToCreate)
+        {
+            string mRetVal = "Successfully created the new directory!";
+            try
+            {
+                Directory.CreateDirectory(directoryToCreate);
+            }
+            catch (System.Exception ex)
+            {
+                Logger mLog = Logger.Instance();
+                mLog.Error(ex);
+                mRetVal = "Directory was not created!";
+            }
+            return mRetVal;
         }
 
         /// <summary>
@@ -297,7 +356,7 @@ namespace GrowthWare.Framework
             {
                 throw;
             }
-            finally 
+            finally
             {
                 if (mTempRetTable != null) mTempRetTable.Dispose();
             }

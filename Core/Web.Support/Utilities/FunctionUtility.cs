@@ -9,15 +9,12 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using System.Collections.Generic;
 using System.Data;
-using Microsoft.AspNetCore.Http.HttpResults;
-using System.Xml.Linq;
-using Microsoft.AspNetCore.Razor.Language;
-using System.Security.Cryptography.X509Certificates;
 
 namespace GrowthWare.Web.Support.Utilities;
 
 public static class FunctionUtility
 {
+    private static CacheController m_CacheController = CacheController.Instance();
     private static IHttpContextAccessor m_IHttpContextAccessor = null;
     private static List<UIKeyValuePair> m_FunctionTypes = null;
 
@@ -28,10 +25,10 @@ public static class FunctionUtility
     public static void Delete(int functionSeqId)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBFunctions.Delete(functionSeqId);
-        CacheController.RemoveFromCache(mCacheName);
+        String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        m_CacheController.RemoveFromCache(mCacheName);
     }
 
     /// <summary>
@@ -44,16 +41,12 @@ public static class FunctionUtility
         // TODO: Cache has not been implemented
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-        Collection<MFunctionProfile> mRetVal = null;
-        // this seems to be an issue b/c the AssignedXXX of the MFunctionProfile
-        // is read only so when it is retrived from the cache they are empty and
-        // since security relys on them being set correctly all security fails!!!
-        // mRetVal = CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
+        Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);;
         if (mRetVal == null)
         {
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBFunctions.GetFunctions(mSecurityEntityProfile.Id);
-            // CacheController.AddToCacheDependency(mCacheName, mRetVal);
+            m_CacheController.AddToCacheDependency<Collection<MFunctionProfile>>(mCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -173,7 +166,10 @@ public static class FunctionUtility
     public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        return mBFunctions.Save(profile, saveGroups, saveRoles);
+        int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
+        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
+        m_CacheController.RemoveFromCache(mCacheName);
+        return mRetVal;
     }
 
     /// <summary>

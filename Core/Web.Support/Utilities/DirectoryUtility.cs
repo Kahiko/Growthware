@@ -13,6 +13,8 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class DirectoryUtility
 {
 
+    private static CacheController m_CacheController = CacheController.Instance();
+
     /// <summary>
     /// The m_ directory info cached name
     /// </summary>
@@ -27,18 +29,12 @@ public static class DirectoryUtility
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
-        Collection<MDirectoryProfile> mRetVal = null;
-        String mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(mCacheName);
-        if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
-        {
-            mRetVal = JsonSerializer.Deserialize<Collection<MDirectoryProfile>>(mJsonString);
-        }
-        else
+        Collection<MDirectoryProfile> mRetVal = m_CacheController.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
+        if(mRetVal == null)
         {
             BDirectories mBDirectories = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBDirectories.Directories();
-            mJsonString = JsonSerializer.Serialize(mRetVal);
-            m_HttpContextAccessor.HttpContext.Session.SetString(mCacheName, mJsonString);
+            m_CacheController.AddToCacheDependency<Collection<MDirectoryProfile>>(mCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -73,6 +69,8 @@ public static class DirectoryUtility
     {
         BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBDirectories.Save(profile);
+        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
+        m_CacheController.RemoveFromCache(mCacheName);
     }
 
     [CLSCompliant(false)]
