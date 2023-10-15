@@ -66,6 +66,7 @@ public abstract class AbstractFunctionController : ControllerBase
             mRetVal.CanSaveGroups = this.getSecurityInfo("View_Function_Group_Tab").MayView;
             mRetVal.CanSaveRoles = this.getSecurityInfo("View_Function_Role_Tab").MayView;
             mRetVal.DirectoryData = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            mRetVal.DirectoryData.ImpersonatePassword = string.Empty; // We don't want the password to show
             mRetVal.FunctionMenuOrders = FunctionUtility.GetFunctionOrder(mFunctionProfile.Id);
             return Ok(mRetVal);
         }
