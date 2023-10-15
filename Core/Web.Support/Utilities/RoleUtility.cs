@@ -9,18 +9,19 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class RoleUtility
 {
-    static BRoles m_BRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
 
     private static string[] getAccountsInRole(MRole profile) 
     {
-        DataTable mDataTable = m_BRoles.GetAccountsInRole(profile);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mDataTable = mBRoles.GetAccountsInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
 
     private static string[] getAccountsNotInRole(MRole profile)
     {
-        DataTable mDataTable = m_BRoles.GetAccountsNotInRole(profile);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mDataTable = mBRoles.GetAccountsNotInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
     }
@@ -57,7 +58,8 @@ public static class RoleUtility
         MRole mRoleToDelete = new MRole(mRoleFromDB);
         mRoleToDelete.Id = roleSeqId;
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
-        m_BRoles.DeleteRole(mRoleToDelete);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBRoles.DeleteRole(mRoleToDelete);
         return true;
     }
 
@@ -77,7 +79,8 @@ public static class RoleUtility
         MRole mRoleProfile = new MRole();
         mRoleProfile.Id = roleSeqId;
         mRoleProfile.SecurityEntityID = securityEntitySeqId;
-        mRoleProfile = m_BRoles.GetProfile(mRoleProfile);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mRoleProfile = mBRoles.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
         mRetVal.AccountsInRole = getAccountsInRole(mRoleProfile);
         mRetVal.AccountsNotInRole = getAccountsNotInRole(mRoleProfile);
@@ -87,19 +90,21 @@ public static class RoleUtility
     public static UIRole Save(MRole roleProfile, string[] accountsInRole)
     {
         MRole mRoleToSave = new MRole(roleProfile);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         if (roleProfile.Id > -1) 
         {
-            MRole mProfileFromDB = m_BRoles.GetProfile(mRoleToSave);
+            MRole mProfileFromDB = mBRoles.GetProfile(mRoleToSave);
             mRoleToSave.AddedBy = mProfileFromDB.AddedBy; 
             mRoleToSave.AddedDate = mProfileFromDB.AddedDate;
         }
-        mRoleToSave.Id = m_BRoles.Save(mRoleToSave);
+        mRoleToSave.Id = mBRoles.Save(mRoleToSave);
         UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
         return new UIRole(mRoleToSave);
     }
 
     public static bool UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
     {
-        return m_BRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        return mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
     }
 }
