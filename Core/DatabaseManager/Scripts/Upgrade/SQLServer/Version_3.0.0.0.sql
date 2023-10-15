@@ -612,6 +612,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/sys_admin/linecount' WHERE [Ac
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/sys_admin/editdbinformation' WHERE [Action] = 'EditDBInformation';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/logout' WHERE [Action] = 'Logoff';
 UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/logon' WHERE [Action] = 'Logon';
+UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/register' WHERE [Action] = 'Register';
 UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 2 WHERE [Action] = 'Logon';
 UPDATE [ZGWSecurity].[Functions] SET [Source] = 'functions' WHERE [Action] = 'MSNewPage';
 UPDATE [GrowthWare].[ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'generic_home' WHERE [Account] = 'Anonymous'

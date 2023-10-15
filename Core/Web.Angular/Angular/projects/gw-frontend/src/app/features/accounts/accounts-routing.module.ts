@@ -16,6 +16,7 @@ const childRoutes: Routes = [
   { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
   { path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
   { path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+  { path: 'register', component: AccountDetailsComponent },
   { path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
   { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
   { path: 'logon', component: LoginComponent},
