@@ -13,8 +13,9 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class SecurityEntityUtility
 {
 
-    private static Collection<MSecurityEntity> m_SecurityEntities = null;
+    private static CacheController m_CacheController = CacheController.Instance();
     private static IHttpContextAccessor m_HttpContextAccessor = null;
+    private static String s_CacheName = "Cached_SecurityEntities";
 
     public static MSecurityEntity CurrentProfile()
     {
@@ -115,9 +116,10 @@ public static class SecurityEntityUtility
 
     public static Collection<MSecurityEntity> Profiles()
     {
-        if (m_SecurityEntities == null)
+        Collection<MSecurityEntity> mSecurityEntities = m_CacheController.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
+        if (mSecurityEntities == null)
         {
-            m_SecurityEntities = new Collection<MSecurityEntity>();
+            mSecurityEntities = new Collection<MSecurityEntity>();
             BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
             foreach (MSecurityEntity mSecurityEntity in mBSecurityEntities.SecurityEntities())
             {
@@ -125,10 +127,10 @@ public static class SecurityEntityUtility
                 string mDecryptedPassword;
                 CryptoUtility.TryDecrypt(mSecurityEntity.ConnectionString, out mDecryptedPassword, ConfigSettings.EncryptionType);
                 mSecurityEntity.ConnectionString = mDecryptedPassword;
-                m_SecurityEntities.Add(mSecurityEntity);
+                mSecurityEntities.Add(mSecurityEntity);
             }
-            // m_SecurityEntities = mBSecurityEntities.SecurityEntities();
+            m_CacheController.AddToCache(s_CacheName, mSecurityEntities);
         }
-        return m_SecurityEntities;
+        return mSecurityEntities;
     }
 }
