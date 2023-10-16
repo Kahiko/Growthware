@@ -8,7 +8,10 @@ import { ModalService } from '@Growthware/features/modal';
 import { SecurityService, ISecurityInfo, SecurityInfo } from '@Growthware/features/security';
 
 export interface IBaseDetailComponent extends BaseDetailComponent {
+    delete(): void;
+    createForm(): void;
     populateProfile(): void;
+    save(): void;
 }
 
 @Component({
