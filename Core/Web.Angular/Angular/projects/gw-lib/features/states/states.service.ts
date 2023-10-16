@@ -12,8 +12,8 @@ export class StatesService {
     return 'editState'
   }
 
-  editAccount: string = '';
   editReason: string = '';
+  editRow: any = {};
 
   constructor() { }
 }

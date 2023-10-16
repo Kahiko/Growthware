@@ -6,10 +6,13 @@ import { FormBuilder } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 import { DataService } from '@Growthware/shared/services';
+import { IKeyValuePair } from '@Growthware/shared/models';
 import { LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { SecurityService } from '@Growthware/features/security';
@@ -28,7 +31,9 @@ import { StatesService } from '../../states.service';
     MatButtonModule,
     MatCheckboxModule,
     MatIconModule,
-    MatTabsModule
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
   ],
   templateUrl: './state-details.component.html',
   styleUrls: ['./state-details.component.scss']
@@ -36,6 +41,11 @@ import { StatesService } from '../../states.service';
 export class StateDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
   private _Profile: IStateProfile = new StateProfile();
+
+  state: string = 'state';
+
+  selectedStatus: number = -1;
+  validStatuses: IKeyValuePair[] = [{key: 1, value: 'Active'}, {key: 2, value: 'Inactive'}];
 
   constructor(
     private _FormBuilder: FormBuilder,
@@ -56,29 +66,46 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
   ngOnInit(): void {
     // console.log('editReason', this._ProfileSvc.editReason);
     // console.log('editRow', this._ProfileSvc.editRow);
-    let mEditId = -1;
-    if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-      mEditId = this._ProfileSvc.editRow.FunctionSeqId;
+    this._Profile.description = this._ProfileSvc.editRow.Description;
+    this._Profile.state = this._ProfileSvc.editRow.State;
+    this._Profile.status = 1;
+    this.selectedStatus = 1;
+    if(this._ProfileSvc.editRow.Status.trim() !== 'Active') {
+      this._Profile.status = 2;
+      this.selectedStatus = 2;
     }
-    console.log('mEditId', mEditId);
+    this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // Request/Handler #1
+      // console.log('StateDetailsComponent.ngOnInit.securityInfo', securityInfo);
+      this._SecurityInfo = securityInfo;
+      this.applySecurity();
+      this.populateForm();
+    });
     this.createForm();
   }
 
   delete() {
-
+    // only here to satisfy the base component we will not be allowing the deletion of a state
   }
 
   createForm() {
-    console.log('StateDetailsComponent.createForm._Profile', this._Profile);
+    // console.log('StateDetailsComponent.createForm._Profile', this._Profile);
     this.frmProfile = this._FormBuilder.group({
-
+      state: [this._Profile.state],
+      description: [this._Profile.description],
+      status: [this._Profile.status]
     });
   }
+
+  populateForm() {
+    this.createForm();
+    this.state = this._Profile.state;
+  }
+
   populateProfile() {
 
   }
 
   save() {
-
+    this.onClose();
   }
 }
