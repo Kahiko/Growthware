@@ -264,7 +264,7 @@ States:
 		search_states
 		ng generate module features/States --project gw-lib
 		ng generate interface features/states/StateProfile --type model --project gw-lib
-		ng generate component features/states/c/StateDetails --module states --style scss --skip-tests --project gw-lib
+		ng generate component features/states/c/StateDetails --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/states/c/SearchStates --module states --style scss --skip-tests --project gw-lib
 		ng generate service features/states/states --skip-tests --project gw-lib
 Workflows:
