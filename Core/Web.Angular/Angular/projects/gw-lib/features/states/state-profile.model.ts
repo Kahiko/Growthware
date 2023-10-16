@@ -1,2 +1,5 @@
-export interface StateProfile {
+export interface IStateProfile {
+}
+
+export class StateProfile implements IStateProfile {
 }

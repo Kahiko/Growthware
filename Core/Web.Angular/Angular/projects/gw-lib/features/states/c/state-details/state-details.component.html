@@ -1,1 +1,23 @@
-<p>state-details works!</p>
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
+    <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
+        <mat-tab label="General">
+            <div class="mat-tab__container">
+                <div class="mat-tab__content formSectionContents tabHeight">
+                    <p>state-details works!</p>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
+          <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+        </button>
+        <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+          <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+        </button>
+        <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+          <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+        </button>
+      </div>
+</form>
+
