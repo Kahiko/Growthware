@@ -45,7 +45,10 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
   state: string = 'state';
 
   selectedStatus: number = -1;
-  validStatuses: IKeyValuePair[] = [{key: 1, value: 'Active'}, {key: 2, value: 'Inactive'}];
+  validStatuses: IKeyValuePair[] = [
+    {key: 1, value: 'Active'},
+    {key: 2, value: 'Inactive'}
+  ];
 
   constructor(
     private _FormBuilder: FormBuilder,
