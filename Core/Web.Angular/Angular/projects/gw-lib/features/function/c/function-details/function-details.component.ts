@@ -19,6 +19,7 @@ import {
   moveItemInArray,
 } from '@angular/cdk/drag-drop';
 // Library
+import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 import { DataService } from '@Growthware/shared/services';
 import { GroupService } from '@Growthware/features/group';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
@@ -32,7 +33,6 @@ import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
-import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 
 @Component({
   selector: 'gw-lib-function-details',
