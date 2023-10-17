@@ -15,19 +15,6 @@ namespace GrowthWare.DataAccess.SQLServer
         public MState Profile { get{return m_Profile;} set{this.m_Profile = value;} }
         public int SecurityEntitySeqId { get{return this.m_SecurityEntitySeqID;} set{this.m_SecurityEntitySeqID = value;} }
 
-        public DataRow GetState 
-        {
-            get
-            {
-                this.checkValid();
-                String mStoredProcedure  = "ZGWOptional.Get_State";
-                SqlParameter[] mParameters = {
-                    new SqlParameter("@P_State", m_Profile.State)
-                };
-                return base.GetDataRow(mStoredProcedure, mParameters);
-            }
-        }
-
         private void checkValid()
         {
             base.IsValid();
@@ -40,15 +27,21 @@ namespace GrowthWare.DataAccess.SQLServer
                 throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
             }
         }
-
-        public void Delete()
+        
+        DataTable IState.GetStates
         {
-            throw new NotImplementedException();
+            get
+            {
+                this.checkValid();
+                String mStoredProcedure  = "ZGWOptional.Get_State";
+                SqlParameter[] mParameters = {
+                    new SqlParameter("@P_State", m_Profile.State)
+                };
+                return base.GetDataTable(mStoredProcedure, mParameters);
+            }
         }
 
-        public DataTable GetStates => throw new NotImplementedException();
-
-        public void Save()
+        void IState.Save()
         {
             throw new NotImplementedException();
         }

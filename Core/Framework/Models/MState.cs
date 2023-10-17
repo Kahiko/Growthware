@@ -11,15 +11,12 @@ namespace GrowthWare.Framework.Models
     public class MState : AbstractBaseModel
     {
 #region "Public Methods"
-        public MState()
-        {
-
-        }
+        public MState() {}
 
         public MState(DataRow detailRow)
         {
             base.NameColumnName = "State";
-            base.IdColumnName = "State";
+            // base.IdColumnName = "State";
             this.Description = this.GetString(detailRow, "Description");
             this.State = this.GetString(detailRow, "State");
             this.StatusId = this.GetInt(detailRow, "StatusSeqId");

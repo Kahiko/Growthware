@@ -14,17 +14,6 @@ namespace GrowthWare.DataAccess.Interfaces
         int SecurityEntitySeqId {get; set;}
 
         /// <summary>
-        /// Deletes an account
-        /// </summary>
-        void Delete();
-
-        /// <summary>
-        /// Retrieves Account information
-        /// </summary>
-        /// <returns>DataRow</returns>
-        DataRow GetState {get;}
-
-        /// <summary>
         /// Returns all states associated with a given SecurityEntitySeqID.
         /// </summary>
         /// <returns>DataTable</returns>

@@ -13,7 +13,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 import { DataService } from '@Growthware/shared/services';
 import { IKeyValuePair } from '@Growthware/shared/models';
-import { LoggingService } from '@Growthware/features/logging';
+import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
 import { SecurityService } from '@Growthware/features/security';
 // Feature
@@ -69,19 +69,23 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
   ngOnInit(): void {
     // console.log('editReason', this._ProfileSvc.editReason);
     // console.log('editRow', this._ProfileSvc.editRow);
-    this._Profile.description = this._ProfileSvc.editRow.Description;
-    this._Profile.state = this._ProfileSvc.editRow.State;
-    this._Profile.status = 1;
     this.selectedStatus = 1;
     if(this._ProfileSvc.editRow.Status.trim() !== 'Active') {
       this._Profile.status = 2;
       this.selectedStatus = 2;
     }
-    this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // Request/Handler #1
+    this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // #1 getSecurityInfo Request/Handler
       // console.log('StateDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
+      return this._ProfileSvc.getState(this._ProfileSvc.editRow.State);      // #2 getState getState
+    }).catch((error: any) => {                                               // #1 getSecurityInfo Error Handler
+      this._LoggingSvc.toast("Error getting security info:\r\n" + error, 'State Details:', LogLevel.Error);
+    }).then((response) => {                                                  // #2 getState Handler
+      this._Profile = response;
       this.applySecurity();
       this.populateForm();
+    }).catch((error: any) => {                                                // #2 getStateError Handler
+      this._LoggingSvc.toast("Error getting State:\r\n" + error, 'State Details:', LogLevel.Error);
     });
     this.createForm();
   }
