@@ -77,7 +77,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
     this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // #1 getSecurityInfo Request/Handler
       // console.log('StateDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
-      return this._ProfileSvc.getState(this._ProfileSvc.editRow.State);      // #2 getState getState
+      return this._ProfileSvc.getState(this._ProfileSvc.editRow.State);      // #2 getState Request
     }).catch((error: any) => {                                               // #1 getSecurityInfo Error Handler
       this._LoggingSvc.toast("Error getting security info:\r\n" + error, 'State Details:', LogLevel.Error);
     }).then((response) => {                                                  // #2 getState Handler
