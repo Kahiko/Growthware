@@ -1,11 +1,11 @@
 export interface IStateProfile {
     description: string;
     state: string;
-    status: number;
+    statusId: number;
 }
 
 export class StateProfile implements IStateProfile {
     public description = '';
     public state = '';
-    public status = -1;
+    public statusId = -1;
 }

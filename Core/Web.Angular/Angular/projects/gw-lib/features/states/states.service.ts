@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
+import { SearchService } from '@Growthware/features/search';
 // Feature
 import { IStateProfile } from './state-profile.model';
 
@@ -30,6 +31,7 @@ export class StatesService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
+    private _SearchSvc: SearchService
   ) { 
     this._Api_GetProfile = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
     this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save';
@@ -66,6 +68,10 @@ export class StatesService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_Save, stateProfile, mHttpOptions).subscribe({
         next: (response: any) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("States"); // from SearchStatesComponent (this.configurationName)
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("States", mSearchCriteria);
+          }
           resolve(response);
         }
         , error: (error: any) => {

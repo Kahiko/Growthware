@@ -71,7 +71,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
     // console.log('editRow', this._ProfileSvc.editRow);
     this.selectedStatus = 1;
     if(this._ProfileSvc.editRow.Status.trim() !== 'Active') {
-      this._Profile.status = 2;
+      this._Profile.statusId = 2;
       this.selectedStatus = 2;
     }
     this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // #1 getSecurityInfo Request/Handler
@@ -99,7 +99,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
     this.frmProfile = this._FormBuilder.group({
       state: [this._Profile.state],
       description: [this._Profile.description],
-      status: [this._Profile.status]
+      status: [this._Profile.statusId]
     });
   }
 
@@ -109,10 +109,19 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   populateProfile() {
-
+    this._Profile.description = this.frmProfile.get('description')?.value;
+    this._Profile.state = this.state;
+    this._Profile.statusId = this.selectedStatus;
   }
 
   save() {
-    this.onClose();
+    this._ProfileSvc.saveState(this._Profile).then((response: boolean) => {
+      if (response) {
+        this._LoggingSvc.toast('State has been saved', 'State Details:', LogLevel.Success);
+        this.onClose();
+      }
+    }).catch((error: any) => {
+      this._LoggingSvc.toast("Error saving State:\r\n" + error, 'State Details:', LogLevel.Error);
+    })
   }
 }

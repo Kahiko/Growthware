@@ -27,7 +27,19 @@ namespace GrowthWare.DataAccess.SQLServer
                 throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
             }
         }
-        
+
+        private SqlParameter[] getInsertUpdateParameters()
+        {
+            SqlParameter[] mParameters = { 
+                base.GetSqlParameter("@P_State      "   , m_Profile.State, ParameterDirection.Input),
+                base.GetSqlParameter("@P_Description"   , m_Profile.Description, ParameterDirection.Input),
+                base.GetSqlParameter("@P_StatusSeqId"   , m_Profile.StatusId, ParameterDirection.Input),
+                base.GetSqlParameter("@P_Updated_By"    , m_Profile.UpdatedBy, ParameterDirection.Input),
+                base.GetSqlParameter("@P_Primary_Key"   , m_Profile.State, ParameterDirection.InputOutput)
+            };
+            return mParameters;
+        }
+
         DataTable IState.GetStates
         {
             get
@@ -43,7 +55,9 @@ namespace GrowthWare.DataAccess.SQLServer
 
         void IState.Save()
         {
-            throw new NotImplementedException();
+            SqlParameter[] mParameters = getInsertUpdateParameters();
+            String mStoreProc = "ZGWOptional.Set_State";
+            base.ExecuteNonQuery( mStoreProc, mParameters);            
         }
     }
 }

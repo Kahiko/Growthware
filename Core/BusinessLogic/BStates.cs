@@ -83,4 +83,10 @@ public class BStates: AbstractBusinessLogic
         }
         return mRetVal;
     }
+
+    public void Save(MState state)
+    {
+        m_DStates.Profile = state;
+        m_DStates.Save();
+    }
 }

@@ -46,12 +46,11 @@ public static class StateUtility
         return mRetVal;
     }
 
-    public static bool Save(MState state)
+    public static void Save(MState state)
     {
-        bool mRetVal = false;
+        BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBStates.Save(state);
         m_CacheController.RemoveFromCache(m_CacheName);
-        mRetVal = true;
-        return mRetVal;
     }
 
 }

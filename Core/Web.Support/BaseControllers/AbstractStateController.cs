@@ -36,13 +36,32 @@ public abstract class AbstractStateController : ControllerBase
     [HttpPost("Save")]
     public ActionResult<bool> Save(MState state)
     {
-        bool mRetVal = false;
         if (state == null) throw new ArgumentNullException("state", " can not be null!");
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        
-        mRetVal = true;
-        return Ok(mRetVal);
+        if (HttpContext.Session.GetString("EditId") != null)
+        {
+            string mEditId = HttpContext.Session.GetString("EditId");
+            MState mProfileToSave = StateUtility.GetState(state.State);
+            if(mEditId == mProfileToSave.State)
+            {
+                if (mSecurityInfo.MayEdit)
+                {
+                    mProfileToSave.UpdatedBy = mRequestingProfile.Id;
+                    mProfileToSave.UpdatedDate = DateTime.Now;
+                } 
+                else 
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                }
+                mProfileToSave.Description = state.Description;
+                mProfileToSave.StatusId = state.StatusId;
+                StateUtility.Save(mProfileToSave);
+                return Ok(true);
+            }
+        }
+        return StatusCode(StatusCodes.Status304NotModified, "Unable to save");
     }
 
     [Authorize("Search_States")]
