@@ -40,6 +40,39 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     }
 
     [AllowAnonymous]
+    [HttpGet("GetProfile")]
+    public ActionResult<MSecurityEntity> GetProfile(int securityEntitySeqId) {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        if(mRequestingProfile.IsSystemAdmin)
+        {
+            MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
+            if(mSecurityInfo.MayView) 
+            {
+                MSecurityEntity mRetVal = new MSecurityEntity();
+                if(securityEntitySeqId > -1)
+                {
+                    mRetVal = SecurityEntityUtility.GetProfile(securityEntitySeqId);
+                }
+                if(mRetVal == null)
+                {
+                    mRetVal = new MSecurityEntity();
+                }
+                HttpContext.Session.SetInt32("EditId", mRetVal.Id);
+                return Ok(mRetVal);
+            }
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    private MSecurityInfo getSecurityInfo(string action)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        return mSecurityInfo;
+    }
+
+    [AllowAnonymous]
     [HttpGet("GetValidSecurityEntities")]
     public ActionResult<List<UIValidSecurityEntity>> GetValidSecurityEntities()
     {
