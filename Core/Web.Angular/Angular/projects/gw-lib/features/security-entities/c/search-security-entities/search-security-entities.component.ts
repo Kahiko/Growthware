@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 // Library
 import { BaseSearchComponent } from '@Growthware/shared/components';
-import { ConfigurationService } from '@Growthware';
+import { ConfigurationService } from '@Growthware/features/configuration';
 import { DynamicTableService } from '@Growthware/features/dynamic-table';
 import { DataService } from '@Growthware/shared/services';
 import { SearchService } from '@Growthware/features/search';
