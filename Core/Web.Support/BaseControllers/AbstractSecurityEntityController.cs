@@ -8,6 +8,8 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Data;
+using System.Linq;
+using System.Collections.ObjectModel;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -70,6 +72,23 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetValidParents")]
+    public ActionResult<List<UIKeyValuePair>> GetValidParents(int securityEntitySeqId)
+    {
+        MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
+        if(mSecurityInfo.MayView) 
+        {
+            List<UIKeyValuePair> mRetVal = new List<UIKeyValuePair>();
+            var mSecurityEntities = from mProfile in SecurityEntityUtility.Profiles()
+                        where mProfile.Id != securityEntitySeqId
+                        select mProfile;
+            mSecurityEntities.ToList().ForEach(item => mRetVal.Add(new UIKeyValuePair { Key = item.Id, Value = item.Name }));
+            return mRetVal;
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
     [AllowAnonymous]

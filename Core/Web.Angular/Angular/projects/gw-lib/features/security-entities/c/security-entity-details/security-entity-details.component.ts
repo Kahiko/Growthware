@@ -5,12 +5,14 @@ import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angu
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 import { ConfigurationService } from '@Growthware/features/configuration';
 import { DataService } from '@Growthware/shared/services';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
+import { IKeyValuePair, INameValuePair } from '@Growthware/shared/models';
 import { SecurityService } from '@Growthware/features/security';
 // Feature
 import { SecurityEntityService } from '../../security-entity.service';
@@ -28,6 +30,7 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
     MatButtonModule,
     MatIconModule,
     MatInputModule,
+    MatSelectModule,
   ],
   templateUrl: './security-entity-details.component.html',
   styleUrls: ['./security-entity-details.component.scss']
@@ -39,6 +42,44 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   canEnterName: boolean = false;
   securityEntityTranslation: string = 'Security Entity';
   securityEntityName: string = '';
+
+  selectedDal: string = '';
+  selectedEncryptionType: number = -1;
+  selectedSkin:string = '';
+  selectedParent: number = -1;
+  selectedStatusSeqId: number = 0;
+  selectedStyle:string = '';
+
+  validDataAccessLayers: INameValuePair[] = [
+    { name: 'SQLServer', payLoad: 'SQL Server' },
+    { name: 'MySql', payLoad: 'MySql' },
+    { name: 'Oracle', payLoad: 'Oracle' },
+  ];
+
+  validEncryptionTypes: IKeyValuePair[] = [
+    { key: 0, value: 'None' },
+    { key: 3, value: 'Aes' },
+    { key: 2, value: 'Des' },
+    { key: 1, value: 'TripleDes' },
+  ];
+
+  validSkins: INameValuePair[] = [
+    { name: 'Default', payLoad: 'Default' },
+    { name: 'System', payLoad: 'System' },
+    { name: 'Blue Arrow', payLoad: 'Blue Arrow' },
+    { name: 'Default Black', payLoad: 'Default Black' },
+    { name: 'DevOps', payLoad: 'DevOps' },
+    { name: 'Professional', payLoad: 'Professional' },
+    { name: 'Arc', payLoad: 'Arc' },
+    { name: 'Dashboard', payLoad: 'Dashboard' },
+  ];
+
+  validParents: IKeyValuePair[] = [];
+
+  validStatuses: IKeyValuePair[] = [
+    {key: 1, value: 'Active'},
+    {key: 2, value: 'Inactive'}
+  ];
 
   constructor(
     private _FormBuilder: FormBuilder,
@@ -69,19 +110,27 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
     let mEditId = -1;
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.SecurityEntitySeqId;
+    } else {
+      this.canEnterName = true;
     }
     // console.log('SecurityEntityDetailsComponent.ngOnInit.mEditId', mEditId);
     this._SecuritySvc.getSecurityInfo('search_security_entities').then((securityInfo) => {  // #1 Request/Handler getSecurityInfo
       // console.log('SecurityEntityDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
-      return this._ProfileSvc.getSecurityEntity(mEditId);                                   // #2 Request getSecurityEntity
+      return this._ProfileSvc.getValidParents(mEditId);                                     // #2 Request getValidParents
     }).catch((error: any) => {                                                              // #1 Error Handler getSecurityInfo
       this._LoggingSvc.toast("Error getting security info:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
-    }).then((profile: ISecurityEntityProfile) => {                                          // #2 Request getProfile Handler
+    }).then((parrents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
+      // console.log('SecurityEntityDetailsComponent.ngOnInit.parrents', parrents);
+      this.validParents = parrents;
+      return this._ProfileSvc.getSecurityEntity(mEditId);                                   // #3 Request getSecurityEntity
+    }).catch((error: any) => {                                                              // #2 Error Handler
+      this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+    }).then((profile: ISecurityEntityProfile) => {                                          // #3 Request getProfile Handler
       // console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
       this._Profile = profile;
       this.populateForm();
-    }).catch((error: any) => {                                                              // #2 Error Handler
+    }).catch((error: any) => {                                                              // #3 Error Handler
       this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     });
     this.createForm();
@@ -93,16 +142,27 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   override createForm(): void {
     this.frmProfile = this._FormBuilder.group({
       name: [this._Profile.name, [Validators.required]],
+      description: [this._Profile.description, [Validators.required]],
+      url: [this._Profile.url],
+      dataAccessLayerAssemblyName: [this._Profile.dataAccessLayerAssemblyName, [Validators.required]],
+      dataAccessLayerNamespace: [this._Profile.dataAccessLayerNamespace, [Validators.required]],
+      connectionString: [this._Profile.connectionString, [Validators.required]],
     });
   }
 
   populateForm(): void {
     this.securityEntityName = this._Profile.name;
+    this.selectedDal = this._Profile.dataAccessLayer;
+    this.selectedEncryptionType = this._Profile.encryptionType;
+    this.selectedParent = this._Profile.parentSeqId
+    this.selectedSkin = this._Profile.skin;
+    this.selectedStatusSeqId = this._Profile.statusSeqId;
+    this.selectedStyle = this._Profile.style;
     this.createForm();
   }
 
   override populateProfile(): void {
-    // do nothing atm
+    this._Profile.dataAccessLayer = this.selectedDal;
   }
 
   override save(): void {

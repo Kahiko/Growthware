@@ -1,29 +1,31 @@
 export interface ISecurityEntityProfile {
     connectionString: string;
-    description: string;
     dataAccessLayer: string;
     dataAccessLayerAssemblyName: string;
     dataAccessLayerNamespace: string;
+    description: string;
     encryptionType: number;
+    id: number;
     name: string;
     parentSeqId: number;
     skin: string;
-    style: string;
     statusSeqId: number;
+    style: string;
     url: string;
 }
 
 export class SecurityEntityProfile implements ISecurityEntityProfile {
     connectionString = '';
-    description = '';
     dataAccessLayer = '';
     dataAccessLayerAssemblyName = '';
     dataAccessLayerNamespace = '';
+    description = '';
     encryptionType = -1;
+    id = -1;
     name = '';
     parentSeqId = -1;
     skin = '';
-    style = '';
     statusSeqId = -1;
+    style = '';
     url = '';
 }

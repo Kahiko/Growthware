@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@Growthware/common-code';
+import { IKeyValuePair } from '@Growthware/shared/models';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
 import { IValidSecurityEntity } from './valid-security-entity.model';
@@ -14,6 +15,7 @@ export class SecurityEntityService {
 
   private _ApiName: string = 'GrowthwareSecurityEntity/';
   private _Api_GetSecurityEntity: string = '';
+  private _Api_GetValidParents: string = '';
   private _Api_GetValidSecurityEntities: string = '';  
   
   public get addModalId(): string {
@@ -32,7 +34,8 @@ export class SecurityEntityService {
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
   ) { 
-    this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities'
+    this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities';
+    this._Api_GetValidParents = this._GWCommon.baseURL + this._ApiName + 'GetValidParents';
     this._Api_GetSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
   }
 
@@ -52,6 +55,29 @@ export class SecurityEntityService {
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getSecurityEntity');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  public async getValidParents(id: number): Promise<IKeyValuePair[]> {
+    const mQueryParameter: HttpParams = new HttpParams()
+      .set('securityEntitySeqId', id);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<IKeyValuePair[]>((resolve, reject) => {
+      this._HttpClient.get<IKeyValuePair[]>(this._Api_GetValidParents, mHttpOptions).subscribe({
+        next: (response: IKeyValuePair[]) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getValidParents');
           reject('Failed to call the API');
         },
         // complete: () => {}
