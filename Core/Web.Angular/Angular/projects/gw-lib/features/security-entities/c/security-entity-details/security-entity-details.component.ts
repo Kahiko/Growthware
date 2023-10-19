@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
 import { DataService } from '@Growthware/shared/services';
@@ -13,7 +14,6 @@ import { SecurityService } from '@Growthware/features/security';
 // Feature
 import { SecurityEntityService } from '../../security-entity.service';
 import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-entity-profile.model';
-
 
 @Component({
   selector: 'gw-lib-security-entity-details',
@@ -26,6 +26,7 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
 
     MatButtonModule,
     MatIconModule,
+    MatInputModule,
   ],
   templateUrl: './security-entity-details.component.html',
   styleUrls: ['./security-entity-details.component.scss']
@@ -33,6 +34,10 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
 export class SecurityEntityDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
   private _Profile: ISecurityEntityProfile = new SecurityEntityProfile();
+
+  canEnterName: boolean = false;
+  securityEntityTranslation: string = 'Security Entity';
+  securityEntityName: string = '';
 
   constructor(
     private _FormBuilder: FormBuilder,
@@ -53,22 +58,24 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   ngOnInit(): void {
     // console.log('SecurityEntityDetailsComponent.ngOnInit.editReason', this._ProfileSvc.editReason);
     // console.log('SecurityEntityDetailsComponent.ngOnInit.editRow', this._ProfileSvc.editRow);
-    console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
+    // console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
     let mEditId = -1;
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.SecurityEntitySeqId;
     }
-    console.log('SecurityEntityDetailsComponent.ngOnInit.mEditId', mEditId);
+    // console.log('SecurityEntityDetailsComponent.ngOnInit.mEditId', mEditId);
     this._SecuritySvc.getSecurityInfo('search_security_entities').then((securityInfo) => {  // #1 Request/Handler getSecurityInfo
       // console.log('SecurityEntityDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
       return this._ProfileSvc.getSecurityEntity(mEditId);                                   // #2 Request getSecurityEntity
     }).catch((error: any) => {                                                              // #1 Error Handler getSecurityInfo
-      this._LoggingSvc.toast("Error getting security info:\r\n" + error, 'Security Entity Details:', LogLevel.Error);
+      this._LoggingSvc.toast("Error getting security info:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     }).then((profile: ISecurityEntityProfile) => {                                          // #2 Request getProfile Handler
-      console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
+      // console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
+      this._Profile = profile;
+      this.populateForm();
     }).catch((error: any) => {                                                              // #2 Error Handler
-      this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, 'Security Entity Details:', LogLevel.Error);
+      this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     });
     this.createForm();
   }
@@ -78,14 +85,22 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   }
   override createForm(): void {
     this.frmProfile = this._FormBuilder.group({
-
+      name: [this._Profile.name, [Validators.required]],
     });
   }
+
+  populateForm(): void {
+    this.securityEntityName = this._Profile.name;
+    this.createForm();
+  }
+
   override populateProfile(): void {
     // do nothing atm
   }
+
   override save(): void {
-    throw new Error('Method not implemented.');
+    this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
+    this.onClose();
   }
 
 }

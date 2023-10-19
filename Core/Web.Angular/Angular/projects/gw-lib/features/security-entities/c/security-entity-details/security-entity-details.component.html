@@ -1,7 +1,44 @@
 <form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
     <div class="mat-tab__container formSection">
         <div class="mat-tab__content formSectionContents tabHeight">
-            <p>security-entity-details works!</p>
+            <div class="table">
+                <div class="tr">
+                    <div class="td right">
+                        <span class="Form_LabelText">{{securityEntityTranslation}}:</span>
+                    </div>
+                    <div class="td left">
+                        <span id="litSecurityEntity" *ngIf="!canEnterName">{{securityEntityName}}</span>
+                        <div *ngIf="canEnterName">
+                            <textarea matInput id="txtName" formControlName="name" #name class="rounded" TextMode="MultiLine" Rows="15" style="Width: 95%;"></textarea>
+                            <mat-hint align="end">{{name.value.length}}/256</mat-hint>        
+                        </div>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+                <div class="tr">
+                    <div class="td right"></div>
+                    <div class="td left"></div>
+                </div>
+            </div>
         </div>
         <div class="buttonRow">
             <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">

@@ -5,6 +5,7 @@ export interface ISecurityEntityProfile {
     dataAccessLayerAssemblyName: string;
     dataAccessLayerNamespace: string;
     encryptionType: number;
+    name: string;
     parentSeqId: number;
     skin: string;
     style: string;
@@ -19,6 +20,7 @@ export class SecurityEntityProfile implements ISecurityEntityProfile {
     dataAccessLayerAssemblyName = '';
     dataAccessLayerNamespace = '';
     encryptionType = -1;
+    name = '';
     parentSeqId = -1;
     skin = '';
     style = '';
