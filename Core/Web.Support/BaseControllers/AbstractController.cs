@@ -23,6 +23,8 @@ public abstract class AbstractController : ControllerBase
 
     private string m_LogPriority = string.Empty;
 
+    private string m_SecurityEntityTranslation = string.Empty;
+
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
 
     // // returns the current authenticated account (null if not logged in)
@@ -48,8 +50,13 @@ public abstract class AbstractController : ControllerBase
         {
             this.m_Version = ConfigSettings.Version;
         }
+        if(this.m_SecurityEntityTranslation == string.Empty)
+        {
+            this.m_SecurityEntityTranslation = ConfigSettings.SecurityEntityTranslation;
+        }
         mRetVal.LogPriority = this.m_LogPriority;
         mRetVal.Name = this.m_ApplicationName;
+        mRetVal.SecurityEntityTranslation = this.m_SecurityEntityTranslation;
         mRetVal.Version = this.m_Version;
         return mRetVal;
     }

@@ -15,7 +15,7 @@ import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@Growthwa
 })
 export abstract class BaseSearchComponent implements OnDestroy {
 
-  private _SearchCriteriaChangedSub: Subscription = new Subscription();
+  protected _Subscription: Subscription = new Subscription();
 
   protected _TheApi: string = '';
   protected _TheComponent: any = {};
@@ -44,24 +44,28 @@ export abstract class BaseSearchComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this._SearchCriteriaChangedSub.unsubscribe();
+    this._Subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this._SearchCriteriaChangedSub = this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
-      if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-        this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
-          this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
-        }).catch((error) => {
-          console.log(error);
-        });
-      }
-    });
+    this._Subscription.add(
+      this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
+        if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
+          this._SearchSvc.getResults(this._TheApi, criteria).then((results) => {
+            this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
+          }).catch((error) => {
+            console.log(error);
+          });
+        }
+      })
+    );
+
     // Get the initial SearchCriteriaNVP from the service
     const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
     let mResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName, mAccountTableConfig);
     // Set the search criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
+    this.init();
   }
 
   private onBtnTopRight () {
@@ -78,7 +82,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
     // this._LoggingSvc.toast(mMessage, 'onRowClick', LogLevel.Info);
   }
 
-  private onRowDoubleClick (rowNumber: number): void {
+  protected onRowDoubleClick (rowNumber: number): void {
     const mDataRow: any = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
     this._TheService.editRow = mDataRow;
     this._TheService.editReason = 'EditProfile';
@@ -87,4 +91,9 @@ export abstract class BaseSearchComponent implements OnDestroy {
       this._ModalSvc.open(mModalOptions);
     }
   }
+
+  protected init(): void {
+    // this.init();
+  }
+
 }

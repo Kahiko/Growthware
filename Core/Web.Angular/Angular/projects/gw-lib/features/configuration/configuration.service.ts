@@ -19,10 +19,12 @@ export class ConfigurationService {
   private _ApiSetDBInformationURL: string = '';
   private _Loaded: boolean = false;
   private _LogPriority = new Subject<string>();
+  private _SecurityEntityTranslation = new BehaviorSubject('');
   private _Version = new Subject<string>();
 
   readonly applicationName$ = this._ApplicationName.asObservable();
   readonly logPriority$ = this._LogPriority.asObservable();
+  readonly securityEntityTranslation$ = this._SecurityEntityTranslation.asObservable();
   readonly version$ = this._Version.asObservable();
 
   constructor(
@@ -65,6 +67,7 @@ export class ConfigurationService {
           if(response.name) { this._ApplicationName.next(response.name); }
           if(response.logPriority) { this._LogPriority.next(response.logPriority); }
           if(response.version) { this._Version.next(response.version); }
+          if(response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
           this._Loaded = true;
         },
         error: (errorResponse: any) => {

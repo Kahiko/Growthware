@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@Growthware/shared/components';
+import { ConfigurationService } from '@Growthware/features/configuration';
 import { DataService } from '@Growthware/shared/services';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
@@ -41,6 +42,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 
   constructor(
     private _FormBuilder: FormBuilder,
+    private _ConfigurationSvc: ConfigurationService,
     dataSvc: DataService,
     loggingSvc: LoggingService,
     modalSvc: ModalService,
@@ -59,6 +61,11 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
     // console.log('SecurityEntityDetailsComponent.ngOnInit.editReason', this._ProfileSvc.editReason);
     // console.log('SecurityEntityDetailsComponent.ngOnInit.editRow', this._ProfileSvc.editRow);
     // console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
+    this._Subscription.add(
+      this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { 
+        this.securityEntityTranslation = val;
+      })
+    );
     let mEditId = -1;
     if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
       mEditId = this._ProfileSvc.editRow.SecurityEntitySeqId;
