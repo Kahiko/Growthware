@@ -112,7 +112,7 @@ public static class SecurityEntityUtility
     {
         BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile(), ConfigSettings.CentralManagement);
         string mEcryptedValue = string.Empty;
-        CryptoUtility.TryDecrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
+        CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
 
         m_CacheController.RemoveFromCache(s_CacheName);
