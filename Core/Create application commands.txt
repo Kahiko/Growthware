@@ -222,7 +222,7 @@ Functions:
 		ng generate interface features/function/functionProfile --type model --project gw-lib
 		ng generate interface features/function/directoryData --type model --project gw-lib
 		ng generate interface features/function/functionMenuOrder --type model --project gw-lib
-		ng generate component features/function/c/CopyFunctionSecurity --module function --style scss --skip-tests --project gw-lib
+		ng generate component features/function/c/CopyFunctionSecurity --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/function/c/functionDetails --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/function/c/Searchfunctions --module function --style scss --skip-tests --project gw-lib
 		ng generate service features/function/function --project gw-lib
