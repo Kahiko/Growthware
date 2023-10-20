@@ -76,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            <hr>
             <div class="table">
                 <div class="tr">
                     <div class="td">
@@ -94,9 +95,9 @@
                             </mat-option>
                         </mat-select>
                     </div>
-                    <div class="td">
-                        <span class="Form_LabelText">Style:</span><br />
-                        <mat-select [(value)]="selectedStyle" class="rounded" style="width: 180px;">
+                    <div *ngIf="false" class="td">
+                        <span *ngIf="false" class="Form_LabelText">Style:</span><br />
+                        <mat-select *ngIf="false" [(value)]="selectedStyle" class="rounded" style="width: 180px;">
                             <mat-option *ngFor="let item of validSkins" [value]="item.name">
                                 {{item.payLoad}}
                             </mat-option>
