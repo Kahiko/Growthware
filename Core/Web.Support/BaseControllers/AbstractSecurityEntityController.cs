@@ -10,6 +10,7 @@ using GrowthWare.Web.Support.Utilities;
 using System.Data;
 using System.Linq;
 using System.Collections.ObjectModel;
+using GrowthWare.Framework;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -110,5 +111,37 @@ public abstract class AbstractSecurityEntityController : ControllerBase
             mRetVal.Add(mItem);
         }
         return Ok(mRetVal);
+    }
+
+    [AllowAnonymous]
+    [HttpPost("SaveProfile")]
+    public ActionResult<bool> SaveProfile(MSecurityEntity securityEntity)
+    {
+        MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
+        if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+        {
+            MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+            if(securityEntity.Id == -1)
+            {
+                if(!mSecurityInfo.MayAdd)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                }
+                securityEntity.AddedBy = mRequestingProfile.Id;
+                securityEntity.AddedDate = DateTime.Now;
+            } 
+            else 
+            {
+                if(!mSecurityInfo.MayEdit)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                }
+                securityEntity.UpdatedBy = mRequestingProfile.Id;
+                securityEntity.UpdatedDate = DateTime.Now;
+            }
+            SecurityEntityUtility.SaveProfile(securityEntity);
+        }
+        return Ok(true);
     }
 }

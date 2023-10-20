@@ -16,7 +16,8 @@ export class SecurityEntityService {
   private _ApiName: string = 'GrowthwareSecurityEntity/';
   private _Api_GetSecurityEntity: string = '';
   private _Api_GetValidParents: string = '';
-  private _Api_GetValidSecurityEntities: string = '';  
+  private _Api_GetValidSecurityEntities: string = '';
+  private _Api_SaveSecurityEntity: string = '';
   
   public get addModalId(): string {
     return 'addSecurityEntity'
@@ -37,6 +38,7 @@ export class SecurityEntityService {
     this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities';
     this._Api_GetValidParents = this._GWCommon.baseURL + this._ApiName + 'GetValidParents';
     this._Api_GetSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
+    this._Api_SaveSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'SaveProfile';
   }
 
   public async getSecurityEntity(id: number): Promise<ISecurityEntityProfile> {
@@ -97,5 +99,20 @@ export class SecurityEntityService {
         // complete: () => {}
       });
     });
+  }
+
+  public async save(securityEntity: ISecurityEntityProfile): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, securityEntity).subscribe({
+        next: (response: boolean) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'saveSecurityEntity');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    })
   }
 }

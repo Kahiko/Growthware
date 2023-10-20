@@ -108,6 +108,18 @@ public static class SecurityEntityUtility
         return mBSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
+    public static int SaveProfile(MSecurityEntity profile)
+    {
+        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile(), ConfigSettings.CentralManagement);
+        string mEcryptedValue = string.Empty;
+        CryptoUtility.TryDecrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
+        profile.ConnectionString = mEcryptedValue;
+
+        m_CacheController.RemoveFromCache(s_CacheName);
+        return mBSecurityEntities.Save(profile);
+    }
+
+
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {

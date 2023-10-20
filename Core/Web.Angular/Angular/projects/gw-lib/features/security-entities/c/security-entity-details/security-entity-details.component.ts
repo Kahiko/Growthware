@@ -162,12 +162,25 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   }
 
   override populateProfile(): void {
+    this._Profile.name = this.securityEntityName;
     this._Profile.dataAccessLayer = this.selectedDal;
+    this._Profile.encryptionType = this.selectedEncryptionType;
+    this._Profile.parentSeqId = this.selectedParent;
+    // this._Profile.skin = this.selectedSkin; // legacy havent figured out how to do this yet
+    this._Profile.statusSeqId = this.selectedStatusSeqId;
+    this._Profile.style = this.selectedStyle;
+    // console.log('SecurityEntityDetailsComponent.populateProfile._Profile', this._Profile);
   }
 
   override save(): void {
-    this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
-    this.onClose();
+    this._ProfileSvc.save(this._Profile).then((response: boolean) => {
+      if(response) {
+        this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
+        this.onClose();
+      }
+    }).catch((error: any) => {
+      this._LoggingSvc.toast("Error saving " + this.securityEntityTranslation + ":\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+    });
   }
 
 }
