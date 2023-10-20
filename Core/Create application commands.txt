@@ -248,7 +248,7 @@ Security Entities:
 		Security_Entities
 		ng generate module features/SecurityEntities --project gw-lib
 		ng generate component features/security-entities/c/SearchSecurityEntities --module security-entities --style scss --skip-tests --project gw-lib
-		ng generate component features/security-entities/c/SecurityEntityDetails --module security-entities --style scss --skip-tests --project gw-lib
+		ng generate component features/security-entities/c/SecurityEntityDetails --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/security-entities/c/SelectSecurityEntity --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/security-entities/SecurityEntityProfile --type model --project gw-lib
 		ng generate interface features/security-entities/ValidSecurityEntity --type model --project gw-lib
