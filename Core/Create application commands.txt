@@ -25,11 +25,9 @@ How to create/update routes programmatically
 	https://mokkapps.de/blog/manually-lazy-load-modules-and-components-in-angular/
 	https://stackoverflow.com/questions/59236582/angular-load-routing-from-rest-service-before-initialization/61694578#61694578
 		https://long2know.com/2017/11/angular-dynamic-routes-and-application-initialization/
-		https://medium.com/codegg/pre-loading-user-specific-routes-in-angular-ce829430e1cb
 		https://www.tektutorialshub.com/angular/angular-how-to-use-app-initializer/#where-to-use-app-initializer
 
 Popup/Modal using route:
-	https://medium.com/ngconf/routing-to-angular-material-dialogs-c3fb7231c177
 
 JWT:
 	https://code-maze.com/authentication-aspnetcore-jwt-1/
