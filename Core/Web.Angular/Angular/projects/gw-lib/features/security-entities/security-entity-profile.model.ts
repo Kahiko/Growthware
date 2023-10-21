@@ -16,16 +16,16 @@ export interface ISecurityEntityProfile {
 
 export class SecurityEntityProfile implements ISecurityEntityProfile {
     connectionString = '';
-    dataAccessLayer = '';
+    dataAccessLayer = 'SQLServer';
     dataAccessLayerAssemblyName = '';
     dataAccessLayerNamespace = '';
     description = '';
-    encryptionType = -1;
+    encryptionType = 3;
     id = -1;
     name = '';
     parentSeqId = -1;
-    skin = '';
-    statusSeqId = -1;
-    style = '';
-    url = '';
+    skin = 'Default';
+    statusSeqId = 1;
+    style = 'Default';
+    url = 'no url';
 }

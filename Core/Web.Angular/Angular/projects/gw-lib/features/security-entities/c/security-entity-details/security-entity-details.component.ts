@@ -150,6 +150,39 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
     });
   }
 
+  getErrorMessage(fieldName: string) {
+    switch (fieldName) {
+      case 'connectionString':
+        if (this.controls['connectionString'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'description':
+        if (this.controls['description'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'dataAccessLayerAssemblyName':
+        if (this.controls['dataAccessLayerAssemblyName'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'dataAccessLayerNamespace':
+        if (this.controls['dataAccessLayerNamespace'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'name':
+        if (this.controls['name'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      default:
+        break;
+    }
+    return undefined;
+  }
+
   populateForm(): void {
     this.securityEntityName = this._Profile.name;
     this.selectedDal = this._Profile.dataAccessLayer;
@@ -162,13 +195,19 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   }
 
   override populateProfile(): void {
-    this._Profile.name = this.securityEntityName;
+    this._Profile.connectionString = this.controls['connectionString'].getRawValue();
+    this._Profile.description = this.controls['description'].getRawValue();
     this._Profile.dataAccessLayer = this.selectedDal;
+    this._Profile.dataAccessLayerAssemblyName = this.controls['dataAccessLayerAssemblyName'].getRawValue();
+    this._Profile.dataAccessLayerNamespace = this.controls['dataAccessLayerNamespace'].getRawValue();
     this._Profile.encryptionType = this.selectedEncryptionType;
+    // this._Profile.id // No need to set
+    this._Profile.name = this.controls['name'].getRawValue();
     this._Profile.parentSeqId = this.selectedParent;
-    // this._Profile.skin = this.selectedSkin; // legacy havent figured out how to do this yet
+    this._Profile.skin = this.selectedSkin;
     this._Profile.statusSeqId = this.selectedStatusSeqId;
-    this._Profile.style = this.selectedStyle;
+    // this._Profile.style = this.selectedStyle; // legacy havent figured out how to do this yet
+    this._Profile.url = this.controls['url'].getRawValue();
     // console.log('SecurityEntityDetailsComponent.populateProfile._Profile', this._Profile);
   }
 

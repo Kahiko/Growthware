@@ -9,8 +9,9 @@
                     <div class="td left">
                         <span id="litSecurityEntity" *ngIf="!canEnterName">{{securityEntityName}}</span>
                         <div *ngIf="canEnterName">
-                            <textarea matInput id="txtName" formControlName="name" #name class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+                            <textarea matInput id="txtName" formControlName="name" #name class="rounded" TextMode="MultiLine" Rows="1" style="Width: 95%;"></textarea>
                             <mat-hint align="end">{{name.value.length}}/256</mat-hint>
+                            <mat-error *ngIf="controls['name'].invalid && controls['name'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('name')}}</mat-error>
                         </div>
                     </div>
                 </div>
@@ -21,6 +22,7 @@
                     <div class="td left">
                         <textarea matInput id="txtDescription" formControlName="description" #description class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
                         <mat-hint align="end">{{description.value.length}}/512</mat-hint>
+                        <mat-error *ngIf="controls['description'].invalid && controls['description'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('description')}}</mat-error>
                     </div>
                 </div>
                 <div class="tr">
@@ -53,6 +55,7 @@
                         <input matInput id="txtDataAccessLayerAssemblyName" type="text" formControlName="dataAccessLayerAssemblyName" #dataAccessLayerAssemblyName class="Form_Field rounded" style="Width: 95%;">
                         <br/>
                         <mat-hint align="end">{{dataAccessLayerAssemblyName.value.length}}/50</mat-hint>
+                        <mat-error *ngIf="controls['dataAccessLayerAssemblyName'].invalid && controls['dataAccessLayerAssemblyName'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('dataAccessLayerAssemblyName')}}</mat-error>
                     </div>
                 </div>
                 <div class="tr">
@@ -63,6 +66,7 @@
                         <input matInput id="txtDataAccessLayerNamespace" type="text" formControlName="dataAccessLayerNamespace" #dataAccessLayerNamespace class="Form_Field rounded" style="Width: 95%;">
                         <br/>
                         <mat-hint align="end">{{dataAccessLayerNamespace.value.length}}/50</mat-hint>
+                        <mat-error *ngIf="controls['dataAccessLayerNamespace'].invalid && controls['dataAccessLayerNamespace'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('dataAccessLayerNamespace')}}</mat-error>
                     </div>
                 </div>
                 <div class="tr">
@@ -73,6 +77,7 @@
                     <div class="td left">
                         <textarea matInput id="txtConnectionString" formControlName="connectionString" #connectionString class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
                         <mat-hint align="end">{{connectionString.value.length}}/512</mat-hint>
+                        <mat-error *ngIf="controls['connectionString'].invalid && controls['connectionString'].touched" style="display: inline-block; padding-left: 5px;">{{getErrorMessage('connectionString')}}</mat-error>
                     </div>
                 </div>
             </div>
@@ -82,6 +87,7 @@
                     <div class="td">
                         <span class="Form_LabelText">Parent:</span><br />
                         <mat-select [(value)]="selectedParent" class="rounded" style="width: 150px;">
+                            <mat-option [value]="-1">None</mat-option>
                             <mat-option *ngFor="let item of validParents" [value]="item.key">
                                 {{item.value}}
                             </mat-option>

@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { GWCommon } from '@Growthware/common-code';
 import { IKeyValuePair } from '@Growthware/shared/models';
 import { LoggingService } from '@Growthware/features/logging';
+import { SearchService } from '@Growthware/features/search';
 // Feature
 import { IValidSecurityEntity } from './valid-security-entity.model';
 import { ISecurityEntityProfile } from './security-entity-profile.model';
@@ -34,6 +35,7 @@ export class SecurityEntityService {
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
+    private _SearchSvc: SearchService,
   ) { 
     this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities';
     this._Api_GetValidParents = this._GWCommon.baseURL + this._ApiName + 'GetValidParents';
@@ -105,6 +107,10 @@ export class SecurityEntityService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, securityEntity).subscribe({
         next: (response: boolean) => {
+          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Security_Entities"); // from SearchSecurityEntitiesComponent (this.configurationName)
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Security_Entities", mSearchCriteria);
+          }
           resolve(response);
         },
         error: (error: any) => {

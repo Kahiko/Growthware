@@ -54,6 +54,17 @@ public class MSecurityEntity : AbstractBaseModel
         /// <remarks></remarks>
         public MSecurityEntity()
         {
+            // populate with default values
+            this.ConnectionString = ConfigSettings.ConnectionString;
+            this.DataAccessLayer = ConfigSettings.DataAccessLayer;
+            this.DataAccessLayerAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
+            this.DataAccessLayerNamespace = ConfigSettings.DataAccessLayerNamespace;
+            this.EncryptionType = ConfigSettings.EncryptionType;
+            this.ParentSeqId = -1;
+            this.Skin = "Default";
+            this.StatusSeqId = 1;
+            this.Style = "Default";
+            this.Url = "no url";
         }
 
         /// <summary>
