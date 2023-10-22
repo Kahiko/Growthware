@@ -166,7 +166,8 @@ public static class FunctionUtility
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
         String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-        m_CacheController.RemoveFromCache(mCacheName);
+        m_CacheController.RemoveAll();
+        SessionController.RemoveAll();
         return mRetVal;
     }
 
