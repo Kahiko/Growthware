@@ -43,9 +43,9 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="name">The name of the value to add or update.</param>
     /// <param name="value">The value to add or update.</param>
-    private void addOrUpdateCacheOrSession(string name, object value)
+    private void addOrUpdateCacheOrSession(string name, object value, string forAccount)
     {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
             SessionController.AddToSession(name, value);
             return;
@@ -316,7 +316,7 @@ public class AccountService : IAccountService
                 mRetVal = mBAccount.GetProfile(account);
                 if (!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
-                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal);
+                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
                 }
                 else
                 {
@@ -325,12 +325,12 @@ public class AccountService : IAccountService
             }
             else
             {
-                mRetVal = getFromCacheOrSession<MAccountProfile>(mSessionNameToUse);
+                mRetVal = getFromCacheOrSession<MAccountProfile>(mSessionNameToUse, mSessionNameToUse);
                 if (mRetVal == default)
                 {
                     mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                     mRetVal = mBAccount.GetProfile(account);
-                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal);
+                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
                 }
             }
         }
@@ -384,9 +384,9 @@ public class AccountService : IAccountService
     /// <typeparam name="T">The type of the object being retrieved.</typeparam>
     /// <param name="name">The name of the value to retrieved.</param>
     /// <returns></returns>
-    private T getFromCacheOrSession<T>(string name)
+    private T getFromCacheOrSession<T>(string name, string forAccount)
     {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
             return SessionController.GetFromSession<T>(name);
         }
@@ -397,13 +397,13 @@ public class AccountService : IAccountService
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
-        string mDataName = menuType.ToString() + "_" + account + "_Menu";
-        string mJsonString = this.getStringData(account, mDataName);
-        if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
+        string mMenuName = menuType.ToString() + "_" + account + "_Menu";
+        mRetVal = getFromCacheOrSession<IList<MMenuTree>>(mMenuName, account);
+        if(mRetVal != default)
         {
-            mRetVal = JsonSerializer.Deserialize<IList<MMenuTree>>(mJsonString);
             return mRetVal;
         }
+        mRetVal = new List<MMenuTree>();
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         DataTable mDataTable = null;
         mDataTable = mBAccount.GetMenu(account, menuType);
@@ -414,8 +414,8 @@ public class AccountService : IAccountService
             {
                 mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
             }
-            this.setStringData(account, mDataName, JsonSerializer.Serialize(mRetVal));
         }
+        addOrUpdateCacheOrSession(mMenuName, mRetVal, account);
         return mRetVal;
     }
 
@@ -506,9 +506,9 @@ public class AccountService : IAccountService
     /// Removes the specified name from the cache or session.
     /// </summary>
     /// <param name="name">The name to remove from the cache or session.</param>
-    private void remmoveFromCacheOrSession(string name)
+    private void remmoveFromCacheOrSession(string name, string forAccount)
     {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
             SessionController.RemoveFromSession(name);
             return;
