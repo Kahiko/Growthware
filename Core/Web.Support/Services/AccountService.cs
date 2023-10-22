@@ -158,6 +158,11 @@ public class AccountService : IAccountService
         return mAccountProfile;
     }
 
+    /// <summary>
+    /// ChangePassword function takes in a UIChangePassword object as a parameter and returns a string.
+    /// </summary>
+    /// <param name="changePassword">UIChangePassword</param>
+    /// <returns></returns>
     public string ChangePassword(UIChangePassword changePassword)
     {
         string mRetVal = string.Empty;
@@ -180,8 +185,7 @@ public class AccountService : IAccountService
                 try
                 {
                     Save(mAccountProfile, false, false, false);
-                    string mJsonString = JsonSerializer.Serialize(mAccountProfile);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                    addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
                     mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
@@ -207,8 +211,7 @@ public class AccountService : IAccountService
                 try
                 {
                     Save(mAccountProfile, false, false, false);
-                    string mJsonString = JsonSerializer.Serialize(mAccountProfile);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(s_SessionName, mJsonString);
+                    addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
                     mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
