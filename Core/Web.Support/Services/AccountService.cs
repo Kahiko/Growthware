@@ -126,6 +126,12 @@ public class AccountService : IAccountService
         return mAccountProfile;
     }
 
+    /// <summary>
+    /// Sets the tokens for the provided account profile and IP address.
+    /// </summary>
+    /// <param name="accountProfile">The account profile to set the tokens for.</param>
+    /// <param name="ipAddress">The IP address associated with the tokens.</param>
+    /// <returns>The updated account profile with the tokens set.</returns>
     private MAccountProfile setTokens(MAccountProfile accountProfile, string ipAddress)
     {
         MAccountProfile mAccountProfile = accountProfile;
