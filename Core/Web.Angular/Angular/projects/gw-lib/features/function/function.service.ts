@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { AccountService } from '@Growthware/features/account';
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 import { SearchService } from '@Growthware/features/search';
@@ -50,6 +51,7 @@ export class FunctionService {
   }
 
   constructor(
+    private _AccountSvc: AccountService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
@@ -76,6 +78,7 @@ export class FunctionService {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.delete<any>(this._Api_Delete, mHttpOptions).subscribe({
         next: (response: boolean) => {
+          this._AccountSvc.updateMenus();
           resolve(response);
         },
         error: (error: any) => {
@@ -216,6 +219,7 @@ export class FunctionService {
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Functions", mSearchCriteria);
           }
+          this._AccountSvc.updateMenus();
           resolve(response);
         },
         error: (error: any) => {
