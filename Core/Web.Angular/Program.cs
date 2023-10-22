@@ -2,7 +2,6 @@ using GrowthWare.Framework;
 using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
-using GrowthWare.Web.Support;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -67,6 +66,7 @@ IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContext
 if(httpContextAccessor != null)
 {
     SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
+    SessionController.SetHttpContextAccessor(httpContextAccessor);
 } 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
