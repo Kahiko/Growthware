@@ -347,6 +347,15 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves the account profile based on the provided refresh token.
+    /// </summary>
+    /// <param name="token">The refresh token used to retrieve the account profile.</param>
+    /// <returns>
+    /// An instance of MAccountProfile representing the account profile associated with the refresh token.
+    /// </returns>
+    /// <exception cref="ArgumentException">Thrown when the provided token is null or empty.</exception>
+    /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private MAccountProfile getAccountByRefreshToken(string token)
     {
         if (String.IsNullOrEmpty(token))
@@ -366,6 +375,12 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves an account profile based on the given reset token.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns>An instance of MAccountProfile representing the account profile associated with the reset token.</returns>
+    /// <exception cref="ArgumentException"></exception>
     private MAccountProfile getAccountByResetToken(string token)
     {
         if (String.IsNullOrEmpty(token))
@@ -393,6 +408,13 @@ public class AccountService : IAccountService
         return this.m_CacheController.GetFromCache<T>(name);
     }
 
+    /// <summary>
+    /// Retrieves the list of menu items for a given account and menu type.
+    /// </summary>
+    /// <param name="account">The account for which to retrieve the menu items.</param>
+    /// <param name="menuType"></param>
+    /// <returns>The list of menu items for the specified account and menu type.</returns>
+    /// <exception cref="ArgumentNullException">he type of menu (e.g., Hierarchical, Horizontal, or Vertical) to retrieve the menu items for.</exception>
     public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
@@ -419,32 +441,6 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
-    private string getStringData(string account, string dataName)
-    {
-        if (account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
-        {
-            // TODO: should attempting to get from cache instead of session but the cache has not been developed yet
-            return m_HttpContextAccessor.HttpContext.Session.GetString(dataName);
-        }
-        else
-        {
-            return m_HttpContextAccessor.HttpContext.Session.GetString(dataName);
-        }
-    }
-
-    private void setStringData(string account, string dataName, string data)
-    {
-        if (account.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
-        {
-            // TODO: should attempting to put the string into cache instead of session but the cache has not been developed yet
-            m_HttpContextAccessor.HttpContext.Session.SetString(dataName, data);
-        }
-        else
-        {
-            m_HttpContextAccessor.HttpContext.Session.SetString(dataName, data);
-        }
-    }
-
     private MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
     {
         var newRefreshToken = generateRefreshToken(ipAddress);
@@ -452,6 +448,12 @@ public class AccountService : IAccountService
         return newRefreshToken;
     }
 
+    /// <summary>
+    /// Refreshes the access token and generates a new JWT token.
+    /// </summary>
+    /// <param name="token">The refresh token.</param>
+    /// <param name="ipAddress">The IP address of the user.</param>
+    /// <returns></returns>
     public AuthenticationResponse RefreshToken(string token, string ipAddress)
     {
         try
@@ -495,6 +497,11 @@ public class AccountService : IAccountService
         }
     }
 
+    /// <summary>
+    /// Checks if a refresh token exists in the system.
+    /// </summary>
+    /// <param name="refreshToken">The refresh token to check.</param>
+    /// <returns>True if the refresh token exists, otherwise false.</returns>
     public bool RefreshTokenExists(string refreshToken)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
