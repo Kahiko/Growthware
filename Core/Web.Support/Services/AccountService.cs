@@ -7,7 +7,6 @@ using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Text;
-using System.Text.Json;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using GrowthWare.BusinessLogic;
@@ -229,12 +228,21 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
+    /// <summary>
+    /// Deletes an account with the specified accountSeqId.
+    /// </summary>
+    /// <param name="accountSeqId"></param>
     public void Delete(int accountSeqId)
     {
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBAccount.Delete(accountSeqId);
     }
 
+    /// <summary>
+    /// Generates a JWT token using the given MAccountProfile.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns></returns>
     private string generateJwtToken(MAccountProfile account)
     {
         var mJwtSecurityTokenHandler = new JwtSecurityTokenHandler();
@@ -252,6 +260,10 @@ public class AccountService : IAccountService
         return mJwtSecurityTokenHandler.WriteToken(mToken);
     }
 
+    /// <summary>
+    /// Generates a reset token.
+    /// </summary>
+    /// <returns></returns>
     private string generateResetToken()
     {
         // token is a cryptographically strong random sequence of values
@@ -285,6 +297,10 @@ public class AccountService : IAccountService
         return mRetVal;
     }
 
+    /// <summary>
+    /// Generates a verification token.
+    /// </summary>
+    /// <returns></returns>
     private string generateVerificationToken()
     {
         // token is a cryptographically strong random sequence of values
@@ -526,6 +542,13 @@ public class AccountService : IAccountService
         this.m_CacheController.RemoveFromCache(name);
     }
 
+    /// <summary>
+    /// Revokes a refresh token.
+    /// </summary>
+    /// <param name="token">The refresh token to revoke.</param>
+    /// <param name="ipAddress">The IP address of the user revoking the token.</param>
+    /// <param name="reason">The reason for revoking the token. (optional)</param>
+    /// <param name="replacedByToken">The token that replaces the revoked token. (optional)</param>
     private void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
     {
         token.Revoked = DateTime.UtcNow;
@@ -534,6 +557,12 @@ public class AccountService : IAccountService
         token.ReplacedByToken = replacedByToken;
     }
 
+    /// Recursively traverses the refresh token chain and ensures all descendants are revoked.
+    /// </summary>
+    /// <param name="refreshToken">The refresh token to start the traversal from.</param>
+    /// <param name="account">The account profile associated with the refresh token.</param>
+    /// <param name="ipAddress">The IP address of the requester.</param>
+    /// <param name="reason">The reason for revoking the tokens.</param>
     private void revokeDescendantRefreshTokens(MRefreshToken refreshToken, MAccountProfile account, string ipAddress, string reason)
     {
         // recursively traverse the refresh token chain and ensure all descendants are revoked
@@ -547,6 +576,10 @@ public class AccountService : IAccountService
         }
     }
 
+    /// <summary>
+    /// Removes old refresh tokens from the given MAccountProfile.
+    /// </summary>
+    /// <param name="account"></param>
     private void removeOldRefreshTokens(MAccountProfile account)
     {
         account.RefreshTokens.RemoveAll(x =>
@@ -586,6 +619,11 @@ public class AccountService : IAccountService
         return Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mSecurityEntityProfile);
     }
 
+    /// <summary>
+    /// Verifies if a token exists in the system.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     private bool verificationTokenExists(string token)
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
