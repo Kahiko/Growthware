@@ -421,4 +421,13 @@ export class AccountService {
       });
     });
   }
+
+  /**
+   * Updates the menus by.
+   *
+   * @return {void} 
+   */
+  public updateMenus(): void {
+    this._AuthenticationResponseSubject.next(this.authenticationResponse);
+  }
 }
