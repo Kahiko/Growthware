@@ -294,6 +294,7 @@ export class AccountService {
       this._HttpClient.post<boolean>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
         next: (response: any) => {
           this._ClientChoicesSubject.next(clientChoices);
+          this.updateMenus();
           resolve(response);
         },
         error: (error: any) => {
