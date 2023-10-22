@@ -302,7 +302,7 @@ public class AccountService : IAccountService
                 mRetVal = mBAccount.GetProfile(account);
                 if (!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
-                    addToCacheOrSession(mSessionNameToUse, mRetVal);
+                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal);
                 }
                 else
                 {
@@ -316,7 +316,7 @@ public class AccountService : IAccountService
                 {
                     mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                     mRetVal = mBAccount.GetProfile(account);
-                    addToCacheOrSession(mSessionNameToUse, mRetVal);
+                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal);
                 }
             }
         }
@@ -541,7 +541,7 @@ public class AccountService : IAccountService
     }
 
 
-    private void addToCacheOrSession(string name, object value)
+    private void addOrUpdateCacheOrSession(string name, object value)
     {
         if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
