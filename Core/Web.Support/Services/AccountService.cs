@@ -24,7 +24,7 @@ public class AccountService : IAccountService
     // private MAccountProfile m_CachedAnonymousAccount = null;
     private int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private string s_AnonymousAccount = "Anonymous";
-    
+
     // TODO: Cache is now avalible and should be used for the Anonymous account
     private CacheController m_CacheController = CacheController.Instance();
 
@@ -283,12 +283,12 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = true)
+    public MAccountProfile GetAccount(String account, bool forceDb = false)
     {
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         MAccountProfile mRetVal = null;
         BAccounts mBAccount = null;
-        string mJsonString = string.Empty;
+        // string mJsonString = string.Empty;
         string mSessionNameToUse = s_SessionName;
         if (account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant())
         {
@@ -302,11 +302,7 @@ public class AccountService : IAccountService
                 mRetVal = mBAccount.GetProfile(account);
                 if (!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
-                    if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null && updateSession)
-                    {
-                        mJsonString = JsonSerializer.Serialize(mRetVal);
-                        m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
-                    }
+                    addToCacheOrSession(mSessionNameToUse, mRetVal);
                 }
                 else
                 {
@@ -315,27 +311,12 @@ public class AccountService : IAccountService
             }
             else
             {
-                if (m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null)
+                mRetVal = getFromCacheOrSession<MAccountProfile>(mSessionNameToUse);
+                if (mRetVal == default)
                 {
-                    mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(mSessionNameToUse);
-                    if (mJsonString != null && !String.IsNullOrEmpty(mJsonString))
-                    {
-                        mRetVal = JsonSerializer.Deserialize<MAccountProfile>(mJsonString);
-                    }
-                    else
-                    {
-                        mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                        mRetVal = mBAccount.GetProfile(account);
-                        mJsonString = JsonSerializer.Serialize(mRetVal);
-                        m_HttpContextAccessor.HttpContext.Session.SetString(mSessionNameToUse, mJsonString);
-                    }
-                }
-                else
-                {
-                    // there is no session so you have to get from the DB and since there is no session no need to attempt to add it to session
                     mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                     mRetVal = mBAccount.GetProfile(account);
-                    if (String.IsNullOrWhiteSpace(mRetVal.Account)) mRetVal = null;
+                    addToCacheOrSession(mSessionNameToUse, mRetVal);
                 }
             }
         }
@@ -558,4 +539,35 @@ public class AccountService : IAccountService
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         return mBAccount.RefreshTokenExists(token);
     }
+
+
+    private void addToCacheOrSession(string name, object value)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            SessionController.AddToSession(name, value);
+            return;
+        }
+        this.m_CacheController.AddToCache(name, value);
+    }
+
+    private T getFromCacheOrSession<T>(string name)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            return SessionController.GetFromSession<T>(name);
+        }
+        return this.m_CacheController.GetFromCache<T>(name);
+    }
+
+    private void remmoveFromCacheOrSession(string name)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            SessionController.RemoveFromSession(name);
+            return;
+        }
+        this.m_CacheController.RemoveFromCache(name);
+    }
+
 }

@@ -98,7 +98,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = new MAccountProfile(mRequestingProfile.Id);
         if(account != "new") // Populate from the DB
         {
-            mAccountProfile = this.m_AccountService.GetAccount(account, true, false);
+            mAccountProfile = this.m_AccountService.GetAccount(account, true);
         }
         if(mSecurityInfo.MayEdit)
         {
@@ -361,7 +361,7 @@ public abstract class AbstractAccountController : ControllerBase
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true, false);
+            MAccountProfile mExistingAccount = m_AccountService.GetAccount(accountProfile.Account, true);
             if(mExistingAccount == null) 
             {
                 mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
