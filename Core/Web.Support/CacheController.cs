@@ -24,7 +24,7 @@ public class CacheController
     private static CacheController m_CacheController;
     private string s_CacheDirectory = string.Empty;
     private static readonly Mutex m_Mutex = new Mutex();
-    private readonly IMemoryCache m_MemoryCache;
+    private IMemoryCache m_MemoryCache;
 
     /// <summary>
     /// Prevent any other instances of this class from being created
@@ -133,6 +133,7 @@ public class CacheController
             mFileInfo.Delete();
         }
         m_MemoryCache.Dispose();
+        this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
     }
 
     /// <summary>
