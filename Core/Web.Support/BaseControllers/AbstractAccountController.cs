@@ -388,6 +388,8 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.UpdatedBy = mRequestingProfile.Id;
             mExistingAccount.UpdatedDate = DateTime.Now;
             this.m_AccountService.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
+            this.m_AccountService.RemmoveFromCacheOrSession(m_AccountService.SessionName, mExistingAccount.Account);
+            this.m_AccountService.RemoveMenusFromCacheOrSession(mExistingAccount.Account);           
             mRetVal = true;
         }
         else
@@ -421,6 +423,8 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             m_ClientChoicesService.Save(mClientChoicesState);
+            this.m_AccountService.RemmoveFromCacheOrSession(m_AccountService.SessionName, accountChoices.Account);
+            this.m_AccountService.RemoveMenusFromCacheOrSession(accountChoices.Account);   
             mRetVal = true;
         }
         return mRetVal;
