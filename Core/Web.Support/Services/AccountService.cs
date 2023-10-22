@@ -31,6 +31,9 @@ public class AccountService : IAccountService
 
     private IHttpContextAccessor m_HttpContextAccessor;
 
+    public string AnonymousAccount { get { return s_AnonymousAccount; } }
+    public string SessionName { get { return s_SessionName; } }
+
     [CLSCompliant(false)]
     public AccountService(IHttpContextAccessor httpContextAccessor)
     {
@@ -446,7 +449,7 @@ public class AccountService : IAccountService
         IList<MMenuTree> mRetVal = null;
         string mMenuName = menuType.ToString() + "_" + account + "_Menu";
         mRetVal = getFromCacheOrSession<IList<MMenuTree>>(mMenuName, account);
-        if(mRetVal != default)
+        if (mRetVal != default)
         {
             return mRetVal;
         }
@@ -538,7 +541,7 @@ public class AccountService : IAccountService
     /// Removes the specified name from the cache or session.
     /// </summary>
     /// <param name="name">The name to remove from the cache or session.</param>
-    private void remmoveFromCacheOrSession(string name, string forAccount)
+    public void RemmoveFromCacheOrSession(string name, string forAccount)
     {
         if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
         {
@@ -546,6 +549,15 @@ public class AccountService : IAccountService
             return;
         }
         this.m_CacheController.RemoveFromCache(name);
+    }
+
+    public void RemoveMenusFromCacheOrSession(string forAccount)
+    {
+        foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
+        {
+            string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
+            this.RemmoveFromCacheOrSession(mMenuName, forAccount);
+        }
     }
 
     /// <summary>

@@ -9,6 +9,10 @@ namespace GrowthWare.Web.Support.Services;
 
 public interface IAccountService
 {
+
+    public string AnonymousAccount{ get; }
+    public string SessionName { get; }
+
     public MAccountProfile Authenticate(string account, string password, string ipAddress);
 
     public void Delete(int accountSeqId);
@@ -22,6 +26,10 @@ public interface IAccountService
     public AuthenticationResponse RefreshToken(string token, string ipAddress);
 
     public bool RefreshTokenExists(string refreshToken);
+
+    public void RemmoveFromCacheOrSession(string name, string forAccount);
+
+    public void RemoveMenusFromCacheOrSession(string forAccount);
 
     public MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups);
 }
