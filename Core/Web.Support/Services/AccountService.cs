@@ -39,6 +39,21 @@ public class AccountService : IAccountService
     }
 
     /// <summary>
+    /// Adds or updates a value in the cache or session.
+    /// </summary>
+    /// <param name="name">The name of the value to add or update.</param>
+    /// <param name="value">The value to add or update.</param>
+    private void addOrUpdateCacheOrSession(string name, object value)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            SessionController.AddToSession(name, value);
+            return;
+        }
+        this.m_CacheController.AddToCache(name, value);
+    }
+
+    /// <summary>
     /// Performs the authentication logic
     /// </summary>
     /// <param name="account"></param>
@@ -288,7 +303,6 @@ public class AccountService : IAccountService
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         MAccountProfile mRetVal = null;
         BAccounts mBAccount = null;
-        // string mJsonString = string.Empty;
         string mSessionNameToUse = s_SessionName;
         if (account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant())
         {
@@ -362,6 +376,21 @@ public class AccountService : IAccountService
         MAccountProfile mRetVal = null;
         mRetVal = mBAccount.GetProfileByResetToken(token);
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Retrieves an object of type `T` from either the cache or the session, based on the given `name`.
+    /// </summary>
+    /// <typeparam name="T">The type of the object being retrieved.</typeparam>
+    /// <param name="name">The name of the value to retrieved.</param>
+    /// <returns></returns>
+    private T getFromCacheOrSession<T>(string name)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            return SessionController.GetFromSession<T>(name);
+        }
+        return this.m_CacheController.GetFromCache<T>(name);
     }
 
     public IList<MMenuTree> GetMenuItems(string account, MenuType menuType)
@@ -473,6 +502,20 @@ public class AccountService : IAccountService
         return mBAccount.RefreshTokenExists(refreshToken);
     }
 
+    /// <summary>
+    /// Removes the specified name from the cache or session.
+    /// </summary>
+    /// <param name="name">The name to remove from the cache or session.</param>
+    private void remmoveFromCacheOrSession(string name)
+    {
+        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        {
+            SessionController.RemoveFromSession(name);
+            return;
+        }
+        this.m_CacheController.RemoveFromCache(name);
+    }
+
     private void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
     {
         token.Revoked = DateTime.UtcNow;
@@ -539,35 +582,4 @@ public class AccountService : IAccountService
         BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         return mBAccount.RefreshTokenExists(token);
     }
-
-
-    private void addOrUpdateCacheOrSession(string name, object value)
-    {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
-        {
-            SessionController.AddToSession(name, value);
-            return;
-        }
-        this.m_CacheController.AddToCache(name, value);
-    }
-
-    private T getFromCacheOrSession<T>(string name)
-    {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
-        {
-            return SessionController.GetFromSession<T>(name);
-        }
-        return this.m_CacheController.GetFromCache<T>(name);
-    }
-
-    private void remmoveFromCacheOrSession(string name)
-    {
-        if (name.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
-        {
-            SessionController.RemoveFromSession(name);
-            return;
-        }
-        this.m_CacheController.RemoveFromCache(name);
-    }
-
 }
