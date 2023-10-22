@@ -125,7 +125,7 @@ public class CacheController
     /// <summary>
     /// Removes all cache by deleting all the files.
     /// </summary>
-    public void RemoveAllCache()
+    public void RemoveAll()
     {
         DirectoryInfo mDirectoryInfo = new DirectoryInfo(this.s_CacheDirectory);
         foreach (FileInfo mFileInfo in mDirectoryInfo.GetFiles())
