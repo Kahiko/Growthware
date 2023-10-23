@@ -26,7 +26,10 @@ export class JwtInterceptor implements HttpInterceptor {
       this._BaseUrl + "GrowthwareFile",
       this._BaseUrl + "GrowthwareFunction",
       this._BaseUrl + "GrowthwareGroup",
+      this._BaseUrl + "GrowthwareMessage",
       this._BaseUrl + "GrowthwareRole",
+      this._BaseUrl + "GrowthwareSecurityEntity",
+      this._BaseUrl + "GrowthwareState",
       this._BaseUrl + "swagger"
     ];
     const mUrlIndex = mApiUrls.findIndex(item => request.url.toLowerCase().startsWith(item.toLowerCase()));
