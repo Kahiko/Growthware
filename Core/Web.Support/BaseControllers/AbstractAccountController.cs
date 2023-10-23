@@ -317,7 +317,8 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     { 
-        // TODO: need to remove anything from session for the current account
+        this.m_AccountService.RemoveMenusFromCacheOrSession(this.getCurrentAccount().Account);
+        SessionController.RemoveFromSession(this.m_AccountService.SessionName);
         return this.Authenticate(this.s_AnonymousAccount, "none");
     }
 
@@ -424,7 +425,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             m_ClientChoicesService.Save(mClientChoicesState);
             this.m_AccountService.RemmoveFromCacheOrSession(m_AccountService.SessionName, accountChoices.Account);
-            this.m_AccountService.RemoveMenusFromCacheOrSession(accountChoices.Account);   
+            SessionController.RemoveAll();
             mRetVal = true;
         }
         return mRetVal;
