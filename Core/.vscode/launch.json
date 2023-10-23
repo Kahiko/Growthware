@@ -160,7 +160,7 @@
             "processId": "${command:pickProcess}"
         },
         {
-            "type": "pwa-chrome",
+            "type": "chrome",
             "request": "launch",
             "name": "PWA Chrome",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
@@ -173,7 +173,7 @@
             }
         },
         {
-            "type": "pwa-msedge",
+            "type": "msedge",
             "request": "launch",
             "name": "PWA Edge",
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
