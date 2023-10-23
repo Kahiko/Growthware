@@ -40,8 +40,8 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
             context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
             context.HttpContext.Items["Function"] = mFunction;
-            if(mAccount.IsSystemAdmin) return;
-            if (mAccount == null || !mSecurityInfo.MayView)
+            // if(mAccount.IsSystemAdmin) return;
+            if (mAccount == null || (!mSecurityInfo.MayView && !mAccount.IsSystemAdmin))
             {
                 // not logged in or role not authorized
                 context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
