@@ -40,6 +40,7 @@ public class AuthorizeAttribute : Attribute, IAuthorizationFilter
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunction, mAccount);
             context.HttpContext.Items["SecurityInfo"] = mSecurityInfo;
             context.HttpContext.Items["Function"] = mFunction;
+            if(mAccount.IsSystemAdmin) return;
             if (mAccount == null || !mSecurityInfo.MayView)
             {
                 // not logged in or role not authorized
