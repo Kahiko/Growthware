@@ -22,8 +22,11 @@ public static class SessionController
     /// <param name="value">The value to be added to the session.</param>
     public static void AddToSession(string sessionName, object value)
     {
-        string mJsonString = JsonSerializer.Serialize(value);
-        m_HttpContextAccessor.HttpContext.Session.SetString(sessionName, mJsonString);
+        if(value != null)
+        {
+            string mJsonString = JsonSerializer.Serialize(value);
+            m_HttpContextAccessor.HttpContext.Session.SetString(sessionName, mJsonString);
+        }
     }
 
     /// <summary>
@@ -38,6 +41,7 @@ public static class SessionController
     public static T GetFromSession<T>(string sessionName)
     {
         string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(sessionName);
+        if (mJsonString == null) return default(T);
         try
         {
             return JsonSerializer.Deserialize<T>(mJsonString);
