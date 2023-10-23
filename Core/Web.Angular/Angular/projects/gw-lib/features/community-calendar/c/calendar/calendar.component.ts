@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit {
     const startingDateOfCalendar = this.getStartDateForCalendar(day);
 
     let dateToAdd = startingDateOfCalendar;
-    const mDayNeededForCalendar = this.getNumberOfCalendarDays(day);
+    let mDayNeededForCalendar = this.getNumberOfCalendarDays(day);
     for (var i = 0; i < mDayNeededForCalendar; i++) {
       this.calendar.push(new CalendarDay(new Date(dateToAdd)));
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
@@ -62,22 +62,26 @@ export class CalendarComponent implements OnInit {
     const mDaysFromLastMonth = mFristDay - 1 == -1 ? 6 : mFristDay - 1;
     const mDaysFromNextMonth = 6 - mLastDay == -1 ? 0 : 6 - mLastDay;
     const mDaysInMonth = new Date(mYear, mMonth + 1, 0).getDate();
-    return (mDaysFromLastMonth + mDaysInMonth + mDaysFromNextMonth) + 1;    
+    const mRetVal = (mDaysFromLastMonth + mDaysInMonth + mDaysFromNextMonth) + 1;
+    return mRetVal;
   }
 
   private getStartDateForCalendar(selectedDate: Date){
     // for the day we selected let's get the previous month last day
     const lastDayOfPreviousMonth = new Date(selectedDate.setDate(0));
+    const mLastDayOfPreviousMonthName = lastDayOfPreviousMonth.toLocaleString('en-us', {  weekday: 'long' });
 
     // start by setting the starting date of the calendar same as the last day of previous month
     let startingDateOfCalendar: Date = lastDayOfPreviousMonth;
 
     // but since we actually want to find the last Monday of previous month
     // we will start going back in days intil we encounter our last Monday of previous month
-    if (startingDateOfCalendar.getDay() != 1) {
-      do {
-        startingDateOfCalendar = new Date(startingDateOfCalendar.setDate(startingDateOfCalendar.getDate() - 1));
-      } while (startingDateOfCalendar.getDay() != 1);
+    if(mLastDayOfPreviousMonthName !== 'Sunday') {
+      if (startingDateOfCalendar.getDay() != 1) {
+        do {
+          startingDateOfCalendar = new Date(startingDateOfCalendar.setDate(startingDateOfCalendar.getDate() - 1));
+        } while (startingDateOfCalendar.getDay() != 1);
+      }  
     }
 
     return startingDateOfCalendar;
