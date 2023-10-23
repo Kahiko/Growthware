@@ -91,14 +91,34 @@ namespace GrowthWare.Framework.Models
         {
             if (groupRolePermissionSecurity == null) throw new ArgumentNullException("groupRolePermissionSecurity", "groupRolePermissionSecurity cannot be a null reference (Nothing in Visual Basic)!");
             if (profileWithDerivedRoles == null) throw new ArgumentNullException("profileWithDerivedRoles", "profileWithDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
-            // Check View Permissions
-            m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
-            // Check Add Permissions
-            m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
-            // Check Edit Permissions
-            m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
-            // Check Delete Permissions
-            m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+            // not all object will be a type of MAccountProfile
+            if(profileWithDerivedRoles is MAccountProfile)
+            {
+                /*
+                    If the account profile is a system admin, then all permissions are granted
+                    This handles the special case when the selected SecurityEntity has no parrent and
+                    roles have not been setup and the UI is needed to "Fix" secutiry.
+                */
+                if(((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
+                {
+                    m_MayView = true;
+                    m_MayAdd = true;
+                    m_MayEdit = true;
+                    m_MayDelete = true;
+                }
+            }
+            else
+            {
+                // Check View Permissions
+                m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                // Check Add Permissions
+                m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                // Check Edit Permissions
+                m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                // Check Delete Permissions
+                m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+            }
+
         }
 
         /// <summary>
