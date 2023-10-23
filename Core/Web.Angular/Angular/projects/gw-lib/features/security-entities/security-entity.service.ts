@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { AccountService } from '@Growthware/features/account';
 import { GWCommon } from '@Growthware/common-code';
 import { IKeyValuePair } from '@Growthware/shared/models';
 import { LoggingService } from '@Growthware/features/logging';
@@ -32,6 +33,7 @@ export class SecurityEntityService {
   editRow: any = {};
 
   constructor(
+    private _AccountSvc: AccountService,
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
@@ -111,6 +113,7 @@ export class SecurityEntityService {
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Security_Entities", mSearchCriteria);
           }
+          this._AccountSvc.updateMenus();
           resolve(response);
         },
         error: (error: any) => {
