@@ -1,31 +1,31 @@
+<h4>
+    Please use with great caution.<br>
+    Doing this will remove any current Function security information for the target Security Entity!!!
+</h4>
 <form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
     <div class="mat-tab__content formSectionContents tabHeight">
         <div>
-            <h4>
-                Please use with great caution.<br>
-                Doing this will remove any current Function security information for the target Security Entity!!!
-            </h4>
             <div class="table">
                 <div class="tr">
-                    <div class="td right">
-                        <span class="Form_LabelText">Source:</span>
+                    <div class="td left">
+                        <mat-form-field appearance="outline">
+                            <mat-label htmlFor="source">Choose Source</mat-label>
+                            <mat-select id="source" [(value)]="selectedSource" class="rounded">
+                                <mat-option *ngFor="let item of validSourceEntities" [value]="item.key">
+                                    {{item.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                     <div class="td left">
-                        <mat-select [(value)]="selectedSource" class="rounded" style="width: 150px;">
-                            <mat-option *ngFor="let item of validSecurityEntities" [value]="item.key">
-                                {{item.value}}
-                            </mat-option>
-                        </mat-select>
-                    </div>
-                    <div class="td right">
-                        <span class="Form_LabelText">Destination:</span>
-                    </div>
-                    <div class="td left">
-                        <mat-select [(value)]="selectedTarget" class="rounded" style="width: 150px;">
-                            <mat-option *ngFor="let item of validSecurityEntities" [value]="item.key">
-                                {{item.value}}
-                            </mat-option>
-                        </mat-select>
+                        <mat-form-field appearance="outline">
+                            <mat-label htmlFor="target">Choose Destination</mat-label>
+                            <mat-select id="target" [(value)]="selectedTarget" class="rounded">
+                                <mat-option *ngFor="let item of validTargetEntities" [value]="item.key">
+                                    {{item.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
             </div>
