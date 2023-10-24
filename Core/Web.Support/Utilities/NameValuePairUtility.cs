@@ -71,10 +71,6 @@ public static class NameValuePairUtility
             yourDataTable = mDataView.Table.Clone();
             mDataView.RowFilter = "NVP_SEQ_ID = " + nameValuePairSeqId;
             yourDataTable = mDataView.ToTable();
-            foreach (DataRowView mDataRowView in mDataView)
-            {
-                yourDataTable.ImportRow(mDataRowView.Row);
-            }
         }
         finally
         {
