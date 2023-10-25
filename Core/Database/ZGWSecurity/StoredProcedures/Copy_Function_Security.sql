@@ -31,6 +31,11 @@ BEGIN
         [RolesSecurityEntitiesSeqId] IN (SELECT [RolesSecurityEntitiesSeqId] FROM [ZGWSecurity].[Roles_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target)
     DELETE FROM [ZGWSecurity].[Roles_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target
 
+    DELETE FROM
+        [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities]
+    WHERE
+        [GroupsSecurityEntitiesSeqId] IN (SELECT [GroupsSecurityEntitiesSeqId] FROM [ZGWSecurity].[Groups_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target)
+
     DELETE FROM [ZGWSecurity].[Groups_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target
     -- Insert the new values for the target
 	INSERT INTO [ZGWSecurity].[Roles_Security_Entities]
