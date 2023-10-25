@@ -23,8 +23,14 @@ CREATE PROCEDURE [ZGWSecurity].[Copy_Function_Security]
 AS
 BEGIN
     SET NOCOUNT ON;
-    -- Delete any Roles or Groups associated with the target (rely's on FK settings to delete from subsequent tables
+    -- Delete any Roles and Groups associated with the target (rely's on FK settings to delete from subsequent tables
+	SELECT * FROM [ZGWSecurity].[Roles_Security_Entities]
+	DELETE FROM 
+        [ZGWSecurity].[Groups_Security_Entities_Roles_Security_Entities]
+    WHERE 
+        [RolesSecurityEntitiesSeqId] IN (SELECT [RolesSecurityEntitiesSeqId] FROM [ZGWSecurity].[Roles_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target)
     DELETE FROM [ZGWSecurity].[Roles_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target
+
     DELETE FROM [ZGWSecurity].[Groups_Security_Entities] WHERE [SecurityEntitySeqId] =  @p_Target
     -- Insert the new values for the target
 	INSERT INTO [ZGWSecurity].[Roles_Security_Entities]
