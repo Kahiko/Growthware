@@ -13,7 +13,7 @@ exec ZGWSystem.PrepForAngularJS @P_UseAngular;
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
-    [Version] = '1.0.0.0',
+    [Version] = '2.0.0.0',
     [Updated_By] = 3,
     [Updated_Date] = getdate()
-WHERE [Version] = '3.0.0.0'
+--WHERE [Version] = '3.0.0.0'
