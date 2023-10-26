@@ -16,6 +16,7 @@
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
     <button *ngIf="showDelete" mat-menu-item (click)="onMenuDeleteClick(item.content)">Delete</button>
+    <button *ngIf="showDownalod" mat-menu-item (click)="onMenuDownloadClick(item.content)">Download</button>
     <button *ngIf="showRename" mat-menu-item (click)="onMenuRenameClick(item.content)">Rename</button>
     <button mat-menu-item (click)="onMenuPropertiesClick(item.content)">Properties</button>
   </ng-template>

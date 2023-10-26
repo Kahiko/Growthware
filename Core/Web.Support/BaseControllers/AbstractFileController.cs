@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Security.AccessControl;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -12,6 +11,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
+using GrowthWare.Web.Support.Jwt;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -37,10 +37,10 @@ public abstract class AbstractFileController : ControllerBase
     private string calculatePath(string directory, string selectedPath)
     {
         string mRetVal = string.Empty;
-        if(selectedPath != null) { mRetVal = selectedPath; }
-        if(!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
+        if (selectedPath != null) { mRetVal = selectedPath; }
+        if (!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
         mRetVal = directory + mRetVal;
-        if(mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
+        if (mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
         return mRetVal;
     }
 
@@ -57,13 +57,13 @@ public abstract class AbstractFileController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mSecurityInfo.MayAdd)
+        if (mSecurityInfo.MayAdd)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mCurrentPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
             string mNewDirectoryName = Path.Combine(mCurrentPath, newPath);
             DirectoryInfo mDirectoryInfo = new DirectoryInfo(mNewDirectoryName);
-            if(!mDirectoryInfo.Exists) 
+            if (!mDirectoryInfo.Exists)
             {
                 mDirectoryInfo.Create();
             }
@@ -84,11 +84,11 @@ public abstract class AbstractFileController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mSecurityInfo.MayDelete)
+        if (mSecurityInfo.MayDelete)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mFullPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
-            if(mFullPath != mDirectoryProfile.Directory)
+            if (mFullPath != mDirectoryProfile.Directory)
             {
                 DirectoryInfo mDirectoryInfo = new DirectoryInfo(mFullPath);
                 recursiveDelete(mDirectoryInfo);
@@ -112,16 +112,16 @@ public abstract class AbstractFileController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mSecurityInfo.MayDelete)
+        if (mSecurityInfo.MayDelete)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mFileName = Path.Combine(this.calculatePath(mDirectoryProfile.Directory, selectedPath), fileName);
-            if(System.IO.File.Exists(mFileName))
+            if (System.IO.File.Exists(mFileName))
             {
                 System.IO.File.Delete(mFileName);
                 return Ok(true);
             }
-            return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", mFileName));
+            return StatusCode(StatusCodes.Status404NotFound, String.Format("The file '{0}' does not exists", mFileName));
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -138,19 +138,19 @@ public abstract class AbstractFileController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mSecurityInfo.MayView)
+        if (mSecurityInfo.MayView)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             DirectoryInfo mDirectoryInfo = new DirectoryInfo(mDirectoryProfile.Directory);
             try
             {
-                if(mDirectoryInfo == null || !mDirectoryInfo.Exists) 
-                { 
-                    mDirectoryInfo.Create(); 
+                if (mDirectoryInfo == null || !mDirectoryInfo.Exists)
+                {
+                    mDirectoryInfo.Create();
                 }
                 // https://stackoverflow.com/questions/24725775/converting-a-directory-structure-and-parsing-to-json-format-in-c-sharp
                 MDirectoryTree mDirTree = new MDirectoryTree(mDirectoryInfo, mDirectoryProfile.Directory);
-                string result =  mDirTree.ToJson();
+                string result = mDirTree.ToJson();
                 return Ok(mDirTree);
             }
             catch (System.Exception ex)
@@ -158,6 +158,45 @@ public abstract class AbstractFileController : ControllerBase
                 Logger.Instance().Error(ex);
                 return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
             }
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetFile")]
+    public ActionResult GetFile(string action, string selectedPath, string fileName)
+    {
+        if (action == null) throw new ArgumentNullException("action", "action cannot be a null reference (Nothing in Visual Basic)!");
+        if (selectedPath == null) throw new ArgumentNullException("selectedPath", "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
+        if (fileName == null) throw new ArgumentNullException("fileName", "fileName cannot be a null reference (Nothing in Visual Basic)!");
+
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayView)
+        {
+            MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
+            if (mDirectoryProfile != null)
+            {
+                string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+                // Code to download the file
+                string mFilePath = Path.Combine(selectedPath, fileName);
+
+                // Check if the file exists
+                if (System.IO.File.Exists(mFilePath))
+                {
+                    // Set the appropriate headers for file download
+                    Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
+                    // return File(System.IO.File.ReadAllBytes(mFilePath), "application/octet-stream");
+                    return Ok(File(System.IO.File.ReadAllBytes(mFilePath), "application/octet-stream"));
+                }
+                else
+                {
+                    // File not found
+                    return NotFound();
+                }
+            }
+            return StatusCode(StatusCodes.Status404NotFound, "Could not determine the directory information");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -174,13 +213,13 @@ public abstract class AbstractFileController : ControllerBase
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mSecurityInfo.MayView)
+        if (mSecurityInfo.MayView)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
             DirectoryInfo mDirectoryInto = new DirectoryInfo(mPath);
             List<FileInfoLight> mRetVal = new List<FileInfoLight>();
-            if(mDirectoryInto.GetFiles() != null)
+            if (mDirectoryInto.GetFiles() != null)
             {
                 foreach (FileInfo item in mDirectoryInto.GetFiles())
                 {
@@ -225,7 +264,7 @@ public abstract class AbstractFileController : ControllerBase
     /// Used for testing
     /// </note>
     [HttpGet("GetTestNaturalSort")]
-    public  ActionResult<UITestNaturalSort> GetTestNaturalSort(string sortDirection)
+    public ActionResult<UITestNaturalSort> GetTestNaturalSort(string sortDirection)
     {
         UITestNaturalSort mRetVal = new UITestNaturalSort();
         DataTable mDataTable = new DataTable("MyTable");
@@ -294,16 +333,16 @@ public abstract class AbstractFileController : ControllerBase
         mDataView.Sort = "col1 " + sortDirection;
 
         List<MColumns> mDataTableList = mDataTable.AsEnumerable().Select(item => new MColumns
-                                {
-                                    col1 = item["col1"].ToString() ,
-                                    col2 = item["col2"].ToString()
-                                }).ToList() ;
+        {
+            col1 = item["col1"].ToString(),
+            col2 = item["col2"].ToString()
+        }).ToList();
         mDataTableList.RemoveAt(0);
         List<MColumns> mDataViewList = mDataView.Table.AsEnumerable().Select(item => new MColumns
-                                {
-                                    col1 = item["col1"].ToString() ,
-                                    col2 = item["col2"].ToString()
-                                }).ToList() ;
+        {
+            col1 = item["col1"].ToString(),
+            col2 = item["col2"].ToString()
+        }).ToList();
 
         mDataViewList.RemoveAt(0);
         mRetVal.DataTable = mDataTableList;
@@ -313,6 +352,11 @@ public abstract class AbstractFileController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Merges the contents of two files.
+    /// </summary>
+    /// <param name="file1">The first file.</param>
+    /// <param name="file2">The second file.</param>
     private static void mergeFiles(string file1, string file2)
     {
         FileStream mFileStream1 = null;
@@ -361,75 +405,94 @@ public abstract class AbstractFileController : ControllerBase
         directoryInfo.Delete();
     }
 
+    /// <summary>
+    /// Renames a directory.
+    /// </summary>
+    /// <param name="action">The action.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <param name="newName">The new name.</param>
+    /// <returns>An ActionResult.</returns>
     [HttpPost("RenameDirectory")]
     public ActionResult RenameDirectory(string action, string selectedPath, string newName)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
-        if(mSecurityInfo.MayEdit)
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayEdit)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            if(mDirectoryProfile != null)
+            if (mDirectoryProfile != null)
             {
                 string[] mSelectedPathParts = selectedPath.Split(@"\");
                 string mSelectedPath = "";
-                if(mSelectedPathParts.Count() == 0) { mSelectedPathParts = selectedPath.Split(@"/"); }
-                if(mSelectedPathParts.Count() > 2)
+                if (mSelectedPathParts.Count() == 0) { mSelectedPathParts = selectedPath.Split(@"/"); }
+                if (mSelectedPathParts.Count() > 2)
                 {
-                    mSelectedPath = selectedPath.Replace(mSelectedPathParts[mSelectedPathParts.Count() -1], "");
+                    mSelectedPath = selectedPath.Replace(mSelectedPathParts[mSelectedPathParts.Count() - 1], "");
                 }
                 string mOldDirectoryName = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
                 string mNewDirectoryName = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
                 mNewDirectoryName = Path.Combine(mNewDirectoryName, newName);
-                if(mOldDirectoryName != mDirectoryProfile.Directory)
+                if (mOldDirectoryName != mDirectoryProfile.Directory)
                 {
                     Directory.Move(mOldDirectoryName, mNewDirectoryName);
                     return Ok();
                 }
                 return StatusCode(StatusCodes.Status403Forbidden, "Not allowed to change the root directory");
             }
-            return StatusCode(StatusCodes.Status404NotFound , "Could not determine the directory information");
+            return StatusCode(StatusCodes.Status404NotFound, "Could not determine the directory information");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// Renames a file.
+    /// </summary>
+    /// <param name="action">The action.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <param name="oldName">The old name.</param>
+    /// <param name="newName">The new name.</param>
+    /// <returns>An ActionResult.</returns>
     [HttpPost("RenameFile")]
     public ActionResult RenameFile(string action, string selectedPath, string oldName, string newName)
     {
         MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
-        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
-        if(mSecurityInfo.MayEdit)
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (mSecurityInfo.MayEdit)
         {
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-            if(mDirectoryProfile != null)
+            if (mDirectoryProfile != null)
             {
                 string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
                 string mOldFileName = mPath + oldName;
                 string mNewFileName = mPath + newName;
-                if(!System.IO.File.Exists(mOldFileName)) 
+                if (!System.IO.File.Exists(mOldFileName))
                 {
-                    return StatusCode(StatusCodes.Status404NotFound , String.Format("The file '{0}' does not exists", oldName));
+                    return StatusCode(StatusCodes.Status404NotFound, String.Format("The file '{0}' does not exists", oldName));
                 }
-                if(System.IO.File.Exists(mNewFileName)) 
+                if (System.IO.File.Exists(mNewFileName))
                 {
-                    return StatusCode(StatusCodes.Status409Conflict , String.Format("The file '{0}' already exists please delete it first", oldName));
+                    return StatusCode(StatusCodes.Status409Conflict, String.Format("The file '{0}' already exists please delete it first", oldName));
                 }
                 System.IO.File.Move(mOldFileName, mNewFileName);
                 return Ok();
             }
-            return StatusCode(StatusCodes.Status404NotFound , "Could not determine the directory information");
+            return StatusCode(StatusCodes.Status404NotFound, "Could not determine the directory information");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// Uploads a file.
+    /// </summary>
+    /// <returns>An IActionResult representing the result of the upload.</returns>
     [HttpPost("UploadFile")]
     public async Task<IActionResult> UploadFile()
     {
         string mAction = Request.Form["action"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
         string mSelectedPath = Request.Form["selectedPath"].ToString(); // Set in file-manager.service.ts - multiPartFileUpload or singleFileUpload
-        if(string.IsNullOrEmpty(mAction)) { return StatusCode(StatusCodes.Status500InternalServerError, "Missing the 'action' property."); }
+        if (string.IsNullOrEmpty(mAction)) { return StatusCode(StatusCodes.Status500InternalServerError, "Missing the 'action' property."); }
         if (mSelectedPath.Contains(":"))
         {
             return StatusCode(StatusCodes.Status500InternalServerError, "The current path parameter can not contain a colon.");
@@ -438,11 +501,11 @@ public abstract class AbstractFileController : ControllerBase
         {
             MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
-            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile); 
-            if(mSecurityInfo.MayAdd)
+            MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+            if (mSecurityInfo.MayAdd)
             {
                 MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
-                if(mDirectoryProfile != null)
+                if (mDirectoryProfile != null)
                 {
                     UploadResponse mRetVal = new UploadResponse();
                     mRetVal.IsSuccess = false;
@@ -450,7 +513,7 @@ public abstract class AbstractFileController : ControllerBase
                     // create the upload directory if one doest exist
                     DirectoryInfo mDirectoryInfo = new DirectoryInfo(mUploadDirectory);
                     string mCompleted = Request.Form["completed"];
-                    if(!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
+                    if (!mDirectoryInfo.Exists) { mDirectoryInfo.Create(); }
                     if (Request.Form.Files.Count() > 0)
                     {
                         // attempt the upload
@@ -470,7 +533,7 @@ public abstract class AbstractFileController : ControllerBase
                         string mFileName = Request.Form["fileName"];
                         // get file that start with the file name
                         FileInfo[] mSortedFiles = mDirectoryInfo.GetFiles().Where(f => f.Name.StartsWith(mFileName)).OrderBy(x => x.Name).ToArray();
-                        if(mSortedFiles != null && mSortedFiles.Count() > 0)
+                        if (mSortedFiles != null && mSortedFiles.Count() > 0)
                         {
                             string mNewFileName = mSortedFiles[0].FullName.Replace(m_TempUploadDirectory, ""); // The original intended directory
                             mNewFileName = mNewFileName.Replace("_UploadNumber_1", ""); // strip off the _UploadNumber_1
@@ -479,7 +542,7 @@ public abstract class AbstractFileController : ControllerBase
                             {
                                 mergeFiles(mNewFileName, mSortedFiles[i].FullName);
                             }
-                            if(mDirectoryInfo.GetFiles().Count() == 0) 
+                            if (mDirectoryInfo.GetFiles().Count() == 0)
                             {
                                 mDirectoryInfo.Delete();
                             }
@@ -488,7 +551,7 @@ public abstract class AbstractFileController : ControllerBase
                             return Ok(mRetVal);
                         }
                     }
-                    if(mRetVal.IsSuccess)
+                    if (mRetVal.IsSuccess)
                     {
                         return Ok(mRetVal);
                     }
@@ -496,7 +559,7 @@ public abstract class AbstractFileController : ControllerBase
                 }
                 return StatusCode(StatusCodes.Status500InternalServerError, "UploadFile is not intended to create directories.");
             }
-            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");            
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         catch (System.Exception ex)
         {

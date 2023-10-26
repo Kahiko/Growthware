@@ -37,6 +37,7 @@ export class FileListComponent implements OnInit {
   menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates 
   selectedFile!: IFileInfoLight;
   showDelete: boolean = false;
+  showDownalod: boolean = false;
   showRename: boolean = false;
 
   @Input() numberOfColumns: string = '4';
@@ -66,6 +67,7 @@ export class FileListComponent implements OnInit {
     this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
     this.id = this._Action + "_Files";
     this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
+      this.showDownalod = response.mayView;
       this.showDelete = response.mayDelete;
       this.showRename = response.mayEdit;
     }).catch((error)=>{
@@ -136,6 +138,12 @@ export class FileListComponent implements OnInit {
       this._ModalSvc.close(this._ModalId_Delete);
     }
     this._ModalSvc.open(mModalOptions);
+  }
+
+  onMenuDownloadClick(item: IFileInfoLight) {
+    // console.log('item', item);
+    this.selectedFile = item;
+    this._FileManagerSvc.getFile(this._Action, this._FileManagerSvc.SelectedPath, item.name);
   }
 
   onMenuRenameClick(item: IFileInfoLight) {

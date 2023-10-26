@@ -4,7 +4,7 @@ import { Observable, Subject } from 'rxjs';
 // Library
 import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
-import { LoggingService } from '@Growthware/features/logging';
+import { LogLevel, LoggingService } from '@Growthware/features/logging';
 // Feature
 import { IDirectoryTree } from './directory-tree.model';
 import { IFileInfoLight } from './file-info-light.model';
@@ -18,6 +18,7 @@ import { IUploadStatus, UploadStatus } from './upload-status.model';
 export class FileManagerService {
   private _Api: string = '';
   private _Api_GetDirectories: string = '';
+  private _Api_GetFile: string = '';
   private _Api_GetFiles: string = '';
   private _Api_CreateDirectory: string = '';
   private _Api_DeleteDirectory: string = '';
@@ -55,6 +56,7 @@ export class FileManagerService {
   ) { 
     this._Api = this._GWCommon.baseURL + 'GrowthwareFile/';
     this._Api_GetDirectories = this._Api + 'GetDirectories';
+    this._Api_GetFile = this._Api + 'GetFile';
     this._Api_GetFiles = this._Api + 'GetFiles';
     this._Api_CreateDirectory = this._Api + 'CreateDirectory';
     this._Api_DeleteDirectory = this._Api + 'DeleteDirectory';
@@ -190,8 +192,9 @@ export class FileManagerService {
    * @returns {Promise<boolean>} A promise that resolves to a boolean indicating the success of the operation.
    */
   public async getDirectories(action: string, path: string, forControl: string): Promise<boolean> {
-    let mQueryParameter: HttpParams = new HttpParams().append('action', action);
-    mQueryParameter = mQueryParameter.append('selectedPath', path);
+    const mQueryParameter: HttpParams = new HttpParams()
+      .append('action', action)
+      .append('selectedPath', path);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -214,6 +217,36 @@ export class FileManagerService {
         },
         // complete: () => {}
       });
+    });
+  }
+
+  public getFile(action: string, selectedPath: string, fileName: string) {
+    const mQueryParameter: HttpParams = new HttpParams().append('action', action)
+      .append('selectedPath', selectedPath)
+      .append('fileName', fileName);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    this._HttpClient.get(this._Api_GetFile, mHttpOptions).subscribe({
+      next: (response: any) => {
+        var mBlob: Blob = new Blob([response]);
+        var url = window.URL.createObjectURL(mBlob);
+        var link = document.createElement("a");
+        link.setAttribute("href", url);
+        link.setAttribute("download", fileName);
+        link.style.display = "none";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
+      error: (error: any) => {
+        this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFile');
+        this._LoggingSvc.toast('Error downloading file "' + fileName + '"!', 'File Manager', LogLevel.Error);
+      },
+      // complete: () => {}
     });
   }
 
