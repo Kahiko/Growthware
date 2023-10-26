@@ -70,12 +70,15 @@ export class CopyFunctionSecurityComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup): void {
-    this._FunctionSvc.copyFunctionSecurity(this.selectedSource, this.selectedTarget).then((response: boolean) => {
-      if (response) {
-        this._LoggingSvc.toast('Function Security has been copied', 'Copy Function:', LogLevel.Success);
-      } else {
-        this._LoggingSvc.toast('Function Security could not be copied!', 'Copy Function:', LogLevel.Error);
-      }
-    })
+    if(this.selectedSource != this.selectedTarget) {
+      this._FunctionSvc.copyFunctionSecurity(this.selectedSource, this.selectedTarget).then((response: boolean) => {
+        if (response) {
+          this._LoggingSvc.toast('Function Security has been copied', 'Copy Function:', LogLevel.Success);
+        } else {
+          this._LoggingSvc.toast('Function Security could not be copied!', 'Copy Function:', LogLevel.Error);
+        }
+      })
+    }
+    this._LoggingSvc.toast('The source can not be equal to the target!', 'Copy Function:', LogLevel.Error);
   }
 }
