@@ -16,6 +16,7 @@ export class FunctionService {
   private _FunctionSeqId: number = -1;
   private _ApiName: string = 'GrowthwareFunction/';
   private _Api_AvalibleParents: string = '';
+  private _Api_CopyFunctionSecurity: string = '';
   private _Api_Delete: string = '';
   private _Api_GetFunction: string = '';
   private _Api_GetFunctionOrder: string = '';
@@ -58,6 +59,7 @@ export class FunctionService {
     private _SearchSvc: SearchService,
   ) {
     this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
+    this._Api_CopyFunctionSecurity = this._GWCommon.baseURL + this._ApiName + 'CopyFunctionSecurity';
     this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteFunction';
     this._Api_GetFunction = this._GWCommon.baseURL + this._ApiName + 'GetFunction';
     this._Api_GetFunctionOrder = this._GWCommon.baseURL + this._ApiName + 'GetFunctionOrder';
@@ -65,6 +67,29 @@ export class FunctionService {
     this._Api_NavigationTypes = this._GWCommon.baseURL + this._ApiName + 'GetNavigationTypes';
     this._Api_LinkBehaviors = this._GWCommon.baseURL + this._ApiName + 'GetLinkBehaviors';
     this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save';
+  }
+
+  public async copyFunctionSecurity(source: number, target: number): Promise<boolean> {
+    const mQueryParameter: HttpParams = new HttpParams().append('source', source).append('target', target);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<any>((resolve, reject) => {
+      this._HttpClient.post<any>(this._Api_CopyFunctionSecurity, null, mHttpOptions).subscribe({
+        next: (response: boolean) => {
+          this._AccountSvc.updateMenus();
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'FunctionService', 'copyFunctionSecurity');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
   }
 
   public async deleteFunction(functionSeqId: number): Promise<boolean> {

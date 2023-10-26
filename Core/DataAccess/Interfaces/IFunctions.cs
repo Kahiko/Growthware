@@ -21,6 +21,13 @@ namespace GrowthWare.DataAccess.Interfaces
         int SecurityEntitySeqId { get; set; }
 
         /// <summary>
+        /// Copies the function security from the source to the target deleteing the target in the process
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="target"></param>
+        void CopyFunctionSecurity(int source, int target, int added_Updated_By);
+
+        /// <summary>
         /// Deletes a funciton
         /// </summary>
         void Delete(int functionSeqId);

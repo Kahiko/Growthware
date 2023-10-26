@@ -195,6 +195,11 @@ namespace GrowthWare.BusinessLogic
 
         }
 
+        public void CopyFunctionSecurity(int source, int target, int added_Updated_By)
+        {
+            if (DatabaseIsOnline()) m_DFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
+        }
+
         /// <summary>
         /// Deletes the specified function seq id.
         /// </summary>

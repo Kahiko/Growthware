@@ -17,6 +17,15 @@ public static class FunctionUtility
     private static CacheController m_CacheController = CacheController.Instance();
     private static List<UIKeyValuePair> m_FunctionTypes = null;
 
+    public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)
+    {
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
+        String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";        
+        m_CacheController.RemoveFromCache(mCacheName);
+    }
+
     /// <summary>
     /// Deletes a function from the database.
     /// </summary>

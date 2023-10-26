@@ -14,7 +14,7 @@ import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { IKeyValuePair, KeyValuePair } from '@Growthware/shared/models';
 import { SecurityEntityService } from '@Growthware/features/security-entities';
 // Feature
-
+import { FunctionService } from '../../function.service';
 
 @Component({
   selector: 'gw-lib-copy-function-security',
@@ -44,6 +44,7 @@ export class CopyFunctionSecurityComponent implements OnInit {
 
   constructor(
     private _FormBuilder: FormBuilder,
+    private _FunctionSvc: FunctionService,
     private _LoggingSvc: LoggingService,
     private _SecuritySvc: SecurityEntityService
   ) { 
@@ -69,6 +70,12 @@ export class CopyFunctionSecurityComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup): void {
-    this._LoggingSvc.toast('Save is not working yet', 'Copy Function:', LogLevel.Error);
+    this._FunctionSvc.copyFunctionSecurity(this.selectedSource, this.selectedTarget).then((response: boolean) => {
+      if (response) {
+        this._LoggingSvc.toast('Function Security has been copied', 'Copy Function:', LogLevel.Success);
+      } else {
+        this._LoggingSvc.toast('Function Security could not be copied!', 'Copy Function:', LogLevel.Error);
+      }
+    })
   }
 }

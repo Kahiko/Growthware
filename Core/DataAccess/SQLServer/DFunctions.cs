@@ -122,7 +122,18 @@ namespace GrowthWare.DataAccess.SQLServer
         }
         #endregion
 
-        #region Public methods
+#region Public methods
+        void IFunction.CopyFunctionSecurity(int source, int target, int added_Updated_By)
+        {
+            SqlParameter[] mParameters = 
+			{
+			  new SqlParameter("@P_Source", source),
+			  new SqlParameter("@P_Target", target),
+			  new SqlParameter("@P_Added_Updated_By", added_Updated_By)
+			};
+            String mStoreProcedure = "ZGWSecurity.Copy_Function_Security";
+            base.ExecuteNonQuery(mStoreProcedure, mParameters);            
+        }
         void IFunction.Delete(int functionSeqId)
         {
             SqlParameter[] mParameters = 

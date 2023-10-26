@@ -17,6 +17,21 @@ public abstract class AbstractFunctionController : ControllerBase
     private Logger m_Logger = Logger.Instance();
 
     [AllowAnonymous]
+    [HttpPost("CopyFunctionSecurity")]
+    public ActionResult<bool> CopyFunctionSecurity(int source, int target)
+    {
+        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        // Special case where you must be an account with IsSystemAdmin = true
+        // Copying the function security is risky b/c the process will delete all existing security for the target
+        if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
+        {
+            FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
+            return Ok(true);
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
     [HttpDelete("DeleteFunction")]
     public ActionResult<bool> Delete(int functionSeqId)
     {
