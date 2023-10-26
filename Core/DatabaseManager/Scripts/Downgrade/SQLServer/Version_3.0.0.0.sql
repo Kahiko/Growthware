@@ -395,6 +395,13 @@ RETURN 0
 GO
 
 /****** End:  StoredProcedure [ZGWSecurity].[Get_Function_Sort] ******/
+/****** Start:  StoredProcedure [ZGWSecurity].[Copy_Function_Security]    Script Date: 9/24/2023 5:49:41 AM ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('ZGWSecurity.Copy_Function_Security'))
+   exec('DROP PROCEDURE [ZGWSecurity].[Copy_Function_Security]')
+GO
+SET ANSI_NULLS ON
+GO
+/****** End:  StoredProcedure [ZGWSecurity].[Copy_Function_Security] ******/
 
 /****** Start:  UserDefinedFunction [ZGWSecurity].[udfSplit] Script Date: 10/21/2021 4:13:21 PM ******/
 IF EXISTS (
@@ -505,4 +512,4 @@ UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '2.0.0.0',
     [Updated_By] = null,
     [Updated_Date] = null
-WHERE [Version] = '3.0.0.0'
+--WHERE [Version] = '3.0.0.0'
