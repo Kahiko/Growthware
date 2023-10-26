@@ -143,6 +143,7 @@ export class FileListComponent implements OnInit {
   onMenuDownloadClick(item: IFileInfoLight) {
     // console.log('item', item);
     this.selectedFile = item;
+    // TODO: this._FileManagerSvc.SelectedPath is not being set correctly b/c it's blank at this point
     this._FileManagerSvc.getFile(this._Action, this._FileManagerSvc.SelectedPath, item.name);
   }
 
