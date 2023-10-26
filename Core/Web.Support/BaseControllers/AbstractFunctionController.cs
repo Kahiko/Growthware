@@ -25,8 +25,11 @@ public abstract class AbstractFunctionController : ControllerBase
         // Copying the function security is risky b/c the process will delete all existing security for the target
         if(mRequestingProfile != null && mRequestingProfile.IsSystemAdmin)
         {
-            FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
-            return Ok(true);
+            if(source != target && target != 1) {
+                FunctionUtility.CopyFunctionSecurity(source, target, mRequestingProfile.Id);
+                return Ok(true);
+            }
+            return StatusCode(StatusCodes.Status400BadRequest, "The function cannot be copied to itself or the target can not be 'System'");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
