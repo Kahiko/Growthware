@@ -44,6 +44,13 @@ public abstract class AbstractFileController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Creates a new directory.
+    /// </summary>
+    /// <param name="action">The action to perform.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <param name="newPath">The new path.</param>
+    /// <returns>An ActionResult indicating the success or failure of the operation.</returns>
     [HttpPost("CreateDirectory")]
     public ActionResult CreateDirectory(string action, string selectedPath, string newPath)
     {
@@ -65,6 +72,12 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// Deletes a directory.
+    /// </summary>
+    /// <param name="action">The action.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <returns>An ActionResult<bool> indicating the success of the operation.</returns>
     [HttpDelete("DeleteDirectory")]
     public ActionResult<bool> DeleteDirectory(string action, string selectedPath)
     {
@@ -149,7 +162,12 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
-
+    /// <summary>
+    /// Retrieves a list of files from the specified directory.
+    /// </summary>
+    /// <param name="action">The action to perform.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <returns>An ActionResult containing a list of FileInfoLight objects.</returns>
     [HttpGet("GetFiles")]
     public ActionResult<List<FileInfoLight>> GetFiles(string action, string selectedPath)
     {
@@ -174,6 +192,11 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// This method is an HTTP POST endpoint that gets the line count of files in a directory.
+    /// </summary>
+    /// <param name="countInfo">An object of type UICountInfo that contains information about the directory, files to include, and files to exclude.</param>
+    /// <returns>An ActionResult of type string that contains the line count of the files in the directory.</returns>
     [HttpPost("GetLineCount")]
     public ActionResult<string> GetLineCount(UICountInfo countInfo)
     {
@@ -193,6 +216,14 @@ public abstract class AbstractFileController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Retrieves result for natural sorting.
+    /// </summary>
+    /// <param name="sortDirection">The direction to sort the data in.</param>
+    /// <returns>An ActionResult containing the test result.</returns>
+    /// <note>
+    /// Used for testing
+    /// </note>
     [HttpGet("GetTestNaturalSort")]
     public  ActionResult<UITestNaturalSort> GetTestNaturalSort(string sortDirection)
     {
