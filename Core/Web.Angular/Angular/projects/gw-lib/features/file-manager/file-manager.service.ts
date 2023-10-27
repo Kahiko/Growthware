@@ -587,6 +587,7 @@ export class FileManagerService {
    */
   uploadFile(action: string, file: File, chunkSize: number = 29696000)
   {
+    // TODO: When you upload an .ISO file it seems to get "crupted" and can not be mounted.  Need to investigate this.
     const mTotalNumberOfUploads: number = this.getTotalNumberOfUploads(file.size, chunkSize);
     if (mTotalNumberOfUploads > 1) {
       const mMultiPartFileUpload: IMultiPartFileUploadParameters = new MultiPartFileUploadParameters(
