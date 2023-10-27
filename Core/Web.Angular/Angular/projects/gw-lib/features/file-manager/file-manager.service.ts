@@ -220,27 +220,36 @@ export class FileManagerService {
     });
   }
 
+  /**
+   * @description Retrieves a file from the server.
+   *
+   * @param {string} action - The action to determine the upload directory and enforce security on the server.
+   * @param {string} selectedPath - The selected path.
+   * @param {string} fileName - The name of the file.
+   */
   public getFile(action: string, selectedPath: string, fileName: string) {
+    let mSelectedPath = selectedPath;
+    if(this._GWCommon.isNullOrEmpty(selectedPath)) {
+      mSelectedPath = '//';
+    }
     const mQueryParameter: HttpParams = new HttpParams().append('action', action)
-      .append('selectedPath', selectedPath)
+      .append('selectedPath', mSelectedPath)
       .append('fileName', fileName);
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
+      responseType: 'blob' as 'json',
       params: mQueryParameter,
     };
-    this._HttpClient.get(this._Api_GetFile, mHttpOptions).subscribe({
+    this._HttpClient.get<any>(this._Api_GetFile, mHttpOptions).subscribe({
       next: (response: any) => {
-        var mBlob: Blob = new Blob([response]);
-        var url = window.URL.createObjectURL(mBlob);
-        var link = document.createElement("a");
-        link.setAttribute("href", url);
-        link.setAttribute("download", fileName);
-        link.style.display = "none";
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
+        const mBlob: Blob = new Blob([response]);
+        const mLink = document.createElement("a");
+        mLink.href = window.URL.createObjectURL(mBlob);
+        mLink.download = fileName;
+        mLink.click();
+        window.URL.revokeObjectURL(mLink.href);
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFile');

@@ -12,6 +12,7 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Web.Support.Jwt;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -19,14 +20,8 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractFileController : ControllerBase
 {
     string m_TempUploadDirectory = "tempUpload" + Path.DirectorySeparatorChar;
-    private static Logger m_Logger = Logger.Instance();
 
-    // [Authorize("GetFiles")]
-    // [HttpGet("GetFiles")]
-    // public ActionResult<FileInfo[]> GetFiles()
-    // {
-    //     return Ok();
-    // }
+    private static Logger m_Logger = Logger.Instance();
 
     /// <summary>
     /// Calculates the path given the directory and the selected (or desired) path
@@ -127,6 +122,22 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves the content type of a file based on its full file name.
+    /// </summary>
+    /// <param name="fullFileName">The full file name of the file including the path.</param>
+    /// <returns>The content type of the file.</returns>
+    private string getContentType(string fullFileName)
+    {
+        FileExtensionContentTypeProvider mFileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
+        string mContentType;
+        if(!mFileExtensionContentTypeProvider.TryGetContentType(fullFileName, out mContentType))
+        {
+            mContentType = "application/octet-stream";
+        }
+        return mContentType;
+    }
+
+    /// <summary>
     /// Returns hierarchical representing a directory structure
     /// </summary>
     /// <param name="action">Used to determine both security and the root path</param>
@@ -162,9 +173,16 @@ public abstract class AbstractFileController : ControllerBase
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
+    /// <summary>
+    /// Retrieves a file from the specified path and returns it as an IActionResult.
+    /// </summary>
+    /// <param name="action">The action of the function.</param>
+    /// <param name="selectedPath">The selected path.</param>
+    /// <param name="fileName">The name of the file to retrieve.</param>
+    /// <returns>An IActionResult representing the retrieved file.</returns>
     [AllowAnonymous]
     [HttpGet("GetFile")]
-    public ActionResult GetFile(string action, string selectedPath, string fileName)
+    public IActionResult GetFile(string action, string selectedPath, string fileName)
     {
         if (action == null) throw new ArgumentNullException("action", "action cannot be a null reference (Nothing in Visual Basic)!");
         if (selectedPath == null) throw new ArgumentNullException("selectedPath", "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
@@ -175,20 +193,20 @@ public abstract class AbstractFileController : ControllerBase
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
         {
+            // get the directory information from the directory profile
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
                 string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
-                // Code to download the file
-                string mFilePath = Path.Combine(selectedPath, fileName);
+                string mFilePath = Path.Combine(mPath, fileName);
 
                 // Check if the file exists
                 if (System.IO.File.Exists(mFilePath))
                 {
-                    // Set the appropriate headers for file download
-                    Response.Headers.Add("Content-Disposition", "attachment; filename=" + fileName);
-                    // return File(System.IO.File.ReadAllBytes(mFilePath), "application/octet-stream");
-                    return Ok(File(System.IO.File.ReadAllBytes(mFilePath), "application/octet-stream"));
+                    // Set the appropriate content type based on the file extension
+                    string mContentType = getContentType(mFilePath);
+                    FileStream stream = System.IO.File.OpenRead(mFilePath);
+                    return File(stream, mContentType, fileName);
                 }
                 else
                 {
