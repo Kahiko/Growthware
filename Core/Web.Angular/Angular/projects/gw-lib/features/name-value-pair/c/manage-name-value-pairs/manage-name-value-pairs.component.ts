@@ -21,7 +21,6 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
   private _Api_Name: string = 'GrowthwareNameValuePair/';
   private _Api_Search: string = '';
-  
 
   configurationName = 'SearchNameValuePairs';
   
