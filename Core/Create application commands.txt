@@ -253,10 +253,12 @@ Security Entities:
 		ng generate service features/security-entities/SecurityEntity --skip-tests --project gw-lib
 NameValuePairs:
 		ng generate module features/NameValuePair --project gw-lib
-		ng generate interface features/name-value-pair/NameValuePairProfile --type model --project gw-lib
-		ng generate component features/name-value-pair/c/NameValuePairDetails --module name-value-pair --style scss --skip-tests --project gw-lib
-		ng generate component features/name-value-pair/c/SearchNameValuePairs --module name-value-pair --style scss --skip-tests --project gw-lib
-		ng generate component features/name-value-pair/c/SearchNameValuePairDetails --module name-value-pair --style scss --skip-tests --project gw-lib
+		ng generate interface features/name-value-pair/NameValuePairParentProfile --type model --project gw-lib
+		ng generate interface features/name-value-pair/NameValuePairChildProfile --type model --project gw-lib
+		ng generate component features/name-value-pair/c/NameValuePairParentDetail --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/name-value-pair/c/NameValuePairChildDetail --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/name-value-pair/c/ManageValuePairDetails --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/name-value-pair/c/ManageNameValuePairs --module name-value-pair --style scss --skip-tests --project gw-lib
 		ng generate service features/name-value-pair/name-value-pairs --skip-tests --project gw-lib
 States:
 		search_states
