@@ -27,6 +27,7 @@ export class JwtInterceptor implements HttpInterceptor {
       this._BaseUrl + "GrowthwareFunction",
       this._BaseUrl + "GrowthwareGroup",
       this._BaseUrl + "GrowthwareMessage",
+      this._BaseUrl + "GrowthwareNameValuePair",
       this._BaseUrl + "GrowthwareRole",
       this._BaseUrl + "GrowthwareSecurityEntity",
       this._BaseUrl + "GrowthwareState",
