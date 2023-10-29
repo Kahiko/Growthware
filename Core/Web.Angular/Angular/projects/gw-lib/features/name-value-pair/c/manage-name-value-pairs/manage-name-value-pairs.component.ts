@@ -33,7 +33,7 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   private _NameValuePairDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
 
   configurationName = 'SearchNameValuePairs';
-  _nameValuePairWindowSize: WindowSize = new WindowSize(800, 600);
+  _nameValuePairWindowSize: WindowSize = new WindowSize(400, 600);
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
   readonly nameValuePairData$ = this._NameValuePairDataSubject.asObservable();
