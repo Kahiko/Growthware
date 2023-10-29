@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
@@ -7,6 +10,13 @@ import { CalendarDay } from '../../calendar-day.model';
 
 @Component({
   selector: 'gw-DayOfWeek',
+  standalone: true,
+  imports: [
+    CommonModule,
+
+    MatButtonModule,
+
+  ],
   templateUrl: './day-of-week.component.html',
   styleUrls: ['./day-of-week.component.css']
 })

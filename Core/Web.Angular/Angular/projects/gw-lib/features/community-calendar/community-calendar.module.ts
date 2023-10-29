@@ -10,13 +10,14 @@ import { DayOfWeekComponent } from './c/day-of-week/day-of-week.component';
 @NgModule({
   declarations: [
     CalendarComponent,
-    DayOfWeekComponent,
   ],
   imports: [
     CommonModule,
     
     MatButtonModule,
     MatIconModule,
+
+    DayOfWeekComponent,
   ]
 })
 export class CommunityCalendarModule { }
