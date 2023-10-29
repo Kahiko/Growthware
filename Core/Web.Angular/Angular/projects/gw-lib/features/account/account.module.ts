@@ -12,15 +12,12 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
 import { DynamicTableModule } from '@Growthware/features/dynamic-table';
-import { PickListModule } from '@Growthware/features/pick-list';
-import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
-import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 
 @NgModule({
   declarations: [
-    AccountDetailsComponent,
+    // AccountDetailsComponent,
     SearchAccountsComponent,
   ],
   imports: [
@@ -37,9 +34,7 @@ import { SearchAccountsComponent } from './c/search-accounts/search-accounts.com
     MatSelectModule,
     MatTabsModule,
 
-    PickListModule,
     ReactiveFormsModule,
-    SnakeListModule,
   ]
 })
 export class AccountModule { }

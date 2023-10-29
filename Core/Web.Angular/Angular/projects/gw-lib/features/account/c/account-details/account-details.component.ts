@@ -1,7 +1,18 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatSelectModule } from '@angular/material/select';
 // Library
 import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
@@ -9,14 +20,34 @@ import { GroupService } from '@Growthware/features/group';
 import { ISecurityInfo } from '@Growthware/features/security';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
+import { PickListModule } from '@Growthware/features/pick-list';
 import { RoleService } from '@Growthware/features/role';
 import { SecurityService } from '@Growthware/features/security';
+import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature
 import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'gw-lib-account-details',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+
+    PickListModule,
+    SnakeListModule,
+  ],
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss']
 })
