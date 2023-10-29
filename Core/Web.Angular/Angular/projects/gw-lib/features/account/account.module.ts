@@ -14,18 +14,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { DynamicTableModule } from '@Growthware/features/dynamic-table';
 import { PickListModule } from '@Growthware/features/pick-list';
 import { SnakeListModule } from '@Growthware/features/snake-list';
-// Feature Components
+// Feature
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
-// Feature Modules
-import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
-
 
 @NgModule({
   declarations: [
     AccountDetailsComponent,
     SearchAccountsComponent,
-    UpdateAnonymousProfileComponent,
   ],
   imports: [
     CommonModule,
