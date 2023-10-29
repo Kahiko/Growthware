@@ -16,7 +16,6 @@ import { PickListModule } from '@Growthware/features/pick-list';
 import { SnakeListModule } from '@Growthware/features/snake-list';
 // Feature Components
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
-import { ChangePasswordComponent } from './c/change-password/change-password.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
 // Feature Modules
 import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
@@ -25,7 +24,6 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
 @NgModule({
   declarations: [
     AccountDetailsComponent,
-    ChangePasswordComponent,
     SearchAccountsComponent,
     UpdateAnonymousProfileComponent,
   ],

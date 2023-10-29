@@ -1,7 +1,12 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 // Feature
@@ -9,6 +14,15 @@ import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'gw-lib-change-password',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    MatButtonModule,
+    MatIconModule,
+  ],
   templateUrl: './change-password.component.html',
   styleUrls: ['./change-password.component.scss']
 })
