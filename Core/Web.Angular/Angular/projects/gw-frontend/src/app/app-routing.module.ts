@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'search_roles', loadChildren: () => import('./features/roles/roles.module').then(m => m.RolesModule), canActivate: [AuthGuard]  },
   { path: 'search_messages', loadChildren: () => import('./features/messages/messages.module').then(m => m.MessagesModule), canActivate: [AuthGuard]  },
   { path: 'sys_admin', loadChildren: () => import('./features/sys-admin/sys-admin.module').then(m => m.SysAdminModule)  },
-  { path: 'communitycalendar', loadChildren: () => import('./features/community-calendar/community-calendar.module').then(m => m.CommunityCalendarModule)  },
+  { path: 'communitycalendar', loadComponent: () => import('@Growthware/features/community-calendar').then(m => m.CalendarComponent)  },
   { path: 'addeditworkflow', loadChildren: () => import('./features/workflows/workflows.module').then(m => m.WorkflowsModule)  },
   { path: 'setloglevel', loadChildren: () => import('./features/logging/logging.module').then(m => m.LoggingModule)  },
 ];

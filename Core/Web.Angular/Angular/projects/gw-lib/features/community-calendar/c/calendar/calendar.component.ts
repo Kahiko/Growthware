@@ -1,11 +1,25 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 // Feature
 import { CalendarDay } from '../../calendar-day.model';
+import { DayOfWeekComponent } from '../day-of-week/day-of-week.component';
 
 @Component({
   selector: 'gw-lib-calendar',
+  standalone: true,
+  imports: [
+    CommonModule,
+
+    MatButtonModule,
+    MatIconModule,
+
+    DayOfWeekComponent,
+  ],
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
