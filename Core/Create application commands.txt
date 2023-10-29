@@ -192,7 +192,7 @@ Accounts:
 		ng generate component features/account/c/SearchAccounts --module account.module --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/login --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/ChangePassword --module account.module --style scss --skip-tests --project gw-lib
-		ng generate component features/account/c/Logout --module account.module --skip-tests --project gw-lib
+		ng generate component features/account/c/Logout --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/SelectPreferences --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/UpdateAnonymousProfile --module account.module --skip-tests --project gw-lib
 		ng generate service features/account/account --project gw-lib

@@ -18,7 +18,7 @@ import { SnakeListModule } from '@Growthware/features/snake-list';
 import { AccountDetailsComponent } from './c/account-details/account-details.component';
 import { ChangePasswordComponent } from './c/change-password/change-password.component';
 import { SearchAccountsComponent } from './c/search-accounts/search-accounts.component';
-import { LogoutComponent } from './c/logout/logout.component';
+// import { LogoutComponent } from './c/logout/logout.component';
 // Feature Modules
 import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
 
@@ -28,7 +28,7 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
     AccountDetailsComponent,
     ChangePasswordComponent,
     SearchAccountsComponent,
-    LogoutComponent,
+    // LogoutComponent,
     UpdateAnonymousProfileComponent,
   ],
   imports: [
