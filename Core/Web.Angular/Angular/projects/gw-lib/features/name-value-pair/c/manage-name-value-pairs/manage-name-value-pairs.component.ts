@@ -8,6 +8,7 @@ import { LoggingService } from '@Growthware/features/logging';
 import { INameValuePair } from '@Growthware/shared/models';
 // Feature
 // import { NameValuePairService } from '../../name-value-pairs.service';
+import { INvpParentProfile } from '../../name-value-pair-parent-profile.model';
 
 @Component({
   selector: 'gw-lib-manage-name-value-pairs',
@@ -20,17 +21,20 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
 
   private _Subscription: Subscription = new Subscription();
   private _Api_Name: string = 'GrowthwareNameValuePair/';
-  private _Api_Search: string = '';
+  private _Api_Nvp_Search: string = '';
+  private _Api_Nvp_Details_Search: string = '';
 
   configurationName = 'SearchNameValuePairs';
+
+  nameValuePairs: INvpParentProfile[] = [];
   
   constructor(
-    // private _DataSvc: DataService,
     private _SearchSvc: SearchService,
     private _LoggingSvc: LoggingService
-    // private _NameValuePairsSvc: NameValuePairService
   ){
-    this._Api_Search = this._Api_Name + 'SearchNameValuePairs';
+    this._Api_Nvp_Search = this._Api_Name + 'SearchNameValuePairs';
+    this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
+    console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
   }
 
   ngOnDestroy(): void {
@@ -41,8 +45,9 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
     this._Subscription.add(
       this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
         if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
-          this._SearchSvc.getResults(this._Api_Search, criteria).then((results) => {
-            console.log('ManageNameValuePairsComponent.ngOnInit.data', results.payLoad.data);
+          this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
+            this.nameValuePairs = results.payLoad.data;
+            console.log('ManageNameValuePairsComponent.ngOnInit.nameValuePairs', this.nameValuePairs);
             // this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
           }).catch((error) => {
             this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
