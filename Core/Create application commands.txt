@@ -105,14 +105,14 @@ Toast: (converted to stand alone)
 		ng generate component features/toast/c/toaster --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/toast/ToastMessage --type model --project gw-lib
 		ng generate service features/toast/toast --project gw-lib --skip-tests
-Logging:
+Logging: (converted to stand alone)
 		ng generate module features/logging --project gw-lib
 		ng generate enum features/logging/LogDestination --type enum --project gw-lib
 		ng generate enum features/logging/LogLevel --type enum --project gw-lib
 		ng generate interface features/logging/LogOptions --type model --project gw-lib
 		ng generate interface features/logging/LoggingProfile --type model --project gw-lib
 		ng generate service features/logging/logging --skip-tests --project gw-lib
-		ng generate component features/logging/c/SetLogLevel --module logging --style scss --skip-tests --project gw-lib
+		ng generate component features/logging/c/SetLogLevel --standalone --style scss --skip-tests --project gw-lib
 Modal:
 			https://garage.sekrab.com/posts/homemade-dialog-service-in-angular
 			https://stackblitz.com/edit/angular-program-component?file=src%2Flib%2FDialog%2Fservice.ts

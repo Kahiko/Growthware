@@ -1,9 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 // Feature
 import { LoggingService } from '../../logging.service';
 
 @Component({
   selector: 'gw-lib-set-log-level',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+
+    MatButtonModule,
+    MatSelectModule,
+  ],
   templateUrl: './set-log-level.component.html',
   styleUrls: ['./set-log-level.component.scss']
 })
