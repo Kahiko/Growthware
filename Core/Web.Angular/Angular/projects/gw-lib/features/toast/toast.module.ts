@@ -6,12 +6,13 @@ import { ToasterComponent } from './c/toaster/toaster.component';
 
 @NgModule({
   declarations: [
-    ToastComponent,
     ToasterComponent
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ToastComponent,
+
   ],
   exports: [
     ToasterComponent

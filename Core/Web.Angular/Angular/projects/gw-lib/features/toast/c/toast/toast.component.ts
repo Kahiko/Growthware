@@ -1,9 +1,15 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { EventType } from '../../event-type.enum';
+import { CommonModule } from '@angular/common';
 import { fromEvent, take } from 'rxjs';
+// Feature
+import { EventType } from '../../event-type.enum';
 
 @Component({
   selector: 'gw-lib-toast',
+  standalone: true,
+  imports: [
+    CommonModule
+  ],
   templateUrl: './toast.component.html',
   styleUrls: ['./toast.component.scss']
 })
