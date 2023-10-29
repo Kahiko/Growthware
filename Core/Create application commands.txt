@@ -98,11 +98,11 @@ Shared Models
 Shared Components:
 		ng generate component shared/components/baseSearch --inline-template --inline-style --skip-import --skip-tests --project gw-lib
 		ng generate component shared/components/baseDetail --inline-template --inline-style --skip-import --skip-tests --project gw-lib
-Toast:
+Toast: (converted to stand alone)
 		ng generate module features/toast --project gw-lib
 		ng generate enum features/toast/EventType --type enum --project gw-lib
 		ng generate component features/toast/c/toast --standalone --style scss --skip-tests --project gw-lib
-		ng generate component features/toast/c/toaster --module toast --style scss --project gw-lib --skip-tests
+		ng generate component features/toast/c/toaster --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/toast/ToastMessage --type model --project gw-lib
 		ng generate service features/toast/toast --project gw-lib --skip-tests
 Logging:

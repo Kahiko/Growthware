@@ -11,7 +11,8 @@ import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b
 import { AccountService } from '@Growthware/features/account';
 import { LoaderService } from '@Growthware/features/loader';
 // Library Modules
-import { ToastModule } from '@Growthware/features/toast';
+// import { ToastModule } from '@Growthware/features/toast';
+import { ToasterComponent } from '@Growthware/features/toast';
 import { ModalModule } from '@Growthware/features/modal';
 // Library Misc
 // import { AuthGuard } from '@Growthware/common-code';
@@ -35,7 +36,7 @@ export function tokenGetter() {
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -54,7 +55,8 @@ export function tokenGetter() {
     ModalModule,
     ReactiveFormsModule,
     SystemModule,
-    ToastModule,
+    // ToastModule,
+    ToasterComponent,
   ],
   providers: [
     { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },

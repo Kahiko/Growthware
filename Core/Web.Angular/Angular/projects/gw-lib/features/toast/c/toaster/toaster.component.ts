@@ -1,13 +1,23 @@
-import { OnDestroy, OnInit } from '@angular/core';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
-import { IToastMessage, ToastMessage } from '../../toast-message.model';
-import { ToastService } from '../../toast.service';
 // Library Imports
 import { GWCommon } from '@Growthware/common-code';
+// Features
+import { IToastMessage, ToastMessage } from '../../toast-message.model';
+import { ToastService } from '../../toast.service';
+import { ToastComponent } from '../toast/toast.component';
 
 @Component({
   selector: 'gw-lib-toaster',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+
+    ToastComponent,
+  ],
   templateUrl: './toaster.component.html',
   styleUrls: ['./toaster.component.scss'],
 })
