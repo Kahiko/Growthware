@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 // import { DataService } from '@Growthware/shared/services';
 import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@Growthware/features/search';
-import { LoggingService } from '@Growthware/features/logging';
+import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
 import { INameValuePair } from '@Growthware/shared/models';
 // Feature
@@ -59,10 +59,7 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
       this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
         if(criteria.name.trim().toLowerCase() === this.configurationName.trim().toLowerCase()) {
           this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
-            // this.nameValuePairData = results.payLoad.data;
             this._NameValuePairDataSubject.next(results.payLoad.data);
-            console.log('ManageNameValuePairsComponent.ngOnInit.nameValuePairData$', this._NameValuePairDataSubject.getValue());
-            // this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
           }).catch((error) => {
             this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
           });
@@ -74,9 +71,8 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
     const mSearchColumns: Array<string> = ['Static_Name', 'Display', 'Description'];
     const mSortColumns: Array<string> = ['Display'];
     const mNumberOfRecords: number = 10;
-    const mSearchCriteria: ISearchCriteria = new SearchCriteria(mSearchColumns,mSortColumns,mNumberOfRecords,'',1);
+    const mSearchCriteria: ISearchCriteria = new SearchCriteria(mSearchColumns, mSortColumns, mNumberOfRecords, '', 1);
     const mResults: SearchCriteriaNVP = new SearchCriteriaNVP(this.configurationName, mSearchCriteria);
-    console.log('ManageNameValuePairsComponent.ngOnInit.mResults', mResults);
     // Set the search criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
   }
@@ -94,7 +90,7 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   }
 
   onRowClickNvpParent(rowIndex: number): void {
-    console.log('onRowClickNvpParent.row', this._NameValuePairDataSubject.getValue()[rowIndex]);
+    this._LoggingSvc.toast('Not yet implemented', 'Name Value Pairs', LogLevel.Debug);
   }
 
 }
