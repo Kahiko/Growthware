@@ -190,7 +190,7 @@ Accounts:
 		ng generate interface features/account/selectedableAction --type model --project gw-lib
 		ng generate component features/account/c/accountDetails --module account.module --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/SearchAccounts --module account.module --style scss --skip-tests --project gw-lib
-		ng generate component features/account/c/login --module account.module --style scss --skip-tests --project gw-lib
+		ng generate component features/account/c/login --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/ChangePassword --module account.module --style scss --skip-tests --project gw-lib
 		ng generate component features/account/c/Logout --module account.module --skip-tests --project gw-lib
 		ng generate component features/account/c/SelectPreferences --standalone --style scss --skip-tests --project gw-lib

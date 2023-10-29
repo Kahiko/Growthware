@@ -1,11 +1,29 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+// Library
 // import { LoggingService } from '@Growthware/features/logging';
 import { ModalService } from '@Growthware/features/modal';
+// Feature
 import { AccountService } from '../../account.service';
 
 @Component({
   selector: 'gw-lib-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
