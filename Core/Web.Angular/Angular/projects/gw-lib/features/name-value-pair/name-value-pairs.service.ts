@@ -4,11 +4,17 @@ import { Injectable } from '@angular/core';
 // import { GWCommon } from '@Growthware/common-code';
 // import { LoggingService } from '@Growthware/features/logging';
 // import { SearchService } from '@Growthware/features/search';
+// Feature
+import { INvpParentProfile } from './name-value-pair-parent-profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NameValuePairService {
+
+  public nameNVPParrentRow!: INvpParentProfile;
+  public modalIdNVPParrent: string = 'AddOrEditNVPParrent';
+
 
   constructor(
     // private _GWCommon: GWCommon,
@@ -16,6 +22,10 @@ export class NameValuePairService {
     // private _LoggingSvc: LoggingService,
     // private _SearchSvc: SearchService
   ) { }
+
+  setNameNVPParrentRow(row: INvpParentProfile): void {
+    this.nameNVPParrentRow = JSON.parse(JSON.stringify(row));
+  }
 
 
 }

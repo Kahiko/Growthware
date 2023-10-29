@@ -1,10 +1,44 @@
 <div class="table" style="max-width: 800px;">
     <div class="tr">
-        <div class="td" style="text-align: center; width: 250px;">Name Value Pair</div>
+        <div class="td" style="text-align: center; width: 250px;">
+            Name Value Pairs
+            <button
+                mat-raised-button
+                color="primary"
+                id="btn_AddNvpParent"
+                name="btn_AddNvpParent"
+                (click) = "onAddClickNvpParent()"
+            >Add
+            </button>        
+        </div>
         <div class="td" style="text-align: center;">Details</div>
     </div>
     <div class="tr">
-        <div class="right td" style="padding-right: 5px;">Name Value Pair</div>
+        <div class="right td" style="padding-right: 5px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Edit</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of nameValuePairData$ | async; let rowIndex=index;">
+                        <td>
+                            <i (click)="onEditClickNvpParent(rowIndex)" id="editIcon_NvpParent" class="Form_Button_Icon material-icons" style="cursor: pointer;">edit</i>
+                        </td>
+                        <td (click)="onRowClickNvpParent(rowIndex)">
+                            {{row['Display']}}
+                        </td>
+                        <td (click)="onRowClickNvpParent(rowIndex)">
+                            {{row['Description']}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="td" style="width: 30px; max-width: 30px;"></div>
         <div class="left td" style="padding-left: 5px;">Name Value Pair Child</div>
     </div>
 </div>
