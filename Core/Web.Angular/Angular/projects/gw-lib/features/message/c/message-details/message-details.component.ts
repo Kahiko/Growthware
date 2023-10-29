@@ -56,13 +56,13 @@ export class MessageDetailsComponent implements OnInit {
       return this._MessageSvc.getProfile(mIdToGet);                   // #2 Request
     }).catch((error: any) => {                                        // Request #1 Error Handler
       this._LoggingSvc.toast("Error getting the security :\r\n" + error, 'Message Details:', LogLevel.Error);
-    }).then((response) => {                          // Request 2 Handler
+    }).then((response) => {                                           // Request 2 Handler
       if(response) {
         this._Profile = response;
       }
       this.populateForm();
       this.applySecurity();
-    }).catch((error) => {                                                       // Request #2 Error Handler
+    }).catch((error) => {                                              // Request #2 Error Handler
       this._LoggingSvc.toast("Error getting the message :\r\n" + error, 'Message Details:', LogLevel.Error);
     })
   }

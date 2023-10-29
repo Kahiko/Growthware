@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 // Library
 import { BaseSearchComponent } from '@Growthware/shared/components';
-import { DynamicTableService } from '@Growthware/features/dynamic-table';
+import { DynamicTableModule, DynamicTableService } from '@Growthware/features/dynamic-table';
 import { DataService } from '@Growthware/shared/services';
 import { SearchService } from '@Growthware/features/search';
 import { ModalService, WindowSize } from '@Growthware/features/modal';
@@ -11,6 +12,11 @@ import { MessageService } from '../../message.service';
 
 @Component({
   selector: 'gw-lib-search-messages',
+  standalone: true,
+  imports: [
+    CommonModule,
+    DynamicTableModule,
+  ],
   templateUrl: './search-messages.component.html',
   styleUrls: ['./search-messages.component.scss']
 })
