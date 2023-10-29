@@ -30,7 +30,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = m_AccountService.Authenticate(account, password, ipAddress());
         if (mAccountProfile == null)
         {
-            HttpContext.Items["AccountProfile"] = m_AccountService.GetAccount("Anonymous");
+            m_AccountService.GetAccount("Anonymous", false, true);
             return StatusCode(403, "Incorrect account or password");
         }
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
@@ -68,7 +68,7 @@ public abstract class AbstractAccountController : ControllerBase
         // application and deleting it here could be quite an issue
 
         if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId =  HttpContext.Session.GetInt32("EditId");
@@ -90,7 +90,7 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
         
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         HttpContext.Session.Remove("EditId");
@@ -111,7 +111,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("EditProfile")]
     public ActionResult<MAccountProfile> EditProfile(string account)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if(mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
@@ -148,15 +148,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns>MAccountProfile</returns>
     private MAccountProfile getCurrentAccount()
     {
-        MAccountProfile mRetVal = (MAccountProfile)HttpContext.Items["AccountProfile"];
-        if(mRetVal == null) 
-        {
-            mRetVal = m_AccountService.GetAccount("Anonymous");
-            if(mRetVal == null)
-            {
-                mRetVal = m_AccountService.GetAccount("Anonymous", true);
-            }
-        }
+        MAccountProfile mRetVal = m_AccountService.GetCurrentAccount();
         mRetVal.Password = string.Empty;
         return mRetVal;
     }
@@ -188,7 +180,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         List<MNavLink> mRootNavLinks = new List<MNavLink>();
         MNavLink mNavLink;
-        MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mAccountProfile = getCurrentAccount();
         if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
         {
             mNavLink = new MNavLink("home", "home", LinkBehaviors.Internal, "Home");
@@ -241,7 +233,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
-        MAccountProfile mAccountProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mAccountProfile = getCurrentAccount();
         IList<MMenuTree> mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
         if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
@@ -312,7 +304,6 @@ public abstract class AbstractAccountController : ControllerBase
             return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 
-
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     { 
@@ -347,12 +338,13 @@ public abstract class AbstractAccountController : ControllerBase
         }
     }
 
+    [AllowAnonymous]
     [HttpPost("SaveAccount")]
     public ActionResult<bool> SaveAccount(MAccountProfile accountProfile)
     {
         // requesting profile same as 
         bool mRetVal = false;
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);

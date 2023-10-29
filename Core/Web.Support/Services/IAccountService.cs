@@ -19,7 +19,9 @@ public interface IAccountService
 
     public string ChangePassword(UIChangePassword changePassword);
 
-    public MAccountProfile GetAccount(String account, bool forceDb = false);
+    public MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = false);
+
+    public MAccountProfile GetCurrentAccount();
 
     public IList<MMenuTree> GetMenuItems(string account, MenuType menuType);
 

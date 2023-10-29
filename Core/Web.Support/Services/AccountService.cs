@@ -83,7 +83,7 @@ public class AccountService : IAccountService
             mForceDb = false;
             mAuthenticated = true;
         }
-        MAccountProfile mAccountProfile = GetAccount(mRequestedAccount, mForceDb);
+        MAccountProfile mAccountProfile = GetAccount(mRequestedAccount, mForceDb, !mIsAnonymous);
         if (!mIsAnonymous)
         {
             if (!this.m_InvalidStatus.Contains(mAccountProfile.Status))
@@ -326,7 +326,7 @@ public class AccountService : IAccountService
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public MAccountProfile GetAccount(String account, bool forceDb = false)
+    public MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = false)
     {
         if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
         MAccountProfile mRetVal = null;
@@ -344,7 +344,10 @@ public class AccountService : IAccountService
                 mRetVal = mBAccount.GetProfile(account);
                 if (!String.IsNullOrWhiteSpace(mRetVal.Account))
                 {
-                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
+                    if(updateSession)
+                    {
+                        addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
+                    }
                 }
                 else
                 {
@@ -418,6 +421,20 @@ public class AccountService : IAccountService
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         mRetVal = mBAccount.GetProfileByResetToken(token);
+        return mRetVal;
+    }
+
+    public MAccountProfile GetCurrentAccount()
+    {
+        MAccountProfile mRetVal = SessionController.GetFromSession<MAccountProfile>(s_SessionName);
+        if(mRetVal == null) 
+        {
+            mRetVal = GetAccount("Anonymous");
+            if(mRetVal == null)
+            {
+                mRetVal = GetAccount("Anonymous", true);
+            }
+        }
         return mRetVal;
     }
 
