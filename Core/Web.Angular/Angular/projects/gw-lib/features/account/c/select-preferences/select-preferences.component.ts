@@ -1,6 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+// Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
@@ -11,6 +18,17 @@ import { ISelectedableAction } from '../../selectedable-action.model';
 
 @Component({
   selector: 'gw-lib-select-preferences',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
+    
+    MatButtonModule,
+    MatIconModule,
+    MatRadioModule,
+    MatSelectModule,
+  ],
   templateUrl: './select-preferences.component.html',
   styleUrls: ['./select-preferences.component.scss']
 })

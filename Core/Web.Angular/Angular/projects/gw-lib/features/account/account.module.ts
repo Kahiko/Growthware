@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { MatRadioModule } from '@angular/material/radio';
+// import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSelectModule } from '@angular/material/select';
 // Library
@@ -22,7 +22,7 @@ import { SearchAccountsComponent } from './c/search-accounts/search-accounts.com
 import { LoginComponent } from './c/login/login.component';
 import { LogoutComponent } from './c/logout/logout.component';
 // Feature Modules
-import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
+// import { SelectPreferencesComponent } from './c/select-preferences/select-preferences.component';
 import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/update-anonymous-profile.component';
 
 
@@ -33,7 +33,7 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
     SearchAccountsComponent,
     LoginComponent,
     LogoutComponent,
-    SelectPreferencesComponent,
+    // SelectPreferencesComponent,
     UpdateAnonymousProfileComponent,
   ],
   imports: [
@@ -47,7 +47,7 @@ import { UpdateAnonymousProfileComponent } from './c/update-anonymous-profile/up
     MatGridListModule,
     MatIconModule,
     MatInputModule,
-    MatRadioModule,
+    // MatRadioModule,
     MatSelectModule,
     MatTabsModule,
 
