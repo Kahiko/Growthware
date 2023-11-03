@@ -1,2 +1,5 @@
-export interface NameValuePairChildProfile {
+export interface INvpChildProfile {
+}
+
+export class NameValuePairChildProfile implements INvpChildProfile {
 }

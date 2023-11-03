@@ -9,6 +9,7 @@ import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
 import { INameValuePair } from '@Growthware/shared/models';
 // Feature
+import { INvpChildProfile } from '../../name-value-pair-child-profile.model';
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
 import { NameValuePairParentDetailComponent } from '../name-value-pair-parent-detail/name-value-pair-parent-detail.component';
@@ -33,15 +34,17 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   private _Api_Name: string = 'GrowthwareNameValuePair/';
   private _Api_Nvp_Search: string = '';
   private _Api_Nvp_Details_Search: string = '';
-  private _NameValuePairDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
+  private _NameValuePairParentDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
+  private _NameValuePairChildDataSubject = new BehaviorSubject<INvpChildProfile[]>([]);
 
-  detailsConfigurationName = 'SearchNVPDetails';
+  childConfigurationName = 'SearchNVPDetails';
 
   parentConfigurationName = 'SearchNameValuePairs';
   _nameValuePairWindowSize: WindowSize = new WindowSize(400, 600);
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
-  readonly nameValuePairData$ = this._NameValuePairDataSubject.asObservable();
+  readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
+  readonly nameValuePairChildData$ = this._NameValuePairChildDataSubject.asObservable();
   nameValuePairModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
   
   constructor(
@@ -65,7 +68,18 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
       this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
         if(criteria.name.trim().toLowerCase() === this.parentConfigurationName.trim().toLowerCase()) {
           this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
-            this._NameValuePairDataSubject.next(results.payLoad.data);
+            this._NameValuePairParentDataSubject.next(results.payLoad.data);
+          }).catch((error) => {
+            this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
+          });
+        }
+      })
+    );
+    this._Subscription.add(
+      this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
+        if(criteria.name.trim().toLowerCase() === this.childConfigurationName.trim().toLowerCase()) {
+          this._SearchSvc.getResults(this._Api_Nvp_Details_Search, criteria).then((results) => {
+            this._NameValuePairChildDataSubject.next(results.payLoad.data);
           }).catch((error) => {
             this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
           });
@@ -73,8 +87,8 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
       })
     );
     // Get the initial child SearchCriteriaNVP from the service
-    const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.detailsConfigurationName);
-    let mChildResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.detailsConfigurationName, mAccountTableConfig);
+    const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
+    let mChildResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mAccountTableConfig);
     // Set the search child criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mChildResults.name, mChildResults.payLoad);
 
@@ -89,19 +103,20 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   }
 
   onAddClickNvpParent(): void {
-    this._NameValuePairService.setNameNVPParrentRow(new NvpParentProfile());
+    this._NameValuePairService.setNameValuePairParrentRow(new NvpParentProfile());
     this.nameValuePairModalOptions.headerText = 'Add NVP';
     this._ModalSvc.open(this.nameValuePairModalOptions);    
   }
 
   onEditClickNvpParent(rowIndex: number): void {
-    this._NameValuePairService.setNameNVPParrentRow(this._NameValuePairDataSubject.getValue()[rowIndex]);
+    this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
     this.nameValuePairModalOptions.headerText = 'Edit NVP';
     this._ModalSvc.open(this.nameValuePairModalOptions);
   }
 
   onRowClickNvpParent(rowIndex: number): void {
-    this._LoggingSvc.toast('Not yet implemented', 'Name Value Pairs', LogLevel.Debug);
+    this._NameValuePairService.setNameValuePairDetailRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
+    this._LoggingSvc.toast('Supposed to set search criteria and get results', 'Name Value Pairs', LogLevel.Debug);
   }
 
 }

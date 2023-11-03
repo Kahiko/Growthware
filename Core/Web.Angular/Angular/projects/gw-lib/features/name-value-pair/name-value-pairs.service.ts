@@ -6,14 +6,17 @@ import { Injectable } from '@angular/core';
 // import { SearchService } from '@Growthware/features/search';
 // Feature
 import { INvpParentProfile } from './name-value-pair-parent-profile.model';
+import { INvpChildProfile } from './name-value-pair-child-profile.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class NameValuePairService {
 
-  public nameNVPParrentRow!: INvpParentProfile;
+  public nvpParentRow!: INvpParentProfile;
+  public nvpChildRow!: INvpChildProfile;
   public modalIdNVPParrent: string = 'AddOrEditNVPParrent';
+  public modalIdNVPChild: string = 'AddOrEditNVPChild';
 
 
   constructor(
@@ -23,9 +26,12 @@ export class NameValuePairService {
     // private _SearchSvc: SearchService
   ) { }
 
-  setNameNVPParrentRow(row: INvpParentProfile): void {
-    this.nameNVPParrentRow = JSON.parse(JSON.stringify(row));
+  setNameValuePairParrentRow(row: INvpParentProfile): void {
+    this.nvpParentRow = JSON.parse(JSON.stringify(row));
   }
 
+  setNameValuePairDetailRow(row: INvpChildProfile): void {
+    this.nvpChildRow = JSON.parse(JSON.stringify(row));
+  }
 
 }

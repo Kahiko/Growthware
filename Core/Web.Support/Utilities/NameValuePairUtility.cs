@@ -37,6 +37,20 @@ public static class NameValuePairUtility
     }
 
     /// <summary>
+    /// Method to get all children for a name value pair (Security is ignored).  Created to support add/edit name value pair details
+    /// </summary>
+    /// <param name="nameValuePairSeqId"></param>
+    /// <returns></returns>
+    public static string GetAllChildrenForParent(int nameValuePairSeqId)
+    {
+        DataTable mDataTable = new DataTable();
+        getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
+        DataHelper.AddTotalRowsField(ref mDataTable);
+        string mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
+        return mRetVal;
+    }
+
+    /// <summary>
     /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behaviors
     /// </summary>
     /// <returns>List<UIKeyValuePair></returns>

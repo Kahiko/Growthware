@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let row of nameValuePairData$ | async; let rowIndex=index;">
+                    <tr *ngFor="let row of nameValuePairParentData$ | async; let rowIndex=index;">
                         <td>
                             <i (click)="onEditClickNvpParent(rowIndex)" id="editIcon_NvpParent" class="Form_Button_Icon material-icons" style="cursor: pointer;">edit</i>
                         </td>
@@ -39,7 +39,7 @@
             </table>
         </div>
         <div class="left td" style="padding-left: 5px;">
-            <gw-lib-dynamic-table configurationName={{detailsConfigurationName}} #dynamicTable></gw-lib-dynamic-table>
+            <gw-lib-dynamic-table configurationName={{childConfigurationName}} #dynamicTable></gw-lib-dynamic-table>
         </div>
     </div>
 </div>
