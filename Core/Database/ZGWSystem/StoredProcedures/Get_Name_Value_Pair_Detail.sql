@@ -31,7 +31,7 @@ AS
 	SET @V_TableName = (SELECT [Schema_Name] + '.' + Static_Name
 FROM ZGWSystem.Name_Value_Pairs
 WHERE NVPSeqId = @P_NVPSeqId)
-	SET @V_Statement = 'SELECT NVPSeqId as NVP_SEQ_ID, [Schema_Name], Static_Name, Display, Description, StatusSeqId as STATUS_SEQ_ID, Added_By, Added_Date, Updated_By, Updated_Date FROM ' + CONVERT(VARCHAR,@V_TableName) + '
+	SET @V_Statement = '[NVP_DetailSeqId], [NVPSeqId] as NVP_SEQ_ID, [NVP_Detail_Name], [NVP_Detail_Value], [StatusSeqId], [Sort_Order], [Added_By], [Added_Date], [Updated_By], [Updated_Date] FROM ' + CONVERT(VARCHAR,@V_TableName) + '
 	WHERE
 		NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId) + ' ORDER BY Static_Name'
 
