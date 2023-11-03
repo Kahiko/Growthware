@@ -15,7 +15,7 @@ public static class NameValuePairUtility
     private static Dictionary<int, List<UIKeyValuePair>> m_NameValuePairCache = new Dictionary<int, List<UIKeyValuePair>>();
 
     /// <summary>
-    /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing link behavior types from the database
+    /// Returns a List of UIKeyValuePair ({key: 1, value: "string"}) representing name value pairs from the database
     /// </summary>
     /// <param name="nameValuePairSeqId"></param>
     /// <returns>List<UIKeyValuePair></returns>
