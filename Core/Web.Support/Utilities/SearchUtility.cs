@@ -1,4 +1,5 @@
 using GrowthWare.BusinessLogic;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
 using System.Data;
@@ -58,37 +59,7 @@ public static class SearchUtility
         BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
         mDataTable = mBSearch.GetSearchResults(searchCriteria);
-        var mStringBuilder = new StringBuilder();
-        if (mDataTable.Rows.Count > 0)
-        {
-            mStringBuilder.Append("[");
-            for (int i = 0; i < mDataTable.Rows.Count; i++)
-            {
-                mStringBuilder.Append("{");
-                for (int j = 0; j < mDataTable.Columns.Count; j++)
-                {
-                    if (j < mDataTable.Columns.Count - 1)
-                    {
-                        mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\",");
-                    }
-                    else if (j == mDataTable.Columns.Count - 1)
-                    {
-                        mStringBuilder.Append("\"" + mDataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + mDataTable.Rows[i][j].ToString() + "\"");
-                    }
-                }
-                if (i == mDataTable.Rows.Count - 1)
-                {
-                    mStringBuilder.Append("}");
-                }
-                else
-                {
-                    mStringBuilder.Append("},");
-                }
-            }
-            mStringBuilder.Append("]");
-            mRetVal = mStringBuilder.ToString();
-        }
-
+        mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using System.Data;
 using System.Globalization;
+using System.Text;
 
 namespace GrowthWare.Framework
 {
@@ -62,7 +63,7 @@ namespace GrowthWare.Framework
             {
                 throw;
             }
-            finally 
+            finally
             {
                 if (mColumn != null) mColumn.Dispose();
             }
@@ -88,6 +89,51 @@ namespace GrowthWare.Framework
                 mColumn.ReadOnly = true;
             }
 
+        }
+
+        /// <summary>
+        /// Returns a JSON string from the given table.
+        /// </summary>
+        /// <param name="dataTable"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public static string GetJsonStringFromTable(ref DataTable dataTable)
+        {
+            if (dataTable == null) throw new ArgumentNullException(nameof(dataTable), "table cannot be a null reference (Nothing in VB) or empty!");
+            string mRetVal = string.Empty;
+            var mStringBuilder = new StringBuilder();
+            if (dataTable.Rows.Count > 0)
+            {
+                mStringBuilder.Append("[");
+                for (int i = 0; i < dataTable.Rows.Count; i++)
+                {
+                    mStringBuilder.Append("{");
+                    for (int j = 0; j < dataTable.Columns.Count; j++)
+                    {
+                        if (j < dataTable.Columns.Count - 1)
+                        {
+                            mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString() + "\",");
+                        }
+                        else if (j == dataTable.Columns.Count - 1)
+                        {
+                            mStringBuilder.Append("\"" + dataTable.Columns[j].ColumnName.ToString() + "\":" + "\"" + dataTable.Rows[i][j].ToString() + "\"");
+                        }
+                    }
+                    if (i == dataTable.Rows.Count - 1)
+                    {
+                        mStringBuilder.Append("}");
+                    }
+                    else
+                    {
+                        mStringBuilder.Append("},");
+                    }
+                }
+                mStringBuilder.Append("]");
+            }
+            mRetVal = mStringBuilder.ToString();
+            mStringBuilder.Clear();
+            mStringBuilder.Capacity = 0;
+            return mRetVal;
         }
 
         /// <summary>
