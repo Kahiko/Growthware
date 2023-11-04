@@ -239,7 +239,7 @@
     "showFirstRow": true,
     "showThirdRow": true,
     "showHelp": true,
-    "showSearch": true,
+    "showSearch": false,
     "tableHeight": 286
   }
 ]
