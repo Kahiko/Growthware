@@ -2,14 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
-// import { DataService } from '@Growthware/shared/services';
+import { DataService } from '@Growthware/shared/services';
 import { DynamicTableModule, DynamicTableService } from '@Growthware/features/dynamic-table';
 import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@Growthware/features/search';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
 import { INameValuePair } from '@Growthware/shared/models';
 // Feature
-import { INvpChildProfile } from '../../name-value-pair-child-profile.model';
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
 import { NameValuePairParentDetailComponent } from '../name-value-pair-parent-detail/name-value-pair-parent-detail.component';
@@ -34,8 +33,8 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   private _Api_Name: string = 'GrowthwareNameValuePair/';
   private _Api_Nvp_Search: string = '';
   private _Api_Nvp_Details_Search: string = '';
+  private _SearchCriteriaNVP!: SearchCriteriaNVP;
   private _NameValuePairParentDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
-  private _NameValuePairChildDataSubject = new BehaviorSubject<INvpChildProfile[]>([]);
 
   childConfigurationName = 'SearchNVPDetails';
 
@@ -44,10 +43,10 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
   readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
-  readonly nameValuePairChildData$ = this._NameValuePairChildDataSubject.asObservable();
   nameValuePairModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
   
   constructor(
+    private _DataSvc: DataService,
     private _DynamicTableSvc: DynamicTableService,
     private _ModalSvc: ModalService,
     private _NameValuePairService: NameValuePairService,
@@ -79,7 +78,7 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
       this._SearchSvc.searchCriteriaChanged.subscribe((criteria: INameValuePair) => {
         if(criteria.name.trim().toLowerCase() === this.childConfigurationName.trim().toLowerCase()) {
           this._SearchSvc.getResults(this._Api_Nvp_Details_Search, criteria).then((results) => {
-            this._NameValuePairChildDataSubject.next(results.payLoad.data);
+            this._DataSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
           }).catch((error) => {
             this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
           });
@@ -88,9 +87,10 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
     );
     // Get the initial child SearchCriteriaNVP from the service
     const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
-    let mChildResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mAccountTableConfig);
+    this._SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mAccountTableConfig);
+    this._SearchCriteriaNVP.payLoad.searchText = '1'
     // Set the search child criteria to initiate search criteria changed subject
-    this._SearchSvc.setSearchCriteria(mChildResults.name, mChildResults.payLoad);
+    this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
 
     // Get the initial parent SearchCriteriaNVP
     const mSearchColumns: Array<string> = ['Static_Name', 'Display', 'Description'];
@@ -116,6 +116,9 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
 
   onRowClickNvpParent(rowIndex: number): void {
     this._NameValuePairService.setNameValuePairDetailRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
+    this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].NVPSeqId.toString();
+    // Set the search child criteria to initiate search criteria changed subject
+    this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
     this._LoggingSvc.toast('Supposed to set search criteria and get results', 'Name Value Pairs', LogLevel.Debug);
   }
 
