@@ -42,7 +42,7 @@
           </button>
         </span>
         <span style="margin: 5px;">
-          <input
+          <input *ngIf="tableConfiguration.showSearch"
             type="text"
             id="{{tableConfiguration.name}}_searchText"
             name="{{tableConfiguration.name}}_searchText"
