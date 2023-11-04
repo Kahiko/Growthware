@@ -227,9 +227,9 @@
     ],
     "columns": [
       { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "NVP_SEQ_DET_ID"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
-      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "NVP_DET_TEXT"    , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Value"       , "name": "NVP_DET_VALUE"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
-      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Sort Order"  , "name": "Sort_Order"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 }
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "NVP_DET_TEXT"    , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Value"       , "name": "NVP_DET_VALUE"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Sort Order"  , "name": "Sort_Order"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 }
     ],
     "captionText": "",
     "maxHeadHeight": 16,
