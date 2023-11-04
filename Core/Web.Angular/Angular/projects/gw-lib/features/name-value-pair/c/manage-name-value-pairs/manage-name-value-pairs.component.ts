@@ -5,7 +5,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { DataService } from '@Growthware/shared/services';
 import { DynamicTableModule, DynamicTableService } from '@Growthware/features/dynamic-table';
 import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@Growthware/features/search';
-import { LogLevel, LoggingService } from '@Growthware/features/logging';
+import { LoggingService } from '@Growthware/features/logging';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
 import { INameValuePair } from '@Growthware/shared/models';
 // Feature
@@ -119,7 +119,6 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
     this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].NVPSeqId.toString();
     // Set the search child criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
-    this._LoggingSvc.toast('Supposed to set search criteria and get results', 'Name Value Pairs', LogLevel.Debug);
   }
 
 }
