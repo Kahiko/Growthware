@@ -758,7 +758,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Action] = '/accounts/register' WHERE [Acti
 UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 2 WHERE [Action] = 'Logon';
 UPDATE [ZGWSecurity].[Functions] SET [Source] = 'functions' WHERE [Action] = 'MSNewPage';
 UPDATE [GrowthWare].[ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'generic_home' WHERE [Account] = 'Anonymous'
-
+UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 0 WHERE [Action] = 'WorkFlows';
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET

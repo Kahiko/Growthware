@@ -540,6 +540,7 @@ UPDATE [ZGWSecurity].[Functions] SET [Link_Behavior] = 1 WHERE [Action] = '/acco
 UPDATE [ZGWSecurity].[Functions] SET [Action] = 'Rregister' WHERE [Action] = '/accounts/register';
 UPDATE [ZGWSecurity].[Functions] SET [Source] = 'Functions/System/TestNaturalSort.aspx' WHERE [Action] = 'MSNewPage';
 UPDATE [GrowthWare].[ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'home' WHERE [Account] = 'Anonymous'
+UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 1 WHERE [Action] = 'WorkFlows';
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 
