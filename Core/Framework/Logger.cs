@@ -18,12 +18,19 @@ namespace GrowthWare.Framework
         *   will have access to the database outside of the DataAccess project!
         */
         const string FILE_NAME_FORMAT = "yyyy_MM_dd";
+
         private static Logger s_Logger;
+
         private static Mutex s_Mutex = new Mutex();
+
         private NLog.Logger m_Logger = NLog.LogManager.GetCurrentClassLogger();
+
         private string m_LogFileName = string.Empty;
+
         private string m_LogFilePath = string.Empty;
+
         private string m_Log_Path_Name = string.Empty;
+
         private int m_CurrentLogLevel;
 
         private static string m_CurrentLogLevelString = string.Empty;
@@ -123,6 +130,7 @@ namespace GrowthWare.Framework
             // Apply config           
             NLog.LogManager.Configuration = mLoggingConfiguration;
         }
+        
         private void deleteOldLogs()
         {
             int mCounter = 0;
@@ -388,7 +396,7 @@ namespace GrowthWare.Framework
             this.disposedValue = true;
         }
 
-        #region " IDisposable Support "
+#region " IDisposable Support "
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
         /// </summary>
@@ -398,7 +406,7 @@ namespace GrowthWare.Framework
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-        #endregion
+#endregion
 
     }
 }
