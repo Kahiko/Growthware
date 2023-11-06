@@ -1,7 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using System;
-using System.Data;
-using System.Text.Json;
 using System.Globalization;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
@@ -14,14 +12,26 @@ public class ClientChoicesService : IClientChoicesService
 {
     private static string m_AnonymousAccount = "Anonymous";
 
-    private static MClientChoicesState m_AnonymousClientChoicesState;
-
-    private static IHttpContextAccessor m_HttpContextAccessor = null;
+    private CacheController m_CacheController = CacheController.Instance();
 
     [CLSCompliant(false)]
-    public ClientChoicesService(IHttpContextAccessor httpContextAccessor)
+    public ClientChoicesService()
     {
-        m_HttpContextAccessor = httpContextAccessor;
+    }
+
+    /// <summary>
+    /// Adds or updates a value in the cache or session.
+    /// </summary>
+    /// <param name="name">The name of the value to add or update.</param>
+    /// <param name="value">The value to add or update.</param>
+    private void addOrUpdateCacheOrSession(string name, object value, string forAccount)
+    {
+        if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
+        {
+            SessionController.AddToSession(name, value);
+            return;
+        }
+        this.m_CacheController.AddToCache(m_AnonymousAccount, value);
     }
 
     /// <summary>
@@ -35,35 +45,11 @@ public class ClientChoicesService : IClientChoicesService
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.DefaultProfile();
         BClientChoices mBClientChoices = new BClientChoices(mSecurityEntity, ConfigSettings.CentralManagement);
-        if (fromDB) return mBClientChoices.GetClientChoicesState(account);
-        MClientChoicesState mRetVal = null;
-        if (account.Trim().ToLower(CultureInfo.CurrentCulture) != m_AnonymousAccount.ToLower(CultureInfo.CurrentCulture))
+        MClientChoicesState mRetVal = this.getFromCacheOrSession<MClientChoicesState>(MClientChoices.SessionName, account); ;
+        if (mRetVal == null || fromDB)
         {
-            if (m_HttpContextAccessor.HttpContext.Session != null && m_HttpContextAccessor.HttpContext.Session.GetString(MClientChoices.SessionName) != null) 
-            {
-                string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(MClientChoices.SessionName);
-                mRetVal = new MClientChoicesState(mJsonString);
-                if (mRetVal == null || (mRetVal.AccountName.Trim().ToUpper(CultureInfo.InvariantCulture) != account.Trim().ToUpper(CultureInfo.InvariantCulture)))
-                {
-                    mRetVal = mBClientChoices.GetClientChoicesState(account);
-                    mJsonString = JsonSerializer.Serialize(mRetVal);
-                    m_HttpContextAccessor.HttpContext.Session.SetString(MClientChoices.SessionName, mJsonString);
-                }
-            }
-            else
-            {
-                mRetVal = mBClientChoices.GetClientChoicesState(account);
-                string mJsonString = JsonSerializer.Serialize(mRetVal);
-                m_HttpContextAccessor.HttpContext.Session.SetString(MClientChoices.SessionName, mJsonString);
-            }
-        }
-        else
-        {
-            if (m_AnonymousClientChoicesState == null) 
-            {
-                m_AnonymousClientChoicesState = mBClientChoices.GetClientChoicesState(m_AnonymousAccount);
-            }
-            mRetVal = m_AnonymousClientChoicesState;
+            mRetVal = mBClientChoices.GetClientChoicesState(account);
+            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, mRetVal, account);
         }
         return mRetVal;
     }
@@ -76,6 +62,21 @@ public class ClientChoicesService : IClientChoicesService
     public MClientChoicesState GetClientChoicesState(String account)
     {
         return GetClientChoicesState(account, false);
+    }
+
+    /// <summary>
+    /// Retrieves an object of type `T` from either the cache or the session, based on the given `name`.
+    /// </summary>
+    /// <typeparam name="T">The type of the object being retrieved.</typeparam>
+    /// <param name="name">The name of the value to retrieved.</param>
+    /// <returns></returns>
+    private T getFromCacheOrSession<T>(string name, string forAccount)
+    {
+        if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
+        {
+            return SessionController.GetFromSession<T>(name);
+        }
+        return this.m_CacheController.GetFromCache<T>(m_AnonymousAccount);
     }
 
     /// <summary>
@@ -92,11 +93,7 @@ public class ClientChoicesService : IClientChoicesService
         mBClientChoices.Save(clientChoicesState);
         if (updateContext)
         {
-            if (m_HttpContextAccessor.HttpContext.Session != null)
-            {
-                string mJsonString = JsonSerializer.Serialize(clientChoicesState);
-                m_HttpContextAccessor.HttpContext.Session.SetString(MClientChoices.SessionName, mJsonString);
-            }
+            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, clientChoicesState, clientChoicesState.AccountName);
         }
     }
 
@@ -116,18 +113,10 @@ public class ClientChoicesService : IClientChoicesService
     /// <returns>System.Int32.</returns>
     public int SelectedSecurityEntity()
     {
-        if (m_HttpContextAccessor != null && m_HttpContextAccessor.HttpContext != null && m_HttpContextAccessor.HttpContext.Session != null)
+        MClientChoicesState myClientChoicesState = this.m_CacheController.GetFromCache<MClientChoicesState>(MClientChoices.SessionName);
+        if ((myClientChoicesState != null))
         {
-            string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(MClientChoices.SessionName);
-            MClientChoicesState myClientChoicesState = new MClientChoicesState(mJsonString);        
-            if ((myClientChoicesState != null))
-            {
-                return int.Parse(myClientChoicesState[MClientChoices.SecurityEntityID], CultureInfo.InvariantCulture);
-            }
-            else
-            {
-                return ConfigSettings.DefaultSecurityEntityID;
-            }
+            return int.Parse(myClientChoicesState[MClientChoices.SecurityEntityID], CultureInfo.InvariantCulture);
         }
         else
         {
