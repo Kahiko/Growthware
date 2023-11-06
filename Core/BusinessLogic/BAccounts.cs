@@ -338,7 +338,6 @@ namespace GrowthWare.BusinessLogic
                 {
                     m_DAccounts.SaveRoles();
                 }
-                // TODO: add save for the refresh tokens
                 profile = new MAccountProfile(m_DAccounts.GetAccount, m_DAccounts.RefreshTokens(), m_DAccounts.Roles(), m_DAccounts.Groups(), m_DAccounts.Security());
             }
         }
