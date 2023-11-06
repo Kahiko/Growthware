@@ -6,7 +6,6 @@ console.log(`proxy.conf.js - Proxy target: '${target}'`);
 const PROXY_CONFIG = [
   {
     context: [
-      "/weatherforecast",
       "/GrowthwareAccount",
       "/GrowthwareAPI",
       "/GrowthwareFile",
