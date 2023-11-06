@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Data;
-using System.Text.Json.Nodes;
 
 namespace GrowthWare.Framework.Models;
 
@@ -42,26 +41,6 @@ public class MClientChoicesState
             catch (Exception)
             {
                 throw;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Parses the JSON string representation of a MClientChoicesState
-    /// </summary>
-    /// <param name="jsonString"></param>
-    public MClientChoicesState(string jsonString) 
-    {
-        if(jsonString == null || string.IsNullOrEmpty(jsonString)) throw new ArgumentNullException("jsonString", "jsonString cannot be a null reference (Nothing in Visual Basic)!");
-        JsonNode mClientChoicesState = JsonNode.Parse(jsonString)!;
-        if (mClientChoicesState != null) 
-        {
-            AccountName = mClientChoicesState!["AccountName"]!.ToString();
-            IsDirty = bool.Parse(mClientChoicesState!["IsDirty"]!.ToString());
-            JsonObject mChoicesHashtable = mClientChoicesState!["ChoicesHashtable"]!.AsObject();
-            foreach (var item in mChoicesHashtable)
-            {
-                m_ClientChoices.Add(item.Key, item.Value);
             }
         }
     }

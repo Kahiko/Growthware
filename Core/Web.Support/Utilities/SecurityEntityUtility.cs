@@ -20,17 +20,13 @@ public static class SecurityEntityUtility
     public static MSecurityEntity CurrentProfile()
     {
         MSecurityEntity mRetProfile = null;
-        if(m_HttpContextAccessor != null) 
+        if (m_HttpContextAccessor != null)
         {
-            string mJsonString = m_HttpContextAccessor.HttpContext.Session.GetString(MClientChoices.SessionName);
-            if(mJsonString != null)
+            MClientChoicesState mClientChoicesState = SessionController.GetFromSession<MClientChoicesState>(MClientChoices.SessionName);
+            if (mClientChoicesState != null)
             {
-                MClientChoicesState mClientChoicesState = new MClientChoicesState(mJsonString);
-                if (mClientChoicesState != null) 
-                {
-                    int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
-                    mRetProfile = GetProfile(mSecurityEntity);
-                }
+                int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
+                mRetProfile = GetProfile(mSecurityEntity);
             }
             if (mRetProfile == null) mRetProfile = DefaultProfile();
         }
