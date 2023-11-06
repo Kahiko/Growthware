@@ -5,7 +5,7 @@ using System;
 
 namespace GrowthWare.BusinessLogic
 {
-    public class BLogger
+    public class BLogger : AbstractBusinessLogic
     {
 
         private ILogging m_Logging;
@@ -16,14 +16,32 @@ namespace GrowthWare.BusinessLogic
             this.m_Logging.ConnectionString = connectionString;
         }
 
+        /// <summary>
+        /// Retrieves the logging profile for a given log sequence ID.
+        /// </summary>
+        /// <param name="logSeqId">The log sequence ID.</param>
+        /// <returns>The logging profile if the database is online, otherwise null.</returns>
         public MLoggingProfile GetLoggingProfile(int logSeqId)
         {
-            return this.m_Logging.GetLog(logSeqId);
+            if (DatabaseIsOnline())
+            {
+                return this.m_Logging.GetLog(logSeqId);
+            }
+            return null;
         }
 
+        /// <summary>
+        /// Saves the profile information to the Database.
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <exception cref="ArgumentNullException"></exception>
         public void Save(MLoggingProfile profile)
         {
-            m_Logging.Save(profile);
+            if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+            if (DatabaseIsOnline())
+            {
+                m_Logging.Save(profile);
+            }
         }
     }
 }
