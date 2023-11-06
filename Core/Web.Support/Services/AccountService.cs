@@ -24,20 +24,23 @@ public class AccountService : IAccountService
     private int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private string s_AnonymousAccount = "Anonymous";
 
-    // TODO: Cache is now avalible and should be used for the Anonymous account
     private CacheController m_CacheController = CacheController.Instance();
+
+    private IClientChoicesService m_ClientChoicesService;
 
     private string s_SessionName = "SessionAccount";
 
     private IHttpContextAccessor m_HttpContextAccessor;
 
     public string AnonymousAccount { get { return s_AnonymousAccount; } }
+
     public string SessionName { get { return s_SessionName; } }
 
     [CLSCompliant(false)]
-    public AccountService(IHttpContextAccessor httpContextAccessor)
+    public AccountService(IHttpContextAccessor httpContextAccessor, IClientChoicesService clientChoicesService)
     {
         this.m_HttpContextAccessor = httpContextAccessor;
+        this.m_ClientChoicesService = clientChoicesService;
     }
 
     /// <summary>
@@ -512,8 +515,6 @@ public class AccountService : IAccountService
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(refreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
                 this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
-                // _context.Update(account);
-                // _context.SaveChanges();
             }
             if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
             // replace old refresh token with a new one (rotate token)
@@ -525,7 +526,9 @@ public class AccountService : IAccountService
 
             // save changes to db
             this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
-
+            addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
+            this.m_ClientChoicesService.GetClientChoicesState(mAccountProfile.Account, true);
+            
             // generate new jwt
             JwtUtils mJwtUtils = new JwtUtils();
             var jwtToken = mJwtUtils.GenerateJwtToken(mAccountProfile);
