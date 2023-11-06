@@ -13,6 +13,12 @@ public static class GroupUtility
 {
     private static CacheController m_CacheController = CacheController.Instance();
 
+    /// <summary>
+    /// Saves the groups and roles for the given MGroupProfile and MGroupRoles to the database.
+    /// </summary>
+    /// <param name="profile">The UIGroupProfile to be saved.</param>
+    /// <param name="groupRoles">The MGroupRoles to be saved.</param>
+    /// <returns>The saved UIGroupProfile.</returns>
     public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
         BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
@@ -29,12 +35,25 @@ public static class GroupUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Updates the group roles for a given group.
+    /// </summary>
+    /// <param name="groupRoles">The group roles to update.</param>
+    /// <returns>No return value.</returns>
     public static void UpdateGroupRoles(MGroupRoles groupRoles)
     {
         BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBGroups.UpdateGroupRoles(groupRoles);
     }
 
+    /// <summary>
+    /// Retrieves a UIGroupProfile object based on the provided groupSeqId and 
+    /// securityEntityId. The UIGroupProfile object contains information about 
+    /// the group, its roles, and other details used in the UI.
+    /// </summary>
+    /// <param name="groupSeqId">The ID of the group.</param>
+    /// <param name="securityEntityId">The ID of the security entity.</param>
+    /// <returns>A UIGroupProfile object representing the group and its roles.</returns>
     public static UIGroupProfile GetUIGroupProfile(int groupSeqId, int securityEntityId)
     {
         UIGroupProfile mRetVal = new UIGroupProfile();
@@ -89,6 +108,11 @@ public static class GroupUtility
         }
     }
 
+    /// <summary>
+    /// Retrieves the group profile for a given group sequence ID.
+    /// </summary>
+    /// <param name="groupSeqId">The ID of the group.</param>
+    /// <returns>The group profile for the given group sequence ID.</returns>
     public static MGroupProfile GetGroupProfile(int groupSeqId) 
     {
         BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
@@ -96,6 +120,11 @@ public static class GroupUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves the selected roles from the given MGroupRoles object.
+    /// </summary>
+    /// <param name="groupRoles">The MGroupRoles object from which to retrieve the selected roles.</param>
+    /// <returns>An array of strings representing the selected roles.</returns>
     private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
@@ -104,6 +133,11 @@ public static class GroupUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves a list of groups as an ArrayList for a given security entity ID.
+    /// </summary>
+    /// <param name="securityEntityId">The ID of the security entity.</param>
+    /// <returns>An ArrayList of group names.</returns>
     public static ArrayList GetGroupsArrayListBySecurityEntity(int securityEntityId)
     {
         DataTable mGroupsTable = getAllGroupsBySecurityEntity(securityEntityId);
@@ -115,9 +149,13 @@ public static class GroupUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves all groups by the specified security entity.
+    /// </summary>
+    /// <param name="securityEntityId">The ID of the security entity.</param>
+    /// <returns>A DataTable containing the groups.</returns>
     private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
     {
-        // TODO: Add cache
         String mCacheName = securityEntityId.ToString() + "_Groups";
         DataTable mRetVal = m_CacheController.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
