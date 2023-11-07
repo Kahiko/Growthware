@@ -44,10 +44,10 @@ public class ClientChoicesService : IClientChoicesService
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.DefaultProfile();
-        BClientChoices mBClientChoices = new BClientChoices(mSecurityEntity, ConfigSettings.CentralManagement);
         MClientChoicesState mRetVal = this.getFromCacheOrSession<MClientChoicesState>(MClientChoices.SessionName, account); ;
         if (mRetVal == null || fromDB)
         {
+            BClientChoices mBClientChoices = new BClientChoices(mSecurityEntity, ConfigSettings.CentralManagement);
             mRetVal = mBClientChoices.GetClientChoicesState(account);
             this.addOrUpdateCacheOrSession(MClientChoices.SessionName, mRetVal, account);
         }
