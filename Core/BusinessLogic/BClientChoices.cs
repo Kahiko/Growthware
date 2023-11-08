@@ -3,6 +3,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using System;
 using System.Collections;
+using System.Data;
 
 namespace GrowthWare.BusinessLogic;
 
@@ -110,6 +111,28 @@ public class BClientChoices : AbstractBusinessLogic
         catch (Exception ex)
         {
 
+            throw new BusinessLogicLayerException("Could not retrieve the client choices state", ex);
+        }
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Retrieves a DataRow object for the specified account.
+    /// </summary>
+    /// <param name="account">The account to retrieve the DataRow for.</param>
+    /// <returns>The DataRow object for the specified account.</returns>
+    public DataRow GetDataRow(string account)
+    {
+        DataRow mRetVal = null;
+        try
+        {
+            if (base.DatabaseIsOnline())
+            {
+                mRetVal = m_DClientChoices.GetChoices(account);
+            }
+        }
+        catch (Exception ex)
+        {
             throw new BusinessLogicLayerException("Could not retrieve the client choices state", ex);
         }
         return mRetVal;

@@ -5,12 +5,14 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Utilities;
+using System.Data;
+using System.Text.Json;
 
 namespace GrowthWare.Web.Support.Services;
 
 public class ClientChoicesService : IClientChoicesService
 {
-    private static string m_AnonymousAccount = "Anonymous";
+    private string m_AnonymousAccount = "Anonymous";
 
     private CacheController m_CacheController = CacheController.Instance();
 
@@ -43,14 +45,16 @@ public class ClientChoicesService : IClientChoicesService
     public MClientChoicesState GetClientChoicesState(string account, bool fromDB)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.DefaultProfile();
-        MClientChoicesState mRetVal = this.getFromCacheOrSession<MClientChoicesState>(MClientChoices.SessionName, account); ;
-        if (mRetVal == null || fromDB)
+        DataTable mDataTable = this.getDataTableWithEmptyRow();
+        string mJsonString = this.getFromCacheOrSession<string>(MClientChoices.SessionName, account);
+        if (mJsonString == null || fromDB)
         {
-            BClientChoices mBClientChoices = new BClientChoices(mSecurityEntity, ConfigSettings.CentralManagement);
-            mRetVal = mBClientChoices.GetClientChoicesState(account);
-            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, mRetVal, account);
+            BClientChoices mBClientChoices = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
+            mJsonString = JsonSerializer.Serialize(mBClientChoices.GetDataRow(account).ItemArray);
+            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, mJsonString, account);
         }
+        this.populateDataRow(ref mDataTable, mJsonString);
+        MClientChoicesState mRetVal = new(mDataTable.Rows[0]);
         return mRetVal;
     }
 
@@ -62,6 +66,30 @@ public class ClientChoicesService : IClientChoicesService
     public MClientChoicesState GetClientChoicesState(String account)
     {
         return GetClientChoicesState(account, false);
+    }
+
+    /// <summary>
+    /// Creates a new DataTable with an empty row.
+    /// </summary>
+    /// <returns>The newly created DataTable with an empty row.</returns>
+    private DataTable getDataTableWithEmptyRow()
+    {
+        DataTable mRetVal = new DataTable();
+        mRetVal.Columns.Add("ACCT");
+        mRetVal.Columns.Add("SecurityEntityID");
+        mRetVal.Columns.Add("SecurityEntityName");
+        mRetVal.Columns.Add("BackColor");
+        mRetVal.Columns.Add("LeftColor");
+        mRetVal.Columns.Add("HeadColor");
+        mRetVal.Columns.Add("HeaderForeColor");
+        mRetVal.Columns.Add("SubHeadColor");
+        mRetVal.Columns.Add("RowBackColor");
+        mRetVal.Columns.Add("AlternatingRowBackColor");
+        mRetVal.Columns.Add("ColorScheme");
+        mRetVal.Columns.Add("FavoriteAction");
+        mRetVal.Columns.Add("recordsPerPage");
+        mRetVal.Rows.Add(mRetVal.NewRow());
+        return mRetVal;
     }
 
     /// <summary>
@@ -77,6 +105,25 @@ public class ClientChoicesService : IClientChoicesService
             return SessionController.GetFromSession<T>(name);
         }
         return this.m_CacheController.GetFromCache<T>(m_AnonymousAccount);
+    }
+
+    /// <summary>
+    /// Populates a DataTable with data from a JSON string.
+    /// </summary>
+    /// <param name="yourDataTable">The DataTable to populate.</param>
+    /// <param name="jasonData">The JSON string containing the data.</param>
+    private void populateDataRow(ref DataTable yourDataTable, string jasonData)
+    {
+        string mJsonString = jasonData;
+        // Remove unnecessary characters from the JSON string
+        mJsonString = mJsonString.Replace("[", "").Replace("]", "").Replace("\"", "");
+        // Split the JSON string into an array
+        string[] mJsonStringArray = mJsonString.Split(',');
+        // Iterate over the array and assign values to the DataTable
+        for (int i = 0; i < mJsonStringArray.Length; i++)
+        {
+            yourDataTable.Rows[0][i] = mJsonStringArray[i];
+        }
     }
 
     /// <summary>
