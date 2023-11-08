@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
 
@@ -22,11 +23,19 @@ public static class SessionController
     /// <param name="value">The value to be added to the session.</param>
     public static void AddToSession(string sessionName, object value)
     {
-        if(value != null)
+        if (value != null)
         {
             string mJsonString = JsonSerializer.Serialize(value);
             m_HttpContextAccessor.HttpContext.Session.SetString(sessionName, mJsonString);
         }
+    }
+
+    private static bool deserializeFilter(Exception e)
+    {
+        return e is ArgumentNullException ||
+                e is JsonException ||
+                e is NotSupportedException ||
+                e is InvalidOperationException;
     }
 
     /// <summary>
@@ -46,7 +55,7 @@ public static class SessionController
         {
             return JsonSerializer.Deserialize<T>(mJsonString);
         }
-        catch (System.Exception)
+        catch (Exception ex) when (deserializeFilter(ex))
         {
             return default(T);
         }
@@ -70,12 +79,12 @@ public static class SessionController
     /// </param>
     public static void RemoveFromSession(string sessionName, bool all = false)
     {
-        if (!all) 
-        { 
+        if (!all)
+        {
             m_HttpContextAccessor.HttpContext.Session.Remove(sessionName);
-        } 
-        else 
-        { 
+        }
+        else
+        {
             m_HttpContextAccessor.HttpContext.Session.Clear();
         }
     }
