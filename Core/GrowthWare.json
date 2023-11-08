@@ -75,7 +75,6 @@
     "Development_SMTP_Password": "somepassword",
     "Development_SMTP_Server": "mymailserver",
     "Development_TwitterConsumerKey": "",
-    "Development_TwitterConsumerSecret": "",
-    "Development_Version": "Set By Build"
+    "Development_TwitterConsumerSecret": ""
   }
 }
