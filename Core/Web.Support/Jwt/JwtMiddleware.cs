@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Services;
+using GrowthWare.Web.Support.Utilities;
 
 namespace GrowthWare.Web.Support.Jwt;
 
@@ -20,7 +21,7 @@ public class JwtMiddleware
     }
 
     [CLSCompliant(false)]
-    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService, IClientChoicesService clientChoicesService)
+    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService, IClientChoicesUtility clientChoicesUtility)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if(token != null)
@@ -30,7 +31,7 @@ public class JwtMiddleware
             {
                 // attach account to context on successful jwt validation
                 httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
-                MClientChoicesState mClientChoicesState = clientChoicesService.GetClientChoicesState(mAccount);
+                MClientChoicesState mClientChoicesState = clientChoicesUtility.GetClientChoicesState(mAccount);
                 httpContext.Items["ClientChoicesState"] = mClientChoicesState;
             }
             else

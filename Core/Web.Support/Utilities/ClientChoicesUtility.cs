@@ -2,20 +2,19 @@ using System;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
-using GrowthWare.Web.Support.Utilities;
 using System.Data;
 using System.Text.Json;
 
-namespace GrowthWare.Web.Support.Services;
+namespace GrowthWare.Web.Support.Utilities;
 
-public class ClientChoicesService : IClientChoicesService
+public class ClientChoicesUtility : IClientChoicesUtility
 {
     private string m_AnonymousAccount = "Anonymous";
 
     private CacheController m_CacheController = CacheController.Instance();
 
     [CLSCompliant(false)]
-    public ClientChoicesService()
+    public ClientChoicesUtility()
     {
     }
 

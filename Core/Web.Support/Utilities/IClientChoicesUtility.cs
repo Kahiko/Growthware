@@ -1,8 +1,8 @@
 using GrowthWare.Framework.Models;
 
-namespace GrowthWare.Web.Support.Services;
+namespace GrowthWare.Web.Support.Utilities;
 
-public interface IClientChoicesService
+public interface IClientChoicesUtility
 {
     public MClientChoicesState GetClientChoicesState(string account, bool fromDB);
 

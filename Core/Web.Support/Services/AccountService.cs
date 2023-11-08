@@ -26,7 +26,7 @@ public class AccountService : IAccountService
 
     private CacheController m_CacheController = CacheController.Instance();
 
-    private IClientChoicesService m_ClientChoicesService;
+    private IClientChoicesUtility m_ClientChoicesService;
 
     private string s_SessionName = "SessionAccount";
 
@@ -37,7 +37,7 @@ public class AccountService : IAccountService
     public string SessionName { get { return s_SessionName; } }
 
     [CLSCompliant(false)]
-    public AccountService(IHttpContextAccessor httpContextAccessor, IClientChoicesService clientChoicesService)
+    public AccountService(IHttpContextAccessor httpContextAccessor, IClientChoicesUtility clientChoicesService)
     {
         this.m_HttpContextAccessor = httpContextAccessor;
         this.m_ClientChoicesService = clientChoicesService;
