@@ -153,21 +153,4 @@ public class ClientChoicesService : IClientChoicesService
     {
         Save(clientChoicesState, true);
     }
-
-    /// <summary>
-    /// Gets the selected security entity.
-    /// </summary>
-    /// <returns>System.Int32.</returns>
-    public int SelectedSecurityEntity()
-    {
-        MClientChoicesState myClientChoicesState = this.m_CacheController.GetFromCache<MClientChoicesState>(MClientChoices.SessionName);
-        if ((myClientChoicesState != null))
-        {
-            return int.Parse(myClientChoicesState[MClientChoices.SecurityEntityID], CultureInfo.InvariantCulture);
-        }
-        else
-        {
-            return ConfigSettings.DefaultSecurityEntityID;
-        }
-    }
 }

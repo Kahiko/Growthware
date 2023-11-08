@@ -11,6 +11,4 @@ public interface IClientChoicesService
     public void Save(MClientChoicesState clientChoicesState, bool updateContext);
 
     public void Save(MClientChoicesState clientChoicesState);
-
-    public int SelectedSecurityEntity();
 }
