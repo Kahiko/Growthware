@@ -7,30 +7,25 @@ using System.Text.Json;
 
 namespace GrowthWare.Web.Support.Utilities;
 
-public class ClientChoicesUtility : IClientChoicesUtility
+public static class ClientChoicesUtility
 {
-    private string m_AnonymousAccount = "Anonymous";
+    private static string m_AnonymousAccount = "Anonymous";
 
-    private CacheController m_CacheController = CacheController.Instance();
-
-    [CLSCompliant(false)]
-    public ClientChoicesUtility()
-    {
-    }
+    private static CacheController m_CacheController = CacheController.Instance();
 
     /// <summary>
     /// Adds or updates a value in the cache or session.
     /// </summary>
     /// <param name="name">The name of the value to add or update.</param>
     /// <param name="value">The value to add or update.</param>
-    private void addOrUpdateCacheOrSession(string name, object value, string forAccount)
+    private static void addOrUpdateCacheOrSession(string name, object value, string forAccount)
     {
         if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
         {
             SessionController.AddToSession(name, value);
             return;
         }
-        this.m_CacheController.AddToCache(m_AnonymousAccount, value);
+        m_CacheController.AddToCache(m_AnonymousAccount, value);
     }
 
     /// <summary>
@@ -39,18 +34,18 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// <param name="account">The account.</param>
     /// <param name="fromDB">if set to <c>true</c> [from database].</param>
     /// <returns>MClientChoicesState.</returns>
-    public MClientChoicesState GetClientChoicesState(string account, bool fromDB)
+    public static MClientChoicesState GetClientChoicesState(string account, bool fromDB)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        DataTable mDataTable = this.getDataTableWithEmptyRow();
-        string mJsonString = this.getFromCacheOrSession<string>(MClientChoices.SessionName, account);
+        DataTable mDataTable = getDataTableWithEmptyRow();
+        string mJsonString = getFromCacheOrSession<string>(MClientChoices.SessionName, account);
         if (mJsonString == null || fromDB)
         {
             BClientChoices mBClientChoices = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
             mJsonString = JsonSerializer.Serialize(mBClientChoices.GetDataRow(account).ItemArray);
-            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, mJsonString, account);
+            addOrUpdateCacheOrSession(MClientChoices.SessionName, mJsonString, account);
         }
-        this.populateDataRow(ref mDataTable, mJsonString);
+        populateDataRow(ref mDataTable, mJsonString);
         MClientChoicesState mRetVal = new(mDataTable.Rows[0]);
         return mRetVal;
     }
@@ -60,7 +55,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// </summary>
     /// <param name="account">String</param>
     /// <returns>MClientChoicesState</returns>
-    public MClientChoicesState GetClientChoicesState(String account)
+    public static MClientChoicesState GetClientChoicesState(String account)
     {
         return GetClientChoicesState(account, false);
     }
@@ -69,7 +64,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// Creates a new DataTable with an empty row.
     /// </summary>
     /// <returns>The newly created DataTable with an empty row.</returns>
-    private DataTable getDataTableWithEmptyRow()
+    private static DataTable getDataTableWithEmptyRow()
     {
         DataTable mRetVal = new DataTable();
         mRetVal.Columns.Add("ACCT");
@@ -95,13 +90,13 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// <typeparam name="T">The type of the object being retrieved.</typeparam>
     /// <param name="name">The name of the value to retrieved.</param>
     /// <returns></returns>
-    private T getFromCacheOrSession<T>(string name, string forAccount)
+    private static T getFromCacheOrSession<T>(string name, string forAccount)
     {
         if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
         {
             return SessionController.GetFromSession<T>(name);
         }
-        return this.m_CacheController.GetFromCache<T>(m_AnonymousAccount);
+        return m_CacheController.GetFromCache<T>(m_AnonymousAccount);
     }
 
     /// <summary>
@@ -109,7 +104,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// </summary>
     /// <param name="yourDataTable">The DataTable to populate.</param>
     /// <param name="jasonData">The JSON string containing the data.</param>
-    private void populateDataRow(ref DataTable yourDataTable, string jasonData)
+    private static void populateDataRow(ref DataTable yourDataTable, string jasonData)
     {
         string mJsonString = jasonData;
         // Remove unnecessary characters from the JSON string
@@ -129,7 +124,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// <param name="clientChoicesState">MClientChoicesState</param>
     /// <param name="updateContext">bool</param>
     /// <remarks></remarks>
-    public void Save(MClientChoicesState clientChoicesState, bool updateContext)
+    public static void Save(MClientChoicesState clientChoicesState, bool updateContext)
     {
         if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.DefaultProfile();
@@ -137,7 +132,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
         mBClientChoices.Save(clientChoicesState);
         if (updateContext)
         {
-            this.addOrUpdateCacheOrSession(MClientChoices.SessionName, clientChoicesState, clientChoicesState.AccountName);
+            addOrUpdateCacheOrSession(MClientChoices.SessionName, clientChoicesState, clientChoicesState.AccountName);
         }
     }
 
@@ -146,7 +141,7 @@ public class ClientChoicesUtility : IClientChoicesUtility
     /// </summary>
     /// <param name="clientChoicesState">MClientChoicesState</param>
     /// <remarks></remarks>
-    public void Save(MClientChoicesState clientChoicesState)
+    public static void Save(MClientChoicesState clientChoicesState)
     {
         Save(clientChoicesState, true);
     }

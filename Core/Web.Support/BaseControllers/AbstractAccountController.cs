@@ -18,7 +18,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractAccountController : ControllerBase
 {
     protected IAccountService m_AccountService;
-    protected IClientChoicesUtility m_ClientChoicesService;
+    // protected IClientChoicesUtility m_ClientChoicesService;
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";
 
@@ -252,7 +252,7 @@ public abstract class AbstractAccountController : ControllerBase
     public UIAccountChoices GetPreferences()
     {
         MAccountProfile mRequestingProfile = this.getCurrentAccount();
-        MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(mRequestingProfile.Account);
+        MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mRequestingProfile.Account);
         UIAccountChoices mRetVal = new UIAccountChoices(mClientChoicesState);
         return mRetVal;
     }
@@ -319,7 +319,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             var mRefreshToken = Request.Cookies["refreshToken"];
             AuthenticationResponse mAuthenticationResponse = m_AccountService.RefreshToken(mRefreshToken, ipAddress());
-            MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(mAuthenticationResponse.Account);
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAuthenticationResponse.Account);
             setTokenCookie(mAuthenticationResponse.RefreshToken);
             return Ok(mAuthenticationResponse);
         }
@@ -399,8 +399,8 @@ public abstract class AbstractAccountController : ControllerBase
         if(accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower()) 
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
-            MClientChoicesState mDefaultClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState("Anonymous");
-            MClientChoicesState mClientChoicesState = this.m_ClientChoicesService.GetClientChoicesState(accountChoices.Account);
+            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.GetClientChoicesState("Anonymous");
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountChoices.Account);
             mClientChoicesState[MClientChoices.AccountName] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
             mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor ?? mDefaultClientChoicesState[MClientChoices.AlternatingRowBackColor];
@@ -414,7 +414,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityID] = mSecurityEntity.Id.ToString();
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
-            m_ClientChoicesService.Save(mClientChoicesState);
+            ClientChoicesUtility.Save(mClientChoicesState);
             this.m_AccountService.RemmoveFromCacheOrSession(m_AccountService.SessionName, accountChoices.Account);
             SessionController.RemoveAll();
             mRetVal = true;

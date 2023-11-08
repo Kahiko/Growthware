@@ -26,8 +26,6 @@ public class AccountService : IAccountService
 
     private CacheController m_CacheController = CacheController.Instance();
 
-    private IClientChoicesUtility m_ClientChoicesService;
-
     private string s_SessionName = "SessionAccount";
 
     private IHttpContextAccessor m_HttpContextAccessor;
@@ -37,10 +35,9 @@ public class AccountService : IAccountService
     public string SessionName { get { return s_SessionName; } }
 
     [CLSCompliant(false)]
-    public AccountService(IHttpContextAccessor httpContextAccessor, IClientChoicesUtility clientChoicesService)
+    public AccountService(IHttpContextAccessor httpContextAccessor)
     {
         this.m_HttpContextAccessor = httpContextAccessor;
-        this.m_ClientChoicesService = clientChoicesService;
     }
 
     /// <summary>
@@ -527,7 +524,7 @@ public class AccountService : IAccountService
             // save changes to db
             this.Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
             addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
-            this.m_ClientChoicesService.GetClientChoicesState(mAccountProfile.Account, true);
+            ClientChoicesUtility.GetClientChoicesState(mAccountProfile.Account, true);
             
             // generate new jwt
             JwtUtils mJwtUtils = new JwtUtils();
