@@ -2,6 +2,8 @@ using System;
 using System.Data;
 using System.Text.Json;
 using Microsoft.AspNetCore.Http;
+using GrowthWare.Framework.Models;
+using GrowthWare.Web.Support.Utilities;
 
 /// <summary>
 /// SessionController class contains methods for managing session data.
@@ -25,8 +27,24 @@ public static class SessionController
     {
         if (value != null)
         {
-            string mJsonString = JsonSerializer.Serialize(value);
-            m_HttpContextAccessor.HttpContext.Session.SetString(sessionName, mJsonString);
+            try
+            {
+                string mJsonString = JsonSerializer.Serialize(value);
+                m_HttpContextAccessor.HttpContext.Session.SetString(sessionName, mJsonString);
+            }
+            catch (System.Exception ex)
+            {
+                MLoggingProfile mLoggingProfile = new MLoggingProfile();
+                mLoggingProfile.Account = "System";
+                mLoggingProfile.ClassName = "SessionController";
+                mLoggingProfile.Component = "Web.Support";
+                mLoggingProfile.Level = "Error";
+                mLoggingProfile.LogDate = DateTime.Now;
+                mLoggingProfile.MethodName = "AddToSession";
+                mLoggingProfile.Msg = ex.Message;
+                LoggingUtility.Save(mLoggingProfile);
+                throw;
+            }
         }
     }
 
@@ -57,6 +75,15 @@ public static class SessionController
         }
         catch (Exception ex) when (deserializeFilter(ex))
         {
+            MLoggingProfile mLoggingProfile = new MLoggingProfile();
+            mLoggingProfile.Account = "System";
+            mLoggingProfile.ClassName = "SessionController";
+            mLoggingProfile.Component = "Web.Support";
+            mLoggingProfile.Level = "Error";
+            mLoggingProfile.LogDate = DateTime.Now;
+            mLoggingProfile.MethodName = "GetFromSession";
+            mLoggingProfile.Msg = ex.Message;
+            LoggingUtility.Save(mLoggingProfile);
             return default(T);
         }
     }
