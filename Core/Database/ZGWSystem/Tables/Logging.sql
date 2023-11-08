@@ -7,7 +7,7 @@ CREATE TABLE [ZGWSystem].[Logging] (
     [LogSeqId]   INT            IDENTITY (1, 1) NOT NULL,
     [MethodName] VARCHAR (50)   NOT NULL,
     [Msg]        NVARCHAR (MAX) NOT NULL,
-    CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED ([LogDate] ASC)
+    CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED ([LogSeqId] ASC)
 );
 
 
