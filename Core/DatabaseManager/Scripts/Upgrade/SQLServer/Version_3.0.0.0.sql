@@ -1,4 +1,28 @@
 -- Upgrade
+/****** Object:  Table [ZGWSystem].[Logging]    Script Date: 7/4/2022 10:50:33 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND type in (N'U'))
+BEGIN
+	CREATE TABLE [ZGWSystem].[Logging]
+	(
+		[Account] [varchar](128) NOT NULL,
+		[Component] [varchar](50) NOT NULL,
+		[ClassName] [varchar](50) NOT NULL,
+		[Level] [varchar](5) NOT NULL,
+		[LogDate] [datetime] NULL,
+		[LogSeqId] [int] IDENTITY(1,1) NOT NULL,
+		[MethodName] [varchar](50) NOT NULL,
+		[Msg] [nvarchar](max) NOT NULL,
+		CONSTRAINT [CI_ZGWSystem.Logging] UNIQUE CLUSTERED ( [LogDate] ASC )
+		WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+END
+GO
 -- 0 = FALSE 1 = TRUE
 DECLARE @V_Action VARCHAR(256)          = ''
     , @V_Debug int                      = 0

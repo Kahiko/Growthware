@@ -1,4 +1,11 @@
 -- Downgrade
+/****** Start:  Table [ZGWSystem].[Logging] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND type in (N'U'))
+	BEGIN
+		DROP TABLE [ZGWSystem].[Logging]
+	END
+--End IF
+/****** End:  Table [ZGWSystem].[Logging] ******/
 
 /****** Object:  StoredProcedure [ZGWCoreWeb].[Set_Message]    Script Date: 9/24/2023 5:49:41 AM ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND OBJECT_ID = OBJECT_ID('ZGWCoreWeb.Set_Message'))
