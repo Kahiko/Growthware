@@ -21,6 +21,7 @@ namespace GrowthWare.Framework.Models
         /// </summary>
         public MLoggingProfile()
         {
+            LogSeqId = -1;
         }
 
         /// <summary>
@@ -35,6 +36,8 @@ namespace GrowthWare.Framework.Models
             this.Component = base.GetString(dataRow, "Component");
             this.Level = base.GetString(dataRow, "Level");
             this.LogDate = base.GetDateTime(dataRow, "LogDate", DateTime.Now);
+            this.LogSeqId = base.GetInt(dataRow, "LogSeqId");
+            this.MethodName = base.GetString(dataRow, "MethodName");
             this.Msg = base.GetString(dataRow, "Msg");
         }
 
