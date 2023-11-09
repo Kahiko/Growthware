@@ -49,8 +49,6 @@ builder.Services.AddSwaggerGen(c =>
 });
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
-builder.Services.AddSingleton<IAccountUtility, AccountUtility>();
-// builder.Services.AddSingleton<IClientChoicesUtility, ClientChoicesUtility>();
 
 builder.Services.AddSession(options =>
 {

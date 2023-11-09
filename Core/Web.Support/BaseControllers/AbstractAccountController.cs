@@ -16,7 +16,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractAccountController : ControllerBase
 {
-    protected IAccountUtility m_AccountUtility;
+    // protected IAccountUtility m_AccountUtility;
     // protected IClientChoicesUtility m_ClientChoicesService;
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";
@@ -26,10 +26,10 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("Authenticate")]
     public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
     {
-        MAccountProfile mAccountProfile = m_AccountUtility.Authenticate(account, password, ipAddress());
+        MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
         if (mAccountProfile == null)
         {
-            m_AccountUtility.GetAccount("Anonymous", false, true);
+            AccountUtility.GetAccount("Anonymous", false, true);
             return StatusCode(403, "Incorrect account or password");
         }
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
@@ -47,7 +47,7 @@ public abstract class AbstractAccountController : ControllerBase
         // if (mChangePassword. <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
         if(mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
         if(mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
-        string mRetVal = m_AccountUtility.ChangePassword(mChangePassword);
+        string mRetVal = AccountUtility.ChangePassword(mChangePassword);
         return Ok(mRetVal);
     }
 
@@ -75,7 +75,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             if(mSecurityInfo.MayDelete)
             {
-                this.m_AccountUtility.Delete(accountSeqId);
+                AccountUtility.Delete(accountSeqId);
                 HttpContext.Session.Remove("EditId");
                 return Ok(true);
             }
@@ -96,7 +96,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = new MAccountProfile(mRequestingProfile.Id);
         if(account != "new") // Populate from the DB
         {
-            mAccountProfile = this.m_AccountUtility.GetAccount(account, true);
+            mAccountProfile = AccountUtility.GetAccount(account, true);
         }
         if(mSecurityInfo.MayEdit)
         {
@@ -147,7 +147,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns>MAccountProfile</returns>
     private MAccountProfile getCurrentAccount()
     {
-        MAccountProfile mRetVal = m_AccountUtility.GetCurrentAccount();
+        MAccountProfile mRetVal = AccountUtility.GetCurrentAccount();
         mRetVal.Password = string.Empty;
         return mRetVal;
     }
@@ -162,7 +162,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mRetVal = new MAccountProfile();
         if(!String.IsNullOrWhiteSpace(account) && account != "_")
         {
-            mRetVal = m_AccountUtility.GetAccount(account);
+            mRetVal = AccountUtility.GetAccount(account);
         }
         if(mRetVal == null)
         {
@@ -237,11 +237,11 @@ public abstract class AbstractAccountController : ControllerBase
         MenuType mMenuType = (MenuType)menuType;
         if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
         {
-            mRetVal = m_AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
+            mRetVal = AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
         } 
         else 
         {
-            mRetVal = m_AccountUtility.GetMenuItems(this.s_AnonymousAccount, mMenuType);
+            mRetVal = AccountUtility.GetMenuItems(this.s_AnonymousAccount, mMenuType);
         }
 
         return Ok(mRetVal);
@@ -261,11 +261,11 @@ public abstract class AbstractAccountController : ControllerBase
     {
         List<string> mExcludedActions = new List<string>(){"favorite","logoff", "logon"};
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
-        IList<MMenuTree> mMenuItems = m_AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
+        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = m_AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Horizontal);
+        mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Horizontal);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = m_AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
+        mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
         // not the best way b/c this is defined in the DB but it's better than nothing
         foreach(string mAction in mExcludedActions) 
@@ -306,8 +306,8 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     { 
-        this.m_AccountUtility.RemoveMenusFromCacheOrSession(this.getCurrentAccount().Account);
-        SessionController.RemoveFromSession(this.m_AccountUtility.SessionName);
+        AccountUtility.RemoveMenusFromCacheOrSession(this.getCurrentAccount().Account);
+        SessionController.RemoveFromSession(AccountUtility.SessionName);
         ClientChoicesUtility.ClearSession();
         return this.Authenticate(this.s_AnonymousAccount, "none");
     }
@@ -318,7 +318,7 @@ public abstract class AbstractAccountController : ControllerBase
         try
         {
             var mRefreshToken = Request.Cookies["refreshToken"];
-            AuthenticationResponse mAuthenticationResponse = m_AccountUtility.RefreshToken(mRefreshToken, ipAddress());
+            AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
             MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAuthenticationResponse.Account);
             setTokenCookie(mAuthenticationResponse.RefreshToken);
             return Ok(mAuthenticationResponse);
@@ -353,7 +353,7 @@ public abstract class AbstractAccountController : ControllerBase
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MAccountProfile mExistingAccount = m_AccountUtility.GetAccount(accountProfile.Account, true);
+            MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account, true);
             if(mExistingAccount == null) 
             {
                 mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
@@ -379,9 +379,9 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.TimeZone = accountProfile.TimeZone;
             mExistingAccount.UpdatedBy = mRequestingProfile.Id;
             mExistingAccount.UpdatedDate = DateTime.Now;
-            this.m_AccountUtility.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
-            this.m_AccountUtility.RemmoveFromCacheOrSession(m_AccountUtility.SessionName, mExistingAccount.Account);
-            this.m_AccountUtility.RemoveMenusFromCacheOrSession(mExistingAccount.Account);           
+            AccountUtility.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
+            AccountUtility.RemmoveFromCacheOrSession(AccountUtility.SessionName, mExistingAccount.Account);
+            AccountUtility.RemoveMenusFromCacheOrSession(mExistingAccount.Account);           
             mRetVal = true;
         }
         else
@@ -415,7 +415,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
-            this.m_AccountUtility.RemmoveFromCacheOrSession(m_AccountUtility.SessionName, accountChoices.Account);
+            AccountUtility.RemmoveFromCacheOrSession(AccountUtility.SessionName, accountChoices.Account);
             SessionController.RemoveAll();
             mRetVal = true;
         }

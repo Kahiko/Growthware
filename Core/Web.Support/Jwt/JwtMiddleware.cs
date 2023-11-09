@@ -20,7 +20,7 @@ public class JwtMiddleware
     }
 
     [CLSCompliant(false)]
-    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountUtility accountService)
+    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if(token != null)
@@ -29,7 +29,7 @@ public class JwtMiddleware
             if (mAccount != null)
             {
                 // attach account to context on successful jwt validation
-                httpContext.Items["AccountProfile"] = accountService.GetAccount(mAccount);
+                httpContext.Items["AccountProfile"] = AccountUtility.GetAccount(mAccount);
                 MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
                 httpContext.Items["ClientChoicesState"] = mClientChoicesState;
             }
@@ -37,7 +37,7 @@ public class JwtMiddleware
             {
                 if(this.m_AnonymousProfile == null)
                 {
-                    this.m_AnonymousProfile = accountService.GetAccount("Anonymous");
+                    this.m_AnonymousProfile = AccountUtility.GetAccount("Anonymous");
                 }           
                 httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
             }
