@@ -1,5 +1,4 @@
 using GrowthWare.Framework;
-using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -50,7 +49,7 @@ builder.Services.AddSwaggerGen(c =>
 });
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
-builder.Services.AddSingleton<IAccountService, AccountService>();
+builder.Services.AddSingleton<IAccountUtility, AccountUtility>();
 // builder.Services.AddSingleton<IClientChoicesUtility, ClientChoicesUtility>();
 
 builder.Services.AddSession(options =>

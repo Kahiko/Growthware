@@ -14,10 +14,9 @@ using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
-using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.Web.Support.Services;
-public class AccountService : IAccountService
+namespace GrowthWare.Web.Support.Utilities;
+public class AccountUtility : IAccountUtility
 {
     // private MAccountProfile m_CachedAnonymousAccount = null;
     private int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
@@ -32,7 +31,7 @@ public class AccountService : IAccountService
     public string SessionName { get { return s_SessionName; } }
 
     [CLSCompliant(false)]
-    public AccountService()
+    public AccountUtility()
     {
     }
 

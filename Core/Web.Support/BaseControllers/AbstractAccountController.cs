@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
-using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
@@ -17,7 +16,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractAccountController : ControllerBase
 {
-    protected IAccountService m_AccountService;
+    protected IAccountUtility m_AccountService;
     // protected IClientChoicesUtility m_ClientChoicesService;
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";

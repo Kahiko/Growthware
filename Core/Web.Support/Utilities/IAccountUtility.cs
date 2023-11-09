@@ -5,9 +5,9 @@ using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 
-namespace GrowthWare.Web.Support.Services;
+namespace GrowthWare.Web.Support.Utilities;
 
-public interface IAccountService
+public interface IAccountUtility
 {
 
     public string AnonymousAccount{ get; }

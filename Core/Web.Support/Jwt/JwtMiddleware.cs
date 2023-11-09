@@ -3,7 +3,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using GrowthWare.Framework.Models;
-using GrowthWare.Web.Support.Services;
 using GrowthWare.Web.Support.Utilities;
 
 namespace GrowthWare.Web.Support.Jwt;
@@ -21,7 +20,7 @@ public class JwtMiddleware
     }
 
     [CLSCompliant(false)]
-    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountService accountService)
+    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils, IAccountUtility accountService)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if(token != null)
