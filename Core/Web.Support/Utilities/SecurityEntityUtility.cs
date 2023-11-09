@@ -22,7 +22,7 @@ public static class SecurityEntityUtility
         MSecurityEntity mRetProfile = null;
         if (m_HttpContextAccessor != null)
         {
-            MClientChoicesState mClientChoicesState = SessionController.GetFromSession<MClientChoicesState>(MClientChoices.SessionName);
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetCurrentState();
             if (mClientChoicesState != null)
             {
                 int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
