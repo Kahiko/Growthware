@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -28,16 +27,13 @@ public class AccountService : IAccountService
 
     private string s_SessionName = "SessionAccount";
 
-    private IHttpContextAccessor m_HttpContextAccessor;
-
     public string AnonymousAccount { get { return s_AnonymousAccount; } }
 
     public string SessionName { get { return s_SessionName; } }
 
     [CLSCompliant(false)]
-    public AccountService(IHttpContextAccessor httpContextAccessor)
+    public AccountService()
     {
-        this.m_HttpContextAccessor = httpContextAccessor;
     }
 
     /// <summary>
@@ -175,7 +171,7 @@ public class AccountService : IAccountService
     {
         string mRetVal = string.Empty;
         MMessage mMessageProfile = new MMessage();
-        MAccountProfile mAccountProfile = (MAccountProfile)m_HttpContextAccessor.HttpContext.Items["AccountProfile"];
+        MAccountProfile mAccountProfile = SessionController.GetFromSession<MAccountProfile>("AccountProfile");
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         string mCurrentPassword = mAccountProfile.Password;
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
