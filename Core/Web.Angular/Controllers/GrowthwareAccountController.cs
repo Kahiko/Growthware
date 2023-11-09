@@ -12,7 +12,7 @@ public class GrowthwareAccountController : AbstractAccountController
 
     public GrowthwareAccountController(ILogger<GrowthwareAPIController> logger, IAccountUtility accountService)
     {
-        base.m_AccountService = accountService;
+        base.m_AccountUtility = accountService;
         this.m_logger = logger;
     }
 
