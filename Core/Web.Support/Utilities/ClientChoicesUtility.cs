@@ -9,8 +9,6 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class ClientChoicesUtility
 {
-    private static string m_AnonymousAccount = "Anonymous";
-
     private static CacheController m_CacheController = CacheController.Instance();
 
     /// <summary>
@@ -20,12 +18,12 @@ public static class ClientChoicesUtility
     /// <param name="value">The value to add or update.</param>
     private static void addOrUpdateCacheOrSession(string name, object value, string forAccount)
     {
-        if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != MClientChoices.AnonymousClientChoicesState.ToLowerInvariant())
         {
             SessionController.AddToSession(name, value);
             return;
         }
-        m_CacheController.AddToCache(m_AnonymousAccount, value);
+        m_CacheController.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
     }
 
     /// <summary>
@@ -92,11 +90,11 @@ public static class ClientChoicesUtility
     /// <returns></returns>
     private static T getFromCacheOrSession<T>(string name, string forAccount)
     {
-        if (forAccount.ToLowerInvariant() != m_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != MClientChoices.AnonymousClientChoicesState.ToLowerInvariant())
         {
             return SessionController.GetFromSession<T>(name);
         }
-        return m_CacheController.GetFromCache<T>(m_AnonymousAccount);
+        return m_CacheController.GetFromCache<T>(MClientChoices.AnonymousClientChoicesState);
     }
 
     /// <summary>
