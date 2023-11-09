@@ -308,6 +308,7 @@ public abstract class AbstractAccountController : ControllerBase
     { 
         this.m_AccountService.RemoveMenusFromCacheOrSession(this.getCurrentAccount().Account);
         SessionController.RemoveFromSession(this.m_AccountService.SessionName);
+        ClientChoicesUtility.ClearSession();
         return this.Authenticate(this.s_AnonymousAccount, "none");
     }
 
