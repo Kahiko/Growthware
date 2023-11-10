@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, AfterViewInit, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DataService } from '@Growthware/shared/services';
-import { DynamicTableModule, DynamicTableService } from '@Growthware/features/dynamic-table';
+import { DynamicTableBtnMethods, DynamicTableComponent, DynamicTableModule, DynamicTableService } from '@Growthware/features/dynamic-table';
 import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@Growthware/features/search';
 import { LoggingService } from '@Growthware/features/logging';
 import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
@@ -11,6 +11,7 @@ import { INameValuePair } from '@Growthware/shared/models';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
+import { NameValuePairChildDetailComponent } from '../name-value-pair-child-detail/name-value-pair-child-detail.component';
 import { NameValuePairParentDetailComponent } from '../name-value-pair-parent-detail/name-value-pair-parent-detail.component';
 import { MatButtonModule } from '@angular/material/button';
 
@@ -27,7 +28,7 @@ import { MatButtonModule } from '@angular/material/button';
   templateUrl: './manage-name-value-pairs.component.html',
   styleUrls: ['./manage-name-value-pairs.component.scss']
 })
-export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
+export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, OnInit {
 
   private _Subscription: Subscription = new Subscription();
   private _Api_Name: string = 'GrowthwareNameValuePair/';
@@ -40,12 +41,15 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
 
   childConfigurationName = 'SearchNVPDetails';
 
+  @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
+
   parentConfigurationName = 'SearchNameValuePairs';
   _nameValuePairWindowSize: WindowSize = new WindowSize(400, 600);
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
   readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
-  nameValuePairModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
+  nVP_ChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairWindowSize);
+  nVP_ParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
   
   constructor(
     private _DataSvc: DataService,
@@ -58,6 +62,14 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
     this._Api_Nvp_Search = this._Api_Name + 'SearchNameValuePairs';
     this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
     console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
+  }
+
+  ngAfterViewInit(): void {
+    // Setup the dynamic table button methods
+    const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
+    mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => { this.onAddClickNvpDetail(); }
+    this.dynamicTable.setButtonMethods(mDynamicTableBtnMethods);
+    this.dynamicTable.rowDoubleClickBackMethod = (rowNumber: number) => { this.onEditNvpChild(rowNumber); };
   }
 
   ngOnDestroy(): void {
@@ -106,16 +118,28 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
 
   onAddClickNvpParent(): void {
     this._NameValuePairService.setNameValuePairParrentRow(new NvpParentProfile());
-    this.nameValuePairModalOptions.headerText = 'Add NVP';
-    this._ModalSvc.open(this.nameValuePairModalOptions);    
+    this.nVP_ParentModalOptions.headerText = 'Add NVP';
+    this._ModalSvc.open(this.nVP_ParentModalOptions);    
+  }
+
+  onAddClickNvpDetail(): void {
+    this.nVP_ChildModalOptions.headerText = 'Add NVP Detail';
+    this._ModalSvc.open(this.nVP_ChildModalOptions);
   }
 
   onEditClickNvpParent(rowIndex: number): void {
     this.activeParrentRowIndex = rowIndex;
     this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
-    this.nameValuePairModalOptions.headerText = 'Edit NVP';
-    this._ModalSvc.open(this.nameValuePairModalOptions);
+    this.nVP_ParentModalOptions.headerText = 'Edit NVP';
+    this._ModalSvc.open(this.nVP_ParentModalOptions);
   }
+
+  onEditNvpChild(rowIndex: number): void {
+    // this.activeParrentRowIndex = rowIndex;
+    // this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
+    this.nVP_ChildModalOptions.headerText = 'Edit NVP Detail';
+    this._ModalSvc.open(this.nVP_ChildModalOptions);
+  }  
 
   onRowClickNvpParent(rowIndex: number): void {
     this.activeParrentRowIndex = rowIndex;
