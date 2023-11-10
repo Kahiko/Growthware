@@ -16,8 +16,6 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractAccountController : ControllerBase
 {
-    // protected IAccountUtility m_AccountUtility;
-    // protected IClientChoicesUtility m_ClientChoicesService;
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";
 
