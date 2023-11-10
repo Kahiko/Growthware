@@ -12,6 +12,12 @@ namespace GrowthWare.DatabaseManager
     {
         private static Version m_DesiredVersion = null;
 
+        /// <summary>
+        /// Retrieves the value of the specified command line argument.
+        /// </summary>
+        /// <param name="args">An array of command line arguments.</param>
+        /// <param name="name">The name of the argument to retrieve.</param>
+        /// <returns>The value of the specified argument, or null if the argument was not found.</returns>
         private static string getArgument(string[] args, string name)
         {
             string mRetVal = null;
@@ -27,6 +33,10 @@ namespace GrowthWare.DatabaseManager
             return mRetVal;
         }
 
+        /// <summary>
+        /// Main entry point for the application.
+        /// </summary>
+        /// <param name="args">Command line arguments.</param>
         static void Main(string[] args)
         {
             if (args == null || args.Length == 0) // Check for null array
@@ -180,6 +190,9 @@ namespace GrowthWare.DatabaseManager
             Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);
         }
 
+        /// <summary>
+        /// Displays the help information.
+        /// </summary>
         private static void showHelp()
         {
             string mTab = "    ";
