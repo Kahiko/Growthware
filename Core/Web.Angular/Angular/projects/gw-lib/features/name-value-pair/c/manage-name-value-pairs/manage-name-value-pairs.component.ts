@@ -36,6 +36,8 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   private _SearchCriteriaNVP!: SearchCriteriaNVP;
   private _NameValuePairParentDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
 
+  activeParrentRowIndex: number = 0;
+
   childConfigurationName = 'SearchNVPDetails';
 
   parentConfigurationName = 'SearchNameValuePairs';
@@ -109,12 +111,14 @@ export class ManageNameValuePairsComponent implements OnDestroy, OnInit {
   }
 
   onEditClickNvpParent(rowIndex: number): void {
+    this.activeParrentRowIndex = rowIndex;
     this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
     this.nameValuePairModalOptions.headerText = 'Edit NVP';
     this._ModalSvc.open(this.nameValuePairModalOptions);
   }
 
   onRowClickNvpParent(rowIndex: number): void {
+    this.activeParrentRowIndex = rowIndex;
     this._NameValuePairService.setNameValuePairDetailRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
     this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].NVPSeqId.toString();
     // Set the search child criteria to initiate search criteria changed subject

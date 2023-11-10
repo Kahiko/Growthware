@@ -24,7 +24,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let row of nameValuePairParentData$ | async; let rowIndex=index;">
+                    <tr *ngFor="let row of nameValuePairParentData$ | async; let rowIndex=index;" [ngClass]="{ 'background-highlight': activeParrentRowIndex === rowIndex }">
                         <td>
                             <i (click)="onEditClickNvpParent(rowIndex)" id="editIcon_NvpParent" class="Form_Button_Icon material-icons" style="cursor: pointer;">edit</i>
                         </td>
