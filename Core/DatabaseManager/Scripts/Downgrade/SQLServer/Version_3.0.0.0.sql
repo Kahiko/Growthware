@@ -1,4 +1,19 @@
 -- Downgrade
+
+/****** Start:  Procedure [ZGWSystem].[Get_Log] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSystem].[Get_Log]') AND type in (N'P', N'PC'))
+	BEGIN
+		DROP PROCEDURE ZGWSystem.Get_Log;
+	END
+--End If
+/****** End:  Procedure [ZGWSystem].[Get_Log] ******/
+/****** Start:  Procedure [ZGWSystem].[Set_Log] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSystem].[Set_Log]') AND type in (N'P', N'PC'))
+	BEGIN
+		DROP PROCEDURE ZGWSystem.Set_Log;
+	END
+--End If
+/****** End:  Procedure [ZGWSystem].[Set_Log] ******/
 /****** Start:  Table [ZGWSystem].[Logging] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND type in (N'U'))
 	BEGIN

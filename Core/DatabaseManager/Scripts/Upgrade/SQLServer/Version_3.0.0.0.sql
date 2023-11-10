@@ -1,5 +1,5 @@
 -- Upgrade
-/****** Object:  Table [ZGWSystem].[Logging]    Script Date: 7/4/2022 10:50:33 AM ******/
+/****** Start: Table [ZGWSystem].[Logging] ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -23,6 +23,150 @@ BEGIN
 	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSystem].[DF_ZGWSystem.Logging_LogDate]') AND type = 'D')
+BEGIN
+	ALTER TABLE [ZGWSystem].[Logging] ADD  CONSTRAINT [DF_ZGWSystem.Logging_LogDate]  DEFAULT (getdate()) FOR [LogDate]
+END
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.indexes
+WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Logging]') AND name = N'NC_ZGWSystem_Logging_LogDate_Level')
+CREATE NONCLUSTERED INDEX [NC_ZGWSystem_Logging_LogDate_Level] ON [ZGWSystem].[Logging]
+(
+	[LogDate] ASC,
+	[Level] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWCoreWeb].[DF_ZGWCoreWeb_Messages_Format_As_HTML]') AND type = 'D')
+BEGIN
+	ALTER TABLE [ZGWCoreWeb].[Messages] ADD  CONSTRAINT [DF_ZGWCoreWeb_Messages_Format_As_HTML]  DEFAULT ((0)) FOR [Format_As_HTML]
+END
+GO
+/****** End: Table [ZGWSystem].[Logging] ******/
+/****** Start: StoredProcedure [ZGWSystem].[Get_Log] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Get_Log]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Log] AS'
+END
+GO
+
+/*
+Usage:
+    DECLARE
+		@P_LogSeqId int = 1
+
+	exec ZGWSystem.Get_Log @P_LogSeqId
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 07/04/2022
+-- Description:	Retrievs a row from the [ZGWSystem].[Logging]
+-- =============================================
+ALTER PROCEDURE [ZGWSystem].[Get_Log]
+	@P_LogSeqId int,
+	@P_StartDate VARCHAR(10) = NULL,
+	@P_EndDate VARCHAR(10) = NULL
+AS
+    SET NOCOUNT ON;
+    SELECT TOP 1
+	[Account]
+        , [Component]
+        , [ClassName]
+        , [Level]
+        , [LogDate]
+        , [LogSeqId]
+        , [MethodName]
+        , [Msg]
+FROM
+	[ZGWSystem].[Logging] WITH(NOLOCK)
+WHERE
+		[LogSeqId] = @P_LogSeqId;
+
+    RETURN 0;
+
+GO
+/****** End: StoredProcedure [ZGWSystem].[Get_Log] ******/
+/****** Start: StoredProcedure [ZGWSystem].[Set_Log] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSystem].[Set_Log]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_Log] AS'
+END
+GO
+/*
+Usage:
+    DECLARE
+        @P_Account       VARCHAR (128) 	  = 'System'
+        , @P_Component     VARCHAR (50)   = 'UI'
+        , @P_ClassName     VARCHAR (50)   = 'TestClass'
+        , @P_Level         VARCHAR (5)    = 'Debug'
+        , @P_MethodName    VARCHAR (50)   = 'TestMethod'
+        , @P_Msg           NVARCHAR (MAX) = 'Just testing'
+        , @P_Primary_Key int
+
+    EXEC [ZGWSystem].[Set_Log]
+            @P_Account
+            , @P_Component
+            , @P_ClassName
+            , @P_Level
+            , @P_MethodName
+            , @P_Msg
+            , @P_Primary_Key OUTPUT
+    PRINT @P_Primary_Key
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 07/04/2022
+-- Description:	Inserts a row into the [ZGWSystem].[Logging] table
+--	ZGWSystem.Get_Log
+-- =============================================
+ALTER PROCEDURE [ZGWSystem].[Set_Log]
+	@P_Account       VARCHAR (128),
+	@P_Component     VARCHAR (50),
+	@P_ClassName     VARCHAR (50),
+	@P_Level         VARCHAR (5),
+	@P_MethodName    VARCHAR (50),
+	@P_Msg           NVARCHAR (MAX),
+	@P_Primary_Key int OUTPUT
+AS
+    SET NOCOUNT ON;
+    INSERT [ZGWSystem].[Logging](
+		[Account]
+		, [Component]
+		, [ClassName]
+		, [Level]
+		, [LogDate]
+		, [MethodName]
+		, [Msg]
+	)VALUES(
+		@P_Account
+        , @P_Component
+        , @P_ClassName
+        , @P_Level
+        , GETDATE()
+        , @P_MethodName
+        , @P_Msg
+    )
+    SELECT @P_Primary_Key = SCOPE_IDENTITY()-- Get the IDENTITY value for the row just inserted.
+    RETURN 0;
+
+GO
+/****** End: StoredProcedure [ZGWSystem].[Set_Log] ******/
 -- 0 = FALSE 1 = TRUE
 DECLARE @V_Action VARCHAR(256)          = ''
     , @V_Debug int                      = 0
