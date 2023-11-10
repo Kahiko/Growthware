@@ -317,7 +317,6 @@ public abstract class AbstractAccountController : ControllerBase
         {
             var mRefreshToken = Request.Cookies["refreshToken"];
             AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAuthenticationResponse.Account);
             setTokenCookie(mAuthenticationResponse.RefreshToken);
             return Ok(mAuthenticationResponse);
         }
