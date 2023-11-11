@@ -29,18 +29,18 @@ public class JwtMiddleware
             if (mAccount != null)
             {
                 // attach account to context on successful jwt validation
-                httpContext.Items["AccountProfile"] = AccountUtility.GetAccount(mAccount);
+                SessionController.AddToSession(AccountUtility.SessionName, AccountUtility.GetAccount(mAccount));
                 MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount);
                 httpContext.Items["ClientChoicesState"] = mClientChoicesState;
             }
-            else
-            {
-                if(this.m_AnonymousProfile == null)
-                {
-                    this.m_AnonymousProfile = AccountUtility.GetAccount("Anonymous");
-                }           
-                httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
-            }
+            // else
+            // {
+            //     if(this.m_AnonymousProfile == null)
+            //     {
+            //         this.m_AnonymousProfile = AccountUtility.GetAccount("Anonymous");
+            //     }           
+            //     httpContext.Items["AccountProfile"] = this.m_AnonymousProfile;
+            // }
         }
         await _next(httpContext);
     }
