@@ -115,6 +115,7 @@ public static class AccountUtility
             mRetVal.FailedAttempts = 0;
             mRetVal.LastLogOn = DateTime.Now;
             Save(mRetVal, true, false, false);
+            ClientChoicesUtility.GetClientChoicesState(mRetVal.Account, true);
             mRetVal.Password = ""; // Don't want to ever send the password out
         }
         return mRetVal;
