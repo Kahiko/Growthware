@@ -45,7 +45,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     [AllowAnonymous]
     [HttpGet("GetProfile")]
     public ActionResult<MSecurityEntity> GetProfile(int securityEntitySeqId) {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         if(mRequestingProfile.IsSystemAdmin)
         {
             MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
@@ -69,7 +69,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     private MSecurityInfo getSecurityInfo(string action)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         return mSecurityInfo;
@@ -96,7 +96,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     [HttpGet("GetValidSecurityEntities")]
     public ActionResult<List<UIValidSecurityEntity>> GetValidSecurityEntities()
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         if(mRequestingProfile.Account.ToLower() == "anonymous" && mRequestingProfile.Status != (int) SystemStatus.Active)
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
@@ -120,7 +120,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
         if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
         {
-            MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
             if(securityEntity.Id == -1)
             {

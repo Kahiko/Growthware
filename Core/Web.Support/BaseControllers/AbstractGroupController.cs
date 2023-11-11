@@ -19,7 +19,7 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpPost("DeleteGroup")]
     public ActionResult<bool> DeleteGroup(int groupSeqId)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -43,7 +43,7 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpGet("GetGroupForEdit")]
     public ActionResult<UIGroupProfile> GetGroupForEdit(int groupSeqId)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -68,7 +68,7 @@ public abstract class AbstractGroupController : ControllerBase
     [HttpPost("SaveGroup")]
     public ActionResult<UIGroupProfile> SaveGroup(UIGroupProfile groupProfile)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);

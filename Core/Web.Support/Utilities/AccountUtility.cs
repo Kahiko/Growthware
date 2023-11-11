@@ -2,46 +2,45 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Globalization;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Text;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
+using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
-    private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
-    private static string s_AnonymousAccount = "Anonymous";
-
+    private static string s_Anonymous = "Anonymous";
+    private static string s_CachedName = "CachedAnonymous";
     private static CacheController m_CacheController = CacheController.Instance();
-
+    private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private static string s_SessionName = "SessionAccount";
 
-    public static string AnonymousAccount { get { return s_AnonymousAccount; } }
+    public static string AnonymousAccount { get { return s_Anonymous; } }
 
     public static string SessionName { get { return s_SessionName; } }
 
     /// <summary>
     /// Adds or updates a value in the cache or session.
     /// </summary>
-    /// <param name="name">The name of the value to add or update.</param>
-    /// <param name="value">The value to add or update.</param>
-    private static void addOrUpdateCacheOrSession(string name, object value, string forAccount)
+    /// <param name="forAccount"></param>
+    /// <param name="value"></param>
+    private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
     {
-        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
         {
-            SessionController.AddToSession(name, value);
+            SessionController.AddToSession(sessionName, value);
             return;
         }
-        m_CacheController.AddToCache(name, value);
+        m_CacheController.AddToCache(s_CachedName, value);
     }
 
     /// <summary>
@@ -50,109 +49,75 @@ public static class AccountUtility
     /// <param name="account"></param>
     /// <param name="password"></param>
     /// <param name="ipAddress"></param>
-    /// <returns>MAccountProfile if authenticated null if not authenticated</returns>
+    /// <returns>MAccountProfile or null</returns>
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
+        /*
+         *  1.) Don't save the anonymous account
+         *  2.) Ensure the account exists
+         *  3.) Check account Status
+         *  4.) Retrieve the account from the database
+         *  5.) Determine authentication method (Password or LDAP)
+         *      a.) LDAP or Proprietary authentication
+         *  6.) If authentication is successful
+         *      a.) Set the tokens on the returned profile
+         *      b.) Set LastLogOn
+         *      c.) Set FailedAttempts = 0
+         *  7.) If authentication is not successful
+         *      a.) Set FailedAttempts++
+         *          1.) If FailedAttempts >= MaxFailedAttempts then Set Status = (int)SystemStatus.Disabled
+         */
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
-        string mRequestedAccount = account;  // It's good practice to leave parameters unchanged.
-        bool mAuthenticated = false;
-        bool mIsAnonymous = false;
-        bool mIsDomainAccount = false;
-        int mDomainPos = account.IndexOf(@"\", StringComparison.OrdinalIgnoreCase);
-        bool mForceDb = true;
-        if (mDomainPos != -1)
+        string mAccount = account;  // It's good practice to leave parameters unchanged.
+        bool mIsAuthenticated = false;
+        MAccountProfile mRetVal = null;
+        // No need to save the anonymous account
+        if (account.ToLowerInvariant() == s_Anonymous.ToLowerInvariant())
         {
-            mIsDomainAccount = true;
-            mRequestedAccount = account.Substring(mDomainPos + 1, account.Length - mDomainPos - 1);
+            mRetVal = getAccountProfile(s_Anonymous);
+            return mRetVal;
         }
-        mIsAnonymous = mRequestedAccount.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant();
-        if (mIsAnonymous)
+        mRetVal = getAccountProfile(account, true);
+        if (mRetVal == null)
         {
-            mForceDb = false;
-            mAuthenticated = true;
+            return mRetVal;
         }
-        MAccountProfile mAccountProfile = GetAccount(mRequestedAccount, mForceDb, !mIsAnonymous);
-        if (!mIsAnonymous)
+        if (!m_InvalidStatus.Contains(mRetVal.Status))
         {
-            if (!m_InvalidStatus.Contains(mAccountProfile.Status))
+            if (ConfigSettings.AuthenticationType.ToLowerInvariant() == "internal")
             {
-                // the account is not in an invalid status
-                if (!mIsDomainAccount && ConfigSettings.AuthenticationType.ToUpper(CultureInfo.InvariantCulture) == "INTERNAL")
+                // Proprietary authentication
+                string mProfilePassword = string.Empty;
+                CryptoUtility.TryDecrypt(mRetVal.Password, out mProfilePassword, ConfigSettings.EncryptionType);
+                mIsAuthenticated = password == mProfilePassword;
+                if (mIsAuthenticated)
                 {
-                    // proprietary authentication
-                    string mProfilePassword = string.Empty;
-                    CryptoUtility.TryDecrypt(mAccountProfile.Password, out mProfilePassword, ConfigSettings.EncryptionType);
-                    mAuthenticated = password == mProfilePassword;
-                    if (mAuthenticated)
-                    {
-                        mAuthenticated = mAccountProfile.FailedAttempts < 4 && mAccountProfile.Status != (int)SystemStatus.Disabled;
-                    }
-                }
-                else
-                {
-                    // TODO: LDAP authentication
+                    mIsAuthenticated = mRetVal.FailedAttempts < ConfigSettings.FailedAttempts + 1 && mRetVal.Status != (int)SystemStatus.Disabled;
                 }
             }
-        }
-        if (mAuthenticated)
-        {
+            else
+            {
+                // TODO: Add LDAP authentication
+            }
+            if (!mIsAuthenticated)
+            {
+                mRetVal.FailedAttempts++;
+                if (mRetVal.FailedAttempts >= ConfigSettings.FailedAttempts + 1)
+                {
+                    mRetVal.Status = (int)SystemStatus.Disabled;
+                }
+                Save(mRetVal, true, false, false);
+                return null;
+            }
             // setup tokens, claims and what not
-            mAccountProfile = setTokens(mAccountProfile, ipAddress);
-            mAccountProfile.FailedAttempts = 0;
-            if (!mIsAnonymous) { mAccountProfile.LastLogOn = DateTime.Now; }
-            Save(mAccountProfile, true, false, false);
-            mAccountProfile.Password = ""; // Don't want to ever send the password out
+            mRetVal = setTokens(mRetVal, ipAddress);
+            mRetVal.FailedAttempts = 0;
+            mRetVal.LastLogOn = DateTime.Now;
+            Save(mRetVal, true, false, false);
+            mRetVal.Password = ""; // Don't want to ever send the password out
         }
-        else
-        {
-            // return null
-            mAccountProfile.FailedAttempts += 1;
-            if (mAccountProfile.FailedAttempts > 3 && mAccountProfile.Status != (int)SystemStatus.Disabled)
-            {
-                mAccountProfile.Status = (int)SystemStatus.Disabled;
-            }
-            Save(mAccountProfile, true, false, false);
-            mAccountProfile = null;
-        }
-        return mAccountProfile;
-    }
-
-    /// <summary>
-    /// Sets the tokens for the provided account profile and IP address.
-    /// </summary>
-    /// <param name="accountProfile">The account profile to set the tokens for.</param>
-    /// <param name="ipAddress">The IP address associated with the tokens.</param>
-    /// <returns>The updated account profile with the tokens set.</returns>
-    private static MAccountProfile setTokens(MAccountProfile accountProfile, string ipAddress)
-    {
-        MAccountProfile mAccountProfile = accountProfile;
-        mAccountProfile.FailedAttempts = 0;
-        mAccountProfile.LastLogOn = DateTime.Now;
-        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
-        var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
-
-        var claims = new List<Claim>
-            {
-                new Claim("account", mAccountProfile.Account), 
-                // new Claim(ClaimTypes.Role, "Manager") 
-            };
-
-        var tokeOptions = new JwtSecurityToken(
-            issuer: "https://localhost:5001",
-            audience: "https://localhost:5001",
-            claims: claims,
-            expires: DateTime.Now.AddMinutes(5),
-            signingCredentials: signingCredentials
-        );
-        mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
-
-        var mJwtToken = generateJwtToken(mAccountProfile);
-        var mRefreshToken = generateRefreshToken(ipAddress);
-        mRefreshToken.AccountSeqId = mAccountProfile.Id;
-        mAccountProfile.Token = mJwtToken;
-        mAccountProfile.RefreshTokens.Add(mRefreshToken);
-        return mAccountProfile;
+        return mRetVal;
     }
 
     /// <summary>
@@ -182,7 +147,6 @@ public static class AccountUtility
                 try
                 {
                     Save(mAccountProfile, false, false, false);
-                    addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
                     mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
@@ -208,7 +172,6 @@ public static class AccountUtility
                 try
                 {
                     Save(mAccountProfile, false, false, false);
-                    addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
                     mMessageProfile = MessageUtility.GetProfile("SuccessChangePassword");
                 }
                 catch (System.Exception)
@@ -225,13 +188,16 @@ public static class AccountUtility
         mRetVal = mMessageProfile.Body;
         return mRetVal;
     }
-
+    
     /// <summary>
     /// Deletes an account with the specified accountSeqId.
     /// </summary>
     /// <param name="accountSeqId"></param>
     public static void Delete(int accountSeqId)
     {
+        // TODO: It may be worth being able to get an account from the Id so we can get the name
+        // and remove the any in memory information for the account.
+        // This is not necessary for now b/c you can't delete the your own account.
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         mBAccount.Delete(accountSeqId);
     }
@@ -256,21 +222,6 @@ public static class AccountUtility
         };
         var mToken = mJwtSecurityTokenHandler.CreateToken(mSecurityTokenDescriptor);
         return mJwtSecurityTokenHandler.WriteToken(mToken);
-    }
-
-    /// <summary>
-    /// Generates a reset token.
-    /// </summary>
-    /// <returns></returns>
-    private static string generateResetToken()
-    {
-        // token is a cryptographically strong random sequence of values
-        var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        if (RefreshTokenExists(mToken))
-        {
-            generateResetToken();
-        }
-        return mToken;
     }
 
     /// <summary>
@@ -300,73 +251,22 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Generates a verification token.
-    /// </summary>
-    /// <returns></returns>
-    private static string generateVerificationToken()
-    {
-        // token is a cryptographically strong random sequence of values
-        var mToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
-        if (verificationTokenExists(mToken))
-        {
-            generateVerificationToken();
-        }
-        return mToken;
-    }
-
-    /// <summary>
-    /// Populates and returns a MAccountProfile if found in the DB
+    /// Returns a MAccountProfile given the account.
     /// </summary>
     /// <param name="account"></param>
     /// <returns>MAccountProfile or null</returns>
-    public static MAccountProfile GetAccount(String account, bool forceDb = false, bool updateSession = false)
+    public static MAccountProfile GetAccount(string account, bool forceDb = false)
     {
-        if (String.IsNullOrEmpty(account)) throw new ArgumentException("account can not be null or empty", account);
-        MAccountProfile mRetVal = null;
-        BAccounts mBAccount = null;
-        string mSessionNameToUse = s_SessionName;
-        if (account.ToLowerInvariant() == s_AnonymousAccount.ToLowerInvariant())
+        MAccountProfile mRetVal = CurrentProfile;
+        bool mAddToSessionOrCache = mRetVal == null;
+        if (mRetVal == null || (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant()))
         {
-            mSessionNameToUse = s_AnonymousAccount;
-        }
-        try
-        {
-            if (forceDb)
+            mRetVal = getAccountProfile(account, true);
+            if (mAddToSessionOrCache && mRetVal != null)
             {
-                mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                mRetVal = mBAccount.GetProfile(account);
-                if (!String.IsNullOrWhiteSpace(mRetVal.Account))
-                {
-                    if (updateSession)
-                    {
-                        addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
-                    }
-                }
-                else
-                {
-                    mRetVal = null;
-                }
+                // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+                addOrUpdateCacheOrSession(account, mRetVal);
             }
-            else
-            {
-                mRetVal = getFromCacheOrSession<MAccountProfile>(mSessionNameToUse, mSessionNameToUse);
-                if (mRetVal == default)
-                {
-                    mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                    mRetVal = mBAccount.GetProfile(account);
-                    addOrUpdateCacheOrSession(mSessionNameToUse, mRetVal, mSessionNameToUse);
-                }
-            }
-        }
-        catch (InvalidOperationException)
-        {
-            String mMSG = "Account not find account: " + account + " in the database";
-            Logger.Instance().Error(mMSG);
-        }
-        catch (IndexOutOfRangeException)
-        {
-            String mMSG = "Account not find account: " + account + " in the database";
-            Logger.Instance().Error(mMSG);
         }
         return mRetVal;
     }
@@ -400,39 +300,64 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Retrieves an account profile based on the given reset token.
+    /// Attempts to return the account from session or cache the stored value account is not equal to the requestd account
+    /// the value will be retrieved from the database.
     /// </summary>
-    /// <param name="token"></param>
-    /// <returns>An instance of MAccountProfile representing the account profile associated with the reset token.</returns>
-    /// <exception cref="ArgumentException"></exception>
-    private static MAccountProfile getAccountByResetToken(string token)
+    /// <param name="account"></param>
+    /// <param name="forceDb"></param>
+    /// <returns>MAccountProfile or null</returns>
+    private static MAccountProfile getAccountProfile(string account, bool forceDb = false)
     {
-        if (String.IsNullOrEmpty(token))
-        {
-            throw new ArgumentException("token can not be null or empty", token);
-        }
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
-        mRetVal = mBAccount.GetProfileByResetToken(token);
+        BAccounts mBAccount = null;
+        bool mAddToSessionOrCache = false;
+        if (forceDb)
+        {
+            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mRetVal = mBAccount.GetProfile(account);
+        }
+        else
+        {
+            mRetVal = CurrentProfile;
+            mAddToSessionOrCache = mRetVal == null;
+            if (mRetVal == null || (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant()))
+            {
+                mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+                mRetVal = mBAccount.GetProfile(account);
+            }
+        }
+        if (mAddToSessionOrCache && mRetVal != null)
+        {
+            // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+            addOrUpdateCacheOrSession(account, mRetVal);
+        }
         return mRetVal;
     }
 
     /// <summary>
     /// Retrieves the current account profile.
     /// </summary>
-    /// <returns>An instance of MAccountProfile representing the current account profile.</returns>
-    public static MAccountProfile GetCurrentAccount()
+    /// <returns>MAccountProfile</returns>
+    public static MAccountProfile CurrentProfile
     {
-        MAccountProfile mRetVal = SessionController.GetFromSession<MAccountProfile>(s_SessionName);
-        if (mRetVal == null)
+        get
         {
-            mRetVal = GetAccount("Anonymous");
-            if (mRetVal == null)
+            /*
+             *  1.) Attempt to get account from session
+             *  2.) Attempt to get account from cache if the return value is null
+             *  3.) If the return value is null the get the Anonymous account from the DB
+             *      and add it to cache.
+             */
+            // getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
+            MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(s_Anonymous);
+            if (mRetVal == null) 
             {
-                mRetVal = GetAccount("Anonymous", true);
+                mRetVal = getAccountProfile(s_Anonymous, true);
+                // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+                addOrUpdateCacheOrSession(s_Anonymous, mRetVal);
             }
+            return mRetVal;
         }
-        return mRetVal;
     }
 
     /// <summary>
@@ -441,13 +366,13 @@ public static class AccountUtility
     /// <typeparam name="T">The type of the object being retrieved.</typeparam>
     /// <param name="name">The name of the value to retrieved.</param>
     /// <returns></returns>
-    private static T getFromCacheOrSession<T>(string name, string forAccount)
+    private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
     {
-        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
         {
-            return SessionController.GetFromSession<T>(name);
+            return SessionController.GetFromSession<T>(sessionName);
         }
-        return m_CacheController.GetFromCache<T>(name);
+        return m_CacheController.GetFromCache<T>(s_CachedName);
     }
 
     /// <summary>
@@ -462,7 +387,8 @@ public static class AccountUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
         string mMenuName = menuType.ToString() + "_" + account + "_Menu";
-        mRetVal = getFromCacheOrSession<IList<MMenuTree>>(mMenuName, account);
+        // getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
+        mRetVal = getFromCacheOrSession<IList<MMenuTree>>(account, mMenuName);
         if (mRetVal != default)
         {
             return mRetVal;
@@ -479,26 +405,9 @@ public static class AccountUtility
                 mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
             }
         }
-        addOrUpdateCacheOrSession(mMenuName, mRetVal, account);
+        // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+        addOrUpdateCacheOrSession(account, mRetVal, mMenuName);
         return mRetVal;
-    }
-
-    /// <summary>
-    /// Rotates the refresh token for the given user.
-    /// </summary>
-    /// <param name="refreshToken">The current refresh token.</param>
-    /// <param name="ipAddress">The IP address of the user.</param>
-    /// <returns>The new refresh token.</returns>
-    private static MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
-    {
-        // Generate a new refresh token
-        var newRefreshToken = generateRefreshToken(ipAddress);
-
-        // Revoke the old refresh token and replace it with the new token
-        revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
-
-        // Return the new refresh token
-        return newRefreshToken;
     }
 
     /// <summary>
@@ -506,20 +415,20 @@ public static class AccountUtility
     /// </summary>
     /// <param name="token">The refresh token.</param>
     /// <param name="ipAddress">The IP address of the user.</param>
-    /// <returns></returns>
+    /// <returns>AuthenticationResponse or null</returns>
     public static AuthenticationResponse RefreshToken(string token, string ipAddress)
     {
         try
         {
             MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
-            MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
             MRefreshToken refreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
 
             if (refreshToken.IsRevoked())
             {
                 // revoke all descendant tokens in case this token has been compromised
                 revokeDescendantRefreshTokens(refreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-                Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
+                Save(mAccountProfile, true, false, false);
+                return null;
             }
             if (!refreshToken.IsActive()) throw new WebSupportException("Invalid token");
             // replace old refresh token with a new one (rotate token)
@@ -530,8 +439,7 @@ public static class AccountUtility
             removeOldRefreshTokens(mAccountProfile);
 
             // save changes to db
-            Save(mAccountProfile, true, false, false, mSecurityEntityProfile);
-            addOrUpdateCacheOrSession(s_SessionName, mAccountProfile, mAccountProfile.Account);
+            Save(mAccountProfile, true, false, false);
             ClientChoicesUtility.GetClientChoicesState(mAccountProfile.Account, true);
 
             // generate new jwt
@@ -563,45 +471,43 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes the specified name from the cache or session.
+    /// Removes an object from either the cache or the session, based on the given `forAccount`.
     /// </summary>
-    /// <param name="name">The name to remove from the cache or session.</param>
-    public static void RemmoveFromCacheOrSession(string name, string forAccount)
+    /// <param name="forAccount"></param>
+    /// <param name="sessionName">Optional if not specified the default value is "SessionAccount"</param>
+    public static void RemmoveFromCacheOrSession(string forAccount, string sessionName = "SessionAccount")
     {
-        if (forAccount.ToLowerInvariant() != s_AnonymousAccount.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
         {
-            SessionController.RemoveFromSession(name);
+            SessionController.RemoveFromSession(s_SessionName);
             return;
         }
-        m_CacheController.RemoveFromCache(name);
+        m_CacheController.RemoveFromCache(s_CachedName);
     }
 
     /// <summary>
-    /// Removes the menus from cache or session for a specific account.
+    /// Removes account and menu information from the session for the given account.
     /// </summary>
-    /// <param name="forAccount">The account for which to remove the menus.</param>
-    public static void RemoveMenusFromCacheOrSession(string forAccount)
+    /// <param name="forAccount"></param>
+    public static void RemoveInMemoryInformation(string forAccount) 
     {
+        RemmoveFromCacheOrSession(forAccount);
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
             string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
-            RemmoveFromCacheOrSession(mMenuName, forAccount);
-        }
+            RemmoveFromCacheOrSession(forAccount, mMenuName);
+        }        
     }
 
     /// <summary>
-    /// Revokes a refresh token.
+    /// Removes old refresh tokens from the given MAccountProfile.
     /// </summary>
-    /// <param name="token">The refresh token to revoke.</param>
-    /// <param name="ipAddress">The IP address of the user revoking the token.</param>
-    /// <param name="reason">The reason for revoking the token. (optional)</param>
-    /// <param name="replacedByToken">The token that replaces the revoked token. (optional)</param>
-    private static void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
+    /// <param name="account"></param>
+    private static void removeOldRefreshTokens(MAccountProfile account)
     {
-        token.Revoked = DateTime.UtcNow;
-        token.RevokedByIp = ipAddress;
-        token.ReasonRevoked = reason;
-        token.ReplacedByToken = replacedByToken;
+        account.RefreshTokens.RemoveAll(x =>
+            !x.IsActive() &&
+            x.Created.AddDays(ConfigSettings.RefreshTokenTTL) <= DateTime.UtcNow);
     }
 
     /// Recursively traverses the refresh token chain and ensures all descendants are revoked.
@@ -624,32 +530,36 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes old refresh tokens from the given MAccountProfile.
+    /// Revokes a refresh token.
     /// </summary>
-    /// <param name="account"></param>
-    private static void removeOldRefreshTokens(MAccountProfile account)
+    /// <param name="token">The refresh token to revoke.</param>
+    /// <param name="ipAddress">The IP address of the user revoking the token.</param>
+    /// <param name="reason">The reason for revoking the token. (optional)</param>
+    /// <param name="replacedByToken">The token that replaces the revoked token. (optional)</param>
+    private static void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
     {
-        account.RefreshTokens.RemoveAll(x =>
-            !x.IsActive() &&
-            x.Created.AddDays(ConfigSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        token.Revoked = DateTime.UtcNow;
+        token.RevokedByIp = ipAddress;
+        token.ReasonRevoked = reason;
+        token.ReplacedByToken = replacedByToken;
     }
 
     /// <summary>
-    /// Inserts or updates account information
+    /// Rotates the refresh token for the given user.
     /// </summary>
-    /// <param name="accountProfile">MAccountProfile</param>
-    /// <param name="saveRefreshTokens">Boolean</param>
-    /// <param name="saveRoles">Boolean</param>
-    /// <param name="saveGroups">Boolean</param>
-    /// <param name="securityEntityProfile">MSecurityEntityProfile</param>
-    /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
-    public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups, MSecurityEntity securityEntityProfile)
+    /// <param name="refreshToken">The current refresh token.</param>
+    /// <param name="ipAddress">The IP address of the user.</param>
+    /// <returns>The new refresh token.</returns>
+    private static MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
     {
-        if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
-        if (securityEntityProfile == null) throw new ArgumentNullException("securityEntityProfile", "securityEntityProfile cannot be a null reference (Nothing in VB) or empty!");
-        BAccounts mBAccount = new BAccounts(securityEntityProfile, ConfigSettings.CentralManagement);
-        mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
-        return accountProfile;
+        // Generate a new refresh token
+        var newRefreshToken = generateRefreshToken(ipAddress);
+
+        // Revoke the old refresh token and replace it with the new token
+        revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
+
+        // Return the new refresh token
+        return newRefreshToken;
     }
 
     /// <summary>
@@ -662,19 +572,54 @@ public static class AccountUtility
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
     public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        return Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups, mSecurityEntityProfile);
+        if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        BAccounts mBAccount = new BAccounts(mSecurityEntity, ConfigSettings.CentralManagement);
+        mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
+        if (accountProfile.Account != CurrentProfile.Account) 
+        {
+            RemoveInMemoryInformation(accountProfile.Account);
+        }
+        MAccountProfile mAccountProfile =mBAccount.GetProfile(accountProfile.Account);
+        // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+        addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);        
+        return accountProfile;
     }
 
     /// <summary>
-    /// Verifies if a token exists in the system.
+    /// Sets the tokens for the provided account profile and IP address.
     /// </summary>
-    /// <param name="token"></param>
-    /// <returns></returns>
-    private static bool verificationTokenExists(string token)
+    /// <param name="accountProfile">The account profile to set the tokens for.</param>
+    /// <param name="ipAddress">The IP address associated with the tokens.</param>
+    /// <returns>The updated account profile with the tokens set.</returns>
+    private static MAccountProfile setTokens(MAccountProfile accountProfile, string ipAddress)
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
-        return mBAccount.RefreshTokenExists(token);
+        MAccountProfile mAccountProfile = accountProfile;
+        mAccountProfile.FailedAttempts = 0;
+        mAccountProfile.LastLogOn = DateTime.Now;
+        var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret));
+        var signingCredentials = new SigningCredentials(secretKey, SecurityAlgorithms.HmacSha256);
+
+        var claims = new List<Claim>
+            {
+                new Claim("account", mAccountProfile.Account), 
+                // new Claim(ClaimTypes.Role, "Manager") 
+            };
+        // TODO: the issuer and audience should be in a configuration file
+        var tokeOptions = new JwtSecurityToken(
+            issuer: "https://localhost:5001",
+            audience: "https://localhost:5001",
+            claims: claims,
+            expires: DateTime.Now.AddMinutes(5),
+            signingCredentials: signingCredentials
+        );
+        mAccountProfile.Token = new JwtSecurityTokenHandler().WriteToken(tokeOptions);
+
+        var mJwtToken = generateJwtToken(mAccountProfile);
+        var mRefreshToken = generateRefreshToken(ipAddress);
+        mRefreshToken.AccountSeqId = mAccountProfile.Id;
+        mAccountProfile.Token = mJwtToken;
+        mAccountProfile.RefreshTokens.Add(mRefreshToken);
+        return mAccountProfile;
     }
 }

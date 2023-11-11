@@ -27,13 +27,6 @@ public abstract class AbstractController : ControllerBase
 
     private Random m_Random = new Random(System.DateTime.Now.Millisecond);
 
-    // // returns the current authenticated account (null if not logged in)
-    // public MAccountProfile m_AccountProfile => (MAccountProfile)HttpContext.Items["AccountProfile"];
-    // // returns the current authenticated accounts client choices (null if not logged in)
-    // public MClientChoices m_ClientChoices => (MClientChoices)HttpContext.Items["ClientChoices"];
-    // // returns the current security entity (default as defined in GrowthWare.json)
-    // public MSecurityEntity m_SecurityEntity => (MSecurityEntity)HttpContext.Items["SecurityEntity"];
-
     [HttpGet("GetAppSettings")]
     public UIAppSettings GetAppSettings()
     {
@@ -98,7 +91,7 @@ public abstract class AbstractController : ControllerBase
     {
         MSecurityInfo mSecurityInfo = new MSecurityInfo();
         if (action == null || string.IsNullOrEmpty(action)) throw new ArgumentNullException("action", " can not be null or blank!");
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         if (mFunctionProfile != null)
         {

@@ -49,7 +49,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpPost("CreateDirectory")]
     public ActionResult CreateDirectory(string action, string selectedPath, string newPath)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayAdd)
@@ -76,7 +76,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpDelete("DeleteDirectory")]
     public ActionResult<bool> DeleteDirectory(string action, string selectedPath)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
@@ -104,7 +104,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpDelete("DeleteFile")]
     public ActionResult<bool> DeleteFile(string action, string selectedPath, string fileName)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
@@ -146,7 +146,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpGet("GetDirectories")]
     public ActionResult<MDirectoryTree> GetDirectories(string action, string selectedPath)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
@@ -188,7 +188,7 @@ public abstract class AbstractFileController : ControllerBase
         if (selectedPath == null) throw new ArgumentNullException("selectedPath", "selectedPath cannot be a null reference (Nothing in Visual Basic)!");
         if (fileName == null) throw new ArgumentNullException("fileName", "fileName cannot be a null reference (Nothing in Visual Basic)!");
 
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
@@ -228,7 +228,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpGet("GetFiles")]
     public ActionResult<List<FileInfoLight>> GetFiles(string action, string selectedPath)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayView)
@@ -433,7 +433,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpPost("RenameDirectory")]
     public ActionResult RenameDirectory(string action, string selectedPath, string newName)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
@@ -474,7 +474,7 @@ public abstract class AbstractFileController : ControllerBase
     [HttpPost("RenameFile")]
     public ActionResult RenameFile(string action, string selectedPath, string oldName, string newName)
     {
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit)
@@ -517,7 +517,7 @@ public abstract class AbstractFileController : ControllerBase
         }
         try
         {
-            MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mAction);
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (mSecurityInfo.MayAdd)

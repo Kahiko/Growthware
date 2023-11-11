@@ -24,9 +24,7 @@ export class AccountService {
   private _Api_Authenticate = '';
   private _Api_ClientChoices = '';
   private _Api_ChangePassword = '';
-  // private _Api_GetLinks: string = '';
   private _Api_DeleteAccount: string = '';
-  // private _Api_GetMenuItems: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
   private _Api_SaveAccount: string = '';
@@ -85,8 +83,6 @@ export class AccountService {
     this._Api_DeleteAccount = this._BaseURL + this._ApiName + 'DeleteAccount';
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
     this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
-    // this._Api_GetLinks = this._BaseURL + this._ApiName + 'GetLinks';
-    // this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
     this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';

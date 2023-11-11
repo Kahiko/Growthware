@@ -21,7 +21,7 @@ public abstract class AbstractStateController : ControllerBase
         {
             return StatusCode(StatusCodes.Status400BadRequest, "'state' can not be blank"); 
         }
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("EditState");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if(!mSecurityInfo.MayView)
@@ -37,7 +37,7 @@ public abstract class AbstractStateController : ControllerBase
     public ActionResult<bool> Save(MState state)
     {
         if (state == null) throw new ArgumentNullException("state", " can not be null!");
-        MAccountProfile mRequestingProfile = (MAccountProfile)HttpContext.Items["AccountProfile"];
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);        
         if (HttpContext.Session.GetString("EditId") != null)

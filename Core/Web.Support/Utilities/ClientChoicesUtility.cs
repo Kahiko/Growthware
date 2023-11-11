@@ -183,5 +183,6 @@ public static class ClientChoicesUtility
     public static void Save(MClientChoicesState clientChoicesState)
     {
         Save(clientChoicesState, true);
+        ClearSession();
     }
 }

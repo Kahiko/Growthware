@@ -27,7 +27,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
         if (mAccountProfile == null)
         {
-            AccountUtility.GetAccount("Anonymous", false, true);
+            AccountUtility.GetAccount("Anonymous");
             return StatusCode(403, "Incorrect account or password");
         }
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
@@ -71,7 +71,7 @@ public abstract class AbstractAccountController : ControllerBase
         var mEditId =  HttpContext.Session.GetInt32("EditId");
         if(mEditId != null) 
         {
-            if(mSecurityInfo.MayDelete)
+            if(mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile.Id)
             {
                 AccountUtility.Delete(accountSeqId);
                 HttpContext.Session.Remove("EditId");
@@ -94,7 +94,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = new MAccountProfile(mRequestingProfile.Id);
         if(account != "new") // Populate from the DB
         {
-            mAccountProfile = AccountUtility.GetAccount(account, true);
+            mAccountProfile = AccountUtility.GetAccount(account);
         }
         if(mSecurityInfo.MayEdit)
         {
@@ -145,7 +145,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns>MAccountProfile</returns>
     private MAccountProfile getCurrentAccount()
     {
-        MAccountProfile mRetVal = AccountUtility.GetCurrentAccount();
+        MAccountProfile mRetVal = AccountUtility.CurrentProfile;
         mRetVal.Password = string.Empty;
         return mRetVal;
     }
@@ -171,62 +171,6 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
-
-    [HttpGet("GetLinks")]
-    public List<MNavLink> GetLinks(int menuType)
-    {
-        List<MNavLink> mRootNavLinks = new List<MNavLink>();
-        MNavLink mNavLink;
-        MAccountProfile mAccountProfile = getCurrentAccount();
-        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
-        {
-            mNavLink = new MNavLink("home", "home", LinkBehaviors.Internal, "Home");
-            mRootNavLinks.Add(mNavLink);
-            mNavLink = new MNavLink("api", "swagger", LinkBehaviors.Internal, "API", false);
-            mRootNavLinks.Add(mNavLink);
-            // Nested Administration links
-            MNavLink mAdminLinks = new MNavLink("admin_panel_settings", "", LinkBehaviors.Internal, "Administration", false);
-
-            MNavLink mChildLink = new MNavLink("groups", "manage-groups", LinkBehaviors.Internal, "Manage Groups");
-            mAdminLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("manage_roles", "manage-roles", LinkBehaviors.Internal, "Manage Roles");
-            mAdminLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("manage_accounts", "accounts", LinkBehaviors.Internal, "Manage Accounts");
-            mAdminLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("functions", "functions", LinkBehaviors.Internal, "Manage Functions");
-            mAdminLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("folder_shared", "manage_cache_dependency", LinkBehaviors.Internal, "Manage Cache Dependency");
-            mAdminLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("folder_shared", "manage_logs", LinkBehaviors.Internal, "Manage Logs");
-            mAdminLinks.Children.Add(mChildLink);
-            // Nested Administration\Security links
-            MNavLink mSecurityLinks = new MNavLink("admin_panel_settings", "", LinkBehaviors.Internal, "Security", false);
-            mChildLink = new MNavLink("enhanced_encryption", "security", LinkBehaviors.Internal, "Encryption Helper");
-            mSecurityLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("admin_panel_settings", "security/guid-helper", LinkBehaviors.Internal, "GUID Helper");
-            mSecurityLinks.Children.Add(mChildLink);
-
-            mChildLink = new MNavLink("shuffle", "security/random-numbers", LinkBehaviors.Internal, "Random number Helper");
-            mSecurityLinks.Children.Add(mChildLink);
-            // add the security lings to the administration links
-            mAdminLinks.Children.Add(mSecurityLinks);
-
-            mRootNavLinks.Add(mAdminLinks);
-
-        } else 
-        {
-            mNavLink = new MNavLink("home", "generic_home", LinkBehaviors.Internal, "Home");
-            mRootNavLinks.Add(mNavLink);
-        }
-        return mRootNavLinks;
-    }
-
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
@@ -241,7 +185,6 @@ public abstract class AbstractAccountController : ControllerBase
         {
             mRetVal = AccountUtility.GetMenuItems(this.s_AnonymousAccount, mMenuType);
         }
-
         return Ok(mRetVal);
     }
 
@@ -304,10 +247,9 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     { 
-        AccountUtility.RemoveMenusFromCacheOrSession(this.getCurrentAccount().Account);
-        SessionController.RemoveFromSession(AccountUtility.SessionName);
+        AccountUtility.RemoveInMemoryInformation(this.getCurrentAccount().Account);
         ClientChoicesUtility.ClearSession();
-        return this.Authenticate(this.s_AnonymousAccount, "none");
+        return new AuthenticationResponse(AccountUtility.GetAccount("Anonymous"));
     }
 
     [HttpPost("RefreshToken")]
@@ -350,7 +292,7 @@ public abstract class AbstractAccountController : ControllerBase
         if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
-            MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account, true);
+            MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account);
             if(mExistingAccount == null) 
             {
                 mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
@@ -377,8 +319,6 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.UpdatedBy = mRequestingProfile.Id;
             mExistingAccount.UpdatedDate = DateTime.Now;
             AccountUtility.Save(mExistingAccount, false, mSecurityInfo_View_Account_Role.MayView, mSecurityInfo_View_Account_Role.MayView);
-            AccountUtility.RemmoveFromCacheOrSession(AccountUtility.SessionName, mExistingAccount.Account);
-            AccountUtility.RemoveMenusFromCacheOrSession(mExistingAccount.Account);           
             mRetVal = true;
         }
         else
@@ -412,8 +352,6 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
-            AccountUtility.RemmoveFromCacheOrSession(AccountUtility.SessionName, accountChoices.Account);
-            SessionController.RemoveAll();
             mRetVal = true;
         }
         return mRetVal;
