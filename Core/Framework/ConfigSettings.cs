@@ -330,8 +330,8 @@ namespace GrowthWare.Framework
         /// <summary>
         /// Returns Failed_Attempts from the CONFIG file
         /// </summary>
-        /// <value>String</value>
-        /// <returns>String</returns>
+        /// <value>int</value>
+        /// <returns>int</returns>
         /// <remarks></remarks>
         public static int FailedAttempts
         {
