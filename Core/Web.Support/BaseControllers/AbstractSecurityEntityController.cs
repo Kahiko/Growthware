@@ -61,6 +61,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                     mRetVal = new MSecurityEntity();
                 }
                 HttpContext.Session.SetInt32("EditId", mRetVal.Id);
+                // mRetVal.ConnectionString = ""; // We don't want the password to ever be displayed
                 return Ok(mRetVal);
             }
         }
@@ -117,6 +118,9 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     [HttpPost("SaveProfile")]
     public ActionResult<bool> SaveProfile(MSecurityEntity securityEntity)
     {
+        // TODO: Add logic to handle connection string basicall like password for Account
+        //       If the connection comes in from the UI then it's ok to change it otherwise
+        //       get it from the DB and use that (will need to encrypt as always)
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
         if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
         {
