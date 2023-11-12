@@ -41,7 +41,13 @@ Application:
 	
 		ng generate service RouteLoader --project gw-frontend
 		create ensureRoutesExist.initializer by hand
-	Skins
+	Skins: (Angular\projects\gw-frontend\src\app)
+		--ng generate module skins/arc --routing --project gw-frontend
+		ng generate module skins/arc --project gw-frontend
+		ng generate component skins/arc/ArcFooter --skip-tests --module arc --project gw-frontend
+		ng generate component skins/arc/ArcHeader --skip-tests --module arc --project gw-frontend
+		ng generate component skins/arc/ArcLayout --skip-tests --module arc --project gw-frontend
+
 		--ng generate module skins/default --routing --project gw-frontend
 		ng generate module skins/default --project gw-frontend
 		ng generate component skins/default/DefaultFooter --module default --project gw-frontend
