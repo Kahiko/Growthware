@@ -37,24 +37,48 @@ export class AccountService {
   private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(this._ClientChoices);
   private _DefaultAccount: string = 'Anonymous';
   private _RefreshTokenTimeout?: NodeJS.Timeout;
-  // private _SideNavSubject = new Subject<INavLink[]>();
 
+  /**
+   * Returns the ID of the add modal.
+   *
+   * @return {string} The ID of the add modal.
+   */
   public get addModalId(): string {
     return 'addAccount'
   }
 
+  /**
+   * Returns the ID of the edit modal.
+   *
+   * @return {string} The ID of the edit modal.
+   */
   public get editModalId(): string {
     return 'editAccount'
   }
 
+  /**
+   * Returns the login modal id.
+   *
+   * @return {string} The login modal id.
+   */
   public get loginModalId(): string {
     return 'login';
   }
 
+  /**
+   * Retrieves the authentication response.
+   *
+   * @return {IAuthenticationResponse} The authentication response.
+   */
   public get authenticationResponse(): IAuthenticationResponse {
     return this._AuthenticationResponseSubject.getValue();
   }
 
+  /**
+   * Returns the current value of the "clientChoices" property.
+   *
+   * @return {IClientChoices} The current value of the "clientChoices" property.
+   */
   public get clientChoices(): IClientChoices {
     return this._ClientChoicesSubject.getValue();
   }
@@ -65,12 +89,24 @@ export class AccountService {
   readonly authenticationResponse$ = this._AuthenticationResponseSubject.asObservable();
   readonly clientChoices$ = this._ClientChoicesSubject.asObservable();
   
+  /**
+   * Returns the default account.
+   *
+   * @return {string} The default account.
+   */
   public get defaultAccount(): string {
     return this._DefaultAccount;
   }
 
-  // readonly sideNav$ = this._SideNavSubject.asObservable();
-
+  /**
+   * Constructor for the class.
+   *
+   * @param {GWCommon} _GWCommon - an instance of GWCommon
+   * @param {HttpClient} _HttpClient - an instance of HttpClient
+   * @param {LoggingService} _LoggingSvc - an instance of LoggingService
+   * @param {Router} _Router - an instance of Router
+   * @param {SearchService} _SearchSvc - an instance of SearchService
+   */
   constructor(
     private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
@@ -90,6 +126,14 @@ export class AccountService {
     this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
   }
 
+  /**
+   * Authenticates the client with the provided account and password.
+   *
+   * @param {string} account - The client's account.
+   * @param {string} password - The client's password.
+   * @param {boolean} silent - (Optional) Indicates whether to perform a silent authentication. Defaults to false.
+   * @return {Promise<boolean|string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
+   */
   public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
     return new Promise<boolean>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(account)) {
@@ -141,6 +185,13 @@ export class AccountService {
     });
   }
 
+  /**
+   * Change the client's password.
+   *
+   * @param {string} oldPassword - The client's current password.
+   * @param {string} newPassword - The new password to set for the client.
+   * @return {Promise<boolean>} A promise that resolves to true if the password change was successful, or false otherwise.
+   */
   public async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
     if(this._GWCommon.isNullOrEmpty(newPassword)) {
       throw new Error("newPassword can not be blank!");
@@ -185,6 +236,12 @@ export class AccountService {
     });
   }
 
+  /**
+   * Deletes an item with the given ID.
+   *
+   * @param {number} id - The ID of the item to be deleted.
+   * @return {Promise<boolean>} A promise that resolves to a boolean indicating whether the deletion was successful.
+   */
   public async delete(id: number): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const mQueryParameter: HttpParams = new HttpParams()
@@ -213,6 +270,11 @@ export class AccountService {
     });
   }
 
+  /**
+   * Retrieves the client choices asynchronously.
+   *
+   * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
+   */
   public async getClientChoices(): Promise<IClientChoices> {
     let mHttpOptions = {
       headers: new HttpHeaders({
@@ -256,6 +318,12 @@ export class AccountService {
     });
   }
 
+  /**
+   * Saves the account profile asynchronously.
+   *
+   * @param {IAccountProfile} accountProfile - The account profile to be saved.
+   * @return {Promise<boolean>} A promise that resolves to a boolean indicating whether the account profile was saved successfully.
+   */
   async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -280,6 +348,12 @@ export class AccountService {
     });
   }
 
+  /**
+   * Saves the client choices in the database.
+   *
+   * @param {IClientChoices} clientChoices - The client choices to be saved.
+   * @return {Promise<boolean>} A promise that resolves to true if the client choices are saved successfully, otherwise false.
+   */
   public async saveClientChoices(clientChoices: IClientChoices): Promise<boolean> {
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -302,6 +376,14 @@ export class AccountService {
     });
   }
 
+  /**
+   * Starts the refresh token timer.
+   *
+   * This function parses a JSON object from the base64 encoded JWT token and sets
+   * a timeout to refresh the token a minute before it expires.
+   *
+   * @private
+   */
   private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
     const jwtBase64 = this._AuthenticationResponseSubject.getValue().jwtToken!.split('.')[1];
@@ -314,10 +396,22 @@ export class AccountService {
     }
   }
 
+
+  /**
+   * Stops the refresh token timer.
+   *
+   * @param {none} - This function does not take any parameters.
+   * @return {void} - This function does not return a value.
+   */
   private stopRefreshTokenTimer() {
     clearTimeout(this._RefreshTokenTimeout);
 }
 
+  /**
+   * Refreshes the authentication token.
+   *
+   * @return {Observable<IAuthenticationResponse>} The authentication response observable.
+   */
   public refreshToken(): Observable<IAuthenticationResponse> {
     const mHttpOptions = {
       headers: new HttpHeaders({
