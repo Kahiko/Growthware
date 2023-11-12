@@ -3,4 +3,5 @@ Razor, ASPX, or ASCX.
 
 Utilities are responseable for: 
     1.) Implementing any logic required by Web project
-    2.) Interacting with the business logic to retrieve requied data
+    2.) Interacting with the business logic to retrieve/save requied data
+    3.) Deal with any performance optimization (cache/session management)
