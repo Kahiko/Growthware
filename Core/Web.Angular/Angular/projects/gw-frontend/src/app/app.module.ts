@@ -20,6 +20,7 @@ import { LowerCaseUrlSerializer } from '@Growthware/common-code';
 // Application Modules
 import { AppRoutingModule } from './app-routing.module';
 // Application Modules (UI Skins)
+import { ArcModule } from './skins/arc/arc.module';
 import { DefaultModule } from './skins/default/default.module';
 import { SystemModule } from './skins/system/system.module';
 // Application Components
@@ -42,7 +43,6 @@ export function tokenGetter() {
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    DefaultModule,
     HttpClientModule,
     JwtModule.forRoot({
       config: {
@@ -54,6 +54,10 @@ export function tokenGetter() {
     MatSelectModule,
     ModalModule,
     ReactiveFormsModule,
+
+    // Skins
+    ArcModule,
+    DefaultModule,
     SystemModule,
     // ToastModule,
     ToasterComponent,
