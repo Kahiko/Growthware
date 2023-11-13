@@ -7,7 +7,7 @@ import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
 // Feature
-import { INavLink } from './nav-link.model';
+import { INavLink, NavLink } from './nav-link.model';
 import { MenuTypes } from './menu-types.enum';
 import { LinkBehaviors } from './link-behaviors.enum';
 
@@ -20,8 +20,10 @@ export class NavigationService {
   private _Api_GetMenuItems: string = '';
   private _BaseURL: string = '';
 
+  private _CurrentNavLink = new BehaviorSubject<INavLink>(new NavLink('', '', '', '', '', 0, '', true, ''));
   private _ShowNavText = new BehaviorSubject<boolean>(true); // Sets the inital value in all controls
 
+  public currentNavLink$ = this._CurrentNavLink.asObservable();
   public currentUrl = new BehaviorSubject<string>('');
   readonly showNavText$ = this._ShowNavText.asObservable();
 
@@ -71,6 +73,7 @@ export class NavigationService {
 
   navigateTo(navLink: INavLink): void {
     // console.log('NavigationService.navigateTo', navLink);
+    this._CurrentNavLink.next(navLink);
     if (!navLink.children || !navLink.children.length) {
       switch (navLink.linkBehavior) {
         case LinkBehaviors.Internal:
