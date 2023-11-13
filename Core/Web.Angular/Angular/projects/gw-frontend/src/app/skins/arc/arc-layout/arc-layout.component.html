@@ -1,2 +1,23 @@
 <gw-frontend-arc-header></gw-frontend-arc-header>
-<router-outlet></router-outlet>
+<mat-drawer-container class="drawer-container" color="primary" autosize>
+    <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+        <div class="table">
+            <div class="tr">
+                <!-- <div class="td" style="width: 135px; padding: 0px; margin: 0px;"> -->
+                    <!-- <img src='assets\arc\images\small_gray_line.gif' style="height: 16px;" /> -->
+                    <!-- <img src='assets\arc\images\thick_gray_line.gif' style="height: 16px;" /> -->
+                <!-- </div> -->
+                <div class="td right" style="width: 190px; padding: 0px; margin: 0px;">
+                    <img src='assets\arc\images\right_curve.gif' />
+                </div>
+            </div>
+            <div class="tr">
+                <div class="td"></div>
+            </div>
+        </div>
+    </mat-drawer>
+    <div class="router-outlet__div page">
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
+

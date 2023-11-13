@@ -6,7 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 // import { MatIconModule } from '@angular/material/icon';
 // import { MatListModule } from '@angular/material/list';
 // import { MatMenuModule } from '@angular/material/menu';
-// import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
 import { LoaderModule } from '@Growthware/features/loader';
@@ -38,7 +38,7 @@ import { ArcLayoutComponent } from './arc-layout/arc-layout.component';
     // MatIconModule,
     // MatListModule,
     // MatMenuModule,
-    // MatSidenavModule,
+    MatSidenavModule,
     MatToolbarModule,
 
     // Library Modules
