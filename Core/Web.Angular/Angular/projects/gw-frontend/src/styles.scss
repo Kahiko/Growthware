@@ -86,6 +86,9 @@ div.colspan>div>div {
 .right {
   text-align: right;
 }
+.center {
+  text-align: center;
+}
 
 /* Rounded Corners */
 .selectRounded {
@@ -98,7 +101,8 @@ div.colspan>div>div {
   box-shadow: 2px 2px 3px #666;
   padding: 4px 7px;
   outline: 0;
-  -webkit-appearance: none;  
+  -webkit-appearance: none;
+  appearance: none;
 }
 
 select.rounded {
@@ -112,6 +116,7 @@ select.rounded {
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 select.rounded:focus
@@ -131,6 +136,7 @@ input.rounded
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 input.rounded10
@@ -145,6 +151,7 @@ input.rounded10
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 input.rounded:focus
@@ -164,6 +171,7 @@ textarea.rounded
     padding: 4px 7px;
     outline: 0;
     -webkit-appearance: none;
+    appearance: none;
 }
 
 textarea.rounded:focus
