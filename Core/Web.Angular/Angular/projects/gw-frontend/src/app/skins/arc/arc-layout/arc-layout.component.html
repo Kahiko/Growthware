@@ -3,16 +3,13 @@
     <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
         <div class="table">
             <div class="tr">
-                <!-- <div class="td" style="width: 135px; padding: 0px; margin: 0px;"> -->
-                    <!-- <img src='assets\arc\images\small_gray_line.gif' style="height: 16px;" /> -->
-                    <!-- <img src='assets\arc\images\thick_gray_line.gif' style="height: 16px;" /> -->
-                <!-- </div> -->
-                <div class="td right" style="width: 190px; padding: 0px; margin: 0px;">
-                    <img src='assets\arc\images\right_curve.gif' />
+                <div class="td top" style="width: 135px; padding: 0px; margin: 0px;">
+                    <gw-lib-vertical name="vertical"></gw-lib-vertical>
+                    <mat-divider></mat-divider>
+                    <mat-nav-list>
+                      <gw-lib-hierarchical-vertical name="hierarchicalVertical"></gw-lib-hierarchical-vertical>
+                    </mat-nav-list>
                 </div>
-            </div>
-            <div class="tr">
-                <div class="td"></div>
             </div>
         </div>
     </mat-drawer>

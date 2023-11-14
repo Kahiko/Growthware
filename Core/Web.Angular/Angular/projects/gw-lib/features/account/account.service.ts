@@ -423,6 +423,7 @@ export class AccountService {
     .pipe(
       map((response) => {
         this._AuthenticationResponseSubject.next(response);
+        this.getClientChoices();
         // this.getClientChoices().then((clientChoices) => {
         //   // TODO: I don't think this is necessary, should delete after testing
         //   // this._Router.navigate([clientChoices.action.toLowerCase()]);
