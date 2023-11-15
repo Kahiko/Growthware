@@ -76,7 +76,7 @@ public static class ClientChoicesUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         DataTable mDataTable = getDataTableWithEmptyRow();
         string mJsonString = getFromCacheOrSession(MClientChoices.SessionName, account);
-        if (mJsonString == null || fromDB)
+        if (mJsonString == null || mJsonString.Replace("[", "").Replace("]", "").Replace("\"", "").Split(',')[0].ToLowerInvariant() != account.ToLowerInvariant() || fromDB)
         {
             BClientChoices mBClientChoices = new BClientChoices(SecurityEntityUtility.DefaultProfile(), ConfigSettings.CentralManagement);
             mJsonString = JsonSerializer.Serialize(mBClientChoices.GetDataRow(account).ItemArray);
