@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
-import { AccountService, IClientChoices, SecurityEntityService } from '@Growthware';
+import { AccountService, IAccountInformation, IClientChoices, SecurityEntityService } from '@Growthware';
 
 @Component({
   selector: 'gw-frontend-root',
@@ -28,9 +28,9 @@ export class AppComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this._Subscription.add(
-      this._AccountSvc.clientChoicesChanged$.subscribe((val: IClientChoices) => {
+      this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
         // console.log('AppComponent.ngOnInit.val', val);
-        this.setSkin(val);
+        this.setSkin(val.clientChoices);
       })
     );
   }

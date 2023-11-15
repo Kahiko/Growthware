@@ -9,7 +9,7 @@ import { LoggingService, LogLevel } from '@Growthware/features/logging';
 import { IAccountInformation, AccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse } from './authentication-response.model';
-import { ClientChoices, IClientChoices } from './client-choices.model';
+import { IClientChoices } from './client-choices.model';
 import { ISelectedableAction } from './selectedable-action.model';
 
 @Injectable({
@@ -28,7 +28,6 @@ export class AccountService {
   private _Api_SaveClientChoices: string = '';
   private _Api_SelectableActions: string = '';
   private _BaseURL: string = '';
-  private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(new ClientChoices());
   private _TimerId!: any;
 
   readonly accountInformation = this._AccountInformationSubject.getValue();
@@ -37,7 +36,6 @@ export class AccountService {
   readonly authenticationResponse = this._AccountInformationSubject.getValue().authenticationResponse;
   readonly anonymous: string = 'Anonymous';
   readonly clientChoices = this._AccountInformationSubject.getValue().clientChoices;
-  readonly clientChoicesChanged$ = this._ClientChoicesSubject.asObservable();
   readonly logInModalId = 'logInModal';
   public modalReason: string = '';
   public selectedRow: any;
@@ -377,7 +375,8 @@ export class AccountService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
         next: (response: any) => {
-          this._ClientChoicesSubject.next(clientChoices);
+          const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: clientChoices };
+          this._AccountInformationSubject.next(mAccountInformation);
           this.updateMenus();
           resolve(response);
         },
