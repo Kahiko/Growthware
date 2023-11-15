@@ -175,7 +175,7 @@ public static class ClientChoicesUtility
     }
 
     /// <summary>
-    /// Save the client choices to the database.
+    /// Save the client choices to the database and updates context.
     /// </summary>
     /// <param name="clientChoicesState">MClientChoicesState</param>
     /// <remarks></remarks>
