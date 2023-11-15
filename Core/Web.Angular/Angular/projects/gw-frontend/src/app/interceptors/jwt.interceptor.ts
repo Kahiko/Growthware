@@ -18,7 +18,7 @@ export class JwtInterceptor implements HttpInterceptor {
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const mAuthenticationResponse = this._AccountSvc.authenticationResponse;
-    const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.defaultAccount;
+    const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.anonymous;
     // This will need to match any Api's you have in proxy.conf.js
     const mApiUrls = [
       this._BaseUrl + "GrowthwareAccount",

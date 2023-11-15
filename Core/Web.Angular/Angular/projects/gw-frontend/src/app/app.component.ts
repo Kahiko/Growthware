@@ -14,7 +14,7 @@ export class AppComponent implements OnDestroy, OnInit {
   private _Subscription: Subscription = new Subscription();
 
   readonly skin$ = this._Skin.asObservable();
-  // skin = 'default';
+  skin = 'default';
   title = 'gw-frontend';
 
   constructor(
@@ -28,7 +28,8 @@ export class AppComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     this._Subscription.add(
-      this._AccountSvc.clientChoices$.subscribe((val: IClientChoices) => {
+      this._AccountSvc.clientChoicesChanged$.subscribe((val: IClientChoices) => {
+        // console.log('AppComponent.ngOnInit.val', val);
         this.setSkin(val);
       })
     );

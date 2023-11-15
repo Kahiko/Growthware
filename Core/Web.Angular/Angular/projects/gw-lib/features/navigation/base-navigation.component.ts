@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService } from '@Growthware/features/account';
+import { AccountService, IAccountInformation } from '@Growthware/features/account';
 import { DataService } from '@Growthware/shared/services';
 import { GWCommon } from '@Growthware/common-code';
 import { LogLevel, LoggingService } from '@Growthware/features/logging';
@@ -52,7 +52,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
       this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
     } else {
       this._Subscription.add(
-        this._AccountSvc.authenticationResponse$.subscribe((value) => { 
+        this._AccountSvc.accountInformationChanged$.subscribe((value: IAccountInformation) => { 
           this._NavigationSvc.getNavLinks(this._MenuType, this.name);
         })
       );

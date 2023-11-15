@@ -5,6 +5,7 @@ export * from './c/logout/logout.component';
 export * from './c/search-accounts/search-accounts.component';
 export * from './c/select-preferences/select-preferences.component';
 export * from './c/update-anonymous-profile/update-anonymous-profile.component';
+export * from './account-information.model';
 export * from './account-profile.model';
 export * from './account.service';
 export * from './authentication-response.model';

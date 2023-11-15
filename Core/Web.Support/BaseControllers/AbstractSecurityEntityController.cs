@@ -23,7 +23,7 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     {
         String mRetVal = string.Empty;
         string mColumns = "[SecurityEntitySeqId], [Name], [Description], [Skin]";
-        if(searchCriteria.sortColumns.Length > 0)
+        if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
@@ -39,33 +39,27 @@ public abstract class AbstractSecurityEntityController : ControllerBase
             };
             mRetVal = SearchUtility.GetSearchResults(mSearchCriteria);
         }
-        return mRetVal;        
+        return mRetVal;
     }
 
     [AllowAnonymous]
     [HttpGet("GetProfile")]
-    public ActionResult<MSecurityEntity> GetProfile(int securityEntitySeqId) {
+    public ActionResult<MSecurityEntity> GetProfile(int securityEntitySeqId)
+    {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        if(mRequestingProfile.IsSystemAdmin)
+        MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
+        MSecurityEntity mRetVal = new MSecurityEntity();
+        if (securityEntitySeqId > -1)
         {
-            MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
-            if(mSecurityInfo.MayView) 
-            {
-                MSecurityEntity mRetVal = new MSecurityEntity();
-                if(securityEntitySeqId > -1)
-                {
-                    mRetVal = SecurityEntityUtility.GetProfile(securityEntitySeqId);
-                }
-                if(mRetVal == null)
-                {
-                    mRetVal = new MSecurityEntity();
-                }
-                HttpContext.Session.SetInt32("EditId", mRetVal.Id);
-                // mRetVal.ConnectionString = ""; // We don't want the password to ever be displayed
-                return Ok(mRetVal);
-            }
+            mRetVal = SecurityEntityUtility.GetProfile(securityEntitySeqId);
         }
-        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+        if (mRetVal == null)
+        {
+            mRetVal = new MSecurityEntity();
+        }
+        HttpContext.Session.SetInt32("EditId", mRetVal.Id);
+        // mRetVal.ConnectionString = ""; // We don't want the password to ever be displayed
+        return Ok(mRetVal);
     }
 
     private MSecurityInfo getSecurityInfo(string action)
@@ -81,12 +75,12 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     public ActionResult<List<UIKeyValuePair>> GetValidParents(int securityEntitySeqId)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
-        if(mSecurityInfo.MayView) 
+        if (mSecurityInfo.MayView)
         {
             List<UIKeyValuePair> mRetVal = new List<UIKeyValuePair>();
             var mSecurityEntities = from mProfile in SecurityEntityUtility.Profiles()
-                        where mProfile.Id != securityEntitySeqId
-                        select mProfile;
+                                    where mProfile.Id != securityEntitySeqId
+                                    select mProfile;
             mSecurityEntities.ToList().ForEach(item => mRetVal.Add(new UIKeyValuePair { Key = item.Id, Value = item.Name }));
             return mRetVal;
         }
@@ -98,13 +92,13 @@ public abstract class AbstractSecurityEntityController : ControllerBase
     public ActionResult<List<UIValidSecurityEntity>> GetValidSecurityEntities()
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        if(mRequestingProfile.Account.ToLower() == "anonymous" && mRequestingProfile.Status != (int) SystemStatus.Active)
+        if (mRequestingProfile.Account.ToLower() == "anonymous" && mRequestingProfile.Status != (int)SystemStatus.Active)
         {
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         List<UIValidSecurityEntity> mRetVal = new List<UIValidSecurityEntity>();
-        
+
         DataTable mDataView = SecurityEntityUtility.GetValidSecurityEntities(mRequestingProfile.Account, mSecurityEntity.Id, mRequestingProfile.IsSystemAdmin);
         foreach (DataRow mDataRowView in mDataView.Rows)
         {
@@ -122,22 +116,22 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         //       If the connection comes in from the UI then it's ok to change it otherwise
         //       get it from the DB and use that (will need to encrypt as always)
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
-        if(mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+        if (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-            if(securityEntity.Id == -1)
+            if (securityEntity.Id == -1)
             {
-                if(!mSecurityInfo.MayAdd)
+                if (!mSecurityInfo.MayAdd)
                 {
                     return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                 }
                 securityEntity.AddedBy = mRequestingProfile.Id;
                 securityEntity.AddedDate = DateTime.Now;
-            } 
-            else 
+            }
+            else
             {
-                if(!mSecurityInfo.MayEdit)
+                if (!mSecurityInfo.MayEdit)
                 {
                     return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                 }

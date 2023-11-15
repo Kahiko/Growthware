@@ -249,7 +249,9 @@ public abstract class AbstractAccountController : ControllerBase
     { 
         AccountUtility.RemoveInMemoryInformation(this.getCurrentAccount().Account);
         ClientChoicesUtility.ClearSession();
-        return new AuthenticationResponse(AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
+        AuthenticationResponse mAuthenticationResponse = new (AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
+        setTokenCookie(mAuthenticationResponse.RefreshToken);
+        return mAuthenticationResponse;
     }
 
     [HttpPost("RefreshToken")]

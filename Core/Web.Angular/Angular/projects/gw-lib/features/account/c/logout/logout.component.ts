@@ -14,7 +14,9 @@ import { AccountService } from '../../account.service';
 })
 export class LogoutComponent implements OnInit {
 
-  constructor(private _AccountSvc: AccountService) { }
+  constructor(
+    private _AccountSvc: AccountService
+  ) { }
 
   ngOnInit(): void {
     this._AccountSvc.logout();

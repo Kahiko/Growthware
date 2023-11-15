@@ -188,6 +188,7 @@ SnakeList:
 		ng generate module features/snake-list --project gw-lib
 		ng generate component features/snake-list/c/snake-list --module snake-list --style scss --project gw-lib
 Accounts: (converted to stand alone)
+		ng generate interface features/account/accountInformation --type model --project gw-lib
 		ng generate interface features/account/accountProfile --type model --project gw-lib
 		ng generate interface features/account/authenticationResponse --type model --project gw-lib
 		ng generate interface features/account/clientChoices --type model --project gw-lib

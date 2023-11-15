@@ -70,7 +70,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   private onBtnTopRight () {
     this._TheService.editReason = 'NewProfile'
-    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addModalId, 'Add ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
+    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Add ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);
     }
@@ -84,9 +84,9 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   protected onRowDoubleClick (rowNumber: number): void {
     const mDataRow: any = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
-    this._TheService.editRow = mDataRow;
-    this._TheService.editReason = 'EditProfile';
-    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.editModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
+    this._TheService.selectedRow = mDataRow;
+    this._TheService.modalReason = 'EditProfile';
+    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);
     }

@@ -87,8 +87,8 @@ export class LoginComponent implements AfterViewInit, OnInit {
     if (this.loginForm.invalid) {
         return;
     }
-    this._AccountSvc.authenticate(this.loginForm.value['account'], this.loginForm.value['password']).then((response: boolean | string) => {
-      this._ModalSvc.close(this._AccountSvc.loginModalId);
+    this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then((response: boolean | string) => {
+      this._ModalSvc.close(this._AccountSvc.logInModalId);
     });
   }
 

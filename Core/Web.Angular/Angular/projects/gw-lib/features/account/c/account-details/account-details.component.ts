@@ -138,16 +138,16 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
     switch (this._Router.url) {
       case '/accounts':
-        if(this._AccountSvc.editReason.toLowerCase() != "newprofile") {
-          // console.log('editRow', this._AccountSvc.editRow);
-          mDesiredAccount = this._AccountSvc.editRow.Account;
+        if(this._AccountSvc.modalReason.toLowerCase() != "newprofile") {
+          // console.log('selectedRow', this._AccountSvc.selectedRow);
+          mDesiredAccount = this._AccountSvc.selectedRow.Account;
         } else {
           mDesiredAccount = "new";
         }
         this.canCancel = true;
         break;
       case '/accounts/edit-my-account':
-        this._AccountSvc.editReason = 'EditProfile';
+        this._AccountSvc.modalReason = 'EditProfile';
         mDesiredAccount = this._AccountSvc.authenticationResponse.account;
         this.canDelete = false;
         break;
@@ -159,6 +159,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
+        // console.log('groups', groups);
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
       }
       return this._RoleSvc.getRoles();                                      // Request #2
@@ -169,6 +170,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         // TODO: this would indicate that the pick-list component isn't loaded at this point
         // and we are simply adding a delay to give it time... need to find a better way
         // such as a different lifecycle hook?
+        // console.log('roles', roles);
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
       return this._SecuritySvc.getSecurityInfo('Accounts');              // Request #3
@@ -192,7 +194,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
       }
-      return this._AccountSvc.getAccount(mDesiredAccount);                  // Request #6
+      return this._AccountSvc.getAccountForEdit(mDesiredAccount);                  // Request #6
     }).catch((error) => {
       this._LoggingSvc.toast("Error getting security info for 'Role tab' :\r\n" + error, 'Account Details:', LogLevel.Error);
     }).then((accountProfile) => {                                           // Response Handler #6
@@ -231,7 +233,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   private applySecurity() {
-    switch (this._AccountSvc.editReason.toLowerCase()) {
+    switch (this._AccountSvc.modalReason.toLowerCase()) {
       case 'newprofile':
         this.canDelete = false;
         this.showDerived = false;
@@ -273,14 +275,15 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
   closeModal(): void {
     if(this._Router.url === '/accounts') {
-      if(this._AccountSvc.editReason.toLocaleLowerCase() === 'newprofile') {
-        this._ModalSvc.close(this._AccountSvc.addModalId);
+      this._ModalSvc.close(this._AccountSvc.modalReason + '_Id');
+      if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'newprofile') {
+        this._ModalSvc.close(this._AccountSvc.addEditModalId);
       }
-      if(this._AccountSvc.editReason.toLocaleLowerCase() === 'editprofile') {
-        this._ModalSvc.close(this._AccountSvc.editModalId);
+      if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'editprofile') {
+        this._ModalSvc.close(this._AccountSvc.addEditModalId);
       }
     }
-    this._AccountSvc.editReason = '';
+    this._AccountSvc.modalReason = '';
   }
 
   get controls() {
@@ -313,13 +316,13 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   }
 
   onDelete(): void {
-    this._AccountSvc.delete(this._AccountProfile.id).then((response) => {
-      console.log('AccountDetailsComponent.onDelete', response);
-      this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
-      this.closeModal();
-    }).catch((error) => {
-      this._LoggingSvc.toast('Error deleting account!', 'Delete Account', LogLevel.Error);
-    })
+    // this._AccountSvc.delete(this._AccountProfile.id).then((response) => {
+    //   console.log('AccountDetailsComponent.onDelete', response);
+    //   this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
+    //   this.closeModal();
+    // }).catch((error) => {
+    //   this._LoggingSvc.toast('Error deleting account!', 'Delete Account', LogLevel.Error);
+    // })
   }
 
   onSubmit(form: FormGroup): void {
@@ -327,10 +330,10 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     if(form.valid) {
       this.populateProfile();
       // console.log('AccountProfile', this._AccountProfile);
-      this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
-        this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-        this.closeModal();
-      });
+      // this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
+      //   this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+      //   this.closeModal();
+      // });
     }
   }
 

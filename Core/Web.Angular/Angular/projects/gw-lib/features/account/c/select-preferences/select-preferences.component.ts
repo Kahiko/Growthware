@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
 // Angular Material
@@ -71,7 +71,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
       selectedColorScheme: new FormControl('Blue'),
     })
     this.clientChoices = this._AccountSvc.clientChoices;
-    // console.log('clientChoices', this.clientChoices);
+    console.log('clientChoices', this.clientChoices);
     this._AccountSvc.getSelectableActions().then((response: ISelectedableAction[]) => {
       this.validLinks = response;
       this.populateForm();
@@ -96,7 +96,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
       this.clientChoices.subHeadColor = mSelectedColorScheme.sub_Head_Color;
       this.clientChoices.action = this.selectedAction;
       this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
-      this._AccountSvc.saveClientChoices(this.clientChoices).catch((error) => {
+      this._AccountSvc.saveClientChoices(this.clientChoices).catch((error: any) => {
         this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
       }).then((_) => {
         this._LoggingSvc.toast('Client choices saved', 'Save client choices', LogLevel.Success);

@@ -1,18 +1,15 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map, Observable } from 'rxjs';
-import { catchError, of } from 'rxjs';
+import { BehaviorSubject, catchError, map, Observable, of } from "rxjs";
 // Library
 import { GWCommon } from '@Growthware/common-code';
-import { SearchService } from '@Growthware/features/search';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
-// import { INavLink } from '@Growthware/features/navigation';
-// import { MenuType } from '@Growthware/features/navigation';
 // Feature
+import { IAccountInformation, AccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
+import { IAuthenticationResponse } from './authentication-response.model';
 import { ClientChoices, IClientChoices } from './client-choices.model';
-import { AuthenticationResponse, IAuthenticationResponse } from './authentication-response.model';
 import { ISelectedableAction } from './selectedable-action.model';
 
 @Injectable({
@@ -20,108 +17,44 @@ import { ISelectedableAction } from './selectedable-action.model';
 })
 export class AccountService {
 
+  private _AccountInformationSubject: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
   private _ApiName: string = 'GrowthwareAccount/';
-  private _Api_Authenticate = '';
-  private _Api_ClientChoices = '';
+  private _Api_GetAccountForEdit: string = '';
+  private _Api_Authenticate: string = '';
   private _Api_ChangePassword = '';
-  private _Api_DeleteAccount: string = '';
+  private _Api_ClientChoices: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
-  private _Api_SaveAccount: string = '';
   private _Api_SaveClientChoices: string = '';
   private _Api_SelectableActions: string = '';
-  private _AuthenticationResponse = new AuthenticationResponse();
-  private _AuthenticationResponseSubject: BehaviorSubject<IAuthenticationResponse> = new BehaviorSubject<IAuthenticationResponse>(this._AuthenticationResponse);
   private _BaseURL: string = '';
-  private _ClientChoices: IClientChoices = new ClientChoices();
-  private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(this._ClientChoices);
-  private _DefaultAccount: string = 'Anonymous';
-  private _RefreshTokenTimeout?: NodeJS.Timeout;
+  private _ClientChoicesSubject: BehaviorSubject<IClientChoices> = new BehaviorSubject<IClientChoices>(new ClientChoices());
+  private _TimerId!: any;
 
-  /**
-   * Returns the ID of the add modal.
-   *
-   * @return {string} The ID of the add modal.
-   */
-  public get addModalId(): string {
-    return 'addAccount'
-  }
+  readonly accountInformation = this._AccountInformationSubject.getValue();
+  readonly accountInformationChanged$ = this._AccountInformationSubject.asObservable();
+  readonly addEditModalId: string = 'addEditAccountModal';
+  readonly authenticationResponse = this._AccountInformationSubject.getValue().authenticationResponse;
+  readonly anonymous: string = 'Anonymous';
+  readonly clientChoices = this._AccountInformationSubject.getValue().clientChoices;
+  readonly clientChoicesChanged$ = this._ClientChoicesSubject.asObservable();
+  readonly logInModalId = 'logInModal';
+  public modalReason: string = '';
+  public selectedRow: any;
 
-  /**
-   * Returns the ID of the edit modal.
-   *
-   * @return {string} The ID of the edit modal.
-   */
-  public get editModalId(): string {
-    return 'editAccount'
-  }
-
-  /**
-   * Returns the login modal id.
-   *
-   * @return {string} The login modal id.
-   */
-  public get loginModalId(): string {
-    return 'login';
-  }
-
-  /**
-   * Retrieves the authentication response.
-   *
-   * @return {IAuthenticationResponse} The authentication response.
-   */
-  public get authenticationResponse(): IAuthenticationResponse {
-    return this._AuthenticationResponseSubject.getValue();
-  }
-
-  /**
-   * Returns the current value of the "clientChoices" property.
-   *
-   * @return {IClientChoices} The current value of the "clientChoices" property.
-   */
-  public get clientChoices(): IClientChoices {
-    return this._ClientChoicesSubject.getValue();
-  }
-
-  editReason: string = '';
-  editRow: any = {};
-
-  readonly authenticationResponse$ = this._AuthenticationResponseSubject.asObservable();
-  readonly clientChoices$ = this._ClientChoicesSubject.asObservable();
-  
-  /**
-   * Returns the default account.
-   *
-   * @return {string} The default account.
-   */
-  public get defaultAccount(): string {
-    return this._DefaultAccount;
-  }
-
-  /**
-   * Constructor for the class.
-   *
-   * @param {GWCommon} _GWCommon - an instance of GWCommon
-   * @param {HttpClient} _HttpClient - an instance of HttpClient
-   * @param {LoggingService} _LoggingSvc - an instance of LoggingService
-   * @param {Router} _Router - an instance of Router
-   * @param {SearchService} _SearchSvc - an instance of SearchService
-   */
   constructor(
-    private _GWCommon: GWCommon,
+    private _GWCommon: GWCommon, 
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
     private _Router: Router,
-    private _SearchSvc: SearchService,
   ) {
     this._BaseURL = this._GWCommon.baseURL;
+    this._Api_GetAccountForEdit = this._BaseURL + this._ApiName + 'EditAccount';
     this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
-    this._Api_DeleteAccount = this._BaseURL + this._ApiName + 'DeleteAccount';
     this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
     this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
-    this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
     this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
     this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
   }
@@ -131,45 +64,29 @@ export class AccountService {
    *
    * @param {string} account - The client's account.
    * @param {string} password - The client's password.
-   * @param {boolean} silent - (Optional) Indicates whether to perform a silent authentication. Defaults to false.
+   * @param {boolean} silent - (Optional) Indicates whether to log toast messages or not.
    * @return {Promise<boolean|string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
    */
-  public async authenticate(account: string, password: string, silent: boolean = false): Promise<boolean | string> {
-    return new Promise<boolean>((resolve, reject) => {
+  private async authenticate(account: string, password: string, silent: boolean = false): Promise<IAuthenticationResponse> {
+    return new Promise<IAuthenticationResponse>((resolve, reject) => {
       if(this._GWCommon.isNullOrEmpty(account)) {
         throw new Error("account can not be blank!");
       }
       if(this._GWCommon.isNullOrEmpty(password)) {
         throw new Error("password can not be blank!");
       }
-      let mQueryParameter: HttpParams = new HttpParams()
+      const mQueryParameter: HttpParams = new HttpParams()
         .set('account', account)
         .set('password', password);
-        const mHttpOptions = {
+      const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),
         params: mQueryParameter,
       };
       this._HttpClient.post<IAuthenticationResponse>(this._Api_Authenticate, null, mHttpOptions).subscribe({
-        next: (response: IAuthenticationResponse) => {
-          localStorage.setItem("jwt", response.jwtToken);
-          this._AuthenticationResponseSubject.next(response);
-          if(!silent && account.toLowerCase() === response.account.toLowerCase()) {
-            this.getClientChoices().then((clientChoices) => {
-              this._Router.navigate([clientChoices.action.toLowerCase()]);
-            });
-            this._LoggingSvc.toast('Successfully logged in', 'Login Success', LogLevel.Success);
-          }
-          if(account.toLowerCase() !== response.account.toLowerCase()) {
-            this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Error);
-            resolve(false);
-          } else {
-            if(response.status == 4) {
-              this._Router.navigate(['/accounts/change-password']);
-            }
-            resolve(true);
-          }
+        next: (authenticationResponse: IAuthenticationResponse) => {
+          resolve(authenticationResponse);
         },
         error: (error: any) => {
           if(error.status && error.status === 403) {
@@ -215,7 +132,7 @@ export class AccountService {
         next: (response: string) => {
           if(response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-            this.authenticate(this._AuthenticationResponseSubject.getValue().account, newPassword, true);
+            this.authenticate(this.authenticationResponse.account, newPassword, true);
             resolve(true);
           } else {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
@@ -235,47 +152,13 @@ export class AccountService {
       });
     });
   }
-
-  /**
-   * Deletes an item with the given ID.
-   *
-   * @param {number} id - The ID of the item to be deleted.
-   * @return {Promise<boolean>} A promise that resolves to a boolean indicating whether the deletion was successful.
-   */
-  public async delete(id: number): Promise<boolean> {
-    return new Promise<boolean>((resolve, reject) => {
-      const mQueryParameter: HttpParams = new HttpParams()
-        .set('accountSeqId', id);
-      const mHttpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'text/plain',
-        }),
-        responseType: "text" as "json",
-        params: mQueryParameter,
-      };
-      this._HttpClient.delete<boolean>(this._Api_DeleteAccount, mHttpOptions).subscribe({
-        next: (response: boolean) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent line 25
-          if(mSearchCriteria != null) {
-            this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
-          }
-          resolve(true);
-        },
-        error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'delete');
-          reject(false);
-        },
-        // complete: () => {}
-      });
-    });
-  }
-
+  
   /**
    * Retrieves the client choices asynchronously.
    *
    * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
    */
-  public async getClientChoices(): Promise<IClientChoices> {
+  private async getClientChoices(): Promise<IClientChoices> {
     let mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -285,7 +168,6 @@ export class AccountService {
       this._HttpClient.get<IClientChoices>(this._Api_ClientChoices, mHttpOptions).subscribe({
         next: (response: IClientChoices) => {
           resolve(response);
-          this._ClientChoicesSubject.next(response);
         },
         error: (error: any) => {
           reject(false);
@@ -296,6 +178,113 @@ export class AccountService {
     });
   }
 
+  /**
+   * Retrieves a list of selectable actions.
+   *
+   * @return {Promise<ISelectedableAction[]>} A promise that resolves to an array of selectable actions.
+   */
+  public async getSelectableActions(): Promise<ISelectedableAction[]> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<ISelectedableAction[]>((resolve, reject) => {
+      this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  /**
+   * Retrieves the account profile for the given account.
+   *
+   * @param {string} account - The account to retrieve the profile for.
+   * @return {Promise<IAccountProfile>} - A promise that resolves to the account profile.
+   */
+  public async getAccountForEdit(account: string): Promise<IAccountProfile> {
+    let mAccount: string = account;
+    if(this._GWCommon.isNullOrEmpty(mAccount)) {
+      throw new Error("account can not be blank!");
+    }
+    const mQueryParameter: HttpParams = new HttpParams()
+      .set('account', mAccount);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter,
+    };
+    return new Promise<IAccountProfile>((resolve, reject) => {
+      this._HttpClient.get<IAccountProfile>(this._Api_GetAccountForEdit, mHttpOptions).subscribe({
+        next: (response: any) => {
+          resolve(response);
+        },
+        error: (error: any) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
+          reject('Failed to call the API');
+        },
+        // complete: () => {}
+      });
+    });
+  }
+
+  /**
+   * Logs in the client with the provided account and password.
+   *
+   * @param {string} account - The client's account.
+   * @param {string} password - The client's password.
+   * @param {boolean} silent - (Optional) Set to true to suppress any notifications or toasts. Defaults to false.
+   * @returns {Promise<boolean>} A promise that resolves to true if the login is successful, and false otherwise.
+   */
+  public async logIn(account: string, password: string, silent: boolean = false): Promise<boolean> {
+    /**
+     * 1.) Authenticate the account
+     * on Success:
+     *  1.) Get the client choices
+     *  2.) Notify subscribers that the AuthenticationResponse and ClientChoices have changed
+     *  3.) Start the refresh token timer
+     *  4.) Navigate to the appropriate page
+     * on Failure:
+     *  1.) Navigate to the appropriate page
+     */
+    return new Promise<boolean>((resolve, reject) => {
+      this.authenticate(account, password, silent).then((authenticationResponse: IAuthenticationResponse) => {
+        this.getClientChoices().then((clientChoices: IClientChoices) => {
+          let mNavigationUrl: string = clientChoices.action;
+          if(authenticationResponse.status == 4) {
+            mNavigationUrl = '/account/change-password';
+          }
+          localStorage.setItem("jwt", authenticationResponse.jwtToken);
+          const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+          this._AccountInformationSubject.next(mAccountInformation);
+          this.startRefreshTokenTimer();
+          this._Router.navigate([mNavigationUrl]);
+          if(!silent) {
+            this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
+          }
+          resolve(true);
+        })        
+      }).catch((error) => {
+        this._LoggingSvc.errorHandler(error, 'AccountService', 'logIn');
+        this._Router.navigate(['/accounts/logout']);
+        reject(error);
+      });  
+    });
+  }
+
+  /**
+   * Logout the client and perform necessary cleanup actions.
+   *
+   * @return {void} This function does not return anything.
+   */
   public logout(): void {
     localStorage.removeItem("jwt")
     const mHttpOptions = {
@@ -304,12 +293,16 @@ export class AccountService {
       })
     };
     this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
-      next: (response: any) => {
-        localStorage.setItem("jwt", response.jwtToken);
-        this._AuthenticationResponseSubject.next(response);
-        this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
-        this._Router.navigate(['generic_home']);
-        this.stopRefreshTokenTimer();
+      next: (authenticationResponse: any) => {
+        // console.log('logout.authenticationResponse', authenticationResponse);
+        localStorage.setItem("jwt", authenticationResponse.jwtToken);
+        this.getClientChoices().then((clientChoices: IClientChoices) => {
+          const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+          this._AccountInformationSubject.next(mAccountInformation);
+          this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+          this._Router.navigate(['generic_home']);
+          this.stopRefreshTokenTimer();
+          });
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
@@ -319,33 +312,54 @@ export class AccountService {
   }
 
   /**
-   * Saves the account profile asynchronously.
+   * Refreshes the authentication token.
    *
-   * @param {IAccountProfile} accountProfile - The account profile to be saved.
-   * @return {Promise<boolean>} A promise that resolves to a boolean indicating whether the account profile was saved successfully.
+   * @return {Observable<IAuthenticationResponse>} The authentication response
    */
-  async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
+  public refreshFromToken(): Observable<IAuthenticationResponse> {
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
-      })
+      }),
+      withCredentials: true,
     };
-    return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
-        next: (response: any) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent (this.configurationName)
-          if(mSearchCriteria != null) {
-            this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
+    return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
+    .pipe(
+      map((authenticationResponse) => {
+        this.getClientChoices().then((clientChoices: IClientChoices) => {
+          // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
+          if(this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
+            const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+            this._AccountInformationSubject.next(mAccountInformation);
           }
-          resolve(response);
-        }
-        , error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'saveAccount');
-          reject(error);
-        }
-        //, complete: () => {}
-      });
-    });
+        });
+        return authenticationResponse;
+      }),
+      catchError((err) => {
+        // console.log(err);
+        this.logout();
+        // return nothing
+        return of();
+      })
+    );
+  }
+
+  /**
+   * Starts the refresh token timer.
+   */
+  public startRefreshTokenTimer(): void {
+    // console.log('AccountService.startRefreshTokenTimer', 'Called');
+    // parse json object from base64 encoded jwt token
+    const jwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
+    if(jwtBase64) {
+      const jwtToken = JSON.parse(window.atob(jwtBase64));
+      // set a timeout to refresh the token a minute before it expires
+      const mExpires = new Date(jwtToken.exp * 1000);
+      const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
+      this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(() => {
+        console.log('AccountService.startRefreshTokenTimer', 'Running');
+      }), mTimeout);
+    }
   }
 
   /**
@@ -377,150 +391,26 @@ export class AccountService {
   }
 
   /**
-   * Starts the refresh token timer.
-   *
-   * This function parses a JSON object from the base64 encoded JWT token and sets
-   * a timeout to refresh the token a minute before it expires.
-   *
-   * @private
-   */
-  private startRefreshTokenTimer() {
-    // parse json object from base64 encoded jwt token
-    const jwtBase64 = this._AuthenticationResponseSubject.getValue().jwtToken!.split('.')[1];
-    if(jwtBase64) {
-      const jwtToken = JSON.parse(window.atob(jwtBase64));
-      // set a timeout to refresh the token a minute before it expires
-      const expires = new Date(jwtToken.exp * 1000);
-      const timeout = expires.getTime() - Date.now() - (60 * 1000);
-      this._RefreshTokenTimeout = setTimeout(() => this.refreshToken().subscribe(), timeout);
-    }
-  }
-
-
-  /**
    * Stops the refresh token timer.
    *
-   * @param {none} - This function does not take any parameters.
-   * @return {void} - This function does not return a value.
+   * @return {void} - This function does not return anything.
    */
-  private stopRefreshTokenTimer() {
-    clearTimeout(this._RefreshTokenTimeout);
-}
-
-  /**
-   * Refreshes the authentication token.
-   *
-   * @return {Observable<IAuthenticationResponse>} The authentication response observable.
-   */
-  public refreshToken(): Observable<IAuthenticationResponse> {
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      withCredentials: true,
-    };
-    return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
-    .pipe(
-      map((response) => {
-        this._AuthenticationResponseSubject.next(response);
-        this.getClientChoices();
-        // this.getClientChoices().then((clientChoices) => {
-        //   // TODO: I don't think this is necessary, should delete after testing
-        //   // this._Router.navigate([clientChoices.action.toLowerCase()]);
-        // });
-        this.startRefreshTokenTimer();
-        return this._AuthenticationResponseSubject.getValue();
-      }),
-      catchError((err) => {
-        // console.log(err);
-        this.logout();
-        // return nothing
-        return of();
-      })
-    );
-  }
-
-  public async getAccount(account: string): Promise<IAccountProfile> {
-    let mAccount: string = account;
-    if(this._GWCommon.isNullOrEmpty(mAccount)) {
-      mAccount = this._DefaultAccount;
-    }
-    const mQueryParameter: HttpParams = new HttpParams().append('account', mAccount);
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      params: mQueryParameter,
-    };
-    const mUrl = this._BaseURL + this._ApiName + 'EditAccount';
-    return new Promise<IAccountProfile>((resolve, reject) => {
-      this._HttpClient.get<IAccountProfile>(mUrl, mHttpOptions).subscribe({
-        next: (response: any) => {
-          resolve(response);
-        },
-        error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
-          reject('Failed to call the API');
-        },
-        // complete: () => {}
-      });
-    });
+  public stopRefreshTokenTimer(): void {
+    console.log('AccountService.stopRefreshTokenTimer', 'Called');
+    clearInterval(this._TimerId);
+    // release our intervalID from the variable
+    // this._TimerId = null;
   }
 
   /**
-   * Gets an array if NavLinks from the API
-   *
-   * @return {*}  {Promise<INavLink[]>}
-   * @memberof AccountService
-   */
-  public getNavLinks(menuType: any): void {
-    // const mQueryParameter: HttpParams = new HttpParams()
-    //   .set('menuType', menuType);
-    // const mHttpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //   }),
-    //   params: mQueryParameter
-    // };
-    // this._HttpClient.get<INavLink[]>(this._Api_GetMenuItems, mHttpOptions).subscribe({
-    //   next: (response) => {
-    //     this._SideNavSubject.next(response);
-    //   },
-    //   error: (error) => {
-    //     this._LoggingSvc.errorHandler(error, 'AccountService', 'getNavLinks');
-    //   },
-    //   complete: () => {
-    //     // here as example
-    //   }
-    // })
-  }
-
-  public async getSelectableActions(): Promise<ISelectedableAction[]> {
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      })
-    };
-    return new Promise<ISelectedableAction[]>((resolve, reject) => {
-      this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
-        next: (response: any) => {
-          resolve(response);
-        },
-        error: (error: any) => {
-          this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
-          reject('Failed to call the API');
-        },
-        // complete: () => {}
-      });
-    });
-  }
-
-  /**
-   * Updates the menus by.
+   * Notifies account information subscribers that the account information has changed, triggering
+   * menu components to re-render.
    *
    * @return {void} 
    */
   public updateMenus(): void {
-    this._AuthenticationResponseSubject.next(this.authenticationResponse);
+    // This is not well named b/c information about roles, groups, functions etc. will need to trigger
+    // a re-render of menus.  The account services is as good as place as any to do that.
+    this._AccountInformationSubject.next(this.accountInformation);
   }
 }

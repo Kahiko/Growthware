@@ -57,6 +57,7 @@ export class SecurityEntityService {
     return new Promise<ISecurityEntityProfile>((resolve, reject) => {
       this._HttpClient.get<ISecurityEntityProfile>(this._Api_GetSecurityEntity, mHttpOptions).subscribe({
         next: (response: ISecurityEntityProfile) => {
+          // console.log('SecurityEntityService.getSecurityEntity', response);
           resolve(response);
         },
         error: (error: any) => {

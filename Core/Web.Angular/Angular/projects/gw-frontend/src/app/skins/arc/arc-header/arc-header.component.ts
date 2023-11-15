@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
-import { AccountService, IAuthenticationResponse, IClientChoices } from '@Growthware/features/account';
+import { AccountService, IAccountInformation } from '@Growthware/features/account';
 import { GWCommon } from '@Growthware/common-code';
 import { ConfigurationService } from '@Growthware/features/configuration';
 // import { LoginComponent } from '@Growthware/features/account/c/login/login.component';
@@ -51,13 +51,12 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
       this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
     );
     this._Subscription.add(
-      this._AccountSvc.authenticationResponse$.subscribe((val: IAuthenticationResponse) => {
-        // this.isAuthenticated = val.account.toLowerCase() != this._AccountSvc.defaultAccount.toLowerCase();
-        this.accountName = this._GWCommon.formatData(val.account, 'text:28');
+      this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
+        this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
       })
     );
     this._Subscription.add(
-      this._AccountSvc.clientChoices$.subscribe((val: IClientChoices) => { this.securityEntity = val.securityEntityName; })
+      this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => { this.securityEntity = val.clientChoices.securityEntityName; })
     );
     this._Subscription.add(
       this._NavigationSvc.currentNavLink$.subscribe((val: INavLink) => { 
@@ -72,7 +71,7 @@ export class ArcHeaderComponent implements OnDestroy, OnInit {
   }
 
   onLogoClick(): void {
-    if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.defaultAccount.trim().toLocaleLowerCase()) {
+    if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
       this._Router.navigate(['home']);
     } else {
       this._Router.navigate(['generic_home']);
