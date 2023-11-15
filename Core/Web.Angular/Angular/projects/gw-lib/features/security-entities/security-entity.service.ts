@@ -114,7 +114,7 @@ export class SecurityEntityService {
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Security_Entities", mSearchCriteria);
           }
-          this._AccountSvc.updateMenus();
+          this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
         error: (error: any) => {

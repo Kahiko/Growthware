@@ -29,6 +29,7 @@ export class AccountService {
   private _Api_SelectableActions: string = '';
   private _BaseURL: string = '';
   private _TimerId!: any;
+  private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   readonly accountInformation = this._AccountInformationSubject.getValue();
   readonly accountInformationChanged$ = this._AccountInformationSubject.asObservable();
@@ -39,6 +40,7 @@ export class AccountService {
   readonly logInModalId = 'logInModal';
   public modalReason: string = '';
   public selectedRow: any;
+  readonly triggerMenuUpdate$ = this._TriggerMenuUpdateSubject.asObservable();
 
   constructor(
     private _GWCommon: GWCommon, 
@@ -377,7 +379,7 @@ export class AccountService {
         next: (response: any) => {
           const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: clientChoices };
           this._AccountInformationSubject.next(mAccountInformation);
-          this.updateMenus();
+          this.triggerMenuUpdate();
           resolve(response);
         },
         error: (error: any) => {
@@ -407,9 +409,7 @@ export class AccountService {
    *
    * @return {void} 
    */
-  public updateMenus(): void {
-    // This is not well named b/c information about roles, groups, functions etc. will need to trigger
-    // a re-render of menus.  The account services is as good as place as any to do that.
-    this._AccountInformationSubject.next(this.accountInformation);
+  public triggerMenuUpdate(): void {
+    this._TriggerMenuUpdateSubject.next(true);
   }
 }

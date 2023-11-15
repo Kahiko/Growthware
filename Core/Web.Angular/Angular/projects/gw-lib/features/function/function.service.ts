@@ -80,7 +80,7 @@ export class FunctionService {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.post<any>(this._Api_CopyFunctionSecurity, null, mHttpOptions).subscribe({
         next: (response: boolean) => {
-          this._AccountSvc.updateMenus();
+          this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
         error: (error: any) => {
@@ -103,7 +103,7 @@ export class FunctionService {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.delete<any>(this._Api_Delete, mHttpOptions).subscribe({
         next: (response: boolean) => {
-          this._AccountSvc.updateMenus();
+          this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
         error: (error: any) => {
@@ -244,7 +244,7 @@ export class FunctionService {
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Functions", mSearchCriteria);
           }
-          this._AccountSvc.updateMenus();
+          this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
         error: (error: any) => {
