@@ -271,6 +271,7 @@ export class AccountService {
           this._AuthenticationResponse = authenticationResponse;
           this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
+          this.triggerMenuUpdate();
           this.startRefreshTokenTimer();
           this._Router.navigate([mNavigationUrl]);
           if(!silent) {
@@ -307,6 +308,7 @@ export class AccountService {
           this._AuthenticationResponse = authenticationResponse;
           this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
+          this.triggerMenuUpdate();
           this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
           this._Router.navigate(['generic_home']);
           this.stopRefreshTokenTimer();
@@ -341,6 +343,7 @@ export class AccountService {
             this._AuthenticationResponse = authenticationResponse;
             this._ClientChoices = clientChoices;
             this._AccountInformationSubject.next(mAccountInformation);
+            this.triggerMenuUpdate();
           }
         });
         return authenticationResponse;
