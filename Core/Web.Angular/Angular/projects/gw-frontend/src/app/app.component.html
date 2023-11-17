@@ -4,7 +4,7 @@
     <gw-frontend-arc-layout *ngSwitchCase="'arc'"></gw-frontend-arc-layout>
     <gw-frontend-default-layout *ngSwitchCase="'default'"></gw-frontend-default-layout>
     <gw-frontend-system-layout *ngSwitchCase="'system'"></gw-frontend-system-layout>
-    <div *ngSwitchDefault>Fall through</div>
+    <div *ngSwitchDefault><gw-frontend-default-layout></gw-frontend-default-layout></div>
   </ng-container>
   <ng-template #loading>
     loading...
