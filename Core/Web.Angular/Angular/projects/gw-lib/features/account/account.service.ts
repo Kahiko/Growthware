@@ -8,8 +8,8 @@ import { LoggingService, LogLevel } from '@Growthware/features/logging';
 // Feature
 import { IAccountInformation, AccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
-import { IAuthenticationResponse } from './authentication-response.model';
-import { IClientChoices } from './client-choices.model';
+import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
+import { IClientChoices, ClientChoices } from './client-choices.model';
 import { ISelectedableAction } from './selectedable-action.model';
 
 @Injectable({
@@ -27,16 +27,18 @@ export class AccountService {
   private _Api_RefreshToken: string = '';
   private _Api_SaveClientChoices: string = '';
   private _Api_SelectableActions: string = '';
+  private _AuthenticationResponse = new AuthenticationResponse;
   private _BaseURL: string = '';
+  private _ClientChoices: IClientChoices = new ClientChoices();
   private _TimerId!: any;
   private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
-  readonly accountInformation = this._AccountInformationSubject.getValue();
+  readonly accountInformation = new AccountInformation();
   readonly accountInformationChanged$ = this._AccountInformationSubject.asObservable();
   readonly addEditModalId: string = 'addEditAccountModal';
-  readonly authenticationResponse = this._AccountInformationSubject.getValue().authenticationResponse;
+  get authenticationResponse() { return this._AuthenticationResponse;}
   readonly anonymous: string = 'Anonymous';
-  readonly clientChoices = this._AccountInformationSubject.getValue().clientChoices;
+  get clientChoices() { return this._ClientChoices; }
   readonly logInModalId = 'logInModal';
   public modalReason: string = '';
   public selectedRow: any;
@@ -264,6 +266,8 @@ export class AccountService {
           }
           localStorage.setItem("jwt", authenticationResponse.jwtToken);
           const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+          this._AuthenticationResponse = authenticationResponse;
+          this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
           this.startRefreshTokenTimer();
           this._Router.navigate([mNavigationUrl]);
@@ -298,6 +302,8 @@ export class AccountService {
         localStorage.setItem("jwt", authenticationResponse.jwtToken);
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+          this._AuthenticationResponse = authenticationResponse;
+          this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
           this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
           this._Router.navigate(['generic_home']);
@@ -330,6 +336,8 @@ export class AccountService {
           // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
           if(this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
             const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+            this._AuthenticationResponse = authenticationResponse;
+            this._ClientChoices = clientChoices;
             this._AccountInformationSubject.next(mAccountInformation);
           }
         });
@@ -378,6 +386,7 @@ export class AccountService {
       this._HttpClient.post<boolean>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
         next: (response: any) => {
           const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: clientChoices };
+          this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
           this.triggerMenuUpdate();
           resolve(response);
