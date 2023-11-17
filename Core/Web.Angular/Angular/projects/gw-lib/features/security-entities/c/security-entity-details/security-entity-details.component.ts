@@ -64,14 +64,12 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   ];
 
   validSkins: INameValuePair[] = [
-    { name: 'Default', payLoad: 'Default' },
-    { name: 'System', payLoad: 'System' },
+    { name: 'Arc', payLoad: 'Arc' },
     { name: 'Blue Arrow', payLoad: 'Blue Arrow' },
-    { name: 'Default Black', payLoad: 'Default Black' },
+    { name: 'Dashboard', payLoad: 'Dashboard' },
+    { name: 'Default', payLoad: 'Default' },
     { name: 'DevOps', payLoad: 'DevOps' },
     { name: 'Professional', payLoad: 'Professional' },
-    { name: 'Arc', payLoad: 'Arc' },
-    { name: 'Dashboard', payLoad: 'Dashboard' },
   ];
 
   validParents: IKeyValuePair[] = [];
