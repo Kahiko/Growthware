@@ -22,7 +22,6 @@ import { AppRoutingModule } from './app-routing.module';
 // Application Modules (UI Skins)
 import { ArcModule } from './skins/arc/arc.module';
 import { DefaultModule } from './skins/default/default.module';
-import { SystemModule } from './skins/system/system.module';
 // Application Components
 import { AppComponent } from './app.component';
 // Application
@@ -58,7 +57,6 @@ export function tokenGetter() {
     // Skins
     ArcModule,
     DefaultModule,
-    SystemModule,
     // ToastModule,
     ToasterComponent,
   ],

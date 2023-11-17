@@ -566,6 +566,8 @@ UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 1 WHERE [Action] = 'WorkFlows';
 
 DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
 
+UPDATE [ZGWSecurity].[Security_Entities] SET [Skin] = 'Default Black' WHERE [Skin] = 'Default'
+
 DECLARE 
 	@V_FunctionSeqId int = 4,
 	@V_SecurityEntitySeqId	INT = 1,
