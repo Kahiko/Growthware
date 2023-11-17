@@ -1,6 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 // @import './theme.scss';
-html, body { height: 100%; }
+html,
+body {
+  height: 100%;
+}
 
 .spacer {
   flex: 1 1 auto;
@@ -27,7 +30,7 @@ html, body { height: 100%; }
   -webkit-box-shadow: 0px 0px 4px #222;
   box-shadow: 0px 0px 4px #222;
   background-image: -moz-linear-gradient(top, #f8f8f8, #cccccc);
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, #f8f8f8),color-stop(1, #cccccc));
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #f8f8f8), color-stop(1, #cccccc));
   background-image: -webkit-linear-gradient(top, #f8f8f8, #cccccc);
   background-image: -moz-linear-gradient(top, #f8f8f8, #cccccc);
   background-image: -ms-linear-gradient(top, #f8f8f8, #cccccc);
@@ -36,6 +39,7 @@ html, body { height: 100%; }
   z-index: 99999;
   visibility: hidden;
 }
+
 [data-title] {
   position: relative;
 }
@@ -52,8 +56,17 @@ div.table {
 div.tr {
   display: table-row;
 }
-div.caption {border:1px solid grey; caption-side: bottom; display: table-caption; text-align: center; }
-div.group {display: table-row-group; }
+
+div.caption {
+  border: 1px solid grey;
+  caption-side: bottom;
+  display: table-caption;
+  text-align: center;
+}
+
+div.group {
+  display: table-row-group;
+}
 
 div.td {
   display: table-cell;
@@ -83,9 +96,11 @@ div.colspan>div>div {
 .left {
   text-align: left;
 }
+
 .right {
   text-align: right;
 }
+
 .center {
   text-align: center;
 }
@@ -106,86 +121,79 @@ div.colspan>div>div {
 }
 
 select.rounded {
-    border: 1px solid #ccc;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-box-shadow: 2px 2px 3px #666;
-    -webkit-box-shadow: 2px 2px 3px #666;
-    box-shadow: 2px 2px 3px #666;
-    padding: 4px 7px;
-    outline: 0;
-    -webkit-appearance: none;
-    appearance: none;
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px #666;
+  -webkit-box-shadow: 2px 2px 3px #666;
+  box-shadow: 2px 2px 3px #666;
+  padding: 4px 7px;
+  outline: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-select.rounded:focus
-{
-    border-color: #339933;
+select.rounded:focus {
+  border-color: #339933;
 }
 
-input.rounded
-{
-    border: 1px solid #ccc;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-box-shadow: 2px 2px 3px #666;
-    -webkit-box-shadow: 2px 2px 3px #666;
-    box-shadow: 2px 2px 3px #666;
-    padding: 4px 7px;
-    outline: 0;
-    -webkit-appearance: none;
-    appearance: none;
+input.rounded {
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px #666;
+  -webkit-box-shadow: 2px 2px 3px #666;
+  box-shadow: 2px 2px 3px #666;
+  padding: 4px 7px;
+  outline: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-input.rounded10
-{
-    border: 1px solid #ccc;
-    -moz-border-radius: 10px;
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
-    -moz-box-shadow: 2px 2px 3px #666;
-    -webkit-box-shadow: 2px 2px 3px #666;
-    box-shadow: 2px 2px 3px #666;
-    padding: 4px 7px;
-    outline: 0;
-    -webkit-appearance: none;
-    appearance: none;
+input.rounded10 {
+  border: 1px solid #ccc;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  -moz-box-shadow: 2px 2px 3px #666;
+  -webkit-box-shadow: 2px 2px 3px #666;
+  box-shadow: 2px 2px 3px #666;
+  padding: 4px 7px;
+  outline: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-input.rounded:focus
-{
-    border-color: #339933;
+input.rounded:focus {
+  border-color: #339933;
 }
 
-textarea.rounded
-{
-    border: 1px solid #ccc;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
-    border-radius: 5px;
-    -moz-box-shadow: 2px 2px 3px #666;
-    -webkit-box-shadow: 2px 2px 3px #666;
-    box-shadow: 2px 2px 3px #666;
-    padding: 4px 7px;
-    outline: 0;
-    -webkit-appearance: none;
-    appearance: none;
+textarea.rounded {
+  border: 1px solid #ccc;
+  -moz-border-radius: 5px;
+  -webkit-border-radius: 5px;
+  border-radius: 5px;
+  -moz-box-shadow: 2px 2px 3px #666;
+  -webkit-box-shadow: 2px 2px 3px #666;
+  box-shadow: 2px 2px 3px #666;
+  padding: 4px 7px;
+  outline: 0;
+  -webkit-appearance: none;
+  appearance: none;
 }
 
-textarea.rounded:focus
-{
-    border-color: #339933;
+textarea.rounded:focus {
+  border-color: #339933;
 }
 
-div.rounded
-{
-    border: 1px solid black;
-    -webkit-border-radius: 8px;
-    -moz-border-radius: 8px;
-    border-radius: 8px;
-    overflow: hidden;
+div.rounded {
+  border: 1px solid black;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 /* Tabs */
