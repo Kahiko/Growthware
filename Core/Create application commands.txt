@@ -53,6 +53,10 @@ Application:
 		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
 		ng generate component skins/default/defaultLayout --module default --project gw-frontend
 
+		ng generate module skins/BlueArrow --routing --project gw-frontend
+		ng generate component skins/blue-arrow/BlueArrowFooter --skip-tests --module blue-arrow --project gw-frontend
+		ng generate component skins/blue-arrow/BlueArrowHeader --skip-tests --module blue-arrow --project gw-frontend
+		ng generate component skins/blue-arrow/BlueArrowLayout --skip-tests --module blue-arrow --project gw-frontend
 
 	Features
 		ng generate module features/home --routing --project gw-frontend
