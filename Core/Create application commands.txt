@@ -53,11 +53,7 @@ Application:
 		ng generate component skins/default/DefaultHeader --module default --project gw-frontend
 		ng generate component skins/default/defaultLayout --module default --project gw-frontend
 
-		--ng generate module skins/system --routing --project gw-frontend
-		ng generate module skins/system --project gw-frontend
-		ng generate component skins/system/SystemFooter --module system --project gw-frontend
-		ng generate component skins/system/SystemHeader --module system --project gw-frontend
-		ng generate component skins/system/SystemLayout --module system --project gw-frontend
+
 	Features
 		ng generate module features/home --routing --project gw-frontend
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend
