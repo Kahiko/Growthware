@@ -191,9 +191,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetPreferences")]
     public UIAccountChoices GetPreferences()
     {
-        MAccountProfile mRequestingProfile = this.getCurrentAccount();
-        MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mRequestingProfile.Account);
-        UIAccountChoices mRetVal = new UIAccountChoices(mClientChoicesState);
+        UIAccountChoices mRetVal = new UIAccountChoices(ClientChoicesUtility.CurrentState);
         return mRetVal;
     }
 
@@ -338,8 +336,8 @@ public abstract class AbstractAccountController : ControllerBase
         if(accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower()) 
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
-            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.GetClientChoicesState("Anonymous");
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(accountChoices.Account);
+            MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
+            MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
             mClientChoicesState[MClientChoices.AccountName] = accountChoices.Account;
             mClientChoicesState[MClientChoices.Action] = accountChoices.Action ?? mDefaultClientChoicesState[MClientChoices.Action];
             mClientChoicesState[MClientChoices.AlternatingRowBackColor] = accountChoices.AlternatingRowBackColor ?? mDefaultClientChoicesState[MClientChoices.AlternatingRowBackColor];

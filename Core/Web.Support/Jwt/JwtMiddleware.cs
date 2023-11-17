@@ -27,8 +27,7 @@ public class JwtMiddleware
             if (mAccount != null)
             {
                 // attach account to context on successful jwt validation
-                SessionController.AddToSession(AccountUtility.SessionName, AccountUtility.GetAccount(mAccount));
-                MClientChoicesState mClientChoicesState = ClientChoicesUtility.GetClientChoicesState(mAccount, true);
+                AccountUtility.GetAccount(mAccount);
             }
         }
         await _next(httpContext);
