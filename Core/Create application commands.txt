@@ -58,6 +58,11 @@ Application:
 		ng generate component skins/blue-arrow/BlueArrowHeader --skip-tests --module blue-arrow --project gw-frontend
 		ng generate component skins/blue-arrow/BlueArrowLayout --skip-tests --module blue-arrow --project gw-frontend
 
+		ng generate module skins/dashboard --routing --project gw-frontend
+		ng generate component skins/dashboard/dashboardFooter --skip-tests --module dashboard --project gw-frontend
+		ng generate component skins/dashboard/dashboardHeader --skip-tests --module dashboard --project gw-frontend
+		ng generate component skins/dashboard/dashboardLayout --skip-tests --module dashboard --project gw-frontend
+
 	Features
 		ng generate module features/home --routing --project gw-frontend
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend

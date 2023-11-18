@@ -21,6 +21,7 @@ import { LowerCaseUrlSerializer } from '@Growthware/common-code';
 import { AppRoutingModule } from './app-routing.module';
 // Application Modules (UI Skins)
 import { ArcModule } from './skins/arc/arc.module';
+import { DashboardModule } from './skins/dashboard/dashboard.module';
 import { DefaultModule } from './skins/default/default.module';
 import { BlueArrowModule } from './skins/blue-arrow/blue-arrow.module';
 // Application Components
@@ -57,6 +58,7 @@ export function tokenGetter() {
 
     // Skins
     ArcModule,
+    DashboardModule,
     DefaultModule,
     BlueArrowModule,
     // ToastModule,
