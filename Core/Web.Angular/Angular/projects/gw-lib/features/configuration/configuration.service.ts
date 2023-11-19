@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService } from '@Growthware/features/logging';
@@ -18,9 +18,9 @@ export class ConfigurationService {
   private _ApiGetDBInformationURL: string = '';
   private _ApiSetDBInformationURL: string = '';
   private _Loaded: boolean = false;
-  private _LogPriority = new Subject<string>();
-  private _SecurityEntityTranslation = new BehaviorSubject('');
-  private _Version = new Subject<string>();
+  private _LogPriority = new BehaviorSubject('Debug');
+  private _SecurityEntityTranslation = new BehaviorSubject('Security Entity');
+  private _Version = new BehaviorSubject('0.0.0.0');
 
   readonly applicationName$ = this._ApplicationName.asObservable();
   readonly logPriority$ = this._LogPriority.asObservable();
