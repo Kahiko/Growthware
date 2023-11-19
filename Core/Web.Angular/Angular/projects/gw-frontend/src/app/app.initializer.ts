@@ -1,7 +1,9 @@
-import { AccountService } from '@Growthware/features/account';
 import { catchError, of, tap } from 'rxjs';
+import { AccountService } from '@Growthware/features/account';
+import { ConfigurationService } from '@Growthware/features/configuration';
 
-export function appInitializer(accountSvc: AccountService) {
+export function appInitializer(accountSvc: AccountService, configurationSvc: ConfigurationService) {
+  configurationSvc.loadAppSettings();
   return () => accountSvc.refreshFromToken()
     .pipe(
       tap(authenticationResponse => {  

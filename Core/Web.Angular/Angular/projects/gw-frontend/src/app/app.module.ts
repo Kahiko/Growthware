@@ -9,6 +9,7 @@ import { JwtModule } from "@auth0/angular-jwt";
 import { MatSelectModule } from '@angular/material/select'; // <--- Had to add b/c of an injection error when loading component from library that uses angular material
 // Library Services
 import { AccountService } from '@Growthware/features/account';
+import { ConfigurationService } from '@Growthware/features/configuration';
 import { LoaderService } from '@Growthware/features/loader';
 // Library Modules
 // import { ToastModule } from '@Growthware/features/toast';
@@ -68,7 +69,7 @@ export function tokenGetter() {
   ],
   providers: [
     { provide: UrlSerializer, useClass: LowerCaseUrlSerializer },
-    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService] },
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService, ConfigurationService] },
     { provide: HTTP_INTERCEPTORS, useClass: LoaderInterceptor, multi: true, deps: [LoaderService] },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
