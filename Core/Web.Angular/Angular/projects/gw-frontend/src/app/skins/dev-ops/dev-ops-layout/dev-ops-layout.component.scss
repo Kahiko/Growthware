@@ -240,3 +240,8 @@ $altTheme: mat.define-dark-theme((
   @include mat.all-component-colors($altTheme);
 }
 // Done Theme
+
+#sidebar-left {
+  background: #6AA6D6;
+  width: 276.5px;
+}

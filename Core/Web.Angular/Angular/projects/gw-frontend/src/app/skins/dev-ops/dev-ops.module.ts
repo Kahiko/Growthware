@@ -12,9 +12,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { LoaderModule } from '@Growthware/features/loader';
 import { NavigationModule } from '@Growthware/features/navigation';
 // Library Standalone
-import { HorizontalComponent } from '@Growthware/features/navigation';
+// import { HorizontalComponent } from '@Growthware/features/navigation';
 // import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
 // import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
+import { HierarchicalHorizontalFlyoutComponent } from '@Growthware/features/navigation';
 import { VerticalComponent } from '@Growthware/features/navigation';
 // Modules/Components
 import { DevOpsRoutingModule } from './dev-ops-routing.module';
@@ -43,7 +44,7 @@ import { DevOpsLayoutComponent } from './dev-ops-layout/dev-ops-layout.component
     LoaderModule,
     NavigationModule,
     // Library Standalone
-    HorizontalComponent,
+    HierarchicalHorizontalFlyoutComponent,
     VerticalComponent,
     // Modules/Components
     DevOpsRoutingModule

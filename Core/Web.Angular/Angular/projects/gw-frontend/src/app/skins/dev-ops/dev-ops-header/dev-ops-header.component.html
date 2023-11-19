@@ -1,37 +1,42 @@
-<mat-toolbar class="header">
+<div class="header">
     <div id="logo" class="header__left">
-        <a (click)="onLogoClick()" style="width: 266.5px; padding-left: 15px;">Growthware VB</a>
+        <a (click)="onLogoClick()">Growthware VB</a>
     </div>
-    <div class="header__center spacer">
+    <div class="header__center spacer top">
         <button style="outline: none;" mat-icon-button (click)="sidenav.toggle();">
             <mat-icon>menu</mat-icon>
-          </button>
-    </div>
-    <span>Version {{version}}</span>
-    <button mat-icon-button>
-      <mat-icon>help_outline</mat-icon>
-    </button>
-    <button mat-icon-button [matMenuTriggerFor]="menu">
-      <mat-icon>person_outline</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-      <div *ngIf="!isAuthenticated">
-        <button (click)="onLogin()" mat-menu-item>
-          <mat-icon>login</mat-icon>
-          <span>Sign in</span>
         </button>
-      </div>
-      <div *ngIf="isAuthenticated">
-        <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
-        <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
-          <mat-icon>settings</mat-icon><span>Edit Profile</span>
-        </a>
-        <a mat-menu-item [routerLink]="['/accounts/change-password']">
-          <mat-icon>settings</mat-icon><span>Change Password</span>
-        </a>
-        <a mat-menu-item [routerLink]="['/accounts/logout']">
-          <mat-icon>logout</mat-icon><span>logout</span>
-        </a>
-      </div>
-    </mat-menu>
-  </mat-toolbar>
+        <gw-lib-hierarchical-horizontal-flyout 
+            backgroundColor="#1bc2a2"
+            fontColor="#fff"
+            height="52px"
+            hoverBackgroundColor="#2c3e50"
+            name="hierarchicalVerticalFlyout" 
+            ></gw-lib-hierarchical-horizontal-flyout>
+    </div>
+    <div class="header__right">
+        <button mat-icon-button [matMenuTriggerFor]="menu">
+            <mat-icon>person_outline</mat-icon>
+          </button>
+          <mat-menu #menu="matMenu">
+            <div *ngIf="!isAuthenticated">
+              <button (click)="onLogin()" mat-menu-item>
+                <mat-icon>login</mat-icon>
+                <span>Sign in</span>
+              </button>
+            </div>
+            <div *ngIf="isAuthenticated">
+              <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
+              <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
+                <mat-icon>settings</mat-icon><span>Edit Profile</span>
+              </a>
+              <a mat-menu-item [routerLink]="['/accounts/change-password']">
+                <mat-icon>settings</mat-icon><span>Change Password</span>
+              </a>
+              <a mat-menu-item [routerLink]="['/accounts/logout']">
+                <mat-icon>logout</mat-icon><span>logout</span>
+              </a>
+            </div>
+          </mat-menu>
+    </div>
+</div>
