@@ -12,7 +12,7 @@ export class HierarchicalHorizontalFlyoutComponent implements OnInit {
 
   @Input() backgroundColor: string = 'lightblue'; // #1bc2a2
   @Input() hoverBackgroundColor: string = '#2c3e50'; // #2c3e50
-  @Input() fontColor: string = 'white';
+  @Input() fontColor: string = 'white'; // #fff
   @Input() name: string = '';
   @Input() height: string = '32px';
 
