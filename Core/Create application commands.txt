@@ -164,7 +164,9 @@ Navigation:
 	https://stackblitz.com/edit/dynamic-nested-sidenav-menu?file=app%2Fapp.component.ts
 		ng generate module features/navigation --project gw-lib
 		ng generate component features/navigation/c/HierarchicalHorizontal --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/navigation/c/HierarchicalHorizontalFlyout --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/navigation/c/HierarchicalVertical --standalone --style scss --skip-tests --project gw-lib
+		ng generate component features/navigation/c/HierarchicalVerticalFlyout --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/navigation/c/Horizontal --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/navigation/c/Vertical --standalone --style scss --skip-tests --project gw-lib
 		ng generate interface features/navigation/NavLink --type model --project gw-lib
