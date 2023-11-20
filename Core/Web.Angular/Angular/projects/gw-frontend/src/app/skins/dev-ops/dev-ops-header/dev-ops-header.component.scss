@@ -1,45 +1,11 @@
-.header {
-    display: flex;
-    padding: 0px;
-    margin: 0px;
-    height: 60px;
-}
-
-.header__left {
-    padding: 0px;
-    margin: 0px;
-    padding-left: 10px;
-    background: #525252;
-    display: inline-block;
-    width: 266.5px;
-}
-
-.header__center {
-    padding: 0px;
-    margin: 0px;
-    padding-left: 10px;
-    background: #ebebeb;
-    display: inline-block;
-}
-
-.header__center__menu {
-    padding: 0px;
-    margin: 0px;
-    padding-left: 10px;
-    display: inline-block;
-    width: 95%;
-}
-
-.header__right {
-    padding: 0px;
-    margin: 0px;
-    padding-right: 10px;
-    background: #ebebeb;
-    display: inline-block;
+.container {
+    height: 50px;
 }
 
 #logo {
     position: relative;
+    background: #525252;
+    width: 266.5px;
 }
 
 #logo a {
@@ -59,4 +25,18 @@
 #logo a:hover {
     background-position: right 25px;
     text-decoration: none;
+}
+
+.middle_left {
+    padding: 0;
+}
+
+.middle_right {
+    padding: 0;
+    vertical-align: bottom;
+    align-items: center;
+}
+
+.right_cell {
+    width: 50px;
 }
