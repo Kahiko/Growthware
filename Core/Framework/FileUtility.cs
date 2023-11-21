@@ -266,10 +266,10 @@ namespace GrowthWare.Framework
                         // Add the row to the table
                     }
                 }
-                catch (IOException ex)
+                catch (IOException)
                 {
                     if (mRetTable != null) mRetTable.Dispose();
-                    throw ex;
+                    throw;
                 }
 
             }
@@ -321,10 +321,10 @@ namespace GrowthWare.Framework
                     mRetTable.Rows.Add(mRow);
                 }
             }
-            catch (IOException ex)
+            catch (IOException)
             {
                 if (mRetTable != null) mRetTable.Dispose();
-                throw ex;
+                throw;
             }
             SortTable mSorter = new SortTable();
             String mColName = columnName;
