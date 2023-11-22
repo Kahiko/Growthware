@@ -28,6 +28,63 @@ export class GWCommon {
     }
   }
 
+  public buildMenuData(menuData: any): any[] {
+    // console.log('menuData', menuData);
+    const source = [];
+    const items = [];
+    // build hierarchical source.
+    if(menuData && menuData.length) {
+      for (let i = 0; i < menuData.length; i++) {
+        const item = menuData[i];
+        const id = item["Id"];
+        const label = item["Title"];
+        const description = item["Description"];
+        const action = item["URL"].replace("?Action=", "").replace("&Action=", "");
+        const parentId = item["ParentId"];
+  
+        if (items[parentId]) {
+          let item: any = { parentId: parentId, label: label, description: description, action: action };
+          if (!items[parentId].items) {
+            items[parentId].items = [];
+          }
+          items[parentId].items[items[parentId].items.length] = item;
+          items[id] = item;
+        }
+        else {
+          items[id] = { parentId: parentId, label: label, description: description, action: action };
+          source[id] = items[id];
+        }
+      }
+    }
+    // console.log('source', source);
+    return source;
+  }
+
+  public buildUL(parent: HTMLUListElement, items: any[], callbackMethod?: any): void {
+    items.forEach(element => {
+      if (element.label) {
+        // create LI element and append it to the parent element.
+        const mListItem: HTMLLIElement = document.createElement('li');
+        const mAnchor: HTMLAnchorElement = document.createElement('a');
+        const mSpan: HTMLSpanElement = document.createElement('span');
+        mSpan.innerHTML = element.label;
+        mAnchor.appendChild(mSpan);
+        mListItem.appendChild(mAnchor);
+        // if there are sub items, call the buildUL function.
+        if (element.items && element.items.length > 0) {
+          Object.assign(mAnchor, 'title', element.description, 'href', '#', 'innerHTML', element.label);
+          mListItem.setAttribute('class', 'has-sub');
+          const mHTMLUListElement: HTMLUListElement = document.createElement('ul');
+          mListItem.appendChild(mHTMLUListElement);
+          this.buildUL(mHTMLUListElement, element.items);
+        } else {
+          Object.assign(mAnchor, { title: element.description, onclick: () => alert(element.action) });
+        }
+        parent.appendChild(mListItem);
+    }
+    });
+  }
+
   /**
    * Returns the base URL ending in a forward slash
    *

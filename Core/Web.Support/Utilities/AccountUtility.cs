@@ -376,6 +376,25 @@ public static class AccountUtility
         return m_CacheController.GetFromCache<T>(s_CachedName);
     }
 
+    public static string GetMenuData(string account, MenuType menuType)
+    {
+        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
+        string mMenuName = menuType.ToString() + "_" + account + "_Menu_Data";
+        string mRetVal = getFromCacheOrSession<string>(account, mMenuName);
+        if (mRetVal != default)
+        {
+            return mRetVal;
+        }
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        DataTable mDataTable = mBAccount.GetMenu(account, menuType);
+        if(mDataTable != null) 
+        {
+            mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
+            addOrUpdateCacheOrSession(account, mRetVal, mMenuName);
+        }
+        return mRetVal;
+    }
+
     /// <summary>
     /// Retrieves the list of menu items for a given account and menu type.
     /// </summary>

@@ -171,6 +171,23 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    [HttpGet("GetMenuData")]
+    public ActionResult<string> GetMenuData(int menuType)
+    {
+        MAccountProfile mAccountProfile = getCurrentAccount();
+        string mRetVal = null;
+        MenuType mMenuType = (MenuType)menuType;
+        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
+        {
+            mRetVal = AccountUtility.GetMenuData(mAccountProfile.Account, mMenuType);
+        } 
+        else 
+        {
+            mRetVal = AccountUtility.GetMenuData(this.s_AnonymousAccount, mMenuType);
+        }
+        return Ok(mRetVal);
+    }
+
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {

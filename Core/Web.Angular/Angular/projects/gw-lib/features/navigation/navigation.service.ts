@@ -17,6 +17,7 @@ import { LinkBehaviors } from './link-behaviors.enum';
 export class NavigationService {
 
   private _ApiName: string = 'GrowthwareAccount/';
+  private _Api_GetMenuData: string = '';
   private _Api_GetMenuItems: string = '';
   private _BaseURL: string = '';
 
@@ -35,6 +36,7 @@ export class NavigationService {
     private _Router: Router
   ) {
     this._BaseURL = this._GWCommon.baseURL;
+    this._Api_GetMenuData = this._BaseURL + this._ApiName + 'GetMenuData';
     this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
     this._Router.events.subscribe({
       next: (event: any) => {
@@ -42,6 +44,28 @@ export class NavigationService {
           this.currentUrl.next(event.urlAfterRedirects);
         }
       },
+    });
+  }
+
+  public getMenuData(menuType: MenuTypes, configuarionName: string): void {
+    const mQueryParameter: HttpParams = new HttpParams()
+      .set('menuType', menuType);
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      params: mQueryParameter
+    };
+    this._HttpClient.get<INavLink[]>(this._Api_GetMenuData, mHttpOptions).subscribe({
+      next: (response: INavLink[]) => {
+        this._DataSvc.notifyDataChanged(configuarionName, response);
+      },
+      error: (error) => {
+        this._LoggingSvc.errorHandler(error, 'NavigationService', 'getNavLinks');
+      },
+      complete: () => {
+        // here as example
+      }
     });
   }
 

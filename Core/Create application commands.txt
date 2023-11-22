@@ -169,6 +169,7 @@ Navigation:
 		ng generate component features/navigation/c/HierarchicalVerticalFlyout --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/navigation/c/Horizontal --standalone --style scss --skip-tests --project gw-lib
 		ng generate component features/navigation/c/Vertical --standalone --style scss --skip-tests --project gw-lib
+		ng generate interface features/navigation/NavItem --type model --project gw-lib
 		ng generate interface features/navigation/NavLink --type model --project gw-lib
 		ng generate enum features/navigation/MenuType --type enum --project gw-lib
 		ng generate enum features/navigation/LinkBehaviors --type enum --project gw-lib

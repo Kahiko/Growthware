@@ -1,6 +1,7 @@
 .flyout-nav {
   height: var(--height);
   display: inline-block;
+  z-index: 9999;
 }
 
 ul {
