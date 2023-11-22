@@ -2,6 +2,12 @@
     height: 50px;
 }
 
+.center {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
 #logo {
     position: relative;
     background: #525252;
@@ -34,8 +40,6 @@
 .middle_right {
     padding: 0;
     width: 100%;
-    vertical-align: bottom;
-    align-items: center;
 }
 
 .right_cell {
