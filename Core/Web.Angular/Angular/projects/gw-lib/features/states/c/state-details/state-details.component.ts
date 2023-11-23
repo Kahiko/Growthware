@@ -67,17 +67,17 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   ngOnInit(): void {
-    // console.log('editReason', this._ProfileSvc.editReason);
-    // console.log('editRow', this._ProfileSvc.editRow);
+    // console.log('modalReason', this._ProfileSvc.modalReason);
+    // console.log('selectedRow', this._ProfileSvc.selectedRow);
     this.selectedStatus = 1;
-    if(this._ProfileSvc.editRow.Status.trim() !== 'Active') {
+    if(this._ProfileSvc.selectedRow.Status.trim() !== 'Active') {
       this._Profile.statusId = 2;
       this.selectedStatus = 2;
     }
     this._SecuritySvc.getSecurityInfo('EditState').then((securityInfo) => {  // #1 getSecurityInfo Request/Handler
       // console.log('StateDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
-      return this._ProfileSvc.getState(this._ProfileSvc.editRow.State);      // #2 getState Request
+      return this._ProfileSvc.getState(this._ProfileSvc.selectedRow.State);      // #2 getState Request
     }).catch((error: any) => {                                               // #1 getSecurityInfo Error Handler
       this._LoggingSvc.toast("Error getting security info:\r\n" + error, 'State Details:', LogLevel.Error);
     }).then((response) => {                                                  // #2 getState Handler

@@ -46,9 +46,9 @@ export class MessageDetailsComponent implements OnInit {
   ngOnInit(): void {
     this.populateForm(); // need to make sure the form controls are set ¯\_(ツ)_/¯
     let mIdToGet = -1;
-    // console.log('editRow', this._MessageSvc.editRow);
-    if(this._MessageSvc.editReason.toLowerCase() != "newprofile") {
-      mIdToGet = this._MessageSvc.editRow.MessageSeqId;
+    // console.log('selectedRow', this._MessageSvc.selectedRow);
+    if(this._MessageSvc.modalReason.toLowerCase() != "newprofile") {
+      mIdToGet = this._MessageSvc.selectedRow.MessageSeqId;
     }
     console.log('mIdToGet', mIdToGet);
     this._SecuritySvc.getSecurityInfo('Search_Messages').then((securityInfo: ISecurityInfo) => { // #1 Request/Handler
@@ -80,11 +80,7 @@ export class MessageDetailsComponent implements OnInit {
   }
 
   closeModal(): void {
-    if(this._MessageSvc.editReason.toLowerCase() !== "newprofile") {
-      this._ModalSvc.close(this._MessageSvc.editModalId);
-    } else {
-      this._ModalSvc.close(this._MessageSvc.addModalId);
-    }
+    this._ModalSvc.close(this._MessageSvc.addEditModalId);
   }
 
 /**

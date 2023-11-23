@@ -128,11 +128,11 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   }
 
   ngOnInit(): void {
-    // console.log('editReason', this._ProfileSvc.editReason);
-    // console.log('editRow', this._ProfileSvc.editRow);
+    // console.log('modalReason', this._ProfileSvc.modalReason);
+    // console.log('selectedRow', this._ProfileSvc.selectedRow);
     let mEditId = -1;
-    if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-      mEditId = this._ProfileSvc.editRow.FunctionSeqId;
+    if(this._ProfileSvc.modalReason.toLocaleLowerCase() != 'newprofile') {
+      mEditId = this._ProfileSvc.selectedRow.FunctionSeqId;
     }
     this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // Request/Handler #1
       // console.log('securityInfo', securityInfo);

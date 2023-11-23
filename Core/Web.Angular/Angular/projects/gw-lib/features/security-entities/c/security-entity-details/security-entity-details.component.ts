@@ -97,8 +97,8 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
   }
 
   ngOnInit(): void {
-    // console.log('SecurityEntityDetailsComponent.ngOnInit.editReason', this._ProfileSvc.editReason);
-    // console.log('SecurityEntityDetailsComponent.ngOnInit.editRow', this._ProfileSvc.editRow);
+    // console.log('SecurityEntityDetailsComponent.ngOnInit.modalReason', this._ProfileSvc.modalReason);
+    // console.log('SecurityEntityDetailsComponent.ngOnInit.selectedRow', this._ProfileSvc.selectedRow);
     // console.log('SecurityEntityDetailsComponent.ngOnInit._Profile', this._Profile);
     this._Subscription.add(
       this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { 
@@ -106,8 +106,8 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
       })
     );
     let mEditId = -1;
-    if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-      mEditId = this._ProfileSvc.editRow.SecurityEntitySeqId;
+    if(this._ProfileSvc.modalReason.toLocaleLowerCase() != 'newprofile') {
+      mEditId = this._ProfileSvc.selectedRow.SecurityEntitySeqId;
     } else {
       this.canEnterName = true;
     }

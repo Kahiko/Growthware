@@ -15,16 +15,10 @@ export class GroupService {
   private _Api_GetGroupForEdit = '';
   private _Api_SaveGroup = '';
 
-  public get addModalId(): string {
-    return 'addProfile'
-  }
-
-  public get editModalId(): string {
-    return 'editProfile'
-  }
-
-  editRow: any = {};
-  editReason: string = '';
+  readonly addEditModalId: string = 'addEditAccountModal';
+  
+  selectedRow: any = {};
+  modalReason: string = '';
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
     this._Api_DeleteGroup = this._GWCommon.baseURL + this._ApiName + 'DeleteGroup/';

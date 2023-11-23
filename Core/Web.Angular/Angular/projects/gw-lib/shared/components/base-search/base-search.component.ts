@@ -69,7 +69,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   }
 
   private onBtnTopRight () {
-    this._TheService.editReason = 'NewProfile'
+    this._TheService.modalReason = 'NewProfile'
     const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Add ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);

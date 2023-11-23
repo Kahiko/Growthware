@@ -16,16 +16,10 @@ export class MessageService {
   private _ApiName: string = 'GrowthwareMessage/';
   private _Api_Save: string = '';
   
-  public get addModalId(): string {
-    return 'addMessage'
-  }
+  readonly addEditModalId: string = 'addEditAccountModal';
 
-  public get editModalId(): string {
-    return 'editMessage'
-  }
-
-  editRow: any = {};
-  editReason: string = '';
+  selectedRow: any = {};
+  modalReason: string = '';
 
   constructor(
     private _GWCommon: GWCommon,

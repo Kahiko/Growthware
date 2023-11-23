@@ -21,16 +21,10 @@ export class SecurityEntityService {
   private _Api_GetValidSecurityEntities: string = '';
   private _Api_SaveSecurityEntity: string = '';
   
-  public get addModalId(): string {
-    return 'addSecurityEntity'
-  }
+  readonly addEditModalId: string = 'addEditAccountModal';
 
-  public get editModalId(): string {
-    return 'editSecurityEntity'
-  }
-
-  editReason: string = '';
-  editRow: any = {};
+  modalReason: string = '';
+  selectedRow: any = {};
 
   constructor(
     private _AccountSvc: AccountService,

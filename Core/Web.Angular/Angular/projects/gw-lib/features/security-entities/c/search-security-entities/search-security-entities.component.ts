@@ -48,9 +48,9 @@ export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 
   override onRowDoubleClick (rowNumber: number): void {
     const mDataRow: any = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
-    this._TheService.editRow = mDataRow;
-    this._TheService.editReason = 'EditProfile';
-    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.editModalId, 'Edit ' + this.securityEntityTranslation, this._TheComponent, this._TheWindowSize);
+    this._TheService.selectedRow = mDataRow;
+    this._TheService.modalReason = 'EditProfile';
+    const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this.securityEntityTranslation, this._TheComponent, this._TheWindowSize);
     if(this._ModalSvc) {
       this._ModalSvc.open(mModalOptions);
     }

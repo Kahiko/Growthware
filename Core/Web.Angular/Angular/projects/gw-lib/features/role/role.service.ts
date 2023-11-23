@@ -15,16 +15,10 @@ export class RoleService {
   private _Api_GetRole: string = '';
   private _Api_Save: string = '';
 
-  public get addModalId(): string {
-    return 'addRole'
-  }
+  readonly addEditModalId: string = 'addEditAccountModal';
 
-  public get editModalId(): string {
-    return 'editRole'
-  }
-
-  editRow: any = {};
-  editReason: string = '';
+  selectedRow: any = {};
+  modalReason: string = '';
 
   constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
     this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteRole';

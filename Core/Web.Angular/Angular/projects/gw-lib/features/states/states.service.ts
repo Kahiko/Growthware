@@ -16,16 +16,10 @@ export class StatesService {
   private _Api_GetProfile: string = '';
   private _Api_Save: string = '';
 
-  public get addModalId(): string {
-    return 'addState'
-  }
+  readonly addEditModalId: string = 'addEditAccountModal';
 
-  public get editModalId(): string {
-    return 'editState'
-  }
-
-  editReason: string = '';
-  editRow: any = {};
+  modalReason: string = '';
+  selectedRow: any = {};
 
   constructor(
     private _GWCommon: GWCommon,

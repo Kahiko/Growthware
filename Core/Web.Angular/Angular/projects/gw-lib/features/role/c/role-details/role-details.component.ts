@@ -81,13 +81,13 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
       // console.log('RoleDetailsComponent.ngOnInit.getSecurityInfo.response', response);
       this._SecurityInfo = securityInfo;
       let mRoleSeqId: number = -1;
-      if(this._RoleSvc.editReason === 'EditProfile') {
-        mRoleSeqId = this._RoleSvc.editRow.RoleSeqId;
+      if(this._RoleSvc.modalReason === 'EditProfile') {
+        mRoleSeqId = this._RoleSvc.selectedRow.RoleSeqId;
         this.canSave = securityInfo.mayEdit;
       } else {
         this.canSave = securityInfo.mayAdd;
       }
-      // TODO: Looks like this._RoleSvc.editRow is not always being set correctly
+      // TODO: Looks like this._RoleSvc.selectedRow is not always being set correctly
       return this._RoleSvc.getRoleForEdit(mRoleSeqId); // Request #2
     }).catch((error: any) => { // Request #1 error
       this._LoggingSvc.toast("Error getting security info for 'EditRole' :\r\n" + error, 'Role Details:', LogLevel.Error);
@@ -122,11 +122,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    if(this._RoleSvc.editReason.toLowerCase() !== "newprofile") {
-      this._ModalSvc.close(this._RoleSvc.editModalId);
-    } else {
-      this._ModalSvc.close(this._RoleSvc.addModalId);
-    }
+    this._ModalSvc.close(this._RoleSvc.addEditModalId);
   }
 
   getErrorMessage(fieldName: string) {

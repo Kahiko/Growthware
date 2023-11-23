@@ -37,14 +37,14 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
 
     ngOnDestroy(): void {
         this._Subscription.unsubscribe();
-        this._ProfileSvc.editReason = '';
-        this._ProfileSvc.editRow = '';
+        this._ProfileSvc.modalReason = '';
+        this._ProfileSvc.selectedRow = '';
     }
 
     protected applySecurity() {
         this.canSave = this._SecurityInfo.mayEdit || this._SecurityInfo.mayAdd;
         this.canDelete = this._SecurityInfo.mayDelete
-        if(this._ProfileSvc.editReason.toLowerCase() == 'newprofile') {
+        if(this._ProfileSvc.modalReason.toLowerCase() == 'newprofile') {
             this.canDelete = false;
         }
     }
@@ -54,11 +54,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
     }
 
     protected onClose(): void {
-        if(this._ProfileSvc.editReason.toLocaleLowerCase() != 'newprofile') {
-            this._ModalSvc.close(this._ProfileSvc.editModalId);
-        } else {
-            this._ModalSvc.close(this._ProfileSvc.addModalId);
-        }
+        this._ModalSvc.close(this._ProfileSvc.addEditModalId);
         // this._LoggingSvc.toast('BaseDetailComponent.onClose', 'Function Details:', LogLevel.Error);
     }
 

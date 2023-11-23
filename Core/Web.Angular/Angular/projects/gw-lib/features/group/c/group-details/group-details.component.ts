@@ -69,9 +69,9 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
   ngOnInit(): void {
     let mIdToGet = -1;
-    if(this._GroupSvc.editReason.toLowerCase() != "newprofile") {
-      // console.log('editRow', this._GroupSvc.editRow);
-      mIdToGet = this._GroupSvc.editRow.GroupSeqId;
+    if(this._GroupSvc.modalReason.toLowerCase() != "newprofile") {
+      // console.log('selectedRow', this._GroupSvc.selectedRow);
+      mIdToGet = this._GroupSvc.selectedRow.GroupSeqId;
     }
     this._GroupSvc.getGroupForEdit(mIdToGet).then((response: IGroupProfile) => {
       this._GroupProfile = response;
@@ -98,7 +98,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
   applySecurity(): void {
     this.canDelete = this.securityInfo.mayDelete;
-    if(this._GroupSvc.editReason.toLowerCase() == 'newprofile') {
+    if(this._GroupSvc.modalReason.toLowerCase() == 'newprofile') {
       this.canDelete = false;
     }
   }
@@ -108,13 +108,9 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
   }
 
   closeModal(): void {
-    // console.log('GroupDetailsComponent.closeModal.editReason', this._GroupSvc.editReason);
-    // console.log('GroupDetailsComponent.closeModal.editModalId', this._GroupSvc.editModalId);
-    if(this._GroupSvc.editReason.toLowerCase() !== "newprofile") {
-      this._ModalSvc.close(this._GroupSvc.editModalId);
-    } else {
-      this._ModalSvc.close(this._GroupSvc.addModalId);
-    }
+    // console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.modalReason);
+    // console.log('GroupDetailsComponent.closeModal.modalReason', this._GroupSvc.addEditModalId);
+    this._ModalSvc.close(this._GroupSvc.addEditModalId);
   }
 
   getErrorMessage(fieldName: string) {

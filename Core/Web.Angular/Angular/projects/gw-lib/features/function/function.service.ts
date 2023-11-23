@@ -26,8 +26,8 @@ export class FunctionService {
   private _Api_Save: string = '';
   private _Reason: string = '';
 
-  editReason: string = '';
-  editRow: any = {};
+  modalReason: string = '';
+  selectedRow: any = {};
 
   public get functionSeqId(): number {
     return this._FunctionSeqId;
