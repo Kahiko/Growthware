@@ -61,10 +61,4 @@ export class HierarchicalHorizontalFlyoutComponent extends BaseNavigationFlyoutC
     document.documentElement.style.setProperty('--ulLiBackgroundColor', this.backgroundColor);
   }
 
-  // onItemSelected(item: any): void {
-  //   alert('hi');
-  //   // super.onItemSelected(item);
-  //   // this._Router.navigate([item.action]);
-  // }
-
 }

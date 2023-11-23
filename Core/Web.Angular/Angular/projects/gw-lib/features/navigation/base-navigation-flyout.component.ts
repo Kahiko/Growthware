@@ -60,14 +60,14 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
             this._GWCommon.buildMenuData(data.payLoad).forEach((item) => {
               this.menuData.push(item);
             });
-            this._GWCommon.buildUL(this.firstLevel.nativeElement, this.menuData, this.onItemSelected);
+            this._GWCommon.buildUL(this.firstLevel.nativeElement, this.menuData, (action: string) => { return this.onItemSelected(action);});
           }
         })
       );
     }    
   }
 
-  protected onItemSelected(action: string): void {
+  onItemSelected(action: string): void {
     // console.log('BaseNavigationFlyoutComponent.onItemSelected.action', action);
     this._Router.navigate([action.toLowerCase()]);
   }
