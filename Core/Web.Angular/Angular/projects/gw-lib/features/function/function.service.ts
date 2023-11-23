@@ -35,21 +35,15 @@ export class FunctionService {
   public set functionSeqId(value: number) {
     this._FunctionSeqId = value;
   }
-
-  public get addModalId(): string {
-    return 'addFunction'
-  }
-
-  public get editModalId(): string {
-    return 'editFunction'
-  }
-
+  
   public get reason(): string {
     return this._Reason;
   }
   public set reason(value: string) {
     this._Reason = value;
   }
+
+  readonly addEditModalId: string = 'addEditAccountModal';
 
   constructor(
     private _AccountSvc: AccountService,
