@@ -66,19 +66,20 @@ export class GWCommon {
         // create LI element and append it to the parent element.
         const mListItem: HTMLLIElement = document.createElement('li');
         const mAnchor: HTMLAnchorElement = document.createElement('a');
+        Object.assign(mAnchor, { 'title': element.description });
         const mSpan: HTMLSpanElement = document.createElement('span');
         mSpan.innerHTML = element.label;
         mAnchor.appendChild(mSpan);
         mListItem.appendChild(mAnchor);
         // if there are sub items, call the buildUL function.
         if (element.items && element.items.length > 0) {
-          Object.assign(mAnchor, 'title', element.description, 'href', '#', 'innerHTML', element.label);
           mListItem.setAttribute('class', 'has-sub');
+          Object.assign(mAnchor, { href: '#' });
           const mHTMLUListElement: HTMLUListElement = document.createElement('ul');
           mListItem.appendChild(mHTMLUListElement);
-          this.buildUL(mHTMLUListElement, element.items);
+          this.buildUL(mHTMLUListElement, element.items, callbackMethod);
         } else {
-          Object.assign(mAnchor, { title: element.description, onclick: () => alert(element.action) });
+          Object.assign(mAnchor, { onclick: () => callbackMethod(element.action) });
         }
         parent.appendChild(mListItem);
     }
