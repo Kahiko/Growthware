@@ -40,6 +40,9 @@
 .middle_right {
     padding: 0;
     width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
 }
 
 .right_cell {
