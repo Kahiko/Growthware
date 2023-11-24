@@ -402,11 +402,15 @@ public abstract class AbstractAccountController : ControllerBase
 
     private void setTokenCookie(string token)
     {
+        string mToken = string.Empty;
+        if(token != null) {
+            mToken = token;
+        }
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
             Expires = DateTime.UtcNow.AddDays(7)
         };
-        Response.Cookies.Append("refreshToken", token, cookieOptions);
+        Response.Cookies.Append("refreshToken", mToken, cookieOptions);
     }
 }
