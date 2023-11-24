@@ -273,7 +273,7 @@ export class AccountService {
           this._AccountInformationSubject.next(mAccountInformation);
           this.triggerMenuUpdate();
           this.startRefreshTokenTimer();
-          this._Router.navigate([mNavigationUrl]);
+          this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
           if(!silent) {
             this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
           }

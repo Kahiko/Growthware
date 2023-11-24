@@ -54,13 +54,13 @@ export class AuthGuard implements CanActivate  {
     if(redirectUrl !== '') {
       if(!state.url.startsWith(redirectUrl)) {
         if(returnParameter) {
-          this._Router.navigate([redirectUrl], {
+          this._Router.navigate([redirectUrl.toLocaleLowerCase()], {
             queryParams: {
               return: state.url
             }
           });
         } else {
-          this._Router.navigate([redirectUrl]);
+          this._Router.navigate([redirectUrl.toLocaleLowerCase()]);
         }
       }
     }
