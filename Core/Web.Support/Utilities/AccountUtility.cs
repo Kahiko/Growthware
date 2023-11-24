@@ -130,7 +130,7 @@ public static class AccountUtility
     {
         string mRetVal = string.Empty;
         MMessage mMessageProfile = new MMessage();
-        MAccountProfile mAccountProfile = SessionController.GetFromSession<MAccountProfile>("AccountProfile");
+        MAccountProfile mAccountProfile = CurrentProfile;
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         string mCurrentPassword = mAccountProfile.Password;
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
