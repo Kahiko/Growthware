@@ -72,6 +72,17 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         return this.frmProfile.controls;
     }
 
+    public findInvalidControls(theForm: FormGroup) {
+        const mRetVal = [];
+        const mFormControls = theForm.controls;
+        for (const mControlName in mFormControls) {
+            if (mFormControls[mControlName].invalid) {
+                mRetVal.push(mControlName);
+            }
+        }
+        return mRetVal;
+      }
+
     abstract delete(): void;
     abstract createForm(): void;
     abstract populateProfile(): void;
