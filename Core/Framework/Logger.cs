@@ -173,6 +173,7 @@ namespace GrowthWare.Framework
                 if (s_Logger == null)
                 {
                     s_Logger = new Logger();
+                    s_Logger.log("Logger initialized", LogPriority.Info);
                 }
             }
             catch
