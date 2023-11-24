@@ -928,7 +928,8 @@ UPDATE [ZGWSecurity].[Functions] SET [Source] = 'functions' WHERE [Action] = 'MS
 UPDATE [ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'generic_home' WHERE [Account] = 'Anonymous'
 UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 0 WHERE [Action] = 'WorkFlows';
 
-UPDATE [ZGWSecurity].[Security_Entities] SET [Skin] = 'Default' WHERE [Skin] = 'Default Black'
+UPDATE [ZGWSecurity].[Security_Entities] SET [Skin] = 'Default' WHERE [Skin] = 'Default Black';
+UPDATE [ZGWSecurity].[Security_Entities] SET [Name] = 'Default' WHERE [Name] = 'Default Black';
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET

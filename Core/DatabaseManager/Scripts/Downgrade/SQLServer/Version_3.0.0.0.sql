@@ -564,9 +564,10 @@ UPDATE [ZGWSecurity].[Functions] SET [Source] = 'Functions/System/TestNaturalSor
 UPDATE [ZGWCoreWeb].[Account_Choices] SET [FavoriteAction] = 'home' WHERE [Account] = 'Anonymous'
 UPDATE [ZGWSecurity].[Functions] SET [Is_Nav] = 1 WHERE [Action] = 'WorkFlows';
 
-DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount'
+DELETE FROM [ZGWSecurity].[Functions] WHERE [Action] = 'SaveAccount';
 
-UPDATE [ZGWSecurity].[Security_Entities] SET [Skin] = 'Default Black' WHERE [Skin] = 'Default'
+UPDATE [ZGWSecurity].[Security_Entities] SET [Skin] = 'Default Black' WHERE [Skin] = 'Default';
+UPDATE [ZGWSecurity].[Security_Entities] SET [Name] = 'Default Black' WHERE [Name] = 'Default';
 
 DECLARE 
 	@V_FunctionSeqId int = 4,
