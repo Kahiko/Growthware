@@ -26,6 +26,7 @@ import { DashboardModule } from './skins/dashboard/dashboard.module';
 import { DefaultModule } from './skins/default/default.module';
 import { BlueArrowModule } from './skins/blue-arrow/blue-arrow.module';
 import { DevOpsModule } from './skins/dev-ops/dev-ops.module';
+import { ProfessionalModule } from './skins/professional/professional.module';
 // Application Components
 import { AppComponent } from './app.component';
 // Application
@@ -64,6 +65,7 @@ export function tokenGetter() {
     DefaultModule,
     BlueArrowModule,
     DevOpsModule,
+    ProfessionalModule,
     // ToastModule,
     ToasterComponent,
   ],

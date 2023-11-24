@@ -68,6 +68,10 @@ Application:
 		ng generate component skins/dev-ops/dev-opsHeader --skip-tests --module dev-ops --project gw-frontend
 		ng generate component skins/dev-ops/dev-opsLayout --skip-tests --module dev-ops --project gw-frontend
 
+		ng generate module skins/professional --routing --project gw-frontend
+		ng generate component skins/professional/professionalFooter --skip-tests --module professional --project gw-frontend
+		ng generate component skins/professional/professionalHeader --skip-tests --module professional --project gw-frontend
+		ng generate component skins/professional/professionalLayout --skip-tests --module professional --project gw-frontend
 	Features
 		ng generate module features/home --routing --project gw-frontend
 		ng generate component features/home/c/GenericHome --module home --project gw-frontend
