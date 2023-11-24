@@ -1,1 +1,15 @@
-<p>professional-layout works!</p>
+<gw-frontend-professional-header></gw-frontend-professional-header>
+<mat-drawer-container class="drawer-container" color="primary" autosize>
+    <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+        <mat-nav-list>
+            <gw-lib-hierarchical-vertical name="hierarchicalVertical"></gw-lib-hierarchical-vertical>
+        </mat-nav-list>
+        <mat-divider></mat-divider>
+        <gw-lib-vertical name="vertical"></gw-lib-vertical>
+    </mat-drawer>
+    <div class="router-outlet__div page">
+        <gw-lib-loader></gw-lib-loader>
+        <router-outlet></router-outlet>
+    </div>
+</mat-drawer-container>
+<gw-frontend-professional-footer></gw-frontend-professional-footer>

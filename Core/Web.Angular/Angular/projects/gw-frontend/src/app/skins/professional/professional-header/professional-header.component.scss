@@ -1,0 +1,69 @@
+.centerLogo {
+    height: 75px;
+    width: 50px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+.header {
+    padding: 0px;
+    margin: 0px;
+    background-color: #CBCDD1;
+    width: 100%;
+}
+
+.header_firstRow_left__div {
+    padding: 0px;
+    margin: 0px;
+    width: 20%;
+}
+
+.header_firstRow_center__div {
+    padding: 0px;
+    margin: 0px;
+    width: 103px;
+}
+.header_firstRow_right__div {
+    color: white;
+    background-repeat: repeat-x;
+    background-image: url('/assets/professional/images/top_blue_strip.gif');
+}
+
+.header_firstRow_right__div__table {
+    position: absolute; top: 10px;
+}
+
+.header_firstRow_right__div__table__td {
+    block-size: fit-content;
+}
+
+.header_secondRow {
+    padding: 0px;
+    margin: 0px;
+    height: 5px;
+    background-repeat: repeat-x;
+    background-image: url('/assets/professional/images/top_black_stripes.gif');
+}
+
+.header_thirdRow {
+    padding: 0px;
+    margin: 0px;
+    height: 26px;
+    background-repeat: repeat-x;
+    background-image: url('/assets/professional/images/blue_topic_background.gif');
+}
+
+.header_thirdRow_right__div {
+    padding: 0px;
+    margin: 0px;    
+    color: white;
+}
+
+.header_forthRow {
+    padding: 0px;
+    margin: 0px;
+    height: 5px;
+    background-repeat: repeat-x;
+    background-image: url('/assets/professional/images/top_black_stripes.gif');
+}
