@@ -17,12 +17,14 @@ export class ConfigurationService {
   private _ApiAppSettingsURL: string = '';
   private _ApiGetDBInformationURL: string = '';
   private _ApiSetDBInformationURL: string = '';
+  private _Environment = new BehaviorSubject('not set');
   private _Loaded: boolean = false;
   private _LogPriority = new BehaviorSubject('Debug');
   private _SecurityEntityTranslation = new BehaviorSubject('Security Entity');
   private _Version = new BehaviorSubject('0.0.0.0');
 
   readonly applicationName$ = this._ApplicationName.asObservable();
+  readonly environment$ = this._Environment.asObservable();
   readonly logPriority$ = this._LogPriority.asObservable();
   readonly securityEntityTranslation$ = this._SecurityEntityTranslation.asObservable();
   readonly version$ = this._Version.asObservable();
@@ -65,6 +67,7 @@ export class ConfigurationService {
       this._HttpClient.get<IAppSettings>(mUrl).subscribe({
         next: (response: IAppSettings) => {
           if(response.name) { this._ApplicationName.next(response.name); }
+          if(response.environment) { this._Environment.next(response.environment); }
           if(response.logPriority) { this._LogPriority.next(response.logPriority); }
           if(response.version) { this._Version.next(response.version); }
           if(response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }

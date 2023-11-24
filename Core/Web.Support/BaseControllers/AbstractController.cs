@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
@@ -17,6 +15,7 @@ public abstract class AbstractController : ControllerBase
 {
 
     private string m_ApplicationName = string.Empty;
+    private string m_Environment = string.Empty;
     private string m_Version = string.Empty;
 
     private Logger m_Logger = Logger.Instance();
@@ -31,6 +30,11 @@ public abstract class AbstractController : ControllerBase
     public UIAppSettings GetAppSettings()
     {
         UIAppSettings mRetVal = new UIAppSettings();
+        if(this.m_Environment == string.Empty)
+        {
+            this.m_Environment = ConfigSettings.Environment;
+            this.m_Environment = this.m_Environment.Substring(0, this.m_Environment.Length - 1);
+        }
         if (this.m_LogPriority == string.Empty)
         {
             this.m_LogPriority = ConfigSettings.LogPriority;
@@ -47,6 +51,7 @@ public abstract class AbstractController : ControllerBase
         {
             this.m_SecurityEntityTranslation = ConfigSettings.SecurityEntityTranslation;
         }
+        mRetVal.Environment = this.m_Environment;
         mRetVal.LogPriority = this.m_LogPriority;
         mRetVal.Name = this.m_ApplicationName;
         mRetVal.SecurityEntityTranslation = this.m_SecurityEntityTranslation;
