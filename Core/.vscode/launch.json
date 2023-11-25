@@ -20,7 +20,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
@@ -52,7 +52,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
@@ -75,7 +75,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
@@ -101,7 +101,7 @@
             "request": "launch",
             "preLaunchTask": "DB_Manager_Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net7.0/GrowthWare.DatabaseManager.dll",
+            "program": "${workspaceFolder}/DatabaseManager/bin/Debug/net8.0/GrowthWare.DatabaseManager.dll",
             "args": [
                 "--Version",
                 "3.0.0.0"
@@ -117,7 +117,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,
@@ -138,7 +138,7 @@
             "request": "launch",
             "preLaunchTask": "Angular-Web-Build-Watch",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net7.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
             "args": [],
             "cwd": "${workspaceFolder}/Web.Angular",
             "stopAtEntry": false,

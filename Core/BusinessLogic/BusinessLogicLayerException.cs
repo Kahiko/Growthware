@@ -35,17 +35,5 @@ namespace GrowthWare.BusinessLogic
         {
 
         }
-
-        /// <summary>
-        /// Calls base method
-        /// </summary>
-        /// <param name="info"></param>
-        /// <param name="context"></param>
-        protected BusinessLogicLayerException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-        {
-            // Implement type-specific serialization constructor logic.
-        }
-
     }
 }

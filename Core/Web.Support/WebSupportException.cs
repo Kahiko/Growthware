@@ -33,16 +33,5 @@ namespace GrowthWare.Web.Support
 		{
 		
 		}
-
-		/// <summary>
-		/// Calls base method
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-        protected WebSupportException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-		{
-			// Implement type-specific serialization constructor logic.
-		}
     }
 }

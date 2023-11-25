@@ -485,16 +485,5 @@ namespace GrowthWare.Framework
 		{
 		
 		}
-
-		/// <summary>
-		/// Calls base method
-		/// </summary>
-		/// <param name="info"></param>
-		/// <param name="context"></param>
-        protected NaturalComparerException(SerializationInfo info, StreamingContext context)
-            : base(info, context)
-		{
-			// Implement type-specific serialization constructor logic.
-		}
     }
 }
