@@ -8,7 +8,7 @@ const routes: Routes = [
   { path: 'naturalsort', loadComponent: () => import('@Growthware/features/sys-admin').then(m => m.NaturalSortComponent), canActivate: [AuthGuard] },
   { path: 'selectasecurityentity', loadComponent: () => import('@Growthware/features/security-entities').then(m => m.SelectSecurityEntityComponent), canActivate: [AuthGuard] },
   { path: 'update', loadComponent: () => import('@Growthware/features/sys-admin').then(m => m.UpdateSessionComponent), canActivate: [AuthGuard] },
-  { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule), canActivate: [AuthGuard]  },
+  { path: 'accounts', loadChildren: () => import('./features/accounts/accounts.module').then(m => m.AccountsModule)  },
   { path: 'manage_cache_dependency', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'manage_logs', loadChildren: () => import('./features/file-manager/file-manager.module').then(m => m.FileManagerModule) },
   { path: 'functions', loadChildren: () => import('./features/functions/functions.module').then(m => m.FunctionsModule), canActivate: [AuthGuard]  },  
