@@ -109,10 +109,18 @@ public class CacheController
         {
             string mCacheName = (string)state;
             string mFileNameAndPath = Path.Combine(s_CacheDirectory, mCacheName + ".txt");
-            if (File.Exists(mFileNameAndPath))
+            int mWaitCount = 0;
+            do
             {
-                File.Delete(mFileNameAndPath);
-            }
+                try
+                {
+                    File.Delete(mFileNameAndPath);
+                }
+                catch (System.Exception)
+                {
+                    mWaitCount++;
+                }              
+            } while (mWaitCount < 4 && File.Exists(mFileNameAndPath));
         }
     }
 
