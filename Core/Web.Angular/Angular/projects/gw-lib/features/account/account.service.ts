@@ -292,7 +292,7 @@ export class AccountService {
    *
    * @return {void} This function does not return anything.
    */
-  public logout(): void {
+  public logout(slient: boolean = false): void {
     localStorage.removeItem("jwt")
     const mHttpOptions = {
       headers: new HttpHeaders({
@@ -309,7 +309,9 @@ export class AccountService {
           this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
           this.triggerMenuUpdate();
-          this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+          if(!slient) {
+            this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+          }
           this._Router.navigate(['generic_home']);
           this.stopRefreshTokenTimer();
           });
@@ -350,7 +352,7 @@ export class AccountService {
       }),
       catchError((err) => {
         // console.log(err);
-        this.logout();
+        this.logout(true);
         // return nothing
         return of();
       })
