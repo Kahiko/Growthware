@@ -138,13 +138,17 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
     throw new Error('Method not implemented.');
   }
   override createForm(): void {
+    const ConnectionStringValidation: Validators[] = [Validators.required];
+    if(this._Profile.id != -1) {
+      ConnectionStringValidation.splice(0, 1);
+    }
     this.frmProfile = this._FormBuilder.group({
       name: [this._Profile.name, [Validators.required]],
       description: [this._Profile.description, [Validators.required]],
       url: [this._Profile.url],
       dataAccessLayerAssemblyName: [this._Profile.dataAccessLayerAssemblyName, [Validators.required]],
       dataAccessLayerNamespace: [this._Profile.dataAccessLayerNamespace, [Validators.required]],
-      connectionString: [this._Profile.connectionString, [Validators.required]],
+      connectionString: [this._Profile.connectionString, ConnectionStringValidation],
     });
   }
 
@@ -194,6 +198,9 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 
   override populateProfile(): void {
     this._Profile.connectionString = this.controls['connectionString'].getRawValue();
+    if(!this._Profile.connectionString) {
+      this._Profile.connectionString = '';
+    }
     this._Profile.description = this.controls['description'].getRawValue();
     this._Profile.dataAccessLayer = this.selectedDal;
     this._Profile.dataAccessLayerAssemblyName = this.controls['dataAccessLayerAssemblyName'].getRawValue();

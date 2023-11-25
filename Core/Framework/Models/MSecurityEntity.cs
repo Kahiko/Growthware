@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Text.Json.Serialization;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models.Base;
 
@@ -86,7 +85,6 @@ public class MSecurityEntity : AbstractBaseModel
         /// <summary>
         /// Represents the connection string
         /// </summary>
-        [JsonIgnore]
         public string ConnectionString { get; set; }
 
         /// <summary>
