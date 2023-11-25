@@ -272,26 +272,30 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("RefreshToken")]
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
-        try
+        if(AccountUtility.CurrentProfile.Account.ToLowerInvariant() != AccountUtility.AnonymousAccount.ToLowerInvariant())
         {
-            var mRefreshToken = Request.Cookies["refreshToken"];
-            AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-            setTokenCookie(mAuthenticationResponse.RefreshToken);
-            return Ok(mAuthenticationResponse);
-        }
-        catch (System.Exception ex)
-        {
-            if(ex.Message.Contains("token does not exist"))
+            try
             {
-                return NotFound();
-                // throw;
+                var mRefreshToken = Request.Cookies["refreshToken"];
+                AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
+                setTokenCookie(mAuthenticationResponse.RefreshToken);
+                return Ok(mAuthenticationResponse);
             }
-            else
+            catch (System.Exception ex)
             {
-                this.m_Logger.Error(ex);
-                throw new Exception("token does not exist, unable to get account");
+                if(ex.Message.Contains("token does not exist"))
+                {
+                    return NotFound();
+                    // throw;
+                }
+                else
+                {
+                    this.m_Logger.Error(ex);
+                    throw new Exception("token does not exist, unable to get account");
+                }
             }
         }
+        return NotFound();
     }
 
     [AllowAnonymous]
