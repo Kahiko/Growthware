@@ -66,7 +66,7 @@ export class ModalService {
   public open<T>(options: IModalOptions): void {
     if(this._GWCommon.isNullOrEmpty(options.modalId)) {
       this._LoggingSvc.toast('options.modalId can not be null or blank', 'Modal Service', LogLevel.Error);
-      console.log('ModalService.open', options);
+      // console.log('ModalService.open', options);
       return;
     }
     if (this._GWCommon.isNullOrEmpty(options.contentPayLoad) && typeof (options.contentPayLoad) !== 'function') {

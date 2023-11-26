@@ -50,7 +50,7 @@ export class MessageDetailsComponent implements OnInit {
     if(this._MessageSvc.modalReason.toLowerCase() != "newprofile") {
       mIdToGet = this._MessageSvc.selectedRow.MessageSeqId;
     }
-    console.log('mIdToGet', mIdToGet);
+    // console.log('mIdToGet', mIdToGet);
     this._SecuritySvc.getSecurityInfo('Search_Messages').then((securityInfo: ISecurityInfo) => { // #1 Request/Handler
       this._SecurityInfo = securityInfo;
       return this._MessageSvc.getProfile(mIdToGet);                   // #2 Request
