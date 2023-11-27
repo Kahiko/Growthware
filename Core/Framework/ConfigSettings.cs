@@ -79,6 +79,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Append_To_File"); }
         }
 
+        public static string Audience
+        {
+            get { return GetAppSettingValue("Audience", true); }
+        }
+
         /// <summary>
         /// Returns Authentication_Type from the CONFIG file.
         /// </summary>
@@ -99,6 +104,11 @@ namespace GrowthWare.Framework
         public static string BasePage
         {
             get { return GetAppSettingValue("Base_Page"); }
+        }
+
+        public static string Issuer
+        {
+            get { return GetAppSettingValue("Issuer", true); }
         }
 
         public static string Secret
