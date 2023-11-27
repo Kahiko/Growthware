@@ -13,7 +13,6 @@ using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
