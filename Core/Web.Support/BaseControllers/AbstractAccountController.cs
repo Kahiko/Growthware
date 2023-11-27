@@ -43,8 +43,8 @@ public abstract class AbstractAccountController : ControllerBase
         mChangePassword.OldPassword = oldPassword;
         mChangePassword.NewPassword = newPassword;
         // if (mChangePassword. <= 0) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
-        if(mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
-        if(mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
+        if (mChangePassword.NewPassword.Length == 0) throw new ArgumentNullException("NewPassword", " can not be blank");
+        if (mChangePassword.OldPassword.Length == 0) throw new ArgumentNullException("OldPassword", " can not be blank");
         string mRetVal = AccountUtility.ChangePassword(mChangePassword);
         return Ok(mRetVal);
     }
@@ -68,10 +68,10 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        var mEditId =  HttpContext.Session.GetInt32("EditId");
-        if(mEditId != null) 
+        var mEditId = HttpContext.Session.GetInt32("EditId");
+        if (mEditId != null)
         {
-            if(mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile.Id)
+            if (mSecurityInfo.MayDelete && accountSeqId != AccountUtility.CurrentProfile.Id)
             {
                 AccountUtility.Delete(accountSeqId);
                 HttpContext.Session.Remove("EditId");
@@ -86,17 +86,17 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("EditAccount")]
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
-        
+
         MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         HttpContext.Session.Remove("EditId");
         MAccountProfile mAccountProfile = new MAccountProfile(mRequestingProfile.Id);
-        if(account != "new") // Populate from the DB
+        if (account != "new") // Populate from the DB
         {
             mAccountProfile = AccountUtility.GetAccount(account);
         }
-        if(mSecurityInfo.MayEdit)
+        if (mSecurityInfo.MayEdit)
         {
             HttpContext.Session.SetInt32("EditId", mAccountProfile.Id);
             return Ok(mAccountProfile);
@@ -111,7 +111,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mRequestingProfile = getCurrentAccount();
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
-        if(mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
+        if (mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
         {
             MAccountProfile mAccountProfile = this.getAccount(account);
             HttpContext.Session.SetInt32("EditId", mAccountProfile.Id);
@@ -128,11 +128,11 @@ public abstract class AbstractAccountController : ControllerBase
     {
         string mRetVal = string.Empty;
         EncryptionType mEncryptionType = (EncryptionType)encryptionType;
-        if(encrypt) 
+        if (encrypt)
         {
             CryptoUtility.TryEncrypt(txtValue, out mRetVal, mEncryptionType);
-        } 
-        else 
+        }
+        else
         {
             CryptoUtility.TryDecrypt(txtValue, out mRetVal, mEncryptionType);
         }
@@ -158,11 +158,11 @@ public abstract class AbstractAccountController : ControllerBase
     private MAccountProfile getAccount(string account)
     {
         MAccountProfile mRetVal = new MAccountProfile();
-        if(!String.IsNullOrWhiteSpace(account) && account != "_")
+        if (!String.IsNullOrWhiteSpace(account) && account != "_")
         {
             mRetVal = AccountUtility.GetAccount(account);
         }
-        if(mRetVal == null)
+        if (mRetVal == null)
         {
             // mRetVal = AccountUtility.GetAccount("Anonymous");
             mRetVal = new MAccountProfile();
@@ -177,11 +177,11 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = getCurrentAccount();
         string mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
-        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
+        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
         {
             mRetVal = AccountUtility.GetMenuData(mAccountProfile.Account, mMenuType);
-        } 
-        else 
+        }
+        else
         {
             mRetVal = AccountUtility.GetMenuData(this.s_AnonymousAccount, mMenuType);
         }
@@ -194,11 +194,11 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = getCurrentAccount();
         IList<MMenuTree> mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
-        if(mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant()) 
+        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
         {
             mRetVal = AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
-        } 
-        else 
+        }
+        else
         {
             mRetVal = AccountUtility.GetMenuItems(this.s_AnonymousAccount, mMenuType);
         }
@@ -215,7 +215,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetSelectableActions")]
     public List<UISelectedableAction> GetSelectableActions()
     {
-        List<string> mExcludedActions = new List<string>(){"favorite","logoff", "logon"};
+        List<string> mExcludedActions = new List<string>() { "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
         IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
@@ -224,27 +224,27 @@ public abstract class AbstractAccountController : ControllerBase
         mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
         // not the best way b/c this is defined in the DB but it's better than nothing
-        foreach(string mAction in mExcludedActions) 
+        foreach (string mAction in mExcludedActions)
         {
             var mItemToRemove = mRetVal.SingleOrDefault(r => r.Title.ToLower().Contains(mAction.ToLower()));
             if (mItemToRemove != null) { mRetVal.Remove(mItemToRemove); }
         }
-        mRetVal = mRetVal.OrderBy(o=>o.Title).ToList();
+        mRetVal = mRetVal.OrderBy(o => o.Title).ToList();
         return mRetVal;
     }
 
     private void addSelectedActions(IList<MMenuTree> menuTree, ref List<UISelectedableAction> selectedableActions)
     {
-        foreach(MMenuTree mMenuTree in menuTree)
+        foreach (MMenuTree mMenuTree in menuTree)
         {
-            if(mMenuTree.Children == null || mMenuTree.Children.Count == 0)
+            if (mMenuTree.Children == null || mMenuTree.Children.Count == 0)
             {
                 UISelectedableAction mSelectedableAction = new UISelectedableAction();
                 mSelectedableAction.Action = mMenuTree.Action;
                 mSelectedableAction.Title = mMenuTree.Label;
                 selectedableActions.Add(mSelectedableAction);
-            } 
-            else 
+            }
+            else
             {
                 addSelectedActions(mMenuTree.Children, ref selectedableActions);
             }
@@ -261,10 +261,10 @@ public abstract class AbstractAccountController : ControllerBase
 
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
-    { 
+    {
         AccountUtility.RemoveInMemoryInformation(this.getCurrentAccount().Account);
         ClientChoicesUtility.ClearSession();
-        AuthenticationResponse mAuthenticationResponse = new (AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
+        AuthenticationResponse mAuthenticationResponse = new(AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
         setTokenCookie(mAuthenticationResponse.RefreshToken);
         return mAuthenticationResponse;
     }
@@ -272,30 +272,30 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("RefreshToken")]
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
-        if(AccountUtility.CurrentProfile.Account.ToLowerInvariant() != AccountUtility.AnonymousAccount.ToLowerInvariant())
+        try
         {
-            try
+            var mRefreshToken = Request.Cookies["refreshToken"];
+            AuthenticationResponse mAuthenticationResponse = TokenUtility.RefreshToken(mRefreshToken, ipAddress());
+            setTokenCookie(mAuthenticationResponse.RefreshToken);
+            MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAuthenticationResponse.Account);
+            EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
+            string mPassword = string.Empty;
+            CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, mEncryptionType);
+            return Authenticate(mAccountProfile.Account, mPassword);
+        }
+        catch (System.Exception ex)
+        {
+            if (ex.Message.Contains("token does not exist"))
             {
-                var mRefreshToken = Request.Cookies["refreshToken"];
-                AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-                setTokenCookie(mAuthenticationResponse.RefreshToken);
-                return Ok(mAuthenticationResponse);
+                return NotFound();
+                // throw;
             }
-            catch (System.Exception ex)
+            else
             {
-                if(ex.Message.Contains("token does not exist"))
-                {
-                    return NotFound();
-                    // throw;
-                }
-                else
-                {
-                    this.m_Logger.Error(ex);
-                    throw new Exception("token does not exist, unable to get account");
-                }
+                this.m_Logger.Error(ex);
+                throw new Exception("token does not exist, unable to get account");
             }
         }
-        return NotFound();
     }
 
     [AllowAnonymous]
@@ -309,12 +309,12 @@ public abstract class AbstractAccountController : ControllerBase
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Role = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Role_Tab), mRequestingProfile);
-        var mEditId =  HttpContext.Session.GetInt32("EditId");
-        if(mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)) 
+        var mEditId = HttpContext.Session.GetInt32("EditId");
+        if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account);
-            if(mExistingAccount == null) 
+            if (mExistingAccount == null)
             {
                 mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
                 mExistingAccount.Password = ""; // should be auto generated and 
@@ -326,7 +326,7 @@ public abstract class AbstractAccountController : ControllerBase
             mExistingAccount.FirstName = accountProfile.FirstName;
             mExistingAccount.Groups = accountProfile.Groups;
             mExistingAccount.Id = accountProfile.Id;
-            if(mRequestingProfile.IsSystemAdmin) 
+            if (mRequestingProfile.IsSystemAdmin)
             {
                 mExistingAccount.IsSystemAdmin = accountProfile.IsSystemAdmin;
             }
@@ -354,7 +354,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
         bool mRetVal = false;
-        if(accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower()) 
+        if (accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower())
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
             MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;
@@ -384,7 +384,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         String mRetVal = string.Empty;
         string mColumns = "[AccountSeqId], [Account], [First_Name], [Last_Name], [Email], [Added_Date], [Last_Login]";
-        if(searchCriteria.sortColumns.Length > 0)
+        if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
@@ -407,7 +407,8 @@ public abstract class AbstractAccountController : ControllerBase
     private void setTokenCookie(string token)
     {
         string mToken = string.Empty;
-        if(token != null) {
+        if (token != null)
+        {
             mToken = token;
         }
         var cookieOptions = new CookieOptions
