@@ -281,7 +281,8 @@ body {
 
 .drawer-container {
   width: 100%;
-  height: calc(90vh);
+  min-height: calc(100vh - 85px);
+  height: calc(100vh - 85px);
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
 
