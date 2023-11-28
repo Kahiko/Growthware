@@ -10,6 +10,7 @@ namespace GrowthWare.DatabaseManager
 {
     internal class Program
     {
+        private static Boolean m_CreatedDatabase = false;
         private static Version m_DesiredVersion = null;
 
         /// <summary>
@@ -44,22 +45,12 @@ namespace GrowthWare.DatabaseManager
                 showHelp();
                 return;
             }
-            else
+            if (getArgument(args, "--Help") != null || getArgument(args, "--H") != null)
             {
-                string mHelp = getArgument(args, "--Help");
-                if (mHelp != null)
-                {
-                    showHelp();
-                    return;
-                }
-                mHelp = getArgument(args, "--H");
-                if (mHelp != null)
-                {
-                    showHelp();
-                    return;
-                }
-                m_DesiredVersion = new Version(getArgument(args, "--Version"));
+                showHelp();
+                return;
             }
+            m_DesiredVersion = new Version(getArgument(args, "--Version"));
             string mAssemblyName = ConfigSettings.DataAccessLayerAssemblyName;
             DataTable mAvailbleFiles = null;
             List<Version> mAvailbleVersions = new List<Version>();
@@ -108,6 +99,7 @@ namespace GrowthWare.DatabaseManager
             {
                 if (!mDatabaseManager.Exists())
                 {
+                    m_CreatedDatabase = true;
                     Console.WriteLine(String.Format("Attempting to create the '{0}' database.", mDataBaseName));
                     mDatabaseManager.Create();
                     Console.WriteLine(String.Format("The '{0}' database has been created.", mDataBaseName));
@@ -185,6 +177,10 @@ namespace GrowthWare.DatabaseManager
                         Console.WriteLine("Elapsed time: {0} File: '{1}' ", mWatch.Elapsed, mFileName);
                     }
                 }
+            }
+            if(m_CreatedDatabase) 
+            {
+                mDatabaseManager.UpdateLogPath();
             }
             mWatch.Stop();
             Console.WriteLine("Time elapsed as per stopwatch: {0} ", mWatch.Elapsed);

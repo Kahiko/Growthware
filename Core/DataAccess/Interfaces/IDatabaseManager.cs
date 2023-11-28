@@ -15,5 +15,6 @@ namespace GrowthWare.DataAccess.Interfaces
         Boolean ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection);
         string GetScriptPath(string theDirection);
         Version GetVersion();
+        void UpdateLogPath();
     }
 }
