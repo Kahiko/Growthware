@@ -390,13 +390,13 @@ export class AccountService {
       })
     };
     return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<boolean>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
-        next: (response: any) => {
-          const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: clientChoices };
-          this._ClientChoices = clientChoices;
+      this._HttpClient.post<IClientChoices>(this._Api_SaveClientChoices, clientChoices, mHttpOptions).subscribe({
+        next: (response: IClientChoices) => {
+          const mAccountInformation: IAccountInformation = { authenticationResponse: this.authenticationResponse, clientChoices: response };
+          this._ClientChoices = response;
           this._AccountInformationSubject.next(mAccountInformation);
           this.triggerMenuUpdate();
-          resolve(response);
+          resolve(true);
         },
         error: (error: any) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'saveClientChoices');

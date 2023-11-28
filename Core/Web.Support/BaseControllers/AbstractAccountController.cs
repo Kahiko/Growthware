@@ -350,10 +350,9 @@ public abstract class AbstractAccountController : ControllerBase
     }
 
     [HttpPost("SaveClientChoices")]
-    public ActionResult<bool> SaveClientChoices(UIAccountChoices accountChoices)
+    public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
     {
         if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
-        bool mRetVal = false;
         if (accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower())
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
@@ -373,9 +372,10 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
-            mRetVal = true;
+            UIAccountChoices mRetVal = new (mClientChoicesState);
+            return Ok(mRetVal);
         }
-        return mRetVal;
+        return Ok(false);
     }
 
     [Authorize("Accounts")]
