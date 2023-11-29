@@ -65,7 +65,7 @@ public abstract class AbstractAccountController : ControllerBase
         // application and deleting it here could be quite an issue
 
         if (accountSeqId < 1) throw new ArgumentNullException("accountSeqId", " must be a positive number!");
-        MAccountProfile mRequestingProfile = getCurrentAccount();
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         var mEditId = HttpContext.Session.GetInt32("EditId");
@@ -87,7 +87,7 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
 
-        MAccountProfile mRequestingProfile = getCurrentAccount();
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         HttpContext.Session.Remove("EditId");
@@ -108,7 +108,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("EditProfile")]
     public ActionResult<MAccountProfile> EditProfile(string account)
     {
-        MAccountProfile mRequestingProfile = getCurrentAccount();
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditAccount);
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mRequestingProfile.Account.ToLowerInvariant() == account.ToLowerInvariant())
@@ -140,17 +140,6 @@ public abstract class AbstractAccountController : ControllerBase
     }
 
     /// <summary>
-    /// Returns the current account from HttpContext, if Context is not available then "Anonymous" will be returned
-    /// </summary>
-    /// <returns>MAccountProfile</returns>
-    private MAccountProfile getCurrentAccount()
-    {
-        MAccountProfile mRetVal = AccountUtility.CurrentProfile;
-        mRetVal.Password = string.Empty;
-        return mRetVal;
-    }
-
-    /// <summary>
     /// Returns a MAccountProfile given the account. If the account is not specivied ("" or "_") then a new MAccountProfile will be returned.
     /// </summary>
     /// <param name="account"></param>
@@ -174,7 +163,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetMenuData")]
     public ActionResult<string> GetMenuData(int menuType)
     {
-        MAccountProfile mAccountProfile = getCurrentAccount();
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
         string mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
@@ -191,7 +180,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
-        MAccountProfile mAccountProfile = getCurrentAccount();
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
         IList<MMenuTree> mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
         if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
@@ -217,11 +206,11 @@ public abstract class AbstractAccountController : ControllerBase
     {
         List<string> mExcludedActions = new List<string>() { "favorite", "logoff", "logon" };
         List<UISelectedableAction> mRetVal = new List<UISelectedableAction>();
-        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Hierarchical);
+        IList<MMenuTree> mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Hierarchical);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Horizontal);
+        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Horizontal);
         addSelectedActions(mMenuItems, ref mRetVal);
-        mMenuItems = AccountUtility.GetMenuItems(getCurrentAccount().Account, MenuType.Vertical);
+        mMenuItems = AccountUtility.GetMenuItems(AccountUtility.CurrentProfile.Account, MenuType.Vertical);
         addSelectedActions(mMenuItems, ref mRetVal);
         // not the best way b/c this is defined in the DB but it's better than nothing
         foreach (string mAction in mExcludedActions)
@@ -262,7 +251,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
-        AccountUtility.RemoveInMemoryInformation(this.getCurrentAccount().Account);
+        AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);
         ClientChoicesUtility.ClearSession();
         AuthenticationResponse mAuthenticationResponse = new(AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
         setTokenCookie(mAuthenticationResponse.RefreshToken);
@@ -304,7 +293,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         // requesting profile same as 
         bool mRetVal = false;
-        MAccountProfile mRequestingProfile = getCurrentAccount();
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MSecurityInfo mSecurityInfo_View_Account_Group = new MSecurityInfo(FunctionUtility.GetProfile(ConfigSettings.View_Account_Group_Tab), mRequestingProfile);
