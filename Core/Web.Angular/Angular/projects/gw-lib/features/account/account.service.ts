@@ -426,6 +426,8 @@ export class AccountService {
    * @return {void} 
    */
   public triggerMenuUpdate(): void {
-    this._TriggerMenuUpdateSubject.next(true);
+    this._GWCommon.sleep(1000).then(() => {
+      this._TriggerMenuUpdateSubject.next(true);
+    });
   }
 }
