@@ -363,12 +363,16 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes account and menu information from the session for the given account.
+    /// Removes thhe menu and or account information from the session for the given account.
     /// </summary>
     /// <param name="forAccount"></param>
-    public static void RemoveInMemoryInformation(string forAccount) 
+    /// /// <param name="includeAccount">By default this parameter is true and the account will be removed from the session.</param>
+    public static void RemoveInMemoryInformation(string forAccount, bool includeAccount = true) 
     {
-        RemmoveFromCacheOrSession(forAccount);
+        if(includeAccount)
+        {
+            RemmoveFromCacheOrSession(forAccount);
+        }
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
             string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
