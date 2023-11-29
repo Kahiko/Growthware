@@ -152,11 +152,11 @@ public static class ClientChoicesUtility
     }
 
     /// <summary>
-    /// Save the client choices to the database.
+    /// Save the client choices to the database and updates Cache/Session.
     /// </summary>
     /// <param name="clientChoicesState">MClientChoicesState</param>
     /// <param name="updateContext">bool</param>
-    /// <remarks></remarks>
+    /// <remarks>Calls getClientChoicesState to ensure the Session/Cache matches for the given account.</remarks>
     public static void Save(MClientChoicesState clientChoicesState)
     {
         if (clientChoicesState == null) throw new ArgumentNullException("clientChoicesState", "clientChoicesState cannot be a null reference (Nothing in Visual Basic)! (Nothing in VB)!");
