@@ -372,6 +372,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
+            AccountUtility.RemoveInMemoryInformation(accountChoices.Account, false);
             UIAccountChoices mRetVal = new (mClientChoicesState);
             return Ok(mRetVal);
         }
