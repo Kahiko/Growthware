@@ -63,7 +63,7 @@ public static class SessionController
     /// <param name="sessionName">The name of the session key.</param>
     /// <returns>
     /// The object of type T retrieved from the session. If the object cannot be retrieved,
-    /// the default value of type T is returned.
+    /// default(T) is returned.
     /// </returns>
     public static T GetFromSession<T>(string sessionName)
     {
