@@ -82,7 +82,7 @@ public static class SessionController
             mLoggingProfile.Level = "Error";
             mLoggingProfile.LogDate = DateTime.Now;
             mLoggingProfile.MethodName = "GetFromSession";
-            mLoggingProfile.Msg = ex.Message;
+            mLoggingProfile.Msg = "sessionName: " + sessionName + " ex: " + ex.Message;
             LoggingUtility.Save(mLoggingProfile);
             return default(T);
         }
