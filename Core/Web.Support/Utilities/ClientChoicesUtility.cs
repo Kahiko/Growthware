@@ -133,10 +133,6 @@ public static class ClientChoicesUtility
         string mJsonString = JsonSerializer.Serialize(mDataRow.ItemArray);
         addOrUpdateCacheOrSession(forAccount, mJsonString);
         MClientChoicesState mRetVal = getFromCacheOrSession(forAccount);
-        if(mRetVal.AccountName.ToLowerInvariant() != forAccount.ToLowerInvariant())
-        {
-            mRetVal = new MClientChoicesState(getFromDB(forAccount));
-        }
         return mRetVal;
     }
 
