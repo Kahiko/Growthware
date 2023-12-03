@@ -351,12 +351,17 @@ public static class AccountUtility
     /// Removes an object from either the cache or the session, based on the given `forAccount`.
     /// </summary>
     /// <param name="forAccount"></param>
-    /// <param name="sessionName">Optional if not specified the default value is "SessionAccount"</param>
-    public static void RemmoveFromCacheOrSession(string forAccount, string sessionName = "SessionAccount")
+    /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
+    public static void RemmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
+        string mSessionName = s_SessionName;
+        if(sessionName != "useDefault")
+        {
+            mSessionName = sessionName;
+        }
         if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
         {
-            SessionController.RemoveFromSession(s_SessionName);
+            SessionController.RemoveFromSession(sessionName);
             return;
         }
         m_CacheController.RemoveFromCache(s_CachedName);
