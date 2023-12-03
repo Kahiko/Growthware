@@ -11,6 +11,10 @@ using GrowthWare.Framework.Models.UI;
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
+    /*
+     * TODO: Authenticate should be the only place where the cache/session account is ever touchted.  Logoff should authenticate the Anonymous account so that the session/cached account
+     * is only changed and never removed
+     */
     private static string s_Anonymous = "Anonymous";
     private static string s_CachedName = "CachedAnonymous";
     private static CacheController m_CacheController = CacheController.Instance();
