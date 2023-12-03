@@ -4,39 +4,94 @@ Growthware is an idea dedicated to producing reusable and extendable core techno
 
 <b>Welcome to the Growthware source control site.</b>
 <p>
-    Growthware is an idea dedicated to producing reusable and extendable core technologies used to produce a working web application (Web 2.0) in less than 10 minutes. At the core are the Framework, custom web controls, and the core web application.
+    Growthware is an idea dedicated to producing reusable and extendable core technologies used to produce a working web application in less than 10 minutes.  The framework has now grown to work with both .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
 </p>
 The framework was developed to provide a data store independent/generic code base to supply the following functionality and features.
+<table>
+    <caption>Account Management</caption>
+    <thead>
+        <tr>
+            <td>Feature</td>
+            <td>.Net 4.8 VB</td>
+            <td>.Net 4.8 C#</td>
+            <td>.Net Core 8 C#</td>
+            <td>UI</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Creation</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Registration - Internal</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Registration - Google</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Registration - Facebook</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Registration - Twitter</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Registration - Microsoft Account</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Edit (including the ability for each client to edit their personal information)</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Authentication - Internal</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular</td>
+        </tr>
+        <tr>
+            <td>Authentication - LDAP/ADSI</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+        <tr>
+            <td>Authentication - IIS A.K.A Windows Authentication</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS</td>
+        </tr>
+    </tbody>
+</table>
 <ul>
-    <li>
-        Account Management
-        <ul>
-            <li>
-                Account creation and Registration
-                <ul>
-                    <li>
-                        Using popular social media providers
-                        <ul>
-                            <li>Google </li>
-                            <li>Facebook </li>
-                            <li>Twitter </li>
-                            <li>Microsoft Account </li>
-                        </ul>
-                    </li>
-                </ul>
-            </li>
-            <li>Account edit (including the ability for each client to edit their personal information) </li>
-            <li>
-                Account authentication
-                <ul>
-                    <li>By internal data store </li>
-                    <li>By LDAP/ADSI </li>
-                    <li>By IIS A.K.A Windows Authentication </li>
-                </ul>
-            </li>
-            <li>Security Management </li>
-        </ul>
-    </li>
     <li>An E-Mail facility </li>
     <li>Logging using Log4Net </li>
     <li>
@@ -74,7 +129,7 @@ The framework was developed to provide a data store independent/generic code bas
     <li>
         Personalization
         <ul>
-            <li>Choose from 5 color schemas </li>
+            <li>Choose from five color schemas </li>
             <li>Select your favoriate action </li>
             <li>Choose the number of records to show per page </li>
         </ul>
