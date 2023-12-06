@@ -31,6 +31,7 @@ import { INavLink } from '../../nav-link.model';
 export class HorizontalComponent extends BaseNavigationComponent implements OnInit {
 
   @Input() override name: string = '';
+  @Input() fontColor: string = 'white';
 
   constructor(
     accountSvc: AccountService,
@@ -51,6 +52,7 @@ export class HorizontalComponent extends BaseNavigationComponent implements OnIn
 
   ngOnInit(): void {
     this._MenuType = MenuTypes.Horizontal;
+    document.documentElement.style.setProperty('--fontColor', this.fontColor);
   }
 
   override onItemSelected(item: INavLink) {
