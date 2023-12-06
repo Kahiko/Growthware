@@ -10,6 +10,7 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
 using System.Data;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -251,11 +252,9 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
-        AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);
-        ClientChoicesUtility.ClearSession();
-        AuthenticationResponse mAuthenticationResponse = new(AccountUtility.GetAccount(AccountUtility.AnonymousAccount));
-        setTokenCookie(mAuthenticationResponse.RefreshToken);
-        return mAuthenticationResponse;
+        MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
+        CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
+        return Authenticate(mAccountProfile.Account, mPassword);
     }
 
     [HttpPost("RefreshToken")]
@@ -361,7 +360,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SecurityEntityName] = mSecurityEntity.Name;
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
-            AccountUtility.RemoveInMemoryInformation(accountChoices.Account, false);
+            AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
             UIAccountChoices mRetVal = new (mClientChoicesState);
             return Ok(mRetVal);
         }

@@ -33,12 +33,12 @@ public static class AccountUtility
     private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "useDefault")
     {
         string mSessionName = s_SessionName;
-        if(sessionName != "useDefault") { mSessionName = sessionName; }
+        if (sessionName != "useDefault") { mSessionName = sessionName; }
         if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             SessionController.AddToSession(mSessionName, value);
             return;
-        }        
+        }
         m_CacheController.AddToCache(s_CachedName, value);
     }
 
@@ -51,24 +51,13 @@ public static class AccountUtility
     /// <returns>MAccountProfile or null</returns>
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
-        /*
-         *  1.) Don't save the anonymous account
-         *  2.) Ensure the account exists
-         *  3.) Check account Status
-         *  4.) Retrieve the account from the database
-         *  5.) Determine authentication method (Password or LDAP)
-         *      a.) LDAP or Proprietary authentication
-         *  6.) If authentication is successful
-         *      a.) Set the tokens on the returned profile
-         *      b.) Set LastLogOn
-         *      c.) Set FailedAttempts = 0
-         *  7.) If authentication is not successful
-         *      a.) Set FailedAttempts++
-         *          1.) If FailedAttempts >= MaxFailedAttempts then Set Status = (int)SystemStatus.Disabled
-         */
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
+        // Remove the session/cache information for the current account
+        string mCurrentAccount = CurrentProfile.Account;
+        remmoveFromCacheOrSession(mCurrentAccount);
+        RemoveInMemoryInformation(mCurrentAccount);
         bool mIsAuthenticated = false;
         MAccountProfile mRetVal = null;
         // No need to save the anonymous account
@@ -114,8 +103,13 @@ public static class AccountUtility
             mRetVal.FailedAttempts = 0;
             mRetVal.LastLogOn = DateTime.Now;
             Save(mRetVal, true, false, false);
-            ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
             mRetVal.Password = ""; // Don't want to ever send the password out
+        }
+        if(mRetVal != null) 
+        { 
+            addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
+            RemoveInMemoryInformation(mRetVal.Account);
+            ClientChoicesUtility.SynchronizeContext(mRetVal.Account); 
         }
         return mRetVal;
     }
@@ -188,7 +182,7 @@ public static class AccountUtility
         mRetVal = mMessageProfile.Body;
         return mRetVal;
     }
-    
+
     /// <summary>
     /// Deletes an account with the specified accountSeqId.
     /// </summary>
@@ -210,15 +204,9 @@ public static class AccountUtility
     public static MAccountProfile GetAccount(string account, bool forceDb = false)
     {
         MAccountProfile mRetVal = CurrentProfile;
-        bool mAddToSessionOrCache = mRetVal == null;
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mRetVal = getAccountProfile(account, true);
-            if (mAddToSessionOrCache && mRetVal != null)
-            {
-                // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
-                addOrUpdateCacheOrSession(account, mRetVal);
-            }
         }
         return mRetVal;
     }
@@ -234,7 +222,6 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = null;
         BAccounts mBAccount = null;
-        bool mAddToSessionOrCache = false;
         if (forceDb)
         {
             mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
@@ -243,17 +230,11 @@ public static class AccountUtility
         else
         {
             mRetVal = CurrentProfile;
-            mAddToSessionOrCache = mRetVal == null;
             if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
             {
                 mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBAccount.GetProfile(account);
             }
-        }
-        if (mAddToSessionOrCache && mRetVal != null)
-        {
-            // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
-            addOrUpdateCacheOrSession(account, mRetVal);
         }
         return mRetVal;
     }
@@ -274,10 +255,9 @@ public static class AccountUtility
              */
             // getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
             MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(s_Anonymous);
-            if (mRetVal == null) 
+            if (mRetVal == null)
             {
                 mRetVal = getAccountProfile(s_Anonymous, true);
-                // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
                 addOrUpdateCacheOrSession(s_Anonymous, mRetVal);
             }
             return mRetVal;
@@ -310,7 +290,7 @@ public static class AccountUtility
         }
         BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         DataTable mDataTable = mBAccount.GetMenu(account, menuType);
-        if(mDataTable != null) 
+        if (mDataTable != null)
         {
             mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
             addOrUpdateCacheOrSession(account, mRetVal, mMenuName);
@@ -358,10 +338,10 @@ public static class AccountUtility
     /// </summary>
     /// <param name="forAccount"></param>
     /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
-    public static void RemmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
+    private static void remmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
         string mSessionName = s_SessionName;
-        if(sessionName != "useDefault") { mSessionName = sessionName; }
+        if (sessionName != "useDefault") { mSessionName = sessionName; }
         if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             SessionController.RemoveFromSession(mSessionName);
@@ -375,17 +355,13 @@ public static class AccountUtility
     /// </summary>
     /// <param name="forAccount"></param>
     /// /// <param name="includeAccount">By default this parameter is true and the account will be removed from the session.</param>
-    public static void RemoveInMemoryInformation(string forAccount, bool includeAccount = true) 
+    public static void RemoveInMemoryInformation(string forAccount)
     {
-        if(includeAccount)
-        {
-            RemmoveFromCacheOrSession(forAccount);
-        }
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
             string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
-            RemmoveFromCacheOrSession(forAccount, mMenuName);
-        }        
+            remmoveFromCacheOrSession(forAccount, mMenuName);
+        }
     }
 
     /// <summary>
@@ -402,13 +378,7 @@ public static class AccountUtility
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new BAccounts(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
-        if (accountProfile.Account != CurrentProfile.Account) 
-        {
-            RemoveInMemoryInformation(accountProfile.Account);
-        }
-        MAccountProfile mAccountProfile =mBAccount.GetProfile(accountProfile.Account);
-        // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
-        addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);        
+        MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
         return accountProfile;
     }
 }
