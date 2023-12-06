@@ -1,0 +1,17 @@
+(install node --version: v20.10.0)
+npm uninstall -g @angular/cli
+npm cache clean --force
+npm install -g @angular/cli@latest
+
+del package-lock.json
+rmdir /s/q node_modules
+npm install
+ng update @angular-eslint/schematics@17 --allow-dirty
+ng update @angular/material@17 @angular/cdk@17 --allow-dirty
+ng update @types/jasmine@latest --allow-dirty
+ng update @html-eslint/eslint-plugin@latest --allow-dirty
+ng update @html-eslint/parser@latest --allow-dirty
+-- ng update typescript --allow-dirty
+
+rmdir /s/q node_modules
+npm install

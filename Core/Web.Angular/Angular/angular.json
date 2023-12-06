@@ -66,11 +66,11 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "gw-frontend:build:production"
+              "buildTarget": "gw-frontend:build:production"
             },
             "development": {
-              "browserTarget": "gw-frontend:build:development",
-              "proxyConfig": "proxy.conf.js"
+              "proxyConfig": "proxy.conf.js",
+              "buildTarget": "gw-frontend:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -78,7 +78,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "gw-frontend:build"
+            "buildTarget": "gw-frontend:build"
           }
         },
         "test": {
