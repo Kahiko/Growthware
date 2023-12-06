@@ -168,6 +168,14 @@ The framework was developed to provide a data store independent/generic code bas
     </thead>
     <tbody>
         <tr>
+            <td>Database Manager</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td>N/A</td>
+        </tr>    
+        <tr>
             <td>An E-Mail facility</td>
             <td>X</td>
             <td>X</td>
