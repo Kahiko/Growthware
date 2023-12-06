@@ -81,7 +81,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 {
                     DataRow mRow = mDataTable.NewRow();
                     PropertyInfo[] mProperties = item.GetType().GetProperties();
-                    foreach (PropertyInfo mPropertyItem in mProperties) 
+                    foreach (PropertyInfo mPropertyItem in mProperties)
                     {
                         var mValue = mPropertyItem.GetValue(item, null);
                         var mPropertyType = mPropertyItem.PropertyType;
@@ -94,7 +94,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                         {
                             mValue = DBNull.Value;
                         }
-                        if(!includePrimaryKey) 
+                        if (!includePrimaryKey)
                         {
                             if (mPrimaryKeyName.Replace("[", "").Replace("]", "").ToLowerInvariant() != mPropertyItem.Name.ToLowerInvariant())
                             {
@@ -122,10 +122,10 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     }
                     mSqlCommand.ExecuteNonQuery();
                 }
-                if (!includePrimaryKey) 
+                if (!includePrimaryKey)
                 {
                     mCommandText = string.Format("ALTER TABLE {0} DROP COLUMN IF EXISTS {1}", mTempTableName, mFirstObj.GetPrimaryKeyName());
-                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText)) 
+                    using (SqlCommand mSqlCommand = new SqlCommand(mCommandText))
                     {
                         mSqlCommand.Connection = mSqlConnection;
                         mSqlCommand.CommandType = CommandType.Text;
@@ -199,9 +199,12 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         protected virtual string Cleanup(string stringValue)
         {
             string mRetVal = stringValue;
-            mRetVal = mRetVal.Replace(";", "");
-            mRetVal = mRetVal.Replace("'", "");
-            mRetVal = mRetVal.Replace("\"", "");
+            if (!string.IsNullOrEmpty(mRetVal))
+            {
+                mRetVal = mRetVal.Replace(";", "");
+                mRetVal = mRetVal.Replace("'", "");
+                mRetVal = mRetVal.Replace("\"", "");
+            }
             return mRetVal;
         }
 
@@ -412,13 +415,14 @@ namespace GrowthWare.DataAccess.SQLServer.Base
         protected virtual DataRow GetDataRow(String commandText, SqlParameter[] sqlParameters, bool forceCommandText = false)
         {
             this.IsValid();
-            DataTable mDataTable =  this.GetDataTable(commandText, sqlParameters, forceCommandText);
-            if(mDataTable.Rows.Count > 0 ){
-              return mDataTable.Rows[0];
+            DataTable mDataTable = this.GetDataTable(commandText, sqlParameters, forceCommandText);
+            if (mDataTable.Rows.Count > 0)
+            {
+                return mDataTable.Rows[0];
             }
             else
             {
-              return null;
+                return null;
             }
         }
 
