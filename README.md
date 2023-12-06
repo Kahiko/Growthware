@@ -91,34 +91,146 @@ The framework was developed to provide a data store independent/generic code bas
         </tr>
     </tbody>
 </table>
+<table>
+    <caption>Security Management</caption>
+    <thead>
+        <tr>
+            <td>Feature</td>
+            <td>VB</td>
+            <td>C#</td>
+            <td>.Net 4.8</td>
+            <td>.Net Core 8</td>
+            <td>UI</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Add, Edit, Security Entities (SE)</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Add, Edit, Delete, Roles by SE</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Add, Edit, Delete, Groups by SE</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Add, Edit, Delete, Functions</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Associate Roles/Groups to Functions/Pages</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Associate Roles/Groups to Accounts</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <caption>Miscellaneous</caption>
+    <thead>
+        <tr>
+            <td>Feature</td>
+            <td>VB</td>
+            <td>C#</td>
+            <td>.Net 4.8</td>
+            <td>.Net Core 8</td>
+            <td>UI</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>An E-Mail facility</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td></td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Message Management</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Logging - File</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Logging - Datastore</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Client Choice</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Multi-Tenant</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>Multiple datastore technology</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+    </tbody>
+</table>
 <ul>
-    <li>An E-Mail facility </li>
-    <li>Logging using Log4Net </li>
     <li>
-        Security Entity Management
-        <ul>
-            <li>Manage properties of a Security Entity </li>
-            <li>Add a Security Entity through the UI </li>
-            <li>Unlimited number of Parent/Child Security Entitys </li>
-        </ul>
+        Role/Group Management: Roles are created and assigned to Page/Functions for 4 “Permissions” (View, Add, Edit, and Delete). Roles are also assigned to Accounts. When both the Client/Account and Function/Page for any given permission has the same role then that permission is granted. The role based security is accumulative meaning if the account is in a any role that has a permission then the permission is granted.
     </li>
     <li>
-        Role management
-        <ul>
-            <li>Adding a role </li>
-            <li>Editing a role </li>
-            <li>Deleting a role </li>
-        </ul>
-        Note: Role management is by Security Entity, roles are created and assigned to Page/Functions for 4 “Permissions” (View, Add, Edit, and Delete). Roles are also assigned to Accounts. When both the Client/Account and Function/Page for any given permission has the same role then that permission is granted. The role based security is accumulative meaning if the account is in a any role that has a permission then the permission is granted.
-    </li>
-    <li>
-        Function/Page Management
-        <ul>
-            <li>Add Functions/Pages </li>
-            <li>Edit Functions/Pages </li>
-            <li>Delete Functions/Pages </li>
-            <li>Security Management – Assigning roles by Security Entitys </li>
-        </ul>
+        Group Management: Roles are associated with Groups and or other Groups.  It can help to think of Groups as a "Job" where someone does more than just 1 thing.
     </li>
     <li>
         Client Choice Management
@@ -127,20 +239,23 @@ The framework was developed to provide a data store independent/generic code bas
         </ul>
     </li>
     <li>
-        Personalization
-        <ul>
-            <li>Choose from five color schemas </li>
-            <li>Select your favoriate action </li>
-            <li>Choose the number of records to show per page </li>
-        </ul>
+        Multiple datastore technologies is supported but not implemented an example can be found in .Net 4.8 VB/CS
     </li>
     <li>
-        Skinning
+        Multi-Tenant Support exist in all flavors of Growthware.
         <ul>
-            <li>Skinning is the ability to put any look and feel to the application without changing the underpinnings of the application code. </li>
-            <li>Skins can be applied on the fly </li>
-            <li>Skins are setup on a per Security Entity basis, so when a Security Entity is selected the look an feel change to the Security Entitys skin. </li>
-            <li>Skins make an excellent visual queue making it easier to identify the Security Entity your working with </li>
+            <li>
+                The Security Entity (SE) is the mechanism by which multi-tenant support is achieved in the datastore and UI.
+            </li>
+            <li>
+                A "Skin" is associated with an SE and is how the UI can be completely different for each one.  Note that a URL can also be associated with the SE and could faciliate have a unique UI displayed via a given URL, though this is not implemented it wouldn't take much to implement.
+            </li>
+            <li>
+                Associate an SE in a data table to allow data to be stored in a single DB instance for a given "tenant"
+            </li>
+            <li>
+                With a connection string, Data Access (DAL), a "Central Management" boolean associated with an SE, it is possible to completely separate the data into, not only a different datastore, but, a different datastore technology!
+            </li>
         </ul>
     </li>
     <li>
