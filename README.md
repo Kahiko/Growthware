@@ -200,7 +200,7 @@ The framework was developed to provide a data store independent/generic code bas
             <td>N/A</td>
         </tr>
         <tr>
-            <td>Client Choice</td>
+            <td>Client Choices</td>
             <td></td>
             <td></td>
             <td></td>
@@ -222,6 +222,30 @@ The framework was developed to provide a data store independent/generic code bas
             <td>X</td>
             <td>X</td>
             <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>File Manager</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX, Angular JS, Angular 17</td>
+        </tr>
+        <tr>
+            <td>In-memory storage (Cache/Session)</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>N/A</td>
+        </tr>
+        <tr>
+            <td>Community Calendar (Demonstrates Multi-Tenant support)</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
+            <td>ASPX</td>
         </tr>
     </tbody>
 </table>
