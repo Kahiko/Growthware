@@ -257,9 +257,18 @@ The framework was developed to provide a data store independent/generic code bas
         Group Management: Roles are associated with Groups and or other Groups.  It can help to think of Groups as a "Job" where someone does more than just 1 thing.
     </li>
     <li>
-        Client Choice Management
+        Client Choice Management: As a client makes choices in the application the information is stored in the data store and retrieved when necessary.
         <ul>
-            <li>As a client makes choices in the application the information is stored in the data store and retrieved when necessary. </li>
+            <li>Records per page</li>
+            <li>
+                Choose an SE
+            </li>
+            <li>
+                Choose a color scheme
+            </li>
+            <li>
+                Favorite "Action"
+            </li>
         </ul>
     </li>
     <li>
