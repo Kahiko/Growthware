@@ -121,6 +121,8 @@ public static class TokenUtility
             removeOldRefreshTokens(mAccountProfile);
 
             // save changes to db
+            // TODO: Considering calling AccountUtility.Authenticate instead of AccountUtility.Save and 
+            //          ClientChoicesUtility.SynchronizeContext
             AccountUtility.Save(mAccountProfile, true, false, false);
             ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
 
