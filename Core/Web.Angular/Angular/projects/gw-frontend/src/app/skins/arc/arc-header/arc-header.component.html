@@ -1,0 +1,38 @@
+<div class="table" style="background-color: white;">
+    <div class="tr" style="background-color: #DADFCB; ">
+        <div class="td center" style="width: 192px; min-width: 192px;">
+            <img src='assets\arc\images\logo.png' />
+        </div>
+        <div class="td">
+            &nbsp;
+        </div>
+        <div class="td center">
+            <span *ngIf="environment !== 'Production'" id="spEnvironment" style="color: Black;">Environment: {{environment}}</span>&nbsp;&nbsp;
+            <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntity}}</span>&nbsp;&nbsp;
+            <span id="spVersion" style="color: Black;">{{version}}</span>
+        </div>
+        <div class="td right" style="width: 375px;">
+            <gw-lib-horizontal name="horizontal"></gw-lib-horizontal>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td" style="vertical-align: top; padding: 0px; margin: 0px;">
+            <img src='assets\arc\images\black_lines_top.gif' />
+        </div>
+        <div class="td" style="font-weight: bold; font-size: .9em; height: 16px; padding: 0px; margin: 0px;">{{navDescription}}</div>
+        <div class="td">&nbsp;</div>
+        <div class="td right" style="font-size: .8em; height: 16px; padding: 0px; margin: 0px;">
+            Search:<input type="text" style="height: 8px; width: 200px;" />&nbsp;Go&nbsp;&nbsp;&nbsp;
+        </div>
+    </div>
+    <div class="tr" style="background-color: #807C4F;">
+        <div class="td" style="height: 16px; padding: 0px; margin: 0px;">
+            <img src='assets\arc\images\small_gray_line.gif' style="height: 16px;" />
+            <img src='assets\arc\images\thick_gray_line.gif' style="height: 16px;" />
+            <img src='assets\arc\images\top_curve.gif' style="height: 16px;" />
+        </div>
+        <div class="td">&nbsp;</div>
+        <div class="td">&nbsp;</div>
+        <div class="td">&nbsp;</div>
+    </div>
+</div>

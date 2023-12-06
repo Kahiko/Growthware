@@ -1,0 +1,7 @@
+USE [master]
+GO
+IF DB_ID ( N'YourDatabaseName' ) IS NOT NULL
+BEGIN
+	ALTER DATABASE [YourDatabaseName] SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+	DROP DATABASE [YourDatabaseName];
+END

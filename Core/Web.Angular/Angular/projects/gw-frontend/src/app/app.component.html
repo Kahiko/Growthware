@@ -1,0 +1,15 @@
+<div>
+  <gw-lib-toaster></gw-lib-toaster>
+  <ng-container *ngIf="(skin$ | async) as layout" [ngSwitch]="layout">
+    <gw-frontend-arc-layout *ngSwitchCase="'arc'"></gw-frontend-arc-layout>
+    <gw-frontend-dashboard-layout *ngSwitchCase="'dashboard'"></gw-frontend-dashboard-layout>
+    <gw-frontend-default-layout *ngSwitchCase="'default'"></gw-frontend-default-layout>
+    <gw-frontend-blue-arrow-layout *ngSwitchCase="'blue arrow'"></gw-frontend-blue-arrow-layout>
+    <gw-frontend-dev-ops-layout *ngSwitchCase="'devops'"></gw-frontend-dev-ops-layout>
+    <gw-frontend-professional-layout *ngSwitchCase="'professional'"></gw-frontend-professional-layout>
+    <div *ngSwitchDefault><gw-frontend-default-layout></gw-frontend-default-layout></div>
+  </ng-container>
+  <ng-template #loading>
+    loading...
+  </ng-template>
+</div>

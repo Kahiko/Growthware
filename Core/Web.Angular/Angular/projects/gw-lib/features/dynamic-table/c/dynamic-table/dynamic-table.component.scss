@@ -1,0 +1,283 @@
+.span__sort {
+  text-decoration: underline;
+}
+
+.div__sort {
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+  left: 0;
+  right: 0;
+  margin: auto;
+  text-align: center;
+}
+
+.input__checkbox {
+  position: relative;
+  vertical-align: middle;
+}
+
+input.rounded10
+{
+    border: 1px solid #ccc;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+    -moz-box-shadow: 2px 2px 3px #666;
+    -webkit-box-shadow: 2px 2px 3px #666;
+    box-shadow: 2px 2px 3px #666;
+    font-size: 0.9em;
+    padding: 4px 7px;
+    outline: 0;
+    -webkit-appearance: none;
+}
+
+.child {
+  float: right;
+}
+
+.centerCell {
+  flex-grow: 1;
+  margin-left: 5px;
+  margin-right: 5px;
+}
+
+.dynamicTableContainerDiv {
+  margin: 10px;
+  border: 1px solid #fff;
+  background-color: #ffffff;
+  box-shadow: 0px 2px 7px #292929;
+  -moz-box-shadow: 0px 2px 7px #292929;
+  -webkit-box-shadow: 0px 2px 7px #292929;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background-color: #DBD8C5; /* fallback */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
+  background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
+  background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
+  background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
+  background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
+}
+.dynamicTableMainbodyDiv
+.dynamicTableHeaderDiv,
+.dynamicTableFooterDiv {
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+.dynamicTableMainbodyDiv {
+  margin-top: 0;
+  overflow: auto;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  top: 0px;
+}
+.dynamicTableHeaderDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  vertical-align:bottom;
+  height: 45px;
+  border-bottom: 1px solid #EEE;
+  background-color: #ffffff;
+  -webkit-border-top-left-radius: 5px;
+  -webkit-border-top-right-radius: 5px;
+  -moz-border-radius-topleft: 5px;
+  -moz-border-radius-topright: 5px;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+  background-color: #DBD8C5; /* fallback */;
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
+  background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
+  background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
+  background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
+  background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
+}
+.dynamicTableFooterDiv {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  align-items: center;
+  white-space: nowrap;
+  vertical-align:bottom;
+  height: 55px;
+  border-bottom: 1px solid #EEE;
+  background-color: #ffffff;
+  -webkit-border-bottom-left-radius: 5px;
+  -webkit-border-bottom-right-radius: 5px;
+  -moz-border-radius-bottomleft: 5px;
+  -moz-border-radius-bottomright: 5px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #DBD8C5; /* fallback */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
+  background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
+  background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
+  background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
+  background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
+}
+
+checkbox-checkedaccent checkbox-ripple ripple-element {
+  opacity: 0.03 !important;
+  background-color: #005691 !important;
+}
+
+checkbox-checkedaccent checkbox-background,
+checkbox-indeterminateaccent checkbox-background {
+  background-color: #005691 !important;
+}
+
+checkbox-ripple ripple-element,
+checkbox-checkedaccent checkbox-background {
+  background-color: #005691 !important;
+}
+/* to add a buffer to the top of a row*/
+.top-buffer {
+  margin-top: 20px;
+}
+/* Search Results ----------------------------------------------------------*/
+.lower-right-buttons {
+  padding: 5px;
+}
+
+table {
+  background-color: white;
+  border-collapse: collapse;
+  margin: 0px 0;
+  font-size: 0.9em;
+  font-family: sans-serif;
+  min-width: 400px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+table caption {
+  caption-side: top;
+  position: sticky;
+  top: 0;
+}
+thead th {
+  position: sticky;
+  padding: 12px 15px;
+  top: 0;
+}
+tbody tr {
+  border-bottom: 1px solid #dddddd;
+}
+tbody tr td {
+  padding-left: 1rem;
+  vertical-align: top;
+}
+th, td {
+  text-align: left;
+}
+caption {
+  font-size: 2em;
+  text-align: center;
+}
+
+ul li {
+  list-style: none;
+}
+
+
+.green caption {
+  background-color: #396e39;
+  color: #ffffff;
+}
+.green thead > tr {
+  background-color: #396E39;
+  color: #ffffff;
+}
+.green tbody tr:last-of-type {
+  border-bottom: 2px solid #396E39;
+}
+.green th {
+  background-color: #396E39;
+}
+.green tbody tr.active-row {
+  font-weight: bold;
+  color: #396E39;
+}
+
+// AlternatingRowBackColo
+.blue caption {
+  background-color: #6699CC;
+  color: #ffffff;
+}
+.blue thead > tr {
+  background-color: #6699CC;
+  color: #ffffff;
+}
+.blue tbody tr:last-of-type {
+  border-bottom: 2px solid #6699CC;
+}
+.blue th {
+  background-color: #6699CC;
+}
+.blue tbody tr.active-row {
+  font-weight: bold;
+  color: #6699CC;
+}
+
+.yellow caption {
+  background-color: #f8bc03;
+  color: #ffffff;
+}
+.yellow thead > tr {
+  background-color: #f8bc03;
+  color: #ffffff;
+}
+.yellow tbody tr:last-of-type {
+  border-bottom: 2px solid #f8bc03;
+}
+.yellow th {
+  background-color: #f8bc03;
+}
+.yellow tbody tr.active-row {
+  font-weight: bold;
+  color: #f8bc03;
+}
+
+.purple caption {
+  background-color: #91619b;
+  color: #ffffff;
+}
+.purple thead > tr {
+  background-color: #91619b;
+  color: #ffffff;
+}
+.purple tbody tr:last-of-type {
+  border-bottom: 2px solid #91619b;
+}
+.purple th {
+  background-color: #91619b;
+}
+.purple tbody tr.active-row {
+  font-weight: bold;
+  color: #91619b;
+}
+
+.red caption {
+  background-color: #A72A49;
+  color: #ffffff;
+}
+.red thead > tr {
+  background-color: #A72A49;
+  color: #ffffff;
+}
+.red tbody tr:last-of-type {
+  border-bottom: 2px solid #A72A49;
+}
+.red th {
+  background-color: #A72A49;
+}
+.red tbody tr.active-row {
+  font-weight: bold;
+  color: #A72A49;
+}

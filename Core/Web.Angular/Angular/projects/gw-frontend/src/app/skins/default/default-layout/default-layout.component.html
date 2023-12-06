@@ -1,0 +1,20 @@
+<gw-frontend-default-header [sidenav]="drawer"></gw-frontend-default-header>
+<mat-drawer-container class="drawer-container" color="primary" autosize>
+  <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
+    <button style="outline: none;" color="primary" mat-icon-button (click)="onShowSideNavLinkText();">
+      <span *ngIf="showSideNavLinkText" class="material-icons">arrow_left</span>
+      <span *ngIf="!showSideNavLinkText" class="material-icons">arrow_right</span>
+    </button>
+    <mat-divider></mat-divider>
+      <gw-lib-vertical name="vertical"></gw-lib-vertical>
+    <mat-divider></mat-divider>
+    <mat-nav-list>
+      <gw-lib-hierarchical-vertical name="hierarchicalVertical"></gw-lib-hierarchical-vertical>
+    </mat-nav-list>
+  </mat-drawer>
+  <div class="router-outlet__div page">
+    <gw-lib-loader></gw-lib-loader>
+    <router-outlet></router-outlet>
+  </div>
+</mat-drawer-container>
+<gw-frontend-default-footer></gw-frontend-default-footer>

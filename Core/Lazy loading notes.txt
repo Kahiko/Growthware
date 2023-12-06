@@ -1,0 +1,24 @@
+feature.module.ts
+	imports the feature-routing.module
+	imports the components related to the feature
+	
+	xxRoutingModule in imports array
+	components in declarations array
+
+feature-routing.module.ts
+	imports feature components
+	
+	put components into the const routes: Routes
+	Note the first path is blank and should correspond to the path used in 
+	app-routing.module.ts:
+		const routes: Routes = [
+		  { path: '', component: ProfileComponent },
+		  { path: 'user-profile', component: UserProfileComponent }  
+		];
+	
+	Array's as follows:
+		imports: [RouterModule.forChild(routes)],
+		exports: [RouterModule]
+
+app-routing.module.ts
+	path: 'namedPath',  loadChildren: () => import(`./pathTo/feature.module`).then(m => m.featureModule)},

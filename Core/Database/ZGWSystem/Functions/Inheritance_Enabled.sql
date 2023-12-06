@@ -1,0 +1,11 @@
+CREATE FUNCTION [ZGWSystem].[Inheritance_Enabled]()
+RETURNS INT
+AS
+BEGIN
+	DECLARE @V_RETURN_VAL INT
+	SET @V_RETURN_VAL = (SELECT TOP 1 Enable_Inheritance FROM ZGWSystem.Database_Information ORDER BY Updated_Date DESC)
+	RETURN @V_RETURN_VAL -- 0 = FALSE 1 = TRUE
+END
+
+GO
+

@@ -1,0 +1,6 @@
+
+1.) Install SQL Server 2008 or greater
+2.) Create the database:
+        In "RUN AND DEBUG" run "Database Manager"
+Umm thats it ¯\_(ツ)_/¯
+I use "1.) API + Chrome" when developing ... hope this helps in some way for you :-)

@@ -1,0 +1,245 @@
+
+[
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary" , "text": "Select All"  , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary" , "text": "Add"         , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary" , "text": "bottomLeft"  , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary" , "text": "bottomRight" , "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false , "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "AccountSeqId" , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:10" , "isPrimaryKey": false, "label": "Account"     , "name": "Account"      , "searchSelected": true ,  "sortSelected": true  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:10" , "isPrimaryKey": false, "label": "First Name"  , "name": "First_Name"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:10" , "isPrimaryKey": false, "label": "Last Name"   , "name": "Last_Name"    , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 132 },
+      { "allowSearch": true  , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:30" , "isPrimaryKey": false, "label": "Email"       , "name": "Email"        , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 200 },
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 164 },
+      { "allowSearch": false , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Last Login"  , "name": "Last_Login"   , "searchSelected": false,  "sortSelected": false , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 164 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Accounts",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": false,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "" , "outputType": "icon"   , "isPrimaryKey": true , "label": "Edit"        , "name": "FunctionSeqId", "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":   40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:20", "isPrimaryKey": false, "label": "Action"      , "name": "Action"       , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width":  80 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text:15", "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width":  80 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text"   , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text"   , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "" , "outputType": "text"   , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true , "width": 120 }
+    ],
+    "captionText": "Add/Edit Functions",
+    "maxHeadHeight": 18,
+    "maxTableRowHeight": 24,
+    "name": "Functions",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "GroupSeqId"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width":  80 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Groups",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "MessageSeqId" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Title"       , "name": "Title"        , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 80  },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Messages",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "NVPSeqId"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "Name"         , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Status"      , "name": "Status"       , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 80  },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Name_Value_Pairs",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"            , "name": "RoleSeqId"       , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"            , "name": "Name"            , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description"     , "name": "Description"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Is System"       , "name": "Is_System"       , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Is System Only"  , "name": "Is_System_Only"  , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Added By"        , "name": "Added_By"        , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width":  80 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"      , "name": "Added_Date"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"      , "name": "Updated_By"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date"    , "name": "Updated_Date"    , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Roles",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "SecurityEntitySeqId" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "Name"                , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"         , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Skin"        , "name": "Skin"                , "searchSelected": true ,  "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "Security_Entities",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": false },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "State"        , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false,	"type": "string", "visible": true, "width":  40 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Description" , "name": "Description"  , "searchSelected": true,   "sortSelected": true   , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": true , "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Status"      , "name": "Status"       , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Added By"    , "name": "Added_By"     , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width":  80 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Added Date"  , "name": "Added_Date"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated By"  , "name": "Updated_By"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 },
+      { "allowSearch": false, "allowSort": true , "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Updated Date", "name": "Updated_Date" , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true ,	"type": "string", "visible": true, "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "States",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": true,
+    "tableHeight": 286
+  },
+  {
+    "buttons": [
+      { "id": "topLeft"     , "name": "topLeft"     , "class": "btn-xs" , "color": "primary"  , "text": "Select All" , "visible": false },
+      { "id": "topRight"    , "name": "topRight"    , "class": "btn-xs" , "color": "primary"  , "text": "Add"        , "visible": true  },
+      { "id": "bottomLeft"  , "name": "bottomLeft"  , "class": ""       , "color": "primary"  , "text": "bottomLeft" , "visible": false },
+      { "id": "bottomRight" , "name": "bottomRight" , "class": ""       , "color": "primary"  , "text": "bottomRight", "visible": false }
+    ],
+    "columns": [
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "icon"    , "isPrimaryKey": true , "label": "Edit"        , "name": "NVP_SEQ_DET_ID"  , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": false  ,	"type": "string", "visible": true , "width":  40 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text:20" , "isPrimaryKey": false, "label": "Name"        , "name": "NVP_DET_TEXT"    , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text:15" , "isPrimaryKey": false, "label": "Value"       , "name": "NVP_DET_VALUE"   , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 },
+      { "allowSearch": false, "allowSort": false, "canEdit": false, "editText": "", "outputType": "text"    , "isPrimaryKey": false, "label": "Sort Order"  , "name": "Sort_Order"      , "searchSelected": false,  "sortSelected": false  , "direction": "asc", "showData": true   ,	"type": "string", "visible": true , "width": 120 }
+    ],
+    "captionText": "",
+    "maxHeadHeight": 16,
+    "maxTableRowHeight": 24,
+    "name": "SearchNVPDetails",
+    "numberOfRows": 10,
+    "showFirstRow": true,
+    "showThirdRow": true,
+    "showHelp": true,
+    "showSearch": false,
+    "tableHeight": 286
+  }
+]

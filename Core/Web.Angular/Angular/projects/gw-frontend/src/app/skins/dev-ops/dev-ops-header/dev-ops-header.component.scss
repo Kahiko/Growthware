@@ -1,0 +1,50 @@
+.container {
+    height: 50px;
+}
+
+.center {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+#logo {
+    position: relative;
+    background: #525252;
+    width: 266.5px;
+}
+
+#logo a {
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Righteous', cursive;
+    display: block;
+    font-size: 20px;
+    line-height: 50px;
+    background: url('/assets/arc/images/logo.png') right 42px no-repeat;
+    -webkit-transition: 0.5s;
+    -moz-transition: 0.5s;
+    -o-transition: 0.5s;
+    transition: 0.5s;
+}
+
+#logo a:hover {
+    background-position: right 25px;
+    text-decoration: none;
+}
+
+.middle_left {
+    padding: 0;
+}
+
+.middle_right {
+    padding: 0;
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.right_cell {
+    width: 50px;
+}

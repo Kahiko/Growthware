@@ -1,0 +1,44 @@
+<div class="table" style="height: calc(75vh);">
+    <div class="tr">
+        <div class="td center blue LogoCell" style="width: 150px; height: 70px; border: solid 1px;">
+            <img src='assets\bluearrow\images\CompanyLogo.gif' style="height: 65px;" />
+        </div>
+        <div class="td grey center">
+            <span *ngIf="environment !== 'Production'" id="spEnvironment" style="color: Black;">Environment: {{environment}}</span>&nbsp;&nbsp;
+            <span id="spSecurityEntity" style="color: Black;">{{securityEntityTranslation}}:  {{securityEntity}}</span>&nbsp;&nbsp;
+            <span id="spVersion" style="color: Black;">{{version}}</span>
+        </div>
+    </div>
+    <div class="tr separatorRow">
+        <div class="td grey"></div>
+        <div class="td blue"></div>
+    </div>
+    <div class="tr">
+        <div class="td"></div>
+        <div class="td top">
+            <gw-lib-horizontal name="horizontal"></gw-lib-horizontal>
+        </div>
+    </div>
+    <div class="tr">
+        <div class="td">
+            <gw-lib-vertical name="vertical"></gw-lib-vertical>
+            <mat-divider></mat-divider>
+            <gw-lib-hierarchical-vertical name="hierarchicalVertical"></gw-lib-hierarchical-vertical>
+        </div>
+        <div class="td router-outlet__div page">
+            <gw-lib-loader></gw-lib-loader>
+            <router-outlet></router-outlet>
+        </div>
+    </div>
+    <div class="tr separatorRow">
+        <div class="td"></div>
+        <div class="td"></div>
+    </div>
+    <div class="tr separatorRow">
+        <div class="td blue"></div>
+        <div class="td grey center">
+            <gw-frontend-blue-arrow-footer></gw-frontend-blue-arrow-footer>
+        </div>
+    </div>
+
+</div>

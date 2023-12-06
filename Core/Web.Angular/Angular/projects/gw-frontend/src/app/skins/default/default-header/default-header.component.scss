@@ -1,0 +1,15 @@
+toolbar {
+  block-size: fit-content;
+  height: 2.5rem;
+}
+
+.button__link {
+  background: none!important;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0!important;
+  /*input has OS specific font-family*/
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -55,6 +55,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
         },
 
         buildData: function (menuData) {
+            console.log('menuData', menuData);
             var source = [];
             var items = [];
             // build hierarchical source.
@@ -80,6 +81,7 @@ if (typeof GW.Navigation == "undefined" || !GW.Navigation) {
                     source[id] = items[id];
                 }
             }
+            console.log('source', source);
             return source;
         },
 

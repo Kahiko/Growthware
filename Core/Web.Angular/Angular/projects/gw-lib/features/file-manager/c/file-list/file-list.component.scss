@@ -1,0 +1,16 @@
+.grid-list__ul {
+  position: absolute;
+  left: 295px;
+  margin-top: 0;
+  list-style-type: none;
+  display: grid;
+  gap: .5rem;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.background-highlight {
+  background-color: #CCE8FF;
+}

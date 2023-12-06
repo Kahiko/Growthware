@@ -1,0 +1,39 @@
+<h4>
+    Please use with great caution.<br>
+    Doing this will remove any current Function security information for the target Security Entity!!!
+</h4>
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit(frmProfile)" novalidate>
+    <div class="mat-tab__content formSectionContents tabHeight">
+        <div>
+            <div class="table">
+                <div class="tr">
+                    <div class="td left">
+                        <mat-form-field appearance="outline">
+                            <mat-label htmlFor="source">Choose Source</mat-label>
+                            <mat-select id="source" [(value)]="selectedSource" class="rounded">
+                                <mat-option *ngFor="let item of validSourceEntities" [value]="item.key">
+                                    {{item.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="td left">
+                        <mat-form-field appearance="outline">
+                            <mat-label htmlFor="target">Choose Destination</mat-label>
+                            <mat-select id="target" [(value)]="selectedTarget" class="rounded">
+                                <mat-option *ngFor="let item of validTargetEntities" [value]="item.key">
+                                    {{item.value}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="buttonRow">
+            <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+              </button>
+        </div>
+    </div>
+</form>

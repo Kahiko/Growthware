@@ -1,0 +1,191 @@
+<form [formGroup]="frmAccount" (ngSubmit)="onSubmit(frmAccount)" novalidate>
+  <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
+    <mat-tab label="Account Information">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents tabHeight">
+          <div class="table" style="padding: 5px;">
+            <div class="tr">
+              <div class="td" style="width: 50%;">
+                <div class="table" style="width: 100%;">
+                  <div class="tr"><!--Account/Status-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Account: </span><mat-error *ngIf="controls['account'].invalid">{{getErrorMessage('account')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="account" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Status: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-select [(value)]="selectedStatus" class="Form_Field rounded">
+                        <mat-option *ngFor="let item of validStatus" [value]="item.id">
+                          {{item.name}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div class="tr"><!--SysAdmin/Failed-->
+                    <div class="td left">
+                      <span class="Form_LabelText">System Administrator: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-checkbox formControlName="isSystemAdmin" class="Form_Field"></mat-checkbox>
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Failed Logon Attempts: </span>
+                    </div>
+                    <div class="td left">
+                      <span id="litFailedAttempts" *ngIf="false"></span>
+                      <input matInput type="number" formControlName="failedAttempts" class="Form_Field rounded">
+                    </div>
+                  </div>
+                  <div class="tr"><!--FirstName/LastName-->
+                    <div class="td left">
+                      <span class="Form_LabelText">First Name: </span><mat-error *ngIf="controls['firstName'].invalid">{{getErrorMessage('firstName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="firstName" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Last Name: </span><mat-error *ngIf="controls['lastName'].invalid">{{getErrorMessage('lastName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="lastName" class="Form_Field rounded">
+                    </div>
+                  </div>
+                  <div class="tr"><!--MiddleName/blank-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Middle Name: </span><mat-error *ngIf="controls['middleName'].invalid">{{getErrorMessage('middleName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="middleName" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Preferred Name: </span><mat-error *ngIf="controls['preferredName'].invalid">{{getErrorMessage('preferredName')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="preferredName" class="Form_Field rounded">
+                    </div>
+                  </div>
+                  <div class="tr"><!--EMail/Timezone-->
+                    <div class="td left">
+                      <span class="Form_LabelText">Email: </span><mat-error *ngIf="controls['email'].invalid">{{getErrorMessage('email')}}</mat-error>
+                    </div>
+                    <div class="td left">
+                      <input matInput type="text" formControlName="email" class="Form_Field rounded">
+                    </div>
+                    <div class="td left">
+                      <span class="Form_LabelText">Timezone: </span>
+                    </div>
+                    <div class="td left">
+                      <mat-select [(value)]="selectedTimeZone" class="rounded">
+                        <mat-option *ngFor="let item of validTimezones" [value]="item.id">
+                          {{item.name}}
+                        </mat-option>
+                      </mat-select>
+                    </div>
+                  </div>
+                  <div *ngIf="false" class="tr"><!--blank/blank-->
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      text:
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      control
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      text:
+                    </div>
+                    <div class="td left" style="width: 25%; border: solid 1px;">
+                      control
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <hr>
+            <div class="tr">
+              <div class="td">
+                <span class="Form_SubSectionText"><b>Optional Information </b></span>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td">
+                <div class="table">
+                  <div class="tr">
+                    <div class="td left">
+                      <span class="Form_LabelText">Location: </span>
+                    </div>
+                    <div class="td left">
+                      <input formControlName="location" id="txtLocation" maxlength="128" class="Form_Field rounded" />
+                    </div>
+                  </div>
+                  <div class="tr">
+                    <div class="td left">
+                      <span class="Form_LabelText">Email Notifications: </span>
+                    </div>
+                    <div class="td left">
+                      <input formControlName="enableNotifications" type="checkbox" id="chkEnableNotifications" class="Form_Field" checked="true" text="Receive Email Notifications" />
+                      <br />
+                      <span class="Form_Field">(This option controls Email Notification. If this option is enabled, you will see Email Notification.) </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab *ngIf="showRoles" label="Roles">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents tabHeight">
+          <gw-lib-pick-list #rolePickList
+            id="roles"
+            name="{{rolesPickListName}}"
+            allItemsText="Available Roles"
+            header="Assign roles"
+            pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+            selectedItemsText="Selected Roles"
+            size=8
+            width=120></gw-lib-pick-list>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab *ngIf="showGroups" label="Groups">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__content formSectionContents tabHeight">
+          <gw-lib-pick-list #groupPickList
+            id="groups"
+            name="{{groupsPickListName}}"
+            allItemsText="Available Groups"
+            header="Assign Groups"
+            pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the role for one list to the other."
+            selectedItemsText="Selected Groups"
+            size=8
+            width=120></gw-lib-pick-list>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab *ngIf="showDerived" label="Derived Roles">
+      <div class="mat-tab__container formSection">
+        <div class="mat-tab__container formSection tabHeight">
+          <div>
+            <gw-lib-snake-list id="{{derivedRolesId}}"></gw-lib-snake-list>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class="buttonRow">
+    <button type="submit" [disabled]="frmAccount.invalid" mat-button class="Form_Button" color="primary">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+    </button>
+    <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+    </button>
+    <button type="button" *ngIf="canCancel" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+    </button>
+  </div>
+</form>

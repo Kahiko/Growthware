@@ -1,0 +1,35 @@
+For AngularJS Project
+	Install URL-Rewire:
+		Download:	http://www.iis.net/downloads/microsoft/url-rewrite
+		Local:		..\ThirdParty\AngularJS_Support\
+
+	Install SQL Server 2008 or greater
+	
+	Add the following to the web.config (<system.webServer>) if not already there:
+		<rewrite>
+		  <rules>
+			<rule name="AngularJS Routes" stopProcessing="true">
+			  <match url=".*" />
+			  <conditions logicalGrouping="MatchAll">
+				<add input="{REQUEST_FILENAME}" matchType="IsFile" negate="true" />
+				<add input="{REQUEST_FILENAME}" matchType="IsDirectory" negate="true" />
+				<add input="{REQUEST_URI}" matchType="Pattern" pattern="(\/gw\/api)" ignoreCase="true" negate="true" />
+			  </conditions>
+			  <action type="Rewrite" url="/Default.aspx" />
+			</rule>
+		  </rules>
+		</rewrite>
+
+All:
+	For application pool of the webside set the identity to "LocalService"
+
+Create the GW2013Development database:
+	1.) Open Visual Studio (Last tested with VS2022)
+	2.) Open the database solution (SQLServer\2008\GrowthWare_DB.sln)
+	3.) Build the project:
+			Build\Build Solution
+	4.) Publish the project:
+			1.) Build\Publish GrowthWare_DB...
+			2.) Click Load Profile...
+			3.) Select GrowthWare_DB.publish.xml
+	5.) Click Publish

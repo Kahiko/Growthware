@@ -1,0 +1,20 @@
+input[type] {
+  width: 132px;
+}
+
+.tabHeight { // From (SearchAccountsComponent._TheWindowSize)
+  min-height: 325px; // -125px
+  min-width: 850px;  // -50px
+}
+
+// checkbox-frame,
+// checkbox-background,
+// checkbox-anim-unchecked-checked,
+// checkbox-anim-checked-unchecked {
+//   transform: scale(.7);
+// }
+
+.mat-mdc-checkbox,
+checkbox-inner-container {
+  transform: scale(.7);
+}

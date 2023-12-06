@@ -1,0 +1,70 @@
+/* The Modal (background) */
+.modal-background {
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  padding-top: 100px; /* Location of the box */
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  display: block;
+}
+
+.modal__div {
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 2px 7px #292929;
+  -moz-box-shadow: 0px 2px 7px #292929;
+  -webkit-box-shadow: 0px 2px 7px #292929;
+  border-radius: 10px;
+  -moz-border-radius: 10px;
+  -webkit-border-radius: 10px;
+  background-color: whitesmoke; /* fallback */
+  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
+  background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
+  background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
+  background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
+  background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
+}
+
+.modal-body__div {
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+}
+
+.modal-footer__div {
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex; justify-content: flex-end;
+  border-top: 1px solid;
+}
+
+.toolbar {
+  font-size: 1.2rem;
+  height: 3.2rem;
+  border-top-left-radius: 10px;
+  -moz-border-top-left-radius: 10px;
+  -webkit-border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  -moz-border-top-right-radius: 10px;
+  -webkit-border-top-right-radius: 10px;
+}
+
+.button__link {
+  margin: auto;
+  background: none!important;
+  border: none;
+  font-size: 1.5rem;
+  padding: 0!important;
+  /*input has OS specific font-family*/
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-footer__button {
+  margin-left: 5px;
+}

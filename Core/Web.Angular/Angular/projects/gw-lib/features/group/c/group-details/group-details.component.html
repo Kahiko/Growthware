@@ -1,0 +1,65 @@
+<form [formGroup]="frmGroup" (ngSubmit)="onSubmit(frmGroup)">
+    <mat-tab-group  mat-align-tabs="center" style="padding-bottom: 0px; min-width: 400px;">
+        <mat-tab label="General">
+            <div class="mat-tab__container formSection tabHeight">
+                <div class="mat-tab__container formSection tabHeight">
+                    <div class="table" style="padding: 5px; width: 100%;">
+                        <div class="tr">
+                            <div class="td left">
+                                <span class="Form_LabelText">Name: </span>
+                            </div>
+                            <div class="td left">
+                                <input matInput type="text" formControlName="name" class="Form_Field rounded">
+                            </div>
+                            <div class="td left">
+                                <mat-error *ngIf="controls['name'].invalid">{{getErrorMessage('name')}}</mat-error>
+                            </div>
+                        </div>
+                        <div class="tr">
+                            <div class="td left">
+                                <span class="Form_LabelText">Description: </span>
+                                <!-- <mat-label>Description</mat-label> -->
+                            </div>
+                            <div class="td left">
+                                <mat-form-field class="rounded">
+                                    <textarea matInput maxlength="512" #description formControlName="description"></textarea>
+                                    <mat-hint align="end">{{description.value.length}}/512</mat-hint>
+                                </mat-form-field>
+                            </div>
+                            <div class="td left">
+                                <mat-error *ngIf="controls['description'].invalid">{{getErrorMessage('description')}}</mat-error>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <mat-tab label="Roles">
+            <div class="mat-tab__container formSection tabHeight">
+                <div class="mat-tab__container formSection tabHeight">
+                    <gw-lib-pick-list #rolePickList
+                        id="roles"
+                        name="{{rolesPickListName}}"
+                        allItemsText="Available Roles"
+                        header="Assign roles"
+                        pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                        selectedItemsText="Selected Roles"
+                        size=8
+                        width=120>
+                    </gw-lib-pick-list>
+                </div>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+    <div class="buttonRow">
+        <button type="submit" [disabled]="frmGroup.invalid" mat-button class="Form_Button" color="primary">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+          </button>
+          <button type="button" *ngIf="canDelete" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+          </button>
+          <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+          </button>
+    </div>
+</form>

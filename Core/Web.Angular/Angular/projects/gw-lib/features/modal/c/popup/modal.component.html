@@ -1,0 +1,18 @@
+<div class="modal-background">
+  <div class="modal__div" [ngStyle]="{ 'width.px': width + 10 }">
+    <div>
+      <mat-toolbar class="mat-toolbar toolbar" color="accent">
+        <h2>{{header}}</h2>
+        <span class="spacer"></span>
+        <span id="{{cancelBtn.id}}" (click)="onCancel()" class="button__link" aria-label="Close">&times;</span>
+      </mat-toolbar>
+    </div>
+    <div class="modal-body__div" [ngStyle]="{ 'height.px': height, 'width.px': width }">
+      <ng-content></ng-content>
+    </div>
+    <div *ngIf="showFooter" class="modal-footer__div">
+      <button *ngIf="closeBtn.visible" id="{{closeBtn.id}}" name="{{closeBtn.name}}" class="modal-footer__button {{closeBtn.class}" (click)="onClose()" mat-raised-button color="primary">{{closeBtn.text}}</button>
+      <button *ngIf="okBtn.visible" id="{{okBtn.id}}" name="{{okBtn.name}}" class="modal-footer__button {{okBtn.class}}" data-dismiss="modal" (click)="onOk()" mat-raised-button color="primary">{{okBtn.text}}</button>
+    </div>
+  </div>
+</div>

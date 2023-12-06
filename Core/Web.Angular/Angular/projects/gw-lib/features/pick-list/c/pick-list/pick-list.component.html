@@ -1,0 +1,54 @@
+<table class="pickListTable">
+  <tbody>
+      <tr class="pickListTableHeader">
+          <td>
+            {{header}}&nbsp;&nbsp;
+            <button type="button" (click)="onShowHelp()" mat-button class="Form_Button">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">help</i>Help
+              </button>
+          </td>
+      </tr>
+      <tr>
+          <td class="pickListTableContents">
+              <table class="listPicker">
+                  <tbody>
+                      <tr>
+                          <td>{{allItemsText}}</td>
+                          <td>&nbsp;</td>
+                          <td>{{selectedItemsText}}</td>
+                          <td></td>
+                      </tr>
+                      <tr>
+                          <td valign="top">
+                            <select name="{{name}}_SrcList" id="{{id}}_SrcList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                                <option *ngFor="let item of availableItems$ | async; let rowIndex=index;" [value]="item">
+                                {{item}}
+                                </option>
+                            </select>
+                          </td>
+                          <td valign="middle">
+                            <button class="material-icons" (click)="switchList($event, '_SrcList', '_DstList')"><mat-icon>keyboard_arrow_right</mat-icon></button><br/>
+                            <button class="material-icons" (click)="switchAll($event, '_SrcList', '_DstList')"><mat-icon>keyboard_double_arrow_right</mat-icon></button><br/>
+                            <button class="material-icons" (click)="switchList($event, '_DstList', '_SrcList')"><mat-icon>keyboard_arrow_left</mat-icon></button><br/>
+                            <button class="material-icons" (click)="switchAll($event, '_DstList', '_SrcList')"><mat-icon>keyboard_double_arrow_left</mat-icon></button><br/>
+                          </td>
+                          <td valign="top">
+                              <select name="{{name}}_DstList" id="{{id}}_DstList" multiple="multiple" [ngStyle]="{ 'width.px': width }" size="{{size}}">
+                                  <!-- <option ng-repeat="item in selectedItems" data-ng-selected="false" value="{{item}}">{{item}}</option> -->
+                                  <option *ngFor="let item of selectedItems$ | async; let rowIndex=index;" [value]="item">
+                                    {{item}}
+                                  </option>
+                              </select>
+                          </td>
+                          <td></td>
+                          <td valign="top" *ngIf="!sortOnChange">
+                              <input name="" value="▲" (click)="onMove('_DstList', 'up')" class="listPickerArrow" style="width: 50px" type="button"><br />
+                              <input name="" value="▼" (click)="onMove('_DstList', 'down')" class="listPickerArrow" style="width: 50px" type="button"><br />
+                          </td>
+                      </tr>
+                  </tbody>
+              </table>
+          </td>
+      </tr>
+  </tbody>
+</table>

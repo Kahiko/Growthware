@@ -1,0 +1,45 @@
+<div class="table" style="max-width: 800px;">
+    <div class="tr">
+        <div class="td" style="text-align: center; width: 250px; padding-right: 50px;">
+            Name Value Pairs
+            <button
+                mat-raised-button
+                color="primary"
+                id="btn_AddNvpParent"
+                name="btn_AddNvpParent"
+                (click) = "onAddClickNvpParent()"
+            >Add
+            </button>        
+        </div>
+        <div class="td" style="text-align: center;" >Details</div>
+    </div>
+    <div class="tr">
+        <div class="right td" style="padding-right: 5px;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Edit</th>
+                        <th>Name</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let row of nameValuePairParentData$ | async; let rowIndex=index;" [ngClass]="{ 'background-highlight': activeParrentRowIndex === rowIndex }">
+                        <td>
+                            <i (click)="onEditClickNvpParent(rowIndex)" id="editIcon_NvpParent" class="Form_Button_Icon material-icons" style="cursor: pointer;">edit</i>
+                        </td>
+                        <td (click)="onRowClickNvpParent(rowIndex)">
+                            {{row['Display']}}
+                        </td>
+                        <td (click)="onRowClickNvpParent(rowIndex)">
+                            {{row['Description']}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="left td" style="padding-left: 5px;">
+            <gw-lib-dynamic-table configurationName={{childConfigurationName}} #dynamicTable></gw-lib-dynamic-table>
+        </div>
+    </div>
+</div>
