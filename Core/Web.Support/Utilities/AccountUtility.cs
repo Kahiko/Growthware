@@ -11,10 +11,6 @@ using GrowthWare.Framework.Models.UI;
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
-    /*
-     * TODO: Authenticate should be the only place where the cache/session account is ever touchted.  Logoff should authenticate the Anonymous account so that the session/cached account
-     * is only changed and never removed
-     */
     private static string s_Anonymous = "Anonymous";
     private static string s_CachedName = "CachedAnonymous";
     private static CacheController m_CacheController = CacheController.Instance();
@@ -160,8 +156,7 @@ public static class AccountUtility
                 mAccountProfile.PasswordLastSet = System.DateTime.Now;
                 mAccountProfile.Status = (int)SystemStatus.Active;
                 mAccountProfile.FailedAttempts = 0;
-                string mEncryptedPassword;
-                CryptoUtility.TryEncrypt(changePassword.NewPassword, out mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                CryptoUtility.TryEncrypt(changePassword.NewPassword, out string mEncryptedPassword, mSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 mAccountProfile.Password = mEncryptedPassword;
                 try
                 {
@@ -178,7 +173,6 @@ public static class AccountUtility
                 mMessageProfile = MessageUtility.GetProfile("UnSuccessChangePassword");
             }
         }
-        //AccountUtility.RemoveInMemoryInformation(true);
         mRetVal = mMessageProfile.Body;
         return mRetVal;
     }
@@ -253,7 +247,6 @@ public static class AccountUtility
              *  3.) If the return value is null the get the Anonymous account from the DB
              *      and add it to cache.
              */
-            // getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
             MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(s_Anonymous);
             if (mRetVal == null)
             {
@@ -310,7 +303,6 @@ public static class AccountUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         IList<MMenuTree> mRetVal = null;
         string mMenuName = menuType.ToString() + "_" + account + "_Menu";
-        // getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
         mRetVal = getFromCacheOrSession<IList<MMenuTree>>(account, mMenuName);
         if (mRetVal != default)
         {
@@ -328,7 +320,6 @@ public static class AccountUtility
                 mRetVal = MMenuTree.FillRecursive(MMenuTree.GetFlatList(mDataTable), 0);
             }
         }
-        // addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
         addOrUpdateCacheOrSession(account, mRetVal, mMenuName);
         return mRetVal;
     }
@@ -351,10 +342,10 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes thhe menu and or account information from the session for the given account.
+    /// Removes thhe menu and or other information from the session for the given account.
     /// </summary>
     /// <param name="forAccount"></param>
-    /// /// <param name="includeAccount">By default this parameter is true and the account will be removed from the session.</param>
+    /// <notes>Does not remove account information from session use remmoveFromCacheOrSession.</notes>
     public static void RemoveInMemoryInformation(string forAccount)
     {
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
@@ -376,7 +367,7 @@ public static class AccountUtility
     {
         if (accountProfile == null) throw new ArgumentNullException("accountProfile", "accountProfile cannot be a null reference (Nothing in VB) or empty!");
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBAccount = new BAccounts(mSecurityEntity, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
         return accountProfile;
