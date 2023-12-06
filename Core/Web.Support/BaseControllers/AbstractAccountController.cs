@@ -263,13 +263,19 @@ public abstract class AbstractAccountController : ControllerBase
         try
         {
             var mRefreshToken = Request.Cookies["refreshToken"];
-            AuthenticationResponse mAuthenticationResponse = TokenUtility.RefreshToken(mRefreshToken, ipAddress());
-            setTokenCookie(mAuthenticationResponse.RefreshToken);
-            MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAuthenticationResponse.Account);
-            EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
             string mPassword = string.Empty;
-            CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, mEncryptionType);
-            return Authenticate(mAccountProfile.Account, mPassword);
+            if (mRefreshToken != null)
+            {
+                AuthenticationResponse mAuthenticationResponse = TokenUtility.RefreshToken(mRefreshToken, ipAddress());
+                setTokenCookie(mAuthenticationResponse.RefreshToken);
+                MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAuthenticationResponse.Account);
+                CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, SecurityEntityUtility.CurrentProfile().EncryptionType);
+                return Authenticate(mAccountProfile.Account, mPassword);
+            }
+            MAccountProfile mAnonymousProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
+            EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
+            CryptoUtility.TryDecrypt(mAnonymousProfile.Password, out mPassword, mEncryptionType);
+            return Authenticate(mAnonymousProfile.Account, mPassword);
         }
         catch (System.Exception ex)
         {
@@ -361,7 +367,7 @@ public abstract class AbstractAccountController : ControllerBase
             mClientChoicesState[MClientChoices.SubheadColor] = accountChoices.SubheadColor ?? mDefaultClientChoicesState[MClientChoices.SubheadColor];
             ClientChoicesUtility.Save(mClientChoicesState);
             AccountUtility.RemoveInMemoryInformation(accountChoices.Account);
-            UIAccountChoices mRetVal = new (mClientChoicesState);
+            UIAccountChoices mRetVal = new(mClientChoicesState);
             return Ok(mRetVal);
         }
         return Ok(false);
