@@ -30,13 +30,15 @@ public static class AccountUtility
     /// </summary>
     /// <param name="forAccount"></param>
     /// <param name="value"></param>
-    private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "SessionAccount")
+    private static void addOrUpdateCacheOrSession(string forAccount, object value, string sessionName = "useDefault")
     {
-        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
+        string mSessionName = s_SessionName;
+        if(sessionName != "useDefault") { mSessionName = sessionName; }
+        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionController.AddToSession(sessionName, value);
+            SessionController.AddToSession(mSessionName, value);
             return;
-        }
+        }        
         m_CacheController.AddToCache(s_CachedName, value);
     }
 
@@ -70,7 +72,7 @@ public static class AccountUtility
         bool mIsAuthenticated = false;
         MAccountProfile mRetVal = null;
         // No need to save the anonymous account
-        if (account.ToLowerInvariant() == s_Anonymous.ToLowerInvariant())
+        if (account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             mRetVal = getAccountProfile(s_Anonymous);
             return mRetVal;
@@ -82,7 +84,7 @@ public static class AccountUtility
         }
         if (!m_InvalidStatus.Contains(mRetVal.Status))
         {
-            if (ConfigSettings.AuthenticationType.ToLowerInvariant() == "internal")
+            if (ConfigSettings.AuthenticationType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
             {
                 // Proprietary authentication
                 string mProfilePassword = string.Empty;
@@ -209,7 +211,7 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = CurrentProfile;
         bool mAddToSessionOrCache = mRetVal == null;
-        if (mRetVal == null || (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant()))
+        if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
             mRetVal = getAccountProfile(account, true);
             if (mAddToSessionOrCache && mRetVal != null)
@@ -242,7 +244,7 @@ public static class AccountUtility
         {
             mRetVal = CurrentProfile;
             mAddToSessionOrCache = mRetVal == null;
-            if (mRetVal == null || (mRetVal.Account.ToLowerInvariant() != account.ToLowerInvariant()))
+            if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
             {
                 mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
                 mRetVal = mBAccount.GetProfile(account);
@@ -290,7 +292,7 @@ public static class AccountUtility
     /// <returns></returns>
     private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
     {
-        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
+        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             return SessionController.GetFromSession<T>(sessionName);
         }
@@ -359,13 +361,10 @@ public static class AccountUtility
     public static void RemmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
         string mSessionName = s_SessionName;
-        if(sessionName != "useDefault")
+        if(sessionName != "useDefault") { mSessionName = sessionName; }
+        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            mSessionName = sessionName;
-        }
-        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
-        {
-            SessionController.RemoveFromSession(sessionName);
+            SessionController.RemoveFromSession(mSessionName);
             return;
         }
         m_CacheController.RemoveFromCache(s_CachedName);
