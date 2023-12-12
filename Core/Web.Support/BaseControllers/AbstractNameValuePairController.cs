@@ -6,8 +6,8 @@ using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using GrowthWare.BusinessLogic;
+using Microsoft.AspNetCore.Http;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -17,6 +17,10 @@ public abstract class AbstractNameValuePairController : ControllerBase
     private CacheController m_CacheController = CacheController.Instance();
     private Logger m_Logger = Logger.Instance();
 
+    [AllowAnonymous]
+    [HttpGet("GetMNameValuePairs")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]    
     public List<MNameValuePair> GetMNameValuePairs()
     {
         List<MNameValuePair> mRetVal = this.m_CacheController.GetFromCache<List<MNameValuePair>>("NameValuePairs");
