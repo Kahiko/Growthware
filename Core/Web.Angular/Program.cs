@@ -8,11 +8,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddAuthentication(opt =>
 {
     opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
     opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    opt.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
     {
         options.TokenValidationParameters = new TokenValidationParameters
@@ -21,18 +21,20 @@ builder.Services.AddAuthentication(opt =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = "https://localhost:5001",
-            ValidAudience = "https://localhost:5001",
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret))
+            ValidIssuer = ConfigSettings.Issuer,
+            ValidAudience = ConfigSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(ConfigSettings.Secret)),
         };
-    });
+    }
+);
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("EnableCORS", builder => 
-    { 
+    options.AddPolicy("EnableCORS", builder =>
+    {
         builder.AllowAnyOrigin()
         .AllowAnyHeader()
-        .AllowAnyMethod(); 
+        .AllowAnyMethod();
     });
 });
 // Add services to the container.
@@ -43,9 +45,34 @@ builder.Services.AddControllersWithViews();         // Added
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(c =>
+builder.Services.AddSwaggerGen(options =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "Growthware API", Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies", Version = "v1" });
+    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter 'Bearer [jwt]'",
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey
+    });
+    var mOpenApiSecurityScheme = new OpenApiSecurityScheme
+    {
+        Reference = new OpenApiReference
+        {
+            Type = ReferenceType.SecurityScheme,
+            Id = "Bearer"
+        }
+    };
+
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement { { mOpenApiSecurityScheme, Array.Empty<string>() } });
+
+    options.SwaggerDoc("v1",
+        new OpenApiInfo
+        {
+            Title = "Growthware API",
+            Description = "Growthware is an idea dedicated to producing reusable and extendable core technologies",
+            Version = "v1"
+        }
+    );
 });
 // configure DI for application services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
@@ -60,17 +87,18 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 IHttpContextAccessor? httpContextAccessor = app.Services.GetService<IHttpContextAccessor>();
-if(httpContextAccessor != null)
+if (httpContextAccessor != null)
 {
     SecurityEntityUtility.SetHttpContextAccessor(httpContextAccessor);
     SessionController.SetHttpContextAccessor(httpContextAccessor);
-} 
+}
 // Configure the HTTP request pipeline.
 app.UseSwagger();
-app.UseSwaggerUI(c =>
+app.UseSwaggerUI(mSwaggerUIOptions =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
+    mSwaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
 });
+
 if (!app.Environment.IsDevelopment())               // Added
 {
     app.UseDefaultFiles();                          // Added
