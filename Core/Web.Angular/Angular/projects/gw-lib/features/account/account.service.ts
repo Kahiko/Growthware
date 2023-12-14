@@ -369,8 +369,15 @@ export class AccountService {
     if(jwtBase64) {
       const jwtToken = JSON.parse(window.atob(jwtBase64));
       // set a timeout to refresh the token a minute before it expires
-      const mExpires = new Date(jwtToken.exp * 1000);
-      const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
+        // set a timeout to refresh the token a minute before it expires
+        const mExpires = new Date(jwtToken.exp * 1000);
+        const mAMinuteLess = new Date( mExpires.getTime() - 1000 * 60 );
+        const mTimeout = mAMinuteLess.getTime();
+        // const mCheckDate = new Date(mTimeout);
+        // console.log('expires', mExpires);
+        // console.log('aMinuteLess', mAMinuteLess);
+        // console.log('mTimeout', mTimeout);
+        // console.log('mCheckDate', mCheckDate);
       this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(() => {
         console.log('AccountService.startRefreshTokenTimer', 'Running');
       }), mTimeout);
