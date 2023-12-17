@@ -39,6 +39,41 @@ public static class AccountUtility
     }
 
     /// <summary>
+    /// Retrieves an object of type `T` from either the cache or the session, based on the given `name`.
+    /// </summary>
+    /// <typeparam name="T">The type of the object being retrieved.</typeparam>
+    /// <param name="name">The name of the value to retrieved.</param>
+    /// <returns></returns>
+    private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "useDefault")
+    {
+        string mSessionName = s_SessionName;
+        if (sessionName != "useDefault") { mSessionName = sessionName; }
+        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        {
+            var mRetVal = SessionController.GetFromSession<T>(mSessionName);
+            return mRetVal;
+        }
+        return m_CacheController.GetFromCache<T>(s_CachedName);
+    }
+
+    /// <summary>
+    /// Removes an object from either the cache or the session, based on the given `forAccount`.
+    /// </summary>
+    /// <param name="forAccount"></param>
+    /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
+    private static void remmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
+    {
+        string mSessionName = s_SessionName;
+        if (sessionName != "useDefault") { mSessionName = sessionName; }
+        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        {
+            SessionController.RemoveFromSession(mSessionName);
+            return;
+        }
+        m_CacheController.RemoveFromCache(s_CachedName);
+    }
+
+    /// <summary>
     /// Performs the authentication logic
     /// </summary>
     /// <param name="account"></param>
@@ -50,63 +85,63 @@ public static class AccountUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
-        // Remove the session/cache information for the current account
-        string mCurrentAccount = CurrentProfile.Account;
-        remmoveFromCacheOrSession(mCurrentAccount);
-        RemoveInMemoryInformation(mCurrentAccount);
-        bool mIsAuthenticated = false;
-        MAccountProfile mRetVal = null;
-        // No need to save the anonymous account
         if (account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            mRetVal = getAccountProfile(s_Anonymous);
-            return mRetVal;
+            // no need to validate or save
+            return GetAccount(account);
         }
-        mRetVal = getAccountProfile(account, true);
+
+        // get account from the DB
+        MAccountProfile mRetVal = GetAccount(mAccount, true);
         if (mRetVal == null)
         {
             return mRetVal;
         }
-        if (!m_InvalidStatus.Contains(mRetVal.Status))
+
+        // validate
+        if (m_InvalidStatus.Contains(mRetVal.Status))
         {
-            if (ConfigSettings.AuthenticationType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
+            return null;
+        }
+        bool mIsAuthenticated = false;
+        if (ConfigSettings.AuthenticationType.Equals("internal", StringComparison.InvariantCultureIgnoreCase))
+        {
+            // internal db validation
+            CryptoUtility.TryDecrypt(mRetVal.Password, out string mProfilePassword, ConfigSettings.EncryptionType);
+            mIsAuthenticated = password == mProfilePassword;
+            if (mIsAuthenticated)
             {
-                // Proprietary authentication
-                string mProfilePassword = string.Empty;
-                CryptoUtility.TryDecrypt(mRetVal.Password, out mProfilePassword, ConfigSettings.EncryptionType);
-                mIsAuthenticated = password == mProfilePassword;
-                if (mIsAuthenticated)
-                {
-                    mIsAuthenticated = mRetVal.FailedAttempts < ConfigSettings.FailedAttempts + 1 && mRetVal.Status != (int)SystemStatus.Disabled;
-                }
+                mIsAuthenticated = mRetVal.FailedAttempts < ConfigSettings.FailedAttempts + 1 && mRetVal.Status != (int)SystemStatus.Disabled;
             }
-            else
+        }
+        else
+        {
+            // TODO: Add LDAP authentication
+        }
+        if (!mIsAuthenticated)
+        {
+            mRetVal.FailedAttempts++;
+            if (mRetVal.FailedAttempts >= ConfigSettings.FailedAttempts + 1)
             {
-                // TODO: Add LDAP authentication
+                mRetVal.Status = (int)SystemStatus.Disabled;
             }
-            if (!mIsAuthenticated)
-            {
-                mRetVal.FailedAttempts++;
-                if (mRetVal.FailedAttempts >= ConfigSettings.FailedAttempts + 1)
-                {
-                    mRetVal.Status = (int)SystemStatus.Disabled;
-                }
-                Save(mRetVal, true, false, false);
-                return null;
-            }
-            // setup tokens, claims and what not
-            mRetVal = TokenUtility.SetTokens(mRetVal, ipAddress);
-            mRetVal.FailedAttempts = 0;
-            mRetVal.LastLogOn = DateTime.Now;
             Save(mRetVal, true, false, false);
-            mRetVal.Password = ""; // Don't want to ever send the password out
+            return null;
         }
-        if(mRetVal != null) 
-        { 
-            addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
-            RemoveInMemoryInformation(mRetVal.Account);
-            ClientChoicesUtility.SynchronizeContext(mRetVal.Account); 
-        }
+
+        // authentication successful so generate jwt and refresh tokens
+        mRetVal = TokenUtility.SetTokens(mRetVal, ipAddress);
+
+        // remove old refresh tokens from account
+        TokenUtility.RemoveOldRefreshTokens(mRetVal);
+
+        // save changes to db
+        mRetVal.FailedAttempts = 0;
+        mRetVal.LastLogOn = DateTime.Now;        
+        Save(mRetVal, true, false, false);
+        RemoveInMemoryInformation(mRetVal.Account);
+        addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
+        ClientChoicesUtility.SynchronizeContext(mRetVal.Account); 
         return mRetVal;
     }
 
@@ -178,62 +213,6 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Deletes an account with the specified accountSeqId.
-    /// </summary>
-    /// <param name="accountSeqId"></param>
-    public static void Delete(int accountSeqId)
-    {
-        // TODO: It may be worth being able to get an account from the Id so we can get the name
-        // and remove the any in memory information for the account.
-        // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        mBAccount.Delete(accountSeqId);
-    }
-
-    /// <summary>
-    /// Returns a MAccountProfile given the account.
-    /// </summary>
-    /// <param name="account"></param>
-    /// <returns>MAccountProfile or null</returns>
-    public static MAccountProfile GetAccount(string account, bool forceDb = false)
-    {
-        MAccountProfile mRetVal = CurrentProfile;
-        if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
-        {
-            mRetVal = getAccountProfile(account, true);
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
-    /// Attempts to return the account from session or cache the stored value account is not equal to the requestd account
-    /// the value will be retrieved from the database.
-    /// </summary>
-    /// <param name="account"></param>
-    /// <param name="forceDb"></param>
-    /// <returns>MAccountProfile or null</returns>
-    private static MAccountProfile getAccountProfile(string account, bool forceDb = false)
-    {
-        MAccountProfile mRetVal = null;
-        BAccounts mBAccount = null;
-        if (forceDb)
-        {
-            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-            mRetVal = mBAccount.GetProfile(account);
-        }
-        else
-        {
-            mRetVal = CurrentProfile;
-            if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
-            {
-                mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-                mRetVal = mBAccount.GetProfile(account);
-            }
-        }
-        return mRetVal;
-    }
-
-    /// <summary>
     /// Retrieves the current account profile.
     /// </summary>
     /// <returns>MAccountProfile</returns>
@@ -250,7 +229,7 @@ public static class AccountUtility
             MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(s_Anonymous);
             if (mRetVal == null)
             {
-                mRetVal = getAccountProfile(s_Anonymous, true);
+                mRetVal = GetAccount(s_Anonymous, true);
                 addOrUpdateCacheOrSession(s_Anonymous, mRetVal);
             }
             return mRetVal;
@@ -258,20 +237,25 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Retrieves an object of type `T` from either the cache or the session, based on the given `name`.
+    /// Deletes an account with the specified accountSeqId.
     /// </summary>
-    /// <typeparam name="T">The type of the object being retrieved.</typeparam>
-    /// <param name="name">The name of the value to retrieved.</param>
-    /// <returns></returns>
-    private static T getFromCacheOrSession<T>(string forAccount, string sessionName = "SessionAccount")
+    /// <param name="accountSeqId"></param>
+    public static void Delete(int accountSeqId)
     {
-        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
-        {
-            return SessionController.GetFromSession<T>(sessionName);
-        }
-        return m_CacheController.GetFromCache<T>(s_CachedName);
+        // TODO: It may be worth being able to get an account from the Id so we can get the name
+        // and remove the any in memory information for the account.
+        // This is not necessary for now b/c you can't delete the your own account.
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        mBAccount.Delete(accountSeqId);
     }
 
+    /// <summary>
+    /// Retrieves menu data for a given account and MenuType
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="menuType"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     public static string GetMenuData(string account, MenuType menuType)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
@@ -292,7 +276,7 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Retrieves the list of menu items for a given account and menu type.
+    /// Retrieves the list of menu items for a given account and MenuType
     /// </summary>
     /// <param name="account">The account for which to retrieve the menu items.</param>
     /// <param name="menuType"></param>
@@ -325,20 +309,34 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes an object from either the cache or the session, based on the given `forAccount`.
+    /// Retrieves the account profile for the given account.
     /// </summary>
-    /// <param name="forAccount"></param>
-    /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
-    private static void remmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
+    /// <param name="account"></param>
+    /// <param name="forceDb"></param>
+    /// <returns></returns>
+    public static MAccountProfile GetAccount(string account, bool forceDb = false)
     {
-        string mSessionName = s_SessionName;
-        if (sessionName != "useDefault") { mSessionName = sessionName; }
-        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        MAccountProfile mRetVal = null;
+        BAccounts mBAccount = null;
+        if (forceDb)
         {
-            SessionController.RemoveFromSession(mSessionName);
-            return;
+            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mRetVal = mBAccount.GetProfile(account);
+            return mRetVal;
         }
-        m_CacheController.RemoveFromCache(s_CachedName);
+        mRetVal = CurrentProfile;
+        if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
+        {
+            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mRetVal = mBAccount.GetProfile(account);
+        }
+        return mRetVal;
+    }
+
+    public static void Logoff(string forAccount)
+    {
+        remmoveFromCacheOrSession(forAccount);
+        RemoveInMemoryInformation(forAccount);
     }
 
     /// <summary>
@@ -351,7 +349,8 @@ public static class AccountUtility
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
             string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
-            remmoveFromCacheOrSession(forAccount, mMenuName);
+            remmoveFromCacheOrSession(forAccount, mMenuName + "_Menu");
+            remmoveFromCacheOrSession(forAccount, mMenuName + "_Menu_Data");
         }
     }
 
@@ -365,6 +364,9 @@ public static class AccountUtility
     /// <remarks>Changes will be reflected in the profile passed as a reference.</remarks>
     public static MAccountProfile Save(MAccountProfile accountProfile, bool saveRefreshTokens, bool saveRoles, bool saveGroups)
     {
+        /*
+         * Roles, groups, and refresh tokens are stored in detail tables and it is not always necessary to save them.
+         */
         if (accountProfile == null || string.IsNullOrEmpty(accountProfile.Account)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile cannot be a null reference (Nothing in VB) or empty!");
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);

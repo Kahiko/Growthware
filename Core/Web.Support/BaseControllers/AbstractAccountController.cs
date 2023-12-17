@@ -31,6 +31,7 @@ public abstract class AbstractAccountController : ControllerBase
             AccountUtility.GetAccount("Anonymous");
             return StatusCode(403, "Incorrect account or password");
         }
+        mAccountProfile.Password = string.Empty; // Don't want to ever send the password out
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mAuthenticationResponse.RefreshToken);
         return Ok(mAuthenticationResponse);
@@ -154,7 +155,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         if (mRetVal == null)
         {
-            // mRetVal = AccountUtility.GetAccount("Anonymous");
+            // mRetVal = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
             mRetVal = new MAccountProfile();
         }
         mRetVal.Password = string.Empty;
@@ -252,6 +253,7 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
+        AccountUtility.Logoff(AccountUtility.CurrentProfile.Account);
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
         return Authenticate(mAccountProfile.Account, mPassword);

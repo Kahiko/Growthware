@@ -118,7 +118,7 @@ public static class TokenUtility
             newRefreshToken.AccountSeqId = mAccountProfile.Id;
             mAccountProfile.RefreshTokens.Add(newRefreshToken);
             // remove old refresh tokens from account
-            removeOldRefreshTokens(mAccountProfile);
+            RemoveOldRefreshTokens(mAccountProfile);
 
             // save changes to db
             // TODO: Considering calling AccountUtility.Authenticate instead of AccountUtility.Save and 
@@ -158,7 +158,7 @@ public static class TokenUtility
     /// Removes old refresh tokens from the given MAccountProfile.
     /// </summary>
     /// <param name="account"></param>
-    private static void removeOldRefreshTokens(MAccountProfile account)
+    public static void RemoveOldRefreshTokens(MAccountProfile account)
     {
         account.RefreshTokens.RemoveAll(x =>
             !x.IsActive() &&
