@@ -17,16 +17,20 @@ public class MDirectoryTree
     public MDirectoryTree(DirectoryInfo directoryInfo, string rootPath)
     {
         // Set the properties
+        string mRootPath = rootPath; // it is good practace not to change the paramater
+        mRootPath = mRootPath.Replace(@"\", @"/");
+        mRootPath = mRootPath.Replace(@"/", Path.DirectorySeparatorChar.ToString());        
+        mRootPath = mRootPath.TrimEnd(Path.DirectorySeparatorChar);
         Children = new List<MDirectoryTree>();
         DirectoryCount = directoryInfo.GetDirectories().Length;
         FileCount = directoryInfo.GetFiles().Length;
         IsFolder = true;
         Key = directoryInfo.Name.Replace(" ", "").ToLower();
         Name = directoryInfo.Name;
-        RelitivePath = directoryInfo.FullName.Replace(rootPath, "");
+        RelitivePath = directoryInfo.FullName.Replace(mRootPath, "");
         foreach (DirectoryInfo mDirectoryInfo in directoryInfo.GetDirectories())
         {
-            Children.Add(new MDirectoryTree(mDirectoryInfo, rootPath));
+            Children.Add(new MDirectoryTree(mDirectoryInfo, mRootPath));
         }
     }
 
