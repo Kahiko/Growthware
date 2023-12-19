@@ -20,6 +20,7 @@ button {
 }
 
 .directories {
+    display: inline-block;
     border-right: 1px solid whitesmoke; 
     width: 300px; 
     overflow-y: scroll;
@@ -28,4 +29,5 @@ button {
 
 .fileList {
     vertical-align: top;
+    display: inline-block;
 }
