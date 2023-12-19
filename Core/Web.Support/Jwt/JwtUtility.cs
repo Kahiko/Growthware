@@ -11,14 +11,18 @@ using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Utilities;
 
 namespace GrowthWare.Web.Support.Jwt;
-public class JwtUtils : IJwtUtils
+public class JwtUtility : IJwtUtility
 {
-
-    public JwtUtils()
+    public JwtUtility()
     {
         // nothing atm
     }
 
+    /// <summary>
+    /// Generate a JWT token for the given account profile.
+    /// </summary>
+    /// <param name="account">The account profile for which the token is generated.</param>
+    /// <returns>The generated JWT token.</returns>
     public string GenerateJwtToken(MAccountProfile account)
     {
         // generate token that is valid for 15 minutes
@@ -34,10 +38,20 @@ public class JwtUtils : IJwtUtils
         return tokenHandler.WriteToken(token);
     }
 
+    /// <summary>
+    /// Validates a JWT token.
+    /// </summary>
+    /// <param name="token">The JWT token to be validated.</param>
+    /// <returns>
+    /// The account id from the JWT token if validation is successful.
+    /// Null if validation fails or the token is null.
+    /// </returns>
     public string ValidateJwtToken(string token)
     {
         if (token == null)
+        {
             return null;
+        }
 
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
@@ -49,7 +63,7 @@ public class JwtUtils : IJwtUtils
                 IssuerSigningKey = new SymmetricSecurityKey(key),
                 ValidateIssuer = false,
                 ValidateAudience = false,
-                // set ClockSkew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
+                // set clockskew to zero so tokens expire exactly at token expiration time (instead of 5 minutes later)
                 ClockSkew = TimeSpan.Zero
             }, out SecurityToken validatedToken);
 
@@ -59,20 +73,18 @@ public class JwtUtils : IJwtUtils
             // return account id from JWT token if validation successful
             return mAccount;
         }
-        catch(SecurityTokenExpiredException) 
+        catch
         {
-            // do nothing ... error is acceptable
-            return null;  
-        }
-        catch(Exception ex)
-        {
-            Logger mLogger = Logger.Instance();
-            mLogger.Debug(ex);
             // return null if validation fails
             return null;
         }
     }
 
+    /// <summary>
+    /// Generates a refresh token for a given IP address.
+    /// </summary>
+    /// <param name="ipAddress">The IP address of the client requesting the refresh token.</param>
+    /// <returns>An instance of MRefreshToken representing the generated refresh token.</returns>
     public MRefreshToken GenerateRefreshToken(string ipAddress)
     {
         var refreshToken = new MRefreshToken
@@ -86,8 +98,8 @@ public class JwtUtils : IJwtUtils
         };
 
         // ensure token is unique by checking against db
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        BAccounts mBAccount = new BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+        // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
         var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)

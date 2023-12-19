@@ -102,7 +102,7 @@ namespace GrowthWare.DataAccess.SQLServer
             bool mRetVal = false;
             Int32 mCount = 0;
             string mCleanedValue = this.Cleanup(refreshToken);
-            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @P_Token";
+            string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @P_Token";
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Token", mCleanedValue), 
 			};
@@ -110,6 +110,10 @@ namespace GrowthWare.DataAccess.SQLServer
             if(mDbValue != null)
             {
                 mCount = (Int32)mDbValue;
+                if(mCount == 0) 
+                {
+                    mRetVal = true;
+                }
             }
             return mRetVal;
         }

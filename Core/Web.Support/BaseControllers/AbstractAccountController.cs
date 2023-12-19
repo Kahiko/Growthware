@@ -10,7 +10,6 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
 using System.Data;
 using System.Linq;
-using System.Reflection.Metadata.Ecma335;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -268,7 +267,7 @@ public abstract class AbstractAccountController : ControllerBase
             string mPassword = string.Empty;
             if (mRefreshToken != null)
             {
-                AuthenticationResponse mAuthenticationResponse = TokenUtility.RefreshToken(mRefreshToken, ipAddress());
+                AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
                 setTokenCookie(mAuthenticationResponse.RefreshToken);
                 MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAuthenticationResponse.Account);
                 CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, SecurityEntityUtility.CurrentProfile().EncryptionType);

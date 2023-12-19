@@ -7,6 +7,7 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Jwt;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
@@ -15,6 +16,7 @@ public static class AccountUtility
     private static string s_CachedName = "CachedAnonymous";
     private static CacheController m_CacheController = CacheController.Instance();
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
+    private static JwtUtility m_JwtUtils = new JwtUtility();
     private static string s_SessionName = "SessionAccount";
 
     public static string AnonymousAccount { get { return s_Anonymous; } }
@@ -61,7 +63,7 @@ public static class AccountUtility
     /// </summary>
     /// <param name="forAccount"></param>
     /// <param name="sessionName">Optional if not specified the default value is "useDefault"</param>
-    private static void remmoveFromCacheOrSession(string forAccount, string sessionName = "useDefault")
+    private static void removeFromCacheOrSession(string forAccount, string sessionName = "useDefault")
     {
         string mSessionName = s_SessionName;
         if (sessionName != "useDefault") { mSessionName = sessionName; }
@@ -130,10 +132,14 @@ public static class AccountUtility
         }
 
         // authentication successful so generate jwt and refresh tokens
-        mRetVal = TokenUtility.SetTokens(mRetVal, ipAddress);
+        var jwtToken = m_JwtUtils.GenerateJwtToken(mRetVal);
+        mRetVal.Token = jwtToken;
+        var refreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress);
+        refreshToken.AccountSeqId = mRetVal.Id;
+        mRetVal.RefreshTokens.Add(refreshToken);
 
         // remove old refresh tokens from account
-        TokenUtility.RemoveOldRefreshTokens(mRetVal);
+        removeOldRefreshTokens(mRetVal);
 
         // save changes to db
         mRetVal.FailedAttempts = 0;
@@ -333,10 +339,66 @@ public static class AccountUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves the account profile based on the provided refresh token.
+    /// </summary>
+    /// <param name="token">The refresh token used to retrieve the account profile.</param>
+    /// <returns>
+    /// An instance of MAccountProfile representing the account profile associated with the refresh token.
+    /// </returns>
+    /// <exception cref="ArgumentException">Thrown when the provided token is null or empty.</exception>
+    /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
+    private static MAccountProfile getAccountByRefreshToken(string token)
+    {
+        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        var account = mBAccount.GetProfileByRefreshToken(token);
+        if (account == null) throw new WebSupportException("Invalid token");
+        return account;
+    }
+
     public static void Logoff(string forAccount)
     {
-        remmoveFromCacheOrSession(forAccount);
+        removeFromCacheOrSession(forAccount);
         RemoveInMemoryInformation(forAccount);
+    }
+
+    /// <summary>
+    /// Refreshes the access token and generates a new JWT token.
+    /// </summary>
+    /// <param name="token">The refresh token.</param>
+    /// <param name="ipAddress">The IP address of the user.</param>
+    /// <returns>AuthenticationResponse or null</returns>
+    public static AuthenticationResponse RefreshToken(string token, string ipAddress)
+    {
+        var account = getAccountByRefreshToken(token);
+        var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
+
+        if (refreshToken.IsRevoked())
+        {
+            // revoke all descendant tokens in case this token has been compromised
+            revokeDescendantRefreshTokens(refreshToken, account, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+            AccountUtility.Save(account, true, false, false);
+        }
+
+        if (!refreshToken.IsActive())
+            throw new WebSupportException("Invalid token");
+
+        // replace old refresh token with a new one (rotate token)
+        var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
+        account.RefreshTokens.Add(newRefreshToken);
+
+        // remove old refresh tokens from account
+        removeOldRefreshTokens(account);
+
+        // save changes to db
+        AccountUtility.Save(account, true, false, false);
+
+        // generate new jwt
+        var jwtToken = m_JwtUtils.GenerateJwtToken(account);
+
+        AuthenticationResponse mRetVal = new(account);
+        ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
+        return mRetVal;
     }
 
     /// <summary>
@@ -349,9 +411,69 @@ public static class AccountUtility
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
             string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
-            remmoveFromCacheOrSession(forAccount, mMenuName + "_Menu");
-            remmoveFromCacheOrSession(forAccount, mMenuName + "_Menu_Data");
+            removeFromCacheOrSession(forAccount, mMenuName + "_Menu");
+            removeFromCacheOrSession(forAccount, mMenuName + "_Menu_Data");
         }
+    }
+
+    /// <summary>
+    /// Revokes a refresh token.
+    /// </summary>
+    /// <param name="token">The refresh token to revoke.</param>
+    /// <param name="ipAddress">The IP address of the user revoking the token.</param>
+    /// <param name="reason">The reason for revoking the token. (optional)</param>
+    /// <param name="replacedByToken">The token that replaces the revoked token. (optional)</param>
+    private static void revokeRefreshToken(MRefreshToken token, string ipAddress, string reason = null, string replacedByToken = null)
+    {
+        token.Revoked = DateTime.UtcNow;
+        token.RevokedByIp = ipAddress;
+        token.ReasonRevoked = reason;
+        token.ReplacedByToken = replacedByToken;
+    }
+
+    /// Recursively traverses the refresh token chain and ensures all descendants are revoked.
+    /// </summary>
+    /// <param name="refreshToken">The refresh token to start the traversal from.</param>
+    /// <param name="account">The account profile associated with the refresh token.</param>
+    /// <param name="ipAddress">The IP address of the requester.</param>
+    /// <param name="reason">The reason for revoking the tokens.</param>    
+    private static void revokeDescendantRefreshTokens(MRefreshToken refreshToken, MAccountProfile account, string ipAddress, string reason)
+    {
+        // recursively traverse the refresh token chain and ensure all descendants are revoked
+        if (!string.IsNullOrEmpty(refreshToken.ReplacedByToken))
+        {
+            var childToken = account.RefreshTokens.SingleOrDefault(x => x.Token == refreshToken.ReplacedByToken);
+            if (childToken.IsActive())
+                revokeRefreshToken(childToken, ipAddress, reason);
+            else
+                revokeDescendantRefreshTokens(childToken, account, ipAddress, reason);
+        }
+    }
+
+    /// <summary>
+    /// Rotates the refresh token for the given user.
+    /// </summary>
+    /// <param name="refreshToken">The current refresh token.</param>
+    /// <param name="ipAddress">The IP address of the user.</param>
+    /// <returns>The new refresh token.</returns>    
+    private static MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
+    {
+        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress);
+        newRefreshToken.AccountSeqId = CurrentProfile.Id;
+        revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
+        return newRefreshToken;
+    }
+
+    /// <summary>
+    /// Removes old refresh tokens from the given MAccountProfile.
+    /// </summary>
+    /// <param name="account"></param>
+    private static void removeOldRefreshTokens(MAccountProfile account)
+    {
+        // TODO: x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
+        account.RefreshTokens.RemoveAll(x => 
+            !x.IsActive() && 
+            x.Created.AddMinutes(3) <= DateTime.UtcNow);
     }
 
     /// <summary>

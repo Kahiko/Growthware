@@ -75,7 +75,7 @@ builder.Services.AddSwaggerGen(options =>
     );
 });
 // configure DI for application services
-builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+builder.Services.AddScoped<IJwtUtility, JwtUtility>();
 
 builder.Services.AddSession(options =>
 {

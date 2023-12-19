@@ -18,7 +18,7 @@ public class JwtMiddleware
     }
 
     [CLSCompliant(false)]
-    public async Task Invoke(HttpContext httpContext, IJwtUtils jwtUtils)
+    public async Task Invoke(HttpContext httpContext, IJwtUtility jwtUtils)
     {
         var token = httpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
         if(token != null)
