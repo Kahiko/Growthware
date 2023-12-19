@@ -335,6 +335,8 @@ export class AccountService {
       }),
       withCredentials: true,
     };
+    const mNow = new Date();
+    console.log('refreshFromToken', mNow);
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
     .pipe(
       map((authenticationResponse) => {
@@ -372,11 +374,11 @@ export class AccountService {
       const mExpires = new Date(jwtToken.exp * 1000);
       const mAMinuteLess = new Date( mExpires.getTime() - 1000 * 60 );
       const mTimeout = mAMinuteLess.getTime();
-      // const mCheckDate = new Date(mTimeout);
-      // console.log('expires', mExpires);
-      // console.log('aMinuteLess', mAMinuteLess);
-      // console.log('mTimeout', mTimeout);
-      // console.log('mCheckDate', mCheckDate);
+      // const mTimeoutDate = new Date(mTimeout);
+      // console.log('startRefreshTokenTimer.mExpires      ', mExpires);
+      // console.log('startRefreshTokenTimer.mAMinuteLess  ', mAMinuteLess);
+      // console.log('startRefreshTokenTimer.mTimeout      ', mTimeout);
+      // console.log('startRefreshTokenTimer.mTimeoutDate  ', mTimeoutDate);
       this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(() => {
         console.log('AccountService.startRefreshTokenTimer', 'Running');
       }), mTimeout);
