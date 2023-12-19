@@ -480,6 +480,22 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Gets the JWT_Refresh_Token_Days_TL.
+        /// </summary>
+        public static int JWT_Refresh_Token_Days_TL
+        {
+            get { return int.Parse(GetAppSettingValue("JWT_Refresh_Token_Days_TL", true), CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public static int JWT_Token_Minutes_TL
+        {
+            get { return int.Parse(GetAppSettingValue("JWT_Token_Minutes_TL", true), CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
         /// Return LDAP_Domain from the CONFIG file
         /// </summary>
         /// <value></value>
