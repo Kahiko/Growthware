@@ -410,7 +410,7 @@ public abstract class AbstractAccountController : ControllerBase
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Expires = DateTime.UtcNow.AddDays(7)
+            Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL)
         };
         Response.Cookies.Append("refreshToken", mToken, cookieOptions);
     }
