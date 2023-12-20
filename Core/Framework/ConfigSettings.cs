@@ -402,15 +402,6 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Gets the RefreshTokenTTL value from Growthware.json for the given environment.
-        /// </summary>
-        /// <value></value>
-        public static int RefreshTokenTTL
-        {
-            get { return int.Parse(GetAppSettingValue("RefreshTokenTTL", true));}
-        }
-
-        /// <summary>
         /// Gets or sets a value indicating the account to use for the client choices.
         /// </summary>
         /// <value>string value from config file</value>
