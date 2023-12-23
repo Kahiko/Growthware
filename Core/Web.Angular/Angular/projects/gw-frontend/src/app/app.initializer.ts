@@ -11,9 +11,6 @@ export function appInitializer(accountSvc: AccountService, configurationSvc: Con
       })).subscribe({
         next: (authenticationResponse: IAuthenticationResponse) => {
           // console.log('appInitializer.authenticationResponse', authenticationResponse);
-          if (authenticationResponse.account.toLocaleLowerCase() !== accountSvc.anonymous.toLocaleLowerCase()) {
-            accountSvc.startRefreshTokenTimer();
-          }
         },
         error: (error: any) => {
           console.log(error);

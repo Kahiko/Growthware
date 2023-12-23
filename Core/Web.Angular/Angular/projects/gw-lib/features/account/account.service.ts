@@ -335,13 +335,13 @@ export class AccountService {
       }),
       withCredentials: true,
     };
-    const mNow = new Date();
-    console.log('refreshFromToken', mNow);
+    console.log('refreshFromToken', new Date());
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
     .pipe(
       map((authenticationResponse) => {
         this.getClientChoices().then((clientChoices: IClientChoices) => {
-          // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
+          console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
+          this.startRefreshTokenTimer();
           if(this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
             const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
             this._AuthenticationResponse = authenticationResponse;
@@ -367,21 +367,16 @@ export class AccountService {
   public startRefreshTokenTimer(): void {
     // console.log('AccountService.startRefreshTokenTimer', 'Called');
     // parse json object from base64 encoded jwt token
-    const jwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
-    if(jwtBase64) {
-      const jwtToken = JSON.parse(window.atob(jwtBase64));
+    const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
+    if(mJwtBase64) {
+      // parse json object from base64 encoded jwt token
+      const mJwtToken = JSON.parse(window.atob(mJwtBase64));
       // set a timeout to refresh the token a minute before it expires
-      const mExpires = new Date(jwtToken.exp * 1000);
-      const mAMinuteLess = new Date( mExpires.getTime() - 1000 * 60 );
-      const mTimeout = mAMinuteLess.getTime();
-      // const mTimeoutDate = new Date(mTimeout);
-      // console.log('startRefreshTokenTimer.mExpires      ', mExpires);
-      // console.log('startRefreshTokenTimer.mAMinuteLess  ', mAMinuteLess);
-      // console.log('startRefreshTokenTimer.mTimeout      ', mTimeout);
-      // console.log('startRefreshTokenTimer.mTimeoutDate  ', mTimeoutDate);
-      this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(() => {
-        console.log('AccountService.startRefreshTokenTimer', 'Running');
-      }), mTimeout);
+      const mExpires = new Date(mJwtToken.exp * 1000);
+      const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
+      // console.log('mExpires', mExpires);
+      // console.log('mTimeoutDate',  new Date(Date.now() + mTimeout));
+      this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(), mTimeout);
     }
   }
 
@@ -421,9 +416,9 @@ export class AccountService {
    * @return {void} - This function does not return anything.
    */
   public stopRefreshTokenTimer(): void {
-    console.log('AccountService.stopRefreshTokenTimer', 'Called');
-    clearInterval(this._TimerId);
+    // console.log('AccountService.stopRefreshTokenTimer', 'Called');
     // release our intervalID from the variable
+    clearInterval(this._TimerId);
     // this._TimerId = null;
   }
 
