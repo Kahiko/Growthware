@@ -85,10 +85,11 @@ public class JwtUtility : IJwtUtility
     /// </summary>
     /// <param name="ipAddress">The IP address of the client requesting the refresh token.</param>
     /// <returns>An instance of MRefreshToken representing the generated refresh token.</returns>
-    public MRefreshToken GenerateRefreshToken(string ipAddress)
+    public MRefreshToken GenerateRefreshToken(string ipAddress, int accountSeqId)
     {
         var refreshToken = new MRefreshToken
         {
+            AccountSeqId = accountSeqId,
             // token is a cryptographically strong random sequence of values
             Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),
             // token is valid for 7 days
@@ -103,7 +104,7 @@ public class JwtUtility : IJwtUtility
         var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
-            return GenerateRefreshToken(ipAddress);
+            return GenerateRefreshToken(ipAddress, accountSeqId);
 
         return refreshToken;
     }

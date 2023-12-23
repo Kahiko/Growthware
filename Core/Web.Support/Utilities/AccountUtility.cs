@@ -132,11 +132,8 @@ public static class AccountUtility
         }
 
         // authentication successful so generate jwt and refresh tokens
-        var jwtToken = m_JwtUtils.GenerateJwtToken(mRetVal);
-        mRetVal.Token = jwtToken;
-        var refreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress);
-        refreshToken.AccountSeqId = mRetVal.Id;
-        mRetVal.RefreshTokens.Add(refreshToken);
+        mRetVal.Token = m_JwtUtils.GenerateJwtToken(mRetVal);
+        mRetVal.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, CurrentProfile.Id));
 
         // remove old refresh tokens from account
         removeOldRefreshTokens(mRetVal);
@@ -458,8 +455,7 @@ public static class AccountUtility
     /// <returns>The new refresh token.</returns>    
     private static MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
     {
-        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress);
-        newRefreshToken.AccountSeqId = CurrentProfile.Id;
+        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress, CurrentProfile.Id);
         revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
         return newRefreshToken;
     }
