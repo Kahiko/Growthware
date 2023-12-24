@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
+import { inject, Injectable } from '@angular/core';
+import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 interface IToken {
@@ -13,14 +13,14 @@ interface IToken {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard implements CanActivate  {
+class AuthGuardService {
 
-  constructor(
-    private _Router: Router,
-    private _JwtHelper: JwtHelperService
-  ){}
+  private _JwtHelper = inject(JwtHelperService);
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  constructor(private _Router: Router) { }
+
+  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+    //your logic goes here
     const mTokenStr = localStorage.getItem("jwt");
     let mRedirectUrl: string = '';
     let mReturn: boolean = false;
@@ -45,15 +45,14 @@ export class AuthGuard implements CanActivate  {
       this.handleRedirect(mRedirectUrl, state, mReturn);
       return true;
     }
-
     this.handleRedirect('/accounts/logout', state, false);
     return true; // b/c we are now navigating to logout we can return true
   }
 
   private handleRedirect(redirectUrl: string, state: RouterStateSnapshot, returnParameter: boolean): void {
-    if(redirectUrl !== '') {
-      if(!state.url.startsWith(redirectUrl)) {
-        if(returnParameter) {
+    if (redirectUrl !== '') {
+      if (!state.url.startsWith(redirectUrl)) {
+        if (returnParameter) {
           this._Router.navigate([redirectUrl.toLocaleLowerCase()], {
             queryParams: {
               return: state.url
@@ -65,4 +64,8 @@ export class AuthGuard implements CanActivate  {
       }
     }
   }
+}
+
+export const AuthGuard: CanActivateFn = (next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean => {
+  return inject(AuthGuardService).canActivate(next, state);
 }
