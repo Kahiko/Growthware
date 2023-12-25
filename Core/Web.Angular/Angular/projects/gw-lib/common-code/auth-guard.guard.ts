@@ -15,12 +15,10 @@ interface IToken {
 })
 class AuthGuardService {
 
+  private _Router = inject(Router);
   private _JwtHelper = inject(JwtHelperService);
 
-  constructor(private _Router: Router) { }
-
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    //your logic goes here
     const mTokenStr = localStorage.getItem("jwt");
     let mRedirectUrl: string = '';
     let mReturn: boolean = false;
