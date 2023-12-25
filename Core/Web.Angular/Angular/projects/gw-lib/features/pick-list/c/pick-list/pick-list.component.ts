@@ -56,7 +56,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
             // update the local data
             this._AvailableItemsData = results.payLoad;
             this._AvailableItemsSubject.next(results.payLoad);
-          };
+          }
           if (this.name.trim().toLowerCase() + '_selecteditems' === results.name.trim().toLowerCase()) {
             // update the local data
             this._SelectedItemsData = results.payLoad;
@@ -70,7 +70,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
               }
             }
             this.sortDataArrays();
-          };
+          }
         })
       );
     } else {
@@ -102,7 +102,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   switchAll(e: any, source: string, destination: string): void {
     e.stopPropagation();
     e.preventDefault();
-    var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+    const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
     // var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
     if(objFromBox.length > 0) {
       if(source == '_SrcList') {
@@ -126,7 +126,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   switchList(e: any, source: string, destination: string): void {
     e.stopPropagation();
     e.preventDefault();
-    var objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
+    const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
     // var objToBox = document.getElementById(this.id + destination)! as HTMLSelectElement;
     if(objFromBox.selectedOptions.length > 0) {
       if(source == '_SrcList') {

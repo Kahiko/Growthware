@@ -60,7 +60,7 @@ export class ListComponent {
             // update the local data
             this._AvailableItemsData = results.payLoad;
             this._AvailableItemsSubject.next(this._AvailableItemsData);
-          };
+          }
         })
       );
     } else {

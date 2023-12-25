@@ -15,7 +15,7 @@ export class GWCommon {
    * @memberof GWCommon
    */
   public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
-    var mExistingIds = yourArray.map((obj) => obj.id);
+    const mExistingIds = yourArray.map((obj) => obj.id);
 
     if (!mExistingIds.includes(objectWithId.id)) {
       yourArray.push(objectWithId);
@@ -43,7 +43,7 @@ export class GWCommon {
         const parentId = item["ParentId"];
   
         if (items[parentId]) {
-          let item: any = { parentId: parentId, label: label, description: description, action: action };
+          const item: any = { parentId: parentId, label: label, description: description, action: action };
           if (!items[parentId].items) {
             items[parentId].items = [];
           }
@@ -94,14 +94,14 @@ export class GWCommon {
    * @memberof GWCommon
    */
   public get baseURL(): string {
-    let mCurrentLocation = window.location;
+    const mCurrentLocation = window.location;
     let mPort = mCurrentLocation.port;
     if (mPort === '80' || mPort.length === 0) {
       mPort = '';
     } else {
       mPort = ':' + mPort;
     }
-    let mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort + '/';
+    const mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + mPort + '/';
     return mURL;
   }
 
@@ -119,7 +119,7 @@ export class GWCommon {
     }
     let mFormattedData = data;
     const mFormatParts: string[] = format.split(':');
-    let mFormat = mFormatParts[0];
+    const mFormat = mFormatParts[0];
     switch (mFormat.toLowerCase()) {
       case 'date':
         mFormattedData = this.formatDate(data);
@@ -190,8 +190,8 @@ export class GWCommon {
    * @memberof GWCommon
    */
   public hierarchySearch(data: any, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): object | null {
-    var i: number // iterator
-    var mNode: any = null; // found node
+    let i: number // iterator
+    let mNode: any = null; // found node
     if (Array.isArray(data)) { // if entry object is array objects, check each object
       for (i = 0; i < data.length; i++) {
         mNode = this.hierarchySearch(data[i], searchValue, nameOfProperty, nameOfChildNodes);
@@ -300,10 +300,10 @@ export class GWCommon {
       if (xD < yD) return -1;
       else if (xD > yD) return 1;
     // natural sorting through split numeric strings and default strings
-    for (var cLoc = 0, numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
+    for (let cLoc = 0, numS = Math.max(xN.length, yN.length); cLoc < numS; cLoc++) {
       // find floats not starting with '0', string or 0 if not defined (Clint Priest)
-      var oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
-      var oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
+      let oFxNcL = !(xN[cLoc] || '').match(ore) && parseFloat(xN[cLoc]) || xN[cLoc] || 0;
+      let oFyNcL = !(yN[cLoc] || '').match(ore) && parseFloat(yN[cLoc]) || yN[cLoc] || 0;
       // handle numeric vs string comparison - number < string - (Kyle Adams)
       if (isNaN(oFxNcL) !== isNaN(oFyNcL)) return (isNaN(oFxNcL)) ? 1 : -1;
       // rely on string comparison if different types - i.e. '02' < 2 != '02' < '2'

@@ -161,7 +161,7 @@ export class AccountService {
    * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
    */
   private async getClientChoices(): Promise<IClientChoices> {
-    let mHttpOptions = {
+    const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
       }),
@@ -212,7 +212,7 @@ export class AccountService {
    * @return {Promise<IAccountProfile>} - A promise that resolves to the account profile.
    */
   public async getAccountForEdit(account: string): Promise<IAccountProfile> {
-    let mAccount: string = account;
+    const mAccount: string = account;
     if(this._GWCommon.isNullOrEmpty(mAccount)) {
       throw new Error("account can not be blank!");
     }

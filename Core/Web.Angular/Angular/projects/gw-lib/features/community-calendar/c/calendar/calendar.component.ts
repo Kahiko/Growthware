@@ -53,8 +53,8 @@ export class CalendarComponent implements OnInit {
     const startingDateOfCalendar = this.getStartDateForCalendar(day);
 
     let dateToAdd = startingDateOfCalendar;
-    let mDayNeededForCalendar = this.getNumberOfCalendarDays(day);
-    for (var i = 0; i < mDayNeededForCalendar; i++) {
+    const mDayNeededForCalendar = this.getNumberOfCalendarDays(day);
+    for (let i = 0; i < mDayNeededForCalendar; i++) {
       this.calendar.push(new CalendarDay(new Date(dateToAdd)));
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
     }

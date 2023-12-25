@@ -104,7 +104,7 @@ export class SecurityEntityService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, securityEntity).subscribe({
         next: (response: boolean) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Security_Entities"); // from SearchSecurityEntitiesComponent (this.configurationName)
+          const mSearchCriteria = this._SearchSvc.getSearchCriteria("Security_Entities"); // from SearchSecurityEntitiesComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Security_Entities", mSearchCriteria);
           }

@@ -179,7 +179,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   updateSearch(): void {
-    var mSearchCriteria = this._SearchSvc.getSearchCriteria("Roles"); // from SearchAccountsComponent line 25
+    const mSearchCriteria = this._SearchSvc.getSearchCriteria("Roles"); // from SearchAccountsComponent line 25
     if(mSearchCriteria != null) {
       this._SearchSvc.setSearchCriteria("Roles", mSearchCriteria);
     }    

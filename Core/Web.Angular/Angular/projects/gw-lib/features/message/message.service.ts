@@ -64,7 +64,7 @@ export class MessageService {
       };
       this._HttpClient.post<IMessageProfile>(this._Api_Save, messageProfile, mHttpOptions).subscribe({
         next: (response: IMessageProfile) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Messages"); // from SearchMessagesComponent (this.configurationName)
+          const mSearchCriteria = this._SearchSvc.getSearchCriteria("Messages"); // from SearchMessagesComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Messages", mSearchCriteria);
           }

@@ -67,7 +67,7 @@ export interface IDynamicTableConfiguration {
 
     if(this._GWCommon.isNullOrUndefined(buttons) || buttons.length === 0) {
       const mDefaultNameId = name + '_AddBtn';
-      let mButton:ICallbackButton = new CallbackButton('Add', mDefaultNameId, mDefaultNameId)
+      const mButton:ICallbackButton = new CallbackButton('Add', mDefaultNameId, mDefaultNameId)
       this.buttons.push(mButton);
     } else {
       // ensure number of buttons not greater than 5
@@ -79,7 +79,7 @@ export interface IDynamicTableConfiguration {
     }
 
     if(!this._GWCommon.isNullOrUndefined(columns) && columns.length > 0) {
-      let result = columns.filter(o => o.visible === true);
+      const result = columns.filter(o => o.visible === true);
       if(this._GWCommon.isNullOrUndefined(result) || result.length === 0) {
         throw new Error("At least 1 column in the columns must be visible");
       } else {

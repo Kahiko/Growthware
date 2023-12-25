@@ -40,7 +40,7 @@ export class FileManagerService {
 
   public get SelectedPath(): string {
     return this._SelectedPath;
-  };
+  }
 
   ModalId_Rename_Directory: string = 'DirectoryTreeComponent.onMenuRenameClick';
   ModalId_CreateDirectory: string = "CreateDirectoryForm";
@@ -83,7 +83,7 @@ export class FileManagerService {
     }
     if(this._GWCommon.isNullOrEmpty(newPath)) {
       throw new Error("newPath can not be blank!");
-    };
+    }
     let mQueryParameter: HttpParams = new HttpParams().append('action', action);
     mQueryParameter = mQueryParameter.append('selectedPath', this.SelectedPath);
     mQueryParameter = mQueryParameter.append('newPath', newPath);
@@ -122,7 +122,7 @@ export class FileManagerService {
       }
       if(this._GWCommon.isNullOrEmpty(selectedPath)) {
         throw new Error("selectedPath can not be blank!");
-      };
+      }
       let mQueryParameter: HttpParams = new HttpParams().append('action', action);
       mQueryParameter=mQueryParameter.append('selectedPath', selectedPath);
       const mHttpOptions = {
@@ -333,7 +333,7 @@ export class FileManagerService {
    */
   private multiPartFileUpload(parameters: IMultiPartFileUploadParameters) {
     const mParams = {...parameters}; // it's good practice to leave parameter values unchanged
-    let mNextUploadNumber = mParams.uploadNumber + 1;
+    const mNextUploadNumber = mParams.uploadNumber + 1;
     // const mFileSize: number = mParams.file.size;
     const mMultiUploadFileName = mParams.file.name + "_UploadNumber_" + mNextUploadNumber;
     if(mParams.uploadNumber < mParams.totalNumberOfUploads) { // do we need to send any more pices of the file
@@ -364,7 +364,7 @@ export class FileManagerService {
         },
         // complete: () => {}
       });
-    };
+    }
     if(mParams.uploadNumber == mParams.totalNumberOfUploads) { // make sure this is the last upload
       this.multiUploadComplete(mParams.action, mParams.file.name, this._Api_UploadFile).subscribe({
         next: (response: IUploadResponse) => {
@@ -393,7 +393,7 @@ export class FileManagerService {
    * @memberof FileManagerService
    */
   private multiUploadComplete(action: string, fileName: string, uri: string): Observable<IUploadResponse> {
-    var mFormData = new FormData();
+    const mFormData = new FormData();
     mFormData.append('action', action);
     mFormData.append('completed', 'true');
     mFormData.append('fileName', fileName);

@@ -62,7 +62,7 @@ export class StatesService {
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_Save, stateProfile, mHttpOptions).subscribe({
         next: (response: any) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("States"); // from SearchStatesComponent (this.configurationName)
+          const mSearchCriteria = this._SearchSvc.getSearchCriteria("States"); // from SearchStatesComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("States", mSearchCriteria);
           }

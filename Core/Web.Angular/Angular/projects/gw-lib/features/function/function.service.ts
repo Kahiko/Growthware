@@ -234,7 +234,7 @@ export class FunctionService {
     return new Promise<any>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_Save, functionProfile, mHttpOptions).subscribe({
         next: (response: any) => {
-          var mSearchCriteria = this._SearchSvc.getSearchCriteria("Functions"); // from SearchFunctionsComponent (this.configurationName)
+          const mSearchCriteria = this._SearchSvc.getSearchCriteria("Functions"); // from SearchFunctionsComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("Functions", mSearchCriteria);
           }

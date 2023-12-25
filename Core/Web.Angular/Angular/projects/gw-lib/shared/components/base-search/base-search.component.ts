@@ -62,7 +62,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
     // Get the initial SearchCriteriaNVP from the service
     const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.configurationName);
-    let mResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName, mAccountTableConfig);
+    const mResults: SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.configurationName, mAccountTableConfig);
     // Set the search criteria to initiate search criteria changed subject
     this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
     this.init();
