@@ -100,6 +100,17 @@
             ],
             "scripts": []
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/gw-lib/**/*.ts",
+              "projects/gw-lib/**/*.html",
+              "projects/gw-frontend/**/*.ts",
+              "projects/gw-frontend/**/*.html"
+            ]
+          }
         }
       }
     },
