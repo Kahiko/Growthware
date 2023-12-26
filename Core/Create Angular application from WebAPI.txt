@@ -60,6 +60,9 @@ From a command prompt and the directory you would like to create your new projec
 	npm install @auth0/angular-jwt --save
 	ng add @angular/material --project gw-frontend
 	ng add @angular-eslint/schematics
+  npm install eslint-plugin-deprecation --save-dev
+  npm install eslint-plugin-html --save-dev
+
 Files you'll need to edit the following files:
 	<dotNetProjectName>.csproj
 	Program.cs

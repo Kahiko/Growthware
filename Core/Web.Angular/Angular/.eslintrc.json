@@ -12,11 +12,12 @@
     "parserOptions": {
         "ecmaVersion": "latest",
         "project": [
-            "./tsconfig.json"
+            "**/tsconfig.json"
         ]
     },
     "plugins": [
         "@typescript-eslint",
+        "eslint-plugin-html",
         "deprecation"
     ],
     "rules": {
