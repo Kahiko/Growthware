@@ -5,6 +5,9 @@
         "searchfunctions"
     ],
     "eslint.enable": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
     "eslint.validate": [
       "javascript", // ...
       "html" // Add "html" to enable linting `.html` files.
