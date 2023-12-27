@@ -14,5 +14,8 @@ export class LineCount implements ILineCount {
         excludePattern = '',
         includeFiles = '*.json, *.cs, *.ts'
     ) {
+        this.excludePattern = excludePattern;
+        this.includeFiles = includeFiles;
+        this.theDirectory = theDirectory;
     }
 }
