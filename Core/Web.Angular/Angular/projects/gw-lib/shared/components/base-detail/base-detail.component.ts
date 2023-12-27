@@ -62,7 +62,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
         this.delete();
     }
 
-    protected onSubmit(form: FormGroup): void {
+    protected onSubmit(): void {
         // this._LoggingSvc.toast('BaseDetailComponent.onSubmit', 'Function Details:', LogLevel.Error);
         this.populateProfile();
         this.save();
