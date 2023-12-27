@@ -23,8 +23,8 @@ import { LoggingService } from '@Growthware/features/logging';
 })
 export class NaturalSortComponent implements OnInit {
 
-  dataTableSource: any[] = [];
-  dataViewSource: any[] = [];
+  dataTableSource: unknown[] = [];
+  dataViewSource: unknown[] = [];
   displayedColumns: string[] = ['col1', 'col2'];
 
   startTime: string = '';

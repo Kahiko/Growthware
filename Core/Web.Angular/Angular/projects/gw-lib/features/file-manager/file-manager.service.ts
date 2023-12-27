@@ -11,6 +11,7 @@ import { IFileInfoLight } from './file-info-light.model';
 import { IMultiPartFileUploadParameters, MultiPartFileUploadParameters } from './multi-part-file-upload-parameters.model';
 import { IUploadResponse } from './upload-response.model';
 import { IUploadStatus, UploadStatus } from './upload-status.model';
+import { INaturalSortResults } from './natural-sort-results.model';
 
 @Injectable({
   providedIn: 'root'
@@ -288,8 +289,8 @@ export class FileManagerService {
     });
   }
 
-  public async getTestNaturalSort(sortDirection: string): Promise<any> {
-    return new Promise<any>((resolve, reject) => {
+  public async getTestNaturalSort(sortDirection: string): Promise<INaturalSortResults> {
+    return new Promise<INaturalSortResults>((resolve, reject) => {
       const mQueryParameter: HttpParams = new HttpParams().append('sortDirection', sortDirection);
       const mHttpOptions = {
         headers: new HttpHeaders({
@@ -297,8 +298,8 @@ export class FileManagerService {
         }),
         params: mQueryParameter,
       };
-      this._HttpClient.get<any>(this._Api_GetTestNaturalSort, mHttpOptions).subscribe({
-        next: (response: any) => {
+      this._HttpClient.get<INaturalSortResults>(this._Api_GetTestNaturalSort, mHttpOptions).subscribe({
+        next: (response: INaturalSortResults) => {
           resolve(response);
         },
         error: (error: any) => {
