@@ -77,7 +77,7 @@ export class FileManagerService {
    * @return {*}  {Promise<any>}
    * @memberof FileManagerService
    */
-  async createDirectory(action: string, newPath: string): Promise<any>
+  async createDirectory(action: string, newPath: string): Promise<boolean>
   {
     if(this._GWCommon.isNullOrEmpty(action)) {
       throw new Error("action can not be blank!");
@@ -95,7 +95,7 @@ export class FileManagerService {
       params: mQueryParameter,
     };
     return new Promise<boolean>((resolve, reject) => {
-      this._HttpClient.post<any>(this._Api_CreateDirectory, null, mHttpOptions).subscribe({
+      this._HttpClient.post<never>(this._Api_CreateDirectory, null, mHttpOptions).subscribe({
         next:( response: boolean ) => {
           resolve(response)
         },
