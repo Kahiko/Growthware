@@ -5,7 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 // Library
-import { FileManagerService } from '@Growthware/features/file-manager';
+import { INaturalSortResults, FileManagerService } from '@Growthware/features/file-manager';
 import { LoggingService } from '@Growthware/features/logging';
 
 @Component({
@@ -49,7 +49,7 @@ export class NaturalSortComponent implements OnInit {
   }
 
   getData(): void {
-    this._FileManagerSvc.getTestNaturalSort(this.selectedSortDirection).then((response: any) => {
+    this._FileManagerSvc.getTestNaturalSort(this.selectedSortDirection).then((response: INaturalSortResults) => {
       // console.log('NaturalSortComponent.ngOnInit',response.dataTable);
       this.dataTableSource = response.dataTable;
       this.dataViewSource = response.dataView;

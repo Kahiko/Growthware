@@ -7,5 +7,6 @@ export * from './file-manager.module';
 export * from './file-manager.service';
 export * from './file-upload-parameters.model';
 export * from './multi-part-file-upload-parameters.model';
+export * from './natural-sort-results.model';
 export * from './upload-response.model';
 export * from './upload-status.model';
