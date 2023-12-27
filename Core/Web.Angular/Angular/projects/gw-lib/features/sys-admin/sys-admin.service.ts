@@ -30,9 +30,9 @@ export class SysAdminService {
     };
     return new Promise<string>((resolve, reject) => {
       this._HttpClient
-      .post<any>(this._ApiLineCount, lineCount, mHttpOptions)
+      .post<string>(this._ApiLineCount, lineCount, mHttpOptions)
       .subscribe({
-        next: (response: any) => {
+        next: (response: string) => {
           resolve(response);
         },
         error: (errorResponse: any) => {
