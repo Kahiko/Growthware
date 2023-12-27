@@ -48,7 +48,7 @@ export class SecurityService {
     const mUrl = this._Api_Security;
     return new Promise<ISecurityInfo>((resolve, reject) => {
       this._HttpClient.get<ISecurityInfo>(mUrl, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: ISecurityInfo) => {
           resolve(response);
         },
         error: (error: any) => {
