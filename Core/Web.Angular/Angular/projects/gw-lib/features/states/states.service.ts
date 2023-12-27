@@ -19,7 +19,7 @@ export class StatesService {
   readonly addEditModalId: string = 'addEditAccountModal';
 
   modalReason: string = '';
-  selectedRow: any = {};
+  selectedRow = {};
 
   constructor(
     private _GWCommon: GWCommon,
@@ -41,7 +41,7 @@ export class StatesService {
     };    
     return new Promise<IStateProfile>((resolve, reject) => {
       this._HttpClient.get<IStateProfile>(this._Api_GetProfile, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: IStateProfile) => {
           resolve(response);
         },
         error: (error: any) => {
@@ -61,7 +61,7 @@ export class StatesService {
     }
     return new Promise<boolean>((resolve, reject) => {
       this._HttpClient.post<boolean>(this._Api_Save, stateProfile, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: boolean) => {
           const mSearchCriteria = this._SearchSvc.getSearchCriteria("States"); // from SearchStatesComponent (this.configurationName)
           if(mSearchCriteria != null) {
             this._SearchSvc.setSearchCriteria("States", mSearchCriteria);
