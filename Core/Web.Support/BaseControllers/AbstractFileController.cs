@@ -197,7 +197,11 @@ public abstract class AbstractFileController : ControllerBase
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
-                string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
+                string mSelectedPath = selectedPath;
+                mSelectedPath = mSelectedPath.Replace(@"\", @"/");
+                mSelectedPath = mSelectedPath.Replace(@"/", Path.DirectorySeparatorChar.ToString());        
+                mSelectedPath = mSelectedPath.TrimEnd(Path.DirectorySeparatorChar);
+                string mPath = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
                 string mFilePath = Path.Combine(mPath, fileName);
 
                 // Check if the file exists
