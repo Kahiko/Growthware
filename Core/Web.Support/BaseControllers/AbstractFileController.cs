@@ -33,9 +33,23 @@ public abstract class AbstractFileController : ControllerBase
     {
         string mRetVal = string.Empty;
         if (selectedPath != null) { mRetVal = selectedPath; }
-        if (!mRetVal.StartsWith(Path.DirectorySeparatorChar) && !directory.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = Path.DirectorySeparatorChar.ToString() + mRetVal; }
-        mRetVal = directory + mRetVal;
-        if (mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = directory; }
+        string mDirectory = directory.Replace(@"\", @"/");
+        mDirectory = mDirectory.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        mDirectory = mDirectory.TrimEnd(Path.DirectorySeparatorChar);
+        mDirectory = mDirectory.TrimStart(Path.DirectorySeparatorChar);
+        if (!mDirectory.EndsWith(Path.DirectorySeparatorChar)) { mDirectory = mDirectory + Path.DirectorySeparatorChar.ToString(); }
+
+        string mSelectedPath = string.Empty;
+        if (!string.IsNullOrEmpty(selectedPath))
+        {
+            mSelectedPath = selectedPath.Replace(@"\", @"/");
+            mSelectedPath = mSelectedPath.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+            mSelectedPath = mSelectedPath.TrimEnd(Path.DirectorySeparatorChar);
+            mSelectedPath = mSelectedPath.TrimStart(Path.DirectorySeparatorChar);
+        }
+        mRetVal = mDirectory + mSelectedPath;
+        if (mRetVal.LastIndexOf(Path.DirectorySeparatorChar) == 0) { mRetVal = mDirectory; }
+        if (!mRetVal.EndsWith(Path.DirectorySeparatorChar)) { mRetVal = mRetVal + Path.DirectorySeparatorChar.ToString(); }
         return mRetVal;
     }
 
@@ -130,7 +144,7 @@ public abstract class AbstractFileController : ControllerBase
     {
         FileExtensionContentTypeProvider mFileExtensionContentTypeProvider = new FileExtensionContentTypeProvider();
         string mContentType;
-        if(!mFileExtensionContentTypeProvider.TryGetContentType(fullFileName, out mContentType))
+        if (!mFileExtensionContentTypeProvider.TryGetContentType(fullFileName, out mContentType))
         {
             mContentType = "application/octet-stream";
         }
@@ -197,11 +211,7 @@ public abstract class AbstractFileController : ControllerBase
             MDirectoryProfile mDirectoryProfile = DirectoryUtility.GetDirectoryProfile(mFunctionProfile.Id);
             if (mDirectoryProfile != null)
             {
-                string mSelectedPath = selectedPath;
-                mSelectedPath = mSelectedPath.Replace(@"\", @"/");
-                mSelectedPath = mSelectedPath.Replace(@"/", Path.DirectorySeparatorChar.ToString());        
-                mSelectedPath = mSelectedPath.TrimEnd(Path.DirectorySeparatorChar);
-                string mPath = this.calculatePath(mDirectoryProfile.Directory, mSelectedPath);
+                string mPath = this.calculatePath(mDirectoryProfile.Directory, selectedPath);
                 string mFilePath = Path.Combine(mPath, fileName);
 
                 // Check if the file exists
