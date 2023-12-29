@@ -172,6 +172,8 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
    */
   onMenuPropertiesClick(item: IDirectoryTree) {
     // console.log('item', item);
+    // this._FileManagerSvc.CurrentDirectoryTree = item;
+    this.activeNode = item;
     const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Directory_Properties, 'Properties', this._DirectoryProperties, new WindowSize(80, 600));
     mModalOptions.buttons.okButton.visible = true;
     mModalOptions.buttons.okButton.callbackMethod = () => {

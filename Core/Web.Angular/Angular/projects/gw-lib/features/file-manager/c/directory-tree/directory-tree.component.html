@@ -60,14 +60,20 @@
 </ng-template>
 
 <ng-template #directoryProperties>
-  <div class="formSection">
+  <div class="formSection" style="margin: auto; width: 98%">
     <div class="formSectionContents">
-      <div class="table Form_Table" style="margin: auto; width: 98%">
-        <div class="tr Form_LabelRow">
-          <div class="td right"></div>
-          <div class="td left"></div>
-          <div class="td right"></div>
-          <div class="td left"></div>
+      <div class="table Form_Table">
+        <div class="tr">
+          <div class="td right">Number of Files: </div>
+          <div class="td left" style="word-wrap: none;">{{activeNode?.fileCount}}</div>
+        </div>
+        <div class="tr">
+          <div class="td right" style="word-wrap: none;">Size: </div>
+          <div class="td left" style="word-wrap: none;">{{activeNode?.size}}</div>
+        </div>
+        <div class="tr">
+          <div class="td right" style="word-wrap: none;">Size With Children: </div>
+          <div class="td left" style="word-wrap: none;">{{activeNode?.sizeWithChildren}}</div>
         </div>
       </div>
     </div>
