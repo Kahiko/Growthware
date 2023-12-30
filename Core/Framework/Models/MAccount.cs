@@ -323,10 +323,8 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <value></value>
     public List<MRefreshToken> RefreshTokens 
     {
-        get
-        {
-            return m_RefreshTokens;
-        }
+        get{ return m_RefreshTokens; }
+        set{ m_RefreshTokens = value; }
     }
 
     /// <summary>
