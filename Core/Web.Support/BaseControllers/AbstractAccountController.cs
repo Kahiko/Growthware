@@ -19,18 +19,17 @@ public abstract class AbstractAccountController : ControllerBase
     private Logger m_Logger = Logger.Instance();
     private string s_AnonymousAccount = "Anonymous";
 
-
+    /// <summary>
+    /// Handles authentication and cookie management.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <param name="password"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("Authenticate")]
     public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
     {
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
-        if (mAccountProfile == null)
-        {
-            AccountUtility.GetAccount("Anonymous");
-            return StatusCode(403, "Incorrect account or password");
-        }
-        mAccountProfile.Password = string.Empty; // Don't want to ever send the password out
         AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mAuthenticationResponse.RefreshToken);
         return Ok(mAuthenticationResponse);
@@ -252,7 +251,12 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpGet("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
-        AccountUtility.Logoff(AccountUtility.CurrentProfile.Account);
+        string mRefreshToken = Request.Cookies["refreshToken"];
+        if(mRefreshToken == null) 
+        {
+            mRefreshToken = string.Empty;
+        }
+        AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
         return Authenticate(mAccountProfile.Account, mPassword);
@@ -261,36 +265,17 @@ public abstract class AbstractAccountController : ControllerBase
     [HttpPost("RefreshToken")]
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
-        try
+        string mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
+        string mPassword = string.Empty;
+        string mAccount = AccountUtility.AnonymousAccount;
+        if (mRefreshToken != null)
         {
-            var mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
-            string mPassword = string.Empty;
-            if (mRefreshToken != null)
-            {
-                AuthenticationResponse mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-                setTokenCookie(mAuthenticationResponse.RefreshToken);
-                MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAuthenticationResponse.Account);
-                CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, SecurityEntityUtility.CurrentProfile().EncryptionType);
-                return Authenticate(mAccountProfile.Account, mPassword);
-            }
-            MAccountProfile mAnonymousProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
-            EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
-            CryptoUtility.TryDecrypt(mAnonymousProfile.Password, out mPassword, mEncryptionType);
-            return Authenticate(mAnonymousProfile.Account, mPassword);
+            mAccount = AccountUtility.RefreshToken(mRefreshToken, ipAddress()).Account;
         }
-        catch (System.Exception ex)
-        {
-            if (ex.Message.Contains("token does not exist"))
-            {
-                return NotFound();
-                // throw;
-            }
-            else
-            {
-                this.m_Logger.Error(ex);
-                throw new Exception("token does not exist, unable to get account");
-            }
-        }
+        MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAccount);
+        EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
+        CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, mEncryptionType);
+        return Authenticate(mAccount, mPassword);
     }
 
     [AllowAnonymous]

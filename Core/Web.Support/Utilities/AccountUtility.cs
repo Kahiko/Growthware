@@ -76,7 +76,7 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Performs the authentication logic
+    /// Performs the authentication logic and session/cache management.
     /// </summary>
     /// <param name="account"></param>
     /// <param name="password"></param>
@@ -87,14 +87,18 @@ public static class AccountUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
+        MAccountProfile mRetVal = null;
         if (account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             // no need to validate or save
-            return GetAccount(account);
+            mRetVal = GetAccount(account);
+            mRetVal.Token = string.Empty;
+            mRetVal.RefreshTokens = [];
+            return mRetVal;
         }
 
         // get account from the DB
-        MAccountProfile mRetVal = GetAccount(mAccount, true);
+        mRetVal = GetAccount(mAccount, true);
         if (mRetVal == null)
         {
             return mRetVal;
@@ -140,11 +144,12 @@ public static class AccountUtility
 
         // save changes to db
         mRetVal.FailedAttempts = 0;
-        mRetVal.LastLogOn = DateTime.Now;        
+        mRetVal.LastLogOn = DateTime.Now;
         Save(mRetVal, true, false, false);
         RemoveInMemoryInformation(mRetVal.Account);
+        // Update the cache or session which in turn will update the "CurrentProfile" property.
         addOrUpdateCacheOrSession(mRetVal.Account, mRetVal);
-        ClientChoicesUtility.SynchronizeContext(mRetVal.Account); 
+        ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
     }
 
@@ -348,13 +353,33 @@ public static class AccountUtility
     private static MAccountProfile getAccountByRefreshToken(string token)
     {
         BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
-        var account = mBAccount.GetProfileByRefreshToken(token);
-        if (account == null) throw new WebSupportException("Invalid token");
-        return account;
+        MAccountProfile mRetVal = null;
+        try
+        {
+            mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        }
+        catch (System.Exception)
+        {
+            mRetVal = GetAccount(s_Anonymous);
+        }
+        return mRetVal;
     }
 
-    public static void Logoff(string forAccount)
+    public static void Logoff(string forAccount, string token, string ipAddress)
     {
+        if(!String.IsNullOrWhiteSpace(token))
+        {
+            MAccountProfile mAccountProfile = GetAccount(forAccount);
+            if(mAccountProfile.RefreshTokens.Count > 0) 
+            {
+                MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);            
+                revokeRefreshToken(mRefreshToken, ipAddress, "Revoked by Logoff");
+                // remove old refresh tokens from account
+                removeOldRefreshTokens(mAccountProfile);
+                // save changes to db
+                AccountUtility.Save(mAccountProfile, true, false, false);
+            }
+        }
         removeFromCacheOrSession(forAccount);
         RemoveInMemoryInformation(forAccount);
     }
@@ -367,33 +392,36 @@ public static class AccountUtility
     /// <returns>AuthenticationResponse or null</returns>
     public static AuthenticationResponse RefreshToken(string token, string ipAddress)
     {
-        var account = getAccountByRefreshToken(token);
-        var refreshToken = account.RefreshTokens.Single(x => x.Token == token);
-
-        if (refreshToken.IsRevoked())
+        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+        if (mAccountProfile.RefreshTokens.Count > 0)
         {
-            // revoke all descendant tokens in case this token has been compromised
-            revokeDescendantRefreshTokens(refreshToken, account, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
-            AccountUtility.Save(account, true, false, false);
+            MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
+
+            if (mRefreshToken.IsRevoked())
+            {
+                // revoke all descendant tokens in case this token has been compromised
+                revokeDescendantRefreshTokens(mRefreshToken, mAccountProfile, ipAddress, $"Attempted reuse of revoked ancestor token: {token}");
+                AccountUtility.Save(mAccountProfile, true, false, false);
+            }
+
+            if (!mRefreshToken.IsActive())
+                throw new WebSupportException("Invalid token");
+
+            // replace old refresh token with a new one (rotate token)
+            var newRefreshToken = rotateRefreshToken(mRefreshToken, ipAddress);
+            mAccountProfile.RefreshTokens.Add(newRefreshToken);
+
+            // remove old refresh tokens from account
+            removeOldRefreshTokens(mAccountProfile);
+
+            // save changes to db
+            AccountUtility.Save(mAccountProfile, true, false, false);
+
+            // generate new jwt
+            mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
         }
 
-        if (!refreshToken.IsActive())
-            throw new WebSupportException("Invalid token");
-
-        // replace old refresh token with a new one (rotate token)
-        var newRefreshToken = rotateRefreshToken(refreshToken, ipAddress);
-        account.RefreshTokens.Add(newRefreshToken);
-
-        // remove old refresh tokens from account
-        removeOldRefreshTokens(account);
-
-        // save changes to db
-        AccountUtility.Save(account, true, false, false);
-
-        // generate new jwt
-        account.Token = m_JwtUtils.GenerateJwtToken(account);
-
-        AuthenticationResponse mRetVal = new(account);
+        AuthenticationResponse mRetVal = new(mAccountProfile);
         ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
     }
@@ -467,8 +495,8 @@ public static class AccountUtility
     private static void removeOldRefreshTokens(MAccountProfile account)
     {
         // TODO: x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
-        account.RefreshTokens.RemoveAll(x => 
-            !x.IsActive() && 
+        account.RefreshTokens.RemoveAll(x =>
+            !x.IsActive() &&
             x.Created.AddMinutes(3) <= DateTime.UtcNow);
     }
 
