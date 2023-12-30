@@ -19,7 +19,7 @@ class AuthGuardService {
   private _JwtHelper = inject(JwtHelperService);
 
   canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
-    const mTokenStr = localStorage.getItem("jwt");
+    const mTokenStr = sessionStorage.getItem("jwt");
     let mRedirectUrl: string = '';
     let mReturn: boolean = false;
     if (mTokenStr && !this._JwtHelper.isTokenExpired(mTokenStr)) {

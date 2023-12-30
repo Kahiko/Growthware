@@ -36,7 +36,7 @@ import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 
 export function tokenGetter() {
-  return localStorage.getItem("jwt");
+  return sessionStorage.getItem("jwt");
 }
 
 @NgModule({
