@@ -340,7 +340,7 @@ export class AccountService {
     .pipe(
       map((authenticationResponse) => {
         this.getClientChoices().then((clientChoices: IClientChoices) => {
-          console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
+          // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
           this.startRefreshTokenTimer();
           if(this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
             const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
