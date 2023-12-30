@@ -391,7 +391,7 @@ public static class AccountUtility
         AccountUtility.Save(account, true, false, false);
 
         // generate new jwt
-        var jwtToken = m_JwtUtils.GenerateJwtToken(account);
+        account.Token = m_JwtUtils.GenerateJwtToken(account);
 
         AuthenticationResponse mRetVal = new(account);
         ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
