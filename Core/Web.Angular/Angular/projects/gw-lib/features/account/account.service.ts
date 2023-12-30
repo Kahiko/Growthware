@@ -335,7 +335,7 @@ export class AccountService {
       }),
       withCredentials: true,
     };
-    console.log('refreshFromToken', new Date());
+    // console.log('refreshFromToken', new Date());
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
     .pipe(
       map((authenticationResponse) => {
