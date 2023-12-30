@@ -34,6 +34,7 @@ public class MRefreshToken : AbstractDatabaseFunctions
 
     private void setKeyAndTable()
     {
+        this.m_ForeignKeyIsNumber = true;
         this.m_ForeignKeyName = "[AccountSeqId]";
         this.m_PrimaryKeyName = "[RefreshTokenId]";
         this.m_TableName = "[ZGWSecurity].[RefreshTokens]";

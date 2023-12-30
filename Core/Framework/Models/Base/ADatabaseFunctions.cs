@@ -17,6 +17,8 @@ namespace GrowthWare.Framework.Models.Base
         // Only needs to be set if you intend on using BulkInsert
         protected string m_ForeignKeyName = string.Empty;
 
+        protected bool m_ForeignKeyIsNumber = false;
+
         protected string m_PrimaryKeyName = string.Empty;
 
         protected string m_TableName = string.Empty;
@@ -341,6 +343,11 @@ namespace GrowthWare.Framework.Models.Base
             }
 
             return mIsBoolean;
+        }
+
+        bool IDatabaseFunctions.IsForeignKeyNumber()
+        {
+            return this.m_ForeignKeyIsNumber;
         }
     }
 }

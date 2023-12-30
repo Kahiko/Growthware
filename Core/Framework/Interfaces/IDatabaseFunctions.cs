@@ -51,4 +51,6 @@ public interface IDatabaseFunctions
     /// All properties must be populated first if not this will may have adverse effects.
     /// </remarks>		
     string GetInsert(bool usePrimaryKey);
+
+    bool IsForeignKeyNumber();
 }
