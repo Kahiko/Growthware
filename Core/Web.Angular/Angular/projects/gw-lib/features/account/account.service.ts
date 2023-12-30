@@ -266,7 +266,7 @@ export class AccountService {
           if(authenticationResponse.status == 4) {
             mNavigationUrl = '/account/change-password';
           }
-          localStorage.setItem("jwt", authenticationResponse.jwtToken);
+          sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
           const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
           this._AuthenticationResponse = authenticationResponse;
           this._ClientChoices = clientChoices;
@@ -293,7 +293,7 @@ export class AccountService {
    * @return {void} This function does not return anything.
    */
   public logout(slient: boolean = false): void {
-    localStorage.removeItem("jwt")
+    sessionStorage.removeItem("jwt")
     const mHttpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
@@ -302,7 +302,7 @@ export class AccountService {
     this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
       next: (authenticationResponse: any) => {
         // console.log('logout.authenticationResponse', authenticationResponse);
-        localStorage.setItem("jwt", authenticationResponse.jwtToken);
+        sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
           this._AuthenticationResponse = authenticationResponse;
