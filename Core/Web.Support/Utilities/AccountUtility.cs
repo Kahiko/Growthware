@@ -133,7 +133,7 @@ public static class AccountUtility
 
         // authentication successful so generate jwt and refresh tokens
         mRetVal.Token = m_JwtUtils.GenerateJwtToken(mRetVal);
-        mRetVal.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, CurrentProfile.Id));
+        mRetVal.RefreshTokens.Add(m_JwtUtils.GenerateRefreshToken(ipAddress, mRetVal.Id));
 
         // remove old refresh tokens from account
         removeOldRefreshTokens(mRetVal);
