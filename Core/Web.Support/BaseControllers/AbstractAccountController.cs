@@ -263,7 +263,7 @@ public abstract class AbstractAccountController : ControllerBase
     {
         try
         {
-            var mRefreshToken = Request.Cookies["refreshToken"];
+            var mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
             string mPassword = string.Empty;
             if (mRefreshToken != null)
             {
@@ -412,6 +412,6 @@ public abstract class AbstractAccountController : ControllerBase
             HttpOnly = true,
             Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL)
         };
-        Response.Cookies.Append("refreshToken", mToken, cookieOptions);
+        Response.Cookies.Append(ConfigSettings.JWT_Refresh_CookieName, mToken, cookieOptions);
     }
 }

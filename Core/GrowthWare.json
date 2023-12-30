@@ -62,6 +62,7 @@
     "Development_Log_Path": "D:/Development/Growthware/Core/Web.Angular/Logs/",
     "Development_Log_Priority": "debug",
     "Development_Log_Retention": "5",
+    "JWT_Refresh_CookieName": "refreshToken",
     "Development_JWT_Refresh_Token_Days_TL": "7",
     "Development_JWT_Token_Minutes_TL": "15",
     "Development_MicrosoftAccountClientId": "",

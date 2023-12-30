@@ -470,6 +470,11 @@ namespace GrowthWare.Framework
             get { return AppDisplayedName + "Remember_Me"; }
         }
 
+        public static string JWT_Refresh_CookieName
+        {
+            get { return GetAppSettingValue("JWT_Refresh_CookieName", true); }
+        }
+
         /// <summary>
         /// Gets the JWT_Refresh_Token_Days_TL.
         /// </summary>
