@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface INameValuePair {
     name: string,
     payLoad: any
