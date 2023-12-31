@@ -518,6 +518,7 @@ public static class AccountUtility
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
+        addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         return accountProfile;
     }
 }
