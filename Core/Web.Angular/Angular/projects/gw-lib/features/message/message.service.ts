@@ -46,7 +46,7 @@ export class MessageService {
           // console.log('MessageService.getProfile.response', response);
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'MessageService', 'getMessageForEdit');
           reject('Failed to call the API');
         },
@@ -70,7 +70,7 @@ export class MessageService {
           }
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'MessageService', 'save');
           reject('Failed to call the API');
         },

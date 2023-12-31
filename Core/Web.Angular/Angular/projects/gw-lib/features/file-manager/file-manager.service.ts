@@ -212,7 +212,7 @@ export class FileManagerService {
           this._DataSvc.notifyDataChanged(forControl, mDirectoryTree);
           resolve(true);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
           reject(false);
         },
@@ -252,7 +252,7 @@ export class FileManagerService {
         mLink.click();
         window.URL.revokeObjectURL(mLink.href);
       },
-      error: (error: any) => {
+      error: (error) => {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFile');
         this._LoggingSvc.toast('Error downloading file "' + fileName + '"!', 'File Manager', LogLevel.Error);
       },
@@ -282,7 +282,7 @@ export class FileManagerService {
       next: (response) => {
         this._DataSvc.notifyDataChanged(controlId, response);
       },
-      error: (error: any) => {
+      error: (error) => {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getFiles');
       },
       // complete: () => {}
@@ -302,7 +302,7 @@ export class FileManagerService {
         next: (response: INaturalSortResults) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getTestNaturalSort');
           reject(false);
         },
@@ -353,7 +353,7 @@ export class FileManagerService {
           this.uploadStatusChanged.next(mUploadStatus);
           this.multiPartFileUpload(mParams);
         },
-        error: (error: any) => {
+        error: (error) => {
           if(parameters.retryNumber < 4) {
             mParams.retryNumber = mParams.retryNumber + 1;
             this.multiPartFileUpload(mParams);
@@ -372,7 +372,7 @@ export class FileManagerService {
           const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
           this.uploadStatusChanged.next(mUploadStatus);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
           const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, mParams.file.name, error, true, false, mParams.totalNumberOfUploads, mParams.uploadNumber);
           this.uploadStatusChanged.next(mUploadStatus);
@@ -557,7 +557,7 @@ export class FileManagerService {
         const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
         this.uploadStatusChanged.next(mUploadStatus);
       },
-      error: (error: any) => {
+      error: (error) => {
         this._LoggingSvc.errorHandler(error, 'FileManagerService', 'singleFileUpload');
         // const mUploadStatus: IUploadStatus = new UploadStatus(action, file.name, error, true, false, 1, 1);
       },

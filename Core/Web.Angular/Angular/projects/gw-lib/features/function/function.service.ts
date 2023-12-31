@@ -77,7 +77,7 @@ export class FunctionService {
           this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'copyFunctionSecurity');
           reject('Failed to call the API');
         },
@@ -100,7 +100,7 @@ export class FunctionService {
           this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'deleteFunction');
           reject('Failed to call the API');
         },
@@ -115,7 +115,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getAvalibleParents');
           reject('Failed to call the API');
         },
@@ -144,7 +144,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
           reject('Failed to call the API');
         },
@@ -166,7 +166,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFunctionOrder');
           reject('Failed to call the API');
         },
@@ -186,7 +186,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
           reject('Failed to call the API');
         },
@@ -201,7 +201,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
           reject('Failed to call the API');
         },
@@ -216,7 +216,7 @@ export class FunctionService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'GetFuncitonTypes');
           reject('Failed to call the API');
         },
@@ -241,7 +241,7 @@ export class FunctionService {
           this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'save');
           reject('Failed to call the API');
         },

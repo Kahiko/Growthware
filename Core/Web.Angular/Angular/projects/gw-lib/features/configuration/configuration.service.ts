@@ -98,7 +98,7 @@ export class ConfigurationService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'ConfigurationService', 'updateProfile');
         },
         // complete: () => {}

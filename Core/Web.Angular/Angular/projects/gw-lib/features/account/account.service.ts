@@ -90,7 +90,7 @@ export class AccountService {
         next: (authenticationResponse: IAuthenticationResponse) => {
           resolve(authenticationResponse);
         },
-        error: (error: any) => {
+        error: (error) => {
           if (error.status && error.status === 403) {
             this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
             reject(error.error);
@@ -141,7 +141,7 @@ export class AccountService {
             reject(false);
           }
         },
-        error: (error: any) => {
+        error: (error) => {
           if (error.status && error.status === 403) {
             this._LoggingSvc.toast('Unable to change password', 'Change password', LogLevel.Error);
             reject(error.error);
@@ -171,7 +171,7 @@ export class AccountService {
         next: (response: IClientChoices) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           reject(false);
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getClientChoices');
         },
@@ -196,7 +196,7 @@ export class AccountService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
           reject('Failed to call the API');
         },
@@ -229,7 +229,7 @@ export class AccountService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
           reject('Failed to call the API');
         },
@@ -316,7 +316,7 @@ export class AccountService {
           this.stopRefreshTokenTimer();
         });
       },
-      error: (error: any) => {
+      error: (error) => {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
       },
       // complete: () => {}
@@ -389,7 +389,7 @@ export class AccountService {
           this.triggerMenuUpdate();
           resolve(true);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'saveClientChoices');
           reject(error);
         }

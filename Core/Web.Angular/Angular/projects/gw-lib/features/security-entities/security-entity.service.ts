@@ -54,7 +54,7 @@ export class SecurityEntityService {
           // console.log('SecurityEntityService.getSecurityEntity', response);
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getSecurityEntity');
           reject('Failed to call the API');
         },
@@ -77,7 +77,7 @@ export class SecurityEntityService {
         next: (response: IKeyValuePair[]) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getValidParents');
           reject('Failed to call the API');
         },
@@ -92,7 +92,7 @@ export class SecurityEntityService {
         next: (response: IValidSecurityEntity[]) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getValidSecurityEntities');
         },
         // complete: () => {}
@@ -111,7 +111,7 @@ export class SecurityEntityService {
           this._AccountSvc.triggerMenuUpdate();
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'saveSecurityEntity');
           reject('Failed to call the API');
         },

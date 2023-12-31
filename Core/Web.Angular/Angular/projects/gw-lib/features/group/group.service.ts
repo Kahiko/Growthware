@@ -40,7 +40,7 @@ export class GroupService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'GroupService', 'delete');
           reject(false);
         },
@@ -71,7 +71,7 @@ export class GroupService {
           // console.log('getGroupForEdit.GetGroupForEdit.response', response);
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'GroupService', 'getGroupForEdit');
           reject('Failed to call the API');
         },
@@ -97,7 +97,7 @@ export class GroupService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'GroupService', 'getGroups');
           reject('Failed to call the API');
         },
@@ -123,7 +123,7 @@ export class GroupService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'GroupService', 'saveGroup');
           reject(false);
         },

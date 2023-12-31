@@ -51,7 +51,7 @@ export class SecurityService {
         next: (response: ISecurityInfo) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'SecurityService', 'getSecurityInfo');
           reject('Failed to call the API');
         },

@@ -44,7 +44,7 @@ export class StatesService {
         next: (response: IStateProfile) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'FunctionService', 'getFunction');
           reject('Failed to call the API');
         },
@@ -68,7 +68,7 @@ export class StatesService {
           }
           resolve(response);
         }
-        , error: (error: any) => {
+        , error: (error) => {
           this._LoggingSvc.errorHandler(error, 'StatesService', 'saveState');
           reject('Failed to call the API');
         }

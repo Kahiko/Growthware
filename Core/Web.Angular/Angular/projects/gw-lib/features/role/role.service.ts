@@ -40,7 +40,7 @@ export class RoleService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'RoleService', 'delete');
           reject('Failed to call the API');
         },
@@ -69,7 +69,7 @@ export class RoleService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'RoleService', 'getRole');
           reject('Failed to call the API');
         },
@@ -95,7 +95,7 @@ export class RoleService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'AccountService', 'getAccount');
           reject('Failed to call the API');
         },
@@ -121,7 +121,7 @@ export class RoleService {
         next: (response: any) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           this._LoggingSvc.errorHandler(error, 'RoleService', 'save');
           reject(false);
         },

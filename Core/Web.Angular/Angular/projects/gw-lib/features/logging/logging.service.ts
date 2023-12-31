@@ -42,7 +42,7 @@ export class LoggingService {
         next: (response: number) => {
           resolve(response);
         },
-        error: (error: any) => {
+        error: (error) => {
           if(error.status && error.status === 403) {
             this.toast('Unable to get log level', 'Get Log Level', LogLevel.Error);
             reject(error.error);
@@ -146,7 +146,7 @@ export class LoggingService {
           this.toast('Successfully set the log level', 'Set Log Level', LogLevel.Success);
           resolve(true);
         },
-        error: (error: any) => {
+        error: (error) => {
           if(error.status && error.status === 403) {
             this.toast('Unable to set log level', 'Set Log Level', LogLevel.Error);
             reject(error.error);

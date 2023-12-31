@@ -46,7 +46,7 @@ export class EncryptDecryptComponent implements OnInit {
       next: (response: any) => {
         this.processedText = response;
       },
-      error: (error: any) => {
+      error: (error) => {
         this._LoggingSvc.errorHandler(error, 'EncryptDecryptComponent', 'encryptDecrypt');
         this.processedText = 'Failed to call the API';
       },
