@@ -239,7 +239,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       } else {
         this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
       }
-    }).catch((error) => {
+    }).catch(() => {
       this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
     });
   }
@@ -346,7 +346,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       } else {
         this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
       }
-    }).catch((error) => {
+    }).catch(() => {
       this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
     })
   }

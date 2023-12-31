@@ -120,7 +120,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
         this._LoggingSvc.toast('State has been saved', 'State Details:', LogLevel.Success);
         this.onClose();
       }
-    }).catch((error) => {
+    }).catch((error: string) => {
       this._LoggingSvc.toast("Error saving State:\r\n" + error, 'State Details:', LogLevel.Error);
     })
   }

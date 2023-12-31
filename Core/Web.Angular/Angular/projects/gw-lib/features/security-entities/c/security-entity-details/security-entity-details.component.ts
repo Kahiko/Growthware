@@ -222,7 +222,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
         this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
         this.onClose();
       }
-    }).catch((error) => {
+    }).catch((error: string) => {
       this._LoggingSvc.toast("Error saving " + this.securityEntityTranslation + ":\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     });
   }
