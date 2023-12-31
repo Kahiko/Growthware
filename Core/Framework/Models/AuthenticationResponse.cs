@@ -8,6 +8,13 @@ namespace GrowthWare.Framework.Models;
 [Serializable(), CLSCompliant(true)]
 public class AuthenticationResponse
 {
+    /// <summary>
+    /// Sets all property values using the account profile.
+    /// </summary>
+    /// <param name="accountProfile"></param>
+    /// <remarks>
+    ///     RefreshToken is set to the newest accountProfile.RefreshTokens and JwtToken is set using accountProfile.Token
+    /// </remarks>
     public AuthenticationResponse(MAccountProfile accountProfile)
     {
         this.Account = accountProfile.Account;
