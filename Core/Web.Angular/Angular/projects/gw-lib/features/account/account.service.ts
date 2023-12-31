@@ -30,7 +30,7 @@ export class AccountService {
   private _AuthenticationResponse = new AuthenticationResponse;
   private _BaseURL: string = '';
   private _ClientChoices: IClientChoices = new ClientChoices();
-  private _TimerId? = {};
+  private _TimerId!: any;
   private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   readonly accountInformation = new AccountInformation();
