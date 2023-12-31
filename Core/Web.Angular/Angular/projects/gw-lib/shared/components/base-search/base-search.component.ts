@@ -18,11 +18,11 @@ export abstract class BaseSearchComponent implements OnDestroy {
   protected _Subscription: Subscription = new Subscription();
 
   protected _TheApi: string = '';
-  protected _TheComponent: any = {};
+  protected _TheComponent: object = {};
   protected _TheFeatureName: string = 'Not set';
   protected _TheWindowSize = new WindowSize(450,900);
 
-  protected _TheService: any = {};
+  protected _TheService: object = {};
   protected _DataSvc!: DataService;
   protected _DynamicTableSvc!: DynamicTableService;
   protected _ModalSvc!: ModalService;
@@ -31,7 +31,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
 
   public configurationName = '';
-  public results: any;
+  public results: unknown;
 
   protected ngAfterViewInit(): void {
     // Setup the dynamic table button methods
@@ -76,6 +76,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
     }
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   private onRowClick (rowNumber: number): void {
     // Do nothing ATM just leaving as an example
     // const mMessage = 'hi from SearchAccountsComponent.onRowClick row "' + rowNumber + '" was clicked';
@@ -83,7 +84,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   }
 
   protected onRowDoubleClick (rowNumber: number): void {
-    const mDataRow: any = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
+    const mDataRow = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
     this._TheService.selectedRow = mDataRow;
     this._TheService.modalReason = 'EditProfile';
     const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
