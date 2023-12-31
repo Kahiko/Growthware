@@ -22,7 +22,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   protected _TheFeatureName: string = 'Not set';
   protected _TheWindowSize = new WindowSize(450,900);
 
-  protected _TheService: object = {};
+  protected _TheService: any = {};
   protected _DataSvc!: DataService;
   protected _DynamicTableSvc!: DynamicTableService;
   protected _ModalSvc!: ModalService;
