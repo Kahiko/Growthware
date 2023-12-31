@@ -345,7 +345,7 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     public int TimeZone { get; set; }
 
     /// <summary>
-    /// Used to pass the JWT token to the front-end
+    /// Used in new AuthenticationResponse to set the JwtToken
     /// </summary>
     public string Token { get; set; }
 
