@@ -159,7 +159,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       // console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
       this.validNavigationTypes = navigationTypes;
       return this._ProfileSvc.getLinkBehaviors();                                   // Request #5 getLinkBehaviors() Request
-    }).catch((error: any) => {                                                      // Request #4 Error Handler
+    }).catch((error) => {                                                      // Request #4 Error Handler
       this._LoggingSvc.toast("Error getting navigation types:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((linkBehaviors: IKeyValuePair[]) => {                                   // Request #5 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
@@ -180,7 +180,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_AvailableItems', roles); }, 500);
       setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameView + '_AvailableItems', roles); }, 500);
       return this._GroupSvc.getGroups();                                            // Request #8 getGroups()
-    }).catch((error: any) => {                                                      // Request #7 Error Handler
+    }).catch((error) => {                                                      // Request #7 Error Handler
       this._LoggingSvc.toast("Error getting avalible roles:\r\n" + error, 'Function Details:', LogLevel.Error);
     }).then((groups: any) => {                                                      // Request #8 Handler
       // console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
@@ -192,7 +192,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       this.showGroups = this._Profile.canSaveGroups;
       this.showRoles = this._Profile.canSaveRoles;      
       this.populateForm();
-    }).catch((error: any) => {                                                      // Request #8 Error Handler
+    }).catch((error) => {                                                      // Request #8 Error Handler
       this._LoggingSvc.toast("Error getting avalible groups:\r\n" + error, 'Function Details:', LogLevel.Error);
     });
 
@@ -239,7 +239,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       } else {
         this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
       }
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast('Function could not be deleted!', 'Function Details:', LogLevel.Error);
     });
   }
@@ -346,7 +346,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
       } else {
         this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
       }
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast('Function could not be saved!', 'Function Details:', LogLevel.Error);
     })
   }

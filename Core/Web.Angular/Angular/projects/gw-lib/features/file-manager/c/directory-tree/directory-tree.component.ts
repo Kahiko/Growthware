@@ -153,7 +153,7 @@ export class DirectoryTreeComponent implements AfterViewInit, OnInit {
           const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this.dataSource.data, mPreviousRelitavePath, 'relitivePath', 'children');
           this.selectDirectory(mPreviousDirectoryNode);
           this._ModalSvc.close(this._ModalId_Directory_Delete);
-        }).catch((error: any) => {
+        }).catch((error) => {
           this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
         });
       }).catch((error) => {

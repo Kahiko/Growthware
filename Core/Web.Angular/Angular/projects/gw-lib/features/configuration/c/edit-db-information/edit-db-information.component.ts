@@ -44,7 +44,7 @@ export class EditDbInformationComponent implements OnInit {
   }
 
   public onBtsSave(): void {
-    this._ConfigurationSvc.updateProfile(this.selectedInheritance).catch((error: any) => {
+    this._ConfigurationSvc.updateProfile(this.selectedInheritance).catch((error) => {
       this._LoggingSvc.toast('Save failed', 'Save', LogLevel.Error);
     }).then((_) => {
       this._LoggingSvc.toast('Successfully saved', 'Save', LogLevel.Success);

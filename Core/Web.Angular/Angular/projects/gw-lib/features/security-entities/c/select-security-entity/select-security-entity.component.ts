@@ -43,7 +43,7 @@ export class SelectSecurityEntityComponent implements OnInit {
       // console.log('SelectSecurityEntityComponent.ngOnInit', securityEntities);
       this.validSecurityEntities = securityEntities;
       this.selectedSecurityEntity = this._AccountSvc.clientChoices.securityEntityID;
-    }).catch((error: any) => { 
+    }).catch((error) => { 
       this._LoggingSvc.toast('Error calling the API', 'Select Security Entity', LogLevel.Error);
     });
   }

@@ -116,19 +116,19 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
       // console.log('SecurityEntityDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
       return this._ProfileSvc.getValidParents(mEditId);                                     // #2 Request getValidParents
-    }).catch((error: any) => {                                                              // #1 Error Handler getSecurityInfo
+    }).catch((error) => {                                                              // #1 Error Handler getSecurityInfo
       this._LoggingSvc.toast("Error getting security info:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     }).then((parrents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
       // console.log('SecurityEntityDetailsComponent.ngOnInit.parrents', parrents);
       this.validParents = parrents;
       return this._ProfileSvc.getSecurityEntity(mEditId);                                   // #3 Request getSecurityEntity
-    }).catch((error: any) => {                                                              // #2 Error Handler
+    }).catch((error) => {                                                              // #2 Error Handler
       this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     }).then((profile: ISecurityEntityProfile) => {                                          // #3 Request getProfile Handler
       // console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
       this._Profile = profile;
       this.populateForm();
-    }).catch((error: any) => {                                                              // #3 Error Handler
+    }).catch((error) => {                                                              // #3 Error Handler
       this._LoggingSvc.toast("Error getting Security Entity:\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     });
     this.createForm();
@@ -222,7 +222,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
         this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
         this.onClose();
       }
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast("Error saving " + this.securityEntityTranslation + ":\r\n" + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
     });
   }

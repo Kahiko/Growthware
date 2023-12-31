@@ -89,7 +89,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
       }
       // TODO: Looks like this._RoleSvc.selectedRow is not always being set correctly
       return this._RoleSvc.getRoleForEdit(mRoleSeqId); // Request #2
-    }).catch((error: any) => { // Request #1 error
+    }).catch((error) => { // Request #1 error
       this._LoggingSvc.toast("Error getting security info for 'EditRole' :\r\n" + error, 'Role Details:', LogLevel.Error);
     }).then((profile) => {
       if(profile) {
@@ -106,7 +106,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
         }
       }
       this.populateForm();
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'className', 'method');
       this.populateForm();
     });
@@ -146,7 +146,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this._RoleSvc.delete(this._Role.id).then((_) => {
       this.updateSearch();
       this.closeModal();
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast('The role could not be deleted', 'Delete Role', LogLevel.Error);
     })
   }
@@ -156,7 +156,7 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
     this._RoleSvc.save(this._Role).then((response: IRoleProfile) => {
       this.updateSearch();
       this._LoggingSvc.toast('The role has been saved', 'Save Role', LogLevel.Success);
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast('The role could not be saved', 'Save Role', LogLevel.Error);
     });
     this.closeModal();

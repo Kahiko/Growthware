@@ -54,7 +54,7 @@ export class MessageDetailsComponent implements OnInit {
     this._SecuritySvc.getSecurityInfo('Search_Messages').then((securityInfo: ISecurityInfo) => { // #1 Request/Handler
       this._SecurityInfo = securityInfo;
       return this._MessageSvc.getProfile(mIdToGet);                   // #2 Request
-    }).catch((error: any) => {                                        // Request #1 Error Handler
+    }).catch((error) => {                                        // Request #1 Error Handler
       this._LoggingSvc.toast("Error getting the security :\r\n" + error, 'Message Details:', LogLevel.Error);
     }).then((response) => {                                           // Request 2 Handler
       if(response) {

@@ -78,13 +78,13 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
       // console.log('StateDetailsComponent.ngOnInit.securityInfo', securityInfo);
       this._SecurityInfo = securityInfo;
       return this._ProfileSvc.getState(this._ProfileSvc.selectedRow.State);      // #2 getState Request
-    }).catch((error: any) => {                                               // #1 getSecurityInfo Error Handler
+    }).catch((error) => {                                               // #1 getSecurityInfo Error Handler
       this._LoggingSvc.toast("Error getting security info:\r\n" + error, 'State Details:', LogLevel.Error);
     }).then((response) => {                                                  // #2 getState Handler
       this._Profile = response;
       this.applySecurity();
       this.populateForm();
-    }).catch((error: any) => {                                                // #2 getStateError Handler
+    }).catch((error) => {                                                // #2 getStateError Handler
       this._LoggingSvc.toast("Error getting State:\r\n" + error, 'State Details:', LogLevel.Error);
     });
     this.createForm();
@@ -120,7 +120,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
         this._LoggingSvc.toast('State has been saved', 'State Details:', LogLevel.Success);
         this.onClose();
       }
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.toast("Error saving State:\r\n" + error, 'State Details:', LogLevel.Error);
     })
   }

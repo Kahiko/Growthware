@@ -136,7 +136,7 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
       this.updateSearch();
       this._LoggingSvc.toast('The group has been deleted', 'Delete Group', LogLevel.Success);
       this.closeModal();
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'GroupService', 'delete');
       this._LoggingSvc.toast('The group could not be deleted', 'Delete Group', LogLevel.Error);
     });

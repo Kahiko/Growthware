@@ -60,7 +60,7 @@ export class CopyFunctionSecurityComponent implements OnInit {
       mSystem.value = 'System';
       this.validSourceEntities.push(mSystem);
       this.validSourceEntities = GWCommon.sortArray(this.validSourceEntities, 'value', 'desc');
-    }).catch((error: any) => {
+    }).catch((error) => {
       this._LoggingSvc.errorHandler(error, 'CopyFunctionSecurityComponent', 'ngOnInit');
     });
   }
