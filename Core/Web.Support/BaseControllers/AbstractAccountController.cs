@@ -30,9 +30,9 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
     {
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
-        AuthenticationResponse mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
-        setTokenCookie(mAuthenticationResponse.RefreshToken);
-        return Ok(mAuthenticationResponse);
+        AuthenticationResponse mRetVal = new AuthenticationResponse(mAccountProfile);
+        setTokenCookie(mRetVal.RefreshToken);
+        return Ok(mRetVal);
     }
 
     [Authorize("/accounts/change-password")]
@@ -252,7 +252,7 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<AuthenticationResponse> Logoff()
     {
         string mRefreshToken = Request.Cookies["refreshToken"];
-        if(mRefreshToken == null) 
+        if (mRefreshToken == null)
         {
             mRefreshToken = string.Empty;
         }
@@ -266,16 +266,17 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
         string mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
-        string mPassword = string.Empty;
-        string mAccount = AccountUtility.AnonymousAccount;
+        AuthenticationResponse mRetVal = null;
         if (mRefreshToken != null)
         {
-            mAccount = AccountUtility.RefreshToken(mRefreshToken, ipAddress()).Account;
+            mRetVal = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
+            setTokenCookie(mRetVal.RefreshToken);
+            return Ok(mRetVal);
         }
-        MAccountProfile mAccountProfile = AccountUtility.GetAccount(mAccount);
-        EncryptionType mEncryptionType = (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType;
-        CryptoUtility.TryDecrypt(mAccountProfile.Password, out mPassword, mEncryptionType);
-        return Authenticate(mAccount, mPassword);
+        MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
+        mRetVal = new AuthenticationResponse(mAccountProfile);
+        Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
+        return Ok(mRetVal);
     }
 
     [AllowAnonymous]

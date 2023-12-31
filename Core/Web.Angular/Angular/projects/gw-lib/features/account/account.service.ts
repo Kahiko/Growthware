@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, catchError, map, Observable, of } from "rxjs";
+import { BehaviorSubject, map } from "rxjs";
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
@@ -30,13 +30,13 @@ export class AccountService {
   private _AuthenticationResponse = new AuthenticationResponse;
   private _BaseURL: string = '';
   private _ClientChoices: IClientChoices = new ClientChoices();
-  private _TimerId!: any;
+  private _TimerId? = {};
   private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   readonly accountInformation = new AccountInformation();
   readonly accountInformationChanged$ = this._AccountInformationSubject.asObservable();
   readonly addEditModalId: string = 'addEditAccountModal';
-  get authenticationResponse() { return this._AuthenticationResponse;}
+  get authenticationResponse() { return this._AuthenticationResponse; }
   readonly anonymous: string = 'Anonymous';
   get clientChoices() { return this._ClientChoices; }
   readonly logInModalId = 'logInModal';
@@ -45,7 +45,7 @@ export class AccountService {
   readonly triggerMenuUpdate$ = this._TriggerMenuUpdateSubject.asObservable();
 
   constructor(
-    private _GWCommon: GWCommon, 
+    private _GWCommon: GWCommon,
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
     private _Router: Router,
@@ -69,12 +69,12 @@ export class AccountService {
    * @param {boolean} silent - (Optional) Indicates whether to log toast messages or not.
    * @return {Promise<boolean|string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
    */
-  private async authenticate(account: string, password: string, silent: boolean = false): Promise<IAuthenticationResponse> {
+  private async authenticate(account: string, password: string): Promise<IAuthenticationResponse> {
     return new Promise<IAuthenticationResponse>((resolve, reject) => {
-      if(this._GWCommon.isNullOrEmpty(account)) {
+      if (this._GWCommon.isNullOrEmpty(account)) {
         throw new Error("account can not be blank!");
       }
-      if(this._GWCommon.isNullOrEmpty(password)) {
+      if (this._GWCommon.isNullOrEmpty(password)) {
         throw new Error("password can not be blank!");
       }
       const mQueryParameter: HttpParams = new HttpParams()
@@ -91,7 +91,7 @@ export class AccountService {
           resolve(authenticationResponse);
         },
         error: (error: any) => {
-          if(error.status && error.status === 403) {
+          if (error.status && error.status === 403) {
             this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
             reject(error.error);
           } else {
@@ -112,10 +112,10 @@ export class AccountService {
    * @return {Promise<boolean>} A promise that resolves to true if the password change was successful, or false otherwise.
    */
   public async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
-    if(this._GWCommon.isNullOrEmpty(newPassword)) {
+    if (this._GWCommon.isNullOrEmpty(newPassword)) {
       throw new Error("newPassword can not be blank!");
     }
-    if(this._GWCommon.isNullOrEmpty(oldPassword)) {
+    if (this._GWCommon.isNullOrEmpty(oldPassword)) {
       throw new Error("oldPassword can not be blank!");
     }
     // console.log(this._Api_ChangePassword);
@@ -132,9 +132,9 @@ export class AccountService {
       };
       this._HttpClient.post<any>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
         next: (response: string) => {
-          if(response.startsWith('Your password has been changed')) {
+          if (response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-            this.authenticate(this.authenticationResponse.account, newPassword, true);
+            this.authenticate(this.authenticationResponse.account, newPassword);
             resolve(true);
           } else {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);
@@ -142,7 +142,7 @@ export class AccountService {
           }
         },
         error: (error: any) => {
-          if(error.status && error.status === 403) {
+          if (error.status && error.status === 403) {
             this._LoggingSvc.toast('Unable to change password', 'Change password', LogLevel.Error);
             reject(error.error);
           } else {
@@ -154,7 +154,7 @@ export class AccountService {
       });
     });
   }
-  
+
   /**
    * Retrieves the client choices asynchronously.
    *
@@ -213,7 +213,7 @@ export class AccountService {
    */
   public async getAccountForEdit(account: string): Promise<IAccountProfile> {
     const mAccount: string = account;
-    if(this._GWCommon.isNullOrEmpty(mAccount)) {
+    if (this._GWCommon.isNullOrEmpty(mAccount)) {
       throw new Error("account can not be blank!");
     }
     const mQueryParameter: HttpParams = new HttpParams()
@@ -260,10 +260,10 @@ export class AccountService {
     return new Promise<boolean>((resolve, reject) => {
       // TODO: Consider haveing authenticae return both the authentication response and the client choices for
       // improved performance.
-      this.authenticate(account, password, silent).then((authenticationResponse: IAuthenticationResponse) => {
+      this.authenticate(account, password).then((authenticationResponse: IAuthenticationResponse) => {
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           let mNavigationUrl: string = clientChoices.action;
-          if(authenticationResponse.status == 4) {
+          if (authenticationResponse.status == 4) {
             mNavigationUrl = '/account/change-password';
           }
           sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
@@ -274,16 +274,16 @@ export class AccountService {
           this.triggerMenuUpdate();
           this.startRefreshTokenTimer();
           this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
-          if(!silent) {
+          if (!silent) {
             this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
           }
           resolve(true);
-        })        
+        })
       }).catch((error) => {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logIn');
         this._Router.navigate(['/accounts/logout']);
         reject(error);
-      });  
+      });
     });
   }
 
@@ -309,12 +309,12 @@ export class AccountService {
           this._ClientChoices = clientChoices;
           this._AccountInformationSubject.next(mAccountInformation);
           this.triggerMenuUpdate();
-          if(!slient) {
+          if (!slient) {
             this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
           }
           this._Router.navigate(['generic_home']);
           this.stopRefreshTokenTimer();
-          });
+        });
       },
       error: (error: any) => {
         this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
@@ -328,21 +328,14 @@ export class AccountService {
    *
    * @return {Observable<IAuthenticationResponse>} The authentication response
    */
-  public refreshFromToken(): Observable<IAuthenticationResponse> {
-    const mHttpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type': 'application/json',
-      }),
-      withCredentials: true,
-    };
-    // console.log('refreshFromToken', new Date());
-    return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, null, mHttpOptions)
-    .pipe(
-      map((authenticationResponse) => {
+  refreshToken() {
+    return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, {}, { withCredentials: true })
+      .pipe(map((authenticationResponse) => {
+        // 1.) get the client choices from the server
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
           this.startRefreshTokenTimer();
-          if(this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
+          if (this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
             const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
             this._AuthenticationResponse = authenticationResponse;
             this._ClientChoices = clientChoices;
@@ -350,33 +343,28 @@ export class AccountService {
             this.triggerMenuUpdate();
           }
         });
+        // 2.) start the refresh token timer
+        this.startRefreshTokenTimer();
+        // 3.) return the authentication response
         return authenticationResponse;
-      }),
-      catchError((err) => {
-        // console.log(err);
-        this.logout(true);
-        // return nothing
-        return of();
-      })
-    );
+      }));
   }
 
   /**
    * Starts the refresh token timer.
    */
-  public startRefreshTokenTimer(): void {
-    // console.log('AccountService.startRefreshTokenTimer', 'Called');
+  private startRefreshTokenTimer() {
     // parse json object from base64 encoded jwt token
     const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
     if(mJwtBase64) {
-      // parse json object from base64 encoded jwt token
       const mJwtToken = JSON.parse(window.atob(mJwtBase64));
+
       // set a timeout to refresh the token a minute before it expires
       const mExpires = new Date(mJwtToken.exp * 1000);
       const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
-      // console.log('mExpires', mExpires);
-      // console.log('mTimeoutDate',  new Date(Date.now() + mTimeout));
-      this._TimerId = setTimeout(() => this.refreshFromToken().subscribe(), mTimeout);
+      console.log('mExpires', mExpires);
+      console.log('mTimeout',  new Date(Date.now() + mTimeout));
+      this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
     }
   }
 
@@ -415,11 +403,8 @@ export class AccountService {
    *
    * @return {void} - This function does not return anything.
    */
-  public stopRefreshTokenTimer(): void {
-    // console.log('AccountService.stopRefreshTokenTimer', 'Called');
-    // release our intervalID from the variable
-    clearInterval(this._TimerId);
-    // this._TimerId = null;
+  private stopRefreshTokenTimer(): void {
+    clearTimeout(this._TimerId);
   }
 
   /**
