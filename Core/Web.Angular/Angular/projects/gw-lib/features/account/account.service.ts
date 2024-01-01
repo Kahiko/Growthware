@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { BehaviorSubject, map } from "rxjs";
+import { BehaviorSubject, map, Observable } from "rxjs";
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
@@ -328,23 +328,21 @@ export class AccountService {
    *
    * @return {Observable<IAuthenticationResponse>} The authentication response
    */
-  refreshToken() {
+  refreshToken(): Observable<IAuthenticationResponse> {
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, {}, { withCredentials: true })
       .pipe(map((authenticationResponse) => {
         // 1.) get the client choices from the server
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
+          const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
+          this._AuthenticationResponse = authenticationResponse;
+          this._ClientChoices = clientChoices;
+          this._AccountInformationSubject.next(mAccountInformation);
+          this.triggerMenuUpdate();
+          // 2.) start the refresh token timer
           this.startRefreshTokenTimer();
-          if (this.authenticationResponse.account.toLocaleLowerCase() != authenticationResponse.account.toLocaleLowerCase()) {
-            const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
-            this._AuthenticationResponse = authenticationResponse;
-            this._ClientChoices = clientChoices;
-            this._AccountInformationSubject.next(mAccountInformation);
-            this.triggerMenuUpdate();
-          }
+
         });
-        // 2.) start the refresh token timer
-        this.startRefreshTokenTimer();
         // 3.) return the authentication response
         return authenticationResponse;
       }));
