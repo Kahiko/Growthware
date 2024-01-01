@@ -30,7 +30,7 @@ export class AccountService {
   private _AuthenticationResponse = new AuthenticationResponse;
   private _BaseURL: string = '';
   private _ClientChoices: IClientChoices = new ClientChoices();
-  private _TimerId!: any;
+  private _TimerId!: ReturnType<typeof setTimeout>;
   private _TriggerMenuUpdateSubject: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
   readonly accountInformation = new AccountInformation();
@@ -41,6 +41,7 @@ export class AccountService {
   get clientChoices() { return this._ClientChoices; }
   readonly logInModalId = 'logInModal';
   public modalReason: string = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public selectedRow: any;
   readonly triggerMenuUpdate$ = this._TriggerMenuUpdateSubject.asObservable();
 
@@ -130,7 +131,7 @@ export class AccountService {
         responseType: "text" as "json",
         params: mQueryParameter,
       };
-      this._HttpClient.post<any>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
+      this._HttpClient.post<string>(this._Api_ChangePassword, null, mHttpOptions).subscribe({
         next: (response: string) => {
           if (response.startsWith('Your password has been changed')) {
             this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
@@ -193,7 +194,7 @@ export class AccountService {
     };
     return new Promise<ISelectedableAction[]>((resolve, reject) => {
       this._HttpClient.get<ISelectedableAction[]>(this._Api_SelectableActions, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: ISelectedableAction[]) => {
           resolve(response);
         },
         error: (error) => {
@@ -226,7 +227,7 @@ export class AccountService {
     };
     return new Promise<IAccountProfile>((resolve, reject) => {
       this._HttpClient.get<IAccountProfile>(this._Api_GetAccountForEdit, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: IAccountProfile) => {
           resolve(response);
         },
         error: (error) => {
@@ -300,7 +301,7 @@ export class AccountService {
       })
     };
     this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
-      next: (authenticationResponse: any) => {
+      next: (authenticationResponse: IAuthenticationResponse) => {
         // console.log('logout.authenticationResponse', authenticationResponse);
         sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
         this.getClientChoices().then((clientChoices: IClientChoices) => {

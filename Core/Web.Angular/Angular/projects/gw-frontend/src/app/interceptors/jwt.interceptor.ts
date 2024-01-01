@@ -13,6 +13,7 @@ export class JwtInterceptor implements HttpInterceptor {
     this._BaseUrl = this._GWCommon.baseURL;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     const mAuthenticationResponse = this._AccountSvc.authenticationResponse;
     const mIsLoggedIn = mAuthenticationResponse && mAuthenticationResponse.account != this._AccountSvc.anonymous;
