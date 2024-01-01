@@ -27,7 +27,7 @@ public class JwtMiddleware
             if (mAccount != null)
             {
                 // attach account to context on successful jwt validation
-                AccountUtility.GetAccount(mAccount);
+                httpContext.Items["AccountProfile"] = AccountUtility.GetAccount(mAccount);
             }
         }
         await _next(httpContext);

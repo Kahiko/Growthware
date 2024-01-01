@@ -270,7 +270,14 @@ public abstract class AbstractAccountController : ControllerBase
         if (mRefreshToken != null)
         {
             mRetVal = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-            setTokenCookie(mRetVal.RefreshToken);
+            if(!mRetVal.Account.Equals(AccountUtility.AnonymousAccount))
+            {
+                setTokenCookie(mRetVal.RefreshToken);
+            } 
+            else 
+            {
+                Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
+            }
             return Ok(mRetVal);
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);

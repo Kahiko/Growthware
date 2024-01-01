@@ -43,7 +43,7 @@ public class JwtUtility : IJwtUtility
     /// </summary>
     /// <param name="token">The JWT token to be validated.</param>
     /// <returns>
-    /// The account id from the JWT token if validation is successful.
+    /// The account from the JWT token if validation is successful.
     /// Null if validation fails or the token is null.
     /// </returns>
     public string ValidateJwtToken(string token)

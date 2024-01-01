@@ -514,6 +514,10 @@ public static class AccountUtility
          * Roles, groups, and refresh tokens are stored in detail tables and it is not always necessary to save them.
          */
         if (accountProfile == null || string.IsNullOrEmpty(accountProfile.Account)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile cannot be a null reference (Nothing in VB) or empty!");
+        if(accountProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase) && accountProfile.RefreshTokens.Count > 0)
+        {
+             return accountProfile;
+        }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
