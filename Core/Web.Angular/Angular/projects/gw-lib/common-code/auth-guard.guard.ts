@@ -43,6 +43,14 @@ class AuthGuardService {
       this.handleRedirect(mRedirectUrl, state, mReturn);
       return true;
     }
+    if(mTokenStr) {
+      // In the case of an expired token and the account is anonymous we want to allow the code to continue
+      // and let the API security layer handle the request.
+      const mToken: IToken | null = this._JwtHelper.decodeToken(mTokenStr)
+      if(mToken && mToken.account.toLocaleLowerCase() === 'anonymous') {
+        return true;
+      }
+    }
     this.handleRedirect('/accounts/logout', state, false);
     return true; // b/c we are now navigating to logout we can return true
   }

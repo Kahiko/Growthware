@@ -92,7 +92,9 @@ public static class AccountUtility
         {
             // no need to validate or save
             mRetVal = GetAccount(account);
-            mRetVal.Token = string.Empty;
+            // generate token for the anonymous account b/c it is needed in auth-guard.guard.ts (canActivate)
+            // to be able to check if the user is authenticated or not
+            mRetVal.Token = m_JwtUtils.GenerateJwtToken(mRetVal);
             mRetVal.RefreshTokens = [];
             return mRetVal;
         }
