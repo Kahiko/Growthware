@@ -416,11 +416,11 @@ public static class AccountUtility
             // remove old refresh tokens from account
             removeOldRefreshTokens(mAccountProfile);
 
-            // save changes to db
-            AccountUtility.Save(mAccountProfile, true, false, false);
-
             // generate new jwt
             mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
+
+            // save changes to db and update session/cache
+            AccountUtility.Save(mAccountProfile, true, false, false);
         }
 
         AuthenticationResponse mRetVal = new(mAccountProfile);
