@@ -152,13 +152,8 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     // semi correct should account for the primary key or in other words join on all columns except the primary key
                     // b/c the primary key if one exists is always unique
                     // for now I'm going to insist that the Destination have a single foreign key
-                    string mForeignKeyValue = mDataTable.Rows[0][mForeignKeyName.Replace("[","").Replace("]","")].ToString();
-                    mCommandText = "DELETE FROM {0} WHERE {1} = '{2}';";
-                    if(mForeignKeyIsNumber)
-                    {
-                       mCommandText = mCommandText.Replace("'", "");
-                    }
-                    mCommandText = string.Format(mCommandText, mDestinationTableName, mForeignKeyName, mForeignKeyValue);
+                    mCommandText = "DELETE {0} FROM {1} Destination INNER JOIN {2} TempTable ON Destination.{3} = TempTable.{4};";
+                    mCommandText = string.Format(mCommandText, mDestinationTableName, mDestinationTableName, mTempTableName, mForeignKeyName, mForeignKeyName);
                     using SqlCommand mSqlCommand = new SqlCommand(mCommandText)
                     {
                         Connection = mSqlConnection,
@@ -197,7 +192,6 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     }
                     mSqlCommand.ExecuteNonQuery();
                 }
-
                 mSqlTransaction.Commit();
             }
         }
