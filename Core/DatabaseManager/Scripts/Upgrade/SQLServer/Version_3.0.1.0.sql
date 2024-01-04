@@ -59,6 +59,17 @@ IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAct
 		EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
 	END
 --END IF
+SET @V_MyAction = 'RevokeToken'
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAction)
+	BEGIN
+		PRINT 'Adding RevokeToken'
+		SET @V_FunctionTypeSeqId 	= (SELECT FunctionTypeSeqId FROM ZGWSecurity.Function_Types WHERE [Name] = 'Security')
+		SET @V_ParentID 			= (SELECT FunctionSeqId FROM ZGWSecurity.Functions WHERE [Action] = 'Admin')
+		EXEC ZGWSecurity.Set_Function -1,'RevokeToken','Revokes a token',@V_FunctionTypeSeqId,'https://localhost:44455/swagger/index.html','', NULL,@V_EnableViewStateFalse,@V_EnableNotificationsFalse,@V_Redirect_On_Timeout,@V_IsNavFalse,@V_LinkBehaviorExternal,@V_NO_UITrue,@V_NAV_TYPE_Horizontal,@V_MyAction,@V_META_KEY_WORDS,@V_ParentID,'Used to enforce secutiry when attempting to revoke a token.', @V_SystemID, @V_Debug
+		SET @V_FunctionID 			= (select FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction)
+		EXEC ZGWSecurity.Set_Function_Roles @V_FunctionID,1,'Developer',@V_ViewPermission,@V_SystemID, @V_Debug
+	END
+--END IF
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '3.0.0.1',

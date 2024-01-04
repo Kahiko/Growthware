@@ -248,7 +248,7 @@ public abstract class AbstractAccountController : ControllerBase
             return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 
-    [HttpGet("Logoff")]
+    [HttpPost("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
         string mRefreshToken = Request.Cookies["refreshToken"];
@@ -284,6 +284,26 @@ public abstract class AbstractAccountController : ControllerBase
         mRetVal = new AuthenticationResponse(mAccountProfile);
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
         return Ok(mRetVal);
+    }
+
+    [HttpPost("RevokeToken")]
+    public IActionResult RevokeToken(string token)
+    {
+        // accept token from request body or cookie
+        var mToken = token ?? Request.Cookies["refreshToken"];
+
+        if (string.IsNullOrEmpty(mToken))
+            return BadRequest(new { message = "Token is required" });
+
+        // users can revoke their own tokens and admins can revoke any tokens
+        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+        MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("RevokeToken");
+        MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
+        if (!AccountUtility.CurrentProfile.OwnsToken(token) && !mSecurityInfo.MayView)
+            return Unauthorized(new { message = "Unauthorized" });
+
+        AccountUtility.RevokeToken(token, ipAddress());
+        return Ok(new { message = "Token revoked" });
     }
 
     [AllowAnonymous]

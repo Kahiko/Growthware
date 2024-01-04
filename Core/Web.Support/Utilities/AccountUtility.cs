@@ -458,6 +458,19 @@ public static class AccountUtility
         token.ReplacedByToken = replacedByToken;
     }
 
+    public static void RevokeToken(string token, string ipAddress)
+    {
+        MAccountProfile mAccountProfile = getAccountByRefreshToken(token);
+        MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
+
+        if (!mRefreshToken.IsActive())
+            throw new WebSupportException("Invalid token");
+
+        // revoke token and save
+        revokeRefreshToken(mRefreshToken, ipAddress, "Revoked without replacement");
+        Save(mAccountProfile, true, false, false);
+    }
+
     /// Recursively traverses the refresh token chain and ensures all descendants are revoked.
     /// </summary>
     /// <param name="refreshToken">The refresh token to start the traversal from.</param>
