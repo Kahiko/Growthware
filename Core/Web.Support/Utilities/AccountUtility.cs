@@ -410,7 +410,7 @@ public static class AccountUtility
                 throw new WebSupportException("Invalid token");
 
             // replace old refresh token with a new one (rotate token)
-            var newRefreshToken = rotateRefreshToken(mRefreshToken, ipAddress);
+            var newRefreshToken = rotateRefreshToken(mAccountProfile.Id, mRefreshToken, ipAddress);
             mAccountProfile.RefreshTokens.Add(newRefreshToken);
 
             // remove old refresh tokens from account
@@ -483,9 +483,9 @@ public static class AccountUtility
     /// <param name="refreshToken">The current refresh token.</param>
     /// <param name="ipAddress">The IP address of the user.</param>
     /// <returns>The new refresh token.</returns>    
-    private static MRefreshToken rotateRefreshToken(MRefreshToken refreshToken, string ipAddress)
+    private static MRefreshToken rotateRefreshToken(int accountSeqId, MRefreshToken refreshToken, string ipAddress)
     {
-        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress, CurrentProfile.Id);
+        var newRefreshToken = m_JwtUtils.GenerateRefreshToken(ipAddress, accountSeqId);
         revokeRefreshToken(refreshToken, ipAddress, "Replaced by new token", newRefreshToken.Token);
         return newRefreshToken;
     }
