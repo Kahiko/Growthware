@@ -122,7 +122,8 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             string mCommandText = "SELECT [RefreshTokenId], RT.[AccountSeqId], [Token], [Expires], [Created], [CreatedByIp], [Revoked], [RevokedByIp], [ReplacedByToken], [ReasonRevoked] ";
             mCommandText +=  "FROM [ZGWSecurity].[RefreshTokens] RT ";
-            mCommandText +=  "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId];";
+            mCommandText +=  "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
+            mCommandText +=  "ORDER BY [Created] ASC;";
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Account", m_Profile.Account), 
 			};
