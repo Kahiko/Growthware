@@ -300,7 +300,7 @@ export class AccountService {
         'Content-Type': 'application/json',
       })
     };
-    this._HttpClient.get<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
+    this._HttpClient.post<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
       next: (authenticationResponse: IAuthenticationResponse) => {
         // console.log('logout.authenticationResponse', authenticationResponse);
         sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
