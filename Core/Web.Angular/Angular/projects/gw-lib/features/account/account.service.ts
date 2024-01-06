@@ -332,6 +332,7 @@ export class AccountService {
   refreshToken(): Observable<IAuthenticationResponse> {
     return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, {}, { withCredentials: true })
       .pipe(map((authenticationResponse) => {
+        sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
         // 1.) get the client choices from the server
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           // console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
