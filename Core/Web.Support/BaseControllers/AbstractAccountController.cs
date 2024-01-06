@@ -124,7 +124,7 @@ public abstract class AbstractAccountController : ControllerBase
     }
 
     [HttpGet("EncryptDecrypt")]
-    public ContentResult EncryptDecrypt(string txtValue, int encryptionType, bool encrypt)
+    public ActionResult<string> EncryptDecrypt(string txtValue, int encryptionType, bool encrypt)
     {
         string mRetVal = string.Empty;
         EncryptionType mEncryptionType = (EncryptionType)encryptionType;
@@ -136,7 +136,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             CryptoUtility.TryDecrypt(txtValue, out mRetVal, mEncryptionType);
         }
-        return Content(mRetVal);
+        return mRetVal;
     }
 
     /// <summary>

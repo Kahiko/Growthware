@@ -21,7 +21,7 @@ export class GuidHelperComponent implements OnInit {
   }
 
   onGuid(): void {
-    this._SecuritySvc.getGuid().catch((error: any)=>{
+    this._SecuritySvc.getGuid().catch((error)=>{
       this._LoggingSvc.errorHandler(error, 'GuidHelperComponent', 'onGuid');
     }).then((response)=>{
       if(response) {

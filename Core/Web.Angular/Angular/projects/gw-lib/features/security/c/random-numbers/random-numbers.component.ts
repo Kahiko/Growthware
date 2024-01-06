@@ -33,7 +33,7 @@ export class RandomNumbersComponent implements OnInit {
    */
   doGetNumbers(): void {
     this.results = '';
-    this._SecuritySvc.getRandomNumbers(this.amountOfNumbers, this.maxNumber, this.minNumber).catch((error: any)=>{
+    this._SecuritySvc.getRandomNumbers(this.amountOfNumbers, this.maxNumber, this.minNumber).catch(()=>{
       this._LoggingSvc.toast('Error calling the API', 'Random Numbers', LogLevel.Error);
     }).then((response)=>{
       if(response)

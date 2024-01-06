@@ -79,7 +79,7 @@ export class SecurityService {
         next: (response: string)=>{
           resolve(response);
         },
-        error: (error: any)=>{
+        error: (error)=>{
           this._LoggingSvc.errorHandler(error, 'SecurityService', 'getGuid');
           reject('Failed to call the API');          
         },
@@ -108,7 +108,7 @@ export class SecurityService {
         next: (response: number[])=>{
           resolve(response);
         },
-        error: (error: any)=>{
+        error: (error)=>{
           this._LoggingSvc.errorHandler(error, 'SecurityService', 'getGuid');
           reject('Failed to call the API');          
         },

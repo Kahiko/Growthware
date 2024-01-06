@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 // Library
 import { LoggingService } from '@Growthware/features/logging';
 import { GWCommon } from '@Growthware/common-code';
@@ -36,14 +36,10 @@ export class EncryptDecryptComponent implements OnInit {
       .set('txtValue', this.textValue)
       .set('encryptionType', this.selectedEncryptionType)
       .set('encrypt', encrypt);
-    const mHttpOptions: Object = {
-      headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
-      responseType: 'text',
-      params: mQueryParameter
-    }
+    // could not use an object for the HttpOptions b/c it produces an error reguarding responseType
     const mUrl = this._GWCommon.baseURL + 'GrowthwareAccount/EncryptDecrypt';
-    this._HttpClient.get<string>(mUrl, mHttpOptions).subscribe({
-      next: (response: any) => {
+    this._HttpClient.get(mUrl, { responseType: 'text', params: mQueryParameter }).subscribe({
+      next: (response) => {
         this.processedText = response;
       },
       error: (error) => {
