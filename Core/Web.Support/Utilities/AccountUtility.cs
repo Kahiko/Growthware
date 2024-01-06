@@ -509,10 +509,9 @@ public static class AccountUtility
     /// <param name="account"></param>
     private static void removeOldRefreshTokens(MAccountProfile account)
     {
-        // TODO: x.Created.AddDays(_appSettings.RefreshTokenTTL) <= DateTime.UtcNow);
         account.RefreshTokens.RemoveAll(x =>
             !x.IsActive() &&
-            x.Created.AddMinutes(3) <= DateTime.UtcNow);
+            x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL) <= DateTime.UtcNow);
     }
 
     /// <summary>
