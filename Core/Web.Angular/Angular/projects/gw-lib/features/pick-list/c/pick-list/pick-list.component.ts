@@ -22,12 +22,12 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   @Input() size: string = '8';
   @Input() width: string = '120';
 
-  private _AvailableItemsSubject = new BehaviorSubject<any[]>([]);
-  private _AvailableItemsData: any[] = [];
+  private _AvailableItemsSubject = new BehaviorSubject<Array<string>>([]);
+  private _AvailableItemsData: Array<string> = [];
   private _ModalOptions!: ModalOptions;
   private _Subscriptions: Subscription = new Subscription();
-  private _SelectedItemsSubject = new BehaviorSubject<any[]>([]);
-  private _SelectedItemsData: any[] = [];
+  private _SelectedItemsSubject = new BehaviorSubject<Array<string>>([]);
+  private _SelectedItemsData: Array<string> = [];
 
   readonly availableItems$ = this._AvailableItemsSubject.asObservable();
   readonly selectedItems$ = this._SelectedItemsSubject.asObservable();
@@ -92,14 +92,15 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
   }
 
   onMove(listBox: string, direction: string): void {
-
+    // does nothing atm but log the parameters to the console
+    console.log('PickListComponent.onMove',listBox + ', ' + direction);
   }
 
   onShowHelp(): void {
     this._ModalSvc.open(this._ModalOptions);
   }
 
-  switchAll(e: any, source: string, destination: string): void {
+  switchAll(e: Event, source: string): void {
     e.stopPropagation();
     e.preventDefault();
     const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;
@@ -108,14 +109,22 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
       if(source == '_SrcList') {
         // remove all from _AvailableItemsData add to _SelectedItemsData
         for (let mOuterIndex = 0; mOuterIndex < objFromBox.length; mOuterIndex++) {
-          this._SelectedItemsData.push(objFromBox.item(mOuterIndex)?.text);
+          // this._SelectedItemsData.push(objFromBox.item(mOuterIndex)?.text);
+          const mItem = objFromBox.item(mOuterIndex);
+          if(mItem) {
+            this._SelectedItemsData.push(mItem.text);
+          }
         }
         this._AvailableItemsData = [];
         this.sortDataArrays();
       } else {
         // remove all from _SelectedItemsData add to _AvailableItemsData
         for (let mOuterIndex = 0; mOuterIndex < objFromBox.length; mOuterIndex++) {
-          this._AvailableItemsData.push(objFromBox.item(mOuterIndex)?.text);
+          // this._AvailableItemsData.push(objFromBox.item(mOuterIndex)?.text);
+          const mItem = objFromBox.item(mOuterIndex);
+          if(mItem) {
+            this._AvailableItemsData.push(mItem.text);
+          }
         }
         this._SelectedItemsData = [];
         this.sortDataArrays();
@@ -123,7 +132,7 @@ export class PickListComponent implements AfterViewInit, OnDestroy, OnInit {
     }
   }
 
-  switchList(e: any, source: string, destination: string): void {
+  switchList(e: Event, source: string): void {
     e.stopPropagation();
     e.preventDefault();
     const objFromBox = document.getElementById(this.id + source)! as HTMLSelectElement;

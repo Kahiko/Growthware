@@ -143,20 +143,20 @@ export class RoleDetailsComponent implements OnDestroy, OnInit {
   }
 
   onDelete(): void {
-    this._RoleSvc.delete(this._Role.id).then((_) => {
+    this._RoleSvc.delete(this._Role.id).then(() => {
       this.updateSearch();
       this.closeModal();
-    }).catch((error) => {
+    }).catch(() => {
       this._LoggingSvc.toast('The role could not be deleted', 'Delete Role', LogLevel.Error);
     })
   }
 
-  onSubmit(form: FormGroup): void {
+  onSubmit(): void {
     this.populateProfile();
-    this._RoleSvc.save(this._Role).then((response: IRoleProfile) => {
+    this._RoleSvc.save(this._Role).then(() => {
       this.updateSearch();
       this._LoggingSvc.toast('The role has been saved', 'Save Role', LogLevel.Success);
-    }).catch((error) => {
+    }).catch(() => {
       this._LoggingSvc.toast('The role could not be saved', 'Save Role', LogLevel.Error);
     });
     this.closeModal();
