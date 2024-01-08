@@ -221,7 +221,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         case "roles":
           this._AccountProfile.assignedRoles = data.payLoad;
           break;
-        case "roles":
+        case "groups":
           this._AccountProfile.groups = data.payLoad;
           break
         default:
@@ -330,10 +330,10 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     if(form.valid) {
       this.populateProfile();
       // console.log('AccountProfile', this._AccountProfile);
-      // this._AccountSvc.saveAccount(this._AccountProfile).then((response) => {
-      //   this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-      //   this.closeModal();
-      // });
+      this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
+        this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+        this.closeModal();
+      });
     }
   }
 

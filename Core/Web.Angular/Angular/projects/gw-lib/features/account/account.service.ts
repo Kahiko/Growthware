@@ -5,6 +5,7 @@ import { BehaviorSubject, map, Observable } from "rxjs";
 // Library
 import { GWCommon } from '@Growthware/common-code';
 import { LoggingService, LogLevel } from '@Growthware/features/logging';
+import { SearchService } from '@Growthware/features/search';
 // Feature
 import { IAccountInformation, AccountInformation } from './account-information.model';
 import { IAccountProfile } from './account-profile.model';
@@ -25,6 +26,7 @@ export class AccountService {
   private _Api_ClientChoices: string = '';
   private _Api_Logoff: string = '';
   private _Api_RefreshToken: string = '';
+  private _Api_SaveAccount: string = '';
   private _Api_SaveClientChoices: string = '';
   private _Api_SelectableActions: string = '';
   private _AuthenticationResponse = new AuthenticationResponse;
@@ -50,6 +52,7 @@ export class AccountService {
     private _HttpClient: HttpClient,
     private _LoggingSvc: LoggingService,
     private _Router: Router,
+    private _SearchSvc: SearchService,
   ) {
     this._BaseURL = this._GWCommon.baseURL;
     this._Api_GetAccountForEdit = this._BaseURL + this._ApiName + 'EditAccount';
@@ -58,6 +61,7 @@ export class AccountService {
     this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
     this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
     this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
+    this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
     this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
     this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
   }
@@ -367,7 +371,30 @@ export class AccountService {
       this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
     }
   }
-
+  async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
+    const mHttpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      })
+    };
+    return new Promise<boolean>((resolve, reject) => {
+      this._HttpClient.post<string>(this._Api_SaveAccount, accountProfile, mHttpOptions).subscribe({
+        next: () => {
+          const mSearchCriteria = this._SearchSvc.getSearchCriteria("Accounts"); // from SearchAccountsComponent (this.configurationName)
+          if(mSearchCriteria != null) {
+            this._SearchSvc.setSearchCriteria("Accounts", mSearchCriteria);
+          }
+          resolve(true);
+        }
+        , error: (error) => {
+          this._LoggingSvc.errorHandler(error, 'AccountService', 'saveAccount');
+          reject(error);
+        }
+        //, complete: () => {}
+      });
+    });
+  }
+  
   /**
    * Saves the client choices in the database.
    *
