@@ -37,7 +37,7 @@ export class RoleService {
         params: mQueryParameter,
       };
       this._HttpClient.delete<boolean>(this._Api_Delete, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: boolean) => {
           resolve(response);
         },
         error: (error) => {
@@ -66,7 +66,7 @@ export class RoleService {
         params: mQueryParameter,
       };
       this._HttpClient.get<IRoleProfile>(this._Api_GetRole, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: IRoleProfile) => {
           resolve(response);
         },
         error: (error) => {
@@ -81,18 +81,18 @@ export class RoleService {
   /**
    * Retrieves the roles from the server.
    *
-   * @return {Promise<any>} A promise that resolves with the roles data.
+   * @return {Promise<Array<string>>} A promise that resolves with the roles data.
    */
-  public async getRoles(): Promise<any> {
-    return new Promise<boolean>((resolve, reject) => {
+  public async getRoles(): Promise<Array<string>> {
+    return new Promise<Array<string>>((resolve, reject) => {
       const mHttpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/json',
         }),
       };
       const mUrl = this._GWCommon.baseURL + this._ApiName + 'GetRoles';
-      this._HttpClient.get<any>(mUrl, mHttpOptions).subscribe({
-        next: (response: any) => {
+      this._HttpClient.get<Array<string>>(mUrl, mHttpOptions).subscribe({
+        next: (response: Array<string>) => {
           resolve(response);
         },
         error: (error) => {
@@ -108,9 +108,9 @@ export class RoleService {
    * Saves the profile information.
    *
    * @param {IRoleProfile} profile - The profile to be saved.
-   * @return {Promise<any>} A promise that resolves with the result of saving the profile.
+   * @return {Promise<boolean>} A promise that resolves with the result of saving the profile.
    */
-  public async save(profile: IRoleProfile): Promise<any> {
+  public async save(profile: IRoleProfile): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const mHttpOptions = {
         headers: new HttpHeaders({
@@ -118,7 +118,7 @@ export class RoleService {
         }),
       };
       this._HttpClient.post<boolean>(this._Api_Save, profile, mHttpOptions).subscribe({
-        next: (response: any) => {
+        next: (response: boolean) => {
           resolve(response);
         },
         error: (error) => {
