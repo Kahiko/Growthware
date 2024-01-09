@@ -170,7 +170,11 @@
             "sourceMaps": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${workspaceRoot}/Web.Angular/Angular/*"
-            }
+            },
+            "resolveSourceMapLocations": [
+                "${workspaceFolder}/Web.Angular/Angular/**",
+                "!**/node_modules/**"
+            ]
         },
         {
             "type": "msedge",
