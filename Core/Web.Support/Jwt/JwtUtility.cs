@@ -30,7 +30,10 @@ public class JwtUtility : IJwtUtility
         var key = Encoding.ASCII.GetBytes(ConfigSettings.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("account", account.Account.ToString()) }),
+            Subject = new ClaimsIdentity(new[] { 
+                new Claim("account", account.Account.ToString()),
+                new Claim("status", account.Status.ToString()) 
+            }),
             Expires = DateTime.UtcNow.AddMinutes(ConfigSettings.JWT_Token_Minutes_TL),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
