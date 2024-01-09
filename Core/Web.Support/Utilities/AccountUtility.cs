@@ -369,15 +369,20 @@ public static class AccountUtility
 
     public static void Logoff(string forAccount, string token, string ipAddress)
     {
-        if(!String.IsNullOrWhiteSpace(token))
+        if (!String.IsNullOrWhiteSpace(token))
         {
             MAccountProfile mAccountProfile = GetAccount(forAccount);
-            if(mAccountProfile.RefreshTokens.Count > 0) 
+            if (mAccountProfile.RefreshTokens.Count > 0)
             {
-                MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);            
-                revokeRefreshToken(mRefreshToken, ipAddress, "Revoked by Logoff");
-                // remove old refresh tokens from account
-                removeOldRefreshTokens(mAccountProfile);
+                MRefreshToken mRefreshToken = mAccountProfile.RefreshTokens.Single(x => x.Token == token);
+                if (!mRefreshToken.IsActive())
+                {
+                    removeFromCacheOrSession(forAccount);
+                    RemoveInMemoryInformation(forAccount);
+                    throw new WebSupportException("Invalid token");
+                }
+                // revoke token and save
+                revokeRefreshToken(mRefreshToken, ipAddress, "Revoked without replacement");
                 // save changes to db
                 AccountUtility.Save(mAccountProfile, true, false, false);
             }
@@ -528,15 +533,15 @@ public static class AccountUtility
          * Roles, groups, and refresh tokens are stored in detail tables and it is not always necessary to save them.
          */
         if (accountProfile == null || string.IsNullOrEmpty(accountProfile.Account)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile cannot be a null reference (Nothing in VB) or empty!");
-        if(accountProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase) && accountProfile.RefreshTokens.Count > 0)
+        if (accountProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase) && accountProfile.RefreshTokens.Count > 0)
         {
-             return accountProfile;
+            return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
-        if((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase)))
+        if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {
             addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         }
