@@ -166,10 +166,10 @@
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/Web.Angular/Angular/Projects/gw-frontend",
+            "webRoot": "${workspaceFolder}/Web.Angular/Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/Web.Angular/Angular/*"
+              "webpack:///./*": "${webRoot}/*"
             }
         },
         {
@@ -179,10 +179,10 @@
             // For .net 6.0 + this port needs to match Properties\launchSettings.json:applicationUrl
             // otherwise the SPA will not launch
             "url": "http://localhost:5000",
-            "webRoot": "${workspaceFolder}/Web.Angular/Angular/Projects/gw-frontend",
+            "webRoot": "${workspaceFolder}/Web.Angular/Angular",
             "sourceMaps": true,
             "sourceMapPathOverrides": {
-              "webpack:///./*": "${workspaceRoot}/Web.Angular/Angular/*"
+              "webpack:///./*": "${webRoot}/*"
             }
         }
     ]
