@@ -27,6 +27,7 @@ export class FunctionService {
   private _Reason: string = '';
 
   modalReason: string = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selectedRow: any = {};
 
   public get functionSeqId(): number {

@@ -24,6 +24,7 @@ export class SecurityEntityService {
   readonly addEditModalId: string = 'addEditAccountModal';
 
   modalReason: string = '';
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selectedRow: any = {};
 
   constructor(

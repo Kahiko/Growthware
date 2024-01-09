@@ -17,6 +17,7 @@ export class RoleService {
 
   readonly addEditModalId: string = 'addEditAccountModal';
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   selectedRow: any = {};
   modalReason: string = '';
 
