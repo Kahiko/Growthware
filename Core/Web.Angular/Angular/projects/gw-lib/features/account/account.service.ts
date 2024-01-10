@@ -366,8 +366,8 @@ export class AccountService {
       // set a timeout to refresh the token a minute before it expires
       const mExpires = new Date(mJwtToken.exp * 1000);
       const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
-      console.log('mExpires', mExpires);
-      console.log('mTimeout',  new Date(Date.now() + mTimeout));
+      // console.log('mExpires', mExpires);
+      // console.log('mTimeout',  new Date(Date.now() + mTimeout));
       this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
     }
   }
