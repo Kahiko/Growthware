@@ -269,7 +269,7 @@ export class AccountService {
         this.getClientChoices().then((clientChoices: IClientChoices) => {
           let mNavigationUrl: string = clientChoices.action;
           if (authenticationResponse.status == 4) {
-            mNavigationUrl = '/account/change-password';
+            mNavigationUrl = '/accounts/change-password';
           }
           sessionStorage.setItem("jwt", authenticationResponse.jwtToken);
           const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };

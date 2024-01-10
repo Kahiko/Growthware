@@ -34,7 +34,7 @@ public class JwtUtility : IJwtUtility
                 new Claim("account", account.Account.ToString()),
                 new Claim("status", account.Status.ToString()) 
             }),
-            Expires = DateTime.UtcNow.AddMinutes(ConfigSettings.JWT_Token_Minutes_TL),
+            Expires = DateTime.UtcNow.AddMinutes(ConfigSettings.JWT_Token_TTL_Minutes),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -96,7 +96,7 @@ public class JwtUtility : IJwtUtility
             // token is a cryptographically strong random sequence of values
             Token = Convert.ToHexString(RandomNumberGenerator.GetBytes(64)),
             // token is valid for 7 days
-            Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL),
+            Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Token_Expires_Days),
             Created = DateTime.UtcNow,
             CreatedByIp = ipAddress
         };

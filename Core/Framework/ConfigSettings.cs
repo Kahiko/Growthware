@@ -470,25 +470,64 @@ namespace GrowthWare.Framework
             get { return AppDisplayedName + "Remember_Me"; }
         }
 
+        /// <summary>
+        /// Return JWT_Refresh_Cookie_TTL_Days from the CONFIG file
+        /// </summary>
+        /// <remarks>
+        /// Used to determine when the refresh cookie expires. (See AbstractAccountController.setTokenCookie)
+        /// </remarks>
+        public static int JWT_Refresh_Cookie_TTL_Days
+        {
+            get { return int.Parse(GetAppSettingValue("JWT_Refresh_Cookie_TTL_Days", true), CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
+        /// Return JWT_Refresh_CookieName from the CONFIG file
+        /// </summary>
+        /// <remarks>
+        /// Provides the name of the refresh cookie name. (See AbstractAccountController.setTokenCookie)
+        /// The cookie name will also be used in the UI!
+        /// </remarks>
         public static string JWT_Refresh_CookieName
         {
             get { return GetAppSettingValue("JWT_Refresh_CookieName", true); }
         }
 
         /// <summary>
-        /// Gets the JWT_Refresh_Token_Days_TL.
+        /// Return JWT_Refresh_Token_DB_TTL_Days from the CONFIG file
         /// </summary>
-        public static int JWT_Refresh_Token_Days_TL
+        /// <remarks>
+        /// Used to determine how long a refresh token is kept in the datastore.
+        /// (See AccountUtility.removeOldRefreshTokens)
+        /// </remarks>
+        public static int JWT_Refresh_Token_DB_TTL_Days
         {
-            get { return int.Parse(GetAppSettingValue("JWT_Refresh_Token_Days_TL", true), CultureInfo.InvariantCulture); }
+            get { return int.Parse(GetAppSettingValue("JWT_Refresh_Token_DB_TTL_Days", true), CultureInfo.InvariantCulture); }
         }
 
         /// <summary>
-        /// 
+        /// Return JWT_Refresh_Token_Expires_Days from the CONFIG file
         /// </summary>
-        public static int JWT_Token_Minutes_TL
+        /// <remarks>
+        /// Determines how long a refresh token is valid for. The effect is that the account will be
+        /// logged on again after this many days so long as the refresh token is still valid.
+        /// (See: JwtUtility.GenerateRefreshToken)
+        /// </remarks>
+        public static int JWT_Refresh_Token_Expires_Days
         {
-            get { return int.Parse(GetAppSettingValue("JWT_Token_Minutes_TL", true), CultureInfo.InvariantCulture); }
+            get { return int.Parse(GetAppSettingValue("JWT_Refresh_Token_Expires_Days", true), CultureInfo.InvariantCulture); }
+        }
+
+        /// <summary>
+        /// Return JWT_Token_TTL_Minutes from the CONFIG file
+        /// </summary>
+        /// <remarks>
+        /// Used to determine how long the JWT is valid for.
+        /// (See: JwtUtility.GenerateJwtToken)
+        /// </remarks>
+        public static int JWT_Token_TTL_Minutes
+        {
+            get { return int.Parse(GetAppSettingValue("JWT_Token_TTL_Minutes", true), CultureInfo.InvariantCulture); }
         }
 
         /// <summary>

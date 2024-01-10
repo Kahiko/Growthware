@@ -511,12 +511,14 @@ public static class AccountUtility
     /// <summary>
     /// Removes old refresh tokens from the given MAccountProfile.
     /// </summary>
-    /// <param name="account"></param>
-    private static void removeOldRefreshTokens(MAccountProfile account)
+    /// <param name="accountProfile"></param>
+    private static void removeOldRefreshTokens(MAccountProfile accountProfile)
     {
-        account.RefreshTokens.RemoveAll(x =>
-            !x.IsActive() &&
-            x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL) <= DateTime.UtcNow);
+        // TODO - look at this are we sure we need to keep refresh tokens in the db for this long?
+        accountProfile.RefreshTokens.RemoveAll(x => 
+            !x.IsActive() && 
+            x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
+        );
     }
 
     /// <summary>

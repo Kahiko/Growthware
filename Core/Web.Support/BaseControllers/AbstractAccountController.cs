@@ -20,7 +20,7 @@ public abstract class AbstractAccountController : ControllerBase
     private string s_AnonymousAccount = "Anonymous";
 
     /// <summary>
-    /// Handles authentication and cookie management.
+    /// Performs an account authentication and handles the token cookie.
     /// </summary>
     /// <param name="account"></param>
     /// <param name="password"></param>
@@ -35,6 +35,13 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// ChangePassword is a function that allows the account to change their password.
+    /// </summary>
+    /// <param name="oldPassword">The account's current password.</param>
+    /// <param name="newPassword">The account's new password.</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     [Authorize("/accounts/change-password")]
     [HttpPost("ChangePassword")]
     public ActionResult ChangePassword(string oldPassword, string newPassword)
@@ -54,11 +61,9 @@ public abstract class AbstractAccountController : ControllerBase
     /// </summary>
     /// <param name="accountSeqId"></param>
     /// <returns>ActionResult<bool></returns>
-    [HttpDelete("DeleteAccount")]
-    public ActionResult<bool> DeleteAccount(int accountSeqId)
+    // [HttpDelete("DeleteAccount")]
+    private ActionResult<bool> DeleteAccount(int accountSeqId)
     {
-        // TODO: Remove/comment out the HttpDelete and change the access modifier to private!!!
-
         // This is here only for example it is this developers view that deleting accounts
         // is extremely risky and should be left to say a backend developer (DBA if you like)
         // it is possible for data to be associated with an account outside the realms of this
@@ -82,7 +87,11 @@ public abstract class AbstractAccountController : ControllerBase
         return StatusCode(StatusCodes.Status204NoContent, "Could not find the account to delete");
     }
 
-    // [HttpGet("/accounts/edit-my-account")]
+    /// <summary>
+    /// Allows for editing an account other than the current account.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns></returns>
     [HttpGet("EditAccount")]
     public ActionResult<MAccountProfile> EditAccount(string account)
     {
@@ -105,6 +114,11 @@ public abstract class AbstractAccountController : ControllerBase
     }
 
 
+    /// <summary>
+    /// Allows for editing the same account as the current account.
+    /// </summary>
+    /// <param name="account"></param>
+    /// <returns></returns>
     [HttpGet("EditProfile")]
     public ActionResult<MAccountProfile> EditProfile(string account)
     {
@@ -160,6 +174,11 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Retrieves menu data based on the specified menu type as a JSON string.
+    /// </summary>
+    /// <param name="menuType"></param>
+    /// <returns></returns>
     [HttpGet("GetMenuData")]
     public ActionResult<string> GetMenuData(int menuType)
     {
@@ -177,6 +196,11 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Retrieves a list of menu items based on the specified menu type for the current account.
+    /// </summary>
+    /// <param name="menuType"></param>
+    /// <returns></returns>
     [HttpGet("GetMenuItems")]
     public ActionResult<IList<MMenuTree>> GetMenuItems(int menuType)
     {
@@ -194,6 +218,10 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Returns the current client preferences
+    /// </summary>
+    /// <returns></returns>
     [HttpGet("GetPreferences")]
     public UIAccountChoices GetPreferences()
     {
@@ -201,6 +229,13 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Returns a list of selectable actions for the current client.
+    /// </summary>
+    /// <returns></returns>
+    /// <remarks>
+    /// This is needed by the UI to allow the client to choose their favorite "action"
+    /// </remarks>
     [HttpGet("GetSelectableActions")]
     public List<UISelectedableAction> GetSelectableActions()
     {
@@ -222,6 +257,11 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Recursively adds UISelectedableAction to selectedableActions given a list of MMenuTree
+    /// </summary>
+    /// <param name="menuTree"></param>
+    /// <param name="selectedableActions"></param>
     private void addSelectedActions(IList<MMenuTree> menuTree, ref List<UISelectedableAction> selectedableActions)
     {
         foreach (MMenuTree mMenuTree in menuTree)
@@ -240,6 +280,10 @@ public abstract class AbstractAccountController : ControllerBase
         }
     }
 
+    /// <summary>
+    /// Returns the IP address of the request.
+    /// </summary>
+    /// <returns></returns>
     private string ipAddress()
     {
         if (Request.Headers.ContainsKey("X-Forwarded-For"))
@@ -248,6 +292,10 @@ public abstract class AbstractAccountController : ControllerBase
             return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
     }
 
+    /// <summary>
+    /// Removes any in memory authentication information and logs the user out.
+    /// </summary>
+    /// <returns></returns>
     [HttpPost("Logoff")]
     public ActionResult<AuthenticationResponse> Logoff()
     {
@@ -262,6 +310,15 @@ public abstract class AbstractAccountController : ControllerBase
         return Authenticate(mAccountProfile.Account, mPassword);
     }
 
+    /// <summary>
+    /// Creates a new refresh token with a Json Web Token.
+    /// </summary>
+    /// <returns>AuthenticationResponse</returns>
+    /// <remarks>
+    /// Should be executed a minute before the JWT expires.
+    /// The refresh should expire a considerable amout of time before the JWT and
+    /// is the mechanism by which the account is authenticated at a later date.
+    /// </remarks>
     [HttpPost("RefreshToken")]
     public ActionResult<AuthenticationResponse> RefreshToken()
     {
@@ -286,9 +343,16 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Revokes a refresh token.
+    /// </summary>
+    /// <param name="token"></param>
+    /// <returns></returns>
     [HttpPost("RevokeToken")]
     public IActionResult RevokeToken(string token)
     {
+        // TODO: For future use, not currently being used!
+        
         // accept token from request body or cookie
         var mToken = token ?? Request.Cookies["refreshToken"];
 
@@ -306,6 +370,11 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(new { message = "Token revoked" });
     }
 
+    /// <summary>
+    /// Saves the specified account.
+    /// </summary>
+    /// <param name="accountProfile"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("SaveAccount")]
     public ActionResult<bool> SaveAccount(MAccountProfile accountProfile)
@@ -357,6 +426,12 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Saves the client choices.
+    /// </summary>
+    /// <param name="accountChoices"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
     [HttpPost("SaveClientChoices")]
     public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
     {
@@ -387,6 +462,11 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(false);
     }
 
+    /// <summary>
+    /// Performs a search for accounts based on the provided search criteria.
+    /// </summary>
+    /// <param name="searchCriteria">The criteria used to filter the search</param>
+    /// <returns></returns>
     [Authorize("Accounts")]
     [HttpPost("SearchAccounts")]
     public String SearchAccounts(UISearchCriteria searchCriteria)
@@ -413,6 +493,10 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    /// <summary>
+    /// Sets an HttpOnly refresh cookie.
+    /// </summary>
+    /// <param name="token"></param>
     private void setTokenCookie(string token)
     {
         string mToken = string.Empty;
@@ -423,7 +507,7 @@ public abstract class AbstractAccountController : ControllerBase
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Token_Days_TL)
+            Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Cookie_TTL_Days)
         };
         Response.Cookies.Append(ConfigSettings.JWT_Refresh_CookieName, mToken, cookieOptions);
     }
