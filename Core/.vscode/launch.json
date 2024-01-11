@@ -168,6 +168,7 @@
             "url": "http://localhost:5000",
             "webRoot": "${workspaceFolder}/Web.Angular/Angular",
             "sourceMaps": true,
+            // "trace": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
             }
