@@ -2,9 +2,9 @@
   "name": "@Growthware",
   "version": "0.0.1",
   "peerDependencies": {
-    "@angular/common": "^17.0.5",
-    "@angular/core": "^17.0.5",
-    "@angular/material": "^17.0.2"
+    "@angular/common": "^17.0.9",
+    "@angular/core": "^17.0.9",
+    "@angular/material": "^17.0.5"
   },
   "dependencies": {
     "tslib": "^2.6.2"
