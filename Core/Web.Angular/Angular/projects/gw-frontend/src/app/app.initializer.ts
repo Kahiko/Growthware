@@ -14,7 +14,7 @@ export function appInitializer(accountSvc: AccountService, configurationSvc: Con
           // We need to log out for the anonymous account in order to generate a Json Web Token
           // that is used in auth-guard.guard.ts (canActivate)
           if(authenticationResponse.account.toLocaleLowerCase() === 'anonymous') {
-            accountSvc.logout();
+            accountSvc.logout(true);
           }
         },
         error: (error) => {
