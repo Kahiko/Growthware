@@ -68,11 +68,9 @@ export class AccountService {
 
   /**
    * Authenticates the client with the provided account and password.
-   *
    * @param {string} account - The client's account.
    * @param {string} password - The client's password.
-   * @param {boolean} silent - (Optional) Indicates whether to log toast messages or not.
-   * @return {Promise<boolean|string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
+   * @return {Promise<boolean | string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
    */
   private async authenticate(account: string, password: string): Promise<IAuthenticationResponse> {
     return new Promise<IAuthenticationResponse>((resolve, reject) => {
