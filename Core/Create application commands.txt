@@ -1,6 +1,7 @@
 					To track angular cli commands used
 Complete compatibility list for Angular/Angular-CLI Node.js
 	npx -y ngvm compat
+
 Configure Swagger:
 	https://www.daniaal.com/configuring-swagger-in-net-6/
 
