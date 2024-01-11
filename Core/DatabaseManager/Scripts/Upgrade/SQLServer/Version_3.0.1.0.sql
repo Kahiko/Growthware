@@ -72,6 +72,6 @@ IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = @V_MyAct
 --END IF
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
-    [Version] = '3.0.0.1',
+    [Version] = '3.0.1.0',
     [Updated_By] = 3,
     [Updated_Date] = getdate()
