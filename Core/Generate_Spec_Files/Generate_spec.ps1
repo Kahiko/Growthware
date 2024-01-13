@@ -9,7 +9,7 @@ foreach($filePath in $paths)
     }
 }
 $angularSrc = "D:\Development\Growthware\Core\Web.Angular\Angular\projects\"
-$configFile ="D:\Development\Growthware\Core\Generate_Spec_Files\ngentest.config.js"
+$configFile = "D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js"
 $includeTypes = "*.class.ts", "*.component.ts", "*.directive.ts", "*.guard.ts", "*.interceptor.ts", "*.pipe.ts", "*.service.ts"
 $fileNames = Get-ChildItem -Path $angularSrc -Recurse -Include ($includeTypes)
 foreach ($f in $fileNames){
