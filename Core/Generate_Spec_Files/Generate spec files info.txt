@@ -1,0 +1,6 @@
+https://github.com/allenhwkim/ngentest
+	npm install ngentest -D
+	npx ngentest -h
+	Example:
+		npx ngentest account.service.ts -s -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
+		npx ngentest account-details.component.ts -s -f -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
