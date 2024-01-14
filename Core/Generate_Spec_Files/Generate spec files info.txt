@@ -8,3 +8,19 @@ https://github.com/allenhwkim/ngentest
 	Example:
 		npx ngentest account.service.ts -s -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
 		npx ngentest account-details.component.ts -s -f -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
+
+Unit testing with Jest instead of Karma
+	https://dev.to/this-is-angular/angular-testing-in-2023-past-present-and-future-j5m
+		npm install -D jest @types/jest jest-environment-jsdom
+		angular.json:
+			Change - @angular-devkit/build-angular:karma to @angular-devkit/build-angular:jest
+		tsconfig.spec.json:
+			replace the value jasmine in the property types with jest
+		Now just execute npx ng test
+
+	https://timdeschryver.dev/blog/integrate-jest-into-an-angular-application-and-library
+
+	https://www.beyondjava.net/angular-17-jest-mono-repo-just-jeb
+
+General angular unit testing
+	https://dev.to/wagnercaetano/how-to-test-angular-components-using-jest-nice-and-easy-f6d
