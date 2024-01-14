@@ -1,13 +1,14 @@
-https://github.com/allenhwkim/ngentest/blob/main/README.md
-https://github.com/allenhwkim/ngentest
-	npm install ngentest -D
-	npx ngentest -h
-	Edit:
-		D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
-		Make any changes (ie framework) you may need
-	Example:
-		npx ngentest account.service.ts -s -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
-		npx ngentest account-details.component.ts -s -f -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
+Generating .spec files:
+	https://github.com/allenhwkim/ngentest/blob/main/README.md
+	https://github.com/allenhwkim/ngentest
+		npm install ngentest -D
+		npx ngentest -h
+		Edit:
+			D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
+			Make any changes (ie framework) you may need
+		Example:
+			npx ngentest account.service.ts -s -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
+			npx ngentest account-details.component.ts -s -f -c D:\Development\Growthware\Core\Web.Angular\Angular\node_modules\ngentest\ngentest.config.js
 
 Unit testing with Jest instead of Karma
 	https://dev.to/this-is-angular/angular-testing-in-2023-past-present-and-future-j5m
