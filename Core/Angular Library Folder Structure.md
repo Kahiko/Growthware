@@ -10,32 +10,26 @@ Below you can see the basic structure of the project that the CLI has generated 
 ├── projects/
 │   └── gw-lib/                          # (1)
 |       ├── common/                      # (2)
-|       │    ├─components/
+|       │    ├─grouping1/
 |       │    │  │ └─src/
 |       │    │  │  └─ *.ts               # (3)
 |       |    │  ├─index.ts               # (4)
 |       |    │  ├─ ng-package.json       # (5)
 |       |    │  ├─ public-api.ts         # (6)
-|       │    ├─interfaces/
-|       │    │  │ └─src/
-|       │    │  │  └─ *.ts               # (3)
-|       |    │  ├─index.ts               # (4)
-|       |    │  ├─ ng-package.json       # (5)
-|       |    │  ├─ public-api.ts         # (6)
-|       │    ├─services/
+|       │    ├─grouping2/
 |       │    │  │ └─src/
 |       │    │  │  └─ *.ts               # (3)
 |       |    │  ├─index.ts               # (4)
 |       |    │  ├─ ng-package.json       # (5)
 |       |    │  └─ public-api.ts         # (6)
 |       ├── core/                        # (2)
-|       │    ├─feature1/
+|       │    ├─grouping1/
 |       │    │  │ └─src/
 |       │    │  │  └─ *.ts               # (3)
 |       |    │  ├─index.ts               # (4)
 |       |    │  ├─ ng-package.json       # (5)
 |       |    │  ├─ public-api.ts         # (6)
-|       │    └─feature2/
+|       │    └─grouping2/
 |       │       │ └─src/
 |       │       │  └─ *.ts               # (3)
 |       |       ├─index.ts               # (4)
