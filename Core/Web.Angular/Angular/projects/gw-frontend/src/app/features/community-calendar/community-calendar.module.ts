@@ -5,10 +5,10 @@ import { CommunityCalendarRoutingModule } from './community-calendar-routing.mod
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    CommunityCalendarRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		CommunityCalendarRoutingModule
+	]
 })
 export class CommunityCalendarModule { }

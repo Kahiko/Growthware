@@ -1,26 +1,28 @@
 {
     "env": {
         "browser": true,
-        "commonjs": true,
         "es2021": true
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:@angular-eslint/recommended",
+        "plugin:@angular-eslint/template/process-inline-templates"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": "latest",
-        "project": [
-            "**/tsconfig.json"
-        ]
+        "sourceType": "module"
     },
     "plugins": [
         "@typescript-eslint",
-        "eslint-plugin-html",
-        "deprecation"
+        "html"
     ],
     "rules": {
-        "deprecation/deprecation": "warn"
+        "no-mixed-spaces-and-tabs": 0,
+        "indent": ["error", "tab"],
+        "linebreak-style": ["error", "windows"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"]
     }
 }

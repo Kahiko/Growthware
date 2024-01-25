@@ -1,6 +1,6 @@
 {
   "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
-  "dest": "../../dist/gw-lib",
+  "dest": "../../dist/growthware/gw-lib",
   "lib": {
     "entryFile": "public-api.ts"
   }

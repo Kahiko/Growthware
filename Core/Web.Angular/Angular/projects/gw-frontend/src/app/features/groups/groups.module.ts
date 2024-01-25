@@ -5,10 +5,10 @@ import { GroupsRoutingModule } from './groups-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    GroupsRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		GroupsRoutingModule
+	]
 })
 export class GroupsModule { }

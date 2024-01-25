@@ -15,11 +15,11 @@
       "prefix": "gw-frontend",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/gw-frontend",
             "index": "projects/gw-frontend/src/index.html",
-            "main": "projects/gw-frontend/src/main.ts",
+            "browser": "projects/gw-frontend/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -40,8 +40,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "1.5mb",
-                  "maximumError": "2.0mb"
+                  "maximumWarning": "2.0mb",
+                  "maximumError": "2.5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -52,12 +52,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -69,8 +66,8 @@
               "buildTarget": "gw-frontend:build:production"
             },
             "development": {
-              "proxyConfig": "proxy.conf.js",
-              "buildTarget": "gw-frontend:build:development"
+              "buildTarget": "gw-frontend:build:development",
+              "proxyConfig": "proxy.conf.js"
             }
           },
           "defaultConfiguration": "development"
@@ -105,8 +102,6 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/gw-lib/**/*.ts",
-              "projects/gw-lib/**/*.html",
               "projects/gw-frontend/**/*.ts",
               "projects/gw-frontend/**/*.html"
             ]
@@ -118,7 +113,7 @@
       "projectType": "library",
       "root": "projects/gw-lib",
       "sourceRoot": "projects/gw-lib",
-      "prefix": "gw-lib",
+      "prefix": "gw-core",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:ng-packagr",
@@ -144,11 +139,17 @@
               "zone.js/testing"
             ]
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/gw-lib/**/*.ts",
+              "projects/gw-lib/**/*.html"
+            ]
+          }
         }
       }
     }
-  },
-  "cli": {
-    "analytics": "f05c723c-e4b9-49fd-a71b-97092d2ee6ba"
   }
 }

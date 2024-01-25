@@ -9,14 +9,14 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
-import { LoaderModule } from '@Growthware/features/loader';
-import { NavigationModule } from '@Growthware/features/navigation';
+import { LoaderComponent } from '@growthware/core/loader';
+import { NavigationModule } from '@growthware/core/navigation';
 // Library Standalone
-// import { HorizontalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
-import { HierarchicalHorizontalFlyoutComponent } from '@Growthware/features/navigation';
-import { VerticalComponent } from '@Growthware/features/navigation';
+// import { HorizontalComponent } from '@growthware/core/navigation';
+// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
+// import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+import { HierarchicalHorizontalFlyoutComponent } from '@growthware/core/navigation';
+import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { DevOpsRoutingModule } from './dev-ops-routing.module';
 import { DevOpsFooterComponent } from './dev-ops-footer/dev-ops-footer.component';
@@ -25,32 +25,32 @@ import { DevOpsLayoutComponent } from './dev-ops-layout/dev-ops-layout.component
 
 
 @NgModule({
-  declarations: [
-    DevOpsFooterComponent,
-    DevOpsHeaderComponent,
-    DevOpsLayoutComponent
-  ],
-  imports: [
-    CommonModule,
-    // Angular Material
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    // Library Modules
-    LoaderModule,
-    NavigationModule,
-    // Library Standalone
-    HierarchicalHorizontalFlyoutComponent,
-    VerticalComponent,
-    // Modules/Components
-    DevOpsRoutingModule
-  ],
-  exports: [
-    DevOpsLayoutComponent
-  ]
+	declarations: [
+		DevOpsFooterComponent,
+		DevOpsHeaderComponent,
+		DevOpsLayoutComponent
+	],
+	imports: [
+		CommonModule,
+		// Angular Material
+		MatButtonModule,
+		MatDividerModule,
+		MatIconModule,
+		MatListModule,
+		MatMenuModule,
+		MatSidenavModule,
+		MatToolbarModule,
+		// Library Modules
+		LoaderComponent,
+		NavigationModule,
+		// Library Standalone
+		HierarchicalHorizontalFlyoutComponent,
+		VerticalComponent,
+		// Modules/Components
+		DevOpsRoutingModule
+	],
+	exports: [
+		DevOpsLayoutComponent
+	]
 })
 export class DevOpsModule { }

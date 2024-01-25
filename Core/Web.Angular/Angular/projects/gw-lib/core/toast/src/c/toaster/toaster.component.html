@@ -1,0 +1,12 @@
+<div class="toaster position-fixed bottom-0 end-0 px-3 py-2 m-16">
+  @for (toast of currentToasts; track toast; let i = $index) {
+    <div>
+      <gw-core-toast
+        [type]="toast.eventType"
+        [title]="toast.title"
+        [message]="toast.message"
+        (disposeEvent)="dispose(i)"
+      ></gw-core-toast>
+    </div>
+  }
+</div>

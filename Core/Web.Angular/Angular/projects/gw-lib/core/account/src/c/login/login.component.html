@@ -1,0 +1,23 @@
+<form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="loginForm" novalidate>
+  <div>
+    <mat-form-field class="loginForm__mat-form-field" appearance="fill">
+      <mat-label>Account</mat-label>
+      <input matInput type="text" formControlName="account" #account>
+      @if (getControls['account'].invalid) {
+        <mat-error>{{getErrorMessage('account')}}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field class="loginForm__mat-form-field" appearance="fill">
+      <mat-label>Password</mat-label>
+      <input matInput type="password" formControlName="password">
+      @if (getControls['password'].invalid) {
+        <mat-error>{{getErrorMessage('password')}}</mat-error>
+      }
+    </mat-form-field>
+  </div>
+  <div class="loginForm-footer__div">
+    <button mat-raised-button color="primary" type="submit">Submit</button>
+  </div>
+</form>

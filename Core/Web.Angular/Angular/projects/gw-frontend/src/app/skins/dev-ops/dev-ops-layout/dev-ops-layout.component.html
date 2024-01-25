@@ -1,10 +1,10 @@
 <gw-frontend-dev-ops-header [sidenav]="drawer"></gw-frontend-dev-ops-header>
 <mat-drawer-container class="drawer-container" color="primary" autosize>
   <mat-drawer id="sidebar-left" #drawer class="drawer-sidenav" opened="true" mode="side">
-    <gw-lib-vertical name="vertical"></gw-lib-vertical>
+    <gw-core-vertical name="vertical"></gw-core-vertical>
   </mat-drawer>
   <div class="router-outlet__div page">
-    <gw-lib-loader></gw-lib-loader>
+    <gw-core-loader></gw-core-loader>
     <router-outlet></router-outlet>
   </div>
 </mat-drawer-container>

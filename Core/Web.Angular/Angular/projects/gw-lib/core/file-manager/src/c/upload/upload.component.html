@@ -1,0 +1,41 @@
+<input #singleFile [hidden]="true" type="file" (change)="onFileSelected($event)">
+<input #multipleFiles [hidden]="true" type="file" multiple (change)="onFileSelected($event)">
+<div style="display: flex;">
+  @if (isMultiple) {
+    <button type="button" mat-button color="accent" id="btnMultiple_{{id}}" name="btnMultiple_{{id}}" (click)="multipleFiles.click()">
+      <span color="white" class="material-icons">file_upload</span>
+      <span>Upload</span>
+    </button>
+  }
+  @if (!isMultiple) {
+    <button type="button" mat-button color="accent" id="btnSingle_{{id}}" name="btnSingle_{{id}}"
+      (click)="singleFile.click()">
+      <span color="white" class="material-icons">file_upload</span>
+      <span>Upload</span>
+    </button>
+  }
+  <ng-template #progressTemplate style="width: 390px;">
+    <div style="width: 100%;">
+      <div [style.visibility]="showOverallProgress ? 'visible' : 'hidden'">
+        Overall:
+        <br />
+        <div class="progressContainer">
+          <span class="progressContainer__text">{{ overallProgressSubject | async }}%</span>
+          <mat-progress-bar [value]="overallProgressSubject | async" color="accent"></mat-progress-bar>
+        </div>
+      </div>
+      <div class="flexWidthChild" [style.visibility]="showFileProgress ? 'visible' : 'hidden'">
+        File: {{currentFile}}
+      </div>
+      <div class="progressContainer" [style.visibility]="showFileProgress ? 'visible' : 'hidden'">
+        <span class="progressContainer__text">{{ fileProgressSubject | async }}%</span>
+        <mat-progress-bar [value]="fileProgressSubject | async" color="accent"></mat-progress-bar>
+      </div>
+      <div style="width: 100%; position: relative;">
+        <div style="position: absolute; right: 5px; margin-top: 15px;">
+          <button type="button" id="btnOk_{{id}}" name="btnOk_{{id}}" mat-raised-button color="primary" (click)="onOk()">Close</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

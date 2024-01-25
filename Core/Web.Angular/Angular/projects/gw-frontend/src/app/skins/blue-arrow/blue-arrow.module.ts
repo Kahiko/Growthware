@@ -9,13 +9,13 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 // import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
-import { LoaderModule } from '@Growthware/features/loader';
-import { NavigationModule } from '@Growthware/features/navigation';
+import { LoaderComponent } from '@growthware/core/loader';
+import { NavigationModule } from '@growthware/core/navigation';
 // Library Standalone
-import { HorizontalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
-import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
-import { VerticalComponent } from '@Growthware/features/navigation';
+import { HorizontalComponent } from '@growthware/core/navigation';
+// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { BlueArrowRoutingModule } from './blue-arrow-routing.module';
 import { BlueArrowFooterComponent } from './blue-arrow-footer/blue-arrow-footer.component';
@@ -23,34 +23,34 @@ import { BlueArrowHeaderComponent } from './blue-arrow-header/blue-arrow-header.
 import { BlueArrowLayoutComponent } from './blue-arrow-layout/blue-arrow-layout.component';
 
 @NgModule({
-  declarations: [
-    BlueArrowFooterComponent,
-    BlueArrowHeaderComponent,
-    BlueArrowLayoutComponent
-  ],
-  imports: [
-    // Angular Material
-    // MatButtonModule,
-    MatDividerModule,
-    // MatIconModule,
-    MatListModule,
-    // MatMenuModule,
-    MatSidenavModule,
-    // MatToolbarModule,
+	declarations: [
+		BlueArrowFooterComponent,
+		BlueArrowHeaderComponent,
+		BlueArrowLayoutComponent
+	],
+	imports: [
+		// Angular Material
+		// MatButtonModule,
+		MatDividerModule,
+		// MatIconModule,
+		MatListModule,
+		// MatMenuModule,
+		MatSidenavModule,
+		// MatToolbarModule,
     
-    HorizontalComponent,
-    // HierarchicalHorizontalComponent,
-    HierarchicalVerticalComponent,
-    VerticalComponent,
+		HorizontalComponent,
+		// HierarchicalHorizontalComponent,
+		HierarchicalVerticalComponent,
+		VerticalComponent,
 
-    CommonModule,
-    BlueArrowRoutingModule,
-    LoaderModule,
+		CommonModule,
+		BlueArrowRoutingModule,
+		LoaderComponent,
 
-    NavigationModule
-  ],
-  exports: [
-    BlueArrowLayoutComponent
-  ]
+		NavigationModule
+	],
+	exports: [
+		BlueArrowLayoutComponent
+	]
 })
 export class BlueArrowModule { }

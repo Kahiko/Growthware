@@ -6,13 +6,13 @@ import { HomeComponent } from './c/home/home.component';
 import { GenericHomeComponent } from './c/generic-home/generic-home.component';
 
 @NgModule({
-  declarations: [
-    GenericHomeComponent,
-    HomeComponent
-  ],
-  imports: [
-    CommonModule,
-    HomeRoutingModule
-  ]
+	declarations: [
+		GenericHomeComponent,
+		HomeComponent
+	],
+	imports: [
+		CommonModule,
+		HomeRoutingModule
+	]
 })
 export class HomeModule { }

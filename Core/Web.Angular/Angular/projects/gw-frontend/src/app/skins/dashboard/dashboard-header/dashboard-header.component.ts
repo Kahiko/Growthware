@@ -3,24 +3,24 @@ import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 
 // Library
-import { AccountService, IAccountInformation } from '@Growthware/features/account';
-import { GWCommon } from '@Growthware/common-code';
-import { LoginComponent } from '@Growthware/features/account/c/login/login.component';
-import { ModalService, ModalOptions, WindowSize } from '@Growthware/features/modal';
-import { ConfigurationService } from '@Growthware/features/configuration';
+import { AccountService, IAccountInformation } from '@growthware/core/account';
+import { GWCommon } from '@growthware/common/services';
+import { LoginComponent } from '@growthware/core/account';
+import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
+import { ConfigurationService } from '@growthware/core/configuration';
 
 @Component({
-  selector: 'gw-frontend-dashboard-header',
-  templateUrl: './dashboard-header.component.html',
-  styleUrls: ['./dashboard-header.component.scss']
+	selector: 'gw-frontend-dashboard-header',
+	templateUrl: './dashboard-header.component.html',
+	styleUrls: ['./dashboard-header.component.scss']
 })
 export class DashboardHeaderComponent implements OnDestroy, OnInit {
-  private _Subscription: Subscription = new Subscription();
+	private _Subscription: Subscription = new Subscription();
 
-  accountName: string = '';
-  applicationName: string = '';
-  isAuthenticated: boolean = false;
-  version: string = '';
+	accountName: string = '';
+	applicationName: string = '';
+	isAuthenticated: boolean = false;
+	version: string = '';
 
   @Input() sidenav: any;
 
@@ -32,39 +32,39 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
     private _Router: Router) { }
 
   ngOnDestroy(): void {
-    this._Subscription.unsubscribe();
+  	this._Subscription.unsubscribe();
   }
 
   ngOnInit(): void {
-    this._Subscription.add(
-      this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
-    );
-    this._Subscription.add(
-      this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
-    );
-    this._Subscription.add(
-      this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-        this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
-        this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
-      })
-    );
+  	this._Subscription.add(
+  		this._ConfigurationSvc.applicationName$.subscribe((val: string) => { this.applicationName = val; })
+  	);
+  	this._Subscription.add(
+  		this._ConfigurationSvc.version$.subscribe((val: string) => { this.version = val; })
+  	);
+  	this._Subscription.add(
+  		this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
+  			this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
+  			this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
+  		})
+  	);
   }
 
   onLogin(): void {
-    const mWindowSize: WindowSize = new WindowSize(225, 450);
-    const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
-    mModalOptions.buttons.okButton.callbackMethod = () => {
-      this.onModalOk
-    }
-    this._ModalSvc.open(mModalOptions);
+  	const mWindowSize: WindowSize = new WindowSize(225, 450);
+  	const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.logInModalId, 'Logon', LoginComponent, mWindowSize);
+  	mModalOptions.buttons.okButton.callbackMethod = () => {
+  		this.onModalOk;
+  	};
+  	this._ModalSvc.open(mModalOptions);
   }
 
   onLogoClick(): void {
-    if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
-      this._Router.navigate(['home']);
-    } else {
-      this._Router.navigate(['generic_home']);
-    }
+  	if(this._AccountSvc.authenticationResponse.account.trim().toLocaleLowerCase() !== this._AccountSvc.anonymous.trim().toLocaleLowerCase()) {
+  		this._Router.navigate(['home']);
+  	} else {
+  		this._Router.navigate(['generic_home']);
+  	}
   }
 
   onModalOk() {
@@ -72,6 +72,6 @@ export class DashboardHeaderComponent implements OnDestroy, OnInit {
   }
 
   onLogout(): void {
-    this._AccountSvc.logout();
+  	this._AccountSvc.logout();
   }
 }

@@ -5,10 +5,10 @@ import { WorkflowsRoutingModule } from './workflows-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    WorkflowsRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		WorkflowsRoutingModule
+	]
 })
 export class WorkflowsModule { }

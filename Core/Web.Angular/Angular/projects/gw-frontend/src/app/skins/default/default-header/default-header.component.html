@@ -5,7 +5,7 @@
   <span class="spacer">
     <button (click)="onLogoClick()" class="button__link">{{applicationName}}</button>
   </span>
-  <gw-lib-horizontal name="horizontal" fontColor="white"></gw-lib-horizontal>
+  <gw-core-horizontal name="horizontal" fontColor="white"></gw-core-horizontal>
   <span>Version {{version}}</span>
   <button mat-icon-button>
     <mat-icon>help_outline</mat-icon>
@@ -14,23 +14,27 @@
     <mat-icon>person_outline</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <div *ngIf="!isAuthenticated">
-      <button (click)="onLogin()" mat-menu-item>
-        <mat-icon>login</mat-icon>
-        <span>Sign in</span>
-      </button>
-    </div>
-    <div *ngIf="isAuthenticated">
-      <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
-      <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
-        <mat-icon>settings</mat-icon><span>Edit Profile</span>
-      </a>
-      <a mat-menu-item [routerLink]="['/accounts/change-password']">
-        <mat-icon>settings</mat-icon><span>Change Password</span>
-      </a>
-      <a mat-menu-item [routerLink]="['/accounts/logout']">
-        <mat-icon>logout</mat-icon><span>logout</span>
-      </a>
-    </div>
+    @if (!isAuthenticated) {
+      <div>
+        <button (click)="onLogin()" mat-menu-item>
+          <mat-icon>login</mat-icon>
+          <span>Sign in</span>
+        </button>
+      </div>
+    }
+    @if (isAuthenticated) {
+      <div>
+        <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}</div>
+        <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
+          <mat-icon>settings</mat-icon><span>Edit Profile</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/accounts/change-password']">
+          <mat-icon>settings</mat-icon><span>Change Password</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/accounts/logout']">
+          <mat-icon>logout</mat-icon><span>logout</span>
+        </a>
+      </div>
+    }
   </mat-menu>
 </mat-toolbar>

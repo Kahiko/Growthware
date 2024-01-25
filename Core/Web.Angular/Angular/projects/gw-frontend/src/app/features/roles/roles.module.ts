@@ -5,10 +5,10 @@ import { RolesRoutingModule } from './roles-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    RolesRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		RolesRoutingModule
+	]
 })
 export class RolesModule { }

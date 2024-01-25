@@ -9,14 +9,14 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 // import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
-import { LoaderModule } from '@Growthware/features/loader';
-import { NavigationModule } from '@Growthware/features/navigation';
+import { LoaderComponent } from '@growthware/core/loader';
+import { NavigationModule } from '@growthware/core/navigation';
 // Library Standalone
-import { HorizontalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
-import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalHorizontalFlyoutComponent } from '@Growthware/features/navigation';
-import { VerticalComponent } from '@Growthware/features/navigation';
+import { HorizontalComponent } from '@growthware/core/navigation';
+// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+// import { HierarchicalHorizontalFlyoutComponent } from '@growthware/core/navigation';
+import { VerticalComponent } from '@growthware/core/navigation';
 // Modules/Components
 import { ProfessionalRoutingModule } from './professional-routing.module';
 import { ProfessionalFooterComponent } from './professional-footer/professional-footer.component';
@@ -25,35 +25,35 @@ import { ProfessionalLayoutComponent } from './professional-layout/professional-
 
 
 @NgModule({
-  declarations: [
-    ProfessionalFooterComponent,
-    ProfessionalHeaderComponent,
-    ProfessionalLayoutComponent
-  ],
-  imports: [
-    CommonModule,
-    // Angular Material
-    // MatButtonModule,
-    MatDividerModule,
-    // MatIconModule,
-    MatListModule,
-    // MatMenuModule,
-    MatSidenavModule,
-    // MatToolbarModule,
-    // Library Modules
-    LoaderModule,
-    NavigationModule,
-    // Library Standalone
-    HorizontalComponent,
-    // HierarchicalHorizontalComponent,
-    HierarchicalVerticalComponent,
-    // HierarchicalHorizontalFlyoutComponent,
-    VerticalComponent,
-    // Modules/Components
-    ProfessionalRoutingModule,
-  ],
-  exports: [
-    ProfessionalLayoutComponent
-  ]
+	declarations: [
+		ProfessionalFooterComponent,
+		ProfessionalHeaderComponent,
+		ProfessionalLayoutComponent
+	],
+	imports: [
+		CommonModule,
+		// Angular Material
+		// MatButtonModule,
+		MatDividerModule,
+		// MatIconModule,
+		MatListModule,
+		// MatMenuModule,
+		MatSidenavModule,
+		// MatToolbarModule,
+		// Library Modules
+		LoaderComponent,
+		NavigationModule,
+		// Library Standalone
+		HorizontalComponent,
+		// HierarchicalHorizontalComponent,
+		HierarchicalVerticalComponent,
+		// HierarchicalHorizontalFlyoutComponent,
+		VerticalComponent,
+		// Modules/Components
+		ProfessionalRoutingModule,
+	],
+	exports: [
+		ProfessionalLayoutComponent
+	]
 })
 export class ProfessionalModule { }

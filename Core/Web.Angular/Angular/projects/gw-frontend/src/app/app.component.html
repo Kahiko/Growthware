@@ -1,14 +1,30 @@
 <div>
-  <gw-lib-toaster></gw-lib-toaster>
-  <ng-container *ngIf="(skin$ | async) as layout" [ngSwitch]="layout">
-    <gw-frontend-arc-layout *ngSwitchCase="'arc'"></gw-frontend-arc-layout>
-    <gw-frontend-dashboard-layout *ngSwitchCase="'dashboard'"></gw-frontend-dashboard-layout>
-    <gw-frontend-default-layout *ngSwitchCase="'default'"></gw-frontend-default-layout>
-    <gw-frontend-blue-arrow-layout *ngSwitchCase="'blue arrow'"></gw-frontend-blue-arrow-layout>
-    <gw-frontend-dev-ops-layout *ngSwitchCase="'devops'"></gw-frontend-dev-ops-layout>
-    <gw-frontend-professional-layout *ngSwitchCase="'professional'"></gw-frontend-professional-layout>
-    <div *ngSwitchDefault><gw-frontend-default-layout></gw-frontend-default-layout></div>
-  </ng-container>
+  <gw-core-toaster></gw-core-toaster>
+  @if ((skin$ | async); as layout) {
+    @switch (layout) {
+      @case ('arc') {
+        <gw-frontend-arc-layout></gw-frontend-arc-layout>
+      }
+      @case ('dashboard') {
+        <gw-frontend-dashboard-layout></gw-frontend-dashboard-layout>
+      }
+      @case ('default') {
+        <gw-frontend-default-layout></gw-frontend-default-layout>
+      }
+      @case ('blue arrow') {
+        <gw-frontend-blue-arrow-layout></gw-frontend-blue-arrow-layout>
+      }
+      @case ('devops') {
+        <gw-frontend-dev-ops-layout></gw-frontend-dev-ops-layout>
+      }
+      @case ('professional') {
+        <gw-frontend-professional-layout></gw-frontend-professional-layout>
+      }
+      @default {
+        <div><gw-frontend-default-layout></gw-frontend-default-layout></div>
+      }
+    }
+  }
   <ng-template #loading>
     loading...
   </ng-template>

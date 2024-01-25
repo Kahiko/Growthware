@@ -5,10 +5,10 @@ import { MessagesRoutingModule } from './messages-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    MessagesRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		MessagesRoutingModule
+	]
 })
 export class MessagesModule { }

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
-import { HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { HttpInterceptor } from '@angular/common/http';
+import { Injectable, inject } from '@angular/core';
+import { HttpRequest, HttpEvent, HttpHandlerFn } from '@angular/common/http';
+import { HttpInterceptorFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 // Library
-import { LoaderService } from '@Growthware/features/loader';
+import { LoaderService } from '@growthware/core/loader';
 
 /**
  * This class is for intercepting all http requests. When a request starts, we set the loadingSub property
@@ -12,17 +12,23 @@ import { LoaderService } from '@Growthware/features/loader';
  * property to false. If an error occurs while servicing the request, set the loadingSub property to false.
  * @class {LoaderInterceptor}
  */
-@Injectable()
-export class LoaderInterceptor implements HttpInterceptor {
+@Injectable({
+	providedIn: 'root'
+})
+class Loader {
 
-    constructor(
+	constructor(
         private _LoadingSvc: LoaderService
-    ) { }
+	) { }
 
-    intercept(request: HttpRequest<unknown>, next: HttpHandler ): Observable<HttpEvent<unknown>> {
-        this._LoadingSvc.setLoading(true);
-        return next.handle(request).pipe(
-            finalize(() => this._LoadingSvc.setLoading(false))
-        );
-    }
+	intercept(request: HttpRequest<unknown>, next: HttpHandlerFn ): Observable<HttpEvent<unknown>> {
+		this._LoadingSvc.setLoading(true);
+		return next(request).pipe(
+			finalize(() => this._LoadingSvc.setLoading(false))
+		);
+	}
 }
+
+export const LoaderInterceptor: HttpInterceptorFn = ( req: HttpRequest<unknown>, next: HttpHandlerFn,) => {
+	return inject(Loader).intercept(req, next);
+};

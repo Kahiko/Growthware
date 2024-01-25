@@ -2,14 +2,14 @@
 <mat-drawer-container class="drawer-container" color="primary" autosize>
   <mat-drawer #drawer class="drawer-sidenav" opened="true" mode="side">
     <mat-divider></mat-divider>
-      <gw-lib-vertical name="vertical"></gw-lib-vertical>
+      <gw-core-vertical name="vertical"></gw-core-vertical>
     <mat-divider></mat-divider>
     <mat-nav-list>
-      <gw-lib-hierarchical-vertical name="hierarchicalVertical"></gw-lib-hierarchical-vertical>
+      <gw-core-hierarchical-vertical name="hierarchicalVertical"></gw-core-hierarchical-vertical>
     </mat-nav-list>
   </mat-drawer>
   <div class="router-outlet__div page">
-    <gw-lib-loader></gw-lib-loader>
+    <gw-core-loader></gw-core-loader>
     <router-outlet></router-outlet>
   </div>
 </mat-drawer-container>

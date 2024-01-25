@@ -1,0 +1,30 @@
+<div class="formSection">
+  <div class="formSectionContents">
+    <form [formGroup]="frmCreateDirectory" (ngSubmit)="onCreateDirectorySubmit()">
+      <div class="table">
+        <div class="tr">
+          <div class="td left">
+            <span class="Form_LabelText">New name&nbsp;:</span>
+          </div>
+          <div class="td right">
+            <input formControlName="newDirectoryName" class="Form_Field rounded" id="newDirectoryName" />&nbsp;
+          </div>
+          <div class="td">
+            @if (getControls['newDirectoryName'].hasError('required')) {
+              <span class="Form_LabelTextRed">{{getErrorMessage('newDirectoryName')}}</span>
+            }
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td"></div>
+          <div class="td right">
+            <button type="submit" [disabled]="frmCreateDirectory.invalid" mat-button class="Form_Button" style="float: right;" color="primary">
+              <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i> Save
+            </button>
+          </div>
+          <div class="td"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

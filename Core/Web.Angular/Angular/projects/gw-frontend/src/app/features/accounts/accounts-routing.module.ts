@@ -2,31 +2,31 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library MISC
-import { AuthGuard } from '@Growthware/common-code';
+import { AuthGuard } from '@growthware/common/services';
 // Library Components
-import { AccountDetailsComponent } from '@Growthware/features/account/c/account-details/account-details.component';
-import { ChangePasswordComponent } from '@Growthware/features/account/c/change-password/change-password.component';
-import { LoginComponent } from '@Growthware/features/account/c/login/login.component';
-import { LogoutComponent } from '@Growthware/features/account/c/logout/logout.component';
-import { SearchAccountsComponent } from '@Growthware/features/account/c/search-accounts/search-accounts.component';
-import { SelectPreferencesComponent } from '@Growthware/features/account/c/select-preferences/select-preferences.component';
-import { UpdateAnonymousProfileComponent } from '@Growthware/features/account/c/update-anonymous-profile/update-anonymous-profile.component';
+import { AccountDetailsComponent } from '@growthware/core/account';
+import { ChangePasswordComponent } from '@growthware/core/account';
+import { LoginComponent } from '@growthware/core/account';
+import { LogoutComponent } from '@growthware/core/account';
+import { SearchAccountsComponent } from '@growthware/core/account';
+import { SelectPreferencesComponent } from '@growthware/core/account';
+import { UpdateAnonymousProfileComponent } from '@growthware/core/account';
 
 const childRoutes: Routes = [
-  { path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
-  { path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'register', component: AccountDetailsComponent },
-  { path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
-  { path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
-  { path: 'logon', component: LoginComponent},
-  { path: 'change-password', component: ChangePasswordComponent },
-  { path: 'logout', component: LogoutComponent },
+	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
+	{ path: 'edit-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+	{ path: 'edit-my-account', component: AccountDetailsComponent, canActivate: [AuthGuard] },
+	{ path: 'register', component: AccountDetailsComponent },
+	{ path: 'selectpreferences', component: SelectPreferencesComponent, canActivate: [AuthGuard] },
+	{ path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
+	{ path: 'logon', component: LoginComponent},
+	{ path: 'change-password', component: ChangePasswordComponent },
+	{ path: 'logout', component: LogoutComponent },
 ];
 
 
 @NgModule({
-  imports: [RouterModule.forChild(childRoutes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(childRoutes)],
+	exports: [RouterModule]
 })
 export class AccountsRoutingModule { }

@@ -1,0 +1,5 @@
+<ul class="grid-list">
+  @for (item of data$ | async; track item; let rowIndex = $index) {
+    <li>{{item}}</li>
+  }
+</ul>

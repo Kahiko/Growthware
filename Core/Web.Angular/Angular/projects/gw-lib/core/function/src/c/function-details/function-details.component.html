@@ -1,0 +1,435 @@
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" novalidate>
+  <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
+    <mat-tab label="General">
+      <div class="mat-tab__container">
+        <div class="mat-tab__content formSectionContents tabHeight">
+          <div class="table">
+            <div class="tr">
+              <div class="td firstCell left">
+                <span class="Form_LabelText">ID:</span>
+              </div>
+              <div class="td middleCell"></div>
+              <div class="td left">
+                <input matInput type="text" formControlName="id" class="Form_Field rounded">
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td left">
+                <span class="Form_LabelText">Name:</span>@if (controls['name'].invalid) {
+                <mat-error style="display: inline-block; padding-left: 5px;">*</mat-error>
+              }
+            </div>
+            <div class="td middleCell"></div>
+            <div class="td left">
+              <input matInput type="text" formControlName="name" class="Form_Field rounded">@if (controls['name'].invalid && controls['name'].touched) {
+              <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('name')}}</mat-error>
+            }
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td left">
+            <span class="Form_LabelText">Description: </span>
+          </div>
+          <div class="td middleCell"></div>
+          <div class="td top left">
+            <textarea matInput id="txtDescription" formControlName="description" #description class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+            <mat-hint align="end">{{description.value.length}}/512</mat-hint>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td left">
+            <span class="Form_LabelText">Notes: </span>
+          </div>
+          <div class="td middleCell"></div>
+          <div class="td top left">
+            <textarea matInput id="txtNotes" formControlName="notes" #notes class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+            <mat-hint align="end">{{notes.value.length}}/512</mat-hint>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td top left">
+            <span class="Form_LabelText">Key Words: </span>
+          </div>
+          <div class="td middleCell"></div>
+          <div class="td left">
+            <textarea matInput id="txtKeywords" formControlName="metaKeywords" #metaKeywords class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+            <mat-hint align="end">{{metaKeywords.value.length}}/512</mat-hint>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td left">
+            <span class="Form_LabelText">Action:</span>@if (controls['action'].invalid) {
+            <mat-error style="display: inline-block; padding-left: 5px;">*</mat-error>
+          }
+        </div>
+        <div class="td middleCell">
+          <i (click)="onHelp('Action')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+        </div>
+        <div class="td left">
+          <input matInput type="text" formControlName="action" class="Form_Field rounded">
+          @if (controls['action'].invalid && controls['action'].touched) {
+            <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('action')}}</mat-error>
+          }
+        </div>
+      </div>
+      <div class="tr">
+        <div class="td left">
+          <span class="Form_LabelText">Type: </span>
+        </div>
+        <div class="td middleCell"></div>
+        <div class="td left">
+          <mat-select [(value)]="selectedFunctionType" class="rounded" style="width: 150px;">
+            @for (item of validFunctionTypes; track item) {
+              <mat-option [value]="item.key">
+                {{item.value}}
+              </mat-option>
+            }
+          </mat-select>
+        </div>
+      </div>
+      <div class="tr">
+        <div class="td left">
+          <span class="Form_LabelText">Source: </span>
+        </div>
+        <div class="td middleCell">
+          <i (click)="onHelp('Source')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+        </div>
+        <div class="td left">
+          <input matInput type="text" formControlName="source" class="Form_Field rounded">
+        </div>
+      </div>
+      <div class="tr">
+        <div class="td left">
+          <span class="Form_LabelText">Controller: </span>
+        </div>
+        <div class="td middleCell">
+          <i (click)="onHelp('Control')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+        </div>
+        <div class="td left">
+          <input matInput type="text" formControlName="controller" class="Form_Field rounded">
+        </div>
+      </div>
+    </div>
+    <div class="table">
+      <div class="tr">
+        <div class="td left">
+          <input type="checkbox" ID="chkEnableViewState" formControlName="enableViewState" />
+          <label for="chkEnableViewState">Enable ViewState</label>
+
+          <input type="checkbox" ID="chkEnableNotifications" formControlName="enableNotifications" />
+          <label for="chkEnableNotifications">Enable Notifications</label>
+
+          <input type="checkbox" ID="chkRedirectOnTimeout" formControlName="redirectOnTimeout" />
+          <label for="chkRedirectOnTimeout">Redirect on Session Timeout</label>
+
+          <input type="checkbox" ID="chkNoUI" formControlName="noUI" />
+          <label for="chkNoUI">No UI</label>
+
+          <input type="checkbox" ID="chkIsNav" formControlName="isNavigable" />
+          <label for="chkIsNav">Is Nav</label>
+        </div>
+      </div>
+    </div>
+    <div class="table">
+      <div class="tr">
+        <div class="td left">
+          <span class="Form_LabelText" style="display: in;">Nav type: </span>
+          <mat-form-field>
+            <mat-select placeholder="Navigation Type" [(value)]="selectedNavigationType" class="rounded" style="width: 150px;">
+              @for (item of validNavigationTypes; track item) {
+                <mat-option [value]="item.key">
+                  {{item.value}}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="td">
+          <span class="Form_LabelText">Parent: </span>
+          <mat-form-field>
+            <mat-select [(value)]="selectedParentId" class="rounded" style="width: 150px;">
+              @for (item of avalibleParents; track item) {
+                <mat-option [value]="item.key">
+                  {{item.value}}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="td">
+          <span class="Form_LabelText">Link Behavior: </span>
+          <mat-form-field>
+            <mat-select [(value)]="selectedLinkBehavior" class="rounded" style="width: 150px;">
+              @for (item of validLinkBehaviors; track item) {
+                <mat-option [value]="item.key">
+                  {{item.value}}
+                </mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</mat-tab>
+<mat-tab label="Menu Order">
+  <div class="mat-tab__container">
+    <div class="mat-tab__content formSectionContents tabHeight">
+      <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+        @for (movie of functionMenuOrders; track movie) {
+          <div class="example-box" cdkDrag>
+            <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+            {{movie.name}}
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+</mat-tab>
+@if (showRoles) {
+  <mat-tab label="Roles">
+    <div class="mat-tab__container">
+      <div class="mat-tab__content formSectionContents tabHeight">
+        <div class="table">
+          <div class="tr">
+            <div class="td centerDiv">
+              <gw-core-pick-list #rolesView
+                id="viewRoles"
+                name="{{rolesPickListNameView}}"
+                allItemsText="Available Roles"
+                header="View roles"
+                pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                selectedItemsText="Selected Roles"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+            <div class="td centerDiv">
+              <gw-core-pick-list #rolesAdd
+                id="addRoles"
+                name="{{rolesPickListNameAdd}}"
+                allItemsText="Available Roles"
+                header="Add roles"
+                pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                selectedItemsText="Selected Roles"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+          </div>
+          <div class="tr" style="height: 10px;"></div>
+          <div class="tr">
+            <div class="td centerDiv">
+              <gw-core-pick-list #rolesEdit
+                id="editRoles"
+                name="{{rolesPickListNameEdit}}"
+                allItemsText="Available Roles"
+                header="Edit roles"
+                pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                selectedItemsText="Selected Roles"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+            <div class="td centerDiv">
+              <gw-core-pick-list #rolesDelete
+                id="deleteRoles"
+                name="{{rolesPickListNameDelete}}"
+                header="Delete roles"
+                pickListTableHelp="Select roles from either the 'Available Roles' or the 'Selected Roles' then use the center arrow buttons to move the role for one list to the other."
+                selectedItemsText="Selected Roles"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+}
+@if (showGroups) {
+  <mat-tab label="Groups">
+    <div class="mat-tab__container ">
+      <div class="mat-tab__content formSectionContents tabHeight">
+        <div class="table">
+          <div class="tr">
+            <div class="td centerDiv">
+              <gw-core-pick-list #groupsView
+                id="viewGroups"
+                name="{{groupsPickListNameView}}"
+                allItemsText="Available Groups"
+                header="View Groups"
+                pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                selectedItemsText="Selected Groups"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+            <div class="td centerDiv">
+              <gw-core-pick-list #groupsAdd
+                id="addGroups"
+                name="{{groupsPickListNameAdd}}"
+                allItemsText="Available Groups"
+                header="Add Groups"
+                pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                selectedItemsText="Selected Groups"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+          </div>
+          <div class="tr" style="height: 10px;"></div>
+          <div class="tr" style="padding-top: 5px;">
+            <div class="td centerDiv">
+              <gw-core-pick-list #groupsEdit
+                id="editGroups"
+                name="{{groupsPickListNameEdit}}"
+                allItemsText="Available Groups"
+                header="Edit Groups"
+                pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                selectedItemsText="Selected Groups"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+            <div class="td centerDiv">
+              <gw-core-pick-list #groupsDelete
+                id="deleteGroups"
+                name="{{groupsPickListNameDelete}}"
+                allItemsText="Available Groups"
+                header="Delete Groups"
+                pickListTableHelp="Select groups from either the 'Available Groups' or the 'Selected Groups' then use the center arrow buttons to move the group for one list to the other."
+                selectedItemsText="Selected Groups"
+                size=8
+              width=120></gw-core-pick-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+}
+<mat-tab label="Directory Information">
+  <div class="mat-tab__container">
+    <div class="mat-tab__content formSectionContents tabHeight">
+      <div class="table">
+        <div class="tr">
+          <div class="td right">
+            <span class="Form_LabelText">Directory: </span>
+          </div>
+          <div class="td" style="width: 20px;"></div>
+          <div class="td left">
+            <input matInput type="text" formControlName="directory" #directory class="Form_Field rounded"><br/>
+            <mat-hint align="end">{{directory.value.length}}/255</mat-hint>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td right">
+            <span class="Form_LabelText">Requries Impersonation: </span>
+          </div>
+          <div class="td" style="width: 20px;"></div>
+          <div class="td left">
+            <mat-checkbox formControlName="impersonate" class="Form_Field"></mat-checkbox>
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td right">
+            <span class="Form_LabelText">Account: </span>
+          </div>
+          <div class="td" style="width: 20px;"></div>
+          <div class="td left">
+            <input matInput type="text" formControlName="impersonationAccount" #impersonationAccount class="Form_Field rounded">
+          </div>
+        </div>
+        <div class="tr">
+          <div class="td right">
+            <span class="Form_LabelText">Password: </span>
+          </div>
+          <div class="td" style="width: 20px;">
+            <i (click)="onHelp('Passord')" style="cursor: pointer;" class="Form_Button_Icon material-icons">help</i>
+          </div>
+          <div class="td left">
+            <input matInput type="text" formControlName="impersonatePassword" #impersonatePassword class="Form_Field rounded">&nbsp;!Leave blank to keep the same password!
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</mat-tab>
+<mat-tab label="Derived Roles">
+  <div class="mat-tab__container">
+    <div class="mat-tab__container formSectionContents tabHeight">
+      <div>
+        <mat-grid-list cols="2" rowHeight="2:1">
+          <mat-grid-tile>
+            <gw-core-list #derivedViewRoles
+              id="derivedViewRoles"
+              name="{{derivedRolesView}}"
+              allItemsText=""
+              header="Derived View Roles"
+              pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+              size=8
+            width=200></gw-core-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <gw-core-list #derivedAddRoles
+              id="derivedAddRoles"
+              name="{{derivedRolesAdd}}"
+              allItemsText=""
+              header="Derived Add Roles"
+              pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+              size=8
+            width=200></gw-core-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <gw-core-list #derivedEditRoles
+              id="derivedEditRoles"
+              name="{{derivedRolesEdit}}"
+              allItemsText=""
+              header="Derived Edit Roles"
+              pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+              size=8
+            width=200></gw-core-list>
+          </mat-grid-tile>
+          <mat-grid-tile>
+            <gw-core-list #derivedDeleteRoles
+              id="derivedDeleteRoles"
+              name="{{derivedRolesDelete}}"
+              allItemsText=""
+              header="Derived Delete Roles"
+              pickListTableHelp="Represents roles that have been either directly assigned or assigned through a group."
+              size=8
+            width=200></gw-core-list>
+          </mat-grid-tile>
+        </mat-grid-list>
+      </div>
+    </div>
+  </div>
+</mat-tab>
+</mat-tab-group>
+<div class="buttonRow">
+  <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
+    <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+  </button>
+  @if (canDelete) {
+    <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+    </button>
+  }
+  <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+    <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+  </button>
+</div>
+</form>
+<ng-template #helpAction>
+  Note: Action should not have any special charactors.<br />
+  Once an action has been entered it can not be changed other than by direct access to the data store.<br />
+</ng-template>
+<ng-template #helpSource>
+  Note: If specifing a page use the forward slash Ex:&nbsp; /pages/common/mypage.aspx.<br />
+</ng-template>
+<ng-template #helpControl>
+  Note: Used for AngularJs implementations.<br />
+</ng-template>
+<ng-template #helpPassword>
+  For security reasons passwords are not displayed but are retained.<br />
+  If you are editing the Function and do not want to change the password then<br />
+  simply leave it blank and the original will be kept.<br />
+  If this is a new Function or you wish to change the password then fill out the<br />
+  the box provided.
+</ng-template>

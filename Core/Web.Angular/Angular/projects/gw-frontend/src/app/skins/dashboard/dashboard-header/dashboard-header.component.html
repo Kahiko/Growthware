@@ -1,35 +1,39 @@
 <mat-toolbar class="dark-bg">
-    <button style="color: #bdbdbd; outline: none;" mat-icon-button (click)="sidenav.toggle();">
-        <mat-icon>menu</mat-icon>
-    </button>
-    <span class="spacer">
-        <div style="display: inline-block; text-transform: uppercase; color: #fed189; font-weight: 300; font-size: 22px;">
-            Growthware&nbsp;
-            <span (click)="onLogoClick()" class="lite">{{applicationName}}</span>
-        </div>        
-    </span>
-    <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #bdbdbd;">
-        <mat-icon>person_outline</mat-icon>
-    </button>
-    <mat-menu #menu="matMenu">
-        <div *ngIf="!isAuthenticated">
-            <button (click)="onLogin()" mat-menu-item>
-                <mat-icon>login</mat-icon>
-                <span>Sign in</span>
-            </button>
+  <button style="color: #bdbdbd; outline: none;" mat-icon-button (click)="sidenav.toggle();">
+    <mat-icon>menu</mat-icon>
+  </button>
+  <span class="spacer">
+    <div style="display: inline-block; text-transform: uppercase; color: #fed189; font-weight: 300; font-size: 22px;">
+      Growthware&nbsp;
+      <span (click)="onLogoClick()" class="lite">{{applicationName}}</span>
+    </div>
+  </span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" style="color: #bdbdbd;">
+    <mat-icon>person_outline</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    @if (!isAuthenticated) {
+      <div>
+        <button (click)="onLogin()" mat-menu-item>
+          <mat-icon>login</mat-icon>
+          <span>Sign in</span>
+        </button>
+      </div>
+    }
+    @if (isAuthenticated) {
+      <div>
+        <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}
         </div>
-        <div *ngIf="isAuthenticated">
-            <div style="border: solid 1px; width: 98%; vertical-align: middle; text-align: center; ">{{accountName}}
-            </div>
-            <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
-                <mat-icon>settings</mat-icon><span>Edit Profile</span>
-            </a>
-            <a mat-menu-item [routerLink]="['/accounts/change-password']">
-                <mat-icon>settings</mat-icon><span>Change Password</span>
-            </a>
-            <a mat-menu-item [routerLink]="['/accounts/logout']">
-                <mat-icon>logout</mat-icon><span>logout</span>
-            </a>
-        </div>
-    </mat-menu>
+        <a mat-menu-item [routerLink]="['/accounts/edit-my-account']">
+          <mat-icon>settings</mat-icon><span>Edit Profile</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/accounts/change-password']">
+          <mat-icon>settings</mat-icon><span>Change Password</span>
+        </a>
+        <a mat-menu-item [routerLink]="['/accounts/logout']">
+          <mat-icon>logout</mat-icon><span>logout</span>
+        </a>
+      </div>
+    }
+  </mat-menu>
 </mat-toolbar>

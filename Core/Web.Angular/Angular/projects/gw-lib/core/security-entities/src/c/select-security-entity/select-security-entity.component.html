@@ -1,0 +1,22 @@
+<div class="table" style=" width: 200px;">
+  <div class="tr">
+    <div class="td">
+      <mat-form-field appearance="fill">
+        <mat-select [(value)]="selectedSecurityEntity" class="rounded">
+          @for (item of validSecurityEntities; track item) {
+            <mat-option [value]="item.id">
+              {{ item.name }}
+            </mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="tr">
+    <div class="td right">
+      <button type="button" mat-button (click)="onSave()" class="Form_Button" color="primary">
+        <i style="padding-right: 3px" class="Form_Button_Icon material-icons">save</i>Save
+      </button>
+    </div>
+  </div>
+</div>

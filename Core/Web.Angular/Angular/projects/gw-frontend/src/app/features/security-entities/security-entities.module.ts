@@ -5,10 +5,10 @@ import { SecurityEntitiesRoutingModule } from './security-entities-routing.modul
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    SecurityEntitiesRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		SecurityEntitiesRoutingModule
+	]
 })
 export class SecurityEntitiesModule { }

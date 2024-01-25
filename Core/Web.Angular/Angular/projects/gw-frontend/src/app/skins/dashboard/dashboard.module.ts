@@ -9,13 +9,13 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
-import { LoaderModule } from '@Growthware/features/loader';
-import { NavigationModule } from '@Growthware/features/navigation';
+import { LoaderComponent } from '@growthware/core/loader';
+import { NavigationModule } from '@growthware/core/navigation';
 // // Library Standalone
-import { HorizontalComponent } from '@Growthware/features/navigation';
-// import { HierarchicalHorizontalComponent } from '@Growthware/features/navigation';
-import { HierarchicalVerticalComponent } from '@Growthware/features/navigation';
-import { VerticalComponent } from '@Growthware/features/navigation';
+import { HorizontalComponent } from '@growthware/core/navigation';
+// import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
+import { HierarchicalVerticalComponent } from '@growthware/core/navigation';
+import { VerticalComponent } from '@growthware/core/navigation';
 // Skin - Modules/Components
 import { DashboardRoutingModule } from './dashboard-routing.module';
 import { DashboardFooterComponent } from './dashboard-footer/dashboard-footer.component';
@@ -24,33 +24,33 @@ import { DashboardLayoutComponent } from './dashboard-layout/dashboard-layout.co
 
 
 @NgModule({
-  declarations: [
-    DashboardFooterComponent,
-    DashboardHeaderComponent,
-    DashboardLayoutComponent
-  ],
-  imports: [
-    CommonModule,
-    // Angular Material
-    MatButtonModule,
-    MatDividerModule,
-    MatIconModule,
-    MatListModule,
-    MatMenuModule,
-    MatSidenavModule,
-    MatToolbarModule,
-    // Library Modules
-    LoaderModule,
-    NavigationModule,
-    // Library Standalone
-    HorizontalComponent,
-    VerticalComponent,
-    HierarchicalVerticalComponent,
-    // Skin
-    DashboardRoutingModule
-  ],
-  exports: [
-    DashboardLayoutComponent,
-  ]
+	declarations: [
+		DashboardFooterComponent,
+		DashboardHeaderComponent,
+		DashboardLayoutComponent
+	],
+	imports: [
+		CommonModule,
+		// Angular Material
+		MatButtonModule,
+		MatDividerModule,
+		MatIconModule,
+		MatListModule,
+		MatMenuModule,
+		MatSidenavModule,
+		MatToolbarModule,
+		// Library Modules
+		LoaderComponent,
+		NavigationModule,
+		// Library Standalone
+		HorizontalComponent,
+		VerticalComponent,
+		HierarchicalVerticalComponent,
+		// Skin
+		DashboardRoutingModule
+	],
+	exports: [
+		DashboardLayoutComponent,
+	]
 })
 export class DashboardModule { }

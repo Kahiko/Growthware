@@ -5,10 +5,10 @@ import { SysAdminRoutingModule } from './sys-admin-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    SysAdminRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		SysAdminRoutingModule
+	]
 })
 export class SysAdminModule { }

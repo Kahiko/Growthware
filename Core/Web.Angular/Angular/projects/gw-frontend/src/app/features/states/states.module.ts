@@ -5,10 +5,10 @@ import { StatesRoutingModule } from './states-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    StatesRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		StatesRoutingModule
+	]
 })
 export class StatesModule { }

@@ -1,0 +1,56 @@
+
+<form [formGroup]="frmMessage" (ngSubmit)="onSubmit(frmMessage)">
+  <div class="pageDescription" style="padding-left: 5px;">
+    In this page, you can add or edit messages, which can be used as error or general information text in response to an action by a user. For example, 'Invalid Password' or 'Please allow 24 hours for your submission to appear.'
+  </div>
+  <table class="formSection" style="width: 850px; margin-left: 15px; border: solid 1px;">
+    <tr>
+      <td class="left">
+        <span class="Form_LabelText">Name:</span>
+      </td>
+      <td style="width: 10px;"></td>
+      <td class="left">
+        <input type="text" id="txtName" formControlName="name" class="rounded" />
+      </td>
+    </tr>
+    <tr>
+      <td style="width: 10px;" colspan="3">
+        <span class="Form_LabelText">Description: </span><br />
+        <input type="text" id="txtDescription" formControlName="description" class="rounded" style="height: 49px; width: 847px;" TextMode="MultiLine" MaxLength="128" />
+      </td>
+    </tr>
+    <tr>
+      <td class="left" style="vertical-align: top;">
+        <span class="Form_LabelText">Title: </span><br />
+        <input type="text" id="txtMessageTitle" formControlName="title" class="rounded" Columns="50" MaxLength="100" style="Width: 95%;" />
+      </td>
+      <td style="width: 10px;"></td>
+      <td class="left">
+        <span class="Form_LabelText">Tags: </span><br />
+        <textarea id="txtTags" formControlName="avalibleTags" class="rounded" TextMode="MultiLine" Columns="15" Rows="5" style="Width: 95%;"></textarea>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3" style="width: 10px;">
+        <input type="checkbox" id="chkFormatAsHTML" formControlName="formatAsHtml" />
+        <label for="chkEnableNotifications">Format as HTML</label>
+      </td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        <span class="Form_LabelText">Message Body:</span>
+        <textarea  id="txtMessageBody" formControlName="messageBody" maxlength="512" TextMode="MultiLine" Columns="50" Rows="5" class="rounded" style="width: 847px;" matInput></textarea>
+      </td>
+    </tr>
+  </table>
+  <div class="buttonRow">
+    @if (canSave) {
+      <button type="submit" [disabled]="frmMessage.invalid" mat-button class="Form_Button" color="primary">
+        <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+      </button>
+    }
+    <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
+      <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+    </button>
+  </div>
+</form>

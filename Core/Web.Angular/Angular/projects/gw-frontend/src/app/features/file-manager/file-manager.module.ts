@@ -5,10 +5,10 @@ import { FileManagerRoutingModule } from './file-manager-routing.module';
 
 
 @NgModule({
-  declarations: [],
-  imports: [
-    CommonModule,
-    FileManagerRoutingModule
-  ]
+	declarations: [],
+	imports: [
+		CommonModule,
+		FileManagerRoutingModule
+	]
 })
 export class FileManagerModule { }

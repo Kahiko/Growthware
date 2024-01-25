@@ -1,0 +1,69 @@
+<mat-toolbar>
+  <span>
+    <button type="button" mat-button color="accent" id="btnNewFolder_{{configurationName}}" name="btnNewFolder_{{configurationName}}" (click)="onCreateDirectory()">
+      <span color="white" class="material-icons">add</span>
+      <span>New Folder</span>
+    </button>
+  </span>
+  <span>
+    <gw-core-upload></gw-core-upload>
+  </span>
+  <span>
+    <button type="button" (click)="onRefresh()" mat-button color="accent" id="btnRefresh_{{configurationName}}" name="btnRefresh_{{configurationName}}">
+      <span color="white" class="material-icons">refresh</span>
+    </button>
+  </span>
+  <span class="spacer"></span>
+  <span>
+    <button type="button" mat-button color="accent" id="btnView_{{configurationName}}" name="btnView_{{configurationName}}">
+      <span color="white" class="material-icons">grid_view</span>
+    </button>
+  </span>
+  <span>
+    <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName}}" name="btnInfo_{{configurationName}}">
+      <span color="white" class="material-icons">info_outline</span>
+    </button>
+  </span>
+</mat-toolbar>
+<div style="position: relative; top: 0px; left: 0px;">
+  <div class="directories">
+    <gw-core-directory-tree></gw-core-directory-tree>
+  </div>
+  <div class="fileList">
+    @if ((skin$ | async); as layout) {
+      @switch (layout) {
+        @case ('snake') {
+          <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+        }
+        @case ('snake') {
+          <gw-core-dynamic-table configurationName="FileManagerTable"></gw-core-dynamic-table>
+        }
+        @default {
+          <div>
+            <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
+          </div>
+        }
+      }
+    }
+  </div>
+</div>
+<ng-template #helpText>
+  <div class="formSectionContents">
+    <p>
+      File manage uses "right click" context menu to manage files and folders.
+    </p>
+    <p>
+      Foler:
+    </p>
+    <ul>
+      <li>Select the desired folder by "left" clicking on the folder</li>
+      <li>"Right" click on the selected folder to open the context menu</li>
+    </ul>
+    <p>
+      File:
+    </p>
+    <ul>
+      <li>"Right" click on the file to open the context menu</li>
+    </ul>
+  </div>
+</ng-template>

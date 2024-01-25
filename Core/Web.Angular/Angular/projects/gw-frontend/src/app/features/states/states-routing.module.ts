@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 // Library
-import { AuthGuard } from '@Growthware/common-code';
+import { AuthGuard } from '@growthware/common/services';
 // Feature
-import { SearchStatesComponent } from '@Growthware/features/states/c/search-states/search-states.component';
+import { SearchStatesComponent } from '@growthware/core/states';
 
 const childRoutes: Routes = [
-  { path: '', component: SearchStatesComponent, canActivate: [AuthGuard] },
+	{ path: '', component: SearchStatesComponent, canActivate: [AuthGuard] },
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(childRoutes)],
-  exports: [RouterModule]
+	imports: [RouterModule.forChild(childRoutes)],
+	exports: [RouterModule]
 })
 export class StatesRoutingModule { }
