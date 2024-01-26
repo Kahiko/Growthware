@@ -52,6 +52,7 @@ export class ConfigurationService {
 				next: (response: IDBInformation) => {
 					resolve(response);
 				},
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				error: (errorResponse: any) => {
 					this._LoggingSvc.errorHandler(errorResponse, 'ConfigurationService', 'getDBInformation');
 					reject(errorResponse);
@@ -73,6 +74,7 @@ export class ConfigurationService {
 					if(response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
 					this._Loaded = true;
 				},
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				error: (errorResponse: any) => {
 					this._LoggingSvc.errorHandler(errorResponse, 'ConfigurationService', 'getAppSettings');
 				},
@@ -93,8 +95,9 @@ export class ConfigurationService {
 			}),
 			params: mQueryParameter,
 		};
-		return new Promise<boolean>((resolve, reject) => {
+		return new Promise<boolean>((resolve) => {
 			this._HttpClient.post<boolean>(this._ApiSetDBInformationURL, mQueryParameter, mHttpOptions).subscribe({
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				next: (response: any) => {
 					resolve(response);
 				},
