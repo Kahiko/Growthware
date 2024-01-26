@@ -5,9 +5,9 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 // Application
 import { routes } from './app.routes';
-import { LoaderInterceptor } from './interceptors/loader.interceptor';
-import { ErrorInterceptor } from './interceptors/error.interceptor';
-import { JwtInterceptor } from './interceptors/jwt.interceptor';
+import { LoaderInterceptor } from '@growthware/core/loader';
+import { ErrorInterceptor } from '@growthware/common/interceptors';
+import { JwtInterceptor } from '@growthware/common/interceptors';
 import { appInitializer } from './app.initializer';
 // Library Services
 import { AccountService } from '@growthware/core/account';

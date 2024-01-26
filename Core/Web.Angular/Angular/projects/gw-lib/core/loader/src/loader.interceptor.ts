@@ -4,7 +4,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { finalize } from 'rxjs/operators';
 // Library
-import { LoaderService } from '@growthware/core/loader';
+import { LoaderService } from './loader.service';
 
 /**
  * This class is for intercepting all http requests. When a request starts, we set the loadingSub property
