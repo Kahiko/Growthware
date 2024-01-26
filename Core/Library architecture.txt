@@ -2,5 +2,8 @@ Google: angular.io library export model
 	https://tomastrajan.medium.com/the-best-way-to-architect-your-angular-libraries-87959301d3d3
 		https://www.youtube.com/watch?v=2vHJ3_Om_gU
 
-npm i -g madge
-madge projects/gw-lib/public-api.ts --ts-config tsconfig.json --image graph.png
+https://graphviz.gitlab.io/download/
+	set the path for all users
+	reboot
+npm install madge -g
+madge projects/gw-frontend/src/main.ts --ts-config tsconfig.json --image "../../gw-frontend-Dependency-Graph.png"
