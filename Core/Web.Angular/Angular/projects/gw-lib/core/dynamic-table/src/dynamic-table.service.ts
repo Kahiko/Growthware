@@ -83,7 +83,7 @@ export class DynamicTableService {
 		// Intended to be used from appInitializer
 		// Load the default data for the growthware application
 		this._HttpClient.get('../assets/data/dynamic-table.config.json').subscribe((data) => {
-			console.log('data', data);
+			// console.log('data', data);
 			if (!this._GWCommon.isNullOrUndefined(data)) {
 				this.setTableConfiguration(data);
 			}
