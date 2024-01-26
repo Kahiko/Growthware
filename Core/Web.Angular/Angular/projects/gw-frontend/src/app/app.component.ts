@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Title } from '@angular/platform-browser';
 // Library
 import { ToasterComponent } from '@growthware/core/toast';
 import { AccountService, IAccountInformation, IClientChoices } from '@growthware/core/account';
+import { ConfigurationService } from '@growthware/core/configuration';
 import { ISecurityEntityProfile, SecurityEntityService } from '@growthware/core/security-entities';
-import { BehaviorSubject, Subscription } from 'rxjs';
 // Application Modules (UI Skins)
 import { ArcModule } from './skins/arc/arc.module';
 import { DashboardModule } from './skins/dashboard/dashboard.module';
@@ -43,7 +45,9 @@ export class AppComponent implements OnDestroy, OnInit {
 
 	constructor(
 		private _AccountSvc: AccountService,
-		private _SecurityEntitySvc: SecurityEntityService
+		private _ConfigurationSvc: ConfigurationService,
+		private _SecurityEntitySvc: SecurityEntityService,
+		private _TitleService: Title,
 	) { }
 	ngOnDestroy(): void {
 		this._Subscription.unsubscribe();
@@ -54,6 +58,11 @@ export class AppComponent implements OnDestroy, OnInit {
 			this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
 				// console.log('AppComponent.ngOnInit.val', val);
 				this.setSkin(val.clientChoices);
+			})
+		);
+		this._Subscription.add(
+			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { 
+				this._TitleService.setTitle(val + ' | Growthware');
 			})
 		);
 	}
