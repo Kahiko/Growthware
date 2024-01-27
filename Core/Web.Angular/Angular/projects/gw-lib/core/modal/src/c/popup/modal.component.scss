@@ -22,11 +22,11 @@
   -moz-border-radius: 10px;
   -webkit-border-radius: 10px;
   background-color: whitesmoke; /* fallback */
-  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
-  background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
-  background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
-  background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
-  background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
+  // background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#DBD8C5), to(#DED7B1)); /* Safari 4-5, Chrome 1-9 */;
+  // background: -webkit-linear-gradient(top, #DED7B1, #DBD8C5); /* Safari 5.1, Chrome 10+ */;
+  // background: -moz-linear-gradient(top, #DED7B1, #DBD8C5); /* Firefox 3.6+ */;
+  // background: -ms-linear-gradient(top, #DED7B1, #DBD8C5); /* IE 10 */;
+  // background: -o-linear-gradient(top, #DED7B1, #DBD8C5); /* Opera 11.10+ */
 }
 
 .modal-body__div {
