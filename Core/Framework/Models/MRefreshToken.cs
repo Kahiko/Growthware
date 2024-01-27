@@ -6,14 +6,17 @@ using GrowthWare.Framework.Models.Base;
 namespace GrowthWare.Framework.Models;
 public class MRefreshToken : AbstractDatabaseFunctions
 {
+    m_ForeignKeyIsNumber = true;
+    m_ForeignKeyName = "[AccountSeqId]";
+    m_PrimaryKeyName = "[RefreshTokenId]";
+    m_TableName = "[ZGWSecurity].[RefreshTokens]";
+
     public MRefreshToken()
     {
-        this.setKeyAndTable();
     }
     
     public MRefreshToken(DataRow dataRow)
     {
-        this.setKeyAndTable();
         DateTime mDateTime = DateTime.Now;
         this.RefreshTokenId = base.GetInt(dataRow, "RefreshTokenId");
         this.AccountSeqId = base.GetInt(dataRow, "AccountSeqId");
@@ -30,14 +33,6 @@ public class MRefreshToken : AbstractDatabaseFunctions
         this.ReplacedByToken = base.GetString(dataRow, "ReplacedByToken");
         this.ReasonRevoked = base.GetString(dataRow, "ReasonRevoked");
 
-    }
-
-    private void setKeyAndTable()
-    {
-        this.m_ForeignKeyIsNumber = true;
-        this.m_ForeignKeyName = "[AccountSeqId]";
-        this.m_PrimaryKeyName = "[RefreshTokenId]";
-        this.m_TableName = "[ZGWSecurity].[RefreshTokens]";
     }
 
     [Key]
