@@ -2,6 +2,9 @@
 Complete compatibility list for Angular/Angular-CLI Node.js
 	npx -y ngvm compat
 
+Migrate previous angular components control flow to Angular 17:
+	ng g @angular/core:control-flow
+
 Configure Swagger:
 	https://www.daniaal.com/configuring-swagger-in-net-6/
 
