@@ -17,7 +17,7 @@ describe('LineCountComponent', () => {
 		fixture.detectChanges();
 	});
 
-	it('should create', () => {
+	it('(not yet implemented) should create', () => {
 		expect(component).toBeTruthy();
 	});
 });
