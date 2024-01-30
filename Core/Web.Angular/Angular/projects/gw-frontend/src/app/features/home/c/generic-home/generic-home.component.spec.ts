@@ -26,8 +26,7 @@ describe('GenericHomeComponent', () => {
 			providers: [
 				{ provide: 'ConfigurationService', useClass: FakeConfigurationService }
 			]
-		})
-			.compileComponents();
+		}).compileComponents();
 
 		fixture = TestBed.createComponent(GenericHomeComponent);
 		component = fixture.componentInstance;
