@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 
 import { AccountInformation, IAccountInformation } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile } from '@growthware/core/security-entities';
+import { ConfigurationService } from '@growthware/core/configuration';
 
 class FakeAccountService {
 	private _AccountInformationChangedSubject = new BehaviorSubject<IAccountInformation>(new AccountInformation);
@@ -61,7 +62,7 @@ describe('AppComponent', () => {
 			declarations: [],
 			providers: [
 				{provide: 'AccountService', useValue: dependencies.AccountService},
-				{provide: 'ConfigurationService', useValue: dependencies.ConfigurationService},
+				{provide: ConfigurationService, useValue: dependencies.ConfigurationService},
 				{provide: 'SecurityEntityService', useValue: dependencies.SecurityEntityService},
 			]
 		}).compileComponents();
@@ -79,9 +80,15 @@ describe('AppComponent', () => {
 		expect(app.title).toEqual('gw-frontend');
 	});
 
-	it('(not yet implemented) should render title', () => {
+	it('should render title `CS Angular.io`', () => {
 		const fixture = TestBed.createComponent(AppComponent);
+		const app = fixture.componentInstance;
+		const injectedService = TestBed.get(ConfigurationService);
+		const mNewValue = 'CS Angular.io';
+
 		fixture.detectChanges();
-		expect(true).toBeTrue();
+		injectedService.changeApplicationName(mNewValue);
+		console.log('app.title', app.title);
+		expect(app.title).toEqual(mNewValue);
 	});
 });
