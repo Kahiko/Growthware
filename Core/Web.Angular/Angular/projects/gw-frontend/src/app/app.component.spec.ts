@@ -6,8 +6,13 @@ import { BehaviorSubject, Subject } from 'rxjs';
 
 import { AppComponent } from './app.component';
 
-import { AccountService } from '@growthware/core/account';
+import { AccountInformation, IAccountInformation } from '@growthware/core/account';
 import { ISecurityEntityProfile, SecurityEntityProfile } from '@growthware/core/security-entities';
+
+class FakeAccountService {
+	private _AccountInformationChangedSubject = new BehaviorSubject<IAccountInformation>(new AccountInformation);
+	accountInformationChanged$ = this._AccountInformationChangedSubject.asObservable();
+}
 
 class FakeConfigurationService {
 	private _ApplicationNameSubject = new BehaviorSubject<string>('');
@@ -42,7 +47,7 @@ class FakeSecurityEntityService {
 describe('AppComponent', () => {
 	beforeEach(async () => {
 		const dependencies = {
-			AccountService,
+			'AccountService': new FakeAccountService(),
 			'ConfigurationService': new FakeConfigurationService(),
 			'SecurityEntityService': new FakeSecurityEntityService()
 		};
@@ -55,7 +60,7 @@ describe('AppComponent', () => {
 			],
 			declarations: [],
 			providers: [
-				AccountService,
+				{provide: 'AccountService', useValue: dependencies.AccountService},
 				{provide: 'ConfigurationService', useValue: dependencies.ConfigurationService},
 				{provide: 'SecurityEntityService', useValue: dependencies.SecurityEntityService},
 			]
