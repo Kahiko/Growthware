@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import { TestBed, inject } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -80,15 +80,13 @@ describe('AppComponent', () => {
 		expect(app.title).toEqual('gw-frontend');
 	});
 
-	it('should render title `CS Angular.io`', () => {
+	it('should render title `CS Angular.io`', inject([ConfigurationService], (mockConfigSvc: FakeConfigurationService) => {
 		const fixture = TestBed.createComponent(AppComponent);
 		const app = fixture.componentInstance;
-		const injectedService = TestBed.get(ConfigurationService);
 		const mNewValue = 'CS Angular.io';
 
 		fixture.detectChanges();
-		injectedService.changeApplicationName(mNewValue);
-		console.log('app.title', app.title);
+		mockConfigSvc.changeApplicationName(mNewValue);
 		expect(app.title).toEqual(mNewValue);
-	});
+	}));
 });
