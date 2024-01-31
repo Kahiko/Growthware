@@ -7,8 +7,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { AppComponent } from './app.component';
 
 import { AccountService } from '@growthware/core/account';
-import { ConfigurationService } from '@growthware/core/configuration';
-import { SecurityEntityService } from '@growthware/core/security-entities';
+import { ISecurityEntityProfile, SecurityEntityProfile } from '@growthware/core/security-entities';
 
 class FakeConfigurationService {
 	private _ApplicationNameSubject = new BehaviorSubject<string>('');
@@ -20,14 +19,33 @@ class FakeConfigurationService {
 	}
 }
 
+class FakeSecurityEntityService {
+	private _SecurityEntityProfile = new SecurityEntityProfile();
+
+	constructor() { 
+		const mSecurityEntityProfile = new SecurityEntityProfile();
+		mSecurityEntityProfile.id = 1;
+		mSecurityEntityProfile.name = 'Test';
+		mSecurityEntityProfile.skin = 'default';
+		this.changeSecurityEntity(mSecurityEntityProfile);		
+	}
+
+	public getSecurityEntity(): ISecurityEntityProfile {
+		return this._SecurityEntityProfile;
+	}
+
+	public changeSecurityEntity(securityEntityProfile: ISecurityEntityProfile): void {
+		this._SecurityEntityProfile = securityEntityProfile;
+	}
+}
+
 describe('AppComponent', () => {
 	beforeEach(async () => {
 		const dependencies = {
 			AccountService,
-			ConfigurationService: new FakeConfigurationService(),
-			SecurityEntityService
+			'ConfigurationService': new FakeConfigurationService(),
+			'SecurityEntityService': new FakeSecurityEntityService()
 		};
-		dependencies.ConfigurationService = new FakeConfigurationService();
 		await TestBed.configureTestingModule({
 			imports: [
 				AppComponent,
@@ -38,8 +56,8 @@ describe('AppComponent', () => {
 			declarations: [],
 			providers: [
 				AccountService,
-				{provide: ConfigurationService, useValue: dependencies.ConfigurationService},
-				SecurityEntityService
+				{provide: 'ConfigurationService', useValue: dependencies.ConfigurationService},
+				{provide: 'SecurityEntityService', useValue: dependencies.SecurityEntityService},
 			]
 		}).compileComponents();
 	});
