@@ -62,6 +62,7 @@ export class AppComponent implements OnDestroy, OnInit {
 		);
 		this._Subscription.add(
 			this._ConfigurationSvc.applicationName$.subscribe((val: string) => { 
+				this.title = val;
 				this._TitleService.setTitle(val + ' | Growthware');
 			})
 		);
