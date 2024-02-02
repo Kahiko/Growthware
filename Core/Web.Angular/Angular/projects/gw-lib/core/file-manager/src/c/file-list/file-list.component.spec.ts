@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { FileListComponent } from './file-list.component';
 
@@ -8,9 +10,12 @@ describe('FileListComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [FileListComponent]
-		})
-			.compileComponents();
+			imports: [
+				FileListComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(FileListComponent);
 		component = fixture.componentInstance;
