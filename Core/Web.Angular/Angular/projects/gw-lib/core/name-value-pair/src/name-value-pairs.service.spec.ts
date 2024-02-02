@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { NameValuePairService } from './name-value-pairs.service';
 
-describe('NameValuePairsService', () => {
+describe('NameValuePairService', () => {
 	let service: NameValuePairService;
 
 	beforeEach(() => {
