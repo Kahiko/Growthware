@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { SelectPreferencesComponent } from './select-preferences.component';
 
@@ -8,9 +10,12 @@ describe('SelectPreferencesComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [SelectPreferencesComponent]
-		})
-			.compileComponents();
+			imports: [
+				SelectPreferencesComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(SelectPreferencesComponent);
 		component = fixture.componentInstance;
