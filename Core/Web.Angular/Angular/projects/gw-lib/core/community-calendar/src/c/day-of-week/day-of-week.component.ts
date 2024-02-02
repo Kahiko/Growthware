@@ -38,7 +38,7 @@ export class DayOfWeekComponent implements OnInit {
   		this._LoggingService.toast('the "day" property is required', 'DayOfWeekComponent', LogLevel.Error);
   	} else {
   		this.day = new CalendarDay(new Date(this.day.value.date));
-  		console.log('DayOfWeek', this.day);
+  		// console.log('DayOfWeek', this.day);
   	}
   }
 
