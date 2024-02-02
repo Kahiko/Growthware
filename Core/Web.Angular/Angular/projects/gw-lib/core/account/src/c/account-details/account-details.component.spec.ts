@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AccountDetailsComponent } from './account-details.component';
 
@@ -8,10 +10,13 @@ describe('AccountDetailsComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [AccountDetailsComponent]
-		})
-			.compileComponents();
-    
+			imports: [
+				AccountDetailsComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
+
 		fixture = TestBed.createComponent(AccountDetailsComponent);
 		component = fixture.componentInstance;
 		fixture.detectChanges();
