@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NameValuePairsService } from './name-value-pairs.service';
+import { NameValuePairService } from './name-value-pairs.service';
 
 describe('NameValuePairsService', () => {
-	let service: NameValuePairsService;
+	let service: NameValuePairService;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({});
-		service = TestBed.inject(NameValuePairsService);
+		service = TestBed.inject(NameValuePairService);
 	});
 
 	it('(not yet implemented) should be created', () => {

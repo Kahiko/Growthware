@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GwCommonService } from './gw-common.service';
+import { GWCommon } from './gw-common.service';
 
-describe('GwCommonService', () => {
-	let service: GwCommonService;
+describe('GWCommon', () => {
+	let service: GWCommon;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({});
-		service = TestBed.inject(GwCommonService);
+		service = TestBed.inject(GWCommon);
 	});
 
 	it('(not implemented yet) should be created', () => {

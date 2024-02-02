@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LowerCaseUrlSerializerService } from './lower-case-url-serializer.service';
+import { LowerCaseUrlSerializer } from './lower-case-url-serializer.service';
 
-describe('LowerCaseUrlSerializerService', () => {
-	let service: LowerCaseUrlSerializerService;
+describe('LowerCaseUrlSerializer', () => {
+	let service: LowerCaseUrlSerializer;
 
 	beforeEach(() => {
 		TestBed.configureTestingModule({});
-		service = TestBed.inject(LowerCaseUrlSerializerService);
+		service = TestBed.inject(LowerCaseUrlSerializer);
 	});
 
 	it('(not implemented yet) should be created', () => {
