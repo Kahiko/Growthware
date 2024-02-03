@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HierarchicalVerticalComponent } from './hierarchical-vertical.component';
 
@@ -8,9 +10,12 @@ describe('HierarchicalVerticalComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [HierarchicalVerticalComponent]
-		})
-			.compileComponents();
+			imports: [
+				HierarchicalVerticalComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(HierarchicalVerticalComponent);
 		component = fixture.componentInstance;
