@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PagerComponent } from './pager.component';
 
@@ -8,7 +10,11 @@ describe('PagerComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [PagerComponent]
+			imports: [
+				PagerComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
 		})
 			.compileComponents();
     
