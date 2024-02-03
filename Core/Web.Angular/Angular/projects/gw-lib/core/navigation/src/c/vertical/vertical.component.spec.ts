@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { VerticalComponent } from './vertical.component';
 
@@ -8,7 +10,11 @@ describe('VerticalComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [VerticalComponent]
+			imports: [
+				VerticalComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
 		})
 			.compileComponents();
     
