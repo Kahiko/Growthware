@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HierarchicalVerticalFlyoutComponent } from './hierarchical-vertical-flyout.component';
 
@@ -8,9 +10,12 @@ describe('HierarchicalVerticalFlyoutComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [HierarchicalVerticalFlyoutComponent]
-		})
-			.compileComponents();
+			imports: [
+				HierarchicalVerticalFlyoutComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(HierarchicalVerticalFlyoutComponent);
 		component = fixture.componentInstance;
