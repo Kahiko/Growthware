@@ -1,74 +1,65 @@
 @if (item.isRouterLink || item.children.length > 0) {
-  <a
-    mat-list-item
-    class="drawer-nav-list__list-item"
-    [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-    (click)="onItemSelected(item)"
-    [ngClass]="{'expanded': expanded}"
-    data-title="{{ item.description }}">
-    <div style="display: flex;">
-      <span>
-        <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
-      </span>
-      <span>
-        @if (item.children && item.children.length) {
-          <span>
-            <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-              chevron_right
-            </mat-icon>
-            @if (showSideNavLinkText===true && item.children.length===0) {
-              <span>{{ item.label }}</span>
-            }
-          </span>
-        }
-        <span class="spacer">
-          @if (showSideNavLinkText) {
-            <span>{{ item.label }}</span>
-          }
-        </span>
-      </span>
-    </div>
-  </a>
-}
-@if (!item.isRouterLink && item.children.length === 0) {
-  <a
-    mat-list-item
-    class="drawer-nav-list__list-item"
-    [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
-    (click)="onItemSelected(item)"
-    data-title="{{ item.description }}">
-    <div style="display: flex;">
-      <span>
-        <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
-      </span>
-      @if (item.children && item.children.length==0) {
-        <span style="width: 24px;"></span>
-      }
+<a mat-list-item class="drawer-nav-list__list-item" [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+  (click)="onItemSelected(item)" [ngClass]="{'expanded': expanded}" data-title="{{ item.description }}">
+  <div style="display: flex;">
+    <span>
+      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+    </span>
+    <span>
       @if (item.children && item.children.length) {
-        <span>
-          <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
-            chevron_right
-          </mat-icon>
-          @if (showSideNavLinkText===true && item.children.length===0) {
-            <span>{{ item.label }}</span>
-          }
-        </span>
+      <span>
+        <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+          chevron_right
+        </mat-icon>
+        @if (showSideNavLinkText===true && item.children.length===0) {
+        <span>{{ item.label }}</span>
+        }
+      </span>
       }
       <span class="spacer">
         @if (showSideNavLinkText) {
-          <span>{{ item.label }}</span>
+        <span>{{ item.label }}</span>
         }
       </span>
-    </div>
-  </a>
+    </span>
+  </div>
+</a>
+}
+@if (!item.isRouterLink && item.children.length === 0) {
+<a mat-list-item class="drawer-nav-list__list-item" [ngStyle]="{'padding-left': (depth * 12) + 'px'}"
+  (click)="onItemSelected(item)" data-title="{{ item.description }}">
+  <div style="display: flex;">
+    <span>
+      <mat-icon class="routeIcon">{{item.icon}}</mat-icon>
+    </span>
+    @if (item.children && item.children.length==0) {
+    <span style="width: 24px;"></span>
+    }
+    @if (item.children && item.children.length) {
+    <span>
+      <mat-icon [@indicatorRotate]="expanded ? 'expanded': 'collapsed'">
+        chevron_right
+      </mat-icon>
+      @if (showSideNavLinkText===true && item.children.length===0) {
+      <span>{{ item.label }}</span>
+      }
+    </span>
+    }
+    <span class="spacer">
+      @if (showSideNavLinkText) {
+      <span>{{ item.label }}</span>
+      }
+    </span>
+  </div>
+</a>
 }
 @if (expanded) {
-  <div>
-    <div mat-list-item class="drawer-nav-list__list-item">
-      @for (child of item.children; track child) {
-        <gw-core-vertical-list-item [item]="child" [depth]="depth+1">
-        </gw-core-vertical-list-item>
-      }
-    </div>
+<div>
+  <div mat-list-item class="drawer-nav-list__list-item">
+    @for (child of item.children; track child) {
+    <gw-core-vertical-list-item [item]="child" [depth]="depth+1">
+    </gw-core-vertical-list-item>
+    }
   </div>
+</div>
 }
