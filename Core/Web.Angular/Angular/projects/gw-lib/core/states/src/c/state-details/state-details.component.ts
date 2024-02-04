@@ -44,17 +44,17 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
 
 	selectedStatus: number = -1;
 	validStatuses: IKeyValuePair[] = [
-		{key: 1, value: 'Active'},
-		{key: 2, value: 'Inactive'}
+		{ key: 1, value: 'Active' },
+		{ key: 2, value: 'Inactive' }
 	];
 
 	constructor(
-    private _FormBuilder: FormBuilder,
-    dataSvc: DataService,
-    loggingSvc: LoggingService,
-    modalSvc: ModalService,
-    profileSvc: StatesService,
-    securitySvc: SecurityService,
+		private _FormBuilder: FormBuilder,
+		dataSvc: DataService,
+		loggingSvc: LoggingService,
+		modalSvc: ModalService,
+		profileSvc: StatesService,
+		securitySvc: SecurityService,
 	) {
 		super();
 		this._DataSvc = dataSvc;
@@ -68,7 +68,7 @@ export class StateDetailsComponent extends BaseDetailComponent implements IBaseD
 		// console.log('modalReason', this._ProfileSvc.modalReason);
 		// console.log('selectedRow', this._ProfileSvc.selectedRow);
 		this.selectedStatus = 1;
-		if(this._ProfileSvc.selectedRow.Status.trim() !== 'Active') {
+		if (this._ProfileSvc.selectedRow.Status.trim() !== 'Active') {
 			this._Profile.statusId = 2;
 			this.selectedStatus = 2;
 		}
