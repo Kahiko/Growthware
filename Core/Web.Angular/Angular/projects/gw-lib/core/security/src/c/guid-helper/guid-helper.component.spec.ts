@@ -10,7 +10,8 @@ describe('GuidHelperComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [GuidHelperComponent,
+			imports: [
+				GuidHelperComponent,
 				HttpClientTestingModule,
 				NoopAnimationsModule,
 			],
