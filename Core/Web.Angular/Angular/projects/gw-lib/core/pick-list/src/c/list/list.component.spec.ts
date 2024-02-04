@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ListComponent } from './list.component';
 
@@ -8,9 +10,12 @@ describe('ListComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [ListComponent]
-		})
-			.compileComponents();
+			imports: [
+				ListComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(ListComponent);
 		component = fixture.componentInstance;
