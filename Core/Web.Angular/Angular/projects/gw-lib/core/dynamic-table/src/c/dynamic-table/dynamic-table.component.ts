@@ -1,4 +1,4 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, Input, ViewChild } from '@angular/core';
 import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
