@@ -12,8 +12,8 @@ import { NavigationService } from '../../navigation.service';
 	styleUrls: ['./vertical-list-item.component.scss'],
 	animations: [
 		trigger('indicatorRotate', [
-			state('collapsed', style({transform: 'rotate(0deg)'})),
-			state('expanded', style({transform: 'rotate(90deg)'})),
+			state('collapsed', style({ transform: 'rotate(0deg)' })),
+			state('expanded', style({ transform: 'rotate(90deg)' })),
 			transition('expanded <=> collapsed',
 				animate('225ms cubic-bezier(0.4,0.0,0.2,1)')
 			)
@@ -23,34 +23,34 @@ import { NavigationService } from '../../navigation.service';
 export class VerticalListItemComponent implements OnDestroy, OnInit {
 	expanded!: boolean;
 	showSideNavLinkText!: boolean;
-  @HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
-  @Input() depth!: number;
-  @Input() item!: INavLink;
+	@HostBinding('attr.aria-expanded') ariaExpanded = this.expanded;
+	@Input() depth!: number;
+	@Input() item!: INavLink;
 
-  private _Subscription: Subscription = new Subscription();
+	private _Subscription: Subscription = new Subscription();
 
-  constructor(
-    private _NavigationSvc: NavigationService,
-    public _Router: Router
-  ) { }
+	constructor(
+		private _NavigationSvc: NavigationService,
+		public _Router: Router
+	) { }
 
-  ngOnDestroy(): void {
-  	this._Subscription.unsubscribe();
-  }
+	ngOnDestroy(): void {
+		this._Subscription.unsubscribe();
+	}
 
-  ngOnInit(): void {
-  	if (this.depth === undefined) {
-  		this.depth = 0;
-  	}
-  	this._Subscription.add(
-  		this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
-  	);
-  }
+	ngOnInit(): void {
+		if (this.depth === undefined) {
+			this.depth = 0;
+		}
+		this._Subscription.add(
+			this._NavigationSvc.showNavText$.subscribe((value) => { this.showSideNavLinkText = value; })
+		);
+	}
 
-  onItemSelected(item: INavLink) {
-  	if (item.children && item.children.length) {
-  		this.expanded = !this.expanded;
-  	}
-  	this._NavigationSvc.navigateTo(item);
-  }
+	onItemSelected(item: INavLink) {
+		if (item.children && item.children.length) {
+			this.expanded = !this.expanded;
+		}
+		this._NavigationSvc.navigateTo(item);
+	}
 }
