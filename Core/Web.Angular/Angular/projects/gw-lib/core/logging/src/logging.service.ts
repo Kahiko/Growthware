@@ -38,7 +38,7 @@ export class LoggingService {
 			responseType: 'text' as 'json',
 		};
 		return new Promise<number>((resolve, reject) => {
-			this._HttpClient.get<any>(this._Api_CurrentLogLevel, mHttpOptions).subscribe({
+			this._HttpClient.get<number>(this._Api_CurrentLogLevel, mHttpOptions).subscribe({
 				next: (response: number) => {
 					resolve(response);
 				},
@@ -64,7 +64,7 @@ export class LoggingService {
 		) {
 			return '';
 		}
-		const mOurCallStack: any[] = [];
+		const mOurCallStack = [];
 		let mRetVal: string = '';
 		try {
 			for (let x = 0; x <= mStackLines.length; x++) {
@@ -72,7 +72,7 @@ export class LoggingService {
 				if (mLine != 'Error' && !this._GWCommon.isNullOrUndefined(mLine)) {
 					// Don't need the first line
 					const mParts = mLine.split(' ');
-					if ((mParts.length = 7)) {
+					if ((mParts.length === 7)) {
 						const mCaller = mParts[5];
 						if (
 							mCaller.indexOf('_next') === -1 &&
@@ -141,8 +141,8 @@ export class LoggingService {
 			params: mQueryParameter,
 		};
 		return new Promise<boolean>((resolve, reject) => {
-			this._HttpClient.post<any>(this._Api_SetLogLevel, mQueryParameter, mHttpOptions).subscribe({
-				next: (response: string) => {
+			this._HttpClient.post<string>(this._Api_SetLogLevel, mQueryParameter, mHttpOptions).subscribe({
+				next: () => {
 					this.toast('Successfully set the log level', 'Set Log Level', LogLevel.Success);
 					resolve(true);
 				},
@@ -247,11 +247,12 @@ export class LoggingService {
 		);
 		mData.logDate = new Date().toISOString();
 		this._HttpClient
-			.post<any>(this._Api_Log, mData, mHttpOptions)
+			.post<boolean>(this._Api_Log, mData, mHttpOptions)
 			.subscribe({
-				next: (response: any) => {
-					this._LogConsole(response);
+				next: () => {
+					// do nothing
 				},
+				// eslint-disable-next-line @typescript-eslint/no-explicit-any
 				error: (errorResponse: any) => {
 					this.errorHandler(errorResponse, 'LoggingService', 'logDB');
 				},
