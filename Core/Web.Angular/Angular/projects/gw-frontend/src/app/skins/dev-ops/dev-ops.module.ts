@@ -10,7 +10,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library Modules
 import { LoaderComponent } from '@growthware/core/loader';
-import { NavigationModule } from '@growthware/core/navigation';
 // Library Standalone
 // import { HorizontalComponent } from '@growthware/core/navigation';
 // import { HierarchicalHorizontalComponent } from '@growthware/core/navigation';
@@ -42,7 +41,6 @@ import { DevOpsLayoutComponent } from './dev-ops-layout/dev-ops-layout.component
 		MatToolbarModule,
 		// Library Modules
 		LoaderComponent,
-		NavigationModule,
 		// Library Standalone
 		HierarchicalHorizontalFlyoutComponent,
 		VerticalComponent,

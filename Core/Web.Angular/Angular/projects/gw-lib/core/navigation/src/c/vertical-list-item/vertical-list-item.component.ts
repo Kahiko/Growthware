@@ -1,13 +1,23 @@
 import { Component, HostBinding, Input, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { trigger, state, style, transition, animate } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+// Angular Material
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
 // Feature
 import { INavLink } from '../../nav-link.model';
 import { NavigationService } from '../../navigation.service';
 
 @Component({
 	selector: 'gw-core-vertical-list-item',
+	standalone: true,
+	imports: [
+		CommonModule,
+		MatIconModule,
+		MatListModule
+	],
 	templateUrl: './vertical-list-item.component.html',
 	styleUrls: ['./vertical-list-item.component.scss'],
 	animations: [

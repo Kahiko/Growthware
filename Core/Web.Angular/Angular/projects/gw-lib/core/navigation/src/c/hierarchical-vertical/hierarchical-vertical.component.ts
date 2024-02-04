@@ -11,15 +11,16 @@ import { LoggingService } from '@growthware/core/logging';
 // Feature
 import { BaseNavigationComponent } from '../../base-navigation.component';
 import { NavigationService } from '../../navigation.service';
-import { NavigationModule } from '../../navigation.module';
 import { MenuTypes } from '../../menu-types.enum';
+import { VerticalListItemComponent } from '../vertical-list-item/vertical-list-item.component';
 
 @Component({
 	selector: 'gw-core-hierarchical-vertical',
 	standalone: true,
 	imports: [
+		VerticalListItemComponent,
+		
 		MatIconModule,
-		NavigationModule
 	],
 	templateUrl: './hierarchical-vertical.component.html',
 	styleUrls: ['./hierarchical-vertical.component.scss']
