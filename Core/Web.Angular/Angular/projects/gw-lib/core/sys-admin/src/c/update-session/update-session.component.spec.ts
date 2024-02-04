@@ -9,8 +9,7 @@ describe('UpdateSessionComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [UpdateSessionComponent]
-		})
-			.compileComponents();
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(UpdateSessionComponent);
 		component = fixture.componentInstance;
