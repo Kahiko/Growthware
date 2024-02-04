@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { EncryptDecryptComponent } from './encrypt-decrypt.component';
 
@@ -8,9 +10,12 @@ describe('EncryptDecryptComponent', () => {
 
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
-			imports: [EncryptDecryptComponent]
-		})
-			.compileComponents();
+			imports: [
+				EncryptDecryptComponent,
+				HttpClientTestingModule,
+				NoopAnimationsModule,
+			]
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(EncryptDecryptComponent);
 		component = fixture.componentInstance;
