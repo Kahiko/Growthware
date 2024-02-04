@@ -9,8 +9,7 @@ describe('ToasterComponent', () => {
 	beforeEach(async () => {
 		await TestBed.configureTestingModule({
 			imports: [ToasterComponent]
-		})
-			.compileComponents();
+		}).compileComponents();
     
 		fixture = TestBed.createComponent(ToasterComponent);
 		component = fixture.componentInstance;
