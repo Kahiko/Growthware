@@ -21,13 +21,13 @@ export class LoggingService {
 	private _Api_SetLogLevel = 'SetLogLevel';
 
 	constructor(
-    private _HttpClient: HttpClient,
-    private _GWCommon: GWCommon,
-    private _ToastSvc: ToastService
+		private _HttpClient: HttpClient,
+		private _GWCommon: GWCommon,
+		private _ToastSvc: ToastService
 	) {
 		this._Api_Log = _GWCommon.baseURL + this._ApiName + 'Log';
 		this._Api_SetLogLevel = _GWCommon.baseURL + this._ApiName + 'SetLogLevel';
-		this._Api_CurrentLogLevel = _GWCommon.baseURL + this._ApiName  + 'GetLogLevel';
+		this._Api_CurrentLogLevel = _GWCommon.baseURL + this._ApiName + 'GetLogLevel';
 	}
 
 	public async getLogLevel(): Promise<number> {
@@ -43,7 +43,7 @@ export class LoggingService {
 					resolve(response);
 				},
 				error: (error) => {
-					if(error.status && error.status === 403) {
+					if (error.status && error.status === 403) {
 						this.toast('Unable to get log level', 'Get Log Level', LogLevel.Error);
 						reject(error.error);
 					} else {
@@ -52,7 +52,7 @@ export class LoggingService {
 					}
 				},
 				// complete: () => {}
-			});      
+			});
 		});
 	}
 
@@ -60,7 +60,7 @@ export class LoggingService {
 		const mStackLines = new Error('').stack?.split('\n') ?? [];
 		if (
 			this._GWCommon.isNullOrUndefined(mStackLines) ||
-      mStackLines.length === 0
+			mStackLines.length === 0
 		) {
 			return '';
 		}
@@ -76,7 +76,7 @@ export class LoggingService {
 						const mCaller = mParts[5];
 						if (
 							mCaller.indexOf('_next') === -1 &&
-              mCaller.indexOf('callH') === -1
+							mCaller.indexOf('callH') === -1
 						) {
 							// we can stop b/c we have gotten all of our codes stack
 							if (mCaller.indexOf('LoggingService') === -1) {
@@ -96,7 +96,7 @@ export class LoggingService {
 		}
 		if (
 			!this._GWCommon.isNullOrUndefined(mOurCallStack) &&
-      mOurCallStack.length !== 0
+			mOurCallStack.length !== 0
 		) {
 			mOurCallStack.forEach((element) => {
 				mRetVal += element.caller + ' => ';
@@ -132,7 +132,7 @@ export class LoggingService {
 
 	public async setLogLevel(logLevel: number): Promise<boolean> {
 		const mQueryParameter: HttpParams = new HttpParams()
-			.set('logLevel', logLevel);    
+			.set('logLevel', logLevel);
 		const mHttpOptions = {
 			headers: new HttpHeaders({
 				'Content-Type': 'application/json',
@@ -147,7 +147,7 @@ export class LoggingService {
 					resolve(true);
 				},
 				error: (error) => {
-					if(error.status && error.status === 403) {
+					if (error.status && error.status === 403) {
 						this.toast('Unable to set log level', 'Set Log Level', LogLevel.Error);
 						reject(error.error);
 					} else {
@@ -156,7 +156,7 @@ export class LoggingService {
 					}
 				},
 				// complete: () => {}
-			});      
+			});
 		});
 	}
 
@@ -174,9 +174,9 @@ export class LoggingService {
 
 	private _LogConsole(options: ILogOptions): void {
 		const mMsg =
-      this.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
-      '\n  ' +
-      options.msg;
+			this.getStackTrace().replace(new RegExp(' => ' + '$'), ':') +
+			'\n  ' +
+			options.msg;
 		switch (LogLevel[options.level]) {
 		case 'Debug':
 			console.debug(mMsg);
@@ -247,7 +247,7 @@ export class LoggingService {
 		);
 		mData.logDate = new Date().toISOString();
 		this._HttpClient
-			.post<any>(this. _Api_Log, mData, mHttpOptions)
+			.post<any>(this._Api_Log, mData, mHttpOptions)
 			.subscribe({
 				next: (response: any) => {
 					this._LogConsole(response);
