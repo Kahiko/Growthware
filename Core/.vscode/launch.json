@@ -171,7 +171,11 @@
             // "trace": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
-            }
+            },
+            "resolveSourceMapLocations": [
+                "${webRoot}/**",
+                "!**/node_modules/**"
+            ]
         },
         {
             "type": "msedge",
@@ -184,7 +188,11 @@
             "sourceMaps": true,
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
-            }
+            },
+            "resolveSourceMapLocations": [
+                "${webRoot}/**",
+                "!**/node_modules/**"
+            ]
         }
     ]
 }
