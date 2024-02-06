@@ -245,3 +245,9 @@ $altTheme: mat.define-dark-theme((
   background: #6AA6D6;
   width: 271.5px;
 }
+
+.drawer-container {
+  width: 100%;
+  height: calc(90vh);
+  border: 1px solid rgba(0, 0, 0, 0.5);
+}
