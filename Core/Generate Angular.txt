@@ -259,6 +259,7 @@ Library: (core) From Web.Angular\Angular
 	Messages: (converted to stand alone)
 		#ng generate module --path=projects/gw-lib/core/message/src --project gw-lib
 		ng generate interface 	--path=projects/gw-lib/core/message/src MessageProfile 		--type model --project gw-lib
+		ng generate interface   --path=projects/gw-lib/core/message/src selectedRow 		--type model --project gw-lib
 		ng generate service 	--path=projects/gw-lib/core/message/src message 			--project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/message/src c/MessageDetails 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/message/src c/SearchMessages 	--standalone --style scss --project gw-lib

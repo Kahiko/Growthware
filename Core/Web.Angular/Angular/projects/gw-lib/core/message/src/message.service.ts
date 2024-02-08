@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
 // Feature
 import { IMessageProfile } from './message-profile.model';
+import { SelectedRow } from './selected-row.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class MessageService {
+export class MessageService implements BaseService {
 
 	private _Api_GetProfile: string = '';
 	private _ApiName: string = 'GrowthwareMessage/';
@@ -18,8 +20,7 @@ export class MessageService {
   
 	readonly addEditModalId: string = 'addEditAccountModal';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectedRow: any = {};
+	selectedRow: SelectedRow = new SelectedRow();
 	modalReason: string = '';
 
 	constructor(
