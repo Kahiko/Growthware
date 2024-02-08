@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 // Feature
 import { IGroupProfile } from './group-profile.model';
+import { SelectedRow } from './selected-row.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class GroupService {
+export class GroupService implements BaseService {
 	private _ApiName: string = 'GrowthwareGroup/';
 	private _Api_DeleteGroup = '';
 	private _Api_GetGroupForEdit = '';
@@ -17,8 +19,7 @@ export class GroupService {
 
 	readonly addEditModalId: string = 'addEditAccountModal';
   
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectedRow: any = {};
+	selectedRow: SelectedRow = new SelectedRow();
 	modalReason: string = '';
 
 	constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
@@ -38,7 +39,7 @@ export class GroupService {
 				params: mQueryParameter,
 			};
 			this._HttpClient.post<boolean>(this._Api_DeleteGroup, null, mHttpOptions).subscribe({
-				next: (response: any) => {
+				next: (response: boolean) => {
 					resolve(response);
 				},
 				error: (error) => {
@@ -84,18 +85,18 @@ export class GroupService {
 	/**
    * Retrieves the groups from the API.
    *
-   * @return {Promise<any>} A promise that resolves with the groups retrieved from the API.
+   * @return {Promise<aArray<string>ny>} A promise that resolves with the groups retrieved from the API.
    */
-	public async getGroups(): Promise<any> {
-		return new Promise<boolean>((resolve, reject) => {
+	public async getGroups(): Promise<Array<string>> {
+		return new Promise<Array<string>>((resolve, reject) => {
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
 				}),
 			};
 			const mUrl = this._GWCommon.baseURL + this._ApiName + 'GetGroups';
-			this._HttpClient.get<any>(mUrl, mHttpOptions).subscribe({
-				next: (response: any) => {
+			this._HttpClient.get<Array<string>>(mUrl, mHttpOptions).subscribe({
+				next: (response: Array<string>) => {
 					resolve(response);
 				},
 				error: (error) => {
@@ -121,7 +122,7 @@ export class GroupService {
 		};
 		return new Promise<boolean>((resolve, reject) => {
 			this._HttpClient.post<boolean>(this._Api_SaveGroup, profile, mHttpOptions).subscribe({
-				next: (response: any) => {
+				next: (response: boolean) => {
 					resolve(response);
 				},
 				error: (error) => {
