@@ -1,6 +1,7 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Subscription } from 'rxjs';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { DynamicTableComponent, DynamicTableService, DynamicTableBtnMethods } from '@growthware/core/dynamic-table';
 import { DataService } from '@growthware/common/services';
 import { SearchService, ISearchCriteriaNVP } from '@growthware/core/search';
@@ -12,7 +13,7 @@ import { ModalService, IModalOptions, ModalOptions, WindowSize } from '@growthwa
 	styles: [
 	]
 })
-export abstract class BaseSearchComponent implements OnDestroy {
+export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, OnInit {
 
 	protected _Subscription: Subscription = new Subscription();
 
@@ -21,7 +22,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 	protected _TheFeatureName: string = 'Not set';
 	protected _TheWindowSize = new WindowSize(450,900);
 
-	protected _TheService: any = {};
+	protected _TheService!: BaseService;
 	protected _DataSvc!: DataService;
 	protected _DynamicTableSvc!: DynamicTableService;
 	protected _ModalSvc!: ModalService;
@@ -32,7 +33,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
   public configurationName = '';
   public results: unknown;
 
-  protected ngAfterViewInit(): void {
+  ngAfterViewInit(): void {
   	// Setup the dynamic table button methods
   	const mDynamicTableBtnMethods: DynamicTableBtnMethods = new DynamicTableBtnMethods();
   	mDynamicTableBtnMethods.btnTopRightCallBackMethod = () => { this.onBtnTopRight(); };
@@ -84,6 +85,7 @@ export abstract class BaseSearchComponent implements OnDestroy {
 
   protected onRowDoubleClick (rowNumber: number): void {
   	const mDataRow = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
+  	console.log('onRowDoubleClick.mDataRow', mDataRow);
   	this._TheService.selectedRow = mDataRow;
   	this._TheService.modalReason = 'EditProfile';
   	const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);

@@ -121,12 +121,14 @@ Library (common):
 	interceptors: From Web.Angular\Angular
 		ng generate interceptor --path=projects/gw-lib/common/interceptors/src Error --project gw-lib
 		ng generate interceptor --path=projects/gw-lib/common/interceptors/src JWT --project gw-lib
+		
 
 Library: (core) From Web.Angular\Angular
 	Base:
 		ng generate component c/baseSearch 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
 		ng generate component c/baseDetail 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
-
+		ng generate service base            --path=projects/gw-lib/core/base/services/src --project gw-lib
+		ng generate interface selectedRow   --path=projects/gw-lib/core/base/interfaces/src --type model --project gw-lib
 	Search:
 		ng generate interface 				--path=projects/gw-lib/core/search/src SearchCriteria --type model --project gw-lib
 		ng generate service search 			--path=projects/gw-lib/core/search/src --project gw-lib
