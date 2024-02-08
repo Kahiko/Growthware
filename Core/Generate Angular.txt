@@ -251,6 +251,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate interface 	--path=projects/gw-lib/core/function/src functionProfile 			--type model --project gw-lib
 		ng generate interface 	--path=projects/gw-lib/core/function/src directoryData 				--type model --project gw-lib
 		ng generate interface 	--path=projects/gw-lib/core/function/src functionMenuOrder 			--type model --project gw-lib
+		ng generate interface 	--path=projects/gw-lib/core/function/src selectedRow 	    --type model --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/function/src c/CopyFunctionSecurity 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/function/src c/functionDetails 			--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/function/src c/Searchfunctions 			--standalone --style scss --project gw-lib
