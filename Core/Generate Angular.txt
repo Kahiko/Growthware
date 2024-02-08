@@ -182,7 +182,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/security/src c/RandomNumbers 	--standalone --style scss --project gw-lib
 	Groups:
 		ng generate interface 	--path=projects/gw-lib/core/group/src GroupProfile --type model --project gw-lib
-		ng generate interface   --path=projects/gw-lib/core/group/src selectedRow 		--type model --project gw-lib
+		ng generate interface   --path=projects/gw-lib/core/group/src selectedRow  --type model --project gw-lib
 		ng generate service 	--path=projects/gw-lib/core/group/src group --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/group/src c/GroupDetails --standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/group/src c/SearchGroups --standalone --style scss --project gw-lib
