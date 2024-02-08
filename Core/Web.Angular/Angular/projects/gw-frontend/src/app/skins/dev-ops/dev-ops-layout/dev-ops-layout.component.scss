@@ -251,3 +251,44 @@ $altTheme: mat.define-dark-theme((
   height: calc(90vh);
   border: 1px solid rgba(0, 0, 0, 0.5);
 }
+
+.page {
+	width: 98%;
+	min-height:550px;
+	background-color: #fff;
+	margin: 5px auto 0px auto;
+
+}
+
+.pageDescription { font-family: Arial; font-size: 12px; color: #666666;}
+
+.Form_Title {font-weight: bold; font-size: 17px; font-variant: small-caps;}
+.Form_Description {font-size: 12px;}
+
+.formSection {background-color:#DCDDDE; width:500; border-collapse:collapse;}
+.formSectionHeader {background-color:#B2B2B2; padding:5px; font-family:verdana, arial; font-weight: bold; font-size: 12px; color: #FFFFFF;}
+.formSectionHelp {padding:2px;font-family:verdana, arial; font-size: 10px;}
+.formSectionContents {padding:2px;font: 14px Verdana;}
+.formSectionContents td {font: 12px Verdana;}
+.Form_SectionRow {background-color: #ccccff;}
+.Form_SectionCell {font-size: 12pt;}
+.Form_SectionText {font-weight: bold;}
+.Form_SubSectionRow {font-size: 13px;}
+.Form_SubSectionCell {font-size: 13px;}
+.Form_SubSectionText {font-size: 13px;}
+
+.Form_Table {background-color: #cccccc; border: thick solid #AAAAAA 1px;}
+.Form_LabelRow {font-size: 10pt;}
+.Form_LabelCell {font-size: 10pt;}
+.Form_FieldRow {font-size: 12px;}
+.Form_FieldCell {font-size: 12px;}
+.Form_Field {font-size: 11px;}
+
+.Form_LabelText {font-size: 10pt; font-variant: small-caps; white-space: nowrap;}
+.Form_LabelTextRed {font-size: 10pt; font-variant: small-caps; color:Red;}
+
+.Form_Button {font-size: 12px;}
+.Form_Button_Icon {font-size: 16px;}
+.Form_HelpText {font-size: 8pt;}
+.Form_List {font-size: 12px;}
+.Form_Message {font-size: 12px; color: #CC0000}
