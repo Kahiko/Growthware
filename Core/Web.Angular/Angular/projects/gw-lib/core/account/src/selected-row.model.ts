@@ -1,6 +1,7 @@
 import { ISelectedRow } from '@growthware/core/base/interfaces';
 
 export class SelectedRow implements ISelectedRow {
+	Account: string = '';
 	AccountSeqId: number = -1;
 	Added_Date: string = '';
 	Email: string = '';
