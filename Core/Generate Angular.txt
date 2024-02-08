@@ -249,6 +249,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/security-entities/src c/SelectSecurityEntity 	--standalone --style scss --project gw-lib
 		ng generate interface 	--path=projects/gw-lib/core/security-entities/src SecurityEntityProfile 	--type model --project gw-lib
 		ng generate interface 	--path=projects/gw-lib/core/security-entities/src ValidSecurityEntities 	--type model --project gw-lib
+		ng generate interface   --path=projects/gw-lib/core/security-entities/src selectedRow               --type model --project gw-lib
 		ng generate service 	--path=projects/gw-lib/core/security-entities/src SecurityEntity 			--project gw-lib
 	Functions:
 		ng generate interface 	--path=projects/gw-lib/core/function/src functionProfile 			--type model --project gw-lib

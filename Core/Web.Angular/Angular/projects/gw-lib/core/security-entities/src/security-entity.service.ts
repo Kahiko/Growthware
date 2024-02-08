@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { AccountService } from '@growthware/core/account';
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { IKeyValuePair } from '@growthware/common/interfaces';
 import { LoggingService } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
+import { SelectedRow } from './selected-row.model';
 // Feature
 import { IValidSecurityEntities } from './valid-security-entities.model';
 import { ISecurityEntityProfile } from './security-entity-profile.model';
@@ -13,7 +15,7 @@ import { ISecurityEntityProfile } from './security-entity-profile.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class SecurityEntityService {
+export class SecurityEntityService implements BaseService {
 
 	private _ApiName: string = 'GrowthwareSecurityEntity/';
 	private _Api_GetSecurityEntity: string = '';
@@ -24,8 +26,7 @@ export class SecurityEntityService {
 	readonly addEditModalId: string = 'addEditAccountModal';
 
 	modalReason: string = '';
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectedRow: any = {};
+	selectedRow: SelectedRow = new SelectedRow();
 
 	constructor(
     private _AccountSvc: AccountService,
@@ -95,6 +96,7 @@ export class SecurityEntityService {
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getValidSecurityEntities');
+					reject('Failed to call the API');
 				},
 				// complete: () => {}
 			});

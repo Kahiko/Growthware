@@ -6,7 +6,7 @@ import { ConfigurationService } from '@growthware/core/configuration';
 import { DynamicTableComponent, DynamicTableService } from '@growthware/core/dynamic-table';
 import { DataService } from '@growthware/common/services';
 import { SearchService } from '@growthware/core/search';
-import { IModalOptions, ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
+import { ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
 import { SecurityEntityDetailsComponent } from '../security-entity-details/security-entity-details.component';
 import { SecurityEntityService } from '../../security-entity.service';
@@ -49,15 +49,5 @@ export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 		this._Subscription.add(
 			this._ConfigurationSvc.securityEntityTranslation$.subscribe((val: string) => { this.securityEntityTranslation = val;})
 		);
-	}
-
-	override onRowDoubleClick (rowNumber: number): void {
-		const mDataRow: any = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
-		this._TheService.selectedRow = mDataRow;
-		this._TheService.modalReason = 'EditProfile';
-		const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this.securityEntityTranslation, this._TheComponent, this._TheWindowSize);
-		if(this._ModalSvc) {
-			this._ModalSvc.open(mModalOptions);
-		}
 	}
 }
