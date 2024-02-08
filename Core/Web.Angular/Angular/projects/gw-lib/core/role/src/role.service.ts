@@ -1,15 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
+import { SelectedRow } from './selected-row.model';
 // Feature
 import { IRoleProfile } from './role-profile.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class RoleService {
+export class RoleService implements BaseService {
 	private _ApiName: string = 'GrowthwareRole/';
 	private _Api_Delete: string = '';
 	private _Api_GetRole: string = '';
@@ -17,8 +19,7 @@ export class RoleService {
 
 	readonly addEditModalId: string = 'addEditAccountModal';
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	selectedRow: any = {};
+	selectedRow: SelectedRow = new SelectedRow();
 	modalReason: string = '';
 
 	constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 

@@ -187,10 +187,11 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/group/src c/GroupDetails --standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/group/src c/SearchGroups --standalone --style scss --project gw-lib
 	Roles:
-		ng generate interface 	--path=projects/gw-lib/core/role/src RoleProfile 	--type model --project gw-lib
-		ng generate service 	--path=projects/gw-lib/core/role/src role 			--project gw-lib
-		ng generate component 	--path=projects/gw-lib/core/role/src c/RoleDetails 	--standalone --style scss --project gw-lib
-		ng generate component 	--path=projects/gw-lib/core/role/src c/SearchRoles 	--standalone --style scss --project gw-lib
+		ng generate interface 	--path=projects/gw-lib/core/role/src RoleProfile   --type model --project gw-lib
+		ng generate interface   --path=projects/gw-lib/core/role/src selectedRow   --type model --project gw-lib
+		ng generate service 	--path=projects/gw-lib/core/role/src role          --project gw-lib
+		ng generate component 	--path=projects/gw-lib/core/role/src c/RoleDetails --standalone --style scss --project gw-lib
+		ng generate component 	--path=projects/gw-lib/core/role/src c/SearchRoles --standalone --style scss --project gw-lib
 	SnakeList:
 		ng generate component --path=projects/gw-lib/core/snake-list/src c/snake-list --standalone --style scss --project gw-lib
 	Accounts: (converted to stand alone)
