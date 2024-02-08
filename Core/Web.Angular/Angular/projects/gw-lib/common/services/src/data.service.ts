@@ -18,7 +18,7 @@ export class DataService {
 			const mNameDataPair: INameDataPair = new NameDataPair(name, data);
 			this.dataChanged$.next(mNameDataPair);
 		} else {
-			console.warn('nameDataPair is null or undefined');
+			console.warn('DataService.notifyDataChanged: nameDataPair is null or undefined');
 		}
 	}
 }
