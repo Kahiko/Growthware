@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
 // Feature
 import { IStateProfile } from './state-profile.model';
+import { SelectedRow } from './selected-row.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class StatesService {
+export class StatesService implements BaseService {
 
 	private _ApiName: string = 'GrowthwareState/';
 	private _Api_GetProfile: string = '';
@@ -19,7 +21,7 @@ export class StatesService {
 	readonly addEditModalId: string = 'addEditAccountModal';
 
 	modalReason: string = '';
-	selectedRow = {};
+	selectedRow: SelectedRow = new SelectedRow();
 
 	constructor(
     private _GWCommon: GWCommon,

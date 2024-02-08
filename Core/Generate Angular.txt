@@ -283,6 +283,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/name-value-pair/src c/ManageNameValuePairs 		--module name-value-pair --style scss --project gw-lib
 	States:
 		ng generate interface 	--path=projects/gw-lib/core/states/src StateProfile 	--type model --project gw-lib
+		ng generate interface 	--path=projects/gw-lib/core/states/src selectedRow 	    --type model --project gw-lib
 		ng generate service 	--path=projects/gw-lib/core/states/src states 			--project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/states/src c/StateDetails 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/states/src c/SearchStates 	--standalone --style scss --project gw-lib
