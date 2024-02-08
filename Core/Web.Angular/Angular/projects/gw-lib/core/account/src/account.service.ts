@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { BehaviorSubject, map, Observable } from 'rxjs';
 // Library
+import { BaseService } from '@growthware/core/base/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
@@ -12,11 +13,12 @@ import { IAccountProfile } from './account-profile.model';
 import { IAuthenticationResponse, AuthenticationResponse } from './authentication-response.model';
 import { IClientChoices, ClientChoices } from './client-choices.model';
 import { ISelectedableAction } from './selectedable-action.model';
+import { SelectedRow } from './selected-row.model';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class AccountService {
+export class AccountService implements BaseService {
 
 	private _AccountInformationSubject: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
 	private _ApiName: string = 'GrowthwareAccount/';
@@ -43,8 +45,7 @@ export class AccountService {
 	get clientChoices() { return this._ClientChoices; }
 	readonly logInModalId = 'logInModal';
 	public modalReason: string = '';
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public selectedRow: any;
+	public selectedRow: SelectedRow = new SelectedRow();
 	readonly triggerMenuUpdate$ = this._TriggerMenuUpdateSubject.asObservable();
 
 	constructor(
