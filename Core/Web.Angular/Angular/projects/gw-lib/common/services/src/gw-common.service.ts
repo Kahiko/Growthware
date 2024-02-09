@@ -11,13 +11,13 @@ import { INavItem } from '@growthware/common/interfaces';
 export class GWCommon {
 
 	/**
-   * Adds or updates an element in an array so long as the elements in the array
-   * have an 'id' property.
-   *
-   * @param {any[]} yourArray
-   * @param {*} objectWithId
-   * @memberof GWCommon
-   */
+	 * Adds or updates an element in an array so long as the elements in the array
+	 * have an 'id' property.
+	 *
+	 * @param {any[]} yourArray
+	 * @param {*} objectWithId
+	 * @memberof GWCommon
+	 */
 	public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
 		const mExistingIds = yourArray.map((obj) => obj.id);
 
@@ -293,12 +293,11 @@ export class GWCommon {
 		return typeof value === 'string' || value instanceof String;
 	}
 
-	/********** Natural Sorting *****************/
 	/*
-  * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
-  * Author: Jim Palmer (based on chunking idea from Dave Koelle)
-  * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
-  */
+	 * Natural Sort algorithm for Javascript - Version 0.6 - Released under MIT license
+	 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
+	 * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
+	 */
 	public static naturalSort(a: any, b: any): number {
 		const re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi;
 		const sre = /(^[ ]*|[ ]*$)/g;
@@ -338,37 +337,37 @@ export class GWCommon {
 
 
 	/**
-   * sleep for x number of milliseconds
-   *
-   * @param {number} ms
-   * @return {*}
-   * @memberof UtilityService
-   */
+	 * sleep for x number of milliseconds
+	 *
+	 * @param {number} ms
+	 * @return {*}
+	 * @memberof UtilityService
+	 */
 	public async sleep(ms: number) {
 		await new Promise(resolve => setTimeout(() => resolve(true), ms)).then(() => {/* do nothing */ });
 	}
 
 	/**
-   * @description sortData is a basic sort for an array.
-   *
-   * @requires #sortBy a basic comparer function
-   *
-   * @param {Array} columnName this is the array to be sorted
-   * @param {String} columnName this is the name of the column or element in the array
-   * @param {String} orderByDirection this is the desired direction valid options asc or desc
-   *
-   * @returns {Array} a sorted array of object given a object property
-   *
-   * @usage:
-   * @usage:
-   * var myArray = [
-   *  {'First': '', 'Last': '', 'Middle': ''},
-   *  {'First': '', 'Last': '', 'Middle': ''}
-   * ]; // of course your array will have many "rows" not just two
-   * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
-   * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "Last"
-   *
-   */
+	 * @description sortData is a basic sort for an array.
+	 *
+	 * @requires #sortBy a basic comparer function
+	 *
+	 * @param {Array} columnName this is the array to be sorted
+	 * @param {String} columnName this is the name of the column or element in the array
+	 * @param {String} orderByDirection this is the desired direction valid options asc or desc
+	 *
+	 * @returns {Array} a sorted array of object given a object property
+	 *
+	 * @usage:
+	 * @usage:
+	 * var myArray = [
+	 *  {'First': '', 'Last': '', 'Middle': ''},
+	 *  {'First': '', 'Last': '', 'Middle': ''}
+	 * ]; // of course your array will have many "rows" not just two
+	 * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
+	 * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "Last"
+	 *
+	 */
 	public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
 		const isArray = (Object.prototype.toString.call(dataArray) === '[object Array]');
 		if (!isArray) {
@@ -388,10 +387,10 @@ export class GWCommon {
 	}
 
 	/**
-   * @description Returns a function which will sort an
-   * array of objects by the given key.
-   *
-   */
+	 * @description Returns a function which will sort an
+	 * array of objects by the given key.
+	 *
+	 */
 	private static sortBy(key: string | number, reverse: boolean): any {
 		// Move smaller items towards the front
 		// or back of the array depending on if
@@ -422,15 +421,15 @@ export class GWCommon {
 	}
 
 	/**
-   * Splits an array into multiple arrays of a specified size.
-   *
-   * @param {Array<any>} arrayToSplit - The array to be split.
-   * @param {number} numberInSubArray - The number of elements in each subarray.
-   * @return {any[]} The resulting array of subarrays.
-   * 
-   * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
-   *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
-   */
+	 * Splits an array into multiple arrays of a specified size.
+	 *
+	 * @param {Array<any>} arrayToSplit - The array to be split.
+	 * @param {number} numberInSubArray - The number of elements in each subarray.
+	 * @return {any[]} The resulting array of subarrays.
+	 * 
+	 * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
+	 *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
+	 */
 	public splitArray(arrayToSplit: Array<any>, numberInSubArray: number): any[] {
 		let idx: number = 0;
 		const mResult: any[] = [];
