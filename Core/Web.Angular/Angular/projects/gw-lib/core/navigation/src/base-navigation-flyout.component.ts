@@ -48,7 +48,7 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
 			this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
 		} else {
 			this._Subscription.add(
-				this._AccountSvc.triggerMenuUpdate$.subscribe((_) => { 
+				this._AccountSvc.triggerMenuUpdate$.subscribe(() => { 
 					this._NavigationSvc.getMenuData(this._MenuType, this.name);
 				})
 			);
