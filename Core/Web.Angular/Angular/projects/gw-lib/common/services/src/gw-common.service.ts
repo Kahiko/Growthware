@@ -159,10 +159,11 @@ export class GWCommon {
 		case 'icon':
 			mFormattedData = '';
 			break;
-		default:
+		default: {
 			const mMsg = '\'' + format + '\' is an unknown format';
 			throw (mMsg);
 			break;
+		}
 		}
 		return mFormattedData;
 	}
