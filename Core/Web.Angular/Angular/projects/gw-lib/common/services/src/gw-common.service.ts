@@ -96,7 +96,7 @@ export class GWCommon {
 					mListItem.appendChild(mHTMLUListElement);
 					this.buildUL(mHTMLUListElement, element.items, callbackMethod);
 				} else {
-					if(callbackMethod) {
+					if (callbackMethod) {
 						Object.assign(mAnchor, { onclick: () => callbackMethod(element.action) });
 					}
 				}
