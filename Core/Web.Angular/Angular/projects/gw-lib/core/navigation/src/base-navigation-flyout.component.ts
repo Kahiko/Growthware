@@ -1,5 +1,4 @@
 import { Component, AfterContentInit, OnDestroy, ElementRef } from '@angular/core';
-
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
