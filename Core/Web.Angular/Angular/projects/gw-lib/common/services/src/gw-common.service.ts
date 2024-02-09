@@ -32,7 +32,13 @@ export class GWCommon {
 		}
 	}
 
-	public buildMenuData(menuData: IMenuData[]): INavItem[] {
+	/**
+	 * A function to build hierarchical INavItem[] from the flat menuData.
+	 *
+	 * @param {IMenuData[]} menuData - description of parameter
+	 * @return {INavItem[]} description of return value
+	 */
+	public buildNavItems(menuData: IMenuData[]): INavItem[] {
 		// console.log('menuData', menuData);
 		const mRetItems: INavItem[] = [];
 		const items: INavItem[] = [];
@@ -63,6 +69,14 @@ export class GWCommon {
 		return mRetItems;
 	}
 
+	/**
+	 * A function that builds an unordered list within a given HTMLUListElement based on the provided INavItem array, and optionally invokes a callback method.
+	 *
+	 * @param {HTMLUListElement} parent - The parent HTMLUListElement where the unordered list will be built.
+	 * @param {INavItem[]} items - The array of INavItem objects used to populate the unordered list.
+	 * @param {CallbackMethod} [callbackMethod] - An optional callback method to be invoked.
+	 * @return {void} This function does not return a value.
+	 */
 	public buildUL(parent: HTMLUListElement, items: INavItem[], callbackMethod?: CallbackMethod): void {
 		items.forEach(element => {
 			if (element.label) {
@@ -92,12 +106,12 @@ export class GWCommon {
 	}
 
 	/**
-   * Returns the base URL ending in a forward slash
-   *
-   * @readonly
-   * @type {string}
-   * @memberof GWCommon
-   */
+	 * Returns the base URL ending in a forward slash
+	 *
+	 * @readonly
+	 * @type {string}
+	 * @memberof GWCommon
+	 */
 	public get baseURL(): string {
 		const mCurrentLocation = window.location;
 		let mPort = mCurrentLocation.port;
@@ -111,13 +125,13 @@ export class GWCommon {
 	}
 
 	/**
-   * Formats data
-   *
-   * @param {*} data
-   * @param {string} format
-   * @returns
-   * @memberof DynamicTableComponent
-   */
+	 * Formats data
+	 *
+	 * @param {*} data
+	 * @param {string} format
+	 * @returns
+	 * @memberof DynamicTableComponent
+	 */
 	public formatData(data: any, format: string): any {
 		if (this.isNullOrUndefined(data)) {
 			return '&nbsp;';
@@ -154,13 +168,13 @@ export class GWCommon {
 	}
 
 	/**
-   * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
-   *
-   * @static
-   * @param {*} sqlDate
-   * @return {*}  {*}
-   * @memberof GWCommon
-   */
+	 * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
+	 *
+	 * @static
+	 * @param {*} sqlDate
+	 * @return {*}  {*}
+	 * @memberof GWCommon
+	 */
 	public formatDate(sqlDate: any): any {
 		const mDateTime = new Date(sqlDate);
 		const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
