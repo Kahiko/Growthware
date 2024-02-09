@@ -1,5 +1,9 @@
 import { DatePipe } from '@angular/common';
 import { Injectable } from '@angular/core';
+// Library
+import { CallbackMethod } from '@growthware/common/interfaces';
+import { IMenuData } from '@growthware/common/interfaces';
+import { INavItem } from '@growthware/common/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -28,22 +32,21 @@ export class GWCommon {
 		}
 	}
 
-	public buildMenuData(menuData: any): any[] {
+	public buildMenuData(menuData: IMenuData[]): INavItem[] {
 		// console.log('menuData', menuData);
-		const source = [];
-		const items = [];
+		const mRetItems: INavItem[] = [];
+		const items: INavItem[] = [];
 		// build hierarchical source.
-		if(menuData && menuData.length) {
+		if (menuData && menuData.length) {
 			for (let i = 0; i < menuData.length; i++) {
 				const item = menuData[i];
-				const id = item['Id'];
-				const label = item['Title'];
-				const description = item['Description'];
-				const action = item['URL'].replace('?Action=', '').replace('&Action=', '');
-				const parentId = item['ParentId'];
-  
+				const id = item.Id;
+				const label = item.Title;
+				const description = item.Description;
+				const action = item.URL.replace('?Action=', '').replace('&Action=', '');
+				const parentId = item.ParentId;
 				if (items[parentId]) {
-					const item: any = { parentId: parentId, label: label, description: description, action: action };
+					const item: INavItem = { action: action, description: description, items: [], label: label, parentId: parentId };
 					if (!items[parentId].items) {
 						items[parentId].items = [];
 					}
@@ -51,16 +54,16 @@ export class GWCommon {
 					items[id] = item;
 				}
 				else {
-					items[id] = { parentId: parentId, label: label, description: description, action: action };
-					source[id] = items[id];
+					items[id] = { action: action, description: description, items: [], label: label, parentId: parentId };
+					mRetItems[id] = items[id];
 				}
 			}
 		}
 		// console.log('source', source);
-		return source;
+		return mRetItems;
 	}
 
-	public buildUL(parent: HTMLUListElement, items: any[], callbackMethod?: any): void {
+	public buildUL(parent: HTMLUListElement, items: INavItem[], callbackMethod?: CallbackMethod): void {
 		items.forEach(element => {
 			if (element.label) {
 				// create LI element and append it to the parent element.
@@ -79,7 +82,9 @@ export class GWCommon {
 					mListItem.appendChild(mHTMLUListElement);
 					this.buildUL(mHTMLUListElement, element.items, callbackMethod);
 				} else {
-					Object.assign(mAnchor, { onclick: () => callbackMethod(element.action) });
+					if(callbackMethod) {
+						Object.assign(mAnchor, { onclick: () => callbackMethod(element.action) });
+					}
 				}
 				parent.appendChild(mListItem);
 			}
@@ -263,8 +268,8 @@ export class GWCommon {
 	public isNumber(value: string | number): boolean {
 		let mRetVal: boolean = false;
 		if (!this.isNullOrUndefined(value) &&
-      !this.isNullOrEmpty(value.toString()) &&
-      !isNaN(Number(value.toString()))) {
+			!this.isNullOrEmpty(value.toString()) &&
+			!isNaN(Number(value.toString()))) {
 			mRetVal = true;
 		}
 		return mRetVal;
@@ -326,7 +331,7 @@ export class GWCommon {
    * @memberof UtilityService
    */
 	public async sleep(ms: number) {
-		await new Promise(resolve => setTimeout(()=>resolve(true), ms)).then(()=> {/* do nothing */});
+		await new Promise(resolve => setTimeout(() => resolve(true), ms)).then(() => {/* do nothing */ });
 	}
 
 	/**
@@ -387,10 +392,10 @@ export class GWCommon {
 		const moveLarger = reverse ? -1 : 1;
 
 		/**
-     * @param  {*} a
-     * @param  {*} b
-     * @return {Number}
-     */
+	 * @param  {*} a
+	 * @param  {*} b
+	 * @return {Number}
+	 */
 		return (a: any, b: any) => {
 			if (a[key] < b[key]) {
 				return moveSmaller;

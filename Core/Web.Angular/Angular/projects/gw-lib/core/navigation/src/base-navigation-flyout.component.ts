@@ -8,8 +8,8 @@ import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
+import { INavItem } from '@growthware/common/interfaces';
 // Feature
-import { INavItem } from './nav-item.model';
 import { NavigationService } from './navigation.service';
 import { MenuTypes } from './menu-types.enum';
 
@@ -56,7 +56,7 @@ export abstract class BaseNavigationFlyoutComponent implements AfterContentInit,
 			this._Subscription.add(
 				this._DataSvc.dataChanged$.subscribe((data) => {
 					if(data.name.toLowerCase() === this.name.toLowerCase()) {
-						// console.log('this.data.name', data.name);
+						console.log('BaseNavigationFlyoutComponent.ngAfterContentInit.data', data);
 						this._GWCommon.buildMenuData(data.value).forEach((item) => {
 							this.menuData.push(item);
 						});

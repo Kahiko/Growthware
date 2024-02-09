@@ -112,7 +112,9 @@ Application:
 Library (common):
 	interfaces: From Web.Angular\Angular
 		ng generate interface CallbackButton --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface KeyValuePair --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface KeyValuePair   --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface menuData       --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface NavItem        --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
 	services: From Web.Angular\Angular
 		ng generate guard AuthGuard 				--path=projects/gw-lib/common/services/src --guardType=CanActivate --project gw-lib
 		ng generate service gwCommon 				--path=projects/gw-lib/common/services/src --project gw-lib
@@ -223,7 +225,6 @@ Library: (core) From Web.Angular\Angular
 		ng generate component --path=projects/gw-lib/core/navigation/src c/Horizontal 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/Vertical 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/navigation/src c/VerticalListItem 			--standalone --style scss --project gw-lib
-		ng generate interface --path=projects/gw-lib/core/navigation/src NavItem 						--type model --project gw-lib
 		ng generate interface --path=projects/gw-lib/core/navigation/src NavLink 						--type model --project gw-lib
 		ng generate enum 	  --path=projects/gw-lib/core/navigation/src MenuTypes 						--type enum --project gw-lib
 		ng generate enum 	  --path=projects/gw-lib/core/navigation/src LinkBehaviors 					--type enum --project gw-lib
