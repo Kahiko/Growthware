@@ -249,13 +249,13 @@ export class GWCommon {
 	}
 
 	/**
-   * Determins if the str is null or empty (ie length === 0)
-   *
-   * @static
-   * @param {string} str
-   * @return {*}
-   * @memberof GWCommon
-   */
+     * Determins if the str is null or empty (ie length === 0)
+     *
+     * @static
+     * @param {string} str
+     * @return {*}
+     * @memberof GWCommon
+     */
 	public isNullOrEmpty(str: string): boolean {
 		if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
 			return true;
@@ -264,13 +264,13 @@ export class GWCommon {
 	}
 
 	/**
-   * Determines if the obj is null or undefined
-   *
-   * @static
-   * @param {*} obj
-   * @return {*}
-   * @memberof GWCommon
-   */
+     * Determines if the obj is null or undefined
+     *
+     * @static
+     * @param {*} obj
+     * @return {*}
+     * @memberof GWCommon
+     */
 	public isNullOrUndefined(obj: any): boolean {
 		if (obj == null || obj === null || typeof obj === 'undefined') {
 			return true;
@@ -279,12 +279,12 @@ export class GWCommon {
 	}
 
 	/**
-   * Determines if the value is a number
-   *
-   * @param {(string | number)} value
-   * @return {*}  {boolean}
-   * @memberof GWCommon
-   */
+     * Determines if the value is a number
+     *
+     * @param {(string | number)} value
+     * @return {*}  {boolean}
+     * @memberof GWCommon
+     */
 	public isNumber(value: string | number): boolean {
 		let mRetVal: boolean = false;
 		if (!this.isNullOrUndefined(value) &&
