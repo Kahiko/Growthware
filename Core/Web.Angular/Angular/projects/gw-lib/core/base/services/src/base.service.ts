@@ -1,7 +1,7 @@
-import { ISelectedRow } from '@growthware/core/base/interfaces';
+import { ITotalRecords } from '@growthware/common/interfaces';
 
 export abstract class BaseService {
 	abstract addEditModalId: string;
 	abstract modalReason: string;
-	abstract selectedRow: ISelectedRow;
+	abstract selectedRow: ITotalRecords;
 }

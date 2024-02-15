@@ -1,6 +1,6 @@
-import { ISelectedRow } from '@growthware/core/base/interfaces';
+import { ITotalRecords } from '@growthware/common/interfaces';
 
-export class SelectedRow implements ISelectedRow {
+export class SelectedRow implements ITotalRecords {
 	Action: string = '';
 	Added_By: string = '';
 	Added_Date: string = '';
