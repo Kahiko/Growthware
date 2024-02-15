@@ -266,11 +266,11 @@ export class GWCommon {
 	 * Determines if the obj is null or undefined
 	 *
 	 * @static
-	 * @param {*} obj
-	 * @return {*}
+	 * @param {unknown} obj - the input to check
+	 * @return {boolean} true if the input is null or or typeof undefined, false otherwise
 	 * @memberof GWCommon
 	 */
-	public isNullOrUndefined(obj: any): boolean {
+	public isNullOrUndefined(obj: unknown): boolean {
 		if (obj == null || obj === null || typeof obj === 'undefined') {
 			return true;
 		}
