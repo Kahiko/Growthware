@@ -316,11 +316,12 @@ export class GWCommon {
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static naturalSort(a: any, b: any): number {
-		const re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi;
-		const sre = /(^[ ]*|[ ]*$)/g;
-		const dre = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/;
-		const hre = /^0x[0-9a-f]+$/i;
-		const ore = /^0/;
+		const re: RegExp = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi;
+		const sre: RegExp = /(^[ ]*|[ ]*$)/g;
+		// eslint-disable-next-line no-useless-escape
+		const dre: RegExp = /(^([\w ]+,?[\w ]+)?[\w ]+,?[\w ]+\d+:\d+(:\d+)?[\w ]?|^\d{1,4}[\/\-]\d{1,4}[\/\-]\d{1,4}|^\w+, \w+ \d+, \d{4})/;
+		const hre: RegExp = /^0x[0-9a-f]+$/i;
+		const ore: RegExp = /^0/;
 		// convert all to strings and trim()
 		const x = a.toString().replace(sre, '') || '';
 		const y = b.toString().replace(sre, '') || '';
