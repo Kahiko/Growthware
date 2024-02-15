@@ -19,17 +19,17 @@ export class GWCommon {
 	 * @param {*} objectWithId
 	 * @memberof GWCommon
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
-		const mExistingIds = yourArray.map((obj) => obj.id);
-
-		if (!mExistingIds.includes(objectWithId.id)) {
-			yourArray.push(objectWithId);
+		if ('id' in objectWithId) {
+			const index = yourArray.findIndex((obj) => obj.id === objectWithId.id);
+			if (index === -1) {
+				yourArray.push(objectWithId);
+			} else {
+				yourArray[index] = objectWithId;
+			}	
 		} else {
-			yourArray.forEach((element, index) => {
-				if (element.id === objectWithId.id) {
-					yourArray[index] = objectWithId;
-				}
-			});
+			console.warn('addOrUpdateArray: objectWithId does not have an id property');
 		}
 	}
 
@@ -142,30 +142,30 @@ export class GWCommon {
 		const mFormatParts: string[] = format.split(':');
 		const mFormat = mFormatParts[0];
 		switch (mFormat.toLowerCase()) {
-		    case 'date':
-			    mFormattedData = this.formatDate(data);
+		case 'date':
+			mFormattedData = this.formatDate(data);
 			break;
-		    case 'text':
-			    if (mFormatParts.length > 1 && data.length > 0) {
-			    	const mDesiredLength = parseInt(mFormatParts[1]);
-			    	if (data.length > mDesiredLength) {
-			    		// console.log('eclipsing the data');
-			    		// console.log(data);
-			    		mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
-			    	}
-			    }
+		case 'text':
+			if (mFormatParts.length > 1 && data.length > 0) {
+				const mDesiredLength = parseInt(mFormatParts[1]);
+				if (data.length > mDesiredLength) {
+					// console.log('eclipsing the data');
+					// console.log(data);
+					mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
+				}
+			}
 			break;
-		    case 'checkBox':
-			    mFormattedData = data;
+		case 'checkBox':
+			mFormattedData = data;
 			break;
-		    case 'icon':
-			    mFormattedData = '';
+		case 'icon':
+			mFormattedData = '';
 			break;
-		    default: {
-			    const mMsg: string = '\'' + format + '\' is an unknown format';
-			    throw (mMsg);
-			    break;
-		    }
+		default: {
+			const mMsg: string = '\'' + format + '\' is an unknown format';
+			throw (mMsg);
+			break;
+		}
 		}
 		return mFormattedData;
 	}
@@ -238,25 +238,25 @@ export class GWCommon {
 	}
 
 	/**
-     * Determines if the obj is a function
-     *
-     * @static
-     * @param {*} obj
-     * @return {*}  {boolean}
-     * @memberof GWCommon
-     */
+	 * Determines if the obj is a function
+	 *
+	 * @static
+	 * @param {*} obj
+	 * @return {*}  {boolean}
+	 * @memberof GWCommon
+	 */
 	public isFunction(obj: any): boolean {
 		return typeof obj === 'function';
 	}
 
 	/**
-     * Determins if the str is null or empty (ie length === 0)
-     *
-     * @static
-     * @param {string} str
-     * @return {*}
-     * @memberof GWCommon
-     */
+	 * Determins if the str is null or empty (ie length === 0)
+	 *
+	 * @static
+	 * @param {string} str
+	 * @return {*}
+	 * @memberof GWCommon
+	 */
 	public isNullOrEmpty(str: string): boolean {
 		if (!str || 0 === str.length || !str || /^\s*$/.test(str)) {
 			return true;
@@ -265,13 +265,13 @@ export class GWCommon {
 	}
 
 	/**
-     * Determines if the obj is null or undefined
-     *
-     * @static
-     * @param {*} obj
-     * @return {*}
-     * @memberof GWCommon
-     */
+	 * Determines if the obj is null or undefined
+	 *
+	 * @static
+	 * @param {*} obj
+	 * @return {*}
+	 * @memberof GWCommon
+	 */
 	public isNullOrUndefined(obj: any): boolean {
 		if (obj == null || obj === null || typeof obj === 'undefined') {
 			return true;
@@ -280,12 +280,12 @@ export class GWCommon {
 	}
 
 	/**
-     * Determines if the value is a number
-     *
-     * @param {(string | number)} value
-     * @return {*}  {boolean}
-     * @memberof GWCommon
-     */
+	 * Determines if the value is a number
+	 *
+	 * @param {(string | number)} value
+	 * @return {*}  {boolean}
+	 * @memberof GWCommon
+	 */
 	public isNumber(value: string | number): boolean {
 		let mRetVal: boolean = false;
 		if (!this.isNullOrUndefined(value) &&
