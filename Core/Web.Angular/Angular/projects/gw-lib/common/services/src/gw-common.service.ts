@@ -237,13 +237,13 @@ export class GWCommon {
 	}
 
 	/**
-   * Determines if the obj is a function
-   *
-   * @static
-   * @param {*} obj
-   * @return {*}  {boolean}
-   * @memberof GWCommon
-   */
+     * Determines if the obj is a function
+     *
+     * @static
+     * @param {*} obj
+     * @return {*}  {boolean}
+     * @memberof GWCommon
+     */
 	public isFunction(obj: any): boolean {
 		return typeof obj === 'function';
 	}
