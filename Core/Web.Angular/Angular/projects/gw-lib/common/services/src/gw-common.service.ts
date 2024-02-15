@@ -295,8 +295,18 @@ export class GWCommon {
 		return mRetVal;
 	}
 
-	public isString(value: any) {
-		return typeof value === 'string' || value instanceof String;
+	/**
+	 * Check if the input value is a string.
+	 *
+	 * @param {unknown} value - the value to be checked
+	 * @return {boolean} true if the value is a string, false otherwise
+	 */
+	public isString(value: unknown): boolean {
+		let mRetVal: boolean = false;
+		if(typeof value === 'string' || value instanceof String) {
+			mRetVal = true;
+		}
+		return mRetVal;
 	}
 
 	/*
