@@ -389,7 +389,7 @@ export class GWCommon {
 	public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
 		const isArray = (Object.prototype.toString.call(dataArray) === '[object Array]');
 		if (!isArray) {
-			console.log('Common.sortArray: dataArray is not an "Array" exiting!');
+			console.log('Common.sortArray: dataArray is not an "Array"!');
 			return;
 		}
 		let mReverse = false;
