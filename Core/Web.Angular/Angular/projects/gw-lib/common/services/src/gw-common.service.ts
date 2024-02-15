@@ -385,6 +385,7 @@ export class GWCommon {
 	 * myArray = svc.SortArray(myArray, 'Last', 'asc'); // sort your array by the element "Last"
 	 *
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
 		const isArray = (Object.prototype.toString.call(dataArray) === '[object Array]');
 		if (!isArray) {
