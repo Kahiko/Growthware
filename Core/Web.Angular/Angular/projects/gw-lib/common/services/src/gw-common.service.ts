@@ -133,6 +133,7 @@ export class GWCommon {
 	 * @returns {any} The formatted data
 	 * @memberof DynamicTableComponent
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public formatData(data: any, format: string): any {
 		if (this.isNullOrUndefined(data)) {
 			return '&nbsp;';
@@ -141,10 +142,10 @@ export class GWCommon {
 		const mFormatParts: string[] = format.split(':');
 		const mFormat = mFormatParts[0];
 		switch (mFormat.toLowerCase()) {
-		case 'date':
+		  case 'date':
 			mFormattedData = this.formatDate(data);
 			break;
-		case 'text':
+		  case 'text':
 			if (mFormatParts.length > 1 && data.length > 0) {
 				const mDesiredLength = parseInt(mFormatParts[1]);
 				if (data.length > mDesiredLength) {
@@ -154,17 +155,17 @@ export class GWCommon {
 				}
 			}
 			break;
-		case 'checkBox':
+		  case 'checkBox':
 			mFormattedData = data;
 			break;
-		case 'icon':
+		  case 'icon':
 			mFormattedData = '';
 			break;
-		default: {
-			const mMsg = '\'' + format + '\' is an unknown format';
+		  default: {
+			const mMsg: string = '\'' + format + '\' is an unknown format';
 			throw (mMsg);
 			break;
-		}
+		  }
 		}
 		return mFormattedData;
 	}
