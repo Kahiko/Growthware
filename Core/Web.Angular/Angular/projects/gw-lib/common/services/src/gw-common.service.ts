@@ -142,30 +142,30 @@ export class GWCommon {
 		const mFormatParts: string[] = format.split(':');
 		const mFormat = mFormatParts[0];
 		switch (mFormat.toLowerCase()) {
-		  case 'date':
-			mFormattedData = this.formatDate(data);
+		    case 'date':
+			    mFormattedData = this.formatDate(data);
 			break;
-		  case 'text':
-			if (mFormatParts.length > 1 && data.length > 0) {
-				const mDesiredLength = parseInt(mFormatParts[1]);
-				if (data.length > mDesiredLength) {
-					// console.log('eclipsing the data');
-					// console.log(data);
-					mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
-				}
-			}
+		    case 'text':
+			    if (mFormatParts.length > 1 && data.length > 0) {
+			    	const mDesiredLength = parseInt(mFormatParts[1]);
+			    	if (data.length > mDesiredLength) {
+			    		// console.log('eclipsing the data');
+			    		// console.log(data);
+			    		mFormattedData = data.toString().substring(0, mDesiredLength) + '...';
+			    	}
+			    }
 			break;
-		  case 'checkBox':
-			mFormattedData = data;
+		    case 'checkBox':
+			    mFormattedData = data;
 			break;
-		  case 'icon':
-			mFormattedData = '';
+		    case 'icon':
+			    mFormattedData = '';
 			break;
-		  default: {
-			const mMsg: string = '\'' + format + '\' is an unknown format';
-			throw (mMsg);
-			break;
-		  }
+		    default: {
+			    const mMsg: string = '\'' + format + '\' is an unknown format';
+			    throw (mMsg);
+			    break;
+		    }
 		}
 		return mFormattedData;
 	}
