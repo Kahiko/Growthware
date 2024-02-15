@@ -423,10 +423,10 @@ export class GWCommon {
 		const moveLarger = reverse ? -1 : 1;
 
 		/**
-	 * @param  {*} a
-	 * @param  {*} b
-	 * @return {Number}
-	 */
+		 * @param  {*} a
+		 * @param  {*} b
+		 * @return {Number}
+		 */
 		return (a: any, b: any) => {
 			if (a[key] < b[key]) {
 				return moveSmaller;
