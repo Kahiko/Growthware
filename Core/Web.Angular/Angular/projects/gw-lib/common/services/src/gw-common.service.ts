@@ -239,11 +239,11 @@ export class GWCommon {
 	 * Determines if the obj is a function
 	 *
 	 * @static
-	 * @param {*} obj
-	 * @return {*}  {boolean}
+	 * @param {unknown} obj - the input to check
+	 * @return {boolean} true if the input is a function, false otherwise
 	 * @memberof GWCommon
 	 */
-	public isFunction(obj: any): boolean {
+	public isFunction(obj: unknown): boolean {
 		return typeof obj === 'function';
 	}
 
