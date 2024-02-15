@@ -382,7 +382,7 @@ export class GWCommon {
 	 *  {'First': '', 'Last': '', 'Middle': ''}
 	 * ]; // of course your array will have many "rows" not just two
 	 * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "First"
-	 * myArray = svc.SortArray(myArray, 'First', 'asc'); // sort your array by the element "Last"
+	 * myArray = svc.SortArray(myArray, 'Last', 'asc'); // sort your array by the element "Last"
 	 *
 	 */
 	public static sortArray(dataArray: any, columnName: string, orderByDirection: string) {
