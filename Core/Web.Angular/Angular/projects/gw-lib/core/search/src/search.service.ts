@@ -18,19 +18,19 @@ export class SearchService {
 	public searchDataChanged$ = new Subject<SearchResultsNVP>();
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
 	) {
 		this._BaseUrl = this._GWCommon.baseURL;
 	}
 
 	/**
-   * Calls GrowthwareAPI.Search
-   *
-   * @param {SearchCriteria} criteria
-   * @return {*}  {Promise<any>}
-   * @memberof GWLibSearchService
-   */
+	 * Get search results from the specified URL using the provided search criteria.
+	 *
+	 * @param {string} url - the URL for the search request
+	 * @param {SearchCriteriaNVP} criteria - the search criteria object
+	 * @return {Promise<ISearchResultsNVP>} a promise that resolves with the search results
+	 */
 	public async getResults(url: string, criteria: SearchCriteriaNVP): Promise<ISearchResultsNVP> {
 		const mUrl: string = this._BaseUrl + url;
 		const mHttpOptions = {
@@ -40,14 +40,14 @@ export class SearchService {
 		};
 		return new Promise<SearchResultsNVP>((resolve, reject) => {
 			this._HttpClient
-				.post<any>(mUrl, criteria.payLoad, mHttpOptions)
+				.post<Array<ITotalRecords>>(mUrl, criteria.payLoad, mHttpOptions)
 				.subscribe({
-					next: (response: any) => {
+					next: (response: Array<ITotalRecords>) => {
 						const mTotalRecords = this._GWCommon.getTotalRecords(response);
 						const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(criteria.name, { data: response, totalRecords: mTotalRecords, searchCriteria: criteria.payLoad });
 						resolve(mSearchResultsNVP);
 					},
-					error: (errorResponse: any) => {
+					error: (errorResponse: unknown) => {
 						reject(errorResponse);
 					},
 					// complete: () => console.info('complete')
@@ -55,6 +55,12 @@ export class SearchService {
 		});
 	}
 
+	/**
+	 * Returns a locally stored search criteria or null given the name of the SearchCriteria.
+	 *
+	 * @param {string} name - description of parameter
+	 * @return {null | SearchCriteria} description of return value
+	 */
 	public getSearchCriteria(name: string): null | SearchCriteria {
 		const index = this._SearchCriteria_NVP_Array.findIndex(searchCriteriaNVP => searchCriteriaNVP.name === name);
 		let mRetVal = null;
@@ -64,12 +70,26 @@ export class SearchService {
 		return mRetVal;
 	}
 
+	/**
+	 * Notify when search data has changed by calling searchDataChanged$.next
+	 *
+	 * @param {string} name - the name of the search data
+	 * @param {Array<ITotalRecords>} data - the array of total records
+	 * @param {SearchCriteria} searchCriteria - the search criteria
+	 * @return {void} 
+	 */
 	public notifySearchDataChanged(name: string, data: Array<ITotalRecords>, searchCriteria: SearchCriteria): void {
 		const mTotalRecords = this._GWCommon.getTotalRecords(data);
 		const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(name, { data: data, totalRecords: mTotalRecords, searchCriteria: searchCriteria });
 		this.searchDataChanged$.next(mSearchResultsNVP);
 	}
 
+	/**
+	 * Adds or updates thel ocally stored search criteria for a given name.
+	 *
+	 * @param {string} name - the name of the search criteria
+	 * @param {SearchCriteria} searchCriteria - the criteria to be set
+	 */
 	public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
 		const mChangedCriteria = new SearchCriteriaNVP(name, searchCriteria);
 		this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria);
