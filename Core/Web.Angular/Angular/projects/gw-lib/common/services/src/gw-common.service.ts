@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import { CallbackMethod } from '@growthware/common/interfaces';
 import { IMenuData } from '@growthware/common/interfaces';
 import { INavItem } from '@growthware/common/interfaces';
+import { ITotalRecords } from '@growthware/common/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -171,12 +172,10 @@ export class GWCommon {
 	/**
 	 * Formats a SQL date as 'dddd, MMMM Do YYYY, h:mm:ss a'
 	 *
-	 * @static
-	 * @param {*} sqlDate
-	 * @return {*}  {*}
-	 * @memberof GWCommon
+	 * @param {string | number | Date} sqlDate - the date to be formatted
+	 * @return {string | null} the formatted date, or null if the input is invalid
 	 */
-	public formatDate(sqlDate: any): any {
+	public formatDate(sqlDate: string | number | Date): string | null {
 		const mDateTime = new Date(sqlDate);
 		const mMask = 'dddd, MMMM Do YYYY, h:mm:ss a';
 		const mDatePipe: DatePipe = new DatePipe('en-US');
@@ -184,7 +183,13 @@ export class GWCommon {
 		return mFormattedDate;
 	}
 
-	public getTotalRecords(data: Array<any>): number {
+	/**
+	 * Get the total number of records from the given data array.
+	 *
+	 * @param {Array<ITotalRecords>} data - the array of records
+	 * @return {number} the total number of records, or -1 if the data is empty or the 'TotalRecords' field is missing
+	 */
+	public getTotalRecords(data: Array<ITotalRecords>): number {
 		let mRetVal = -1;
 		if (data && data.length > 0) {
 			const mFirstRow = data[0];

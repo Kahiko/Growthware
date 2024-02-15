@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
+import { ITotalRecords } from '@growthware/common/interfaces';
 // This Feature
 import { ISearchResultsNVP, SearchCriteria, SearchCriteriaNVP, SearchResultsNVP } from '../src/search-criteria.model';
 
@@ -63,7 +64,7 @@ export class SearchService {
 		return mRetVal;
 	}
 
-	public notifySearchDataChanged(name: string, data: unknown[], searchCriteria: SearchCriteria): void {
+	public notifySearchDataChanged(name: string, data: Array<ITotalRecords>, searchCriteria: SearchCriteria): void {
 		const mTotalRecords = this._GWCommon.getTotalRecords(data);
 		const mSearchResultsNVP: SearchResultsNVP = new SearchResultsNVP(name, { data: data, totalRecords: mTotalRecords, searchCriteria: searchCriteria });
 		this.searchDataChanged$.next(mSearchResultsNVP);
