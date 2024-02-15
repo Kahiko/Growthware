@@ -215,12 +215,11 @@ export class GWCommon {
    * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
    * @memberof GWCommon
    */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public hierarchySearch(data: any, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): object | null {
-		let i: number; // iterator
-		let mNode: any = null; // found node
 		if (Array.isArray(data)) { // if entry object is array objects, check each object
-			for (i = 0; i < data.length; i++) {
-				mNode = this.hierarchySearch(data[i], searchValue, nameOfProperty, nameOfChildNodes);
+			for (let i = 0; i < data.length; i++) {
+				const mNode = this.hierarchySearch(data[i], searchValue, nameOfProperty, nameOfChildNodes);
 				if (mNode) { // if found matching object, return it.
 					return mNode;
 				}
@@ -232,9 +231,8 @@ export class GWCommon {
 		}
 		if (data[nameOfChildNodes] !== undefined && data[nameOfChildNodes].length > 0) { // did not find the node but there more children to search
 			return this.hierarchySearch(data[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes);
-		} else {
-			return null; // node does not match and did not find it in any of the children
 		}
+		return null; // node does not match and did not find it in any of the children
 	}
 
 	/**
