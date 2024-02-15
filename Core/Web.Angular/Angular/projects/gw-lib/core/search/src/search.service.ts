@@ -92,7 +92,7 @@ export class SearchService {
 	 */
 	public setSearchCriteria(name: string, searchCriteria: SearchCriteria) {
 		const mChangedCriteria = new SearchCriteriaNVP(name, searchCriteria);
-		this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria);
+		this._GWCommon.addOrUpdateArray(this._SearchCriteria_NVP_Array, mChangedCriteria, 'name');
 		this.searchCriteriaChanged$.next(mChangedCriteria);
 	}
 }

@@ -16,20 +16,21 @@ export class GWCommon {
 	 * has an 'id' property.
 	 *
 	 * @param {any[]} yourArray
-	 * @param {*} objectWithId
+	 * @param {*} objectWithProperty
 	 * @memberof GWCommon
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public addOrUpdateArray(yourArray: any[], objectWithId: any): void {
-		if ('id' in objectWithId) {
-			const index = yourArray.findIndex((obj) => obj.id === objectWithId.id);
+	public addOrUpdateArray(yourArray: any[], objectWithProperty: any, propertyName: string = 'id'): void {
+		if (propertyName in objectWithProperty) {
+			const index = yourArray.findIndex((obj) => obj.id === objectWithProperty.id);
 			if (index === -1) {
-				yourArray.push(objectWithId);
+				yourArray.push(objectWithProperty);
 			} else {
-				yourArray[index] = objectWithId;
+				yourArray[index] = objectWithProperty;
 			}	
 		} else {
-			console.warn('addOrUpdateArray: objectWithId does not have an id property');
+			console.warn('addOrUpdateArray: objectWithProperty does not have the "' + propertyName + '" property');
+			throw new Error('objectWithProperty does not have an id property');
 		}
 	}
 
