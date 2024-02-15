@@ -206,16 +206,42 @@ export class GWCommon {
 	}
 
 	/**
-   * @description Searches hierarchical data for an object with specified properties value
-   *
-   * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
-   * @param {(string | number)} searchValue value of searched node's  prop
-   * @param {string} nameOfProperty name of the property used to compare against the value parameter
-   * @param {string} nameOfChildNodes name of prop that holds child nodes array (default value of 'children')
-   * @return {*}  {*} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
-   * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
-   * @memberof GWCommon
-   */
+	 * @description Replaces an object in a hierarchy of data
+	 *
+	 * @param {Array<any>} data - the tree to be searched for a record to replace
+	 * @param {string | number} searchValue - the value of the property to be searched for
+	 * @param {string} nameOfProperty - name of the property used to search for the value
+	 * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
+	 * @param {any} replacementObject - the replacement object for the matching item
+	 * @return {boolean} true if the data was found and replaced, false otherwise
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public replaceInHierarchy(data: Array<any>, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string, replacementObject: any): boolean {
+		let mRetVal = false;
+		for (const mItem of data) {
+			if (mItem[nameOfProperty] === searchValue) {
+				mRetVal = true;
+				Object.assign(mItem, replacementObject);
+				break;
+			}
+			if (mItem[nameOfChildNodes]) {
+				mRetVal = this.replaceInHierarchy(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes, replacementObject);
+			}
+		}
+		return mRetVal;
+	}
+
+	/**
+	 * @description Searches hierarchical data for an object with specified properties value
+	 *
+	 * @param {*} data tree nodes tree with children items in nodesProp[] table, with one (object) or many (array of objects) roots
+	 * @param {(string | number)} searchValue value of searched node's  prop
+	 * @param {string} nameOfProperty name of the property used to compare against the value parameter
+	 * @param {string} nameOfChildNodes name of prop that holds child nodes array (default value of 'children')
+	 * @return {*}  {*} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+	 * @return {*}  {(object | null)} returns first object that match supplied arguments (propertyName: value) or null if no matching object was found
+	 * @memberof GWCommon
+	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public hierarchySearch(data: any, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): object | null {
 		if (Array.isArray(data)) { // if entry object is array objects, check each object
