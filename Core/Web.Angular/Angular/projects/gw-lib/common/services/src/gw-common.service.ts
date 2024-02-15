@@ -409,25 +409,26 @@ export class GWCommon {
 	 * array of objects by the given key.
 	 *
 	 */
-	private static sortBy(key: string | number, reverse: boolean): any {
+	private static sortBy(key: string | number, reverse: boolean): (a: Record<string, unknown>, b: Record<string, unknown>) => number {
 		// Move smaller items towards the front
 		// or back of the array depending on if
 		// we want to sort the array in reverse
 		// order or not.
-		const moveSmaller = reverse ? 1 : -1;
+		const moveSmaller: number = reverse ? 1 : -1;
 
 		// Move larger items towards the front
 		// or back of the array depending on if
 		// we want to sort the array in reverse
 		// order or not.
-		const moveLarger = reverse ? -1 : 1;
+		const moveLarger: number = reverse ? -1 : 1;
 
 		/**
 		 * @param  {*} a
 		 * @param  {*} b
 		 * @return {Number}
 		 */
-		return (a: any, b: any) => {
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		return (a: Record<string, any>, b: Record<string, any>): number => {
 			if (a[key] < b[key]) {
 				return moveSmaller;
 			}
