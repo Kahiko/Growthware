@@ -377,7 +377,6 @@ export class GWCommon {
 	 * @returns {Array} a sorted array of object given a object property
 	 *
 	 * @usage:
-	 * @usage:
 	 * var myArray = [
 	 *  {'First': '', 'Last': '', 'Middle': ''},
 	 *  {'First': '', 'Last': '', 'Middle': ''}
