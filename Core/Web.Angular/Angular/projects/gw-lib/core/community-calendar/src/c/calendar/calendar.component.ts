@@ -43,7 +43,7 @@ export class CalendarComponent implements OnInit {
 	private generateCalendarDays(monthIndex: number): void {
 		// we reset our calendar
 		this.calendar = [];
-		let mCalendar: CalendarDay[] = [];
+		let mCalendar: Array<Array<CalendarDay>> = [];
 		// we set the date 
 		const day: Date = new Date(new Date().setMonth(new Date().getMonth() + monthIndex));
 

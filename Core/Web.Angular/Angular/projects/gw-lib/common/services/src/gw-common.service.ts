@@ -27,7 +27,7 @@ export class GWCommon {
 				yourArray.push(objectWithProperty);
 			} else {
 				yourArray[index] = objectWithProperty;
-			}	
+			}
 		} else {
 			console.warn('addOrUpdateArray: objectWithProperty does not have the "' + propertyName + '" property');
 			throw new Error('objectWithProperty does not have an id property');
@@ -303,7 +303,7 @@ export class GWCommon {
 	 */
 	public isString(value: unknown): boolean {
 		let mRetVal: boolean = false;
-		if(typeof value === 'string' || value instanceof String) {
+		if (typeof value === 'string' || value instanceof String) {
 			mRetVal = true;
 		}
 		return mRetVal;
@@ -442,22 +442,23 @@ export class GWCommon {
 	/**
 	 * Splits an array into multiple arrays of a specified size.
 	 *
-	 * @param {Array<any>} arrayToSplit - The array to be split.
+	 * @param {T[]} arrayToSplit - The array to be split.
 	 * @param {number} numberInSubArray - The number of elements in each subarray.
-	 * @return {any[]} The resulting array of subarrays.
+	 * @return {T[][]} The resulting array of subarrays.
 	 * 
 	 * @example: var myArrray = splitArray([1,2,3,4,5,6,7,8], 3);
 	 *          Outputs  [ [1,2,3] , [4,5,6] ,[7,8] ]
 	 */
-	public splitArray(arrayToSplit: Array<any>, numberInSubArray: number): any[] {
-		let idx: number = 0;
-		const mResult: any[] = [];
-		while (idx < arrayToSplit.length) {
-			if (idx % numberInSubArray === 0) mResult.push([]);
-			const mNewElement = JSON.parse(JSON.stringify(arrayToSplit[idx++]));
-			// const mNewElement = arrayToSplit[idx++];
-			mResult[mResult.length - 1].push(mNewElement);
+	public splitArray<T>(arrayToSplit: T[], numberInSubArray: number): T[][] {
+		if (numberInSubArray <= 0) {
+			throw new Error('numberInSubArray must be greater than 0');
 		}
-		return mResult;
+
+		const result: T[][] = [];
+		for (let i = 0; i < arrayToSplit.length; i += numberInSubArray) {
+			result.push(arrayToSplit.slice(i, i + numberInSubArray));
+		}
+
+		return result;
 	}
 }
