@@ -13,7 +13,7 @@ export class GWCommon {
 
 	/**
 	 * Adds or updates an element in an array so long as the elements in the array
-	 * have an 'id' property.
+	 * has an 'id' property.
 	 *
 	 * @param {any[]} yourArray
 	 * @param {*} objectWithId
