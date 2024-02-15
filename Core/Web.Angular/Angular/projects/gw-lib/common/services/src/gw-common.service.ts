@@ -304,6 +304,7 @@ export class GWCommon {
 	 * Author: Jim Palmer (based on chunking idea from Dave Koelle)
 	 * Contributors: Mike Grier (mgrier.com), Clint Priest, Kyle Adams, guillermo
 	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	public static naturalSort(a: any, b: any): number {
 		const re = /(^-?[0-9]+(\.?[0-9]*)[df]?e?[0-9]?$|^0x[0-9a-f]+$|[0-9]+)/gi;
 		const sre = /(^[ ]*|[ ]*$)/g;
