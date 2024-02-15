@@ -3,6 +3,7 @@
  */
 
 export * from './src/callback-button.model';
+export * from './src/directory-tree.model';
 export * from './src/gw.types';
 export * from './src/key-value-pair.model';
 export * from './src/menu-data.model';

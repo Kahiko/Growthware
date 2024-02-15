@@ -4,9 +4,9 @@ import { Observable, Subject } from 'rxjs';
 // Library
 import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
+import { IDirectoryTree } from '@growthware/common/interfaces';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
-import { IDirectoryTree } from './interfaces/directory-tree.model';
 import { IFileInfoLight } from './interfaces/file-info-light.model';
 import { IMultiPartFileUploadParameters, MultiPartFileUploadParameters } from './interfaces/multi-part-file-upload-parameters.model';
 import { IUploadResponse } from './interfaces/upload-response.model';

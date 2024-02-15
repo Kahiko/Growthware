@@ -22,8 +22,9 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ScrollingModule } from '@angular/cdk/scrolling';
+// Library
+import { IDirectoryTree } from '@growthware/common/interfaces';
 // Feature
-import { IDirectoryTree } from '../../interfaces/directory-tree.model';
 import { FileManagerService } from '../../file-manager.service';
 import { RenameDirectoryComponent } from '../rename-directory/rename-directory.component';
 

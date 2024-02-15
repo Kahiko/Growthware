@@ -25,3 +25,4 @@ export class DirectoryTree implements IDirectoryTree {
 	public sizeInBytes: number = 0;
 	public sizeInBytesWithChildren: number = 0;
 }
+
