@@ -128,9 +128,9 @@ export class GWCommon {
 	/**
 	 * Formats data
 	 *
-	 * @param {*} data
-	 * @param {string} format
-	 * @returns
+	 * @param {any} data - The data to be formatted
+	 * @param {string} format - The format to be applied to the data
+	 * @returns {any} The formatted data
 	 * @memberof DynamicTableComponent
 	 */
 	public formatData(data: any, format: string): any {
