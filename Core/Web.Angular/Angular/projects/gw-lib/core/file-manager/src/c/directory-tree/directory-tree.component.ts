@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { TemplateRef } from '@angular/core';
@@ -8,7 +8,6 @@ import { Subscription } from 'rxjs';
 // Library
 import { DataService, GWCommon } from '@growthware/common/services';
 import { IDirectoryTree } from '@growthware/common/interfaces';
-import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 import { ISecurityInfo, SecurityInfo } from '@growthware/core/security';
@@ -49,10 +48,7 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	private _SecurityInfo: ISecurityInfo = new SecurityInfo();
 	private _Subscriptions: Subscription = new Subscription();
 
-	@Input() doGetFiles: boolean = true;
-
 	activeNode?: IDirectoryTree;
-	configurationName: string = '';
 	menuTopLeftPosition = { x: '0', y: '0' }; // we create an object that contains coordinates
 	selectedPath: string = '';
 
@@ -86,51 +82,34 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	ngOnInit(): void {
 		this._FileManagerSvc.setSelectedDirectory('\\');
 		this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
-		this.configurationName = this._Action + '_Directories';
-		if (!this._GWCommon.isNullOrEmpty(this.configurationName)) {
-			this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
-				this._SecurityInfo = response;
-			}).catch((error) => {
-				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
-			});
-			// logic to start getting data
-			this._Subscriptions.add(this._FileManagerSvc.directoriesChanged$.subscribe((data: Array<IDirectoryTree>) => {
-				this.dataSource.data = data;
-				if (this.doGetFiles) {
-					console.log('DirectoryTreeComponent.ngOnInit.doGetFiles', this.doGetFiles);
-					// const mAction = this.configurationName.replace('_Directories', '');
+		this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
+			this._SecurityInfo = response;
+		}).catch((error) => {
+			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
+		});
+		// logic to start getting data
+		this._Subscriptions.add(this._FileManagerSvc.directoriesChanged$.subscribe((data: Array<IDirectoryTree>) => {
+			this.dataSource.data = data;
+			const mSelectedDirectory = this._GWCommon.hierarchySearch(data, this._FileManagerSvc.selectedPath, 'relitivePath') as IDirectoryTree;
+			if (mSelectedDirectory) {
+				this.expand(this.dataSource.data, mSelectedDirectory.relitivePath);
+				this.activeNode = mSelectedDirectory;
+			}
+		}));
+		this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged$.subscribe((data: IDirectoryTree) => {
+			if(this.selectedPath !== data.relitivePath || this._FileManagerSvc.needToExpand) {
+				this.selectedPath = data.relitivePath;
+				if (this._GWCommon.isNullOrEmpty(data.relitivePath)) {
+					this.selectedPath = '\\';
 				}
-			}));
-			this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged$.subscribe((data: IDirectoryTree) => {
-				if(this.selectedPath !== data.relitivePath || this._FileManagerSvc.needToExpand) {
-					this.selectedPath = data.relitivePath;
-					if (this._GWCommon.isNullOrEmpty(data.relitivePath)) {
-						this.selectedPath = '\\';
-					}
-					this.activeNode = data;
-					this.expand(this.dataSource.data, data.relitivePath);
-					this._FileManagerSvc.getFiles(this._Action, this.selectedPath);
-					if (this._FileManagerSvc.needToExpand) {
-						this._FileManagerSvc.needToExpand = false;
-					}
+				this.activeNode = data;
+				this.expand(this.dataSource.data, data.relitivePath);
+				this._FileManagerSvc.getFiles(this._Action, this.selectedPath);
+				if (this._FileManagerSvc.needToExpand) {
+					this._FileManagerSvc.needToExpand = false;
 				}
-			}));
-		} else {
-			const mLogDestinations: Array<LogDestination> = [];
-			mLogDestinations.push(LogDestination.Console);
-			mLogDestinations.push(LogDestination.Toast);
-			const mLogOptions: ILogOptions = new LogOptions(
-				'DirectoryTreeComponent.ngOnInit: configurationName is blank',
-				LogLevel.Error,
-				mLogDestinations,
-				'DirectoryTreeComponent',
-				'DirectoryTreeComponent',
-				'ngOnInit',
-				'system',
-				'DirectoryTreeComponent'
-			);
-			this._LoggingSvc.log(mLogOptions);
-		}
+			}
+		}));
 	}
 
 	/**
@@ -242,7 +221,6 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	 * @memberof DirectoryTreeComponent
 	 */
 	onSelectDirectory(node: IDirectoryTree): void {
-		this.doGetFiles = true;
 		this.selectDirectory(node);
 	}
 

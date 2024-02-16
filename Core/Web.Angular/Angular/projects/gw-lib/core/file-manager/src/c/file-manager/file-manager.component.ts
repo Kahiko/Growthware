@@ -80,6 +80,6 @@ export class FileManagerComponent implements OnInit {
   }
 
   onRefresh(): void {
-  	// this._FileManagerSvc.refresh(this._Action);
+  	this._FileManagerSvc.refresh(this._Action);
   }
 }

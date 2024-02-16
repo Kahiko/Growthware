@@ -181,6 +181,11 @@ export class FileManagerService {
 		});
 	}
 
+	refresh(action: string): void {
+		this.getDirectories(action, this.selectedPath);
+		this.getFiles(action, this.selectedPath);
+	}
+
 	/**
 	 * Renames a directory, updates the local directory tree, and calls setSelectedDirectory.
 	 *
