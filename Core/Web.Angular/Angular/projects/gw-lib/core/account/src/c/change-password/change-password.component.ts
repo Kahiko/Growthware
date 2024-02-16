@@ -51,10 +51,10 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
   	});
   	this.hideOldPassword = this._AccountSvc.authenticationResponse.status == 4;
   	this.populateForm();
-  	this._Subscription.add(this.getControls['newPassword'].valueChanges.subscribe((data) => {
+  	this._Subscription.add(this.getControls['newPassword'].valueChanges.subscribe(() => {
   		this.onPasswordChange();
   	}));
-  	this._Subscription.add(this.getControls['confirmPassword'].valueChanges.subscribe((data) => {
+  	this._Subscription.add(this.getControls['confirmPassword'].valueChanges.subscribe(() => {
   		this.onPasswordChange();
   	}));
   }
@@ -63,7 +63,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
   	this._Subscription.unsubscribe();
   }
 
-  onSubmit(form: FormGroup): void {
+  onSubmit(): void {
   	// logic to change password
   	this._AccountSvc.changePassword(this.getControls['oldPassword'].value, this.getControls['newPassword'].value).then((response) => {
   		if(response) {
@@ -88,6 +88,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   getErrorMessage(fieldName: string) {
+  	let mRetVal: string = '';
   	switch (fieldName) {
   	case 'oldPassword':
   		if(this._AccountSvc.authenticationResponse.status != 4) {
@@ -102,7 +103,6 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
   		}
   		break;
   	case 'confirmPassword':
-  		let mRetVal: string = '';
   		if (this.getControls['confirmPassword'].hasError('required')) {
   			mRetVal = 'Required';
   		} else {
