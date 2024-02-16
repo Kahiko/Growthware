@@ -98,7 +98,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 			this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
 			this._AccountSvc.saveClientChoices(this.clientChoices).catch((error) => {
 				this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
-			}).then((_) => {
+			}).then(() => {
 				this._LoggingSvc.toast('Client choices saved', 'Save client choices', LogLevel.Success);
 			});
 		}

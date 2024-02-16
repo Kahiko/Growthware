@@ -52,7 +52,7 @@ export abstract class BaseNavigationComponent implements AfterContentInit, OnDes
   		this._LoggingSvc.toast('the "name" property is required', 'BaseHierarchicalComponent', LogLevel.Error);
   	} else {
   		this._Subscription.add(
-  			this._AccountSvc.triggerMenuUpdate$.subscribe((_) => { 
+  			this._AccountSvc.triggerMenuUpdate$.subscribe(() => { 
   				this._NavigationSvc.getNavLinks(this._MenuType, this.name);
   			})
   		);

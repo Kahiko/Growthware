@@ -50,9 +50,9 @@ export class SelectSecurityEntityComponent implements OnInit {
 		// console.log('SelectSecurityEntityComponent.onSave');
 		const mClientChoices: IClientChoices = JSON.parse(JSON.stringify(this._AccountSvc.clientChoices));
 		mClientChoices.securityEntityID = this.selectedSecurityEntity;
-		this._AccountSvc.saveClientChoices(mClientChoices).then((_) => {
+		this._AccountSvc.saveClientChoices(mClientChoices).then(() => {
 			this._LoggingSvc.toast('Selection saved', 'Select Security Entity', LogLevel.Success);
-		}).catch((error) => {
+		}).catch(() => {
 			this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
 		});
 	}

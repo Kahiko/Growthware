@@ -142,11 +142,11 @@ export class GroupDetailsComponent implements OnDestroy, OnInit {
 
 	onSubmit(form: FormGroup): void {
 		this.populateProfile();
-		this._GroupSvc.saveGroup(this._GroupProfile).then((response) => {
+		this._GroupSvc.saveGroup(this._GroupProfile).then(() => {
 			this.updateSearch();
 			this._LoggingSvc.toast('The group has been saved', 'Save Group', LogLevel.Success);
 			this.closeModal();
-		}).catch((_) => {
+		}).catch(() => {
 			this._LoggingSvc.toast('The group could not be saved', 'Save Group', LogLevel.Error);
 		});
 	}
