@@ -215,7 +215,7 @@ export class GWCommon {
 	 * @param {any} replacementObject - the replacement object for the match
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public deleteFromHierarchy(data: any[], searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): boolean {
+	public hierarchyRemoveItem(data: any[], searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): boolean {
 		let mRetVal: boolean = false;
 		if (data && data.length > 0) {
 			for (let i = 0; i < data.length; i++) {
@@ -226,7 +226,7 @@ export class GWCommon {
 					data.splice(i, 1);
 					break;
 				} else if (mItem[nameOfChildNodes]) {
-					mRetVal = this.deleteFromHierarchy(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes);
+					mRetVal = this.hierarchyRemoveItem(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes);
 					if (mRetVal) {
 						break;
 					}
@@ -247,7 +247,7 @@ export class GWCommon {
 	 * @return {boolean} true if the data was found and replaced, false otherwise
 	 */
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	public replaceInHierarchy(data: Array<any>, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string, replacementObject: any): boolean {
+	public hierarchyReplaceItem(data: Array<any>, searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string, replacementObject: any): boolean {
 		let mRetVal = false;
 		for (const mItem of data) {
 			if (mItem[nameOfProperty] === searchValue) {
@@ -256,7 +256,7 @@ export class GWCommon {
 				break;
 			}
 			if (mItem[nameOfChildNodes]) {
-				mRetVal = this.replaceInHierarchy(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes, replacementObject);
+				mRetVal = this.hierarchyReplaceItem(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes, replacementObject);
 			}
 		}
 		return mRetVal;

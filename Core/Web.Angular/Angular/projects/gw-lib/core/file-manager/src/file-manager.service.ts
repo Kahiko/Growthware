@@ -130,7 +130,7 @@ export class FileManagerService {
 					next: (response: boolean) => {
 						if(response === true) {
 							const mNewDirectoryArray = JSON.parse(JSON.stringify(this._DirectoriesSub.getValue()));
-							this._GWCommon.deleteFromHierarchy(mNewDirectoryArray, selectedPath, 'relitivePath');
+							this._GWCommon.hierarchyRemoveItem(mNewDirectoryArray, selectedPath, 'relitivePath');
 							this._DirectoriesSub.next(mNewDirectoryArray);
 							this.setSelectedDirectory(mDirectory.parentRelitivePath);
 						}
@@ -215,7 +215,7 @@ export class FileManagerService {
 						mNewDirectory.name = newName;
 						mNewDirectory.relitivePath = mNewRelitivePath;
 						const mNewDirectoryArray = JSON.parse(JSON.stringify(this._DirectoriesSub.getValue()));
-						this._GWCommon.replaceInHierarchy(mNewDirectoryArray, mOriginalDirectory.key, 'key', 'children', mNewDirectory);
+						this._GWCommon.hierarchyReplaceItem(mNewDirectoryArray, mOriginalDirectory.key, 'key', 'children', mNewDirectory);
 						this._DirectoriesSub.next(mNewDirectoryArray);
 						this.setSelectedDirectory(mNewDirectory.relitivePath);
 						resolve(true);
