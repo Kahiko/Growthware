@@ -63,7 +63,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   	this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
   	this.id = this._Action + '_Upload';
   	if(!this._GWCommon.isNullOrEmpty(this.id)) {
-  		this._Subscription.add(this._FileManagerSvc.uploadStatusChanged.subscribe((data: IUploadStatus) => {
+  		this._Subscription.add(this._FileManagerSvc.uploadStatusChanged$.subscribe((data: IUploadStatus) => {
   			// console.log('data', data);
   			if (data.id.toLowerCase() + '_upload' === this.id.toLowerCase()) {
   				const mFilePercentage: number = Math.floor((data.uploadNumber / data.totalNumberOfUploads) * 100);
@@ -75,7 +75,7 @@ export class UploadComponent implements OnDestroy, OnInit {
   					if(mTotalPercent == 100) {
   						this._GWCommon.sleep(500).then(() => {
   							this.showFileProgress = false;
-  							this._FileManagerSvc.refresh(this._Action);
+  							// this._FileManagerSvc.refresh(this._Action);
   							this._GWCommon.sleep(3000).then(() => {
   								this.onOk();
   							});

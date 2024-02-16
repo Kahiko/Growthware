@@ -1,6 +1,6 @@
 <ul class="grid-list__ul" [ngStyle]="getTemplateColumnsStyle()">
   @for (item of data$ | async; track item; let rowIndex = $index) {
-    <li (click)="onLeftClick(item)" (contextmenu)="onRightClick($event, { content: item })" [ngClass]="{ 'background-highlight': selectedFile === item }">
+    <li (click)="onLeftClick(item)" (contextmenu)="onRightClick($event, item)" [ngClass]="{ 'background-highlight': selectedFile === item }">
       {{ item.shortFileName }}
     </li>
   }
@@ -18,15 +18,15 @@
 <mat-menu #rightMenu="matMenu">
   <ng-template matMenuContent let-item="item">
     @if (showDelete) {
-      <button mat-menu-item (click)="onMenuDeleteClick(item.content)">Delete</button>
+      <button mat-menu-item (click)="onMenuDeleteClick(item)">Delete</button>
     }
     @if (showDownalod) {
-      <button mat-menu-item (click)="onMenuDownloadClick(item.content)">Download</button>
+      <button mat-menu-item (click)="onMenuDownloadClick(item)">Download</button>
     }
     @if (showRename) {
-      <button mat-menu-item (click)="onMenuRenameClick(item.content)">Rename</button>
+      <button mat-menu-item (click)="onMenuRenameClick(item)">Rename</button>
     }
-    <button mat-menu-item (click)="onMenuPropertiesClick(item.content)">Properties</button>
+    <button mat-menu-item (click)="onMenuPropertiesClick(item)">Properties</button>
   </ng-template>
 </mat-menu>
 

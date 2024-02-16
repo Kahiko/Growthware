@@ -65,8 +65,7 @@ export class FileManagerComponent implements OnInit {
   	const mAction: string = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
   	this._Action = mAction;
   	this.configurationName = mAction;
-  	const mForControl: string = mAction + '_Directories';
-  	this._FileManagerSvc.getDirectories(mAction, '\\', mForControl);
+  	this._FileManagerSvc.getDirectories(mAction, '\\');
   }
 
   onCreateDirectory() {
@@ -81,6 +80,6 @@ export class FileManagerComponent implements OnInit {
   }
 
   onRefresh(): void {
-  	this._FileManagerSvc.refresh(this._Action);
+  	// this._FileManagerSvc.refresh(this._Action);
   }
 }

@@ -73,9 +73,15 @@ export class AddDirectoryComponent {
    */
 	onCreateDirectorySubmit(): void {
 		this._FileManagerSvc.createDirectory(this._Action, this.getControls['newDirectoryName'].value).then((response) => {
+			let mMsg = 'Folder has been created';
+			let mLogLevel = LogLevel.Success;
+			if(response === false) {
+				mMsg = 'Folder was NOT created';
+				mLogLevel = LogLevel.Error;
+			}
 			this.frmCreateDirectory.reset();
 			this._ModalSvc.close(this._FileManagerSvc.ModalId_CreateDirectory);
-			this._LoggingSvc.toast('Folder has been created', 'New Folder', LogLevel.Success);
+			this._LoggingSvc.toast(mMsg, 'New Folder', mLogLevel);					
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileManagerComponent', 'onCreateDirectorySubmit');
 		});

@@ -5,6 +5,7 @@ export interface IDirectoryTree {
     isFolder: boolean;
     key: string;
     name: string;
+    parentRelitivePath: string;
     relitivePath: string;
     size: string;
     sizeWithChildren: string;
@@ -19,6 +20,7 @@ export class DirectoryTree implements IDirectoryTree {
 	public isFolder: boolean = true;
 	public key: string = '';
 	public name: string = '';
+	public parentRelitivePath: string = '';
 	public relitivePath: string = '';
 	public size: string = '';
 	public sizeWithChildren: string = '';

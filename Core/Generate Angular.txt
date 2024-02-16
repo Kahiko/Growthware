@@ -111,12 +111,13 @@ Application:
 		ng generate module features/SysAdmin --routing --project gw-frontend
 Library (common):
 	interfaces: From Web.Angular\Angular
-		ng generate interface CallbackButton --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface KeyValuePair   --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface menuData       --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface NavItem        --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface totalRecords   --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
-		ng generate interface directoryTree  --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface CallbackButton     --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface KeyValuePair       --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface menuData           --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface NavItem            --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface totalRecords       --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface directoryTree      --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
+		ng generate interface NaturalSortResults --type model --path=projects/gw-lib/common/interfaces/src --project gw-lib
 	services: From Web.Angular\Angular
 		ng generate guard AuthGuard 				--path=projects/gw-lib/common/services/src --guardType=CanActivate --project gw-lib
 		ng generate service gwCommon 				--path=projects/gw-lib/common/services/src --project gw-lib
@@ -237,7 +238,6 @@ Library: (core) From Web.Angular\Angular
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/Upload --standalone 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/RenameDirectory 						--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/AddDirectory 							--standalone --style scss --project gw-lib
-		ng generate interface --path=projects/gw-lib/core/file-manager/src interfaces/NaturalSortResults 			--type model --project gw-lib
 		ng generate interface --path=projects/gw-lib/core/file-manager/src interfaces/fileInfoLight 				--type model --project gw-lib
 		ng generate interface --path=projects/gw-lib/core/file-manager/src interfaces/uploadResponse 				--type model --project gw-lib
 		ng generate interface --path=projects/gw-lib/core/file-manager/src interfaces/MultiPartFileUploadParameters --type model --project gw-lib

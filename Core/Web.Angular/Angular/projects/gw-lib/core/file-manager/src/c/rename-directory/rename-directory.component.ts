@@ -80,13 +80,16 @@ export class RenameDirectoryComponent implements OnInit {
    * @memberof DirectoryTreeComponent
    */
 	onRenameSubmit(form: FormGroup): void {
-		this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName'], this._Action + '_Directories').then((response) => {
-			form.reset();
-			this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
-			this._LoggingSvc.toast('The directory has been renamed', 'Rename direcory', LogLevel.Success);
+		console.log('form', form);
+		this._FileManagerSvc.renameDirectory(this._Action, form.value['newDirectoryName']).then((response) => {
+			if(response === true){
+				form.reset();
+				this._LoggingSvc.toast('The directory has been renamed', 'Rename direcory', LogLevel.Success);
+			}
 		}).catch((error) => {
 			this._LoggingSvc.toast('Directory was NOT renamed', 'Rename direcory', LogLevel.Error);
 			this._LoggingSvc.errorHandler(error, 'RenameDirectoryComponent', 'onRenameSubmit');
 		});
+		this._ModalSvc.close(this._FileManagerSvc.ModalId_Rename_Directory);
 	}
 }

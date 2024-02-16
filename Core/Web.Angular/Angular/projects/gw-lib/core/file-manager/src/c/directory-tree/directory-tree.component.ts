@@ -1,14 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ViewChild } from '@angular/core';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Library
-import { INameDataPair } from '@growthware/common/interfaces';
-import { DataService } from '@growthware/common/services';
-import { GWCommon } from '@growthware/common/services';
+import { DataService, GWCommon } from '@growthware/common/services';
+import { IDirectoryTree } from '@growthware/common/interfaces';
 import { LogDestination, ILogOptions, LogOptions } from '@growthware/core/logging';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
@@ -22,8 +21,6 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTreeModule } from '@angular/material/tree';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { ScrollingModule } from '@angular/cdk/scrolling';
-// Library
-import { IDirectoryTree } from '@growthware/common/interfaces';
 // Feature
 import { FileManagerService } from '../../file-manager.service';
 import { RenameDirectoryComponent } from '../rename-directory/rename-directory.component';
@@ -44,7 +41,7 @@ import { RenameDirectoryComponent } from '../rename-directory/rename-directory.c
 	templateUrl: './directory-tree.component.html',
 	styleUrls: ['./directory-tree.component.scss']
 })
-export class DirectoryTreeComponent implements OnInit {
+export class DirectoryTreeComponent implements OnDestroy, OnInit {
 
 	private _Action: string = '';
 	private _ModalId_Directory_Delete = 'DirectoryTreeComponent.onMenuDeleteClick';
@@ -81,7 +78,13 @@ export class DirectoryTreeComponent implements OnInit {
 		// do nothing
 	}
 
+	ngOnDestroy(): void {
+		this._Action = '';
+		this._Subscriptions.unsubscribe();
+	}
+
 	ngOnInit(): void {
+		this._FileManagerSvc.setSelectedDirectory('\\');
 		this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
 		this.configurationName = this._Action + '_Directories';
 		if (!this._GWCommon.isNullOrEmpty(this.configurationName)) {
@@ -91,23 +94,26 @@ export class DirectoryTreeComponent implements OnInit {
 				this._LoggingSvc.errorHandler(error, 'FileListComponent', 'ngOnInit');
 			});
 			// logic to start getting data
-			this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
-				if (data.name.toLowerCase() === this.configurationName.toLowerCase()) {
-					// console.log('data.value', data.value);
-					this.dataSource.data = data.value;
-					if (this.doGetFiles) {
-						const mAction = this.configurationName.replace('_Directories', '');
-						const mForControlName = mAction + '_Files';
-						this.activeNode = data.value[0];
-						this.selectedPath = data.value[0].relitivePath;
-						this._FileManagerSvc.getFiles(mAction, mForControlName, data.value[0].relitivePath);
-					}
+			this._Subscriptions.add(this._FileManagerSvc.directoriesChanged$.subscribe((data: Array<IDirectoryTree>) => {
+				this.dataSource.data = data;
+				if (this.doGetFiles) {
+					console.log('DirectoryTreeComponent.ngOnInit.doGetFiles', this.doGetFiles);
+					// const mAction = this.configurationName.replace('_Directories', '');
 				}
 			}));
-			this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged.subscribe((data: IDirectoryTree) => {
-				this.selectedPath = data.relitivePath;
-				this.activeNode = data;
-				this.expand(this.dataSource.data, data.relitivePath);
+			this._Subscriptions.add(this._FileManagerSvc.selectedDirectoryChanged$.subscribe((data: IDirectoryTree) => {
+				if(this.selectedPath !== data.relitivePath || this._FileManagerSvc.needToExpand) {
+					this.selectedPath = data.relitivePath;
+					if (this._GWCommon.isNullOrEmpty(data.relitivePath)) {
+						this.selectedPath = '\\';
+					}
+					this.activeNode = data;
+					this.expand(this.dataSource.data, data.relitivePath);
+					this._FileManagerSvc.getFiles(this._Action, this.selectedPath);
+					if (this._FileManagerSvc.needToExpand) {
+						this._FileManagerSvc.needToExpand = false;
+					}
+				}
 			}));
 		} else {
 			const mLogDestinations: Array<LogDestination> = [];
@@ -130,21 +136,23 @@ export class DirectoryTreeComponent implements OnInit {
 	/**
 	 * Expands all the parent nodes given the hierarchical data and the value of the unique node property
 	 *
-	 * @param {IDirectoryTree[]} data
-	 * @param {string} relitivePath
-	 * @return {*}  {*}
+	 * @param {IDirectoryTree[]} data - description of parameter
+	 * @param {string} relitivePath - description of parameter
+	 * @return {void} description of return value
 	 * @memberof DirectoryTreeComponent
 	 */
 	expand(data: IDirectoryTree[], relitivePath: string): void {
-		data.forEach(node => {
-			if (node.children && node.children.find(c => c.relitivePath === relitivePath)) {
+		this.treeControl.expand(data[0]);
+		for	(let i: number = 0; i < data.length; i++) {
+			const node = data[i];
+			if(node.children && node.children.find(c => c.relitivePath === relitivePath)) {
 				this.treeControl.expand(node);
-				this.expand(data, node.relitivePath);
+				break;
 			}
 			else if (node.children && node.children.find(c => c.children)) {
 				this.expand(node.children, relitivePath);
 			}
-		});
+		}
 	}
 
 	hasChild = (_: number, node: IDirectoryTree) => !!node.children && node.children.length > 0;
@@ -156,23 +164,18 @@ export class DirectoryTreeComponent implements OnInit {
 	 * @memberof DirectoryTreeComponent
 	 */
 	onMenuDeleteClick(item: IDirectoryTree) {
-		// console.log('item', item);
+		console.log('item', item);
 		const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Directory_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
 		mModalOptions.buttons.okButton.visible = true;
 		mModalOptions.buttons.okButton.text = 'Yes';
 		mModalOptions.buttons.okButton.callbackMethod = () => {
 			this._FileManagerSvc.deleteDirectory(this._Action, this.selectedPath).then(() => {
-				const mPreviousRelitavePath = this.previousRelitavePath(item);
-				this._FileManagerSvc.getDirectories(this._Action, mPreviousRelitavePath, this.configurationName).then(() => {
-					const mPreviousDirectoryNode: IDirectoryTree = <IDirectoryTree>this._GWCommon.hierarchySearch(this.dataSource.data, mPreviousRelitavePath, 'relitivePath', 'children');
-					this.selectDirectory(mPreviousDirectoryNode);
-					this._ModalSvc.close(this._ModalId_Directory_Delete);
-				}).catch((error) => {
-					this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
-				});
+				// TODO: get files for the selected directory
+				this._ModalSvc.close(this._ModalId_Directory_Delete);
 			}).catch((error) => {
 				this._LoggingSvc.errorHandler(error, 'DirectoryTreeComponent', 'onMenuDeleteClick');
 				this._LoggingSvc.toast('Was not able to delete the directory', 'Delete directory error', LogLevel.Error);
+				this._ModalSvc.close(this._ModalId_Directory_Delete);
 			});
 		};
 		this._ModalSvc.open(mModalOptions);
@@ -239,24 +242,8 @@ export class DirectoryTreeComponent implements OnInit {
 	 * @memberof DirectoryTreeComponent
 	 */
 	onSelectDirectory(node: IDirectoryTree): void {
+		this.doGetFiles = true;
 		this.selectDirectory(node);
-	}
-
-	/**
-	 * @description Return the previous directory node's relitive path
-	 *
-	 * @private
-	 * @param {IDirectoryTree} directoryTree
-	 * @return {*}  {string}
-	 * @memberof DirectoryTreeComponent
-	 */
-	private previousRelitavePath(directoryTree: IDirectoryTree): string {
-		const mRelitivePathParts = directoryTree.relitivePath.split('\\');
-		let mRetVal: string = '';
-		for (let index = 1; index < mRelitivePathParts.length - 1; index++) {
-			mRetVal += '\\' + mRelitivePathParts[index];
-		}
-		return mRetVal;
 	}
 
 	/**
@@ -273,11 +260,6 @@ export class DirectoryTreeComponent implements OnInit {
 			this.showDelete = this._SecurityInfo.mayDelete;
 			this.showRename = this._SecurityInfo.mayEdit;
 		}
-		this._FileManagerSvc.setSelectedDirectory(directoryTree);
-		if (this.doGetFiles) {
-			const mAction = this.configurationName.replace('_Directories', '');
-			const mForControlName = mAction + '_Files';
-			this._FileManagerSvc.getFiles(mAction, mForControlName, directoryTree.relitivePath);
-		}
+		this._FileManagerSvc.setSelectedDirectory(directoryTree.relitivePath);
 	}
 }

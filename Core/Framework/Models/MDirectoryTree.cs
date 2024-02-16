@@ -12,11 +12,13 @@ public class MDirectoryTree
     public bool IsFolder { get; set; }
     public string Key { get; set; }
     public string Name { get; set; }
+    public string ParentRelitivePath { get; set; }
     public string RelitivePath { get; set; }
     public string Size { get; set; }
     public string SizeWithChildren { get; set; }
     public long SizeInBytes { get; set; }
     public long SizeInBytesWithChildren { get; set; }
+
     public MDirectoryTree(DirectoryInfo directoryInfo, string rootPath)
     {
         // Set the properties
@@ -31,6 +33,18 @@ public class MDirectoryTree
         Key = directoryInfo.Name.Replace(" ", "").ToLower();
         Name = directoryInfo.Name;
         RelitivePath = directoryInfo.FullName.Replace(mRootPath, "");
+        ParentRelitivePath = this.RelitivePath.Replace(directoryInfo.Name, "");
+        ParentRelitivePath = ParentRelitivePath.Replace(@"\", @"/");
+        ParentRelitivePath = ParentRelitivePath.Replace(@"/", Path.DirectorySeparatorChar.ToString());
+        int mLastInstance = ParentRelitivePath.LastIndexOf(Path.DirectorySeparatorChar);
+        if (mLastInstance > 0) 
+        {
+            ParentRelitivePath = ParentRelitivePath.Substring(0, mLastInstance);        
+        }
+        if (ParentRelitivePath.Length < 1) 
+        { 
+            ParentRelitivePath = Path.DirectorySeparatorChar.ToString(); 
+        }
         // Add file sizes.
         FileInfo[] mFiles = directoryInfo.GetFiles();        
         long mSize = 0;

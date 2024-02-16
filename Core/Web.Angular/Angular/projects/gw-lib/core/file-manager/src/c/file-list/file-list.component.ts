@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -9,7 +9,6 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatMenuTrigger } from '@angular/material/menu';
 // Library
-import { INameDataPair } from '@growthware/common/interfaces';
 import { DataService } from '@growthware/common/services';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService, LogLevel } from '@growthware/core/logging';
@@ -34,10 +33,10 @@ import { IFileInfoLight } from '../../interfaces/file-info-light.model';
 	templateUrl: './file-list.component.html',
 	styleUrls: ['./file-list.component.scss']
 })
-export class FileListComponent implements OnInit {
+export class FileListComponent implements OnDestroy, OnInit {
 
 	private _Action: string = '';
-	private _DataSubject = new BehaviorSubject<any[]>([]);
+	private _DataSubject = new BehaviorSubject<Array<IFileInfoLight>>([]);
 	private _ModalId_Delete = 'FileListComponent.onMenuDeleteClick';
 	private _ModalId_Properties = 'FileListComponent.onMenuPropertiesClick';
 	private _ModalId_Rename: string = 'FileListComponent.onRenameClick';
@@ -57,9 +56,9 @@ export class FileListComponent implements OnInit {
 
   // reference to the MatMenuTrigger in the DOM 
   @ViewChild( MatMenuTrigger, {static: true}) private _MatMenuTrigger!: MatMenuTrigger;
-  @ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!:TemplateRef<any>;
-  @ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!:TemplateRef<any>;
-  @ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<any>;
+  @ViewChild('deleteFile', { read: TemplateRef }) private _DeleteFile!:TemplateRef<unknown>;
+  @ViewChild('fileProperties', { read: TemplateRef }) private _FileProperties!:TemplateRef<unknown>;
+  @ViewChild('renameFile', { read: TemplateRef }) private _RenameFile!:TemplateRef<unknown>;
 
   constructor(
     private _DataSvc: DataService,
@@ -73,6 +72,7 @@ export class FileListComponent implements OnInit {
   ) { }
 
   ngOnDestroy(): void {
+  	this._Action = '';
   	this._Subscriptions.unsubscribe();
   }
 
@@ -90,10 +90,8 @@ export class FileListComponent implements OnInit {
   	if(this._GWCommon.isNullOrUndefined(this.id)) {
   		this._LoggingSvc.toast('The id can not be blank!', 'File List Component', LogLevel.Error);
   	} else {
-  		this._Subscriptions.add(this._DataSvc.dataChanged$.subscribe((data: INameDataPair) => {
-  			if(data.name.toLocaleLowerCase() === this.id.toLowerCase()) {
-  				this._DataSubject.next(data.value);
-  			}
+  		this._Subscriptions.add(this._FileManagerSvc.filesChanged$.subscribe((data: Array<IFileInfoLight>) => {
+  			this._DataSubject.next(data);
   		}));
   	}
   }
@@ -102,6 +100,12 @@ export class FileListComponent implements OnInit {
   	return this.frmRenameFile.controls;
   }
 
+  /**
+   * Get error message for a specific field.
+   *
+   * @param {string} fieldName - the name of the field
+   * @return {string | undefined} the error message, or undefined if no error
+   */
   getErrorMessage(fieldName: string): string | undefined {
   	switch (fieldName) {
   	case 'newName':
@@ -115,13 +119,22 @@ export class FileListComponent implements OnInit {
   	return undefined;
   }
 
-  getTemplateColumnsStyle(): Object {
-  	let obj :Object;
-  	obj = { 'grid-template-columns':'repeat('+Number(this.numberOfColumns)+', 1fr)'};
-  	// console.log('obj', obj);
-  	return obj;
+  /**
+   * Get the style for template columns.
+   *
+   * @return {object} the style for template columns
+   */
+  getTemplateColumnsStyle(): object {
+  	const mRetVal  = { 'grid-template-columns':'repeat('+Number(this.numberOfColumns)+', 1fr)'};
+  	// console.log('getTemplateColumnsStyle.mRetVal', mRetVal);
+  	return mRetVal;
   }
 
+  /**
+   * Handle left click event on the file
+   *
+   * @param {IFileInfoLight} item - the file information
+   */
   onLeftClick(item: IFileInfoLight) {
   	if(!this.selectedFile) {
   		this.selectedFile = item;
@@ -134,6 +147,11 @@ export class FileListComponent implements OnInit {
   	}
   }
 
+  /**
+   * Handle "Delete" menu click event
+   *
+   * @param {IFileInfoLight} item - the file information
+   */
   onMenuDeleteClick(item: IFileInfoLight){
   	// console.log('item', item);
   	this.selectedFile = item;
@@ -141,8 +159,8 @@ export class FileListComponent implements OnInit {
   	mModalOptions.buttons.okButton.visible = true;
   	mModalOptions.buttons.okButton.text = 'Yes';
   	mModalOptions.buttons.okButton.callbackMethod = () => {
-  		this._FileManagerSvc.deleteFile(this._Action, this.selectedFile.name).then((_)=>{
-  			this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
+  		this._FileManagerSvc.deleteFile(this._Action, this.selectedFile.name).then(()=>{
+  			this._FileManagerSvc.getFiles(this._Action, this._FileManagerSvc.selectedPath);
   			this._LoggingSvc.toast('File was deleted', 'Delete file', LogLevel.Success);
   		}).catch((error) => {
   			this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onMenuDeleteClick');
@@ -153,13 +171,22 @@ export class FileListComponent implements OnInit {
   	this._ModalSvc.open(mModalOptions);
   }
 
+  /**
+   * Handle "Download" menu click event
+   *
+   * @param {IFileInfoLight} item - the file information
+   */
   onMenuDownloadClick(item: IFileInfoLight) {
   	// console.log('item', item);
   	this.selectedFile = item;
-  	// TODO: this._FileManagerSvc.SelectedPath is not being set correctly b/c it's blank at this point
-  	this._FileManagerSvc.getFile(this._Action, this._FileManagerSvc.SelectedPath, item.name);
+  	this._FileManagerSvc.getFile(this._Action, this._FileManagerSvc.selectedPath, item.name);
   }
 
+  /**
+   * Handle "Rename" menu click event
+   *
+   * @param {IFileInfoLight} item - the file information
+   */
   onMenuRenameClick(item: IFileInfoLight) {
   	// console.log('item', item);
   	this.selectedFile = item;
@@ -168,6 +195,13 @@ export class FileListComponent implements OnInit {
   	this._ModalSvc.open(mModalOptions);
   }
 
+  
+  /**
+   * Handle "Properties" menu click event
+   *
+   * @param {IFileInfoLight} item - the file information
+   * @return {void} 
+   */
   onMenuPropertiesClick(item: IFileInfoLight) {
   	this.selectedFile = item;
   	const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Properties, 'Properties', this._FileProperties, new WindowSize(80, 600));
@@ -178,14 +212,20 @@ export class FileListComponent implements OnInit {
   	this._ModalSvc.open(mModalOptions);
   }
 
+  /**
+   * Performs the rename by calling _FileManagerSvc.renameFile.
+   *
+   * @param {FormGroup} form - description of parameter
+   * @return {void} description of return value
+   */
   onRenameSubmit(form: FormGroup): void {
-  	this._FileManagerSvc.renameFile(this._Action, this.selectedFile.name, form.value['newFileName']).then((response) => {
+  	this._FileManagerSvc.renameFile(this._Action, this.selectedFile.name, form.value['newFileName']).then(() => {
   		form.reset();
-  		this._FileManagerSvc.getFiles(this._Action, this.id, this._FileManagerSvc.SelectedPath);
   		this._ModalSvc.close(this._ModalId_Rename);
   		this._LoggingSvc.toast('File was renamed', 'Rename file', LogLevel.Success);
   	}).catch((error) => {
   		this._LoggingSvc.errorHandler(error, 'FileListComponent', 'onRenameSubmit');
+  		this._LoggingSvc.toast('File was NOT renamed', 'Rename file', LogLevel.Success);
   	});
   }
 
@@ -200,8 +240,8 @@ export class FileListComponent implements OnInit {
    * @param event MouseEvent, it contains the coordinates
    * @param item Our data contained in the row of the table
    */
-  onRightClick(event: MouseEvent, item: any) {
-  	this.selectedFile = item.content;
+  onRightClick(event: MouseEvent, item: IFileInfoLight) {
+  	this.selectedFile = item;
   	// preventDefault avoids to show the visualization of the right-click menu of the browser
   	event.preventDefault();
 

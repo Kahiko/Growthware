@@ -5,8 +5,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 // Library
-import { INaturalSortResults, FileManagerService } from '@growthware/core/file-manager';
 import { LoggingService } from '@growthware/core/logging';
+import { INaturalSortResults } from '@growthware/common/interfaces';
+// Feature
+import { SysAdminService } from '../../sys-admin.service';
+
 
 @Component({
 	selector: 'gw-core-natural-sort',
@@ -38,8 +41,8 @@ export class NaturalSortComponent implements OnInit {
 	];
 
 	constructor(
-    private _FileManagerSvc: FileManagerService,
-    private _LoggingSvc: LoggingService
+		private _SysAdminSvc: SysAdminService,
+		private _LoggingSvc: LoggingService
 	) { }
 
 	ngOnInit(): void {
@@ -47,7 +50,7 @@ export class NaturalSortComponent implements OnInit {
 	}
 
 	getData(): void {
-		this._FileManagerSvc.getTestNaturalSort(this.selectedSortDirection).then((response: INaturalSortResults) => {
+		this._SysAdminSvc.getTestNaturalSort(this.selectedSortDirection).then((response: INaturalSortResults) => {
 			// console.log('NaturalSortComponent.ngOnInit',response.dataTable);
 			this.dataTableSource = response.dataTable;
 			this.dataViewSource = response.dataView;
@@ -56,7 +59,7 @@ export class NaturalSortComponent implements OnInit {
 			this.totalMilliseconds = response.totalMilliseconds;
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'FileManagerService', 'getTestNaturalSort');
-		});    
+		});
 	}
 
 }

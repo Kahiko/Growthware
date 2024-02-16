@@ -206,6 +206,37 @@ export class GWCommon {
 	}
 
 	/**
+	 * @description Remove an object from a hierarchy of data
+	 *
+	 * @param {Array<any>} data - the tree to be searched for a record to delete
+	 * @param {string | number} searchValue - the value of the property to be searched for
+	 * @param {string} nameOfProperty - name of the property used to search for the value
+	 * @param {string} nameOfChildNodes - name of the property which contains the child nodes (default = 'children')
+	 * @param {any} replacementObject - the replacement object for the match
+	 */
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
+	public deleteFromHierarchy(data: any[], searchValue: string | number, nameOfProperty: string, nameOfChildNodes: string = 'children'): boolean {
+		let mRetVal: boolean = false;
+		if (data && data.length > 0) {
+			for (let i = 0; i < data.length; i++) {
+				const mItem = data[i];
+				const mPropValue = mItem[nameOfProperty];
+				if (mPropValue === searchValue) {
+					mRetVal = true;
+					data.splice(i, 1);
+					break;
+				} else if (mItem[nameOfChildNodes]) {
+					mRetVal = this.deleteFromHierarchy(mItem[nameOfChildNodes], searchValue, nameOfProperty, nameOfChildNodes);
+					if (mRetVal) {
+						break;
+					}
+				}
+			}
+		}
+		return mRetVal;
+	}
+
+	/**
 	 * @description Replaces an object in a hierarchy of data
 	 *
 	 * @param {Array<any>} data - the tree to be searched for a record to replace
