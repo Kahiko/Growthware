@@ -82,7 +82,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 		return this.frmSelectPreferences.controls;
 	}
   
-	onSubmit(form: FormGroup): void {
+	onSubmit(): void {
 		const mSelectedColor: string = this.controls['selectedColorScheme'].getRawValue();
 		const mSelectedColorScheme = this.validColorSchemes.find(item => item.color_Scheme === mSelectedColor);
 		if(mSelectedColorScheme) {
@@ -96,7 +96,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 			this.clientChoices.subHeadColor = mSelectedColorScheme.sub_Head_Color;
 			this.clientChoices.action = this.selectedAction;
 			this.clientChoices.recordsPerPage = this.controls['recordsPerPage'].getRawValue();
-			this._AccountSvc.saveClientChoices(this.clientChoices).catch((error) => {
+			this._AccountSvc.saveClientChoices(this.clientChoices).catch(() => {
 				this._LoggingSvc.toast('Unable to save client choices', 'Save client choices', LogLevel.Error);
 			}).then(() => {
 				this._LoggingSvc.toast('Client choices saved', 'Save client choices', LogLevel.Success);

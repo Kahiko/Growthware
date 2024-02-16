@@ -1,4 +1,4 @@
-<form [formGroup]="frmSelectPreferences" (ngSubmit)="onSubmit(frmSelectPreferences)" style="width: 600px;" novalidate>
+<form [formGroup]="frmSelectPreferences" (ngSubmit)="onSubmit()" style="width: 600px;" novalidate>
   <div class="table Form_Table" style="padding: 5px;">
     @for (item of validColorSchemes; track item; let colorSchemIndex = $index) {
       <div class="tr">
