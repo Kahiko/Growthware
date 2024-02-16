@@ -455,6 +455,7 @@ export class FileManagerService {
 				next: (response: IUploadResponse) => {
 					const mUploadStatus: IUploadStatus = new UploadStatus(mParams.action, response.fileName, response.data, true, response.isSuccess, mParams.totalNumberOfUploads, mParams.uploadNumber);
 					this._UploadStatusSub.next(mUploadStatus);
+					this.getFiles(mParams.action, this._SelectedPath);
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'FileManagementService', 'upload');
@@ -505,6 +506,9 @@ export class FileManagerService {
 			next: (response: IUploadResponse) => {
 				const mUploadStatus: IUploadStatus = new UploadStatus(action, response.fileName, response.data, true, response.isSuccess, 1, 1);
 				this._UploadStatusSub.next(mUploadStatus);
+				if (mUploadStatus.completed) {
+					this.getFiles(action, this._SelectedPath);
+				}
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'FileManagerService', 'singleFileUpload');

@@ -45,7 +45,7 @@ export class UploadComponent implements OnDestroy, OnInit {
 	showOverallProgress: boolean = false;
 
   @Input() multiple: string = 'false';
-  @ViewChild('progressTemplate', { read: TemplateRef }) private _ProgressTemplate!:TemplateRef<any>;
+  @ViewChild('progressTemplate', { read: TemplateRef }) private _ProgressTemplate!:TemplateRef<unknown>;
 
   constructor(
     private _FileManagerSvc: FileManagerService,
@@ -102,28 +102,30 @@ export class UploadComponent implements OnDestroy, OnInit {
   	}
   }
 
-  onFileSelected(event: any): void {  
-  	// const mFileList: FileList = {...event.target.files};
-  	const mFileList = event.target.files;
-  	const mModalOptions: ModalOptions = new ModalOptions(this._ProgressModalId, 'Progress', this._ProgressTemplate, new WindowSize(150, 400));
-  	this._ModalSvc.open(mModalOptions);
-  	this._NumberOfFilesCompleted = 0;
-  	this._TotalNumberOfFiles = mFileList.length;
-  	this.fileProgressSubject.next(0);
-  	this.overallProgressSubject.next(0);
-  	this.showFileProgress = true;
-  	this.showOverallProgress = true;
-  	const mAction = this.id.replace('_Upload', '');
-  	// Loop through all of the selected files and upload them
-  	for (let index = 0; index < mFileList.length; index++) {
-  		const mFile = mFileList[index];
-  		let mFileName: string = mFile.name;
-  		mFileName = mFileName.substring(0, 50);
-  		this.currentFile = mFileName;
-  		this._FileManagerSvc.uploadFile(mAction, mFile);
+  onFileSelected(event: Event): void {  
+  	const mFleInput = event.target as HTMLInputElement;
+  	const mFileList: FileList | null = mFleInput.files;
+  	if (mFileList) {
+  		const mModalOptions: ModalOptions = new ModalOptions(this._ProgressModalId, 'Progress', this._ProgressTemplate, new WindowSize(150, 400));
+  		this._ModalSvc.open(mModalOptions);
+  		this._NumberOfFilesCompleted = 0;
+  		this._TotalNumberOfFiles = mFileList.length;
+  		this.fileProgressSubject.next(0);
+  		this.overallProgressSubject.next(0);
+  		this.showFileProgress = true;
+  		this.showOverallProgress = true;
+  		const mAction = this.id.replace('_Upload', '');
+  		// Loop through all of the selected files and upload them
+  		for (let index = 0; index < mFileList.length; index++) {
+  			const mFile = mFileList[index];
+  			let mFileName: string = mFile.name;
+  			mFileName = mFileName.substring(0, 50);
+  			this.currentFile = mFileName;
+  			this._FileManagerSvc.uploadFile(mAction, mFile);
+  		}
+  		// Clear the value so you can choose the same file(s) again
+  		mFleInput.value = '';
   	}
-  	// Clear the value so you can choose the same file(s) again
-  	event.target.value = '';
   }
 
   onOk(): void {
