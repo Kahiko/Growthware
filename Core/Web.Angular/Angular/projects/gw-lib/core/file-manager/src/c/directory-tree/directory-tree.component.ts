@@ -144,6 +144,7 @@ export class DirectoryTreeComponent implements OnDestroy, OnInit {
 	 */
 	onMenuDeleteClick(item: IDirectoryTree) {
 		console.log('item', item);
+		this.selectedPath = item.relitivePath;
 		const mModalOptions: ModalOptions = new ModalOptions(this._ModalId_Directory_Delete, 'Delete Directory', this._DeleteDirectory, new WindowSize(84, 300));
 		mModalOptions.buttons.okButton.visible = true;
 		mModalOptions.buttons.okButton.text = 'Yes';
