@@ -11,7 +11,7 @@ import { IRoleProfile } from './role-profile.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class RoleService implements BaseService {
+export class RoleService extends BaseService {
 	private _ApiName: string = 'GrowthwareRole/';
 	private _Api_Delete: string = '';
 	private _Api_GetRole: string = '';
@@ -22,7 +22,12 @@ export class RoleService implements BaseService {
 	selectedRow: SelectedRow = new SelectedRow();
 	modalReason: string = '';
 
-	constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
+	constructor(
+		private _GWCommon: GWCommon, 
+		private _HttpClient: HttpClient, 
+		private _LoggingSvc: LoggingService
+	) { 
+		super();
 		this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteRole';
 		this._Api_GetRole = this._GWCommon.baseURL + this._ApiName + 'GetRoleForEdit';
 		this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'SaveRole';
