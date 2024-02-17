@@ -60,10 +60,10 @@ import { IFunctionProfile, FunctionProfile } from '../../function-profile.model'
 })
 export class FunctionDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
-  @ViewChild('helpAction') private _HelpAction!: TemplateRef<any>;
-  @ViewChild('helpControl') private _HelpControl!: TemplateRef<any>;
-  @ViewChild('helpSource') private _HelpSource!: TemplateRef<any>;
-  @ViewChild('helpPassword') private _HelpPassword!: TemplateRef<any>;
+  @ViewChild('helpAction') private _HelpAction!: TemplateRef<unknown>;
+  @ViewChild('helpControl') private _HelpControl!: TemplateRef<unknown>;
+  @ViewChild('helpSource') private _HelpSource!: TemplateRef<unknown>;
+  @ViewChild('helpPassword') private _HelpPassword!: TemplateRef<unknown>;
   
   private _HelpOptions: IModalOptions = new ModalOptions('help', 'Help', '', 1);
   private _Profile: IFunctionProfile = new FunctionProfile();

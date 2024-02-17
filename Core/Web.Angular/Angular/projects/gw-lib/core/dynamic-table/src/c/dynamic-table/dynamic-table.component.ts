@@ -49,7 +49,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
-  @ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<any>;
+  @ViewChild('helpTemplate', { read: TemplateRef }) helpTemplate!:TemplateRef<unknown>;
 
   activeRow: number = -1;
   maxHeadHeight: number = 32;
