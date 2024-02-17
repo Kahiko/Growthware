@@ -18,7 +18,7 @@ import { SelectedRow } from './selected-row.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class AccountService extends BaseService {
+export class AccountService implements BaseService {
 
 	private _AccountInformationSubject: BehaviorSubject<IAccountInformation> = new BehaviorSubject<IAccountInformation>(new AccountInformation());
 	private _ApiName: string = 'GrowthwareAccount/';
@@ -55,7 +55,6 @@ export class AccountService extends BaseService {
 		private _Router: Router,
 		private _SearchSvc: SearchService,
 	) {
-		super();
 		this._BaseURL = this._GWCommon.baseURL;
 		this._Api_GetAccountForEdit = this._BaseURL + this._ApiName + 'EditAccount';
 		this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';

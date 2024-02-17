@@ -15,7 +15,7 @@ import { IFunctionMenuOrder } from './function-menu-order.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class FunctionService extends BaseService {
+export class FunctionService implements BaseService {
 
 	private _FunctionSeqId: number = -1;
 	private _ApiName: string = 'GrowthwareFunction/';
@@ -56,7 +56,6 @@ export class FunctionService extends BaseService {
 		private _LoggingSvc: LoggingService,
 		private _SearchSvc: SearchService,
 	) {
-		super();
 		this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
 		this._Api_CopyFunctionSecurity = this._GWCommon.baseURL + this._ApiName + 'CopyFunctionSecurity';
 		this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteFunction';

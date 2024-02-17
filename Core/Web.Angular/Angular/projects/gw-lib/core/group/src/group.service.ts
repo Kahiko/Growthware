@@ -11,7 +11,7 @@ import { SelectedRow } from './selected-row.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class GroupService extends BaseService {
+export class GroupService implements BaseService {
 	private _ApiName: string = 'GrowthwareGroup/';
 	private _Api_DeleteGroup = '';
 	private _Api_GetGroupForEdit = '';
@@ -23,7 +23,6 @@ export class GroupService extends BaseService {
 	modalReason: string = '';
 
 	constructor(private _GWCommon: GWCommon, private _HttpClient: HttpClient, private _LoggingSvc: LoggingService) { 
-		super();
 		this._Api_DeleteGroup = this._GWCommon.baseURL + this._ApiName + 'DeleteGroup/';
 		this._Api_GetGroupForEdit = this._GWCommon.baseURL + this._ApiName + 'GetGroupForEdit/';
 		this._Api_SaveGroup = this._GWCommon.baseURL + this._ApiName + 'SaveGroup/';

@@ -12,7 +12,7 @@ import { SelectedRow } from './selected-row.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class StatesService extends BaseService {
+export class StatesService implements BaseService {
 
 	private _ApiName: string = 'GrowthwareState/';
 	private _Api_GetProfile: string = '';
@@ -29,7 +29,6 @@ export class StatesService extends BaseService {
 		private _LoggingSvc: LoggingService,
 		private _SearchSvc: SearchService
 	) { 
-		super();
 		this._Api_GetProfile = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
 		this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save';
 	}
