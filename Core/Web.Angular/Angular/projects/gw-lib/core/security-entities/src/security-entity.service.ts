@@ -15,7 +15,7 @@ import { ISecurityEntityProfile } from './security-entity-profile.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class SecurityEntityService implements BaseService {
+export class SecurityEntityService extends BaseService {
 
 	private _ApiName: string = 'GrowthwareSecurityEntity/';
 	private _Api_GetSecurityEntity: string = '';
@@ -35,6 +35,7 @@ export class SecurityEntityService implements BaseService {
 		private _LoggingSvc: LoggingService,
 		private _SearchSvc: SearchService,
 	) { 
+		super();
 		this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities';
 		this._Api_GetValidParents = this._GWCommon.baseURL + this._ApiName + 'GetValidParents';
 		this._Api_GetSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
