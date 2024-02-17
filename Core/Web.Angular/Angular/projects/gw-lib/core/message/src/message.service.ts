@@ -12,7 +12,7 @@ import { SelectedRow } from './selected-row.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class MessageService implements BaseService {
+export class MessageService extends BaseService {
 
 	private _Api_GetProfile: string = '';
 	private _ApiName: string = 'GrowthwareMessage/';
@@ -24,11 +24,12 @@ export class MessageService implements BaseService {
 	modalReason: string = '';
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient, 
-    private _LoggingSvc: LoggingService,
-    private _SearchSvc: SearchService
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient, 
+		private _LoggingSvc: LoggingService,
+		private _SearchSvc: SearchService
 	) { 
+		super();
 		this._Api_GetProfile = this._GWCommon.baseURL + this._ApiName + 'GetProfile/';
 		this._Api_Save = this._GWCommon.baseURL + this._ApiName + 'Save/';
 	}

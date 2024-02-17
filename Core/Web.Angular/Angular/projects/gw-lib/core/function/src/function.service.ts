@@ -15,7 +15,7 @@ import { IFunctionMenuOrder } from './function-menu-order.model';
 @Injectable({
 	providedIn: 'root'
 })
-export class FunctionService implements BaseService {
+export class FunctionService extends BaseService {
 
 	private _FunctionSeqId: number = -1;
 	private _ApiName: string = 'GrowthwareFunction/';
@@ -50,12 +50,13 @@ export class FunctionService implements BaseService {
 	readonly addEditModalId: string = 'addEditAccountModal';
 
 	constructor(
-    private _AccountSvc: AccountService,
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService,
-    private _SearchSvc: SearchService,
+		private _AccountSvc: AccountService,
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService,
+		private _SearchSvc: SearchService,
 	) {
+		super();
 		this._Api_AvalibleParents = this._GWCommon.baseURL + this._ApiName + 'GetAvalibleParents';
 		this._Api_CopyFunctionSecurity = this._GWCommon.baseURL + this._ApiName + 'CopyFunctionSecurity';
 		this._Api_Delete = this._GWCommon.baseURL + this._ApiName + 'DeleteFunction';

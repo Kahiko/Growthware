@@ -1,5 +1,4 @@
 import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
-
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
 // Angular Material
@@ -33,6 +32,7 @@ import { SnakeListComponent } from '@growthware/core/snake-list';
 // Feature
 import { FunctionService } from '../../function.service';
 import { IFunctionProfile, FunctionProfile } from '../../function-profile.model';
+import { IFunctionMenuOrder } from '../../function-menu-order.model';
 
 @Component({
 	selector: 'gw-core-function-details',
@@ -72,7 +72,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
 
   derivedRolesId: string = 'derivedRoles';
 
-  functionMenuOrders: any = [];
+  functionMenuOrders: IFunctionMenuOrder[] = [];
 
   groupsAvailable: Array<string> = [];
   groupsPickListName: string = 'groups';
