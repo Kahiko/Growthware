@@ -25,7 +25,7 @@ export class DayOfWeekComponent implements OnInit {
 		'July', 'August', 'September', 'October', 'November', 'December'
 	];
 	
-	@Input() day?: any;
+	@Input() calendarDay?: any;
 	@Input() weekNumber?: number;
 
 	constructor(
@@ -34,10 +34,10 @@ export class DayOfWeekComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
-		if (this._GWCommon.isNullOrUndefined(this.day)) {
+		if (this._GWCommon.isNullOrUndefined(this.calendarDay)) {
 			this._LoggingService.toast('the "day" property is required', 'DayOfWeekComponent', LogLevel.Error);
 		} else {
-			this.day = new CalendarDay(new Date(this.day.value.date));
+			this.calendarDay = new CalendarDay(new Date(this.calendarDay.value.date));
 			// console.log('DayOfWeek', this.day);
 		}
 	}

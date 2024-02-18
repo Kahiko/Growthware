@@ -1,8 +1,8 @@
-<div class="calendar-day-header" [ngClass]="{'blue-date': day.isToday}">
+<div class="calendar-day-header" [ngClass]="{'blue-date': calendarDay.isToday}">
   <button style="outline: none;"  mat-mini-fab disabled>
-    <strong [ngClass]="{'blue-date': day.isToday}">{{day.date.getDate()}}</strong>
+    <strong [ngClass]="{'blue-date': calendarDay.isToday}">{{calendarDay.date.getDate()}}</strong>
   </button>
-  @if ((weekNumber == 0 && day.date.getDate() > 7 && day.date.getDay() == 1) || (day.date.getDate() == 1)) {
-    <strong> {{monthNames[day.date.getMonth()]}}</strong>
+  @if ((weekNumber == 0 && calendarDay.date.getDate() > 7 && calendarDay.date.getDay() == 1) || (calendarDay.date.getDate() == 1)) {
+    <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
   }
 </div>
