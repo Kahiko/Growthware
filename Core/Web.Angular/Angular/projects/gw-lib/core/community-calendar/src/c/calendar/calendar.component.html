@@ -32,7 +32,7 @@
         <tr>
           @for (day of week | keyvalue; track day; let propertyIndex = $index) {
             <td class="calendar-day-header">
-              <gw-DayOfWeek [day]=day [weekNumber]=weekIndex></gw-DayOfWeek>
+              <gw-core-day-of-week [day]=day [weekNumber]=weekIndex></gw-core-day-of-week>
             </td>
           }
         </tr>

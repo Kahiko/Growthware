@@ -9,7 +9,7 @@ import { LoggingService, LogLevel } from '@growthware/core/logging';
 import { CalendarDay } from '../../calendar-day.model';
 
 @Component({
-	selector: 'gw-DayOfWeek',
+	selector: 'gw-core-day-of-week',
 	standalone: true,
 	imports: [
 		CommonModule,
