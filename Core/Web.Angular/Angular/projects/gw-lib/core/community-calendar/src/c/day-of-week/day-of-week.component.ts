@@ -13,9 +13,8 @@ import { CalendarDay } from '../../calendar-day.model';
 	standalone: true,
 	imports: [
 		CommonModule,
-
+		// Angular Material
 		MatButtonModule,
-
 	],
 	templateUrl: './day-of-week.component.html',
 	styleUrls: ['./day-of-week.component.css']
