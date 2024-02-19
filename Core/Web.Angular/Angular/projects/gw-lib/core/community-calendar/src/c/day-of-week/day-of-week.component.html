@@ -2,7 +2,7 @@
   <button style="outline: none;"  mat-mini-fab disabled>
     <strong [ngClass]="{'blue-date': calendarDay.isToday}">{{calendarDay.date.getDate()}}</strong>
   </button>
-  @if ((weekNumber == 0 && calendarDay.date.getDate() > 7 && calendarDay.date.getDay() == 1) || (calendarDay.date.getDate() == 1)) {
+  @if (calendarDay.date.getDate() == 1) {
     <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
   }
 </div>

@@ -18,21 +18,17 @@
         </td>
       </tr>
       <tr>
-        <th>Monday</th>
-        <th>Tuesday</th>
-        <th>Wednesday</th>
-        <th>Thursday</th>
-        <th>Friday</th>
-        <th>Saturday</th>
-        <th>Sunday</th>
+        @for (dayOfWeek of weekDayNames; track dayOfWeek) {
+          <th>{{dayOfWeek}}</th>
+        }
       </tr>
     </thead>
     <tbody>
-      @for (week of calendar; track week; let weekIndex = $index) {
+      @for (week of calendar.weeks; track week; let weekIndex = $index) {
         <tr>
-          @for (day of week | keyvalue; track day; let propertyIndex = $index) {
+          @for (day of week.days; track day; let dayIndex = $index) {
             <td class="calendar-day-header">
-              <gw-core-day-of-week [calendarDay]=day [weekNumber]=weekIndex></gw-core-day-of-week>
+              <gw-core-day-of-week [calendarDay]=day></gw-core-day-of-week>
             </td>
           }
         </tr>

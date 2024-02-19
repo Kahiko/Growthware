@@ -3,5 +3,4 @@
  */
 
 export * from './src/c/calendar/calendar.component';
-export * from './src/calendar-profile.model';
 export * from './src/calendar.service';
