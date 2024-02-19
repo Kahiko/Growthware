@@ -3,17 +3,22 @@
     <thead>
       <tr style="text-align: center; width: 100%">
         <td colspan="7">
-          <h1 style="text-align: center; width: 100%">{{displayMonth}}</h1>
+          <h1 style="text-align: center; width: 100%">{{displayMonth}}&nbsp;{{displayYear}}</h1>
           <div>
-            <button (click)="decreaseMonth()" mat-button class="Form_Button" color="primary">
+            <button (click)="decrease()" mat-button class="Form_Button" color="primary">
               <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">remove</i>
             </button>
-            <button (click)="setCurrentMonth()" mat-button class="Form_Button" color="primary">
+            <button (click)="currentDate()" mat-button class="Form_Button" color="primary">
               Today
             </button>
-            <button (click)="increaseMonth()" mat-button class="Form_Button" color="primary">
+            <button (click)="increase()" mat-button class="Form_Button" color="primary">
               <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">add</i>
             </button>
+            <mat-radio-group [(ngModel)]="incrementBy">
+              <mat-radio-button value="day">Day</mat-radio-button>
+              <mat-radio-button value="month">Month</mat-radio-button>
+              <mat-radio-button value="year">Year</mat-radio-button>
+            </mat-radio-group>            
           </div>
         </td>
       </tr>
