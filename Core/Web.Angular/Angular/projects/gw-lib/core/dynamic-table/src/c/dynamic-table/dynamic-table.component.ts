@@ -44,8 +44,9 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
 	private _OnRowDoubleClickCallbackMethod?: CallbackMethod;
 	private _SearchCriteria!: SearchCriteria;
 	private _Subscriptions: Subscription = new Subscription();
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	private _TableDataSubject = new BehaviorSubject<any[]>([]);
-	private _TableData: any[] = [];
+	private _TableData: Array<unknown> = [];
 
   @Input() configurationName: string = '';
   @ViewChild('pager', { static: false }) pagerComponent!: PagerComponent;
@@ -135,6 +136,7 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @return {*}
    * @memberof DynamicTableComponent
    */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   formatData(data: any, type: string): void {
   	return this._GWCommon.formatData(data, type);
   }
@@ -320,9 +322,10 @@ export class DynamicTableComponent implements AfterViewInit, OnDestroy, OnInit {
    * @param { string } columnName
    * @param { any } event The $event of the HTML object
    */
-  onSearchClick(columnName: string, event: any):void {
+  onSearchClick(columnName: string, event: Event):void {
+  	const mFleInput = event.target as HTMLInputElement;
   	let mColumns: Array<string> = this.getColumnArray(columnName, 'search');
-  	if(event.target && !event.target.checked) {
+  	if(mFleInput && !mFleInput.checked) {
   		mColumns = mColumns.filter(obj => { return obj !== columnName; });
   	}
   	const mSearchCriteria: ISearchCriteria = {
