@@ -66,7 +66,7 @@ export class CalendarComponent implements OnInit {
     /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
     switch (this.incrementBy) {
       case 'day': {
-        this._SelectedDate.setDate(this._SelectedDate.getDay() + 1);
+        this._SelectedDate.setDate(this._SelectedDate.getDate() + 1);
         break;
       }
       case 'month': {
@@ -85,7 +85,24 @@ export class CalendarComponent implements OnInit {
   }
 
   public decrease() {
-    this._SelectedDate.setMonth(this._SelectedDate.getMonth() - 1);
+    /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
+    switch (this.incrementBy) {
+      case 'day': {
+        this._SelectedDate.setDate(this._SelectedDate.getDate() - 1);
+        break;
+      }
+      case 'month': {
+        this._SelectedDate.setMonth(this._SelectedDate.getMonth() - 1);
+        break;
+      }
+      case 'year': {
+        this._SelectedDate.setFullYear(this._SelectedDate.getFullYear() - 1);
+        break;
+      }
+      default: {
+        this._SelectedDate.setMonth(this._SelectedDate.getMonth() - 1);
+      }
+    }
     this.getCalendarData();
   }
 
