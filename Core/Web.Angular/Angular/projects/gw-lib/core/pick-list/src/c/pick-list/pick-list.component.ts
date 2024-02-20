@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 // Library
 import { INameDataPair } from '@growthware/common/interfaces';
@@ -15,7 +16,8 @@ import { ModalOptions, ModalService } from '@growthware/core/modal';
 	standalone: true,
 	imports: [
 		CommonModule,
-
+		// Angular Material
+		MatButtonModule,
 		MatIconModule
 	],
 	templateUrl: './pick-list.component.html',
