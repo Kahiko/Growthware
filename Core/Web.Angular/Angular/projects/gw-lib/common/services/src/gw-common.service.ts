@@ -127,6 +127,21 @@ export class GWCommon {
 	}
 
 	/**
+	 * Compares two dates to check if they are equal.
+	 *
+	 * @param {Date} date1 - The first date to compare
+	 * @param {Date} date2 - The second date to compare
+	 * @return {boolean} true if the dates are equal, false otherwise
+	 */
+	public datesEqual(date1: Date, date2: Date): boolean {
+		return (
+			date1.getFullYear() === date2.getFullYear() &&
+			date1.getMonth() === date2.getMonth() &&
+			date1.getDate() === date2.getDate()
+		);
+	}
+
+	/**
 	 * Formats data
 	 *
 	 * @param {any} data - The data to be formatted

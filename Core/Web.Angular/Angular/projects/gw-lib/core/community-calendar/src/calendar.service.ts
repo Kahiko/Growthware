@@ -53,6 +53,8 @@ export class CalendarService {
 			for (let i = 0; i < 7; i++) {
 				// const mNewWorkingDate = new Date(mWorkingDate);
 				const mDay = new Day(new Date(mWorkingDate));
+				mDay.isToday = this._GWCommon.datesEqual(new Date(), mDay.date);
+				mDay.isSelected = this._GWCommon.datesEqual(selectedDate, mDay.date);
 				week.days.push(mDay);
 				mWorkingDate.setDate(mWorkingDate.getDate() + 1);
 			}
