@@ -2,7 +2,7 @@
   <button style="outline: none;"  mat-mini-fab disabled>
     <strong [ngClass]="{'blue-date': calendarDay.isSelected}">{{calendarDay.date.getDate()}}</strong>
   </button>
-  @if (calendarDay.date.getDate() == 1) {
+  @if (calendarDay.date.getDate() === 1) {
     <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
   }
 </div>
