@@ -63,7 +63,7 @@ export class ModalService {
    * @param {IModalOptions} options - The options for the modal dialog.
    * @return {void} 
    */
-	public open<T>(options: IModalOptions): void {
+	public open(options: IModalOptions): void {
 		if(this._GWCommon.isNullOrEmpty(options.modalId)) {
 			this._LoggingSvc.toast('options.modalId can not be null or blank', 'Modal Service', LogLevel.Error);
 			// console.log('ModalService.open', options);
@@ -76,10 +76,11 @@ export class ModalService {
 		// resolve the ngContent
 		const mResolvedNgContent = this.resolveNgContent(options.contentPayLoad);
 		// first, create the child
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mNgContent: any = mResolvedNgContent;
 		if(this._ContentType === ContentType.Component) {
 			// get root nodes
-			mNgContent = (<EmbeddedViewRef<any>>mResolvedNgContent.hostView).rootNodes;
+			mNgContent = (<EmbeddedViewRef<unknown>>mResolvedNgContent.hostView).rootNodes;
 		}
 		// then create the dialog that will host it
 		const mModalComponentRef: ComponentRef<ModalComponent> = createComponent(ModalComponent, {
@@ -89,7 +90,7 @@ export class ModalService {
 		mModalComponentRef.instance.setUp(options); // sets up UI properties (height, width, show components, etc.)
 		this.setupModalCallbacks(options, mModalComponentRef.instance);
 		// append to body, we will use platform document for this
-		const mDialogElement = (<EmbeddedViewRef<any>>mModalComponentRef.hostView).rootNodes[0];
+		const mDialogElement = (<EmbeddedViewRef<unknown>>mModalComponentRef.hostView).rootNodes[0];
 		// setup a ContentObject to add to the array
 		const mContentObject = new ContentObject(options.modalId, this._ContentType, mModalComponentRef);
 		if(this._ContentType === ContentType.Component) { // the payloadRef is only used when it's a component so destroy can be called in the this.close
@@ -112,6 +113,7 @@ export class ModalService {
    */  
 	private resolveNgContent<T>(content: Content<T>) {
 		this._ContentType = ContentType.String;
+		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		let mRetVal: any;
 		if (typeof content === 'string') {            /** String */
 			const element = this._Document.createTextNode(content);
