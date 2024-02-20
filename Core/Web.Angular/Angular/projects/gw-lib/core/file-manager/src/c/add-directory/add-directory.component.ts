@@ -1,5 +1,4 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import { Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -16,7 +15,7 @@ import { FileManagerService } from '../../file-manager.service';
 	templateUrl: './add-directory.component.html',
 	styleUrls: ['./add-directory.component.scss']
 })
-export class AddDirectoryComponent {
+export class AddDirectoryComponent implements OnInit {
 	private _Action: string = '';
 
 	public configurationName: string = '';
