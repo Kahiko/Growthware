@@ -1,11 +1,11 @@
-import { IEvent } from './event.model';
+import { ICalendarEvent } from './calendar-event.model';
 import { NamesOfDays } from './names-of-days.enum';
 import { NamesOfMonths } from './names-of-months.enum';
 
 export interface IDay {
 	day: NamesOfDays;
 	date: Date;
-	events?: IEvent[];
+	events?: ICalendarEvent[];
 	isFutureMonth: boolean;
 	isPreviousMonth: boolean;
 	isSelected: boolean;
@@ -17,7 +17,7 @@ export interface IDay {
 export class Day implements IDay {
 	public day!: NamesOfDays;
 	public date: Date;
-	public events?: IEvent[];
+	public events?: ICalendarEvent[];
 	public isFutureMonth: boolean = false;
 	public isPreviousMonth: boolean = false;
 	public isSelected: boolean = false;
