@@ -1,4 +1,4 @@
-/* custom.css */
+/* custom-style.css */
 
 /* Replace the Swagger UI logo with your own image */
 .swagger-ui .topbar img {
@@ -7,4 +7,3 @@
     width: 24px;
     max-width: 200px; /* Set a maximum width for the logo */
 }
-
