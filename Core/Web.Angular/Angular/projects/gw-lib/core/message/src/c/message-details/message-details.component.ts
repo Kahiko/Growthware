@@ -91,10 +91,10 @@ export class MessageDetailsComponent implements OnInit {
 		if(form.valid) {
 			this.populateProfile();
 			// console.log('Profile', this._Profile);
-			this._MessageSvc.save(this._Profile).then((response) => {
+			this._MessageSvc.save(this._Profile).then(() => {
 				this._LoggingSvc.toast('Message has been saved', 'Save Message', LogLevel.Success);
 				this.closeModal();
-			}).catch((error) => {
+			}).catch(() => {
 				this._LoggingSvc.toast('Message could not be saved', 'Save Message', LogLevel.Error);
 			});
 		}
