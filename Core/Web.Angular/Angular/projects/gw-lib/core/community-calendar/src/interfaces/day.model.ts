@@ -31,8 +31,17 @@ export class Day implements IDay {
 		this.isFutureMonth = date.getMonth() > new Date().getMonth();
 		this.isPastDate = date > new Date();
 		this.isPreviousMonth = date.getMonth() < new Date().getMonth();
-		this.isToday = date === new Date();
+		this.isToday = this.isDatesEqual(new Date(), this.date);
 		this.month = date.getMonth() as NamesOfMonths;
 		this.monthName = NamesOfDays[this.day];
 	}
+
+	private isDatesEqual(date1: Date, date2: Date): boolean {
+		return (
+			date1.getFullYear() === date2.getFullYear() &&
+			date1.getMonth() === date2.getMonth() &&
+			date1.getDate() === date2.getDate()
+		  );		
+	}
+
 }
