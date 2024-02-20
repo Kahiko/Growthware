@@ -97,6 +97,8 @@ app.UseSwagger();
 app.UseSwaggerUI(mSwaggerUIOptions =>
 {
     mSwaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
+    mSwaggerUIOptions.InjectJavascript("/assets/swagger-ui/custom-script.js");
+    mSwaggerUIOptions.InjectStylesheet("/assets/swagger-ui/custom-style.css");
 });
 
 if (!app.Environment.IsDevelopment())               // Added
