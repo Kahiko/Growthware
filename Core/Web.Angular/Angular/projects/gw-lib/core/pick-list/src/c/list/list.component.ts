@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Angular Material
@@ -24,7 +24,7 @@ import { ModalOptions, ModalService, ModalSize } from '@growthware/core/modal';
 	templateUrl: './list.component.html',
 	styleUrls: ['./list.component.scss']
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
   @Input() allItemsText: string = '';
   @Input() header: string = '';
   @Input() id: string = '';
