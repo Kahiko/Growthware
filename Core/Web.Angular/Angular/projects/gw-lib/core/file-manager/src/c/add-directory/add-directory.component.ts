@@ -37,21 +37,21 @@ export class AddDirectoryComponent {
 	}
 
 	/**
-   * Returns the controls of the 'frmCreateDirectory' form.
-   *
-   * @return {any} The controls of the 'frmCreateDirectory' form.
-   */
+	 * Returns the controls of the 'frmCreateDirectory' form.
+	 *
+	 * @return {any} The controls of the 'frmCreateDirectory' form.
+	 */
 	get getControls() {
 		return this.frmCreateDirectory.controls;
 	}
 
 	/**
-   * @description Return text for the given field if there is an error with the field
-   *
-   * @param {string} fieldName
-   * @return {*}  {(string | undefined)}
-   * @memberof DirectoryTreeComponent
-   */
+	 * @description Return text for the given field if there is an error with the field
+	 *
+	 * @param {string} fieldName
+	 * @return {*}  {(string | undefined)}
+	 * @memberof DirectoryTreeComponent
+	 */
 	getErrorMessage(fieldName: string): string | undefined {
 		switch (fieldName) {
 		case 'newName':
@@ -66,11 +66,11 @@ export class AddDirectoryComponent {
 	}
 
 	/**
-   * Executes the logic to submit the creation of a directory.
-   *
-   * @param {void} - No parameters needed.
-   * @return {void} - No return value.
-   */
+	 * Executes the logic to submit the creation of a directory.
+	 *
+	 * @param {void} - No parameters needed.
+	 * @return {void} - No return value.
+	 */
 	onCreateDirectorySubmit(): void {
 		this._FileManagerSvc.createDirectory(this._Action, this.getControls['newDirectoryName'].value).then((response) => {
 			let mMsg = 'Folder has been created';
@@ -88,11 +88,11 @@ export class AddDirectoryComponent {
 	}
 
 	/**
-   * Populates the create directory form with the given directory name.
-   *
-   * @param {string} directoryName - The name of the directory to be populated.
-   * @return {void} This function does not return anything.
-   */
+	 * Populates the create directory form with the given directory name.
+	 *
+	 * @param {string} directoryName - The name of the directory to be populated.
+	 * @return {void} This function does not return anything.
+	 */
 	private populateCreateDirectoryForm(directoryName: string): void {
 		this.frmCreateDirectory = this._FormBuilder.group({
 			newDirectoryName: [directoryName, [Validators.required]],
