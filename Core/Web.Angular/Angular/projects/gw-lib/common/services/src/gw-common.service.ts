@@ -202,6 +202,21 @@ export class GWCommon {
   }
 
   /**
+   * Retrieves the names of the enum values from the given enum object.
+   *
+   * @param {any} e - the enum object
+   * @return {Array<string>} an array of enum names
+   */
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  public getEnumNames(e: any): Array<string> {
+    return Object.keys(e).filter(k => 
+      typeof e[k] === 'number'
+            || e[k] === k
+            || e[e[k]]?.toString() !== k
+    );
+  }
+  
+  /**
 	 * Get the total number of records from the given data array.
 	 *
 	 * @param {Array<ITotalRecords>} data - the array of records
