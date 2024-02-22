@@ -7,6 +7,7 @@ import { GWCommon } from '@growthware/common/services';
 import { LoggingService} from '@growthware/core/logging';
 // Feature
 import { IDay } from '../../interfaces/day.model';
+import { NamesOfMonths } from '../../interfaces/names-of-months.enum';
 
 @Component({
 	selector: 'gw-core-day-of-week',
@@ -21,9 +22,7 @@ import { IDay } from '../../interfaces/day.model';
 })
 export class DayOfWeekComponent {
 
-	public monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
-		'July', 'August', 'September', 'October', 'November', 'December'
-	];
+	public monthNames: Array<string> = [];
 	
 	@Input() calendarDay!: IDay;
 	@Input() weekNumber?: number;
@@ -31,5 +30,7 @@ export class DayOfWeekComponent {
 	constructor(
 		private _GWCommon: GWCommon,
 		private _LoggingService: LoggingService
-	) { }
+	) { 
+		this.monthNames = this._GWCommon.getEnumNames(NamesOfMonths);
+	}
 }
