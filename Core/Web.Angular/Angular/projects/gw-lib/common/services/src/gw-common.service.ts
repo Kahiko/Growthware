@@ -207,13 +207,10 @@ export class GWCommon {
    * @param {any} e - the enum object
    * @return {Array<string>} an array of enum names
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public getEnumNames(e: any): Array<string> {
-    return Object.keys(e).filter(k => 
-      typeof e[k] === 'number'
-            || e[k] === k
-            || e[e[k]]?.toString() !== k
-    );
+  public getEnumNames<T extends Record<string, number | string>>(e: T): Array<keyof T> {
+    return Object.keys(e).filter(k =>
+      typeof e[k] === 'number' || e[k] === k || e[e[k]]?.toString() !== k
+    ) as Array<keyof T>;
   }
   
   /**
