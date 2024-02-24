@@ -31,6 +31,6 @@ export class Day implements IDay {
 		this.isFutureMonth = date.getMonth() > new Date().getMonth();
 		this.isPreviousMonth = date.getMonth() < new Date().getMonth();
 		this.month = date.getMonth() as NamesOfMonths;
-		this.monthName = NamesOfDays[this.day];
+		this.monthName = NamesOfMonths[date.getMonth()];
 	}
 }
