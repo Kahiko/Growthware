@@ -1,8 +1,15 @@
-<div class="calendar-day-header" [ngClass]="{'blue-date': calendarDay.isToday}">
-  <button style="outline: none;"  mat-mini-fab disabled>
-    <strong [ngClass]="{'blue-date': calendarDay.isSelected}">{{calendarDay.date.getDate()}}</strong>
-  </button>
-  @if (calendarDay.date.getDate() === 1) {
-    <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
-  }
+<div>
+  <div (click)="onDateClick(calendarDay)" class="right" [ngClass]="{'selected-date': calendarDay.isSelected, 'calendar-day': !calendarDay.isSelected}">
+    @if (calendarDay.date.getDate() === 1) {
+      <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
+    }
+    @if (!calendarDay.isSelected) {
+      <a>
+        {{calendarDay.date.getDate()}}
+      </a>
+    } @else {
+      {{calendarDay.date.getDate()}}
+    }
+  </div>
+  <div>body</div>  
 </div>

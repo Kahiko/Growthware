@@ -4,7 +4,7 @@ import { GWCommon } from '@growthware/common/services';
 // Featuer
 import { IMonth, Month } from './interfaces/month.model';
 import { IWeek, Week } from './interfaces/week.model';
-import { Day } from './interfaces/day.model';
+import { IDay, Day } from './interfaces/day.model';
 import { NamesOfDays } from './interfaces/names-of-days.enum';
 import { BehaviorSubject } from 'rxjs';
 
@@ -15,33 +15,37 @@ export class CalendarService {
 
 	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
 	public calendarData$ = this._CalendarData.asObservable();
+	private _FirstDayOfWeek: NamesOfDays = NamesOfDays.Monday;
+	public get firstDayOfWeek(): NamesOfDays { return this._FirstDayOfWeek; }
+	private _SelectedDate: Date = new Date();
+	public get selectedDate(): Date { return this._SelectedDate; }
 
 	constructor(
 		private _GWCommon: GWCommon
 	) { }
 
-	
+
 	/**
 	 * Generate the data for a month given a selected date and the first day of the week.
 	 *
 	 * @param {Date} selectedDate - the selected date
-	 * @param {NamesOfDays} firstDayOfWeek - the first day of the week IE NamesOfDays.Sunday
 	 * @return {IMonth} the month data
+	 * @memberof CalendarService
 	 */
-	getMonthData(selectedDate: Date, firstDayOfWeek: NamesOfDays): void {
+	private getMonthData(selectedDate: Date): void {
 		const mRetVal: IMonth = new Month();
 		const mWorkingDate = new Date(selectedDate);
 		const mCurrentMonth = selectedDate.getMonth();
-		let mPreviousMonth = selectedDate.getMonth() -1;
+		let mPreviousMonth = selectedDate.getMonth() - 1;
 
 		// Adjust for the previous month being in the previous year
-		if(mPreviousMonth === -1) {
+		if (mPreviousMonth === -1) {
 			mPreviousMonth = 11;
 		}
 		// Set to the first day of the month
 		mWorkingDate.setDate(1);
 		// Move to the first day to display in the calendar
-		while (mWorkingDate.getDay() !== firstDayOfWeek) {
+		while (mWorkingDate.getDay() !== this._FirstDayOfWeek) {
 			mWorkingDate.setDate(mWorkingDate.getDate() - 1);
 		}
 		// Interate for the working date creating IDay objects and IWeek objects, then
@@ -61,5 +65,50 @@ export class CalendarService {
 			mRetVal.weeks.push(week);
 		}
 		this._CalendarData.next(mRetVal);
+	}
+
+	/**
+	 * Sets the selected date and updates the calendar data if necessary.
+	 *
+	 * @param {Date} newSelectedDate - the new selected date
+	 * @param {boolean} force - optional parameter to force the update
+	 * @return {void} 
+	 * @memberof CalendarService
+	 */
+	public setSelectedDate(newSelectedDate: Date, force: boolean = false): void {
+		const mMonthMatch = newSelectedDate.getMonth() === this._SelectedDate.getMonth();
+		const mYearMatch = newSelectedDate.getFullYear() === this._SelectedDate.getFullYear();
+		this._SelectedDate = newSelectedDate;
+		if (!force && mMonthMatch && mYearMatch) {
+			this._CalendarData.getValue().weeks.some((week: IWeek) => {
+				week.days.some((day: IDay) => { 
+					if (day.isSelected) {
+						day.isSelected = false; 
+					}
+				}); 
+			});
+			this._CalendarData.getValue().weeks.some((week: IWeek) => { 
+				week.days.some((day: IDay) => { 
+					if (this._GWCommon.datesEqual(day.date, newSelectedDate)) { 
+						day.isSelected = true; 
+					}
+				}); 
+			});
+			this._CalendarData.next(this._CalendarData.getValue());
+		} else {
+			this.getMonthData(newSelectedDate);
+		}
+	}
+
+	/**
+	 * Sets the first day of the week.
+	 *
+	 * @param {NamesOfDays} firstDayOfWeek - the name of the first day of the week
+	 * @return {void} 
+	 * @memberof CalendarService
+	 */
+	public setFirstDayOfWeek(firstDayOfWeek: NamesOfDays): void {
+		// typically 0 = Sunday or 1 = Monday and set by the calendar.component
+		this._FirstDayOfWeek = firstDayOfWeek;
 	}
 }

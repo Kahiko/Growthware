@@ -1,0 +1,16 @@
+.selected-date {
+    background-color: #5a80a9;
+    color: white;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    padding-right: 15px;
+}
+
+.calendar-day {
+    background-color: lightgray;
+    color: black;
+    height: 1.5rem;
+    line-height: 1.5rem;
+    padding-right: 15px;
+    cursor: pointer;
+}
