@@ -96,6 +96,7 @@ if (httpContextAccessor != null)
 app.UseSwagger();
 app.UseSwaggerUI(mSwaggerUIOptions =>
 {
+    mSwaggerUIOptions.DocumentTitle = "Growthware API";
     mSwaggerUIOptions.SwaggerEndpoint("/swagger/v1/swagger.json", "Growthware API V1");
     mSwaggerUIOptions.InjectJavascript("/assets/swagger-ui/custom-script.js");
     mSwaggerUIOptions.InjectStylesheet("/assets/swagger-ui/custom-style.css");
