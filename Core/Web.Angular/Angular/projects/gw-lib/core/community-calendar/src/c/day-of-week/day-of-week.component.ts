@@ -36,8 +36,14 @@ export class DayOfWeekComponent {
 		this.monthNames = this._GWCommon.getEnumNames(NamesOfMonths);
 	}
 
+	/**
+	 * Handles the date header click event.
+	 *
+	 * @param {IDay} date - description of parameter
+	 * @return {void} description of return value
+	 */
 	public onDateClick(date: IDay): void {
-		console.log('onDateClick', date);
+		// console.log('onDateClick', date);
 		this._CalendarSvc.setSelectedDate(date.date);
 	}
 }
