@@ -1,12 +1,13 @@
 -- Downgrade
 SET NOCOUNT ON;
 
-/****** Start:  Procedure [ZGWSystem].[Get_Calendar_Data] ******/
+/****** Start: Procedure [ZGWSystem].[Get_Calendar_Data] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar_Data]') AND type in (N'P', N'PC'))
 	BEGIN
 		DROP PROCEDURE ZGWOptional.Get_Calendar_Data;
 	END
 --End If
+/****** End: Procedure [ZGWSystem].[Get_Calendar_Data] ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
