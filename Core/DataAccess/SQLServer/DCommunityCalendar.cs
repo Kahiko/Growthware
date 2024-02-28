@@ -6,13 +6,13 @@ using System.Data.SqlClient;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
-    public class DCalendarData : AbstractDBInteraction, ICalendarData
+    public class DCommunityCalendar : AbstractDBInteraction, ICommunityCalendar
     {
         private string m_CalendarName = string.Empty;
-        private int m_SecurityEntitySeqID = -2;
+        private int m_SecurityEntitySeqId = -2;
 
         public string CalendarName { get; set; }
-        public int SecurityEntitySeqID { get{return this.m_SecurityEntitySeqID;} set{this.m_SecurityEntitySeqID = value;} }
+        public int SecurityEntitySeqId { get{return this.m_SecurityEntitySeqId;} set{this.m_SecurityEntitySeqId = value;} }
 
         public bool DeleteCalendarData(string comment, DateTime entryDate, int accountSeqId)
         {
@@ -20,7 +20,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+                    new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqId),
                     new SqlParameter("@P_Calendar_Name", m_CalendarName),
                     new SqlParameter("@P_Comment", comment),
                     new SqlParameter("@P_EntryDate", entryDate),
@@ -37,14 +37,16 @@ namespace GrowthWare.DataAccess.SQLServer
              }
         }
 
-        public bool GetCalendarData(ref DataSet calendarDataSet)
+        public bool GetCalendarData(ref DataSet calendarDataSet, DateTime startDate, DateTime endDate)
         {
             this.checkValid();
             string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqID),
-                    new SqlParameter("@P_Calendar_Name", this.m_CalendarName)
+                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
+                    new SqlParameter("@P_Calendar_Name", this.m_CalendarName),
+                    new SqlParameter("@P_Start_Date", startDate),
+                    new SqlParameter("@P_End_Date", endDate),
 			 };
              try
              {
@@ -63,7 +65,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqID),
+                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
                     new SqlParameter("@P_Calendar_Name", this.m_CalendarName),
                     new SqlParameter("@P_Comment", comment),
                     new SqlParameter("@P_EntryDate", entryDate),
@@ -88,7 +90,7 @@ namespace GrowthWare.DataAccess.SQLServer
             {
                 throw new DataAccessLayerException("CalendarName property must be set before calling methods from this class");
             }
-            if(m_SecurityEntitySeqID == -2)
+            if(m_SecurityEntitySeqId == -2)
             {
                 throw new DataAccessLayerException("SecurityEntitySeqID property must be set before calling methods from this class");
             }
