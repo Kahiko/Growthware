@@ -31,7 +31,7 @@
       @for (week of calendar.weeks; track week; let weekIndex = $index) {
         <tr>
           @for (day of week.days; track day; let dayIndex = $index) {
-            <td class="calendar-day-header">
+            <td>
               <gw-core-day-of-week [calendarDay]=day></gw-core-day-of-week>
             </td>
           }
