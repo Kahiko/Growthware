@@ -426,10 +426,10 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Stops the refresh token timer.
-   *
-   * @return {void} - This function does not return anything.
-   */
+	 * Stops the refresh token timer.
+	 *
+	 * @return {void} - This function does not return anything.
+	 */
 	private stopRefreshTokenTimer(): void {
 		clearTimeout(this._TimerId);
 	}
