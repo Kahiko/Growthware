@@ -13,16 +13,16 @@ GO
 /*
 Usage:
 	DECLARE 
-          @P_SecurityEntitySeqId INT = 1
-        , @P_Calendar_Name VARCHAR(50) = ''
-        , @P_Start_Date SMALLDATETIME = CONVERT(VARCHAR, '2/2/24 00:00', 108)
-        , @P_End_Date SMALLDATETIME = CONVERT(VARCHAR, '2/29/24 00:00', 108)
+		@P_SecurityEntitySeqId INT = 1
+	  , @P_Calendar_Name VARCHAR(50) = ''
+	  , @P_Start_Date SMALLDATETIME = CONVERT(VARCHAR, '2/2/24 00:00', 108)
+	  , @P_End_Date SMALLDATETIME = CONVERT(VARCHAR, '2/29/24 00:00', 108)
 
 	exec ZGWOptional.Get_Calendar_Data
-          @P_SecurityEntitySeqId
-        , @P_Calendar_Name
-        , @P_Start_Date
-        , @P_End_Date
+		@P_SecurityEntitySeqId
+	  , @P_Calendar_Name
+	  , @P_Start_Date
+	  , @P_End_Date
 */
 -- =============================================
 -- Author:		Michael Regan
