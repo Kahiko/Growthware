@@ -1,11 +1,15 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService} from '@growthware/core/logging';
+import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
 import { CalendarService } from '../../calendar.service';
+import { EventDetailsComponent } from '../event-details/event-details.component';
 import { IDay } from '../../interfaces/day.model';
 import { NamesOfMonths } from '../../interfaces/names-of-months.enum';
 import { NamesOfDays } from '../../interfaces/names-of-days.enum';
@@ -15,7 +19,11 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
 	standalone: true,
 	imports: [
 		CommonModule,
+		// Feature
+		EventDetailsComponent,
 		// Angular Material
+		MatButtonModule,
+		MatIconModule,
 	],
 	templateUrl: './day-of-week.component.html',
 	styleUrls: ['./day-of-week.component.scss']
@@ -31,7 +39,8 @@ export class DayOfWeekComponent {
 	constructor(
 		private _CalendarSvc: CalendarService,
 		private _GWCommon: GWCommon,
-		private _LoggingService: LoggingService
+		private _LoggingService: LoggingService,
+		private _ModalSvc: ModalService,
 	) { 
 		this.monthNames = this._GWCommon.getEnumNames(NamesOfMonths);
 	}
@@ -39,11 +48,32 @@ export class DayOfWeekComponent {
 	/**
 	 * Handles the date header click event.
 	 *
-	 * @param {IDay} date - description of parameter
-	 * @return {void} description of return value
+	 * @param {IDay} date - The date to be selected.
+	 * @return {void} - This function does not return anything.
 	 */
 	public onDateClick(date: IDay): void {
 		// console.log('onDateClick', date);
 		this._CalendarSvc.setSelectedDate(date.date);
+	}
+
+	/**
+	 * Handles the Add Event button click.
+	 *
+	 * @param {IDay} date - The date the event will be added to.
+	 * @return {void} - This function does not return anything.
+	 */
+	public onAddEventClick(date: IDay) {
+		// console.log('onDateClick', date);
+		this._CalendarSvc.setSelectedDate(date.date);
+		const mWindowSize: WindowSize = new WindowSize(225, 450);
+		const mModalOptions: ModalOptions = new ModalOptions(this._CalendarSvc.addEditModalId, 'Event', EventDetailsComponent, mWindowSize);
+		// mModalOptions.buttons.okButton.callbackMethod = () => {
+		// 	this.onModalOk;
+		// };
+		this._ModalSvc.open(mModalOptions);
+	}
+
+	private onModalOk() {
+		this._ModalSvc.close(this._CalendarSvc.addEditModalId);
 	}
 }

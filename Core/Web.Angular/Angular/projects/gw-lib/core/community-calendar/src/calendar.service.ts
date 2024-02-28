@@ -1,17 +1,22 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
 // Library
 import { GWCommon } from '@growthware/common/services';
+import { BaseService } from '@growthware/core/base/services';
 // Featuer
 import { IMonth, Month } from './interfaces/month.model';
 import { IWeek, Week } from './interfaces/week.model';
 import { IDay, Day } from './interfaces/day.model';
 import { NamesOfDays } from './interfaces/names-of-days.enum';
-import { BehaviorSubject } from 'rxjs';
+import { ITotalRecords } from '@growthware/common/interfaces';
 
 @Injectable({
 	providedIn: 'root'
 })
-export class CalendarService {
+export class CalendarService extends BaseService {
+	override addEditModalId: string = 'addEditEvent';
+	override modalReason: string = '';
+	override selectedRow: ITotalRecords = { TotalRecords: 0 } as ITotalRecords;
 
 	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
 	public calendarData$ = this._CalendarData.asObservable();
@@ -22,8 +27,9 @@ export class CalendarService {
 
 	constructor(
 		private _GWCommon: GWCommon
-	) { }
-
+	) { 
+		super();
+	}
 
 	/**
 	 * Generate the data for a month given a selected date and the first day of the week.

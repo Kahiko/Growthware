@@ -270,15 +270,16 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/message/src c/SearchMessages 	--standalone --style scss --project gw-lib
 	Community Calendar (converted to stand alone) 
 		https://dev.to/rickystam/how-to-build-a-full-screen-calendar-like-outlook-in-angular-5dcg
-		ng generate interface CalendarEvent --path=projects/gw-lib/core/community-calendar/src/interfaces            --type model --project gw-lib
-		ng generate interface Day           --path=projects/gw-lib/core/community-calendar/src/interfaces            --type model --project gw-lib
-		ng generate interface Week          --path=projects/gw-lib/core/community-calendar/src/interfaces            --type model --project gw-lib
-		ng generate interface Month         --path=projects/gw-lib/core/community-calendar/src/interfaces            --type model --project gw-lib
-		ng generate enum      namesOfDays   --path=projects/gw-lib/core/community-calendar/src/interfaces            --type enum  --project gw-lib
-		ng generate enum      namesOfMonths --path=projects/gw-lib/core/community-calendar/src/interfaces            --type enum  --project gw-lib
-		ng generate service 	            --path=projects/gw-lib/core/community-calendar/src Calendar    --project gw-lib
-		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src c/Calendar  --standalone --style scss --project gw-lib
-		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src c/dayOfWeek --standalone --style scss --project gw-lib
+		ng generate interface CalendarEvent --path=projects/gw-lib/core/community-calendar/src/interfaces     --type model --project gw-lib
+		ng generate interface Day           --path=projects/gw-lib/core/community-calendar/src/interfaces     --type model --project gw-lib
+		ng generate interface Week          --path=projects/gw-lib/core/community-calendar/src/interfaces     --type model --project gw-lib
+		ng generate interface Month         --path=projects/gw-lib/core/community-calendar/src/interfaces     --type model --project gw-lib
+		ng generate enum      namesOfDays   --path=projects/gw-lib/core/community-calendar/src/interfaces     --type enum  --project gw-lib
+		ng generate enum      namesOfMonths --path=projects/gw-lib/core/community-calendar/src/interfaces     --type enum  --project gw-lib
+		ng generate service 	            --path=projects/gw-lib/core/community-calendar/src/Calendar       --project gw-lib
+		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c Calendar     --standalone --style scss --project gw-lib
+		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c dayOfWeek    --standalone --style scss --project gw-lib
+		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c EventDetails --standalone --style scss --project gw-lib
 
 	// https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes
 		ng generate component --path=projects/gw-lib/core/loader/src c/loader --standalone --style scss --project gw-lib

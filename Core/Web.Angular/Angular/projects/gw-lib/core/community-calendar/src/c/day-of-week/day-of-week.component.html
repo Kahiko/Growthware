@@ -1,15 +1,26 @@
-<div>
-  <div (click)="onDateClick(calendarDay)" class="right" [ngClass]="{'selected-date': calendarDay.isSelected, 'calendar-day': !calendarDay.isSelected}">
-    @if (calendarDay.date.getDate() === 1) {
-      <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
-    }
-    @if (!calendarDay.isSelected) {
-      <a>
+<div class="calendar-day">
+  <div class="header" [ngClass]="{'selected-header': calendarDay.isSelected}">
+    <div>
+      <button (click)="onAddEventClick(calendarDay)" mat-button style="height: 1.5rem; width: 8px; padding-top: 8px;" color="primary">
+        <i style="padding-right: 3px; height: 1.5rem;" class="Form_Button_Icon material-icons">add</i>
+      </button>      
+    </div>
+    <div class="spacer"></div>
+    <div (click)="onDateClick(calendarDay)" class="right" style="padding-right: 5px;">
+      @if (calendarDay.date.getDate() === 1) {
+        <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
+      }
+      @if (!calendarDay.isSelected) {
+        <a>
+          {{calendarDay.date.getDate()}}
+        </a>
+      } @else {
         {{calendarDay.date.getDate()}}
-      </a>
-    } @else {
-      {{calendarDay.date.getDate()}}
-    }
+      }
+    </div>
+  
   </div>
-  <div>body</div>  
+  <div class="day-body">
+    body
+  </div>  
 </div>

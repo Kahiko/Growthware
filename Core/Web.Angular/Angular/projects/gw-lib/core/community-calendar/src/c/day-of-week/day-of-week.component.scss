@@ -1,4 +1,6 @@
-.selected-date {
+
+.selected-header {
+    display: flex;
     background-color: #5a80a9;
     color: white;
     height: 1.5rem;
@@ -6,11 +8,28 @@
     padding-right: 15px;
 }
 
+.header {
+    display: flex;
+    height: 1.5rem;
+}
+
+.header div {
+    display: inline-block;
+}
+
+.selected-header i {
+    color: white;
+}
+/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
+.selected-header svg {
+    fill: white;
+}
+
 .calendar-day {
     background-color: lightgray;
-    color: black;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    padding-right: 15px;
-    cursor: pointer;
+}
+
+.day-body {
+    background-color: white;
+    border: 1px solid #dee2e6;
 }
