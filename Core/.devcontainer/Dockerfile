@@ -1,3 +1,5 @@
+# Works with Docker 25.0.3
+# Based on the pre-build image from https://github.com/rsm-hcd/devcontainer-templates/tree/main/src/dotnet-node-mssql
 FROM mcr.microsoft.com/devcontainers/dotnet:1-8.0-bookworm
 # FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-dotnet
 
