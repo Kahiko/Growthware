@@ -26,13 +26,26 @@
 						"savePassword": false,
 						"profileName": "mssql-container"
 					}
-				]
+				],
+				"workbench.colorTheme": "Cobalt2"
 			},
 
 			// Add the IDs of extensions you want installed when the container is created.
 			"extensions": [
 				"ms-dotnettools.csharp",
-				"ms-mssql.mssql"
+				"ms-azuretools.vscode-docker",
+				"ms-vscode-remote.remote-containers",
+				"ms-mssql.mssql",
+				"Angular.ng-template", 
+				"wesbos.theme-cobalt2",
+				"ms-dotnettools.csdevkit",
+				"adrianwilczynski.csharp-to-typescript",
+				"dbaeumer.vscode-eslint",
+				"donjayamanne.githistory",
+				"eamodio.gitlens",
+				"ms-dotnettools.vscodeintellicode-csharp",
+				"codeandstuff.package-json-upgrade",
+				"ms-vscode.powershell"
 			]
 		}
 	},
@@ -49,5 +62,5 @@
 	// "postCreateCommand": "bash .devcontainer/mssql/postCreateCommand.sh 'P@ssw0rd' './bin/Debug/' './.devcontainer/mssql/'"
 
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
-	// "remoteUser": "root"
+	"remoteUser": "root"
 }
