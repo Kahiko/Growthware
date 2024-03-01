@@ -43,10 +43,10 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
-                    new SqlParameter("@P_Calendar_Name", this.m_CalendarName),
-                    new SqlParameter("@P_Start_Date", startDate),
-                    new SqlParameter("@P_End_Date", endDate),
+                    new ("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
+                    new ("@P_Calendar_Name", this.m_CalendarName),
+                    new ("@P_Start_Date", startDate),
+                    new ("@P_End_Date", endDate),
 			 };
              try
              {
@@ -65,11 +65,11 @@ namespace GrowthWare.DataAccess.SQLServer
             string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Data]";
             SqlParameter[] mParameters =
 			 {
-                    new SqlParameter("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
-                    new SqlParameter("@P_Calendar_Name", this.m_CalendarName),
-                    new SqlParameter("@P_Comment", comment),
-                    new SqlParameter("@P_EntryDate", entryDate),
-                    new SqlParameter("@P_ADDUPD_BY", accountSeqId)
+                    new ("@P_SecurityEntitySeqId", this.m_SecurityEntitySeqId),
+                    new ("@P_Calendar_Name", this.m_CalendarName),
+                    new ("@P_Comment", comment),
+                    new ("@P_EntryDate", entryDate),
+                    new ("@P_ADDUPD_BY", accountSeqId)
 			 };
              try
              {
