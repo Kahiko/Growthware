@@ -9,7 +9,6 @@ IF COL_LENGTH('ZGWOptional.Calendars','CalendarSeqId') IS NULL
     CREATE TABLE [ZGWOptional].[Calendars2] (
         [CalendarSeqId]       INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
         [SecurityEntitySeqId] INT           NOT NULL,
-        [FunctionSeqId]       INT           NOT NULL,
         [Calendar_Name]       VARCHAR (50)  NOT NULL,
         [Comment]             VARCHAR (100) NOT NULL,
         [Active]              INT           NOT NULL,
@@ -27,15 +26,137 @@ IF COL_LENGTH('ZGWOptional.Calendars','CalendarSeqId') IS NULL
 
 	EXEC sp_rename 'ZGWOptional.Calendars2', 'Calendars';
 
-	ALTER TABLE [ZGWOptional].[Calendars]
-    ADD CONSTRAINT [FK_ZGWSecurity_Entities_ZGWOptional_Calendars] FOREIGN KEY ([SecurityEntitySeqId]) REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId]) ON DELETE CASCADE ON UPDATE CASCADE;
+	CREATE UNIQUE NONCLUSTERED INDEX [UX_Calendars_SecurityEntitySeqId_Name] ON [ZGWOptional].[Calendars]
+	(
+		[SecurityEntitySeqId] ASC,
+		[Calendar_Name] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY];
 
-	ALTER TABLE [ZGWOptional].[Calendars]
-    ADD CONSTRAINT [FK_ZGWSecurity_Functions_ZGWOptional_Calendars] FOREIGN KEY ([FunctionSeqId]) REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId]) ON DELETE CASCADE ON UPDATE CASCADE;
+	ALTER TABLE [ZGWOptional].[Calendars]  WITH CHECK ADD  CONSTRAINT [FK_ZGWSecurity_Entities_ZGWOptional_Calendars] FOREIGN KEY([SecurityEntitySeqId])
+	REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
+	ON UPDATE CASCADE
+	ON DELETE CASCADE;
+
+	ALTER TABLE [ZGWOptional].[Calendars] CHECK CONSTRAINT [FK_ZGWSecurity_Entities_ZGWOptional_Calendars];
 
   END
 --END IF
 /****** End: Add columns to [ZGWOptional].[Calendars] ******/
+
+/****** Start: Procedure [ZGWOptional].[Set_Calendar] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Set_Calendar]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Set_Calendar] AS'
+	END
+--End If
+
+GO
+/*
+Usage:
+	DECLARE 
+	  @P_CalendarSeqId INT  = -1,
+	  @P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
+	  @P_Calendar_Name [varchar](50) = 'Community Calendar',
+	  @P_Comment [varchar](100) = 'Created for the community calendar',
+	  @P_Active [int] = 1,
+	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
+
+	exec ZGWOptional.Set_Calendar
+	  @P_CalendarSeqId OUTPUT,
+	  @P_SecurityEntitySeqId,
+	  @P_Calendar_Name,
+	  @P_Comment,
+	  @P_Active,
+	  @P_Added_Updated_By;
+
+    PRINT @P_CalendarSeqId;
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/01/2024
+-- Description:	Calendar Data
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Set_Calendar]
+    @P_CalendarSeqId INT OUTPUT,
+    @P_SecurityEntitySeqId [int],
+    @P_Calendar_Name [varchar](50),
+    @P_Comment [varchar](100),
+    @P_Active [int],
+    @P_Added_Updated_By [int]
+AS
+	SET NOCOUNT ON;
+	IF @P_CalendarSeqId > 0
+		BEGIN
+			UPDATE [ZGWOptional].[Calendars] SET
+			  [Calendar_Name] = @P_Calendar_Name
+			, [Comment] = @P_Comment
+			, [Active] = @P_Active
+			, [Updated_By] = @P_Added_Updated_By
+			, [Updated_Date] = GETDATE()
+			WHERE [CalendarSeqId] = @P_CalendarSeqId;
+		END
+	ELSE
+		BEGIN
+			INSERT INTO [ZGWOptional].[Calendars] (
+				  [SecurityEntitySeqId]
+				, [Calendar_Name]
+				, [Comment]
+				, [Active]
+				, [Added_By]
+				, [Added_Date]
+			) VALUES (
+				  @P_SecurityEntitySeqId
+				, @P_Calendar_Name
+				, @P_Comment
+				, @P_Active
+				, @P_Added_Updated_By
+				, GETDATE()
+			);
+			SELECT @P_CalendarSeqId=SCOPE_IDENTITY();
+		END
+	--END IF
+
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Set_Calendar] ******/
+
+/****** Start: Procedure [ZGWOptional].[Delete_Calendar] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Delete_Calendar]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Delete_Calendar] AS'
+	END
+--End If
+
+GO
+/*
+Usage:
+	DECLARE 
+		@P_CalendarSeqId INT = 1
+
+	exec ZGWOptional.Delete_Calendar
+		@P_CalendarSeqId
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/01/2024
+-- Description:	Calendar Data
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Delete_Calendar]
+      @P_CalendarSeqId INT
+AS
+	SET NOCOUNT ON;
+  IF EXISTS (SELECT 1 FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId)
+    BEGIN
+      DELETE FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId;
+    END
+  --END IF
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Delete_Calendar] ******/
 
 /****** Start: Create [ZGWOptional].[Calendar_Events] ******/
 IF OBJECT_ID(N'ZGWOptional.Calendar_Events', N'U') IS NULL  
@@ -60,10 +181,10 @@ IF OBJECT_ID(N'ZGWOptional.Calendar_Events', N'U') IS NULL
 GO
 /****** End: Create [ZGWOptional].[Calendar_Events] ******/
 
-/****** Start: Procedure [ZGWOptional].[Get_Calendar_Data] ******/
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar_Data]') AND type in (N'P', N'PC'))
+/****** Start: Procedure [ZGWOptional].[Get_Calendar_Events] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar_Events]') AND type in (N'P', N'PC'))
 	BEGIN
-		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_Calendar_Data] AS'
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_Calendar_Events] AS'
 	END
 --End If
 
@@ -76,7 +197,7 @@ Usage:
 	  , @P_Start_Date SMALLDATETIME = CONVERT(VARCHAR, '2/2/24 00:00', 108)
 	  , @P_End_Date SMALLDATETIME = CONVERT(VARCHAR, '2/29/24 00:00', 108)
 
-	exec ZGWOptional.Get_Calendar_Data
+	exec ZGWOptional.Get_Calendar_Events
 		@P_CalendarSeqId
 	  , @P_Start_Date
 	  , @P_End_Date
@@ -86,7 +207,7 @@ Usage:
 -- Create date: 02/26/2024
 -- Description:	Calendar Data
 -- =============================================
-ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Data]
+ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Events]
       @P_CalendarSeqId INT
     , @P_Start_Date SMALLDATETIME
     , @P_End_Date SMALLDATETIME
@@ -118,7 +239,7 @@ AS
 
 RETURN 0
 GO
-/****** End: Procedure [ZGWOptional].[Get_Calendar_Data] ******/
+/****** End: Procedure [ZGWOptional].[Get_Calendar_Events] ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
