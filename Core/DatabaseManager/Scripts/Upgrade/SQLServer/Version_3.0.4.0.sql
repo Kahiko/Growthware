@@ -296,6 +296,76 @@ RETURN 0
 GO
 /****** End: Procedure [ZGWOptional].[Get_Calendar_Events] ******/
 
+/****** Start: Procedure [ZGWOptional].[Set_Calendar_Event] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Set_Calendar_Event]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Set_Calendar_Event] AS'
+	END
+--End If
+GO
+/*
+USAGE:
+	DECLARE
+		  @P_CalendarEventSeqId	INT				= 1
+		, @P_CalendarSeqId		INT				= -1
+		, @P_Title				VARCHAR(255)	= 'Fake meeting with me ;-)'
+		, @P_Start				DATETIME		= CONVERT(VARCHAR, '2/2/24 00:00', 108)
+		, @P_End				DATETIME		= CONVERT(VARCHAR, '2/2/24 00:00', 108)
+		, @P_AllDay				BIT				= 0
+		, @P_Description		VARCHAR(512)	= 'Fake meeting with me ;-) so I can test'
+		, @P_Color				VARCHAR(20)		= '#ff0000' -- red
+		, @P_Link				VARCHAR(255)	= ''
+		, @P_Location			VARCHAR(255)	= 'My office?'
+		, @P_Added_Updated_By	INT				= 3
+
+	exec ZGWOptional.Set_Calendar_Event
+		  @P_CalendarEventSeqId
+		, @P_CalendarSeqId
+		, @P_Title
+		, @P_Start
+		, @P_End
+		, @P_AllDay
+		, @P_Description
+		, @P_Color
+		, @P_Link
+		, @P_Location
+		, @P_Added_Updated_By
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/06/2024
+-- Description:	Calendar Data
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Set_Calendar_Event]
+	  @P_CalendarEventSeqId	INT
+	, @P_CalendarSeqId		INT
+	, @P_Title				VARCHAR(255)
+	, @P_Start				DATETIME
+	, @P_End				DATETIME
+	, @P_AllDay				BIT
+	, @P_Description		VARCHAR(512)
+	, @P_Color				VARCHAR(20)
+	, @P_Link				VARCHAR(255)
+	, @P_Location			VARCHAR(255)
+	, @P_Added_Updated_By	INT
+AS
+	SET NOCOUNT ON;
+	IF @P_CalendarSeqId = -1
+		BEGIN
+			PRINT 'Insert new';
+
+		END
+	ELSE
+		BEGIN
+			PRINT 'Update existing'
+		END
+	--END IF
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Set_Calendar_Event] ******/
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '3.0.4.0',
