@@ -408,6 +408,41 @@ RETURN 0
 GO
 /****** End: Procedure [ZGWOptional].[Set_Calendar_Event] ******/
 
+/****** Start: Procedure [ZGWOptional].[Delete_Calendar_Event] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Delete_Calendar_Event]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Delete_Calendar_Event] AS'
+	END
+--End If
+GO
+/*
+USAGE:
+	DECLARE
+		  @P_CalendarEventSeqId	INT = 1;
+
+	EXEC ZGWOptional.Delete_Calendar_Event
+		  @P_CalendarEventSeqId;
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/06/2024
+-- Description:	Delete a calendar event
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Delete_Calendar_Event]
+	@P_CalendarEventSeqId	INT
+AS
+	SET NOCOUNT ON;
+	IF EXISTS (SELECT TOP(1) 1 FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarEventSeqId] = @P_CalendarEventSeqId)
+		BEGIN
+			DELETE FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarEventSeqId] = @P_CalendarEventSeqId;
+		END
+	--END IF
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Delete_Calendar_Event] ******/
+
 /****** Adding new Calendar ******/
 	DECLARE 
 	  @P_CalendarSeqId INT  = -1,
