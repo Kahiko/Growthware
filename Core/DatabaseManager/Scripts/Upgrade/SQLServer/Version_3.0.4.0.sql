@@ -9,7 +9,7 @@ IF COL_LENGTH('ZGWOptional.Calendars','CalendarSeqId') IS NULL
     CREATE TABLE [ZGWOptional].[Calendars2] (
         [CalendarSeqId]       INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
         [SecurityEntitySeqId] INT           NOT NULL,
-        [Calendar_Name]       VARCHAR (50)  NOT NULL,
+		[FunctionSeqId]		  INT			NOT NULL,
         [Comment]             VARCHAR (100) NOT NULL,
         [Active]              INT           NOT NULL,
         [Added_By]            INT           NOT NULL,
@@ -26,10 +26,10 @@ IF COL_LENGTH('ZGWOptional.Calendars','CalendarSeqId') IS NULL
 
 	EXEC sp_rename 'ZGWOptional.Calendars2', 'Calendars';
 
-	CREATE UNIQUE NONCLUSTERED INDEX [UX_Calendars_SecurityEntitySeqId_Name] ON [ZGWOptional].[Calendars]
+	CREATE UNIQUE NONCLUSTERED INDEX [UX_Calendars_SecurityEntitySeqId_FunctionSeqId] ON [ZGWOptional].[Calendars]
 	(
 		[SecurityEntitySeqId] ASC,
-		[Calendar_Name] ASC
+		[FunctionSeqId] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY];
 
 	ALTER TABLE [ZGWOptional].[Calendars]  WITH CHECK ADD  CONSTRAINT [FK_ZGWSecurity_Entities_ZGWOptional_Calendars] FOREIGN KEY([SecurityEntitySeqId])
@@ -39,6 +39,12 @@ IF COL_LENGTH('ZGWOptional.Calendars','CalendarSeqId') IS NULL
 
 	ALTER TABLE [ZGWOptional].[Calendars] CHECK CONSTRAINT [FK_ZGWSecurity_Entities_ZGWOptional_Calendars];
 
+	ALTER TABLE [ZGWOptional].[Calendars]  WITH CHECK ADD  CONSTRAINT [FK_ZGWSecurity_Functions_ZGWOptional_Calendars] FOREIGN KEY([FunctionSeqId])
+	REFERENCES [ZGWSecurity].[Functions] ([FunctionSeqId])
+	ON UPDATE CASCADE
+	ON DELETE CASCADE;
+
+	ALTER TABLE [ZGWOptional].[Calendars] CHECK CONSTRAINT [FK_ZGWSecurity_Functions_ZGWOptional_Calendars];
   END
 --END IF
 /****** End: Add columns to [ZGWOptional].[Calendars] ******/
@@ -56,7 +62,7 @@ Usage:
 	DECLARE 
 	  @P_CalendarSeqId INT  = -1,
 	  @P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
-	  @P_Calendar_Name [varchar](50) = 'Community Calendar',
+	  @P_FunctionSeqId [int] = (SELECT TOP(1) FROM [ZGWSecurity].[Functions] WHERE [Action] = 'CommunityCalendar')
 	  @P_Comment [varchar](100) = 'Created for the community calendar',
 	  @P_Active [int] = 1,
 	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
@@ -64,7 +70,7 @@ Usage:
 	exec ZGWOptional.Set_Calendar
 	  @P_CalendarSeqId OUTPUT,
 	  @P_SecurityEntitySeqId,
-	  @P_Calendar_Name,
+	  @P_FunctionSeqId,
 	  @P_Comment,
 	  @P_Active,
 	  @P_Added_Updated_By;
@@ -79,7 +85,7 @@ Usage:
 ALTER PROCEDURE [ZGWOptional].[Set_Calendar]
     @P_CalendarSeqId INT OUTPUT,
     @P_SecurityEntitySeqId [int],
-    @P_Calendar_Name [varchar](50),
+    @P_FunctionSeqId [int],
     @P_Comment [varchar](100),
     @P_Active [int],
     @P_Added_Updated_By [int]
@@ -88,8 +94,7 @@ AS
 	IF @P_CalendarSeqId > 0
 		BEGIN
 			UPDATE [ZGWOptional].[Calendars] SET
-			  [Calendar_Name] = @P_Calendar_Name
-			, [Comment] = @P_Comment
+			  [Comment] = @P_Comment
 			, [Active] = @P_Active
 			, [Updated_By] = @P_Added_Updated_By
 			, [Updated_Date] = GETDATE()
@@ -99,14 +104,14 @@ AS
 		BEGIN
 			INSERT INTO [ZGWOptional].[Calendars] (
 				  [SecurityEntitySeqId]
-				, [Calendar_Name]
+				, [FunctionSeqId]
 				, [Comment]
 				, [Active]
 				, [Added_By]
 				, [Added_Date]
 			) VALUES (
 				  @P_SecurityEntitySeqId
-				, @P_Calendar_Name
+				, @P_FunctionSeqId
 				, @P_Comment
 				, @P_Active
 				, @P_Added_Updated_By
@@ -152,7 +157,7 @@ AS
 			SELECT 
 				 [CalendarSeqId]
 				,[SecurityEntitySeqId]
-				,[Calendar_Name]
+				,[FunctionSeqId]
 				,[Comment]
 				,[Active]
 				,[Added_By]
@@ -407,7 +412,7 @@ GO
 	DECLARE 
 	  @P_CalendarSeqId INT  = -1,
 	  @P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
-	  @P_Calendar_Name [varchar](50) = 'Community Calendar',
+	  @P_FunctionSeqId [varchar](50) = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'CommunityCalendar'),
 	  @P_Comment [varchar](100) = 'Created for the community calendar',
 	  @P_Active [int] = 1,
 	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
@@ -415,7 +420,7 @@ GO
 	EXEC ZGWOptional.Set_Calendar
 	  @P_CalendarSeqId OUTPUT,
 	  @P_SecurityEntitySeqId,
-	  @P_Calendar_Name,
+	  @P_FunctionSeqId,
 	  @P_Comment,
 	  @P_Active,
 	  @P_Added_Updated_By;
