@@ -147,11 +147,11 @@ ALTER PROCEDURE [ZGWOptional].[Delete_Calendar]
       @P_CalendarSeqId INT
 AS
 	SET NOCOUNT ON;
-  IF EXISTS (SELECT 1 FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId)
-    BEGIN
-      DELETE FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId;
-    END
-  --END IF
+	IF EXISTS (SELECT 1 FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId)
+		BEGIN
+			DELETE FROM [ZGWOptional].[Calendar_Events] WHERE [CalendarSeqId] = @P_CalendarSeqId;
+		END
+	--END IF
 	SET NOCOUNT OFF;
 
 RETURN 0
