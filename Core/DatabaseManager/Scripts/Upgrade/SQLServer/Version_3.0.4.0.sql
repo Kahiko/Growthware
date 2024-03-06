@@ -460,6 +460,7 @@ GO
 	  @P_Active,
 	  @P_Added_Updated_By;
 /****** Done adding new Calendar ******/
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '3.0.4.0',
