@@ -2,7 +2,6 @@ CREATE TABLE [ZGWOptional].[Calendars] (
     [CalendarSeqId]       INT           IDENTITY (1, 1) NOT FOR REPLICATION NOT NULL,
     [SecurityEntitySeqId] INT           NOT NULL,
     [FunctionSeqId]       INT           NOT NULL,
-    [Calendar_Name]       VARCHAR (50)  NOT NULL,
     [Entry_Date]          SMALLDATETIME NOT NULL,
     [Comment]             VARCHAR (100) NOT NULL,
     [Active]              INT           NOT NULL,
