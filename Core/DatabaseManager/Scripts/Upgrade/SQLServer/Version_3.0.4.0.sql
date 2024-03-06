@@ -323,7 +323,7 @@ USAGE:
 		, @P_Location			VARCHAR(255)	= 'My office?'
 		, @P_Added_Updated_By	INT				= 3
 
-	exec ZGWOptional.Set_Calendar_Event
+	EXEC ZGWOptional.Set_Calendar_Event
 		  @P_CalendarEventSeqId
 		, @P_CalendarSeqId
 		, @P_Title
