@@ -403,6 +403,23 @@ RETURN 0
 GO
 /****** End: Procedure [ZGWOptional].[Set_Calendar_Event] ******/
 
+/****** Adding new Calendar ******/
+	DECLARE 
+	  @P_CalendarSeqId INT  = -1,
+	  @P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
+	  @P_Calendar_Name [varchar](50) = 'Community Calendar',
+	  @P_Comment [varchar](100) = 'Created for the community calendar',
+	  @P_Active [int] = 1,
+	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
+
+	exec ZGWOptional.Set_Calendar
+	  @P_CalendarSeqId OUTPUT,
+	  @P_SecurityEntitySeqId,
+	  @P_Calendar_Name,
+	  @P_Comment,
+	  @P_Active,
+	  @P_Added_Updated_By;
+/****** Done adding new Calendar ******/
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '3.0.4.0',
