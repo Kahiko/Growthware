@@ -19,6 +19,14 @@ IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(
 --End If
 /****** End: Procedure [ZGWOptional].[Set_Calendar] ******/
 
+/****** Start: Procedure [ZGWOptional].[Get_Calendar] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar]') AND type in (N'P', N'PC'))
+	BEGIN
+		DROP PROCEDURE ZGWOptional.Get_Calendar;
+	END
+--End If
+/****** End: Procedure [ZGWOptional].[Get_Calendar] ******/
+
 /****** Start: Procedure [ZGWOptional].[Delete_Calendar] ******/
 IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Delete_Calendar]') AND type in (N'P', N'PC'))
 	BEGIN

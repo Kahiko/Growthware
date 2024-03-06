@@ -122,6 +122,57 @@ RETURN 0
 GO
 /****** End: Procedure [ZGWOptional].[Set_Calendar] ******/
 
+/****** Start: Procedure [ZGWOptional].[Get_Calendar] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_Calendar] AS'
+	END
+--End If
+
+GO
+/*
+Usage:
+	DECLARE 
+	  @P_CalendarSeqId INT  = 1
+
+	exec ZGWOptional.Get_Calendar
+	  @P_CalendarSeqId
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/06/2024
+-- Description:	Calendar Data
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Get_Calendar]
+    @P_CalendarSeqId INT
+AS
+	SET NOCOUNT ON;
+	IF @P_CalendarSeqId > 0
+		BEGIN
+			SELECT 
+				 [CalendarSeqId]
+				,[SecurityEntitySeqId]
+				,[Calendar_Name]
+				,[Comment]
+				,[Active]
+				,[Added_By]
+				,[Added_Date]
+				,[Updated_By]
+				,[Updated_Date]
+			FROM [ZGWOptional].[Calendars] WHERE [CalendarSeqId] = @P_CalendarSeqId;
+		END
+	ELSE
+		BEGIN
+			PRINT 'Not implemented as of yet, unsure if we need, should be using search';
+		END
+	--END IF
+
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Get_Calendar] ******/
+
 /****** Start: Procedure [ZGWOptional].[Delete_Calendar] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Delete_Calendar]') AND type in (N'P', N'PC'))
 	BEGIN
