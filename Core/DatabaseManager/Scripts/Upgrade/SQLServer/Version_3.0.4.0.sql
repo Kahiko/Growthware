@@ -412,7 +412,7 @@ GO
 	  @P_Active [int] = 1,
 	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
 
-	exec ZGWOptional.Set_Calendar
+	EXEC ZGWOptional.Set_Calendar
 	  @P_CalendarSeqId OUTPUT,
 	  @P_SecurityEntitySeqId,
 	  @P_Calendar_Name,
