@@ -60,7 +60,8 @@ namespace GrowthWare.Framework.Models.Base
         /// </summary>
         /// <param name="dataRow">datarow</param>
         /// <remarks>
-        /// Only sets Id and Name if IdColumnName or NameColumnName is not null
+        /// Sets AddedBy, AddedDate, UpdatedBy, UpdatedDate
+        /// Only sets Id and Name if properties IdColumnName or NameColumnName is not null
         /// </remarks>
         protected virtual void Initialize(DataRow dataRow)
         {
