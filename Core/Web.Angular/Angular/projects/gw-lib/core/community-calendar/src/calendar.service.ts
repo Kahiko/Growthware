@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 // Library
-import { GWCommon } from '@growthware/common/services';
 import { BaseService } from '@growthware/core/base/services';
+import { GWCommon } from '@growthware/common/services';
+import { LoggingService } from '@growthware/core/logging';
 // Featuer
 import { IMonth, Month } from './interfaces/month.model';
 import { IWeek, Week } from './interfaces/week.model';
 import { IDay, Day } from './interfaces/day.model';
 import { NamesOfDays } from './interfaces/names-of-days.enum';
 import { ITotalRecords } from '@growthware/common/interfaces';
+import { ICalendarEvent } from './interfaces/calendar-event.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +21,9 @@ export class CalendarService extends BaseService {
 	override modalReason: string = '';
 	override selectedRow: ITotalRecords = { TotalRecords: 0 } as ITotalRecords;
 
+	private _ApiName: string = 'GrowthwareCalendar/';
+	private _Api_GetEvents: string = '';
+
 	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
 	public calendarData$ = this._CalendarData.asObservable();
 	private _FirstDayOfWeek: NamesOfDays = NamesOfDays.Monday;
@@ -26,9 +32,38 @@ export class CalendarService extends BaseService {
 	public get selectedDate(): Date { return this._SelectedDate; }
 
 	constructor(
-		private _GWCommon: GWCommon
-	) { 
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService,
+	) {
 		super();
+		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
+	}
+
+	private getEvents(action: string, startDate: Date, endDate: Date): Promise<ICalendarEvent[]> {
+		const mQueryParameter: HttpParams = new HttpParams()
+			.set('action', action)
+			.set('startDate', startDate.toLocaleDateString())
+			.set('endDate', endDate.toLocaleDateString());
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			params: mQueryParameter,
+		};
+		return new Promise<ICalendarEvent[]>((resolve, reject) => {
+			this._HttpClient.get<ICalendarEvent[]>(this._Api_GetEvents, mHttpOptions).subscribe({
+				next: (response: ICalendarEvent[]) => {
+					// console.log('CalendarService.getEvents', response);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'CalendarService', 'getEvents');
+					reject('Failed to call the API');
+				},
+				// complete: () => {}
+			});
+		});
 	}
 
 	/**
@@ -70,7 +105,29 @@ export class CalendarService extends BaseService {
 			}
 			mRetVal.weeks.push(week);
 		}
+		this.mergeEvents(mRetVal);
 		this._CalendarData.next(mRetVal);
+	}
+
+	public mergeEvents(monthData: IMonth): void {
+		// console.log('mergeEvents.monthData', monthData);
+		const mFirstDay = monthData.weeks[0].days[0];
+		const mLastDay = monthData.weeks[monthData.weeks.length - 1].days[6];
+		this.getEvents('CommunityCalendar', mFirstDay.date, mLastDay.date).then((response) => {
+			monthData.weeks.forEach((week) => {
+				week.days.forEach((day) => {
+					// console.log('mergeEvents.getEvents.day.date', day.date);
+					const mFoundEvents = response.filter((event) => {
+						return this._GWCommon.datesEqual(new Date(event.start), new Date(day.date));
+					});
+					if(mFoundEvents.length > 0) {
+						day.events = mFoundEvents;
+					}
+				});
+			});
+		}).catch((error) => {
+			this._LoggingSvc.errorHandler(error, 'CalendarService', 'mergeEvents');
+		});
 	}
 
 	/**
@@ -87,18 +144,18 @@ export class CalendarService extends BaseService {
 		this._SelectedDate = newSelectedDate;
 		if (!force && mMonthMatch && mYearMatch) {
 			this._CalendarData.getValue().weeks.some((week: IWeek) => {
-				week.days.some((day: IDay) => { 
+				week.days.some((day: IDay) => {
 					if (day.isSelected) {
-						day.isSelected = false; 
+						day.isSelected = false;
 					}
-				}); 
+				});
 			});
-			this._CalendarData.getValue().weeks.some((week: IWeek) => { 
-				week.days.some((day: IDay) => { 
-					if (this._GWCommon.datesEqual(day.date, newSelectedDate)) { 
-						day.isSelected = true; 
+			this._CalendarData.getValue().weeks.some((week: IWeek) => {
+				week.days.some((day: IDay) => {
+					if (this._GWCommon.datesEqual(day.date, newSelectedDate)) {
+						day.isSelected = true;
 					}
-				}); 
+				});
 			});
 			this._CalendarData.next(this._CalendarData.getValue());
 		} else {

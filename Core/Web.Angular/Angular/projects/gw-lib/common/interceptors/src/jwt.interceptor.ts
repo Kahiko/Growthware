@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 import { Injectable, inject } from '@angular/core';
 import { HttpRequest, HttpEvent, HttpHandlerFn, HttpInterceptorFn } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -24,6 +25,7 @@ class JwtHandler {
 			const mApiUrls = [
 				this._BaseUrl + 'GrowthwareAccount',
 				this._BaseUrl + 'GrowthwareAPI',
+				this._BaseUrl + 'GrowthwareCalendar',
 				this._BaseUrl + 'GrowthwareFile',
 				this._BaseUrl + 'GrowthwareFunction',
 				this._BaseUrl + 'GrowthwareGroup',

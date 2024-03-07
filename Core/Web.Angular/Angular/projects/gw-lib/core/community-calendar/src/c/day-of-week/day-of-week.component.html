@@ -21,6 +21,10 @@
   
   </div>
   <div class="day-body">
-    body
+    @for (item of calendarDay.events; track $index) {
+      <div>
+        {{item.title}}
+      </div>
+    }
   </div>  
 </div>

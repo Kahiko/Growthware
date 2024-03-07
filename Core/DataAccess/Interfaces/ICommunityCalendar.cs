@@ -6,11 +6,14 @@ namespace GrowthWare.DataAccess.Interfaces
 {
     public interface ICommunityCalendar : IDBInteraction
     {
-        string CalendarName {get; set;}
+        int CalendarSeqId {get; set;}
         int SecurityEntitySeqId {get; set;}
 
-		bool GetCalendarData(ref DataSet calendarDataSet, DateTime startDate, DateTime endDate);
-		bool SaveCalendarData(String comment, DateTime entryDate, int accountSeqId);
-		bool DeleteCalendarData(String comment, DateTime entryDate, int accountSeqId);
+        bool DeleteCalendar(int calendarSeqId);
+		bool DeleteEvent(int calendarEventSeqId);
+        bool GetCalendar(int calendarSeqId);
+		DataTable GetEvents(DateTime startDate, DateTime endDate);
+        bool SaveCalendar(int functionSeqId, String comment, int accountSeqId);
+		bool SaveEvent(String comment, DateTime entryDate, int accountSeqId);
     }
 }

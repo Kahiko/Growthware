@@ -89,13 +89,12 @@ public class BCommunityCalendar : AbstractBusinessLogic
             m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
     }
 
-    public bool GetCalendarData(ref DataSet calendarDataSet, String calendarName, DateTime startDate, DateTime endDate)
+    public DataTable GetEvents(int calendarSeqId, DateTime startDate, DateTime endDate)
     {
-        m_DCommunityCalendar.CalendarName = calendarName;
         try
         {
-            m_DCommunityCalendar.GetCalendarData(ref calendarDataSet, startDate, endDate);
-            return true;
+            m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
+            return m_DCommunityCalendar.GetEvents(startDate, endDate);
         }
         catch (System.Exception ex)
         {
@@ -103,15 +102,15 @@ public class BCommunityCalendar : AbstractBusinessLogic
         }
     }
 
-    public bool SaveCalendarData(String calendarName, String comment, DateTime entryDate, int accountSeqId)
+    public bool SaveCalendarEvent(int calendarSeqId, int functionSeqId, String comment, int accountSeqId)
     {
-        m_DCommunityCalendar.CalendarName = calendarName;
+        m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
         throw new NotImplementedException();
     }
 
-    public bool DeleteCalendarData(String calendarName, String comment, DateTime entryDate, int accountSeqId)
+    public bool DeleteCalendarData(int calendarSeqId, String comment, DateTime entryDate, int accountSeqId)
     {
-        m_DCommunityCalendar.CalendarName = calendarName;
+        m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
         throw new NotImplementedException();
     }
 }
