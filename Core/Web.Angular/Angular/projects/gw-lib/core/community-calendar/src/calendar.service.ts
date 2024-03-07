@@ -106,7 +106,6 @@ export class CalendarService extends BaseService {
 			mRetVal.weeks.push(week);
 		}
 		this.mergeEvents(mRetVal);
-		this._CalendarData.next(mRetVal);
 	}
 
 	public mergeEvents(monthData: IMonth): void {
@@ -125,6 +124,7 @@ export class CalendarService extends BaseService {
 					}
 				});
 			});
+			this._CalendarData.next(monthData);
 		}).catch((error) => {
 			this._LoggingSvc.errorHandler(error, 'CalendarService', 'mergeEvents');
 		});
