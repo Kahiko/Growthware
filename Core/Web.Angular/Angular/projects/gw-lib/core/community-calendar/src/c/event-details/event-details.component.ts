@@ -48,12 +48,12 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     super();
     this._ProfileSvc = profileSvc;
     this._ModalSvc = modalSvc;
-    console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
+    // console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
     this._Profile = profileSvc.selectedEvent;
   }
 
   ngOnInit(): void {
-    console.log('EventDetailsComponent.ngOnInit');
+    // console.log('EventDetailsComponent.ngOnInit');
     this.createForm();
   }
 
