@@ -24,6 +24,7 @@ export class CalendarService extends BaseService {
 
 	private _ApiName: string = 'GrowthwareCalendar/';
 	private _Api_GetEvents: string = '';
+	private _Api_SaveEvent: string = '';
 
 	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
 	public calendarData$ = this._CalendarData.asObservable();
@@ -39,8 +40,17 @@ export class CalendarService extends BaseService {
 	) {
 		super();
 		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
+		this._Api_SaveEvent = this._GWCommon.baseURL + this._ApiName + 'SaveEvent';
 	}
 
+	/**
+	 * Gets events from the API.
+	 *
+	 * @param {string} action - The action for the calendar
+	 * @param {Date} startDate - The start date or first date for the calendar
+	 * @param {Date} endDate - The end date or last date for the calendar
+	 * @return {Promise<ICalendarEvent[]>} description of return value
+	 */
 	private getEvents(action: string, startDate: Date, endDate: Date): Promise<ICalendarEvent[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('action', action)
@@ -69,6 +79,7 @@ export class CalendarService extends BaseService {
 
 	/**
 	 * Generate the data for a month given a selected date and the first day of the week.
+	 * Calls mergeEvents padding the generated data.
 	 *
 	 * @param {Date} selectedDate - the selected date
 	 * @return {IMonth} the month data

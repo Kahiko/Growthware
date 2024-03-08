@@ -82,7 +82,7 @@ export class DayOfWeekComponent {
 		if(this._CalendarSvc.selectedEvent.id > 0) {
 			mTitle = 'Edit Event';
 		}
-		const mWindowSize: WindowSize = new WindowSize(225, 450);
+		const mWindowSize: WindowSize = new WindowSize(425, 450);
 		const mModalOptions: ModalOptions = new ModalOptions(this._CalendarSvc.addEditModalId, mTitle, EventDetailsComponent, mWindowSize);
 		// mModalOptions.buttons.okButton.callbackMethod = () => {
 		// 	this.onModalOk;
