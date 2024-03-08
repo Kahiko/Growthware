@@ -1,12 +1,12 @@
 <div class="calendar-day">
-  <div class="header" [ngClass]="{'selected-header': calendarDay.isSelected}">
+  <div (click)="onDateClick(calendarDay)" class="header" [ngClass]="{'selected-header': calendarDay.isSelected}">
     <div>
       <button (click)="onAddEventClick(calendarDay)" mat-button style="height: 1.5rem; width: 8px; padding-top: 8px;" color="primary">
         <i style="padding-right: 3px; height: 1.5rem;" class="Form_Button_Icon material-icons">add</i>
       </button>      
     </div>
     <div class="spacer"></div>
-    <div (click)="onDateClick(calendarDay)" class="right" style="padding-right: 5px;">
+    <div class="right" style="padding-right: 5px;">
       @if (calendarDay.date.getDate() === 1) {
         <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
       }
@@ -22,8 +22,8 @@
   </div>
   <div class="day-body">
     @for (item of calendarDay.events; track $index) {
-      <div>
-        {{item.title}}
+      <div (click)="onEventClick(calendarDay, item)" [ngStyle]="{'background-color': item.color, 'cursor': 'pointer', color: 'white'}">
+        {{item.start | date: 'shortTime'}} - {{item.end | date: 'shortTime'}}
       </div>
     }
   </div>  

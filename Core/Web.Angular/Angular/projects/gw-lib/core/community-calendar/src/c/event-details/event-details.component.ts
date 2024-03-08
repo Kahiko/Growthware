@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
+// Feature
+import { CalendarService } from '../../calendar.service';
 
 @Component({
 	selector: 'gw-core-event-details',
@@ -10,8 +12,11 @@ import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base
 })
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
-	constructor() {
+	constructor(
+		private _CalendarSvc: CalendarService,
+	) {
 		super();
+		console.log('EventDetailsComponent.selectedEvent', _CalendarSvc.selectedEvent);
 	}
 
 	ngOnInit(): void {

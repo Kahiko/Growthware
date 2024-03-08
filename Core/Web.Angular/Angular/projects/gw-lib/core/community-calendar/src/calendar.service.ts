@@ -19,6 +19,7 @@ import { ICalendarEvent } from './interfaces/calendar-event.model';
 export class CalendarService extends BaseService {
 	override addEditModalId: string = 'addEditEvent';
 	override modalReason: string = '';
+	public selectedEvent: ICalendarEvent = {} as ICalendarEvent;
 	override selectedRow: ITotalRecords = { TotalRecords: 0 } as ITotalRecords;
 
 	private _ApiName: string = 'GrowthwareCalendar/';

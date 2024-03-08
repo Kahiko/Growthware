@@ -13,6 +13,7 @@ import { EventDetailsComponent } from '../event-details/event-details.component'
 import { IDay } from '../../interfaces/day.model';
 import { NamesOfMonths } from '../../interfaces/names-of-months.enum';
 import { NamesOfDays } from '../../interfaces/names-of-days.enum';
+import { CalendarEvent, ICalendarEvent } from '../../interfaces/calendar-event.model';
 
 @Component({
 	selector: 'gw-core-day-of-week',
@@ -65,12 +66,28 @@ export class DayOfWeekComponent {
 	public onAddEventClick(date: IDay) {
 		// console.log('onDateClick', date);
 		this._CalendarSvc.setSelectedDate(date.date);
+		this._CalendarSvc.selectedEvent = new CalendarEvent();
+		this.openEventDetails();
+	}
+
+	public onEventClick(date: IDay, event: ICalendarEvent) {
+		// console.log('DayOfWeekComponent.onEditEventClick', event);
+		this._CalendarSvc.setSelectedDate(date.date);
+		this._CalendarSvc.selectedEvent = event;
+		this.openEventDetails();
+	}
+
+	private openEventDetails() {
+		let mTitle: string = 'Add Event';
+		if(this._CalendarSvc.selectedEvent.id > 0) {
+			mTitle = 'Edit Event';
+		}
 		const mWindowSize: WindowSize = new WindowSize(225, 450);
-		const mModalOptions: ModalOptions = new ModalOptions(this._CalendarSvc.addEditModalId, 'Event', EventDetailsComponent, mWindowSize);
+		const mModalOptions: ModalOptions = new ModalOptions(this._CalendarSvc.addEditModalId, mTitle, EventDetailsComponent, mWindowSize);
 		// mModalOptions.buttons.okButton.callbackMethod = () => {
 		// 	this.onModalOk;
 		// };
-		this._ModalSvc.open(mModalOptions);
+		this._ModalSvc.open(mModalOptions);		
 	}
 
 	private onModalOk() {
