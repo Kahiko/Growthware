@@ -109,7 +109,13 @@ export class CalendarService extends BaseService {
 		this.mergeEvents(mRetVal);
 	}
 
-	public mergeEvents(monthData: IMonth): void {
+	/**
+	 * Merge events into the month data and update the calendar data.
+	 *
+	 * @param {IMonth} monthData - the month data to merge events into
+	 * @return {void} 
+	 */
+	private mergeEvents(monthData: IMonth): void {
 		// console.log('mergeEvents.monthData', monthData);
 		const mFirstDay = monthData.weeks[0].days[0];
 		const mLastDay = monthData.weeks[monthData.weeks.length - 1].days[6];
