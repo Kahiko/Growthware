@@ -219,8 +219,8 @@ public abstract class AbstractFileController : ControllerBase
                 {
                     // Set the appropriate content type based on the file extension
                     string mContentType = getContentType(mFilePath);
-                    FileStream stream = System.IO.File.OpenRead(mFilePath);
-                    return File(stream, mContentType, fileName);
+                    FileStream mFileStream = new(mFilePath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    return File(mFileStream, mContentType, fileName);
                 }
                 else
                 {
