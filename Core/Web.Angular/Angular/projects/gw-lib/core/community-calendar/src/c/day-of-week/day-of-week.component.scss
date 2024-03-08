@@ -1,36 +1,52 @@
-
-.selected-header {
-    display: flex;
-    background-color: #5a80a9;
-    color: white;
-    height: 1.5rem;
-    line-height: 1.5rem;
-    padding-right: 15px;
-}
-
 .header {
     display: flex;
-    height: 1.5rem;
+    height: 1.6rem;
+    min-height: 1.6rem;
     cursor: pointer;
+    font-size: 12px;
 }
 
-.header div {
-    display: inline-block;
+.header__icon-button {
+    height: 1.5rem;
+    width: 1.5rem;
+    padding: 0;
+    /* Remove default padding */
+}
+
+.header__mat-icon {
+    padding-top: 5px;
+    font-size: 1rem;
+    /* Adjust the icon size as needed */
+}
+
+.header__date {
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+.selected-header {
+    background-color: #5a80a9;
+    color: white;
 }
 
 .selected-header i {
     color: white;
 }
-/* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
-.selected-header svg {
+
+.selected-header svg { /* Note: If you're using an SVG icon, you should make the class target the `<svg>` element */
     fill: white;
 }
 
-.calendar-day {
-    background-color: lightgray;
-}
-
-.day-body {
+.event-body {
+    padding-top: 15px;
     background-color: white;
     border: 1px solid #dee2e6;
+    height: 150px;
+    overflow-y: scroll;
+}
+
+.event-body__event {
+    cursor: pointer;
+    color: white;
+    margin-bottom: 5px;
 }
