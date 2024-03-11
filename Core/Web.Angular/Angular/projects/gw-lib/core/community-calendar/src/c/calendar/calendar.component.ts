@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -30,7 +30,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnDestroy, OnInit {
   private _Subscriptions: Subscription = new Subscription();
   // public calendar: CalendarDay[] = [];
   public calendar: IMonth = new Month();
@@ -43,6 +43,10 @@ export class CalendarComponent implements OnInit {
 		private _CalendarSvc: CalendarService,
 		private _GWCommon: GWCommon
   ) { }
+
+  ngOnDestroy(): void {
+    this._Subscriptions.unsubscribe();
+  }
 
   ngOnInit(): void {
     // Set the first day of the week
