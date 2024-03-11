@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService} from '@growthware/core/logging';
@@ -27,6 +28,7 @@ import { CalendarEvent, ICalendarEvent } from '../../interfaces/calendar-event.m
 		MatButtonModule,
 		MatIconModule,
 		MatToolbarModule,
+		MatTooltipModule,
 	],
 	templateUrl: './day-of-week.component.html',
 	styleUrls: ['./day-of-week.component.scss']

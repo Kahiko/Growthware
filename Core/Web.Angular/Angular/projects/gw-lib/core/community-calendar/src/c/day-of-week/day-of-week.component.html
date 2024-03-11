@@ -17,7 +17,7 @@
 </mat-toolbar>
 <div class="event-body">
   @for (item of calendarDay.events; track $index) {
-    <div (click)="onEventClick(calendarDay, item)" class="event-body__event" [ngStyle]="{'background-color': item.color,}">
+    <div (click)="onEventClick(calendarDay, item)" class="event-body__event" [ngStyle]="{'background-color': item.color,}" matTooltip="{{item.title}}">
       {{item.start | date: 'shortTime'}} - {{item.end | date: 'shortTime'}}
     </div>
   }
