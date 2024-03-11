@@ -7,7 +7,6 @@ export interface IDay {
 	date: Date;
 	events?: ICalendarEvent[];
 	isSelected: boolean;
-	isToday: boolean;
 	month: NamesOfMonths;
 	monthName: string;
 }
@@ -17,7 +16,6 @@ export class Day implements IDay {
 	public date: Date;
 	public events?: ICalendarEvent[];
 	public isSelected: boolean = false;
-	public isToday: boolean = false;
 	public month: NamesOfMonths;
 	public monthName: string = '';
 
