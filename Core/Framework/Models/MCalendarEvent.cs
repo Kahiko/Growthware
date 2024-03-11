@@ -9,14 +9,15 @@ namespace GrowthWare.Framework.Models;
 [Serializable(), CLSCompliant(true)]
 public class MCalendarEvent : AbstractBaseModel
 {
-    public string Title {get; set;}
-    public DateTime Start {get; set;}
-    public DateTime End {get; set;}
     public bool AllDay {get; set;}
-    public string Description {get; set;}
     public string Color {get; set;}
+    public string Description {get; set;}
+    public DateTime End {get; set;}
     public string Link {get; set;}
     public string Location {get; set;}
+    public string Owner {get; set;}
+    public DateTime Start {get; set;}
+    public string Title {get; set;}
 
     public MCalendarEvent()
     {
@@ -40,6 +41,7 @@ public class MCalendarEvent : AbstractBaseModel
         this.End = base.GetDateTime(dataRow, "End", DateTime.Now);
         this.Link = base.GetString(dataRow, "Link");
         this.Location = base.GetString(dataRow, "Location");
+        this.Owner = base.GetString(dataRow, "Owner");
         this.Start = base.GetDateTime(dataRow, "Start", DateTime.Now);
         this.Title = base.GetString(dataRow, "Title");
     }

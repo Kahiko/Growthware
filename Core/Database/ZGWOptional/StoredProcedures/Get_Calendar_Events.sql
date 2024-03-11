@@ -22,19 +22,20 @@ CREATE PROCEDURE [ZGWOptional].[Get_Calendar_Events]
 AS
 	SET NOCOUNT ON;
 	SELECT
-		  [CalendarEventSeqId]
+		  [AllDay]
+		, [CalendarEventSeqId]
 		, [CalendarSeqId]
+		, [Color]
+		, [Description]
+		, [End]
+		, [Link]
+		, [Owner] = (SELECT TOP(1) [Owner] = SUBSTRING ([First_Name], 1, 1) + '. ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Added_By])
 		, [Title]
 		, [Start]
-		, [End]
-		, [AllDay]
-		, [Description]
-		, [Color]
-		, [Link]
 		, [Location]
-		, [AddedBy] = (SELECT TOP(1) [FullName] = [First_Name] + ' ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Added_By])
+		, [Added_By]
 		, [Added_Date]
-		, [UpdatedBy] = (SELECT TOP(1) [FullName] = [First_Name] + ' ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Updated_By])
+		, [Updated_By]
 		, [Updated_Date]
 	FROM 
 		[ZGWOptional].[Calendar_Events]

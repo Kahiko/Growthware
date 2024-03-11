@@ -39,6 +39,7 @@ import { ICalendarEvent } from '../../interfaces/calendar-event.model';
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
   private _Profile!: ICalendarEvent;
+  
 
   constructor(
     profileSvc: CalendarService,
@@ -50,6 +51,9 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     this._ModalSvc = modalSvc;
     // console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
     this._Profile = profileSvc.selectedEvent;
+    if(this._Profile.id > 0) {
+      this.canDelete = true;
+    }
   }
 
   ngOnInit(): void {
