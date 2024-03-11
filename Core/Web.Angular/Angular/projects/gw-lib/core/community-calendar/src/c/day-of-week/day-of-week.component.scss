@@ -1,4 +1,6 @@
 .header {
+    background-color: DarkTurquoise;
+    color: Cornsilk;
     display: flex;
     height: 1.6rem;
     min-height: 1.6rem;
@@ -24,8 +26,13 @@
     margin-right: 10px;
 }
 
+.grey-header {
+    background-color: whitesmoke;
+    color: black;
+}
+
 .selected-header {
-    background-color: #5a80a9;
+    background-color: CornflowerBlue;
     color: white;
 }
 

@@ -49,6 +49,24 @@ export class DayOfWeekComponent {
 	}
 
 	/**
+	 * Returns the header class for the day.
+	 * 
+	 * @param {IDay} date - The date to be selected.
+	 * @returns Array<string>
+	 */
+	public headerClass(calendarDay: IDay): Array<string> {
+		const mRetVal = ['header'];
+		const mCurrentMonth = calendarDay.date.toLocaleString('default', { month: 'long' });
+		const mSelectedtMonth = this._CalendarSvc.selectedDate.toLocaleString('default', { month: 'long' });
+		if (mCurrentMonth !== mSelectedtMonth) {
+			mRetVal.push('grey-header');
+		} else  if (calendarDay.isSelected) {
+			mRetVal.push('selected-header');
+		}
+		return mRetVal;
+	}
+
+	/**
 	 * Handles the date header click event.
 	 *
 	 * @param {IDay} date - The date to be selected.

@@ -1,4 +1,4 @@
-<mat-toolbar (click)="onDateClick(calendarDay)" class="header" [ngClass]="{'selected-header': calendarDay.isSelected}">
+<mat-toolbar (click)="onDateClick(calendarDay)" [ngClass]="headerClass(calendarDay)">
   <button (click)="onAddEventClick(calendarDay)" mat-icon-button class="header__icon-button">
     <mat-icon class="header__mat-icon">add</mat-icon>
   </button>
