@@ -3,7 +3,7 @@
     <mat-icon class="header__mat-icon">add</mat-icon>
   </button>
   <div class="right header__date">
-    @if (calendarDay.date.getDate() === 1) {
+    @if (calendarDay.date.getDate() === 1 || (weekNumber === 0 &&calendarDay.date.getDay() == 0)) {
       <strong> {{monthNames[calendarDay.date.getMonth()]}}</strong>
     }
     @if (!calendarDay.isSelected) {
