@@ -12,7 +12,7 @@ public static class CalendarUtility
     public static List<MCalendarEvent> GetEvents(MSecurityEntity securityEntityProfile, int functionSeqId, DateTime startDate, DateTime endDate) 
     {
         List<MCalendarEvent> mRetVal = [];
-        BCommunityCalendar mCommunityCalendar = new BCommunityCalendar(securityEntityProfile, ConfigSettings.CentralManagement);
+        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = mCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
         foreach (DataRow item in mDataTable.Rows)
         {
@@ -20,5 +20,11 @@ public static class CalendarUtility
             mRetVal.Add(mCalendarEvent);
         }
         return mRetVal;
+    }
+
+    public static MCalendarEvent GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
+    {
+        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        return mCommunityCalendar.GetEvent(calendarEventSeqId);
     }
 }

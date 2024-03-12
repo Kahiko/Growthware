@@ -10,8 +10,8 @@ import { IMonth, Month } from './interfaces/month.model';
 import { IWeek, Week } from './interfaces/week.model';
 import { IDay, Day } from './interfaces/day.model';
 import { NamesOfDays } from './interfaces/names-of-days.enum';
-import { ITotalRecords } from '@growthware/common/interfaces';
 import { ICalendarEvent } from './interfaces/calendar-event.model';
+import { ITotalRecords } from '@growthware/common/interfaces';
 
 @Injectable({
 	providedIn: 'root'
@@ -24,6 +24,7 @@ export class CalendarService extends BaseService {
 
 	private _ApiName: string = 'GrowthwareCalendar/';
 	private _Api_GetEvents: string = '';
+	private _Api_GetEventSecurity: string = '';
 	private _Api_SaveEvent: string = '';
 
 	private _CalendarData: BehaviorSubject<IMonth> = new BehaviorSubject<IMonth>(new Month());
@@ -40,6 +41,7 @@ export class CalendarService extends BaseService {
 	) {
 		super();
 		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
+		this._Api_GetEventSecurity = this._GWCommon.baseURL + this._ApiName + 'GetEventSecurity';
 		this._Api_SaveEvent = this._GWCommon.baseURL + this._ApiName + 'SaveEvent';
 	}
 
@@ -119,6 +121,28 @@ export class CalendarService extends BaseService {
 		this.mergeEvents(mRetVal);
 	}
 
+	public getEventSecurity(eventId: number): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			const mQueryParameter: HttpParams = new HttpParams()
+				.set('calendarEventSeqId', eventId);
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+				params: mQueryParameter,
+			};
+			this._HttpClient.get<boolean>(this._Api_GetEventSecurity, mHttpOptions).subscribe({
+				next: (response: boolean) => {
+					resolve(response);
+				},
+				error: (error) => {
+					reject('Failed to call the API');
+					this._LoggingSvc.errorHandler(error, 'CalendarService', 'getEventSecurity');
+				}
+			});
+		});
+	}
+
 	/**
 	 * Merge events into the month data and update the calendar data.
 	 *
@@ -136,7 +160,7 @@ export class CalendarService extends BaseService {
 					const mFoundEvents = response.filter((event) => {
 						return this._GWCommon.datesEqual(new Date(event.start), new Date(day.date));
 					});
-					if(mFoundEvents.length > 0) {
+					if (mFoundEvents.length > 0) {
 						day.events = mFoundEvents;
 					}
 				});

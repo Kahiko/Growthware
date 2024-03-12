@@ -241,6 +241,58 @@ IF OBJECT_ID(N'ZGWOptional.Calendar_Events', N'U') IS NULL
 GO
 /****** End: Create [ZGWOptional].[Calendar_Events] ******/
 
+/****** Start: Procedure [ZGWOptional].[Get_Calendar_Event] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar_Event]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWOptional].[Get_Calendar_Event] AS'
+	END
+--End If
+
+GO
+
+/*
+Usage:
+	DECLARE 
+        @P_CalendarEventSeqId INT = 1
+
+	exec ZGWOptional.Get_Calendar_Event
+		@P_CalendarSeqId
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 03/11/2024
+-- Description:	Calendar Data
+-- =============================================
+ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Event]
+    @P_CalendarEventSeqId INT
+AS
+	SET NOCOUNT ON;
+	SELECT
+		  [AllDay]
+		, [CalendarEventSeqId]
+		, [CalendarSeqId]
+		, [Color]
+		, [Description]
+		, [End]
+		, [Link]
+		, [Owner] = (SELECT TOP(1) [Owner] = SUBSTRING ([First_Name], 1, 1) + '. ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Added_By])
+		, [Title]
+		, [Start]
+		, [Location]
+		, [Added_By]
+		, [Added_Date]
+		, [Updated_By]
+		, [Updated_Date]
+	FROM 
+		[ZGWOptional].[Calendar_Events]
+	WHERE 
+		[CalendarEventSeqId] = @P_CalendarEventSeqId
+	SET NOCOUNT OFF;
+
+RETURN 0
+GO
+/****** End: Procedure [ZGWOptional].[Get_Calendar_Event] ******/
+
 /****** Start: Procedure [ZGWOptional].[Get_Calendar_Events] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWOptional].[Get_Calendar_Events]') AND type in (N'P', N'PC'))
 	BEGIN
@@ -274,23 +326,25 @@ ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Events]
 AS
 	SET NOCOUNT ON;
 	SELECT
-		  [AllDay]
-		, [CalendarEventSeqId]
-		, [CalendarSeqId]
-		, [Color]
-		, [Description]
-		, [End]
-		, [Link]
-		, [Owner] = (SELECT TOP(1) [Owner] = SUBSTRING ([First_Name], 1, 1) + '. ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Added_By])
-		, [Title]
-		, [Start]
-		, [Location]
-		, [Added_By]
-		, [Added_Date]
-		, [Updated_By]
-		, [Updated_Date]
+		  CE.[AllDay]
+		, CE.[CalendarEventSeqId]
+		, CE.[CalendarSeqId]
+		, CE.[Color]
+		, CE.[Description]
+		, CE.[End]
+		, CE.[Link]
+		, [Owner] = (SELECT SUBSTRING (ACCTS.[First_Name], 1, 1) + '. ' + ACCTS.[Last_Name])
+		, CE.[Title]
+		, CE.[Start]
+		, CE.[Location]
+		, CE.[Added_By]
+		, CE.[Added_Date]
+		, CE.[Updated_By]
+		, CE.[Updated_Date]
 	FROM 
-		[ZGWOptional].[Calendar_Events]
+		[ZGWOptional].[Calendar_Events] CE
+		LEFT JOIN [ZGWSecurity].[Accounts] ACCTS ON
+			CE.[Added_By] = ACCTS.[AccountSeqId]
 	WHERE 
 		[CalendarSeqId] = @P_CalendarSeqId
 		AND [Start] >= @P_Start_Date 
@@ -445,21 +499,25 @@ GO
 /****** End: Procedure [ZGWOptional].[Delete_Calendar_Event] ******/
 
 /****** Adding new Calendar ******/
-	DECLARE 
-	  @P_CalendarSeqId INT  = -1,
-	  @P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
-	  @P_FunctionSeqId [varchar](50) = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'CommunityCalendar'),
-	  @P_Comment [varchar](100) = 'Created for the community calendar',
-	  @P_Active [int] = 1,
-	  @P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
+	DECLARE @P_FunctionSeqId [varchar](50) = (SELECT TOP(1) [FunctionSeqId] FROM [ZGWSecurity].[Functions] WHERE [Action] = 'CommunityCalendar');
+	IF NOT EXISTS (SELECT TOP(1) 1 FROM [ZGWOptional].[Calendars] WHERE [FunctionSeqId] = @P_FunctionSeqId)
+		BEGIN
+			DECLARE 
+				@P_CalendarSeqId INT  = -1,
+				@P_SecurityEntitySeqId [int] = (SELECT TOP(1) [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities] WHERE [Name] = 'System'),
+				@P_Comment [varchar](100) = 'Created for the community calendar',
+				@P_Active [int] = 1,
+				@P_Added_Updated_By [int] = (SELECT TOP(1) [AccountSeqId] FROM [ZGWSecurity].[Accounts] WHERE [Account] = 'System');
 
-	EXEC ZGWOptional.Set_Calendar
-	  @P_CalendarSeqId OUTPUT,
-	  @P_SecurityEntitySeqId,
-	  @P_FunctionSeqId,
-	  @P_Comment,
-	  @P_Active,
-	  @P_Added_Updated_By;
+			EXEC ZGWOptional.Set_Calendar
+				@P_CalendarSeqId OUTPUT,
+				@P_SecurityEntitySeqId,
+				@P_FunctionSeqId,
+				@P_Comment,
+				@P_Active,
+				@P_Added_Updated_By;
+		END
+	--END IF
 /****** Done adding new Calendar ******/
 
 -- Update the version

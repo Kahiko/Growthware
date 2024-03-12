@@ -35,4 +35,24 @@ public abstract class AbstractCalendarController : ControllerBase
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     } 
+
+    [AllowAnonymous]
+    [HttpGet("GetEventSecurity")]
+    public ActionResult<Boolean> GetEventSecurity(int calendarEventSeqId)
+    {
+        bool mRetVal = false;
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        if (mSecurityEntity != null) 
+        {
+            MCalendarEvent mCalendarEvent = CalendarUtility.GetEvent(mSecurityEntity, calendarEventSeqId);
+            if(mCalendarEvent != null)
+            {
+                if (AccountUtility.CurrentProfile.Id == mCalendarEvent.AddedBy) 
+                {
+                    mRetVal = true;
+                }
+            }
+        }
+        return mRetVal;
+    }
 }

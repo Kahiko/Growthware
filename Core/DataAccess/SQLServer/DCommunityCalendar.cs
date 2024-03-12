@@ -32,6 +32,24 @@ namespace GrowthWare.DataAccess.SQLServer
             return true;
         }
 
+        DataRow ICommunityCalendar.GetEvent(int calendarEventSeqId)
+        {
+            this.checkValid();
+            string mStoredProcedure = "[ZGWOptional].[Get_Calendar_Event]";
+            SqlParameter[] mParameters = 
+            {
+                new ("@P_CalendarEventSeqId", calendarEventSeqId),
+            };
+            try
+            {
+                return base.GetDataRow(mStoredProcedure, mParameters);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
+
 		DataTable ICommunityCalendar.GetEvents(DateTime startDate, DateTime endDate) 
         {
             this.checkValid();

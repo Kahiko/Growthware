@@ -44,7 +44,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   constructor(
     profileSvc: CalendarService,
     modalSvc: ModalService,
-	private _FormBuilder: FormBuilder,
+	  private _FormBuilder: FormBuilder,
   ) {
     super();
     this._ProfileSvc = profileSvc;
@@ -59,6 +59,12 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   ngOnInit(): void {
     // console.log('EventDetailsComponent.ngOnInit');
     this.createForm();
+    if (this._Profile.id > -1) {
+      this._ProfileSvc.getEventSecurity(this._Profile.id).then((canEdit: boolean) => {
+        this.canDelete = canEdit;
+        this.canSave = canEdit;
+      });
+    }
   }
 
   override delete(): void {
@@ -99,6 +105,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   override populateProfile(): void {
     this._Profile.title = this.controls['title'].getRawValue();
   }
+
   override save(): void {
     throw new Error('Method not implemented.');
   }
