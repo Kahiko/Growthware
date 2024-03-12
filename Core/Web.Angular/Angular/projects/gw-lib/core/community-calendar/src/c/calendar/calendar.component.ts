@@ -56,19 +56,21 @@ export class CalendarComponent implements OnDestroy, OnInit {
       this.calendar = data;
       this.displayMonth = this._CalendarSvc.selectedDate.toLocaleString('default', { month: 'long' });
       this.displayYear = this._CalendarSvc.selectedDate.getFullYear();
-      const mSelectedElement = document.getElementsByClassName('selected-header');
-      // console.log('CalendarComponent.ngAfterContentInit.mSelectedElement', mSelectedElement);
-      if (mSelectedElement) {
-        const mSelectedDay = mSelectedElement[0];
-        if (mSelectedDay) {
-          // mSelectedDay.scrollIntoView({behavior: 'smooth'});
-          mSelectedDay.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
-          });
-        }
-      }
+      setTimeout(() => {
+        const mSelectedElement = document.getElementsByClassName('selected-header');
+        // console.log('CalendarComponent.ngAfterContentInit.mSelectedElement', mSelectedElement);
+        if (mSelectedElement) {
+          const mSelectedDay = mSelectedElement[0];
+          if (mSelectedDay) {
+            // mSelectedDay.scrollIntoView({behavior: 'smooth'});
+            mSelectedDay.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+              inline: 'nearest'
+            });
+          }
+        }  
+      }, 500);
     }));
     // Set the data for the calendar header
     this.getWeekDayNames();
