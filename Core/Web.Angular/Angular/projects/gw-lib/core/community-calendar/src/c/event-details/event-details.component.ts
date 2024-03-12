@@ -116,13 +116,26 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     return undefined;
   }
 
+  override onDelete(): void {
+    throw new Error('Method not implemented.');
+  }
+
   override onSubmit(): void {
     if (this.frmProfile.valid) {
       this.populateProfile();
+      console.log('EventDetailsComponent.onSubmit.Updated Profile', this._Profile);
+      // this.save();
     }
   }
 
   override populateProfile(): void {
+    this._Profile.allDay = this.controls['allDay'].getRawValue();
+    this._Profile.color = this.selectedColor;
+    this._Profile.description = this.controls['description'].getRawValue();
+    this._Profile.end = this.endDate;
+    this._Profile.link = this.controls['link'].getRawValue();
+    this._Profile.location = this.controls['location'].getRawValue();
+    this._Profile.start = this.startDate;
     this._Profile.title = this.controls['title'].getRawValue();
   }
 

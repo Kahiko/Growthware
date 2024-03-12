@@ -46,11 +46,11 @@
                             <div class="td left">
                                 <mat-select placeholder="Priority" [(value)]="selectedColor" class="rounded" style="width: 150px;">
                                     @for (item of validColors; track item) {
-                                      <mat-option [value]="item.name">
-                                        {{item.value}}
-                                      </mat-option>
+                                        <mat-option [value]="item.name">
+                                            {{item.value}}
+                                        </mat-option>
                                     }
-                                  </mat-select>
+                                </mat-select>
                             </div>
                         </div>
                         <div class="tr">
@@ -83,15 +83,15 @@
         @if (canSave) {
             <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
                 <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
-              </button>      
+            </button>
         }
         @if (canDelete) {
-          <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
-            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
-          </button>
+            <button type="button" (click)="onDelete()" mat-button class="Form_Button" color="warn">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">delete</i>Delete
+            </button>
         }
         <button type="button" (click)="onCancel()" mat-button class="Form_Button" color="accent">
-          <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
+            <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
         </button>
-      </div>
+    </div>
 </form>
