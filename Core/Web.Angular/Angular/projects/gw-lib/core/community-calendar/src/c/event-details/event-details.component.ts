@@ -16,6 +16,7 @@ import { ModalService } from '@growthware/core/modal';
 // Feature
 import { CalendarService } from '../../calendar.service';
 import { ICalendarEvent } from '../../interfaces/calendar-event.model';
+import { TimePickerComponent } from '../time-picker/time-picker.component';
 
 @Component({
   selector: 'gw-core-event-details',
@@ -32,6 +33,8 @@ import { ICalendarEvent } from '../../interfaces/calendar-event.model';
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
+    // Feature
+    TimePickerComponent,
   ],
   templateUrl: './event-details.component.html',
   styleUrl: './event-details.component.scss'
@@ -39,6 +42,9 @@ import { ICalendarEvent } from '../../interfaces/calendar-event.model';
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
   private _Profile!: ICalendarEvent;
+
+  endDate!: Date;
+  startDate!: Date;
   
 
   constructor(
@@ -72,7 +78,11 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override createForm(): void {
+    this.endDate = this._Profile.end;
+    this.startDate = this._Profile.start;
     this.frmProfile = this._FormBuilder.group({
+      endDate: [this._Profile.end, [Validators.required]],
+      startDate: [this._Profile.start, [Validators.required]],
       title: [this._Profile.title, [Validators.required]],
     });
   }
@@ -108,6 +118,10 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
 
   override save(): void {
     throw new Error('Method not implemented.');
+  }
+
+  timeRangeSelected(event: { startTime: Date, endTime: Date }) {
+    console.log('timeRangeSelected', event.startTime, event.endTime);
   }
 
 }

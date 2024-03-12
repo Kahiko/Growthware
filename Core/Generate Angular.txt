@@ -280,6 +280,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c Calendar     --standalone --style scss --project gw-lib
 		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c dayOfWeek    --standalone --style scss --project gw-lib
 		ng generate component 	            --path=projects/gw-lib/core/community-calendar/src/c EventDetails --standalone --style scss --project gw-lib
+		ng generate component               --path=projects/gw-lib/core/community-calendar/src/c TimePicker   --standalone --style scss --project gw-lib
 
 	// https://stackoverflow.com/questions/49385369/angular-show-spinner-for-every-http-request-with-very-less-code-changes
 		ng generate component --path=projects/gw-lib/core/loader/src c/loader --standalone --style scss --project gw-lib

@@ -1,0 +1,20 @@
+<form [formGroup]="frmProfile">
+    <mat-grid-list [cols]="2" gutterSize="10px" rowHeight="32px" width="50px">
+        <mat-grid-tile>
+            <mat-form-field class="custom-form-field">
+                <input matInput placeholder="Hour" formControlName="fromHour" (focus)="selectText($event)" (change)="timeChanged$.next(0)" />
+            </mat-form-field>:
+            <mat-form-field class="custom-form-field">
+                <input matInput placeholder="Minute" formControlName="fromMinute" (focus)="selectText($event)" (change)="timeChanged$.next(0)" />
+            </mat-form-field>
+        </mat-grid-tile>
+        <mat-grid-tile>
+            <mat-form-field class="custom-form-field">
+                <input matInput placeholder="Hour" formControlName="toHour" (focus)="selectText($event)" (change)="timeChanged$.next(0)" />
+            </mat-form-field>:
+            <mat-form-field class="custom-form-field">
+                <input matInput placeholder="Minute" formControlName="toMinute" (focus)="selectText($event)" (change)="timeChanged$.next(0)" />
+            </mat-form-field>
+        </mat-grid-tile>
+    </mat-grid-list>
+</form>
