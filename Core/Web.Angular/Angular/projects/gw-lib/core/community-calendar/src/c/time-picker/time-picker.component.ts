@@ -38,7 +38,7 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	@Input() endDate!: Date;
 	@Input() military: boolean = false;
 	@Input() startDate!: Date;
-	@Output() timeRangeSelected = new EventEmitter<{ startTime: Date, endTime: Date }>();
+	@Output() timeRangeSelected = new EventEmitter<{ startDate: Date, endDate: Date }>();
 
 	constructor(
 		private _FormBuilder: FormBuilder,
@@ -83,8 +83,8 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 		this.endDate.setHours(this.frmProfile.value.toHour);
 		this.endDate.setMinutes(this.frmProfile.value.toMinute);
 		this.timeRangeSelected.emit({
-			startTime: this.startDate,
-			endTime: this.endDate
+			startDate: this.startDate,
+			endDate: this.endDate
 		});
 	}
 	

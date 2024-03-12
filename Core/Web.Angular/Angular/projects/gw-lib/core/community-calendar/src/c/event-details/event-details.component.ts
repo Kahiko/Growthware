@@ -17,6 +17,7 @@ import { ModalService } from '@growthware/core/modal';
 import { CalendarService } from '../../calendar.service';
 import { ICalendarEvent } from '../../interfaces/calendar-event.model';
 import { TimePickerComponent } from '../time-picker/time-picker.component';
+import { INameValuePair, NameValuePair } from '@growthware/common/interfaces';
 
 @Component({
   selector: 'gw-core-event-details',
@@ -44,7 +45,9 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   private _Profile!: ICalendarEvent;
 
   endDate!: Date;
+  selectedColor: string = 'Blue';
   startDate!: Date;
+  validColors: INameValuePair[] = [];
   
 
   constructor(
@@ -64,6 +67,8 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
 
   ngOnInit(): void {
     // console.log('EventDetailsComponent.ngOnInit');
+    this.validColors.push(new NameValuePair('#6495ED', 'Blue'));
+    this.validColors.push(new NameValuePair('#ff0000', 'Red'));
     this.createForm();
     if (this._Profile.id > -1) {
       this._ProfileSvc.getEventSecurity(this._Profile.id).then((canEdit: boolean) => {
@@ -78,10 +83,15 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override createForm(): void {
+    this.selectedColor = this._Profile.color;
     this.endDate = this._Profile.end;
     this.startDate = this._Profile.start;
     this.frmProfile = this._FormBuilder.group({
+      allDay: [this._Profile.allDay],
+      description: [this._Profile.description],
       endDate: [this._Profile.end, [Validators.required]],
+      link: [this._Profile.link],
+      location: [this._Profile.location],
       startDate: [this._Profile.start, [Validators.required]],
       title: [this._Profile.title, [Validators.required]],
     });
@@ -120,8 +130,9 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     throw new Error('Method not implemented.');
   }
 
-  timeRangeSelected(event: { startTime: Date, endTime: Date }) {
-    console.log('timeRangeSelected', event.startTime, event.endTime);
+  timeRangeSelected(event: { startDate: Date, endDate: Date }) {
+    this.endDate = event.endDate;
+    this.startDate = event.startDate;
   }
 
 }

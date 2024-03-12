@@ -24,35 +24,54 @@
                                 <span class="Form_LabelText">All Day:</span>
                             </div>
                             <div class="td middleCell"></div>
-                            <div class="td left"></div>
+                            <div class="td left">
+                                <input formControlName="allDay" type="checkbox" id="chkAllDay" class="Form_Field" checked="true" text="All Day" />
+                            </div>
                         </div>
                         <div class="tr">
                             <div class="td firstCell left">
                                 <span class="Form_LabelText">Description:</span>
                             </div>
                             <div class="td middleCell"></div>
-                            <div class="td left"></div>
+                            <div class="td left">
+                                <textarea matInput id="txtDescription" formControlName="description" #description class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+                                <mat-hint align="end">{{description.value.length}}/512</mat-hint>
+                            </div>
                         </div>
                         <div class="tr">
                             <div class="td firstCell left">
-                                <span class="Form_LabelText">Color:</span>
+                                <span class="Form_LabelText">Priority:</span>
                             </div>
                             <div class="td middleCell"></div>
-                            <div class="td left"></div>
+                            <div class="td left">
+                                <mat-select placeholder="Priority" [(value)]="selectedColor" class="rounded" style="width: 150px;">
+                                    @for (item of validColors; track item) {
+                                      <mat-option [value]="item.name">
+                                        {{item.value}}
+                                      </mat-option>
+                                    }
+                                  </mat-select>
+                            </div>
                         </div>
                         <div class="tr">
                             <div class="td firstCell left">
                                 <span class="Form_LabelText">Link:</span>
                             </div>
                             <div class="td middleCell"></div>
-                            <div class="td left"></div>
+                            <div class="td left">
+                                <textarea matInput id="txtLink" formControlName="link" #link class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+                                <mat-hint align="end">{{link.value.length}}/255</mat-hint>
+                            </div>
                         </div>
                         <div class="tr">
                             <div class="td firstCell left">
                                 <span class="Form_LabelText">Location:</span>
                             </div>
                             <div class="td middleCell"></div>
-                            <div class="td left"></div>
+                            <div class="td left">
+                                <textarea matInput id="txtLocation" formControlName="location" #location class="rounded" TextMode="MultiLine" Rows="3" style="Width: 95%;"></textarea>
+                                <mat-hint align="end">{{location.value.length}}/255</mat-hint>
+                            </div>
                         </div>
                     </div>
                 </div>
