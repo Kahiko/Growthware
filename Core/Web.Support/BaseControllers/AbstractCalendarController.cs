@@ -16,6 +16,17 @@ public abstract class AbstractCalendarController : ControllerBase
     private Logger m_Logger = Logger.Instance();
 
     [AllowAnonymous]
+    [HttpGet("DeleteEvent")]
+    public ActionResult<bool> DeleteEvent(int calendarEventSeqId) 
+    { 
+        if (getEventSecurity(calendarEventSeqId))
+        {
+            return Ok(true); 
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [AllowAnonymous]
     [HttpGet("GetEvents")]
     public ActionResult<List<MCalendarEvent>> GetEvents(string action, string startDate, string endDate)
     {
@@ -39,6 +50,11 @@ public abstract class AbstractCalendarController : ControllerBase
     [AllowAnonymous]
     [HttpGet("GetEventSecurity")]
     public ActionResult<Boolean> GetEventSecurity(int calendarEventSeqId)
+    {
+        return Ok(getEventSecurity(calendarEventSeqId));
+    }
+
+    private bool getEventSecurity(int calendarEventSeqId)
     {
         bool mRetVal = false;
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +13,6 @@ import { CalendarService } from '../../calendar.service';
 import { DayOfWeekComponent } from '../day-of-week/day-of-week.component';
 import { IMonth, Month } from '../../interfaces/month.model';
 import { NamesOfDays } from '../../interfaces/names-of-days.enum';
-import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'gw-core-calendar',
@@ -41,7 +41,7 @@ export class CalendarComponent implements OnDestroy, OnInit {
 
   constructor(
 		private _CalendarSvc: CalendarService,
-		private _GWCommon: GWCommon
+		private _GWCommon: GWCommon,
   ) { }
 
   ngOnDestroy(): void {
@@ -56,6 +56,19 @@ export class CalendarComponent implements OnDestroy, OnInit {
       this.calendar = data;
       this.displayMonth = this._CalendarSvc.selectedDate.toLocaleString('default', { month: 'long' });
       this.displayYear = this._CalendarSvc.selectedDate.getFullYear();
+      const mSelectedElement = document.getElementsByClassName('selected-header');
+      // console.log('CalendarComponent.ngAfterContentInit.mSelectedElement', mSelectedElement);
+      if (mSelectedElement) {
+        const mSelectedDay = mSelectedElement[0];
+        if (mSelectedDay) {
+          // mSelectedDay.scrollIntoView({behavior: 'smooth'});
+          mSelectedDay.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      }
     }));
     // Set the data for the calendar header
     this.getWeekDayNames();

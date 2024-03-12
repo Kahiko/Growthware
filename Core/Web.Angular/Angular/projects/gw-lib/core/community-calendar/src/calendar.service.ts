@@ -23,6 +23,7 @@ export class CalendarService extends BaseService {
 	override selectedRow: ITotalRecords = { TotalRecords: 0 } as ITotalRecords;
 
 	private _ApiName: string = 'GrowthwareCalendar/';
+	private _ApiDeleteEvent: string = '';
 	private _Api_GetEvents: string = '';
 	private _Api_GetEventSecurity: string = '';
 	private _Api_SaveEvent: string = '';
@@ -40,9 +41,42 @@ export class CalendarService extends BaseService {
 		private _LoggingSvc: LoggingService,
 	) {
 		super();
+		this._ApiDeleteEvent = this._GWCommon.baseURL + this._ApiName + 'DeleteEvent';
 		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
 		this._Api_GetEventSecurity = this._GWCommon.baseURL + this._ApiName + 'GetEventSecurity';
 		this._Api_SaveEvent = this._GWCommon.baseURL + this._ApiName + 'SaveEvent';
+	}
+
+	/**
+	 * Delete an event by its ID.
+	 *
+	 * @param {number} eventId - The ID of the event to delete
+	 * @return {Promise<boolean>} A promise that resolves with a boolean indicating the success of the deletion
+	 */
+	public deleteEvent(eventId: number): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			const mQueryParameter: HttpParams = new HttpParams()
+				.set('calendarEventSeqId', eventId);
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+				params: mQueryParameter,
+			};
+			this._HttpClient.get<boolean>(this._ApiDeleteEvent, mHttpOptions).subscribe({
+				next: (response: boolean) => {
+					if(response) {
+						resolve(response);
+					} else {
+						reject(response);
+					}
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'CalendarService', 'deleteEvent');
+					reject(error);
+				}
+			});
+		});
 	}
 
 	/**
@@ -121,6 +155,12 @@ export class CalendarService extends BaseService {
 		this.mergeEvents(mRetVal);
 	}
 
+	/**
+	 * Retrieves the security status of a specific event.
+	 *
+	 * @param {number} eventId - the ID of the event to retrieve security status for
+	 * @return {Promise<boolean>} a Promise that resolves to a boolean indicating the security status
+	 */
 	public getEventSecurity(eventId: number): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
