@@ -310,14 +310,18 @@ export class LoggingService {
    * @param {string} methodName
    * @memberof LoggingService
    */
-	public errorHandler(errorResponse: HttpErrorResponse, className: string, methodName: string) {
+	public errorHandler(errorResponse: HttpErrorResponse | string, className: string, methodName: string) {
 		let errorMessage = '';
-		if (errorResponse.error instanceof ErrorEvent) {
-			// Get client-side error
-			errorMessage = errorResponse.error.message;
+		if (typeof errorResponse === 'string') {
+			errorMessage = errorResponse;
 		} else {
-			// Get server-side error
-			errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
+			if (errorResponse.error instanceof ErrorEvent) {
+				// Get client-side error
+				errorMessage = errorResponse.error.message;
+			} else {
+				// Get server-side error
+				errorMessage = `Error Code: ${errorResponse.status}\nMessage: ${errorResponse.message}`;
+			}
 		}
 		console.log(`${className}.${methodName}:`);
 		console.log('\t' + errorMessage);
