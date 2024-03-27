@@ -29,6 +29,7 @@ export abstract class BaseDetailComponent implements IBaseDetailComponent, OnDes
 	protected canSave: boolean = false;
 	protected _SecurityInfo: ISecurityInfo = new SecurityInfo();
 
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	protected _ProfileSvc: any = {};
 	protected _DataSvc!: DataService;
 	protected _LoggingSvc!: LoggingService;
