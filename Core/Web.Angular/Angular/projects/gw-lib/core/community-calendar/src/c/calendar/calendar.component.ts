@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,6 +32,7 @@ import { NamesOfDays } from '../../interfaces/names-of-days.enum';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnDestroy, OnInit {
+  private _Action: string = '';
   private _Subscriptions: Subscription = new Subscription();
   // public calendar: CalendarDay[] = [];
   public calendar: IMonth = new Month();
@@ -42,7 +44,10 @@ export class CalendarComponent implements OnDestroy, OnInit {
   constructor(
 		private _CalendarSvc: CalendarService,
 		private _GWCommon: GWCommon,
-  ) { }
+    private _Router: Router
+  ) { 
+    this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
+  }
 
   ngOnDestroy(): void {
     this._Subscriptions.unsubscribe();
@@ -76,7 +81,7 @@ export class CalendarComponent implements OnDestroy, OnInit {
     this.getWeekDayNames();
     // console.log('CalendarComponent.ngOnInit.weekDayNames', this.weekDayNames);
     // Set the data for the calendar
-    this._CalendarSvc.setSelectedDate(this._CalendarSvc.selectedDate, true);
+    this._CalendarSvc.setSelectedDate(this._Action, this._CalendarSvc.selectedDate, true);
     // console.log('CalendarComponent.ngOnInit.calendar', this.calendar);
   }
 
@@ -100,7 +105,7 @@ export class CalendarComponent implements OnDestroy, OnInit {
         mCurrentDate.setMonth(mCurrentDate.getMonth() + 1);
       }
     }
-    this._CalendarSvc.setSelectedDate(mCurrentDate);
+    this._CalendarSvc.setSelectedDate(this._Action, mCurrentDate);
   }
 
   public decrease() {
@@ -123,12 +128,12 @@ export class CalendarComponent implements OnDestroy, OnInit {
         mCurrentDate.setMonth(mCurrentDate.getMonth() - 1);
       }
     }
-    this._CalendarSvc.setSelectedDate(mCurrentDate);
+    this._CalendarSvc.setSelectedDate(this._Action, mCurrentDate);
   }
 
   public currentDate() {
     const mCurrentDate = new Date();
-    this._CalendarSvc.setSelectedDate(mCurrentDate);
+    this._CalendarSvc.setSelectedDate(this._Action, mCurrentDate);
   }
 
   private getWeekDayNames(): void {
@@ -145,6 +150,6 @@ export class CalendarComponent implements OnDestroy, OnInit {
   }
 
   private updateSelectedDate(): void {
-    this._CalendarSvc.setSelectedDate(this._CalendarSvc.selectedDate);
+    this._CalendarSvc.setSelectedDate(this._Action, this._CalendarSvc.selectedDate);
   }
 }

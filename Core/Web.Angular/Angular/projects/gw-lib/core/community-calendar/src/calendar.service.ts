@@ -24,6 +24,7 @@ export class CalendarService extends BaseService {
 
 	private _ApiName: string = 'GrowthwareCalendar/';
 	private _ApiDeleteEvent: string = '';
+	private _Api_GetEvent: string = '';
 	private _Api_GetEvents: string = '';
 	private _Api_GetEventSecurity: string = '';
 	private _Api_SaveEvent: string = '';
@@ -42,6 +43,7 @@ export class CalendarService extends BaseService {
 	) {
 		super();
 		this._ApiDeleteEvent = this._GWCommon.baseURL + this._ApiName + 'DeleteEvent';
+		this._Api_GetEvent = this._GWCommon.baseURL + this._ApiName + 'GetEvent';
 		this._Api_GetEvents = this._GWCommon.baseURL + this._ApiName + 'GetEvents';
 		this._Api_GetEventSecurity = this._GWCommon.baseURL + this._ApiName + 'GetEventSecurity';
 		this._Api_SaveEvent = this._GWCommon.baseURL + this._ApiName + 'SaveEvent';
@@ -114,14 +116,46 @@ export class CalendarService extends BaseService {
 	}
 
 	/**
-	 * Generate the data for a month given a selected date and the first day of the week.
+	 * Retrieves an event from the API.
+	 * @param {string} action - The action for the calendar
+	 * @param {number} id - The ID of the event to retrieve
+	 * @return {Promise<ICalendarEvent>}
+	 * @memberof CalendarService
+	 */
+	public getEvent(action: string, id: number): Promise<ICalendarEvent> {
+		const mQueryParameter: HttpParams = new HttpParams()
+			.set('action', action)
+			.set('id', id.toString());
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			params: mQueryParameter,
+		};
+		return new Promise<ICalendarEvent>((resolve, reject) => {
+			this._HttpClient.get<ICalendarEvent>(this._Api_GetEvent, mHttpOptions).subscribe({
+				next: (response: ICalendarEvent) => {
+					// console.log('CalendarService.getEvent', response);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'CalendarService', 'getEvent');
+					reject('Failed to call the API');
+				},
+				// complete: () => {}
+			});
+		});
+	}
+
+	/**
+	 * @descriptionGenerate the data for a month given a selected date and the first day of the week.
 	 * Calls mergeEvents padding the generated data.
 	 *
 	 * @param {Date} selectedDate - the selected date
 	 * @return {IMonth} the month data
 	 * @memberof CalendarService
 	 */
-	private getMonthData(selectedDate: Date): void {
+	private getMonthData(action: string, selectedDate: Date): void {
 		const mRetVal: IMonth = new Month();
 		const mWorkingDate = new Date(selectedDate);
 		const mCurrentMonth = selectedDate.getMonth();
@@ -152,7 +186,7 @@ export class CalendarService extends BaseService {
 			}
 			mRetVal.weeks.push(week);
 		}
-		this.mergeEvents(mRetVal);
+		this.mergeEvents(action, mRetVal);
 	}
 
 	/**
@@ -189,7 +223,7 @@ export class CalendarService extends BaseService {
 	 * @param {IMonth} monthData - the month data to merge events into
 	 * @return {void} 
 	 */
-	private mergeEvents(monthData: IMonth): void {
+	private mergeEvents(action: string, monthData: IMonth): void {
 		// console.log('mergeEvents.monthData', monthData);
 		const mFirstDay = monthData.weeks[0].days[0];
 		const mLastDay = monthData.weeks[monthData.weeks.length - 1].days[6];
@@ -211,6 +245,25 @@ export class CalendarService extends BaseService {
 		});
 	}
 
+	public saveEvent(event: ICalendarEvent): Promise<boolean> {
+		return new Promise<boolean>((resolve, reject) => {
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+			};
+			this._HttpClient.post<boolean>(this._Api_SaveEvent, event, mHttpOptions).subscribe({
+				next: (response: boolean) => {
+					resolve(response);
+				},
+				error: (error) => {
+					reject('Failed to call the API');
+					this._LoggingSvc.errorHandler(error, 'CalendarService', 'saveEvent');
+				}
+			});
+		});
+	}
+
 	/**
 	 * Sets the selected date and updates the calendar data if necessary.
 	 *
@@ -219,7 +272,7 @@ export class CalendarService extends BaseService {
 	 * @return {void} 
 	 * @memberof CalendarService
 	 */
-	public setSelectedDate(newSelectedDate: Date, force: boolean = false): void {
+	public setSelectedDate(action: string, newSelectedDate: Date, force: boolean = false): void {
 		const mMonthMatch = newSelectedDate.getMonth() === this._SelectedDate.getMonth();
 		const mYearMatch = newSelectedDate.getFullYear() === this._SelectedDate.getFullYear();
 		this._SelectedDate = newSelectedDate;
@@ -240,7 +293,7 @@ export class CalendarService extends BaseService {
 			});
 			this._CalendarData.next(this._CalendarData.getValue());
 		} else {
-			this.getMonthData(newSelectedDate);
+			this.getMonthData(action, newSelectedDate);
 		}
 	}
 

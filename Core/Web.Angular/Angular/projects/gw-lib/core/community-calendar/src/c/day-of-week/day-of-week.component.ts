@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +35,7 @@ import { CalendarEvent, ICalendarEvent } from '../../interfaces/calendar-event.m
 	styleUrls: ['./day-of-week.component.scss']
 })
 export class DayOfWeekComponent {
+	private _Action: string = '';
 	private _FirstDayOfWeek: NamesOfDays = NamesOfDays.Monday;
 
 	public monthNames: Array<string> = [];
@@ -46,7 +48,9 @@ export class DayOfWeekComponent {
 		private _GWCommon: GWCommon,
 		private _LoggingService: LoggingService,
 		private _ModalSvc: ModalService,
+		private _Router: Router
 	) { 
+		this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
 		this.monthNames = this._GWCommon.getEnumNames(NamesOfMonths);
 	}
 
@@ -76,7 +80,7 @@ export class DayOfWeekComponent {
 	 */
 	public onDateClick(date: IDay): void {
 		// console.log('onDateClick', date);
-		this._CalendarSvc.setSelectedDate(date.date);
+		this._CalendarSvc.setSelectedDate(this._Action, date.date);
 	}
 
 	/**
@@ -87,16 +91,20 @@ export class DayOfWeekComponent {
 	 */
 	public onAddEventClick(date: IDay) {
 		// console.log('onDateClick', date);
-		this._CalendarSvc.setSelectedDate(date.date);
+		this._CalendarSvc.setSelectedDate(this._Action, date.date);
 		this._CalendarSvc.selectedEvent = new CalendarEvent();
 		this.openEventDetails();
 	}
 
 	public onEventClick(date: IDay, event: ICalendarEvent) {
 		// console.log('DayOfWeekComponent.onEditEventClick', event);
-		this._CalendarSvc.setSelectedDate(date.date);
-		this._CalendarSvc.selectedEvent = event;
-		this.openEventDetails();
+		this._CalendarSvc.getEvent(this._Action, event.id).then((response: ICalendarEvent) => {
+			this._CalendarSvc.setSelectedDate(this._Action, date.date);
+			this._CalendarSvc.selectedEvent = response;
+			this.openEventDetails();				
+		}).catch(() => {
+			this._LoggingService.errorHandler('Error attempting to get an event from CalendarService', 'DayOfWeekComponent', 'onEventClick');
+		});
 	}
 
 	private openEventDetails() {

@@ -116,15 +116,11 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     return undefined;
   }
 
-  override onDelete(): void {
-    throw new Error('Method not implemented.');
-  }
-
   override onSubmit(): void {
     if (this.frmProfile.valid) {
       this.populateProfile();
       console.log('EventDetailsComponent.onSubmit.Updated Profile', this._Profile);
-      // this.save();
+      this.save();
     }
   }
 
@@ -140,7 +136,9 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override save(): void {
-    throw new Error('Method not implemented.');
+    this._ProfileSvc.saveEvent(this._Profile).then(() => {
+      this.onClose();
+    });
   }
 
   timeRangeSelected(event: { startDate: Date, endDate: Date }) {
