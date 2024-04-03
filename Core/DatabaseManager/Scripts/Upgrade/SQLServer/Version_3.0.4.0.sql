@@ -305,12 +305,12 @@ GO
 /*
 Usage:
 	DECLARE 
-		@P_CalendarSeqId INT = 1
-	  , @P_Start_Date SMALLDATETIME = CONVERT(VARCHAR, '2/2/24 00:00', 108)
-	  , @P_End_Date SMALLDATETIME = CONVERT(VARCHAR, '2/29/24 00:00', 108)
+		@P_FunctionSeqId INT = 38
+	  , @P_Start_Date SMALLDATETIME = CONVERT(VARCHAR, '3/31/24 00:00', 108)
+	  , @P_End_Date SMALLDATETIME = CONVERT(VARCHAR, '5/11/24 00:00', 108)
 
 	exec ZGWOptional.Get_Calendar_Events
-		@P_CalendarSeqId
+		@P_FunctionSeqId
 	  , @P_Start_Date
 	  , @P_End_Date
 */
@@ -320,7 +320,7 @@ Usage:
 -- Description:	Calendar Data
 -- =============================================
 ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Events]
-      @P_CalendarSeqId INT
+      @P_FunctionSeqId INT
     , @P_Start_Date SMALLDATETIME
     , @P_End_Date SMALLDATETIME
 AS
@@ -342,12 +342,14 @@ AS
 		, CE.[Updated_By]
 		, CE.[Updated_Date]
 	FROM 
-		[ZGWOptional].[Calendar_Events] CE
+		[ZGWOptional].[Calendars] CAL
+		INNER JOIN [ZGWOptional].[Calendar_Events] CE ON
+			CAL.[FunctionSeqId] = @P_FunctionSeqId
+			AND CE.[CalendarSeqId] = CAL.[CalendarSeqId]
 		LEFT JOIN [ZGWSecurity].[Accounts] ACCTS ON
 			CE.[Added_By] = ACCTS.[AccountSeqId]
 	WHERE 
-		[CalendarSeqId] = @P_CalendarSeqId
-		AND [Start] >= @P_Start_Date 
+		[Start] >= @P_Start_Date 
 		AND [End] <= @P_End_Date;
 
 	SET NOCOUNT OFF;

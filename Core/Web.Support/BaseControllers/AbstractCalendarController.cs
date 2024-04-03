@@ -82,7 +82,7 @@ public abstract class AbstractCalendarController : ControllerBase
             {
                 DateTime mStartDate = DateTime.Parse(startDate);
                 DateTime mEndtDate = DateTime.Parse(endDate);
-                List<MCalendarEvent> mRetVal = CalendarUtility.GetEvents(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.FunctionTypeSeqId, mStartDate, mEndtDate);
+                List<MCalendarEvent> mRetVal = CalendarUtility.GetEvents(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mStartDate, mEndtDate);
                 return Ok(mRetVal);
             }
             return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

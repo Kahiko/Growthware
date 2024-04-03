@@ -102,12 +102,12 @@ public class BCommunityCalendar : AbstractBusinessLogic
         }
     }
 
-    public DataTable GetEvents(int calendarSeqId, DateTime startDate, DateTime endDate)
+    public DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate)
     {
         try
         {
-            m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
-            return m_DCommunityCalendar.GetEvents(startDate, endDate);
+            m_DCommunityCalendar.CalendarSeqId = 0; // not used in this method
+            return m_DCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
         }
         catch (System.Exception ex)
         {
