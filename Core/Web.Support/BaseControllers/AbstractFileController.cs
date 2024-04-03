@@ -516,7 +516,7 @@ public abstract class AbstractFileController : ControllerBase
     }
 
     /// <summary>
-    /// Uploads a file.
+    /// An asynchronous action to facilitate Uploading a file.
     /// </summary>
     /// <returns>An IActionResult representing the result of the upload.</returns>
     [HttpPost("UploadFile")]
