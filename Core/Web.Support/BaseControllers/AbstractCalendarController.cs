@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
+using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -93,13 +94,13 @@ public abstract class AbstractCalendarController : ControllerBase
     /// <summary>
     /// Saves the event to the database.
     /// </summary>
-    /// <param name="mCalendarEvent"></param>
+    /// <param name="parameters">UISaveEventParameters</param>
     /// <returns>ActionResult<bool></returns>
     [AllowAnonymous]
     [HttpPost("SaveEvent")]
-    public ActionResult<bool> SaveEvent(string action, MCalendarEvent mCalendarEvent)
+    public ActionResult<bool> SaveEvent(UISaveEventParameters parameters)
     {
-        if (getEventSecurity(mCalendarEvent.Id, action))
+        if (getEventSecurity(parameters.calendarEvent.Id, parameters.action))
         {
             // put code to save the event here
             return Ok(true);

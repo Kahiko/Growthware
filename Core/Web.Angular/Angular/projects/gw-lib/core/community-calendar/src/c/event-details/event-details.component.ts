@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatCheckboxModule } from '@angular/material/checkbox';
@@ -42,6 +43,7 @@ import { INameValuePair, NameValuePair } from '@growthware/common/interfaces';
 })
 export class EventDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
+  private _Action: string = '';
   private _Profile!: ICalendarEvent;
 
   endDate!: Date;
@@ -54,8 +56,10 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     profileSvc: CalendarService,
     modalSvc: ModalService,
 	  private _FormBuilder: FormBuilder,
+    private _Router: Router,
   ) {
     super();
+    this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
     this._ProfileSvc = profileSvc;
     this._ModalSvc = modalSvc;
     // console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
@@ -136,7 +140,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override save(): void {
-    this._ProfileSvc.saveEvent(this._Profile).then(() => {
+    this._ProfileSvc.saveEvent(this._Action, this._Profile).then(() => {
       this.onClose();
     });
   }

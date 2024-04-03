@@ -245,14 +245,19 @@ export class CalendarService extends BaseService {
 		});
 	}
 
-	public saveEvent(event: ICalendarEvent): Promise<boolean> {
+	public saveEvent(action: string, calendarEvent: ICalendarEvent): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
 				}),
 			};
-			this._HttpClient.post<boolean>(this._Api_SaveEvent, event, mHttpOptions).subscribe({
+			// The parameters names match the property names in the UISaveEventParameters.cs model
+			const mParameters = { 
+				action: action, 
+				calendarEvent: calendarEvent 
+			};
+			this._HttpClient.post<boolean>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
 				next: (response: boolean) => {
 					resolve(response);
 				},
