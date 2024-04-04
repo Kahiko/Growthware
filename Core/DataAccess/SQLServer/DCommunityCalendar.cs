@@ -1,5 +1,6 @@
 using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.DataAccess.SQLServer.Base;
+using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -70,13 +71,13 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-        bool ICommunityCalendar.SaveCalendar(int calendarSeqId, String comment, int accountSeqId) 
+        bool ICommunityCalendar.SaveCalendar(MCalendar calendar) 
         {
             this.checkValid();
             return true;
         }
 
-		bool ICommunityCalendar.SaveEvent(String comment, DateTime entryDate, int accountSeqId) 
+		bool ICommunityCalendar.SaveEvent(int functionSeqId, MCalendarEvent calendarEvent) 
         {
             this.checkValid();
             return true;

@@ -1,4 +1,5 @@
 using GrowthWare.DataAccess.Interfaces.Base;
+using GrowthWare.Framework.Models;
 using System;
 using System.Data;
 
@@ -14,7 +15,7 @@ namespace GrowthWare.DataAccess.Interfaces
         bool GetCalendar(int calendarSeqId);
 		DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
         DataRow GetEvent(int calendarEventSeqId);
-        bool SaveCalendar(int functionSeqId, String comment, int accountSeqId);
-		bool SaveEvent(String comment, DateTime entryDate, int accountSeqId);
+        bool SaveCalendar(MCalendar calendar);
+		bool SaveEvent(int functionSeqId, MCalendarEvent calendarEvent);
     }
 }
