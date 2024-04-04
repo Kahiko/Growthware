@@ -16,6 +16,6 @@ namespace GrowthWare.DataAccess.Interfaces
 		DataTable GetEvents(int functionSeqId, DateTime startDate, DateTime endDate);
         DataRow GetEvent(int calendarEventSeqId);
         bool SaveCalendar(MCalendar calendar);
-		bool SaveEvent(int functionSeqId, MCalendarEvent calendarEvent);
+		DataRow SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent);
     }
 }

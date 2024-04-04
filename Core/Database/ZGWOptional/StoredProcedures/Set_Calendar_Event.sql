@@ -2,7 +2,7 @@
 USAGE:
 	DECLARE
 		  @P_CalendarEventSeqId	INT				= -1
-		, @P_CalendarSeqId		INT				= 1
+		, @P_FunctionSeqId		INT				= 1
 		, @P_Title				VARCHAR(255)	= 'Fake meeting with me ;-)'
 		, @P_Start				DATETIME		= CONVERT(VARCHAR, '2/2/24 00:00', 108)
 		, @P_End				DATETIME		= CONVERT(VARCHAR, '2/2/24 00:00', 108)
@@ -15,7 +15,7 @@ USAGE:
 
 	EXEC ZGWOptional.Set_Calendar_Event
 		  @P_CalendarEventSeqId
-		, @P_CalendarSeqId
+		, @P_FunctionSeqId
 		, @P_Title
 		, @P_Start
 		, @P_End
@@ -32,8 +32,8 @@ USAGE:
 -- Description:	Calendar Data
 -- =============================================
 CREATE PROCEDURE [ZGWOptional].[Set_Calendar_Event]
-	  @P_CalendarEventSeqId	INT OUTPUT
-	, @P_CalendarSeqId		INT
+	  @P_CalendarEventSeqId	INT
+	, @P_FunctionSeqId		INT
 	, @P_Title				VARCHAR(255)
 	, @P_Start				DATETIME
 	, @P_End				DATETIME
@@ -45,6 +45,7 @@ CREATE PROCEDURE [ZGWOptional].[Set_Calendar_Event]
 	, @P_Added_Updated_By	INT
 AS
 	SET NOCOUNT ON;
+	DECLARE @V_CalendarSeqId INT = (SELECT [CalendarSeqId] FROM [ZGWOptional].[Calendars] WHERE [FunctionSeqId] = @P_FunctionSeqId);
 	IF @P_CalendarEventSeqId = -1
 		BEGIN
 			-- PRINT 'Insert new';
@@ -61,7 +62,7 @@ AS
 				,[Added_By]
 				,[Added_Date]
 			) VALUES (
-				  @P_CalendarSeqId
+				  @V_CalendarSeqId
 				, @P_Title
 				, @P_Start
 				, @P_End
@@ -89,9 +90,10 @@ AS
 				, [Location] 	= @P_Location
 				, [Updated_By] 	= @P_Added_Updated_By
 				, [Updated_Date] = GETDATE()
-			WHERE [CalendarSeqId] = @P_CalendarSeqId;
+			WHERE [CalendarEventSeqId] = @P_CalendarEventSeqId;
 		END
 	--END IF
+	EXEC ZGWOptional.Get_Calendar_Event @P_CalendarEventSeqId
 	SET NOCOUNT OFF;
 
 RETURN 0

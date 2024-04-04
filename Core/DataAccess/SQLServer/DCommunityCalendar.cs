@@ -77,10 +77,32 @@ namespace GrowthWare.DataAccess.SQLServer
             return true;
         }
 
-		bool ICommunityCalendar.SaveEvent(int functionSeqId, MCalendarEvent calendarEvent) 
+		DataRow ICommunityCalendar.SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent) 
         {
             this.checkValid();
-            return true;
+            string mStoredProcedure = "[ZGWOptional].[Set_Calendar_Event]";
+            SqlParameter[] mParameters =
+			 {
+                    new ("@P_CalendarEventSeqId", calendarEvent.Id),
+                    new ("@P_FunctionSeqId", functionSeqId),
+                    new ("@P_Title", calendarEvent.Title),
+                    new ("@P_Start", calendarEvent.Start),
+                    new ("@P_End", calendarEvent.End),
+                    new ("@P_AllDay", calendarEvent.AllDay),
+                    new ("@P_Description", calendarEvent.Description),
+                    new ("@P_Color", calendarEvent.Color),
+                    new ("@P_Link", calendarEvent.Link),
+                    new ("@P_Location", calendarEvent.Location),
+                    new ("@P_Added_Updated_By", calendarEvent.AddedBy),
+			 };
+            try
+            {
+                return base.GetDataRow(mStoredProcedure, mParameters);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
         }
 
 #region "Private Methods"

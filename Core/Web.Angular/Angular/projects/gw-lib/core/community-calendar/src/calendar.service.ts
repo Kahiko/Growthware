@@ -67,7 +67,7 @@ export class CalendarService extends BaseService {
 			};
 			this._HttpClient.get<boolean>(this._ApiDeleteEvent, mHttpOptions).subscribe({
 				next: (response: boolean) => {
-					if(response) {
+					if (response) {
 						resolve(response);
 					} else {
 						reject(response);
@@ -253,13 +253,51 @@ export class CalendarService extends BaseService {
 				}),
 			};
 			// The parameters names match the property names in the UISaveEventParameters.cs model
-			const mParameters = { 
-				action: action, 
-				calendarEvent: calendarEvent 
+			const mParameters = {
+				action: action,
+				calendarEvent: calendarEvent
 			};
-			this._HttpClient.post<boolean>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
-				next: (response: boolean) => {
-					resolve(response);
+			this._HttpClient.post<ICalendarEvent>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
+				next: (response: ICalendarEvent) => {
+					const mCalendarData = this._CalendarData.getValue();
+					if (calendarEvent.id > 0) {
+						// Update with response
+						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
+							const mDays = mCalendarData.weeks[mWeekIndex].days;
+							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
+								const mDay = mDays[mDayIndex];
+								if (mDay.events) {
+									const mEvents = mDay.events;
+									for (let mEvenIndex = 0; mEvenIndex < mEvents.length; mEvenIndex++) {
+										const mEvent = mEvents[mEvenIndex];
+										if (mEvent && mEvent.id === response.id) {
+											mEvents[mEvenIndex] = response;
+											mDay.events = GWCommon.sortArray(mEvents, 'start', 'ASC');
+											break outerLoop;
+										}
+									}
+								}
+							}
+						}
+					} else {
+						// Add response
+						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
+							const mDays = mCalendarData.weeks[mWeekIndex].days;
+							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
+								const mDay = mDays[mDayIndex];
+								if (this._GWCommon.datesEqual(mDay.date, response.start)) {
+									if (mDay.events) {
+										mDay.events.push(response);
+									} else {
+										mDay.events = [response];
+									}
+									break outerLoop;
+								}
+							}
+						}
+					}
+					this._CalendarData.next(mCalendarData);
+					resolve(true);
 				},
 				error: (error) => {
 					reject('Failed to call the API');

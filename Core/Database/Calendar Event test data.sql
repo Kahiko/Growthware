@@ -1,6 +1,6 @@
 DECLARE
 	  @P_CalendarEventSeqId	INT				= -1
-	, @P_CalendarSeqId		INT				= 1
+	, @P_FunctionSeqId		INT				= 38
 	, @P_Title				VARCHAR(255)	= 'Fake meeting with me ;-)'
 	, @P_Start				DATETIME		= CONVERT(VARCHAR, '4/18/24 08:00', 108)
 	, @P_End				DATETIME		= CONVERT(VARCHAR, '4/18/24 09:00', 108)
@@ -13,7 +13,7 @@ DECLARE
 
 EXEC ZGWOptional.Set_Calendar_Event
 	  @P_CalendarEventSeqId
-	, @P_CalendarSeqId
+	, @P_FunctionSeqId
 	, @P_Title
 	, @P_Start
 	, @P_End
@@ -28,24 +28,24 @@ SET @P_Start	= CONVERT(VARCHAR, '4/18/24 09:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 10:00', 108)
 SET @P_Color	= '#6495ED' -- CornflowerBlue
 SET @P_Added_Updated_By = 3;
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
 SET @P_Start	= CONVERT(VARCHAR, '4/18/24 10:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 11:00', 108)
 SET @P_Color	= '#6495ED' -- CornflowerBlue
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
 SET @P_Start	= CONVERT(VARCHAR, '4/18/24 11:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 12:00', 108)
 SET @P_Color	= '#ff0000' -- red
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
 SET @P_Start	= CONVERT(VARCHAR, '4/18/24 13:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 14:00', 108)
 SET @P_Color	= '#6495ED' -- CornflowerBlue
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
 SET @P_Start	= CONVERT(VARCHAR, '4/18/24 15:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 16:00', 108)
 SET @P_Color	= '#6495ED' -- CornflowerBlue
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
 SET @P_Start	= CONVERT(VARCHAR, '4/18/24 16:00', 108)
 SET @P_End		= CONVERT(VARCHAR, '4/18/24 17:00', 108)
 SET @P_Color	= '#6495ED' -- CornflowerBlue
-EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_CalendarSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;
+EXEC ZGWOptional.Set_Calendar_Event @P_CalendarEventSeqId, @P_FunctionSeqId, @P_Title, @P_Start, @P_End, @P_AllDay, @P_Description, @P_Color, @P_Link, @P_Location, @P_Added_Updated_By;

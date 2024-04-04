@@ -123,7 +123,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   override onSubmit(): void {
     if (this.frmProfile.valid) {
       this.populateProfile();
-      console.log('EventDetailsComponent.onSubmit.Updated Profile', this._Profile);
+      // console.log('EventDetailsComponent.onSubmit.Updated Profile', this._Profile);
       this.save();
     }
   }

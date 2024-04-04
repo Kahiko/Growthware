@@ -98,12 +98,13 @@ public abstract class AbstractCalendarController : ControllerBase
     /// <returns>ActionResult<bool></returns>
     [AllowAnonymous]
     [HttpPost("SaveEvent")]
-    public ActionResult<bool> SaveEvent(UISaveEventParameters parameters)
+    public ActionResult<MCalendarEvent> SaveEvent(UISaveEventParameters parameters)
     {
         if (getEventSecurity(parameters.calendarEvent.Id, parameters.action))
         {
-            // put code to save the event here
-            return Ok(true);
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(parameters.action);
+            MCalendarEvent mRetVal = CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, parameters.calendarEvent);
+            return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }

@@ -27,4 +27,10 @@ public static class CalendarUtility
         BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
         return mCommunityCalendar.GetEvent(calendarEventSeqId);
     }
+
+    public static MCalendarEvent SaveCalendarEvent(MSecurityEntity securityEntityProfile, int functionSeqId, MCalendarEvent calendarEvent)
+    {
+        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        return mCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent);
+    }
 }

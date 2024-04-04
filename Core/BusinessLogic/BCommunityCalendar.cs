@@ -115,10 +115,11 @@ public class BCommunityCalendar : AbstractBusinessLogic
         }
     }
 
-    public bool SaveCalendarEvent(int calendarSeqId, int functionSeqId, String comment, int accountSeqId)
+    public MCalendarEvent SaveCalendarEvent(int functionSeqId, MCalendarEvent calendarEvent)
     {
-        m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
-        throw new NotImplementedException();
+        m_DCommunityCalendar.CalendarSeqId = 1; // not used in this method
+        MCalendarEvent mRetVal = new(m_DCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent));
+        return mRetVal;
     }
 
     public bool DeleteCalendarData(int calendarSeqId, String comment, DateTime entryDate, int accountSeqId)
