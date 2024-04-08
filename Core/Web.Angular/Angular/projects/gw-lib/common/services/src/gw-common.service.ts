@@ -546,4 +546,19 @@ export class GWCommon {
 
     return result;
   }
+
+  /**
+   * Formats the UTC offset as ±HH:MM.  For example, if the new Date().getTimezoneOffset() is 240, this method returns "-04:00".
+   *
+   * @param {number} timezoneOffset - description of parameter
+   * @return {string} description of return value
+   */
+  public timezoneOffset_UtcOffset(timezoneOffset: number): string {
+    const hours = Math.abs(Math.floor(timezoneOffset / 60));
+    const minutes = Math.abs(timezoneOffset % 60);
+    const sign = timezoneOffset < 0 ? '+' : '-';
+	
+    // Format the UTC offset as ±HH:MM
+    return `${sign}${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
 }
