@@ -12,11 +12,11 @@ public class MCalendarEvent : AbstractBaseModel
     public bool AllDay {get; set;}
     public string Color {get; set;}
     public string Description {get; set;}
-    public DateTime End {get; set;}
+    public DateTimeOffset End {get; set;}
     public string Link {get; set;}
     public string Location {get; set;}
     public string Owner {get; set;}
-    public DateTime Start {get; set;}
+    public DateTimeOffset Start {get; set;}
     public string Title {get; set;}
 
     public MCalendarEvent()
