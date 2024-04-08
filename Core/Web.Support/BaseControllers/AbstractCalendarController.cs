@@ -100,10 +100,26 @@ public abstract class AbstractCalendarController : ControllerBase
     [HttpPost("SaveEvent")]
     public ActionResult<MCalendarEvent> SaveEvent(UISaveEventParameters parameters)
     {
-        if (getEventSecurity(parameters.calendarEvent.Id, parameters.action))
+        MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+        if (getEventSecurity(parameters.calendarEvent.Id, parameters.action) && parameters.calendarEvent.AddedBy == mAccountProfile.Id)
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(parameters.action);
+            parameters.calendarEvent.AddedBy = mAccountProfile.Id;
+            if (parameters.calendarEvent.Id < 1) 
+            {
+                parameters.calendarEvent.AddedBy = mAccountProfile.Id;
+                parameters.calendarEvent.AddedDate = DateTime.Now;
+            } else 
+            {
+                parameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
+                parameters.calendarEvent.UpdatedDate = DateTime.Now;
+            }
+            // TODO: Need to figure out how to handle timezone
+            // parameters.calendarEvent.Start = parameters.calendarEvent.Start.ToLocalTime();
+            // parameters.calendarEvent.End = parameters.calendarEvent.End.ToLocalTime();
+            this.m_Logger.Debug("SaveEvent Before: " + parameters.calendarEvent.Start.ToString());
             MCalendarEvent mRetVal = CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, parameters.calendarEvent);
+            this.m_Logger.Debug("SaveEvent After: " + mRetVal.Start.ToString());
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
