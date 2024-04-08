@@ -268,23 +268,25 @@ ALTER PROCEDURE [ZGWOptional].[Get_Calendar_Event]
 AS
 	SET NOCOUNT ON;
 	SELECT
-		  [AllDay]
-		, [CalendarEventSeqId]
-		, [CalendarSeqId]
-		, [Color]
-		, [Description]
-		, [End]
-		, [Link]
-		, [Owner] = (SELECT TOP(1) [Owner] = SUBSTRING ([First_Name], 1, 1) + '. ' + [Last_Name] FROM [ZGWSecurity].[Accounts] WHERE [AccountSeqId] = [Added_By])
-		, [Title]
-		, [Start]
-		, [Location]
-		, [Added_By]
-		, [Added_Date]
-		, [Updated_By]
-		, [Updated_Date]
+		  CE.[AllDay]
+		, CE.[CalendarEventSeqId]
+		, CE.[CalendarSeqId]
+		, CE.[Color]
+		, CE.[Description]
+		, CE.[End]
+		, CE.[Link]
+		, [Owner] = SUBSTRING ([ACCT].[First_Name], 1, 1) + '. ' + [ACCT].[Last_Name]
+		, CE.[Title]
+		, CE.[Start]
+		, CE.[Location]
+		, CE.[Added_By]
+		, CE.[Added_Date]
+		, CE.[Updated_By]
+		, CE.[Updated_Date]
 	FROM 
-		[ZGWOptional].[Calendar_Events]
+		[ZGWOptional].[Calendar_Events] CE
+		LEFT JOIN [ZGWSecurity].[Accounts] ACCT ON 
+			ACCT.[AccountSeqId] = CE.[Added_By]
 	WHERE 
 		[CalendarEventSeqId] = @P_CalendarEventSeqId
 	SET NOCOUNT OFF;
