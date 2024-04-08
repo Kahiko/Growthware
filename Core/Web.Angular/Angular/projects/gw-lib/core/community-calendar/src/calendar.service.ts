@@ -272,7 +272,7 @@ export class CalendarService extends BaseService {
 										const mEvent = mEvents[mEvenIndex];
 										if (mEvent && mEvent.id === response.id) {
 											mEvents[mEvenIndex] = response;
-											mDay.events = GWCommon.sortArray(mEvents, 'start', 'ASC');
+											mDay.events = GWCommon.sortArray(mEvents, 'start', 'DESC');
 											break outerLoop;
 										}
 									}
