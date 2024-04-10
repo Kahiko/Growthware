@@ -88,8 +88,8 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
 
   override createForm(): void {
     this.selectedColor = this._Profile.color;
-    this.endDate = this._Profile.end;
-    this.startDate = this._Profile.start;
+    this.endDate = new Date(this._Profile.end);
+    this.startDate = new Date(this._Profile.start);
     this.frmProfile = this._FormBuilder.group({
       allDay: [this._Profile.allDay],
       description: [this._Profile.description],
@@ -132,10 +132,10 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     this._Profile.allDay = this.controls['allDay'].getRawValue();
     this._Profile.color = this.selectedColor;
     this._Profile.description = this.controls['description'].getRawValue();
-    this._Profile.end = this.endDate;
+    this._Profile.end = this.endDate.toString();
     this._Profile.link = this.controls['link'].getRawValue();
     this._Profile.location = this.controls['location'].getRawValue();
-    this._Profile.start = this.startDate;
+    this._Profile.start = this.startDate.toString();
     this._Profile.title = this.controls['title'].getRawValue();
   }
 

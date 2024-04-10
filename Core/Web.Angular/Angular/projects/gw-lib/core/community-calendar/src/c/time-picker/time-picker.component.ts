@@ -1,9 +1,12 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { DatePipe } from '@angular/common';
+// import { DatePipe } from '@angular/common';
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+// Library
+import { GWCommon } from '@growthware/common/services';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -16,6 +19,7 @@ import { MatInputModule } from '@angular/material/input';
 		FormsModule,
 		ReactiveFormsModule,
 		// Angular Material
+		MatButtonModule,
 		MatDatepickerModule,
 		MatFormFieldModule,
 		MatGridListModule,
@@ -40,7 +44,12 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	@Input() startDate!: Date;
 	@Output() timeRangeSelected = new EventEmitter<{ startDate: Date, endDate: Date }>();
 
+	get controls() {
+		return this.frmProfile.controls;
+	}
+
 	constructor(
+		private _GWCommon: GWCommon,
 		private _FormBuilder: FormBuilder,
 	) {
 		if (this.military) {
@@ -49,7 +58,7 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
-		this.createForm();		
+		this.createForm();
 		this._Subscriptions.add(
 			this.timeChanged$
 				.pipe(debounceTime(500))
@@ -64,35 +73,43 @@ export class TimePickerComponent implements OnDestroy, OnInit {
 	}
 
 	private createForm(): void {
-		// convert the @Input dates to Date objects
 		this.startDate = new Date(this.startDate);
 		this.endDate = new Date(this.endDate);
-		const mStartDatePipe: DatePipe = new DatePipe('en-US');
-		const mEndDatePipe: DatePipe = new DatePipe('en-US');
+		const mStartTime = this.startDate.toTimeString().slice(0, 5);
+		const mEndTime = this.endDate.toTimeString().slice(0, 5);
 		this.frmProfile = this._FormBuilder.group({
-			fromHour: [this.startDate.getHours(), [Validators.required]],
-			fromMinute: [mStartDatePipe.transform(this.startDate, 'mm'), [Validators.required]],
-			toHour: [this.endDate.getHours(), [Validators.required]],
-			toMinute: [mEndDatePipe.transform(this.endDate, 'mm'), [Validators.required]],
+			startTime: [mStartTime, [Validators.required]],
+			endTime: [mEndTime, [Validators.required]],
 		});
 	}
 
 	emitTimeRange(): void {
-		this.startDate.setHours(this.frmProfile.value.fromHour);
-		this.startDate.setMinutes(this.frmProfile.value.fromMinute);
-		this.endDate.setHours(this.frmProfile.value.toHour);
-		this.endDate.setMinutes(this.frmProfile.value.toMinute);
+		const mStartTime = this.controls['startTime'].getRawValue();
+		const mEndTime = this.controls['endTime'].getRawValue();
+		console.log('emitTimeRange - timezoneOffset_UtcOffset', this._GWCommon.timezoneOffset_UtcOffset(new Date().getTimezoneOffset()));
+		this.startDate.setHours(mStartTime.split(':')[0]);
+		this.startDate.setMinutes(mStartTime.split(':')[1]);
+		this.endDate.setHours(mEndTime.split(':')[0]);
+		this.endDate.setMinutes(mEndTime.split(':')[1]);
 		this.timeRangeSelected.emit({
-			startDate: this.startDate,
-			endDate: this.endDate
+			startDate: new Date(this.startDate),
+			endDate: new Date(this.endDate)
 		});
 	}
-	
+
 	selectText(event: FocusEvent): void {
-		if(event !== null && event.target !== null) {
+		if (event !== null && event.target !== null) {
 			const mFleInput = event.target as HTMLInputElement;
 			mFleInput.select();
 		}
 	}
 
+	setToCurrentTime(elementId: string): void {
+		const mNow = new Date();
+		const mHour = mNow.getHours().toString().padStart(2, '0');
+		const mMinute = mNow.getMinutes().toString().padStart(2, '0');
+		const mTimeString = `${mHour}:${mMinute}`;
+		this.controls[elementId].setValue(mTimeString);
+		this.timeChanged$.next(0);
+	}
 }

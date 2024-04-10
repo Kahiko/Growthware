@@ -114,12 +114,7 @@ public abstract class AbstractCalendarController : ControllerBase
                 parameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
                 parameters.calendarEvent.UpdatedDate = DateTime.Now;
             }
-            // TODO: Need to figure out how to handle timezone
-            // parameters.calendarEvent.Start = parameters.calendarEvent.Start.ToLocalTime();
-            // parameters.calendarEvent.End = parameters.calendarEvent.End.ToLocalTime();
-            this.m_Logger.Debug("SaveEvent Before: " + parameters.calendarEvent.Start.ToString());
             MCalendarEvent mRetVal = CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, parameters.calendarEvent);
-            this.m_Logger.Debug("SaveEvent After: " + mRetVal.Start.ToString());
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

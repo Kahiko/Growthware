@@ -257,6 +257,12 @@ export class CalendarService extends BaseService {
 				action: action,
 				calendarEvent: calendarEvent
 			};
+			// console.log('mParameters.calendarEvent.start Before :', mParameters.calendarEvent.start);
+			// console.log('mParameters.calendarEvent.end Before :', mParameters.calendarEvent.end);
+			mParameters.calendarEvent.start = new Date(mParameters.calendarEvent.start).toISOString();
+			mParameters.calendarEvent.end = new Date(mParameters.calendarEvent.end).toISOString();
+			// console.log('mParameters.calendarEvent.start After :', mParameters.calendarEvent.start);
+			// console.log('mParameters.calendarEvent.end After :', mParameters.calendarEvent.end);
 			this._HttpClient.post<ICalendarEvent>(this._Api_SaveEvent, mParameters, mHttpOptions).subscribe({
 				next: (response: ICalendarEvent) => {
 					const mCalendarData = this._CalendarData.getValue();
@@ -285,7 +291,7 @@ export class CalendarService extends BaseService {
 							const mDays = mCalendarData.weeks[mWeekIndex].days;
 							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
 								const mDay = mDays[mDayIndex];
-								if (this._GWCommon.datesEqual(mDay.date, response.start)) {
+								if (this._GWCommon.datesEqual(mDay.date, new Date(response.start))) {
 									if (mDay.events) {
 										mDay.events.push(response);
 									} else {
