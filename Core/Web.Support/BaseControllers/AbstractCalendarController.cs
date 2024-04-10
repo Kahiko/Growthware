@@ -96,6 +96,11 @@ public abstract class AbstractCalendarController : ControllerBase
     /// </summary>
     /// <param name="parameters">UISaveEventParameters</param>
     /// <returns>ActionResult<bool></returns>
+    /// <remarks>
+    /// The parameters.calendarEvent.Start and parameters.calendarEvent.End are expected to be in ISO 8601 format.
+    /// Example '2024-04-18T14:00:00.000Z'
+    /// Typescript example: calendarEvent.end = new Date(calendarEvent.end).toISOString();
+    /// </remarks>
     [AllowAnonymous]
     [HttpPost("SaveEvent")]
     public ActionResult<MCalendarEvent> SaveEvent(UISaveEventParameters parameters)
