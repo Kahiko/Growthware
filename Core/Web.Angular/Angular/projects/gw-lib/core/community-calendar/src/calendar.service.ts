@@ -57,6 +57,9 @@ export class CalendarService extends BaseService {
 	 * @return {Promise<boolean>} A promise that resolves with a boolean indicating the success of the deletion
 	 */
 	public deleteEvent(eventId: number, action: string): Promise<boolean> {
+		if (!eventId || !action) {
+			throw new Error('Event ID and action are required');
+		}
 		return new Promise<boolean>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
 				.set('calendarEventSeqId', eventId)
@@ -86,7 +89,7 @@ export class CalendarService extends BaseService {
 									}
 								}
 							}
-						}						
+						}
 						resolve(response);
 					} else {
 						reject(response);
