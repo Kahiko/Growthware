@@ -4,10 +4,10 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DataService } from '@growthware/common/services';
 import { DynamicTableBtnMethods, DynamicTableComponent, DynamicTableService } from '@growthware/core/dynamic-table';
-import { ISearchCriteria, ISearchCriteriaNVP, ISearchResultsNVP, SearchCriteria, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
+import { ISearchCriteria, ISearchCriteriaNVP, SearchCriteria, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
-import { INameValuePair } from '@growthware/common/interfaces';
+// import { INameValuePair } from '@growthware/common/interfaces';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
@@ -129,14 +129,15 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 
   onEditClickNvpParent(rowIndex: number): void {
   	this.activeParrentRowIndex = rowIndex;
+  	this.onRowClickNvpParent(rowIndex);
   	this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
   	this.nVP_ParentModalOptions.headerText = 'Edit NVP';
   	this._ModalSvc.open(this.nVP_ParentModalOptions);
   }
 
   onEditNvpChild(rowIndex: number): void {
-  	// this.activeParrentRowIndex = rowIndex;
-  	// this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
+  	this.activeParrentRowIndex = rowIndex;
+  	this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
   	this.nVP_ChildModalOptions.headerText = 'Edit NVP Detail';
   	this._ModalSvc.open(this.nVP_ChildModalOptions);
   }  
