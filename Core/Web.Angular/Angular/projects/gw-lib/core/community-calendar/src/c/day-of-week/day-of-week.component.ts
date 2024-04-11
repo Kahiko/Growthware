@@ -92,7 +92,12 @@ export class DayOfWeekComponent {
 	public onAddEventClick(date: IDay) {
 		// console.log('onDateClick', date);
 		this._CalendarSvc.setSelectedDate(this._Action, date.date);
-		this._CalendarSvc.selectedEvent = new CalendarEvent();
+		const mEvent = new CalendarEvent();
+		const mEndDate: Date = new Date(date.date);
+		mEndDate.setMinutes(mEndDate.getMinutes() + 15);
+		mEvent.end = mEndDate.toString();
+		mEvent.start = date.date.toString();
+		this._CalendarSvc.selectedEvent = mEvent;
 		this.openEventDetails();
 	}
 
