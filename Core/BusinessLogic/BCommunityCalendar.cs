@@ -122,9 +122,16 @@ public class BCommunityCalendar : AbstractBusinessLogic
         return mRetVal;
     }
 
-    public bool DeleteCalendarData(int calendarSeqId, String comment, DateTime entryDate, int accountSeqId)
+    public bool DeleteEvent(int calendarEventSeqId)
     {
-        m_DCommunityCalendar.CalendarSeqId = calendarSeqId;
-        throw new NotImplementedException();
+        m_DCommunityCalendar.CalendarSeqId = 0; // not used in this method
+        try
+        {
+            return m_DCommunityCalendar.DeleteEvent(calendarEventSeqId);
+        }
+        catch (System.Exception ex)
+        {
+            throw new BusinessLogicLayerException("Could not delete the calendar event", ex);
+        }
     }
 }

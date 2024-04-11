@@ -18,11 +18,20 @@ public abstract class AbstractCalendarController : ControllerBase
 
     [AllowAnonymous]
     [HttpGet("DeleteEvent")]
-    public ActionResult<bool> DeleteEvent(int calendarEventSeqId)
+    public ActionResult<bool> DeleteEvent(int calendarEventSeqId, string action)
     {
         if (getEventSecurity(calendarEventSeqId))
         {
-            return Ok(true);
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(action);
+            if (mFunctionProfile != null)
+            {
+                MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
+                MSecurityInfo mSecurityInfo = new(mFunctionProfile, mAccountProfile);
+                if (mSecurityInfo.MayView)
+                {
+                    return Ok(CalendarUtility.DeleteEvent(SecurityEntityUtility.CurrentProfile(), calendarEventSeqId));
+                }
+            }
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -53,7 +62,7 @@ public abstract class AbstractCalendarController : ControllerBase
                 HttpContext.Session.SetInt32("EditId", id);
                 return Ok(mRetVal);
             }
-            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+            // return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
@@ -110,11 +119,12 @@ public abstract class AbstractCalendarController : ControllerBase
         {
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(parameters.action);
             parameters.calendarEvent.AddedBy = mAccountProfile.Id;
-            if (parameters.calendarEvent.Id < 1) 
+            if (parameters.calendarEvent.Id < 1)
             {
                 parameters.calendarEvent.AddedBy = mAccountProfile.Id;
                 parameters.calendarEvent.AddedDate = DateTime.Now;
-            } else 
+            }
+            else
             {
                 parameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
                 parameters.calendarEvent.UpdatedDate = DateTime.Now;

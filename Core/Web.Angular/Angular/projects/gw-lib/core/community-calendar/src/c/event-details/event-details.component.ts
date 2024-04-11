@@ -13,6 +13,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
+import { LogLevel } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 // Feature
 import { CalendarService } from '../../calendar.service';
@@ -50,12 +51,12 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   selectedColor: string = 'Blue';
   startDate!: Date;
   validColors: INameValuePair[] = [];
-  
+
 
   constructor(
     profileSvc: CalendarService,
     modalSvc: ModalService,
-	  private _FormBuilder: FormBuilder,
+    private _FormBuilder: FormBuilder,
     private _Router: Router,
   ) {
     super();
@@ -64,7 +65,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     this._ModalSvc = modalSvc;
     // console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
     this._Profile = profileSvc.selectedEvent;
-    if(this._Profile.id > 0) {
+    if (this._Profile.id > 0) {
       this.canDelete = true;
     }
   }
@@ -83,7 +84,12 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override delete(): void {
-    throw new Error('Method not implemented.');
+    this._ProfileSvc.deleteEvent(this._Profile.id, this._Action).then(() => {
+      this.onClose();
+    }).catch(() => {
+      console.log('EventDetailsComponent.delete');
+      this._LoggingSvc.toast('The event could not be deleted', 'Delete Group', LogLevel.Error);
+    });
   }
 
   override createForm(): void {

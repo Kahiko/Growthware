@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 // Library
 import { BaseService } from '@growthware/core/base/services';
@@ -53,12 +53,14 @@ export class CalendarService extends BaseService {
 	 * Delete an event by its ID.
 	 *
 	 * @param {number} eventId - The ID of the event to delete
+	 * @param {string} action - The action for the calendar
 	 * @return {Promise<boolean>} A promise that resolves with a boolean indicating the success of the deletion
 	 */
-	public deleteEvent(eventId: number): Promise<boolean> {
+	public deleteEvent(eventId: number, action: string): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
-				.set('calendarEventSeqId', eventId);
+				.set('calendarEventSeqId', eventId)
+				.set('action', action);
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
@@ -68,12 +70,29 @@ export class CalendarService extends BaseService {
 			this._HttpClient.get<boolean>(this._ApiDeleteEvent, mHttpOptions).subscribe({
 				next: (response: boolean) => {
 					if (response) {
+						const mCalendarData = this._CalendarData.getValue();
+						outerLoop: for (let mWeekIndex = 0; mWeekIndex < mCalendarData.weeks.length; mWeekIndex++) {
+							const mDays = mCalendarData.weeks[mWeekIndex].days;
+							for (let mDayIndex = 0; mDayIndex < mDays.length; mDayIndex++) {
+								const mDay = mDays[mDayIndex];
+								if (mDay.events) {
+									const mEvents = mDay.events;
+									for (let mEvenIndex = 0; mEvenIndex < mEvents.length; mEvenIndex++) {
+										const mEvent = mEvents[mEvenIndex];
+										if (mEvent && mEvent.id === eventId) {
+											mDay.events = mDay.events.filter(obj => obj !== mEvent);
+											break outerLoop;
+										}
+									}
+								}
+							}
+						}						
 						resolve(response);
 					} else {
 						reject(response);
 					}
 				},
-				error: (error) => {
+				error: (error: HttpErrorResponse | string) => {
 					this._LoggingSvc.errorHandler(error, 'CalendarService', 'deleteEvent');
 					reject(error);
 				}

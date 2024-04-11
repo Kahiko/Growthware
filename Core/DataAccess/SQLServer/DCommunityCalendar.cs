@@ -18,12 +18,26 @@ namespace GrowthWare.DataAccess.SQLServer
         bool ICommunityCalendar.DeleteCalendar(int calendarSeqId) 
         {
             this.checkValid();
+
             return true;
         }
 
 		bool ICommunityCalendar.DeleteEvent(int calendarEventSeqId) 
         {
             this.checkValid();
+            string mStoredProcedure = "[ZGWOptional].[Delete_Calendar_Event]";
+            SqlParameter[] mParameters = 
+            {
+                new ("@P_CalendarEventSeqId", calendarEventSeqId),
+            };
+            try
+            {
+                base.ExecuteNonQuery(mStoredProcedure, mParameters);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }            
             return true;
         }
 

@@ -22,6 +22,12 @@ public static class CalendarUtility
         return mRetVal;
     }
 
+    public static bool DeleteEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId)
+    {
+        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        return mCommunityCalendar.DeleteEvent(calendarEventSeqId);
+    }
+
     public static MCalendarEvent GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
     {
         BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
