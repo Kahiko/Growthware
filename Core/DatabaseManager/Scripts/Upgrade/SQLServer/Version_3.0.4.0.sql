@@ -352,7 +352,8 @@ AS
 			CE.[Added_By] = ACCTS.[AccountSeqId]
 	WHERE 
 		[Start] >= @P_Start_Date 
-		AND [End] <= @P_End_Date;
+		AND [End] <= @P_End_Date
+	ORDER BY [Start];
 
 	SET NOCOUNT OFF;
 
