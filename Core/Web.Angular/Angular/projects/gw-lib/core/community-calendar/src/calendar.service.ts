@@ -245,7 +245,18 @@ export class CalendarService extends BaseService {
 		});
 	}
 
+	/**
+	 * Save an event with the provided action and calendar event data.
+	 *
+	 * @param {string} action - The action to be performed.
+	 * @param {ICalendarEvent} calendarEvent - The calendar event data to be saved.
+	 * @return {Promise<boolean>} A promise that resolves to a boolean indicating the success of the save operation.
+	 */
 	public saveEvent(action: string, calendarEvent: ICalendarEvent): Promise<boolean> {
+		// TODO: 
+		// 1.) Add logic checking for overlapping events
+		// 2.) Ensure that the start time is less than the end time
+
 		return new Promise<boolean>((resolve, reject) => {
 			const mHttpOptions = {
 				headers: new HttpHeaders({
