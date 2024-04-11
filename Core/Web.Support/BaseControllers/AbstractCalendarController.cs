@@ -16,6 +16,12 @@ public abstract class AbstractCalendarController : ControllerBase
 {
     private Logger m_Logger = Logger.Instance();
 
+    /// <summary>
+    /// Deletes an event
+    /// </summary>
+    /// <param name="calendarEventSeqId"></param>
+    /// <param name="action"></param>
+    /// <returns></returns>
     [AllowAnonymous]
     [HttpGet("DeleteEvent")]
     public ActionResult<bool> DeleteEvent(int calendarEventSeqId, string action)
