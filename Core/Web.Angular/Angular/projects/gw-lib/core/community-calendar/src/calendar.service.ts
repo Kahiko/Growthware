@@ -324,6 +324,7 @@ export class CalendarService extends BaseService {
 								if (this._GWCommon.datesEqual(mDay.date, new Date(response.start))) {
 									if (mDay.events) {
 										mDay.events.push(response);
+										mDay.events.sort((a, b) => new Date(a.start).getTime() - new Date(b.start).getTime());
 									} else {
 										mDay.events = [response];
 									}
