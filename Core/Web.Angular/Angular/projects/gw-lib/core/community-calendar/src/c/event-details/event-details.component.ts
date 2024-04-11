@@ -65,6 +65,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     this._ModalSvc = modalSvc;
     // console.log('EventDetailsComponent.selectedEvent', profileSvc.selectedEvent);
     this._Profile = profileSvc.selectedEvent;
+    this.createForm();
     if (this._Profile.id > 0) {
       this.canDelete = true;
     }
@@ -74,12 +75,13 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
     // console.log('EventDetailsComponent.ngOnInit');
     this.validColors.push(new NameValuePair('#6495ED', 'Blue'));
     this.validColors.push(new NameValuePair('#ff0000', 'Red'));
-    this.createForm();
     if (this._Profile.id > -1) {
       this._ProfileSvc.getEventSecurity(this._Profile.id).then((canEdit: boolean) => {
         this.canDelete = canEdit;
         this.canSave = canEdit;
       });
+    } else {
+      this.canSave = true;
     }
   }
 
@@ -93,7 +95,7 @@ export class EventDetailsComponent extends BaseDetailComponent implements IBaseD
   }
 
   override createForm(): void {
-    this.selectedColor = this._Profile.color;
+    this.selectedColor = this._Profile.color;  
     this.endDate = new Date(this._Profile.end);
     this.startDate = new Date(this._Profile.start);
     this.frmProfile = this._FormBuilder.group({

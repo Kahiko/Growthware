@@ -121,21 +121,21 @@ public abstract class AbstractCalendarController : ControllerBase
     public ActionResult<MCalendarEvent> SaveEvent(UISaveEventParameters parameters)
     {
         MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
-        if (getEventSecurity(parameters.calendarEvent.Id, parameters.action) && parameters.calendarEvent.AddedBy == mAccountProfile.Id)
+        UISaveEventParameters mParameters = parameters; // Bad practice to alter a parameter in a method.
+        if (mParameters.calendarEvent.Id < 1)
         {
-            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(parameters.action);
-            parameters.calendarEvent.AddedBy = mAccountProfile.Id;
-            if (parameters.calendarEvent.Id < 1)
-            {
-                parameters.calendarEvent.AddedBy = mAccountProfile.Id;
-                parameters.calendarEvent.AddedDate = DateTime.Now;
-            }
-            else
-            {
-                parameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
-                parameters.calendarEvent.UpdatedDate = DateTime.Now;
-            }
-            MCalendarEvent mRetVal = CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, parameters.calendarEvent);
+            mParameters.calendarEvent.AddedBy = mAccountProfile.Id;
+            mParameters.calendarEvent.AddedDate = DateTime.Now;
+        }
+        else
+        {
+            mParameters.calendarEvent.UpdatedBy = mAccountProfile.Id;
+            mParameters.calendarEvent.UpdatedDate = DateTime.Now;
+        }
+        if (getEventSecurity(mParameters.calendarEvent.Id, mParameters.action) && mParameters.calendarEvent.AddedBy == mAccountProfile.Id)
+        {
+            MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(mParameters.action);
+            MCalendarEvent mRetVal = CalendarUtility.SaveCalendarEvent(SecurityEntityUtility.CurrentProfile(), mFunctionProfile.Id, mParameters.calendarEvent);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
