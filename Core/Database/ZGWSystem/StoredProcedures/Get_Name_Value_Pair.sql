@@ -30,14 +30,14 @@ AS
 		BEGIN
 	SELECT
 		NVPSeqId as NVP_SEQ_ID
-				, [Schema_Name]
-				, Static_Name
-				, Display
-				, [Description]
-				, Added_By
-				, Added_Date
-				, Updated_By
-				, Updated_Date
+			, [Schema_Name]
+			, Static_Name
+			, Display
+			, [Description]
+			, Added_By
+			, Added_Date
+			, Updated_By
+			, Updated_Date
 	FROM
 		ZGWSystem.Name_Value_Pairs
 	WHERE
