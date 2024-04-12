@@ -74,6 +74,13 @@ public static class NameValuePairUtility
         return mLinkBehaviorTypes;
     }
 
+    public static MNameValuePair SaveNameValuePairParent(MNameValuePair nameValuePair)
+    {
+        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
+        mNameValuePairDetails.Save(nameValuePair);
+        return nameValuePair;
+    }
+
     public static List<MNameValuePair> GetMNameValuePairs()
     {
         List<MNameValuePair> mRetVal = new List<MNameValuePair>();

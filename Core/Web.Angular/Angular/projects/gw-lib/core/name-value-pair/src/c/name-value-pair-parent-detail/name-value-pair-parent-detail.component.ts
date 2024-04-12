@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { HttpErrorResponse } from '@angular/common/http';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +11,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
+import { SecurityService, ISecurityInfo } from '@growthware/core/security';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
@@ -48,26 +48,32 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
     profileSvc: NameValuePairService,
     loggingSvc: LoggingService,
     modalSvc: ModalService,
-	private _FormBuilder: FormBuilder,
-	private _Router: Router,
+    securitySvc: SecurityService,
+    private _FormBuilder: FormBuilder,
+    private _Router: Router,
   ) {
     super();
     this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
-    this._ProfileSvc = profileSvc;
     this._ModalSvc = modalSvc;
+    this._ProfileSvc = profileSvc;
+    this._SecuritySvc = securitySvc;
   }
 
   ngOnInit(): void {
     this.createForm();
-    this._ProfileSvc.getParentProfile().then((response: INvpParentProfile) => {
-      if (response) {
+    this._SecuritySvc.getSecurityInfo('search_name_value_pairs').then((securityInfo: ISecurityInfo) => {  // Request #1
+      if(securityInfo != null) {                                                                          // Response Handler #1
+        this._SecurityInfo = securityInfo;
+      }
+      return this._ProfileSvc.getParentProfile();                                                         // Request #2
+    }).catch().then((response: INvpParentProfile) => {
+      if (response) {                                                                                     // Response Handler #2
         // console.log('NameValuePairParentDetailComponent.ngOnInit this._Profile', this._Profile);
+        this.canSave = this._SecurityInfo.mayEdit;
         this._Profile = response;
         this.frmProfile.patchValue(this._Profile);
         this.selectedStatus = this._Profile.status;
       }
-    }).catch((error: HttpErrorResponse | string) => {
-      this._LoggingSvc.errorHandler(error, 'NameValuePairParentDetailComponent', 'ngOnInit');
     });
   }
 
@@ -96,22 +102,26 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
 
   override createForm(): void {
     this.frmProfile = this._FormBuilder.group({
-      staticName: [this._Profile.staticName, [Validators.required]],
-      schemaName: [this._Profile.schemaName, [Validators.required]],
-	  display: [this._Profile.display],
       description: [this._Profile.description],
-	  statusSeqId: [this._Profile.status],
+      display: [this._Profile.display],
+      schemaName: [this._Profile.schemaName, [Validators.required]],
+      staticName: [this._Profile.staticName, [Validators.required]],
+      statusSeqId: [this._Profile.status],
     });
   }
 
   override populateProfile(): void {
-    this.frmProfile = this._FormBuilder.group({
-
-    });
+    this._Profile.description = this.controls['description'].getRawValue();
+    this._Profile.display = this.controls['display'].getRawValue();
+    this._Profile.schemaName = this.controls['schemaName'].getRawValue();
+    this._Profile.staticName = this.controls['staticName'].getRawValue();
+    this._Profile.status = this.selectedStatus;
+    // console.log('NameValuePairParentDetailComponent.populateProfile', this._Profile);
+    this._ProfileSvc.saveNameValuePairParent(this._Profile);
   }
 
   override save(): void {
-    throw new Error('Method not implemented.');
+    // this.populateProfile();
   }
 
   onCloseModal(): void {

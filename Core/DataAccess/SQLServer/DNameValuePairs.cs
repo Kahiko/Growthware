@@ -64,14 +64,11 @@ namespace GrowthWare.DataAccess.SQLServer
             return base.GetDataRow(storeProc, mParameters);
         }
 
-        int INameValuePairs.Save()
+        DataRow INameValuePairs.Save()
         {
             String storeProc = "ZGWSystem.Set_Name_Value_Pair";
             SqlParameter[] mParameters = getInsertUpdateParameters();
-            int mRetVal = -1;
-            base.ExecuteNonQuery(storeProc, mParameters);
-            mRetVal = int.Parse(GetParameterValue("@P_Primary_Key", mParameters), CultureInfo.InvariantCulture);
-            return mRetVal;
+            return base.GetDataRow(storeProc, mParameters);
         }
 
         DataTable INameValuePairs.GetRoles(int NameValuePairSeqID)
@@ -168,7 +165,6 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Description", m_Profile.Description), 
 				new SqlParameter("@P_StatusSeqId", m_Profile.Status), 
 				new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(m_Profile)), 
-				GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output), 
 				GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) 
 			};
             return mParameters;

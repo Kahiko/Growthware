@@ -123,8 +123,8 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <summary>
         /// Saves this instance.
         /// </summary>
-        /// <returns>System.Int32.</returns>
-        int Save();
+        /// <returns>System.DataRow</returns>
+        DataRow Save();
 
     }
 }

@@ -171,11 +171,11 @@ namespace GrowthWare.BusinessLogic
         /// </summary>
         /// <param name="nameValuePairProfile">The profile.</param>
         /// <returns>System.Int32.</returns>
-        public int Save(MNameValuePair nameValuePairProfile)
+        public MNameValuePair Save(MNameValuePair nameValuePairProfile)
         {
-            int mRetVal = -1;
+            MNameValuePair mRetVal = null;
             m_DNameValuePairs.NameValuePairProfile = nameValuePairProfile;
-            if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.Save();
+            if (DatabaseIsOnline()) mRetVal = new MNameValuePair(m_DNameValuePairs.Save());
             return mRetVal;
         }
 

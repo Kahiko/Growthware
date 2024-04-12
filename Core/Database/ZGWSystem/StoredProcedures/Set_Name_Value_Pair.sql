@@ -9,7 +9,6 @@ Usage:
 		@P_Description VARCHAR(256) = 'Just Testing the Name value Pair',
 		@P_StatusSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
-		@P_Primary_Key INT = null,
 		@P_ErrorCode int = null,
 		@P_Debug bit = 1
 
@@ -21,7 +20,6 @@ Usage:
 		@P_Description,
 		@P_StatusSeqId,
 		@P_Added_Updated_By,
-		@P_Primary_Key,
 		@P_ErrorCode,
 		@P_Debug
 */
@@ -29,6 +27,10 @@ Usage:
 -- Author:		Michael Regan
 -- Create date: 07/26/2011
 -- Description:	Inserts/Updates ZGWCoreWeb.Account_Choices based on @P_Account
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 04/12/2024
+-- Description:	Changed to return a data row
 -- =============================================
 CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair]
 	@P_NVPSeqId int,
@@ -38,44 +40,40 @@ CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair]
 	@P_Description VARCHAR(256),
 	@P_StatusSeqId INT,
 	@P_Added_Updated_By INT,
-	@P_Primary_Key INT OUTPUT,
 	@P_ErrorCode int OUTPUT,
 	@P_Debug INT = 0
 AS
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSystem].[Set_Name_Value_Pair]'
 	DECLARE @V_Now DATETIME = GETDATE()
+			, @V_PrimaryKey int = -1;
+	SET @V_PrimaryKey = @P_NVPSeqId;
 	IF @P_NVPSeqId > -1
 		BEGIN
 	-- UPDATE PROFILE
 	UPDATE ZGWSystem.Name_Value_Pairs
-			SET 
-				[Display] = @P_Display,
-				[Description] = @P_Description,
-				StatusSeqId = @P_StatusSeqId,
-				Updated_By = @P_Added_Updated_By,
-				Updated_Date = @V_Now
-			WHERE
-				NVPSeqId = @P_NVPSeqId
-
-	SELECT @P_Primary_Key = @P_NVPSeqId
+		SET 
+			[Display] = @P_Display,
+			[Description] = @P_Description,
+			StatusSeqId = @P_StatusSeqId,
+			Updated_By = @P_Added_Updated_By,
+			Updated_Date = @V_Now
+		WHERE
+			NVPSeqId = @P_NVPSeqId
 END
 	ELSE
 	BEGIN
 	-- INSERT a new row in the table.
 
 	-- CHECK FOR DUPLICATE NAME BEFORE INSERTING
-	IF EXISTS(SELECT Static_Name
-	FROM ZGWSystem.Name_Value_Pairs
-	WHERE Static_Name = @P_Static_Name)
-				BEGIN
-		RAISERROR ('The name value pair already exists in the database.',16,1)
-		SELECT @P_ErrorCode=1
-		RETURN
-	END
-	IF NOT EXISTS (SELECT *
-	FROM dbo.sysobjects
-	WHERE id = OBJECT_ID('[' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR(MAX),@P_Static_Name) + ']') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
-			BEGIN
+	IF EXISTS(SELECT Static_Name FROM [ZGWSystem].[Name_Value_Pairs] WHERE Static_Name = @P_Static_Name)
+		BEGIN
+			RAISERROR ('The name value pair already exists in the database.',16,1)
+			SELECT @P_ErrorCode=1
+			RETURN
+		END
+	-- END IF
+	IF NOT EXISTS (SELECT * FROM dbo.sysobjects WHERE id = OBJECT_ID('[' + CONVERT(VARCHAR(MAX),@P_Schema_Name) + '].[' + CONVERT(VARCHAR(MAX),@P_Static_Name) + ']') AND OBJECTPROPERTY(id, N'IsUserTable') = 1)
+	BEGIN
 		-- Create the new table to hold the details for the name value pair
 		DECLARE @V_Statement nvarchar(4000)
 
@@ -113,34 +111,45 @@ END
 					'
 		IF @P_Debug = 1 PRINT  @V_Statement
 		EXECUTE dbo.sp_executesql @statement = @V_Statement
-
 	END
-	INSERT ZGWSystem.Name_Value_Pairs
-		(
+	-- END IF
+	INSERT ZGWSystem.Name_Value_Pairs(
 		[Schema_Name],
-		Static_Name,
+		[Static_Name],
 		[Display],
 		[Description],
-		StatusSeqId,
-		Added_By,
-		Added_Date
-		)
-	VALUES
-		(
-			@P_Schema_Name,
-			@P_Static_Name,
-			@P_Display,
-			@P_Description,
-			@P_StatusSeqId,
-			@P_Added_Updated_By,
-			@V_Now
-			)
-	SELECT @P_Primary_Key=SCOPE_IDENTITY()
+		[StatusSeqId],
+		[Added_By],
+		[Added_Date]
+	) VALUES (
+		@P_Schema_Name,
+		@P_Static_Name,
+		@P_Display,
+		@P_Description,
+		@P_StatusSeqId,
+		@P_Added_Updated_By,
+		@V_Now
+	)
+	SELECT @V_PrimaryKey=SCOPE_IDENTITY()
 -- Get the IDENTITY value for the row just inserted.
 END
 -- Get the Error Code for the statement just executed.
+SELECT
+	  [nvpSeqId] = [NVPSeqId]
+	, [schemaName] = [Schema_Name]
+	, [staticName] = [Static_Name]
+	, [display]
+	, [description]
+	, [StatusSeqId]
+	, [Added_By]
+	, [Added_Date]
+	, [Updated_By]
+	, [Updated_Date]
+FROM
+	[ZGWSystem].[Name_Value_Pairs]
+WHERE
+	[NVPSeqId] = @V_PrimaryKey
 SELECT @P_ErrorCode=@@ERROR
 IF @P_Debug = 1 PRINT 'End [ZGWSystem].[Set_Name_Value_Pair]'
 
 GO
-
