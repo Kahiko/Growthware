@@ -44,7 +44,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
 
   parentConfigurationName = 'SearchNameValuePairs';
-  _nameValuePairWindowSize: WindowSize = new WindowSize(400, 600);
+  _nameValuePairWindowSize: WindowSize = new WindowSize(350, 600);
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
   readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
