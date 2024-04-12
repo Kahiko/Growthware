@@ -380,6 +380,11 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("Actions_EditGroups", true); }
         }
 
+        public static string Actions_EditNameValueParent
+        {
+            get { return GetAppSettingValue("Actions_EditNameValueParent", true); }
+        }
+
         public static string Actions_EditMessages
         {
             get { return GetAppSettingValue("Actions_EditMessages", true); }

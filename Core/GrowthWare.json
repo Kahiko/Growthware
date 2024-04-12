@@ -23,6 +23,7 @@
     "Development_Actions_EditFunction": "Functions",
     "Development_Actions_EditGroups": "Manage_Groups",
     "Development_Actions_EditMessages": "EditMessage",
+    "Development_Actions_EditNameValueParent": "search_name_value_pairs",
     "Development_Actions_EditOtherAccount": "Accounts",
     "Development_Actions_EditRoles": "Search_Roles",
     "Development_Actions_EditSecurityEntity": "Search_Security_Entities",
