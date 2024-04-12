@@ -368,11 +368,11 @@ AS
 		SET 
 			[Display] = @P_Display,
 			[Description] = @P_Description,
-			StatusSeqId = @P_StatusSeqId,
-			Updated_By = @P_Added_Updated_By,
-			Updated_Date = @V_Now
+			[StatusSeqId] = @P_StatusSeqId,
+			[Updated_By] = @P_Added_Updated_By,
+			[Updated_Date] = @V_Now
 		WHERE
-			NVPSeqId = @P_NVPSeqId
+			[NVPSeqId] = @P_NVPSeqId
 END
 	ELSE
 	BEGIN
