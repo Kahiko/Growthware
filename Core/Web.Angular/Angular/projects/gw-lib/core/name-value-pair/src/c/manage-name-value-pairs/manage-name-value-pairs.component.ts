@@ -61,7 +61,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   ){
   	this._Api_Nvp_Search = this._Api_Name + 'SearchNameValuePairs';
   	this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
-  	console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
+  	// console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
   }
 
   ngAfterViewInit(): void {
