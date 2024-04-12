@@ -81,7 +81,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   		this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
   			if(criteria.name.trim().toLowerCase() === this.parentConfigurationName.trim().toLowerCase()) {
   				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
-  					console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
+  					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
   					this._NameValuePairParentDataSubject.next(results.payLoad.data);
   				}).catch((error) => {
   					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
