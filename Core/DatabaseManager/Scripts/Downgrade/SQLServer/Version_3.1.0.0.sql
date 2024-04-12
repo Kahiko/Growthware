@@ -1,4 +1,16 @@
+-- Downgrade
+--USE [YourDatabaseName];
+GO
+SET NOCOUNT ON;
 
+/****** Start: Procedure [ZGWSystem].[Get_Name_Value_Pair] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSystem].[Get_Name_Value_Pair]') AND type in (N'P', N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair] AS'
+	END
+--End If
+
+GO
 /*
 Usage:
 	DECLARE
@@ -18,11 +30,7 @@ Usage:
 -- Create date: 08/19/2011
 -- Description:	Returns name value pairs 
 -- =============================================
--- Author:		Michael Regan
--- Create date: 04/12/2024
--- Description:	Added 
--- =============================================
-CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair]
+ALTER PROCEDURE [ZGWSystem].[Get_Name_Value_Pair]
 	@P_NVPSeqId int,
 	@P_AccountSeqId int,
 	@P_SecurityEntitySeqId int,
@@ -38,7 +46,6 @@ AS
 			, Static_Name
 			, Display
 			, [Description]
-			, [StatusSeqId] = [STATUS_SEQ_ID]
 			, Added_By
 			, Added_Date
 			, Updated_By
@@ -182,7 +189,6 @@ END
 							, Static_Name
 							, Display
 							, [Description]
-							, [StatusSeqId] = [STATUS_SEQ_ID]
 							, Added_By
 							, Added_Date
 							, Updated_By
@@ -224,7 +230,6 @@ END
 						, Static_Name
 						, Display
 						, [Description]
-						, [StatusSeqId] = [STATUS_SEQ_ID]
 						, Added_By
 						, Added_Date
 						, Updated_By
@@ -244,7 +249,6 @@ END
 						, Static_Name
 						, Display
 						, [Description]
-						, [StatusSeqId] = [STATUS_SEQ_ID]
 						, Added_By
 						, Added_Date
 						, Updated_By
@@ -259,4 +263,10 @@ END
 RETURN 0
 
 GO
+/****** Start: Procedure [ZGWSystem].[Get_Name_Value_Pair] ******/
 
+-- Update the version
+UPDATE [ZGWSystem].[Database_Information] SET
+    [Version] = '3.0.4.0',
+    [Updated_By] = null,
+    [Updated_Date] = null

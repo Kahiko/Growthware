@@ -4,7 +4,7 @@ export interface INvpParentProfile {
     Static_Name: string;
     Display: string;
     Description: string;
-    StatusSeqId: number;
+    status: number;
 }
 
 export class NvpParentProfile implements INvpParentProfile {
@@ -13,5 +13,5 @@ export class NvpParentProfile implements INvpParentProfile {
 	Static_Name = '';
 	Display = '';
 	Description = '';
-	StatusSeqId = -1;
+	status = -1;
 }

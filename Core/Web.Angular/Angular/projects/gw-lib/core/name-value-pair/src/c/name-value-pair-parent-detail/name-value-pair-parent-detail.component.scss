@@ -3,3 +3,14 @@
     min-height: calc(400px - 125px);
     min-width: calc(600px - 50px);
 }
+
+.firstCell {
+    width: 30px;
+    vertical-align: top;
+}
+
+.middleCell {
+    margin-top: 5px;
+    vertical-align: middle;
+    width: 20px;
+}
