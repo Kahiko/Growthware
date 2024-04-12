@@ -30,6 +30,10 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             List<MNameValuePair> mNameValuePairs = this.GetMNameValuePairs();
             MNameValuePair mRetVal = mNameValuePairs.FirstOrDefault(x => x.Id == nameValuePairSeqId);
+            if (mRetVal == null) 
+            {
+                mRetVal = new MNameValuePair();
+            }
             HttpContext.Session.SetInt32("EditId", mRetVal.Id);
             return Ok(mRetVal);
         }

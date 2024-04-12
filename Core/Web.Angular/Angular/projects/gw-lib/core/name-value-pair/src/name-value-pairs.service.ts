@@ -17,9 +17,10 @@ export class NameValuePairService {
 	private _Api_Get_ParentProfile: string = '';
 	private _Api_Save_Parent_Name_Value_Pair: string = '';
 
+	public addEditModalId: string = 'AddOrEditNVPParrent';
+	public modalReason: string = '';
 	public nvpParentRow!: INvpParentProfile;
 	public nvpChildRow!: INvpChildProfile;
-	public addEditModalId: string = 'AddOrEditNVPParrent';
 
 	constructor(
 		private _GWCommon: GWCommon,

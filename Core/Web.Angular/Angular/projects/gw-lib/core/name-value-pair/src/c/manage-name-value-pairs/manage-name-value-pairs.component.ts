@@ -119,6 +119,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 
   onAddClickNvpParent(): void {
   	this._NameValuePairService.setNameValuePairParrentRow(new NvpParentProfile());
+  	this._NameValuePairService.modalReason = 'Add';
   	this.nvpParentModalOptions.headerText = 'Add NVP';
   	this._ModalSvc.open(this.nvpParentModalOptions);    
   }
@@ -131,6 +132,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   onEditClickNvpParent(rowIndex: number): void {
   	this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
   	this.onRowClickNvpParent(rowIndex);
+	  this._NameValuePairService.modalReason = 'Edit';
   	this.nvpParentModalOptions.headerText = 'Edit NVP';
   	this._ModalSvc.open(this.nvpParentModalOptions);
   }

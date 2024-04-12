@@ -15,11 +15,14 @@ import { SecurityService, ISecurityInfo } from '@growthware/core/security';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
 import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'gw-core-name-value-pair-parent-detail',
   standalone: true,
   imports: [
+    // Angular
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     // Angular Material
@@ -43,6 +46,7 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
     { id: 2, name: 'Inactive' },
     { id: 3, name: 'Disabled' }
   ];
+  isReadonly: boolean = true;
 
   constructor(
     profileSvc: NameValuePairService,
@@ -61,6 +65,8 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
 
   ngOnInit(): void {
     this.createForm();
+    console.log('NameValuePairParentDetailComponent.ngOnInit modalReason: ', this._ProfileSvc.modalReason);
+
     this._SecuritySvc.getSecurityInfo('search_name_value_pairs').then((securityInfo: ISecurityInfo) => {  // Request #1
       if(securityInfo != null) {                                                                          // Response Handler #1
         this._SecurityInfo = securityInfo;
@@ -70,6 +76,9 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
       if (response) {                                                                                     // Response Handler #2
         // console.log('NameValuePairParentDetailComponent.ngOnInit this._Profile', this._Profile);
         this.canSave = this._SecurityInfo.mayEdit;
+        if (this._ProfileSvc.modalReason === 'Add') {
+          this.isReadonly = false;
+        }
         this._Profile = response;
         this.frmProfile.patchValue(this._Profile);
         this.selectedStatus = this._Profile.status;
