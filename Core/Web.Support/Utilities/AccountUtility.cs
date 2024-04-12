@@ -165,7 +165,7 @@ public static class AccountUtility
         string mRetVal = string.Empty;
         MMessage mMessageProfile = new MMessage();
         MAccountProfile mAccountProfile = CurrentProfile;
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         string mCurrentPassword = mAccountProfile.Password;
         CryptoUtility.TryDecrypt(mAccountProfile.Password, out mCurrentPassword, mSecurityEntity.EncryptionType);
         if (mAccountProfile.Status != (int)SystemStatus.ChangePassword)
@@ -255,7 +255,7 @@ public static class AccountUtility
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBAccount.Delete(accountSeqId);
     }
 
@@ -275,7 +275,7 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
@@ -303,7 +303,7 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = null;
         mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
@@ -330,14 +330,14 @@ public static class AccountUtility
         BAccounts mBAccount = null;
         if (forceDb)
         {
-            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBAccount.GetProfile(account);
             return mRetVal;
         }
         mRetVal = CurrentProfile;
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBAccount.GetProfile(account);
         }
         return mRetVal;
@@ -354,7 +354,7 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static MAccountProfile getAccountByRefreshToken(string token)
     {
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         try
         {
@@ -539,7 +539,7 @@ public static class AccountUtility
         {
             return accountProfile;
         }
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);

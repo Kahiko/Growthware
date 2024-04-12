@@ -21,7 +21,7 @@ public abstract class AbstractGroupController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayDelete)
         {
@@ -45,7 +45,7 @@ public abstract class AbstractGroupController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (mSecurityInfo.MayEdit || mSecurityInfo.MayView)
         {
@@ -60,7 +60,7 @@ public abstract class AbstractGroupController : ControllerBase
     public ActionResult<ArrayList> GetGroups()
     {
         ArrayList mRetVal;
-        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        mRetVal = GroupUtility.GetGroupsArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile.Id);
         return Ok(mRetVal);
     }
 
@@ -70,7 +70,7 @@ public abstract class AbstractGroupController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditGroups);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MGroupProfile mProfileToSave = new MGroupProfile();
         MGroupRoles mGroupRoles = new MGroupRoles();
@@ -113,7 +113,7 @@ public abstract class AbstractGroupController : ControllerBase
             mProfileToSave.Name = groupProfile.Name;
             mProfileToSave.Description = groupProfile.Description;
             mProfileToSave.Id = groupProfile.Id;
-            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
+            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile.Id;
             UIGroupProfile mRetVal = GroupUtility.Save(mProfileToSave, mGroupRoles);
             return Ok(mRetVal);
         }

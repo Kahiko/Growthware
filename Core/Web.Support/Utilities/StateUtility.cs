@@ -17,7 +17,7 @@ public static class StateUtility
         Collection<MState> mRetVal = m_CacheController.GetFromCache<Collection<MState>>(m_CacheName);
         if(mRetVal == null)
         {
-            BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBStates.GetStates();
             m_CacheController.AddToCache(m_CacheName, mRetVal);
         }
@@ -48,7 +48,7 @@ public static class StateUtility
 
     public static void Save(MState state)
     {
-        BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBStates.Save(state);
         m_CacheController.RemoveFromCache(m_CacheName);
     }

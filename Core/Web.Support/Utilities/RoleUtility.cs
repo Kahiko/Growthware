@@ -21,7 +21,7 @@ public static class RoleUtility
     private static string[] getAccountsInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = mBRoles.GetAccountsInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
@@ -35,7 +35,7 @@ public static class RoleUtility
     private static string[] getAccountsNotInRole(MRole profile)
     {
         // intended to be used when editing so no cache is needed
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = mBRoles.GetAccountsNotInRole(profile);
         string[] mRetVal = getStrings(mDataTable);
         return mRetVal;
@@ -71,7 +71,7 @@ public static class RoleUtility
     /// <returns>A DataTable containing the roles.</returns>
     static DataTable GetAllRolesBySecurityEntity(int securityEntityId)
     {
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         DataTable mRoles = m_CacheController.GetFromCache<DataTable>(securityEntityId.ToString() + "_Roles");
         if (mRoles == null)
         {
@@ -93,7 +93,7 @@ public static class RoleUtility
         MRole mRoleToDelete = new MRole(mRoleFromDB);
         mRoleToDelete.Id = roleSeqId;
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBRoles.DeleteRole(mRoleToDelete);
         m_CacheController.RemoveFromCache(securityEntitySeqId.ToString() + "_Roles");
         return true;
@@ -126,7 +126,7 @@ public static class RoleUtility
         MRole mRoleProfile = new MRole();
         mRoleProfile.Id = roleSeqId;
         mRoleProfile.SecurityEntityID = securityEntitySeqId;
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mRoleProfile = mBRoles.GetProfile(mRoleProfile);
         UIRole mRetVal = new UIRole(mRoleProfile);
         mRetVal.AccountsInRole = getAccountsInRole(mRoleProfile);
@@ -143,7 +143,7 @@ public static class RoleUtility
     public static UIRole Save(MRole roleProfile, string[] accountsInRole)
     {
         MRole mRoleToSave = new MRole(roleProfile);
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         if (roleProfile.Id > -1)
         {
             MRole mProfileFromDB = mBRoles.GetProfile(mRoleToSave);
@@ -166,7 +166,7 @@ public static class RoleUtility
     /// <returns>True if the update was successful, false otherwise.</returns>
     public static bool UpdateAllAccountsForRole(int roleId, int securityEntitySeqId, string[] accounts, int accountId)
     {
-        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         return mBRoles.UpdateAllAccountsForRole(roleId, securityEntitySeqId, accounts, accountId);
     }
 }

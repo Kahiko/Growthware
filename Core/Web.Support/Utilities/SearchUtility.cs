@@ -56,7 +56,7 @@ public static class SearchUtility
     {
         string mRetVal = string.Empty;
         DataTable mDataTable = null;
-        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile());
+        BSearch mBSearch = new BSearch(SecurityEntityUtility.CurrentProfile);
         searchCriteria.WhereClause = constantWhere + " AND " + searchCriteria.WhereClause;
         mDataTable = mBSearch.GetSearchResults(searchCriteria);
         mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);

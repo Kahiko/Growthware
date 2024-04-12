@@ -19,8 +19,8 @@ public static class FunctionUtility
 
     public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
         String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheController.RemoveFromCache(mCacheName);
@@ -32,8 +32,8 @@ public static class FunctionUtility
     /// <param name="functionSeqId">int</param>
     public static void Delete(int functionSeqId)
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
-        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBFunctions.Delete(functionSeqId);
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
         m_CacheController.RemoveFromCache(mCacheName);
@@ -46,7 +46,7 @@ public static class FunctionUtility
     [CLSCompliant(false)]
     public static Collection<MFunctionProfile> Functions()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
@@ -79,7 +79,7 @@ public static class FunctionUtility
     /// <returns>List<UIFunctionMenuOrder></returns>
     public static List<UIFunctionMenuOrder> GetFunctionOrder(int functionSeqId)
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(functionSeqId);
         BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         DataTable mDataTable = mBFunctions.GetMenuOrder(mFunctionProfile);
@@ -101,7 +101,7 @@ public static class FunctionUtility
     {
         if(m_FunctionTypes == null) 
         {
-            MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             DataTable mDataTable = mBFunctions.FunctionTypes();
             m_FunctionTypes = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
@@ -172,9 +172,9 @@ public static class FunctionUtility
     /// <returns>The Id representing the updated/inserted function</returns>
     public static int Save(MFunctionProfile profile, bool saveGroups, bool saveRoles)
     {
-        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
-        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
+        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheController.RemoveAll();
         SessionController.RemoveAll();
         return mRetVal;
@@ -187,7 +187,7 @@ public static class FunctionUtility
     /// <param name="profile">The profile.</param>
     public static void UpdateMenuOrder(string commaseparated_Ids, MFunctionProfile profile)
     {
-        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBFunctions.UpdateMenuOrder(commaseparated_Ids, profile);
     }
 }

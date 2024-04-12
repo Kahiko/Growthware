@@ -19,7 +19,7 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
@@ -42,7 +42,7 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         if (HttpContext.Session.GetString("EditId") != null)
         {
@@ -50,7 +50,7 @@ public abstract class AbstractRoleController : ControllerBase
         }
         if (mSecurityInfo.MayEdit)
         {
-            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile().Id);
+            UIRole mRetVal = RoleUtility.GetUIProfile(roleSeqId, SecurityEntityUtility.CurrentProfile.Id);
             HttpContext.Session.SetString("EditId", roleSeqId.ToString());
             return Ok(mRetVal);
         }
@@ -60,7 +60,7 @@ public abstract class AbstractRoleController : ControllerBase
     [HttpGet("GetRoles")]
     public ActionResult<ArrayList> GetRoles()
     {
-        ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile().Id);
+        ArrayList mRetVal = RoleUtility.GetRolesArrayListBySecurityEntity(SecurityEntityUtility.CurrentProfile.Id);
         return Ok(mRetVal);
     }
 
@@ -69,7 +69,7 @@ public abstract class AbstractRoleController : ControllerBase
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditRoles);
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
         MRole mProfileToSave = new MRole(roleProfile);
         if (HttpContext.Session.GetString("EditId") != null)
@@ -101,7 +101,7 @@ public abstract class AbstractRoleController : ControllerBase
                     }
                 }
             }
-            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile().Id;
+            mProfileToSave.SecurityEntityID = SecurityEntityUtility.CurrentProfile.Id;
             UIRole mRetVal = RoleUtility.Save(mProfileToSave, roleProfile.AccountsInRole);
             return Ok(mRetVal);
         }

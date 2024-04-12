@@ -24,7 +24,7 @@ public static class DirectoryUtility
     /// <returns>Collection{MDirectoryProfile}.</returns>
     public static Collection<MDirectoryProfile> Directories()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         Collection<MDirectoryProfile> mRetVal = m_CacheController.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
         if(mRetVal == null)
@@ -64,9 +64,9 @@ public static class DirectoryUtility
 
     public static void Save(MDirectoryProfile profile)
     {
-        BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBDirectories.Save(profile);
-        String mCacheName = SecurityEntityUtility.CurrentProfile().Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
+        String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheController.RemoveFromCache(mCacheName);
     }
 }

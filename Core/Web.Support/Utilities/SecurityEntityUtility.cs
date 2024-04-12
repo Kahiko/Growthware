@@ -17,20 +17,23 @@ public static class SecurityEntityUtility
     private static IHttpContextAccessor m_HttpContextAccessor = null;
     private static String s_CacheName = "Cached_SecurityEntities";
 
-    public static MSecurityEntity CurrentProfile()
+    public static MSecurityEntity CurrentProfile
     {
-        MSecurityEntity mRetProfile = null;
-        if (m_HttpContextAccessor != null)
+        get
         {
-            MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
-            if (mClientChoicesState != null)
+            MSecurityEntity mRetProfile = null;
+            if (m_HttpContextAccessor != null)
             {
-                int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
-                mRetProfile = GetProfile(mSecurityEntity);
+                MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
+                if (mClientChoicesState != null)
+                {
+                    int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
+                    mRetProfile = GetProfile(mSecurityEntity);
+                }
+                if (mRetProfile == null) mRetProfile = DefaultProfile();
             }
-            if (mRetProfile == null) mRetProfile = DefaultProfile();
+            return mRetProfile;
         }
-        return mRetProfile;
     }
 
     public static MSecurityEntity DefaultProfile()
@@ -100,13 +103,13 @@ public static class SecurityEntityUtility
     /// <returns>DataView.</returns>
     public static DataTable GetValidSecurityEntities(string account, int securityEntityId, bool isSystemAdmin)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         return mBSecurityEntities.GetValidSecurityEntities(account, securityEntityId, isSystemAdmin);
     }
 
     public static int SaveProfile(MSecurityEntity profile)
     {
-        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile(), ConfigSettings.CentralManagement);
+        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile, ConfigSettings.CentralManagement);
         string mEcryptedValue = string.Empty;
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;

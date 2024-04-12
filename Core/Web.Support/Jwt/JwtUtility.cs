@@ -103,7 +103,7 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)

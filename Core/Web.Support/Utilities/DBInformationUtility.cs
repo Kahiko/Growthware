@@ -16,7 +16,7 @@ public static class DBInformationUtility
         /// <returns>MDBInformation</returns>
         public static MDBInformation DBInformation()
         {
-            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             return mBll.GetProfile;
         }
         /// <summary>
@@ -27,7 +27,7 @@ public static class DBInformationUtility
         public static bool UpdateProfile(MDBInformation profile) 
         {
             bool mRetVal = false;
-            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BDBInformation mBll = new BDBInformation(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBll.UpdateProfile(profile);
             return mRetVal;
         }

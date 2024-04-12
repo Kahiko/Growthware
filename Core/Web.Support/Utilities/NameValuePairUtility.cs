@@ -85,7 +85,7 @@ public static class NameValuePairUtility
 
     private static void getNameValuePairs(ref DataTable yourDataTable)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile());
+        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
         yourDataTable = mNameValuePairDetails.GetAllNameValuePair();
     }
 
@@ -118,7 +118,7 @@ public static class NameValuePairUtility
 
     private static void getNameValuePairDetails(ref DataTable yourDataTable)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile());
+        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
         yourDataTable = mNameValuePairDetails.GetAllNameValuePairDetail();
     }
 }

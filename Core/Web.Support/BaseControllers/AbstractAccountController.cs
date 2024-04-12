@@ -306,7 +306,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
-        CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile().EncryptionType);
+        CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile.EncryptionType);
         return Authenticate(mAccountProfile.Account, mPassword);
     }
 

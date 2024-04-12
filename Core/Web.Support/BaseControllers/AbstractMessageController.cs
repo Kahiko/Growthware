@@ -81,7 +81,7 @@ public abstract class AbstractMessageController : ControllerBase
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditMessages);
-            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile();
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
             MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
             if (canAddOrEdit(messageProfile.Id, mSecurityInfo))
             {
@@ -138,7 +138,7 @@ public abstract class AbstractMessageController : ControllerBase
         mProfileToSave.FormatAsHtml = messageProfile.FormatAsHtml;
         mProfileToSave.Id = messageProfile.Id;
         mProfileToSave.Name = messageProfile.Name;
-        mProfileToSave.SecurityEntitySeqId = SecurityEntityUtility.CurrentProfile().Id;
+        mProfileToSave.SecurityEntitySeqId = SecurityEntityUtility.CurrentProfile.Id;
         mProfileToSave.Title = messageProfile.Title;
     }
 

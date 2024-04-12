@@ -21,7 +21,7 @@ public static class GroupUtility
     /// <returns>The saved UIGroupProfile.</returns>
     public static UIGroupProfile Save(MGroupProfile profile, MGroupRoles groupRoles)
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         // Save the profile
         int mSavedGroupSeqId = mBGroups.Save(profile);
         MGroupProfile mSavedGroupProfile = mBGroups.GetProfile(mSavedGroupSeqId);
@@ -42,7 +42,7 @@ public static class GroupUtility
     /// <returns>No return value.</returns>
     public static void UpdateGroupRoles(MGroupRoles groupRoles)
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBGroups.UpdateGroupRoles(groupRoles);
     }
 
@@ -61,7 +61,7 @@ public static class GroupUtility
         MGroupRoles mGroupRoles = new MGroupRoles();
         if(groupSeqId != -1)
         {
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mGroupProfile = mBGroups.GetProfile(groupSeqId);
         }
         // Populate mRetVal
@@ -103,7 +103,7 @@ public static class GroupUtility
         if(profile.Id != -1) 
         {
             bool success = false;
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             success = mBGroups.DeleteGroup(profile);
         }
     }
@@ -115,7 +115,7 @@ public static class GroupUtility
     /// <returns>The group profile for the given group sequence ID.</returns>
     public static MGroupProfile GetGroupProfile(int groupSeqId) 
     {
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         MGroupProfile mRetVal = mBGroups.GetProfile(groupSeqId);
         return mRetVal;
     }
@@ -128,7 +128,7 @@ public static class GroupUtility
     private static string[] GetSelectedRoles(MGroupRoles groupRoles) 
     {
         string[] mRetVal = new string[]{};
-        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mRetVal = mBGroups.GetSelectedRoles(groupRoles);
         return mRetVal;
     }
@@ -160,7 +160,7 @@ public static class GroupUtility
         DataTable mRetVal = m_CacheController.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
         {
-            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+            BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
             m_CacheController.AddToCache(mCacheName, mRetVal);
         }

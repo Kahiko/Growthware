@@ -43,7 +43,7 @@ public static class MessageUtility
     /// <param name="profile">The profile.</param>
     public static int Save(MMessage profile)
     {
-        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         int mRetVal = -1;
         mRetVal = mBMessages.Save(profile);
         RemoveCachedMessagesCollection();
@@ -105,7 +105,7 @@ public static class MessageUtility
     /// <returns>Collection{MMessage}.</returns>
     public static Collection<MMessage> Messages()
     {
-        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile();
+        MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         string mCacheName = MessagesUnitCachedCollectionName(mSecurityEntityProfile.Id);
         Collection<MMessage> mMessageCollection = null;
         // mMessageCollection = (Collection<MMessage>)HttpContext.Current.Cache[mCacheName];
@@ -146,7 +146,7 @@ public static class MessageUtility
     // {
     //     try
     //     {
-    //         BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile(), ConfigSettings.CentralManagement);
+    //         BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
     //         return mBMessages.Search(searchCriteria);
     //     }
     //     catch (IndexOutOfRangeException ex)
