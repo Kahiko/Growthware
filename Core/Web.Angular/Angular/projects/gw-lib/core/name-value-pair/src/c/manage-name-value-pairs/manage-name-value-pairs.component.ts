@@ -48,8 +48,8 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
   readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
-  nVP_ChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairWindowSize);
-  nVP_ParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.modalIdNVPParrent, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
+  nVP_ChildModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Child', NameValuePairChildDetailComponent, this._nameValuePairWindowSize);
+  nVP_ParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
   
   constructor(
     private _DataSvc: DataService,
@@ -128,15 +128,13 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   }
 
   onEditClickNvpParent(rowIndex: number): void {
-  	this.activeParrentRowIndex = rowIndex;
-  	this.onRowClickNvpParent(rowIndex);
   	this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
+  	this.onRowClickNvpParent(rowIndex);
   	this.nVP_ParentModalOptions.headerText = 'Edit NVP';
   	this._ModalSvc.open(this.nVP_ParentModalOptions);
   }
 
   onEditNvpChild(rowIndex: number): void {
-  	this.activeParrentRowIndex = rowIndex;
   	this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
   	this.nVP_ChildModalOptions.headerText = 'Edit NVP Detail';
   	this._ModalSvc.open(this.nVP_ChildModalOptions);

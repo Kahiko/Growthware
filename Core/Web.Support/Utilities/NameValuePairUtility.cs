@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
+using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
 
 namespace GrowthWare.Web.Support.Utilities;
@@ -26,8 +27,9 @@ public static class NameValuePairUtility
             DataTable mDataTable = new DataTable();
             getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
             List<UIKeyValuePair> mPairs = null;
-            mPairs = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair {
-                Key = int.Parse(item["NVP_SEQ_DET_ID"].ToString()) ,
+            mPairs = mDataTable.AsEnumerable().Select(item => new UIKeyValuePair
+            {
+                Key = int.Parse(item["NVP_SEQ_DET_ID"].ToString()),
                 Value = item["NVP_DET_VALUE"].ToString()
             }).ToList();
             m_NameValuePairCache.Add(nameValuePairSeqId, mPairs);
@@ -72,6 +74,21 @@ public static class NameValuePairUtility
         return mLinkBehaviorTypes;
     }
 
+    public static List<MNameValuePair> GetMNameValuePairs()
+    {
+        List<MNameValuePair> mRetVal = new List<MNameValuePair>();
+        DataTable mDataTable = new DataTable();
+        getNameValuePairs(ref mDataTable);
+        mRetVal = mDataTable.AsEnumerable().Select(item => new MNameValuePair(item)).ToList();
+        return mRetVal;
+    }
+
+    private static void getNameValuePairs(ref DataTable yourDataTable)
+    {
+        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile());
+        yourDataTable = mNameValuePairDetails.GetAllNameValuePair();
+    }
+
     private static void getNameValuePairDetails(ref DataTable yourDataTable, int nameValuePairSeqId)
     {
         DataView mDataView = null;
@@ -88,11 +105,11 @@ public static class NameValuePairUtility
         }
         finally
         {
-            if(mDataView != null)
+            if (mDataView != null)
             {
                 mDataView.Dispose();
             }
-            if(mDataTable != null)
+            if (mDataTable != null)
             {
                 mDataTable.Dispose();
             }

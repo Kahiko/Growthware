@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
-// import { GWCommon } from '@growthware/common/services';
-// import { LoggingService } from '@growthware/core/logging';
+import { GWCommon } from '@growthware/common/services';
+import { LoggingService } from '@growthware/core/logging';
 // import { SearchService } from '@growthware/core/search';
 // Feature
 import { INvpParentProfile } from './name-value-pair-parent-profile.model';
@@ -12,19 +13,44 @@ import { INvpChildProfile } from './name-value-pair-child-profile.model';
 	providedIn: 'root'
 })
 export class NameValuePairService {
+	private _ApiName: string = 'GrowthwareNameValuePair/';
+	private _Api_Get_ParentProfile: string = '';
 
 	public nvpParentRow!: INvpParentProfile;
 	public nvpChildRow!: INvpChildProfile;
-	public modalIdNVPParrent: string = 'AddOrEditNVPParrent';
-	public modalIdNVPChild: string = 'AddOrEditNVPChild';
-
+	public addEditModalId: string = 'AddOrEditNVPParrent';
 
 	constructor(
-		// private _GWCommon: GWCommon,
-		// private _HttpClient: HttpClient, 
-		// private _LoggingSvc: LoggingService,
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient, 
+		private _LoggingSvc: LoggingService,
 		// private _SearchSvc: SearchService
-	) { }
+	) { 
+		this._Api_Get_ParentProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePair';
+	}
+
+	getParentProfile(): Promise<INvpParentProfile> {
+		return new Promise<INvpParentProfile>((resolve, reject) => {
+			const mQueryParameter: HttpParams = new HttpParams()
+				.set('nameValuePairSeqId', this.nvpParentRow['NVPSeqId'].toString());
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+				params: mQueryParameter,
+			};
+			// The parameters names match the property names in the UISaveEventParameters.cs model
+			this._HttpClient.get<INvpParentProfile>(this._Api_Get_ParentProfile, mHttpOptions).subscribe({
+				next: (response: INvpParentProfile) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'getParentProfile');
+					reject(error);
+				}
+			});
+		});
+	}
 
 	setNameValuePairParrentRow(row: INvpParentProfile): void {
 		this.nvpParentRow = JSON.parse(JSON.stringify(row));
