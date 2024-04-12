@@ -32,7 +32,7 @@ export class NameValuePairService {
 	getParentProfile(): Promise<INvpParentProfile> {
 		return new Promise<INvpParentProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
-				.set('nameValuePairSeqId', this.nvpParentRow['NVPSeqId'].toString());
+				.set('nameValuePairSeqId', this.nvpParentRow['nvpSeqId'].toString());
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',

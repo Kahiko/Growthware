@@ -96,10 +96,10 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
 
   override createForm(): void {
     this.frmProfile = this._FormBuilder.group({
-      staticName: [this._Profile.Static_Name, [Validators.required]],
-      schemaName: [this._Profile.Schema_Name, [Validators.required]],
-	  display: [this._Profile.Display],
-      description: [this._Profile.Description],
+      staticName: [this._Profile.staticName, [Validators.required]],
+      schemaName: [this._Profile.schemaName, [Validators.required]],
+	  display: [this._Profile.display],
+      description: [this._Profile.description],
 	  statusSeqId: [this._Profile.status],
     });
   }

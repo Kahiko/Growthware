@@ -81,7 +81,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   		this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
   			if(criteria.name.trim().toLowerCase() === this.parentConfigurationName.trim().toLowerCase()) {
   				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
-  					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
+  					console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
   					this._NameValuePairParentDataSubject.next(results.payLoad.data);
   				}).catch((error) => {
   					this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
@@ -144,7 +144,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   onRowClickNvpParent(rowIndex: number): void {
   	this.activeParrentRowIndex = rowIndex;
   	this._NameValuePairService.setNameValuePairDetailRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
-  	this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].NVPSeqId.toString();
+  	this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].nvpSeqId.toString();
   	// Set the search child criteria to initiate search criteria changed subject
   	this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
   }

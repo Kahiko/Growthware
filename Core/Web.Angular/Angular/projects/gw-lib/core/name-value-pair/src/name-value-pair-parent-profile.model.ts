@@ -1,17 +1,25 @@
 export interface INvpParentProfile {
-    NVPSeqId: number;
-    Schema_Name: string;
-    Static_Name: string;
-    Display: string;
-    Description: string;
+    nvpSeqId: number;
+    schemaName: string;
+    staticName: string;
+    display: string;
+    description: string;
     status: number;
 }
 
 export class NvpParentProfile implements INvpParentProfile {
-	NVPSeqId = -1;
-	Schema_Name = '';
-	Static_Name = '';
-	Display = '';
-	Description = '';
+	nvpSeqId = -1;
+	schemaName = '';
+	staticName = '';
+	display = '';
+	description = '';
 	status = -1;
 }
+
+// export interface MNameValuePair extends AbstractBaseModel {
+//     status: number;
+//     schemaName: string;
+//     staticName: string;
+//     display: string;
+//     description: string;
+// }

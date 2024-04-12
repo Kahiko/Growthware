@@ -61,7 +61,7 @@
                         </div>
                         <div class="td middleCell">&nbsp;</div>
                         <div class="td left">
-                            <mat-select [(value)]="selectedStatus" class="Form_Field rounded">
+                            <mat-select [(value)]="selectedStatus" class="Form_Field rounded" style="width: 150px;">
                                 @for (item of validStatus; track item) {
                                   <mat-option [value]="item.id">
                                     {{item.name}}

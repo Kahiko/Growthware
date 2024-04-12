@@ -49,7 +49,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
     public String SearchNameValuePairs(UISearchCriteria searchCriteria)
     {
         String mRetVal = string.Empty;
-        string mColumns = "[NVPSeqId], [Schema_Name], [Static_Name], [Display], [Description], [StatusSeqId]";
+        string mColumns = "[nvpSeqId] = [NVPSeqId], [schemaName] = [Schema_Name], [staticName] = [Static_Name], [display], [description], [StatusSeqId]";
         if(searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
