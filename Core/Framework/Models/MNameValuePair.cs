@@ -15,7 +15,7 @@ namespace GrowthWare.Framework.Models
         private string m_StaticName = "NEW";
         private string m_Display = string.Empty;
         private string m_Description = string.Empty;
-        private int m_Status = -1;
+        private int m_Status = 1;
 #endregion
 
 #region "Protected Methods"
