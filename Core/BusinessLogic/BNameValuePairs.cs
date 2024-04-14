@@ -97,10 +97,14 @@ namespace GrowthWare.BusinessLogic
         /// <param name="nameValuePairSeqDetailId">The NVP seq detail ID.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataRow.</returns>
-        public DataRow GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
+        public MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
          {
-            DataRow mRetVal = null;
-            if (DatabaseIsOnline()) mRetVal = m_DNameValuePairs.NameValuePairDetails(nameValuePairSeqDetailId, nameValuePairSeqId);
+            DataRow mDataRow = null;
+            MNameValuePairDetail mRetVal = new MNameValuePairDetail();
+            m_DNameValuePairs.DetailProfile.Id = nameValuePairSeqDetailId;
+            m_DNameValuePairs.DetailProfile.NameValuePairSeqId = nameValuePairSeqId;
+            if (DatabaseIsOnline()) mDataRow = m_DNameValuePairs.NameValuePairDetail();
+            if (mDataRow != null) mRetVal = new MNameValuePairDetail(mDataRow);
             return mRetVal;
         }
 

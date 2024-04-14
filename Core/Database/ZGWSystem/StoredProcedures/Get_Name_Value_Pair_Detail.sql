@@ -31,9 +31,21 @@ AS
 	SET @V_TableName = (SELECT [Schema_Name] + '.' + Static_Name
 FROM ZGWSystem.Name_Value_Pairs
 WHERE NVPSeqId = @P_NVPSeqId)
-	SET @V_Statement = '[NVP_DetailSeqId], [NVPSeqId] as NVP_SEQ_ID, [NVP_Detail_Name], [NVP_Detail_Value], [StatusSeqId], [Sort_Order], [Added_By], [Added_Date], [Updated_By], [Updated_Date] FROM ' + CONVERT(VARCHAR,@V_TableName) + '
-	WHERE
-		NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId) + ' ORDER BY Static_Name'
+	SET @V_Statement = '
+SELECT 
+	  [NVP_DetailSeqId] AS [NVP_SEQ_DET_ID]
+	, [NVPSeqId] as NVP_SEQ_ID
+	, [NVP_Detail_Name] AS [NVP_DET_TEXT]
+	, [NVP_Detail_Value] AS [NVP_DET_VALUE]
+	, [StatusSeqId] AS [STATUS_SEQ_ID]
+	, [Sort_Order] AS [SORT_ORDER]
+	, [Added_By]
+	, [Added_Date]
+	, [Updated_By]
+	, [Updated_Date] 
+FROM ' + CONVERT(VARCHAR,@V_TableName) + '
+WHERE
+	NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId)
 
 	EXECUTE dbo.sp_executesql @statement = @V_Statement
 RETURN 0

@@ -15,12 +15,14 @@ import { INvpChildProfile } from './name-value-pair-child-profile.model';
 export class NameValuePairService {
 	private _ApiName: string = 'GrowthwareNameValuePair/';
 	private _Api_Get_ParentProfile: string = '';
+	private _Api_Get_ChildProfile: string = '';
 	private _Api_Save_Parent_Name_Value_Pair: string = '';
 
 	public addEditModalId: string = 'AddOrEditNVPParrent';
 	public modalReason: string = '';
 	public nvpParentRow!: INvpParentProfile;
 	public nvpChildRow!: INvpChildProfile;
+	public nvpChildId: number = 0;
 	public parentConfigurationName = 'SearchNameValuePairs';
 
 	constructor(
@@ -29,10 +31,36 @@ export class NameValuePairService {
 		private _LoggingSvc: LoggingService,
 		private _SearchSvc: SearchService
 	) {
+		this._Api_Get_ChildProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePairDetail';
 		this._Api_Get_ParentProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePair';
 		this._Api_Save_Parent_Name_Value_Pair = this._GWCommon.baseURL + this._ApiName + 'SaveNameValuePairParent';
 	}
 
+	getChildProfile(): Promise<INvpChildProfile> {
+		// console.log('NameValuePairService.getChildProfile nvpChildRow', this.nvpChildRow);
+		console.log('NameValuePairService.getChildProfile nvpParentRow', this.nvpChildRow);
+		return new Promise<INvpChildProfile>((resolve, reject) => {
+			const mQueryParameter: HttpParams = new HttpParams()
+				.set('nvpSeqId', this.nvpParentRow.nvpSeqId.toString())
+				.set('nvpDetailSeqId', this.nvpChildId.toString());
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+				params: mQueryParameter,
+			};
+			// The parameters names match the property names in the UISaveEventParameters.cs model
+			this._HttpClient.get<INvpChildProfile>(this._Api_Get_ChildProfile, mHttpOptions).subscribe({
+				next: (response: INvpChildProfile) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'getChildProfile');
+					reject(error);
+				}
+			});
+		});
+	}
 
 	/**
 	 * @description Gets the name value pair parent profile from the API.

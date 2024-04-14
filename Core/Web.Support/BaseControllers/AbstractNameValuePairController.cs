@@ -19,6 +19,21 @@ public abstract class AbstractNameValuePairController : ControllerBase
     private string s_ParrentCacheName = "NameValuePairs";
 
     [AllowAnonymous]
+    [HttpGet("GetMNameValuePairDetail")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public ActionResult<MNameValuePairDetail> GetMNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
+    {
+        HttpContext.Session.SetInt32("EditId", nvpDetailSeqId);
+        MNameValuePairDetail mRetVal = NameValuePairUtility.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
+        if (mRetVal == null)
+        {
+            mRetVal = new MNameValuePairDetail();
+        }
+        return Ok(mRetVal);
+    }
+
+    [AllowAnonymous]
     [HttpGet("GetMNameValuePair")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
@@ -51,7 +66,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         if (mRetVal == null)
         {
             // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-            mRetVal = NameValuePairUtility.GetMNameValuePairs();
+            mRetVal = NameValuePairUtility.GetNameValuePairs();
             this.m_CacheController.AddToCache(this.s_ParrentCacheName, mRetVal);
         }
         return mRetVal;
@@ -73,7 +88,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
             }
             else
             {
-                MNameValuePair mOriginal = NameValuePairUtility.GetMNameValuePairs().FirstOrDefault(x => x.Id == mNameValuePair.Id);
+                MNameValuePair mOriginal = NameValuePairUtility.GetNameValuePairs().FirstOrDefault(x => x.Id == mNameValuePair.Id);
                 mNameValuePair.AddedDate = mOriginal.AddedDate;
                 mNameValuePair.AddedBy = mOriginal.AddedBy;
                 mNameValuePair.UpdatedDate = DateTime.Now;

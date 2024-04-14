@@ -6,6 +6,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -81,12 +82,19 @@ public static class NameValuePairUtility
         return nameValuePair;
     }
 
-    public static List<MNameValuePair> GetMNameValuePairs()
+    public static List<MNameValuePair> GetNameValuePairs()
     {
         List<MNameValuePair> mRetVal = new List<MNameValuePair>();
         DataTable mDataTable = new DataTable();
         getNameValuePairs(ref mDataTable);
         mRetVal = mDataTable.AsEnumerable().Select(item => new MNameValuePair(item)).ToList();
+        return mRetVal;
+    }
+
+    public static MNameValuePairDetail GetNameValuePairDetail(int nvpSeqId, int nvpDetailSeqId)
+    {
+        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
+        MNameValuePairDetail mRetVal = mNameValuePairDetails.GetNameValuePairDetail(nvpSeqId, nvpDetailSeqId);
         return mRetVal;
     }
 

@@ -102,10 +102,10 @@ namespace GrowthWare.DataAccess.SQLServer
         DataRow INameValuePairs.NameValuePairDetail()
         {
             string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Detail";
-            SqlParameter[] mParameters = { 
+            SqlParameter[] mParameters = [ 
 											 new SqlParameter("@P_NVP_DetailSeqId", m_Detail_Profile.Id), 
 											 new SqlParameter("@P_NVPSeqId", m_Detail_Profile.NameValuePairSeqId)
-										 };
+										 ];
             return base.GetDataRow(myStoreProcedure, mParameters);
         }
 
@@ -150,8 +150,16 @@ namespace GrowthWare.DataAccess.SQLServer
         void INameValuePairs.SaveNVPDetail(MNameValuePairDetail profile)
         {
             string myStoreProcedure = "ZGWSystem.Set_Name_Value_Pair_Detail";
-            SqlParameter[] mParameters = { new SqlParameter("@P_NVP_DetailSeqId", profile.Id), new SqlParameter("@P_NVPSeqId", profile.NameValuePairSeqId), new SqlParameter("@P_NVP_Detail_Name", profile.Value), new SqlParameter("@P_NVP_Detail_Value", profile.Text), new SqlParameter("@P_StatusSeqId", profile.Status), new SqlParameter("@P_Sort_Order", profile.SortOrder), new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(profile)), 
-			GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output), GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) };
+            SqlParameter[] mParameters = [ 
+                  new SqlParameter("@P_NVP_DetailSeqId", profile.Id)
+                , new SqlParameter("@P_NVPSeqId", profile.NameValuePairSeqId)
+                , new SqlParameter("@P_NVP_Detail_Name", profile.Value)
+                , new SqlParameter("@P_NVP_Detail_Value", profile.Text)
+                , new SqlParameter("@P_StatusSeqId", profile.Status)
+                , new SqlParameter("@P_Sort_Order", profile.SortOrder)
+                , new SqlParameter("@P_Added_Updated_BY", GetAddedUpdatedBy(profile))
+                , GetSqlParameter("@P_Primary_Key", -1, ParameterDirection.Output)
+                , GetSqlParameter("@P_ErrorCode", -1, ParameterDirection.Output) ];
             base.ExecuteNonQuery(myStoreProcedure, mParameters);
         }
 
