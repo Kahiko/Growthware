@@ -19,6 +19,10 @@ Usage:
 --	front end to cache the information and only get called
 --	when needed
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 04/14/2024
+-- Description:	Fixed NVP_DET_VALUE and NVP_DET_TEXT being reversed
+-- =============================================
 CREATE PROCEDURE [ZGWSystem].[Get_Name_Value_Pair_Details] @P_NVPSeqId INT
 	,@P_Debug INT = 0
 AS
@@ -89,8 +93,8 @@ IF @P_NVPSeqId = - 1
 	SELECT #NVP_DETAILS.NVP_DetailSeqId AS NVP_SEQ_DET_ID
 		,#NVP_DETAILS.NVPSeqId AS NVP_SEQ_ID
 		,ZGWSystem.Name_Value_Pairs.[Schema_Name] + '.' + ZGWSystem.Name_Value_Pairs.Static_Name AS [Table_Name]
-		,#NVP_DETAILS.NVP_Detail_Name AS NVP_DET_VALUE
-		,#NVP_DETAILS.NVP_Detail_Value AS NVP_DET_TEXT
+		,#NVP_DETAILS.NVP_Detail_Name AS NVP_DET_TEXT
+		,#NVP_DETAILS.NVP_Detail_Value AS NVP_DET_VALUE
 		,#NVP_DETAILS.StatusSeqId AS STATUS_SEQ_ID
 		,#NVP_DETAILS.Sort_Order
 		,(
@@ -114,8 +118,8 @@ ELSE
 	SELECT #NVP_DETAILS.NVP_DetailSeqId AS NVP_SEQ_DET_ID
 		,#NVP_DETAILS.NVPSeqId AS NVP_SEQ_ID
 		,ZGWSystem.Name_Value_Pairs.[Schema_Name] + '.' + ZGWSystem.Name_Value_Pairs.Static_Name AS [Table_Name]
-		,#NVP_DETAILS.NVP_Detail_Name AS NVP_DET_VALUE
-		,#NVP_DETAILS.NVP_Detail_Value AS NVP_DET_TEXT
+		,#NVP_DETAILS.NVP_Detail_Name AS NVP_DET_TEXT
+		,#NVP_DETAILS.NVP_Detail_Value AS NVP_DET_VALUE
 		,#NVP_DETAILS.StatusSeqId AS STATUS_SEQ_ID
 		,#NVP_DETAILS.Sort_Order
 		,(
