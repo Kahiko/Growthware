@@ -65,7 +65,7 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
 
   ngOnInit(): void {
     this.createForm();
-    console.log('NameValuePairParentDetailComponent.ngOnInit modalReason: ', this._ProfileSvc.modalReason);
+    // console.log('NameValuePairParentDetailComponent.ngOnInit modalReason: ', this._ProfileSvc.modalReason);
 
     this._SecuritySvc.getSecurityInfo('search_name_value_pairs').then((securityInfo: ISecurityInfo) => {  // Request #1
       if(securityInfo != null) {                                                                          // Response Handler #1
