@@ -103,6 +103,11 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
           return 'Required';
         }
         break;
+      case 'display':
+        if (this.controls['display'].hasError('required')) {
+          return 'Required';
+        }
+        break;
       default:
         break;
     }
@@ -112,7 +117,7 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
   override createForm(): void {
     this.frmProfile = this._FormBuilder.group({
       description: [this._Profile.description],
-      display: [this._Profile.display],
+      display: [this._Profile.display, [Validators.required]],
       schemaName: [this._Profile.schemaName, [Validators.required]],
       staticName: [this._Profile.staticName, [Validators.required]],
       statusSeqId: [this._Profile.status],
