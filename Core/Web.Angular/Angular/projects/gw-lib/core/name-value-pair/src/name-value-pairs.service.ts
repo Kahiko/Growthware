@@ -37,8 +37,10 @@ export class NameValuePairService {
 	}
 
 	getChildProfile(): Promise<INvpChildProfile> {
+		// console.log('NameValuePairService.getChildProfile nvpParentRow', this.nvpParentRow);
 		// console.log('NameValuePairService.getChildProfile nvpChildRow', this.nvpChildRow);
-		console.log('NameValuePairService.getChildProfile nvpParentRow', this.nvpChildRow);
+		console.log('NameValuePairService.getChildProfile nvpSeqId', this.nvpParentRow.nvpSeqId);
+		console.log('NameValuePairService.getChildProfile nvpDetailSeqId', this.nvpChildId);
 		return new Promise<INvpChildProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
 				.set('nvpSeqId', this.nvpParentRow.nvpSeqId.toString())

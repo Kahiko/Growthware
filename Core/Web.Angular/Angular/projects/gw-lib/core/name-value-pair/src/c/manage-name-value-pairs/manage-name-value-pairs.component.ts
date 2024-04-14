@@ -82,6 +82,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 					this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
 						// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
 						this._NameValuePairParentDataSubject.next(results.payLoad.data);
+						this._NameValuePairService.nvpChildId = 0;
 						this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[0]);
 					}).catch((error) => {
 						this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
@@ -123,7 +124,6 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	}
 
 	onEditClickNvpParent(rowIndex: number): void {
-		this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
 		this.onRowClickNvpParent(rowIndex);
 		this._NameValuePairService.modalReason = 'Edit';
 		this.nvpParentModalOptions.headerText = 'Edit NVP';
@@ -135,11 +135,13 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 		const mChildRow: any = this.dynamicTable.getRowData(rowIndex);
 		// console.log('ManageNameValuePairsComponent.onEditNvpChild mChildRow', mChildRow);
 		this._NameValuePairService.nvpChildId = parseInt(mChildRow['NVP_SEQ_DET_ID']);
+		this._NameValuePairService.setNameValuePairDetailRow(mChildRow);
 		this.nvpChildModalOptions.headerText = 'Edit NVP Detail';
 		this._ModalSvc.open(this.nvpChildModalOptions);
 	}
 
 	onRowClickNvpParent(rowIndex: number): void {
+		this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
 		this.activeParrentRowIndex = rowIndex;
 		const mNvpChildProfile: INvpChildProfile = new NvpChildProfile();
 		mNvpChildProfile.nameValuePairSeqId = this._NameValuePairParentDataSubject.getValue()[rowIndex].nvpSeqId;

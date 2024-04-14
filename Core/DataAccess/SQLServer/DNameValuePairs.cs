@@ -102,10 +102,10 @@ namespace GrowthWare.DataAccess.SQLServer
         DataRow INameValuePairs.NameValuePairDetail()
         {
             string myStoreProcedure = "ZGWSystem.Get_Name_Value_Pair_Detail";
-            SqlParameter[] mParameters = [ 
-											 new SqlParameter("@P_NVP_DetailSeqId", m_Detail_Profile.Id), 
-											 new SqlParameter("@P_NVPSeqId", m_Detail_Profile.NameValuePairSeqId)
-										 ];
+            SqlParameter[] mParameters = [
+                new SqlParameter("@P_NVPSeqId", m_Detail_Profile.NameValuePairSeqId),
+                new SqlParameter("@P_NVP_DetailSeqId", m_Detail_Profile.Id)
+            ];
             return base.GetDataRow(myStoreProcedure, mParameters);
         }
 

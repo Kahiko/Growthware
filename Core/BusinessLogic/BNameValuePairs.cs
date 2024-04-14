@@ -97,7 +97,7 @@ namespace GrowthWare.BusinessLogic
         /// <param name="nameValuePairSeqDetailId">The NVP seq detail ID.</param>
         /// <param name="nameValuePairSeqId">The NVP seq ID.</param>
         /// <returns>DataRow.</returns>
-        public MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqDetailId, int nameValuePairSeqId)
+        public MNameValuePairDetail GetNameValuePairDetail(int nameValuePairSeqId, int nameValuePairSeqDetailId)
          {
             DataRow mDataRow = null;
             MNameValuePairDetail mRetVal = new MNameValuePairDetail();
