@@ -20,8 +20,8 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [AllowAnonymous]
     [HttpGet("GetMNameValuePair")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]  
-    public ActionResult<MNameValuePair> GetMNameValuePair(int nameValuePairSeqId) 
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    public ActionResult<MNameValuePair> GetMNameValuePair(int nameValuePairSeqId)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile(ConfigSettings.Actions_EditNameValueParent);
@@ -30,7 +30,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
         {
             List<MNameValuePair> mNameValuePairs = this.GetMNameValuePairs();
             MNameValuePair mRetVal = mNameValuePairs.FirstOrDefault(x => x.Id == nameValuePairSeqId);
-            if (mRetVal == null) 
+            if (mRetVal == null)
             {
                 mRetVal = new MNameValuePair();
             }
@@ -43,11 +43,11 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [AllowAnonymous]
     [HttpGet("GetMNameValuePairs")]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]    
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public List<MNameValuePair> GetMNameValuePairs()
     {
         List<MNameValuePair> mRetVal = this.m_CacheController.GetFromCache<List<MNameValuePair>>("NameValuePairs");
-        if(mRetVal == null) 
+        if (mRetVal == null)
         {
             // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
             mRetVal = NameValuePairUtility.GetMNameValuePairs();
@@ -60,24 +60,28 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [HttpPost("SaveNameValuePairParent")]
     public ActionResult<MNameValuePair> SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
-        MNameValuePair mNameValuePair = nameValuePair;
-        MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        if(mNameValuePair.Id == -1)
+        if (nameValuePair.Id == -1 || nameValuePair.Id == HttpContext.Session.GetInt32("EditId"))
         {
-            mNameValuePair.AddedDate = DateTime.Now;
-            mNameValuePair.AddedBy = mRequestingProfile.Id;
+            MNameValuePair mNameValuePair = nameValuePair;
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            if (mNameValuePair.Id == -1)
+            {
+                mNameValuePair.AddedDate = DateTime.Now;
+                mNameValuePair.AddedBy = mRequestingProfile.Id;
+            }
+            else
+            {
+                MNameValuePair mOriginal = NameValuePairUtility.GetMNameValuePairs().FirstOrDefault(x => x.Id == mNameValuePair.Id);
+                mNameValuePair.AddedDate = mOriginal.AddedDate;
+                mNameValuePair.AddedBy = mOriginal.AddedBy;
+                mNameValuePair.UpdatedDate = DateTime.Now;
+                mNameValuePair.UpdatedBy = mRequestingProfile.Id;
+            }
+            HttpContext.Session.SetInt32("EditId", -1);
+            return Ok(NameValuePairUtility.SaveNameValuePairParent(mNameValuePair));
         }
-        else
-        {
-            MNameValuePair mOriginal = NameValuePairUtility.GetMNameValuePairs().FirstOrDefault(x => x.Id == mNameValuePair.Id);
-            mNameValuePair.AddedDate = mOriginal.AddedDate;
-            mNameValuePair.AddedBy = mOriginal.AddedBy;
-            mNameValuePair.UpdatedDate = DateTime.Now;
-            mNameValuePair.UpdatedBy = mRequestingProfile.Id;
-        }
-        HttpContext.Session.SetInt32("EditId", -1);
-        return Ok(NameValuePairUtility.SaveNameValuePairParent(mNameValuePair));
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
 
     [Authorize("search_name_value_pairs")]
@@ -86,7 +90,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
     {
         String mRetVal = string.Empty;
         string mColumns = "[nvpSeqId] = [NVPSeqId], [schemaName] = [Schema_Name], [staticName] = [Static_Name], [display], [description], [StatusSeqId]";
-        if(searchCriteria.sortColumns.Length > 0)
+        if (searchCriteria.sortColumns.Length > 0)
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
@@ -112,12 +116,12 @@ public abstract class AbstractNameValuePairController : ControllerBase
     /// <param name="searchCriteria"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentNullException"></exception>
-     [HttpPost("SearcNVPDetails")]
+    [HttpPost("SearcNVPDetails")]
     public String SearcNVPDetails(UISearchCriteria searchCriteria)
     {
         if (searchCriteria == null) throw new ArgumentNullException(nameof(searchCriteria), "searchCriteria cannot be a null reference (Nothing in VB) or empty!");
         int mNameValuePairSeqId = int.Parse(searchCriteria.searchText);
         String mRetVal = NameValuePairUtility.GetAllChildrenForParent(mNameValuePairSeqId);
         return mRetVal;
-    }   
+    }
 }
