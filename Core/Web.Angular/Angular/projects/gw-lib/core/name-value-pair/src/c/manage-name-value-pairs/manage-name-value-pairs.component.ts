@@ -101,8 +101,8 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   		})
   	);
   	// Get the initial child SearchCriteriaNVP from the service
-  	const mAccountTableConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
-  	this._SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mAccountTableConfig);
+  	const mSearchNVPDetailsConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
+  	this._SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mSearchNVPDetailsConfig);
   	this._SearchCriteriaNVP.payLoad.searchText = '1';
   	// Set the search child criteria to initiate search criteria changed subject
   	this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
