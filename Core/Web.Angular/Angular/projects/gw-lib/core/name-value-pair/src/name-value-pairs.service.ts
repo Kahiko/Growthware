@@ -32,6 +32,13 @@ export class NameValuePairService {
 		this._Api_Save_Parent_Name_Value_Pair = this._GWCommon.baseURL + this._ApiName + 'SaveNameValuePairParent';
 	}
 
+	
+	/**
+	 * @description Gets the name value pair parent profile from the API.
+	 *
+	 * @param {type} paramName - description of parameter
+	 * @return {type} description of return value
+	 */
 	getParentProfile(): Promise<INvpParentProfile> {
 		return new Promise<INvpParentProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
@@ -55,15 +62,18 @@ export class NameValuePairService {
 		});
 	}
 
+	/**
+	 * @description Saves the name value pair parent profile.
+	 *
+	 * @param {INvpParentProfile} profile - The parent profile to be saved
+	 * @return {Promise<INvpParentProfile>} A promise that resolves with the saved parent profile
+	 */
 	saveNameValuePairParent(profile: INvpParentProfile): Promise<INvpParentProfile> {
 		return new Promise<INvpParentProfile>((resolve, reject) => {
-			// const mQueryParameter: HttpParams = new HttpParams()
-			// 	.set('nameValuePairSeqId', this.nvpParentRow['nvpSeqId'].toString());
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
 				}),
-				// params: mQueryParameter,
 			};
 			this._HttpClient.post<INvpParentProfile>(this._Api_Save_Parent_Name_Value_Pair, profile, mHttpOptions).subscribe({
 				next: (response: INvpParentProfile) => {
@@ -77,10 +87,20 @@ export class NameValuePairService {
 		});
 	}
 
+	/**
+	 * @description Sets the name value pair parent row.
+	 * 
+	 * @param row {INvpParentProfile} The parent profile to be set as the 'nvpParentRow'.
+	 */
 	setNameValuePairParrentRow(row: INvpParentProfile): void {
 		this.nvpParentRow = JSON.parse(JSON.stringify(row));
 	}
 
+	/**
+	 * @description Sets the name value pair child row.
+	 * 
+	 * @param row {INvpChildProfile} The child profile to be set as the 'nvpChildRow'.
+	 */
 	setNameValuePairDetailRow(row: INvpChildProfile): void {
 		this.nvpChildRow = JSON.parse(JSON.stringify(row));
 	}
