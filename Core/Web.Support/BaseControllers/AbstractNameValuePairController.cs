@@ -16,6 +16,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
 {
     private CacheController m_CacheController = CacheController.Instance();
     private Logger m_Logger = Logger.Instance();
+    private string s_ParrentCacheName = "NameValuePairs";
 
     [AllowAnonymous]
     [HttpGet("GetMNameValuePair")]
@@ -46,12 +47,12 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public List<MNameValuePair> GetMNameValuePairs()
     {
-        List<MNameValuePair> mRetVal = this.m_CacheController.GetFromCache<List<MNameValuePair>>("NameValuePairs");
+        List<MNameValuePair> mRetVal = this.m_CacheController.GetFromCache<List<MNameValuePair>>(this.s_ParrentCacheName);
         if (mRetVal == null)
         {
             // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
             mRetVal = NameValuePairUtility.GetMNameValuePairs();
-            this.m_CacheController.AddToCache("NameValuePairs", mRetVal);
+            this.m_CacheController.AddToCache(this.s_ParrentCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -79,7 +80,9 @@ public abstract class AbstractNameValuePairController : ControllerBase
                 mNameValuePair.UpdatedBy = mRequestingProfile.Id;
             }
             HttpContext.Session.SetInt32("EditId", -1);
-            return Ok(NameValuePairUtility.SaveNameValuePairParent(mNameValuePair));
+            MNameValuePair mRetVal = NameValuePairUtility.SaveNameValuePairParent(mNameValuePair);
+            this.m_CacheController.RemoveFromCache(this.s_ParrentCacheName);
+            return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
     }
