@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
-// import { SearchService } from '@growthware/core/search';
+import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
 // Feature
 import { INvpParentProfile } from './name-value-pair-parent-profile.model';
 import { INvpChildProfile } from './name-value-pair-child-profile.model';
@@ -21,18 +21,19 @@ export class NameValuePairService {
 	public modalReason: string = '';
 	public nvpParentRow!: INvpParentProfile;
 	public nvpChildRow!: INvpChildProfile;
+	public parentConfigurationName = 'SearchNameValuePairs';
 
 	constructor(
 		private _GWCommon: GWCommon,
-		private _HttpClient: HttpClient, 
+		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
-		// private _SearchSvc: SearchService
-	) { 
+		private _SearchSvc: SearchService
+	) {
 		this._Api_Get_ParentProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePair';
 		this._Api_Save_Parent_Name_Value_Pair = this._GWCommon.baseURL + this._ApiName + 'SaveNameValuePairParent';
 	}
 
-	
+
 	/**
 	 * @description Gets the name value pair parent profile from the API.
 	 *
@@ -78,6 +79,7 @@ export class NameValuePairService {
 			this._HttpClient.post<INvpParentProfile>(this._Api_Save_Parent_Name_Value_Pair, profile, mHttpOptions).subscribe({
 				next: (response: INvpParentProfile) => {
 					resolve(response);
+					this.searchParentNameValuePairs();
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'saveNameValuePairParent');
@@ -85,6 +87,20 @@ export class NameValuePairService {
 				}
 			});
 		});
+	}
+
+	/**
+	 * Initial parent SearchCriteriaNVP
+	 */
+	public searchParentNameValuePairs(): void {
+		// Get the initial parent SearchCriteriaNVP
+		const mSearchColumns: Array<string> = ['Static_Name', 'Display', 'Description'];
+		const mSortColumns: Array<string> = ['Display'];
+		const mNumberOfRecords: number = 10;
+		const mSearchCriteria: ISearchCriteria = new SearchCriteria(mSearchColumns, mSortColumns, mNumberOfRecords, '', 1);
+		const mResults: SearchCriteriaNVP = new SearchCriteriaNVP(this.parentConfigurationName, mSearchCriteria);
+		// Set the search parent criteria to initiate search criteria changed subject
+		this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
 	}
 
 	/**

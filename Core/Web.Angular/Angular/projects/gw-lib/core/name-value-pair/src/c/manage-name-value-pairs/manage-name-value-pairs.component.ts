@@ -4,7 +4,7 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
 import { DataService } from '@growthware/common/services';
 import { DynamicTableBtnMethods, DynamicTableComponent, DynamicTableService } from '@growthware/core/dynamic-table';
-import { ISearchCriteria, ISearchCriteriaNVP, SearchCriteria, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
+import { ISearchCriteriaNVP, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 // import { INameValuePair } from '@growthware/common/interfaces';
@@ -43,7 +43,6 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 
   @ViewChild('dynamicTable', {static: false}) dynamicTable!: DynamicTableComponent;
 
-  parentConfigurationName = 'SearchNameValuePairs';
   _nameValuePairWindowSize: WindowSize = new WindowSize(350, 600);
 
   nameValuePairColumns: Array<string> = ['Display', 'Description'];
@@ -79,7 +78,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   ngOnInit(): void {
   	this._Subscription.add(
   		this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
-  			if(criteria.name.trim().toLowerCase() === this.parentConfigurationName.trim().toLowerCase()) {
+  			if(criteria.name.trim().toLowerCase() === this._NameValuePairService.parentConfigurationName.trim().toLowerCase()) {
   				this._SearchSvc.getResults(this._Api_Nvp_Search, criteria).then((results) => {
   					// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
   					this._NameValuePairParentDataSubject.next(results.payLoad.data);
@@ -106,15 +105,8 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   	this._SearchCriteriaNVP.payLoad.searchText = '1';
   	// Set the search child criteria to initiate search criteria changed subject
   	this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
-
-  	// Get the initial parent SearchCriteriaNVP
-  	const mSearchColumns: Array<string> = ['Static_Name', 'Display', 'Description'];
-  	const mSortColumns: Array<string> = ['Display'];
-  	const mNumberOfRecords: number = 10;
-  	const mSearchCriteria: ISearchCriteria = new SearchCriteria(mSearchColumns, mSortColumns, mNumberOfRecords, '', 1);
-  	const mResults: SearchCriteriaNVP = new SearchCriteriaNVP(this.parentConfigurationName, mSearchCriteria);
-  	// Set the search parent criteria to initiate search criteria changed subject
-  	this._SearchSvc.setSearchCriteria(mResults.name, mResults.payLoad);
+  	// Initial parent SearchCriteriaNVP
+  	this._NameValuePairService.searchParentNameValuePairs();
   }
 
   onAddClickNvpParent(): void {
@@ -150,5 +142,4 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
   	// Set the search child criteria to initiate search criteria changed subject
   	this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
   }
-
 }
