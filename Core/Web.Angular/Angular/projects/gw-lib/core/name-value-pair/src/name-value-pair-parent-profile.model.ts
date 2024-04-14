@@ -15,11 +15,3 @@ export class NvpParentProfile implements INvpParentProfile {
 	description = '';
 	status = -1;
 }
-
-// export interface MNameValuePair extends AbstractBaseModel {
-//     status: number;
-//     schemaName: string;
-//     staticName: string;
-//     display: string;
-//     description: string;
-// }
