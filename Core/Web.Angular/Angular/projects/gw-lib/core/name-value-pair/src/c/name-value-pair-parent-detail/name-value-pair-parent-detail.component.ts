@@ -130,7 +130,7 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
   }
 
   override save(): void {
-    // this.populateProfile();
+    this.onCloseModal();
   }
 
   onCloseModal(): void {
