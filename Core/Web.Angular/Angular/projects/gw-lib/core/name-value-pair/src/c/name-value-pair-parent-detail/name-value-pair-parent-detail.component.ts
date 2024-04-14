@@ -131,10 +131,10 @@ export class NameValuePairParentDetailComponent extends BaseDetailComponent impl
     this._Profile.staticName = this.controls['staticName'].getRawValue();
     this._Profile.status = this.selectedStatus;
     // console.log('NameValuePairParentDetailComponent.populateProfile', this._Profile);
-    this._ProfileSvc.saveNameValuePairParent(this._Profile);
   }
 
   override save(): void {
+    this._ProfileSvc.saveNameValuePairParent(this._Profile);
     this.onCloseModal();
   }
 
