@@ -110,9 +110,9 @@ INSERT INTO ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Stati
 	''' + CONVERT(VARCHAR,@V_Now) + '''
 )';
 			IF @P_Debug = 1 PRINT @V_Statement
-			EXECUTE dbo.sp_executesql @statement = @V_Statement
+			-- EXECUTE dbo.sp_executesql @statement = @V_Statement
 			-- Get the IDENTITY value for the row just inserted.
-			SELECT @P_NVP_DetailSeqId=SCOPE_IDENTITY()
+			EXECUTE sp_executesql  @V_Statement, N'@P_NVP_DetailSeqId INTEGER OUTPUT', @P_NVP_DetailSeqId OUTPUT
 		END
 	-- Get the Error Code for the statement just executed.
 	--PRINT 'SETTING ERROR CODE'

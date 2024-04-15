@@ -306,7 +306,7 @@ GO
 /****** Start: Procedure [ZGWSystem].[Set_Name_Value_Pair] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSystem].[Set_Name_Value_Pair]') AND type in (N'P', N'PC'))
 	BEGIN
-		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Name_ValuSet_Name_Value_Paire_Pairs] AS'
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSystem].[Set_Name_Value_Pair] AS'
 	END
 --End If
 
@@ -321,7 +321,6 @@ Usage:
 		@P_Description VARCHAR(256) = 'Just Testing the Name value Pair',
 		@P_StatusSeqId INT = 1,
 		@P_Added_Updated_By INT = 1,
-		@P_Primary_Key INT = null,
 		@P_ErrorCode int = null,
 		@P_Debug bit = 1
 
@@ -333,7 +332,6 @@ Usage:
 		@P_Description,
 		@P_StatusSeqId,
 		@P_Added_Updated_By,
-		@P_Primary_Key,
 		@P_ErrorCode,
 		@P_Debug
 */
@@ -536,7 +534,7 @@ SELECT
 	, [Updated_Date] 
 FROM ' + CONVERT(VARCHAR,@V_TableName) + '
 WHERE
-	NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId)
+	NVP_DetailSeqId = ' + CONVERT(VARCHAR,@P_NVP_DetailSeqId) + ';';
 	IF @P_Debug = 1 PRINT @V_Statement;
 	EXECUTE dbo.sp_executesql @statement = @V_Statement
 RETURN 0
@@ -656,9 +654,9 @@ INSERT INTO ' + CONVERT(VARCHAR,@V_Schema_Name) + '.' + CONVERT(VARCHAR,@V_Stati
 	''' + CONVERT(VARCHAR,@V_Now) + '''
 )';
 			IF @P_Debug = 1 PRINT @V_Statement
-			EXECUTE dbo.sp_executesql @statement = @V_Statement
 			-- Get the IDENTITY value for the row just inserted.
-			SELECT @P_NVP_DetailSeqId=SCOPE_IDENTITY()
+			SET @V_Statement = @V_Statement + '; SELECT @P_NVP_DetailSeqId = SCOPE_IDENTITY()';
+			EXECUTE sp_executesql @V_Statement, N'@P_NVP_DetailSeqId INTEGER OUTPUT', @P_NVP_DetailSeqId OUTPUT
 		END
 	-- Get the Error Code for the statement just executed.
 	--PRINT 'SETTING ERROR CODE'

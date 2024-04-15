@@ -88,7 +88,7 @@ namespace GrowthWare.DataAccess.Interfaces
         /// Saves the NVP detail.
         /// </summary>
         /// <param name="profile">The profile.</param>
-        void SaveNVPDetail(MNameValuePairDetail profile);
+        DataRow SaveNVPDetail(MNameValuePairDetail profile);
 
         /// <summary>
         /// Updates the groups.

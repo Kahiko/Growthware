@@ -6,7 +6,6 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
-using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -49,6 +48,7 @@ public static class NameValuePairUtility
         DataTable mDataTable = new DataTable();
         getNameValuePairDetails(ref mDataTable, nameValuePairSeqId);
         DataHelper.AddTotalRowsField(ref mDataTable);
+        DataHelper.SortTable(ref mDataTable, "NVP_DET_TEXT", "ASC");
         string mRetVal = DataHelper.GetJsonStringFromTable(ref mDataTable);
         return mRetVal;
     }
@@ -75,10 +75,17 @@ public static class NameValuePairUtility
         return mLinkBehaviorTypes;
     }
 
+    public static MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
+    {
+        BNameValuePairs mBNameValuePair = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
+        MNameValuePairDetail mRetVal = mBNameValuePair.SaveNameValuePairDetail(nameValuePairDetail);        
+        return mRetVal;
+    }
+
     public static MNameValuePair SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
-        BNameValuePairs mNameValuePairDetails = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
-        mNameValuePairDetails.Save(nameValuePair);
+        BNameValuePairs mBNameValuePair = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
+        mBNameValuePair.Save(nameValuePair);
         return nameValuePair;
     }
 

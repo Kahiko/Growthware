@@ -67,13 +67,16 @@ export class NameValuePairChildDetailComponent extends BaseDetailComponent imple
   ngOnInit(): void {
     this.createForm();
     this._SecuritySvc.getSecurityInfo('search_name_value_pairs').then((securityInfo: ISecurityInfo) => {  // Request #1
-      if (securityInfo != null) {                                                                       // Response Handler #1
+      if (securityInfo != null) {                                                                         // Response Handler #1
         this._SecurityInfo = securityInfo;
       }
-      return this._ProfileSvc.getChildProfile();                                                        // Request #2
+      return this._ProfileSvc.getChildProfile();                                                          // Request #2
     }).catch().then((response: INvpChildProfile) => {
-      if (response) {                                                                                   // Response Handler #2
+      if (response) {                                                                                     // Response Handler #2
         this._Profile = response;
+        if (this._Profile.nameValuePairSeqId < 1) {
+          this._Profile.nameValuePairSeqId = this._ProfileSvc.nvpParentId as number;
+        }
         // console.log('NameValuePairChildDetailComponent.ngOnInit this._Profile', this._Profile);
         this.canSave = this._SecurityInfo.mayEdit;
         if (this._ProfileSvc.modalReason === 'Add') {
@@ -119,11 +122,16 @@ export class NameValuePairChildDetailComponent extends BaseDetailComponent imple
   }
 
   override populateProfile(): void {
-    throw new Error('Method not implemented.');
+    this._Profile.text = this.controls['name'].getRawValue();
+    this._Profile.value = this.controls['value'].getRawValue();
+    this._Profile.status = this.selectedStatus;
+    this._Profile.sortOrder = this.controls['sortOrder'].getRawValue();
+    // console.log('NameValuePairParentDetailComponent.populateProfile', this._Profile);
   }
 
   override save(): void {
-    throw new Error('Method not implemented.');
+    this._ProfileSvc.saveNameValuePairChild(this._Profile);
+    this._ModalSvc.close(this._ProfileSvc.addEditModalId);
   }
 
 }

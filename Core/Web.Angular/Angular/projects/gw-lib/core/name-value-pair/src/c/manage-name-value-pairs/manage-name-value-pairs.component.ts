@@ -2,16 +2,14 @@ import { Component, OnDestroy, AfterViewInit, OnInit, ViewChild } from '@angular
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 // Library
-import { DataService } from '@growthware/common/services';
-import { DynamicTableBtnMethods, DynamicTableComponent, DynamicTableService } from '@growthware/core/dynamic-table';
+import { DynamicTableBtnMethods, DynamicTableComponent } from '@growthware/core/dynamic-table';
 import { ISearchCriteriaNVP, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
 import { LoggingService } from '@growthware/core/logging';
 import { ModalService, ModalOptions, WindowSize } from '@growthware/core/modal';
 // import { INameValuePair } from '@growthware/common/interfaces';
 // Feature
 import { NameValuePairService } from '../../name-value-pairs.service';
-import { INvpParentProfile, NvpParentProfile } from '../../name-value-pair-parent-profile.model';
-import { INvpChildProfile, NvpChildProfile } from '../../name-value-pair-child-profile.model';
+import { INvpParentProfile } from '../../name-value-pair-parent-profile.model';
 import { NameValuePairChildDetailComponent } from '../name-value-pair-child-detail/name-value-pair-child-detail.component';
 import { NameValuePairParentDetailComponent } from '../name-value-pair-parent-detail/name-value-pair-parent-detail.component';
 import { MatButtonModule } from '@angular/material/button';
@@ -37,13 +35,12 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	private _Api_Nvp_Details_Search: string = '';
 	private _SearchCriteriaNVP!: SearchCriteriaNVP;
 	private _NameValuePairParentDataSubject = new BehaviorSubject<INvpParentProfile[]>([]);
+	private _nameValuePairWindowSize: WindowSize = new WindowSize(350, 600);
 
 	activeParrentRowIndex: number = 0;
-	childConfigurationName = 'SearchNVPDetails';
+	childConfigurationName: string = '';
 
 	@ViewChild('dynamicTable', { static: false }) dynamicTable!: DynamicTableComponent;
-
-	_nameValuePairWindowSize: WindowSize = new WindowSize(350, 600);
 
 	nameValuePairColumns: Array<string> = ['Display', 'Description'];
 	readonly nameValuePairParentData$ = this._NameValuePairParentDataSubject.asObservable();
@@ -51,8 +48,6 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	nvpParentModalOptions: ModalOptions = new ModalOptions(this._NameValuePairService.addEditModalId, 'Edit NVP Parent', NameValuePairParentDetailComponent, this._nameValuePairWindowSize);
 
 	constructor(
-		private _DataSvc: DataService,
-		private _DynamicTableSvc: DynamicTableService,
 		private _ModalSvc: ModalService,
 		private _NameValuePairService: NameValuePairService,
 		private _SearchSvc: SearchService,
@@ -60,6 +55,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	) {
 		this._Api_Nvp_Search = this._Api_Name + 'SearchNameValuePairs';
 		this._Api_Nvp_Details_Search = this._Api_Name + 'SearcNVPDetails';
+		this.childConfigurationName = this._NameValuePairService.childConfigurationName;
 		// console.log('ManageNameValuePairsComponent.constructor._Api_Nvp_Details_Search', this._Api_Nvp_Details_Search);
 	}
 
@@ -83,7 +79,9 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 						// console.log('ManageNameValuePairsComponent.ngOnInit results.payLoad.data', results.payLoad.data);
 						this._NameValuePairParentDataSubject.next(results.payLoad.data);
 						this._NameValuePairService.nvpChildId = 0;
-						this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[0]);
+						const mNvpParentProfile: INvpParentProfile = this._NameValuePairParentDataSubject.getValue()[0];
+						this._NameValuePairService.nvpParentId = mNvpParentProfile.nvpSeqId;
+						this._NameValuePairService.searchChildNameValuePairs(mNvpParentProfile.nvpSeqId);
 					}).catch((error) => {
 						this._LoggingSvc.errorHandler(error, 'ManageNameValuePairsComponent', 'ngOnInit');
 					});
@@ -92,7 +90,7 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 		);
 		this._Subscription.add(
 			this._SearchSvc.searchCriteriaChanged$.subscribe((criteria: ISearchCriteriaNVP) => {
-				if (criteria.name.trim().toLowerCase() === this.childConfigurationName.trim().toLowerCase()) {
+				if (criteria.name.trim().toLowerCase() === this._NameValuePairService.childConfigurationName.trim().toLowerCase()) {
 					this._SearchSvc.getResults(this._Api_Nvp_Details_Search, criteria).then((results) => {
 						this._SearchSvc.notifySearchDataChanged(results.name, results.payLoad.data, results.payLoad.searchCriteria);
 					}).catch((error) => {
@@ -102,29 +100,33 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 			})
 		);
 		// Get the initial child SearchCriteriaNVP from the service
-		const mSearchNVPDetailsConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
-		this._SearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mSearchNVPDetailsConfig);
-		this._SearchCriteriaNVP.payLoad.searchText = '1';
-		// Set the search child criteria to initiate search criteria changed subject
-		this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
+		let mNvpParentId = this._NameValuePairService.nvpParentId;
+		if (!mNvpParentId) {
+			mNvpParentId = 1;
+		}
+		this._NameValuePairService.searchChildNameValuePairs(mNvpParentId);
 		// Initial parent SearchCriteriaNVP
 		this._NameValuePairService.searchParentNameValuePairs();
 	}
 
 	onAddClickNvpParent(): void {
-		this._NameValuePairService.setNameValuePairParrentRow(new NvpParentProfile());
+		// this._NameValuePairService.setNameValuePairParrentRow(new NvpParentProfile());
+		this._NameValuePairService.nvpParentId = -1;
 		this._NameValuePairService.modalReason = 'Add';
 		this.nvpParentModalOptions.headerText = 'Add NVP';
 		this._ModalSvc.open(this.nvpParentModalOptions);
 	}
 
 	onAddClickNvpDetail(): void {
+		this._NameValuePairService.nvpChildId = -1;
 		this.nvpChildModalOptions.headerText = 'Add NVP Detail';
 		this._ModalSvc.open(this.nvpChildModalOptions);
 	}
 
 	onEditClickNvpParent(rowIndex: number): void {
 		this.onRowClickNvpParent(rowIndex);
+		const mNameValuePairParentData = this._NameValuePairParentDataSubject.getValue()[rowIndex];
+		this._NameValuePairService.nvpParentId = mNameValuePairParentData.nvpSeqId;
 		this._NameValuePairService.modalReason = 'Edit';
 		this.nvpParentModalOptions.headerText = 'Edit NVP';
 		this._ModalSvc.open(this.nvpParentModalOptions);
@@ -133,22 +135,18 @@ export class ManageNameValuePairsComponent implements AfterViewInit, OnDestroy, 
 	onEditNvpChild(rowIndex: number): void {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		const mChildRow: any = this.dynamicTable.getRowData(rowIndex);
-		// console.log('ManageNameValuePairsComponent.onEditNvpChild mChildRow', mChildRow);
+		this._NameValuePairService.nvpParentId = parseInt(mChildRow['NVP_SEQ_ID']);
 		this._NameValuePairService.nvpChildId = parseInt(mChildRow['NVP_SEQ_DET_ID']);
-		this._NameValuePairService.setNameValuePairDetailRow(mChildRow);
 		this.nvpChildModalOptions.headerText = 'Edit NVP Detail';
 		this._ModalSvc.open(this.nvpChildModalOptions);
 	}
 
 	onRowClickNvpParent(rowIndex: number): void {
-		this._NameValuePairService.setNameValuePairParrentRow(this._NameValuePairParentDataSubject.getValue()[rowIndex]);
 		this.activeParrentRowIndex = rowIndex;
-		const mNvpChildProfile: INvpChildProfile = new NvpChildProfile();
-		mNvpChildProfile.nameValuePairSeqId = this._NameValuePairParentDataSubject.getValue()[rowIndex].nvpSeqId;
-		mNvpChildProfile.id = 1;
-		this._NameValuePairService.setNameValuePairDetailRow(mNvpChildProfile);
-		this._SearchCriteriaNVP.payLoad.searchText = this._NameValuePairParentDataSubject.getValue()[rowIndex].nvpSeqId.toString();
-		// Set the search child criteria to initiate search criteria changed subject
-		this._SearchSvc.setSearchCriteria(this._SearchCriteriaNVP.name, this._SearchCriteriaNVP.payLoad);
+		const mNvpParentProfile: INvpParentProfile = this._NameValuePairParentDataSubject.getValue()[rowIndex];
+		if (mNvpParentProfile) {
+			this._NameValuePairService.nvpParentId = mNvpParentProfile.nvpSeqId;
+			this._NameValuePairService.searchChildNameValuePairs(mNvpParentProfile.nvpSeqId);
+		}
 	}
 }

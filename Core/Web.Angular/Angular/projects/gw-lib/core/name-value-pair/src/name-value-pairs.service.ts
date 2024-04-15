@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 // Library
+import { DynamicTableService } from '@growthware/core/dynamic-table';
 import { GWCommon } from '@growthware/common/services';
 import { LoggingService } from '@growthware/core/logging';
 import { ISearchCriteria, SearchCriteria, SearchCriteriaNVP, SearchService } from '@growthware/core/search';
@@ -16,16 +17,18 @@ export class NameValuePairService {
 	private _ApiName: string = 'GrowthwareNameValuePair/';
 	private _Api_Get_ParentProfile: string = '';
 	private _Api_Get_ChildProfile: string = '';
+	private _Api_Save_ChildProfile: string = '';
 	private _Api_Save_Parent_Name_Value_Pair: string = '';
 
 	public addEditModalId: string = 'AddOrEditNVPParrent';
 	public modalReason: string = '';
-	public nvpParentRow!: INvpParentProfile;
-	public nvpChildRow!: INvpChildProfile;
 	public nvpChildId: number = 0;
+	public nvpParentId: number = 0;
+	public childConfigurationName = 'SearchNVPDetails';
 	public parentConfigurationName = 'SearchNameValuePairs';
 
 	constructor(
+		private _DynamicTableSvc: DynamicTableService,
 		private _GWCommon: GWCommon,
 		private _HttpClient: HttpClient,
 		private _LoggingSvc: LoggingService,
@@ -33,17 +36,14 @@ export class NameValuePairService {
 	) {
 		this._Api_Get_ChildProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePairDetail';
 		this._Api_Get_ParentProfile = this._GWCommon.baseURL + this._ApiName + 'GetMNameValuePair';
+		this._Api_Save_ChildProfile = this._GWCommon.baseURL + this._ApiName + 'SaveNameValuePairDetail';
 		this._Api_Save_Parent_Name_Value_Pair = this._GWCommon.baseURL + this._ApiName + 'SaveNameValuePairParent';
 	}
 
 	getChildProfile(): Promise<INvpChildProfile> {
-		// console.log('NameValuePairService.getChildProfile nvpParentRow', this.nvpParentRow);
-		// console.log('NameValuePairService.getChildProfile nvpChildRow', this.nvpChildRow);
-		// console.log('NameValuePairService.getChildProfile nvpSeqId', this.nvpParentRow.nvpSeqId);
-		// console.log('NameValuePairService.getChildProfile nvpDetailSeqId', this.nvpChildId);
 		return new Promise<INvpChildProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
-				.set('nvpSeqId', this.nvpParentRow.nvpSeqId.toString())
+				.set('nvpSeqId', this.nvpParentId.toString())
 				.set('nvpDetailSeqId', this.nvpChildId.toString());
 			const mHttpOptions = {
 				headers: new HttpHeaders({
@@ -73,7 +73,7 @@ export class NameValuePairService {
 	getParentProfile(): Promise<INvpParentProfile> {
 		return new Promise<INvpParentProfile>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
-				.set('nameValuePairSeqId', this.nvpParentRow['nvpSeqId'].toString());
+				.set('nameValuePairSeqId', this.nvpParentId.toString());
 			const mHttpOptions = {
 				headers: new HttpHeaders({
 					'Content-Type': 'application/json',
@@ -87,6 +87,26 @@ export class NameValuePairService {
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'getParentProfile');
+					reject(error);
+				}
+			});
+		});
+	}
+
+	saveNameValuePairChild(profile: INvpChildProfile): Promise<INvpChildProfile> {
+		return new Promise<INvpChildProfile>((resolve, reject) => {
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+			};
+			this._HttpClient.post<INvpChildProfile>(this._Api_Save_ChildProfile, profile, mHttpOptions).subscribe({
+				next: (response: INvpChildProfile) => {
+					this.searchChildNameValuePairs(response.nameValuePairSeqId);
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'saveNameValuePairChild');
 					reject(error);
 				}
 			});
@@ -109,7 +129,11 @@ export class NameValuePairService {
 			this._HttpClient.post<INvpParentProfile>(this._Api_Save_Parent_Name_Value_Pair, profile, mHttpOptions).subscribe({
 				next: (response: INvpParentProfile) => {
 					resolve(response);
-					this.searchParentNameValuePairs();
+					let mNvpParentId = this.nvpParentId;
+					if (!mNvpParentId) {
+						mNvpParentId = 1;
+					}
+					this.searchChildNameValuePairs(mNvpParentId);
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'NameValuePairService', 'saveNameValuePairParent');
@@ -117,6 +141,17 @@ export class NameValuePairService {
 				}
 			});
 		});
+	}
+
+	/**
+	 * @description A function to search child name-value pairs.
+	 */
+	public searchChildNameValuePairs(nvpParentId: number): void {
+		const mSearchNVPDetailsConfig = this._DynamicTableSvc.getTableConfiguration(this.childConfigurationName);
+		const mSearchCriteriaNVP = this._DynamicTableSvc.getSearchCriteriaFromConfig(this.childConfigurationName, mSearchNVPDetailsConfig);
+		mSearchCriteriaNVP.payLoad.searchText = nvpParentId.toString();
+		// Set the search child criteria to initiate search criteria changed subject
+		this._SearchSvc.setSearchCriteria(mSearchCriteriaNVP.name, mSearchCriteriaNVP.payLoad);		
 	}
 
 	/**
@@ -138,17 +173,17 @@ export class NameValuePairService {
 	 * 
 	 * @param row {INvpParentProfile} The parent profile to be set as the 'nvpParentRow'.
 	 */
-	setNameValuePairParrentRow(row: INvpParentProfile): void {
-		this.nvpParentRow = JSON.parse(JSON.stringify(row));
-	}
+	// setNameValuePairParrentRow(row: INvpParentProfile): void {
+	// 	this.nvpParentRow = JSON.parse(JSON.stringify(row));
+	// }
 
 	/**
 	 * @description Sets the name value pair child row.
 	 * 
 	 * @param row {INvpChildProfile} The child profile to be set as the 'nvpChildRow'.
 	 */
-	setNameValuePairDetailRow(row: INvpChildProfile): void {
-		this.nvpChildRow = JSON.parse(JSON.stringify(row));
-	}
+	// setNameValuePairDetailRow(row: INvpChildProfile): void {
+	// 	this.nvpChildRow = JSON.parse(JSON.stringify(row));
+	// }
 
 }

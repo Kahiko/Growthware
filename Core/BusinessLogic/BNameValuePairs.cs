@@ -188,10 +188,16 @@ namespace GrowthWare.BusinessLogic
         /// </summary>
         /// <param name="nameValuePairDetailProfile">The profile.</param>
         /// <returns>System.Int32.</returns>
-        public void SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetailProfile)
+        public MNameValuePairDetail SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetailProfile)
         {
             m_DNameValuePairs.DetailProfile = nameValuePairDetailProfile;
-            if (DatabaseIsOnline()) m_DNameValuePairs.SaveNVPDetail(nameValuePairDetailProfile);
+            MNameValuePairDetail mRetVal = null;
+            if (DatabaseIsOnline()) 
+            {
+                DataRow mDataRow = m_DNameValuePairs.SaveNVPDetail(nameValuePairDetailProfile);
+                if (mDataRow != null) mRetVal = new MNameValuePairDetail(mDataRow);
+            }
+            return mRetVal;
         }
 
         /// <summary>

@@ -73,6 +73,44 @@ public abstract class AbstractNameValuePairController : ControllerBase
     }
 
     [Authorize("search_name_value_pairs")]
+    [HttpPost("SaveNameValuePairDetail")]
+    public ActionResult<MNameValuePairDetail> SaveNameValuePairDetail(MNameValuePairDetail nameValuePairDetail)
+    {
+        if (nameValuePairDetail.Id == -1 || nameValuePairDetail.Id == HttpContext.Session.GetInt32("EditId"))
+        {
+            MNameValuePairDetail mNameValuePairDetail = nameValuePairDetail;
+            MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
+            MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+            if (mNameValuePairDetail.Id != -1)
+            {
+                MNameValuePairDetail mOriginal = NameValuePairUtility.GetNameValuePairDetail(nameValuePairDetail.NameValuePairSeqId, nameValuePairDetail.Id);
+                mNameValuePairDetail.AddedDate = mOriginal.AddedDate;
+                mNameValuePairDetail.AddedBy = mOriginal.AddedBy;
+                mNameValuePairDetail.UpdatedDate = DateTime.Now;
+                mNameValuePairDetail.UpdatedBy = mRequestingProfile.Id;
+            }
+            else
+            {
+                mNameValuePairDetail.AddedDate = DateTime.Now;
+                mNameValuePairDetail.AddedBy = mRequestingProfile.Id;
+            }
+            try
+            {
+                MNameValuePairDetail mRetVal = NameValuePairUtility.SaveNameValuePairDetail(mNameValuePairDetail);
+                HttpContext.Session.SetInt32("EditId", -1);
+                return Ok(mRetVal);                
+            }
+            catch (System.Exception ex)
+            {
+                Exception mException = new Exception("Error Saving NameValuePairDetail", ex);
+                this.m_Logger.Error(mException);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error Saving NameValuePairDetail");
+            }
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
+    [Authorize("search_name_value_pairs")]
     [HttpPost("SaveNameValuePairParent")]
     public ActionResult<MNameValuePair> SaveNameValuePairParent(MNameValuePair nameValuePair)
     {
