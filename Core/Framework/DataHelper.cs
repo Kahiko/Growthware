@@ -233,15 +233,18 @@ namespace GrowthWare.Framework
             DataView mDataView = dataTable.DefaultView;
             NaturalComparer mNaturalComparer = new NaturalComparer();
             DataTable mNewDataTable = null;
-            if (direction.ToUpperInvariant() == "ASC")
+            if (dataTable != null && dataTable.Rows != null && dataTable.Rows.Count > 0)
             {
-                mNewDataTable = mDataView.Table.AsEnumerable().OrderBy(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
+                if (direction.Equals("ASC", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    mNewDataTable = mDataView.Table.AsEnumerable().OrderBy(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
+                }
+                else 
+                {
+                    mNewDataTable = mDataView.Table.AsEnumerable().OrderByDescending(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
+                }
+                dataTable = mNewDataTable.Copy();
             }
-            else 
-            {
-                mNewDataTable = mDataView.Table.AsEnumerable().OrderByDescending(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
-            }
-            dataTable = mNewDataTable.Copy();
         }
     }
 }
