@@ -218,5 +218,30 @@ namespace GrowthWare.Framework
             }
             return mRetVal;
         }
+
+        /// <summary>
+        /// Sorts the table based on the column and direction.
+        /// </summary>
+        /// <param name="dataView">A reverance to your data table</param>
+        /// <param name="string">The column to sort on</param>
+        /// <param name="direction">The direction to sort on ASC or DESC</param>
+        /// <returns>Updates your dataTable</returns>
+        /// <remarks>This not generic enough, should expand on it later</remarks>
+        public static void SortTable(ref DataTable dataTable, string column, string direction)
+        {
+            // TODO: Added multiple column sort support
+            DataView mDataView = dataTable.DefaultView;
+            NaturalComparer mNaturalComparer = new NaturalComparer();
+            DataTable mNewDataTable = null;
+            if (direction.ToUpperInvariant() == "ASC")
+            {
+                mNewDataTable = mDataView.Table.AsEnumerable().OrderBy(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
+            }
+            else 
+            {
+                mNewDataTable = mDataView.Table.AsEnumerable().OrderByDescending(x => x.Field<string>(column), mNaturalComparer).CopyToDataTable();
+            }
+            dataTable = mNewDataTable.Copy();
+        }
     }
 }
