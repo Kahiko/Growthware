@@ -59,7 +59,7 @@
     "Development_Issuer": "https://localhost:5001",
     "Development_LDAP_Domain": "YourDomain",
     "Development_LDAP_Server": "LDAP://ad.YourDomain.???",
-    "Development_Log_Path": "D:/Development/Growthware/Net_Core/Web.Angular/Logs/",
+    "Development_Log_Path": "D:/Development/Growthware/Net_Core/Web.Api/Logs/",
     "Development_Log_Priority": "debug",
     "Development_Log_Retention": "5",
     "Development_JWT_Refresh_Cookie_TTL_Days": "7",
