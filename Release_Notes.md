@@ -6,7 +6,7 @@
 - ???
 
 ### Improvements
-- Split Web.Angular into Web.Api and Web.Angular
+- Split Web.Angular into Web.Api and Web.Angular, removed all .Net code/items
 
 ### Bug Fixes
 - ??
