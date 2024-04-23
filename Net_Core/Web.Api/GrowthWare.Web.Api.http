@@ -1,6 +1,6 @@
 @Api_HostAddress = http://localhost:5000
 
-GET {{Api_HostAddress}}/weatherforecast/
+GET {{Api_HostAddress}}/GrowthwareAPI/GetAppSettings/
 Accept: application/json
 
 ###
