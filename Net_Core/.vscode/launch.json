@@ -136,11 +136,11 @@
             "name": "API-Watch",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "Angular-Web-Build-Watch",
+            "preLaunchTask": "Angular-Web-Build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/Web.Angular/bin/Debug/net8.0/Growthware.Web.Angular.dll",
+            "program": "${workspaceFolder}/Web.Api/bin/Debug/net8.0/GrowthWare.Web.Api.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/Web.Angular",
+            "cwd": "${workspaceFolder}/Web.Api",
             "stopAtEntry": false,
             "internalConsoleOptions": "openOnSessionStart",
             "launchBrowser": {
@@ -150,7 +150,7 @@
                 "ASPNETCORE_ENVIRONMENT": "Development"
             },
             "sourceFileMap": {
-                "/Views": "${workspaceFolder}/Web.Angular"
+                "/Views": "${workspaceFolder}/Web.Api"
             }
         },
         {

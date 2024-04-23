@@ -92,6 +92,19 @@
                 "cwd": "${workspaceFolder}/Web.Angular"
             }
             
+        },
+        {
+            "label": "Build-Web.Api",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "build",
+                "${workspaceFolder}/GrowthwareCore.sln",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
         }
     ]
 }
