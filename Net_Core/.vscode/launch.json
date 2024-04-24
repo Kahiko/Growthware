@@ -185,6 +185,12 @@
             "sourceMapPathOverrides": {
               "webpack:///./*": "${webRoot}/*"
             }
+        },
+        {
+            "name": "Web.Api [http]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}\\Web.Api\\GrowthWare.Web.Api.csproj"
         }
     ]
 }
