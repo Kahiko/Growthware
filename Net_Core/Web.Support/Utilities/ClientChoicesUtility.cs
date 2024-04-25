@@ -29,6 +29,7 @@ public static class ClientChoicesUtility
             SessionController.AddToSession(MClientChoices.SessionName, value);
             return;
         }
+        SessionController.AddToSession(MClientChoices.SessionName, value);
         m_CacheController.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
     }
 

@@ -330,18 +330,19 @@ export class AccountService extends BaseService {
 	 */
 	refreshToken(): Observable<IAuthenticationResponse> {
 		// 1.) get the refresh token response
-		return this._HttpClient.post<IAccountInformation>(this._Api_RefreshToken, {}, { withCredentials: true })
+		return this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_RefreshToken, {}, { withCredentials: true })
 			.pipe(map((response) => {
 				// 2.) update information from the response
-				sessionStorage.setItem('jwt', response.authenticationResponse.jwtToken);
-				this._AuthenticationResponse = response.authenticationResponse;
-				this._ClientChoices = response.clientChoices;
-				this._AccountInformationSubject.next(response);
+				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
+				this._AuthenticationResponse = mAccountInformation.authenticationResponse;
+				this._ClientChoices = mAccountInformation.clientChoices;
+				this._AccountInformationSubject.next(mAccountInformation);
 				this.triggerMenuUpdate();
 				// 3.) start the refresh token timer
 				this.startRefreshTokenTimer();
 				// 4.) return the authentication response
-				return response.authenticationResponse;
+				return mAccountInformation.authenticationResponse;
 			}));
 	}
 

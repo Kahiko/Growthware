@@ -11,4 +11,5 @@
 
 ### Bug Fixes
 - Fixed AuthorizeAttribute.OnAuthorization from getting a null result when getting MAccountProfile
-- Fixed the default-header.component displaying the Authenticated drop down when the account is blank
+- Fixed the default-header.component displaying the Authenticated drop down when it shouldn't
+- Fixed explicit-any in default-header.component.ts

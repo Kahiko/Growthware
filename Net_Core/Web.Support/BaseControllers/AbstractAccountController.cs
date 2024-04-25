@@ -32,6 +32,7 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
         AuthenticationResponse mRetVal = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mRetVal.RefreshToken);
+        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
         UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
         return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
@@ -307,6 +308,7 @@ public abstract class AbstractAccountController : ControllerBase
         }
         AccountUtility.Logoff(AccountUtility.CurrentProfile.Account, mRefreshToken, ipAddress());
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
+        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
         CryptoUtility.TryEncrypt(mAccountProfile.Password, out string mPassword, (EncryptionType)SecurityEntityUtility.CurrentProfile.EncryptionType);
         return Authenticate(mAccountProfile.Account, mPassword);
     }
@@ -324,26 +326,29 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> RefreshToken()
     {
         string mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
-        AuthenticationResponse mRetVal = null;
+        AuthenticationResponse mAuthenticationResponse = null;
+        Tuple<AuthenticationResponse, UIAccountChoices> mRetVal = null;
         if (mRefreshToken != null)
         {
-            mRetVal = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-            if(!mRetVal.Account.Equals(AccountUtility.AnonymousAccount))
+            mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
+            if(!mAuthenticationResponse.Account.Equals(AccountUtility.AnonymousAccount))
             {
-                setTokenCookie(mRetVal.RefreshToken);
+                setTokenCookie(mAuthenticationResponse.RefreshToken);
             } 
             else 
             {
                 Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
             }
+            ClientChoicesUtility.SynchronizeContext(mAuthenticationResponse.Account);
+            mRetVal = Tuple.Create(mAuthenticationResponse, new UIAccountChoices(ClientChoicesUtility.CurrentState));
             return Ok(mRetVal);
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
-        mRetVal = new AuthenticationResponse(mAccountProfile);
-        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
+        mAuthenticationResponse = new AuthenticationResponse(mAccountProfile);
         UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
-        return Ok(Tuple.Create(mRetVal, mAccountChoice));
+        mRetVal = Tuple.Create(mAuthenticationResponse, mAccountChoice);
+        return Ok(mRetVal);
     }
 
     /// <summary>

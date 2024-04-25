@@ -1,7 +1,8 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-
+// Angular Material
+import { MatDrawer } from '@angular/material/sidenav';
 // Library
 import { AccountService, IAccountInformation } from '@growthware/core/account';
 import { GWCommon } from '@growthware/common/services';
@@ -22,7 +23,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
 	isAuthenticated: boolean = false;
 	version: string = '';
 
-  @Input() sidenav: any;
+  @Input() sidenav!: MatDrawer;
 
   constructor(
     private _AccountSvc: AccountService,
@@ -44,7 +45,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   	);
   	this._Subscription.add(
   		this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-  			this.isAuthenticated = !this._GWCommon.isNullOrEmpty(val.authenticationResponse.account) && (val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase());
+  			this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
   			this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
   		})
   	);
