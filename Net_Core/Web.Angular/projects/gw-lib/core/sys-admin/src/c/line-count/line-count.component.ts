@@ -35,7 +35,7 @@ export class LineCountComponent implements OnInit {
 		excludePattern.push('jquery.unobtrusive');
 		excludePattern.push('angular');
 		this.countInfo.excludePattern = excludePattern.join(', ');
-		this.countInfo.theDirectory = 'D:/Development/Growthware/Core';
+		this.countInfo.theDirectory = 'D:/Development/Growthware/Net_Core';
 	}
 
 	onBtnCount() {
