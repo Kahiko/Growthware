@@ -81,11 +81,11 @@
     ],
     "compounds": [
         {
-            "name": "1.) API + Chrome",
+            "name": "1.) Debug w/Chrome",
             "configurations": ["Web.Api", "Start NodeJS", "PWA Chrome"]
         },
         {
-            "name": "2.) API + Edge",
+            "name": "2.) Debug w/Edge",
             "configurations": ["Web.Api", "Start NodeJS", "PWA Edge"]
         }       
     ]
