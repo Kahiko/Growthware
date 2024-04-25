@@ -434,7 +434,7 @@ public static class AccountUtility
     }
 
     /// <summary>
-    /// Removes thhe menu and or other information from the session for the given account.
+    /// Removes menu information from the session for the given account.
     /// </summary>
     /// <param name="forAccount"></param>
     /// <notes>Does not remove account information from session use remmoveFromCacheOrSession.</notes>
@@ -442,7 +442,7 @@ public static class AccountUtility
     {
         foreach (MenuType mMenuType in Enum.GetValues(typeof(MenuType)))
         {
-            string mMenuName = mMenuType.ToString() + "_" + forAccount + "_Menu";
+            string mMenuName = mMenuType.ToString() + "_" + forAccount;
             removeFromCacheOrSession(forAccount, mMenuName + "_Menu");
             removeFromCacheOrSession(forAccount, mMenuName + "_Menu_Data");
         }

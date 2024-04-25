@@ -14,3 +14,4 @@
 - Fixed AuthorizeAttribute.OnAuthorization from getting a null result when getting MAccountProfile
 - Fixed the default-header.component displaying the Authenticated drop down when it shouldn't
 - Fixed explicit-any in default-header.component.ts
+- Fixed "Favorite" menu item not updating when selecting a new "Favorite Link:" in "Select Preferences"
