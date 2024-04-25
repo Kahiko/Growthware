@@ -102,7 +102,7 @@ export class SelectPreferencesComponent implements OnDestroy, OnInit {
 				this._LoggingSvc.toast('Client choices saved', 'Save client choices', LogLevel.Success);
 			});
 		}
-		console.log('clientChoices', this.clientChoices);
+		// console.log('clientChoices', this.clientChoices);
 	}
 
 	private populateForm(): void {
