@@ -26,12 +26,12 @@
             "problemMatcher": "$msCompile"
         },
         {
-            "label": "Angular-Web-Build",
+            "label": "Web.Api-Build",
             "command": "dotnet",
             "type": "process",
             "args": [
                 "build",
-                "${workspaceFolder}/Web.Angular/Growthware.Web.Angular.csproj",
+                "${workspaceFolder}/Web.Api/GrowthWare.Web.Api.csproj",
                 "/property:GenerateFullPaths=true",
                 "/consoleloggerparameters:NoSummary"
             ],
@@ -77,7 +77,7 @@
         },        
         {
             "label": "Angular-Watch",
-            "dependsOn": "Angular-Web-Build",
+            "dependsOn": "Web.Api-Build",
             "command": "dotnet",
             "type": "process",
             "args": [
