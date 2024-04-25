@@ -44,7 +44,7 @@ export class DefaultHeaderComponent implements OnDestroy, OnInit {
   	);
   	this._Subscription.add(
   		this._AccountSvc.accountInformationChanged$.subscribe((val: IAccountInformation) => {
-  			this.isAuthenticated = val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase();
+  			this.isAuthenticated = !this._GWCommon.isNullOrEmpty(val.authenticationResponse.account) && (val.authenticationResponse.account.toLowerCase() != this._AccountSvc.anonymous.toLowerCase());
   			this.accountName = this._GWCommon.formatData(val.authenticationResponse.account, 'text:28');
   		})
   	);
