@@ -253,15 +253,14 @@ export class AccountService extends BaseService {
    */
 	public async logIn(account: string, password: string, silent: boolean = false): Promise<boolean> {
 		/**
-	 * 1.) Authenticate the account
-	 * on Success:
-	 *  1.) Get the client choices
-	 *  2.) Notify subscribers that the AuthenticationResponse and ClientChoices have changed
-	 *  3.) Start the refresh token timer
-	 *  4.) Navigate to the appropriate page
-	 * on Failure:
-	 *  1.) Navigate to the appropriate page
-	 */
+		 * 1.) Authenticate the account
+		 * on Success:
+		 *  1.) Notify subscribers that the AuthenticationResponse and ClientChoices have changed
+		 *  2.) Start the refresh token timer
+		 *  3.) Navigate to the appropriate page
+		 * on Failure:
+		 *  1.) Navigate to the appropriate page
+		 */
 		return new Promise<boolean>((resolve, reject) => {
 			this.authenticate(account, password).then((authenticationResponse: IAuthenticationResponse) => {
 				this.getClientChoices().then((clientChoices: IClientChoices) => {
