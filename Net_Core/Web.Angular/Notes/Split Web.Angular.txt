@@ -1,0 +1,48 @@
+git reset --hard origin/3_2_0
+mkdir Net_Framework
+git mv CS Net_Framework
+git commit -m "Moved CS folder from ./ to Net_Framework"
+git mv ExternalDLLs Net_Framework
+git commit -m "Moved ExternalDLLs folder from ./ to Net_Framework"
+git mv GrowthWareDLLs Net_Framework
+git commit -m "Moved GrowthWareDLLs folder from ./ to Net_Framework"
+git mv SQLServer Net_Framework
+git commit -m "Moved SQLServer folder from ./ to Net_Framework"
+git mv ThirdParty Net_Framework
+git commit -m "Moved ThirdParty folder from ./ to Net_Framework"
+git mv VB Net_Framework
+git commit -m "Moved VB folder from ./ to Net_Framework"
+
+git push -u origin 3_2_0
+
+git mv "Angular Library Folder Structure.md" Web.Angular\Documentation
+git mv "Build sizes - 1 - Initial.txt" Web.Angular\Notes
+git mv "Create Growthware.Web.Angular.short.txt" Web.Angular\Notes
+git mv "Create Web.Angular (Growthware).txt" Web.Angular\Notes
+git mv "Create Web.Angular.txt" Web.Angular\Notes
+git mv "Generate Angular.txt" Web.Angular\Documentation
+git mv gw-frontend-Dependency-Graph.png Web.Angular\Documentation
+git mv "Lazy loading notes.txt" Web.Angular\Notes
+git mv "Library architecture.txt" Web.Angular\Notes
+git mv "No Unused Locals.txt" Web.Angular\Notes
+git mv "Testing Notes.txt" Web.Angular\Notes
+git mv "Update from 14 to 16.txt" Web.Angular\Notes
+git mv "Update from 16 to 17.txt" Web.Angular\Notes
+
+git reset --hard origin/4_0_0
+dotnet new webapi --use-controllers -o GrowthWare.Web.Api
+rename GrowthWare.Web.Api Web.Api
+cd Web.Api
+dotnet dev-certs https --trust
+
+dotnet run --launch-profile https
+
+What is the syntax to move a GIT folder from Web.Angular\Controllers to to Web.Api\Controllers without loosing history on a windows host
+rmdir /s/q Web.Api\Controllers
+git mv Web.Angular/Controllers Web.Api/
+git commit -m "Moved Controllers folder from Web.Angular to Web.Api"
+
+What is the GIT syntac to move the Angular directory in Web.Angular\Angular up one level
+cd D:\Development\Growthware\Net_Core\Web.Angular\Angular
+for /f %f in ('dir /b') do git mv %f ../
+git commit -m "Moved Web.Angular/Angular to Web.Angular"
