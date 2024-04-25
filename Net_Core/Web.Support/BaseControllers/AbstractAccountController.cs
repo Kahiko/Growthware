@@ -10,6 +10,8 @@ using GrowthWare.Web.Support.Utilities;
 using GrowthWare.Framework.Enumerations;
 using System.Data;
 using System.Linq;
+using System.Net;
+using System.Net.Sockets;
 
 namespace GrowthWare.Web.Support.BaseControllers;
 
@@ -288,10 +290,72 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns></returns>
     private string ipAddress()
     {
-        if (Request.Headers.ContainsKey("X-Forwarded-For"))
-            return Request.Headers["X-Forwarded-For"];
-        else
-            return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        string mRetVal = string.Empty;
+        string mIpAddress = getRemoteHostIpAddressUsingRemoteIpAddress();
+        if (!string.IsNullOrEmpty(mIpAddress)) mRetVal = mIpAddress;
+        mIpAddress = getRemoteHostIpAddressUsingXForwardedFor();
+        if (!string.IsNullOrEmpty(mIpAddress)) mRetVal = mIpAddress;
+        mIpAddress = getRemoteHostIpAddressUsingXRealIp();
+        if (!string.IsNullOrEmpty(mIpAddress)) mRetVal = mIpAddress;
+
+        return mRetVal;
+    }
+
+    private string getRemoteHostIpAddressUsingRemoteIpAddress()
+    {
+        if(HttpContext.Connection.RemoteIpAddress != null) return HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+        return string.Empty;
+    }
+
+    private string getRemoteHostIpAddressUsingXForwardedFor()
+    {
+        IPAddress? remoteIpAddress = null;
+        var forwardedFor = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
+
+        if (!string.IsNullOrEmpty(forwardedFor))
+        {
+            var ips = forwardedFor.Split(',', StringSplitOptions.RemoveEmptyEntries)
+                                  .Select(s => s.Trim());
+
+            foreach (var ip in ips)
+            {
+                if (IPAddress.TryParse(ip, out var address) &&
+                    (address.AddressFamily is AddressFamily.InterNetwork
+                     or AddressFamily.InterNetworkV6))
+                {
+                    remoteIpAddress = address;
+                    break;
+                }
+            }
+        }
+        if(remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
+        return string.Empty;
+    }
+
+    private string getRemoteHostIpAddressUsingXRealIp()
+    {
+        IPAddress? remoteIpAddress = null;
+        var xRealIpExists = HttpContext.Request.Headers.TryGetValue("X-Real-IP", out var xRealIp);
+
+        if (xRealIpExists)
+        {
+            if (!IPAddress.TryParse(xRealIp, out IPAddress? address))
+            {
+                return remoteIpAddress.MapToIPv4().ToString();
+            }
+
+            var isValidIP = (address.AddressFamily is AddressFamily.InterNetwork
+                             or AddressFamily.InterNetworkV6);
+
+            if (isValidIP)
+            {
+                remoteIpAddress = address;
+            }
+
+            return remoteIpAddress.MapToIPv4().ToString();
+        }
+        if(remoteIpAddress != null) return remoteIpAddress.MapToIPv4().ToString();
+        return string.Empty;
     }
 
     /// <summary>
@@ -331,11 +395,11 @@ public abstract class AbstractAccountController : ControllerBase
         if (mRefreshToken != null)
         {
             mAuthenticationResponse = AccountUtility.RefreshToken(mRefreshToken, ipAddress());
-            if(!mAuthenticationResponse.Account.Equals(AccountUtility.AnonymousAccount))
+            if (!mAuthenticationResponse.Account.Equals(AccountUtility.AnonymousAccount))
             {
                 setTokenCookie(mAuthenticationResponse.RefreshToken);
-            } 
-            else 
+            }
+            else
             {
                 Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
             }
@@ -360,7 +424,7 @@ public abstract class AbstractAccountController : ControllerBase
     public IActionResult RevokeToken(string token)
     {
         // TODO: For future use, not currently being used!
-        
+
         // accept token from request body or cookie
         var mToken = token ?? Request.Cookies["refreshToken"];
 
