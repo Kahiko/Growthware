@@ -91,9 +91,9 @@ export class AccountService extends BaseService {
 				}),
 				params: mQueryParameter,
 			};
-			this._HttpClient.post<IAuthenticationResponse>(this._Api_Authenticate, null, mHttpOptions).subscribe({
-				next: (authenticationResponse: IAuthenticationResponse) => {
-					resolve(authenticationResponse);
+			this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_Authenticate, null, mHttpOptions).subscribe({
+				next: (response) => {
+					resolve(response.item1);
 				},
 				error: (error) => {
 					if (error.status && error.status === 403) {
@@ -304,22 +304,20 @@ export class AccountService extends BaseService {
 				'Content-Type': 'application/json',
 			})
 		};
-		this._HttpClient.post<IAuthenticationResponse>(this._Api_Logoff, mHttpOptions).subscribe({
-			next: (authenticationResponse: IAuthenticationResponse) => {
+		this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_Logoff, mHttpOptions).subscribe({
+			next: (response) => {
 				// console.log('logout.authenticationResponse', authenticationResponse);
-				sessionStorage.setItem('jwt', authenticationResponse.jwtToken);
-				this.getClientChoices().then((clientChoices: IClientChoices) => {
-					const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
-					this._AuthenticationResponse = authenticationResponse;
-					this._ClientChoices = clientChoices;
-					this._AccountInformationSubject.next(mAccountInformation);
-					this.triggerMenuUpdate();
-					if (!slient) {
-						this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
-					}
-					this._Router.navigate(['generic_home']);
-					this.stopRefreshTokenTimer();
-				});
+				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
+				this._AuthenticationResponse = mAccountInformation.authenticationResponse;
+				this._ClientChoices = mAccountInformation.clientChoices;
+				this._AccountInformationSubject.next(mAccountInformation);
+				this.triggerMenuUpdate();
+				if (!slient) {
+					this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
+				}
+				this._Router.navigate(['generic_home']);
+				this.stopRefreshTokenTimer();
 			},
 			error: (error) => {
 				this._LoggingSvc.errorHandler(error, 'AccountService', 'logout');
@@ -329,28 +327,24 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Refreshes the authentication token.
-   *
-   * @return {Observable<IAuthenticationResponse>} The authentication response
-   */
+	 * Refreshes the authentication token.
+	 *
+	 * @return {Observable<IAuthenticationResponse>} The authentication response
+	 */
 	refreshToken(): Observable<IAuthenticationResponse> {
-		return this._HttpClient.post<IAuthenticationResponse>(this._Api_RefreshToken, {}, { withCredentials: true })
-			.pipe(map((authenticationResponse) => {
-				sessionStorage.setItem('jwt', authenticationResponse.jwtToken);
-				// 1.) get the client choices from the server
-				this.getClientChoices().then((clientChoices: IClientChoices) => {
-					// console.log('AccountService.refreshFromToken.authenticationResponse', authenticationResponse);
-					const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
-					this._AuthenticationResponse = authenticationResponse;
-					this._ClientChoices = clientChoices;
-					this._AccountInformationSubject.next(mAccountInformation);
-					this.triggerMenuUpdate();
-					// 2.) start the refresh token timer
-					this.startRefreshTokenTimer();
-
-				});
-				// 3.) return the authentication response
-				return authenticationResponse;
+		// 1.) get the refresh token response
+		return this._HttpClient.post<IAccountInformation>(this._Api_RefreshToken, {}, { withCredentials: true })
+			.pipe(map((response) => {
+				// 2.) update information from the response
+				sessionStorage.setItem('jwt', response.authenticationResponse.jwtToken);
+				this._AuthenticationResponse = response.authenticationResponse;
+				this._ClientChoices = response.clientChoices;
+				this._AccountInformationSubject.next(response);
+				this.triggerMenuUpdate();
+				// 3.) start the refresh token timer
+				this.startRefreshTokenTimer();
+				// 4.) return the authentication response
+				return response.authenticationResponse;
 			}));
 	}
 

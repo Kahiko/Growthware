@@ -27,12 +27,13 @@ public abstract class AbstractAccountController : ControllerBase
     /// <returns></returns>
     [AllowAnonymous]
     [HttpPost("Authenticate")]
-    public ActionResult<AuthenticationResponse> Authenticate(string account, string password)
+    public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> Authenticate(string account, string password)
     {
         MAccountProfile mAccountProfile = AccountUtility.Authenticate(account, password, ipAddress());
         AuthenticationResponse mRetVal = new AuthenticationResponse(mAccountProfile);
         setTokenCookie(mRetVal.RefreshToken);
-        return Ok(mRetVal);
+        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
+        return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 
     /// <summary>
@@ -297,7 +298,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// </summary>
     /// <returns></returns>
     [HttpPost("Logoff")]
-    public ActionResult<AuthenticationResponse> Logoff()
+    public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> Logoff()
     {
         string mRefreshToken = Request.Cookies["refreshToken"];
         if (mRefreshToken == null)
@@ -320,7 +321,7 @@ public abstract class AbstractAccountController : ControllerBase
     /// is the mechanism by which the account is authenticated at a later date.
     /// </remarks>
     [HttpPost("RefreshToken")]
-    public ActionResult<AuthenticationResponse> RefreshToken()
+    public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> RefreshToken()
     {
         string mRefreshToken = Request.Cookies[ConfigSettings.JWT_Refresh_CookieName];
         AuthenticationResponse mRetVal = null;
@@ -339,8 +340,10 @@ public abstract class AbstractAccountController : ControllerBase
         }
         MAccountProfile mAccountProfile = AccountUtility.GetAccount(AccountUtility.AnonymousAccount);
         mRetVal = new AuthenticationResponse(mAccountProfile);
+        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
+        UIAccountChoices mAccountChoice = new UIAccountChoices(ClientChoicesUtility.CurrentState);
         Response.Cookies.Delete(ConfigSettings.JWT_Refresh_CookieName);
-        return Ok(mRetVal);
+        return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 
     /// <summary>
