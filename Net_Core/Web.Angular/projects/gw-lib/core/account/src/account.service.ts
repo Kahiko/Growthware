@@ -263,8 +263,6 @@ export class AccountService extends BaseService {
 	 *  1.) Navigate to the appropriate page
 	 */
 		return new Promise<boolean>((resolve, reject) => {
-			// TODO: Consider haveing authenticae return both the authentication response and the client choices for
-			// improved performance.
 			this.authenticate(account, password).then((authenticationResponse: IAuthenticationResponse) => {
 				this.getClientChoices().then((clientChoices: IClientChoices) => {
 					let mNavigationUrl: string = clientChoices.action;
