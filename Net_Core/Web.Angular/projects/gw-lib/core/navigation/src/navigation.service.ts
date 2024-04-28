@@ -39,7 +39,7 @@ export class NavigationService {
 		// 	https://dzhavat.github.io/2022/09/14/auto-expand-menu-using-angular-material.html
 		// 	https://github.com/dzhavat/angular-material-auto-expand-sidebar-menu/blob/main/src/app/%40my-org/design-system/components/nav-list/expand-on-active-link.directive.ts
 		// May be able to figure out how to expand the menu when the user refreshes the page.
-		// At the momement I'm thinking we ccan use urlAfterRedirects to figure out what page the user is on
+		// At the momement I'm thinking we can use urlAfterRedirects to figure out what page the user is on
 		// and perhaps look over the items expanding each one.
 		this._BaseURL = this._GWCommon.baseURL;
 		this._Api_GetMenuData = this._BaseURL + this._ApiName + 'GetMenuData';
