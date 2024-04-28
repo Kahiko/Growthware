@@ -35,7 +35,7 @@ export class NavigationService {
     private _LoggingSvc: LoggingService,
     private _Router: Router
 	) {
-		// TODO: look into the following:
+		// TODO: look into the following: Search: (angular mat-list-item expand on refresh)
 		// 	https://dzhavat.github.io/2022/09/14/auto-expand-menu-using-angular-material.html
 		// 	https://github.com/dzhavat/angular-material-auto-expand-sidebar-menu/blob/main/src/app/%40my-org/design-system/components/nav-list/expand-on-active-link.directive.ts
 		// May be able to figure out how to expand the menu when the user refreshes the page.
