@@ -106,7 +106,7 @@ export class NavigationService {
 			case LinkBehaviors.Popup:
 				this._Router.navigate([navLink.action.toLowerCase()]);
 				// TODO: need to fingure out how to get the windows size to here.
-				// I don't like the idea of putting into the DB by that may be the best way.
+				// I don't like the idea of putting into the DB but that may be the best way.
 				// this._Router.navigate([item.action.toLowerCase()]);
 				break;
 			case LinkBehaviors.External:
