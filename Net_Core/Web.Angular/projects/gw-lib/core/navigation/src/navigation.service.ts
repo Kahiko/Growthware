@@ -39,7 +39,7 @@ export class NavigationService {
 		this._Api_GetMenuData = this._BaseURL + this._ApiName + 'GetMenuData';
 		this._Api_GetMenuItems = this._BaseURL + this._ApiName + 'GetMenuItems';
 		this._Router.events.subscribe({
-			next: (event: any) => {
+			next: (event) => {
 				if (event instanceof NavigationEnd) {
 					this.currentUrl.next(event.urlAfterRedirects);
 				}
