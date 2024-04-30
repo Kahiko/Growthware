@@ -15,7 +15,7 @@
     "Server_Side_View_State": "True",
     "Server_Side_View_State_Pages": "16",
     "Strip_Domain_From_Http_Context_UserName": "False",
-    "Version": "4.0.0.0",
+    "Version": "4.0.1.0",
     "Development_Actions_AccessDenied": "AccessDenied",
     "Development_Actions_ChangePassword": "/accounts/change-password",
     "Development_Actions_EditAccount": "/accounts/edit-my-account",

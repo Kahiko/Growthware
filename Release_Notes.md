@@ -1,5 +1,14 @@
 # Release Notes
 
+## Version 4.0.1 (2024-XX-XX)
+
+### New Features
+- Implemented Detail view in File Manager
+
+### Improvements
+
+### Bug Fixes
+
 ## Version 4.0.0 (2024-04-30)
 
 ### New Features
