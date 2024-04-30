@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
 import { DynamicTableComponent } from '@growthware/core/dynamic-table';
@@ -25,6 +26,7 @@ import { AddDirectoryComponent } from '../add-directory/add-directory.component'
 
 		// Angular Material
 		MatButtonModule,
+		MatMenuModule,
 		MatToolbarModule,
 		// Library
 		DynamicTableComponent,
@@ -81,5 +83,9 @@ export class FileManagerComponent implements OnInit {
 
   onRefresh(): void {
   	this._FileManagerSvc.refresh(this._Action);
+  }
+
+  setLayout(layout: string): void {
+  	this._Skin.next(layout);
   }
 }

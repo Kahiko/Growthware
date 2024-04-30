@@ -15,9 +15,13 @@
   </span>
   <span class="spacer"></span>
   <span>
-    <button type="button" mat-button color="accent" id="btnView_{{configurationName}}" name="btnView_{{configurationName}}">
+    <button type="button" [matMenuTriggerFor]="layoutMenu" mat-button color="accent" id="btnView_{{configurationName}}" name="btnView_{{configurationName}}">
       <span color="white" class="material-icons">grid_view</span>
     </button>
+    <mat-menu #layoutMenu="matMenu">
+      <button type="button" mat-menu-item (click)="setLayout('snake')">Details</button>
+      <button type="button" mat-menu-item (click)="setLayout('snake')">List</button>
+    </mat-menu>
   </span>
   <span>
     <button type="button" (click)="onHelp()" mat-button color="accent" id="btnInfo_{{configurationName}}" name="btnInfo_{{configurationName}}">
@@ -35,7 +39,7 @@
         @case ('snake') {
           <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
         }
-        @case ('snake') {
+        @case ('table') {
           <gw-core-dynamic-table configurationName="FileManagerTable"></gw-core-dynamic-table>
         }
         @default {
