@@ -57,6 +57,19 @@ namespace GrowthWare.Framework
         {
             get { return int.Parse(GetAppSettingValue("Auto_Create_Account_StatusId", true), CultureInfo.InvariantCulture); }
         }
+
+        /// <summary>
+        /// Returns "Anonymous"
+        /// </summary>
+        /// <remarks>
+        /// To prevent spelling or typing mistakes
+        /// </remarks>
+        public static string Anonymous
+        {
+            get {
+                return "Anonymous";
+            }
+        }
         /// <summary>
         /// Returns App_Displayed_Name from the WEB.CONFIG file
         /// </summary>
