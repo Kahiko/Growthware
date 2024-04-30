@@ -8,6 +8,7 @@
 ### Improvements
 
 ### Bug Fixes
+- Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine
 
 ## Version 4.0.0 (2024-04-30)
 
