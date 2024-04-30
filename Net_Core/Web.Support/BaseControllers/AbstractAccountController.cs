@@ -308,7 +308,9 @@ public abstract class AbstractAccountController : ControllerBase
 
     private string getRemoteHostIpAddressUsingXForwardedFor()
     {
+#pragma warning disable CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         IPAddress? remoteIpAddress = null;
+#pragma warning restore CS8632 // The annotation for nullable reference types should only be used in code within a '#nullable' annotations context.
         var forwardedFor = HttpContext.Request.Headers["X-Forwarded-For"].FirstOrDefault();
 
         if (!string.IsNullOrEmpty(forwardedFor))
