@@ -1,12 +1,12 @@
 # Release Notes
 
-## Version 4.0.0 (2024-04-21)
+## Version 4.0.0 (2024-04-30)
 
 ### New Features
-- ???
+- None
 
 ### Improvements
-- Split Web.Angular into Web.Api and Web.Angular, removed all .Net code/items
+- Split Web.Angular into Web.Api and Web.Angular.  Moving all .Net code/items out of Web.Angular and into Web.Api
 - Authenticate/Logoff now returns both the authentication response and the client choices for improved performance.
 - Improved AbstractAccountController.ipAddress will use headers if the IP Address is not using the first method
 
