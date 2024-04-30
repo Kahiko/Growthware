@@ -9,7 +9,6 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class ClientChoicesUtility
 {
-    private static string s_Anonymous = "Anonymous";
     private static CacheController m_CacheController = CacheController.Instance();
 
 #region "Cache/Session Methods"
@@ -24,7 +23,7 @@ public static class ClientChoicesUtility
     /// </remarks>
     private static void addOrUpdateCacheOrSession(string forAccount, string value)
     {
-        if (forAccount.ToLowerInvariant() != s_Anonymous.ToLowerInvariant())
+        if (forAccount.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
             SessionController.AddToSession(MClientChoices.SessionName, value);
             return;
@@ -95,8 +94,8 @@ public static class ClientChoicesUtility
             MClientChoicesState mRetVal = getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
             if (mRetVal == null)
             {
-                string mJsonString = JsonSerializer.Serialize(getFromDB(s_Anonymous).ItemArray);
-                addOrUpdateCacheOrSession(s_Anonymous, mJsonString);
+                string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
+                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
                 mRetVal = getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
             }
             return mRetVal;
@@ -115,8 +114,8 @@ public static class ClientChoicesUtility
             MClientChoicesState mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
             if (mRetVal == null)
             {
-                string mJsonString = JsonSerializer.Serialize(getFromDB(s_Anonymous).ItemArray);
-                addOrUpdateCacheOrSession(s_Anonymous, mJsonString);
+                string mJsonString = JsonSerializer.Serialize(getFromDB(ConfigSettings.Anonymous).ItemArray);
+                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
                 mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
             }
             return mRetVal;

@@ -19,7 +19,6 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractAccountController : ControllerBase
 {
     private Logger m_Logger = Logger.Instance();
-    private string s_AnonymousAccount = "Anonymous";
 
     /// <summary>
     /// Performs an account authentication and handles the token cookie.
@@ -189,13 +188,13 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
         string mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
-        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
+        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
             mRetVal = AccountUtility.GetMenuData(mAccountProfile.Account, mMenuType);
         }
         else
         {
-            mRetVal = AccountUtility.GetMenuData(this.s_AnonymousAccount, mMenuType);
+            mRetVal = AccountUtility.GetMenuData(ConfigSettings.Anonymous, mMenuType);
         }
         return Ok(mRetVal);
     }
@@ -211,13 +210,13 @@ public abstract class AbstractAccountController : ControllerBase
         MAccountProfile mAccountProfile = AccountUtility.CurrentProfile;
         IList<MMenuTree> mRetVal = null;
         MenuType mMenuType = (MenuType)menuType;
-        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != this.s_AnonymousAccount.ToLowerInvariant())
+        if (mAccountProfile != null && mAccountProfile.Account.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
             mRetVal = AccountUtility.GetMenuItems(mAccountProfile.Account, mMenuType);
         }
         else
         {
-            mRetVal = AccountUtility.GetMenuItems(this.s_AnonymousAccount, mMenuType);
+            mRetVal = AccountUtility.GetMenuItems(ConfigSettings.Anonymous, mMenuType);
         }
         return Ok(mRetVal);
     }
@@ -508,7 +507,7 @@ public abstract class AbstractAccountController : ControllerBase
     public ActionResult<UIAccountChoices> SaveClientChoices(UIAccountChoices accountChoices)
     {
         if (accountChoices == null) throw new ArgumentNullException("accountChoices", "accountChoices cannot be a null reference (Nothing in Visual Basic)!");
-        if (accountChoices.Account.ToLower() != this.s_AnonymousAccount.ToLower())
+        if (accountChoices.Account.ToLower() != ConfigSettings.Anonymous.ToLower())
         {
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.GetProfile(accountChoices.SecurityEntityID);
             MClientChoicesState mDefaultClientChoicesState = ClientChoicesUtility.AnonymousState;

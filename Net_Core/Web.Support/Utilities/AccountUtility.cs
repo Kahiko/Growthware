@@ -12,14 +12,13 @@ using GrowthWare.Web.Support.Jwt;
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
-    private static string s_Anonymous = "Anonymous";
     private static string s_CachedName = "CachedAnonymous";
     private static CacheController m_CacheController = CacheController.Instance();
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private static JwtUtility m_JwtUtils = new JwtUtility();
     private static string s_SessionName = "SessionAccount";
 
-    public static string AnonymousAccount { get { return s_Anonymous; } }
+    public static string AnonymousAccount { get { return ConfigSettings.Anonymous; } }
 
     public static string SessionName { get { return s_SessionName; } }
 
@@ -32,7 +31,7 @@ public static class AccountUtility
     {
         string mSessionName = s_SessionName;
         if (sessionName != "useDefault") { mSessionName = sessionName; }
-        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             SessionController.AddToSession(mSessionName, value);
             return;
@@ -50,7 +49,7 @@ public static class AccountUtility
     {
         string mSessionName = s_SessionName;
         if (sessionName != "useDefault") { mSessionName = sessionName; }
-        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             var mRetVal = SessionController.GetFromSession<T>(mSessionName);
             return mRetVal;
@@ -67,7 +66,7 @@ public static class AccountUtility
     {
         string mSessionName = s_SessionName;
         if (sessionName != "useDefault") { mSessionName = sessionName; }
-        if (!forAccount.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             SessionController.RemoveFromSession(mSessionName);
             return;
@@ -88,7 +87,7 @@ public static class AccountUtility
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
         MAccountProfile mRetVal = null;
-        if (account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase))
+        if (account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
             // no need to validate or save
             mRetVal = GetAccount(account);
@@ -236,11 +235,11 @@ public static class AccountUtility
              *  3.) If the return value is null the get the Anonymous account from the DB
              *      and add it to cache.
              */
-            MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(s_Anonymous);
+            MAccountProfile mRetVal = getFromCacheOrSession<MAccountProfile>("not_anonymous") ?? getFromCacheOrSession<MAccountProfile>(ConfigSettings.Anonymous);
             if (mRetVal == null)
             {
-                mRetVal = GetAccount(s_Anonymous, true);
-                addOrUpdateCacheOrSession(s_Anonymous, mRetVal);
+                mRetVal = GetAccount(ConfigSettings.Anonymous, true);
+                addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mRetVal);
             }
             return mRetVal;
         }
@@ -362,7 +361,7 @@ public static class AccountUtility
         }
         catch (System.Exception)
         {
-            mRetVal = GetAccount(s_Anonymous);
+            mRetVal = GetAccount(ConfigSettings.Anonymous);
         }
         return mRetVal;
     }
@@ -535,7 +534,7 @@ public static class AccountUtility
          * Roles, groups, and refresh tokens are stored in detail tables and it is not always necessary to save them.
          */
         if (accountProfile == null || string.IsNullOrEmpty(accountProfile.Account)) throw new ArgumentNullException(nameof(accountProfile), "accountProfile cannot be a null reference (Nothing in VB) or empty!");
-        if (accountProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase) && accountProfile.RefreshTokens.Count > 0)
+        if (accountProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase) && accountProfile.RefreshTokens.Count > 0)
         {
             return accountProfile;
         }
@@ -543,7 +542,7 @@ public static class AccountUtility
         BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
-        if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(s_Anonymous, StringComparison.InvariantCultureIgnoreCase)))
+        if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
         {
             addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         }
