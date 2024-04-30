@@ -119,7 +119,7 @@ public class CacheController
                 catch (System.Exception)
                 {
                     mWaitCount++;
-                }              
+                }
             } while (mWaitCount < 4 && File.Exists(mFileNameAndPath));
         }
     }
