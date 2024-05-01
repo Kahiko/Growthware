@@ -6,6 +6,12 @@
 - Implemented Detail view in File Manager
 
 ### Improvements
+- Added .devcontainer and docker-compose.yml the containers:
+    From "Net_Core" run docker-compose up --build -d
+    1.) Build
+    2.) Run
+    3.) Can be "Reopened in container"
+    TODO: Need to get this working together
 
 ### Bug Fixes
 - Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine

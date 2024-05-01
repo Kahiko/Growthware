@@ -1,0 +1,57 @@
+version: '3.8'
+# docker pull mcr.microsoft.com/devcontainers/typescript-node:1-20-bookworm
+# docker pull mcr.microsoft.com/devcontainers/dotnet:8.0
+# docker pull mcr.microsoft.com/mssql/server:2022-latest
+# docker pull node:20.9.0
+# docker-compose up --build -d
+
+services:
+  growthware-angular:
+    build:
+      context: .devcontainer/angular
+    container_name: growthware-angular
+    command: sleep infinity
+    image: growthware-angular:4.0.1.0   # Tag specified here
+    volumes:
+      - ./Web.Angular:/workspace:cached
+    ports:
+      - "4200:4200"
+    depends_on:
+      - growthware-api
+    networks:
+      - growthware-backend
+  
+  growthware-api:
+    build:
+      context: .devcontainer/dotnet-api
+    container_name: growthware-api
+    image: growthware-api:4.0.1.0   # Tag specified here
+    command: sleep infinity
+    volumes:
+      - .:/workspace:cached
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    depends_on:
+      - growthware-db
+    networks:
+      - growthware-backend
+
+  growthware-db:
+    build:
+      context: .devcontainer/sql-server
+    container_name: growthware-db
+    volumes:
+      - growthware-db-volume:/var/opt/mssql
+    ports:
+      - "11433:1433"
+    image: growthware-db:4.0.1.0  # Tag specified here
+    networks:
+      - growthware-backend
+
+networks:
+  growthware-backend:
+
+volumes:
+  growthware-db-volume:
+    driver: local
