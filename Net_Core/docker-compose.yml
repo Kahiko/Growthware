@@ -3,6 +3,8 @@ version: '3.8'
 # docker pull mcr.microsoft.com/devcontainers/dotnet:8.0
 # docker pull mcr.microsoft.com/mssql/server:2022-latest
 # docker pull node:20.9.0
+# How To Remove Docker Images, Containers, and Volumes		
+# 	https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
 # docker-compose up --build -d
 
 services:
