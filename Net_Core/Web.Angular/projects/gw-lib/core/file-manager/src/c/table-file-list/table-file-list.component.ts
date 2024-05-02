@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { BehaviorSubject, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 // Angular Material
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -27,10 +27,8 @@ import { FileManagerService } from '../../file-manager.service';
 	styleUrl: './table-file-list.component.scss'
 })
 export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit {
-	private _DataSubject = new BehaviorSubject<Array<IFileInfoLight>>([]);
 	private _Subscriptions: Subscription = new Subscription();
   
-	readonly data$ = this._DataSubject.asObservable();
 	dataSource = new MatTableDataSource<IFileInfoLight>([]);
 	// displayedColumns pulled from IFileInfoLight Note: order here effects the order in the table
 	displayedColumns: string[] = [

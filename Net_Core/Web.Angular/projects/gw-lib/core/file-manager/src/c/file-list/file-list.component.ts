@@ -49,7 +49,7 @@ export class FileListComponent implements OnDestroy, OnInit {
 	menuTopLeftPosition =  {x: '0', y: '0'}; // we create an object that contains coordinates 
 	selectedFile!: IFileInfoLight;
 	showDelete: boolean = false;
-	showDownalod: boolean = false;
+	showDownload: boolean = false;
 	showRename: boolean = false;
 
   @Input() numberOfColumns: string = '4';
@@ -80,7 +80,7 @@ export class FileListComponent implements OnDestroy, OnInit {
   	this._Action = this._Router.url.split('?')[0] .replace('/', '').replace('\\','');
   	this.id = this._Action + '_Files';
   	this._SecuritySvc.getSecurityInfo(this._Action).then((response: ISecurityInfo) => {
-  		this.showDownalod = response.mayView;
+  		this.showDownload = response.mayView;
   		this.showDelete = response.mayDelete;
   		this.showRename = response.mayEdit;
   	}).catch((error)=>{
