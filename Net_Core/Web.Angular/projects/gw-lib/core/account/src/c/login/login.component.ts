@@ -1,12 +1,14 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 // Library
 // import { LoggingService } from '@growthware/core/logging';
+import { ConfigurationService } from '@growthware/core/configuration';
 import { ModalService } from '@growthware/core/modal';
 import { NavigationService } from '@growthware/core/navigation';
 // Feature
@@ -25,71 +27,86 @@ import { AccountService } from '../../account.service';
 	templateUrl: './login.component.html',
 	styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements AfterViewInit, OnInit {
+export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
+	private _Subscription: Subscription = new Subscription();
 
-  @ViewChild('account') account!: ElementRef;
+	@ViewChild('account') account!: ElementRef;
 
-  loginForm!: FormGroup;
+	loginForm!: FormGroup;
 
-  get getControls() {
-  	return this.loginForm.controls;
-  }
+	get getControls() {
+		return this.loginForm.controls;
+	}
 
-  submitted: boolean = false;
+	submitted: boolean = false;
 
-  constructor(
-    private _AccountSvc: AccountService,
-    private _FormBuilder: FormBuilder,
-    // private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
-	private _NavigationSvc: NavigationService,
-  ) { }
+	constructor(
+		private _AccountSvc: AccountService,
+		private _ConfigurationSvc: ConfigurationService,
+		private _FormBuilder: FormBuilder,
+		// private _LoggingSvc: LoggingService,
+		private _ModalSvc: ModalService,
+		private _NavigationSvc: NavigationService,
+	) { }
 
-  ngAfterViewInit(): void {
-  	setTimeout(() => {
-  		this.account.nativeElement.focus();
-  	}, 100);
-  }
+	ngOnDestroy(): void {
+		this._Subscription.unsubscribe();
+	}
 
-  ngOnInit(): void {
-  	this.loginForm = this._FormBuilder.group({
-  		account: ['Developer', [Validators.required]],
-  		password: ['none', [Validators.required, Validators.minLength(4)]]
-  	});
-  }
+	ngAfterViewInit(): void {
+		setTimeout(() => {
+			this.account.nativeElement.focus();
+		}, 100);
+	}
 
-  getErrorMessage(fieldName: string) {
-  	switch (fieldName) {
-  	case 'account':
-  		if (this.loginForm.controls['account'].hasError('required')) {
-  			return 'You must enter a value';
-  		}
-  		break;
-  	case 'password':
-  		if (this.loginForm.controls['password'].hasError('required')) {
-  			return 'You must enter a value';
-  		}
-  		if (this.loginForm.controls['password'].hasError('minlength')) {
-  			return 'Value must be at least 4 character';
-  		}
-  		break;
-  	default:
-  		break;
-  	}
-  	return undefined;
-  }
+	ngOnInit(): void {
+		this._Subscription.add(this._ConfigurationSvc.environment$.subscribe((environment) => {
+			if (environment.toLocaleLowerCase() === 'development') {
+				this.loginForm = this._FormBuilder.group({
+					account: ['Developer', [Validators.required]],
+					password: ['none', [Validators.required, Validators.minLength(4)]]
+				});
+			} else {
+				this.loginForm = this._FormBuilder.group({
+					account: ['', [Validators.required]],
+					password: ['', [Validators.required, Validators.minLength(4)]]
+				});
+			}
+		}));
+	}
 
-  onSubmit(){
-  	this.submitted = true;
+	getErrorMessage(fieldName: string) {
+		switch (fieldName) {
+		case 'account':
+			if (this.loginForm.controls['account'].hasError('required')) {
+				return 'You must enter a value';
+			}
+			break;
+		case 'password':
+			if (this.loginForm.controls['password'].hasError('required')) {
+				return 'You must enter a value';
+			}
+			if (this.loginForm.controls['password'].hasError('minlength')) {
+				return 'Value must be at least 4 character';
+			}
+			break;
+		default:
+			break;
+		}
+		return undefined;
+	}
 
-  	// stop here if form is invalid
-  	if (this.loginForm.invalid) {
-  		return;
-  	}
-  	this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then(() => {
-  		this._ModalSvc.close(this._AccountSvc.logInModalId);
-  		this._NavigationSvc.navigateTo('favorite');
-  	});
-  }
+	onSubmit() {
+		this.submitted = true;
+
+		// stop here if form is invalid
+		if (this.loginForm.invalid) {
+			return;
+		}
+		this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then(() => {
+			this._ModalSvc.close(this._AccountSvc.logInModalId);
+			this._NavigationSvc.navigateTo('favorite');
+		});
+	}
 
 }
