@@ -9,7 +9,7 @@
     "DB_Status": "OnLine",
     "Encryption_SaltExpression": "Growthware",
     "Encryption_Type": "3",
-    "Environment": "QA",
+    "Environment": "Development",
     "Environments": "Development, QA, Production",
     "Security_Entity_Translation": "Business Unit",
     "Server_Side_View_State": "True",
