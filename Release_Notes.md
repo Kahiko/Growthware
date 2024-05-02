@@ -3,18 +3,20 @@
 ## Version 4.0.1 (2024-XX-XX)
 
 ### New Features
-- Implemented Detail view in File Manager
+- Added Table View in File Manager
 
 ### Improvements
 - Added .devcontainer and docker-compose.yml the containers:
-    From "Net_Core" run docker-compose up --build -d
-    1.) Build
-    2.) Run
-    3.) Can be "Reopened in container"
-    TODO: Need to get this working together
+    From "Net_Core" directory execut "run docker-compose up --build -d" to
+    build and start the containers.  The containers currectly do the following:
+        1.) Build
+        2.) Run
+        3.) Can be "Reopened in container"
+    TODO: Need to get this working together and able to debug with
 
 ### Bug Fixes
 - Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine
+- Fixed Status not updating when you are "forced" to change your password
 
 ## Version 4.0.0 (2024-04-30)
 
@@ -32,4 +34,3 @@
 - Fixed explicit-any in default-header.component.ts
 - Fixed "Favorite" menu item not updating when selecting a new "Favorite Link:" in "Select Preferences"
 - Fixed Line Count updated the directory to D:/Development/Growthware/Net_Core
-- Fixed Status not updating when you are "forced" to change your password
