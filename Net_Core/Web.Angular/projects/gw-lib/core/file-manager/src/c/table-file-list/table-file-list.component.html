@@ -32,7 +32,7 @@
       </ng-container>
   
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;" (contextmenu)="onRightClick($event, row)"></tr>
   
       <!-- Row shown when there is no matching data. -->
       <tr class="mat-row" *matNoDataRow>
@@ -42,4 +42,92 @@
   
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>
+  <!-- an hidden div is created to set the position of appearance of the menu-->
+  <div
+    style="visibility: hidden; position: fixed;"
+    [style.left.px]="menuTopLeftPosition.x"
+    [style.top.px]="menuTopLeftPosition.y"
+    [matMenuTriggerFor]="rightMenu">
+  </div>
+
+  <!-- standar material menu -->
+  <mat-menu #rightMenu="matMenu">
+    <ng-template matMenuContent let-item="item">
+      @if (showDelete) {
+        <button mat-menu-item (click)="onMenuDeleteClick(item)">Delete</button>
+      }
+      @if (showDownload) {
+        <button mat-menu-item (click)="onMenuDownloadClick(item)">Download</button>
+      }
+      @if (showRename) {
+        <button mat-menu-item (click)="onMenuRenameClick(item)">Rename</button>
+      }
+      <button mat-menu-item (click)="onMenuPropertiesClick(item)">Properties</button>
+    </ng-template>
+  </mat-menu>
 </div>
+<ng-template #deleteFile>
+  <div style="width: 100%;">
+    Are you sure you would like to delete<br>'{{selectedFile.name}}'?
+  </div>
+</ng-template>
+
+<ng-template #renameFile>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <form [formGroup]="frmRenameFile" (ngSubmit)="onRenameSubmit(frmRenameFile)">
+        <div class="table">
+          <div class="tr">
+            <div class="td left">
+              <span class="Form_LabelText">New name&nbsp;:</span>
+            </div>
+            <div class="td right">
+              <input formControlName="newFileName" class="Form_Field rounded" id="newFileName" />&nbsp;
+            </div>
+            <div class="td">
+              @if (getControls['newFileName'].hasError('required')) {
+                <span class="Form_LabelTextRed">{{getErrorMessage('newFileName')}}</span>
+              }
+            </div>
+          </div>
+          <div class="tr">
+            <div class="td"></div>
+            <div class="td right">
+              <button type="submit" [disabled]="frmRenameFile.invalid" mat-button class="Form_Button" color="primary">
+                <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">save</i>Save
+              </button>
+            </div>
+            <div class="td"></div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #fileProperties>
+  <div class="formSection">
+    <div class="formSectionContents">
+      <div class="table Form_Table" style="margin: auto; width: 98%">
+        <div class="tr Form_LabelRow">
+          <div class="td right"><span class="Form_LabelText">Name:</span></div>
+          <div class="td left"><span class="Form_FieldCell bold">{{selectedFile.name}}</span></div>
+          <div class="td right"><span class="Form_LabelText">Size:</span></div>
+          <div class="td left"><span class="Form_FieldCell bold">{{selectedFile.size}}</span></div>
+        </div>
+        <div class="tr Form_LabelRow">
+          <div class="td right"><span class="Form_LabelText">Created:</span></div>
+          <div class="td left"><div class="td left"><span class="Form_FieldCell bold">{{selectedFile.createdShort}}</span></div></div>
+          <div class="td right"><span class="Form_LabelText">Modified:</span></div>
+          <div class="td left"><span class="Form_FieldCell bold">{{selectedFile.modifiedShort}}</span></div>
+        </div>
+        <div class="tr">
+          <div class="td right"></div>
+          <div class="td left"></div>
+          <div class="td right"></div>
+          <div class="td left"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
