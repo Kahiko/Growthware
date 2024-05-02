@@ -98,8 +98,8 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 			this._Subscriptions.add(this._FileManagerSvc.filesChanged$.subscribe((data: Array<IFileInfoLight>) => {
 				// console.log('TableFileListComponent.ngOnInit', data);
 				this.dataSource.data = data;
-				this.dataSource.paginator = this.paginator;
-				this.dataSource.sort = this.sort;
+				// this.dataSource.paginator = this.paginator;
+				// this.dataSource.sort = this.sort;
 			}));
 		}
 	}
@@ -133,6 +133,7 @@ export class TableFileListComponent implements AfterViewInit, OnDestroy, OnInit 
 
 	ngAfterViewInit() {
 		this.dataSource.paginator = this.paginator;
+		this.dataSource.sort = this.sort;
 	}
 
 	applyFilter(event: Event) {
