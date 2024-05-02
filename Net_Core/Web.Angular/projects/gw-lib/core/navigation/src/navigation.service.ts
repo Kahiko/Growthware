@@ -100,33 +100,37 @@ export class NavigationService {
 	getShowNavText(): boolean {
 		return this._ShowNavText.getValue();
 	}
-
-	navigateTo(navLink: INavLink): void {
+	navigateTo(arg: INavLink | string): void {
 		// console.log('NavigationService.navigateTo', navLink);
-		this._CurrentNavLink.next(navLink);
-		if (!navLink.children || !navLink.children.length) {
-			switch (navLink.linkBehavior) {
-			case LinkBehaviors.Internal:
-				this._Router.navigate([navLink.action.toLowerCase()]);
-				break;
-			case LinkBehaviors.Popup:
-				this._Router.navigate([navLink.action.toLowerCase()]);
-				// TODO: need to fingure out how to get the windows size to here.
-				// I don't like the idea of putting into the DB but that may be the best way.
-				// this._Router.navigate([item.action.toLowerCase()]);
-				break;
-			case LinkBehaviors.External:
-				window.open(navLink.link, '_blank');
-				break;
-			case LinkBehaviors.NewPage:
-				window.open('/' + navLink.link.toLowerCase(), '_blank');
-				break;
-			default:
-				this._Router.navigate([navLink.action.toLowerCase()]);
-				break;
-			}
-		}    
+		if (typeof arg === 'object') {
+			this._CurrentNavLink.next(arg);
+			if (!arg.children || !arg.children.length) {
+				switch (arg.linkBehavior) {
+				case LinkBehaviors.Internal:
+					this._Router.navigate([arg.action.toLowerCase()]);
+					break;
+				case LinkBehaviors.Popup:
+					this._Router.navigate([arg.action.toLowerCase()]);
+					// TODO: need to fingure out how to get the windows size to here.
+					// I don't like the idea of putting into the DB but that may be the best way.
+					// this._Router.navigate([item.action.toLowerCase()]);
+					break;
+				case LinkBehaviors.External:
+					window.open(arg.link, '_blank');
+					break;
+				case LinkBehaviors.NewPage:
+					window.open('/' + arg.link.toLowerCase(), '_blank');
+					break;
+				default:
+					this._Router.navigate([arg.action.toLowerCase()]);
+					break;
+				}
+			}  
+		} else {
+			this._Router.navigate([arg.toLowerCase()]);
+		}  
 	}
+
 
 	setShowNavText(value: boolean): void {
 		this._ShowNavText.next(value);

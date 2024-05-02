@@ -1,5 +1,4 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 // Angular Material
@@ -9,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 // Library
 // import { LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
+import { NavigationService } from '@growthware/core/navigation';
 // Feature
 import { AccountService } from '../../account.service';
 
@@ -42,6 +42,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
     private _FormBuilder: FormBuilder,
     // private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
+	private _NavigationSvc: NavigationService,
   ) { }
 
   ngAfterViewInit(): void {
@@ -87,6 +88,7 @@ export class LoginComponent implements AfterViewInit, OnInit {
   	}
   	this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then(() => {
   		this._ModalSvc.close(this._AccountSvc.logInModalId);
+  		this._NavigationSvc.navigateTo('favorite');
   	});
   }
 

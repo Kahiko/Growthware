@@ -17,6 +17,7 @@
 ### Bug Fixes
 - Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine
 - Fixed Status not updating when you are "forced" to change your password
+- Fixed not navigating to the "favoriate" action after logon
 
 ## Version 4.0.0 (2024-04-30)
 
