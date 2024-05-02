@@ -69,11 +69,11 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Authenticates the client with the provided account and password.
-   * @param {string} account - The client's account.
-   * @param {string} password - The client's password.
-   * @return {Promise<boolean | string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
-   */
+	 * Authenticates the client with the provided account and password.
+	 * @param {string} account - The client's account.
+	 * @param {string} password - The client's password.
+	 * @return {Promise<boolean | string>} A promise that resolves to true if the authentication is successful, or a string with an error message if the authentication fails.
+	 */
 	private async authenticate(account: string, password: string): Promise<IAuthenticationResponse> {
 		return new Promise<IAuthenticationResponse>((resolve, reject) => {
 			if (this._GWCommon.isNullOrEmpty(account)) {
@@ -91,7 +91,7 @@ export class AccountService extends BaseService {
 				}),
 				params: mQueryParameter,
 			};
-			this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_Authenticate, null, mHttpOptions).subscribe({
+			this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_Authenticate, null, mHttpOptions).subscribe({
 				next: (response) => {
 					resolve(response.item1);
 				},
@@ -110,12 +110,12 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Change the client's password.
-   *
-   * @param {string} oldPassword - The client's current password.
-   * @param {string} newPassword - The new password to set for the client.
-   * @return {Promise<boolean>} A promise that resolves to true if the password change was successful, or false otherwise.
-   */
+	 * Change the client's password.
+	 *
+	 * @param {string} oldPassword - The client's current password.
+	 * @param {string} newPassword - The new password to set for the client.
+	 * @return {Promise<boolean>} A promise that resolves to true if the password change was successful, or false otherwise.
+	 */
 	public async changePassword(oldPassword: string, newPassword: string): Promise<boolean> {
 		if (this._GWCommon.isNullOrEmpty(newPassword)) {
 			throw new Error('newPassword can not be blank!');
@@ -163,10 +163,10 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Retrieves the client choices asynchronously.
-   *
-   * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
-   */
+	 * Retrieves the client choices asynchronously.
+	 *
+	 * @return {Promise<IClientChoices>} A Promise that resolves to an IClientChoices object.
+	 */
 	private async getClientChoices(): Promise<IClientChoices> {
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -188,10 +188,10 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Retrieves a list of selectable actions.
-   *
-   * @return {Promise<ISelectedableAction[]>} A promise that resolves to an array of selectable actions.
-   */
+	 * Retrieves a list of selectable actions.
+	 *
+	 * @return {Promise<ISelectedableAction[]>} A promise that resolves to an array of selectable actions.
+	 */
 	public async getSelectableActions(): Promise<ISelectedableAction[]> {
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -213,11 +213,11 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Retrieves the account profile for the given account.
-   *
-   * @param {string} account - The account to retrieve the profile for.
-   * @return {Promise<IAccountProfile>} - A promise that resolves to the account profile.
-   */
+	 * Retrieves the account profile for the given account.
+	 *
+	 * @param {string} account - The account to retrieve the profile for.
+	 * @return {Promise<IAccountProfile>} - A promise that resolves to the account profile.
+	 */
 	public async getAccountForEdit(account: string): Promise<IAccountProfile> {
 		const mAccount: string = account;
 		if (this._GWCommon.isNullOrEmpty(mAccount)) {
@@ -246,13 +246,13 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Logs in the client with the provided account and password.
-   *
-   * @param {string} account - The client's account.
-   * @param {string} password - The client's password.
-   * @param {boolean} silent - (Optional) Set to true to suppress any notifications or toasts. Defaults to false.
-   * @returns {Promise<boolean>} A promise that resolves to true if the login is successful, and false otherwise.
-   */
+	 * Logs in the client with the provided account and password.
+	 *
+	 * @param {string} account - The client's account.
+	 * @param {string} password - The client's password.
+	 * @param {boolean} silent - (Optional) Set to true to suppress any notifications or toasts. Defaults to false.
+	 * @returns {Promise<boolean>} A promise that resolves to true if the login is successful, and false otherwise.
+	 */
 	public async logIn(account: string, password: string, silent: boolean = false): Promise<boolean> {
 		/**
 		 * 1.) Authenticate the account
@@ -292,10 +292,10 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Logout the client and perform necessary cleanup actions.
-   *
-   * @return {void} This function does not return anything.
-   */
+	 * Logout the client and perform necessary cleanup actions.
+	 *
+	 * @return {void} This function does not return anything.
+	 */
 	public logout(slient: boolean = false): void {
 		sessionStorage.removeItem('jwt');
 		const mHttpOptions = {
@@ -303,7 +303,7 @@ export class AccountService extends BaseService {
 				'Content-Type': 'application/json',
 			})
 		};
-		this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_Logoff, mHttpOptions).subscribe({
+		this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_Logoff, mHttpOptions).subscribe({
 			next: (response) => {
 				// console.log('logout.authenticationResponse', authenticationResponse);
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
@@ -332,7 +332,7 @@ export class AccountService extends BaseService {
 	 */
 	refreshToken(): Observable<IAuthenticationResponse> {
 		// 1.) get the refresh token response
-		return this._HttpClient.post<{item1: IAuthenticationResponse, item2: IClientChoices}>(this._Api_RefreshToken, {}, { withCredentials: true })
+		return this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_RefreshToken, {}, { withCredentials: true })
 			.pipe(map((response) => {
 				// 2.) update information from the response
 				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
@@ -349,8 +349,8 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Starts the refresh token timer.
-   */
+	 * Starts the refresh token timer.
+	 */
 	private startRefreshTokenTimer() {
 		// parse json object from base64 encoded jwt token
 		const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
@@ -365,6 +365,13 @@ export class AccountService extends BaseService {
 			this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
 		}
 	}
+
+	/**
+	 * Sends a request to save an account.
+	 * 
+	 * @param {IAccountProfile} accountProfile the account profile to save
+	 * @returns {Promise<boolean>} A promise that resolves to true if the save is successful, and false otherwise.
+	 */
 	async saveAccount(accountProfile: IAccountProfile): Promise<boolean> {
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -390,11 +397,11 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Saves the client choices in the database.
-   *
-   * @param {IClientChoices} clientChoices - The client choices to be saved.
-   * @return {Promise<boolean>} A promise that resolves to true if the client choices are saved successfully, otherwise false.
-   */
+	 * Saves the client choices in the database.
+	 *
+	 * @param {IClientChoices} clientChoices - The client choices to be saved.
+	 * @return {Promise<boolean>} A promise that resolves to true if the client choices are saved successfully, otherwise false.
+	 */
 	public async saveClientChoices(clientChoices: IClientChoices): Promise<boolean> {
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -429,11 +436,11 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-   * Notifies account information subscribers that the account information has changed, triggering
-   * menu components to re-render.
-   *
-   * @return {void} 
-   */
+	 * Notifies account information subscribers that the account information has changed, triggering
+	 * menu components to re-render.
+	 *
+	 * @return {void} 
+	 */
 	public triggerMenuUpdate(): void {
 		this._TriggerMenuUpdateSubject.next(true);
 	}
