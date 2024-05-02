@@ -19,8 +19,9 @@
       <span color="white" class="material-icons">grid_view</span>
     </button>
     <mat-menu #layoutMenu="matMenu">
-      <button type="button" mat-menu-item (click)="setLayout('snake')">Details</button>
-      <button type="button" mat-menu-item (click)="setLayout('snake')">List</button>
+      @for (item of validFileContents; track $index) {
+        <button type="button" class="material-icons" mat-menu-item (click)="setLayout(item.id)"><mat-icon>{{item.icon}}</mat-icon>&nbsp;{{item.name}}</button>
+      }
     </mat-menu>
   </span>
   <span>
@@ -40,7 +41,7 @@
           <gw-core-file-list numberOfColumns="5"></gw-core-file-list>
         }
         @case ('table') {
-          <gw-core-dynamic-table configurationName="FileManagerTable"></gw-core-dynamic-table>
+          <gw-core-table-file-list></gw-core-table-file-list>
         }
         @default {
           <div>

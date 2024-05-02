@@ -234,6 +234,7 @@ Library: (core) From Web.Angular\Angular
 	File Manager:
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/FileManager 							--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/FileList 								--standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/file-manager/src c/TableFileList 							--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/DirectoryTree 							--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/Upload --standalone 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/file-manager/src c/RenameDirectory 						--standalone --style scss --project gw-lib

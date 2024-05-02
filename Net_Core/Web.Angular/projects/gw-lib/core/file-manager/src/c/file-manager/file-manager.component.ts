@@ -6,10 +6,10 @@ import { Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatToolbarModule } from '@angular/material/toolbar';
 // Library
-import { DynamicTableComponent } from '@growthware/core/dynamic-table';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 // Feature
 import { DirectoryTreeComponent } from '../directory-tree/directory-tree.component';
@@ -17,6 +17,7 @@ import { FileListComponent } from '../file-list/file-list.component';
 import { UploadComponent } from '../upload/upload.component';
 import { FileManagerService } from '../../file-manager.service';
 import { AddDirectoryComponent } from '../add-directory/add-directory.component';
+import { TableFileListComponent } from '../table-file-list/table-file-list.component';
 
 @Component({
 	selector: 'gw-core-file-manager',
@@ -26,11 +27,12 @@ import { AddDirectoryComponent } from '../add-directory/add-directory.component'
 
 		// Angular Material
 		MatButtonModule,
+		MatIconModule,
 		MatMenuModule,
 		MatToolbarModule,
 		// Library
-		DynamicTableComponent,
 		DirectoryTreeComponent,
+		TableFileListComponent,
 		FileListComponent,
 		UploadComponent
 	],
@@ -47,7 +49,7 @@ export class FileManagerComponent implements OnInit {
 	frmCreateDirectory!: FormGroup;
 	validFileContents = [
 		{id: 'snake', name: 'List', icon: 'summarize'},
-		{id: 'details', name: 'Details', icon: 'list'},
+		// {id: 'details', name: 'Details', icon: 'list'},
 		{id: 'table', name: 'Table', icon: 'table_rows'},
 	];
 	readonly skin$ = this._Skin.asObservable();
