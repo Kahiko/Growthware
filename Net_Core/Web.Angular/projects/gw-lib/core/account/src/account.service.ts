@@ -139,7 +139,9 @@ export class AccountService extends BaseService {
 				next: (response: string) => {
 					if (response.startsWith('Your password has been changed')) {
 						this._LoggingSvc.toast(response, 'Change password', LogLevel.Success);
-						this.authenticate(this.authenticationResponse.account, newPassword);
+						this.authenticate(this.authenticationResponse.account, newPassword).then((authenticationResponse: IAuthenticationResponse) => {
+							sessionStorage.setItem('jwt', authenticationResponse.jwtToken);
+						});
 						resolve(true);
 					} else {
 						this._LoggingSvc.toast(response, 'Change password', LogLevel.Error);

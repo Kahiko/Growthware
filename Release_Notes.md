@@ -32,3 +32,4 @@
 - Fixed explicit-any in default-header.component.ts
 - Fixed "Favorite" menu item not updating when selecting a new "Favorite Link:" in "Select Preferences"
 - Fixed Line Count updated the directory to D:/Development/Growthware/Net_Core
+- Fixed Status not updating when you are "forced" to change your password
