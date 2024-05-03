@@ -176,7 +176,9 @@ public static class FunctionUtility
         int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
         String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
         m_CacheController.RemoveAll();
-        SessionController.RemoveAll();
+        // Remove in memory information for the account saving in order to
+        // update their menu's
+        AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);
         return mRetVal;
     }
 
