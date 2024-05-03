@@ -6,7 +6,7 @@
 - Added Table View in File Manager
 
 ### Improvements
-- Added .devcontainer and docker-compose.yml the containers:
+- Added Docker containers via .devcontainer directory with Dockerfiles' and a docker-compose.yml:
     From "Net_Core" directory execut "run docker-compose up --build -d" to
     build and start the containers.  The containers currectly do the following:
         1.) Build
