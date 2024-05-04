@@ -156,22 +156,22 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   	}).then((navigationTypes: IKeyValuePair[]) => {                                 // Request #4 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
   		this.validNavigationTypes = navigationTypes;
-  		return this._ProfileSvc.getLinkBehaviors();                                  // Request #5 getLinkBehaviors() Request
-  	}).catch((error) => {                                                            // Request #4 Error Handler
+  		return this._ProfileSvc.getLinkBehaviors();                                 // Request #5 getLinkBehaviors() Request
+  	}).catch((error) => {                                                           // Request #4 Error Handler
   		this._LoggingSvc.toast('Error getting navigation types:\r\n' + error, 'Function Details:', LogLevel.Error);
-  	}).then((linkBehaviors: IKeyValuePair[]) => {                                    // Request #5 Handler
+  	}).then((linkBehaviors: IKeyValuePair[]) => {                                   // Request #5 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
   		this.validLinkBehaviors = linkBehaviors;
-  		return this._ProfileSvc.getAvalibleParents();                                 // Request #6 getAvalibleParents()
-  	}).catch((error) => {                                                             // Request #5 Error Handler
+  		return this._ProfileSvc.getAvalibleParents();                               // Request #6 getAvalibleParents()
+  	}).catch((error) => {                                                           // Request #5 Error Handler
   		this._LoggingSvc.toast('Error getting link behaviors:\r\n' + error, 'Function Details:', LogLevel.Error);
-  	}).then((avalibleParents)=>{                                                      // Request #6 Handler
+  	}).then((avalibleParents)=>{                                                    // Request #6 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.avalibleParents', avalibleParents);
   		this.avalibleParents = avalibleParents;
-  		return this._RoleSvc.getRoles();                                              // Request #7 getRoles()
-  	}).catch((error) => {                                                             // Request #6 Error Handler
+  		return this._RoleSvc.getRoles();                                            // Request #7 getRoles()
+  	}).catch((error) => {                                                           // Request #6 Error Handler
   		this._LoggingSvc.toast('Error getting avalible parents:\r\n' + error, 'Function Details:', LogLevel.Error);
-  	}).then((roles: string[] | void) => {                                             // Request #7 Handler
+  	}).then((roles: string[] | void) => {                                           // Request #7 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.roles', roles);
   		if(roles) {
   			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameAdd + '_AvailableItems', roles); }, 500);
@@ -179,10 +179,10 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameEdit + '_AvailableItems', roles); }, 500);
   			setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListNameView + '_AvailableItems', roles); }, 500);			  
   		}
-  		return this._GroupSvc.getGroups();                                            // Request #8 getGroups()
-  	}).catch((error) => {                                                             // Request #7 Error Handler
+  		return this._GroupSvc.getGroups();                                          // Request #8 getGroups()
+  	}).catch((error) => {                                                           // Request #7 Error Handler
   		this._LoggingSvc.toast('Error getting avalible roles:\r\n' + error, 'Function Details:', LogLevel.Error);
-  	}).then((groups: string[] | void) => {                                                             // Request #8 Handler
+  	}).then((groups: string[] | void) => {                                          // Request #8 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.groups', groups);
   		if (groups) {
   			setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListNameAdd + '_AvailableItems', groups); }, 500);
@@ -194,10 +194,9 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   		this.showGroups = this._Profile.canSaveGroups;
   		this.showRoles = this._Profile.canSaveRoles;      
   		this.populateForm();
-  	}).catch((error) => {                                                              // Request #8 Error Handler
+  	}).catch((error) => {                                                           // Request #8 Error Handler
   		this._LoggingSvc.toast('Error getting avalible groups:\r\n' + error, 'Function Details:', LogLevel.Error);
   	});
-
   	setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', []); }, 500);
   	this._Profile = new FunctionProfile();
   	this.createForm();
