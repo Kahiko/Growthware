@@ -135,7 +135,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   	this._SecuritySvc.getSecurityInfo('FunctionSecurity').then((securityInfo) => {  // Request/Handler #1
   		// console.log('securityInfo', securityInfo);
   		this._SecurityInfo = securityInfo;
-  		return this._ProfileSvc.getFunction(mEditId);                                 // Request #2 getFunction(mEditId)
+  		return this._ProfileSvc.getFunction(mEditId);                               // Request #2 getFunction(mEditId)
   	}).catch((error) => {                                                           // Request #1 Error Handler
   		this._LoggingSvc.toast('Error getting function security:\r\n' + error, 'Function Details:', LogLevel.Error);
   	}).then((profile) => {                                                          // Request #2 Handler
@@ -144,22 +144,22 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   			this._Profile = profile;
   			this.functionMenuOrders = this._Profile.functionMenuOrders;
   		}
-  		return this._ProfileSvc.getFuncitonTypes();                                   // Request #3 getFuncitonTypes()
+  		return this._ProfileSvc.getFuncitonTypes();                                 // Request #3 getFuncitonTypes()
   	}).catch((error) => {                                                           // Request #2 Error Handler
   		this._LoggingSvc.toast('Error getting function:\r\n' + error, 'Function Details:', LogLevel.Error);
   	}).then((functionTypes: IKeyValuePair[]) => {                                   // Request #3 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.functionTypes', functionTypes);
   		this.validFunctionTypes = functionTypes;
-  		return this._ProfileSvc.getNavigationTypes();                                 // Request #4 getNavigationTypes()
+  		return this._ProfileSvc.getNavigationTypes();                               // Request #4 getNavigationTypes()
   	}).catch((error) => {                                                           // Request #3 Error Handler
   		this._LoggingSvc.toast('Error getting function types:\r\n' + error, 'Function Details:', LogLevel.Error);
   	}).then((navigationTypes: IKeyValuePair[]) => {                                 // Request #4 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.navigationTypes', navigationTypes);
   		this.validNavigationTypes = navigationTypes;
-  		return this._ProfileSvc.getLinkBehaviors();                                   // Request #5 getLinkBehaviors() Request
-  	}).catch((error) => {                                                             // Request #4 Error Handler
+  		return this._ProfileSvc.getLinkBehaviors();                                  // Request #5 getLinkBehaviors() Request
+  	}).catch((error) => {                                                            // Request #4 Error Handler
   		this._LoggingSvc.toast('Error getting navigation types:\r\n' + error, 'Function Details:', LogLevel.Error);
-  	}).then((linkBehaviors: IKeyValuePair[]) => {                                     // Request #5 Handler
+  	}).then((linkBehaviors: IKeyValuePair[]) => {                                    // Request #5 Handler
   		// console.log('FunctionDetailsComponent.ngOnInit.linkBehaviors', linkBehaviors);
   		this.validLinkBehaviors = linkBehaviors;
   		return this._ProfileSvc.getAvalibleParents();                                 // Request #6 getAvalibleParents()
@@ -194,7 +194,7 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   		this.showGroups = this._Profile.canSaveGroups;
   		this.showRoles = this._Profile.canSaveRoles;      
   		this.populateForm();
-  	}).catch((error) => {                                                      // Request #8 Error Handler
+  	}).catch((error) => {                                                              // Request #8 Error Handler
   		this._LoggingSvc.toast('Error getting avalible groups:\r\n' + error, 'Function Details:', LogLevel.Error);
   	});
 
