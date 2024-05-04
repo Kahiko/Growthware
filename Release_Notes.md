@@ -19,7 +19,7 @@
 - Fixed Status not updating when you are "forced" to change your password
 - Fixed not navigating to the "favoriate" action after logon
 - Fixed being logged out when saving a function
-- Fixed [ZGWSecurity].[Get_Function_Sort] where nothing is returned if the ParentSeqId <> 1 this should have been ParentSeqId = @V_Parent_ID
+- Fixed [ZGWSecurity].[Get_Function_Sort] where nothing is returned due to the ParentSeqId <> 1 predicate, this should have been ParentSeqId = @V_Parent_ID
 
 ## Version 4.0.0 (2024-04-30)
 
