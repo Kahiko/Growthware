@@ -2,7 +2,7 @@ input[type] {
   width: 132px;
 }
 
-.tabHeight { // From (SearchAccountsComponent._TheWindowSize)
+.containerSize { // From (SearchAccountsComponent._TheWindowSize)
   min-height: 325px; // -125px
   min-width: 850px;  // -50px
 }

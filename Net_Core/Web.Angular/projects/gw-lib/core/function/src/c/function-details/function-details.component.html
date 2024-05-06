@@ -2,7 +2,7 @@
   <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
     <mat-tab label="General">
       <div class="mat-tab__container">
-        <div class="mat-tab__content formSectionContents tabHeight">
+        <div class="mat-tab__content formSectionContents containerSize">
           <div class="table">
             <div class="tr">
               <div class="td firstCell left">
@@ -175,7 +175,7 @@
 </mat-tab>
 <mat-tab label="Menu Order">
   <div class="mat-tab__container">
-    <div class="mat-tab__content formSectionContents tabHeight">
+    <div class="mat-tab__content formSectionContents containerSize">
       <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
         @for (movie of functionMenuOrders; track movie) {
           <div class="example-box" cdkDrag>
@@ -190,7 +190,7 @@
 @if (showRoles) {
   <mat-tab label="Roles">
     <div class="mat-tab__container">
-      <div class="mat-tab__content formSectionContents tabHeight">
+      <div class="mat-tab__content formSectionContents containerSize">
         <div class="table">
           <div class="tr">
             <div class="td centerDiv">
@@ -248,7 +248,7 @@
 @if (showGroups) {
   <mat-tab label="Groups">
     <div class="mat-tab__container ">
-      <div class="mat-tab__content formSectionContents tabHeight">
+      <div class="mat-tab__content formSectionContents containerSize">
         <div class="table">
           <div class="tr">
             <div class="td centerDiv">
@@ -306,7 +306,7 @@
 }
 <mat-tab label="Directory Information">
   <div class="mat-tab__container">
-    <div class="mat-tab__content formSectionContents tabHeight">
+    <div class="mat-tab__content formSectionContents containerSize">
       <div class="table">
         <div class="tr">
           <div class="td right">
@@ -353,7 +353,7 @@
 </mat-tab>
 <mat-tab label="Derived Roles">
   <div class="mat-tab__container">
-    <div class="mat-tab__container formSectionContents tabHeight">
+    <div class="mat-tab__container formSectionContents containerSize">
       <div>
         <mat-grid-list cols="2" rowHeight="2:1">
           <mat-grid-tile>
