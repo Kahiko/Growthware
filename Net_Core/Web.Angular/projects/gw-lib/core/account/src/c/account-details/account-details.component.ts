@@ -113,16 +113,16 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 	];
 
 	constructor(
-    private _AccountSvc: AccountService,
-    private _FormBuilder: FormBuilder,
-    private _DataSvc: DataService,
-    private _GroupSvc: GroupService,
-    private _GWCommon: GWCommon,
-    private _LoggingSvc: LoggingService,
-    private _ModalSvc: ModalService,
-    private _RoleSvc: RoleService,
-    private _Router: Router,
-    private _SecuritySvc: SecurityService
+		private _AccountSvc: AccountService,
+		private _FormBuilder: FormBuilder,
+		private _DataSvc: DataService,
+		private _GroupSvc: GroupService,
+		private _GWCommon: GWCommon,
+		private _LoggingSvc: LoggingService,
+		private _ModalSvc: ModalService,
+		private _RoleSvc: RoleService,
+		private _Router: Router,
+		private _SecuritySvc: SecurityService
 	) { }
 
 	ngOnDestroy(): void {
