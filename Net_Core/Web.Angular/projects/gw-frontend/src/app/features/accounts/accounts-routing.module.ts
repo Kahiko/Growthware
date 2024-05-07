@@ -6,6 +6,7 @@ import { AuthGuard } from '@growthware/common/services';
 // Library Components
 import { AccountDetailsComponent } from '@growthware/core/account';
 import { ChangePasswordComponent } from '@growthware/core/account';
+import { ForgotPasswordComponent } from '@growthware/core/account/src/c/forgot-password/forgot-password.component';
 import { LoginComponent } from '@growthware/core/account';
 import { LogoutComponent } from '@growthware/core/account';
 import { SearchAccountsComponent } from '@growthware/core/account';
@@ -22,6 +23,7 @@ const childRoutes: Routes = [
 	{ path: 'logon', component: LoginComponent},
 	{ path: 'change-password', component: ChangePasswordComponent },
 	{ path: 'logout', component: LogoutComponent },
+	{ path: 'forgot-password', component: ForgotPasswordComponent },
 ];
 
 

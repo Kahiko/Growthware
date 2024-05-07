@@ -1,7 +1,60 @@
 -- Upgrade script for version 4.0.1.0
+SET NOCOUNT OFF;
+Print 'Adding Forgot Password'
+IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = '/accounts/forgot-password')
+	BEGIN
+		DECLARE 
+			@V_FunctionSeqId int = -1,
+			@V_Name VARCHAR(30) = 'Forgot Password',
+			@V_Description VARCHAR(512) = 'Forgot Password',
+			@V_FunctionTypeSeqId INT = 1,
+			@V_Source VARCHAR(512) = '',
+			@V_Controller VARCHAR(512) = '',
+			@V_Resolve VARCHAR(MAX) = '',
+			@V_Enable_View_State int = 0,
+			@V_Enable_Notifications int = 0,
+			@V_Redirect_On_Timeout int = 0,
+			@V_Is_Nav int = 0,
+			@V_Link_Behavior int = 1,
+			@V_NO_UI int = 0,
+			@V_NAV_TYPE_ID int = 1,
+			@V_Action VARCHAR(256) = '/accounts/forgot-password',
+			@V_Meta_Key_Words VARCHAR(512) = '',
+			@V_ParentSeqId int = 1,
+			@V_Notes VARCHAR(512) = '',
+			@V_Debug INT = 0,
+			@V_SystemID INT = 1,
+			@V_ViewPermission INT;
 
+		EXEC ZGWSecurity.Set_Function
+			@V_FunctionSeqId,
+			@V_Name,
+			@V_Description,
+			@V_FunctionTypeSeqId,
+			@V_Source,
+			@V_Controller,
+			@V_Resolve,
+			@V_Enable_View_State,
+			@V_Enable_Notifications,
+			@V_Redirect_On_Timeout,
+			@V_Is_Nav,
+			@V_Link_Behavior,
+			@V_NO_UI,
+			@V_NAV_TYPE_ID,
+			@V_Action,
+			@V_Meta_Key_Words,
+			@V_ParentSeqId,
+			@V_Notes,
+			@V_SystemID,
+			@V_Debug;
+
+		SET @V_FunctionSeqId = (SELECT FunctionSeqId from ZGWSecurity.Functions where action=@V_Action);
+		SET @V_ViewPermission = (SELECT NVP_DetailSeqId FROM ZGWSecurity.Permissions WHERE NVP_Detail_Value = 'View')
+		EXEC ZGWSecurity.Set_Function_Roles @V_FunctionSeqId, 1, 'Anonymous', @V_ViewPermission, @V_SystemID, @V_Debug;
+	END
+--END IF
 /****** Start: Procedure [ZGWSecurity].[Get_Function_Sort] ******/
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Function_Sort]') AND type in (N'P', N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'ZGWSecurity.Get_Function_Sort') AND type in (N'P', N'PC'))
 	BEGIN
 		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Function_Sort] AS'
 	END
@@ -69,4 +122,6 @@ GO
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '4.0.1.0',
     [Updated_By] = 3,
-    [Updated_Date] = getdate()
+    [Updated_Date] = getdate();
+
+SET NOCOUNT ON

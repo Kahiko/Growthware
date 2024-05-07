@@ -3,32 +3,34 @@
 Usage:
 	DECLARE 
 		@P_FunctionSeqId int = -1,
-		@P_Name VARCHAR(30) = 'Testing',
-		@P_Description VARCHAR(512) = 'Testing',
+		@P_Name VARCHAR(30) = 'Forgot Password',
+		@P_Description VARCHAR(512) = 'Forgot Password',
 		@P_FunctionTypeSeqId INT = 1,
 		@P_Source VARCHAR(512) = '',
 		@P_Controller VARCHAR(512) = '',
+		@P_Resolve VARCHAR(MAX) = '',
 		@P_Enable_View_State int = 0,
 		@P_Enable_Notifications int = 0,
 		@P_Redirect_On_Timeout int = 0,
 		@P_Is_Nav int = 0,
-		@P_Link_Behavior int 0,
+		@P_Link_Behavior int = 1,
 		@P_NO_UI int = 0,
 		@P_NAV_TYPE_ID int = 1,
-		@P_Action VARCHAR(256) = 'testing',
+		@P_Action VARCHAR(256) = '/accounts/forgot-password',
 		@P_Meta_Key_Words VARCHAR(512) = '',
 		@P_ParentSeqId int = 1,
 		@P_Notes VARCHAR(512) = '',
-		@P_Added_Updated_By INT = 1
-		@P_Debug INT = 0
+		@P_Added_Updated_By INT = 1,
+		@P_Debug INT = 0;
 
-	exec ZGWSecurity.Set_Function
+	EXEC ZGWSecurity.Set_Function
 		@P_FunctionSeqId,
 		@P_Name,
 		@P_Description,
 		@P_FunctionTypeSeqId,
 		@P_Source,
 		@P_Controller,
+		@P_Resolve,
 		@P_Enable_View_State,
 		@P_Enable_Notifications,
 		@P_Redirect_On_Timeout,
@@ -40,8 +42,8 @@ Usage:
 		@P_Meta_Key_Words,
 		@P_ParentSeqId,
 		@P_Notes,
-		@P_Added_Updated_By
-		@P_Debug
+		@P_Added_Updated_By,
+		@P_Debug;
 		
 	PRINT 'Primary_Key = ' + CONVERT(VARCHAR(MAX),@P_FunctionSeqId)
 */

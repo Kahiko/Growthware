@@ -1,8 +1,9 @@
 
 .loginForm {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
+  max-height: calc(225px - 125px);
+  max-width: calc(450px - 50px);  
+  min-height: calc(225px - 125px);
+  min-width: calc(450px - 50px);  
 }
 
 .loginForm > div {
@@ -14,6 +15,12 @@
 }
 
 .loginForm-footer__div {
-  display: flex; justify-content: flex-end;
+  display: flex; 
+  align-items: center;
+  justify-content: flex-end;
   margin-right: 20px;
+}
+
+.loginForm-footer__div a {
+  cursor: pointer;
 }

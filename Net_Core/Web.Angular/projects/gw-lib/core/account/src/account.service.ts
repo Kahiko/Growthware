@@ -43,6 +43,7 @@ export class AccountService extends BaseService {
 	get authenticationResponse() { return this._AuthenticationResponse; }
 	readonly anonymous: string = 'Anonymous';
 	get clientChoices() { return this._ClientChoices; }
+	readonly forgotPasswordModalId = 'forgotPasswordModal';
 	readonly logInModalId = 'logInModal';
 	public modalReason: string = '';
 	public selectedRow: SelectedRow = new SelectedRow();

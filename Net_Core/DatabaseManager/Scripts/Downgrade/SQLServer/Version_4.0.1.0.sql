@@ -1,4 +1,13 @@
 -- Downgrade script for version 4.0.1.0
+DECLARE 
+	@V_FunctionSeqId int,
+	@V_MyAction VARCHAR(256) = '/accounts/forgot-password',
+	@V_ErrorCode int;
+
+SET @V_FunctionSeqId = (SELECT FunctionSeqId from ZGWSecurity.Functions where action=@V_MyAction);
+EXEC ZGWSecurity.Delete_Function
+	@V_FunctionSeqId ,
+	@V_ErrorCode;
 
 /****** Start: Procedure [ZGWSecurity].[Get_Function_Sort] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Function_Sort]') AND type in (N'P', N'PC'))

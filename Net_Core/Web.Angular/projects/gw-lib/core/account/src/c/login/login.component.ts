@@ -9,10 +9,11 @@ import { MatInputModule } from '@angular/material/input';
 // Library
 // import { LoggingService } from '@growthware/core/logging';
 import { ConfigurationService } from '@growthware/core/configuration';
-import { ModalService } from '@growthware/core/modal';
+import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
 import { NavigationService } from '@growthware/core/navigation';
 // Feature
 import { AccountService } from '../../account.service';
+import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
 
 @Component({
 	selector: 'gw-core-login',
@@ -94,6 +95,18 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 			break;
 		}
 		return undefined;
+	}
+
+	onForgotPassword(): void {
+		this._ModalSvc.close(this._AccountSvc.logInModalId);
+		const mWindowSize: WindowSize = new WindowSize(225, 450);
+		const mModalOptions: ModalOptions = new ModalOptions(this._AccountSvc.forgotPasswordModalId, 'Forgot Password', ForgotPasswordComponent, mWindowSize);
+		mModalOptions.buttons.okButton.callbackMethod = () => {
+			// this.onModalOk;
+			this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+		};
+		this._ModalSvc.open(mModalOptions);
+
 	}
 
 	onSubmit() {

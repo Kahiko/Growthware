@@ -207,6 +207,7 @@ Library: (core) From Web.Angular\Angular
 		ng generate interface --path=projects/gw-lib/core/account/src selectedRow               --type model --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/accountDetails 			--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/ChangePassword 			--standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/account/src c/ForgotPassword 			--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/login 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/Logout 					--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/SearchAccounts 			--standalone --style scss --project gw-lib
