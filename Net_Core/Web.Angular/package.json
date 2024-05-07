@@ -11,7 +11,8 @@
     "start:windows": "ng serve --host=127.0.0.1 --port 44455 --ssl --ssl-cert %APPDATA%\\ASP.NET\\https\\%npm_package_name%.pem --ssl-key %APPDATA%\\ASP.NET\\https\\%npm_package_name%.key",
     "start:default": "ng serve --host=127.0.0.1 --port 44455 --ssl --ssl-cert $HOME/.aspnet/https/${npm_package_name}.pem --ssl-key $HOME/.aspnet/https/${npm_package_name}.key",
     "test": "ng test",
-    "watch": "ng build --watch --configuration development"
+    "watch": "ng build --watch --configuration development",
+    "bundle-report": "ng build gw-frontend --configuration production --source-map && source-map-explorer dist/gw-frontend/browser/*.js"
   },
   "private": true,
   "dependencies": {
