@@ -1,6 +1,7 @@
 Search: average angular initial size
 	Angular Performance Tuning: Complete Guide To Bundle Size Optimization
 		https://blog.angular-university.io/angular-performance-tuning/
+		npm run bundle-report
 
 feature.module.ts
 	imports the feature-routing.module
