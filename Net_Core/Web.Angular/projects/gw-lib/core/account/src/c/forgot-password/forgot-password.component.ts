@@ -6,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 // Library
 import { ModalService } from '@growthware/core/modal';
+import { LogLevel, LoggingService } from '@growthware/core/logging';
 // Feature
 import { AccountService } from '../../account.service';
 import { Router } from '@angular/router';
@@ -32,6 +33,7 @@ export class ForgotPasswordComponent implements OnInit {
   constructor(
     private _AccountSvc: AccountService,
     private _FormBuilder: FormBuilder,
+    private _LoggingSvc: LoggingService,
     private _ModalSvc: ModalService,
     private _Router: Router,
   ) { 
@@ -52,12 +54,9 @@ export class ForgotPasswordComponent implements OnInit {
   getErrorMessage(fieldName: string): string | void {
     /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
     switch (fieldName) {
-      case 'email': {
-        if (this.controls['email'].hasError('required')) {
+      case 'account': {
+        if (this.controls['account'].hasError('required')) {
           return 'Required';
-        }
-        if (this.controls['email'].hasError('email')) {
-          return 'Not a valid email';
         }
       }
     }
@@ -69,20 +68,20 @@ export class ForgotPasswordComponent implements OnInit {
 
   onSubmit(form: FormGroup): void {
     if(form.valid) {
-      this.populateProfile();
       // console.log('AccountProfile', this._AccountProfile);
-      // call the API
-      this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+      this._AccountSvc.forgotPassword(this.controls['account'].getRawValue()).then((response) => {
+        console.log('ForgotPasswordComponent.onSubmit.response: ', response);
+        this._LoggingSvc.toast('Request has been sent', 'Forgot Password', LogLevel.Success);
+        this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
+      }).catch(() => {
+        this._LoggingSvc.toast('Error sending request', 'Forgot Password', LogLevel.Error);
+      });
     }
   }
 
   createForm(): void {
     this.frmForgotPassword = this._FormBuilder.group({
-      email: ['', [Validators.required, Validators.email]],
+      account: ['', [Validators.required]],
     });
-  }
-
-  private populateProfile(): void {
-    
   }
 }

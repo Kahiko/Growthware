@@ -282,6 +282,16 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
+        /// Check the database to see if the resetToken matches any existing Tokens
+        /// </summary>
+        /// <param name="resetToken"></param>
+        /// <returns></returns>
+        public bool ResetTokenExists(string resetToken)
+        {
+            return m_DAccounts.ResetTokenExists(resetToken);
+        }
+
+        /// <summary>
         /// Performs either insert or update of an MAcountProfile, and re-populates the MAccountProfile with DB information.
         /// </summary>
         /// <param name="profile">MAccountProfile</param>

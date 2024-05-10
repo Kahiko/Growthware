@@ -26,6 +26,7 @@ export class AccountService extends BaseService {
 	private _Api_Authenticate: string = '';
 	private _Api_ChangePassword = '';
 	private _Api_ClientChoices: string = '';
+	private _Api_ForgotPassword: string = '';
 	private _Api_Logoff: string = '';
 	private _Api_RefreshToken: string = '';
 	private _Api_SaveAccount: string = '';
@@ -62,6 +63,7 @@ export class AccountService extends BaseService {
 		this._Api_Authenticate = this._BaseURL + this._ApiName + 'Authenticate';
 		this._Api_ChangePassword = this._BaseURL + this._ApiName + 'ChangePassword';
 		this._Api_ClientChoices = this._BaseURL + this._ApiName + 'GetPreferences';
+		this._Api_ForgotPassword = this._BaseURL + this._ApiName + 'ForgotPassword';
 		this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
 		this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
 		this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
@@ -206,6 +208,30 @@ export class AccountService extends BaseService {
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'AccountService', 'getSelectableActions');
+					reject('Failed to call the API');
+				},
+				// complete: () => {}
+			});
+		});
+	}
+
+	forgotPassword(account: string): Promise<string> {
+		console.log('AccountService.forgotPassword: ', account);
+		return new Promise<string>((resolve, reject) => {
+			const mQueryParameter: HttpParams = new HttpParams()
+				.set('account', account);
+			const mHttpOptions = {
+				headers: new HttpHeaders({
+					'Content-Type': 'application/json',
+				}),
+				params: mQueryParameter,
+			};
+			this._HttpClient.post<string>(this._Api_ForgotPassword, null, mHttpOptions).subscribe({
+				next: (response: string) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'AccountService', 'forgotPassword');
 					reject('Failed to call the API');
 				},
 				// complete: () => {}

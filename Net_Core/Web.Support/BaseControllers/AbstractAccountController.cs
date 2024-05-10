@@ -156,6 +156,36 @@ public abstract class AbstractAccountController : ControllerBase
         return mRetVal;
     }
 
+    [AllowAnonymous]
+    [HttpPost("ForgotPassword")]
+    public ActionResult<string> ForgotPassword(string account)
+    {
+        if (String.IsNullOrWhiteSpace(account)) 
+        {
+            ArgumentNullException mArgumentNullException = new ("account", " account can not be null or empty");
+            m_Logger.Error(mArgumentNullException);
+            return StatusCode(StatusCodes.Status400BadRequest, mArgumentNullException.Message);
+
+        }
+        MAccountProfile mAccountProfile = AccountUtility.GetAccount(account, true);
+        if (mAccountProfile != null)
+        {
+            string mPassword = mAccountProfile.Password;
+            AccountUtility.ForgotPassword(mAccountProfile, Request.Headers["origin"]);
+            MMessage mMessage = MessageUtility.GetProfile("RequestNewPassword");
+            MRequestNewPassword mRequestNewPassword = new MRequestNewPassword(mMessage);
+            CryptoUtility.TryEncrypt(mAccountProfile.Account, out mPassword, SecurityEntityUtility.CurrentProfile.EncryptionType);
+            mRequestNewPassword.AccountName = Uri.EscapeDataString(mPassword);
+            mRequestNewPassword.FullName = mAccountProfile.FirstName + " " + mAccountProfile.LastName;
+            mRequestNewPassword.Password = Uri.EscapeDataString(mAccountProfile.Password);
+            string urlRoot = $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}";
+            mRequestNewPassword.Server = urlRoot;
+            mRequestNewPassword.FormatBody();
+            return Ok(mMessage.Body);
+        }
+        return StatusCode(StatusCodes.Status204NoContent, "Could not request password change");
+    }
+
     /// <summary>
     /// Returns a MAccountProfile given the account. If the account is not specivied ("" or "_") then a new MAccountProfile will be returned.
     /// </summary>
@@ -335,12 +365,12 @@ public abstract class AbstractAccountController : ControllerBase
 
     private string getRemoteHostIpAddressUsingXRealIp()
     {
-        IPAddress? remoteIpAddress = null;
+        IPAddress remoteIpAddress = null;
         var xRealIpExists = HttpContext.Request.Headers.TryGetValue("X-Real-IP", out var xRealIp);
 
         if (xRealIpExists)
         {
-            if (!IPAddress.TryParse(xRealIp, out IPAddress? address))
+            if (!IPAddress.TryParse(xRealIp, out IPAddress address))
             {
                 return remoteIpAddress.MapToIPv4().ToString();
             }

@@ -130,6 +130,27 @@ namespace GrowthWare.DataAccess.SQLServer
             return base.GetDataTable(mCommandText, mParameters, true);
         }
 
+        bool IAccount.ResetTokenExists(string resetToken)
+        {
+            bool mRetVal = false;
+            Int32 mCount = 0;
+            string mCleanedValue = this.Cleanup(resetToken);
+            string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[Accounts] WHERE [ResetToken] = @P_ResetToken";
+            SqlParameter[] mParameters = { 
+				new SqlParameter("@P_ResetToken", mCleanedValue), 
+			};
+            var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
+            if(mDbValue != null)
+            {
+                mCount = (Int32)mDbValue;
+                if(mCount == 0) 
+                {
+                    mRetVal = true;
+                }
+            }
+            return mRetVal;
+        }
+
         DataTable IAccount.Roles()
         {
             checkValid();
@@ -190,6 +211,8 @@ namespace GrowthWare.DataAccess.SQLServer
 				new SqlParameter("@P_Email", m_Profile.Email),
 				new SqlParameter("@P_Password", m_Profile.Password),
 				new SqlParameter("@P_Password_Last_Set", m_Profile.PasswordLastSet),
+                new SqlParameter("@P_ResetToken", m_Profile.ResetToken),
+                new SqlParameter("@P_ResetTokenExpires", m_Profile.ResetTokenExpires),
 				new SqlParameter("@P_Failed_Attempts", m_Profile.FailedAttempts),
 				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
 				new SqlParameter("@P_Last_Login", m_Profile.LastLogOn),

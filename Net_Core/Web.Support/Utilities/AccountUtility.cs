@@ -318,6 +318,27 @@ public static class AccountUtility
     }
 
     /// <summary>
+    /// Generates a unique reset token for a given account then saves it to the DB.
+    /// </summary>
+    /// <param name="accountProfile">MAccountProfile for the account to generate a reset token for.</param>
+    /// <param name="origin">Used when sending an email.</param>
+    public static void ForgotPassword(MAccountProfile accountProfile, string origin)
+    {
+        if (accountProfile == null)
+        {
+            return;
+        }
+        // generate reset token
+        JwtUtility mJwtUtility = new JwtUtility();
+        accountProfile.ResetToken = mJwtUtility.GenerateResetToken();
+        accountProfile.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
+        // Save the account
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        mBAccount.Save(accountProfile, false, false, false);
+        // send email
+    }
+
+    /// <summary>
     /// Retrieves the account profile for the given account.
     /// </summary>
     /// <param name="account"></param>

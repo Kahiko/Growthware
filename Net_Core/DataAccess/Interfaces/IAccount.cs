@@ -20,6 +20,13 @@ namespace GrowthWare.DataAccess.Interfaces
 		bool RefreshTokenExists(string refreshToken);
 
 		/// <summary>
+		/// Check the DB to see if the resetToken is already in use (exists)
+		/// </summary>
+		/// <param name="resetToken">string to check for</param>
+		/// <returns>bool</returns>
+		bool ResetTokenExists(string resetToken);
+
+		/// <summary>
 		/// Used by all methods and must be set to send parameters to the datastore
 		/// </summary>
 		int SecurityEntitySeqId { get; set; }

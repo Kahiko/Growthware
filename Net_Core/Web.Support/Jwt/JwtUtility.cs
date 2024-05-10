@@ -111,4 +111,23 @@ public class JwtUtility : IJwtUtility
 
         return refreshToken;
     }
+
+    /// <summary>
+    /// Generates a unique reset token.
+    /// </summary>
+    /// <returns>string</returns>
+    public string GenerateResetToken()
+    {
+        string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+
+        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        bool mTokenIsUnique = mBAccount.ResetTokenExists(mRetVal);
+
+        if (!mTokenIsUnique)
+        {
+            return GenerateResetToken();
+        }
+        
+        return mRetVal;
+    }
 }
