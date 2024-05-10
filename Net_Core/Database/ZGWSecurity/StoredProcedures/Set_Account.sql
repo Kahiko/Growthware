@@ -69,6 +69,10 @@ Usage:
 --	@P_StatusSeqId's value determines insert/update
 --	a value of -1 is insert > -1 performs update
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 05/10/2024
+-- Description:	Adding @P_ResetToken and @P_ResetTokenExpires
+-- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_StatusSeqId INT
 	,@P_Account VARCHAR(128)
@@ -90,8 +94,8 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_Is_System_Admin INT
 	,@P_Debug INT = 0
 AS
-IF @P_Debug = 1
-	PRINT 'Start Set_Account'
+SET NOCOUNT ON;
+IF @P_Debug = 1 PRINT 'Start Set_Account';
 
 DECLARE @VSecurityEntitySeqId VARCHAR(1)
 	,@V_SecurityEntityName VARCHAR(50)
@@ -111,8 +115,7 @@ DECLARE @VSecurityEntitySeqId VARCHAR(1)
 IF @P_AccountSeqId > - 1
 BEGIN
 	-- UPDATE PROFILE
-	IF @P_Debug = 1
-		PRINT 'UPDATE [ZGWSecurity].[Accounts]'
+	IF @P_Debug = 1 PRINT 'UPDATE [ZGWSecurity].[Accounts]';
 
 	UPDATE [ZGWSecurity].[Accounts]
 	SET StatusSeqId = @P_StatusSeqId
@@ -141,11 +144,10 @@ BEGIN
 	-- INSERT a new row in the table.
 	SET NOCOUNT ON
 
-	IF @P_Debug = 1
-		PRINT 'INSERT [ZGWSecurity].[Accounts]'
+	IF @P_Debug = 1 PRINT 'INSERT [ZGWSecurity].[Accounts]';
 
 	INSERT [ZGWSecurity].[Accounts] (
-		StatusSeqId
+		 StatusSeqId
 		,Account
 		,First_Name
 		,Last_Name
@@ -164,8 +166,7 @@ BEGIN
 		,TIME_ZONE
 		,Location
 		,Enable_Notifications
-		)
-	VALUES (
+	) VALUES (
 		@P_StatusSeqId
 		,@P_Account
 		,@P_First_Name
@@ -185,17 +186,15 @@ BEGIN
 		,@P_Time_Zone
 		,@P_Location
 		,@P_Enable_Notifications
-		)
+	);
 
 	SET @P_AccountSeqId = SCOPE_IDENTITY()
 
 	IF EXISTS (SELECT TOP(1) 1 FROM [ZGWSecurity].[Accounts] WHERE AccountSeqId = @P_AccountSeqId)
 	BEGIN
-		EXEC ZGWSecurity.Set_Account_Roles @P_Account
-			,1
-			,'Authenticated'
-			,@P_Added_Updated_By
-			,@P_Debug;
+		-- The Authenticated role is always added execpte for the Anonymous account
+		IF(UPPER(@P_Account) <> 'ANONYMOUS')
+			EXEC ZGWSecurity.Set_Account_Roles @P_Account ,1 ,'Authenticated' ,@P_Added_Updated_By ,@P_Debug;
 
 		/*add an entry to account choice table*/
 		IF EXISTS (SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'Account_Choices' AND TABLE_SCHEMA = 'ZGWCoreWeb')
@@ -308,6 +307,7 @@ IF @P_Debug = 1
 	WHERE 
 		AccountSeqId = @P_AccountSeqId
 */
+SET NOCOUNT OFF;
 IF @P_Debug = 1 PRINT 'End Set_Account';
 
 GO
