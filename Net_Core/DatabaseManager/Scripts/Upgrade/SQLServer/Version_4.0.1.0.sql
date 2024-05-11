@@ -77,7 +77,7 @@ UPDATE [ZGWCoreWeb].[Messages] SET [Body] = 'Dear <FullName>,
 
 There has been a request for a password change: 
 
-	Please Use this link to logon and change your password: <a href="<Server>logon?resetToken=<ResetToken>">Change Password</a>
+	Please Use this link to logon and change your password: <a href="<Server>accounts/logon?resetToken=<ResetToken>">Change Password</a>
 
 <b>Please note once you have logged on using this link you will only be able to change our password.</b>'
 WHERE [MessageSeqId] = @V_MessageSeqId;
