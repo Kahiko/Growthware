@@ -167,21 +167,25 @@ public abstract class AbstractAccountController : ControllerBase
             return StatusCode(StatusCodes.Status400BadRequest, mArgumentNullException.Message);
 
         }
-        MAccountProfile mAccountProfile = AccountUtility.GetAccount(account, true);
+        MAccountProfile mAccountProfile = AccountUtility.ForgotPassword(account, Request.Headers["origin"]);
         if (mAccountProfile != null)
         {
-            string mPassword = mAccountProfile.Password;
-            AccountUtility.ForgotPassword(mAccountProfile, Request.Headers["origin"]);
             MMessage mMessage = MessageUtility.GetProfile("RequestNewPassword");
-            MRequestNewPassword mRequestNewPassword = new MRequestNewPassword(mMessage);
-            CryptoUtility.TryEncrypt(mAccountProfile.Account, out mPassword, SecurityEntityUtility.CurrentProfile.EncryptionType);
-            mRequestNewPassword.AccountName = Uri.EscapeDataString(mPassword);
-            mRequestNewPassword.FullName = mAccountProfile.FirstName + " " + mAccountProfile.LastName;
-            mRequestNewPassword.Password = Uri.EscapeDataString(mAccountProfile.Password);
-            string urlRoot = $"{Request.Scheme}://{Request.Host}:{Request.Host.Port ?? 80}";
+            MRequestNewPassword mRequestNewPassword = new(mMessage)
+            {
+                AccountName = Uri.EscapeDataString(mAccountProfile.Account),
+                FullName = mAccountProfile.FirstName + " " + mAccountProfile.LastName,
+                Password = Uri.EscapeDataString(mAccountProfile.Password),
+                ResetToken = mAccountProfile.ResetToken
+            };
+            string urlRoot = $"{Request.Scheme}://{Request.Host}/";
             mRequestNewPassword.Server = urlRoot;
             mRequestNewPassword.FormatBody();
-            return Ok(mMessage.Body);
+            // send email
+            
+            // Get return value
+            mMessage = MessageUtility.GetProfile("Request Password Reset UI");
+            return Ok(mMessage.Body.Replace("<b>", "").Replace("</b>", ""));
         }
         return StatusCode(StatusCodes.Status204NoContent, "Could not request password change");
     }

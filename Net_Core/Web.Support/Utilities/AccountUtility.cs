@@ -322,20 +322,18 @@ public static class AccountUtility
     /// </summary>
     /// <param name="accountProfile">MAccountProfile for the account to generate a reset token for.</param>
     /// <param name="origin">Used when sending an email.</param>
-    public static void ForgotPassword(MAccountProfile accountProfile, string origin)
+    public static MAccountProfile ForgotPassword(string account, string origin)
     {
-        if (accountProfile == null)
-        {
-            return;
-        }
+        MAccountProfile mRetVal = GetAccount(account);
         // generate reset token
         JwtUtility mJwtUtility = new JwtUtility();
-        accountProfile.ResetToken = mJwtUtility.GenerateResetToken();
-        accountProfile.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
+        mRetVal.ResetToken = mJwtUtility.GenerateResetToken();
+        mRetVal.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
+        mRetVal.UpdatedBy = mRetVal.Id;
+        mRetVal.UpdatedDate = DateTime.UtcNow;
         // Save the account
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        mBAccount.Save(accountProfile, false, false, false);
-        // send email
+        Save(mRetVal, false, false, false);
+        return mRetVal;
     }
 
     /// <summary>

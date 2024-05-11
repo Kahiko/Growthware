@@ -1,12 +1,14 @@
 -- Upgrade script for version 4.0.1.0
-SET NOCOUNT OFF;
+SET NOCOUNT ON;
+
+DECLARE @V_MessageSeqId INT = (SELECT [MessageSeqId] from [ZGWCoreWeb].[Messages] where [Name] = 'RequestNewPassword');
 
 ALTER TABLE [ZGWSecurity].[Accounts] ALTER COLUMN [ResetToken] VARCHAR(256);
 
-PRINT 'Adding Forgot Password'
-
 IF NOT EXISTS (SELECT 1 FROM [ZGWSecurity].[Functions] WHERE [Action] = '/accounts/forgot-password')
 BEGIN
+	PRINT 'Adding Forgot Password';
+
 	DECLARE @V_FunctionSeqId INT = - 1
 		,@V_Name VARCHAR(30) = 'Forgot Password'
 		,@V_Description VARCHAR(512) = 'Forgot Password'
@@ -68,8 +70,18 @@ BEGIN
 		,@V_SystemID
 		,@V_Debug;
 END
-
 --END IF
+
+-- Update the message
+UPDATE [ZGWCoreWeb].[Messages] SET [Body] = 'Dear <FullName>,
+
+There has been a request for a password change: 
+
+	Please Use this link to logon and change your password: <a href="<Server>logon?resetToken=<ResetToken>">Change Password</a>
+
+<b>Please note once you have logged on using this link you will only be able to change our password.</b>'
+WHERE [MessageSeqId] = @V_MessageSeqId;
+
 /****** Start: Procedure [ZGWSecurity].[Get_Function_Sort] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'ZGWSecurity.Get_Function_Sort') AND type IN ( N'P' ,N'PC'))
 	BEGIN
@@ -474,4 +486,4 @@ SET [Version] = '4.0.1.0'
 	,[Updated_By] = 3
 	,[Updated_Date] = getdate();
 
-SET NOCOUNT ON
+SET NOCOUNT OFF;

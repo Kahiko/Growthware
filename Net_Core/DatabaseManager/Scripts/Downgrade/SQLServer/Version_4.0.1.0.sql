@@ -1,9 +1,10 @@
 -- Downgrade script for version 4.0.1.0
-
+SET NOCOUNT ON;
 ALTER TABLE [ZGWSecurity].[Accounts] ALTER COLUMN [ResetToken] VARCHAR(MAX);
 
 DECLARE 
 	@V_FunctionSeqId int,
+	@V_MessageSeqId INT = (SELECT [MessageSeqId] from [ZGWCoreWeb].[Messages] where [Name] = 'RequestNewPassword'),
 	@V_MyAction VARCHAR(256) = '/accounts/forgot-password',
 	@V_ErrorCode int;
 
@@ -11,6 +12,17 @@ SET @V_FunctionSeqId = (SELECT FunctionSeqId from ZGWSecurity.Functions where ac
 EXEC ZGWSecurity.Delete_Function
 	@V_FunctionSeqId ,
 	@V_ErrorCode;
+
+UPDATE [ZGWCoreWeb].[Messages] SET [Body] = 'Dear <FullName>,
+
+There has been a request for a password change: 
+
+	Please Use this link to logon:
+ <Server>Default.aspx?Action=Logon&Account=<AccountName>&Password=<Password>
+
+<b>Please note once you have logged on using this link you will only be able to change our password.</b>'
+WHERE [MessageSeqId] = @V_MessageSeqId;
+
 
 /****** Start: Procedure [ZGWSecurity].[Get_Function_Sort] ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Function_Sort]') AND type in (N'P', N'PC'))
@@ -376,4 +388,6 @@ GO
 UPDATE [ZGWSystem].[Database_Information] SET
     [Version] = '4.0.0.0',
     [Updated_By] = 3,
-    [Updated_Date] = getdate()
+    [Updated_Date] = getdate();
+
+SET NOCOUNT OFF;

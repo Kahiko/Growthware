@@ -225,6 +225,7 @@ export class AccountService extends BaseService {
 					'Content-Type': 'application/json',
 				}),
 				params: mQueryParameter,
+				responseType: 'text' as 'json',
 			};
 			this._HttpClient.post<string>(this._Api_ForgotPassword, null, mHttpOptions).subscribe({
 				next: (response: string) => {

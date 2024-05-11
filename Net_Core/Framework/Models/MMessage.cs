@@ -3,6 +3,7 @@ using System;
 using System.Data;
 using System.Reflection;
 using GrowthWare.Framework.Models.Base;
+using System.Globalization;
 
 namespace GrowthWare.Framework.Models;
 /// <summary>
@@ -150,7 +151,10 @@ public class MMessage : AbstractBaseModel, IMessage
             object pValue = myPropertyItem.GetValue(this, null);
             if (pValue != null)
             {
-                this.m_Body = this.m_Body.Replace("<" + myPropertyItem.Name + ">", pValue.ToString());
+                if(myPropertyItem.Name.ToUpper(CultureInfo.InvariantCulture) != "BODY")
+                {
+                    this.m_Body = this.m_Body.Replace("<" + myPropertyItem.Name + ">", pValue.ToString());
+                }
             }
         }
     }

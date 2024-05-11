@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -25,8 +25,9 @@ import { Router } from '@angular/router';
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss'
 })
-export class ForgotPasswordComponent implements OnInit {
+export class ForgotPasswordComponent implements AfterViewInit, OnInit {
 
+  @ViewChild('account') accountInputElement!: ElementRef<HTMLInputElement>;
   canCancel: boolean = true;
   frmForgotPassword!: FormGroup;
 
@@ -43,6 +44,11 @@ export class ForgotPasswordComponent implements OnInit {
     }
     // console.log('ForgotPasswordComponent.constructor.mAction', mAction);
   }
+
+  ngAfterViewInit(): void {
+    this.accountInputElement.nativeElement.focus();
+  }
+
   ngOnInit(): void {
     this.createForm();
   }
@@ -71,7 +77,7 @@ export class ForgotPasswordComponent implements OnInit {
       // console.log('AccountProfile', this._AccountProfile);
       this._AccountSvc.forgotPassword(this.controls['account'].getRawValue()).then((response) => {
         console.log('ForgotPasswordComponent.onSubmit.response: ', response);
-        this._LoggingSvc.toast('Request has been sent', 'Forgot Password', LogLevel.Success);
+        this._LoggingSvc.toast(response, 'Forgot Password', LogLevel.Success);
         this._ModalSvc.close(this._AccountSvc.forgotPasswordModalId);
       }).catch(() => {
         this._LoggingSvc.toast('Error sending request', 'Forgot Password', LogLevel.Error);

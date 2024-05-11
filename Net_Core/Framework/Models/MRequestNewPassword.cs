@@ -46,5 +46,10 @@ namespace GrowthWare.Framework.Models
         /// </summary>
         /// <value>The server.</value>
         public String Server { get; set; }
+
+        /// <summary>
+        /// Gets or sets the token.
+        /// </summary>
+        public String ResetToken { get; set; }
     }
 }
