@@ -756,6 +756,19 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Returns XX_SMTP_EnableSsl from the CONFIG file or a default of 25
+        /// </summary>
+        public static int SmtpPort
+        {
+            get 
+            {
+                bool mParseInt = int.TryParse(GetAppSettingValue("SMTP_Port", true), out int mRetVal);
+                if (!mParseInt) mRetVal = 25;
+                return mRetVal;
+            }
+        }
+
+        /// <summary>
         /// Returns SMTP_Domain from the CONFIG file
         /// </summary>
         /// <value>String</value>
@@ -764,6 +777,17 @@ namespace GrowthWare.Framework
         public static string SmtpDomain
         {
             get { return GetAppSettingValue("SMTP_Domain", true); }
+        }
+
+        /// <summary>
+        /// Returns SMTP_EnableSsl from the CONFIG file
+        /// </summary>
+        public static bool SmtpEnableSsl
+        {
+            get
+            {
+                return bool.Parse(GetAppSettingValue("SMTP_EnableSsl", true));
+            }
         }
 
         /// <summary>

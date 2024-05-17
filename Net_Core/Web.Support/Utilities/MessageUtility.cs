@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.ObjectModel;
 using System.Data;
@@ -7,7 +6,11 @@ using System.Linq;
 using GrowthWare.Framework;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
-using GrowthWare.Framework.Models.UI;
+using GrowthWare.Framework.Interfaces;
+using System.IO;
+using System.Net.Mime;
+using System.Net.Mail;
+using System.Net;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -16,6 +19,8 @@ public static class MessageUtility
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
     private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
+
+    private static Logger m_Logger = Logger.Instance();
 
     /// <summary>
     /// Messages the name of the unit cached collection.
@@ -38,15 +43,18 @@ public static class MessageUtility
     }
 
     /// <summary>
-    /// Saves the specified profile.
+    /// Determines whether this instance [can send mail].
     /// </summary>
-    /// <param name="profile">The profile.</param>
-    public static int Save(MMessage profile)
+    /// <returns><c>true</c> if this instance [can send mail]; otherwise, <c>false</c>.</returns>
+    private static bool canSendMail()
     {
-        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        int mRetVal = -1;
-        mRetVal = mBMessages.Save(profile);
-        RemoveCachedMessagesCollection();
+        bool mRetVal = true;
+        if (ConfigSettings.SmtpServer.Trim().Length == 0)
+        {
+            Logger log = Logger.Instance();
+            log.Error("SMTP Server not set in the GrowthWare.json file, no mail can be sent!");
+            mRetVal = false;
+        }
         return mRetVal;
     }
 
@@ -73,6 +81,32 @@ public static class MessageUtility
             mRetVal = null;
         }
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Gets the SMTP client.
+    /// </summary>
+    /// <returns>SmtpClient.</returns>
+    private static SmtpClient getSmtpClient()
+    {
+        // set the common SmtpClient values
+        SmtpClient mMailClient = new()
+        {
+            DeliveryMethod = SmtpDeliveryMethod.Network,
+            EnableSsl = ConfigSettings.SmtpEnableSsl,
+            Host = ConfigSettings.SmtpServer,
+            Port = ConfigSettings.SmtpPort,
+            Timeout = 20000,
+            UseDefaultCredentials = true,
+        };
+        // if we have credentials, use them
+        if (ConfigSettings.SmtpAccount.Trim().Length > 0 & ConfigSettings.SmtpPassword.Trim().Length > 0)
+        {
+            mMailClient.UseDefaultCredentials = false;
+            NetworkCredential mNetworkCredential = new NetworkCredential(ConfigSettings.SmtpAccount.Trim(), ConfigSettings.SmtpPassword.Trim());
+            mMailClient.Credentials = mNetworkCredential;
+        }
+        return mMailClient;
     }
 
     /// <summary>
@@ -135,6 +169,86 @@ public static class MessageUtility
         // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
         // CacheController.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity));
         RemoveCachedMessagesDV();
+    }
+
+    /// <summary>
+    /// Saves the specified profile.
+    /// </summary>
+    /// <param name="profile">The profile.</param>
+    public static int Save(MMessage profile)
+    {
+        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        int mRetVal = -1;
+        mRetVal = mBMessages.Save(profile);
+        RemoveCachedMessagesCollection();
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Sends the mail.
+    /// </summary>
+    /// <param name="messageProfile">Object implementing IMessageProfile</param>
+    /// <param name="accountProfile">The account profile.</param>
+    public static void SendMail(IMessage messageProfile, MAccountProfile accountProfile)
+    {
+        if (!canSendMail()) return;
+        string mFrom = ConfigSettings.SmtpFrom;
+        if (mFrom.Trim().Length == 0)
+        {            
+            m_Logger.Error("SMTP From not set in the GrowthWare.json file");
+            return;
+        }
+        SmtpClient mailClient = getSmtpClient();
+        messageProfile.FormatBody();
+        MailMessage mailMessage = new(mFrom, accountProfile.Email)
+        {
+            Body = messageProfile.Body,
+            IsBodyHtml = messageProfile.FormatAsHtml,
+            Subject = "Request for password change",
+        };
+        try
+        {
+            mailClient.Send(mailMessage);
+        }
+        catch (System.Exception ex)
+        {
+            m_Logger.Error(ex);
+        }
+    }
+
+    /// <summary>
+    /// Sends the mail.
+    /// </summary>
+    /// <param name="body">The body.</param>
+    /// <param name="subject">The subject.</param>
+    /// <param name="formatAsHTML">if set to <c>true</c> [format as HTML].</param>
+    /// <param name="accountProfile">The account profile.</param>
+    /// <param name="file">The file.</param>
+    /// <param name="contentType">Type of the content.</param>
+    public static void SendMail(string body, string subject, bool formatAsHTML, MAccountProfile accountProfile, FileInfo file, ContentType contentType)
+    {
+        if (!canSendMail()) return;
+        string mFrom = ConfigSettings.SmtpFrom;
+        if (mFrom.Trim().Length == 0)
+        {
+            Logger log = Logger.Instance();
+            log.Error("SMTP From not set in the WEB.CONFIG file");
+            return;
+        }
+        SmtpClient mailClient = getSmtpClient();
+        MailMessage mailMessage = new(new MailAddress(mFrom), new MailAddress(accountProfile.Email))
+        {
+            Subject = subject,
+            Body = body,
+            IsBodyHtml = formatAsHTML
+        };
+        Stream mStream = file.OpenRead();
+        Attachment attachment = new(mStream, contentType)
+        {
+            Name = file.Name
+        };
+        mailMessage.Attachments.Add(attachment);
+        mailClient.Send(mailMessage);
     }
 
     /// <summary>

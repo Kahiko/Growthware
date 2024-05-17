@@ -74,11 +74,15 @@ END
 
 -- Update the message
 UPDATE [ZGWCoreWeb].[Messages] SET [Body] = 'Dear <FullName>,
-
+<br><br>
 There has been a request for a password change: 
-
-	Please Use this link to logon and change your password: <a href="<Server>accounts/logon?resetToken=<ResetToken>">Change Password</a>
-
+<br><br>
+	Please Use the following link to logon and change your password: <a href="<Server>accounts/logon?resetToken=<ResetToken>">Change Password</a>
+<br>
+<br>
+If you did not request a password change, please ignore this email, no changes have been made to your account.
+<br>
+<br>
 <b>Please note once you have logged on using this link you will only be able to change our password.</b>'
 WHERE [MessageSeqId] = @V_MessageSeqId;
 

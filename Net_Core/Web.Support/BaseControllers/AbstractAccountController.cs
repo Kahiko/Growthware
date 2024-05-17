@@ -182,7 +182,7 @@ public abstract class AbstractAccountController : ControllerBase
             mRequestNewPassword.Server = urlRoot;
             mRequestNewPassword.FormatBody();
             // send email
-            
+            MessageUtility.SendMail(mRequestNewPassword, mAccountProfile);
             // Get return value
             mMessage = MessageUtility.GetProfile("Request Password Reset UI");
             return Ok(mMessage.Body.Replace("<b>", "").Replace("</b>", ""));
