@@ -216,7 +216,7 @@ export class AccountService extends BaseService {
 	}
 
 	forgotPassword(account: string): Promise<string> {
-		console.log('AccountService.forgotPassword: ', account);
+		// console.log('AccountService.forgotPassword: ', account);
 		return new Promise<string>((resolve, reject) => {
 			const mQueryParameter: HttpParams = new HttpParams()
 				.set('account', account);
