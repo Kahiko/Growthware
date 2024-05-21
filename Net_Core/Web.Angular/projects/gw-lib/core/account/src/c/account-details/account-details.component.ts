@@ -29,90 +29,90 @@ import { IAccountProfile } from '../../account-profile.model';
 import { AccountService } from '../../account.service';
 
 @Component({
-	selector: 'gw-core-account-details',
-	standalone: true,
-	imports: [
-		FormsModule,
-		ReactiveFormsModule,
-		MatButtonModule,
-		MatCheckboxModule,
-		MatFormFieldModule,
-		MatGridListModule,
-		MatIconModule,
-		MatInputModule,
-		MatSelectModule,
-		MatTabsModule,
-		PickListComponent,
-		SnakeListComponent
-	],
-	templateUrl: './account-details.component.html',
-	styleUrls: ['./account-details.component.scss']
+  selector: 'gw-core-account-details',
+  standalone: true,
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatSelectModule,
+    MatTabsModule,
+    PickListComponent,
+    SnakeListComponent
+  ],
+  templateUrl: './account-details.component.html',
+  styleUrls: ['./account-details.component.scss']
 })
 export class AccountDetailsComponent implements OnDestroy, OnInit {
-	private _AccountProfile!: IAccountProfile;
-	private _SecurityInfoAccount: null | ISecurityInfo = null;
-	private _SecurityInfoGroups: null | ISecurityInfo = null;
-	private _SecurityInfoRoles: null | ISecurityInfo = null;
-	private _Subscription: Subscription = new Subscription();
+  private _AccountProfile!: IAccountProfile;
+  private _SecurityInfoAccount: null | ISecurityInfo = null;
+  private _SecurityInfoGroups: null | ISecurityInfo = null;
+  private _SecurityInfoRoles: null | ISecurityInfo = null;
+  private _Subscription: Subscription = new Subscription();
 
-	frmAccount!: FormGroup;
+  frmAccount!: FormGroup;
 
-	canCancel: boolean = false;
-	canDelete: boolean = false;
-	canSave: boolean = false;
+  canCancel: boolean = false;
+  canDelete: boolean = false;
+  canSave: boolean = false;
 
-	derivedRolesId: string = 'derivedRoles';
+  derivedRolesId: string = 'derivedRoles';
 
-	groupsAvailable: Array<string> = [];
-	groupsPickListName: string = 'groups';
-	groupsSelected: Array<string> = [];
+  groupsAvailable: Array<string> = [];
+  groupsPickListName: string = 'groups';
+  groupsSelected: Array<string> = [];
 
-	litAccountWarning: string = '';
-	litEMailWarning: string = '';
-	litFirstNameWarning: string = '';
-	litLastNameWarning: string = '';
-	litStatusWarning: string = '';
+  litAccountWarning: string = '';
+  litEMailWarning: string = '';
+  litFirstNameWarning: string = '';
+  litLastNameWarning: string = '';
+  litStatusWarning: string = '';
 
-	rolesPickListName: string = 'roles';
+  rolesPickListName: string = 'roles';
 
-	selectedStatus: number = 0;
-	selectedTimeZone: number = 0;
+  selectedStatus: number = 0;
+  selectedTimeZone: number = 0;
 
-	showDerived: boolean = false;
-	showRoles: boolean = false;
-	showGroups: boolean = false;
+  showDerived: boolean = false;
+  showRoles: boolean = false;
+  showGroups: boolean = false;
 
-	submitted: boolean = false;
+  submitted: boolean = false;
 
-	validStatus  = [
-		{ id: 1, name: 'Active' },
-		{ id: 4, name: 'Change Password' },
-		{ id: 3, name: 'Disabled' }
-	];
+  validStatus  = [
+    { id: 1, name: 'Active' },
+    { id: 4, name: 'Change Password' },
+    { id: 3, name: 'Disabled' }
+  ];
 
-	validTimezones = [
-		{ id: -10,  name: 'Hawaii (GMT -10)'              },
-		{ id: -9,   name: 'Alaska (GMT -9)'               },
-		{ id: -8,   name: 'Pacific Time (GMT -8)'         },
-		{ id: -7,   name: 'Mountain Time (GMT -7)'        },
-		{ id: -6,   name: 'Central Time (GMT -6)'         },
-		{ id: -5,   name: 'Eastern Time (GMT -5)'         },
-		{ id: -4,   name: 'Atlantic Time (GMT -4)'        },
-		{ id: -3,   name: 'Brasilia Time (GMT -3)'        },
-		{ id: 0,    name: 'Greenwich Mean Time (GMT +0)'  },
-		{ id: 1,    name: 'Central Europe Time (GMT +1)'  },
-		{ id: 2,    name: 'Eastern Europe Time (GMT +2)'  },
-		{ id: 3,    name: 'Middle Eastern Time (GMT +3)'  },
-		{ id: 4,    name: 'Abu Dhabi Time (GMT +4)'       },
-		{ id: 5,    name: 'Indian Time (GMT +5)'          },
-		{ id: 8,    name: 'Eastern China Time (GMT +8)'   },
-		{ id: 9,    name: 'Japan Time (GMT +9)'           },
-		{ id: 10,   name: 'Australian Time (GMT +10)'     },
-		{ id: 11,   name: 'Pacific Rim Time (GMT +11)'    },
-		{ id: 12,   name: 'New Zealand Time (GMT +12)'    },
-	];
+  validTimezones = [
+    { id: -10,  name: 'Hawaii (GMT -10)'              },
+    { id: -9,   name: 'Alaska (GMT -9)'               },
+    { id: -8,   name: 'Pacific Time (GMT -8)'         },
+    { id: -7,   name: 'Mountain Time (GMT -7)'        },
+    { id: -6,   name: 'Central Time (GMT -6)'         },
+    { id: -5,   name: 'Eastern Time (GMT -5)'         },
+    { id: -4,   name: 'Atlantic Time (GMT -4)'        },
+    { id: -3,   name: 'Brasilia Time (GMT -3)'        },
+    { id: 0,    name: 'Greenwich Mean Time (GMT +0)'  },
+    { id: 1,    name: 'Central Europe Time (GMT +1)'  },
+    { id: 2,    name: 'Eastern Europe Time (GMT +2)'  },
+    { id: 3,    name: 'Middle Eastern Time (GMT +3)'  },
+    { id: 4,    name: 'Abu Dhabi Time (GMT +4)'       },
+    { id: 5,    name: 'Indian Time (GMT +5)'          },
+    { id: 8,    name: 'Eastern China Time (GMT +8)'   },
+    { id: 9,    name: 'Japan Time (GMT +9)'           },
+    { id: 10,   name: 'Australian Time (GMT +10)'     },
+    { id: 11,   name: 'Pacific Rim Time (GMT +11)'    },
+    { id: 12,   name: 'New Zealand Time (GMT +12)'    },
+  ];
 
-	constructor(
+  constructor(
 		private _AccountSvc: AccountService,
 		private _FormBuilder: FormBuilder,
 		private _DataSvc: DataService,
@@ -123,269 +123,269 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 		private _RoleSvc: RoleService,
 		private _Router: Router,
 		private _SecuritySvc: SecurityService
-	) { }
+  ) { }
 
-	ngOnDestroy(): void {
-		// console.log('AccountDetailsComponent.ngOnDestroy called', this._AccountProfile);
-		this._Subscription.unsubscribe();
-	}
+  ngOnDestroy(): void {
+    // console.log('AccountDetailsComponent.ngOnDestroy called', this._AccountProfile);
+    this._Subscription.unsubscribe();
+  }
 
-	ngOnInit(): void {
-		let mDesiredAccount: string = '';
+  ngOnInit(): void {
+    let mDesiredAccount: string = '';
+    /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
+    switch (this._Router.url) {
+      case '/accounts':
+        if(this._AccountSvc.modalReason.toLowerCase() != 'newprofile') {
+          // console.log('selectedRow', this._AccountSvc.selectedRow);
+          mDesiredAccount = this._AccountSvc.selectedRow.Account;
+        } else {
+          mDesiredAccount = 'new';
+        }
+        this.canCancel = true;
+        break;
+      case '/accounts/edit-my-account':
+        this._AccountSvc.modalReason = 'EditProfile';
+        mDesiredAccount = this._AccountSvc.authenticationResponse.account;
+        this.canDelete = false;
+        break;
+      default:
+        break;
+    }
+    this._GroupSvc.getGroups().then((groups) => {                           // Response Handler #1
+      if(groups != null) {
+        // TODO: this would indicate that the pick-list component isn't loaded at this point
+        // and we are simply adding a delay to give it time... need to find a better way
+        // such as a different lifecycle hook?
+        // console.log('groups', groups);
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
+      }
+      return this._RoleSvc.getRoles();                                      // Request #2
+    }).catch((error) => { 
+      this._LoggingSvc.toast('Error getting groups:\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((roles) => {                                                    // Response Handler #2
+      if(roles != null) {
+        // TODO: this would indicate that the pick-list component isn't loaded at this point
+        // and we are simply adding a delay to give it time... need to find a better way
+        // such as a different lifecycle hook?
+        // console.log('roles', roles);
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
+      }
+      return this._SecuritySvc.getSecurityInfo('Accounts');              // Request #3
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error getting roles:\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((reasonSecurityInfo) => {                                       // Response Handler #3
+      if(reasonSecurityInfo != null) {
+        this._SecurityInfoAccount = reasonSecurityInfo;
+      }
+      return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab');   // Request #4
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error getting security info for \'EditAccount\' :\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((groupTabSecurityInfo) => {                                     // Response Handler #4
+      if(groupTabSecurityInfo != null) {
+        this._SecurityInfoGroups = groupTabSecurityInfo;
+      }
+      return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');    // Request #5
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error getting security info for \'Group tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((roleTabSecurityInfo) => {                                      // Response Handler #5
+      if(roleTabSecurityInfo != null) {
+        this._SecurityInfoRoles = roleTabSecurityInfo;
+      }
+      return this._AccountSvc.getAccountForEdit(mDesiredAccount);                  // Request #6
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error getting security info for \'Role tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((accountProfile) => {                                           // Response Handler #6
+      if(accountProfile != null) {
+        this._AccountProfile = accountProfile;
+        let mRoles: string[] = [];
+        let mGroups: string[] = [];
+        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.assignedRoles)) {
+          mRoles = this._AccountProfile.assignedRoles!;
+          setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
+        }
+        if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.groups)) {
+          mGroups = this._AccountProfile.groups!;
+          setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
+        }
+        this.applySecurity();
+        this.populateForm();
+      }
+    }).catch((error) => {
+      this._LoggingSvc.toast('Error getting account information :\r\n' + error, 'Account Details:', LogLevel.Error);
+    });
+    this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
+      switch (data.name.toLowerCase()) {
+        case 'roles':
+          this._AccountProfile.assignedRoles = data.value;
+          break;
+        case 'groups':
+          this._AccountProfile.groups = data.value;
+          break;
+        default:
+          break;
+      }
+    }));
+    this.applySecurity();
+    this.populateForm();
+  }
 
-		switch (this._Router.url) {
-		case '/accounts':
-			if(this._AccountSvc.modalReason.toLowerCase() != 'newprofile') {
-				// console.log('selectedRow', this._AccountSvc.selectedRow);
-				mDesiredAccount = this._AccountSvc.selectedRow.Account;
-			} else {
-				mDesiredAccount = 'new';
-			}
-			this.canCancel = true;
-			break;
-		case '/accounts/edit-my-account':
-			this._AccountSvc.modalReason = 'EditProfile';
-			mDesiredAccount = this._AccountSvc.authenticationResponse.account;
-			this.canDelete = false;
-			break;
-		default:
-			break;
-		}
-		this._GroupSvc.getGroups().then((groups) => {                           // Response Handler #1
-			if(groups != null) {
-				// TODO: this would indicate that the pick-list component isn't loaded at this point
-				// and we are simply adding a delay to give it time... need to find a better way
-				// such as a different lifecycle hook?
-				// console.log('groups', groups);
-				setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
-			}
-			return this._RoleSvc.getRoles();                                      // Request #2
-		}).catch((error) => { 
-			this._LoggingSvc.toast('Error getting groups:\r\n' + error, 'Account Details:', LogLevel.Error);
-		}).then((roles) => {                                                    // Response Handler #2
-			if(roles != null) {
-				// TODO: this would indicate that the pick-list component isn't loaded at this point
-				// and we are simply adding a delay to give it time... need to find a better way
-				// such as a different lifecycle hook?
-				// console.log('roles', roles);
-				setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
-			}
-			return this._SecuritySvc.getSecurityInfo('Accounts');              // Request #3
-		}).catch((error) => {
-			this._LoggingSvc.toast('Error getting roles:\r\n' + error, 'Account Details:', LogLevel.Error);
-		}).then((reasonSecurityInfo) => {                                       // Response Handler #3
-			if(reasonSecurityInfo != null) {
-				this._SecurityInfoAccount = reasonSecurityInfo;
-			}
-			return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab');   // Request #4
-		}).catch((error) => {
-			this._LoggingSvc.toast('Error getting security info for \'EditAccount\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-		}).then((groupTabSecurityInfo) => {                                     // Response Handler #4
-			if(groupTabSecurityInfo != null) {
-				this._SecurityInfoGroups = groupTabSecurityInfo;
-			}
-			return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');    // Request #5
-		}).catch((error) => {
-			this._LoggingSvc.toast('Error getting security info for \'Group tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-		}).then((roleTabSecurityInfo) => {                                      // Response Handler #5
-			if(roleTabSecurityInfo != null) {
-				this._SecurityInfoRoles = roleTabSecurityInfo;
-			}
-			return this._AccountSvc.getAccountForEdit(mDesiredAccount);                  // Request #6
-		}).catch((error) => {
-			this._LoggingSvc.toast('Error getting security info for \'Role tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-		}).then((accountProfile) => {                                           // Response Handler #6
-			if(accountProfile != null) {
-				this._AccountProfile = accountProfile;
-				let mRoles: string[] = [];
-				let mGroups: string[] = [];
-				if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.assignedRoles)) {
-					mRoles = this._AccountProfile.assignedRoles!;
-					setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_SelectedItems', mRoles); }, 500);
-				}
-				if(!this._GWCommon.isNullOrUndefined(this._AccountProfile.groups)) {
-					mGroups = this._AccountProfile.groups!;
-					setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_SelectedItems', mGroups); }, 500);
-				}
-				this.applySecurity();
-				this.populateForm();
-			}
-		}).catch((error) => {
-			this._LoggingSvc.toast('Error getting account information :\r\n' + error, 'Account Details:', LogLevel.Error);
-		});
-		this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
-			switch (data.name.toLowerCase()) {
-			case 'roles':
-				this._AccountProfile.assignedRoles = data.value;
-				break;
-			case 'groups':
-				this._AccountProfile.groups = data.value;
-				break;
-			default:
-				break;
-			}
-		}));
-		this.applySecurity();
-		this.populateForm();
-	}
+  private applySecurity() {
+    switch (this._AccountSvc.modalReason.toLowerCase()) {
+      case 'newprofile':
+        this.canDelete = false;
+        this.showDerived = false;
+        if(this._SecurityInfoAccount != null) {
+          this.canSave = this._SecurityInfoAccount.mayEdit;
+        }
+        if(this._SecurityInfoGroups != null) {
+          this.showGroups = this._SecurityInfoGroups.mayView;
+        }
+        if(this._SecurityInfoRoles != null) {
+          this.showRoles = this._SecurityInfoRoles.mayView;
+        }
+        break;
+      case 'editprofile':
+        this.showDerived = true;
+        if(this._SecurityInfoAccount != null) {
+          this.canDelete = this._SecurityInfoAccount.mayDelete;
+          this.canSave = this._SecurityInfoAccount.mayEdit;
+        }
+        if(this._SecurityInfoGroups != null) {
+          this.showGroups = this._SecurityInfoGroups.mayView;
+        }
+        if(this._SecurityInfoRoles != null) {
+          this.showRoles = this._SecurityInfoRoles.mayView;
+        }
+        break;
+      case 'add':
+        break;
+      default:
+        break;
+    }
+    if(this._Router.url === '/accounts/edit-my-account') {
+      this.canDelete = false;
+      this.showDerived = false;
+      this.showGroups = false;
+      this.showRoles = false;
+    }
+  }
 
-	private applySecurity() {
-		switch (this._AccountSvc.modalReason.toLowerCase()) {
-		case 'newprofile':
-			this.canDelete = false;
-			this.showDerived = false;
-			if(this._SecurityInfoAccount != null) {
-				this.canSave = this._SecurityInfoAccount.mayEdit;
-			}
-			if(this._SecurityInfoGroups != null) {
-				this.showGroups = this._SecurityInfoGroups.mayView;
-			}
-			if(this._SecurityInfoRoles != null) {
-				this.showRoles = this._SecurityInfoRoles.mayView;
-			}
-			break;
-		case 'editprofile':
-			this.showDerived = true;
-			if(this._SecurityInfoAccount != null) {
-				this.canDelete = this._SecurityInfoAccount.mayDelete;
-				this.canSave = this._SecurityInfoAccount.mayEdit;
-			}
-			if(this._SecurityInfoGroups != null) {
-				this.showGroups = this._SecurityInfoGroups.mayView;
-			}
-			if(this._SecurityInfoRoles != null) {
-				this.showRoles = this._SecurityInfoRoles.mayView;
-			}
-			break;
-		case 'add':
-			break;
-		default:
-			break;
-		}
-		if(this._Router.url === '/accounts/edit-my-account') {
-			this.canDelete = false;
-			this.showDerived = false;
-			this.showGroups = false;
-			this.showRoles = false;
-		}
-	}
+  closeModal(): void {
+    if(this._Router.url === '/accounts') {
+      this._ModalSvc.close(this._AccountSvc.modalReason + '_Id');
+      if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'newprofile') {
+        this._ModalSvc.close(this._AccountSvc.addEditModalId);
+      }
+      if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'editprofile') {
+        this._ModalSvc.close(this._AccountSvc.addEditModalId);
+      }
+    }
+    this._AccountSvc.modalReason = '';
+  }
 
-	closeModal(): void {
-		if(this._Router.url === '/accounts') {
-			this._ModalSvc.close(this._AccountSvc.modalReason + '_Id');
-			if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'newprofile') {
-				this._ModalSvc.close(this._AccountSvc.addEditModalId);
-			}
-			if(this._AccountSvc.modalReason.toLocaleLowerCase() === 'editprofile') {
-				this._ModalSvc.close(this._AccountSvc.addEditModalId);
-			}
-		}
-		this._AccountSvc.modalReason = '';
-	}
+  get controls() {
+    return this.frmAccount.controls;
+  }
 
-	get controls() {
-		return this.frmAccount.controls;
-	}
+  getErrorMessage(fieldName: string) {
+    switch (fieldName) {
+      case 'account':
+        if (this.controls['account'].hasError('required')) {
+          return 'Required';
+        }
+        break;
+      case 'email':
+        if (this.controls['email'].hasError('required')) {
+          return 'Required';
+        }
+        if (this.controls['email'].hasError('email')) {
+          return 'Not a valid email';
+        }    
+        break;
+      default:
+        break;
+    }
+    return undefined;
+  }
 
-	getErrorMessage(fieldName: string) {
-		switch (fieldName) {
-		case 'account':
-			if (this.controls['account'].hasError('required')) {
-				return 'Required';
-			}
-			break;
-		case 'email':
-			if (this.controls['email'].hasError('required')) {
-				return 'Required';
-			}
-			if (this.controls['email'].hasError('email')) {
-				return 'Not a valid email';
-			}    
-			break;
-		default:
-			break;
-		}
-		return undefined;
-	}
+  onCancel(): void {
+    this.closeModal();
+  }
 
-	onCancel(): void {
-		this.closeModal();
-	}
+  onDelete(): void {
+    // this._AccountSvc.delete(this._AccountProfile.id).then((response) => {
+    //   console.log('AccountDetailsComponent.onDelete', response);
+    //   this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
+    //   this.closeModal();
+    // }).catch((error) => {
+    //   this._LoggingSvc.toast('Error deleting account!', 'Delete Account', LogLevel.Error);
+    // })
+  }
 
-	onDelete(): void {
-		// this._AccountSvc.delete(this._AccountProfile.id).then((response) => {
-		//   console.log('AccountDetailsComponent.onDelete', response);
-		//   this._LoggingSvc.toast('Account has been deleted', 'Delete Account', LogLevel.Success);
-		//   this.closeModal();
-		// }).catch((error) => {
-		//   this._LoggingSvc.toast('Error deleting account!', 'Delete Account', LogLevel.Error);
-		// })
-	}
+  onSubmit(form: FormGroup): void {
+    // console.log('Valid?', form.valid); // true or false
+    if(form.valid) {
+      this.populateProfile();
+      // console.log('AccountProfile', this._AccountProfile);
+      this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
+        this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+        this.closeModal();
+      });
+    }
+  }
 
-	onSubmit(form: FormGroup): void {
-		// console.log('Valid?', form.valid); // true or false
-		if(form.valid) {
-			this.populateProfile();
-			// console.log('AccountProfile', this._AccountProfile);
-			this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
-				this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-				this.closeModal();
-			});
-		}
-	}
-
-	private populateForm(): void {
-		if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
-			this.selectedStatus = this._AccountProfile.status;
-			this.selectedTimeZone = this._AccountProfile.timeZone;
-			this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
-			this.frmAccount = this._FormBuilder.group({
-				account: [this._AccountProfile.account, [Validators.required]],
-				email: [this._AccountProfile.email, [Validators.required, Validators.email]],
-				enableNotifications: [this._AccountProfile.enableNotifications],
-				failedAttempts: [this._AccountProfile.failedAttempts],
-				firstName: [this._AccountProfile.firstName],
-				isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
-				lastName: [this._AccountProfile.lastName],
-				location: [this._AccountProfile.location],
-				middleName: [this._AccountProfile.middleName],
-				preferredName: [this._AccountProfile.preferredName],
-				statusSeqId: [this._AccountProfile.status],
-				timeZone: [this._AccountProfile.timeZone],
-			});
+  private populateForm(): void {
+    if(!this._GWCommon.isNullOrUndefined(this._AccountProfile)) {
+      this.selectedStatus = this._AccountProfile.status;
+      this.selectedTimeZone = this._AccountProfile.timeZone;
+      this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
+      this.frmAccount = this._FormBuilder.group({
+        account: [this._AccountProfile.account, [Validators.required]],
+        email: [this._AccountProfile.email, [Validators.required, Validators.email]],
+        enableNotifications: [this._AccountProfile.enableNotifications],
+        failedAttempts: [this._AccountProfile.failedAttempts],
+        firstName: [this._AccountProfile.firstName],
+        isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+        lastName: [this._AccountProfile.lastName],
+        location: [this._AccountProfile.location],
+        middleName: [this._AccountProfile.middleName],
+        preferredName: [this._AccountProfile.preferredName],
+        statusSeqId: [this._AccountProfile.status],
+        timeZone: [this._AccountProfile.timeZone],
+      });
       
-		} else {
-			this.frmAccount = this._FormBuilder.group({
-				account: ['', [Validators.required]],
-				email: [''],
-				enableNotifications: [false],
-				failedAttempts: [0],
-				firstName: [''],
-				isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
-				lastName: [''],
-				location: [''],
-				middleName: [''],
-				preferredName: [''],
-				statusSeqId: [1],
-				timeZone: [-10],
-			});
-		}
-	}
+    } else {
+      this.frmAccount = this._FormBuilder.group({
+        account: ['', [Validators.required]],
+        email: [''],
+        enableNotifications: [false],
+        failedAttempts: [0],
+        firstName: [''],
+        isSystemAdmin :[{value : false, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+        lastName: [''],
+        location: [''],
+        middleName: [''],
+        preferredName: [''],
+        statusSeqId: [1],
+        timeZone: [-10],
+      });
+    }
+  }
 
-	private populateProfile(): void {
-		this._AccountProfile.account = this.controls['account'].getRawValue();
-		// this._AccountProfile.assignedRoles = '';
-		this._AccountProfile.email = this.controls['email'].getRawValue();
-		this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
-		this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
-		this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
-		// this._AccountProfile.groups = '';
-		this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();
-		this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
-		this._AccountProfile.location = this.controls['location'].getRawValue();
-		this._AccountProfile.middleName = this.controls['middleName'].getRawValue();
-		this._AccountProfile.preferredName = this.controls['preferredName'].getRawValue();
-		this._AccountProfile.status = this.selectedStatus;
-		this._AccountProfile.timeZone = this.selectedTimeZone;
-	}
+  private populateProfile(): void {
+    this._AccountProfile.account = this.controls['account'].getRawValue();
+    // this._AccountProfile.assignedRoles = '';
+    this._AccountProfile.email = this.controls['email'].getRawValue();
+    this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
+    this._AccountProfile.failedAttempts = this.controls['failedAttempts'].getRawValue();
+    this._AccountProfile.firstName = this.controls['firstName'].getRawValue();
+    // this._AccountProfile.groups = '';
+    this._AccountProfile.isSystemAdmin = this.controls['isSystemAdmin'].getRawValue();
+    this._AccountProfile.lastName = this.controls['lastName'].getRawValue();
+    this._AccountProfile.location = this.controls['location'].getRawValue();
+    this._AccountProfile.middleName = this.controls['middleName'].getRawValue();
+    this._AccountProfile.preferredName = this.controls['preferredName'].getRawValue();
+    this._AccountProfile.status = this.selectedStatus;
+    this._AccountProfile.timeZone = this.selectedTimeZone;
+  }
 }
