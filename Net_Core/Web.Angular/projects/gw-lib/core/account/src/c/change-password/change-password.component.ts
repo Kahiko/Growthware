@@ -26,6 +26,7 @@ import { AccountService } from '../../account.service';
 })
 export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit {
 
+	private _Action: string = '';
 	private _Return: string = '';
 	private _Subscription: Subscription = new Subscription();
 
@@ -46,10 +47,11 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
   }
 
   ngOnInit(): void {
+  	this._Action = this._Router.url.split('?')[0].replace('/', '').replace('\\', '');
   	this._ActivatedRoute.queryParams.subscribe((params) => {
   		this._Return = params['return'] || '/home';
   	});
-  	this.hideOldPassword = this._AccountSvc.authenticationResponse.status == 4;
+  	this.hideOldPassword = this._AccountSvc.authenticationResponse.status == 4 || this._Action.toLowerCase() === 'accounts/reset-password';
   	this.populateForm();
   	this._Subscription.add(this.getControls['newPassword'].valueChanges.subscribe(() => {
   		this.onPasswordChange();
