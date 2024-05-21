@@ -383,6 +383,71 @@ END-- Get the Error Code for the statement just executed.
 	IF @P_Debug = 1 PRINT 'End Set_Account'
 GO
 /****** End: Procedure [ZGWSecurity].[Set_Account] ******/
+/****** Start: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT *
+FROM sys.objects
+WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Reset_Token]') AND type in (N'P', N'PC'))
+BEGIN
+	EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token] AS'
+END
+GO
+/*
+Usage:
+	DECLARE 
+		@P_ResetToken NVARCHAR(MAX) = '',
+		@P_Debug INT = 1
+
+	exec  ZGWSecurity.Get_Account_By_Reset_Token
+		@P_ResetToken,
+		@P_Debug
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 11/12/2022
+-- Description:	Selects a single account given the ResetToken has not expired
+-- =============================================
+ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
+	@P_ResetToken NVARCHAR(MAX),
+	@P_Debug INT = 0
+AS
+BEGIN
+	SET NOCOUNT ON
+	SELECT TOP (1) 
+		 ACCT.[AccountSeqId]
+		,ACCT.[Account]
+		,ACCT.[Email]
+		,ACCT.[Enable_Notifications]
+		,ACCT.[Is_System_Admin]
+		,ACCT.[StatusSeqId]
+		,ACCT.[Password_Last_Set]
+		,ACCT.[Password]
+		,ACCT.[ResetToken]
+		,ACCT.[ResetTokenExpires]
+		,ACCT.[Failed_Attempts]
+		,ACCT.[First_Name]
+		,ACCT.[Last_Login]
+		,ACCT.[Last_Name]
+		,ACCT.[Location]
+		,ACCT.[Middle_Name]
+		,ACCT.[Preferred_Name]
+		,ACCT.[Time_Zone]
+		,ACCT.[Added_By]
+		,ACCT.[Added_Date]
+		,ACCT.[Updated_By]
+		,ACCT.[Updated_Date]
+	FROM [ZGWSecurity].[Accounts] ACCT
+-- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
+    WHERE
+        ACCT.[ResetToken] = @P_ResetToken
+        AND ResetTokenExpires > GETDATE();
+	RETURN 0
+END
+GO
+/****** End: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
 
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information] SET

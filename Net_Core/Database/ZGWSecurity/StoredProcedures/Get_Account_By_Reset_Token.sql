@@ -13,6 +13,11 @@ Usage:
 -- Create date: 11/12/2022
 -- Description:	Selects a single account given the ResetToken has not expired
 -- =============================================
+-- Author:			Michael Regan
+-- Modified date: 	05/21/2024
+-- Description:		Changed ACCT.[Account] to [ACCT] = ACCT.[Account]
+-- 					to match the C# code
+-- =============================================
 CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
 	@P_ResetToken NVARCHAR(MAX),
 	@P_Debug INT = 0
@@ -21,7 +26,7 @@ BEGIN
 	SET NOCOUNT ON
 	SELECT TOP (1) 
 		 ACCT.[AccountSeqId]
-		,ACCT.[Account]
+		,[ACCT] = ACCT.[Account]
 		,ACCT.[Email]
 		,ACCT.[Enable_Notifications]
 		,ACCT.[Is_System_Admin]
