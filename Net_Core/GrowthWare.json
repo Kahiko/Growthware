@@ -80,6 +80,8 @@
     "Development_SMTP_From": "me@domain.com",
     "Development_SMTP_Password": "somepassword",
     "Development_SMTP_Server": "mymailserver",
+    "Development_SMTP_Port": "587",
+    "Development_SMTP_EnableSsl": "True",
     "Development_TwitterConsumerKey": "",
     "Development_TwitterConsumerSecret": "",
 
@@ -147,6 +149,8 @@
     "QA_SMTP_From": "me@domain.com",
     "QA_SMTP_Password": "somepassword",
     "QA_SMTP_Server": "mymailserver",
+    "QA_SMTP_Port": "587",
+    "QA_SMTP_EnableSsl": "True",
     "QA_TwitterConsumerKey": "",
     "QA_TwitterConsumerSecret": "",
 
@@ -214,6 +218,8 @@
     "Production_SMTP_From": "me@domain.com",
     "Production_SMTP_Password": "somepassword",
     "Production_SMTP_Server": "mymailserver",
+    "Production_SMTP_Port": "587",
+    "Production_SMTP_EnableSsl": "True",
     "Production_TwitterConsumerKey": "",
     "Production_TwitterConsumerSecret": ""
   }
