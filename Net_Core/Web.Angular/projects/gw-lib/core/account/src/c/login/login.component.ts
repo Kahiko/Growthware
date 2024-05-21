@@ -1,6 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -43,6 +44,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 
 	constructor(
 		private _AccountSvc: AccountService,
+		private _ActivatedRoute: ActivatedRoute,
 		private _ConfigurationSvc: ConfigurationService,
 		private _FormBuilder: FormBuilder,
 		// private _LoggingSvc: LoggingService,
@@ -61,6 +63,11 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 	}
 
 	ngOnInit(): void {
+		this._Subscription.add(this._ActivatedRoute.queryParams.subscribe((params) => {
+			if (params['resetToken']) {
+				console.log('LoginComponent.ngOnInit.params.resetToken', params['resetToken']);
+			}
+		}));
 		this._Subscription.add(this._ConfigurationSvc.environment$.subscribe((environment) => {
 			if (environment.toLocaleLowerCase() === 'development') {
 				this.loginForm = this._FormBuilder.group({
