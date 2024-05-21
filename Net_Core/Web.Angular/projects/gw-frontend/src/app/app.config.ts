@@ -1,5 +1,5 @@
 import { APP_INITIALIZER, ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, provideRouter } from '@angular/router';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
@@ -37,6 +37,6 @@ export const appConfig: ApplicationConfig = {
 			ErrorInterceptor,
 			JwtInterceptor
 		])),
-		{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AccountService, ConfigurationService, DynamicTableService] },
+		{ provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [ActivatedRoute, AccountService, ConfigurationService, DynamicTableService] },
 	]
 };
