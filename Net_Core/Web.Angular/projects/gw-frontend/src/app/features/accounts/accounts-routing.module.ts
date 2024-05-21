@@ -22,6 +22,7 @@ const childRoutes: Routes = [
 	{ path: 'updateanonymousprofile', component: UpdateAnonymousProfileComponent, canActivate: [AuthGuard] },
 	{ path: 'logon', component: LoginComponent},
 	{ path: 'change-password', component: ChangePasswordComponent },
+	{ path: 'reset-password', component: ChangePasswordComponent },
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'forgot-password', component: ForgotPasswordComponent },
 ];
