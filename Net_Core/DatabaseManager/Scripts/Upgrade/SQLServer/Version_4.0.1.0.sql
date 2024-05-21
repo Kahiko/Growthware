@@ -77,7 +77,7 @@ UPDATE [ZGWCoreWeb].[Messages] SET [Body] = 'Dear <FullName>,
 <br><br>
 There has been a request for a password change: 
 <br><br>
-	Please Use the following link to logon and change your password: <a href="<Server>accounts/logon?resetToken=<ResetToken>">Change Password</a>
+	Please Use the following link to logon and change your password: <a href="<Server>accounts/reset-password?resetToken=<ResetToken>">Change Password</a>
 <br>
 <br>
 If you did not request a password change, please ignore this email, no changes have been made to your account.
