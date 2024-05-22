@@ -15,7 +15,8 @@ Usage:
 -- =============================================
 -- Author:			Michael Regan
 -- Modified date: 	05/21/2024
--- Description:		Changed ACCT.[Account] to [ACCT] = ACCT.[Account]
+-- Description:		Changed ACCT.[Account] to [ACCT] = ACCT.[Account] and
+--					ACCT.[AccountSeqId] to [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
 -- 					to match the C# code
 -- =============================================
 CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
@@ -25,7 +26,7 @@ AS
 BEGIN
 	SET NOCOUNT ON
 	SELECT TOP (1) 
-		 ACCT.[AccountSeqId]
+		 [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
 		,[ACCT] = ACCT.[Account]
 		,ACCT.[Email]
 		,ACCT.[Enable_Notifications]

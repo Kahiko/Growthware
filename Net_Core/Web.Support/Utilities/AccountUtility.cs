@@ -385,6 +385,21 @@ public static class AccountUtility
         return mRetVal;
     }
 
+    public static MAccountProfile GetProfileByResetToken(string token)
+    {
+        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        MAccountProfile mRetVal = null;
+        try
+        {
+            mRetVal = mBAccount.GetProfileByResetToken(token);
+        }
+        catch (System.Exception)
+        {
+            mRetVal = GetAccount(ConfigSettings.Anonymous);
+        }
+        return mRetVal;
+    }
+
     public static void Logoff(string forAccount, string token, string ipAddress)
     {
         if (!String.IsNullOrWhiteSpace(token))
@@ -537,6 +552,22 @@ public static class AccountUtility
             !x.IsActive() && 
             x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
         );
+    }
+
+    public static void ResetPassword(MAccountProfile forAccount, string password)
+    {
+        CryptoUtility.TryEncrypt(password, out string mEncryptedPassword, SecurityEntityUtility.CurrentProfile.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+        // TODO: find a better way then changing properties on the passed in parameter!
+        forAccount.FailedAttempts = 0;
+        forAccount.LastLogOn = System.DateTime.Now;
+        forAccount.Password = mEncryptedPassword;
+        forAccount.PasswordLastSet = System.DateTime.Now;
+        forAccount.ResetToken = null;
+        forAccount.ResetTokenExpires = null;
+        forAccount.Status = (int)SystemStatus.Active;
+        forAccount.UpdatedBy = forAccount.Id;
+        forAccount.UpdatedDate = System.DateTime.Now;
+        Save(forAccount, false, false, false);
     }
 
     /// <summary>

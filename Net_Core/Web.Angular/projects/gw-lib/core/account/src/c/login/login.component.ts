@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
@@ -11,7 +11,6 @@ import { MatInputModule } from '@angular/material/input';
 // import { LoggingService } from '@growthware/core/logging';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { ModalOptions, ModalService, WindowSize } from '@growthware/core/modal';
-import { NavigationService } from '@growthware/core/navigation';
 // Feature
 import { AccountService } from '../../account.service';
 import { ForgotPasswordComponent } from '../forgot-password/forgot-password.component';
@@ -49,7 +48,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 		private _FormBuilder: FormBuilder,
 		// private _LoggingSvc: LoggingService,
 		private _ModalSvc: ModalService,
-		private _NavigationSvc: NavigationService,
+		private _Router: Router,
 	) { }
 
 	ngOnDestroy(): void {
@@ -125,7 +124,7 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 		}
 		this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then(() => {
 			this._ModalSvc.close(this._AccountSvc.logInModalId);
-			this._NavigationSvc.navigateTo('favorite');
+			this._Router.navigate(['favorite']);
 		});
 	}
 

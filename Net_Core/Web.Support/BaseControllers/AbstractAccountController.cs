@@ -450,6 +450,23 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [HttpPut("ResetPassword")]
+    public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> ResetPassword(string resetToken, string newPassword)
+    {
+        if (String.IsNullOrWhiteSpace(resetToken)) throw new ArgumentNullException(nameof(resetToken), " can not be blank");
+        if (String.IsNullOrWhiteSpace(newPassword)) throw new ArgumentNullException(nameof(newPassword), " can not be blank");
+        // Get the account from the reset token.  If found continute else fall through and return 406
+        MAccountProfile mAccountProfile = AccountUtility.GetProfileByResetToken(resetToken);
+        if (mAccountProfile != null)
+        {
+            AccountUtility.ResetPassword(mAccountProfile, newPassword);
+            // Return Authenticate result (should always work we just saved the new password)
+            // changing my mind should return the same as Authenticate
+            return Authenticate(mAccountProfile.Account, newPassword);
+        };
+        return StatusCode(StatusCodes.Status406NotAcceptable, "The reset token is no longer invalid");
+    }
+
     /// <summary>
     /// Revokes a refresh token.
     /// </summary>

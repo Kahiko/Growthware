@@ -29,6 +29,7 @@ export class AccountService extends BaseService {
 	private _Api_ForgotPassword: string = '';
 	private _Api_Logoff: string = '';
 	private _Api_RefreshToken: string = '';
+	private _Api_ResetPassword: string = '';
 	private _Api_SaveAccount: string = '';
 	private _Api_SaveClientChoices: string = '';
 	private _Api_SelectableActions: string = '';
@@ -66,6 +67,7 @@ export class AccountService extends BaseService {
 		this._Api_ForgotPassword = this._BaseURL + this._ApiName + 'ForgotPassword';
 		this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
 		this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
+		this._Api_ResetPassword = this._BaseURL + this._ApiName + 'ResetPassword';
 		this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
 		this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
 		this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
@@ -298,13 +300,9 @@ export class AccountService extends BaseService {
 					if (authenticationResponse.status == 4) {
 						mNavigationUrl = '/accounts/change-password';
 					}
-					sessionStorage.setItem('jwt', authenticationResponse.jwtToken);
 					const mAccountInformation: IAccountInformation = { authenticationResponse: authenticationResponse, clientChoices: clientChoices };
-					this._AuthenticationResponse = authenticationResponse;
-					this._ClientChoices = clientChoices;
-					this._AccountInformationSubject.next(mAccountInformation);
-					this.triggerMenuUpdate();
-					this.startRefreshTokenTimer();
+					sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
+					this.afterLogin(mAccountInformation);
 					this._Router.navigate([mNavigationUrl.toLocaleLowerCase()]);
 					if (!silent) {
 						this._LoggingSvc.toast('You are now logged in', 'Login Successful', LogLevel.Info);
@@ -319,12 +317,20 @@ export class AccountService extends BaseService {
 		});
 	}
 
+	private afterLogin(accountInformation: IAccountInformation) {
+		this._AuthenticationResponse = accountInformation.authenticationResponse;
+		this._ClientChoices = accountInformation.clientChoices;
+		this._AccountInformationSubject.next(accountInformation);
+		this.triggerMenuUpdate();
+		this.startRefreshTokenTimer();
+	}
+
 	/**
 	 * Logout the client and perform necessary cleanup actions.
 	 *
 	 * @return {void} This function does not return anything.
 	 */
-	public logout(slient: boolean = false): void {
+	public logout(slient: boolean = false, navigate: boolean = true): void {
 		sessionStorage.removeItem('jwt');
 		const mHttpOptions = {
 			headers: new HttpHeaders({
@@ -343,7 +349,9 @@ export class AccountService extends BaseService {
 				if (!slient) {
 					this._LoggingSvc.toast('Logout successful', 'Logout', LogLevel.Success);
 				}
-				this._Router.navigate(['generic_home']);
+				if(navigate) {
+					this._Router.navigate(['generic_home']);
+				}
 				this.stopRefreshTokenTimer();
 			},
 			error: (error) => {
@@ -374,6 +382,35 @@ export class AccountService extends BaseService {
 				// 4.) return the authentication response
 				return mAccountInformation.authenticationResponse;
 			}));
+	}
+
+	public async resetPassword(resetToken: string, newPassword: string): Promise<boolean> {
+		const mQueryParameter: HttpParams = new HttpParams()
+			.set('resetToken', resetToken)
+			.set('newPassword', newPassword);
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			params: mQueryParameter,
+		};
+		return new Promise<boolean>((resolve, reject) => {
+			this._HttpClient.put<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_ResetPassword, null, mHttpOptions).subscribe({
+				next: (response: { item1: IAuthenticationResponse, item2: IClientChoices }) => {
+					if(response.item1.account.toLowerCase() !== this.anonymous.toLowerCase()) {
+						const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+						this.afterLogin(mAccountInformation);
+						this._Router.navigate(['home']);
+					} else {
+						resolve(false);
+					}
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'AccountService', 'resetPassword');
+					reject(false);
+				}
+			});
+		});
 	}
 
 	/**

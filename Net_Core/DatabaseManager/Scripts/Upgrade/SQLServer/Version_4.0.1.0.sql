@@ -522,7 +522,7 @@ AS
 BEGIN
 	SET NOCOUNT ON
 	SELECT TOP (1) 
-		 ACCT.[AccountSeqId]
+		 [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
 		,[ACCT] = ACCT.[Account]
 		,ACCT.[Email]
 		,ACCT.[Enable_Notifications]

@@ -1,9 +1,10 @@
 # Release Notes
 
-## Version 4.0.1 (2024-XX-XX)
+## Net_Core Version 4.0.1 (2024-XX-XX)
 
 ### New Features
 - Added Table View in File Manager
+- Fully implemented "Forgot Password"
 
 ### Improvements
 - Added Docker containers via .devcontainer directory with Dockerfiles' and a docker-compose.yml:
@@ -20,8 +21,9 @@
 - Fixed not navigating to the "favoriate" action after logon
 - Fixed being logged out when saving a function
 - Fixed [ZGWSecurity].[Get_Function_Sort] where nothing is returned due to the ParentSeqId <> 1 predicate, this should have been ParentSeqId = @V_Parent_ID
+- Fixed [ZGWSecurity].[Accounts].[ResetToken] Size (no need for MAX now set to 256)
 
-## Version 4.0.0 (2024-04-30)
+## Net_Core Version 4.0.0 (2024-04-30)
 
 ### New Features
 - None
