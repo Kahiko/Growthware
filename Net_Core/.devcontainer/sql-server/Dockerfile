@@ -16,3 +16,6 @@ VOLUME /var/opt/mssql
 
 # docker run -p 11433:1433 -d --name growthware-db growthware-db:4.0.1.0
 # docker exec growthware-db ls -l
+
+# "Development_DAL_SQLServer_ConnectionString": "server=(local);Integrated Security=SSPI;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
+# "Development_DAL_SQLServer_ConnectionString": "server=(local),11433;User Id=sa;Password=P@ssw0rd;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
