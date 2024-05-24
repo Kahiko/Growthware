@@ -25,6 +25,7 @@
 - Fixed being logged out when saving a function
 - Fixed [ZGWSecurity].[Get_Function_Sort] where nothing is returned due to the ParentSeqId <> 1 predicate, this should have been ParentSeqId = @V_Parent_ID
 - Fixed [ZGWSecurity].[Accounts].[ResetToken] Size (no need for MAX now set to 256)
+- Fixed Change password not setting focus correctly
 
 ## Net_Core Version 4.0.0 (2024-04-30)
 

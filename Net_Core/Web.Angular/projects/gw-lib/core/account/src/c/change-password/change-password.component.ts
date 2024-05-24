@@ -35,6 +35,7 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 	hideOldPassword: boolean = true;
 	frmChangePassword!: FormGroup;
 	@ViewChild('newPassword', { static: false }) newPassword!: ElementRef<HTMLInputElement>;
+	@ViewChild('oldPassword', { static: false }) oldPassword!: ElementRef<HTMLInputElement>;
 	title: string = 'Change password';
 
 	constructor(
@@ -46,7 +47,11 @@ export class ChangePasswordComponent implements AfterViewInit, OnDestroy, OnInit
 	) { }
 
 	ngAfterViewInit(): void {
-		this.newPassword.nativeElement.focus();
+		if(this.hideOldPassword) {
+			this.newPassword.nativeElement.focus();
+		} else {
+			this.oldPassword.nativeElement.focus();
+		}
 	}
 
 	ngOnInit(): void {
