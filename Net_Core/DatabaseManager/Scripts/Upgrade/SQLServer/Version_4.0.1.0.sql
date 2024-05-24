@@ -80,10 +80,7 @@ There has been a request for a password change:
 	Please Use the following link to logon and change your password: <a href="<Server>accounts/reset-password?resetToken=<ResetToken>">Change Password</a>
 <br>
 <br>
-If you did not request a password change, please ignore this email, no changes have been made to your account.
-<br>
-<br>
-<b>Please note once you have logged on using this link you will only be able to change our password.</b>'
+If you did not request a password change, please ignore this email, no changes have been made to your account.<br>'
 WHERE [MessageSeqId] = @V_MessageSeqId;
 
 /****** Start: Procedure [ZGWSecurity].[Get_Function_Sort] ******/
