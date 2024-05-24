@@ -57,26 +57,46 @@ namespace GrowthWare.DataAccess.SQLServer
                 using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
                 mSqlCommand.CommandType = CommandType.Text;
                 mSqlCommand.ExecuteNonQuery();
-                // Encrypt the connection string
-                CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 // Encrypt the password
                 CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 // Update all of the just added security entites to the configured data access layer information
-                mCommandText = @"
-                UPDATE [ZGWSecurity].[Security_Entities] SET 
-                      [DAL] = N'{0}'
-                    , [DAL_Name] = N'{1}'
-                    , [DAL_Name_Space] = N'{2}'
-                    , [DAL_String] = N'{3}';";
-                mCommandText = String.Format(
-                    mCommandText,
-                    "SQLServer",
-                    ConfigSettings.DataAccessLayerAssemblyName,
-                    ConfigSettings.DataAccessLayerNamespace,
-                    mEncryptedConnectionString
-                );
-                mSqlCommand.CommandText = mCommandText;
-                mSqlCommand.ExecuteNonQuery();
+                mSqlCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
+                using SqlDataAdapter mSqlDataAdapter = new(mSqlCommand);
+                if (mSqlDataAdapter != null)
+                {
+                    DataSet mDataSet = new DataSet();
+                    mSqlDataAdapter.Fill(mDataSet);
+                    if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+                    {
+                        DataTable mDataTable = mDataSet.Tables[0];
+                        if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+                        {
+                            foreach(DataRow mRow in mDataTable.Rows)
+                            {
+                                // Encrypt the connection string
+                                CryptoUtility.TryEncrypt(ConfigSettings.ConnectionString, out string mEncryptedConnectionString, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                                mCommandText = @"
+                                UPDATE [ZGWSecurity].[Security_Entities] SET 
+                                    [DAL] = N'{0}'
+                                    , [DAL_Name] = N'{1}'
+                                    , [DAL_Name_Space] = N'{2}'
+                                    , [DAL_String] = N'{3}'
+                                WHERE [SecurityEntitySeqId] = {4};";
+                                mCommandText = String.Format(
+                                    mCommandText,
+                                    "SQLServer",
+                                    ConfigSettings.DataAccessLayerAssemblyName,
+                                    ConfigSettings.DataAccessLayerNamespace,
+                                    mEncryptedConnectionString,
+                                    mRow["SecurityEntitySeqId"].ToString()
+                                );
+                                mSqlCommand.CommandText = mCommandText;
+                                mSqlCommand.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
+                mSqlDataAdapter.Dispose();
                 mCommandText = @"
                 UPDATE [ZGWSecurity].[Accounts] SET [Password] = '{0}';";
                 mCommandText = String.Format(mCommandText, mEncryptedPassword);

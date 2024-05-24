@@ -14,6 +14,8 @@
         2.) Run
         3.) Can be "Reopened in container"
     TODO: Need to get this working together and able to debug with
+- Changed DDatabaseManager to update the Security Entities connection string for each row
+- Added connection string examples to sql-server\Dockerfile
 
 ### Bug Fixes
 - Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine
