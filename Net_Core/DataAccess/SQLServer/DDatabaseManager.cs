@@ -57,12 +57,9 @@ namespace GrowthWare.DataAccess.SQLServer
                 using SqlCommand mSqlCommand = new(mCommandText, mSqlConnection);
                 mSqlCommand.CommandType = CommandType.Text;
                 mSqlCommand.ExecuteNonQuery();
-                // Encrypt the password
-                CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
                 // Update all of the just added security entites to the configured data access layer information
                 mSqlCommand.CommandText = @"SELECT [SecurityEntitySeqId] FROM [ZGWSecurity].[Security_Entities];";
-                using SqlDataAdapter mSqlDataAdapter = new(mSqlCommand);
-                if (mSqlDataAdapter != null)
+                using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
                 {
                     DataSet mDataSet = new DataSet();
                     mSqlDataAdapter.Fill(mDataSet);
@@ -96,12 +93,36 @@ namespace GrowthWare.DataAccess.SQLServer
                         }
                     }
                 }
-                mSqlDataAdapter.Dispose();
-                mCommandText = @"
-                UPDATE [ZGWSecurity].[Accounts] SET [Password] = '{0}';";
-                mCommandText = String.Format(mCommandText, mEncryptedPassword);
-                mSqlCommand.CommandText = mCommandText;
-                mSqlCommand.ExecuteNonQuery();
+
+                mSqlCommand.CommandText = @"SELECT [AccountSeqId] FROM [ZGWSecurity].[Accounts];";
+                using (SqlDataAdapter mSqlDataAdapter = new SqlDataAdapter(mSqlCommand))
+                {
+                    DataSet mDataSet = new DataSet();
+                    mSqlDataAdapter.Fill(mDataSet);
+                    if(mDataSet != null && mDataSet.Tables != null && mDataSet.Tables.Count > 0)
+                    {
+                        DataTable mDataTable = mDataSet.Tables[0];
+                        if(mDataTable != null && mDataTable.Rows != null && mDataTable.Rows.Count > 0)
+                        {
+                            foreach(DataRow mRow in mDataTable.Rows)
+                            {
+                                // Encrypt the password
+                                CryptoUtility.TryEncrypt("none", out string mEncryptedPassword, ConfigSettings.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+                                mCommandText = @"
+                                UPDATE [ZGWSecurity].[Accounts] SET 
+                                    [Password] = '{0}'
+                                WHERE [AccountSeqId] = {1};";
+                                mCommandText = String.Format(
+                                    mCommandText,
+                                    mEncryptedPassword,
+                                    mRow["AccountSeqId"].ToString()
+                                );
+                                mSqlCommand.CommandText = mCommandText;
+                                mSqlCommand.ExecuteNonQuery();
+                            }
+                        }
+                    }
+                }
             }
         }
 

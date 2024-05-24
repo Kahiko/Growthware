@@ -15,6 +15,7 @@
         3.) Can be "Reopened in container"
     TODO: Need to get this working together and able to debug with
 - Changed DDatabaseManager to update the Security Entities connection string for each row
+- Changed DDatabaseManager to update the Acounts password string for each row
 - Added connection string examples to sql-server\Dockerfile
 
 ### Bug Fixes
