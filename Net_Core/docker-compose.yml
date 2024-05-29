@@ -11,30 +11,47 @@ version: '3.8'
 #   docker exec -it growthware-code bash
 
 services:
-  growthware-angular:
-    build:
-      context: .devcontainer/angular
-    container_name: growthware-angular
-    command: sleep infinity
-    image: growthware-angular:4.0.1.0   # Tag specified here
-    volumes:
-      - ./Web.Angular:/workspace:cached
-    ports:
-      - "4200:4200"
-    depends_on:
-      - growthware-api
-    networks:
-      - growthware-backend
+  # growthware-angular:
+  #   build:
+  #     context: .devcontainer/angular
+  #   container_name: growthware-angular
+  #   command: sleep infinity
+  #   image: growthware-angular:4.0.1.0   # Tag specified here
+  #   volumes:
+  #     - ./Web.Angular:/workspace:cached
+  #   ports:
+  #     - "4200:4200"
+  #   depends_on:
+  #     - growthware-api
+  #   networks:
+  #     - growthware-backend
   
-  growthware-api:
+  # growthware-api:
+  #   build:
+  #     context: .devcontainer/dotnet-api
+  #   container_name: growthware-api
+  #   image: growthware-api:4.0.1.0   # Tag specified here
+  #   command: sleep infinity
+  #   volumes:
+  #     - .:/workspace:cached
+  #   ports:
+  #     - "5000:5000"
+  #     - "5001:5001"
+  #   depends_on:
+  #     - growthware-db
+  #   networks:
+  #     - growthware-backend
+
+  growthware-code:
     build:
-      context: .devcontainer/dotnet-api
-    container_name: growthware-api
-    image: growthware-api:4.0.1.0   # Tag specified here
+      context: .devcontainer/code
+    container_name: growthware-code
     command: sleep infinity
+    image: growthware-code:4.0.1.0   # Tag specified here
     volumes:
-      - .:/workspace:cached
+      - ./:/workspace:cached
     ports:
+      - "44455:44455"
       - "5000:5000"
       - "5001:5001"
     depends_on:
@@ -49,7 +66,7 @@ services:
     volumes:
       - growthware-db-volume:/var/opt/mssql
     ports:
-      - "11433:1433"
+      - "1433:1433"
     image: growthware-db:4.0.1.0  # Tag specified here
     networks:
       - growthware-backend
