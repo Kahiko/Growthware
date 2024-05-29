@@ -59,6 +59,7 @@ services:
     networks:
       - growthware-backend
 
+  # The service name "growthware-db" becomes the "server=" in your connection string
   growthware-db:
     build:
       context: .devcontainer/sql-server
