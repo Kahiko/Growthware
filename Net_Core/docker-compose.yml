@@ -5,7 +5,10 @@ version: '3.8'
 # docker pull node:20.9.0
 # How To Remove Docker Images, Containers, and Volumes		
 # 	https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
-# docker-compose up --build -d
+# Build the containers from docker-compose.yml
+#   docker-compose up --build -d
+# Start a Docker container with a bash shell
+#   docker exec -it growthware-code bash
 
 services:
   growthware-angular:
