@@ -1,7 +1,4 @@
 FROM mcr.microsoft.com/dotnet/sdk:8.0
-EXPOSE 44455
-EXPOSE 5000
-EXPOSE 5001
 
 # Install NodeJs
 RUN apt-get update && \

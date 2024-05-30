@@ -28,6 +28,14 @@
 		}
 	},
 
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [44455, 5000, 5001],
+	"portsAttributes": {
+			"5001": {
+				"protocol": "https"
+			}
+	}
+
 	// Set `remoteUser` to `root` to connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	// "remoteUser": "vscode"
 	// "remoteUser": "root"

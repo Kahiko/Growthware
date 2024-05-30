@@ -50,10 +50,6 @@ services:
     image: growthware-code:4.0.1.0   # Tag specified here
     volumes:
       - ./:/workspace:cached
-    ports:
-      - "44455:44455"
-      - "5000:5000"
-      - "5001:5001"
     depends_on:
       - growthware-db
     networks:
