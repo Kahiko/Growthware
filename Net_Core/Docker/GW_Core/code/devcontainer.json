@@ -2,7 +2,7 @@
 // README at: https://github.com/devcontainers/templates/tree/main/src/dotnet-mssql
 {
 	"name": "Code Container",
-	"dockerComposeFile": "../../docker-compose.yml",
+	"dockerComposeFile": "../docker-compose.yml",
 	"service": "growthware-code",
 	// "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
 	"shutdownAction": "none",
