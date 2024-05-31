@@ -7,13 +7,7 @@
 - Fully implemented "Forgot Password"
 
 ### Improvements
-- Added Docker containers via .devcontainer directory with Dockerfiles' and a docker-compose.yml:
-    From "Net_Core" directory execute "run docker-compose up --build -d" to
-    build and start the containers.  The containers currectly do the following:
-        1.) Build
-        2.) Run
-        3.) Can be "Reopened in container"
-        4.) Breakpoints work
+- Added Docker directory with all of the necessary files to create a Development environment for Growthware in a Docker container
 - Changed DDatabaseManager to update the Security Entities connection string for each row
 - Changed DDatabaseManager to update the Acounts password string for each row
 - Added connection string examples to sql-server\Dockerfile
