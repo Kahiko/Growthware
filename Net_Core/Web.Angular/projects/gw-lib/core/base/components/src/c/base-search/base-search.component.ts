@@ -85,7 +85,7 @@ export abstract class BaseSearchComponent implements AfterViewInit, OnDestroy, O
 
   protected onRowDoubleClick (rowNumber: number): void {
   	const mDataRow = JSON.parse(JSON.stringify(this.dynamicTable.getRowData(rowNumber)));
-  	console.log('onRowDoubleClick.mDataRow', mDataRow);
+  	// console.log('onRowDoubleClick.mDataRow', mDataRow);
   	this._TheService.selectedRow = mDataRow;
   	this._TheService.modalReason = 'EditProfile';
   	const mModalOptions: IModalOptions = new ModalOptions(this._TheService.addEditModalId, 'Edit ' + this._TheFeatureName, this._TheComponent, this._TheWindowSize);
