@@ -228,8 +228,6 @@ export class FunctionDetailsComponent extends BaseDetailComponent implements IBa
   		source: [this._Profile.source],
   		controller: [this._Profile.controller],
   	});
-  	const mm = '';
-  	console.log(mm);
   }
 
   delete(): void {
