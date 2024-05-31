@@ -1,6 +1,6 @@
 {
 	"name": "Code Container",
-	"dockerComposeFile": "../../docker-compose.yml",
+	"dockerComposeFile": "../Docker/GW_Core/docker-compose.yml",
 	"service": "growthware-code",
 	"workspaceFolder": "/workspace",
 	"shutdownAction": "none",
