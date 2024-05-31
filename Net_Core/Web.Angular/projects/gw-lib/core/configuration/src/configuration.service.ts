@@ -78,7 +78,7 @@ export class ConfigurationService {
 				error: (errorResponse: any) => {
 					this._LoggingSvc.errorHandler(errorResponse, 'ConfigurationService', 'getAppSettings');
 				},
-				complete: () => console.info('complete')
+				// complete: () => console.info('complete')
 			});
 		}
 	}
