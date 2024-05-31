@@ -124,7 +124,6 @@ export class LoginComponent implements AfterViewInit, OnDestroy, OnInit {
 		}
 		this._AccountSvc.logIn(this.loginForm.value['account'], this.loginForm.value['password']).then(() => {
 			this._ModalSvc.close(this._AccountSvc.logInModalId);
-			this._Router.navigate(['favorite']);
 		});
 	}
 

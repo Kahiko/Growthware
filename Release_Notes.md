@@ -21,6 +21,7 @@
 - Fixed [ZGWSecurity].[Accounts].[ResetToken] Size (no need for MAX now set to 256)
 - Fixed Change password not setting focus correctly
 - Fixed Change password styling where error message was not displayed correctly
+- Fixed Cannot match any routes. URL Segment: 'favorite' during logon
 
 ## Net_Core Version 4.0.0 (2024-04-30)
 
