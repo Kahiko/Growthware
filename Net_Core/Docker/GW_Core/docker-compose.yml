@@ -11,7 +11,7 @@ version: '3.8'
 services:
   growthware-code:
     build:
-      context: .devcontainer/code
+      context: code
     container_name: growthware-code
     image: growthware-code:4.0.1.0   # Tag specified here
     depends_on:
@@ -28,7 +28,7 @@ services:
   # The service name "growthware-db" becomes the "server=" in your connection string
   growthware-db:
     build:
-      context: .devcontainer/sql-server
+      context: sql-server
     container_name: growthware-db
     volumes:
       - growthware-db-volume:/var/opt/mssql

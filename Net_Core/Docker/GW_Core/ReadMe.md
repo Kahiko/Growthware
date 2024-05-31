@@ -26,6 +26,8 @@ After you have built the container the first time you will need to run the comma
 NOTE: I tried to incoporate this into the Dockerfile but it didn't work
 
 You may need to update the "Development_DAL_SQLServer_ConnectionString" in the GrowthWare.json file, depending on when it was last updated it may not match what is needed for the dev container enviorment.
+Example:
+        "Development_DAL_SQLServer_ConnectionString": "server=growthware-db;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=true;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
 
 If this is your first time running the container you should need to create the database
     1.) Start VS Code
