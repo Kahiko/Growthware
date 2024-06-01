@@ -23,6 +23,7 @@
 - Fixed Change password styling where error message was not displayed correctly
 - Fixed Cannot match any routes. URL Segment: 'favorite' during logon
 - Fixed DatabaseManager where you could not specifity the USE [YourDatabaseName]; in the upgrade/downgrade scripts
+- Fixed old password not being hidden in ChangePasswordComponent
 
 ## Net_Core Version 4.0.0 (2024-04-30)
 
