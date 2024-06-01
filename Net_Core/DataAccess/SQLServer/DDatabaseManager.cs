@@ -142,7 +142,7 @@ namespace GrowthWare.DataAccess.SQLServer
                 File.WriteAllText(mCreationFile, mCreationText);
                 mSqlConnection.Open();
                 // Create the database 
-                bool mSuccess = this.ExecuteScriptFile(mCreationFile, mSqlConnection);
+                bool mSuccess = this.replace_N_Run(mCreationFile, mSqlConnection);
                 if (!mSuccess)
                 {
                     string mError = "Was not able to create the database using {0}";
@@ -212,7 +212,7 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             using (SqlConnection mSqlConnection = new(this.ConnectionString))
             {
-                return this.ExecuteScriptFile(scriptWithPath, mSqlConnection);
+                return this.replace_N_Run(scriptWithPath, mSqlConnection);
             }
         }
 
