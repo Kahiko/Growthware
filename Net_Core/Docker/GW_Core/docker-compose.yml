@@ -32,7 +32,7 @@ services:
     volumes:
       - growthware-db-volume:/var/opt/mssql
     ports:
-      - "1433:1433"
+      - "11433:1433"
     image: growthware-db:4.0.1.0  # Tag specified here
     networks:
       - growthware-backend
