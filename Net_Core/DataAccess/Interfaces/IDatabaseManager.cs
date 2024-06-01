@@ -12,7 +12,7 @@ namespace GrowthWare.DataAccess.Interfaces
         void Delete();
         Boolean Exists();
         bool ExecuteScriptFile(string scriptWithPath);
-        Boolean ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection);
+        // Boolean ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection);
         string GetScriptPath(string theDirection);
         Version GetVersion();
         void UpdateLogPath();

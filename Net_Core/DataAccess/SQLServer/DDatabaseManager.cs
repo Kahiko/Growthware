@@ -216,7 +216,7 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
-        public bool ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection)
+        private bool ExecuteScriptFile(string scriptWithPath, SqlConnection sqlConnection)
         {
             this.IsValid();
             try
