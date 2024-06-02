@@ -28,7 +28,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     /// <summary>
     /// Formats an error message containing the store procedure name and the parameters/values.
     /// </summary>
-    /// <param name="parameters">The sql parameters used when the error was created.</param>
+    /// <param name="parameters">The oracle parameters used when the error was created.</param>
     /// <param name="storedProcedure">The name of the store procedure used when the error was created.</param>
     /// <param name="yourExMSG">The message for the exception object.</param>
     /// <returns>A formatted string</returns>
@@ -225,7 +225,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
 
     #region IDBInteraction Members
     /// <summary>
-    /// Executes a non Query given the commandText and sql parameters if any
+    /// Executes a non Query given the commandText and oracle parameters if any
     /// </summary>
     /// <param name="commandText">String</param>
     /// <param name="OracleParameter">OracleParameter</param>
@@ -333,7 +333,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Returns a DataSet given the store procedure and sql parameters
+    /// Returns a DataSet given the store procedure and oracle parameters
     /// </summary>
     /// <param name="commandText">String</param>
     /// <returns>DataSet</returns>
@@ -383,7 +383,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Returns a DataTable given the command text, Sql Connection and sql parameters
+    /// Returns a DataTable given the command text, Oracle Connection and oracle parameters
     /// </summary>
     /// <param name="commandText">String</param>
     /// <param name="OracleParameter">OracleParameter[]</param>
@@ -397,7 +397,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Returns a DataTable given the command text and Sql Connection
+    /// Returns a DataTable given the command text and Oracle Connection
     /// </summary>
     /// <param name="commandText">String</param>
     /// <returns>DataTable</returns>
@@ -408,7 +408,7 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
     }
 
     /// <summary>
-    /// Returns a DataRow given the command text and sql parameters
+    /// Returns a DataRow given the command text and oracle parameters
     /// </summary>
     /// <param name="commandText">String</param>
     /// <param name="OracleParameter">OracleParameter[]</param>
