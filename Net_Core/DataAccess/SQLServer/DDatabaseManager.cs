@@ -23,6 +23,15 @@ namespace GrowthWare.DataAccess.SQLServer
 
         public void Create()
         {
+            /**
+              * first checks if the database name is valid. If it is not valid, an exception is thrown.
+              * then opens a SQL connection to the server.
+              * It defines the DDL script and DML script file paths based on the database script path.
+              * runs the DDL script and checks if it was successful. If it was not successful, an exception is thrown.
+              * runs the DML script and checks if it was successful. If it was not successful, an exception is thrown.
+              * updates all of the just added security entities to the configured data access layer information.
+              * updates all of the just added accounts to the encrypted password.
+              */
             this.IsValid();
             string mCommandText = string.Empty;
             string mScriptDirectory = this.GetScriptPath("Upgrade");
@@ -183,6 +192,12 @@ namespace GrowthWare.DataAccess.SQLServer
             return mRetVal;
         }
 
+        /// <summary>
+        /// Replaces 'YourDatabaseName' in the given script file with the actual database name and executes the script.
+        /// </summary>
+        /// <param name="scriptFile">The path to the script file.</param>
+        /// <param name="sqlConnection">The SQL connection to execute the script on.</param>
+        /// <returns>True if the script execution was successful, false otherwise.</returns>
         private bool replace_N_Run(string scriptFile, SqlConnection sqlConnection)
         {
             bool mSuccess = false;
