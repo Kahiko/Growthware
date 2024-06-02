@@ -140,10 +140,10 @@ public abstract class AbstractDBInteraction : IDBInteraction, IDisposable
             }
             
             // 2.) Perform OracleBulkCopy of the data table in a temporary table
-            // using (var mOracleBulkCopy = new OracleBulkCopy(mOracleConnection, OracleBulkCopyOptions.Default, mOracleTransaction))
-            using (var mOracleBulkCopy = new OracleBulkCopy(mOracleConnection))
+            using (var mOracleBulkCopy = new OracleBulkCopy(mOracleConnection, OracleBulkCopyOptions.Default))
             {
-                mOracleBulkCopy.BatchSize = 5000;
+                // mOracleBulkCopy.BatchSize = 5000;
+                mOracleBulkCopy.BatchSize = mDataTable.Rows.Count;
                 mOracleBulkCopy.DestinationTableName = mTempTableName;
                 mOracleBulkCopy.WriteToServer(mDataTable);
                 mOracleBulkCopy.Close();
