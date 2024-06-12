@@ -39,7 +39,8 @@
                 "dbaeumer.vscode-eslint",
                 "Angular.ng-template",
                 "dbaeumer.vscode-eslint",
-                "ms-dotnettools.vscodeintellicode-csharp"
+                "ms-dotnettools.vscodeintellicode-csharp",
+				"adrianwilczynski.csharp-to-typescript"
 			]
 		}
 	},
