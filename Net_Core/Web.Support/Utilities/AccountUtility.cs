@@ -455,7 +455,9 @@ public static class AccountUtility
             removeOldRefreshTokens(mAccountProfile);
 
             // remove replaced by new tokens
-            removeReplacedByNewTokens(mAccountProfile);
+            // TODO - This is not quite right as it removes all tokens with the reason "Replaced by new token"
+            //        and we need to consider if an account can be logged on with multiple sessions..
+            // removeReplacedByNewTokens(mAccountProfile);
 
             // generate new jwt
             mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
