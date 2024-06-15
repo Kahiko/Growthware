@@ -24,6 +24,7 @@
 - Fixed Cannot match any routes. URL Segment: 'favorite' during logon
 - Fixed DatabaseManager where you could not specifity the USE [YourDatabaseName]; in the upgrade/downgrade scripts
 - Fixed old password not being hidden in ChangePasswordComponent
+- Fixed condition where too many refresh tokens were being left in the DB
 
 ## Net_Core Version 4.0.0 (2024-04-30)
 

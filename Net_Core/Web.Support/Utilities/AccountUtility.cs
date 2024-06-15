@@ -454,6 +454,9 @@ public static class AccountUtility
             // remove old refresh tokens from account
             removeOldRefreshTokens(mAccountProfile);
 
+            // remove replaced by new tokens
+            removeReplacedByNewTokens(mAccountProfile);
+
             // generate new jwt
             mAccountProfile.Token = m_JwtUtils.GenerateJwtToken(mAccountProfile);
 
@@ -552,6 +555,23 @@ public static class AccountUtility
             !x.IsActive() && 
             x.Created.AddDays(ConfigSettings.JWT_Refresh_Token_DB_TTL_Days) <= DateTime.UtcNow
         );
+    }
+
+    /// <summary>
+    /// Removes all inactive refresh tokens with the reason "Replaced by new token" from the given account profile,
+    /// and adds the most recent such token back to the profile.
+    /// </summary>
+    /// <param name="accountProfile">The account profile from which to remove replaced tokens.</param>
+    private static void removeReplacedByNewTokens(MAccountProfile accountProfile)
+    {
+        MRefreshToken mByNewToken = accountProfile.RefreshTokens.Where(x => x.ReasonRevoked == "Replaced by new token").OrderByDescending(x => x.Created).FirstOrDefault();
+        if(mByNewToken != null)
+        {
+            accountProfile.RefreshTokens.RemoveAll(x => 
+                x.ReasonRevoked == "Replaced by new token"
+            );
+            accountProfile.RefreshTokens.Add(mByNewToken);
+        }
     }
 
     public static void ResetPassword(MAccountProfile forAccount, string password)
