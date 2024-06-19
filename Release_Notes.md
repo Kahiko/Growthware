@@ -1,6 +1,6 @@
 # Release Notes
 
-## Net_Core Version 4.0.1 (2024-XX-XX)
+## Net_Core Version 4.0.1 (2024-06-19)
 
 ### New Features
 - Added Table View in File Manager
