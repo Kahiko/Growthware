@@ -1,5 +1,15 @@
 # Release Notes
 
+## Net_Core Version 4.1.0.x (2024-xx-xx)
+
+### New Features
+- Added Register
+- Added Verify Email
+
+### Improvements
+
+### Bug Fixes
+
 ## Net_Core Version 4.0.1 (2024-06-19)
 
 ### New Features
