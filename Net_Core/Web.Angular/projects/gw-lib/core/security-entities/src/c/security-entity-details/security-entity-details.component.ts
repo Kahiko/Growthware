@@ -6,6 +6,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { ConfigurationService } from '@growthware/core/configuration';
@@ -27,7 +28,8 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
 		MatButtonModule,
 		MatIconModule,
 		MatInputModule,
-		MatSelectModule
+		MatSelectModule,
+		MatTabsModule
 	],
 	templateUrl: './security-entity-details.component.html',
 	styleUrls: ['./security-entity-details.component.scss']
