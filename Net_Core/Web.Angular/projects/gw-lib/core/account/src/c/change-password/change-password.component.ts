@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatTabsModule } from '@angular/material/tabs';
 // Library
 import { GWCommon } from '@growthware/common/services';
 // Feature
@@ -19,7 +20,8 @@ import { AccountService } from '../../account.service';
 		FormsModule,
 		ReactiveFormsModule,
 		MatButtonModule,
-		MatIconModule
+		MatIconModule,
+		MatTabsModule
 	],
 	templateUrl: './change-password.component.html',
 	styleUrls: ['./change-password.component.scss']
