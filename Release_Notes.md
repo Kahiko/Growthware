@@ -7,6 +7,7 @@
 - Added Verify Email
 
 ### Improvements
+- Popup modals are now draggable
 
 ### Bug Fixes
 

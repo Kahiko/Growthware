@@ -1,4 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+// Angular Material cdk
+import { CdkDrag } from '@angular/cdk/drag-drop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -12,7 +14,13 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'gw-core-modal',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatIconModule, MatToolbarModule],
+  imports: [
+    CdkDrag,
+    CommonModule, 
+    MatButtonModule, 
+    MatIconModule, 
+    MatToolbarModule
+  ],
   templateUrl: './modal.component.html',
   styleUrls: ['./modal.component.scss']
 })
