@@ -8,6 +8,7 @@
 
 ### Improvements
 - Popup modals are now draggable
+- Normalize some of the CSS
 
 ### Bug Fixes
 
