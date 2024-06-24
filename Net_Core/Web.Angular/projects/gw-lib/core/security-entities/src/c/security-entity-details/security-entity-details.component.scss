@@ -1,4 +1,5 @@
-.containerSize { // From (SearchSecurityEntitiesComponent._TheWindowSize)
-  min-height: 385px; // -65px
-  min-width: 725px; // -50px
+.containerSize {
+  // From (SearchSecurityEntitiesComponent._TheWindowSize)
+  min-height: calc(500px - 115px);
+  min-width: calc(775px - 50px);
 }
