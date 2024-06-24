@@ -1,58 +1,57 @@
-<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()">
+<form [formGroup]="frmProfile" (ngSubmit)="onSubmit()" novalidate>
     <mat-tab-group mat-align-tabs="center" style="padding-bottom: 0px;">
-        <mat-tab label="Details">
-            <div class="mat-tab__container">
-                <div class="mat-tab__content formSectionContents containerSize">
-                    <div class="table">
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Name:</span>
-                            </div>
-                            <div class="td middleCell">
-                                @if (getErrorMessage('name')) {
-                                    <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
-                                }
-                            </div>
-                            <div class="td left">
-                                <input matInput type="text" formControlName="name" class="Form_Field rounded">
-                                <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('name')}}</mat-error>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Value:</span>
-                            </div>
-                            <div class="td middleCell">
-                                @if (getErrorMessage('value')) {
-                                    <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
-                                }
-                            </div>
-                            <div class="td left">
-                                <input matInput type="text" formControlName="value" class="Form_Field rounded">
-                                <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('value')}}</mat-error>
-                            </div>
-                        </div>
-                        <div class="tr">
-                            <div class="td firstCell left">
-                                <span class="Form_LabelText">Status:</span>
-                            </div>
-                            <div class="td middleCell">&nbsp;</div>
-                            <div class="td left">
-                                <mat-select [(value)]="selectedStatus" class="Form_Field rounded" style="width: 150px;">
-                                    @for (item of validStatus; track item) {
-                                      <mat-option [value]="item.id">
-                                        {{item.name}}
-                                      </mat-option>
-                                    }
-                                  </mat-select>
-                            </div>
-                        </div>
+      <mat-tab label="Details">
+        <div class="mat-tab__container formSection">
+          <div class="mat-tab__content formSectionContents containerSize">
+            <div class="table">
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Name:</span>
                     </div>
-                </div>    
+                    <div class="td middleCell">
+                        @if (getErrorMessage('name')) {
+                            <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
+                        }
+                    </div>
+                    <div class="td left">
+                        <input matInput type="text" formControlName="name" class="Form_Field rounded">
+                        <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('name')}}</mat-error>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Value:</span>
+                    </div>
+                    <div class="td middleCell">
+                        @if (getErrorMessage('value')) {
+                            <mat-error style="display: inline-block; padding-left: 5px; color: red;">*</mat-error>
+                        }
+                    </div>
+                    <div class="td left">
+                        <input matInput type="text" formControlName="value" class="Form_Field rounded">
+                        <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('value')}}</mat-error>
+                    </div>
+                </div>
+                <div class="tr">
+                    <div class="td firstCell left">
+                        <span class="Form_LabelText">Status:</span>
+                    </div>
+                    <div class="td middleCell">&nbsp;</div>
+                    <div class="td left">
+                        <mat-select [(value)]="selectedStatus" class="Form_Field rounded" style="width: 150px;">
+                            @for (item of validStatus; track item) {
+                              <mat-option [value]="item.id">
+                                {{item.name}}
+                              </mat-option>
+                            }
+                          </mat-select>
+                    </div>
+                </div>
             </div>
-        </mat-tab>
+          </div>
+        </div>
+      </mat-tab>
     </mat-tab-group>
-    <br/>
     <div class="buttonRow">
         @if (canSave) {
             <button type="submit" [disabled]="frmProfile.invalid" mat-button class="Form_Button" color="primary">
@@ -68,4 +67,4 @@
             <i style="padding-right: 3px;" class="Form_Button_Icon material-icons">cancel</i>Cancel
         </button>
     </div>
-</form>
+  </form>
