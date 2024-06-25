@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using GrowthWare.Web.Support.BaseControllers;
-using GrowthWare.Web.Support.Utilities;
 
-namespace GrowthWare.Web.Angular.Controllers;
+namespace GrowthWare.Web.Api.Controllers;
 
 [ApiController]
 [Route("[controller]")]
