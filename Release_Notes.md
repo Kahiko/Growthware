@@ -9,6 +9,8 @@
 ### Improvements
 - Popup modals are now draggable
 - Normalize some of the CSS
+- Added baseURLWithoutPort to GWCommon.ts
+- Added GetProfileByURL to SecurityEntityUtility and AbstractSecurityEntityController
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
