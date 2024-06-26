@@ -45,6 +45,18 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [AllowAnonymous]
+    [HttpGet("GetProfileByURL")]
+    public ActionResult<MSecurityEntity> GetProfileByURL(string url)
+    {
+        MSecurityEntity mRetVal = SecurityEntityUtility.GetProfileByUrl(url);
+        if (mRetVal == null)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "No matching profile found");
+        }
+        return Ok(mRetVal);
+    }
+
     private MSecurityInfo getSecurityInfo(string action)
     {
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;

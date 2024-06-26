@@ -7,6 +7,7 @@ using System.Linq;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
+using System.Runtime.CompilerServices;
 
 namespace GrowthWare.Web.Support.Utilities;
 
@@ -56,20 +57,15 @@ public static class SecurityEntityUtility
     /// <returns>MSecurityEntityProfile</returns>
     public static MSecurityEntity GetProfile(string name)
     {
-        MSecurityEntity mRetVal = new MSecurityEntity();
+        MSecurityEntity mRetVal = null;
         var mResult = from mProfile in Profiles()
                       where mProfile.Name.ToLower(CultureInfo.CurrentCulture) == name.ToLower(CultureInfo.CurrentCulture)
                       select mProfile;
-        try
+        if(mResult.Any()) 
         {
             mRetVal = mResult.First();
         }
-        catch (NullReferenceException)
-        {
-            mRetVal = null;
-        }
         return mRetVal;
-
     }
 
     /// <summary>
@@ -79,17 +75,33 @@ public static class SecurityEntityUtility
     /// <returns>MSecurityEntityProfile</returns>
     public static MSecurityEntity GetProfile(int securityEntitySeqId)
     {
-        MSecurityEntity mRetVal = new MSecurityEntity();
+        MSecurityEntity mRetVal = null;
         var mResult = from mProfile in Profiles()
                       where mProfile.Id == securityEntitySeqId
                       select mProfile;
-        try
+        if(mResult.Any()) 
         {
             mRetVal = mResult.First();
         }
-        catch (NullReferenceException)
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Get the first profile that has a partial match on the url and the URL is not "no url".
+    /// </summary>
+    /// <param name="url">partial URL</param>
+    /// <returns>MSecurityEntity or null</returns>
+    public static MSecurityEntity GetProfileByUrl(string url)
+    {
+        MSecurityEntity mRetVal = null;
+        var mResult = Profiles()
+            .Where(mProfile => !mProfile.Name.Equals("no url", StringComparison.CurrentCultureIgnoreCase))
+            .Where(mProfile => mProfile.Url.Replace("http:", "https:").Contains(url.Replace("http:", "https:"), StringComparison.CurrentCultureIgnoreCase))
+            .OrderByDescending(mProfile => mProfile.Id)
+            .Select(mProfile => mProfile);
+        if(mResult.FirstOrDefault() != null)
         {
-            mRetVal = null;
+           mRetVal = mResult.FirstOrDefault();
         }
         return mRetVal;
     }
