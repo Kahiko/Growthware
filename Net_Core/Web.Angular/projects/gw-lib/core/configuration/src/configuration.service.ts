@@ -30,9 +30,9 @@ export class ConfigurationService {
 	readonly version$ = this._Version.asObservable();
 
 	constructor(
-    private _GWCommon: GWCommon,
-    private _HttpClient: HttpClient,
-    private _LoggingSvc: LoggingService
+		private _GWCommon: GWCommon,
+		private _HttpClient: HttpClient,
+		private _LoggingSvc: LoggingService
 	) {
 		this._ApiAppSettingsURL = this._GWCommon.baseURL + this._ApiName + 'GetAppSettings';
 		this._ApiGetDBInformationURL = this._GWCommon.baseURL + this._ApiName + 'GetDBInformation';
@@ -63,15 +63,15 @@ export class ConfigurationService {
 	}
 
 	public loadAppSettings(): void {
-		if(this._Loaded === false) {
+		if (this._Loaded === false) {
 			const mUrl = this._ApiAppSettingsURL;
 			this._HttpClient.get<IAppSettings>(mUrl).subscribe({
 				next: (response: IAppSettings) => {
-					if(response.name) { this._ApplicationName.next(response.name); }
-					if(response.environment) { this._Environment.next(response.environment); }
-					if(response.logPriority) { this._LogPriority.next(response.logPriority); }
-					if(response.version) { this._Version.next(response.version); }
-					if(response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
+					if (response.name) { this._ApplicationName.next(response.name); }
+					if (response.environment) { this._Environment.next(response.environment); }
+					if (response.logPriority) { this._LogPriority.next(response.logPriority); }
+					if (response.version) { this._Version.next(response.version); }
+					if (response.securityEntityTranslation) { this._SecurityEntityTranslation.next(response.securityEntityTranslation); }
 					this._Loaded = true;
 				},
 				// eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -84,7 +84,7 @@ export class ConfigurationService {
 	}
 
 	public async updateProfile(enableInheritance: number): Promise<boolean> {
-		if(this._GWCommon.isNullOrUndefined(enableInheritance)) {
+		if (this._GWCommon.isNullOrUndefined(enableInheritance)) {
 			throw new Error('enableInheritance can not be blank!');
 		}
 		const mQueryParameter: HttpParams = new HttpParams()
