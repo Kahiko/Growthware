@@ -130,6 +130,17 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Returns Security_Entity_From_Url from the CONFIG file
+        /// </summary>
+        public static bool SecurityEntityFromUrl
+        {
+            get 
+            {
+                return bool.TryParse(GetAppSettingValue("Security_Entity_From_Url", false), out bool mRetVal);
+            }
+        }
+
+        /// <summary>
         /// Returns Security_Entity_Translation from the CONFIG file
         /// </summary>
         /// <value>String</value>
