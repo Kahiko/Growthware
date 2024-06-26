@@ -136,7 +136,9 @@ namespace GrowthWare.Framework
         {
             get 
             {
-                return bool.TryParse(GetAppSettingValue("Security_Entity_From_Url", false), out bool mRetVal);
+                string mValue = GetAppSettingValue("Security_Entity_From_Url", false);
+                _ = bool.TryParse(mValue, out bool mRetVal);
+                return mRetVal;
             }
         }
 
