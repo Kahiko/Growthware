@@ -126,6 +126,21 @@ export class GWCommon {
     return mURL;
   }
 
+  
+  /**
+   * Returns the base URL without the port.
+   *
+   * @return {string} The base URL without the port.
+   */
+  public get baseURLWithoutPort(): string {
+    let mRetVal = this.baseURL;
+    const mColonSplitUrl = mRetVal.split(':');
+    if(mColonSplitUrl.length > 2) {
+      mRetVal = mColonSplitUrl[0] + ':' + mColonSplitUrl[1] + '/';
+    }
+    return mRetVal;
+  }
+
   /**
 	 * Compares two dates to check if they are equal.
 	 *
