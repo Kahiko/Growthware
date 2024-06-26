@@ -133,14 +133,9 @@ export class GWCommon {
    * @return {string} The base URL without the port.
    */
   public get baseURLWithoutPort(): string {
-    // Note this could potentially be improved by ensuring that the second colon
-    // is part of the window.location.hostname instead of being part of a query parameter.
-    let mRetVal = this.baseURL;
-    const mColonSplitUrl = mRetVal.split(':');
-    if(mColonSplitUrl.length > 2) {
-      mRetVal = mColonSplitUrl[0] + ':' + mColonSplitUrl[1] + '/';
-    }
-    return mRetVal;
+    const mCurrentLocation = window.location;
+    const mURL = mCurrentLocation.protocol + '//' + mCurrentLocation.hostname + '/';
+    return mURL;
   }
 
   /**
