@@ -22,16 +22,30 @@ public static class SecurityEntityUtility
         get
         {
             MSecurityEntity mRetProfile = null;
-            if (m_HttpContextAccessor != null)
+            if(!ConfigSettings.SecurityEntityFromUrl)
             {
-                MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
-                if (mClientChoicesState != null)
+                if (m_HttpContextAccessor != null)
                 {
-                    int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
-                    mRetProfile = GetProfile(mSecurityEntity);
+                    MClientChoicesState mClientChoicesState = ClientChoicesUtility.CurrentState;
+                    if (mClientChoicesState != null)
+                    {
+                        int mSecurityEntity = int.Parse(mClientChoicesState[MClientChoices.SecurityEntityID].ToString(), CultureInfo.InvariantCulture);
+                        mRetProfile = GetProfile(mSecurityEntity);
+                    }
                 }
-                if (mRetProfile == null) mRetProfile = DefaultProfile();
             }
+            else
+            {
+                if (m_HttpContextAccessor != null)
+                {
+                    string mUrl = m_HttpContextAccessor.HttpContext.Request.Scheme + "://" + m_HttpContextAccessor.HttpContext.Request.Host.Host;
+                    mRetProfile = GetProfileByUrl(mUrl);
+                    // TODO: Unsure if I should attempt to get the selected profile from ClientChoices
+                    // for now we'll get the default one I am not and just lettting the
+                    // the default profile to be returned
+                }
+            }
+            mRetProfile ??= DefaultProfile();
             return mRetProfile;
         }
     }
@@ -96,7 +110,7 @@ public static class SecurityEntityUtility
         var mResult = Profiles()
             .Where(mProfile => !mProfile.Name.Equals("no url", StringComparison.CurrentCultureIgnoreCase))
             .Where(mProfile => mProfile.Url.Replace("http:", "https:").Contains(url.Replace("http:", "https:"), StringComparison.CurrentCultureIgnoreCase))
-            .OrderByDescending(mProfile => mProfile.Id)
+            .OrderBy(mProfile => mProfile.Id)
             .Select(mProfile => mProfile);
         if(mResult.FirstOrDefault() != null)
         {

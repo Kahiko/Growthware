@@ -118,6 +118,11 @@ public static class ClientChoicesUtility
                 addOrUpdateCacheOrSession(ConfigSettings.Anonymous, mJsonString);
                 mRetVal = getFromCacheOrSession("not") ?? getFromCacheOrSession(MClientChoices.AnonymousClientChoicesState);
             }
+            if(ConfigSettings.SecurityEntityFromUrl)
+            {
+                mRetVal[MClientChoices.SecurityEntityID] = SecurityEntityUtility.CurrentProfile.Id.ToString();
+                mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
+            }            
             return mRetVal;
         }
     }
@@ -133,6 +138,11 @@ public static class ClientChoicesUtility
         string mJsonString = JsonSerializer.Serialize(mDataRow.ItemArray);
         addOrUpdateCacheOrSession(forAccount, mJsonString);
         MClientChoicesState mRetVal = getFromCacheOrSession(forAccount);
+        if(ConfigSettings.SecurityEntityFromUrl)
+        {
+            mRetVal[MClientChoices.SecurityEntityID] = SecurityEntityUtility.CurrentProfile.Id.ToString();
+            mRetVal[MClientChoices.SecurityEntityName] = SecurityEntityUtility.CurrentProfile.Name;
+        }
         return mRetVal;
     }
 

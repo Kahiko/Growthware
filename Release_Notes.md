@@ -11,6 +11,8 @@
 - Normalize some of the CSS
 - Added baseURLWithoutPort to GWCommon.ts
 - Added GetProfileByURL to SecurityEntityUtility and AbstractSecurityEntityController
+- Updated ClientChoicesUtility.CurrentState and ClientChoicesUtility.getClientChoicesState to account for ConfigSettings.SecurityEntityFromUrl
+- Updated SecurityEntityUtility.CurrentProfile to account for ConfigSettings.SecurityEntityFromUrl
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
