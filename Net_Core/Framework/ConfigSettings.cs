@@ -3,7 +3,6 @@ using System.IO;
 using System.Globalization;
 using Microsoft.Extensions.Configuration;
 using GrowthWare.Framework.Enumerations;
-using System.Diagnostics.Contracts;
 
 namespace GrowthWare.Framework
 {
