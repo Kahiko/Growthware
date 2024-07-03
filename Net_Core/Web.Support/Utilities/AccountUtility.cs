@@ -34,7 +34,7 @@ public static class AccountUtility
         if (sessionName != "useDefault") { mSessionName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionController.AddToSession(mSessionName, value);
+            SessionHelper.AddToSession(mSessionName, value);
             return;
         }
         m_CacheController.AddToCache(s_CachedName, value);
@@ -52,7 +52,7 @@ public static class AccountUtility
         if (sessionName != "useDefault") { mSessionName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            var mRetVal = SessionController.GetFromSession<T>(mSessionName);
+            var mRetVal = SessionHelper.GetFromSession<T>(mSessionName);
             return mRetVal;
         }
         return m_CacheController.GetFromCache<T>(s_CachedName);
@@ -69,7 +69,7 @@ public static class AccountUtility
         if (sessionName != "useDefault") { mSessionName = sessionName; }
         if (!forAccount.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
         {
-            SessionController.RemoveFromSession(mSessionName);
+            SessionHelper.RemoveFromSession(mSessionName);
             return;
         }
         m_CacheController.RemoveFromCache(s_CachedName);

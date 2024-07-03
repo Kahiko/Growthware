@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Http;
 using GrowthWare.Framework.Models;
 using GrowthWare.Web.Support.Utilities;
 
+namespace GrowthWare.Web.Support.Helpers;
 /// <summary>
-/// SessionController class contains methods for managing session data.
+/// SessionHelper class contains methods for managing session data.
 /// </summary>
 /// <notes>
 /// TODO: this works fine for a single server but not for a clustered environment.
@@ -14,7 +15,7 @@ using GrowthWare.Web.Support.Utilities;
 /// May want to consider using SQL Dependency with SignalR to manage the frontend updates that relay on the session data.
 ///     such as menu data or security data.  Perhaps after I've finished the bulk if not all of the current UI.
 /// </notes>
-public static class SessionController
+public static class SessionHelper
 {
     private static IHttpContextAccessor m_HttpContextAccessor;
 
@@ -36,7 +37,7 @@ public static class SessionController
             {
                 MLoggingProfile mLoggingProfile = new MLoggingProfile();
                 mLoggingProfile.Account = "System";
-                mLoggingProfile.ClassName = "SessionController";
+                mLoggingProfile.ClassName = "SessionHelper";
                 mLoggingProfile.Component = "Web.Support";
                 mLoggingProfile.Level = "Error";
                 mLoggingProfile.LogDate = DateTime.Now;
@@ -77,7 +78,7 @@ public static class SessionController
         {
             MLoggingProfile mLoggingProfile = new MLoggingProfile();
             mLoggingProfile.Account = "System";
-            mLoggingProfile.ClassName = "SessionController";
+            mLoggingProfile.ClassName = "SessionHelper";
             mLoggingProfile.Component = "Web.Support";
             mLoggingProfile.Level = "Error";
             mLoggingProfile.LogDate = DateTime.Now;

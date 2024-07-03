@@ -26,10 +26,10 @@ public static class ClientChoicesUtility
     {
         if (forAccount.ToLowerInvariant() != ConfigSettings.Anonymous.ToLowerInvariant())
         {
-            SessionController.AddToSession(MClientChoices.SessionName, value);
+            SessionHelper.AddToSession(MClientChoices.SessionName, value);
             return;
         }
-        SessionController.AddToSession(MClientChoices.SessionName, value);
+        SessionHelper.AddToSession(MClientChoices.SessionName, value);
         m_CacheController.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
     }
 
@@ -41,7 +41,7 @@ public static class ClientChoicesUtility
     /// <returns>The retrieved value.</returns>
     private static MClientChoicesState getFromCacheOrSession(string forAccount)
     {
-        string mJsonString = SessionController.GetFromSession<string>(MClientChoices.SessionName) ?? m_CacheController.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
+        string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName) ?? m_CacheController.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
         if(mJsonString != null && mJsonString.Length > 0) 
         {
             return convertToClientChoicesState(mJsonString);
@@ -105,7 +105,7 @@ public static class ClientChoicesUtility
 
     public static void ClearSession()
     {
-        SessionController.RemoveFromSession(MClientChoices.SessionName);
+        SessionHelper.RemoveFromSession(MClientChoices.SessionName);
     }
 
     public static MClientChoicesState CurrentState

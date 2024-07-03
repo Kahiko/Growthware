@@ -13,6 +13,8 @@
 - Added GetProfileByURL to SecurityEntityUtility and AbstractSecurityEntityController
 - Updated ClientChoicesUtility.CurrentState and ClientChoicesUtility.getClientChoicesState to account for ConfigSettings.SecurityEntityFromUrl
 - Updated SecurityEntityUtility.CurrentProfile to account for ConfigSettings.SecurityEntityFromUrl
+- Renamed CacheController.cs to CachenHelper.cs and moved to \Helpers
+- Renamed SessionController.cs to SessionHelper.cs and moved to \Helpers
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
