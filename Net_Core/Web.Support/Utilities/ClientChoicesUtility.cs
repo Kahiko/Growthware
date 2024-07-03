@@ -10,7 +10,7 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class ClientChoicesUtility
 {
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
 #region "Cache/Session Methods"
     /// <summary>
@@ -30,7 +30,7 @@ public static class ClientChoicesUtility
             return;
         }
         SessionHelper.AddToSession(MClientChoices.SessionName, value);
-        m_CacheController.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
+        m_CacheHelper.AddToCache(MClientChoices.AnonymousClientChoicesState, value);
     }
 
     /// <summary>
@@ -41,7 +41,7 @@ public static class ClientChoicesUtility
     /// <returns>The retrieved value.</returns>
     private static MClientChoicesState getFromCacheOrSession(string forAccount)
     {
-        string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName) ?? m_CacheController.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
+        string mJsonString = SessionHelper.GetFromSession<string>(MClientChoices.SessionName) ?? m_CacheHelper.GetFromCache<string>(MClientChoices.AnonymousClientChoicesState);
         if(mJsonString != null && mJsonString.Length > 0) 
         {
             return convertToClientChoicesState(mJsonString);

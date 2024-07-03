@@ -14,7 +14,7 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
     private static string s_CachedName = "CachedAnonymous";
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private static JwtUtility m_JwtUtils = new JwtUtility();
     private static string s_SessionName = "SessionAccount";
@@ -37,7 +37,7 @@ public static class AccountUtility
             SessionHelper.AddToSession(mSessionName, value);
             return;
         }
-        m_CacheController.AddToCache(s_CachedName, value);
+        m_CacheHelper.AddToCache(s_CachedName, value);
     }
 
     /// <summary>
@@ -55,7 +55,7 @@ public static class AccountUtility
             var mRetVal = SessionHelper.GetFromSession<T>(mSessionName);
             return mRetVal;
         }
-        return m_CacheController.GetFromCache<T>(s_CachedName);
+        return m_CacheHelper.GetFromCache<T>(s_CachedName);
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public static class AccountUtility
             SessionHelper.RemoveFromSession(mSessionName);
             return;
         }
-        m_CacheController.RemoveFromCache(s_CachedName);
+        m_CacheHelper.RemoveFromCache(s_CachedName);
     }
 
     /// <summary>

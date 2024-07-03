@@ -15,7 +15,7 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class FunctionUtility
 {
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static List<UIKeyValuePair> m_FunctionTypes = null;
 
     public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)
@@ -24,7 +24,7 @@ public static class FunctionUtility
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBFunctions.CopyFunctionSecurity(source, target, added_Updated_By);
         String mCacheName = target.ToString(CultureInfo.InvariantCulture) + "_Functions";        
-        m_CacheController.RemoveFromCache(mCacheName);
+        m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
     /// <summary>
@@ -37,7 +37,7 @@ public static class FunctionUtility
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBFunctions.Delete(functionSeqId);
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";        
-        m_CacheController.RemoveFromCache(mCacheName);
+        m_CacheHelper.RemoveFromCache(mCacheName);
     }
 
     /// <summary>
@@ -49,12 +49,12 @@ public static class FunctionUtility
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-        Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
+        Collection<MFunctionProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MFunctionProfile>>(mCacheName);
         if (mRetVal == null)
         {
             BFunctions mBFunctions = new BFunctions(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBFunctions.GetFunctions(mSecurityEntityProfile.Id);
-            m_CacheController.AddToCache(mCacheName, mRetVal);
+            m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -176,7 +176,7 @@ public static class FunctionUtility
         BFunctions mBFunctions = new BFunctions(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         int mRetVal = mBFunctions.Save(profile, saveGroups, saveRoles);
         String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-        m_CacheController.RemoveAll();
+        m_CacheHelper.RemoveAll();
         // Remove in memory information for the account saving in order to update their menu's
         AccountUtility.RemoveInMemoryInformation(AccountUtility.CurrentProfile.Account);
         return mRetVal;

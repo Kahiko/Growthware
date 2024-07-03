@@ -159,7 +159,7 @@ public static class MessageUtility
     public static void RemoveCachedMessagesDV()
     {
         // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
-        // CacheController.RemoveFromCache(MessagesUnitCachedDVName(mySecurityEntity));
+        // CacheHelper.RemoveFromCache(MessagesUnitCachedDVName(mySecurityEntity));
     }
 
     /// <summary>
@@ -168,7 +168,7 @@ public static class MessageUtility
     public static void RemoveCachedMessagesCollection()
     {
         // int mySecurityEntity = ClientChoicesUtility.SelectedSecurityEntity();
-        // CacheController.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity));
+        // CacheHelper.RemoveFromCache(MessagesUnitCachedCollectionName(mySecurityEntity));
         RemoveCachedMessagesDV();
     }
 

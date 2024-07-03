@@ -12,7 +12,7 @@ using GrowthWare.Web.Support.Helpers;
 namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
 {
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
     /// Saves the groups and roles for the given MGroupProfile and MGroupRoles to the database.
@@ -158,12 +158,12 @@ public static class GroupUtility
     private static DataTable getAllGroupsBySecurityEntity(int securityEntityId)
     {
         String mCacheName = securityEntityId.ToString() + "_Groups";
-        DataTable mRetVal = m_CacheController.GetFromCache<DataTable>(mCacheName);
+        DataTable mRetVal = m_CacheHelper.GetFromCache<DataTable>(mCacheName);
         if(mRetVal == null)
         {
             BGroups mBGroups = new BGroups(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBGroups.GetGroupsBySecurityEntity(securityEntityId);
-            m_CacheController.AddToCache(mCacheName, mRetVal);
+            m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
     }

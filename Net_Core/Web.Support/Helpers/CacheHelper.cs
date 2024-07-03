@@ -21,7 +21,7 @@ namespace GrowthWare.Web.Support.Helpers;
 [CLSCompliant(false)]
 public class CacheHelper
 {
-    private static CacheHelper m_CacheController;
+    private static CacheHelper m_CacheHelper;
     private string s_CacheDirectory = string.Empty;
     private static readonly Mutex m_Mutex = new Mutex();
     private IMemoryCache m_MemoryCache;
@@ -36,7 +36,7 @@ public class CacheHelper
     }
 
     /// <summary>
-    /// Returns the instance of the CacheController class.
+    /// Returns the instance of the CacheHelper class.
     /// </summary>
     /// <returns></returns>
     public static CacheHelper Instance()
@@ -44,9 +44,9 @@ public class CacheHelper
         try
         {
             m_Mutex.WaitOne();
-            if (m_CacheController == null)
+            if (m_CacheHelper == null)
             {
-                m_CacheController = new CacheHelper();
+                m_CacheHelper = new CacheHelper();
             }
         }
         catch
@@ -57,7 +57,7 @@ public class CacheHelper
         {
             m_Mutex.ReleaseMutex();
         }
-        return m_CacheController;
+        return m_CacheHelper;
     }
 
     /// <summary>
@@ -67,11 +67,11 @@ public class CacheHelper
     /// <param name="value"></param>
     /// <code language="c#">
     ///     String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_Functions";
-    ///     Collection<MFunctionProfile> mRetVal = m_CacheController.GetFromCache<Collection<YourObjectType>>(mCacheName);;
+    ///     Collection<MFunctionProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<YourObjectType>>(mCacheName);;
     ///     if (mRetVal == null)
     ///     {
     ///         mRetVal = <get your data from the database>;
-    ///         m_CacheController.AddToCache(mCacheName, mRetVal);
+    ///         m_CacheHelper.AddToCache(mCacheName, mRetVal);
     ///     }
     ///     return mRetVal;
     /// </code>

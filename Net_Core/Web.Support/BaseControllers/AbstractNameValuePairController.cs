@@ -15,7 +15,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractNameValuePairController : ControllerBase
 {
-    private CacheHelper m_CacheController = CacheHelper.Instance();
+    private CacheHelper m_CacheHelper = CacheHelper.Instance();
     private Logger m_Logger = Logger.Instance();
     private string s_ParrentCacheName = "NameValuePairs";
 
@@ -63,12 +63,12 @@ public abstract class AbstractNameValuePairController : ControllerBase
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public List<MNameValuePair> GetMNameValuePairs()
     {
-        List<MNameValuePair> mRetVal = this.m_CacheController.GetFromCache<List<MNameValuePair>>(this.s_ParrentCacheName);
+        List<MNameValuePair> mRetVal = this.m_CacheHelper.GetFromCache<List<MNameValuePair>>(this.s_ParrentCacheName);
         if (mRetVal == null)
         {
             // BNameValuePairs mBNameValuePairs = new BNameValuePairs(SecurityEntityUtility.CurrentProfile);
             mRetVal = NameValuePairUtility.GetNameValuePairs();
-            this.m_CacheController.AddToCache(this.s_ParrentCacheName, mRetVal);
+            this.m_CacheHelper.AddToCache(this.s_ParrentCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -135,7 +135,7 @@ public abstract class AbstractNameValuePairController : ControllerBase
             }
             HttpContext.Session.SetInt32("EditId", -1);
             MNameValuePair mRetVal = NameValuePairUtility.SaveNameValuePairParent(mNameValuePair);
-            this.m_CacheController.RemoveFromCache(this.s_ParrentCacheName);
+            this.m_CacheHelper.RemoveFromCache(this.s_ParrentCacheName);
             return Ok(mRetVal);
         }
         return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");

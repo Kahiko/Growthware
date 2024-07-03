@@ -12,7 +12,7 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class RoleUtility
 {
 
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
     /// Retrieves an array of strings representing the accounts in the specified role.
@@ -73,11 +73,11 @@ public static class RoleUtility
     static DataTable GetAllRolesBySecurityEntity(int securityEntityId)
     {
         BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        DataTable mRoles = m_CacheController.GetFromCache<DataTable>(securityEntityId.ToString() + "_Roles");
+        DataTable mRoles = m_CacheHelper.GetFromCache<DataTable>(securityEntityId.ToString() + "_Roles");
         if (mRoles == null)
         {
             mRoles = mBRoles.GetRolesBySecurityEntity(securityEntityId);
-            m_CacheController.AddToCache(securityEntityId.ToString() + "_Roles", mRoles);
+            m_CacheHelper.AddToCache(securityEntityId.ToString() + "_Roles", mRoles);
         }
         return mRoles;
     }
@@ -96,7 +96,7 @@ public static class RoleUtility
         mRoleToDelete.SecurityEntityID = securityEntitySeqId;
         BRoles mBRoles = new BRoles(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBRoles.DeleteRole(mRoleToDelete);
-        m_CacheController.RemoveFromCache(securityEntitySeqId.ToString() + "_Roles");
+        m_CacheHelper.RemoveFromCache(securityEntitySeqId.ToString() + "_Roles");
         return true;
     }
 
@@ -153,7 +153,7 @@ public static class RoleUtility
         }
         mRoleToSave.Id = mBRoles.Save(mRoleToSave);
         UpdateAllAccountsForRole(mRoleToSave.Id, mRoleToSave.SecurityEntityID, accountsInRole, mRoleToSave.UpdatedBy);
-        m_CacheController.RemoveFromCache(mRoleToSave.SecurityEntityID.ToString() + "_Roles");
+        m_CacheHelper.RemoveFromCache(mRoleToSave.SecurityEntityID.ToString() + "_Roles");
         return new UIRole(mRoleToSave);
     }
 

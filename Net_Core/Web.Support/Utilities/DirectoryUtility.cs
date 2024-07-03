@@ -12,7 +12,7 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class DirectoryUtility
 {
 
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
     /// The m_ directory info cached name
@@ -27,12 +27,12 @@ public static class DirectoryUtility
     {
         MSecurityEntity mSecurityEntityProfile = SecurityEntityUtility.CurrentProfile;
         String mCacheName = mSecurityEntityProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
-        Collection<MDirectoryProfile> mRetVal = m_CacheController.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
+        Collection<MDirectoryProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
         if(mRetVal == null)
         {
             BDirectories mBDirectories = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mRetVal = mBDirectories.Directories();
-            m_CacheController.AddToCache(mCacheName, mRetVal);
+            m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
     }
@@ -68,6 +68,6 @@ public static class DirectoryUtility
         BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBDirectories.Save(profile);
         String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
-        m_CacheController.RemoveFromCache(mCacheName);
+        m_CacheHelper.RemoveFromCache(mCacheName);
     }
 }

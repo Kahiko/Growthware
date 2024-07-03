@@ -10,17 +10,17 @@ using GrowthWare.Web.Support.Helpers;
 namespace GrowthWare.Web.Support.Utilities;
 public static class StateUtility
 {
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static string m_CacheName = "States";
 
     private static Collection<MState> States()
     {
-        Collection<MState> mRetVal = m_CacheController.GetFromCache<Collection<MState>>(m_CacheName);
+        Collection<MState> mRetVal = m_CacheHelper.GetFromCache<Collection<MState>>(m_CacheName);
         if(mRetVal == null)
         {
             BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
             mRetVal = mBStates.GetStates();
-            m_CacheController.AddToCache(m_CacheName, mRetVal);
+            m_CacheHelper.AddToCache(m_CacheName, mRetVal);
         }
         
         return mRetVal;
@@ -51,7 +51,7 @@ public static class StateUtility
     {
         BStates mBStates = new BStates(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         mBStates.Save(state);
-        m_CacheController.RemoveFromCache(m_CacheName);
+        m_CacheHelper.RemoveFromCache(m_CacheName);
     }
 
 }

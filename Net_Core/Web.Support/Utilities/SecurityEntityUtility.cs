@@ -14,7 +14,7 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class SecurityEntityUtility
 {
 
-    private static CacheHelper m_CacheController = CacheHelper.Instance();
+    private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static IHttpContextAccessor m_HttpContextAccessor = null;
     private static String s_CacheName = "Cached_SecurityEntities";
 
@@ -140,7 +140,7 @@ public static class SecurityEntityUtility
         CryptoUtility.TryEncrypt(profile.ConnectionString, out mEcryptedValue, profile.EncryptionType);
         profile.ConnectionString = mEcryptedValue;
 
-        m_CacheController.RemoveFromCache(s_CacheName);
+        m_CacheHelper.RemoveFromCache(s_CacheName);
         return mBSecurityEntities.Save(profile);
     }
 
@@ -153,7 +153,7 @@ public static class SecurityEntityUtility
 
     public static Collection<MSecurityEntity> Profiles()
     {
-        Collection<MSecurityEntity> mSecurityEntities = m_CacheController.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
+        Collection<MSecurityEntity> mSecurityEntities = m_CacheHelper.GetFromCache<Collection<MSecurityEntity>>(s_CacheName);
         if (mSecurityEntities == null)
         {
             mSecurityEntities = new Collection<MSecurityEntity>();
@@ -166,7 +166,7 @@ public static class SecurityEntityUtility
                 mSecurityEntity.ConnectionString = mDecryptedPassword;
                 mSecurityEntities.Add(mSecurityEntity);
             }
-            m_CacheController.AddToCache(s_CacheName, mSecurityEntities);
+            m_CacheHelper.AddToCache(s_CacheName, mSecurityEntities);
         }
         return mSecurityEntities;
     }
