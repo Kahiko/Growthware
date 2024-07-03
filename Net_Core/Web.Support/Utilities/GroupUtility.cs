@@ -7,11 +7,12 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Helpers;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class GroupUtility
 {
-    private static CacheController m_CacheController = CacheController.Instance();
+    private static CacheHelper m_CacheController = CacheHelper.Instance();
 
     /// <summary>
     /// Saves the groups and roles for the given MGroupProfile and MGroupRoles to the database.

@@ -7,6 +7,7 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Helpers;
 using System.Collections.Generic;
 using System.Data;
 
@@ -14,7 +15,7 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class FunctionUtility
 {
-    private static CacheController m_CacheController = CacheController.Instance();
+    private static CacheHelper m_CacheController = CacheHelper.Instance();
     private static List<UIKeyValuePair> m_FunctionTypes = null;
 
     public static void CopyFunctionSecurity(int source, int target, int added_Updated_By)

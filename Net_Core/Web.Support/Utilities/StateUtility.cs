@@ -5,11 +5,12 @@ using System.Linq;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
+using GrowthWare.Web.Support.Helpers;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class StateUtility
 {
-    private static CacheController m_CacheController = CacheController.Instance();
+    private static CacheHelper m_CacheController = CacheHelper.Instance();
     private static string m_CacheName = "States";
 
     private static Collection<MState> States()

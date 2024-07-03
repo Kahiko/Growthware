@@ -5,13 +5,14 @@ using GrowthWare.BusinessLogic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Helpers;
 
 namespace GrowthWare.Web.Support.Utilities;
 
 public static class RoleUtility
 {
 
-    private static CacheController m_CacheController = CacheController.Instance();
+    private static CacheHelper m_CacheController = CacheHelper.Instance();
 
     /// <summary>
     /// Retrieves an array of strings representing the accounts in the specified role.

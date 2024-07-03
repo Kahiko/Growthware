@@ -7,6 +7,7 @@ using GrowthWare.Framework;
 using GrowthWare.BusinessLogic;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Interfaces;
+using GrowthWare.Web.Support.Helpers;
 using System.IO;
 using System.Net.Mime;
 using System.Net.Mail;
@@ -147,7 +148,7 @@ public static class MessageUtility
         {
             BMessages mBMessages = new BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement);
             mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
-            CacheController.Instance().AddToCache(mCacheName, mMessageCollection);
+            CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
         return mMessageCollection;
     }

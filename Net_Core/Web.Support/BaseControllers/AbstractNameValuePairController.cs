@@ -6,6 +6,7 @@ using System.Linq;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
 
@@ -14,7 +15,7 @@ namespace GrowthWare.Web.Support.BaseControllers;
 [CLSCompliant(false)]
 public abstract class AbstractNameValuePairController : ControllerBase
 {
-    private CacheController m_CacheController = CacheController.Instance();
+    private CacheHelper m_CacheController = CacheHelper.Instance();
     private Logger m_Logger = Logger.Instance();
     private string s_ParrentCacheName = "NameValuePairs";
 

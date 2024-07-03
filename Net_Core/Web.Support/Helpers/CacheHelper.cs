@@ -6,7 +6,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace GrowthWare.Web.Support;
+namespace GrowthWare.Web.Support.Helpers;
 
 /// <summary>
 /// A Facade for Microsoft.Extensions.Caching.Memory and relys on some sort of directory/file management
@@ -19,9 +19,9 @@ namespace GrowthWare.Web.Support;
 /// the database and added to the cache using AddToCache(string cacheName)
 /// </summary>
 [CLSCompliant(false)]
-public class CacheController
+public class CacheHelper
 {
-    private static CacheController m_CacheController;
+    private static CacheHelper m_CacheController;
     private string s_CacheDirectory = string.Empty;
     private static readonly Mutex m_Mutex = new Mutex();
     private IMemoryCache m_MemoryCache;
@@ -29,7 +29,7 @@ public class CacheController
     /// <summary>
     /// Prevent any other instances of this class from being created
     /// </summary>
-    private CacheController()
+    private CacheHelper()
     {
         this.s_CacheDirectory = Path.Combine(System.Environment.CurrentDirectory, "CacheDependency");
         this.m_MemoryCache = new MemoryCache(new MemoryCacheOptions());
@@ -39,14 +39,14 @@ public class CacheController
     /// Returns the instance of the CacheController class.
     /// </summary>
     /// <returns></returns>
-    public static CacheController Instance()
+    public static CacheHelper Instance()
     {
         try
         {
             m_Mutex.WaitOne();
             if (m_CacheController == null)
             {
-                m_CacheController = new CacheController();
+                m_CacheController = new CacheHelper();
             }
         }
         catch

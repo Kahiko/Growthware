@@ -7,13 +7,14 @@ using GrowthWare.Framework;
 using GrowthWare.Framework.Enumerations;
 using GrowthWare.Framework.Models;
 using GrowthWare.Framework.Models.UI;
+using GrowthWare.Web.Support.Helpers;
 using GrowthWare.Web.Support.Jwt;
 
 namespace GrowthWare.Web.Support.Utilities;
 public static class AccountUtility
 {
     private static string s_CachedName = "CachedAnonymous";
-    private static CacheController m_CacheController = CacheController.Instance();
+    private static CacheHelper m_CacheController = CacheHelper.Instance();
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private static JwtUtility m_JwtUtils = new JwtUtility();
     private static string s_SessionName = "SessionAccount";
