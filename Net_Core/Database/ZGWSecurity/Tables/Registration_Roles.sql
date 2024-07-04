@@ -1,6 +1,8 @@
 CREATE TABLE [ZGWSecurity].[Registration_Roles](
     [SecurityEntitySeqId] [int] NOT NULL,
-    [RoleSourceSecuritySeqId] [int] NOT NULL,
+    [SecuritySeqId_With_Roles_Groups] [int] NOT NULL,
+    [Roles] [varchar](max) NULL,
+    [Groups] [varchar](max) NULL,
     CONSTRAINT [PK_Registration_Roles] PRIMARY KEY CLUSTERED ([SecurityEntitySeqId] ASC)
     WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY];
