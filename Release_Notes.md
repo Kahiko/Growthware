@@ -18,6 +18,7 @@
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
+- Fixed Roles and Groups being returned from search by adding to the were clause to account for the selected Security Entity
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

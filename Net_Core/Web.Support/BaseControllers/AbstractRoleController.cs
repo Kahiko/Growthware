@@ -118,7 +118,8 @@ public abstract class AbstractRoleController : ControllerBase
         {
             Tuple<string, string> mOrderByAndWhere = SearchUtility.GetOrderByAndWhere(mColumns, searchCriteria.searchColumns, searchCriteria.sortColumns, searchCriteria.searchText);
             string mOrderByClause = mOrderByAndWhere.Item1;
-            string mWhereClause = mOrderByAndWhere.Item2;
+            string mWhereClause = mOrderByAndWhere.Item2 + " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile.Id.ToString();
+            // mSearchCriteria.WhereClause += " AND Security_Entity_SeqID = " + SecurityEntityUtility.CurrentProfile().Id.ToString();
             MSearchCriteria mSearchCriteria = new MSearchCriteria
             {
                 Columns = mColumns,
