@@ -31,6 +31,7 @@
 - Changed DDatabaseManager to update the Security Entities connection string for each row
 - Changed DDatabaseManager to update the Acounts password string for each row
 - Added connection string examples to sql-server\Dockerfile
+- Added logging logic to AbstractDBInteraction.GetDataSet
 
 ### Bug Fixes
 - Fixed Version_0.0.0.0.sql causing error when creating the DB on a non windows machine

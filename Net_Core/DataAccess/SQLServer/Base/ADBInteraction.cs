@@ -1,4 +1,5 @@
 using GrowthWare.DataAccess.Interfaces.Base;
+using GrowthWare.Framework;
 using GrowthWare.Framework.Interfaces;
 using System;
 using System.Data;
@@ -15,6 +16,7 @@ namespace GrowthWare.DataAccess.SQLServer.Base
     {
         #region Private Fields
         private bool m_DisposedValue;
+        private Logger m_Logger = Logger.Instance();
         #endregion
 
         #region Public Properties
@@ -363,7 +365,24 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                     }
                     using SqlDataAdapter mSqlDataAdapter = new(mSqlCommand);
                     mRetVal = new DataSet();
-                    mSqlDataAdapter.Fill(mRetVal);
+                    try
+                    {
+                        mSqlDataAdapter.Fill(mRetVal);
+                    }
+                    catch (System.Exception ex)
+                    {
+                        // Log an Info message if the error message starts with "Invalid column name"
+                        if(ex.Message.IndexOf("Invalid column name", 0, StringComparison.OrdinalIgnoreCase) == 0)
+                        {
+                            m_Logger.Info(ex);
+                        }
+                        else
+                        {
+                            m_Logger.Error(ex);
+                        }
+                        // Throw the exception
+                        throw;
+                    }
                 }
             }
             return mRetVal;
