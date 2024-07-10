@@ -1,6 +1,5 @@
 CREATE TABLE [ZGWSecurity].[Registration_Information](
     [SecurityEntitySeqId] [int] NOT NULL,
-    [SecuritySeqId_With_Roles_Groups] [int] NOT NULL,
     [AccountChoices] [varchar](128) NULL,
     [AddAccount] [varchar](128) NULL,
     [Groups] [varchar](max) NULL,

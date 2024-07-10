@@ -9,7 +9,6 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecur
 BEGIN
 	CREATE TABLE [ZGWSecurity].[Registration_Information](
 		[SecurityEntitySeqId] [int] NOT NULL,
-		[SecuritySeqId_With_Roles_Groups] [int] NOT NULL,
 		[AccountChoices] [varchar](128) NULL,
 		[AddAccount] [varchar](128) NULL,
 		[Groups] [varchar](max) NULL,
@@ -30,9 +29,6 @@ IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJEC
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SecurityEntitySeqId' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
 	EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'1 to 1 FK to Security_Entities and the SecuritySeqId the information is associated with' , @level0type=N'SCHEMA',@level0name=N'ZGWSecurity', @level1type=N'TABLE',@level1name=N'Registration_Information', @level2type=N'COLUMN',@level2name=N'SecurityEntitySeqId';
-GO
-IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SecuritySeqId_With_Roles_Groups' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
-	EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'The primary key of the table' , @level0type=N'SCHEMA',@level0name=N'ZGWSecurity', @level1type=N'TABLE',@level1name=N'Registration_Information', @level2type=N'COLUMN',@level2name=N'SecuritySeqId_With_Roles_Groups';
 GO
 IF NOT EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Roles' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
 	EXECUTE sp_addextendedproperty @name=N'MS_Description', @value=N'Comma separated list of roles' , @level0type=N'SCHEMA',@level0name=N'ZGWSecurity', @level1type=N'TABLE',@level1name=N'Registration_Information', @level2type=N'COLUMN',@level2name=N'Roles';

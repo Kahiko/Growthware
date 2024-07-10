@@ -13,9 +13,6 @@ GO
 IF EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SecurityEntitySeqId' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
 	EXECUTE sys.sp_dropextendedproperty @name = N'MS_DESCRIPTION' ,@level0type = N'SCHEMA' ,@level0name = N'ZGWSecurity' ,@level1type = N'TABLE' ,@level1name = N'Registration_Information' ,@level2type = N'COLUMN' ,@level2name = N'SecurityEntitySeqId';
 GO
-IF EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'SecuritySeqId_With_Roles_Groups' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
-	EXECUTE sys.sp_dropextendedproperty @name = N'MS_DESCRIPTION' ,@level0type = N'SCHEMA' ,@level0name = N'ZGWSecurity' ,@level1type = N'TABLE' ,@level1name = N'Registration_Information' ,@level2type = N'COLUMN' ,@level2name = N'SecuritySeqId_With_Roles_Groups';
-GO
 IF EXISTS (SELECT NULL FROM SYS.EXTENDED_PROPERTIES WHERE [major_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]') AND [name] = N'MS_Description' AND [minor_id] = (SELECT [column_id] FROM SYS.COLUMNS WHERE [name] = 'Roles' AND [object_id] = OBJECT_ID('[ZGWSecurity].[Registration_Information]')))
 	EXECUTE sys.sp_dropextendedproperty @name = N'MS_DESCRIPTION' ,@level0type = N'SCHEMA' ,@level0name = N'ZGWSecurity' ,@level1type = N'TABLE' ,@level1name = N'Registration_Information' ,@level2type = N'COLUMN' ,@level2name = N'Roles';
 GO
