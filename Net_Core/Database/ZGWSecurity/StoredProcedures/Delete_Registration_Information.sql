@@ -1,4 +1,3 @@
-
 /*
 Usage:
 	DECLARE 
@@ -20,7 +19,6 @@ CREATE PROCEDURE [ZGWSecurity].[Delete_Registration_Information]
 
 	@P_Debug INT = 0
 AS
-	DECLARE @V_Now DATETIME = GETDATE()
 	SET NOCOUNT ON
 	IF @P_Debug = 1 PRINT 'Starting [ZGWSecurity].[Delete_Registration_Information]'
     DECLARE @V_Now DATETIME = GETDATE();
