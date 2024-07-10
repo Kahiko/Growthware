@@ -17,6 +17,13 @@ IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(
 	END
 --End If
 /****** End: Procedure [ZGWSecurity].[Delete_Registration_Information] ******/
+/****** Start: Procedure [ZGWSecurity].[Get_Registration_Information] ******/
+IF EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'ZGWSecurity.Get_Registration_Information') AND type IN ( N'P' ,N'PC'))
+	BEGIN
+		DROP PROCEDURE [ZGWSecurity].[Get_Registration_Information];
+	END
+--End If
+/****** End: Procedure [ZGWSecurity].[Get_Registration_Information] ******/
 -- Drop the table
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Registration_Information]') AND type in (N'U'))
 	DROP TABLE [ZGWSecurity].[Registration_Information];

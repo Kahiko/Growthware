@@ -192,7 +192,6 @@ Usage:
 -- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Delete_Registration_Information]
 	@P_SecurityEntitySeqId int,
-
 	@P_Debug INT = 0
 AS
 	SET NOCOUNT ON
@@ -207,6 +206,76 @@ RETURN 0
 
 GO
 /****** End: Procedure [ZGWSecurity].[Delete_Registration_Information] ******/
+/****** Start: Procedure [ZGWSecurity].[Get_Registration_Information] ******/
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE type = 'P' AND object_id = OBJECT_ID(N'ZGWSecurity.Get_Registration_Information') AND type IN ( N'P' ,N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Registration_Information] AS'
+	END
+--End If
+GO
+/*
+Usage:
+	DECLARE @P_SecurityEntitySeqId int = -1
+	EXECUTE [ZGWSecurity].[Get_Registration_Information] @P_SecurityEntitySeqId
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 07/10/2024
+-- Description:	Returns registration information
+-- Note:
+--	SecurityEntitySeqId of -1 returns all registration information.
+-- =============================================
+ALTER PROCEDURE [ZGWSecurity].[Get_Registration_Information]
+    @P_SecurityEntitySeqId int = -1
+AS
+	SET NOCOUNT ON;
+    IF @P_SecurityEntitySeqId = -1
+        BEGIN
+            SELECT
+                RI.[SecurityEntitySeqId],
+                RI.[SecurityEntitySeqId_Owner],
+                RI.[AccountChoices],
+                RI.[AddAccount],
+                RI.[Groups],
+                RI.[Roles],
+                RI.[Added_By],
+                RI.[Added_Date],
+                RI.[Updated_By],
+                RI.[UPDATED_DATE]
+            FROM
+                [ZGWSecurity].[Registration_Information] AS RI
+            ORDER BY
+                RI.[SecurityEntitySeqId]
+        END
+    ELSE
+        BEGIN
+            SELECT
+                RI.[SecurityEntitySeqId],
+                RI.[SecurityEntitySeqId_Owner],
+                RI.[AccountChoices],
+                RI.[AddAccount],
+                RI.[Groups],
+                RI.[Roles],
+                RI.[Added_By],
+                RI.[Added_Date],
+                RI.[Updated_By],
+                RI.[UPDATED_DATE]
+            FROM
+                [ZGWSecurity].[Registration_Information] AS RI
+            WHERE
+                RI.[SecurityEntitySeqId] = @P_SecurityEntitySeqId
+            ORDER BY
+                RI.[SecurityEntitySeqId]
+        END
+    --END IF
+
+    SET NOCOUNT OFF;
+
+RETURN 0
+
+GO
+/****** Start: Procedure [ZGWSecurity].[Get_Registration_Information] ******/
+
 -- Update the version
 UPDATE [ZGWSystem].[Database_Information]
 SET [Version] = '4.1.0.0'
