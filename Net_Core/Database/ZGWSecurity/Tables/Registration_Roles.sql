@@ -1,9 +1,14 @@
 CREATE TABLE [ZGWSecurity].[Registration_Information](
     [SecurityEntitySeqId] [int] NOT NULL,
+    [SecurityEntitySeqId_Owner] [int] NOT NULL,
     [AccountChoices] [varchar](128) NULL,
     [AddAccount] [varchar](128) NULL,
     [Groups] [varchar](max) NULL,
     [Roles] [varchar](max) NULL,
+    [Added_By] INT NOT NULL,
+    [Added_Date] DATETIME DEFAULT (getdate()) NOT NULL,
+    [Updated_By] INT NULL,
+    [UPDATED_DATE] DATETIME NULL,
     CONSTRAINT [PK_Registration_Information] PRIMARY KEY CLUSTERED ([SecurityEntitySeqId] ASC)
     WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY];
