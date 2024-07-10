@@ -1,4 +1,3 @@
-
 /*
 Usage:
 	DECLARE 
@@ -33,12 +32,11 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Registration_Information]
     @P_AddAccount [varchar](128) NULL,
     @P_Groups [varchar](max) NULL,
     @P_Roles [varchar](max) NULL,
-    @P_AddedBy_Updated
+    @P_Added_Updated_By [int],
 	@P_Debug INT = 0
 AS
-	DECLARE @V_Now DATETIME = GETDATE()
-	SET NOCOUNT ON
-	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Registration_Information'
+	SET NOCOUNT ON;
+	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Registration_Information';
     DECLARE @V_Now DATETIME = GETDATE();
     IF NOT EXISTS (SELECT NULL FROM [ZGWSecurity].[Registration_Information] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
     BEGIN
@@ -53,7 +51,7 @@ AS
                 [AddAccount] = @P_AddAccount,
                 [Groups] = @P_Groups,
                 [Roles] = @P_Roles,
-                [Updated_By] = P_Added_Updated_By,
+                [Updated_By] = @P_Added_Updated_By,
                 [Updated_Date] = @V_Now
             WHERE [SecurityEntitySeqId] = @P_SecurityEntitySeqId;
         END
@@ -67,7 +65,7 @@ AS
                 [Groups],
                 [Roles],
                 [Added_By],
-                [Added_Date],
+                [Added_Date]
             ) VALUES (
                 @P_SecurityEntitySeqId,
                 @P_SecurityEntitySeqId_Owner,
@@ -75,9 +73,9 @@ AS
                 @P_AddAccount,
                 @P_Groups,
                 @P_Roles,
-                @P_AddedBy_Updated,
-                @V_Now,
-            )
+                @P_Added_Updated_By,
+                @V_Now
+            );
         END
     --END IF
     IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Registration_Information'
