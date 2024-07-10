@@ -120,9 +120,9 @@ AS
 	SET NOCOUNT ON;
 	IF @P_Debug = 1 PRINT 'Starting ZGWSecurity.Set_Registration_Information';
     DECLARE @V_Now DATETIME = GETDATE();
-    IF NOT EXISTS (SELECT NULL FROM [ZGWSecurity].[Registration_Information] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
+    IF NOT EXISTS (SELECT NULL FROM [ZGWSecurity].[Security_Entities] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
     BEGIN
-        RAISERROR ('SecurityEntitySeqId does not exist', 16, 1);
+        RAISERROR ('SecurityEntitySeqId does not exist in table [ZGWSecurity].[Security_Entities]', 16, 1);
         RETURN 1
     END
     IF EXISTS (SELECT NULL FROM [ZGWSecurity].[Registration_Information] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
