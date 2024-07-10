@@ -17,3 +17,15 @@ ALTER TABLE [ZGWSecurity].[Registration_Information] WITH CHECK ADD CONSTRAINT [
     REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
     ON UPDATE CASCADE
     ON DELETE CASCADE;
+
+ALTER TABLE [ZGWSecurity].[Registration_Information] WITH CHECK ADD CONSTRAINT [FK_Registration_Information_Security_Entities_Owner] FOREIGN KEY([SecurityEntitySeqId_Owner])
+    REFERENCES [ZGWSecurity].[Security_Entities] ([SecurityEntitySeqId])
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
+
+ALTER TABLE [ZGWSecurity].[Registration_Information] WITH CHECK ADD CONSTRAINT [FK_Registration_Information_Accounts] FOREIGN KEY ([AddAccount]) 
+    REFERENCES [ZGWSecurity].[Accounts] ([AccountSeqId])
+    ON UPDATE NO ACTION
+    ON DELETE NO ACTION;
+
