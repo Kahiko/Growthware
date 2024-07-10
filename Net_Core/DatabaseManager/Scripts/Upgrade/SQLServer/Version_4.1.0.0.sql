@@ -127,6 +127,7 @@ AS
     END
     IF EXISTS (SELECT NULL FROM [ZGWSecurity].[Registration_Information] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
         BEGIN
+			IF @P_Debug = 1 PRINT 'Updating Record';
             UPDATE [ZGWSecurity].[Registration_Information] SET 
                 [SecurityEntitySeqId_Owner] = @P_SecurityEntitySeqId_Owner,
                 [AccountChoices] = @P_AccountChoices,
@@ -139,6 +140,7 @@ AS
         END
     ELSE
         BEGIN
+			IF @P_Debug = 1 PRINT 'Inserting Record';
             INSERT INTO [ZGWSecurity].[Registration_Information] (
                 [SecurityEntitySeqId],
                 [SecurityEntitySeqId_Owner],
