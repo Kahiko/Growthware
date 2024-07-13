@@ -128,7 +128,7 @@ Library (common):
 		ng generate interceptor --path=projects/gw-lib/common/interceptors/src JWT --project gw-lib
 		
 
-Library: (core) From Web.Angular\Angular
+Library: (core) From Web.Angular
 	Base:
 		ng generate component c/baseSearch 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
 		ng generate component c/baseDetail 	--path=projects/gw-lib/core/base/components/src --inline-template --inline-style --skip-import --project gw-lib
@@ -250,9 +250,10 @@ Library: (core) From Web.Angular\Angular
 		ng generate component 	--path=projects/gw-lib/core/security-entities/src c/SearchSecurityEntities 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/security-entities/src c/SecurityEntityDetails 	--standalone --style scss --project gw-lib
 		ng generate component 	--path=projects/gw-lib/core/security-entities/src c/SelectSecurityEntity 	--standalone --style scss --project gw-lib
-		ng generate interface 	--path=projects/gw-lib/core/security-entities/src SecurityEntityProfile 	--type model --project gw-lib
-		ng generate interface 	--path=projects/gw-lib/core/security-entities/src ValidSecurityEntities 	--type model --project gw-lib
-		ng generate interface   --path=projects/gw-lib/core/security-entities/src selectedRow               --type model --project gw-lib
+		ng generate interface 	--path=projects/gw-lib/core/security-entities/src --type model --project gw-lib SecurityEntityProfile
+		ng generate interface 	--path=projects/gw-lib/core/security-entities/src --type model --project gw-lib ValidSecurityEntities
+		ng generate interface   --path=projects/gw-lib/core/security-entities/src --type model --project gw-lib selectedRow
+		ng generate interface   --path=projects/gw-lib/core/security-entities/src --type model --project gw-lib registrationInformation
 		ng generate service 	--path=projects/gw-lib/core/security-entities/src SecurityEntity 			--project gw-lib
 	Functions:
 		ng generate interface 	--path=projects/gw-lib/core/function/src functionProfile 			--type model --project gw-lib
