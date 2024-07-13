@@ -149,7 +149,7 @@ namespace GrowthWare.Framework
                     for (mCounter = 0; mCounter <= mAFiles.GetUpperBound(0); mCounter++)
                     {
                         // Get the position of the trailing separator.
-                        mPosSep = mAFiles[mCounter].LastIndexOf("\\", StringComparison.OrdinalIgnoreCase);
+                        mPosSep = mAFiles[mCounter].LastIndexOf(Path.DirectorySeparatorChar.ToString(), StringComparison.OrdinalIgnoreCase);
                         mFile = mAFiles[mCounter].Substring((mPosSep + 1), mAFiles[mCounter].Length - (mPosSep + 1));
                         mFile = m_LogFilePath + mFile;
                         if (File.GetCreationTime(mFile) < mRetentionDate)
