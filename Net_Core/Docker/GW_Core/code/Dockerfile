@@ -2,8 +2,8 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 
 # Install SQL Tools: SQLPackage and sqlcmd
 COPY mssql/installSQLtools.sh installSQLtools.sh
-RUN bash ./installSQLtools.sh \
-&& apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+# RUN bash ./installSQLtools.sh \
+# && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 # Install GIT
 RUN apt-get update \
