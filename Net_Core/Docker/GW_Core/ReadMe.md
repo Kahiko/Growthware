@@ -18,7 +18,7 @@ start.cmd - Will start the net_core container using cache
 
 After you have built the container the first time you will need to run the command "ng completion" from the Web.Angular folder.
     1.) Start VS Code (code .)
-    2.) Press F1 and select "Dev Container: Attach to Running Container..."
+    2.) Press F1 and select "Dev Containers: Attach to Running Container..."
     3.) Select "/growthware-code"
     4.) Open a folder "/growthware/Net_Core/"
     5.) Open a terminal
