@@ -1,5 +1,6 @@
 # How To Remove Docker Images, Containers, and Volumes		
 # 	https://www.digitalocean.com/community/tutorials/how-to-remove-docker-images-containers-and-volumes
+#   https://depot.dev/blog/docker-clear-cache
 # Build the containers from docker-compose.yml
 #   docker-compose up --build -d
 #   docker-compose build --no-cache
