@@ -432,27 +432,6 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
-        /// Gets or sets a value indicating the account to use for the client choices.
-        /// </summary>
-        /// <value>string value from config file</value>
-        /// <returns>string</returns>
-        public static string RegistrationAccountChoicesAccount
-        {
-            get { return GetAppSettingValue("RegistrationAccountChoicesAccount", true); }
-        }
-
-        /// <summary>
-        /// Returns RegistrationGroups from the CONFIG file
-        /// </summary>
-        /// <value>String</value>
-        /// <returns>String</returns>
-        /// <remarks></remarks>
-        public static string RegistrationGroups
-        {
-            get { return GetAppSettingValue("RegistrationGroups", true); }
-        }
-
-        /// <summary>
         /// Return RegistrationPassword from the COFNIG file
         /// </summary>
         /// <value>String</value>
@@ -463,32 +442,6 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("RegistrationPassword", true); }
         }
 
-        /// <summary>
-        /// Gets the registration create roles.
-        /// </summary>
-        /// <value>The registration roles.</value>
-        public static string RegistrationRoles
-        {
-            get { return GetAppSettingValue("RegistrationRoles", true); }
-        }
-
-        /// <summary>
-        /// Gets the RegistrationStatusIds account.
-        /// </summary>
-        /// <value>The RegistrationStatusIds.</value>
-        public static string RegistrationStatusId 
-        {
-            get { return GetAppSettingValue("RegistrationStatusId", true); }
-        }
-
-        /// <summary>
-        /// Gets the RegistrationSecurityEntityID.
-        /// </summary>
-        /// <value>The RegistrationSecurityEntityID.</value>
-        public static int RegistrationSecurityEntityID
-        {
-            get { return int.Parse(GetAppSettingValue("RegistrationSecurityEntityID", true), CultureInfo.InvariantCulture); }
-        }
         /// <summary>
         /// Retrun AppDisplayedName and Remember_Me from the CONFIG file
         /// </summary>
