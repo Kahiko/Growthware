@@ -20,6 +20,7 @@ public class MRegistrationInformation : AbstractBaseModel
 #endregion
 
 #region "Protected Methods"
+
     /// <summary>
     /// Initializes with the specified DataRow.
     /// </summary>
@@ -39,6 +40,21 @@ public class MRegistrationInformation : AbstractBaseModel
     {
         base.NameColumnName = string.Empty;
         base.IdColumnName = "SecurityEntitySeqId";
+    }
+#endregion
+
+#region "Public Methods"
+    /// <summary>
+    /// Will populate values based on the contents of the data row.
+    /// </summary>
+    /// <param name="dataRow">Datarow containing base values</param>
+    /// <remarks>
+    /// Class should be inherited to extend to your project specific properties
+    /// </remarks>
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+    public MRegistrationInformation(DataRow dataRow)
+    {
+        Initialize(dataRow);
     }
 #endregion
 

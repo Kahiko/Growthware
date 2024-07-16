@@ -56,6 +56,18 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         }
         return Ok(mRetVal);
     }
+    
+    [HttpGet("GetRegistrationInformation")]
+    public ActionResult<MRegistrationInformation> GetRegistrationInformation(int securityEntitySeqId)
+    {
+        MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
+        if (mSecurityInfo.MayView)
+        {
+            return Ok(SecurityEntityUtility.GetRegistrationInformation(securityEntitySeqId));
+        }
+        return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+    }
+
 
     private MSecurityInfo getSecurityInfo(string action)
     {

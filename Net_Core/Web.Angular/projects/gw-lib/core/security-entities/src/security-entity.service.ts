@@ -9,8 +9,9 @@ import { LoggingService } from '@growthware/core/logging';
 import { SearchService } from '@growthware/core/search';
 import { SelectedRow } from './selected-row.model';
 // Feature
-import { IValidSecurityEntities } from './valid-security-entities.model';
+import { IRegistrationInformation } from './registration-information.model';
 import { ISecurityEntityProfile } from './security-entity-profile.model';
+import { IValidSecurityEntities } from './valid-security-entities.model';
 
 @Injectable({
 	providedIn: 'root'
@@ -18,6 +19,7 @@ import { ISecurityEntityProfile } from './security-entity-profile.model';
 export class SecurityEntityService extends BaseService {
 
 	private _ApiName: string = 'GrowthwareSecurityEntity/';
+	private _Api_GetRegistrationInformation: string = '';
 	private _Api_GetSecurityEntity: string = '';
 	private _Api_GetValidParents: string = '';
 	private _Api_GetValidSecurityEntities: string = '';
@@ -39,6 +41,7 @@ export class SecurityEntityService extends BaseService {
 		this._Api_GetValidSecurityEntities = this._GWCommon.baseURL + this._ApiName + 'GetValidSecurityEntities';
 		this._Api_GetValidParents = this._GWCommon.baseURL + this._ApiName + 'GetValidParents';
 		this._Api_GetSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'GetProfile';
+		this._Api_GetRegistrationInformation = this._GWCommon.baseURL + this._ApiName + 'GetRegistrationInformation';
 		this._Api_SaveSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'SaveProfile';
 	}
 
@@ -59,6 +62,29 @@ export class SecurityEntityService extends BaseService {
 				},
 				error: (error) => {
 					this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getSecurityEntity');
+					reject('Failed to call the API');
+				},
+				// complete: () => {}
+			});
+		});
+	}
+
+	public async getRegistrationInformation(id: number): Promise<IRegistrationInformation[]> {
+		const mQueryParameter: HttpParams = new HttpParams()
+			.set('securityEntitySeqId', id);
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			params: mQueryParameter,
+		};
+		return new Promise<IRegistrationInformation[]>((resolve, reject) => {
+			this._HttpClient.get<IRegistrationInformation[]>(this._Api_GetRegistrationInformation, mHttpOptions).subscribe({
+				next: (response: IRegistrationInformation[]) => {
+					resolve(response);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'SecurityEntityService', 'getValidParents');
 					reject('Failed to call the API');
 				},
 				// complete: () => {}

@@ -13,6 +13,16 @@ namespace GrowthWare.DataAccess.SQLServer
     /// </summary>
     public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     {
+        DataTable ISecurityEntities.GetRegistrationInformation()
+        {
+            string mStoredProcedure = "ZGWSecurity.Get_Registration_Information";
+            SqlParameter[] mParameters =
+			{
+			  new SqlParameter("@P_SecurityEntitySeqId", -1)
+			};
+            return base.GetDataTable(mStoredProcedure, mParameters);
+        }
+
         DataTable ISecurityEntities.GetSecurityEntities()
         {
             string mStoredProcedure = "ZGWSecurity.Get_Security_Entity";

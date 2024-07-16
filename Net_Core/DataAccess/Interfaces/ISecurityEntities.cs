@@ -13,6 +13,8 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <remarks></remarks>
         DataTable GetSecurityEntities();
 
+        DataTable GetRegistrationInformation();
+
         /// <summary>
         /// Retrieves security entities for a given account.
         /// </summary>

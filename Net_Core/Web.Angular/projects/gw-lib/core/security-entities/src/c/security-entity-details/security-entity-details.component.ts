@@ -7,10 +7,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatTooltipModule } from '@angular/material/tooltip';
 // Library
 import { BaseDetailComponent, IBaseDetailComponent } from '@growthware/core/base/components';
 import { ConfigurationService } from '@growthware/core/configuration';
 import { DataService } from '@growthware/common/services';
+import { GWCommon } from '@growthware/common/services';
 import { LogLevel, LoggingService } from '@growthware/core/logging';
 import { ModalService } from '@growthware/core/modal';
 import { IKeyValuePair, INameValuePair } from '@growthware/common/interfaces';
@@ -18,6 +20,9 @@ import { SecurityService } from '@growthware/core/security';
 // Feature
 import { SecurityEntityService } from '../../security-entity.service';
 import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-entity-profile.model';
+import { IRegistrationInformation, registrationInformation } from '../../registration-information.model';
+import { IValidSecurityEntities } from '../../valid-security-entities.model';
+import { RolesModule } from '../../../../../../gw-frontend/src/app/features/roles/roles.module';
 
 @Component({
 	selector: 'gw-core-security-entity-details',
@@ -29,7 +34,8 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
 		MatIconModule,
 		MatInputModule,
 		MatSelectModule,
-		MatTabsModule
+		MatTabsModule,
+		MatTooltipModule
 	],
 	templateUrl: './security-entity-details.component.html',
 	styleUrls: ['./security-entity-details.component.scss']
@@ -37,6 +43,7 @@ import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-en
 export class SecurityEntityDetailsComponent extends BaseDetailComponent implements IBaseDetailComponent, OnInit {
 
 	private _Profile: ISecurityEntityProfile = new SecurityEntityProfile();
+	private _RegistrationInformation: IRegistrationInformation = new registrationInformation();
 
 	canEnterName: boolean = false;
 	securityEntityTranslation: string = 'Security Entity';
@@ -44,6 +51,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 
 	selectedDal: string = '';
 	selectedEncryptionType: number = -1;
+	selectedSecurityEntity: number = 1;
 	selectedSkin:string = '';
 	selectedParent: number = -1;
 	selectedStatusSeqId: number = 0;
@@ -73,19 +81,22 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 
 	validParents: IKeyValuePair[] = [];
 
+	validSecurityEntities: IValidSecurityEntities[] = [];
+
 	validStatuses: IKeyValuePair[] = [
 		{key: 1, value: 'Active'},
 		{key: 2, value: 'Inactive'}
 	];
 
 	constructor(
-    private _FormBuilder: FormBuilder,
-    private _ConfigurationSvc: ConfigurationService,
-    dataSvc: DataService,
-    loggingSvc: LoggingService,
-    modalSvc: ModalService,
-    profileSvc: SecurityEntityService,
-    securitySvc: SecurityService
+		private _FormBuilder: FormBuilder,
+		private _ConfigurationSvc: ConfigurationService,
+		dataSvc: DataService,
+		private _GWCommon: GWCommon,
+		loggingSvc: LoggingService,
+		modalSvc: ModalService,
+		profileSvc: SecurityEntityService,
+		securitySvc: SecurityService
 	) {
 		super();
 		this._DataSvc = dataSvc;
@@ -114,21 +125,35 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		this._SecuritySvc.getSecurityInfo('search_security_entities').then((securityInfo) => {  // #1 Request/Handler getSecurityInfo
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.securityInfo', securityInfo);
 			this._SecurityInfo = securityInfo;
-			return this._ProfileSvc.getValidParents(mEditId);                                     // #2 Request getValidParents
-		}).catch((error) => {                                                              // #1 Error Handler getSecurityInfo
+			return this._ProfileSvc.getValidParents(mEditId);                                   // #2 Request getValidParents
+		}).catch((error) => {                                                              		// #1 Error Handler getSecurityInfo
 			this._LoggingSvc.toast('Error getting security info:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
 		}).then((parrents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.parrents', parrents);
 			this.validParents = parrents;
-			return this._ProfileSvc.getSecurityEntity(mEditId);                                   // #3 Request getSecurityEntity
-		}).catch((error) => {                                                              // #2 Error Handler
+			return this._ProfileSvc.getSecurityEntity(mEditId);                                 // #3 Request getSecurityEntity
+		}).catch((error) => {                                                              		// #2 Error Handler
 			this._LoggingSvc.toast('Error getting Security Entity:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
 		}).then((profile: ISecurityEntityProfile) => {                                          // #3 Request getProfile Handler
 			// console.log('SecurityEntityDetailsComponent.ngOnInit.profile', profile);
 			this._Profile = profile;
+			return this._ProfileSvc.getValidSecurityEntities();                      			// #4 Request getValidSecurityEntities
+		}).catch((error) => {                                                              		// #3 Error Handler
+			this._LoggingSvc.toast('Error getting valid Security Entities:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+		}).then((response: IValidSecurityEntities[]) => {										// #4 Request getValidSecurityEntities Handler
+			this.validSecurityEntities = response;
+			return this._ProfileSvc.getRegistrationInformation(mEditId);                      	// #5 Request GetRegistrationInformation
+		}).catch((error) => {																	// #4 Error Handler
+			this._LoggingSvc.errorHandler(error, 'SecurityEntityDetailsComponent', 'ngOnInit');
+		}).then((response: IRegistrationInformation) => {										// #5 Request GetRegistrationInformation Handler
+			if(!this._GWCommon.isNullOrUndefined(response)) {
+				this._RegistrationInformation = response;
+			}
+			this._RegistrationInformation.id = this._Profile.id;
 			this.populateForm();
-		}).catch((error) => {                                                              // #3 Error Handler
-			this._LoggingSvc.toast('Error getting Security Entity:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
+			console.log('SecurityEntityDetailsComponent.ngOnInit this._RegistrationInformation', this._RegistrationInformation);
+		}).catch((error) => {																	// #5 Error Handler
+			this._LoggingSvc.errorHandler(error, 'SecurityEntityDetailsComponent', 'ngOnInit');
 		});
 		this.createForm();
 	}
@@ -142,12 +167,18 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			ConnectionStringValidation.splice(0, 1);
 		}
 		this.frmProfile = this._FormBuilder.group({
+			// SecurityEntity or Details
 			name: [this._Profile.name, [Validators.required]],
 			description: [this._Profile.description, [Validators.required]],
 			url: [this._Profile.url],
 			dataAccessLayerAssemblyName: [this._Profile.dataAccessLayerAssemblyName, [Validators.required]],
 			dataAccessLayerNamespace: [this._Profile.dataAccessLayerNamespace, [Validators.required]],
 			connectionString: [this._Profile.connectionString, ConnectionStringValidation],
+			// RegistrationInformation:
+			accountChoices: [this._RegistrationInformation.accountChoices],
+			addAccount: [this._RegistrationInformation.addAccount],
+			groups: [this._RegistrationInformation.groups],
+			roles: [this._RegistrationInformation.roles],
 		});
 	}
 

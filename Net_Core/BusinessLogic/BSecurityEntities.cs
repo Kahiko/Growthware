@@ -122,7 +122,7 @@ public class BSecurityEntities : AbstractBusinessLogic
         DataTable mDataTable = null;
         try
         {
-            if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
+            if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
             {
                 mDataTable = m_DSecurityEntities.GetSecurityEntities();
                 foreach (DataRow item in mDataTable.Rows)
@@ -146,6 +146,33 @@ public class BSecurityEntities : AbstractBusinessLogic
         return mRetVal;
     }
 
+    public Collection<MRegistrationInformation> GetRegistrationInformation()
+    {
+        Collection<MRegistrationInformation> mRetVal = new Collection<MRegistrationInformation>();
+        DataTable mDataTable = null;
+        try
+        {
+            if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
+            {
+                mDataTable = m_DSecurityEntities.GetRegistrationInformation();
+                foreach (DataRow item in mDataTable.Rows)
+                {
+                    MRegistrationInformation mProfile = new(item);
+                    mRetVal.Add(mProfile);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            mDataTable?.Dispose();
+        }
+        return mRetVal;
+    }
+
     /// <summary>
     /// Gets the valid security entities.
     /// </summary>
@@ -156,7 +183,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     public DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin)
     {
         DataTable mRetVal = null;
-        if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE")
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
         {
             mRetVal = m_DSecurityEntities.GetValidSecurityEntities(account, SecurityEntityID, isSystemAdmin);
         }
@@ -172,7 +199,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     {
         if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
         profile.Id = profile.Id;
-        if (ConfigSettings.DBStatus.ToUpper(CultureInfo.InvariantCulture) == "ONLINE") m_DSecurityEntities.Save(profile);
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) m_DSecurityEntities.Save(profile);
         return profile.Id;
     }
 }

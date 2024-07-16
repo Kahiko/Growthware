@@ -16,6 +16,7 @@ public static class AccountUtility
     private static string s_CachedName = "CachedAnonymous";
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
+    private static Logger m_Logger = Logger.Instance();
     private static JwtUtility m_JwtUtils = new JwtUtility();
     private static string s_SessionName = "SessionAccount";
 
@@ -470,6 +471,33 @@ public static class AccountUtility
         AuthenticationResponse mRetVal = new(mAccountProfile);
         ClientChoicesUtility.SynchronizeContext(mRetVal.Account);
         return mRetVal;
+    }
+
+    public static void Register(MAccountProfile accountProfile, string origin)
+    {
+        // TODO: Implement Register
+        // Get the security entity via the URL or use the default
+        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        if(ConfigSettings.SecurityEntityFromUrl)
+        {
+            mSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
+        }
+        // Validate (ensure email is not in use as an account)
+        MAccountProfile mProfileToSave = GetAccount(accountProfile.Email);
+        if(mProfileToSave != null) 
+        {
+            //  Send Account exists message to the accountProfile.Email
+            return;
+        }
+        mProfileToSave.Account = accountProfile.Email;
+        // Populate the roles/groups via the security entity associated 
+        //   with the [ZGWSecurity].[Registration_Roles] table
+        // Set the AddedBy/AddedDate
+        mProfileToSave.AddedBy = GetAccount("System").Id;
+        // Set the hash password
+        // Save the profile
+        // Send email
+
     }
 
     /// <summary>

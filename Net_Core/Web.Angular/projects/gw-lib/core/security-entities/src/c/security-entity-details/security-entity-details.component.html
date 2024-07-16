@@ -102,15 +102,57 @@
         </div>
       </div>
     </mat-tab>
-    <mat-tab label="Register Roles">
+    <mat-tab label="Registration Information">
       <div class="mat-tab__container formSection">
         <div class="mat-tab__content formSectionContents containerSize">
-        </div>
-      </div>
-    </mat-tab>
-    <mat-tab label="Register Groups">
-      <div class="mat-tab__container formSection">
-        <div class="mat-tab__content formSectionContents containerSize">
+          <div class="table">
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Security Entity:</span>
+              </div>
+              <div class="td left" matTooltip="The security entity the roles and groups are associated with" [matTooltipPosition]="'left'">
+                <mat-select [(value)]="selectedSecurityEntity" class="rounded">
+                  @for (item of validSecurityEntities; track item) {
+                    <mat-option [value]="item.id">
+                      {{ item.name }}
+                    </mat-option>
+                  }
+                </mat-select>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Account Choices:</span>
+              </div>
+              <div class="td left" matTooltip="The account used copy the AccountChoices from." [matTooltipPosition]="'left'">
+                <input matInput id="txtAccountChoices" type="text" formControlName="accountChoices" #label class="Form_Field rounded" style="Width: 95%;">
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Account added by:</span>
+              </div>
+              <div class="td left" matTooltip="Integer ID of the account associated with registration" [matTooltipPosition]="'left'">
+                <input matInput id="txtAddAccount" type="text" formControlName="addAccount" #label class="Form_Field rounded" style="Width: 95%;">
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Groups:</span>
+              </div>
+              <div class="td left" matTooltip="Comma separated list of groups." [matTooltipPosition]="'left'">
+                <textarea matInput id="txtGroups" formControlName="groups" #description class="rounded" TextMode="MultiLine" Rows="3" style="width: 95%"></textarea>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Roles:</span>
+              </div>
+              <div class="td left" matTooltip="Comma separated list of roles." [matTooltipPosition]="'left'">
+                <textarea matInput id="txtRoles" formControlName="roles" #description class="rounded" TextMode="MultiLine" Rows="3" style="width: 95%"></textarea>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </mat-tab>

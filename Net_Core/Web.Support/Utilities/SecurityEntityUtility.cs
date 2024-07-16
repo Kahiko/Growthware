@@ -17,6 +17,7 @@ public static class SecurityEntityUtility
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
     private static IHttpContextAccessor m_HttpContextAccessor = null;
     private static String s_CacheName = "Cached_SecurityEntities";
+    private static string s_CacheRegistrationsName = "Cached_RegistrationInformations";
 
     public static MSecurityEntity CurrentProfile
     {
@@ -120,6 +121,20 @@ public static class SecurityEntityUtility
         return mRetVal;
     }
 
+    public static MRegistrationInformation GetRegistrationInformation(int securityEntityId)
+    {
+        MRegistrationInformation mRetVal = null;
+        var mResult = RegistrationInformation()
+            .Where(mProfile => mProfile.Id == securityEntityId)
+            .OrderBy(mProfile => mProfile.Id)
+            .Select(mProfile => mProfile);
+        if(mResult.FirstOrDefault() != null)
+        {
+           mRetVal = mResult.FirstOrDefault();
+        }
+        return mRetVal;
+    }
+
     /// <summary>
     /// Gets the valid security entities.
     /// </summary>
@@ -149,6 +164,22 @@ public static class SecurityEntityUtility
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)
     {
         m_HttpContextAccessor = httpContextAccessor;
+    }
+
+    public static Collection<MRegistrationInformation> RegistrationInformation()
+    {
+        Collection<MRegistrationInformation> mRegistrationInformations = m_CacheHelper.GetFromCache<Collection<MRegistrationInformation>>(s_CacheRegistrationsName);
+        if (mRegistrationInformations == null)
+        {
+            mRegistrationInformations = new Collection<MRegistrationInformation>();
+            BSecurityEntities mBSecurityEntities = new BSecurityEntities(DefaultProfile(), ConfigSettings.CentralManagement);
+            foreach (MRegistrationInformation mRegistrationInformation in mBSecurityEntities.GetRegistrationInformation())
+            {
+                mRegistrationInformations.Add(mRegistrationInformation);
+            }
+            m_CacheHelper.AddToCache(s_CacheRegistrationsName, mRegistrationInformations);
+        }
+        return mRegistrationInformations;
     }
 
     public static Collection<MSecurityEntity> Profiles()

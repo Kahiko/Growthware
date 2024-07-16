@@ -450,6 +450,13 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    public IActionResult Register(MAccountProfile accountProfile)
+    {
+        // TODO: Implement Register
+        AccountUtility.Register(accountProfile, Request.Headers.Origin);
+        return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+    }
+
     [HttpPut("ResetPassword")]
     public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> ResetPassword(string resetToken, string newPassword)
     {
