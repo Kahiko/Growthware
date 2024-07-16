@@ -22,7 +22,6 @@ import { SecurityEntityService } from '../../security-entity.service';
 import { ISecurityEntityProfile, SecurityEntityProfile } from '../../security-entity-profile.model';
 import { IRegistrationInformation, registrationInformation } from '../../registration-information.model';
 import { IValidSecurityEntities } from '../../valid-security-entities.model';
-import { RolesModule } from '../../../../../../gw-frontend/src/app/features/roles/roles.module';
 
 @Component({
 	selector: 'gw-core-security-entity-details',
@@ -161,6 +160,7 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 	override delete(): void {
 		throw new Error('Method not implemented.');
 	}
+
 	override createForm(): void {
 		const ConnectionStringValidation: Validators[] = [Validators.required];
 		if(this._Profile.id != -1) {
