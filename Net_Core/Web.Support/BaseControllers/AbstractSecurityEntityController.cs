@@ -161,7 +161,13 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 mRegistrationToSave.UpdatedDate = DateTime.Now;
             }
             mRegistrationToSave.Id = SecurityEntityUtility.SaveProfile(mProfileToSave);
-            // SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
+            if(mRegistrationToSave.AddAccount > 1){
+                // SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
+            }
+            else
+            {
+                // SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
+            }
         }
         return Ok(true);
     }
