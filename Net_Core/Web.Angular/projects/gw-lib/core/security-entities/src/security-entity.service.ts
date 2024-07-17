@@ -157,7 +157,8 @@ export class SecurityEntityService extends BaseService {
 	 */
 	public async save(securityEntity: ISecurityEntityProfile, registrationInformation: IRegistrationInformation): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
-			this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, { securityEntity, registrationInformation }).subscribe({
+			const mBody = { securityEntity, registrationInformation };
+			this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, mBody).subscribe({
 				next: (response: boolean) => {
 					const mSearchCriteria = this._SearchSvc.getSearchCriteria('Security_Entities'); // from SearchSecurityEntitiesComponent (this.configurationName)
 					if(mSearchCriteria != null) {
