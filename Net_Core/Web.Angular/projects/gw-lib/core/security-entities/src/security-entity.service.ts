@@ -45,6 +45,11 @@ export class SecurityEntityService extends BaseService {
 		this._Api_SaveSecurityEntity = this._GWCommon.baseURL + this._ApiName + 'SaveProfile';
 	}
 
+	/**
+	 * @description Returns a Security Entity for the given id.
+	 * @param id SecurityEntitySeqId
+	 * @returns Promise<ISecurityEntityProfile>
+	 */
 	public async getSecurityEntity(id: number): Promise<ISecurityEntityProfile> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('securityEntitySeqId', id);
@@ -69,6 +74,11 @@ export class SecurityEntityService extends BaseService {
 		});
 	}
 
+	/**
+	 * @description Returns a Registration Information for the given id.
+	 * @param id The desired SecurityEntitySeqId
+	 * @returns Promise<IRegistrationInformation[]
+	 */
 	public async getRegistrationInformation(id: number): Promise<IRegistrationInformation[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('securityEntitySeqId', id);
@@ -92,6 +102,11 @@ export class SecurityEntityService extends BaseService {
 		});
 	}
 
+	/**
+	 * Returns a list of valid parents given a security entity id
+	 * @param id SecurityEntitySeqId
+	 * @returns Promise<IKeyValuePair[]>
+	 */
 	public async getValidParents(id: number): Promise<IKeyValuePair[]> {
 		const mQueryParameter: HttpParams = new HttpParams()
 			.set('securityEntitySeqId', id);
@@ -115,6 +130,10 @@ export class SecurityEntityService extends BaseService {
 		});
 	}
 
+	/**
+	 * @description Returns a list of valid Security Entities
+	 * @returns Promise<IValidSecurityEntities[]>
+	 */
 	public async getValidSecurityEntities(): Promise<IValidSecurityEntities[]> {
 		return new Promise<IValidSecurityEntities[]>((resolve, reject) => {
 			this._HttpClient.get<IValidSecurityEntities[]>(this._Api_GetValidSecurityEntities).subscribe({
@@ -130,9 +149,15 @@ export class SecurityEntityService extends BaseService {
 		});
 	}
 
-	public async save(securityEntity: ISecurityEntityProfile): Promise<boolean> {
+	/**
+	 * @description Saves the Security Entity and the Registration Information
+	 * @param securityEntity ISecurityEntityProfile
+	 * @param registrationInformation IRegistrationInformation
+	 * @returns Promise<boolean>
+	 */
+	public async save(securityEntity: ISecurityEntityProfile, registrationInformation: IRegistrationInformation): Promise<boolean> {
 		return new Promise<boolean>((resolve, reject) => {
-			this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, securityEntity).subscribe({
+			this._HttpClient.post<boolean>(this._Api_SaveSecurityEntity, { securityEntity, registrationInformation }).subscribe({
 				next: (response: boolean) => {
 					const mSearchCriteria = this._SearchSvc.getSearchCriteria('Security_Entities'); // from SearchSecurityEntitiesComponent (this.configurationName)
 					if(mSearchCriteria != null) {

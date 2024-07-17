@@ -17,8 +17,14 @@ namespace GrowthWare.Web.Support.BaseControllers;
 public abstract class AbstractSecurityEntityController : ControllerBase
 {
 
-    private MSecurityEntity clone(MSecurityEntity original){
+    private MSecurityEntity clone(MSecurityEntity original)
+    {
         return JsonSerializer.Deserialize<MSecurityEntity>(JsonSerializer.Serialize(original));
+    }
+
+    private MRegistrationInformation clone(MRegistrationInformation original)
+    {
+        return JsonSerializer.Deserialize<MRegistrationInformation>(JsonSerializer.Serialize(original));
     }
 
     [AllowAnonymous]
@@ -117,10 +123,13 @@ public abstract class AbstractSecurityEntityController : ControllerBase
 
     [Authorize("Search_Security_Entities")]
     [HttpPost("SaveProfile")]
-    public ActionResult<bool> SaveProfile(MSecurityEntity securityEntity)
+    public ActionResult<bool> SaveProfile(DTO_SecurityEntity_RegistrationInfo securityEntityWithRegistrationInformation)
     {
         MSecurityInfo mSecurityInfo = this.getSecurityInfo("search_security_entities");
-        MSecurityEntity mProfileToSave = this.clone(securityEntity);
+        MSecurityEntity mParamSecurityEntity = securityEntityWithRegistrationInformation.SecurityEntity;
+        MRegistrationInformation mParamRegistrationInformation = securityEntityWithRegistrationInformation.RegistrationInformation;
+        MSecurityEntity mProfileToSave = this.clone(mParamSecurityEntity);
+        MRegistrationInformation mRegistrationToSave = this.clone(mParamRegistrationInformation);
         if (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
@@ -133,6 +142,8 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 }
                 mProfileToSave.AddedBy = mRequestingProfile.Id;
                 mProfileToSave.AddedDate = DateTime.Now;
+                mRegistrationToSave.AddedBy = mRequestingProfile.Id;
+                mRegistrationToSave.AddedDate = DateTime.Now;
             }
             else
             {
@@ -140,14 +151,17 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 {
                     return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
                 }
-                if (securityEntity.Id != -1 && string.IsNullOrWhiteSpace(securityEntity.ConnectionString))
+                if (mParamSecurityEntity.Id != -1 && string.IsNullOrWhiteSpace(mParamSecurityEntity.ConnectionString))
                 {
-                    mProfileToSave.ConnectionString = SecurityEntityUtility.GetProfile(securityEntity.Id).ConnectionString;
+                    mProfileToSave.ConnectionString = SecurityEntityUtility.GetProfile(mParamSecurityEntity.Id).ConnectionString;
                 }
                 mProfileToSave.UpdatedBy = mRequestingProfile.Id;
                 mProfileToSave.UpdatedDate = DateTime.Now;
+                mRegistrationToSave.UpdatedBy = mRequestingProfile.Id;
+                mRegistrationToSave.UpdatedDate = DateTime.Now;
             }
-            SecurityEntityUtility.SaveProfile(mProfileToSave);
+            mRegistrationToSave.Id = SecurityEntityUtility.SaveProfile(mProfileToSave);
+            // SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
         }
         return Ok(true);
     }

@@ -244,10 +244,16 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		// this._Profile.style = this.selectedStyle; // legacy havent figured out how to do this yet
 		this._Profile.url = this.controls['url'].getRawValue();
 		// console.log('SecurityEntityDetailsComponent.populateProfile._Profile', this._Profile);
+		// RegistrationInformation:
+		this._RegistrationInformation.id = this._Profile.id;
+		this._RegistrationInformation.accountChoices = this.controls['accountChoices'].getRawValue();
+		this._RegistrationInformation.addAccount = this.controls['addAccount'].getRawValue();
+		this._RegistrationInformation.groups = this.controls['groups'].getRawValue();
+		this._RegistrationInformation.roles = this.controls['roles'].getRawValue();
 	}
 
 	override save(): void {
-		this._ProfileSvc.save(this._Profile).then((response: boolean) => {
+		this._ProfileSvc.save(this._Profile, this._RegistrationInformation).then((response: boolean) => {
 			if(response) {
 				this._LoggingSvc.toast(this.securityEntityTranslation + ' has been saved', this.securityEntityTranslation + ' Details:', LogLevel.Success);
 				this.onClose();
