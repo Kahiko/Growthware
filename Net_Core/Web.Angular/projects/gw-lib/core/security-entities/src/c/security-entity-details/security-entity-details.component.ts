@@ -245,10 +245,11 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		this._Profile.url = this.controls['url'].getRawValue();
 		// console.log('SecurityEntityDetailsComponent.populateProfile._Profile', this._Profile);
 		// RegistrationInformation:
-		this._RegistrationInformation.id = this._Profile.id;
 		this._RegistrationInformation.accountChoices = this.controls['accountChoices'].getRawValue();
 		this._RegistrationInformation.addAccount = this.controls['addAccount'].getRawValue();
+		this._RegistrationInformation.id = this._Profile.id;
 		this._RegistrationInformation.groups = this.controls['groups'].getRawValue();
+		this._RegistrationInformation.securityEntitySeqIdOwner = this.selectedSecurityEntity;
 		this._RegistrationInformation.roles = this.controls['roles'].getRawValue();
 	}
 

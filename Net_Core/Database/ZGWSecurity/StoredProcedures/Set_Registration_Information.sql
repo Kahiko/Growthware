@@ -45,7 +45,7 @@ AS
     END
     IF EXISTS (SELECT NULL FROM [ZGWSecurity].[Registration_Information] WHERE SecurityEntitySeqId = @P_SecurityEntitySeqId)
         BEGIN
-            IF @P_Debug = 1 PRINT 'Updating Record';
+			IF @P_Debug = 1 PRINT 'Updating Record';
             UPDATE [ZGWSecurity].[Registration_Information] SET 
                 [SecurityEntitySeqId_Owner] = @P_SecurityEntitySeqId_Owner,
                 [AccountChoices] = @P_AccountChoices,
@@ -58,7 +58,7 @@ AS
         END
     ELSE
         BEGIN
-            IF @P_Debug = 1 PRINT 'Inserting Record';
+			IF @P_Debug = 1 PRINT 'Inserting Record';
             INSERT INTO [ZGWSecurity].[Registration_Information] (
                 [SecurityEntitySeqId],
                 [SecurityEntitySeqId_Owner],
@@ -80,7 +80,23 @@ AS
             );
         END
     --END IF
-    IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Registration_Information'
+    SELECT
+         RI.[SecurityEntitySeqId]
+        ,RI.[SecurityEntitySeqId_Owner]
+        ,RI.[AccountChoices]
+        ,RI.[AddAccount]
+        ,RI.[Groups]
+        ,RI.[Roles]
+        ,RI.[Added_By]
+        ,RI.[Added_Date]
+        ,RI.[Updated_By]
+        ,RI.[Updated_Date]
+    FROM 
+        [ZGWSecurity].[Registration_Information] RI
+    WHERE
+        RI.[SecurityEntitySeqId] = @P_SecurityEntitySeqId;
+    SET NOCOUNT OFF;
+    IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Registration_Information';
 RETURN 0
 
 GO

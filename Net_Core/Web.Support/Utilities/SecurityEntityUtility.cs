@@ -65,6 +65,13 @@ public static class SecurityEntityUtility
         };
     }
 
+    public static void DeleteRegistrationInformation(int securityEntitySeqId)
+    {
+        BSecurityEntities mBSecurityEntities = new BSecurityEntities(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        mBSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
+        m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
+    }
+
     /// <summary>
     /// Get a single function given it's action.
     /// </summary>
@@ -159,6 +166,13 @@ public static class SecurityEntityUtility
         return mBSecurityEntities.Save(profile);
     }
 
+    public static MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    {
+        BSecurityEntities mBSecurityEntities = new BSecurityEntities(CurrentProfile, ConfigSettings.CentralManagement);
+        MRegistrationInformation mRetVal = mBSecurityEntities.SaveRegistrationInformation(profile);
+        m_CacheHelper.RemoveFromCache(s_CacheRegistrationsName);
+        return mRetVal;
+    }
 
     [CLSCompliant(false)]
     public static void SetHttpContextAccessor(IHttpContextAccessor httpContextAccessor)

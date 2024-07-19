@@ -162,7 +162,23 @@ AS
             );
         END
     --END IF
-    IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Registration_Information'
+    SELECT
+         RI.[SecurityEntitySeqId]
+        ,RI.[SecurityEntitySeqId_Owner]
+        ,RI.[AccountChoices]
+        ,RI.[AddAccount]
+        ,RI.[Groups]
+        ,RI.[Roles]
+        ,RI.[Added_By]
+        ,RI.[Added_Date]
+        ,RI.[Updated_By]
+        ,RI.[Updated_Date]
+    FROM 
+        [ZGWSecurity].[Registration_Information] RI
+    WHERE
+        RI.[SecurityEntitySeqId] = @P_SecurityEntitySeqId;
+    SET NOCOUNT OFF;
+    IF @P_Debug = 1 PRINT 'Ending ZGWSecurity.Set_Registration_Information';
 RETURN 0
 
 GO

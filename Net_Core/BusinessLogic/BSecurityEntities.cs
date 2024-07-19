@@ -110,40 +110,12 @@ public class BSecurityEntities : AbstractBusinessLogic
     }
 
     /// <summary>
-    /// Returns a collection of MSecurityEntity objects for the given.
+    /// Deletes the registration information.
     /// </summary>
-    /// <returns>
-    ///		Collection of MSecurityEntity
-    ///	</returns>
-    /// <remarks></remarks>
-    public Collection<MSecurityEntity> SecurityEntities()
+    /// <param name="securityEntitySeqId">int</param>
+    public void DeleteRegistrationInformation(int securityEntitySeqId)
     {
-        Collection<MSecurityEntity> mRetVal = new Collection<MSecurityEntity>();
-        DataTable mDataTable = null;
-        try
-        {
-            if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
-            {
-                mDataTable = m_DSecurityEntities.GetSecurityEntities();
-                foreach (DataRow item in mDataTable.Rows)
-                {
-                    MSecurityEntity mProfile = new MSecurityEntity(item);
-                    mRetVal.Add(mProfile);
-                }
-            }
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-        finally
-        {
-            if (mDataTable != null)
-            {
-                mDataTable.Dispose();
-            }
-        }
-        return mRetVal;
+        m_DSecurityEntities.DeleteRegistrationInformation(securityEntitySeqId);
     }
 
     public Collection<MRegistrationInformation> GetRegistrationInformation()
@@ -198,8 +170,58 @@ public class BSecurityEntities : AbstractBusinessLogic
     public int Save(MSecurityEntity profile)
     {
         if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
-        profile.Id = profile.Id;
-        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) m_DSecurityEntities.Save(profile);
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) profile.Id = m_DSecurityEntities.Save(profile);
         return profile.Id;
+    }
+
+    /// <summary>
+    /// Save Registration information to the database
+    /// </summary>
+    /// <param name="profile">MRegistrationInformation</param>
+    /// <returns>MRegistrationInformation</returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    public MRegistrationInformation SaveRegistrationInformation(MRegistrationInformation profile)
+    {
+        MRegistrationInformation mRetVal = profile;
+        if (profile == null) throw new ArgumentNullException("profile", "profile cannot be a null reference (Nothing in Visual Basic)!");
+        if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase)) mRetVal = new(m_DSecurityEntities.SaveRegistrationInformation(profile));
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns a collection of MSecurityEntity objects for the given.
+    /// </summary>
+    /// <returns>
+    ///		Collection of MSecurityEntity
+    ///	</returns>
+    /// <remarks></remarks>
+    public Collection<MSecurityEntity> SecurityEntities()
+    {
+        Collection<MSecurityEntity> mRetVal = new Collection<MSecurityEntity>();
+        DataTable mDataTable = null;
+        try
+        {
+            if (ConfigSettings.DBStatus.Equals("ONLINE", StringComparison.CurrentCultureIgnoreCase))
+            {
+                mDataTable = m_DSecurityEntities.GetSecurityEntities();
+                foreach (DataRow item in mDataTable.Rows)
+                {
+                    MSecurityEntity mProfile = new MSecurityEntity(item);
+                    mRetVal.Add(mProfile);
+                }
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+        finally
+        {
+            if (mDataTable != null)
+            {
+                mDataTable.Dispose();
+            }
+        }
+        return mRetVal;
     }
 }

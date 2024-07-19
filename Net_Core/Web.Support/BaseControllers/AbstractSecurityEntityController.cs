@@ -130,7 +130,8 @@ public abstract class AbstractSecurityEntityController : ControllerBase
         MRegistrationInformation mParamRegistrationInformation = securityEntityWithRegistrationInformation.RegistrationInformation;
         MSecurityEntity mProfileToSave = this.clone(mParamSecurityEntity);
         MRegistrationInformation mRegistrationToSave = this.clone(mParamRegistrationInformation);
-        if (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit)
+        var mEditId = HttpContext.Session.GetInt32("EditId");
+        if (mEditId != null && (mSecurityInfo.MayAdd || mSecurityInfo.MayEdit))
         {
             MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
             MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
@@ -161,13 +162,21 @@ public abstract class AbstractSecurityEntityController : ControllerBase
                 mRegistrationToSave.UpdatedDate = DateTime.Now;
             }
             mRegistrationToSave.Id = SecurityEntityUtility.SaveProfile(mProfileToSave);
-            if(mRegistrationToSave.AddAccount > 1){
-                // SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
+            if(mRegistrationToSave.AddAccount > 0){
+                SecurityEntityUtility.SaveRegistrationInformation(mRegistrationToSave);
             }
             else
             {
-                // SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
+                if (!mSecurityInfo.MayDelete)
+                {
+                    return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
+                }
+                SecurityEntityUtility.DeleteRegistrationInformation(mRegistrationToSave.Id);
             }
+        } 
+        else 
+        {
+            return StatusCode(StatusCodes.Status401Unauthorized, "The requesting account does not have the correct permissions");
         }
         return Ok(true);
     }

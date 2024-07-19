@@ -7,13 +7,23 @@ namespace GrowthWare.DataAccess.Interfaces
     public interface ISecurityEntities : IDBInteraction
     {
         /// <summary>
+        /// Deletes the registration information given a security entity sequence id.
+        /// </summary>
+        /// <param name="securityEntitySeqId"></param>
+        void DeleteRegistrationInformation(int securityEntitySeqId);
+
+        /// <summary>
+        /// Returns all rows from [ZGWSecurity].[Registration_Information]
+        /// </summary>
+        /// <returns></returns>
+        DataTable GetRegistrationInformation();
+
+        /// <summary>
         /// Retrieves all Security Entities as a data table.
         /// </summary>
         /// <returns>DataTable</returns>
         /// <remarks></remarks>
         DataTable GetSecurityEntities();
-
-        DataTable GetRegistrationInformation();
 
         /// <summary>
         /// Retrieves security entities for a given account.
@@ -26,13 +36,6 @@ namespace GrowthWare.DataAccess.Interfaces
         DataTable GetSecurityEntities(string account, int SecurityEntityID, bool isSecurityEntityAdministrator);
 
         /// <summary>
-        /// Saves security entity information to the datastore.
-        /// </summary>
-        /// <param name="profile">MSecurityEntity</param>
-        /// <remarks></remarks>
-        int Save(MSecurityEntity profile);
-
-        /// <summary>
         /// Gets the valid security entities.
         /// </summary>
         /// <param name="account">The account.</param>
@@ -40,5 +43,19 @@ namespace GrowthWare.DataAccess.Interfaces
         /// <param name="isSystemAdmin">if set to <c>true</c> [is system admin].</param>
         /// <returns>DataTable.</returns>
         DataTable GetValidSecurityEntities(string account, int SecurityEntityID, bool isSystemAdmin);
+
+        /// <summary>
+        /// Saves security entity information to the datastore.
+        /// </summary>
+        /// <param name="profile">MSecurityEntity</param>
+        /// <remarks></remarks>
+        int Save(MSecurityEntity profile);
+
+        /// <summary>
+        /// Saves the registration information to [ZGWSecurity].[Registration_Information].
+        /// </summary>
+        /// <param name="profile"></param>
+        /// <returns>DataRow</returns>
+        DataRow SaveRegistrationInformation(MRegistrationInformation profile);
     }
 }

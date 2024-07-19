@@ -13,13 +13,23 @@ namespace GrowthWare.DataAccess.SQLServer
     /// </summary>
     public class DSecurityEntities : AbstractDBInteraction, ISecurityEntities
     {
+        void ISecurityEntities.DeleteRegistrationInformation(int securityEntitySeqId)
+        {
+            string mStoredProcedure = "ZGWSecurity.Delete_Registration_Information";
+            SqlParameter[] mParameters =
+            {
+              new SqlParameter("@P_SecurityEntitySeqId", securityEntitySeqId)
+            };
+            base.ExecuteNonQuery(mStoredProcedure, mParameters);
+        }
+
         DataTable ISecurityEntities.GetRegistrationInformation()
         {
             string mStoredProcedure = "ZGWSecurity.Get_Registration_Information";
             SqlParameter[] mParameters =
-			{
-			  new SqlParameter("@P_SecurityEntitySeqId", -1)
-			};
+            {
+              new SqlParameter("@P_SecurityEntitySeqId", -1)
+            };
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
@@ -27,9 +37,9 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             string mStoredProcedure = "ZGWSecurity.Get_Security_Entity";
             SqlParameter[] mParameters =
-			{
-			  new SqlParameter("@P_SecurityEntitySeqId", -1)
-			};
+            {
+              new SqlParameter("@P_SecurityEntitySeqId", -1)
+            };
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
@@ -39,12 +49,12 @@ namespace GrowthWare.DataAccess.SQLServer
             if (SecurityEntityID == -1) { throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID cannot be a null reference (Nothing in Visual Basic)!"); };
             string mStoredProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
             SqlParameter[] mParameters =
-			{
-			new SqlParameter("@P_ACCT", account),
-			new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
-			new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
-			GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
-			};
+            {
+            new SqlParameter("@P_ACCT", account),
+            new SqlParameter("@P_IS_SE_ADMIN", isSecurityEntityAdministrator),
+            new SqlParameter("@P_SecurityEntityID", SecurityEntityID),
+            GetSqlParameter("@P_ErrorCode", "", ParameterDirection.Output)
+            };
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
 
@@ -54,15 +64,14 @@ namespace GrowthWare.DataAccess.SQLServer
             if (SecurityEntityID == -1) throw new ArgumentNullException("SecurityEntityID", "SecurityEntityID must be greater than -1");
 
             string mStoreProcedure = "ZGWSecurity.Get_Valid_Security_Entity";
-            SqlParameter[] myParameters = 
-            { 
-                new SqlParameter("@P_Account", account), 
-                new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin), 
+            SqlParameter[] myParameters =
+            {
+                new SqlParameter("@P_Account", account),
+                new SqlParameter("@P_IS_SE_ADMIN", isSystemAdmin),
                 new SqlParameter("@P_SecurityEntitySeqId", SecurityEntityID)
             };
             return base.GetDataTable(mStoreProcedure, myParameters);
         }
-
 
         int ISecurityEntities.Save(MSecurityEntity profile)
         {
@@ -71,7 +80,7 @@ namespace GrowthWare.DataAccess.SQLServer
             mPrimaryKey.Size = 10;
             string mStoredProcedure = "ZGWSecurity.Set_Security_Entity";
             SqlParameter[] mParameters =
-			 {
+             {
                 new SqlParameter("@P_SecurityEntitySeqId", profile.Id),
                 new SqlParameter("@P_NAME", profile.Name),
                 new SqlParameter("@P_DESCRIPTION", profile.Description ?? ""),
@@ -85,13 +94,35 @@ namespace GrowthWare.DataAccess.SQLServer
                 new SqlParameter("@P_STYLE", profile.Style ?? ""),
                 new SqlParameter("@P_ENCRYPTION_TYPE", profile.EncryptionType),
                 new SqlParameter("@P_ParentSecurityEntitySeqId", profile.ParentSeqId),
-                new SqlParameter("@P_Added_Updated_By",  GetAddedUpdatedBy(profile)),
+                new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(profile)),
                 mPrimaryKey
-			 };
+             };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
             profile.Id = int.Parse(GetParameterValue("@P_PRIMARY_KEY", mParameters).ToString(), CultureInfo.InvariantCulture);
             return profile.Id;
         }
 
+        DataRow ISecurityEntities.SaveRegistrationInformation(MRegistrationInformation profile)
+        {
+            string mStoredProcedure = "ZGWSecurity.Set_Registration_Information";
+            SqlParameter[] mParameters =
+             {
+                new ("@P_SecurityEntitySeqId", profile.Id),
+                new ("@P_SecurityEntitySeqId_Owner", profile.SecurityEntitySeqIdOwner),
+                new ("@P_AccountChoices", profile.AccountChoices),
+                new ("@P_AddAccount", profile.AddAccount),
+                new ("@P_Groups", profile.Groups),
+                new ("@P_Roles", profile.Roles),
+                new ("@P_Added_Updated_By", GetAddedUpdatedBy(profile))
+             };
+            try
+            {
+                return base.GetDataRow(mStoredProcedure, mParameters);
+            }
+            catch (System.Exception)
+            {
+                throw;
+            }
+        }
     }
 }
