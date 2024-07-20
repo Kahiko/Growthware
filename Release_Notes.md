@@ -22,6 +22,7 @@
 - Fixed deleteOldLogs causing exception file not found on "Linux"
 - Fixed Dockerfile not being able to run
 - Modal drag and drop now works only with the header
+- Fixed non "isAdmin" accounts could not log in, MSecurityInfo was not setting properties correctly
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

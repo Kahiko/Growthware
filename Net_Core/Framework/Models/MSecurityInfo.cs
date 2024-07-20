@@ -99,7 +99,18 @@ namespace GrowthWare.Framework.Models
                     This handles the special case when the selected SecurityEntity has no parrent and
                     roles have not been setup and the UI is needed to "Fix" secutiry.
                 */
-                if(((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
+                if(!((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
+                {
+                    // Check View Permissions
+                    m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                    // Check Add Permissions
+                    m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                    // Check Edit Permissions
+                    m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                    // Check Delete Permissions
+                    m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                }
+                else
                 {
                     m_MayView = true;
                     m_MayAdd = true;
