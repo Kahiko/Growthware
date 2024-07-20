@@ -94,11 +94,6 @@ namespace GrowthWare.Framework.Models
             // not all object will be a type of MAccountProfile
             if(profileWithDerivedRoles is MAccountProfile)
             {
-                /*
-                    If the account profile is a system admin, then all permissions are granted
-                    This handles the special case when the selected SecurityEntity has no parrent and
-                    roles have not been setup and the UI is needed to "Fix" secutiry.
-                */
                 if(!((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
                 {
                     // Check View Permissions
@@ -129,7 +124,6 @@ namespace GrowthWare.Framework.Models
                 // Check Delete Permissions
                 m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
             }
-
         }
 
         /// <summary>
@@ -144,7 +138,7 @@ namespace GrowthWare.Framework.Models
             if (profileDerivedRoles == null) throw new ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
             // If page/module contains the role "Anonymous" the don't bother running the rest of code just return true
             if (objRoles.Contains("Anonymous")) return true;
-            if (profileDerivedRoles.Contains("SysAdmin")) return true;
+            // if (profileDerivedRoles.Contains("SysAdmin")) return true;
             foreach (string role in objRoles)
             {
                 if (profileDerivedRoles.Contains(role))
