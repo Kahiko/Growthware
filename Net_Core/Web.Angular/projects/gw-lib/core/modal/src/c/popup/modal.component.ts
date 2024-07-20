@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 // Angular Material cdk
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 // Angular Material
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
@@ -16,6 +16,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [
     CdkDrag,
+    CdkDragHandle,
     CommonModule, 
     MatButtonModule, 
     MatIconModule, 

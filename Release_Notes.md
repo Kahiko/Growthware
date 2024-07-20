@@ -21,6 +21,7 @@
 - Fixed Roles and Groups being returned from search by adding to the were clause to account for the selected Security Entity
 - Fixed deleteOldLogs causing exception file not found on "Linux"
 - Fixed Dockerfile not being able to run
+- Modal drag and drop now works only with the header
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
