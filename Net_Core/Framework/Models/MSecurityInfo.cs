@@ -12,11 +12,6 @@ namespace GrowthWare.Framework.Models
     public class MSecurityInfo
     {
 
-        private bool m_MayView = false;
-        private bool m_MayAdd = false;
-        private bool m_MayEdit = false;
-        private bool m_MayDelete = false;
-
         /// <summary>
         /// MayView()--
         /// This property is calculated relative to the current object that 
@@ -26,10 +21,7 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool MayView
-        {
-            get { return m_MayView; }
-        }
+        public readonly bool MayView = false;
 
         /// <summary>
         /// MayAdd()--
@@ -40,10 +32,7 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool MayAdd
-        {
-            get { return m_MayAdd; }
-        }
+        public readonly bool MayAdd = false;
 
         /// <summary>
         /// MayEdit()--
@@ -54,10 +43,7 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool MayEdit
-        {
-            get { return m_MayEdit; }
-        }
+        public readonly bool MayEdit = false;
 
         /// <summary>
         /// MayDelete()--
@@ -68,10 +54,7 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public bool MayDelete
-        {
-            get { return m_MayDelete; }
-        }
+        public readonly bool MayDelete = false;
 
         /// <summary>
         /// Creates a new instance of MSecurityInfo
@@ -97,32 +80,32 @@ namespace GrowthWare.Framework.Models
                 if(!((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
                 {
                     // Check View Permissions
-                    m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                    MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Add Permissions
-                    m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                    MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Edit Permissions
-                    m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                    MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Delete Permissions
-                    m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                    MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
                 }
                 else
                 {
-                    m_MayView = true;
-                    m_MayAdd = true;
-                    m_MayEdit = true;
-                    m_MayDelete = true;
+                    MayView = true;
+                    MayAdd = true;
+                    MayEdit = true;
+                    MayDelete = true;
                 }
             }
             else
             {
                 // Check View Permissions
-                m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Add Permissions
-                m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Edit Permissions
-                m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Delete Permissions
-                m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
             }
         }
 
