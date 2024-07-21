@@ -4,9 +4,15 @@ Growthware is an idea dedicated to producing reusable and extendable core techno
 
 <b>Welcome to the Growthware source control site.</b>
 <p>
-    Growthware is an idea dedicated to producing reusable and extendable core technologies used to produce a working web application in less than 10 minutes.  The framework has now grown to work with both .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
+    The Growthware code base is in essence used to produce a functioning web application/site handling Role based security.  The web application/site code provides the ability to manage Roles, Groups, Accounts, Functions and Security Entities.  Supported middle tier technologies are .Net 4.8 and .Net Core 8.  Not all features are avalible in all incarnations so they will denoted with 4.8 or 8 for each version.
 </p>
-The framework was developed to provide a data store independent/generic code base to supply the following functionality and features.
+<p>
+The framework was developed to provide a data store independent/generic code base where SQL Server has been implemented.
+</p>
+<p>
+The following is a summary of the features available.
+</p>
+
 <table>
     <caption>Account Management</caption>
     <thead>
@@ -30,35 +36,35 @@ The framework was developed to provide a data store independent/generic code bas
             <td>Registration - Internal</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
             <td>Registration - Google</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
             <td>Registration - Facebook</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
             <td>Registration - Twitter</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
             <td>Registration - Microsoft Account</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
@@ -72,21 +78,21 @@ The framework was developed to provide a data store independent/generic code bas
             <td>Authentication - Internal</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS, Angular</td>
         </tr>
         <tr>
             <td>Authentication - LDAP/ADSI</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td></td>
             <td>ASPX, Angular JS</td>
         </tr>
         <tr>
             <td>Authentication - IIS A.K.A Windows Authentication</td>
             <td>X</td>
             <td>X</td>
-            <td>X</td>
+            <td> </td>
             <td>ASPX, Angular JS</td>
         </tr>
     </tbody>
@@ -173,7 +179,7 @@ The framework was developed to provide a data store independent/generic code bas
             <td></td>
             <td></td>
             <td>X</td>
-            <td>N/A</td>
+            <td>Console</td>
         </tr>    
         <tr>
             <td>An E-Mail facility</td>
@@ -209,9 +215,9 @@ The framework was developed to provide a data store independent/generic code bas
         </tr>
         <tr>
             <td>Client Choices</td>
-            <td></td>
-            <td></td>
-            <td></td>
+            <td>X</td>
+            <td>X</td>
+            <td>X</td>
             <td>X</td>
             <td>ASPX, Angular JS, Angular 17</td>
         </tr>
