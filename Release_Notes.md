@@ -4,6 +4,7 @@
 
 ### New Features
 - Added Register
+    - Registration information is now stored in the database for each security entity
 - Added Verify Email
 
 ### Improvements
