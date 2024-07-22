@@ -191,7 +191,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
       }
-      return this._AccountSvc.getAccountForEdit(mDesiredAccount);                  // Request #6
+      return this._AccountSvc.getAccountForEdit(mDesiredAccount);           // Request #6
     }).catch((error) => {
       this._LoggingSvc.toast('Error getting security info for \'Role tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
     }).then((accountProfile) => {                                           // Response Handler #6
