@@ -156,50 +156,44 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       default:
         break;
     }
-    this._GroupSvc.getGroups().then((groups) => {                           // Response Handler #1
-      if(groups != null) {
-        // TODO: this would indicate that the pick-list component isn't loaded at this point
-        // and we are simply adding a delay to give it time... need to find a better way
-        // such as a different lifecycle hook?
-        // console.log('groups', groups);
-        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
-      }
-      return this._RoleSvc.getRoles();                                      // Request #2
-    }).catch((error) => { 
+    this._GroupSvc.getGroups().then((groups) => {                         // Request and Response Handler #1 (getGroups)
+      // TODO: this would indicate that the pick-list component isn't loaded at this point
+      // and we are simply adding a delay to give it time... need to find a better way
+      // such as a different lifecycle hook?
+      this.groupsAvailable = groups;
+      return this._RoleSvc.getRoles();                                    // Request #2 (getRoles)
+    }).catch((error) => {                                                 // Error Handler #1 (getGroups)
       this._LoggingSvc.toast('Error getting groups:\r\n' + error, 'Account Details:', LogLevel.Error);
-    }).then((roles) => {                                                    // Response Handler #2
+    }).then((roles) => {                                                  // Response Handler #2 (getRoles)
       if(roles != null) {
-        // TODO: this would indicate that the pick-list component isn't loaded at this point
-        // and we are simply adding a delay to give it time... need to find a better way
-        // such as a different lifecycle hook?
-        // console.log('roles', roles);
+        // TODO: Same issue as Request #1
         setTimeout(() => { this._DataSvc.notifyDataChanged(this.rolesPickListName + '_AvailableItems', roles); }, 500);
       }
-      return this._SecuritySvc.getSecurityInfo('Accounts');              // Request #3
-    }).catch((error) => {
+      return this._SecuritySvc.getSecurityInfo('Accounts');               // Request #3 (getSecurityInfo('Accounts'))
+    }).catch((error) => {                                                 // Error Handler #2 (getRoles)
       this._LoggingSvc.toast('Error getting roles:\r\n' + error, 'Account Details:', LogLevel.Error);
-    }).then((reasonSecurityInfo) => {                                       // Response Handler #3
+    }).then((reasonSecurityInfo) => {                                     // Response Handler #3 (getSecurityInfo('Accounts'))
       if(reasonSecurityInfo != null) {
         this._SecurityInfoAccount = reasonSecurityInfo;
       }
-      return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab');   // Request #4
-    }).catch((error) => {
-      this._LoggingSvc.toast('Error getting security info for \'EditAccount\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-    }).then((groupTabSecurityInfo) => {                                     // Response Handler #4
+      return this._SecuritySvc.getSecurityInfo('View_Account_Group_Tab'); // Request #4 (getSecurityInfo('View_Account_Group_Tab'))
+    }).catch((error) => {                                                 // Error Handler #3 (getSecurityInfo('Accounts'))
+      this._LoggingSvc.toast('Error getting Security Info for Accounts:\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((groupTabSecurityInfo) => {                                   // Response Handler #4 (getSecurityInfo('View_Account_Group_Tab'))
       if(groupTabSecurityInfo != null) {
         this._SecurityInfoGroups = groupTabSecurityInfo;
       }
-      return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');    // Request #5
-    }).catch((error) => {
-      this._LoggingSvc.toast('Error getting security info for \'Group tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-    }).then((roleTabSecurityInfo) => {                                      // Response Handler #5
+      return this._SecuritySvc.getSecurityInfo('View_Account_Role_Tab');  // Request #5 (getSecurityInfo('View_Account_Role_Tab'))
+    }).catch((error) => {                                                 // Error Handler #4 (getSecurityInfo('View_Account_Group_Tab'))
+      this._LoggingSvc.toast('Error getting Security Info for Group Tab:\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((roleTabSecurityInfo) => {                                    // Response Handler #5 (getSecurityInfo('View_Account_Role_Tab'))
       if(roleTabSecurityInfo != null) {
         this._SecurityInfoRoles = roleTabSecurityInfo;
       }
-      return this._AccountSvc.getAccountForEdit(mDesiredAccount);           // Request #6
-    }).catch((error) => {
-      this._LoggingSvc.toast('Error getting security info for \'Role tab\' :\r\n' + error, 'Account Details:', LogLevel.Error);
-    }).then((accountProfile) => {                                           // Response Handler #6
+      return this._AccountSvc.getAccountForEdit(mDesiredAccount);         // Request #6 getAccountForEdit(mDesiredAccount)
+    }).catch((error) => {                                                 // Error Handler #5 (getSecurityInfo('View_Account_Role_Tab'))
+      this._LoggingSvc.toast('Error getting Security Info for Role Tab:\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).then((accountProfile) => {                                         // Response Handler #6 getAccountForEdit(mDesiredAccount)
       if(accountProfile != null) {
         this._AccountProfile = accountProfile;
         let mRoles: string[] = [];
@@ -215,21 +209,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.applySecurity();
         this.populateForm();
       }
-    }).catch((error) => {
-      this._LoggingSvc.toast('Error getting account information :\r\n' + error, 'Account Details:', LogLevel.Error);
+    }).catch((error) => {                                                 // Error Handler #6 getAccountForEdit(mDesiredAccount)
+      this._LoggingSvc.toast('Error getting Account:\r\n' + error, 'Account Details:', LogLevel.Error);
     });
-    this._Subscription.add(this._DataSvc.dataChanged$.subscribe((data) => {
-      switch (data.name.toLowerCase()) {
-        case 'roles':
-          this._AccountProfile.assignedRoles = data.value;
-          break;
-        case 'groups':
-          this._AccountProfile.groups = data.value;
-          break;
-        default:
-          break;
-      }
-    }));
     this.applySecurity();
     this.populateForm();
   }
