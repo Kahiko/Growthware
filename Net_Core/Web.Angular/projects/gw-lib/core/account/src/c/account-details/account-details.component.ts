@@ -148,6 +148,11 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         mDesiredAccount = this._AccountSvc.authenticationResponse.account;
         this.canDelete = false;
         break;
+      case '/accounts/register':
+        this._AccountSvc.modalReason = 'RegisterProfile';
+        mDesiredAccount = 'new';
+        this.canDelete = false;
+        break;
       default:
         break;
     }
