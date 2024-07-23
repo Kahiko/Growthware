@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -32,6 +33,7 @@ import { AccountService } from '../../account.service';
   selector: 'gw-core-account-details',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
@@ -67,6 +69,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   groupsPickListName: string = 'groups';
   groupsSelected: Array<string> = [];
 
+  isRegistration: boolean = false;
+
   litAccountWarning: string = '';
   litEMailWarning: string = '';
   litFirstNameWarning: string = '';
@@ -79,10 +83,12 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   selectedTimeZone: number = 0;
 
   showDerived: boolean = false;
-  showRoles: boolean = false;
   showGroups: boolean = false;
+  showRoles: boolean = false;
 
   submitted: boolean = false;
+
+  title: string = 'Account Information';
 
   validStatus  = [
     { id: 1, name: 'Active' },
@@ -147,9 +153,11 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         this.canDelete = false;
         break;
       case '/accounts/register':
-        this._AccountSvc.modalReason = 'RegisterProfile';
         mDesiredAccount = 'new';
+        this._AccountSvc.modalReason = 'RegisterProfile';
         this.canDelete = false;
+        this.isRegistration = true;
+        this.title = 'Register Account';
         break;
       default:
         break;
@@ -158,7 +166,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       // TODO: this would indicate that the pick-list component isn't loaded at this point
       // and we are simply adding a delay to give it time... need to find a better way
       // such as a different lifecycle hook?
-      this.groupsAvailable = groups;
+      if(groups != null) {
+        setTimeout(() => { this._DataSvc.notifyDataChanged(this.groupsPickListName + '_AvailableItems', groups); }, 500);
+      }
       return this._RoleSvc.getRoles();                                    // Request #2 (getRoles)
     }).catch((error) => {                                                 // Error Handler #1 (getGroups)
       this._LoggingSvc.toast('Error getting groups:\r\n' + error, 'Account Details:', LogLevel.Error);
@@ -287,6 +297,21 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
           return 'Not a valid email';
         }    
         break;
+      case 'firstName':
+        if(this.isRegistration) {
+          if (this.controls['firstName'].hasError('required')) {
+            return 'Required';
+          }  
+        }
+        break;
+      case 'lastName':
+        if(this.isRegistration) {
+          if (this.controls['lastName'].hasError('required')) {
+            return 'Required';
+          }  
+        }
+        break;
+
       default:
         break;
     }
@@ -311,11 +336,14 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     // console.log('Valid?', form.valid); // true or false
     if(form.valid) {
       this.populateProfile();
-      // console.log('AccountProfile', this._AccountProfile);
-      this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
-        this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
-        this.closeModal();
-      });
+      if(!this.isRegistration) {
+        this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
+          this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
+          this.closeModal();
+        });          
+      } else {
+        console.log('AccountProfile', this._AccountProfile);
+      }
     }
   }
 
@@ -324,20 +352,37 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
       this.selectedStatus = this._AccountProfile.status;
       this.selectedTimeZone = this._AccountProfile.timeZone;
       this._DataSvc.notifyDataChanged(this.derivedRolesId, this._AccountProfile.derivedRoles);
-      this.frmAccount = this._FormBuilder.group({
-        account: [this._AccountProfile.account, [Validators.required]],
-        email: [this._AccountProfile.email, [Validators.required, Validators.email]],
-        enableNotifications: [this._AccountProfile.enableNotifications],
-        failedAttempts: [this._AccountProfile.failedAttempts],
-        firstName: [this._AccountProfile.firstName],
-        isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
-        lastName: [this._AccountProfile.lastName],
-        location: [this._AccountProfile.location],
-        middleName: [this._AccountProfile.middleName],
-        preferredName: [this._AccountProfile.preferredName],
-        statusSeqId: [this._AccountProfile.status],
-        timeZone: [this._AccountProfile.timeZone],
-      });
+      if(!this.isRegistration) {
+        this.frmAccount = this._FormBuilder.group({
+          account: [this._AccountProfile.account, [Validators.required]],
+          email: [this._AccountProfile.email, [Validators.required, Validators.email]],
+          enableNotifications: [this._AccountProfile.enableNotifications],
+          failedAttempts: [this._AccountProfile.failedAttempts],
+          firstName: [this._AccountProfile.firstName],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          lastName: [this._AccountProfile.lastName],
+          location: [this._AccountProfile.location],
+          middleName: [this._AccountProfile.middleName],
+          preferredName: [this._AccountProfile.preferredName],
+          statusSeqId: [this._AccountProfile.status],
+          timeZone: [this._AccountProfile.timeZone],
+        });        
+      } else {
+        this.frmAccount = this._FormBuilder.group({
+          account: [this._AccountProfile.account],
+          email: [this._AccountProfile.email, [Validators.required, Validators.email]],
+          enableNotifications: [this._AccountProfile.enableNotifications],
+          failedAttempts: [this._AccountProfile.failedAttempts],
+          firstName: [this._AccountProfile.firstName, [Validators.required]],
+          isSystemAdmin :[{value : this._AccountProfile.isSystemAdmin, disabled: !this._AccountSvc.authenticationResponse.isSystemAdmin}],
+          lastName: [this._AccountProfile.lastName, [Validators.required]],
+          location: [this._AccountProfile.location],
+          middleName: [this._AccountProfile.middleName],
+          preferredName: [this._AccountProfile.preferredName],
+          statusSeqId: [this._AccountProfile.status],
+          timeZone: [this._AccountProfile.timeZone],
+        });        
+      }
       
     } else {
       this.frmAccount = this._FormBuilder.group({
@@ -359,6 +404,9 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
 
   private populateProfile(): void {
     this._AccountProfile.account = this.controls['account'].getRawValue();
+    if(this.isRegistration) {
+      this._AccountProfile.account = this.controls['email'].getRawValue();  
+    }
     // this._AccountProfile.assignedRoles = '';
     this._AccountProfile.email = this.controls['email'].getRawValue();
     this._AccountProfile.enableNotifications = this.controls['enableNotifications'].getRawValue();
