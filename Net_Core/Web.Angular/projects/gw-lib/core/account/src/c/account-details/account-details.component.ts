@@ -135,10 +135,8 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
     /*eslint indent: ["error", 2, { "SwitchCase": 1 }]*/
     switch (this._Router.url) {
       case '/accounts':
-        if(this._AccountSvc.modalReason.toLowerCase() != 'newprofile') {
-          // console.log('selectedRow', this._AccountSvc.selectedRow);
-          mDesiredAccount = this._AccountSvc.selectedRow.Account;
-        } else {
+        mDesiredAccount = this._AccountSvc.selectedRow.Account;
+        if(this._AccountSvc.modalReason.toLowerCase() == 'newprofile') {
           mDesiredAccount = 'new';
         }
         this.canCancel = true;
