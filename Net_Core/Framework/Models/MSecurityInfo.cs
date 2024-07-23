@@ -12,6 +12,11 @@ namespace GrowthWare.Framework.Models
     public class MSecurityInfo
     {
 
+        private bool m_MayView = false;
+        private bool m_MayAdd = false;
+        private bool m_MayEdit = false;
+        private bool m_MayDelete = false;
+
         /// <summary>
         /// MayView()--
         /// This property is calculated relative to the current object that 
@@ -21,7 +26,10 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public readonly bool MayView = false;
+        public bool MayView
+        {
+            get { return m_MayView; }
+        }
 
         /// <summary>
         /// MayAdd()--
@@ -32,7 +40,10 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public readonly bool MayAdd = false;
+        public bool MayAdd
+        {
+            get { return m_MayAdd; }
+        }
 
         /// <summary>
         /// MayEdit()--
@@ -43,7 +54,10 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public readonly bool MayEdit = false;
+        public bool MayEdit
+        {
+            get { return m_MayEdit; }
+        }
 
         /// <summary>
         /// MayDelete()--
@@ -54,7 +68,10 @@ namespace GrowthWare.Framework.Models
         /// <value></value>
         /// <returns></returns>
         /// <remarks></remarks>
-        public readonly bool MayDelete = false;
+        public bool MayDelete
+        {
+            get { return m_MayDelete; }
+        }
 
         /// <summary>
         /// Creates a new instance of MSecurityInfo
@@ -77,36 +94,42 @@ namespace GrowthWare.Framework.Models
             // not all object will be a type of MAccountProfile
             if(profileWithDerivedRoles is MAccountProfile)
             {
+                /*
+                    If the account profile is a system admin, then all permissions are granted
+                    This handles the special case when the selected SecurityEntity has no parrent and
+                    roles have not been setup and the UI is needed to "Fix" secutiry.
+                */
                 if(!((MAccountProfile)profileWithDerivedRoles).IsSystemAdmin)
                 {
                     // Check View Permissions
-                    MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                    m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Add Permissions
-                    MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                    m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Edit Permissions
-                    MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                    m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
                     // Check Delete Permissions
-                    MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                    m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
                 }
                 else
                 {
-                    MayView = true;
-                    MayAdd = true;
-                    MayEdit = true;
-                    MayDelete = true;
+                    m_MayView = true;
+                    m_MayAdd = true;
+                    m_MayEdit = true;
+                    m_MayDelete = true;
                 }
             }
             else
             {
                 // Check View Permissions
-                MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
+                m_MayView = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedViewRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Add Permissions
-                MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
+                m_MayAdd = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedAddRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Edit Permissions
-                MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
+                m_MayEdit = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedEditRoles, profileWithDerivedRoles.DerivedRoles);
                 // Check Delete Permissions
-                MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
+                m_MayDelete = CheckAuthenticatedPermission(groupRolePermissionSecurity.DerivedDeleteRoles, profileWithDerivedRoles.DerivedRoles);
             }
+
         }
 
         /// <summary>
@@ -121,7 +144,7 @@ namespace GrowthWare.Framework.Models
             if (profileDerivedRoles == null) throw new ArgumentNullException("profileDerivedRoles", "profileDerivedRoles cannot be a null reference (Nothing in Visual Basic)!");
             // If page/module contains the role "Anonymous" the don't bother running the rest of code just return true
             if (objRoles.Contains("Anonymous")) return true;
-            // if (profileDerivedRoles.Contains("SysAdmin")) return true;
+            if (profileDerivedRoles.Contains("SysAdmin")) return true;
             foreach (string role in objRoles)
             {
                 if (profileDerivedRoles.Contains(role))
