@@ -3,7 +3,7 @@ You will need to install the following on your machine as a prerequisite
             https://www.docker.com/products/docker-desktop/
     2.) VS Code
             https://code.visualstudio.com/download
-    3.) The following extensions will be helpful:
+    3.) The following extensions will be helpful to install in the docker container as well as local:
             1.) "Docker" - ms-azuretools.vscode-docker
             2.) "Docker Extention Pack" - formulahendry.
             3.) "C#" - ms-dotnettools.csharp
