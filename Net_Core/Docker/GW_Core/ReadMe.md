@@ -7,6 +7,10 @@ You will need to install the following on your machine as a prerequisite
             1.) "Docker Extention Pack" - formulahendry.
             2.) "C#" - ms-dotnettools.csharp
             3.) ".NET Watch Attach (Extended)" - vhorinek.dotnetwatchattach-ext
+            4.) ".NET Install Tool" - ms-dotnettools.vscode-dotnet-runtime
+            5.) "C# Dev Kit" - ms-dotnettools.csdevkit
+            6.) "Docker" - ms-azuretools.vscode-docker
+            7.) "SQL Server (mssql)" - ms-mssql.mssql
 
 So the goal is to build and run the container that will be used to develop Growthware in.
 We do this by staring with a Dockerfile that uses the "mcr.microsoft.com/dotnet/sdk:8.0" image.  From there we install all of the dependencies needed to develop Growthware.
@@ -20,20 +24,19 @@ After you have built the container the first time you will need to run the comma
     1.) Start VS Code (code .)
     2.) Press F1 and select "Dev Containers: Attach to Running Container..."
     3.) Select "/growthware-code"
-    4.) Open a folder "/growthware/Net_Core/"
-    5.) Open a terminal
-    6.) Change to the "Web.Angular" folder
-    7.) Run the command "ng completion"
+    4.) Open a terminal
+    5.) Change to folder - cd "/growthware/Net_Core/Web.Angular/"
+    6.) Run the command "ng completion"
 NOTE: I tried to incoporate this into the Dockerfile but it didn't work
 
-If this is your first time running the container you should need to create the database
-    1.) Start VS Code
-    2.) From the "Run and Debug" menu select "Database Manager" and Click start or press F5
-
-Other GrowthWare.json changes:
+You will need to edit the GrowthWare.json changes to find the file use your explorer "open folder" choose ".." then "growthware/Net_Core
         DAL_SQLServer_ConnectionString
                 Example:
                         "Development_DAL_SQLServer_ConnectionString": "server=growthware-db;User Id=sa;Password=P@ssw0rd;TrustServerCertificate=true;database=GrowthWare;connection lifetime=5;enlist=true;min pool size=1;max pool size=50",
         Log_Path
                 Example:
                         "/growthware/Net_Core/Web.Api/Logs/"
+
+If this is your first time running the container you should need to create the database
+    1.) Start VS Code
+    2.) From the "Run and Debug" menu select "Database Manager" and Click start or press F5
