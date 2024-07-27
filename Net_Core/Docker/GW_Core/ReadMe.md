@@ -12,6 +12,8 @@ You will need to install the following on your machine as a prerequisite
             6.) "Docker" - ms-azuretools.vscode-docker
             7.) "SQL Server (mssql)" - ms-mssql.mssql
 
+It is assumed you have a basic knowledge of VS Code not all steps are explicit
+
 So the goal is to build and run the container that will be used to develop Growthware in.
 We do this by staring with a Dockerfile that uses the "mcr.microsoft.com/dotnet/sdk:8.0" image.  From there we install all of the dependencies needed to develop Growthware.
 The process will install GIT as well as clone the repository.
