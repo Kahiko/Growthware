@@ -4,12 +4,12 @@ You will need to install the following on your machine as a prerequisite
     2.) VS Code
             https://code.visualstudio.com/download
     3.) The following extensions will be helpful:
-            1.) "Docker Extention Pack" - formulahendry.
-            2.) "C#" - ms-dotnettools.csharp
-            3.) ".NET Watch Attach (Extended)" - vhorinek.dotnetwatchattach-ext
-            4.) ".NET Install Tool" - ms-dotnettools.vscode-dotnet-runtime
-            5.) "C# Dev Kit" - ms-dotnettools.csdevkit
-            6.) "Docker" - ms-azuretools.vscode-docker
+            1.) "Docker" - ms-azuretools.vscode-docker
+            2.) "Docker Extention Pack" - formulahendry.
+            3.) "C#" - ms-dotnettools.csharp
+            4.) "C# Dev Kit" - ms-dotnettools.csdevkit
+            5.) ".NET Watch Attach (Extended)" - vhorinek.dotnetwatchattach-ext
+            6.) ".NET Install Tool" - ms-dotnettools.vscode-dotnet-runtime
             7.) "SQL Server (mssql)" - ms-mssql.mssql
 
 It is assumed you have a basic knowledge of VS Code not all steps are explicit
