@@ -432,6 +432,28 @@ namespace GrowthWare.Framework
         }
 
         /// <summary>
+        /// Returns RegistrationDefaultGroups from the CONFIG file
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
+        public static string RegistrationDefaultGroups
+        {
+            get { return GetAppSettingValue("RegistrationDefaultGroups", true); }
+        }
+
+        /// <summary>
+        /// Returns RegistrationDefaultRoles from the CONFIG file
+        /// </summary>
+        /// <value>String</value>
+        /// <returns>String</returns>
+        /// <remarks></remarks>
+        public static string RegistrationDefaultRoles
+        {
+            get { return GetAppSettingValue("RegistrationDefaultRoles", true); }
+        }
+
+        /// <summary>
         /// Return RegistrationPassword from the COFNIG file
         /// </summary>
         /// <value>String</value>
