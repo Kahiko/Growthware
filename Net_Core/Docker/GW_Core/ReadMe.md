@@ -42,3 +42,10 @@ You will need to edit the GrowthWare.json changes to find the file use your expl
 If this is your first time running the container you should need to create the database
     1.) Start VS Code
     2.) From the "Run and Debug" menu select "Database Manager" and Click start or press F5
+
+If you would like to connect to the database in the container using SSMS you will need to use the following:
+        Server type:      Database Engine
+        Server name:    localhost,11433
+        Authentication:  SQL Server Authentication
+        Login:             sa
+        Password:      P@ssw0rd
