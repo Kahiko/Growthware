@@ -46,8 +46,8 @@ If this is your first time running the container you should need to create the d
     4.) Click start or press F5
 
 If you would like to connect to the database in the container using SSMS you will need to use the following:
-        Server type:      Database Engine
+        Server type:    Database Engine
         Server name:    localhost,11433
-        Authentication:  SQL Server Authentication
-        Login:             sa
-        Password:      P@ssw0rd
+        Authentication: SQL Server Authentication
+        Login:          sa
+        Password:       P@ssw0rd
