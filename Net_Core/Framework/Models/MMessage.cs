@@ -4,6 +4,7 @@ using System.Data;
 using System.Reflection;
 using GrowthWare.Framework.Models.Base;
 using System.Globalization;
+using System.Linq;
 
 namespace GrowthWare.Framework.Models;
 /// <summary>
@@ -15,6 +16,7 @@ public class MMessage : AbstractBaseModel, IMessage
     #region "Member Properties"
     private int m_SecurityEntity_Seq_Id = 1;
     private string m_Description = string.Empty;
+    private string[] m_ExcludedTags = new string[] {"Body", "Title", "IdColumnName", "NameColumnName", "AddedBy", "AddedDate", "UpdatedBy", "UpdatedDate" };
     private string m_Title = string.Empty;
     private bool m_FormatAsHTML = false;
     private string m_Body = string.Empty;
@@ -170,7 +172,10 @@ public class MMessage : AbstractBaseModel, IMessage
         PropertyInfo[] mPropertyInfo = this.GetType().GetProperties();
         foreach (PropertyInfo mPropertyItem in mPropertyInfo)
         {
-            retVal = retVal + "<" + mPropertyItem.Name + ">" + separator;
+            if(!m_ExcludedTags.Contains(mPropertyItem.Name, StringComparer.OrdinalIgnoreCase))
+            {
+                retVal = retVal + "<" + mPropertyItem.Name + ">" + separator;
+            }
         }
         return retVal;
     }

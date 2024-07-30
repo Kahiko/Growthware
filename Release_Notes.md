@@ -16,6 +16,7 @@
 - Updated SecurityEntityUtility.CurrentProfile to account for ConfigSettings.SecurityEntityFromUrl
 - Renamed CacheController.cs to CachenHelper.cs and moved to \Helpers
 - Renamed SessionController.cs to SessionHelper.cs and moved to \Helpers
+- MMessage now uses ExcludedTags so as not to show some properties returned in method GetTags
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
