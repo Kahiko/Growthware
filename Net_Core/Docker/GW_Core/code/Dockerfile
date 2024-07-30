@@ -4,6 +4,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
 COPY mssql/installSQLtools.sh installSQLtools.sh
 # RUN bash ./installSQLtools.sh \
 # && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
+# COPY devcontainer.json /root/.devcontainer/devcontainer.json
 
 # Install GIT
 RUN apt-get update \
