@@ -17,11 +17,7 @@ public class MRequestNewPassword : MMessage
     /// Initializes a new instance of the <see cref="MRequestNewPassword" /> class.
     /// </summary>
     /// <param name="profile">MMessage</param>
-    public MRequestNewPassword(MMessage profile)
-        : base(profile)
-    {
-
-    }
+    public MRequestNewPassword(MMessage profile) : base(profile) { }
 
     /// <summary>
     /// Gets or sets the name of the account.
