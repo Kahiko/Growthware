@@ -128,6 +128,11 @@ public static class SecurityEntityUtility
         return mRetVal;
     }
 
+    /// <summary>
+    /// Gets the registration information.
+    /// </summary>
+    /// <param name="securityEntityId"></param>
+    /// <returns>MRegistrationInformation or null</returns>
     public static MRegistrationInformation GetRegistrationInformation(int securityEntityId)
     {
         MRegistrationInformation mRetVal = null;
