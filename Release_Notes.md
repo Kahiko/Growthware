@@ -26,6 +26,7 @@
 - Fixed non "isAdmin" accounts could not log in, MSecurityInfo was not setting properties correctly
 - Fixed Error when searching for groups or roles (incorrect column name)
 - Fixed AbstractAccountController.EditAccount incorrectly throwing a 401 error
+- Fixed PagerComponent not displaying the correct number of pages
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 

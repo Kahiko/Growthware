@@ -45,10 +45,11 @@ export class PagerComponent implements OnDestroy, OnInit {
   					const mFirstRow = results.payLoad.data[0];
   					if (!this._GWCommon.isNullOrUndefined(mFirstRow)) {
   						const mTotalRecords: number = parseInt(mFirstRow['TotalRecords']);
-  						if (mTotalRecords > results.payLoad.searchCriteria.pageSize) {
-  							const mPageSize: number = results.payLoad.searchCriteria.pageSize;
+  						const mPageSize: number = results.payLoad.searchCriteria.pageSize;
+  						if (mTotalRecords > mPageSize) {
   							let mCalculatedPages: number = Math.floor(mTotalRecords / mPageSize);
-  							if(mTotalRecords%mCalculatedPages != 0) {
+  							const mRemainder = mTotalRecords % mPageSize;
+  							if(mRemainder != 0) {
   								mCalculatedPages += 1;
   							}
   							if (this.totalPages !== mCalculatedPages) {
