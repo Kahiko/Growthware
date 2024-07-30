@@ -144,6 +144,27 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     }
 
     /// <summary>
+    /// Provides a new account profile with the same values as the account profile
+    /// </summary>
+    /// <param name="accountProfile">MAccountProfile</param>
+    /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
+    public MAccountProfile(MAccountProfile accountProfile)
+    {
+            this.Account = accountProfile.Account;
+            this.Email = accountProfile.Email;
+            this.EnableNotifications = accountProfile.EnableNotifications;
+            this.FirstName = accountProfile.FirstName;
+            // this.IsSystemAdmin needs to be set by the caller
+            this.LastName = accountProfile.LastName;
+            this.Location = accountProfile.Location;
+            this.MiddleName = accountProfile.MiddleName;
+            this.Name = accountProfile.Account;
+            this.PreferredName = accountProfile.PreferredName;
+            this.Status = accountProfile.Status;
+            this.TimeZone = accountProfile.TimeZone;
+    }
+
+    /// <summary>
     /// Will populate values based on the contents of the data row.
     /// </summary>
     /// <param name="detailRow">DataRow containing base values</param>
