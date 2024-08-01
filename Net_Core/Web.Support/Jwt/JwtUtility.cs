@@ -116,7 +116,7 @@ public class JwtUtility : IJwtUtility
     /// Generates a unique reset token.
     /// </summary>
     /// <returns>string</returns>
-    public string GenerateResetToken()
+    public static string GenerateResetToken()
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
 
@@ -128,6 +128,23 @@ public class JwtUtility : IJwtUtility
             return GenerateResetToken();
         }
         
+        return mRetVal;
+    }
+
+    /// <summary>
+    /// Generates a unique verification token.
+    /// </summary>
+    /// <returns>string</returns>
+    public static string GenerateVerificationToken()
+    {
+        var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
+        // ensure token is unique by checking against db
+        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        bool mTokenIsUnique = mBAccount.VerificationTokenExists(mRetVal);
+        if (!mTokenIsUnique)
+        {
+            return GenerateVerificationToken();
+        }
         return mRetVal;
     }
 }
