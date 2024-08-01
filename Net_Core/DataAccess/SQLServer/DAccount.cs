@@ -265,7 +265,7 @@ namespace GrowthWare.DataAccess.SQLServer
 
         bool IAccount.VerificationTokenExists(string token)
         {
-            bool mRetVal = false;
+            bool mRetVal = true;
             Int32 mCount = 0;
             string mCleanedValue = this.Cleanup(token);
             string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @P_Token";
@@ -277,9 +277,9 @@ namespace GrowthWare.DataAccess.SQLServer
             {
                 mCount = (Int32)mDbValue;
             }
-            if(mCount != 0)
+            if(mCount == 0)
             {
-                mRetVal = true;
+                mRetVal = false;
             }
             return mRetVal;
         }
