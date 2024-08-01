@@ -12,7 +12,7 @@
                     <div class="td left">
                       <span class="Form_LabelText">Account: </span>
                       @if (controls['account'].invalid) {
-                      <mat-error>{{ getErrorMessage("account") }}</mat-error>
+                      <mat-error class="Form_LabelTextRed">{{ getErrorMessage("account") }}</mat-error>
                       }
                     </div>
                     <div class="td left">
@@ -64,7 +64,7 @@
                     <div class="td left">
                       <span class="Form_LabelText">First Name: </span>@if
                       (controls['firstName'].invalid) {
-                      <mat-error>{{ getErrorMessage("firstName") }}</mat-error>
+                      <mat-error class="Form_LabelTextRed">{{ getErrorMessage("firstName") }}</mat-error>
                       }
                     </div>
                     <div class="td left">
@@ -75,14 +75,14 @@
                         class="Form_Field rounded"
                       />
                       @if (controls['account'].invalid) {
-                      <mat-error>{{ getErrorMessage("firstName") }}</mat-error>
+                      <mat-error class="Form_LabelTextRed">{{ getErrorMessage("firstName") }}</mat-error>
                       }
   
                     </div>
                     <div class="td left">
                       <span class="Form_LabelText">Last Name: </span>
                       @if(controls['lastName'].invalid) {
-                      <mat-error>{{ getErrorMessage("lastName") }}</mat-error>
+                      <mat-error class="Form_LabelTextRed">{{ getErrorMessage("lastName") }}</mat-error>
                       }
                     </div>
                     <div class="td left">
@@ -109,7 +109,7 @@
                     <div class="td left">
                       <span class="Form_LabelText">Email: </span>
                       @if(controls['email'].invalid) {
-                      <mat-error>{{ getErrorMessage("email") }}</mat-error>
+                      <mat-error class="Form_LabelTextRed">{{ getErrorMessage("email") }}</mat-error>
                       }
                     </div>
                     <div class="td left">

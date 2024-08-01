@@ -290,8 +290,10 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
         }
         break;
       case 'email':
-        if (this.controls['email'].hasError('required')) {
-          return 'Required';
+        if(this.isRegistration) {
+          if (this.controls['email'].hasError('required')) {
+            return 'Required';
+          }            
         }
         if (this.controls['email'].hasError('email')) {
           return 'Not a valid email';
@@ -335,14 +337,25 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   onSubmit(form: FormGroup): void {
     // console.log('Valid?', form.valid); // true or false
     if(form.valid) {
+      this.submitted = true;
       this.populateProfile();
       if(!this.isRegistration) {
         this._AccountSvc.saveAccount(this._AccountProfile).then(() => {
           this._LoggingSvc.toast('Account has been saved', 'Save Account', LogLevel.Success);
           this.closeModal();
+        }).catch((error) => {
+          console.log('error', error);
+          this._LoggingSvc.toast('Error saving account!', 'Save Account', LogLevel.Error);
         });          
       } else {
         console.log('AccountProfile', this._AccountProfile);
+        this._AccountSvc.registerAccount(this._AccountProfile).then((mMessage: string) => {
+          this._LoggingSvc.toast(mMessage, 'Register Account', LogLevel.Success);
+          this.closeModal();
+        }).catch((error) => {
+          console.log('error', error);
+          this._LoggingSvc.toast('Error registring account!', 'Registration', LogLevel.Error);
+        });
       }
     }
   }
@@ -405,7 +418,7 @@ export class AccountDetailsComponent implements OnDestroy, OnInit {
   private populateProfile(): void {
     this._AccountProfile.account = this.controls['account'].getRawValue();
     if(this.isRegistration) {
-      this._AccountProfile.account = this.controls['email'].getRawValue();  
+      this._AccountProfile.account = this.controls['email'].getRawValue();
     }
     // this._AccountProfile.assignedRoles = '';
     this._AccountProfile.email = this.controls['email'].getRawValue();

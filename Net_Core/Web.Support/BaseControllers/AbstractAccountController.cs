@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
+using GrowthWare.Framework.Models.Messages;
 using GrowthWare.Framework.Models.UI;
 using GrowthWare.Web.Support.Jwt;
 using GrowthWare.Web.Support.Utilities;
@@ -449,11 +450,39 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    [AllowAnonymous]
+    [HttpPost("Register")]
     public IActionResult Register(MAccountProfile accountProfile)
     {
         // TODO: Implement Register
-        AccountUtility.Register(accountProfile, Request.Headers.Origin);
-        return Ok(new { message = "Registration successful, please check your email for verification instructions" });
+        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
+        MAccountProfile mSavedAccountProfile = AccountUtility.Register(accountProfile, Request.Headers.Origin);
+        string mRetunMsg = "Registration successful, please check your email for verification instructions";
+        if(mSavedAccountProfile != null)
+        {
+            MMessage mMessage = MessageUtility.GetProfile("RegistrationSuccess");
+            MRegistrationSuccess mRegistrationSuccess = new(mMessage)
+            {
+                FullName = mSavedAccountProfile.FirstName + " " + mSavedAccountProfile.LastName,
+                VerificationToken = Uri.EscapeDataString(mSavedAccountProfile.VerificationToken)
+            };
+
+            string urlRoot = $"{Request.Scheme}://{Request.Host}/";
+            mRegistrationSuccess.Server = urlRoot;
+            mRegistrationSuccess.FormatBody();
+            // send email
+            MessageUtility.SendMail(mRegistrationSuccess, accountProfile);
+            return Ok(new { message = mRetunMsg });
+        }
+        else
+        {
+            // Send email indicating error
+            mRetunMsg = "Registration failed, please try again";
+        }
+        return Ok(new { message = mRetunMsg });
     }
 
     [HttpPut("ResetPassword")]
@@ -511,6 +540,10 @@ public abstract class AbstractAccountController : ControllerBase
     {
         // requesting profile same as 
         bool mRetVal = false;
+        if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.Account)) throw new ArgumentNullException("Account", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
+        if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
         MAccountProfile mRequestingProfile = AccountUtility.CurrentProfile;
         MFunctionProfile mFunctionProfile = FunctionUtility.GetProfile("SaveAccount");
         MSecurityInfo mSecurityInfo = new MSecurityInfo(mFunctionProfile, mRequestingProfile);
@@ -521,7 +554,7 @@ public abstract class AbstractAccountController : ControllerBase
         {
             // we don't want to save the of the properties from the UI so we get the profile from the DB
             MAccountProfile mExistingAccount = AccountUtility.GetAccount(accountProfile.Account);
-            if (mExistingAccount == null)
+            if (mExistingAccount.Account == null)
             {
                 mExistingAccount = new MAccountProfile(mRequestingProfile.Id);
                 mExistingAccount.Password = ""; // should be auto generated and 

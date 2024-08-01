@@ -55,16 +55,26 @@ public abstract class AbstractMessageController : ControllerBase
             if (mProfileFromDb != null)
             {
                 mRetVal = new UIMessageProfile(mProfileFromDb);
-                try
+                mRetVal.AvalibleTags = "No tags avalible for this message.";
+                string mAssembley = "GrowthWare.Framework";
+                MMessage mMessageProfile = null;
+                string[] mNameSpaces = new string[] { "GrowthWare.Framework.Models", "GrowthWare.Framework.Models.UI", "GrowthWare.Framework.Models.Messages" };
+                foreach (string mNameSpace in mNameSpaces)
                 {
-                    string mAssembley = "GrowthWare.Framework";
-                    string mNameSpace = "GrowthWare.Framework.Models";
-                    MMessage mMessageProfile = (MMessage)ObjectFactory.Create(mAssembley, mNameSpace, "M" + mRetVal.Name);
-                    mRetVal.AvalibleTags = mMessageProfile.GetTags(Environment.NewLine); ;
-                }
-                catch (System.Exception)
-                {
-                    mRetVal.AvalibleTags = "No tags avalible for this message.";
+                    try
+                    {
+                        mMessageProfile = (MMessage)ObjectFactory.Create(mAssembley, mNameSpace, "M" + mRetVal.Name);
+                        if (mMessageProfile != null)
+                        {
+                            // Object successfully created, break out of the loop
+                            mRetVal.AvalibleTags = mMessageProfile.GetTags(Environment.NewLine);
+                            break;
+                        }
+                    }
+                    catch (System.Exception)
+                    {
+                        // do nothing
+                    }
                 }
             }
             HttpContext.Session.SetInt32("EditId", mRetVal.Id);

@@ -328,8 +328,7 @@ public static class AccountUtility
     {
         MAccountProfile mRetVal = GetAccount(account);
         // generate reset token
-        JwtUtility mJwtUtility = new JwtUtility();
-        mRetVal.ResetToken = mJwtUtility.GenerateResetToken();
+        mRetVal.ResetToken = JwtUtility.GenerateResetToken();
         mRetVal.ResetTokenExpires = DateTime.UtcNow.AddDays(1);
         mRetVal.UpdatedBy = mRetVal.Id;
         mRetVal.UpdatedDate = DateTime.UtcNow;
@@ -473,31 +472,62 @@ public static class AccountUtility
         return mRetVal;
     }
 
-    public static void Register(MAccountProfile accountProfile, string origin)
+    public static MAccountProfile Register(MAccountProfile accountProfile, string origin)
     {
         // TODO: Implement Register
         // Get the security entity via the URL or use the default
-        MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
+        MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile;
         if(ConfigSettings.SecurityEntityFromUrl)
         {
-            mSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
+            mTargetSecurityEntity = SecurityEntityUtility.GetProfileByUrl(origin);
         }
+        // Need to get the roles so need to get the Registration_Information
+        MRegistrationInformation mRegistrationInformation = SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
         // Validate (ensure email is not in use as an account)
-        MAccountProfile mProfileToSave = GetAccount(accountProfile.Email);
-        if(mProfileToSave != null) 
+        MAccountProfile mProfileToSave = GetAccount(accountProfile.Email, true);
+        if(String.IsNullOrWhiteSpace(mProfileToSave.Account)) 
         {
-            //  Send Account exists message to the accountProfile.Email
-            return;
+            mProfileToSave = new MAccountProfile(accountProfile)
+            {
+                Account = accountProfile.Email
+            };
+            if (mRegistrationInformation != null) 
+            {
+                // Populate the roles/groups via the security entity associated 
+                // (Uses the [ZGWSecurity].[Registration_Roles] table)
+                mProfileToSave.SetGroups(mRegistrationInformation.Groups);
+                mProfileToSave.SetRoles(mRegistrationInformation.Roles);
+            }
+            else 
+            {
+                mProfileToSave.SetRoles(ConfigSettings.RegistrationDefaultRoles);
+                mProfileToSave.SetGroups(ConfigSettings.RegistrationDefaultGroups);
+            }
+            // When registrating a new account IsSystemAdmin should always be false
+            mProfileToSave.IsSystemAdmin = false;
+            // Set the password though it won't be used I didn't want to hard code it
+            CryptoUtility.TryEncrypt(ConfigSettings.RegistrationPassword, out string mEncryptedPassword, mTargetSecurityEntity.EncryptionType, ConfigSettings.EncryptionSaltExpression);
+            mProfileToSave.Password = mEncryptedPassword;
+            // Set the AddedBy/AddedDate
+            mProfileToSave.AddedBy = GetAccount("System").Id;
+            mProfileToSave.AddedDate = DateTime.Now;
+            mProfileToSave.PasswordLastSet = System.DateTime.Now;
+            // Save the profile
+            BAccounts mBAccount = new(mTargetSecurityEntity, ConfigSettings.CentralManagement);
+            // Added for clarity
+            Boolean mSaveRefreshTokens = false;
+            Boolean mSaveRoles = true;
+            Boolean mSaveGroups = true;
+            JwtUtility mJwtUtility = new();
+            mProfileToSave.VerificationToken = mJwtUtility.GenerateVerificationToken();
+            mBAccount.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
+            mProfileToSave = GetAccount(mProfileToSave.Account, true);
         }
-        mProfileToSave.Account = accountProfile.Email;
-        // Populate the roles/groups via the security entity associated 
-        //   with the [ZGWSecurity].[Registration_Roles] table
-        // Set the AddedBy/AddedDate
-        mProfileToSave.AddedBy = GetAccount("System").Id;
-        // Set the hash password
-        // Save the profile
-        // Send email
-
+        else 
+        {
+            mProfileToSave = null;
+        }
+        return mProfileToSave;
     }
 
     /// <summary>

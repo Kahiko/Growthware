@@ -73,6 +73,11 @@ Usage:
 -- Create date: 05/10/2024
 -- Description:	Adding @P_ResetToken and @P_ResetTokenExpires
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 08/01/2024
+-- Description:	Added check for @P_Password_Last_Set fixes 
+--'SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM' error
+-- =============================================
 CREATE PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_StatusSeqId INT
 	,@P_Account VARCHAR(128)
@@ -96,6 +101,8 @@ CREATE PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 AS
 SET NOCOUNT ON;
 IF @P_Debug = 1 PRINT 'Start Set_Account';
+IF ISDATE(@P_Password_Last_Set) = 0 SET @P_Password_Last_Set = GETDATE();
+IF ISDATE(@P_Last_Login) = 0 SET @P_Last_Login = NULL;
 
 DECLARE @VSecurityEntitySeqId VARCHAR(1)
 	,@V_SecurityEntityName VARCHAR(50)

@@ -29,6 +29,7 @@ export class AccountService extends BaseService {
 	private _Api_ForgotPassword: string = '';
 	private _Api_Logoff: string = '';
 	private _Api_RefreshToken: string = '';
+	private _Api_RegisterAccount: string = '';
 	private _Api_ResetPassword: string = '';
 	private _Api_SaveAccount: string = '';
 	private _Api_SaveClientChoices: string = '';
@@ -67,6 +68,7 @@ export class AccountService extends BaseService {
 		this._Api_ForgotPassword = this._BaseURL + this._ApiName + 'ForgotPassword';
 		this._Api_Logoff = this._BaseURL + this._ApiName + 'Logoff';
 		this._Api_RefreshToken = this._BaseURL + this._ApiName + 'RefreshToken';
+		this._Api_RegisterAccount = this._BaseURL + this._ApiName + 'Register';
 		this._Api_ResetPassword = this._BaseURL + this._ApiName + 'ResetPassword';
 		this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
 		this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
@@ -382,6 +384,36 @@ export class AccountService extends BaseService {
 				// 4.) return the authentication response
 				return mAccountInformation.authenticationResponse;
 			}));
+	}
+
+	async registerAccount(accountProfile: IAccountProfile): Promise<string> {
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			})
+		};
+		return new Promise<string>((resolve, reject) => {
+			// Format the first name, last name, middle name, and preferred name
+			// Create an copy of the accountProfile
+			const mAccountToSave = JSON.parse(JSON.stringify(accountProfile));
+			mAccountToSave.firstName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.firstName);
+			mAccountToSave.lastName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.lastName);
+			mAccountToSave.middleName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.middleName);
+			mAccountToSave.preferredName = this._GWCommon.capitalizeFirstLetter(mAccountToSave.preferredName);
+			this._HttpClient.post<{message: string}>(this._Api_RegisterAccount, mAccountToSave, mHttpOptions).subscribe({
+				next: (mReturnString: {message: string}) => {
+					console.log('AccountService.registerAccount', mReturnString);
+					if(mReturnString.message.toLowerCase().indexOf('failed') > -1) {
+						reject(mReturnString.message);
+					}
+					resolve(mReturnString.message);
+				},
+				error: (error) => {
+					this._LoggingSvc.errorHandler(error, 'AccountService', 'registerAccount');
+					reject(error);
+				}
+			});
+		});
 	}
 
 	public async resetPassword(resetToken: string, newPassword: string): Promise<boolean> {
