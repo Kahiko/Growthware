@@ -268,7 +268,7 @@ namespace GrowthWare.DataAccess.SQLServer
             bool mRetVal = false;
             Int32 mCount = 0;
             string mCleanedValue = this.Cleanup(token);
-            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @Token";
+            string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @P_Token";
             SqlParameter[] mParameters = { 
 				new SqlParameter("@P_Token", mCleanedValue), 
 			};            
