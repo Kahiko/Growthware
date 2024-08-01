@@ -474,11 +474,19 @@ public abstract class AbstractAccountController : ControllerBase
             mRegistrationSuccess.Server = urlRoot;
             mRegistrationSuccess.FormatBody();
             // send email
-            MessageUtility.SendMail(mRegistrationSuccess, accountProfile);
+            if(!MessageUtility.SendMail(mRegistrationSuccess, accountProfile))
+            {
+                mRetunMsg = "Registration failed, could not send mail to '" + accountProfile.Email + "' the account was not created!";
+                AccountUtility.Delete(mSavedAccountProfile.Id);
+            }
             return Ok(new { message = mRetunMsg });
         }
         else
         {
+            if(mSavedAccountProfile != null && mSavedAccountProfile.Id > 0)
+            {
+                AccountUtility.Delete(mSavedAccountProfile.Id);
+            }
             // Send email indicating error
             mRetunMsg = "Registration failed, please try again";
         }
