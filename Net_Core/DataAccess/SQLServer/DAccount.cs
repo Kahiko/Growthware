@@ -200,14 +200,24 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             int mRetInt;
             String mStoredProcedure = "ZGWSecurity.Set_Account";
+            // 1/1/1753 12:00:00 AM
+            DateTime mTestDate = new(0001, 1, 1, 0, 0, 0);
+            if(m_Profile.LastLogOn == mTestDate)
+            {
+                m_Profile.LastLogOn = new(1753, 1, 1, 0, 0, 0);
+            }
+            if(m_Profile.PasswordLastSet == mTestDate)
+            {
+                m_Profile.PasswordLastSet = new(1753, 1, 1, 0, 0, 0);
+            }
             SqlParameter[] mParameters = { 
 				GetSqlParameter("@P_AccountSeqId", m_Profile.Id, ParameterDirection.InputOutput),
 				new SqlParameter("@P_StatusSeqId", m_Profile.Status),
 				new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)),
 				new SqlParameter("@P_First_Name", this.Cleanup(m_Profile.FirstName)),
 				new SqlParameter("@P_Last_Name", this.Cleanup(m_Profile.LastName)),
-				new SqlParameter("@P_Middle_Name", this.Cleanup(m_Profile.MiddleName)),
-				new SqlParameter("@P_Preferred_Name", this.Cleanup(m_Profile.PreferredName)),
+				new SqlParameter("@P_Middle_Name", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
+				new SqlParameter("@P_Preferred_Name", !string.IsNullOrWhiteSpace(m_Profile.PreferredName) ? m_Profile.PreferredName : DBNull.Value),
 				new SqlParameter("@P_Email", m_Profile.Email),
 				new SqlParameter("@P_Password", m_Profile.Password),
 				new SqlParameter("@P_Password_Last_Set", m_Profile.PasswordLastSet),

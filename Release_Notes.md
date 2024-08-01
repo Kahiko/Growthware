@@ -28,6 +28,7 @@
 - Fixed Error when searching for groups or roles (incorrect column name)
 - Fixed AbstractAccountController.EditAccount incorrectly throwing a 401 error
 - Fixed PagerComponent not displaying the correct number of pages
+- Fixed Where DAccount did not account for Middle_Name or Preferred_Name were throwing an error for not passing the associated SQL parameters
 
 ## Net_Core Version 4.0.1 (2024-06-19)
 
