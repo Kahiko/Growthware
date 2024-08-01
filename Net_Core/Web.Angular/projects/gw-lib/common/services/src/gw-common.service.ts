@@ -138,6 +138,11 @@ export class GWCommon {
     return mURL;
   }
 
+  public capitalizeFirstLetter(stringToCap: string): string {
+    if(this.isNullOrEmpty(stringToCap)){ return stringToCap; }
+    return stringToCap.charAt(0).toUpperCase() + stringToCap.slice(1);
+  }
+
   /**
 	 * Compares two dates to check if they are equal.
 	 *
