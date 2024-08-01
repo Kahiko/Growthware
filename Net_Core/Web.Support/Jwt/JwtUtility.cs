@@ -135,13 +135,13 @@ public class JwtUtility : IJwtUtility
     /// Generates a unique verification token.
     /// </summary>
     /// <returns>string</returns>
-    public static string GenerateVerificationToken()
+    public string GenerateVerificationToken()
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
         BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        bool mTokenIsUnique = mBAccount.VerificationTokenExists(mRetVal);
-        if (!mTokenIsUnique)
+        bool mTokenExists = mBAccount.VerificationTokenExists(mRetVal);
+        if (mTokenExists)
         {
             return GenerateVerificationToken();
         }
