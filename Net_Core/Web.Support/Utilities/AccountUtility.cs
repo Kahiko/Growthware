@@ -483,6 +483,11 @@ public static class AccountUtility
         }
         // Need to get the roles so need to get the Registration_Information
         MRegistrationInformation mRegistrationInformation = SecurityEntityUtility.GetRegistrationInformation(mTargetSecurityEntity.Id);
+        if(mRegistrationInformation == null) 
+        {
+            m_Logger.Fatal("Unable to get registration information");
+            throw new WebSupportException("Unable to get registration information");
+        }
         // Validate (ensure email is not in use as an account)
         MAccountProfile mProfileToSave = GetAccount(accountProfile.Email, true);
         if(String.IsNullOrWhiteSpace(mProfileToSave.Account)) 
