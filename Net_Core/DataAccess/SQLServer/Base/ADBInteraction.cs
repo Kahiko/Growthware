@@ -267,12 +267,18 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 }
                 else
                 {
-                    throw new DataAccessLayerException(formatError(sqlParameters, commandText, ex.ToString()), ex);
+                    string mFormattedMsg = formatError(sqlParameters, commandText, ex.ToString());
+                    DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                    this.m_Logger.Fatal(mDataAccessLayerException);
+                    throw mDataAccessLayerException;
                 }
             }
             catch (Exception ex)
             {
-                throw new DataAccessLayerException(formatError(sqlParameters, commandText, ex.ToString()), ex);
+                string mFormattedMsg = formatError(sqlParameters, commandText, ex.ToString());
+                DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                this.m_Logger.Fatal(mDataAccessLayerException);
+                throw mDataAccessLayerException;
             }
         }
 
@@ -323,12 +329,18 @@ namespace GrowthWare.DataAccess.SQLServer.Base
                 }
                 else
                 {
-                    throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+                    string mFormattedMsg = formatError(null, commandText, ex.ToString());
+                    DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                    this.m_Logger.Fatal(mDataAccessLayerException);
+                    throw mDataAccessLayerException;                    
                 }
             }
             catch (Exception ex)
             {
-                throw new DataAccessLayerException(formatError(null, commandText, ex.ToString()), ex);
+                string mFormattedMsg = formatError(null, commandText, ex.ToString());
+                DataAccessLayerException mDataAccessLayerException = new(mFormattedMsg, ex);
+                this.m_Logger.Fatal(mDataAccessLayerException);
+                throw mDataAccessLayerException; 
             }
         }
 
