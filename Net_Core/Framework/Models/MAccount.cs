@@ -150,18 +150,21 @@ public class MAccountProfile : AbstractBaseModel, IGroupRoleSecurity
     /// <remarks>Does not set AssignedRoles, AssignedGroups or IsSystemAdmin</remarks>
     public MAccountProfile(MAccountProfile accountProfile)
     {
-            this.Account = accountProfile.Account;
-            this.Email = accountProfile.Email;
-            this.EnableNotifications = accountProfile.EnableNotifications;
-            this.FirstName = accountProfile.FirstName;
-            // this.IsSystemAdmin needs to be set by the caller
-            this.LastName = accountProfile.LastName;
-            this.Location = accountProfile.Location;
-            this.MiddleName = accountProfile.MiddleName;
-            this.Name = accountProfile.Account;
-            this.PreferredName = accountProfile.PreferredName;
-            this.Status = accountProfile.Status;
-            this.TimeZone = accountProfile.TimeZone;
+        base.NameColumnName = "ACCT";
+        base.IdColumnName = "ACCT_SEQ_ID";
+        this.Id = -1;
+        this.Account = accountProfile.Account;
+        this.Email = accountProfile.Email;
+        this.EnableNotifications = accountProfile.EnableNotifications;
+        this.FirstName = accountProfile.FirstName;
+        // this.IsSystemAdmin needs to be set by the caller
+        this.LastName = accountProfile.LastName;
+        this.Location = accountProfile.Location;
+        this.MiddleName = accountProfile.MiddleName;
+        this.Name = accountProfile.Account;
+        this.PreferredName = accountProfile.PreferredName;
+        this.Status = accountProfile.Status;
+        this.TimeZone = accountProfile.TimeZone;
     }
 
     /// <summary>
