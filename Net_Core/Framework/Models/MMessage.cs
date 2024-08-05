@@ -146,16 +146,16 @@ public class MMessage : AbstractBaseModel, IMessage
     public void FormatBody()
     {
         PropertyInfo[] myPropertyInfo = this.GetType().GetProperties();
-        PropertyInfo myPropertyItem = null;
-        foreach (PropertyInfo myPropertyItem_loopVariable in myPropertyInfo)
+        PropertyInfo mPropertyItem = null;
+        foreach (PropertyInfo mPropertyItem_loopVariable in myPropertyInfo)
         {
-            myPropertyItem = myPropertyItem_loopVariable;
-            object pValue = myPropertyItem.GetValue(this, null);
+            mPropertyItem = mPropertyItem_loopVariable;
+            object pValue = mPropertyItem.GetValue(this, null);
             if (pValue != null)
             {
-                if(myPropertyItem.Name.ToUpper(CultureInfo.InvariantCulture) != "BODY")
+                if(!mPropertyItem.Name.Equals("BODY", StringComparison.CurrentCultureIgnoreCase))
                 {
-                    this.m_Body = this.m_Body.Replace("<" + myPropertyItem.Name + ">", pValue.ToString());
+                    this.m_Body = this.m_Body.Replace("<" + mPropertyItem.Name + ">", pValue.ToString());
                 }
             }
         }
