@@ -461,6 +461,7 @@ public abstract class AbstractAccountController : ControllerBase
         if (string.IsNullOrWhiteSpace(accountProfile.LastName)) throw new ArgumentNullException("LastName", " can not be blank");
         MAccountProfile mSavedAccountProfile = AccountUtility.Register(accountProfile, Request.Headers.Origin);
         string mRetunMsg = "Registration successful, please check your email for verification instructions";
+        bool mMailSent = false;
         if(mSavedAccountProfile != null)
         {
             MMessage mMessage = MessageUtility.GetProfile("RegistrationSuccess");
@@ -469,12 +470,12 @@ public abstract class AbstractAccountController : ControllerBase
                 FullName = mSavedAccountProfile.FirstName + " " + mSavedAccountProfile.LastName,
                 VerificationToken = Uri.EscapeDataString(mSavedAccountProfile.VerificationToken)
             };
-
-            string urlRoot = $"{Request.Scheme}://{Request.Host}/";
+            string urlRoot = string.Format("{0}:/{1}", Request.Scheme, Request.Host);
             mRegistrationSuccess.Server = urlRoot;
             mRegistrationSuccess.FormatBody();
             // send email
-            if(!MessageUtility.SendMail(mRegistrationSuccess, accountProfile))
+            mMailSent = MessageUtility.SendMail(mRegistrationSuccess, accountProfile);
+            if(!mMailSent)
             {
                 mRetunMsg = "Registration failed, could not send mail to '" + accountProfile.Email + "' the account was not created!";
                 AccountUtility.Delete(mSavedAccountProfile.Id);
