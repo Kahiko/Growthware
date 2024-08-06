@@ -12,6 +12,7 @@ import { LogoutComponent } from '@growthware/core/account';
 import { SearchAccountsComponent } from '@growthware/core/account';
 import { SelectPreferencesComponent } from '@growthware/core/account';
 import { UpdateAnonymousProfileComponent } from '@growthware/core/account';
+import { VerifyAccountComponent } from '@growthware/core/account';
 
 const childRoutes: Routes = [
 	{ path: '', component: SearchAccountsComponent, canActivate: [AuthGuard]},
@@ -25,6 +26,7 @@ const childRoutes: Routes = [
 	{ path: 'reset-password', component: ChangePasswordComponent },
 	{ path: 'logout', component: LogoutComponent },
 	{ path: 'forgot-password', component: ForgotPasswordComponent },
+	{ path: 'verify-account', component: VerifyAccountComponent },
 ];
 
 
