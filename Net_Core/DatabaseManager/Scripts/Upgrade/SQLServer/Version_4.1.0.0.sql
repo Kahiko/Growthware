@@ -653,7 +653,7 @@ IF NOT EXISTS (SELECT TOP(1) NULL FROM [ZGWCoreWeb].[Messages] WHERE [Name] = 'R
             'Registration Success', -- Title
             'Sent to the registering email/account when registration is successful', -- Description
             '<p>Please use the below link to verify your account:</p>
-<p><a href="<Server>/accounts/verify-account?verificationToken=<VerificationToken>">Verify Account</a></p>
+<p><a href="<Server>/accounts/verify-account?verificationToken=<VerificationToken>&email=<Email>">Verify Account</a></p>
 <p>When you click on the above link your account will be verified and you will be logged in.  The system will not allow you to use any secured features until you change your password.</p>
 <p>Please note the verification link will only work once.</p>', -- Body
             @V_FORMAT_AS_HTML_TRUE,

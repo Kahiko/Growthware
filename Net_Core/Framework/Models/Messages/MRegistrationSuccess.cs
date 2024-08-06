@@ -19,6 +19,8 @@ public class MRegistrationSuccess : MMessage
     /// <param name="profile">MMessage</param>
     public MRegistrationSuccess(MMessage profile) : base(profile) { }
 
+    public String Email { get; set; }
+
     /// <summary>
     /// Gets or sets the full name.
     /// </summary>
