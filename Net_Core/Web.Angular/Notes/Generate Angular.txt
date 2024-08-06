@@ -213,6 +213,7 @@ Library: (core) From Web.Angular
 		ng generate component --path=projects/gw-lib/core/account/src c/SearchAccounts 			--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/SelectPreferences 		--standalone --style scss --project gw-lib
 		ng generate component --path=projects/gw-lib/core/account/src c/UpdateAnonymousProfile 	--standalone --style scss --project gw-lib
+		ng generate component --path=projects/gw-lib/core/account/src c/VerifyAccount			--standalone --style scss --project gw-lib
 		ng generate service   --path=projects/gw-lib/core/account/src account --project gw-lib
 	Sort By:
 			*ng generate module features/sortBy --project gw-lib
