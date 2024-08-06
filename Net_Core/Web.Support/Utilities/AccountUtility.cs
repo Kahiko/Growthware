@@ -524,9 +524,14 @@ public static class AccountUtility
             Boolean mSaveRoles = true;
             Boolean mSaveGroups = true;
             JwtUtility mJwtUtility = new();
-            mProfileToSave.VerificationToken = mJwtUtility.GenerateVerificationToken();
+            // TODO: At this point I think this needs to be in the upgrade downgrade scripts
+            // but for now it will be done here, should also be thinking about [ResetToken]
+            // as well.
+            string mVerificationToken = mJwtUtility.GenerateVerificationToken();
+            mProfileToSave.VerificationToken = mVerificationToken;
             mBAccount.Save(mProfileToSave, mSaveRefreshTokens, mSaveRoles, mSaveGroups);
             mProfileToSave = GetAccount(mProfileToSave.Account, true);
+            mProfileToSave.VerificationToken = mVerificationToken;
         }
         else 
         {
