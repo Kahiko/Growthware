@@ -101,10 +101,12 @@ public static class MessageUtility
             UseDefaultCredentials = true,
         };
         // if we have credentials, use them
-        if (ConfigSettings.SmtpAccount.Trim().Length > 0 & ConfigSettings.SmtpPassword.Trim().Length > 0)
+        string mSmtpServer = ConfigSettings.SmtpAccount.Trim();
+        CryptoUtility.TryDecrypt(ConfigSettings.SmtpPassword.Trim(), out string mPassword, ConfigSettings.EncryptionType);
+        if (ConfigSettings.SmtpAccount.Trim().Length > 0 & mPassword.Length > 0)
         {
             mMailClient.UseDefaultCredentials = false;
-            NetworkCredential mNetworkCredential = new NetworkCredential(ConfigSettings.SmtpAccount.Trim(), ConfigSettings.SmtpPassword.Trim());
+            NetworkCredential mNetworkCredential = new(mSmtpServer, mPassword);
             mMailClient.Credentials = mNetworkCredential;
         }
         return mMailClient;
@@ -190,31 +192,40 @@ public static class MessageUtility
     /// </summary>
     /// <param name="messageProfile">Object implementing IMessageProfile</param>
     /// <param name="accountProfile">The account profile.</param>
-    public static void SendMail(IMessage messageProfile, MAccountProfile accountProfile)
+    /// <returns>bool</returns>
+    public static bool SendMail(IMessage messageProfile, MAccountProfile accountProfile)
     {
-        if (!canSendMail()) return;
-        string mFrom = ConfigSettings.SmtpFrom;
-        if (mFrom.Trim().Length == 0)
+        bool mRetVal = false;
+        if (!canSendMail()) return mRetVal;
+        string mSmtpAccount = ConfigSettings.SmtpAccount;
+        string mSmtpFrom = ConfigSettings.SmtpFrom;
+        if (mSmtpAccount.Trim().Length == 0)
         {            
             m_Logger.Error("SMTP From not set in the GrowthWare.json file");
-            return;
+            return mRetVal;
+        }
+        if(String.IsNullOrWhiteSpace(mSmtpFrom))
+        {
+            mSmtpFrom = mSmtpAccount;
         }
         SmtpClient mailClient = getSmtpClient();
         messageProfile.FormatBody();
-        MailMessage mailMessage = new(mFrom, accountProfile.Email)
-        {
-            Body = messageProfile.Body,
-            IsBodyHtml = messageProfile.FormatAsHtml,
-            Subject = "Request for password change",
-        };
+        MailMessage mMailMessage = new MailMessage();
+        mMailMessage.From = new MailAddress(mSmtpAccount, mSmtpFrom);
+        mMailMessage.To.Add(new MailAddress(accountProfile.Email, accountProfile.FirstName + " " + accountProfile.LastName));
+        mMailMessage.Subject = messageProfile.Title;
+        mMailMessage.IsBodyHtml = messageProfile.FormatAsHtml;
+        mMailMessage.Body = messageProfile.Body;
         try
         {
-            mailClient.Send(mailMessage);
+            mailClient.Send(mMailMessage);
+            mRetVal = true;
         }
         catch (System.Exception ex)
         {
             m_Logger.Error(ex);
         }
+        return mRetVal;
     }
 
     /// <summary>
@@ -226,18 +237,20 @@ public static class MessageUtility
     /// <param name="accountProfile">The account profile.</param>
     /// <param name="file">The file.</param>
     /// <param name="contentType">Type of the content.</param>
-    public static void SendMail(string body, string subject, bool formatAsHTML, MAccountProfile accountProfile, FileInfo file, ContentType contentType)
+    /// <returns>bool</returns>
+    public static bool SendMail(string body, string subject, bool formatAsHTML, MAccountProfile accountProfile, FileInfo file, ContentType contentType)
     {
-        if (!canSendMail()) return;
+        bool mRetVal = false;
+        if (!canSendMail()) return mRetVal;
         string mFrom = ConfigSettings.SmtpFrom;
         if (mFrom.Trim().Length == 0)
         {
             Logger log = Logger.Instance();
             log.Error("SMTP From not set in the WEB.CONFIG file");
-            return;
+            return mRetVal;
         }
-        SmtpClient mailClient = getSmtpClient();
-        MailMessage mailMessage = new(new MailAddress(mFrom), new MailAddress(accountProfile.Email))
+        SmtpClient mMailClient = getSmtpClient();
+        MailMessage mMailMessage = new(new MailAddress(mFrom), new MailAddress(accountProfile.Email))
         {
             Subject = subject,
             Body = body,
@@ -248,28 +261,16 @@ public static class MessageUtility
         {
             Name = file.Name
         };
-        mailMessage.Attachments.Add(attachment);
-        mailClient.Send(mailMessage);
+        mMailMessage.Attachments.Add(attachment);
+        try
+        {
+            mMailClient.Send(mMailMessage);
+            mRetVal = true;
+        }
+        catch (System.Exception ex)
+        {
+            m_Logger.Error(ex);
+        }
+        return mRetVal;
     }
-
-    /// <summary>
-    /// Searches the specified search criteria.
-    /// </summary>
-    /// <param name="searchCriteria">The search criteria.</param>
-    /// <returns>DataTable.</returns>
-    // public static DataTable Search(MSearchCriteria searchCriteria)
-    // {
-    //     try
-    //     {
-    //         BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-    //         return mBMessages.Search(searchCriteria);
-    //     }
-    //     catch (IndexOutOfRangeException ex)
-    //     {
-    //         Logger mLog = Logger.Instance();
-    //         mLog.Debug(ex);
-    //         return null;
-    //     }
-    // }
-
 }
