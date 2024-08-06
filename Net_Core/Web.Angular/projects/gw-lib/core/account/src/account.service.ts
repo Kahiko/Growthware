@@ -446,24 +446,6 @@ export class AccountService extends BaseService {
 	}
 
 	/**
-	 * Starts the refresh token timer.
-	 */
-	private startRefreshTokenTimer() {
-		// parse json object from base64 encoded jwt token
-		const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
-		if (mJwtBase64) {
-			const mJwtToken = JSON.parse(window.atob(mJwtBase64));
-
-			// set a timeout to refresh the token a minute before it expires
-			const mExpires = new Date(mJwtToken.exp * 1000);
-			const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
-			// console.log('mExpires', mExpires);
-			// console.log('mTimeout',  new Date(Date.now() + mTimeout));
-			this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
-		}
-	}
-
-	/**
 	 * Sends a request to save an account.
 	 * 
 	 * @param {IAccountProfile} accountProfile the account profile to save
@@ -523,6 +505,24 @@ export class AccountService extends BaseService {
 		});
 	}
 
+	/**
+	 * Starts the refresh token timer.
+	 */
+	private startRefreshTokenTimer() {
+		// parse json object from base64 encoded jwt token
+		const mJwtBase64 = this.authenticationResponse.jwtToken!.split('.')[1];
+		if (mJwtBase64) {
+			const mJwtToken = JSON.parse(window.atob(mJwtBase64));
+
+			// set a timeout to refresh the token a minute before it expires
+			const mExpires = new Date(mJwtToken.exp * 1000);
+			const mTimeout = mExpires.getTime() - Date.now() - (60 * 1000);
+			// console.log('mExpires', mExpires);
+			// console.log('mTimeout',  new Date(Date.now() + mTimeout));
+			this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
+		}
+	}
+	
 	/**
 	 * Stops the refresh token timer.
 	 *
