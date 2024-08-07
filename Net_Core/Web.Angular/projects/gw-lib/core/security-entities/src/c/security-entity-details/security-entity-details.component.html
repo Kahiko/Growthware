@@ -50,7 +50,7 @@
                 <span class="Form_LabelText">Data Access Layer:</span>
               </div>
               <div class="td left">
-                <mat-select [(value)]="selectedDal" class="rounded" style="width: 150px;">
+                <mat-select [(value)]="selectedDal" class="rounded" style="width: 100px;;">
                   @for (item of validDataAccessLayers; track item) {
                     <mat-option [value]="item.name">
                       {{item.value}}
@@ -96,6 +96,83 @@
                 @if (controls['connectionString'].invalid && controls['connectionString'].touched) {
                   <mat-error style="display: inline-block; padding-left: 5px;">{{getErrorMessage('connectionString')}}</mat-error>
                 }
+              </div>
+            </div>
+          </div>
+          <div class="table">
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Parent:</span><br />
+              </div>
+              <div class="td left">
+                <mat-form-field appearance="outline">
+                  <mat-select placeholder="Select Parent" [(value)]="selectedParent" class="rounded">
+                    @for (item of validParents; track item) {
+                    <mat-option [value]="item.key">
+                      {{ item.value }}
+                    </mat-option>
+                    }
+                  </mat-select>  
+                </mat-form-field>
+              </div>
+              <div class="td top right">
+                <span class="Form_LabelText">Skin:</span><br />
+              </div>
+              <div class="td left">
+                <mat-form-field appearance="outline">
+                  <mat-select placeholder="Select Skin" [(value)]="selectedSkin" class="rounded">
+                    @for (item of validSkins; track item) {
+                    <mat-option [value]="item.name">
+                      {{ item.value }}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <div class="td top right" style="display: none;">
+                <!-- currently this is not used but should be in a future release -->
+                <span class="Form_LabelText">Style:</span><br />
+              </div>
+              <div class="td left">
+                <mat-form-field appearance="outline" style="display: none;">
+                  <mat-select placeholder="Select Style" [(value)]="selectedStyle" class="rounded" style="display: none;">
+                    @for (item of validStyles; track item) {
+                    <mat-option [value]="item.name">
+                      {{ item.value }}
+                    </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="tr">
+              <div class="td top right">
+                <span class="Form_LabelText">Encrypt Type:</span><br />
+              </div>
+              <div class="td left">
+                <mat-form-field appearance="outline">
+                  <mat-select placeholder="Select Encryption Type" [(value)]="selectedEncryptionType" class="rounded">
+                    @for (item of validEncryptionTypes; track item) {
+                    <mat-option [value]="item.key">
+                      {{ item.value }}
+                    </mat-option>
+                    }
+                  </mat-select>  
+                </mat-form-field>
+              </div>
+              <div class="td top right">
+                <span class="Form_LabelText">Status:</span><br />
+              </div>
+              <div class="td left">
+                <mat-form-field appearance="outline">
+                  <mat-select placeholder="Select Stats" [(value)]="selectedStatusSeqId" class="rounded">
+                    @for (item of validStatuses; track item) {
+                    <mat-option [value]="item.key">
+                      {{ item.value }}
+                    </mat-option>
+                    }
+                  </mat-select>  
+                </mat-form-field>
               </div>
             </div>
           </div>

@@ -87,6 +87,11 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 		{key: 2, value: 'Inactive'}
 	];
 
+	validStyles: INameValuePair[] = [
+		{ name: 'Arc', value: 'Arc' },
+		{ name: 'Blue Arrow', value: 'Blue Arrow' },
+	];
+
 	constructor(
 		private _FormBuilder: FormBuilder,
 		private _ConfigurationSvc: ConfigurationService,
@@ -127,9 +132,11 @@ export class SecurityEntityDetailsComponent extends BaseDetailComponent implemen
 			return this._ProfileSvc.getValidParents(mEditId);                                   // #2 Request getValidParents
 		}).catch((error) => {                                                              		// #1 Error Handler getSecurityInfo
 			this._LoggingSvc.toast('Error getting security info:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);
-		}).then((parrents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
-			// console.log('SecurityEntityDetailsComponent.ngOnInit.parrents', parrents);
-			this.validParents = parrents;
+		}).then((parents: IKeyValuePair[]) => {                                                // #2 Request getValidParents Handler
+			// console.log('SecurityEntityDetailsComponent.ngOnInit.parents', parents);
+			// Add 'None' to the top of the list
+			parents.unshift({ key: -1, value: 'None' });
+			this.validParents = parents;			
 			return this._ProfileSvc.getSecurityEntity(mEditId);                                 // #3 Request getSecurityEntity
 		}).catch((error) => {                                                              		// #2 Error Handler
 			this._LoggingSvc.toast('Error getting Security Entity:\r\n' + error, this.securityEntityTranslation + ' Details:', LogLevel.Error);

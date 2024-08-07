@@ -37,7 +37,7 @@ export class SearchSecurityEntitiesComponent extends BaseSearchComponent {
 		this._TheFeatureName = 'Security Entity';
 		this._TheApi = 'GrowthwareSecurityEntity/Security_Entities';
 		this._TheComponent = SecurityEntityDetailsComponent;
-		this._TheWindowSize = new WindowSize(500,775);
+		this._TheWindowSize = new WindowSize(630,775);
 		this._TheService = theFeatureSvc;
 		this._DataSvc = dataSvc;
 		this._DynamicTableSvc = dynamicTableSvc;
