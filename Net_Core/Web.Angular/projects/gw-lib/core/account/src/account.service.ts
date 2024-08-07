@@ -571,11 +571,9 @@ export class AccountService extends BaseService {
 				this._LoggingSvc.toast('Account has been verified, Please change your password', 'Verify Account', LogLevel.Success);
 			},
 			error: (error) => {
-				if (error.status && error.status === 403) {
-					this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
-				} else {
-					this._LoggingSvc.errorHandler(error, 'AccountService', 'verifyAccount');
-				}
+				// console.log('AccountService.verifyAccount.error: ', error);
+				this._LoggingSvc.errorHandler(error, 'AccountService', 'verifyAccount');
+				this._LoggingSvc.toast('Account failed verification!', 'Verify Account', LogLevel.Fatal);
 			},
 			// complete: () => {}
 		});
