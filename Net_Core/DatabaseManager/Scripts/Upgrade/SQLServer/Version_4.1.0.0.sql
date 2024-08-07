@@ -332,6 +332,7 @@ Usage:
 		@P_Location VARCHAR(50) = 'desk',
 		@P_Enable_Notifications int = 0,
 		@P_Is_System_Admin int = 0,
+		@P_VerificationToken VARCHAR(256) = NULL,
 		@P_Debug INT = 1
 --Insert new
 	exec ZGWSecurity.Set_Account 
@@ -352,6 +353,7 @@ Usage:
 		@P_Location,
 		@P_Enable_Notifications,
 		@P_Is_System_Admin,
+		@P_VerificationToken,
 		@P_Debug
 --Update
 	SET @P_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'test')
@@ -373,6 +375,7 @@ Usage:
 		@P_Location,
 		@P_Enable_Notifications,
 		@P_Is_System_Admin,
+		@P_VerificationToken,
 		@P_Debug
 */
 -- =============================================
@@ -414,7 +417,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_Location VARCHAR(50)
 	,@P_Enable_Notifications INT
 	,@P_Is_System_Admin INT
-	,@P_VerificationToken VARCHAR (MAX) = NULL
+	,@P_VerificationToken VARCHAR (MAX)
 	,@P_Debug INT = 0
 AS
 SET NOCOUNT ON;
@@ -461,6 +464,7 @@ BEGIN
 		,[ResetTokenExpires] = @P_ResetTokenExpires
 		,[StatusSeqId] = @P_StatusSeqId
 		,[Time_Zone] = @P_Time_Zone
+		,[VerificationToken] = @P_VerificationToken
 		,[Updated_By] = @P_Added_Updated_By
 		,[Updated_Date] = @V_Now
 	WHERE [AccountSeqId] = @P_AccountSeqId
