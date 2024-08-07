@@ -49,7 +49,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
         /// <remarks></remarks>
         /// <example> This sample shows how to create an instance of the class.
-        /// <code language="VB.NET">
+        /// <code language="C#">
         /// <![CDATA[
         /// MSecurityEntityProfile mSecurityEntityProfile = MSecurityEntityProfile = New MSecurityEntityProfile();
         /// mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -61,7 +61,7 @@ namespace GrowthWare.Framework.BusinessData.BusinessLogicLayer
         /// BAccounts mBAccount = BAccounts = New BAccounts(mSecurityEntityProfile, ConfigSettings.CentralManagement);
         /// ]]>
         /// </code>
-        /// <code language="C#">
+        /// <code language="VB.NET">
         /// <![CDATA[
         /// Dim mSecurityEntityProfile As MSecurityEntityProfile = New MSecurityEntityProfile()
         /// mSecurityEntityProfile.ID = ConfigSettings.DefaultSecurityEntityID
