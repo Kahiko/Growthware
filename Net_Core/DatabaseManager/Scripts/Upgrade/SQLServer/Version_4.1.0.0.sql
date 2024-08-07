@@ -325,8 +325,6 @@ Usage:
 		@P_Email VARCHAR(128) = 'test@test.com',
 		@P_Password VARCHAR(256) = 'test',
 		@P_Password_Last_Set datetime = GETDATE(),
-		@P_ResetToken VARCHAR(256) = NULL,
-		@P_ResetTokenExpires datetime = NULL,
 		@P_Failed_Attempts int = 0,
 		@P_Added_Updated_By int = 1,
 		@P_Last_Login datetime = GETDATE(),
@@ -336,7 +334,7 @@ Usage:
 		@P_Is_System_Admin int = 0,
 		@P_Debug INT = 1
 --Insert new
-	EXEC ZGWSecurity.Set_Account 
+	exec ZGWSecurity.Set_Account 
 		@P_AccountSeqId,
 		@P_StatusSeqId,
 		@P_Account,
@@ -347,8 +345,6 @@ Usage:
 		@P_Email,
 		@P_Password,
 		@P_Password_Last_Set,
-		@P_ResetToken VARCHAR(256),
-		@P_ResetTokenExpires datetime,
 		@P_Failed_Attempts,
 		@P_Added_Updated_By,
 		@P_Last_Login,
@@ -359,7 +355,7 @@ Usage:
 		@P_Debug
 --Update
 	SET @P_AccountSeqId = (SELECT AccountSeqId FROM ZGWSecurity.Accounts WHERE Account = 'test')
-	EXEC ZGWSecurity.Set_Account
+	exec ZGWSecurity.Set_Account
 		@P_AccountSeqId,
 		@P_StatusSeqId,
 		@P_Account,
@@ -370,8 +366,6 @@ Usage:
 		@P_Email,
 		@P_Password,
 		@P_Password_Last_Set,
-		@P_ResetToken,
-		@P_ResetTokenExpires,
 		@P_Failed_Attempts,
 		@P_Added_Updated_By,
 		@P_Last_Login,
@@ -397,6 +391,10 @@ Usage:
 -- Description:	Added check for @P_Password_Last_Set fixes 
 --'SqlDateTime overflow. Must be between 1/1/1753 12:00:00 AM and 12/31/9999 11:59:59 PM' error
 -- =============================================
+-- Author:		Michael Regan
+-- Create date: 08/07/2024
+-- Description:	Added @P_VerificationToken
+-- =============================================
 ALTER PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_StatusSeqId INT
 	,@P_Account VARCHAR(128)
@@ -416,6 +414,7 @@ ALTER PROCEDURE [ZGWSecurity].[Set_Account] @P_AccountSeqId INT OUTPUT
 	,@P_Location VARCHAR(50)
 	,@P_Enable_Notifications INT
 	,@P_Is_System_Admin INT
+	,@P_VerificationToken VARCHAR (MAX) = NULL
 	,@P_Debug INT = 0
 AS
 SET NOCOUNT ON;
@@ -444,26 +443,27 @@ BEGIN
 	IF @P_Debug = 1 PRINT 'UPDATE [ZGWSecurity].[Accounts]';
 
 	UPDATE [ZGWSecurity].[Accounts]
-	SET StatusSeqId = @P_StatusSeqId
-		,Account = @P_Account
-		,First_Name = @P_First_Name
-		,Last_Name = @P_Last_Name
-		,Middle_Name = @P_Middle_Name
-		,Preferred_Name = @P_Preferred_Name
-		,Email = @P_Email
-		,Password_Last_Set = @P_Password_Last_Set
+	SET 
+		 [Account] = @P_Account
+		,[Email] = @P_Email
+		,[Enable_Notifications] = @P_Enable_Notifications
+		,[Failed_Attempts] = @P_Failed_Attempts
+		,[First_Name] = @P_First_Name
+		,[Is_System_Admin] = @P_Is_System_Admin
+		,[Last_Login] = @P_Last_Login
+		,[Last_Name] = @P_Last_Name
+		,[Location] = @P_Location
+		,[Middle_Name] = @P_Middle_Name
+		,[Preferred_Name] = @P_Preferred_Name
+		,[Password_Last_Set] = @P_Password_Last_Set
 		,[Password] = @P_Password
 		,[ResetToken] = @P_ResetToken
 		,[ResetTokenExpires] = @P_ResetTokenExpires
-		,Failed_Attempts = @P_Failed_Attempts
-		,Last_Login = @P_Last_Login
-		,Time_Zone = @P_Time_Zone
-		,Location = @P_Location
-		,Is_System_Admin = @P_Is_System_Admin
-		,Enable_Notifications = @P_Enable_Notifications
-		,Updated_By = @P_Added_Updated_By
-		,Updated_Date = @V_Now
-	WHERE AccountSeqId = @P_AccountSeqId
+		,[StatusSeqId] = @P_StatusSeqId
+		,[Time_Zone] = @P_Time_Zone
+		,[Updated_By] = @P_Added_Updated_By
+		,[Updated_Date] = @V_Now
+	WHERE [AccountSeqId] = @P_AccountSeqId
 END
 ELSE
 BEGIN
@@ -473,25 +473,26 @@ BEGIN
 	IF @P_Debug = 1 PRINT 'INSERT [ZGWSecurity].[Accounts]';
 
 	INSERT [ZGWSecurity].[Accounts] (
-		 StatusSeqId
-		,Account
-		,First_Name
-		,Last_Name
-		,Middle_Name
-		,Preferred_Name
-		,Email
-		,Password_Last_Set
+		 [StatusSeqId]
+		,[Account]
+		,[First_Name]
+		,[Last_Name]
+		,[Middle_Name]
+		,[Preferred_Name]
+		,[Email]
+		,[Password_Last_Set]
 		,[Password]
 		,[ResetToken]
 		,[ResetTokenExpires]
-		,FAILED_ATTEMPTS
-		,IS_SYSTEM_ADMIN
-		,Added_By
-		,Added_Date
-		,LAST_LOGIN
-		,TIME_ZONE
-		,Location
-		,Enable_Notifications
+		,[FAILED_ATTEMPTS]
+		,[IS_SYSTEM_ADMIN]
+		,[Added_By]
+		,[Added_Date]
+		,[LAST_LOGIN]
+		,[TIME_ZONE]
+		,[VerificationToken]
+		,[Location]
+		,[Enable_Notifications]
 	) VALUES (
 		@P_StatusSeqId
 		,@P_Account
@@ -510,6 +511,7 @@ BEGIN
 		,@V_Now
 		,@P_Last_Login
 		,@P_Time_Zone
+		,@P_VerificationToken
 		,@P_Location
 		,@P_Enable_Notifications
 	);
