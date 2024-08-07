@@ -5,6 +5,7 @@ using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Globalization;
+using System.Linq;
 
 namespace GrowthWare.DataAccess.SQLServer
 {
@@ -77,6 +78,18 @@ namespace GrowthWare.DataAccess.SQLServer
             }
         }
 
+        DataRow IAccount.GetAccountByVerificationToken
+        {
+            get
+            {
+                String mStoredProcedure = "ZGWSecurity.Get_Account_By_Verification_Token";
+                SqlParameter[] mParameters = { 
+                    GetSqlParameter("@P_VerificationToken", this.Cleanup(m_Profile.VerificationToken), ParameterDirection.Input)
+                };
+                return base.GetDataRow(mStoredProcedure, mParameters);
+            }
+        }
+
         DataTable IAccount.GetAccounts
         {
             get
@@ -85,9 +98,9 @@ namespace GrowthWare.DataAccess.SQLServer
                 String mStoredProcedure = "ZGWSecurity.Get_Account";
                 SqlParameter[] mParameters =
 				{
-					new SqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
-					new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-					new SqlParameter("@P_Account", "")
+					new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+					new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+					new("@P_Account", "")
 				};
                 return base.GetDataTable(mStoredProcedure, mParameters);
             }
@@ -104,7 +117,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mCleanedValue = this.Cleanup(refreshToken);
             string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[RefreshTokens] WHERE [Token] = @P_Token";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Token", mCleanedValue), 
+				new("@P_Token", mCleanedValue), 
 			};
             var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
             if(mDbValue != null)
@@ -125,7 +138,7 @@ namespace GrowthWare.DataAccess.SQLServer
             mCommandText +=  "INNER JOIN [ZGWSecurity].[Accounts] ACCT ON ACCT.[Account] = @P_Account AND RT.AccountSeqId = ACCT.[AccountSeqId] ";
             mCommandText +=  "ORDER BY [Created] ASC;";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Account", m_Profile.Account), 
+				new("@P_Account", m_Profile.Account), 
 			};
             return base.GetDataTable(mCommandText, mParameters, true);
         }
@@ -137,7 +150,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mCleanedValue = this.Cleanup(resetToken);
             string mCommandText = "SELECT COUNT(*) FROM [ZGWSecurity].[Accounts] WHERE [ResetToken] = @P_ResetToken";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_ResetToken", mCleanedValue), 
+				new("@P_ResetToken", mCleanedValue), 
 			};
             var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
             if(mDbValue != null)
@@ -156,8 +169,8 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mStoredProcedure = "ZGWSecurity.Get_Account_Roles";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)), 
-				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
+				new("@P_Account", this.Cleanup(m_Profile.Account)), 
+				new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -167,9 +180,9 @@ namespace GrowthWare.DataAccess.SQLServer
             String mStoredProcedure = "ZGWSecurity.Get_Menu_Data";
             SqlParameter[] mParameters =
 			{
-			 new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-			 new SqlParameter("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
-			 new SqlParameter("@P_Account", this.Cleanup(account))
+			 new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+			 new("@P_Navigation_Types_NVP_DetailSeqId", (int)menuType),
+			 new("@P_Account", this.Cleanup(account))
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -179,8 +192,8 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mStoredProcedure = "ZGWSecurity.Get_Account_Groups";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)), 
-				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
+				new("@P_Account", this.Cleanup(m_Profile.Account)), 
+				new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -189,8 +202,8 @@ namespace GrowthWare.DataAccess.SQLServer
         {
             String mStoredProcedure = "ZGWSecurity.Get_Account_Security";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)), 
-				new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
+				new("@P_Account", this.Cleanup(m_Profile.Account)), 
+				new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID) 
 			};
             return base.GetDataTable(mStoredProcedure, mParameters);
         }
@@ -210,26 +223,28 @@ namespace GrowthWare.DataAccess.SQLServer
             {
                 m_Profile.PasswordLastSet = new(1753, 1, 1, 0, 0, 0);
             }
-            SqlParameter[] mParameters = { 
+            SqlParameter[] mParameters = [ 
 				GetSqlParameter("@P_AccountSeqId", m_Profile.Id, ParameterDirection.InputOutput),
-				new SqlParameter("@P_StatusSeqId", m_Profile.Status),
-				new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)),
-				new SqlParameter("@P_First_Name", this.Cleanup(m_Profile.FirstName)),
-				new SqlParameter("@P_Last_Name", this.Cleanup(m_Profile.LastName)),
-				new SqlParameter("@P_Middle_Name", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
-				new SqlParameter("@P_Preferred_Name", !string.IsNullOrWhiteSpace(m_Profile.PreferredName) ? m_Profile.PreferredName : DBNull.Value),
-				new SqlParameter("@P_Email", m_Profile.Email),
-				new SqlParameter("@P_Password", m_Profile.Password),
-				new SqlParameter("@P_Password_Last_Set", m_Profile.PasswordLastSet),
-                new SqlParameter("@P_ResetToken", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
-                new SqlParameter("@P_ResetTokenExpires", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetTokenExpires : DBNull.Value),
-				new SqlParameter("@P_Failed_Attempts", m_Profile.FailedAttempts),
-				new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
-				new SqlParameter("@P_Last_Login", m_Profile.LastLogOn),
-				new SqlParameter("@P_Time_Zone", m_Profile.TimeZone),
-				new SqlParameter("@P_Location", m_Profile.Location),
-				new SqlParameter("@P_Enable_Notifications", m_Profile.EnableNotifications),
-				new SqlParameter("@P_Is_System_Admin", m_Profile.IsSystemAdmin)};
+				new("@P_StatusSeqId", m_Profile.Status),
+				new("@P_Account", this.Cleanup(m_Profile.Account)),
+				new("@P_First_Name", this.Cleanup(m_Profile.FirstName)),
+				new("@P_Last_Name", this.Cleanup(m_Profile.LastName)),
+				new("@P_Middle_Name", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
+				new("@P_Preferred_Name", !string.IsNullOrWhiteSpace(m_Profile.PreferredName) ? m_Profile.PreferredName : DBNull.Value),
+				new("@P_Email", m_Profile.Email),
+				new("@P_Password", m_Profile.Password),
+				new("@P_Password_Last_Set", m_Profile.PasswordLastSet),
+                new("@P_ResetToken", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetToken : DBNull.Value),
+                new("@P_ResetTokenExpires", !string.IsNullOrWhiteSpace(m_Profile.ResetToken) ? m_Profile.ResetTokenExpires : DBNull.Value),
+				new("@P_Failed_Attempts", m_Profile.FailedAttempts),
+				new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile)),
+				new("@P_Last_Login", m_Profile.LastLogOn),
+				new("@P_Time_Zone", m_Profile.TimeZone),
+				new("@P_Location", m_Profile.Location),
+				new("@P_Enable_Notifications", m_Profile.EnableNotifications),
+				new("@P_Is_System_Admin", m_Profile.IsSystemAdmin),
+                new("@P_VerificationToken", !string.IsNullOrWhiteSpace(m_Profile.VerificationToken) ? m_Profile.VerificationToken : DBNull.Value)
+            ];
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
             mRetInt = int.Parse(GetParameterValue("@P_AccountSeqId", mParameters), CultureInfo.InvariantCulture);
             return mRetInt;
@@ -240,10 +255,10 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mStoredProcedure = "ZGWSecurity.Set_Account_Groups";
             SqlParameter[] mParameters = {
-			  new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)),
-			  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-			  new SqlParameter("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
-			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
+			  new("@P_Account", this.Cleanup(m_Profile.Account)),
+			  new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+			  new("@P_Groups", m_Profile.GetCommaSeparatedAssignedGroups),
+			  new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			 };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
@@ -258,10 +273,10 @@ namespace GrowthWare.DataAccess.SQLServer
             checkValid();
             String mStoredProcedure = "ZGWSecurity.Set_Account_Roles";
             SqlParameter[] mParameters = {
-			  new SqlParameter("@P_Account", this.Cleanup(m_Profile.Account)),
-			  new SqlParameter("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
-			  new SqlParameter("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
-			  new SqlParameter("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
+			  new("@P_Account", this.Cleanup(m_Profile.Account)),
+			  new("@P_SecurityEntitySeqId", m_SecurityEntitySeqID),
+			  new("@P_Roles", m_Profile.GetCommaSeparatedAssignedRoles),
+			  new("@P_Added_Updated_By", GetAddedUpdatedBy(m_Profile))
 			 };
             base.ExecuteNonQuery(mStoredProcedure, mParameters);
         }
@@ -269,7 +284,7 @@ namespace GrowthWare.DataAccess.SQLServer
         void IAccount.Delete()
         {
             string myStoreProcedure = "ZGWSecurity.Delete_Account";
-            SqlParameter[] myParameters = { new SqlParameter("@P_AccountSeqId", m_Profile.Id) };
+            SqlParameter[] myParameters = { new("@P_AccountSeqId", m_Profile.Id) };
             base.ExecuteNonQuery(myStoreProcedure, myParameters);
         }
 
@@ -280,7 +295,7 @@ namespace GrowthWare.DataAccess.SQLServer
             string mCleanedValue = this.Cleanup(token);
             string mCommandText = "SELECT TOP(1) * FROM [ZGWSecurity].[Accounts] WHERE [VerificationToken] = @P_Token";
             SqlParameter[] mParameters = { 
-				new SqlParameter("@P_Token", mCleanedValue), 
+				new("@P_Token", mCleanedValue), 
 			};            
             var mDbValue = base.ExecuteScalar(mCommandText, mParameters, true);
             if(mDbValue != null)
