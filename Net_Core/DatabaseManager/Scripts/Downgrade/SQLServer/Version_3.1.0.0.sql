@@ -1,5 +1,5 @@
 -- Downgrade
---USE [YourDatabaseName];
+USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 

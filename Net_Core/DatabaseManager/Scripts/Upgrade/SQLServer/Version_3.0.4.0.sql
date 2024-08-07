@@ -1,5 +1,5 @@
 -- Upgrade
---USE [YourDatabaseName];
+USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 
