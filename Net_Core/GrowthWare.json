@@ -80,7 +80,7 @@
     "Development_SMTP_Account": "some.one@outlook.com",
     "Development_SMTP_From": "Some One",
     "Development_SMTP_NumberOfRetries": "3",
-    "Development_SMTP_Password": "somepaddword",
+    "Development_SMTP_Password": "somepassword",
     "Development_SMTP_Server": "smtp.office365.com",
     "Development_SMTP_Port": "587",
     "Development_SMTP_EnableSsl": "True",
