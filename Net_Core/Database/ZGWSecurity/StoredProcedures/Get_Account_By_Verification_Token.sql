@@ -44,7 +44,6 @@ BEGIN
 		,ACCT.[Updated_By]
 		,ACCT.[Updated_Date]
 	FROM [ZGWSecurity].[Accounts] ACCT
--- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
     WHERE
         ACCT.[VerificationToken] = @P_VerificationToken;
 	RETURN 0
