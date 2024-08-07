@@ -638,6 +638,76 @@ IF @P_Debug = 1 PRINT 'End Set_Account';
 
 GO
 /****** End: Procedure [ZGWSecurity].[Set_Account] ******/
+
+/****** Start: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
+SET ANSI_NULLS OFF
+GO
+
+SET QUOTED_IDENTIFIER OFF
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Reset_Token]') AND type IN (N'P' ,N'PC'))
+	BEGIN
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token] AS'
+	END
+--END IF
+GO
+
+/*
+Usage:
+	DECLARE 
+		@P_VerificationToken NVARCHAR(MAX) = '',
+		@P_Debug INT = 1
+
+	EXEC ZGWSecurity.Get_Account_By_Reset_Token
+		@P_VerificationToken,
+		@P_Debug
+*/
+-- =============================================
+-- Author:		Michael Regan
+-- Create date: 08/07/2024
+-- Description:	Selects a single account given the VerificationToekn
+-- =============================================
+ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
+	@P_VerificationToken NVARCHAR(MAX),
+	@P_Debug INT = 0
+AS
+BEGIN
+	SET NOCOUNT ON
+	SELECT TOP (1) 
+		 [ACCT_SEQ_ID] = ACCT.[AccountSeqId]
+		,[ACCT] = ACCT.[Account]
+		,ACCT.[Email]
+		,ACCT.[Enable_Notifications]
+		,ACCT.[Is_System_Admin]
+		,ACCT.[StatusSeqId]
+		,ACCT.[Password_Last_Set]
+		,ACCT.[Password]
+		,ACCT.[ResetToken]
+		,ACCT.[ResetTokenExpires]
+		,ACCT.[Failed_Attempts]
+		,ACCT.[First_Name]
+		,ACCT.[Last_Login]
+		,ACCT.[Last_Name]
+		,ACCT.[Location]
+		,ACCT.[Middle_Name]
+		,ACCT.[Preferred_Name]
+		,ACCT.[Time_Zone]
+		,ACCT.[VerificationToken]
+		,ACCT.[Added_By]
+		,ACCT.[Added_Date]
+		,ACCT.[Updated_By]
+		,ACCT.[Updated_Date]
+	FROM [ZGWSecurity].[Accounts] ACCT
+-- var account = _context.Accounts.SingleOrDefault(x => x.ResetToken == token && x.ResetTokenExpires > DateTime.UtcNow);
+    WHERE
+        ACCT.[VerificationToken] = @P_VerificationToken;
+	RETURN 0
+END
+GO
+
+/****** End: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
+
 DECLARE @V_SecurityEntitySeqId INT = 1,
         @V_FORMAT_AS_HTML_TRUE INT = 1, -- TRUE
         @V_PRIMARY_KEY INT,
