@@ -219,6 +219,40 @@ namespace GrowthWare.BusinessLogic
         }
 
         /// <summary>
+        /// Returns a MAccountProfile based on a verification token
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public MAccountProfile GetProfileByVerificationToken(string token)
+        {
+            MAccountProfile mRetVal = null;
+            if (DatabaseIsOnline()) 
+            {
+                string mAccount = string.Empty;
+                string mColumnName = "ACCT";
+                m_DAccounts.Profile = new MAccountProfile();
+                m_DAccounts.Profile.VerificationToken = token;
+                DataRow mDataRow = m_DAccounts.GetAccountByVerificationToken;
+                // we will need the "Account" in order to get the correct roles and groups
+                if (mDataRow != null && mDataRow.Table.Columns.Contains(mColumnName) && !(Convert.IsDBNull(mDataRow[mColumnName])))
+                {
+                    mAccount = mDataRow[mColumnName].ToString().Trim();
+                } 
+                else 
+                {
+                    throw new BusinessLogicLayerException("Invalid token");
+                }
+                m_DAccounts.Profile.Account = mAccount;
+                DataTable mRefreshTokens = m_DAccounts.RefreshTokens();
+                DataTable mAssignedRoles = m_DAccounts.Roles();
+                DataTable mAssignedGroups = m_DAccounts.Groups();
+                DataTable mRoles = m_DAccounts.Security();
+                mRetVal = new MAccountProfile(mDataRow, mRefreshTokens, mAssignedRoles, mAssignedGroups, mRoles);
+            }
+            return mRetVal;
+        }
+
+        /// <summary>
         /// Returns a collection of MAccountProfiles without any role information
         /// </summary>
         /// <param name="profile">An instance of MAccountProfile</param>
@@ -352,6 +386,11 @@ namespace GrowthWare.BusinessLogic
             }
         }
 
+        /// <summary>
+        /// Check the database to see if the verificationToken matches any existing Tokens
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
         public bool VerificationTokenExists(string token)
         {
             return m_DAccounts.VerificationTokenExists(token);
