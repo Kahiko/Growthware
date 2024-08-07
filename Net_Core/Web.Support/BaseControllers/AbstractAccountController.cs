@@ -450,11 +450,16 @@ public abstract class AbstractAccountController : ControllerBase
         return Ok(mRetVal);
     }
 
+    /// <summary>
+    /// Registers a new account profile.  If the registration is successful, a verification email will be sent to the account.
+    /// </summary>
+    /// <param name="accountProfile">The account profile to be registered.</param>
+    /// <returns>An IActionResult containing a message indicating the success or failure of the registration.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the accountProfile parameter is null or empty.</exception>
     [AllowAnonymous]
     [HttpPost("Register")]
     public IActionResult Register(MAccountProfile accountProfile)
     {
-        // TODO: Implement Register
         if (accountProfile == null) throw new ArgumentNullException("accountProfile", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.Email)) throw new ArgumentNullException("Email", " can not be blank");
         if (string.IsNullOrWhiteSpace(accountProfile.FirstName)) throw new ArgumentNullException("FirstName", " can not be blank");
@@ -467,11 +472,12 @@ public abstract class AbstractAccountController : ControllerBase
             MMessage mMessage = MessageUtility.GetProfile("RegistrationSuccess");
             MRegistrationSuccess mRegistrationSuccess = new(mMessage)
             {
+                Email = mSavedAccountProfile.Email,
                 FullName = mSavedAccountProfile.FirstName + " " + mSavedAccountProfile.LastName,
                 VerificationToken = Uri.EscapeDataString(mSavedAccountProfile.VerificationToken)
             };
-            string urlRoot = string.Format("{0}:/{1}", Request.Scheme, Request.Host);
-            mRegistrationSuccess.Server = urlRoot;
+            string mUrlRoot = string.Format("{0}:/{1}", Request.Scheme, Request.Host);
+            mRegistrationSuccess.Server = mUrlRoot;
             mRegistrationSuccess.FormatBody();
             // send email
             mMailSent = MessageUtility.SendMail(mRegistrationSuccess, accountProfile);
@@ -682,5 +688,38 @@ public abstract class AbstractAccountController : ControllerBase
             Expires = DateTime.UtcNow.AddDays(ConfigSettings.JWT_Refresh_Cookie_TTL_Days)
         };
         Response.Cookies.Append(ConfigSettings.JWT_Refresh_CookieName, mToken, cookieOptions);
+    }
+
+    /// <summary>
+    /// Verifies an account by looking up the account in the database using the verification token.
+    /// </summary>
+    /// <param name="verificationToken">The verification token to check.</param>
+    /// <param name="email">The email address of the account to verify.</param>
+    /// <returns>A tuple containing an AuthenticationResponse object and a UIAccountChoices object.</returns>
+    [AllowAnonymous]
+    [HttpPost("VerifyAccount")]
+    public ActionResult<Tuple<AuthenticationResponse, UIAccountChoices>> VerifyAccount(string verificationToken, string email)
+    {
+        // Look up the account in the database using the verification token
+        // If the account exists and the verification token is valid:
+        //      Set the last log on date
+        //      Set the status to change password
+        //      Set the verification token to null
+        //      Save the profile
+        //      return the account and account choices
+        // If the account does not exist or the verification token is invalid, throw an exception
+        MAccountProfile mAccountProfile = AccountUtility.VerifyAccount(verificationToken, email);
+        if(mAccountProfile == null)
+        {
+            return StatusCode(StatusCodes.Status406NotAcceptable, "The verification token is not invalid");
+        }
+        mAccountProfile.LastLogOn = DateTime.Now;
+        mAccountProfile.Status = (int)SystemStatus.ChangePassword;
+        mAccountProfile.VerificationToken = null;
+        AccountUtility.Save(mAccountProfile, false, false, false);
+        AuthenticationResponse mRetVal = new(mAccountProfile);
+        ClientChoicesUtility.SynchronizeContext(mAccountProfile.Account);
+        UIAccountChoices mAccountChoice = new(ClientChoicesUtility.CurrentState);
+        return Ok(Tuple.Create(mRetVal, mAccountChoice));
     }
 }
