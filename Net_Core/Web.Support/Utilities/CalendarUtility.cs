@@ -9,10 +9,13 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class CalendarUtility
 {
+
+    private static BCommunityCalendar m_BusinessLogic = null;
+
     public static List<MCalendarEvent> GetEvents(MSecurityEntity securityEntityProfile, int functionSeqId, DateTime startDate, DateTime endDate) 
     {
         List<MCalendarEvent> mRetVal = [];
-        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
         DataTable mDataTable = mCommunityCalendar.GetEvents(functionSeqId, startDate, endDate);
         foreach (DataRow item in mDataTable.Rows)
         {
@@ -24,19 +27,32 @@ public static class CalendarUtility
 
     public static bool DeleteEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId)
     {
-        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
         return mCommunityCalendar.DeleteEvent(calendarEventSeqId);
+    }
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BCommunityCalendar getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
     }
 
     public static MCalendarEvent GetEvent(MSecurityEntity securityEntityProfile, int calendarEventSeqId) 
     {
-        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
         return mCommunityCalendar.GetEvent(calendarEventSeqId);
     }
 
     public static MCalendarEvent SaveCalendarEvent(MSecurityEntity securityEntityProfile, int functionSeqId, MCalendarEvent calendarEvent)
     {
-        BCommunityCalendar mCommunityCalendar = new(securityEntityProfile, ConfigSettings.CentralManagement);
+        BCommunityCalendar mCommunityCalendar = getBusinessLogic();
         return mCommunityCalendar.SaveCalendarEvent(functionSeqId, calendarEvent);
     }
 }
