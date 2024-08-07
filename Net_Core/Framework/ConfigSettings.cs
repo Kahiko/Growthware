@@ -687,6 +687,17 @@ namespace GrowthWare.Framework
             get { return GetAppSettingValue("SMTP_From", true); }
         }
 
+        public static int SmtpNumberOfRetries
+        {
+            get
+            {
+                bool mParseInt = int.TryParse(GetAppSettingValue("SMTP_NumberOfRetries", true), out int mRetVal);
+                // Assign a default value
+                if (!mParseInt) mRetVal = 1;
+                return mRetVal;            
+            }
+        }
+
         /// <summary>
         /// Returns SMTP_Server from the CONFIG file
         /// </summary>
