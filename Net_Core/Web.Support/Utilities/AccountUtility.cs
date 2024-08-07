@@ -15,6 +15,7 @@ public static class AccountUtility
 {
     private static string s_CachedName = "CachedAnonymous";
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
+    private static BAccounts m_BAccounts = null;
     private static int[] m_InvalidStatus = { (int)SystemStatus.Disabled, (int)SystemStatus.Inactive };
     private static Logger m_Logger = Logger.Instance();
     private static JwtUtility m_JwtUtils = new JwtUtility();
@@ -86,7 +87,7 @@ public static class AccountUtility
     public static MAccountProfile Authenticate(string account, string password, string ipAddress)
     {
         if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("account", "account cannot be a null reference (Nothing in VB) or empty!");
-        if (string.IsNullOrEmpty(account)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
+        if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password", "password cannot be a null reference (Nothing in VB) or empty!");
         string mAccount = account;  // It's good practice to leave parameters unchanged.
         MAccountProfile mRetVal = null;
         if (account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase))
@@ -256,7 +257,7 @@ public static class AccountUtility
         // TODO: It may be worth being able to get an account from the Id so we can get the name
         // and remove the any in memory information for the account.
         // This is not necessary for now b/c you can't delete the your own account.
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = getAccountBusinessLogic();
         mBAccount.Delete(accountSeqId);
     }
 
@@ -276,7 +277,7 @@ public static class AccountUtility
         {
             return mRetVal;
         }
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = getAccountBusinessLogic();
         DataTable mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null)
         {
@@ -304,7 +305,7 @@ public static class AccountUtility
             return mRetVal;
         }
         mRetVal = new List<MMenuTree>();
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = getAccountBusinessLogic();
         DataTable mDataTable = null;
         mDataTable = mBAccount.GetMenu(account, menuType);
         if (mDataTable != null && mDataTable.Rows.Count > 0)
@@ -349,14 +350,14 @@ public static class AccountUtility
         BAccounts mBAccount = null;
         if (forceDb)
         {
-            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            mBAccount = getAccountBusinessLogic();
             mRetVal = mBAccount.GetProfile(account);
             return mRetVal;
         }
         mRetVal = CurrentProfile;
         if (mRetVal == null || (!mRetVal.Account.Equals(account, StringComparison.InvariantCultureIgnoreCase)))
         {
-            mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            mBAccount = getAccountBusinessLogic();
             mRetVal = mBAccount.GetProfile(account);
         }
         return mRetVal;
@@ -373,22 +374,43 @@ public static class AccountUtility
     /// <exception cref="System.Exception">Thrown when an error occurs while retrieving the account profile.</exception>
     private static MAccountProfile getAccountByRefreshToken(string token)
     {
+        BAccounts mBAccount = getAccountBusinessLogic();
+        MAccountProfile mRetVal = null;
+        mRetVal = mBAccount.GetProfileByRefreshToken(token);
+        return mRetVal;
+    }
+
+    private static MAccountProfile getProfileByVerificationToken(string token)
+    {
         BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
         MAccountProfile mRetVal = null;
         try
         {
-            mRetVal = mBAccount.GetProfileByRefreshToken(token);
+            mRetVal = mBAccount.GetProfileByVerificationToken(token);
         }
         catch (System.Exception)
         {
-            mRetVal = GetAccount(ConfigSettings.Anonymous);
+            // do
         }
         return mRetVal;
     }
 
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BAccounts getAccountBusinessLogic()
+    {
+        if(m_BAccounts == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BAccounts = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BAccounts;
+    }
+
     public static MAccountProfile GetProfileByResetToken(string token)
     {
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = getAccountBusinessLogic();
         MAccountProfile mRetVal = null;
         try
         {
@@ -474,7 +496,6 @@ public static class AccountUtility
 
     public static MAccountProfile Register(MAccountProfile accountProfile, string origin)
     {
-        // TODO: Implement Register
         // Get the security entity via the URL or use the default
         MSecurityEntity mTargetSecurityEntity = SecurityEntityUtility.CurrentProfile;
         if(ConfigSettings.SecurityEntityFromUrl)
@@ -680,7 +701,7 @@ public static class AccountUtility
             return accountProfile;
         }
         MSecurityEntity mSecurityEntity = SecurityEntityUtility.CurrentProfile;
-        BAccounts mBAccount = new(mSecurityEntity, ConfigSettings.CentralManagement);
+        BAccounts mBAccount = getAccountBusinessLogic();
         mBAccount.Save(accountProfile, saveRefreshTokens, saveRoles, saveGroups);
         MAccountProfile mAccountProfile = mBAccount.GetProfile(accountProfile.Account);
         if ((accountProfile.Id == CurrentProfile.Id) || (CurrentProfile.Account.Equals(ConfigSettings.Anonymous, StringComparison.InvariantCultureIgnoreCase)))
@@ -688,5 +709,40 @@ public static class AccountUtility
             addOrUpdateCacheOrSession(accountProfile.Account, mAccountProfile);
         }
         return accountProfile;
+    }
+
+    /// <summary>
+    /// Verifies an account by checking if the provided verification token exists in the database and matches the email address.
+    /// </summary>
+    /// <param name="verificationToken">The verification token to check.</param>
+    /// <param name="email">The email address to compare against.</param>
+    /// <returns>The verified account profile if the verification token and email match, otherwise null.</returns>
+    /// <exception cref="ArgumentNullException">Thrown when the verificationToken parameter is null.</exception>
+    public static MAccountProfile VerifyAccount(string verificationToken, string email)
+    {
+        if (verificationToken == null) throw new ArgumentNullException(nameof(verificationToken), "verificationToken cannot be a null reference (Nothing in VB)!");
+        MAccountProfile mRetVal = null;
+        MAccountProfile mAccountProfile = getProfileByVerificationToken(verificationToken);
+        if(mAccountProfile != null && !String.IsNullOrWhiteSpace(mAccountProfile.Email) && mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
+        {
+            mRetVal = mAccountProfile;
+        }
+        else
+        {
+            // ensure that we return null if the account was found by the verification token but the email addresses did not match
+            mAccountProfile = null;
+            string mMsg = string.Format("Attempted to verify token for account: {0} and verification token: '{1}'", email, verificationToken);
+            m_Logger.Error(mMsg);
+            mMsg = "The verification token {0}!";
+            if(mAccountProfile == null)
+            {
+                mMsg = string.Format(mMsg, "was not found in the database!");
+            } else if(!String.IsNullOrWhiteSpace(mAccountProfile.Email) && !mAccountProfile.Email.Equals(email, StringComparison.InvariantCultureIgnoreCase))
+            {
+                mMsg = string.Format(mMsg, "email addresses did not match for the found token!");
+            }
+            m_Logger.Error(mMsg);
+        }
+        return mRetVal;
     }
 }
