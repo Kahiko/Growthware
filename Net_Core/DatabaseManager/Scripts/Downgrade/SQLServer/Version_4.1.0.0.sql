@@ -1,5 +1,5 @@
 -- Downgrade from 4.1.0.0 to 4.0.1.0
---USE [YourDatabaseName];
+USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 -- Drop the stored procedures
