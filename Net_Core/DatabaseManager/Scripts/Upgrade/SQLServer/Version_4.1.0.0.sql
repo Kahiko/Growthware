@@ -1,5 +1,5 @@
 -- Upgrade from 4.0.1.0 to 4.1.0.0
-USE [YourDatabaseName];
+--USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 SET QUOTED_IDENTIFIER ON;
@@ -646,9 +646,9 @@ GO
 SET QUOTED_IDENTIFIER OFF
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Reset_Token]') AND type IN (N'P' ,N'PC'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Verification_Token]') AND type IN (N'P' ,N'PC'))
 	BEGIN
-		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token] AS'
+		EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [ZGWSecurity].[Get_Account_By_Verification_Token] AS'
 	END
 --END IF
 GO
@@ -659,7 +659,7 @@ Usage:
 		@P_VerificationToken NVARCHAR(MAX) = '',
 		@P_Debug INT = 1
 
-	EXEC ZGWSecurity.Get_Account_By_Reset_Token
+	EXEC ZGWSecurity.Get_Account_By_Verification_Token
 		@P_VerificationToken,
 		@P_Debug
 */
@@ -668,7 +668,7 @@ Usage:
 -- Create date: 08/07/2024
 -- Description:	Selects a single account given the VerificationToekn
 -- =============================================
-ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
+ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Verification_Token]
 	@P_VerificationToken NVARCHAR(MAX),
 	@P_Debug INT = 0
 AS

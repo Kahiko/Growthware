@@ -1,5 +1,5 @@
 -- Downgrade from 4.1.0.0 to 4.0.1.0
-USE [YourDatabaseName];
+--USE [YourDatabaseName];
 GO
 SET NOCOUNT ON;
 -- Drop the stored procedures
@@ -397,19 +397,19 @@ IF @P_Debug = 1 PRINT 'End Set_Account';
 GO
 /****** End: Procedure [ZGWSecurity].[Set_Account] ******/
 
-/****** Start: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
+/****** Start: Procedure [ZGWSecurity].[Get_Account_By_Verification_Token] ******/
 SET ANSI_NULLS OFF
 GO
 
 SET QUOTED_IDENTIFIER OFF
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Reset_Token]') AND type IN (N'P' ,N'PC'))
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[ZGWSecurity].[Get_Account_By_Verification_Token]') AND type IN (N'P' ,N'PC'))
 	BEGIN
-		DROP PROCEDURE ZGWOptional.Set_Get_Account_By_Reset_TokenCalendar_Event;
+		DROP PROCEDURE ZGWSecurity.Get_Account_By_Verification_Token;
 	END
 --END IF
-/****** End: Procedure [ZGWSecurity].[Get_Account_By_Reset_Token] ******/
+/****** End: Procedure [ZGWSecurity].[Get_Account_By_Verification_Token] ******/
 
 
 DELETE FROM [ZGWCoreWeb].[Messages] WHERE [SecurityEntitySeqId] = 1 AND [Name] IN('RegistrationSuccess', 'RegistrationError');

@@ -4,7 +4,7 @@ Usage:
 		@P_VerificationToken NVARCHAR(MAX) = '',
 		@P_Debug INT = 1
 
-	EXEC ZGWSecurity.Get_Account_By_Reset_Token
+	EXEC ZGWSecurity.Get_Account_By_Verification_Token
 		@P_VerificationToken,
 		@P_Debug
 */
@@ -13,7 +13,7 @@ Usage:
 -- Create date: 08/07/2024
 -- Description:	Selects a single account given the VerificationToekn
 -- =============================================
-CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Reset_Token]
+CREATE OR ALTER PROCEDURE [ZGWSecurity].[Get_Account_By_Verification_Token]
 	@P_VerificationToken NVARCHAR(MAX),
 	@P_Debug INT = 0
 AS
