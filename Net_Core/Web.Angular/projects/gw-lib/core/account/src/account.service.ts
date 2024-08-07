@@ -34,6 +34,7 @@ export class AccountService extends BaseService {
 	private _Api_SaveAccount: string = '';
 	private _Api_SaveClientChoices: string = '';
 	private _Api_SelectableActions: string = '';
+	private _Api_VerifyAccount: string = '';
 	private _AuthenticationResponse = new AuthenticationResponse;
 	private _BaseURL: string = '';
 	private _ClientChoices: IClientChoices = new ClientChoices();
@@ -73,6 +74,7 @@ export class AccountService extends BaseService {
 		this._Api_SaveAccount = this._BaseURL + this._ApiName + 'SaveAccount';
 		this._Api_SaveClientChoices = this._BaseURL + this._ApiName + 'SaveClientChoices';
 		this._Api_SelectableActions = this._BaseURL + this._ApiName + 'GetSelectableActions';
+		this._Api_VerifyAccount = this._BaseURL + this._ApiName + 'VerifyAccount';
 	}
 
 	/**
@@ -522,7 +524,7 @@ export class AccountService extends BaseService {
 			this._TimerId = setTimeout(() => this.refreshToken().subscribe(), mTimeout);
 		}
 	}
-	
+
 	/**
 	 * Stops the refresh token timer.
 	 *
@@ -540,5 +542,42 @@ export class AccountService extends BaseService {
 	 */
 	public triggerMenuUpdate(): void {
 		this._TriggerMenuUpdateSubject.next(true);
+	}
+
+	
+	public verifyAccount(verificationToken: string, email: string): void {
+		if(this._GWCommon.isNullOrEmpty(verificationToken)) {
+			this._LoggingSvc.console('verificationToken can not be blank!', LogLevel.Error);
+			this._LoggingSvc.toast('Unable to verify account.', 'Verify Account', LogLevel.Error);
+			return;
+		}
+		// console.log('AccountService.verifyAccount verificationToken: ', verificationToken);
+		const mQueryParameter: HttpParams = new HttpParams()
+			.set('verificationToken', verificationToken)
+			.set('email', email);
+		const mHttpOptions = {
+			headers: new HttpHeaders({
+				'Content-Type': 'application/json',
+			}),
+			params: mQueryParameter,
+		};
+		this._HttpClient.post<{ item1: IAuthenticationResponse, item2: IClientChoices }>(this._Api_VerifyAccount, null, mHttpOptions).subscribe({
+			next: (response) => {
+				// console.log('AccountService.verifyAccount response: ', response);
+				const mAccountInformation: IAccountInformation = { authenticationResponse: response.item1, clientChoices: response.item2 };
+				sessionStorage.setItem('jwt', mAccountInformation.authenticationResponse.jwtToken);
+				this.afterLogin(mAccountInformation);
+				this._Router.navigate(['/accounts/change-password']);
+				this._LoggingSvc.toast('Account has been verified, Please change your password', 'Verify Account', LogLevel.Success);
+			},
+			error: (error) => {
+				if (error.status && error.status === 403) {
+					this._LoggingSvc.toast('The Account or Password is incorrect', 'Login Error', LogLevel.Warn);
+				} else {
+					this._LoggingSvc.errorHandler(error, 'AccountService', 'verifyAccount');
+				}
+			},
+			// complete: () => {}
+		});
 	}
 }
