@@ -208,22 +208,29 @@ public static class MessageUtility
         {
             mSmtpFrom = mSmtpAccount;
         }
-        SmtpClient mailClient = getSmtpClient();
+        SmtpClient mSmtpClient = getSmtpClient();
         messageProfile.FormatBody();
-        MailMessage mMailMessage = new MailMessage();
-        mMailMessage.From = new MailAddress(mSmtpAccount, mSmtpFrom);
+        MailMessage mMailMessage = new()
+        {
+            Body = messageProfile.Body,
+            From = new MailAddress(mSmtpAccount, mSmtpFrom),
+            Subject = messageProfile.Title,
+            IsBodyHtml = messageProfile.FormatAsHtml
+        };
         mMailMessage.To.Add(new MailAddress(accountProfile.Email, accountProfile.FirstName + " " + accountProfile.LastName));
-        mMailMessage.Subject = messageProfile.Title;
-        mMailMessage.IsBodyHtml = messageProfile.FormatAsHtml;
-        mMailMessage.Body = messageProfile.Body;
-        try
+        int mNumberOfRetries = ConfigSettings.SmtpNumberOfRetries;
+        for (int mNumberOfTries = 1; mNumberOfTries < mNumberOfRetries; mNumberOfTries++)
         {
-            mailClient.Send(mMailMessage);
-            mRetVal = true;
-        }
-        catch (System.Exception ex)
-        {
-            m_Logger.Error(ex);
+            try
+            {
+                mSmtpClient.Send(mMailMessage);
+                mNumberOfTries = mNumberOfRetries;
+                mRetVal = true;
+            }
+            catch (System.Exception ex)
+            {
+                m_Logger.Error(ex);
+            }
         }
         return mRetVal;
     }
@@ -249,7 +256,7 @@ public static class MessageUtility
             log.Error("SMTP From not set in the WEB.CONFIG file");
             return mRetVal;
         }
-        SmtpClient mMailClient = getSmtpClient();
+        SmtpClient mSmtpClient = getSmtpClient();
         MailMessage mMailMessage = new(new MailAddress(mFrom), new MailAddress(accountProfile.Email))
         {
             Subject = subject,
@@ -262,14 +269,19 @@ public static class MessageUtility
             Name = file.Name
         };
         mMailMessage.Attachments.Add(attachment);
-        try
+        int mNumberOfRetries = ConfigSettings.SmtpNumberOfRetries;
+        for (int mNumberOfTries = 1; mNumberOfTries < mNumberOfRetries; mNumberOfTries++)
         {
-            mMailClient.Send(mMailMessage);
-            mRetVal = true;
-        }
-        catch (System.Exception ex)
-        {
-            m_Logger.Error(ex);
+            try
+            {
+                mSmtpClient.Send(mMailMessage);
+                mNumberOfTries = mNumberOfRetries;
+                mRetVal = true;
+            }
+            catch (System.Exception ex)
+            {
+                m_Logger.Error(ex);
+            }
         }
         return mRetVal;
     }
