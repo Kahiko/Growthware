@@ -42,7 +42,15 @@ namespace GrowthWare.DataAccess.Interfaces
 		/// <returns>DataRow</returns>
 		DataRow GetAccount { get; }
 
+		/// <summary>
+		/// Retrieves Account information given the reset token
+		/// </summary>
 		DataRow GetAccountByResetToken { get; }
+
+		/// <summary>
+		/// Retrieves Account information given the verification token
+		/// </summary>
+		DataRow GetAccountByVerificationToken { get; }
 
 		/// <summary>
 		/// Retrieves Account information given the JWT
