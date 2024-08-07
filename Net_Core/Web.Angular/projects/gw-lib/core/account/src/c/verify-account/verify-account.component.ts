@@ -20,7 +20,7 @@ export class VerifyAccountComponent {
     private _GWCommon: GWCommon
 	) { 
 		this._ActivatedRoute.queryParams.subscribe((params) => {
-			this._AccountSvc.verifyAccount(params['verificationToken']);
+			this._AccountSvc.verifyAccount(params['verificationToken'], params['email']);
 		});
 	}
 
