@@ -22,7 +22,7 @@ public static class StateUtility
     {
         if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
         {
-            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
         }
         return m_BusinessLogic;
     }
@@ -65,5 +65,4 @@ public static class StateUtility
         getBusinessLogic().Save(state);
         m_CacheHelper.RemoveFromCache(m_CacheName);
     }
-
 }

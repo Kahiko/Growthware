@@ -6,6 +6,8 @@ using GrowthWare.DataAccess.Interfaces;
 using GrowthWare.Framework;
 using GrowthWare.Framework.Models;
 
+namespace GrowthWare.BusinessLogic;
+
 public class BStates: AbstractBusinessLogic
 {
     private IState m_DStates;
@@ -32,7 +34,7 @@ public class BStates: AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity)
     /// ]]>
     /// </code>
     /// <code language="C#">
@@ -44,28 +46,17 @@ public class BStates: AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// BClientChoices mBClientChoices = new BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BClientChoices mBClientChoices = new BClientChoices(MSecurityEntity);
     /// ]]>
     /// </code>
     /// </example>
-    public BStates(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BStates(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null)
         {
             throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
-        if (centralManagement)
-        {
-            if (m_DStates == null)
-            {
-                m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState");
-            }
-        }
-        else
-        {
-            m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState");
-        }
-
+        m_DStates = (IState)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DState");
         m_DStates.ConnectionString = securityEntityProfile.ConnectionString;
         m_DStates.SecurityEntitySeqId = securityEntityProfile.Id;
     }
