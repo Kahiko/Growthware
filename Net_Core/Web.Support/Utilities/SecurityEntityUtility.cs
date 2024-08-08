@@ -83,7 +83,7 @@ public static class SecurityEntityUtility
         {
             if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
             {
-                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+                m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile);
             }
             return m_BusinessLogic;
         }
@@ -91,7 +91,7 @@ public static class SecurityEntityUtility
         {
             if(m_DefaultBusinessLogic == null || ConfigSettings.CentralManagement == true)
             {
-                m_DefaultBusinessLogic = new(DefaultProfile(), ConfigSettings.CentralManagement);
+                m_DefaultBusinessLogic = new(DefaultProfile());
             }
             return m_DefaultBusinessLogic;
         }

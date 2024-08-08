@@ -63,7 +63,7 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// <param name="centralManagement">Boolean value indicating if the system is being used to manage multiple database instances.</param>
     /// <remarks></remarks>
     /// <example> This sample shows how to create an instance of the class.
-    /// <code language="VB.NET">
+    /// <code language="C#">
     /// <![CDATA[
     /// MSecurityEntity MSecurityEntity = MSecurityEntity = New MSecurityEntity();
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID;
@@ -72,10 +72,10 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL);
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString;
     /// 
-    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement)
+    /// Dim mBClientChoices As BClientChoices = New BClientChoices(MSecurityEntity)
     /// ]]>
     /// </code>
-    /// <code language="C#">
+    /// <code language="VB.NET">
     /// <![CDATA[
     /// Dim MSecurityEntity As MSecurityEntity = New MSecurityEntity()
     /// MSecurityEntity.ID = ConfigSettings.DefaultSecurityEntityID
@@ -84,28 +84,17 @@ public class BSecurityEntities : AbstractBusinessLogic
     /// MSecurityEntity.DAL_Name = ConfigSettings.DAL_AssemblyName(MSecurityEntity.DAL)
     /// MSecurityEntity.ConnectionString = ConfigSettings.ConnectionString
     /// 
-    /// BClientChoices mBClientChoices = new BClientChoices(MSecurityEntity, ConfigSettings.CentralManagement);
+    /// BClientChoices mBClientChoices = new BClientChoices(MSecurityEntity);
     /// ]]>
     /// </code>
     /// </example>
-    public BSecurityEntities(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BSecurityEntities(MSecurityEntity securityEntityProfile)
     {
         if (securityEntityProfile == null)
         {
             throw new ArgumentNullException("securityEntityProfile", "The securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!!");
         }
-        if (centralManagement)
-        {
-            if (m_DSecurityEntities == null)
-            {
-                m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities");
-            }
-        }
-        else
-        {
-            m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities");
-        }
-
+        m_DSecurityEntities = (ISecurityEntities)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DSecurityEntities");
         m_DSecurityEntities.ConnectionString = securityEntityProfile.ConnectionString;
     }
 
