@@ -13,9 +13,24 @@ using GrowthWare.Web.Support.Utilities;
 namespace GrowthWare.Web.Support.Jwt;
 public class JwtUtility : IJwtUtility
 {
+    private static BAccounts m_BusinessLogic = null;
+
     public JwtUtility()
     {
         // nothing atm
+    }
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BAccounts getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -103,8 +118,7 @@ public class JwtUtility : IJwtUtility
 
         // ensure token is unique by checking against db
         // var tokenIsUnique = !_context.Accounts.Any(x => x.ResetToken == token);
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        var tokenIsUnique = mBAccount.RefreshTokenExists(refreshToken.Token);
+        var tokenIsUnique = getBusinessLogic().RefreshTokenExists(refreshToken.Token);
 
         if (!tokenIsUnique)
             return GenerateRefreshToken(ipAddress, accountSeqId);
@@ -120,8 +134,7 @@ public class JwtUtility : IJwtUtility
     {
         string mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
 
-        BAccounts mBAccount = new BAccounts(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        bool mTokenIsUnique = mBAccount.ResetTokenExists(mRetVal);
+        bool mTokenIsUnique = getBusinessLogic().ResetTokenExists(mRetVal);
 
         if (!mTokenIsUnique)
         {
@@ -139,8 +152,7 @@ public class JwtUtility : IJwtUtility
     {
         var mRetVal = Convert.ToHexString(RandomNumberGenerator.GetBytes(64));
         // ensure token is unique by checking against db
-        BAccounts mBAccount = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
-        bool mTokenExists = mBAccount.VerificationTokenExists(mRetVal);
+        bool mTokenExists = getBusinessLogic().VerificationTokenExists(mRetVal);
         if (mTokenExists)
         {
             return GenerateVerificationToken();
