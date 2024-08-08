@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 // Angular Material
+import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSelectModule } from '@angular/material/select';
 // Library
@@ -14,6 +15,7 @@ import { GWCommon } from '@growthware/common/services';
 	standalone: true,
 	imports: [
 		FormsModule,
+		MatButtonModule,
 		MatFormFieldModule,
 		MatSelectModule
 	],
