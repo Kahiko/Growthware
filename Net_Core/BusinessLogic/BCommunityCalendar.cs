@@ -70,23 +70,12 @@ public class BCommunityCalendar : AbstractBusinessLogic
     /// ]]>
     /// </code>
     /// </example>
-    public BCommunityCalendar(MSecurityEntity securityEntityProfile, bool centralManagement)
+    public BCommunityCalendar(MSecurityEntity securityEntityProfile)
     {
-            if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
-            if (!centralManagement)
-            {
-                if (m_DCommunityCalendar == null)
-                {
-                    m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
-                }
-            }
-            else
-            {
-                m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
-            }
-
-            m_DCommunityCalendar.ConnectionString = securityEntityProfile.ConnectionString;
-            m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
+        if (securityEntityProfile == null) throw new ArgumentNullException(nameof(securityEntityProfile), "securityEntityProfile cannot be a null reference (Nothing in Visual Basic)!");
+        m_DCommunityCalendar = (ICommunityCalendar)ObjectFactory.Create(securityEntityProfile.DataAccessLayerAssemblyName, securityEntityProfile.DataAccessLayerNamespace, "DCommunityCalendar");
+        m_DCommunityCalendar.ConnectionString = securityEntityProfile.ConnectionString;
+        m_DCommunityCalendar.SecurityEntitySeqId = securityEntityProfile.Id;
     }
 
     public MCalendarEvent GetEvent(int calendarEventSeqId) 
