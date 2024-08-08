@@ -18,6 +18,7 @@
 - Renamed SessionController.cs to SessionHelper.cs and moved to \Helpers
 - MMessage now uses ExcludedTags so as not to show some properties returned in method GetTags
 - AbstractDBInteraction now logs exceptions to the log file
+- Moved check for ConfigSettings.CentralManagement from the BusinessLogic project to the Web.Support project, this reduces the number of times the business logic class is created resulting in better performance
 
 ### Bug Fixes
 - Fixed the namespace in the WebApi project controllers from GrowthWare.Web.Angular.Controllers to GrowthWare.Web.Api.Controllers
