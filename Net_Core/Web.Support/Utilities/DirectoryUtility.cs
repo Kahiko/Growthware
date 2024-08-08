@@ -12,6 +12,8 @@ namespace GrowthWare.Web.Support.Utilities;
 public static class DirectoryUtility
 {
 
+    private static BDirectories m_BusinessLogic = null;
+
     private static CacheHelper m_CacheHelper = CacheHelper.Instance();
 
     /// <summary>
@@ -30,11 +32,24 @@ public static class DirectoryUtility
         Collection<MDirectoryProfile> mRetVal = m_CacheHelper.GetFromCache<Collection<MDirectoryProfile>>(mCacheName);;
         if(mRetVal == null)
         {
-            BDirectories mBDirectories = new BDirectories(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+            BDirectories mBDirectories = getBusinessLogic();
             mRetVal = mBDirectories.Directories();
             m_CacheHelper.AddToCache(mCacheName, mRetVal);
         }
         return mRetVal;
+    }
+    
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BDirectories getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -65,7 +80,7 @@ public static class DirectoryUtility
 
     public static void Save(MDirectoryProfile profile)
     {
-        BDirectories mBDirectories = new BDirectories(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BDirectories mBDirectories = getBusinessLogic();
         mBDirectories.Save(profile);
         String mCacheName = SecurityEntityUtility.CurrentProfile.Id.ToString(CultureInfo.InvariantCulture) + "_" + s_DirectoryInfoCachedName;
         m_CacheHelper.RemoveFromCache(mCacheName);
