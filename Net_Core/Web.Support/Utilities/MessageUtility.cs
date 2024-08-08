@@ -17,6 +17,7 @@ namespace GrowthWare.Web.Support.Utilities;
 
 public static class MessageUtility
 {
+    private static BMessages m_BusinessLogic = null;
     private static string s_MessagesUnitCachedDVName = "dvMessages";
 
     private static string s_MessagesUnitCachedCollectionName = "MessagesCollection";
@@ -57,6 +58,19 @@ public static class MessageUtility
             mRetVal = false;
         }
         return mRetVal;
+    }
+
+    /// <summary>
+    /// Returns the business logic object used to access the database.
+    /// </summary>
+    /// <returns></returns>
+    private static BMessages getBusinessLogic()
+    {
+        if(m_BusinessLogic == null || ConfigSettings.CentralManagement == true)
+        {
+            m_BusinessLogic = new(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        }
+        return m_BusinessLogic;
     }
 
     /// <summary>
@@ -148,7 +162,7 @@ public static class MessageUtility
         // mMessageCollection = (Collection<MMessage>)HttpContext.Current.Cache[mCacheName];
         if (mMessageCollection == null)
         {
-            BMessages mBMessages = new BMessages(mSecurityEntityProfile, ConfigSettings.CentralManagement);
+            BMessages mBMessages = getBusinessLogic();
             mMessageCollection = mBMessages.GetMessages(mSecurityEntityProfile.Id);
             CacheHelper.Instance().AddToCache(mCacheName, mMessageCollection);
         }
@@ -180,7 +194,7 @@ public static class MessageUtility
     /// <param name="profile">The profile.</param>
     public static int Save(MMessage profile)
     {
-        BMessages mBMessages = new BMessages(SecurityEntityUtility.CurrentProfile, ConfigSettings.CentralManagement);
+        BMessages mBMessages = getBusinessLogic();
         int mRetVal = -1;
         mRetVal = mBMessages.Save(profile);
         RemoveCachedMessagesCollection();
